@@ -1,0 +1,609 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6363D5C527EE196700E34822 /* MlemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C427EE196700E34822 /* MlemApp.swift */; };
+		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
+		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
+		6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */; };
+		6363D5CE27EE196A00E34822 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5CD27EE196A00E34822 /* Persistence.swift */; };
+		6363D5D127EE196A00E34822 /* Mlem.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5CF27EE196A00E34822 /* Mlem.xcdatamodeld */; };
+		6363D5DB27EE196A00E34822 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5DA27EE196A00E34822 /* MlemTests.swift */; };
+		6363D5E527EE196A00E34822 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5E427EE196A00E34822 /* MlemUITests.swift */; };
+		6363D5E727EE196A00E34822 /* MlemUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5E627EE196A00E34822 /* MlemUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6363D5D727EE196A00E34822 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6363D5B927EE196700E34822 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6363D5C027EE196700E34822;
+			remoteInfo = Mlem;
+		};
+		6363D5E127EE196A00E34822 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6363D5B927EE196700E34822 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6363D5C027EE196700E34822;
+			remoteInfo = Mlem;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6363D5C427EE196700E34822 /* MlemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemApp.swift; sourceTree = "<group>"; };
+		6363D5C627EE196700E34822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6363D5C827EE196A00E34822 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6363D5CD27EE196A00E34822 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		6363D5D027EE196A00E34822 /* Mlem.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mlem.xcdatamodel; sourceTree = "<group>"; };
+		6363D5D627EE196A00E34822 /* MlemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6363D5DA27EE196A00E34822 /* MlemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemTests.swift; sourceTree = "<group>"; };
+		6363D5E027EE196A00E34822 /* MlemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6363D5E427EE196A00E34822 /* MlemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITests.swift; sourceTree = "<group>"; };
+		6363D5E627EE196A00E34822 /* MlemUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6363D5BE27EE196700E34822 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6363D5D327EE196A00E34822 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6363D5DD27EE196A00E34822 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6363D5B827EE196700E34822 = {
+			isa = PBXGroup;
+			children = (
+				6363D5C327EE196700E34822 /* Mlem */,
+				6363D5D927EE196A00E34822 /* MlemTests */,
+				6363D5E327EE196A00E34822 /* MlemUITests */,
+				6363D5C227EE196700E34822 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6363D5C227EE196700E34822 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6363D5C127EE196700E34822 /* Mlem.app */,
+				6363D5D627EE196A00E34822 /* MlemTests.xctest */,
+				6363D5E027EE196A00E34822 /* MlemUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6363D5C327EE196700E34822 /* Mlem */ = {
+			isa = PBXGroup;
+			children = (
+				6363D5C427EE196700E34822 /* MlemApp.swift */,
+				6363D5C627EE196700E34822 /* ContentView.swift */,
+				6363D5C827EE196A00E34822 /* Assets.xcassets */,
+				6363D5CD27EE196A00E34822 /* Persistence.swift */,
+				6363D5CF27EE196A00E34822 /* Mlem.xcdatamodeld */,
+				6363D5CA27EE196A00E34822 /* Preview Content */,
+			);
+			path = Mlem;
+			sourceTree = "<group>";
+		};
+		6363D5CA27EE196A00E34822 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		6363D5D927EE196A00E34822 /* MlemTests */ = {
+			isa = PBXGroup;
+			children = (
+				6363D5DA27EE196A00E34822 /* MlemTests.swift */,
+			);
+			path = MlemTests;
+			sourceTree = "<group>";
+		};
+		6363D5E327EE196A00E34822 /* MlemUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6363D5E427EE196A00E34822 /* MlemUITests.swift */,
+				6363D5E627EE196A00E34822 /* MlemUITestsLaunchTests.swift */,
+			);
+			path = MlemUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6363D5C027EE196700E34822 /* Mlem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6363D5EA27EE196A00E34822 /* Build configuration list for PBXNativeTarget "Mlem" */;
+			buildPhases = (
+				6363D5BD27EE196700E34822 /* Sources */,
+				6363D5BE27EE196700E34822 /* Frameworks */,
+				6363D5BF27EE196700E34822 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mlem;
+			productName = Mlem;
+			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6363D5D527EE196A00E34822 /* MlemTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6363D5ED27EE196A00E34822 /* Build configuration list for PBXNativeTarget "MlemTests" */;
+			buildPhases = (
+				6363D5D227EE196A00E34822 /* Sources */,
+				6363D5D327EE196A00E34822 /* Frameworks */,
+				6363D5D427EE196A00E34822 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6363D5D827EE196A00E34822 /* PBXTargetDependency */,
+			);
+			name = MlemTests;
+			productName = MlemTests;
+			productReference = 6363D5D627EE196A00E34822 /* MlemTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6363D5DF27EE196A00E34822 /* MlemUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6363D5F027EE196A00E34822 /* Build configuration list for PBXNativeTarget "MlemUITests" */;
+			buildPhases = (
+				6363D5DC27EE196A00E34822 /* Sources */,
+				6363D5DD27EE196A00E34822 /* Frameworks */,
+				6363D5DE27EE196A00E34822 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6363D5E227EE196A00E34822 /* PBXTargetDependency */,
+			);
+			name = MlemUITests;
+			productName = MlemUITests;
+			productReference = 6363D5E027EE196A00E34822 /* MlemUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6363D5B927EE196700E34822 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1330;
+				LastUpgradeCheck = 1330;
+				TargetAttributes = {
+					6363D5C027EE196700E34822 = {
+						CreatedOnToolsVersion = 13.3;
+					};
+					6363D5D527EE196A00E34822 = {
+						CreatedOnToolsVersion = 13.3;
+						TestTargetID = 6363D5C027EE196700E34822;
+					};
+					6363D5DF27EE196A00E34822 = {
+						CreatedOnToolsVersion = 13.3;
+						TestTargetID = 6363D5C027EE196700E34822;
+					};
+				};
+			};
+			buildConfigurationList = 6363D5BC27EE196700E34822 /* Build configuration list for PBXProject "Mlem" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6363D5B827EE196700E34822;
+			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6363D5C027EE196700E34822 /* Mlem */,
+				6363D5D527EE196A00E34822 /* MlemTests */,
+				6363D5DF27EE196A00E34822 /* MlemUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6363D5BF27EE196700E34822 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */,
+				6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6363D5D427EE196A00E34822 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6363D5DE27EE196A00E34822 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6363D5BD27EE196700E34822 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6363D5D127EE196A00E34822 /* Mlem.xcdatamodeld in Sources */,
+				6363D5CE27EE196A00E34822 /* Persistence.swift in Sources */,
+				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
+				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6363D5D227EE196A00E34822 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6363D5DB27EE196A00E34822 /* MlemTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6363D5DC27EE196A00E34822 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6363D5E527EE196A00E34822 /* MlemUITests.swift in Sources */,
+				6363D5E727EE196A00E34822 /* MlemUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6363D5D827EE196A00E34822 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6363D5C027EE196700E34822 /* Mlem */;
+			targetProxy = 6363D5D727EE196A00E34822 /* PBXContainerItemProxy */;
+		};
+		6363D5E227EE196A00E34822 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6363D5C027EE196700E34822 /* Mlem */;
+			targetProxy = 6363D5E127EE196A00E34822 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6363D5E827EE196A00E34822 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6363D5E927EE196A00E34822 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6363D5EB27EE196A00E34822 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
+				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.Mlem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6363D5EC27EE196A00E34822 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
+				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.Mlem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6363D5EE27EE196A00E34822 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mlem.app/Mlem";
+			};
+			name = Debug;
+		};
+		6363D5EF27EE196A00E34822 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mlem.app/Mlem";
+			};
+			name = Release;
+		};
+		6363D5F127EE196A00E34822 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Mlem;
+			};
+			name = Debug;
+		};
+		6363D5F227EE196A00E34822 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Mlem;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6363D5BC27EE196700E34822 /* Build configuration list for PBXProject "Mlem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6363D5E827EE196A00E34822 /* Debug */,
+				6363D5E927EE196A00E34822 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6363D5EA27EE196A00E34822 /* Build configuration list for PBXNativeTarget "Mlem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6363D5EB27EE196A00E34822 /* Debug */,
+				6363D5EC27EE196A00E34822 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6363D5ED27EE196A00E34822 /* Build configuration list for PBXNativeTarget "MlemTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6363D5EE27EE196A00E34822 /* Debug */,
+				6363D5EF27EE196A00E34822 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6363D5F027EE196A00E34822 /* Build configuration list for PBXNativeTarget "MlemUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6363D5F127EE196A00E34822 /* Debug */,
+				6363D5F227EE196A00E34822 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6363D5CF27EE196A00E34822 /* Mlem.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6363D5D027EE196A00E34822 /* Mlem.xcdatamodel */,
+			);
+			currentVersion = 6363D5D027EE196A00E34822 /* Mlem.xcdatamodel */;
+			path = Mlem.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 6363D5B927EE196700E34822 /* Project object */;
+}
