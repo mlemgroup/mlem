@@ -17,6 +17,8 @@
 		632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E8EE527EE63D3007E8D75 /* Upvote.swift */; };
 		632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E8EE727EE63DB007E8D75 /* Downvote.swift */; };
 		632E8EEA27EE63F4007E8D75 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632E8EE927EE63F4007E8D75 /* Share.swift */; };
+		6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6332FDBC27EFAF7B0009A98A /* Settings.bundle */; };
+		6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDBF27EFB05F0009A98A /* Settings Item.swift */; };
 		6363D5C527EE196700E34822 /* MlemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C427EE196700E34822 /* MlemApp.swift */; };
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
@@ -60,6 +62,8 @@
 		632E8EE527EE63D3007E8D75 /* Upvote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upvote.swift; sourceTree = "<group>"; };
 		632E8EE727EE63DB007E8D75 /* Downvote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downvote.swift; sourceTree = "<group>"; };
 		632E8EE927EE63F4007E8D75 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
+		6332FDBC27EFAF7B0009A98A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		6332FDBF27EFB05F0009A98A /* Settings Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Item.swift"; sourceTree = "<group>"; };
 		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5C427EE196700E34822 /* MlemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemApp.swift; sourceTree = "<group>"; };
 		6363D5C627EE196700E34822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -166,6 +170,14 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		6332FDBE27EFB04E0009A98A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6332FDBF27EFB05F0009A98A /* Settings Item.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		6363D5B827EE196700E34822 = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +210,7 @@
 				6363D5CD27EE196A00E34822 /* Persistence.swift */,
 				6363D5CF27EE196A00E34822 /* Mlem.xcdatamodeld */,
 				6363D5CA27EE196A00E34822 /* Preview Content */,
+				6332FDBC27EFAF7B0009A98A /* Settings.bundle */,
 			);
 			path = Mlem;
 			sourceTree = "<group>";
@@ -257,6 +270,7 @@
 		6363D5F627EE1BBC00E34822 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				6332FDBE27EFB04E0009A98A /* Components */,
 				6363D5F927EE1BDA00E34822 /* Settings View.swift */,
 			);
 			path = Settings;
@@ -408,6 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */,
+				6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */,
 				6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +452,7 @@
 				6363D5D127EE196A00E34822 /* Mlem.xcdatamodeld in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				630049EF27EF396500D5105B /* Networking.swift in Sources */,
+				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Post Item.swift in Sources */,
 				6363D5CE27EE196A00E34822 /* Persistence.swift in Sources */,
 				630049ED27EF391A00D5105B /* Establish Connection to Instance.swift in Sources */,
