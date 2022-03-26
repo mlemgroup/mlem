@@ -13,14 +13,19 @@ struct Post_Item: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(postName)
-                .font(.headline)
+                .font(.subheadline)
             Image("Sleeping Lions")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
+            HStack(alignment: .center) {
+                Upvote_Button()
+                Downvote_Button()
+                Share_Button()
+            }
         }
         .padding(.top)
         .padding(.bottom)
-        .border(.gray, width: 1)
+        .border(.primary, width: 1)
     }
 }
 

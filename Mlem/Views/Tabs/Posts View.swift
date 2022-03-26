@@ -9,12 +9,16 @@ import SwiftUI
 
 struct Posts_View: View {
     let mockPostNames: [String] = ["Test", "Ahoj", "Tohle jsem já", "Nevím"]
+    let mockInstance: String = "Lemmygrad"
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
+        let instanceName: String = mockInstance
+        
+        NavigationView {
+            List(0..<20) { item in
+                Post_Item(postName: mockPostNames.randomElement()!)
+            }
+            .navigationTitle(instanceName)
         }
     }
 }
