@@ -22,9 +22,12 @@ class LemmyConnector: WebSocketDelegate {
         var request = URLRequest(url: instanceAPIUrl)
         request.timeoutInterval = 5
         
-        var socket = WebSocket(request: request)
+        let socket = WebSocket(request: request)
         socket.delegate = self
         socket.connect()
+        
+        print("WS Client Setup Done")
+        print("Will attempt to connect to API URL [\(instanceAPIUrl)]")
     }
     
     

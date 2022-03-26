@@ -9,16 +9,24 @@ import SwiftUI
 
 struct Posts_View: View {
     let mockPostNames: [String] = ["Test", "Ahoj", "Tohle jsem já", "Nevím"]
-    let mockInstance: String = "Cool Lions"
+    let mockCommunity: String = "Cool Lions"
     
     var body: some View {
-        let instanceName: String = mockInstance
+        let communityName: String = mockCommunity
         
         NavigationView {
-            List(0..<20) { item in
+            ScrollView {
+                Post_Item(postName: mockPostNames.randomElement()!)
+                Post_Item(postName: mockPostNames.randomElement()!)
+                Post_Item(postName: mockPostNames.randomElement()!)
+                Post_Item(postName: mockPostNames.randomElement()!)
                 Post_Item(postName: mockPostNames.randomElement()!)
             }
-            .navigationTitle(instanceName)
+            .background(Color.secondarySystemBackground)
+            /*List(0..<20) { item in
+                Post_Item(postName: mockPostNames.randomElement()!)
+            }*/
+            .navigationTitle(communityName)
         }
     }
 }
