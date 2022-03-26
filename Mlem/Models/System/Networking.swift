@@ -8,71 +8,61 @@
 import Foundation
 import Starscream
 
-class LemmyWebSocket: NSObject, URLSessionWebSocketDelegate {
-    private var webSocket: URLSessionWebSocketTask?
+class LemmyConnector: WebSocketDelegate {
+    let instanceURL: String
+    let instanceAPIUrl: URL
     
-    override init() {
-        super.init()
-        let lemmyInstanceLink: String = "hexbear.net" // This is the base URL for the lemmy instance. eg "hexbear.net"
+    var isConnected: Bool
+    
+    init(instanceURL: String) {
+        self.instanceURL = instanceURL
+        self.instanceAPIUrl = URL(string: "wss://www.\(instanceURL)/api/v1/ws")!
+        self.isConnected = false
         
-        let session = URLSession(
-            configuration: .default,
-            delegate: self,
-            delegateQueue: OperationQueue()
-        )
+        var request = URLRequest(url: instanceAPIUrl)
+        request.timeoutInterval = 5
         
-        let lemmyInstanceURL: URL = URL(
-            string: "wss://www.\(lemmyInstanceLink)/api/v1/ws"
-        )! // Make that base URL into an URL type for the WebSocket to work
-        
-        let webSocket = session.webSocketTask(with: lemmyInstanceURL)
-        webSocket.resume()
+        var socket = WebSocket(request: request)
+        socket.delegate = self
+        socket.connect()
     }
     
-    func ping() {
-        webSocket?.sendPing(pongReceiveHandler: { error in
-            if let error = error {
-                print("Ping error: \(error)")
-            }
-        })
+    
+    func didReceive(event: WebSocketEvent, client: WebSocket) {
+        switch event {
+        case .connected(let headers):
+            self.isConnected = true
+            print("Socket Connected! Headers: \(headers)")
+        case .disconnected(let reason, let code):
+            self.isConnected = false
+            print("Socket disconnected! Reason: \(reason) with code \(code)")
+        case .text(let string):
+            print("Received text: \(string)")
+        case .binary(let data):
+            print("Received data: \(data.count)")
+        case .pong(let optional):
+            break
+        case .ping(let optional):
+            break
+        case .error(let error):
+            self.isConnected = false
+            handleError(error)
+        case .viabilityChanged(let bool):
+            break
+        case .reconnectSuggested(let bool):
+            break
+        case .cancelled:
+            self.isConnected = false
+        }
     }
     
-    func close() {
-        webSocket?.cancel(with: .goingAway, reason: "Closed connection willingly".data(using: .utf8))
-    }
-    
-    func send() {
-        webSocket?.send(.string("Sent debug message"), completionHandler: {error in
-            if let error = error {
-                print("Send error: \(error)")
-            }
-        })
-    }
-    
-    func receive() {
-        webSocket?.receive(completionHandler: { [weak self] result in
-            switch result {
-            case .success(let message):
-                switch message {
-                case .data(let data):
-                    print("Received data: \(data)")
-                case .string(let string):
-                    print("Received string: \(string)")
-                @unknown default:
-                    break
-                }
-            case.failure(let error):
-                print("Receive error: \(error)")
-            }
-            self?.receive()
-        })
-    }
-    
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
-        print("WebSocket Connected!")
-        ping()
-    }
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
-        print("WebSocket Closed!")
+    func handleError(_ error: Error?) {
+        if let e = error as? WSError {
+            print("Websocket encountered an error: \(e.message)")
+        } else if let e = error {
+            print("Websocket encountered an error: \(e.localizedDescription)")
+        } else {
+            print("Websocket encountered an error")
+        }
     }
 }

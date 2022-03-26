@@ -25,7 +25,6 @@ struct Post_Item: View {
         }
         .padding(.top)
         .padding(.bottom)
-        .border(.primary, width: 1)
     }
 }
 

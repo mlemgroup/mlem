@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Posts_View: View {
     let mockPostNames: [String] = ["Test", "Ahoj", "Tohle jsem já", "Nevím"]
-    let mockInstance: String = "Lemmygrad"
+    let mockInstance: String = "Cool Lions"
     
     var body: some View {
         let instanceName: String = mockInstance
