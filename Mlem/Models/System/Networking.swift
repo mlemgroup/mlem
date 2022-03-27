@@ -8,7 +8,7 @@
 import Foundation
 import Starscream
 
-class LemmyConnector: WebSocketDelegate {
+class LemmyConnectorSS: WebSocketDelegate {
     let instanceURL: String
     let instanceAPIUrl: URL
     
@@ -28,6 +28,14 @@ class LemmyConnector: WebSocketDelegate {
         
         print("WS Client Setup Done")
         print("Will attempt to connect to API URL [\(instanceAPIUrl)]")
+        
+        let testRequest: String = """
+        {"op": "ListCategories"}
+        """
+        socket.write(string: testRequest) {
+            print("Successfuly sent request to \(instanceURL)")
+            self.didReceive(event: .text(String()), client: socket)
+        }
     }
     
     

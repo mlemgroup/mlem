@@ -46,7 +46,7 @@ struct Settings_View: View {
                     )
                 }
                 Section(header: Text("About me"), footer: Text("Made thanks to my perfect Elča ❤️")) {
-                    NavigationLink("Hello", destination: Settings_View())
+                    NavigationLink("Hello", destination: About_Me())
                     Link("Twitter", destination: URL(string: "https://twitter.com/davidbures")!)
                 }
             }
