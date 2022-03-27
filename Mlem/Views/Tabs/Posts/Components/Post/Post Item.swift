@@ -28,10 +28,10 @@ struct Post_Item: View {
                 print("I would take you to the detail view")
             }
             
-            HStack(alignment: .center) {
-                Upvote_Button()
-                Downvote_Button()
-                Share_Button()
+            HStack {
+                Post_Interactions()
+                Spacer()
+                Post_Info()
             }
             .padding()
         }
@@ -39,9 +39,12 @@ struct Post_Item: View {
         .background(Color.systemBackground)
         .contextMenu { // This created that "peek and pop" feel that I used to love
             // TODO: Implement Peek and pop behavior for posts
-            Button("Hello") {
+            Button(action: {
                 
-            }
+            }, label: {
+                Label("Save", systemImage: "bookmark.fill")
+            })
+            
             Divider()
             Button("This is me") {
                 

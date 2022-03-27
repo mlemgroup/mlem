@@ -14,20 +14,15 @@ struct Posts_View: View {
     var body: some View {
         let communityName: String = mockCommunity
         
-        NavigationView {
-            ScrollView {
-                Post_Item(postName: mockPostNames.randomElement()!)
-                Post_Item(postName: mockPostNames.randomElement()!)
-                Post_Item(postName: mockPostNames.randomElement()!)
-                Post_Item(postName: mockPostNames.randomElement()!)
-                Post_Item(postName: mockPostNames.randomElement()!)
-            }
-            .background(Color.secondarySystemBackground)
-            /*List(0..<20) { item in
-                Post_Item(postName: mockPostNames.randomElement()!)
-            }*/
-            .navigationTitle(communityName)
+        ScrollView {
+            Post_Item(postName: mockPostNames.randomElement()!)
+            Post_Item(postName: mockPostNames.randomElement()!)
+            Post_Item(postName: mockPostNames.randomElement()!)
+            Post_Item(postName: mockPostNames.randomElement()!)
+            Post_Item(postName: mockPostNames.randomElement()!)
         }
+        .background(Color.secondarySystemBackground)
+        .navigationTitle(communityName)
     }
 }
 

@@ -16,6 +16,11 @@ struct ContentView: View {
                     Image(systemName: "text.bubble")
                     Text("Posts")
                 }
+            Instance_and_Community_List_View()
+                .tabItem{
+                    Image(systemName: "text.bubble")
+                    Text("REMOVE ME")
+                }
             Settings_View()
                 .tabItem{
                     Image(systemName: "gear")
