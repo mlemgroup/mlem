@@ -17,13 +17,13 @@ struct Post_Item: View {
                     Text(postName)
                         .font(.subheadline)
                 }
-                .padding(.leading)
-                .padding(.trailing)
                 
                 Image("Sleeping Lions")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
             }
+            .padding()
             .onTapGesture {
                 print("I would take you to the detail view")
             }
@@ -33,9 +33,9 @@ struct Post_Item: View {
                 Spacer()
                 Post_Info()
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.bottom)
         }
-        .padding(.top)
         .background(Color.systemBackground)
         .contextMenu { // This created that "peek and pop" feel that I used to love
             // TODO: Implement Peek and pop behavior for posts

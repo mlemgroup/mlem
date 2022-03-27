@@ -10,8 +10,10 @@ import Foundation
 struct Comment: Identifiable {
     let id = UUID()
     
+    let link: URL
+    
     let content: String
-    let age: Date
+    let datePosted: Date
     
     let poster: User
 }
