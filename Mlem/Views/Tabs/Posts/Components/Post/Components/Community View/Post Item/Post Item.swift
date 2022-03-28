@@ -11,6 +11,9 @@ struct Post_Item: View {
     let postName: String
     let author: String
     
+    let postBody: String?
+    let imageThumbnail: String?
+    
     let score: Int
     
     let numberOfComments: Int
@@ -25,10 +28,32 @@ struct Post_Item: View {
                         .font(.subheadline)
                 }
                 
-                Image("Sleeping Lions")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                if postBody == nil { // Show image if there is no text in the body
+                    if imageThumbnail != nil { // Only show the image if there actually is one. Otherwise just don't show anything
+                        AsyncImage(url: URL(string: imageThumbnail!), content: { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }, placeholder: {
+                            ProgressView()
+                        })
+                    } else {
+                        Text("ERROR: Wtf is this post format")
+                            .background(.red)
+                    }
+                    /*Image("Sleeping Lions")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))*/
+                    
+                } else { // Otherwise show the text
+                    Text(postBody!)
+                        .foregroundColor(.secondary)
+                        .dynamicTypeSize(.small)
+                        .lineLimit(3)
+                        .padding(.top, 2)
+                }
             }
             .padding()
             .onTapGesture {
@@ -36,14 +61,25 @@ struct Post_Item: View {
             }
             
             HStack {
-                Post_Interactions()
+                // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
+                HStack(alignment: .center) {
+                    HStack(spacing: iconToTextSpacing) {
+                        Upvote_Button()
+                        Text(String(score))
+                            .foregroundColor(.blue)
+                    }
+                    Downvote_Button()
+                    Share_Button()
+                }
+                
                 Spacer()
-                // TODO: Refactor this into its own view
+                
+                // TODO: Refactor this into Post Info once I learn how to pass the vars further down
                 HStack(spacing: 8) {
-                    HStack(spacing: iconToTextSpacing) { // Number of upvotes
+                    /*HStack(spacing: iconToTextSpacing) { // Number of upvotes
                         Image(systemName: "arrow.up")
                         Text(String(score))
-                    }
+                    }*/
                     
                     HStack(spacing: iconToTextSpacing) { // Number of comments
                         Image(systemName: "bubble.left")
