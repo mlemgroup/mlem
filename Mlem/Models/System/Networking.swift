@@ -77,3 +77,14 @@ class LemmyConnectorSS: WebSocketDelegate {
         }
     }
 }
+
+class LemmyConnectionHandler {
+    let baseURL: String
+    
+    private let APIUrl: URL
+    
+    init(baseURL: String) {
+        self.baseURL = baseURL
+        APIUrl = URL(string: "wss://www.\(baseURL)/api/v1/ws")!
+    }
+}

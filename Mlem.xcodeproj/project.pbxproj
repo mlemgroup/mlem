@@ -40,6 +40,9 @@
 		6363D5FD27EE1D4600E34822 /* Placeholder View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5FC27EE1D4600E34822 /* Placeholder View.swift */; };
 		6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60127EE1EC400E34822 /* Comment Item.swift */; };
 		6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60327EE20A200E34822 /* Post Expanded.swift */; };
+		6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F23C27F10E4E0074C36F /* Post Parser.swift */; };
+		6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F23E27F10E580074C36F /* Comment Parser.swift */; };
+		6367F24127F10E660074C36F /* Shared Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F24027F10E660074C36F /* Shared Parser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +98,9 @@
 		6363D5FC27EE1D4600E34822 /* Placeholder View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Placeholder View.swift"; sourceTree = "<group>"; };
 		6363D60127EE1EC400E34822 /* Comment Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Item.swift"; sourceTree = "<group>"; };
 		6363D60327EE20A200E34822 /* Post Expanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Expanded.swift"; sourceTree = "<group>"; };
+		6367F23C27F10E4E0074C36F /* Post Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Parser.swift"; sourceTree = "<group>"; };
+		6367F23E27F10E580074C36F /* Comment Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Parser.swift"; sourceTree = "<group>"; };
+		6367F24027F10E660074C36F /* Shared Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared Parser.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +168,7 @@
 		6318EDC527EE4E0B00BFCAE8 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				6367F23B27F10E2D0074C36F /* Server Response Parsing */,
 				630049EB27EF390900D5105B /* Networking */,
 			);
 			path = Logic;
@@ -372,6 +379,16 @@
 			path = Comment;
 			sourceTree = "<group>";
 		};
+		6367F23B27F10E2D0074C36F /* Server Response Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				6367F23C27F10E4E0074C36F /* Post Parser.swift */,
+				6367F23E27F10E580074C36F /* Comment Parser.swift */,
+				6367F24027F10E660074C36F /* Shared Parser.swift */,
+			);
+			path = "Server Response Parsing";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -512,6 +529,7 @@
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */,
 				6332FDDA27F083590009A98A /* About Me.swift in Sources */,
+				6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */,
 				6363D5D127EE196A00E34822 /* Mlem.xcdatamodeld in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				6332FDCC27EFD6F90009A98A /* Post Info.swift in Sources */,
@@ -520,6 +538,7 @@
 				6318EDC327EE4D7F00BFCAE8 /* Post Item.swift in Sources */,
 				6363D5CE27EE196A00E34822 /* Persistence.swift in Sources */,
 				630049ED27EF391A00D5105B /* Establish Connection to Instance.swift in Sources */,
+				6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */,
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
 				6363D5F827EE1BCF00E34822 /* Posts View.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
@@ -532,6 +551,7 @@
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
 				6363D5FD27EE1D4600E34822 /* Placeholder View.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
+				6367F24127F10E660074C36F /* Shared Parser.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
 				6332FDCF27EFDD2E0009A98A /* Instance and Community List View.swift in Sources */,
 				6332FDCA27EFD6B70009A98A /* Post Interactions.swift in Sources */,

@@ -14,6 +14,7 @@ struct Community_View: View {
     var body: some View {
         let communityName: String = mockCommunity
         ScrollView {
+            /*Post_Item(postName: mockPostNames.randomElement()!)
             Post_Item(postName: mockPostNames.randomElement()!)
             Post_Item(postName: mockPostNames.randomElement()!)
             Post_Item(postName: mockPostNames.randomElement()!)
@@ -21,8 +22,7 @@ struct Community_View: View {
             Post_Item(postName: mockPostNames.randomElement()!)
             Post_Item(postName: mockPostNames.randomElement()!)
             Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
+            Post_Item(postName: mockPostNames.randomElement()!)*/
         }
         .background(Color.secondarySystemBackground)
         .navigationTitle(communityName)
