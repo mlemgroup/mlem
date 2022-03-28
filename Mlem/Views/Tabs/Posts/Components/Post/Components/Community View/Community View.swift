@@ -11,6 +11,8 @@ struct Community_View: View {
     let mockPostNames: [String] = ["Test", "Ahoj", "Tohle jsem já", "Nevím", "Tohle je extrémně dlouhý titulek. Jenom mě zajímá, jak to bude vypadat, když tam hodím něco takhle dlouhého"]
     let mockCommunity: String = "Cool Lions"
     
+    @ObservedObject var posts = PostData_Decoded()
+    
     var body: some View {
         let communityName: String = mockCommunity
         ScrollView {
@@ -23,9 +25,17 @@ struct Community_View: View {
             Post_Item(postName: mockPostNames.randomElement()!)
             Post_Item(postName: mockPostNames.randomElement()!)
             Post_Item(postName: mockPostNames.randomElement()!)*/
+            
+            ForEach(posts.decodedPosts) { post in
+                Text(post.name)
+            }
         }
         .background(Color.secondarySystemBackground)
         .navigationTitle(communityName)
+        .onAppear{
+            print("Boutta decode")
+            posts.decodeRawJSON()
+        }
     }
 }
 
