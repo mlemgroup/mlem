@@ -11,6 +11,9 @@ struct Post_Item: View {
     let postName: String
     let author: String
     
+    let communityName: String
+    let communityLink: String
+    
     let postBody: String?
     let imageThumbnail: String?
     
@@ -28,7 +31,7 @@ struct Post_Item: View {
                         .font(.subheadline)
                 }
                 
-                if postBody == nil { // Show image if there is no text in the body
+                if postBody == nil { // Show an image if there is no text in the body
                     if imageThumbnail != nil { // Only show the image if there actually is one. Otherwise just don't show anything
                         AsyncImage(url: URL(string: imageThumbnail!), content: { image in
                             image
@@ -42,10 +45,6 @@ struct Post_Item: View {
                         Text("ERROR: Wtf is this post format")
                             .background(.red)
                     }
-                    /*Image("Sleeping Lions")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))*/
                     
                 } else { // Otherwise show the text
                     Text(postBody!)
@@ -103,15 +102,26 @@ struct Post_Item: View {
         .contextMenu { // This created that "peek and pop" feel that I used to love
             // TODO: Implement Peek and pop behavior for posts
             Button(action: {
-                
+                // TODO: Make saving posts work
             }, label: {
                 Label("Save", systemImage: "bookmark.fill")
             })
             
-            Divider()
-            Button("This is me") {
-                
+            Button {
+                // TODO: Make going to communities work
+                print("\(communityLink)")
+            } label: {
+                Label("c/\(communityName)", systemImage: "person.3.fill")
             }
+            
+            Divider()
+            Button {
+                // TODO: Make going to people work
+                print("Take me to \(author)")
+            } label: {
+                Label(author, systemImage: "person.circle.fill")
+            }
+
         }
     }
 }

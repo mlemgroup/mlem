@@ -17,7 +17,7 @@ struct Community_View: View {
         let communityName: String = mockCommunity
         ScrollView {            
             ForEach(posts.decodedPosts) { post in
-                Post_Item(postName: post.name, author: post.creatorName, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments)
+                Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments)
             }
         }
         .background(Color.secondarySystemBackground)
