@@ -43,6 +43,7 @@ struct Instance_and_Community_List_View: View {
                 }
             }
             .navigationTitle("Communities")
+            .onAppear()
         }
     }
 }

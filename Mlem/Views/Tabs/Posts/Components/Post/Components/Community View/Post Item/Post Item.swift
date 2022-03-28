@@ -9,6 +9,13 @@ import SwiftUI
 
 struct Post_Item: View {
     let postName: String
+    let author: String
+    
+    let score: Int
+    
+    let numberOfComments: Int
+    
+    let iconToTextSpacing: CGFloat = 2
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -31,7 +38,27 @@ struct Post_Item: View {
             HStack {
                 Post_Interactions()
                 Spacer()
-                Post_Info()
+                // TODO: Refactor this into its own view
+                HStack(spacing: 8) {
+                    HStack(spacing: iconToTextSpacing) { // Number of upvotes
+                        Image(systemName: "arrow.up")
+                        Text(String(score))
+                    }
+                    
+                    HStack(spacing: iconToTextSpacing) { // Number of comments
+                        Image(systemName: "bubble.left")
+                        Text(String(numberOfComments))
+                    }
+                    
+                    HStack(spacing: iconToTextSpacing) { // Time since posted
+                        Image(systemName: "clock")
+                        Text("3h")
+                    }
+                    
+                    Text(author)
+                }
+                .foregroundColor(.secondary)
+                .dynamicTypeSize(.small)
             }
             .padding(.horizontal)
             .padding(.bottom)

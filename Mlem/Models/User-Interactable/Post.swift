@@ -7,18 +7,125 @@
 
 import Foundation
 
-struct Post: Decodable, Identifiable {
-    var id: Int
-    
-    let name: String
-    let body: String?
-    
-    let creator_name: String
-    
-    let upvotes: Int
-    let downvotes: Int
+// MARK: - RawResponsePost
+struct RawResponsePost: Codable {
+    let op: String
+    let data: DataClass
 }
 
+// MARK: - DataClass
+struct DataClass: Codable {
+    let posts: [Post]
+}
+
+// MARK: - Post
+struct Post: Codable, Identifiable {
+    let id: Int
+    let name: String
+    let url: String?
+    let body: String?
+    let creatorID, communityID: Int
+    let removed, locked: Bool
+    let published: String
+    let updated: String?
+    let deleted, nsfw, stickied, featured: Bool
+    let embedTitle, embedDescription, embedHTML: String?
+    let thumbnailURL: String?
+    let apID: String
+    let local: Bool
+    let creatorActorID: String
+    let creatorLocal: Bool
+    let creatorName: String
+    let creatorPreferredUsername: JSONNull?
+    let creatorPublished: String
+    let creatorAvatar: JSONNull?
+    let creatorTags: CreatorTags
+    let creatorCommunityTags: JSONNull?
+    let banned, bannedFromCommunity: Bool
+    let communityActorID: String
+    let communityLocal: Bool
+    let communityName: String
+    let communityIcon: JSONNull?
+    let communityRemoved, communityDeleted, communityNsfw, communityHideFromAll: Bool
+    let numberOfComments, score, upvotes, downvotes: Int
+    let hotRank, hotRankActive: Int
+    let newestActivityTime: String
+    let userID, myVote, subscribed, read: JSONNull?
+    let saved: JSONNull?
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, url, body
+        case creatorID = "creator_id"
+        case communityID = "community_id"
+        case removed, locked, published, updated, deleted, nsfw, stickied, featured
+        case embedTitle = "embed_title"
+        case embedDescription = "embed_description"
+        case embedHTML = "embed_html"
+        case thumbnailURL = "thumbnail_url"
+        case apID = "ap_id"
+        case local
+        case creatorActorID = "creator_actor_id"
+        case creatorLocal = "creator_local"
+        case creatorName = "creator_name"
+        case creatorPreferredUsername = "creator_preferred_username"
+        case creatorPublished = "creator_published"
+        case creatorAvatar = "creator_avatar"
+        case creatorTags = "creator_tags"
+        case creatorCommunityTags = "creator_community_tags"
+        case banned
+        case bannedFromCommunity = "banned_from_community"
+        case communityActorID = "community_actor_id"
+        case communityLocal = "community_local"
+        case communityName = "community_name"
+        case communityIcon = "community_icon"
+        case communityRemoved = "community_removed"
+        case communityDeleted = "community_deleted"
+        case communityNsfw = "community_nsfw"
+        case communityHideFromAll = "community_hide_from_all"
+        case numberOfComments = "number_of_comments"
+        case score, upvotes, downvotes
+        case hotRank = "hot_rank"
+        case hotRankActive = "hot_rank_active"
+        case newestActivityTime = "newest_activity_time"
+        case userID = "user_id"
+        case myVote = "my_vote"
+        case subscribed, read, saved
+    }
+}
+
+// MARK: - CreatorTags
+struct CreatorTags: Codable {
+    let pronouns: String
+}
+
+// MARK: - Encode/decode helpers
+
+class JSONNull: Codable, Hashable {
+
+    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+        return true
+    }
+
+    public var hashValue: Int {
+        return 0
+    }
+
+    public init() {}
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if !container.decodeNil() {
+            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encodeNil()
+    }
+}
+
+// MARK: Můj kód
 class PostData_Decoded: ObservableObject {
     // TODO: Feed WebSocket response here V
     let postRawData = #"""
@@ -31,13 +138,14 @@ class PostData_Decoded: ObservableObject {
     func decodeRawJSON() {
         do {
             let decoder = JSONDecoder()
-            self.decodedPosts = try decoder.decode(Post.self, from: postRawData.data(using: .utf8)!)
+            let decodedPosts = try? decoder.decode(RawResponsePost.self, from: postRawData.data(using: .utf8)!)
             
             print("Decoding:")
             print(postRawData)
             
             print("Into:")
             print(decodedPosts)
+            self.decodedPosts = (decodedPosts?.data.posts)!
         } catch {
             print("Failed to decode: \(error)")
         }

@@ -15,19 +15,9 @@ struct Community_View: View {
     
     var body: some View {
         let communityName: String = mockCommunity
-        ScrollView {
-            /*Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)
-            Post_Item(postName: mockPostNames.randomElement()!)*/
-            
+        ScrollView {            
             ForEach(posts.decodedPosts) { post in
-                Text(post.name)
+                Post_Item(postName: post.name, author: post.creatorName, score: post.score, numberOfComments: post.numberOfComments)
             }
         }
         .background(Color.secondarySystemBackground)
