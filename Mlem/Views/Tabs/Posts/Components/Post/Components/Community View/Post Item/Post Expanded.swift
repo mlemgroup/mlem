@@ -32,6 +32,15 @@ struct Post_Expanded: View {
         }
         .onReceive(connectionHandler.$receivedData) { receivedData in
             print("Got this from the async call: \(receivedData)")
+            print("==========")
+            if receivedData == "" { // This is here because the function is called even when the ObservedObject is empty. Utterly retarded TODO: Make it more elegant so this shit actually works like it's supposed to
+                print("LMAO empty")
+            } else { // Only decipher the comments once there's actual data
+                print("LMAO not empty")
+                
+                print("Finna decode")
+                decodeRawCommentJSON(commentRawData: receivedData)
+            }
         }
     }
 }
