@@ -11,11 +11,11 @@ struct Post_Expanded: View {
     
     @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
     
-    let postID: Int
+    let post: Post
     
     var body: some View {
-        VStack {
-            Text(String(postID))
+        ScrollView {
+            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, isExpanded: true)
             
             if connectionHandler.isLoading {
                 ProgressView()
@@ -24,10 +24,11 @@ struct Post_Expanded: View {
             }
             
         }
+        .navigationBarTitle(post.creatorName, displayMode: .inline)
         .onAppear {
             Task {
                 await connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-                    {"op": "GetPost", "data": {"id": \(postID)}}
+                    {"op": "GetPost", "data": {"id": \(post.id)}}
                     """)
             }
         }

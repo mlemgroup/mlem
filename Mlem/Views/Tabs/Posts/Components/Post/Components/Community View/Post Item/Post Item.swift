@@ -21,19 +21,25 @@ struct Post_Item: View {
     
     let numberOfComments: Int
     
+    let isExpanded: Bool
+    
     let iconToTextSpacing: CGFloat = 2
     
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) { // TODO: Make it so that tapping this VStack takes the user to the post detail
-                HStack {
+                if !isExpanded {
                     Text(postName)
                         .font(.subheadline)
+                } else {
+                    Text(postName)
+                        .font(.headline)
                 }
                 
                 if postBody == nil { // Show an image if there is no text in the body
                     if imageThumbnail != nil { // Only show the image if there actually is one. Otherwise just don't show anything
                         AsyncImage(url: URL(string: imageThumbnail!), content: { image in
+                            // TODO: Make it pull the image only at first. Don't pull it again when the post is opened
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -50,11 +56,17 @@ struct Post_Item: View {
                     }
                     
                 } else { // Otherwise show the text
-                    Text(postBody!)
-                        .foregroundColor(.secondary)
-                        .dynamicTypeSize(.small)
-                        .lineLimit(3)
-                        .padding(.top, 2)
+                    if isExpanded {
+                        Text(postBody!)
+                            .dynamicTypeSize(.small)
+                            .padding(.top, 2)
+                    } else {
+                        Text(postBody!)
+                            .foregroundColor(.secondary)
+                            .dynamicTypeSize(.small)
+                            .lineLimit(3)
+                            .padding(.top, 2)
+                    }
                 }
             }
             .padding()
@@ -90,7 +102,9 @@ struct Post_Item: View {
                         Text("3h")
                     }
                     
-                    Text(author)
+                    if !isExpanded {
+                        Text(author)
+                    }
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)

@@ -22,14 +22,14 @@ class LemmyConnectionHandler: ObservableObject {
         self.APIAddress = URL(string: "wss://www.\(instanceAddress)/api/v1/ws")!
     }
     
-    func printOwnName() {
+    /*func printOwnName() {
         print("The function printed: \(APIAddress)")
-    }
+    }*/
     
     func sendCommand(maintainOpenConnection: Bool, command: String) async {
-        print("Function successfully called")
+        //print("Function successfully called")
         
-        print("Will attempt to send command \(command) to \(APIAddress)")
+        //print("Will attempt to send command \(command) to \(APIAddress)")
         
         let webSocketTask = session.webSocketTask(with: APIAddress)
         
@@ -37,7 +37,7 @@ class LemmyConnectionHandler: ObservableObject {
         
         webSocketTask.resume()
         
-        print("Converted command, will try to send the command")
+        //print("Converted command, will try to send the command")
         
         webSocketTask.send(convertedCommand) { error in
             if let error = error {
