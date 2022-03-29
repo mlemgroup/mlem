@@ -24,13 +24,14 @@ struct Post_Expanded: View {
             }
             
         }
-        .navigationBarTitle(post.creatorName, displayMode: .inline)
+        .navigationBarTitle(post.communityName, displayMode: .inline)
         .onAppear {
-            Task {
-                await connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-                    {"op": "GetPost", "data": {"id": \(post.id)}}
-                    """)
-            }
+            connectionHandler.sendCommand(maintainOpenConnection: false, command: """
+            {"op": "GetPost", "data": {"id": \(post.id)}}
+            """)
+        }
+        .onReceive(connectionHandler.$receivedData) { receivedData in
+            print("Got this from the async call: \(receivedData)")
         }
     }
 }

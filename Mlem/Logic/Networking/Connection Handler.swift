@@ -26,7 +26,11 @@ class LemmyConnectionHandler: ObservableObject {
         print("The function printed: \(APIAddress)")
     }*/
     
-    func sendCommand(maintainOpenConnection: Bool, command: String) async {
+    func sendCommand(maintainOpenConnection: Bool, command: String) {
+        if self.receivedData != "" { // Flush the already existing data
+            self.receivedData = ""
+        }
+        
         //print("Function successfully called")
         
         //print("Will attempt to send command \(command) to \(APIAddress)")

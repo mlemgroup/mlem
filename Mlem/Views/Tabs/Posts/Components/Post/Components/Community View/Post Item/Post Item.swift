@@ -102,9 +102,7 @@ struct Post_Item: View {
                         Text("3h")
                     }
                     
-                    if !isExpanded {
-                        Text(author)
-                    }
+                    Text(author)
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)
