@@ -23,7 +23,7 @@ struct ContentView: View {
               }
         }
         .onAppear {
-            establishConnectionToLemmyInstance(instanceURL: "hexbear.net")
+            
         }
     }
 }

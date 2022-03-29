@@ -8,13 +8,28 @@
 import SwiftUI
 
 struct Post_Expanded: View {
+    
+    @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
+    
+    let postID: Int
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct Opened_Post_Previews: PreviewProvider {
-    static var previews: some View {
-        Post_Expanded()
+        VStack {
+            Text(String(postID))
+            
+            if connectionHandler.isLoading {
+                ProgressView()
+            } else {
+                Text(connectionHandler.receivedData)
+            }
+            
+        }
+        .onAppear {
+            Task {
+                await connectionHandler.sendCommand(maintainOpenConnection: false, command: """
+                    {"op": "GetPost", "data": {"id": \(postID)}}
+                    """)
+            }
+        }
     }
 }

@@ -38,6 +38,9 @@ struct Post_Item: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .onTapGesture {
+                                    // TODO: Make it so that tapping an image makes it big
+                                }
                         }, placeholder: {
                             ProgressView()
                         })
@@ -55,10 +58,7 @@ struct Post_Item: View {
                 }
             }
             .padding()
-            .onTapGesture {
-                print("I would take you to the detail view")
-            }
-            
+
             HStack {
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center) {

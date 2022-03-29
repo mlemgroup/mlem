@@ -17,7 +17,10 @@ struct Community_View: View {
         let communityName: String = mockCommunity
         ScrollView {            
             ForEach(posts.decodedPosts) { post in
-                Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments)
+                NavigationLink(destination: Post_Expanded(postID: post.id)) {
+                    Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments)
+                }
+                .buttonStyle(.plain) // Make it so that the link doesn' mess with the styling
             }
         }
         .background(Color.secondarySystemBackground)
