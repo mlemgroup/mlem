@@ -8,17 +8,14 @@
 import SwiftUI
 
 struct Post_Interactions: View {
+    
+    let score: Int
+    
     var body: some View {
         HStack(alignment: .center) {
-            Upvote_Button()
+            Upvote_Button(score: score)
             Downvote_Button()
             Share_Button()
         }
-    }
-}
-
-struct Post_Interactions_Previews: PreviewProvider {
-    static var previews: some View {
-        Post_Interactions()
     }
 }

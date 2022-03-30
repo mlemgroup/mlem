@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct Community_View: View {
-    let mockPostNames: [String] = ["Test", "Ahoj", "Tohle jsem já", "Nevím", "Tohle je extrémně dlouhý titulek. Jenom mě zajímá, jak to bude vypadat, když tam hodím něco takhle dlouhého"]
     let mockCommunity: String = "Cool Lions"
     
     @ObservedObject var posts = PostData_Decoded()

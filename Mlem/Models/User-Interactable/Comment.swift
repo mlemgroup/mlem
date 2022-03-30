@@ -54,7 +54,7 @@ struct Admin: Codable {
 }
 
 // MARK: - Comment
-struct Comment: Codable {
+struct Comment: Codable, Identifiable {
     let id, postID: Int?
     let creatorID: Int?
     let postName: String?
@@ -305,21 +305,26 @@ struct Post_Comment: Codable {
 }
 */
 
-func decodeRawCommentJSON(commentRawData: String) -> [Comment] {
-    var decodedCommentsReturner = [Comment]()
-    do {
-        let decoder = JSONDecoder()
-        let decodedComments = try decoder.decode(RawResponseComment.self, from: commentRawData.data(using: .utf8)!)
-        
-        print("Decoding comment JSON: \(commentRawData)")
-        
-        print("Into comment objects: \(decodedComments)")
-        
-        var decodedCommentsReturner = (decodedComments.data.comments)
-    } catch {
-        print("Failed to decode: \(error)")
-        // TODO: Print some sort of an error
-    }
+class CommentData_Decoded: ObservableObject {
+    @Published var isLoading = true
+    @Published var decodedComments = [Comment]()
     
-    return decodedCommentsReturner
+    func decodeRawCommentJSON(commentRawData: String) {
+        do {
+            let decoder = JSONDecoder()
+            let decodedComments = try decoder.decode(RawResponseComment.self, from: commentRawData.data(using: .utf8)!)
+            
+            print("Decoding comment JSON: \(commentRawData)")
+            
+            print("Into comment objects: \(decodedComments)")
+            
+            self.isLoading = false
+            
+            self.decodedComments = decodedComments.data.comments
+        } catch {
+            print("Failed to decode: \(error)")
+            // TODO: Print some sort of an error
+        }
+
+    }
 }
