@@ -20,7 +20,8 @@ struct Post_Expanded: View {
             if connectionHandler.isLoading {
                 ProgressView()
             } else {
-                Text(connectionHandler.receivedData)
+                //Text(connectionHandler.receivedData)
+                
             }
             
         }
@@ -39,7 +40,7 @@ struct Post_Expanded: View {
                 print("LMAO not empty")
                 
                 print("Finna decode")
-                decodeRawCommentJSON(commentRawData: receivedData)
+                let decodedComments = decodeRawCommentJSON(commentRawData: receivedData)
             }
         }
     }
