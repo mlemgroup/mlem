@@ -15,11 +15,11 @@ struct RawResponseComment: Codable {
     let data: DataClass_Comment
 }
 
-// MARK: - DataClass
+// MARK: - DataClass_Comment
 struct DataClass_Comment: Codable {
     let post: Post_Comment
     let comments: [Comment]
-    let community: Community_Comment
+    let community: Community
     let moderators: [Moderator]
     let online: Int
     let admins, sitemods: [Admin]
@@ -30,15 +30,15 @@ struct Admin: Codable {
     let id: Int
     let actorID: String
     let name: String
-    let preferredUsername: JSONNull_Comment?
+    let preferredUsername: JSONNull?
     let avatar: String?
-    let banner: JSONNull_Comment?
+    let banner: JSONNull?
     let matrixUserID: String?
-    let bio: JSONNull_Comment?
+    let bio: JSONNull?
     let local, admin, sitemod, moderator: Bool
     let banned: Bool
     let published: String
-    let numberOfPosts, numberOfComments: Int
+    let numberOfPosts, numberOfComments: Int?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -62,27 +62,28 @@ struct Comment: Codable {
     let content: String
     let removed, read: Bool
     let published: String
-    let updated: JSONNull_Comment?
+    let updated: String?
     let deleted: Bool
-    let apID: String
+    let apID: String?
     let local: Bool
     let communityID: Int?
-    let communityActorID: String
-    let communityLocal: Bool
-    let communityName: String
-    let communityIcon: JSONNull_Comment?
-    let communityHideFromAll, banned, bannedFromCommunity: Bool
-    let creatorActorID: String
-    let creatorLocal: Bool
-    let creatorName: String
-    let creatorPreferredUsername: JSONNull_Comment?
-    let creatorPublished: String
-    let creatorAvatar: JSONNull_Comment?
-    let creatorTags: CreatorTags
-    let creatorCommunityTags: JSONNull_Comment?
+    let communityActorID: String?
+    let communityLocal: Bool?
+    let communityName: String?
+    let communityIcon: JSONNull?
+    let communityHideFromAll, banned: Bool
+    let bannedFromCommunity: Bool?
+    let creatorActorID: String?
+    let creatorLocal: Bool?
+    let creatorName: String?
+    let creatorPreferredUsername: JSONNull?
+    let creatorPublished: String?
+    let creatorAvatar: JSONNull?
+    let creatorTags: CreatorTags_Comment?
+    let creatorCommunityTags: JSONNull?
     let score, upvotes, downvotes, hotRank: Int
     let hotRankActive: Int
-    let userID, myVote, subscribed, saved: JSONNull_Comment?
+    let userID, myVote, subscribed, saved: JSONNull?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -118,16 +119,17 @@ struct Comment: Codable {
     }
 }
 
-// MARK: - CreatorTags
+// MARK: - CreatorTags_Comment
 struct CreatorTags_Comment: Codable {
     let pronouns: String
 }
 
 // MARK: - Community
-struct Community_Comment: Codable {
+struct Community: Codable {
     let id: Int
-    let name, title: String
-    let icon, banner: JSONNull_Comment?
+    let name: String
+    let title: String
+    let icon, banner: JSONNull?
     let communityDescription: String
     let categoryID: Int
     let creatorID: Int?
@@ -138,13 +140,13 @@ struct Community_Comment: Codable {
     let actorID: String
     let local: Bool
     let lastRefreshedAt: String
-    let creatorActorID: String
-    let creatorLocal: Bool
-    let creatorName: String
-    let creatorPreferredUsername, creatorAvatar: JSONNull_Comment?
+    let creatorActorID: String?
+    let creatorLocal: Bool?
+    let creatorName: String?
+    let creatorPreferredUsername, creatorAvatar: JSONNull?
     let categoryName: String
-    let numberOfSubscribers, numberOfPosts, numberOfComments, hotRank: Int
-    let userID, subscribed: JSONNull_Comment?
+    let numberOfSubscribers, numberOfPosts, numberOfComments, hotRank: Int?
+    let userID, subscribed: JSONNull?
 
     enum CodingKeys: String, CodingKey {
         case id, name, title, icon, banner
@@ -178,11 +180,11 @@ struct Moderator: Codable {
     let userActorID: String
     let userLocal: Bool
     let userName: String
-    let userPreferredUsername, avatar: JSONNull_Comment?
-    let communityActorID: String
-    let communityLocal: Bool
-    let communityName: String
-    let communityIcon: JSONNull_Comment?
+    let userPreferredUsername, avatar: JSONNull?
+    let communityActorID: String?
+    let communityLocal: Bool?
+    let communityName: String?
+    let communityIcon: JSONNull?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -205,38 +207,39 @@ struct Moderator: Codable {
 struct Post_Comment: Codable {
     let id: Int
     let name: String
-    let url: String
-    let body: JSONNull_Comment?
+    let url: String?
+    let body: String?
     let creatorID: Int?
     let communityID: Int?
     let removed, locked: Bool
     let published: String
-    let updated: JSONNull_Comment?
+    let updated: JSONNull?
     let deleted, nsfw, stickied, featured: Bool
-    let embedTitle, embedDescription: JSONNull_Comment?
-    let embedHTML: String
-    let thumbnailURL: String
-    let apID: String
+    let embedTitle, embedDescription: JSONNull?
+    let embedHTML: String?
+    let thumbnailURL: String?
+    let apID: String?
     let local: Bool
-    let creatorActorID: String
-    let creatorLocal: Bool
-    let creatorName: String
-    let creatorPreferredUsername: JSONNull_Comment?
-    let creatorPublished: String
-    let creatorAvatar: JSONNull_Comment?
-    let creatorTags: CreatorTags
-    let creatorCommunityTags: JSONNull_Comment?
-    let banned, bannedFromCommunity: Bool
-    let communityActorID: String
-    let communityLocal: Bool
-    let communityName: String
-    let communityIcon: JSONNull_Comment?
-    let communityRemoved, communityDeleted, communityNsfw, communityHideFromAll: Bool
-    let numberOfComments, score, upvotes, downvotes: Int
+    let creatorActorID: String?
+    let creatorLocal: Bool?
+    let creatorName: String?
+    let creatorPreferredUsername: JSONNull?
+    let creatorPublished: String?
+    let creatorAvatar: JSONNull?
+    let creatorTags: CreatorTags_Comment?
+    let creatorCommunityTags: JSONNull?
+    let banned: Bool
+    let bannedFromCommunity: Bool?
+    let communityActorID: String?
+    let communityLocal: Bool?
+    let communityName: String?
+    let communityIcon: JSONNull?
+    let communityRemoved, communityDeleted, communityNsfw, communityHideFromAll: Bool?
+    let numberOfComments, score, upvotes, downvotes: Int?
     let hotRank, hotRankActive: Int
     let newestActivityTime: String
-    let userID, myVote, subscribed, read: JSONNull_Comment?
-    let saved: JSONNull_Comment?
+    let userID, myVote, subscribed, read: JSONNull?
+    let saved: JSONNull?
 
     enum CodingKeys: String, CodingKey {
         case id, name, url, body
@@ -275,33 +278,6 @@ struct Post_Comment: Codable {
         case userID
         case myVote
         case subscribed, read, saved
-    }
-}
-
-// MARK: - Encode/decode helpers
-
-class JSONNull_Comment: Codable, Hashable {
-
-    public static func == (lhs: JSONNull_Comment, rhs: JSONNull_Comment) -> Bool {
-        return true
-    }
-
-    public var hashValue: Int {
-        return 0
-    }
-
-    public init() {}
-
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if !container.decodeNil() {
-            throw DecodingError.typeMismatch(JSONNull_Comment.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
-        }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encodeNil()
     }
 }
 
