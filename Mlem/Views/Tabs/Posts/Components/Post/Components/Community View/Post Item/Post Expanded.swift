@@ -19,7 +19,7 @@ struct Post_Expanded: View {
     
     var body: some View {
         ScrollView {
-            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, isExpanded: true)
+            Post_Item(postName: post.name, author: post.creatorName ?? "Undefined", communityName: post.communityName ?? "Undefined", communityLink: post.communityActorID ?? "Undefined", postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score ?? 69, numberOfComments: post.numberOfComments ?? 69, isExpanded: true)
             HStack {
                 Picker("Sort by", selection: $sortSelection) {
                     // TODO: Implement sorting
@@ -54,7 +54,7 @@ struct Post_Expanded: View {
             }
             
         }
-        .navigationBarTitle(post.communityName, displayMode: .inline)
+        .navigationBarTitle(post.communityName ?? "Undefined", displayMode: .inline)
         .onAppear {
             connectionHandler.sendCommand(maintainOpenConnection: false, command: """
             {"op": "GetPost", "data": {"id": \(post.id)}}

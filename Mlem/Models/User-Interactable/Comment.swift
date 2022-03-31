@@ -299,7 +299,6 @@ class CommentData_Decoded: ObservableObject {
             self.decodedComments = decodedComments.data.comments
         } catch {
             print("Failed to decode: \(error)")
-            // TODO: Print some sort of an error
         }
 
     }
