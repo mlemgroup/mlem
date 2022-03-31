@@ -280,30 +280,6 @@ struct Post_Comment: Codable {
 
 
 // MARK: Můj kód
-/*func decodeRawCommentJSON(rawJSON: String) -> [Comment] {
-    
-    // TODO: Convert this into an Observable Object in case I need to do any more data pulling on the way
-    
-    let decodedCommentsReturner: [Comment]
-    
-    do {
-        let decoder = JSONDecoder()
-        let decodedComments = try? decoder.decode(RawResponseComment.self, from: rawJSON.data(using: .utf8)!)
-        
-        print("Decoding comment JSON:")
-        print(rawJSON)
-        
-        print("Into comment objects:")
-        print(decodedComments!)
-        
-        decodedCommentsReturner = (decodedComments?.data.comments)!
-    } catch {
-        print("Failed to decode: \(error)")
-    }
-    
-    return decodedCommentsReturner
-}
-*/
 
 class CommentData_Decoded: ObservableObject {
     @Published var isLoading = true

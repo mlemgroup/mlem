@@ -13,7 +13,7 @@ struct Post_Expanded: View {
     @ObservedObject var comments = CommentData_Decoded()
     
     @State private var isReplySheetOpen: Bool = false
-    @State private var sortSelection: String = "Best"
+    @State private var sortSelection = 0
     
     let post: Post
     
@@ -21,16 +21,16 @@ struct Post_Expanded: View {
         ScrollView {
             Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, isExpanded: true)
             HStack {
-                Picker(selection: $sortSelection, label: Text(sortSelection)) {
+                Picker("Sort by", selection: $sortSelection) {
                     // TODO: Implement sorting
                     
                     // TODO: Make it actually work. The @State does not update
-                    Label("Best", systemImage: "star.fill")
-                    Label("Hot", systemImage: "flame.fill")
-                    Label("New", systemImage: "sun.max.fill")
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                
+                    Label("Best", systemImage: "star.fill").tag(0)
+                    Label("Hot", systemImage: "flame.fill").tag(1)
+                    Label("New", systemImage: "sun.max.fill").tag(2)
+                }              
+                Spacer()
+
                 Text("Selected \(sortSelection)")
             }
             .padding()
@@ -46,7 +46,7 @@ struct Post_Expanded: View {
                 } else {
                     VStack(spacing: 16) {
                         ForEach(comments.decodedComments) { comment in
-                            Comment_Item(author: comment.creatorActorID, commentBody: comment.content!, commentID: comment.id!, score: comment.score!)
+                            Comment_Item(author: comment.creatorName, commentBody: comment.content!, commentID: comment.id!, score: comment.score!)
                         }
                         .padding(.horizontal)
                     }

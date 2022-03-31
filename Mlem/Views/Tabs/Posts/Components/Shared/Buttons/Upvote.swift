@@ -20,7 +20,7 @@ struct Upvote_Button: View {
             })
             
             Text(String(score))
-                .foregroundColor(.blue)
+                .foregroundColor(.accentColor)
         }
     }
 }
