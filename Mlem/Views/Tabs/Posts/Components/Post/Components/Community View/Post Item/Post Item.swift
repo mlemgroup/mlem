@@ -57,11 +57,11 @@ struct Post_Item: View {
                     
                 } else { // Otherwise show the text
                     if isExpanded {
-                        Text(postBody!)
+                        Text(.init(postBody!)) // .init for Markdown support
                             .dynamicTypeSize(.small)
                             .padding(.top, 2)
                     } else {
-                        Text(postBody!)
+                        Text(.init(postBody!)) // .init for Markdown support
                             .foregroundColor(.secondary)
                             .dynamicTypeSize(.small)
                             .lineLimit(3)
@@ -74,11 +74,7 @@ struct Post_Item: View {
             HStack {
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center) {
-                    HStack(spacing: iconToTextSpacing) {
-                        Upvote_Button()
-                        Text(String(score))
-                            .foregroundColor(.blue)
-                    }
+                    Upvote_Button(score: score)
                     Downvote_Button()
                     Share_Button()
                 }
@@ -102,9 +98,7 @@ struct Post_Item: View {
                         Text("3h")
                     }
                     
-                    if !isExpanded {
-                        Text(author)
-                    }
+                    Text(author)
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)

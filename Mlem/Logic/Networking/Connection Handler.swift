@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class LemmyConnectionHandler: ObservableObject {
     let instanceAddress: String
@@ -26,7 +27,12 @@ class LemmyConnectionHandler: ObservableObject {
         print("The function printed: \(APIAddress)")
     }*/
     
-    func sendCommand(maintainOpenConnection: Bool, command: String) async {
+    func sendCommand(maintainOpenConnection: Bool, command: String) {
+        // TODO: Maybe remove this
+        /*if self.receivedData != "" { // Flush the already existing data
+            self.receivedData = ""
+        }*/
+        
         //print("Function successfully called")
         
         //print("Will attempt to send command \(command) to \(APIAddress)")
