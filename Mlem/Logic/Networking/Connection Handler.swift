@@ -58,17 +58,23 @@ class LemmyConnectionHandler: ObservableObject {
                         switch message {
                         case .string(let text):
                             print("Received TEXT message: \(text)")
-                            self.receivedData = text
+                            DispatchQueue.main.async {
+                                self.receivedData = text
+                            }
                         case .data(let data):
                             print("Received BINARY message: \(data)")
-                            self.receivedData = "Received unexpected binary data"
+                            fatalError()
                         }
                         
-                        self.isLoading = false
+                        DispatchQueue.main.async {
+                            self.isLoading = false
+                        }
                         
                         if maintainOpenConnection == false {
                             print("Data received, closing connection")
                             webSocketTask.cancel(with: .goingAway, reason: nil)
+                        } else {
+                            webSocketTask.resume() // TODO: This doesn't actually do anything. Make it work.
                         }
                     }
                 }

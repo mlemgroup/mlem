@@ -25,8 +25,8 @@ struct Post: Codable, Identifiable {
     let name: String
     let url: String?
     let body: String?
-    // let creatorID: Int
-    // let communityID: Int
+    let creatorID: Int
+    let communityID: Int
     let removed, locked: Bool?
     let published: String
     let updated: String?
@@ -37,19 +37,19 @@ struct Post: Codable, Identifiable {
     let local: Bool?
     // let creatorActorID: String
     // let creatorLocal: Bool
-    let creatorName: String?
+    let creatorName: String
     let creatorPreferredUsername: JSONNull?
     // let creatorPublished: String
     let creatorAvatar: JSONNull?
     let creatorTags: CreatorTags?
     let creatorCommunityTags: JSONNull?
     // let banned, bannedFromCommunity: Bool
-    let communityActorID: String?
+    let communityActorID: String
     // let communityLocal: Bool
-    let communityName: String?
+    let communityName: String
     let communityIcon: JSONNull?
     let communityRemoved, communityDeleted, communityNsfw, communityHideFromAll: Bool?
-    let numberOfComments, score, upvotes, downvotes: Int?
+    let numberOfComments, score, upvotes, downvotes: Int
     let hotRank, hotRankActive: Int?
     let newestActivityTime: String?
     let userID, myVote, subscribed, read: JSONNull?
@@ -57,18 +57,18 @@ struct Post: Codable, Identifiable {
 
     enum CodingKeys: String, CodingKey {
         case id, name, url, body
-        // case creatorID
-        // case communityID
+        case creatorID = "creator_id"
+        case communityID = "community_id"
         case removed, locked, published, updated, deleted, nsfw, stickied, featured
         case embedTitle
         case embedDescription
         case embedHTML
-        case thumbnailURL
+        case thumbnailURL = "thumbnail_url"
         // case apID
         case local
         // case creatorActorID
         // case creatorLocal
-        case creatorName
+        case creatorName = "creator_name"
         case creatorPreferredUsername
         // case creatorPublished
         case creatorAvatar
@@ -76,15 +76,15 @@ struct Post: Codable, Identifiable {
         case creatorCommunityTags
         // case banned
         // case bannedFromCommunity
-        case communityActorID
+        case communityActorID = "community_actor_id"
         // case communityLocal
-        case communityName
+        case communityName = "community_name"
         case communityIcon
         case communityRemoved
         case communityDeleted
         case communityNsfw
         case communityHideFromAll
-        case numberOfComments
+        case numberOfComments = "number_of_comments"
         case score, upvotes, downvotes
         case hotRank
         case hotRankActive

@@ -14,7 +14,8 @@ struct Post_Item: View {
     let communityName: String
     let communityLink: String
     
-    let postBody: String?
+    var url: String?
+    var postBody: String? // Has to be
     let imageThumbnail: String?
     
     let score: Int
@@ -27,17 +28,22 @@ struct Post_Item: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .leading) { // TODO: Make it so that tapping this VStack takes the user to the post detail
-                if !isExpanded {
-                    Text(postName)
-                        .font(.subheadline)
+            VStack(alignment: .leading) {
+                if !isExpanded { // Show this when the post is just in the list and not expanded
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(communityName)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                        Text(postName)
+                            .font(.subheadline)
+                    }
                 } else {
                     Text(postName)
                         .font(.headline)
                 }
                 
-                if postBody == nil { // Show an image if there is no text in the body
-                    if imageThumbnail != nil { // Only show the image if there actually is one. Otherwise just don't show anything
+                if postBody == nil { // First, if there's nothing in the body, it means it's not a normal text post, so...
+                    if imageThumbnail != nil { // Show an image if there is no text in the body. But only show it if there actually is one.
                         AsyncImage(url: URL(string: imageThumbnail!), content: { image in
                             // TODO: Make it pull the image only at first. Don't pull it again when the post is opened
                             image
@@ -48,14 +54,17 @@ struct Post_Item: View {
                                     // TODO: Make it so that tapping an image makes it big
                                 }
                         }, placeholder: {
-                            ProgressView()
+                            Loading_View(whatIsLoading: .image)
                         })
-                    } else {
-                        Text("ERROR: Wtf is this post format")
-                            .background(.red)
+                        if url != nil { // Sometimes, these pictures are just links to other sites. If that's the case, add the link under the picture
+                            Text(.init(url!))
+                                .dynamicTypeSize(.small)
+                        }
+                    } else { // Second option is that it's a post with just a link and no body. Then just show the link
+                        Text(.init(url!))
                     }
                     
-                } else { // Otherwise show the text
+                } else { // Third option is it being a text post. Show that text here.
                     if isExpanded {
                         Text(.init(postBody!)) // .init for Markdown support
                             .dynamicTypeSize(.small)

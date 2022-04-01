@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct Community_View: View {
-    let mockCommunity: String = "Cool Lions"
+    let communityName: String
     
     @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
     @ObservedObject var posts = PostData_Decoded()
     
     var body: some View {
-        let communityName: String = mockCommunity
         ScrollView {
             if posts.isLoading {
-                ProgressView()
+                Loading_View(whatIsLoading: .posts)
             } else {
                 ForEach(posts.decodedPosts) { post in
                     NavigationLink(destination: Post_Expanded(post: post)) {
-                        Post_Item(postName: post.name, author: post.creatorName ?? "Undefined", communityName: post.communityName ?? "Undefined", communityLink: post.communityActorID ?? "Undefined", postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score ?? 69, numberOfComments: post.numberOfComments ?? 69, isExpanded: false)
+                        Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments ?? 69, isExpanded: false)
                     }
                     .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                 }
@@ -39,14 +38,8 @@ struct Community_View: View {
                 print("Finna decode posts")
                 posts.decodeRawPostJSON(postRawData: receivedData)
                 
-                posts.pushPostsToStorage(decodedPostData: posts.decodedPosts)
+                // posts.pushPostsToStorage(decodedPostData: posts.decodedPosts)
             }
         }
-    }
-}
-
-struct Community_View_Previews: PreviewProvider {
-    static var previews: some View {
-        Community_View()
     }
 }
