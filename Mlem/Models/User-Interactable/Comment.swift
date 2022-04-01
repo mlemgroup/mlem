@@ -103,7 +103,7 @@ struct Comment: Codable, Identifiable {
         case bannedFromCommunity
         case creatorActorID
         case creatorLocal
-        case creatorName
+        case creatorName = "creator_name"
         case creatorPreferredUsername
         case creatorPublished
         case creatorAvatar
