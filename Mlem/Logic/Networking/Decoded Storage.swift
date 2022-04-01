@@ -7,14 +7,10 @@
 
 import Foundation
 
-class DecodedStorage: ObservableObject {
+class DecodedPostStorage: ObservableObject {
+    @Published var storedDecodedPosts: [Post]
     
-}
-
-class DecodedPostStorage: DecodedStorage {
-    
-}
-
-class DecodedComentStorage: DecodedStorage {
-    
+    init() {
+        self.storedDecodedPosts = [Post]()
+    }
 }

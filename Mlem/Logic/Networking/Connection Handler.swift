@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class LemmyConnectionHandler: ObservableObject {
     let instanceAddress: String
@@ -72,20 +73,6 @@ class LemmyConnectionHandler: ObservableObject {
                     }
                 }
             }
-        }
-    }
-    
-    enum decodedDataStorageOptions {
-        case posts
-        case comments
-    }
-    
-    func pushToStorage(push to: decodedDataStorageOptions) {
-        switch to {
-        case .posts:
-            print("Will push to post storage")
-        case .comments:
-            print("Will push to comment storage")
         }
     }
     

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 // MARK: - RawResponsePost
 struct RawResponsePost: Codable {
@@ -122,5 +123,16 @@ class PostData_Decoded: ObservableObject {
         } catch {
             print("Failed to decode: \(error)")
         }
+    }
+    
+    func pushPostsToStorage(decodedPostData: [Post]) {
+        @ObservedObject var decodedPostStorage = DecodedPostStorage()
+        
+        decodedPostStorage.storedDecodedPosts.append(contentsOf: decodedPostData)
+        
+        print("""
+        Successfuly appended to storage. Now contains:
+        \(decodedPostStorage.storedDecodedPosts)
+        """)
     }
 }

@@ -38,6 +38,8 @@ struct Community_View: View {
             if receivedData != "" {
                 print("Finna decode posts")
                 posts.decodeRawPostJSON(postRawData: receivedData)
+                
+                posts.pushPostsToStorage(decodedPostData: posts.decodedPosts)
             }
         }
     }
