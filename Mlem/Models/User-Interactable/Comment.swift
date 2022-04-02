@@ -56,7 +56,7 @@ struct Admin: Codable {
 // MARK: - Comment
 struct Comment: Codable, Identifiable {
     let id, postID: Int?
-    let creatorID: Int?
+    let creatorID: Int
     let postName: String?
     let parentID: Int?
     let content: String?
@@ -74,7 +74,7 @@ struct Comment: Codable, Identifiable {
     let bannedFromCommunity: Bool?
     let creatorActorID: String?
     let creatorLocal: Bool?
-    let creatorName: String?
+    let creatorName: String = "creator_name"
     let creatorPreferredUsername: JSONNull?
     let creatorPublished: String?
     let creatorAvatar: JSONNull?
@@ -86,17 +86,17 @@ struct Comment: Codable, Identifiable {
 
     enum CodingKeys: String, CodingKey {
         case id
-        case creatorID
+        case creatorID = "creator_id"
         case postID
         case postName
-        case parentID
+        case parentID = "parent_id"
         case content, removed, read, published, deleted
         case apID
         case local
         case communityID
-        case communityActorID
+        case communityActorID = "community_actor_id"
         case communityLocal
-        case communityName
+        case communityName = "community_name"
         case communityIcon
         case communityHideFromAll
         case banned

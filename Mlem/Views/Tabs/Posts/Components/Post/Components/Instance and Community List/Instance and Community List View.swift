@@ -13,7 +13,7 @@ struct Instance_and_Community_List_View: View {
             List {
                 Section(header: Text("hexbear")) {
                     NavigationLink("All Communities", destination: {
-                        Community_View(communityName: "All")
+                        Community_View(communityName: "All", communityID: nil)
                     })
                     
                     NavigationLink("CTH", destination: {

@@ -12,7 +12,7 @@ struct Post_Item: View {
     let author: String
     
     let communityName: String
-    let communityLink: String
+    let communityID: Int
     
     var url: String?
     var postBody: String? // Has to be
@@ -31,9 +31,12 @@ struct Post_Item: View {
             VStack(alignment: .leading) {
                 if !isExpanded { // Show this when the post is just in the list and not expanded
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(communityName)
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
+                        NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID)) {
+                            Text(communityName)
+                        }
+                        .buttonStyle(.plain)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
                         Text(postName)
                             .font(.subheadline)
                     }
@@ -129,7 +132,7 @@ struct Post_Item: View {
             
             Button {
                 // TODO: Make going to communities work
-                print("\(communityLink)")
+                print("\(communityID)")
             } label: {
                 Label("c/\(communityName)", systemImage: "person.3.fill")
             }
