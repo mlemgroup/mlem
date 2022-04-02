@@ -19,20 +19,23 @@ struct Post_Expanded: View {
     
     var body: some View {
         ScrollView {
-            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName ?? "Undefined", communityLink: post.communityActorID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, isExpanded: true)
+            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityLink: post.communityActorID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, isExpanded: true)
             
             if post.numberOfComments == 0 { // If there are no comments, just don' show anything
                 VStack {
                     VStack {
                         Image(systemName: "binoculars")
                             .resizable()
-                            .frame(width: 50, height: 50)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 40, height: 40)
                         Text("No comments to be found")
+                            .font(.headline)
                     }
                     Text("Why not post the first one?")
+                        .font(.subheadline)
                 }
-                .background(Color.secondarySystemBackground)
-                .frame(maxWidth: .infinity)
+                .foregroundColor(.secondary)
+                .padding()
             } else { // Otherwise we'll have to do some actual work
                 HStack {
                     Picker("Sort by", selection: $sortSelection) {

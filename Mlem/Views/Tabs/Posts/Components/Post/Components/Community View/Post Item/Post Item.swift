@@ -60,8 +60,11 @@ struct Post_Item: View {
                             Text(.init(url!))
                                 .dynamicTypeSize(.small)
                         }
-                    } else { // Second option is that it's a post with just a link and no body. Then just show the link
+                    } else if url != nil { // Second option is that it's a post with just a link and no body. Then just show the link
+                        // TODO: Make the text look nicer. Maybe something like iMessage has when you send a link
                         Text(.init(url!))
+                    } else { // I have no idea why this would happen
+                        Text("ERR: Unexpected post format")
                     }
                     
                 } else { // Third option is it being a text post. Show that text here.
