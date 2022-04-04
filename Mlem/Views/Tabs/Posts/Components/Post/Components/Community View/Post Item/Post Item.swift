@@ -39,6 +39,7 @@ struct Post_Item: View {
                         .buttonStyle(.plain)
                         .font(.footnote)
                         .foregroundColor(.secondary)
+                        
                         Text(postName)
                             .font(.subheadline)
                     }
