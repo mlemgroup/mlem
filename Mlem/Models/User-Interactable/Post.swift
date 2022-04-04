@@ -33,7 +33,7 @@ struct Post: Codable, Identifiable {
     let deleted, nsfw, stickied, featured: Bool?
     let embedTitle, embedDescription, embedHTML: String?
     let thumbnailURL: String?
-    // let apID: String
+    let apID: String
     let local: Bool?
     // let creatorActorID: String
     // let creatorLocal: Bool
@@ -65,7 +65,7 @@ struct Post: Codable, Identifiable {
         case embedDescription
         case embedHTML
         case thumbnailURL = "thumbnail_url"
-        // case apID
+        case apID = "ap_id"
         case local
         // case creatorActorID
         // case creatorLocal

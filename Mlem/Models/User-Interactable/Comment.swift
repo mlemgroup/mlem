@@ -74,7 +74,7 @@ struct Comment: Codable, Identifiable {
     let bannedFromCommunity: Bool?
     let creatorActorID: String?
     let creatorLocal: Bool?
-    let creatorName: String = "creator_name"
+    let creatorName: String?
     let creatorPreferredUsername: JSONNull?
     let creatorPublished: String?
     let creatorAvatar: JSONNull?
@@ -91,7 +91,7 @@ struct Comment: Codable, Identifiable {
         case postName
         case parentID = "parent_id"
         case content, removed, read, published, deleted
-        case apID
+        case apID = "ap_id"
         case local
         case communityID
         case communityActorID = "community_actor_id"

@@ -18,11 +18,15 @@ struct Post_Item: View {
     var postBody: String? // Has to be
     let imageThumbnail: String?
     
+    let urlToPost: String
+    
     let score: Int
     
     let numberOfComments: Int
     
     let timePosted: String
+    
+    let isStickied: Bool
     
     let isExpanded: Bool
     
@@ -31,59 +35,75 @@ struct Post_Item: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
-                if !isExpanded { // Show this when the post is just in the list and not expanded
-                    VStack(alignment: .leading, spacing: 8) {
-                        NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID)) {
-                            Text(communityName)
+                HStack(alignment: .top) {
+                    if !isExpanded { // Show this when the post is just in the list and not expanded
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID)) {
+                                    Text(communityName)
+                                }
+                                .buttonStyle(.plain)
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                                
+                                if isStickied {
+                                    Stickied_Tag()
+                                }
+                            }
+                            
+                            Text(postName)
+                                .font(.subheadline)
                         }
-                        .buttonStyle(.plain)
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                        
+                    } else { // Show this when the post is expanded
                         Text(postName)
-                            .font(.subheadline)
+                            .font(.headline)
+                        
+                        if isStickied { // TODO: Make it look the right way when the post is expanded
+                            Stickied_Tag()
+                        }
                     }
-                } else {
-                    Text(postName)
-                        .font(.headline)
                 }
                 
-                if postBody == nil { // First, if there's nothing in the body, it means it's not a normal text post, so...
-                    if imageThumbnail != nil { // Show an image if there is no text in the body. But only show it if there actually is one.
-                        AsyncImage(url: URL(string: imageThumbnail!), content: { image in
-                            // TODO: Make it pull the image only at first. Don't pull it again when the post is opened
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                                .onTapGesture {
-                                    // TODO: Make it so that tapping an image makes it big
-                                }
-                        }, placeholder: {
-                            Loading_View(whatIsLoading: .image)
-                        })
-                        if url != nil { // Sometimes, these pictures are just links to other sites. If that's the case, add the link under the picture
-                            Text(.init(url!))
-                                .dynamicTypeSize(.small)
-                        }
-                    } else if url != nil { // Second option is that it's a post with just a link and no body. Then just show the link
-                        // TODO: Make the text look nicer. Maybe something like iMessage has when you send a link
-                        Text(.init(url!))
-                    } else { // I have no idea why this would happen
-                        Text("ERR: Unexpected post format")
-                    }
+                if isStickied && !isExpanded { // If the text is stickied, only show the title. If the user expands the stickied post, make sure it actually has content
                     
-                } else { // Third option is it being a text post. Show that text here.
-                    if isExpanded {
-                        Text(.init(postBody!)) // .init for Markdown support
-                            .dynamicTypeSize(.small)
-                            .padding(.top, 2)
-                    } else {
-                        Text(.init(postBody!)) // .init for Markdown support
-                            .foregroundColor(.secondary)
-                            .dynamicTypeSize(.small)
-                            .lineLimit(3)
-                            .padding(.top, 2)
+                } else {
+                    if postBody == nil { // First, if there's nothing in the body, it means it's not a normal text post, so...
+                        if imageThumbnail != nil { // Show an image if there is no text in the body. But only show it if there actually is one.
+                            AsyncImage(url: URL(string: imageThumbnail!), content: { image in
+                                // TODO: Make it pull the image only at first. Don't pull it again when the post is opened
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .onTapGesture {
+                                        // TODO: Make it so that tapping an image makes it big
+                                    }
+                            }, placeholder: {
+                                Loading_View(whatIsLoading: .image)
+                            })
+                            if url != nil { // Sometimes, these pictures are just links to other sites. If that's the case, add the link under the picture
+                                Text(.init(url!))
+                                    .dynamicTypeSize(.small)
+                            }
+                        } else if url != nil { // Second option is that it's a post with just a link and no body. Then just show the link
+                            // TODO: Make the text look nicer. Maybe something like iMessage has when you send a link
+                            Text(.init(url!))
+                        } else { // I have no idea why this would happen
+                            Text("ERR: Unexpected post format")
+                        }
+                        
+                    } else { // Third option is it being a text post. Show that text here.
+                        if isExpanded {
+                            Text(.init(postBody!)) // .init for Markdown support
+                                .dynamicTypeSize(.small)
+                                .padding(.top, 2)
+                        } else {
+                            Text(.init(postBody!)) // .init for Markdown support
+                                .foregroundColor(.secondary)
+                                .dynamicTypeSize(.small)
+                                .lineLimit(3)
+                                .padding(.top, 2)
+                        }
                     }
                 }
             }
@@ -94,7 +114,7 @@ struct Post_Item: View {
                 HStack(alignment: .center) {
                     Upvote_Button(score: score)
                     Downvote_Button()
-                    Share_Button()
+                    Share_Button(urlToShare: urlToPost)
                 }
                 
                 Spacer()
@@ -123,6 +143,7 @@ struct Post_Item: View {
             }
             .padding(.horizontal)
             .padding(.bottom)
+            
         }
         .background(Color.systemBackground)
         .contextMenu { // This created that "peek and pop" feel that I used to love

@@ -8,17 +8,14 @@
 import SwiftUI
 
 struct Share_Button: View {
+    let urlToShare: String
+    
     var body: some View {
         Button(action: {
+            showShareSheet(URLasString: urlToShare)
             print("Shared")
         }, label: {
             Image(systemName: "square.and.arrow.up")
         })
-    }
-}
-
-struct Share_Button_Previews: PreviewProvider {
-    static var previews: some View {
-        Share_Button()
     }
 }

@@ -19,7 +19,7 @@ struct Post_Expanded: View {
     
     var body: some View {
         ScrollView {
-            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isExpanded: true)
+            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, urlToPost: post.apID, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isStickied: post.stickied!, isExpanded: true)
             
             if post.numberOfComments == 0 { // If there are no comments, just don' show anything
                 VStack {
@@ -77,7 +77,7 @@ struct Post_Expanded: View {
                     } else {
                         VStack(spacing: 16) {
                             ForEach(comments.decodedComments) { comment in
-                                Comment_Item(author: comment.creatorName, commentBody: comment.content!, commentID: comment.id!, score: comment.score!)
+                                Comment_Item(author: comment.creatorName, commentBody: comment.content!, commentID: comment.id!, urlToComment: comment.apID!, score: comment.score!, timePosted: comment.published!)
                             }
                             .padding(.horizontal)
                         }

@@ -14,7 +14,11 @@ struct Comment_Item: View {
     
     let commentID: Int // Here to make replying possible. DON'T REMOVE
     
+    let urlToComment: String
+    
     let score: Int
+    
+    let timePosted: String
     
     @State private var isShowingReplySheet = false
     
@@ -42,8 +46,11 @@ struct Comment_Item: View {
                 
                 Spacer()
                 
-                Text(author ?? .init("ERR: Unable to decode username"))
-                    .foregroundColor(.secondary)
+                HStack {
+                    Text(getTimeIntervalFromNow(originalTime: timePosted))
+                    User_Profile_Link(userName: author!)
+                }
+                .foregroundColor(.secondary)
             }
         }
         .dynamicTypeSize(.small)
