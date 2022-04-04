@@ -22,6 +22,8 @@ struct Post_Item: View {
     
     let numberOfComments: Int
     
+    let timePosted: String
+    
     let isExpanded: Bool
     
     let iconToTextSpacing: CGFloat = 2
@@ -110,10 +112,10 @@ struct Post_Item: View {
                     
                     HStack(spacing: iconToTextSpacing) { // Time since posted
                         Image(systemName: "clock")
-                        Text("3h")
+                        Text(getTimeIntervalFromNow(originalTime: timePosted))
                     }
                     
-                    Text(author)
+                    User_Profile_Link(userName: author)
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)

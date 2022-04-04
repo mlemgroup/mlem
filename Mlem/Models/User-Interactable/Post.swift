@@ -39,7 +39,7 @@ struct Post: Codable, Identifiable {
     // let creatorLocal: Bool
     let creatorName: String
     let creatorPreferredUsername: JSONNull?
-    // let creatorPublished: String
+    let creatorPublished: String
     let creatorAvatar: JSONNull?
     let creatorTags: CreatorTags?
     let creatorCommunityTags: JSONNull?
@@ -59,7 +59,8 @@ struct Post: Codable, Identifiable {
         case id, name, url, body
         case creatorID = "creator_id"
         case communityID = "community_id"
-        case removed, locked, published, updated, deleted, nsfw, stickied, featured
+        case removed, locked, updated, deleted, nsfw, stickied, featured
+        case published = "published"
         case embedTitle
         case embedDescription
         case embedHTML
@@ -70,7 +71,7 @@ struct Post: Codable, Identifiable {
         // case creatorLocal
         case creatorName = "creator_name"
         case creatorPreferredUsername
-        // case creatorPublished
+        case creatorPublished = "creator_published"
         case creatorAvatar
         case creatorTags
         case creatorCommunityTags

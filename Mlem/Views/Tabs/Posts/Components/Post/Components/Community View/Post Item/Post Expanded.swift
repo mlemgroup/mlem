@@ -19,7 +19,7 @@ struct Post_Expanded: View {
     
     var body: some View {
         ScrollView {
-            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, isExpanded: true)
+            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isExpanded: true)
             
             if post.numberOfComments == 0 { // If there are no comments, just don' show anything
                 VStack {
@@ -86,6 +86,6 @@ struct Post_Expanded: View {
             }
             
         }
-        .navigationBarTitle(post.communityName ?? "Undefined", displayMode: .inline)
+        .navigationBarTitle(post.communityName, displayMode: .inline)
     }
 }

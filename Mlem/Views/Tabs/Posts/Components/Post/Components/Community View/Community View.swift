@@ -21,7 +21,7 @@ struct Community_View: View {
             } else {
                 ForEach(posts.decodedPosts) { post in
                     NavigationLink(destination: Post_Expanded(post: post)) {
-                        Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, isExpanded: false)
+                        Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isExpanded: false)
                     }
                     .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                 }
