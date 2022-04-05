@@ -32,6 +32,8 @@ struct Post_Item: View {
     
     let iconToTextSpacing: CGFloat = 2
     
+    @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
+    
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
@@ -39,12 +41,14 @@ struct Post_Item: View {
                     if !isExpanded { // Show this when the post is just in the list and not expanded
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
-                                NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID)) {
-                                    Text(communityName)
+                                if !isInSpecificCommunity.isInSpecificCommunity {
+                                    NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID)) {
+                                        Text(communityName)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
                                 }
-                                .buttonStyle(.plain)
-                                .font(.footnote)
-                                .foregroundColor(.secondary)
                                 
                                 if isStickied {
                                     Stickied_Tag()
