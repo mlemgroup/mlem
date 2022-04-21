@@ -158,10 +158,7 @@ struct Post_Item: View {
                 Label("Save", systemImage: "bookmark.fill")
             })
             
-            Button {
-                // TODO: Make going to communities work
-                print("\(communityID)")
-            } label: {
+            NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID)) {
                 Label("c/\(communityName)", systemImage: "person.3.fill")
             }
             

@@ -20,6 +20,8 @@ struct Community_View: View {
     
     @StateObject var isInSpecificCommunity = IsInSpecificCommunity()
     
+    @State private var isShowingSearch: Bool = false
+    
     var body: some View {
         ScrollView {
             if posts.isLoading {
@@ -56,6 +58,17 @@ struct Community_View: View {
                 
                 // posts.pushPostsToStorage(decodedPostData: posts.decodedPosts)
             }
+        }
+        .toolbar {
+            Button {
+                isShowingSearch.toggle()
+            } label: {
+                Image(systemName: "magnifyingglass")
+            }
+
+        }
+        .sheet(isPresented: $isShowingSearch) {
+            Search_Sheet()
         }
     }
 }
