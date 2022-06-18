@@ -16,8 +16,8 @@ struct Instance_and_Community_List_View: View {
                         Community_View(communityName: "All", communityID: nil)
                     })
                     
-                    NavigationLink("CTH", destination: {
-                        
+                    NavigationLink("ChapoTrapHouse", destination: {
+                        Community_View(communityName: "chapotraphouse", communityID: nil)
                     })
                     NavigationLink("Piracy", destination: {
                         

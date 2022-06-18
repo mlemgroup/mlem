@@ -163,10 +163,7 @@ struct Post_Item: View {
             }
             
             Divider()
-            Button {
-                // TODO: Make going to people work
-                print("Take me to \(author)")
-            } label: {
+            NavigationLink(destination: User_View(userName: author)) {
                 Label(author, systemImage: "person.circle.fill")
             }
 

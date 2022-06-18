@@ -20,7 +20,12 @@ struct DataClass: Codable {
 }
 
 // MARK: - Post
-struct Post: Codable, Identifiable {
+struct Post: Codable, Identifiable, Equatable {
+    // This is here to make Post equatable
+    static func == (lhs: Post, rhs: Post) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: Int
     let name: String
     let url: String?
@@ -105,6 +110,8 @@ struct CreatorTags: Codable {
 class PostData_Decoded: ObservableObject {
     
     @Published var isLoading = true
+    @Published var latestLoadedPageGlobal = 0
+    @Published var latestLoadedPageCommunity = 0
     @Published var decodedPosts = [Post]()
     
     func decodeRawPostJSON(postRawData: String) {
@@ -120,7 +127,7 @@ class PostData_Decoded: ObservableObject {
             
             self.isLoading = false
             
-            self.decodedPosts = decodedPosts.data.posts
+            self.decodedPosts.append(contentsOf: decodedPosts.data.posts) // Load and append posts to the list of decoded posts
         } catch {
             print("Failed to decode: \(error)")
         }
