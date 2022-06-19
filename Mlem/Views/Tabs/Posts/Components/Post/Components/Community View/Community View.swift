@@ -29,29 +29,34 @@ struct Community_View: View {
             if posts.isLoading {
                 Loading_View(whatIsLoading: .posts)
             } else {
-                ForEach(posts.decodedPosts, id: \.id) { post in
-                    if post == posts.decodedPosts.last {
-                        Text("I'm last")
+                LazyVStack {
+                    ForEach(posts.decodedPosts, id: \.id) { post in
+                        if post == posts.decodedPosts.last {
+                            
+                        }
+                        NavigationLink(destination: Post_Expanded(post: post)) {
+                            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, urlToPost: post.apID, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isStickied: post.stickied!, isExpanded: false)
+                                .environmentObject(isInSpecificCommunity)
+                        }
+                        .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
+                        .task {
+                            if post == posts.decodedPosts.last {
+                                if communityID == nil {
+                                    loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts)
+                                } else {
+                                    loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts, communityName: communityName)
+                                }
+                            }
+                        }
                     }
-                    NavigationLink(destination: Post_Expanded(post: post)) {
-                        Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, urlToPost: post.apID, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isStickied: post.stickied!, isExpanded: false)
-                            .environmentObject(isInSpecificCommunity)
-                    }
-                    .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                 }
                 
                 // TODO: Remove this whole button once I figure out how to load new posts when the user arrives at the end
                 Button {
                     if communityID == nil {
-                        posts.latestLoadedPageGlobal += 1
-                        connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-                            {"op": "GetPosts", "data": {"type_": "All", "sort":"Hot", "page": \(posts.latestLoadedPageGlobal)}}
-                            """)
+                        loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts)
                     } else {
-                        posts.latestLoadedPageCommunity += 1
-                        connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-                        {"op": "GetPosts", "data": {"type_": "Community", "sort": "Hot", "page": \(posts.latestLoadedPageCommunity), "community_name": "\(communityName)"}}
-                        """)
+                        loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts, communityName: communityName)
                     }
                     
                 } label: {
@@ -64,17 +69,10 @@ struct Community_View: View {
         .navigationTitle(communityName)
         .onAppear {
             if communityID == nil { // If the community ID is nil, it means we want to pull all posts from that instance
-                posts.latestLoadedPageGlobal += 1
-                connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-                    {"op": "GetPosts", "data": {"type_": "All", "sort":"Hot", "page": \(posts.latestLoadedPageGlobal)}}
-                    """)
+                loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts)
                 
             } else { // If there is a community ID, we want to pull posts from that specific community instead
-                isInSpecificCommunity.isInSpecificCommunity = true // Set the Environment Object to true so the posts don't have community links when the user is already viewing a community
-                posts.latestLoadedPageCommunity += 1
-                connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-                {"op": "GetPosts", "data": {"type_": "Community", "sort": "Hot", "page": \(posts.latestLoadedPageCommunity), "community_name": "\(communityName)"}}
-                """) // TODO: For now, I have to put in the community name because the ID just straight-up doesn't work. Do something about it.
+                loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts, communityName: communityName) 
             }
         }
         .onReceive(connectionHandler.$receivedData) { receivedData in
@@ -84,6 +82,9 @@ struct Community_View: View {
                 
                 // posts.pushPostsToStorage(decodedPostData: posts.decodedPosts)
             }
+        }
+        .onDisappear {
+            posts.latestLoadedPageCommunity = 0
         }
         .toolbar {
             Button {
