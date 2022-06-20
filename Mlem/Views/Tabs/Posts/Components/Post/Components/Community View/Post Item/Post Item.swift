@@ -73,22 +73,35 @@ struct Post_Item: View {
                 } else {
                     if postBody == nil { // First, if there's nothing in the body, it means it's not a normal text post, so...
                         if imageThumbnail != nil { // Show an image if there is no text in the body. But only show it if there actually is one.
-                            AsyncImage(url: URL(string: imageThumbnail!), content: { image in
-                                // TODO: Make it pull the image only at first. Don't pull it again when the post is opened
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .onTapGesture {
-                                        // TODO: Make it so that tapping an image makes it big
+                            VStack(alignment: .leading) {
+                                AsyncImage(url: URL(string: imageThumbnail!)) { phase in
+                                    if let image = phase.image { // Display the image if it successfully loaded
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .onTapGesture {
+                                                // TODO: Make it so that tapping an image makes it big
+                                            }
+                                    } else if phase.error != nil { // Show some kind of an error in case the image failed to load
+                                        Error_View(errorMessage: "This image failed to load")
+                                    } else { // While loading, show a placeholder
+                                        Loading_View(whatIsLoading: .image)
                                     }
-                            }, placeholder: {
-                                Loading_View(whatIsLoading: .image)
-                            })
-                            if url != nil { // Sometimes, these pictures are just links to other sites. If that's the case, add the link under the picture
-                                Text(.init(url!))
-                                    .dynamicTypeSize(.small)
+                                }
+                                
+                                if url != nil { // Sometimes, these pictures are just links to other sites. If that's the case, add the link under the picture
+                                    VStack(alignment: .leading) {
+// This shit doesn't work properly        let urlURLfied = URL(string: url!)
+// Maybe bug in xCode?                    Text("\(urlURLfied?.host)")
+                                        Text(.init(url!))
+                                            .dynamicTypeSize(.small)
+                                            .lineLimit(1)
+                                            .padding([.horizontal, .bottom])
+                                    }
+                                }
                             }
+                            .background(Color.secondarySystemBackground)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         } else if url != nil { // Second option is that it's a post with just a link and no body. Then just show the link
                             // TODO: Make the text look nicer. Maybe something like iMessage has when you send a link
                             Text(.init(url!))

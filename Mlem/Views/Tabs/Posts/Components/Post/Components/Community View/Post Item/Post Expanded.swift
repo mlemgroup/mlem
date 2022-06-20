@@ -21,13 +21,11 @@ struct Post_Expanded: View {
         ScrollView {
             Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, urlToPost: post.apID, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isStickied: post.stickied!, isExpanded: true)
             
-            if post.numberOfComments == 0 { // If there are no comments, just don' show anything
+            if post.numberOfComments == 0 { // If there are no comments, just don't show anything
                 VStack {
                     VStack {
                         Image(systemName: "binoculars")
-                            .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 40, height: 40)
                         Text("No comments to be found")
                             .font(.headline)
                     }
