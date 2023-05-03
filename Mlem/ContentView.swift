@@ -5,25 +5,29 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        TabView {
+struct ContentView: View
+{
+    var body: some View
+    {
+        TabView
+        {
             Posts_View()
-                .tabItem{
+                .tabItem
+                {
                     Image(systemName: "text.bubble")
                     Text("Posts")
                 }
             Settings_View()
-                .tabItem{
+                .tabItem
+                {
                     Image(systemName: "gear")
                     Text("Settings")
-              }
+                }
         }
-        .onAppear {
-            
-        }
+        .onAppear
+        {}
     }
 }

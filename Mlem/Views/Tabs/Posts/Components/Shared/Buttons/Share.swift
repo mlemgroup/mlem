@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct Share_Button: View {
+struct Share_Button: View
+{
     let urlToShare: String
-    
-    var body: some View {
+
+    var body: some View
+    {
         Button(action: {
             showShareSheet(URLasString: urlToShare)
             print("Shared")

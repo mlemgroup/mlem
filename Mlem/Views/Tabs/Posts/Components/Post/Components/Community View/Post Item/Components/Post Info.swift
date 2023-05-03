@@ -7,26 +7,32 @@
 
 import SwiftUI
 
-struct Post_Info: View {
+struct Post_Info: View
+{
     let iconToTextSpacing: CGFloat = 2
-    
-    var body: some View {
-        HStack(spacing: 8) {
-            HStack(spacing: iconToTextSpacing) { // Number of upvotes
+
+    var body: some View
+    {
+        HStack(spacing: 8)
+        {
+            HStack(spacing: iconToTextSpacing)
+            { // Number of upvotes
                 Image(systemName: "arrow.up")
                 Text("20")
             }
-            
-            HStack(spacing: iconToTextSpacing) { // Number of comments
+
+            HStack(spacing: iconToTextSpacing)
+            { // Number of comments
                 Image(systemName: "bubble.left")
                 Text("4")
             }
-            
-            HStack(spacing: iconToTextSpacing) { // Time since posted
+
+            HStack(spacing: iconToTextSpacing)
+            { // Time since posted
                 Image(systemName: "clock")
                 Text("3h")
             }
-            
+
             Text("iMissElca")
         }
         .foregroundColor(.secondary)

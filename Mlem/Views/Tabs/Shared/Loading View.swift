@@ -7,21 +7,26 @@
 
 import SwiftUI
 
-struct Loading_View: View {
-    enum PossibleThingsToLoad {
+struct Loading_View: View
+{
+    enum PossibleThingsToLoad
+    {
         case posts
         case image
         case comments
     }
-    
+
     let whatIsLoading: PossibleThingsToLoad
-    
-    var body: some View {
-        VStack {
+
+    var body: some View
+    {
+        VStack
+        {
             Spacer()
-            
+
             ProgressView()
-            switch whatIsLoading {
+            switch whatIsLoading
+            {
             case .posts:
                 Text("Loading posts")
             case .image:
@@ -29,7 +34,7 @@ struct Loading_View: View {
             case .comments:
                 Text("Loading comments")
             }
-            
+
             Spacer()
         }
         .foregroundColor(.secondary)

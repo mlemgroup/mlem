@@ -8,15 +8,18 @@
 import Foundation
 import SwiftUI
 
-
 // MARK: - RawResponseComment
-struct RawResponseComment: Codable {
+
+struct RawResponseComment: Codable
+{
     let op: String
     let data: DataClass_Comment
 }
 
 // MARK: - DataClass_Comment
-struct DataClass_Comment: Codable {
+
+struct DataClass_Comment: Codable
+{
     let post: Post_Comment
     let comments: [Comment]
     let community: Community
@@ -26,7 +29,9 @@ struct DataClass_Comment: Codable {
 }
 
 // MARK: - Admin
-struct Admin: Codable {
+
+struct Admin: Codable
+{
     let id: Int?
     let actorID: String?
     let name: String?
@@ -40,7 +45,8 @@ struct Admin: Codable {
     let published: String?
     let numberOfPosts, numberOfComments: Int?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey
+    {
         case id
         case actorID
         case name
@@ -54,7 +60,9 @@ struct Admin: Codable {
 }
 
 // MARK: - Comment
-struct Comment: Codable, Identifiable {
+
+struct Comment: Codable, Identifiable
+{
     let id, postID: Int?
     let creatorID: Int
     let postName: String?
@@ -84,7 +92,8 @@ struct Comment: Codable, Identifiable {
     let hotRankActive: Int?
     let userID, myVote, subscribed, saved: JSONNull?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey
+    {
         case id
         case creatorID = "creator_id"
         case postID
@@ -119,12 +128,16 @@ struct Comment: Codable, Identifiable {
 }
 
 // MARK: - CreatorTags_Comment
-struct CreatorTags_Comment: Codable {
+
+struct CreatorTags_Comment: Codable
+{
     let pronouns: String?
 }
 
 // MARK: - Community
-struct Community: Codable {
+
+struct Community: Codable
+{
     let id: Int
     let name: String?
     let title: String?
@@ -146,7 +159,8 @@ struct Community: Codable {
     let numberOfSubscribers, numberOfPosts, numberOfComments, hotRank: Int?
     let userID, subscribed: JSONNull?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey
+    {
         case id, name, title, icon, banner
         case communityDescription
         case categoryID
@@ -171,7 +185,9 @@ struct Community: Codable {
 }
 
 // MARK: - Moderator
-struct Moderator: Codable {
+
+struct Moderator: Codable
+{
     let id, userID: Int?
     let communityID: Int?
     let published: String?
@@ -184,7 +200,8 @@ struct Moderator: Codable {
     let communityName: String?
     let communityIcon: JSONNull?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey
+    {
         case id
         case communityID
         case userID
@@ -202,7 +219,9 @@ struct Moderator: Codable {
 }
 
 // MARK: - Post
-struct Post_Comment: Codable {
+
+struct Post_Comment: Codable
+{
     let id: Int
     let name: String?
     let url: String?
@@ -238,7 +257,8 @@ struct Post_Comment: Codable {
     let userID, myVote, subscribed, read: JSONNull?
     let saved: JSONNull?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey
+    {
         case id, name, url, body
         case creatorID
         case communityID
@@ -278,41 +298,43 @@ struct Post_Comment: Codable {
     }
 }
 
-
 // MARK: Můj kód
 
-class CommentData_Decoded: ObservableObject {
+class CommentData_Decoded: ObservableObject
+{
     @Published var isLoading = true
     @Published var decodedComments = [Comment]()
-    
-    /*func decodeCommentJSON(rawCommentData: String) async -> Void {
-        do {
-            let decodedComments = try JSONDecoder().decode(RawResponseComment.self, from: rawCommentData.data(using: .utf8)!)
-            
-            self.isLoading = false
-            
-            self.decodedComments = decodedComments.data.comments
-        } catch let error as NSError {
-            print("Failed to decode comments because: \(error)")
-        }
-    }*/
-    
-    func decodeRawCommentJSON(commentRawData: String) {
-        do {
+
+    /* func decodeCommentJSON(rawCommentData: String) async -> Void {
+         do {
+             let decodedComments = try JSONDecoder().decode(RawResponseComment.self, from: rawCommentData.data(using: .utf8)!)
+
+             self.isLoading = false
+
+             self.decodedComments = decodedComments.data.comments
+         } catch let error as NSError {
+             print("Failed to decode comments because: \(error)")
+         }
+     } */
+
+    func decodeRawCommentJSON(commentRawData: String)
+    {
+        do
+        {
             let decoder = JSONDecoder()
             let decodedComments = try decoder.decode(RawResponseComment.self, from: commentRawData.data(using: .utf8)!)
-            
+
             print("Decoding comment JSON: \(commentRawData)")
-            
+
             print("Into comment objects: \(decodedComments)")
-            
-            self.isLoading = false
-            
+
+            isLoading = false
+
             self.decodedComments = decodedComments.data.comments
-            
-        } catch {
+        }
+        catch
+        {
             print("Failed to decode: \(error)")
         }
-
     }
 }

@@ -338,10 +338,10 @@
 				6363D5F327EE1BA900E34822 /* Views */,
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
 				6363D5C627EE196700E34822 /* ContentView.swift */,
+				63DF71F02A02999C002AC14E /* App Constants.swift */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				6363D5CA27EE196A00E34822 /* Preview Content */,
 				6332FDBC27EFAF7B0009A98A /* Settings.bundle */,
-				63DF71F02A02999C002AC14E /* App Constants.swift */,
 			);
 			path = Mlem;
 			sourceTree = "<group>";

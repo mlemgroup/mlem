@@ -7,11 +7,16 @@
 
 import SwiftUI
 
-struct Settings_View: View {
-    var body: some View {
-        NavigationView {
-            List {
-                Section(header: Text("Communities")) {
+struct Settings_View: View
+{
+    var body: some View
+    {
+        NavigationView
+        {
+            List
+            {
+                Section(header: Text("Communities"))
+                {
                     Settings_Item(
                         settingPictureSystemName: "person.2.circle.fill",
                         settingPictureColor: .blue,
@@ -31,7 +36,8 @@ struct Settings_View: View {
                         isTicked: true
                     )
                 }
-                Section(header: Text("Posts")) {
+                Section(header: Text("Posts"))
+                {
                     Settings_Item(
                         settingPictureSystemName: "lock.square.stack.fill",
                         settingPictureColor: .primary,
@@ -45,7 +51,8 @@ struct Settings_View: View {
                         isTicked: true
                     )
                 }
-                Section(header: Text("About me"), footer: Text("Made thanks to my perfect Elča ❤️")) {
+                Section(header: Text("About me"), footer: Text("Made thanks to my perfect Elča ❤️"))
+                {
                     NavigationLink("Hello", destination: About_Me())
                     Link("Twitter", destination: URL(string: "https://twitter.com/davidbures")!)
                 }
@@ -56,8 +63,10 @@ struct Settings_View: View {
     }
 }
 
-struct Settings_View_Previews: PreviewProvider {
-    static var previews: some View {
+struct Settings_View_Previews: PreviewProvider
+{
+    static var previews: some View
+    {
         Settings_View()
     }
 }

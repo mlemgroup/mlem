@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct Downvote_Button: View {
-    var body: some View {
+struct Downvote_Button: View
+{
+    var body: some View
+    {
         Button(action: {
             print("Downvoted")
         }, label: {
@@ -17,8 +19,10 @@ struct Downvote_Button: View {
     }
 }
 
-struct Downvote_Button_Previews: PreviewProvider {
-    static var previews: some View {
+struct Downvote_Button_Previews: PreviewProvider
+{
+    static var previews: some View
+    {
         Downvote_Button()
     }
 }

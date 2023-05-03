@@ -7,11 +7,14 @@
 
 import SwiftUI
 
-struct User_Profile_Link: View {
+struct User_Profile_Link: View
+{
     let userName: String
-    
-    var body: some View {
-        NavigationLink(destination: User_View(userName: userName)) {
+
+    var body: some View
+    {
+        NavigationLink(destination: User_View(userName: userName))
+        {
             Text(userName)
         }
     }

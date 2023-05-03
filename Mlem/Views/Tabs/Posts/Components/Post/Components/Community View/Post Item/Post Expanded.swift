@@ -7,23 +7,28 @@
 
 import SwiftUI
 
-struct Post_Expanded: View {
-    
+struct Post_Expanded: View
+{
     @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
     @ObservedObject var comments = CommentData_Decoded()
-    
+
     @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
-    
+
     let post: Post
-    
-    var body: some View {
-        ScrollView {
+
+    var body: some View
+    {
+        ScrollView
+        {
             Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, urlToPost: post.apID, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isStickied: post.stickied!, isExpanded: true)
-            
-            if post.numberOfComments == 0 { // If there are no comments, just don't show anything
-                VStack {
-                    VStack {
+
+            if post.numberOfComments == 0
+            { // If there are no comments, just don't show anything
+                VStack
+                {
+                    VStack
+                    {
                         Image(systemName: "binoculars")
                             .aspectRatio(contentMode: .fill)
                         Text("No comments to be found")
@@ -34,11 +39,15 @@ struct Post_Expanded: View {
                 }
                 .foregroundColor(.secondary)
                 .padding()
-            } else { // Otherwise we'll have to do some actual work
-                HStack {
-                    Picker("Sort by", selection: $sortSelection) {
+            }
+            else
+            { // Otherwise we'll have to do some actual work
+                HStack
+                {
+                    Picker("Sort by", selection: $sortSelection)
+                    {
                         // TODO: Implement sorting
-                        
+
                         // TODO: Make it actually work. The @State does not update
                         Label("Best", systemImage: "star.fill").tag(0)
                         Label("Hot", systemImage: "flame.fill").tag(1)
@@ -51,33 +60,40 @@ struct Post_Expanded: View {
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(Color.secondarySystemBackground)
-                .onAppear { // Request the comments only if I'm actually expecting comments.
+                .onAppear
+                { // Request the comments only if I'm actually expecting comments.
                     // If there are no comments, this won't fire
                     connectionHandler.sendCommand(maintainOpenConnection: false, command: """
                     {"op": "GetPost", "data": {"id": \(post.id)}}
                     """)
                 }
-                .onReceive(connectionHandler.$receivedData) { receivedData in
-                    if receivedData != "" { // This is here because the function is called even when the ObservedObject is empty. Utterly retarded TODO: Make it more elegant so this shit actually works like it's supposed to. Fuck
+                .onReceive(connectionHandler.$receivedData)
+                { receivedData in
+                    if receivedData != ""
+                    { // This is here because the function is called even when the ObservedObject is empty. Utterly retarded TODO: Make it more elegant so this shit actually works like it's supposed to. Fuck
                         print("LMAO not empty")
-                        
+
                         print("Finna decode")
                         comments.decodeRawCommentJSON(commentRawData: receivedData)
                     }
                 }
-                
-                if connectionHandler.isLoading {
+
+                if connectionHandler.isLoading
+                {
                     Loading_View(whatIsLoading: .comments)
-                } else {
-                    VStack(spacing: 16) {
-                        ForEach(comments.decodedComments) { comment in
+                }
+                else
+                {
+                    VStack(spacing: 16)
+                    {
+                        ForEach(comments.decodedComments)
+                        { comment in
                             Comment_Item(author: comment.creatorName, commentBody: comment.content!, commentID: comment.id!, urlToComment: comment.apID!, score: comment.score!, timePosted: comment.published!)
                         }
                         .padding(.horizontal)
                     }
                 }
             }
-            
         }
         .navigationBarTitle(post.communityName, displayMode: .inline)
     }
