@@ -50,19 +50,6 @@ struct Community_View: View {
                         }
                     }
                 }
-                
-                // TODO: Remove this whole button once I figure out how to load new posts when the user arrives at the end
-                Button {
-                    if communityID == nil {
-                        loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts)
-                    } else {
-                        loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts, communityName: communityName)
-                    }
-                    
-                } label: {
-                    Text("Load more")
-                }
-                .buttonStyle(.borderedProminent)
             }
         }
         .background(Color.secondarySystemBackground)

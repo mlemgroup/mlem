@@ -36,14 +36,11 @@
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
 		6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */; };
-		6363D5CE27EE196A00E34822 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5CD27EE196A00E34822 /* Persistence.swift */; };
-		6363D5D127EE196A00E34822 /* Mlem.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5CF27EE196A00E34822 /* Mlem.xcdatamodeld */; };
 		6363D5DB27EE196A00E34822 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5DA27EE196A00E34822 /* MlemTests.swift */; };
 		6363D5E527EE196A00E34822 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5E427EE196A00E34822 /* MlemUITests.swift */; };
 		6363D5E727EE196A00E34822 /* MlemUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5E627EE196A00E34822 /* MlemUITestsLaunchTests.swift */; };
 		6363D5F827EE1BCF00E34822 /* Posts View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5F727EE1BCF00E34822 /* Posts View.swift */; };
 		6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5F927EE1BDA00E34822 /* Settings View.swift */; };
-		6363D5FD27EE1D4600E34822 /* Placeholder View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5FC27EE1D4600E34822 /* Placeholder View.swift */; };
 		6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60127EE1EC400E34822 /* Comment Item.swift */; };
 		6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60327EE20A200E34822 /* Post Expanded.swift */; };
 		6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F23C27F10E4E0074C36F /* Post Parser.swift */; };
@@ -108,8 +105,6 @@
 		6363D5C627EE196700E34822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6363D5C827EE196A00E34822 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6363D5CB27EE196A00E34822 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		6363D5CD27EE196A00E34822 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		6363D5D027EE196A00E34822 /* Mlem.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mlem.xcdatamodel; sourceTree = "<group>"; };
 		6363D5D627EE196A00E34822 /* MlemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5DA27EE196A00E34822 /* MlemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemTests.swift; sourceTree = "<group>"; };
 		6363D5E027EE196A00E34822 /* MlemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,7 +112,6 @@
 		6363D5E627EE196A00E34822 /* MlemUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		6363D5F727EE1BCF00E34822 /* Posts View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Posts View.swift"; sourceTree = "<group>"; };
 		6363D5F927EE1BDA00E34822 /* Settings View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings View.swift"; sourceTree = "<group>"; };
-		6363D5FC27EE1D4600E34822 /* Placeholder View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Placeholder View.swift"; sourceTree = "<group>"; };
 		6363D60127EE1EC400E34822 /* Comment Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Item.swift"; sourceTree = "<group>"; };
 		6363D60327EE20A200E34822 /* Post Expanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Expanded.swift"; sourceTree = "<group>"; };
 		6367F23C27F10E4E0074C36F /* Post Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Parser.swift"; sourceTree = "<group>"; };
@@ -338,8 +332,6 @@
 				6363D5C427EE196700E34822 /* MlemApp.swift */,
 				6363D5C627EE196700E34822 /* ContentView.swift */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
-				6363D5CD27EE196A00E34822 /* Persistence.swift */,
-				6363D5CF27EE196A00E34822 /* Mlem.xcdatamodeld */,
 				6363D5CA27EE196A00E34822 /* Preview Content */,
 				6332FDBC27EFAF7B0009A98A /* Settings.bundle */,
 			);
@@ -383,7 +375,6 @@
 			isa = PBXGroup;
 			children = (
 				6322A5C927F77A3F00135D4F /* Shared */,
-				6363D5FB27EE1D2B00E34822 /* To be Removed */,
 				6363D5F627EE1BBC00E34822 /* Settings */,
 				6363D5F527EE1BB700E34822 /* Posts */,
 				6363D5F727EE1BCF00E34822 /* Posts View.swift */,
@@ -406,14 +397,6 @@
 				6363D5F927EE1BDA00E34822 /* Settings View.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		6363D5FB27EE1D2B00E34822 /* To be Removed */ = {
-			isa = PBXGroup;
-			children = (
-				6363D5FC27EE1D4600E34822 /* Placeholder View.swift */,
-			);
-			path = "To be Removed";
 			sourceTree = "<group>";
 		};
 		6363D5FE27EE1E9600E34822 /* Components */ = {
@@ -632,7 +615,6 @@
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
 				63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */,
 				6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */,
-				6363D5D127EE196A00E34822 /* Mlem.xcdatamodeld in Sources */,
 				631D432327F3A6B200A60775 /* JSON Null.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				6332FDCC27EFD6F90009A98A /* Post Info.swift in Sources */,
@@ -642,7 +624,6 @@
 				63EAFD9F27F4E73500FEBE9C /* Comment Chain Builder.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Post Item.swift in Sources */,
 				63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */,
-				6363D5CE27EE196A00E34822 /* Persistence.swift in Sources */,
 				630049ED27EF391A00D5105B /* Connection Handler.swift in Sources */,
 				6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */,
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
@@ -659,7 +640,6 @@
 				63EBBF1E27FCAE0C00E70532 /* Search Field.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
-				6363D5FD27EE1D4600E34822 /* Placeholder View.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
 				6367F24127F10E660074C36F /* Shared Parser.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
@@ -997,19 +977,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		6363D5CF27EE196A00E34822 /* Mlem.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				6363D5D027EE196A00E34822 /* Mlem.xcdatamodel */,
-			);
-			currentVersion = 6363D5D027EE196A00E34822 /* Mlem.xcdatamodel */;
-			path = Mlem.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 6363D5B927EE196700E34822 /* Project object */;
 }

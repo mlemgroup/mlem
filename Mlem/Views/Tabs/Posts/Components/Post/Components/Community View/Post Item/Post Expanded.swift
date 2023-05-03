@@ -69,16 +69,11 @@ struct Post_Expanded: View {
                 if connectionHandler.isLoading {
                     Loading_View(whatIsLoading: .comments)
                 } else {
-                    //Text(connectionHandler.receivedData)
-                    if comments.isLoading {
-                        Loading_View(whatIsLoading: .comments)
-                    } else {
-                        VStack(spacing: 16) {
-                            ForEach(comments.decodedComments) { comment in
-                                Comment_Item(author: comment.creatorName, commentBody: comment.content!, commentID: comment.id!, urlToComment: comment.apID!, score: comment.score!, timePosted: comment.published!)
-                            }
-                            .padding(.horizontal)
+                    VStack(spacing: 16) {
+                        ForEach(comments.decodedComments) { comment in
+                            Comment_Item(author: comment.creatorName, commentBody: comment.content!, commentID: comment.id!, urlToComment: comment.apID!, score: comment.score!, timePosted: comment.published!)
                         }
+                        .padding(.horizontal)
                     }
                 }
             }

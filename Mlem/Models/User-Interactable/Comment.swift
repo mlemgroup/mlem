@@ -285,6 +285,18 @@ class CommentData_Decoded: ObservableObject {
     @Published var isLoading = true
     @Published var decodedComments = [Comment]()
     
+    /*func decodeCommentJSON(rawCommentData: String) async -> Void {
+        do {
+            let decodedComments = try JSONDecoder().decode(RawResponseComment.self, from: rawCommentData.data(using: .utf8)!)
+            
+            self.isLoading = false
+            
+            self.decodedComments = decodedComments.data.comments
+        } catch let error as NSError {
+            print("Failed to decode comments because: \(error)")
+        }
+    }*/
+    
     func decodeRawCommentJSON(commentRawData: String) {
         do {
             let decoder = JSONDecoder()
@@ -297,6 +309,7 @@ class CommentData_Decoded: ObservableObject {
             self.isLoading = false
             
             self.decodedComments = decodedComments.data.comments
+            
         } catch {
             print("Failed to decode: \(error)")
         }
