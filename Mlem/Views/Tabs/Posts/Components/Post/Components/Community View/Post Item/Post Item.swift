@@ -9,31 +9,13 @@ import SwiftUI
 
 struct Post_Item: View
 {
-    let postName: String
-    let author: String
-
-    let communityName: String
-    let communityID: Int
-
-    var url: String?
-    var postBody: String? // Has to be
-    let imageThumbnail: String?
-
-    let urlToPost: String
-
-    let score: Int
-
-    let numberOfComments: Int
-
-    let timePosted: String
-
-    let isStickied: Bool
-
-    let isExpanded: Bool
-
-    let iconToTextSpacing: CGFloat = 2
-
     @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
+    
+    @State var post: Post
+    
+    @State var isExpanded: Bool
+    
+    let iconToTextSpacing: CGFloat = 2
 
     var body: some View
     {
@@ -51,49 +33,55 @@ struct Post_Item: View
                             {
                                 if !isInSpecificCommunity.isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID))
+                                    NavigationLink(destination: Community_View(communityName: post.communityName, communityID: post.communityID))
                                     {
-                                        Text(communityName)
+                                        Text(post.communityName)
                                     }
                                     .buttonStyle(.plain)
                                     .font(.footnote)
                                     .foregroundColor(.secondary)
                                 }
 
-                                if isStickied
+                                if let isStickied = post.stickied
                                 {
-                                    Stickied_Tag()
+                                    if isStickied
+                                    {
+                                        Stickied_Tag()
+                                    }
                                 }
                             }
 
-                            Text(postName)
+                            Text(post.name)
                                 .font(.subheadline)
                         }
                     }
                     else
                     { // Show this when the post is expanded
-                        Text(postName)
+                        Text(post.name)
                             .font(.headline)
 
-                        if isStickied
+                        if let isStickied = post.stickied
                         { // TODO: Make it look the right way when the post is expanded
-                            Stickied_Tag()
+                            if isStickied
+                            {
+                                Stickied_Tag()
+                            }
                         }
                     }
                 }
 
-                if isStickied && !isExpanded
+                if post.stickied != nil && !isExpanded
                 { // If the text is stickied, only show the title. If the user expands the stickied post, make sure it actually has content
                 }
                 else
                 {
-                    if postBody == nil
+                    if post.body == nil
                     { // First, if there's nothing in the body, it means it's not a normal text post, so...
-                        if imageThumbnail != nil
+                        if post.thumbnailURL != nil
                         { // Show an image if there is no text in the body. But only show it if there actually is one.
                             VStack(alignment: .leading)
                             {
-                                AsyncImage(url: URL(string: imageThumbnail!))
+                                AsyncImage(url: URL(string: post.thumbnailURL!))
                                 { phase in
                                     if let image = phase.image
                                     { // Display the image if it successfully loaded
@@ -115,13 +103,13 @@ struct Post_Item: View
                                     }
                                 }
 
-                                if url != nil
+                                if post.url != nil
                                 { // Sometimes, these pictures are just links to other sites. If that's the case, add the link under the picture
                                     VStack(alignment: .leading)
                                     {
                                         // This shit doesn't work properly        let urlURLfied = URL(string: url!)
                                         // Maybe bug in xCode?                    Text("\(urlURLfied?.host)")
-                                        Text(.init(url!))
+                                        Text(.init(post.url!))
                                             .dynamicTypeSize(.small)
                                             .lineLimit(1)
                                             .padding([.horizontal, .bottom])
@@ -131,10 +119,10 @@ struct Post_Item: View
                             .background(Color.secondarySystemBackground)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
-                        else if url != nil
+                        else if post.url != nil
                         { // Second option is that it's a post with just a link and no body. Then just show the link
                             // TODO: Make the text look nicer. Maybe something like iMessage has when you send a link
-                            Text(.init(url!))
+                            Text(.init(post.url!))
                         }
                         else
                         { // I have no idea why this would happen
@@ -145,13 +133,13 @@ struct Post_Item: View
                     { // Third option is it being a text post. Show that text here.
                         if isExpanded
                         {
-                            Text(.init(postBody!)) // .init for Markdown support
+                            Text(.init(post.body!)) // .init for Markdown support
                                 .dynamicTypeSize(.small)
                                 .padding(.top, 2)
                         }
                         else
                         {
-                            Text(.init(postBody!)) // .init for Markdown support
+                            Text(.init(post.body!)) // .init for Markdown support
                                 .foregroundColor(.secondary)
                                 .dynamicTypeSize(.small)
                                 .lineLimit(3)
@@ -167,9 +155,12 @@ struct Post_Item: View
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center)
                 {
-                    Upvote_Button(score: score)
+                    Upvote_Button(score: post.score)
                     Downvote_Button()
-                    Share_Button(urlToShare: urlToPost)
+                    if let postURL = post.url
+                    {
+                        Share_Button(urlToShare: post.url!)
+                    }
                 }
 
                 Spacer()
@@ -185,16 +176,16 @@ struct Post_Item: View
                     HStack(spacing: iconToTextSpacing)
                     { // Number of comments
                         Image(systemName: "bubble.left")
-                        Text(String(numberOfComments))
+                        Text(String(post.numberOfComments))
                     }
 
                     HStack(spacing: iconToTextSpacing)
                     { // Time since posted
                         Image(systemName: "clock")
-                        Text(getTimeIntervalFromNow(originalTime: timePosted))
+                        Text(getTimeIntervalFromNow(originalTime: post.published))
                     }
 
-                    User_Profile_Link(userName: author)
+                    User_Profile_Link(userName: post.creatorName)
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)
@@ -202,26 +193,6 @@ struct Post_Item: View
             .padding(.horizontal)
             .padding(.bottom)
         }
-        .background(Color.systemBackground)
-        .contextMenu
-        { // This created that "peek and pop" feel that I used to love
-            // TODO: Implement Peek and pop behavior for posts
-            Button(action: {
-                // TODO: Make saving posts work
-            }, label: {
-                Label("Save", systemImage: "bookmark.fill")
-            })
-
-            NavigationLink(destination: Community_View(communityName: communityName, communityID: communityID))
-            {
-                Label("c/\(communityName)", systemImage: "person.3.fill")
-            }
-
-            Divider()
-            NavigationLink(destination: User_View(userName: author))
-            {
-                Label(author, systemImage: "person.circle.fill")
-            }
-        }
+        .background(Color(uiColor: .systemBackground))
     }
 }

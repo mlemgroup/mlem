@@ -8,7 +8,8 @@
 import Foundation
 import SwiftyJSON
 
-func sendCommand(maintainOpenConnection: Bool, command: String) async throws -> JSON
+/*func sendCommand(maintainOpenConnection: Bool, command: String) async throws -> JSON
 {
     
 }
+*/

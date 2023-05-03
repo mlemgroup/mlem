@@ -40,11 +40,11 @@ struct Community_View: View
                 {
                     ForEach(posts.decodedPosts, id: \.id)
                     { post in
-                        if post == posts.decodedPosts.last
-                        {}
+                        /*if post == posts.decodedPosts.last
+                        {}*/
                         NavigationLink(destination: Post_Expanded(post: post))
                         {
-                            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, urlToPost: post.apID, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isStickied: post.stickied!, isExpanded: false)
+                            Post_Item(post: post, isExpanded: false)
                                 .environmentObject(isInSpecificCommunity)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling

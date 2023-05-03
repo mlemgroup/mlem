@@ -9,7 +9,7 @@ import SwiftUI
 
 struct User_Profile_Link: View
 {
-    let userName: String
+    @State var userName: String
 
     var body: some View
     {
