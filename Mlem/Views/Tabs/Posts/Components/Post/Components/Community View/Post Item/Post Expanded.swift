@@ -11,8 +11,6 @@ struct Post_Expanded: View
 {
     @EnvironmentObject var appState: AppState
     
-    @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
-    
     @StateObject var commentTracker: CommentTracker = .init()
 
     @State private var isReplySheetOpen: Bool = false

@@ -25,9 +25,6 @@ struct Community_View: View
 
     @Environment(\.isPresented) var isPresented
 
-    @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
-    //@ObservedObject var posts = PostData_Decoded()
-
     @StateObject var isInSpecificCommunity = IsInSpecificCommunity()
     
     @State private var isShowingSearch: Bool = false
