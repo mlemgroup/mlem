@@ -10,6 +10,9 @@ import SwiftUI
 
 struct ContentView: View
 {
+    
+    @StateObject var appState: AppState = AppState()
+    
     var body: some View
     {
         TabView
@@ -20,6 +23,8 @@ struct ContentView: View
                     Image(systemName: "text.bubble")
                     Text("Posts")
                 }
+                .environmentObject(appState)
+            
             Settings_View()
                 .tabItem
                 {

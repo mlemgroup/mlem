@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Post_Item: View
 {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
     
     @State var post: Post
@@ -33,7 +34,7 @@ struct Post_Item: View
                             {
                                 if !isInSpecificCommunity.isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: Community_View(communityName: post.communityName, communityID: post.communityID))
+                                    NavigationLink(destination: Community_View(instanceAddress: appState.currentActiveInstance, communityName: post.communityName, communityID: post.communityID))
                                     {
                                         Text(post.communityName)
                                     }

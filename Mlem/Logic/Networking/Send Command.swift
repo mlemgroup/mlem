@@ -38,10 +38,12 @@ func sendCommand(maintainOpenConnection: Bool, instanceAddress: String, command:
             
         case let .data(responseData):
             print("Received this data: \(responseData)")
+            task.cancel(with: .policyViolation, reason: nil)
             throw ConnectionError.receivedInvalidResponseFormat
             
         @unknown default:
             print("Unknown response received")
+            task.cancel(with: .policyViolation, reason: nil)
             throw ConnectionError.receivedInvalidResponseFormat
     }
 }

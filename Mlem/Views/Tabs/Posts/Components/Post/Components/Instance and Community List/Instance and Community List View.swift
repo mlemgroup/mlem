@@ -18,11 +18,11 @@ struct Instance_and_Community_List_View: View
                 Section(header: Text("hexbear"))
                 {
                     NavigationLink("All Communities", destination: {
-                        Community_View(communityName: "All", communityID: nil)
+                        Community_View(instanceAddress: "hexbear.net", communityName: "All", communityID: nil)
                     })
 
                     NavigationLink("ChapoTrapHouse", destination: {
-                        Community_View(communityName: "chapotraphouse", communityID: nil)
+                        Community_View(instanceAddress: "hexbear.net", communityName: "chapotraphouse", communityID: nil)
                     })
                     NavigationLink("Piracy", destination: {})
                     NavigationLink("News", destination: {})

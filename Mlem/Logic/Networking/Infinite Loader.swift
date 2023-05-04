@@ -8,28 +8,43 @@
 import Foundation
 import SwiftUI
 
-func loadInfiniteFeed(connectionHandler: LemmyConnectionHandler, tracker: PostData_Decoded, communityName: String? = nil)
+func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, communityName: String? = nil) async
 {
-    if communityName == nil
+    var loadingCommand: String = ""
+    
+    if let communityName
     {
-        print("Jumped into GLOBAL scope")
-        tracker.latestLoadedPageGlobal += 1
-
-        print("Page counter value: \(tracker.latestLoadedPageGlobal)")
-
-        connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-        {"op": "GetPosts", "data": {"type_": "All", "sort":"Hot", "page": \(tracker.latestLoadedPageGlobal)}}
-        """)
+        print("Will be in COMMUNITY scope")
+        
+        loadingCommand = """
+        {"op": "GetPosts", "data": {"type_": "Community", "sort": "Hot", "page": \(postTracker.page), "community_name": "\(communityName)"}}
+        """
     }
     else
     {
-        print("Jumped into COMMUNITY scope, with this community selected: \(communityName!)")
-        tracker.latestLoadedPageCommunity += 1
+        print("Will be in GLOBAL scope")
+        
+        loadingCommand = """
+        {"op": "GetPosts", "data": {"type_": "All", "sort":"Hot", "page": \(postTracker.page)}}
+        """
+    }
 
-        print("Page counter value: \(tracker.latestLoadedPageCommunity)")
-
-        connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-        {"op": "GetPosts", "data": {"type_": "Community", "sort": "Hot", "page": \(tracker.latestLoadedPageCommunity), "community_name": "\(communityName!)"}}
-        """) // TODO: For now, I have to put in the community name because the ID just straight-up doesn't work. Do something about it.
+    print("Page counter value: \(await postTracker.page)")
+    
+    print("Will try to send command: \(loadingCommand)")
+    
+    let apiResponse = try! await sendCommand(maintainOpenConnection: false, instanceAddress: appState.currentActiveInstance, command: loadingCommand)
+    
+    print("API Response: \(apiResponse)")
+    
+    let parsedNewPosts: [Post] = try! await parsePosts(postResponse: apiResponse)
+    
+    DispatchQueue.main.async {
+        for post in parsedNewPosts
+        {
+            postTracker.posts.append(post)
+        }
+        
+        postTracker.page += 1
     }
 }
