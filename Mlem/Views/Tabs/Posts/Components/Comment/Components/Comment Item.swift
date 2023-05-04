@@ -9,17 +9,8 @@ import SwiftUI
 
 struct Comment_Item: View
 {
-    let author: String?
-
-    let commentBody: String
-
-    let commentID: Int // Here to make replying possible. DON'T REMOVE
-
-    let urlToComment: String
-
-    let score: Int
-
-    let timePosted: String
+    
+    @State var comment: Comment
 
     @State private var isShowingReplySheet = false
 
@@ -27,20 +18,20 @@ struct Comment_Item: View
     {
         VStack(alignment: .leading, spacing: 8)
         {
-            Text(.init(commentBody)) // .init makes the comments have Markdown support
+            Text(.init(comment.content)) // .init makes the comments have Markdown support
                 .frame(maxWidth: .infinity, alignment: .topLeading)
 
             HStack(spacing: 12)
             {
                 HStack
                 {
-                    Upvote_Button(score: score)
+                    Upvote_Button(score: comment.score)
                     Downvote_Button()
                 }
                 HStack(spacing: 4)
                 {
                     Button(action: {
-                        print("Would reply to comment ID \(commentID)")
+                        print("Would reply to comment ID \(comment.id)")
                         isShowingReplySheet.toggle()
                     }, label: {
                         Image(systemName: "arrowshape.turn.up.backward")
@@ -54,8 +45,8 @@ struct Comment_Item: View
 
                 HStack
                 {
-                    Text(getTimeIntervalFromNow(originalTime: timePosted))
-                    User_Profile_Link(userName: author!)
+                    Text(getTimeIntervalFromNow(originalTime: comment.published))
+                    User_Profile_Link(userName: comment.creatorName)
                 }
                 .foregroundColor(.secondary)
             }
@@ -63,7 +54,7 @@ struct Comment_Item: View
         .dynamicTypeSize(.small)
         .sheet(isPresented: $isShowingReplySheet)
         {
-            Reply_View(parentCommentID: commentID, parentCommentText: commentBody, parentCommentAuthor: author ?? "ERR: Unable to decode username")
+            Reply_View(parentComment: comment)
         }
     }
 }

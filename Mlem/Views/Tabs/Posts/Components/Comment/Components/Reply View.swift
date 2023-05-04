@@ -9,9 +9,7 @@ import SwiftUI
 
 struct Reply_View: View
 {
-    var parentCommentID: Int
-    var parentCommentText: String
-    var parentCommentAuthor: String
+    @State var parentComment: Comment
 
     @Environment(\.dismiss) var dismiss
 
@@ -42,9 +40,9 @@ struct Reply_View: View
 
             VStack(alignment: .leading, spacing: 3)
             {
-                Text(parentCommentAuthor)
+                Text(parentComment.creatorName)
                     .foregroundColor(.secondary)
-                Text(.init(parentCommentText))
+                Text(.init(parentComment.content))
                     .padding()
                     .background(Color.secondarySystemBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .circular))

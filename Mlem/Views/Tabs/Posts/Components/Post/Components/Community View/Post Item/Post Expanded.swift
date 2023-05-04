@@ -9,8 +9,11 @@ import SwiftUI
 
 struct Post_Expanded: View
 {
+    @EnvironmentObject var appState: AppState
+    
     @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
-    @ObservedObject var comments = CommentData_Decoded()
+    
+    @StateObject var commentTracker: CommentTracker = .init()
 
     @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
@@ -42,55 +45,32 @@ struct Post_Expanded: View
             }
             else
             { // Otherwise we'll have to do some actual work
-                HStack
-                {
-                    Picker("Sort by", selection: $sortSelection)
-                    {
-                        // TODO: Implement sorting
-
-                        // TODO: Make it actually work. The @State does not update
-                        Label("Best", systemImage: "star.fill").tag(0)
-                        Label("Hot", systemImage: "flame.fill").tag(1)
-                        Label("New", systemImage: "sun.max.fill").tag(2)
-                    }
-                    Spacer()
-
-                    Text("Selected \(sortSelection)")
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.secondarySystemBackground)
-                .onAppear
-                { // Request the comments only if I'm actually expecting comments.
-                    // If there are no comments, this won't fire
-                    connectionHandler.sendCommand(maintainOpenConnection: false, command: """
-                    {"op": "GetPost", "data": {"id": \(post.id)}}
-                    """)
-                }
-                .onReceive(connectionHandler.$receivedData)
-                { receivedData in
-                    if receivedData != ""
-                    { // This is here because the function is called even when the ObservedObject is empty. Utterly retarded TODO: Make it more elegant so this shit actually works like it's supposed to. Fuck
-                        print("LMAO not empty")
-
-                        print("Finna decode")
-                        comments.decodeRawCommentJSON(commentRawData: receivedData)
-                    }
-                }
-
-                if connectionHandler.isLoading
+                if commentTracker.isLoading
                 {
                     Loading_View(whatIsLoading: .comments)
+                        .task(priority: .userInitiated)
+                        {
+                            commentTracker.isLoading = true
+                            
+                            let commentCommand: String = """
+    {"op": "GetPost", "data": { "id": \(post.id) }}
+    """
+                            let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: appState.currentActiveInstance, command: commentCommand)
+                            
+                            print("Comment response: \(commentResponse)")
+                            
+                            commentTracker.comments = try! await parseComments(commentResponse: commentResponse)
+                            
+                            commentTracker.isLoading = false
+                        }
                 }
                 else
                 {
-                    VStack(spacing: 16)
-                    {
-                        ForEach(comments.decodedComments)
+                    LazyVStack(alignment: .leading, spacing: 15) {
+                        ForEach(commentTracker.comments)
                         { comment in
-                            Comment_Item(author: comment.creatorName, commentBody: comment.content!, commentID: comment.id!, urlToComment: comment.apID!, score: comment.score!, timePosted: comment.published!)
+                            Comment_Item(comment: comment)
                         }
-                        .padding(.horizontal)
                     }
                 }
             }
