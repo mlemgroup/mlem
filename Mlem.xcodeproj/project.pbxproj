@@ -45,7 +45,6 @@
 		6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60327EE20A200E34822 /* Post Expanded.swift */; };
 		6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F23C27F10E4E0074C36F /* Post Parser.swift */; };
 		6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F23E27F10E580074C36F /* Comment Parser.swift */; };
-		6367F24127F10E660074C36F /* Shared Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F24027F10E660074C36F /* Shared Parser.swift */; };
 		6399719827F465D70057F611 /* Comment List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6399719727F465D70057F611 /* Comment List.swift */; };
 		63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A08924285E625D00EE9BC0 /* Infinite Loader.swift */; };
 		63A09B69285F53E9004F0032 /* Error View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A09B68285F53E9004F0032 /* Error View.swift */; };
@@ -119,7 +118,6 @@
 		6363D60327EE20A200E34822 /* Post Expanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Expanded.swift"; sourceTree = "<group>"; };
 		6367F23C27F10E4E0074C36F /* Post Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Parser.swift"; sourceTree = "<group>"; };
 		6367F23E27F10E580074C36F /* Comment Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Parser.swift"; sourceTree = "<group>"; };
-		6367F24027F10E660074C36F /* Shared Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared Parser.swift"; sourceTree = "<group>"; };
 		6399719727F465D70057F611 /* Comment List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment List.swift"; sourceTree = "<group>"; };
 		63A08924285E625D00EE9BC0 /* Infinite Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Infinite Loader.swift"; sourceTree = "<group>"; };
 		63A09B68285F53E9004F0032 /* Error View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error View.swift"; sourceTree = "<group>"; };
@@ -440,7 +438,6 @@
 			children = (
 				6367F23C27F10E4E0074C36F /* Post Parser.swift */,
 				6367F23E27F10E580074C36F /* Comment Parser.swift */,
-				6367F24027F10E660074C36F /* Shared Parser.swift */,
 				631D432227F3A6B200A60775 /* JSON Null.swift */,
 			);
 			path = "Server Response Parsing";
@@ -653,7 +650,6 @@
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
-				6367F24127F10E660074C36F /* Shared Parser.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
 				63ABCE0E27F894060047A7D0 /* User View.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,

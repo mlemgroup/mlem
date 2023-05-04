@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftyJSON
 
 @main
 struct MlemApp: App
@@ -15,6 +16,28 @@ struct MlemApp: App
         WindowGroup
         {
             ContentView()
+                .task(priority: .background)
+                {
+                    let demoPostResponse: String = AppConstants.demoPostResponse
+
+                    if let dataFromString = demoPostResponse.data(using: .utf8, allowLossyConversion: false)
+                    {
+                        do
+                        {
+                            let parsedJSON: JSON = try JSON(data: dataFromString)
+
+                            print("Parsed JSON: \(parsedJSON.debugDescription)")
+
+                            let parsedDemoPosts = await parsePosts(postJSON: parsedJSON)
+
+                            print("Parsed demo posts: \(parsedDemoPosts)")
+                        }
+                        catch let decodingError as NSError
+                        {
+                            print("Failed whil decoding JSON: \(decodingError)")
+                        }
+                    }
+                }
         }
     }
 }

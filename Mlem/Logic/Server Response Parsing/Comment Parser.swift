@@ -6,3 +6,11 @@
 //
 
 import Foundation
+import SwiftyJSON
+
+/*
+func parseComments(commentData: JSON) -> [Comment]
+{
+    
+}
+*/

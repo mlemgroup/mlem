@@ -50,73 +50,26 @@ struct Post: Codable, Identifiable, Equatable
     // let creatorActorID: String
     // let creatorLocal: Bool
     let creatorName: String
-    let creatorPreferredUsername: JSONNull?
+    let creatorPreferredUsername: String?
     let creatorPublished: String
-    let creatorAvatar: JSONNull?
-    let creatorTags: CreatorTags?
-    let creatorCommunityTags: JSONNull?
+    let creatorAvatar: String?
+    // let creatorTags: CreatorTags?
+    // let creatorCommunityTags: JSONNull?
     // let banned, bannedFromCommunity: Bool
     let communityActorID: String
     // let communityLocal: Bool
     let communityName: String
-    let communityIcon: JSONNull?
+    let communityIcon: String?
     let communityRemoved, communityDeleted, communityNsfw, communityHideFromAll: Bool?
     let numberOfComments, score, upvotes, downvotes: Int
     let hotRank, hotRankActive: Int?
     let newestActivityTime: String?
-    let userID, myVote, subscribed, read: JSONNull?
-    let saved: JSONNull?
-
-    enum CodingKeys: String, CodingKey
-    {
-        case id, name, url, body
-        case creatorID = "creator_id"
-        case communityID = "community_id"
-        case removed, locked, updated, deleted, nsfw, stickied, featured
-        case published
-        case embedTitle
-        case embedDescription
-        case embedHTML
-        case thumbnailURL = "thumbnail_url"
-        case apID = "ap_id"
-        case local
-        // case creatorActorID
-        // case creatorLocal
-        case creatorName = "creator_name"
-        case creatorPreferredUsername
-        case creatorPublished = "creator_published"
-        case creatorAvatar
-        case creatorTags
-        case creatorCommunityTags
-        // case banned
-        // case bannedFromCommunity
-        case communityActorID = "community_actor_id"
-        // case communityLocal
-        case communityName = "community_name"
-        case communityIcon
-        case communityRemoved
-        case communityDeleted
-        case communityNsfw
-        case communityHideFromAll
-        case numberOfComments = "number_of_comments"
-        case score, upvotes, downvotes
-        case hotRank
-        case hotRankActive
-        case newestActivityTime
-        case userID
-        case myVote
-        case subscribed, read, saved
-    }
+    //let userID: Int?
+    //let myVote: Bool?
+    //let subscribed: Bool?
+    //let read: Bool?
+    //let saved: Bool?
 }
-
-// MARK: - CreatorTags
-
-struct CreatorTags: Codable
-{
-    let pronouns: String
-}
-
-// MARK: Můj kód
 
 class PostData_Decoded: ObservableObject
 {
