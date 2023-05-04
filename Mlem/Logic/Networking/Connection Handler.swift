@@ -25,10 +25,6 @@ class LemmyConnectionHandler: ObservableObject
         APIAddress = URL(string: "wss://www.\(instanceAddress)/api/v1/ws")!
     }
 
-    /* func printOwnName() {
-         print("The function printed: \(APIAddress)")
-     } */
-
     func sendCommand(maintainOpenConnection: Bool, command: String)
     {
         // TODO: Maybe remove this
