@@ -20,23 +20,9 @@ struct MlemApp: App
                 {
                     let demoPostResponse: String = AppConstants.demoPostResponse
 
-                    if let dataFromString = demoPostResponse.data(using: .utf8, allowLossyConversion: false)
-                    {
-                        do
-                        {
-                            let parsedJSON: JSON = try JSON(data: dataFromString)
-
-                            print("Parsed JSON: \(parsedJSON.debugDescription)")
-
-                            let parsedDemoPosts = await parsePosts(postJSON: parsedJSON)
-
-                            print("Parsed demo posts: \(parsedDemoPosts)")
-                        }
-                        catch let decodingError as NSError
-                        {
-                            print("Failed whil decoding JSON: \(decodingError)")
-                        }
-                    }
+                    let parsedPosts = try! await parsePosts(postResponse: demoPostResponse)
+                    
+                    print("A debug result: \(String(describing: parsedPosts.randomElement()?.embedHTML))")
                 }
         }
     }

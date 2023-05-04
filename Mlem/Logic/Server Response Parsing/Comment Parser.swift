@@ -8,9 +8,10 @@
 import Foundation
 import SwiftyJSON
 
-/*
-func parseComments(commentData: JSON) -> [Comment]
+func parseComments(commentResponse: String) -> [Comment]
 {
+    let commentTracker: [Comment] = .init()
     
+    return commentTracker
 }
-*/
+
