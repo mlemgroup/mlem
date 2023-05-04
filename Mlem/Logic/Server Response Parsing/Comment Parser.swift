@@ -25,7 +25,7 @@ func parseComments(commentResponse: String) async throws -> [Comment]
                 postID: comment["post_id"].intValue,
                 creatorID: comment["creator_id"].intValue,
                 postName: comment["post_name"].stringValue,
-                parentID: comment["parent_id"].intValue,
+                parentID: comment["parent_id"].int,
                 content: comment["content"].stringValue,
                 removed: comment["removed"].boolValue,
                 read: comment["read"].boolValue,

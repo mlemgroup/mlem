@@ -48,5 +48,5 @@ struct Comment: Codable, Identifiable
     let subscribed: Bool?
     //let userID, myVote: JSONNull?
 
-    let children: [Comment]?
+    var children: [Comment]?
 }

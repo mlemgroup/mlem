@@ -16,7 +16,7 @@ struct Comment_Item: View
 
     var body: some View
     {
-        VStack(alignment: .leading, spacing: 8)
+        VStack(alignment: .leading, spacing: 10)
         {
             Text(.init(comment.content)) // .init makes the comments have Markdown support
                 .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -50,11 +50,14 @@ struct Comment_Item: View
                 }
                 .foregroundColor(.secondary)
             }
+            
+            Divider()
         }
         .dynamicTypeSize(.small)
         .sheet(isPresented: $isShowingReplySheet)
         {
             Reply_View(parentComment: comment)
         }
+        .padding(.horizontal)
     }
 }
