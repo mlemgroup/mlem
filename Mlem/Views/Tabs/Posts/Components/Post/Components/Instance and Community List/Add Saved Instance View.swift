@@ -41,7 +41,7 @@ struct AddSavedInstanceView: View
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(.secondary)
+                        .background(Color(uiColor: .secondarySystemBackground))
                     }
                     else
                     {
@@ -65,7 +65,7 @@ struct AddSavedInstanceView: View
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(.red)
+                    .background(.pink)
                     .foregroundColor(.black)
                 }
             }
