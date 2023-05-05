@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftyJSON
 
 @main
-struct MlemApp: App {
-
-    var body: some Scene {
-        WindowGroup {
+struct MlemApp: App
+{
+    var body: some Scene
+    {
+        WindowGroup
+        {
             ContentView()
         }
     }

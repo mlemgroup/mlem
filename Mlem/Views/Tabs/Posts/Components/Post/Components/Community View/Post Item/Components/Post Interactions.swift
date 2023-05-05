@@ -7,17 +7,19 @@
 
 import SwiftUI
 
-struct Post_Interactions: View {
-    
-    let score: Int
-    
-    let urlToPost: String
-    
-    var body: some View {
-        HStack(alignment: .center) {
-            Upvote_Button(score: score)
-            Downvote_Button()
-            Share_Button(urlToShare: urlToPost)
+struct PostInteractions: View
+{
+    @State var score: Int
+
+    @State var urlToPost: URL
+
+    var body: some View
+    {
+        HStack(alignment: .center)
+        {
+            UpvoteButton(score: score)
+            DownvoteButton()
+            ShareButton(urlToShare: urlToPost)
         }
     }
 }

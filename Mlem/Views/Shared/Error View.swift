@@ -7,21 +7,18 @@
 
 import SwiftUI
 
-struct Error_View: View {
+struct ErrorView: View
+{
     let errorMessage: String
-    
-    var body: some View {
-        VStack(spacing: 10) {
+
+    var body: some View
+    {
+        VStack(spacing: 10)
+        {
             Image(systemName: "xmark.circle")
             Text(errorMessage)
         }
         .padding()
         .foregroundColor(.secondary)
-    }
-}
-
-struct Error_View_Previews: PreviewProvider {
-    static var previews: some View {
-        Error_View(errorMessage: "Test error message")
     }
 }

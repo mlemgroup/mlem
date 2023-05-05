@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct Share_Button: View {
-    let urlToShare: String
-    
-    var body: some View {
+struct ShareButton: View
+{
+    @State var urlToShare: URL
+
+    var body: some View
+    {
         Button(action: {
-            showShareSheet(URLasString: urlToShare)
+            showShareSheet(URLtoShare: urlToShare)
             print("Shared")
         }, label: {
             Image(systemName: "square.and.arrow.up")

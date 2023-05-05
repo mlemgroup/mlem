@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-func showShareSheet(URLasString: String) -> Void {
-    let urlToShare: URL = URL(string: URLasString)!
-    let activityVC = UIActivityViewController(activityItems: [urlToShare], applicationActivities: nil)
+func showShareSheet(URLtoShare: URL)
+{
+    let activityVC = UIActivityViewController(activityItems: [URLtoShare], applicationActivities: nil)
     UIApplication.shared.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
 }

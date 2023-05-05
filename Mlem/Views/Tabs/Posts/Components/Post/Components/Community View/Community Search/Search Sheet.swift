@@ -7,21 +7,25 @@
 
 import SwiftUI
 
-struct Search_Sheet: View {    
+struct SearchSheet: View
+{
     @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Button {
+
+    var body: some View
+    {
+        VStack(alignment: .leading, spacing: 8)
+        {
+            HStack
+            {
+                Button
+                {
                     dismiss()
                 } label: {
                     Text("Cancel")
                 }
-                
             }
-            Search_Field()
-            
+            SearchField()
+
             Spacer()
         }
         .padding()

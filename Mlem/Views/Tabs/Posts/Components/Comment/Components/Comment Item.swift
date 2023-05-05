@@ -7,55 +7,57 @@
 
 import SwiftUI
 
-struct Comment_Item: View {
-    let author: String?
+struct CommentItem: View
+{
     
-    let commentBody: String
-    
-    let commentID: Int // Here to make replying possible. DON'T REMOVE
-    
-    let urlToComment: String
-    
-    let score: Int
-    
-    let timePosted: String
-    
+    @State var comment: Comment
+
     @State private var isShowingReplySheet = false
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(.init(commentBody)) // .init makes the comments have Markdown support
+
+    var body: some View
+    {
+        VStack(alignment: .leading, spacing: 10)
+        {
+            Text(.init(comment.content)) // .init makes the comments have Markdown support
                 .frame(maxWidth: .infinity, alignment: .topLeading)
-            
-            HStack(spacing: 12) {
-                HStack {
-                    Upvote_Button(score: score)
-                    Downvote_Button()
+
+            HStack(spacing: 12)
+            {
+                HStack
+                {
+                    UpvoteButton(score: comment.score)
+                    DownvoteButton()
                 }
-                HStack(spacing: 4) {
+                HStack(spacing: 4)
+                {
                     Button(action: {
-                        print("Would reply to comment ID \(commentID)")
+                        print("Would reply to comment ID \(comment.id)")
                         isShowingReplySheet.toggle()
                     }, label: {
                         Image(systemName: "arrowshape.turn.up.backward")
                     })
-                    
+
                     Text("Reply")
                         .foregroundColor(.accentColor)
                 }
-                
+
                 Spacer()
-                
-                HStack {
-                    Text(getTimeIntervalFromNow(originalTime: timePosted))
-                    User_Profile_Link(userName: author!)
+
+                HStack
+                {
+                    Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: comment.published)))
+                    UserProfileLink(userName: comment.creatorName)
                 }
                 .foregroundColor(.secondary)
             }
+            
+            Divider()
         }
         .dynamicTypeSize(.small)
-        .sheet(isPresented: $isShowingReplySheet) {
-            Reply_View(parentCommentID: commentID, parentCommentText: commentBody, parentCommentAuthor: author ?? ("ERR: Unable to decode username"))
+        .sheet(isPresented: $isShowingReplySheet)
+        {
+            ReplyView(parentComment: comment)
         }
+        .padding(.horizontal)
     }
 }

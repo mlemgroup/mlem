@@ -7,14 +7,10 @@
 
 import SwiftUI
 
-struct Comment_List: View {
-    var body: some View {
+struct CommentList: View
+{
+    var body: some View
+    {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct Comment_List_Previews: PreviewProvider {
-    static var previews: some View {
-        Comment_List()
     }
 }

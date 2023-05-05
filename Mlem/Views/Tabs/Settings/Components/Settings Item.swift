@@ -7,19 +7,22 @@
 
 import SwiftUI
 
-struct Settings_Item: View {
-    let settingPictureSystemName: String
-    let settingPictureColor: Color
-    
-    let settingName: String
-    
-    @State var isTicked: Bool
-    
-    var body: some View {
-        HStack {
+struct SettingsItem: View
+{
+    @State var settingPictureSystemName: String
+    @State var settingPictureColor: Color
+
+    @State var settingName: String
+
+    @Binding var isTicked: Bool
+
+    var body: some View
+    {
+        HStack
+        {
             Image(systemName: settingPictureSystemName)
                 .foregroundColor(settingPictureColor)
-            
+
             Toggle(settingName, isOn: $isTicked)
         }
     }

@@ -7,39 +7,33 @@
 
 import SwiftUI
 
-struct Instance_and_Community_List_View: View {
-    var body: some View {
-        NavigationView {
-            List {
-                Section(header: Text("hexbear")) {
+struct InstanceCommunityListView: View
+{
+    var body: some View
+    {
+        NavigationView
+        {
+            List
+            {
+                Section(header: Text("hexbear"))
+                {
                     NavigationLink("All Communities", destination: {
-                        Community_View(communityName: "All", communityID: nil)
+                        CommunityView(instanceAddress: "hexbear.net", communityName: "All", communityID: nil)
                     })
-                    
+
                     NavigationLink("ChapoTrapHouse", destination: {
-                        Community_View(communityName: "chapotraphouse", communityID: nil)
+                        CommunityView(instanceAddress: "hexbear.net", communityName: "chapotraphouse", communityID: nil)
                     })
-                    NavigationLink("Piracy", destination: {
-                        
-                    })
-                    NavigationLink("News", destination: {
-                        
-                    })
+                    NavigationLink("Piracy", destination: {})
+                    NavigationLink("News", destination: {})
                 }
-                
-                Section(header: Text("lemmy.ml")) {
-                    NavigationLink("All Communities", destination: {
-                        
-                    })
-                    NavigationLink("Linux", destination: {
-                        
-                    })
-                    NavigationLink("Worldnews", destination: {
-                        
-                    })
-                    NavigationLink("LatAm", destination: {
-                        
-                    })
+
+                Section(header: Text("lemmy.ml"))
+                {
+                    NavigationLink("All Communities", destination: {})
+                    NavigationLink("Linux", destination: {})
+                    NavigationLink("Worldnews", destination: {})
+                    NavigationLink("LatAm", destination: {})
                 }
             }
             .navigationTitle("Communities")

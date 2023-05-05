@@ -7,44 +7,61 @@
 
 import SwiftUI
 
-class IsInSpecificCommunity: ObservableObject {
+class IsInSpecificCommunity: ObservableObject
+{
     @Published var isInSpecificCommunity: Bool = false
 }
 
-struct Community_View: View {
+struct CommunityView: View
+{
+    @EnvironmentObject var appState: AppState
+    
+    @StateObject var postTracker: PostTracker = .init()
+    
+    @State var instanceAddress: String
+    
     let communityName: String
     let communityID: Int?
-    
+
     @Environment(\.isPresented) var isPresented
-    
-    @ObservedObject var connectionHandler = LemmyConnectionHandler(instanceAddress: "hexbear.net")
-    @ObservedObject var posts = PostData_Decoded()
-    
+
     @StateObject var isInSpecificCommunity = IsInSpecificCommunity()
     
     @State private var isShowingSearch: Bool = false
-    
-    var body: some View {
-        ScrollView {
-            if posts.isLoading {
-                Loading_View(whatIsLoading: .posts)
-            } else {
-                LazyVStack {
-                    ForEach(posts.decodedPosts, id: \.id) { post in
-                        if post == posts.decodedPosts.last {
-                            
-                        }
-                        NavigationLink(destination: Post_Expanded(post: post)) {
-                            Post_Item(postName: post.name, author: post.creatorName, communityName: post.communityName, communityID: post.communityID, url: post.url, postBody: post.body, imageThumbnail: post.thumbnailURL, urlToPost: post.apID, score: post.score, numberOfComments: post.numberOfComments, timePosted: post.published, isStickied: post.stickied!, isExpanded: false)
+
+    var body: some View
+    {
+        ScrollView
+        {
+            if postTracker.posts.isEmpty
+            {
+                LoadingView(whatIsLoading: .posts)
+            }
+            else
+            {
+                LazyVStack
+                {
+                    ForEach(postTracker.posts)
+                    { post in
+                        /*if post == posts.decodedPosts.last
+                        {}*/
+                        NavigationLink(destination: PostExpanded(post: post))
+                        {
+                            PostItem(post: post, isExpanded: false)
                                 .environmentObject(isInSpecificCommunity)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
-                        .task {
-                            if post == posts.decodedPosts.last {
-                                if communityID == nil {
-                                    loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts)
-                                } else {
-                                    loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts, communityName: communityName)
+                        .task
+                        {
+                            if post == postTracker.posts.last
+                            {
+                                if communityID == nil
+                                {
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState)
+                                }
+                                else
+                                {
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
                                 }
                             }
                         }
@@ -54,35 +71,39 @@ struct Community_View: View {
         }
         .background(Color.secondarySystemBackground)
         .navigationTitle(communityName)
-        .onAppear {
-            if communityID == nil { // If the community ID is nil, it means we want to pull all posts from that instance
-                loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts)
+        .task(priority: .userInitiated, {
+            
+            if postTracker.posts.isEmpty
+            {
+                print("Post tracker is empty")
+                appState.currentActiveInstance = instanceAddress
                 
-            } else { // If there is a community ID, we want to pull posts from that specific community instead
-                loadInfiniteFeed(connectionHandler: connectionHandler, tracker: posts, communityName: communityName) 
+                if let communityID
+                {
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
+                }
+                else
+                {
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState)
+                }
             }
-        }
-        .onReceive(connectionHandler.$receivedData) { receivedData in
-            if receivedData != "" {
-                print("Finna decode posts")
-                posts.decodeRawPostJSON(postRawData: receivedData)
-                
-                // posts.pushPostsToStorage(decodedPostData: posts.decodedPosts)
+            else
+            {
+                print("Post tracker is not empty")
             }
-        }
-        .onDisappear {
-            posts.latestLoadedPageCommunity = 0
-        }
-        .toolbar {
-            Button {
+        })
+        .toolbar
+        {
+            Button
+            {
                 isShowingSearch.toggle()
             } label: {
                 Image(systemName: "magnifyingglass")
             }
-
         }
-        .sheet(isPresented: $isShowingSearch) {
-            Search_Sheet()
+        .sheet(isPresented: $isShowingSearch)
+        {
+            SearchSheet()
         }
     }
 }

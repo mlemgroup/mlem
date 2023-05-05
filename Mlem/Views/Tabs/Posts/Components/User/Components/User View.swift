@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct User_View: View {
-    
-    let userName: String
-    
-    var body: some View {
+struct UserView: View
+{
+    @State var userName: String
+
+    var body: some View
+    {
         Text("Page for \(userName)")
     }
 }

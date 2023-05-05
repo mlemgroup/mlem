@@ -8,14 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct User: Identifiable {
+struct User: Identifiable
+{
     let id = UUID()
-    
+
     let link: URL
-    
+
     let profilePage: URL
     let name: String
     let avatar: Image
-    
+
     let dateJoined: Date
 }
