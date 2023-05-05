@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, communityName: String? = nil) async
+func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddress: URL, communityName: String? = nil) async
 {
     var loadingCommand: String = ""
     
@@ -33,7 +33,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, communityNam
     
     print("Will try to send command: \(loadingCommand)")
     
-    let apiResponse = try! await sendCommand(maintainOpenConnection: false, instanceAddress: appState.currentActiveInstance, command: loadingCommand)
+    let apiResponse = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: loadingCommand)
     
     print("API Response: \(apiResponse)")
     

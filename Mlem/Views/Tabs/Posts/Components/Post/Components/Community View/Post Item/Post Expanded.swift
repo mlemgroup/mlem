@@ -12,17 +12,19 @@ struct PostExpanded: View
     @EnvironmentObject var appState: AppState
     
     @StateObject var commentTracker: CommentTracker = .init()
+    
+    @State var instanceAddress: URL
 
     @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
-
+    
     let post: Post
 
     var body: some View
     {
         ScrollView
         {
-            PostItem(post: post, isExpanded: true)
+            PostItem(post: post, isExpanded: true, instanceAddress: instanceAddress)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything
@@ -53,7 +55,7 @@ struct PostExpanded: View
                             let commentCommand: String = """
     {"op": "GetPost", "data": { "id": \(post.id) }}
     """
-                            let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: appState.currentActiveInstance, command: commentCommand)
+                            let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: commentCommand)
                             
                             print("Comment response: \(commentResponse)")
                             

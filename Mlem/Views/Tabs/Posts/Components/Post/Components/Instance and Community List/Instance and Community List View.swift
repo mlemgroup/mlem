@@ -9,35 +9,76 @@ import SwiftUI
 
 struct InstanceCommunityListView: View
 {
+    @EnvironmentObject var communitiesTracker: SavedCommunityTracker
+
+    @State private var isShowingInstanceAdditionSheet: Bool = false
+
     var body: some View
     {
         NavigationView
         {
-            List
+            VStack
             {
-                Section(header: Text("hexbear"))
+                if !communitiesTracker.savedCommunities.isEmpty
                 {
-                    NavigationLink("All Communities", destination: {
-                        CommunityView(instanceAddress: "hexbear.net", communityName: "All", communityID: nil)
-                    })
-
-                    NavigationLink("ChapoTrapHouse", destination: {
-                        CommunityView(instanceAddress: "hexbear.net", communityName: "chapotraphouse", communityID: nil)
-                    })
-                    NavigationLink("Piracy", destination: {})
-                    NavigationLink("News", destination: {})
+                    List
+                    {
+                        ForEach(communitiesTracker.savedCommunities)
+                        { savedCommunity in
+                            NavigationLink
+                            {
+                                if !savedCommunity.communityName.isEmpty
+                                {
+                                    CommunityView(instanceAddress: savedCommunity.instanceLink, communityName: savedCommunity.communityName, communityID: nil)
+                                }
+                                else
+                                {
+                                    CommunityView(instanceAddress: savedCommunity.instanceLink, communityName: nil, communityID: nil)
+                                }
+                            } label: {
+                                HStack(alignment: .center)
+                                {
+                                    if savedCommunity.communityName.isEmpty
+                                    {
+                                        Text("All Communities")
+                                    }
+                                    else
+                                    {
+                                        Text(savedCommunity.communityName)
+                                    }
+                                    Spacer()
+                                    Text(savedCommunity.instanceLink.host!)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                    }
                 }
-
-                Section(header: Text("lemmy.ml"))
+                else
                 {
-                    NavigationLink("All Communities", destination: {})
-                    NavigationLink("Linux", destination: {})
-                    NavigationLink("Worldnews", destination: {})
-                    NavigationLink("LatAm", destination: {})
+                    VStack(alignment: .center, spacing: 15) {
+                        Text("You have no saved communities")
+                    }
+                    .foregroundColor(.secondary)
                 }
             }
             .navigationTitle("Communities")
-            .onAppear()
+            .toolbar
+            {
+                ToolbarItem(placement: .navigationBarTrailing)
+                {
+                    Button
+                    {
+                        isShowingInstanceAdditionSheet.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $isShowingInstanceAdditionSheet)
+            {
+                AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
+            }
         }
     }
 }

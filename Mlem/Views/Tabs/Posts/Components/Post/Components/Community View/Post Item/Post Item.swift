@@ -7,6 +7,7 @@
 
 import QuickLook
 import SwiftUI
+import CachedAsyncImage
 
 struct PostItem: View
 {
@@ -16,6 +17,8 @@ struct PostItem: View
     @State var post: Post
 
     @State var isExpanded: Bool
+    
+    @State var instanceAddress: URL
     
     @State private var isShowingSafari: Bool = false
 
@@ -37,7 +40,7 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity.isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(instanceAddress: appState.currentActiveInstance, communityName: post.communityName, communityID: post.communityID))
+                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
                                     {
                                         Text(post.communityName)
                                     }
@@ -72,7 +75,7 @@ struct PostItem: View
                 {
                     if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
                     {
-                        AsyncImage(url: postURL)
+                        CachedAsyncImage(url: postURL)
                         { image in
                             image
                                 .resizable()

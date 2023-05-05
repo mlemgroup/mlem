@@ -13,13 +13,13 @@ enum ConnectionError: Error
     case failedToEncodeAddress, receivedInvalidResponseFormat
 }
 
-func sendCommand(maintainOpenConnection: Bool, instanceAddress: String, command: String) async throws -> String
+func sendCommand(maintainOpenConnection: Bool, instanceAddress: URL, command: String) async throws -> String
 {
-    guard let finalInstanceAddress = URL(string: "wss://www.\(instanceAddress)/api/v1/ws") else { throw ConnectionError.failedToEncodeAddress }
-
+    print("Instance address: \(instanceAddress)")
+    
     let session = URLSession(configuration: .default)
 
-    let task: URLSessionWebSocketTask = session.webSocketTask(with: finalInstanceAddress)
+    let task: URLSessionWebSocketTask = session.webSocketTask(with: instanceAddress)
 
     let finalCommand = URLSessionWebSocketTask.Message.string(command)
     

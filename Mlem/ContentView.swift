@@ -9,10 +9,7 @@ import CoreData
 import SwiftUI
 
 struct ContentView: View
-{
-    
-    @StateObject var appState: AppState = AppState()
-    
+{    
     var body: some View
     {
         TabView
@@ -20,16 +17,18 @@ struct ContentView: View
             InstanceCommunityListView()
                 .tabItem
                 {
-                    Image(systemName: "text.bubble")
-                    Text("Posts")
+                    Label("Posts", systemImage: "text.bubble")
                 }
-                .environmentObject(appState)
+            
+            LoggedInUserPage()
+                .tabItem {
+                    Label("User", systemImage: "person.fill")
+                }
             
             SettingsView()
                 .tabItem
                 {
-                    Image(systemName: "gear")
-                    Text("Settings")
+                    Label("Settings", systemImage: "gear")
                 }
         }
         .onAppear
