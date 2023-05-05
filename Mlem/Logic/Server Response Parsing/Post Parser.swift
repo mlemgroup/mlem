@@ -25,7 +25,7 @@ func parsePosts(postResponse: String) async throws -> [Post]
             let newPost: Post = Post(
                 id: post["id"].intValue,
                 name: post["name"].stringValue,
-                url: post["url"].stringValue,
+                url: post["url"].url,
                 body: post["body"].stringValue,
                 creatorID: post["creator_id"].intValue,
                 communityID: post["community_id"].intValue,

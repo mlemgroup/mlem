@@ -18,14 +18,14 @@ struct Post: Codable, Identifiable, Equatable
 
     let id: Int
     let name: String
-    let url: String?
+    var url: URL?
     let body: String?
     let creatorID: Int
     let communityID: Int
     let removed, locked: Bool?
     let published: String
     let updated: String?
-    let deleted, nsfw, stickied, featured: Bool?
+    let deleted, nsfw, stickied, featured: Bool
     let embedTitle, embedDescription, embedHTML: String?
     let thumbnailURL: String?
     let apID: String

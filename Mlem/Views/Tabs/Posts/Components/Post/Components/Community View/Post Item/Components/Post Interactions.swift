@@ -11,7 +11,7 @@ struct Post_Interactions: View
 {
     let score: Int
 
-    let urlToPost: String
+    let urlToPost: URL
 
     var body: some View
     {

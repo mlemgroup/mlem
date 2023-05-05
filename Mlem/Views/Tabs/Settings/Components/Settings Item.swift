@@ -9,12 +9,12 @@ import SwiftUI
 
 struct Settings_Item: View
 {
-    let settingPictureSystemName: String
-    let settingPictureColor: Color
+    @State var settingPictureSystemName: String
+    @State var settingPictureColor: Color
 
-    let settingName: String
+    @State var settingName: String
 
-    @State var isTicked: Bool
+    @Binding var isTicked: Bool
 
     var body: some View
     {
