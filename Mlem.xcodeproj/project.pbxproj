@@ -69,6 +69,7 @@
 		63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */; };
 		63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B32A052E5400A18C5D /* Logged in User Page.swift */; };
 		63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 63F0C7B62A052F5000A18C5D /* CachedAsyncImage */; };
+		63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,7 @@
 		63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decode Data from File.swift"; sourceTree = "<group>"; };
 		63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Create Empty File.swift"; sourceTree = "<group>"; };
 		63F0C7B32A052E5400A18C5D /* Logged in User Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logged in User Page.swift"; sourceTree = "<group>"; };
+		63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Add Saved Instance View.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				6332FDCE27EFDD2E0009A98A /* Instance and Community List View.swift */,
+				63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */,
 			);
 			path = "Instance and Community List";
 			sourceTree = "<group>";
@@ -749,6 +752,7 @@
 				6332FDCF27EFDD2E0009A98A /* Instance and Community List View.swift in Sources */,
 				6332FDCA27EFD6B70009A98A /* Post Interactions.swift in Sources */,
 				6386E0422A04F6C2006B3C1D /* In-App Safari.swift in Sources */,
+				63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -917,6 +921,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -948,6 +953,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

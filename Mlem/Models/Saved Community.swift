@@ -12,5 +12,5 @@ struct SavedCommunity: Identifiable, Codable, Equatable
     var id: UUID = UUID()
     
     let instanceLink: String
-    let communityName: String?
+    let communityName: String
 }

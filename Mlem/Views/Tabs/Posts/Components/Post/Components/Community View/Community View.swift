@@ -20,7 +20,7 @@ struct CommunityView: View
     
     @State var instanceAddress: String
     
-    let communityName: String
+    let communityName: String?
     let communityID: Int?
 
     @Environment(\.isPresented) var isPresented
@@ -70,7 +70,7 @@ struct CommunityView: View
             }
         }
         .background(Color.secondarySystemBackground)
-        .navigationTitle(communityName)
+        .navigationTitle(communityName ?? instanceAddress)
         .task(priority: .userInitiated, {
             
             if postTracker.posts.isEmpty
@@ -78,14 +78,8 @@ struct CommunityView: View
                 print("Post tracker is empty")
                 appState.currentActiveInstance = instanceAddress
                 
-                if let communityID
-                {
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
-                }
-                else
-                {
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState)
-                }
+                await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
+                
             }
             else
             {

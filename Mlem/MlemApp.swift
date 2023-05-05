@@ -20,6 +20,7 @@ struct MlemApp: App
         {
             ContentView()
                 .environmentObject(appState)
+                .environmentObject(communitiesTracker)
                 .onChange(of: communitiesTracker.savedCommunities)
                 { newValue in
                     do

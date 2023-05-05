@@ -9,35 +9,61 @@ import SwiftUI
 
 struct InstanceCommunityListView: View
 {
+    
+    @EnvironmentObject var communitiesTracker: SavedCommunityTracker
+    
+    @State private var isShowingInstanceAdditionSheet: Bool = false
+    
     var body: some View
     {
         NavigationView
         {
             List
             {
-                Section(header: Text("hexbear"))
-                {
-                    NavigationLink("All Communities", destination: {
-                        CommunityView(instanceAddress: "hexbear.net", communityName: "All", communityID: nil)
-                    })
+                ForEach(communitiesTracker.savedCommunities)
+                { savedCommunity in
+                    NavigationLink {
+                        if !savedCommunity.communityName.isEmpty
+                        {
+                            CommunityView(instanceAddress: savedCommunity.instanceLink, communityName: savedCommunity.communityName, communityID: nil)
+                        }
+                        else
+                        {
+                            CommunityView(instanceAddress: savedCommunity.instanceLink, communityName: nil, communityID: nil)
+                        }
+                    } label: {
+                        HStack(alignment: .center)
+                        {
+                            if savedCommunity.communityName.isEmpty
+                            {
+                                Text("All Communities")
+                            }
+                            else
+                            {
+                                Text(savedCommunity.communityName)
+                            }
+                            Spacer()
+                            Text(savedCommunity.instanceLink)
+                                .foregroundColor(.secondary)
+                        }
+                    }
 
-                    NavigationLink("ChapoTrapHouse", destination: {
-                        CommunityView(instanceAddress: "hexbear.net", communityName: "chapotraphouse", communityID: nil)
-                    })
-                    NavigationLink("Piracy", destination: {})
-                    NavigationLink("News", destination: {})
-                }
-
-                Section(header: Text("lemmy.ml"))
-                {
-                    NavigationLink("All Communities", destination: {})
-                    NavigationLink("Linux", destination: {})
-                    NavigationLink("Worldnews", destination: {})
-                    NavigationLink("LatAm", destination: {})
                 }
             }
             .navigationTitle("Communities")
-            .onAppear()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        isShowingInstanceAdditionSheet.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
+            }
+            .sheet(isPresented: $isShowingInstanceAdditionSheet) {
+                AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
+            }
         }
     }
 }
