@@ -18,6 +18,8 @@ struct PostItem: View
 
     @State var isExpanded: Bool
     
+    @State var instanceAddress: URL
+    
     @State private var isShowingSafari: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
@@ -38,7 +40,7 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity.isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(instanceAddress: appState.currentActiveInstance, communityName: post.communityName, communityID: post.communityID))
+                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
                                     {
                                         Text(post.communityName)
                                     }

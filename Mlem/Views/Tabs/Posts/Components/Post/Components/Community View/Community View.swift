@@ -18,7 +18,7 @@ struct CommunityView: View
     
     @StateObject var postTracker: PostTracker = .init()
     
-    @State var instanceAddress: String
+    @State var instanceAddress: URL
     
     let communityName: String?
     let communityID: Int?
@@ -45,9 +45,9 @@ struct CommunityView: View
                     { post in
                         /*if post == posts.decodedPosts.last
                         {}*/
-                        NavigationLink(destination: PostExpanded(post: post))
+                        NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, post: post))
                         {
-                            PostItem(post: post, isExpanded: false)
+                            PostItem(post: post, isExpanded: false, instanceAddress: instanceAddress)
                                 .environmentObject(isInSpecificCommunity)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
@@ -57,11 +57,11 @@ struct CommunityView: View
                             {
                                 if communityID == nil
                                 {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState)
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress)
                                 }
                                 else
                                 {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, communityName: communityName)
                                 }
                             }
                         }
@@ -70,15 +70,14 @@ struct CommunityView: View
             }
         }
         .background(Color.secondarySystemBackground)
-        .navigationTitle(communityName ?? instanceAddress)
+        .navigationTitle(communityName ?? instanceAddress.host!)
         .task(priority: .userInitiated, {
             
             if postTracker.posts.isEmpty
             {
                 print("Post tracker is empty")
-                appState.currentActiveInstance = instanceAddress
                 
-                await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
+                await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, communityName: communityName)
                 
             }
             else

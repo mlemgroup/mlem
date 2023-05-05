@@ -72,6 +72,7 @@
 		63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */; };
 		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
 		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
+		63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +160,7 @@
 		63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Add Saved Instance View.swift"; sourceTree = "<group>"; };
 		63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionWebSocketTask - Send Ping.swift"; sourceTree = "<group>"; };
 		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
+		63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Correct URL to Endpoint.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 				63A08924285E625D00EE9BC0 /* Infinite Loader.swift */,
 				63DF71EB2A02986B002AC14E /* Send Command.swift */,
 				63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */,
+				63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 				63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
+				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,
 				632E8EEA27EE63F4007E8D75 /* Share.swift in Sources */,
 				6332FDC327EFCB5F0009A98A /* Color.swift in Sources */,
