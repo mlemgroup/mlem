@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Post_Expanded: View
+struct PostExpanded: View
 {
     @EnvironmentObject var appState: AppState
     
@@ -22,7 +22,7 @@ struct Post_Expanded: View
     {
         ScrollView
         {
-            Post_Item(post: post, isExpanded: true)
+            PostItem(post: post, isExpanded: true)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything
@@ -45,7 +45,7 @@ struct Post_Expanded: View
             { // Otherwise we'll have to do some actual work
                 if commentTracker.isLoading
                 {
-                    Loading_View(whatIsLoading: .comments)
+                    LoadingView(whatIsLoading: .comments)
                         .task(priority: .userInitiated)
                         {
                             commentTracker.isLoading = true
@@ -67,7 +67,7 @@ struct Post_Expanded: View
                     LazyVStack(alignment: .leading, spacing: 15) {
                         ForEach(commentTracker.comments)
                         { comment in
-                            Comment_Item(comment: comment)
+                            CommentItem(comment: comment)
                         }
                     }
                 }

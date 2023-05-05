@@ -17,7 +17,7 @@ struct ContentView: View
     {
         TabView
         {
-            Posts_View()
+            InstanceCommunityListView()
                 .tabItem
                 {
                     Image(systemName: "text.bubble")
@@ -25,7 +25,7 @@ struct ContentView: View
                 }
                 .environmentObject(appState)
             
-            Settings_View()
+            SettingsView()
                 .tabItem
                 {
                     Image(systemName: "gear")

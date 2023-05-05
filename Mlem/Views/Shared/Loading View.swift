@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Loading_View: View
+struct LoadingView: View
 {
     enum PossibleThingsToLoad
     {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Settings_Item: View
+struct SettingsItem: View
 {
     @State var settingPictureSystemName: String
     @State var settingPictureColor: Color

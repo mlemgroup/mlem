@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct User_View: View
+struct UserView: View
 {
-    let userName: String
+    @State var userName: String
 
     var body: some View
     {

@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct Upvote_Button: View
+struct UpvoteButton: View
 {
-    let score: Int
+    @State var score: Int
 
     var body: some View
     {

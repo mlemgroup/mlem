@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Reply_View: View
+struct ReplyView: View
 {
     @State var parentComment: Comment
 

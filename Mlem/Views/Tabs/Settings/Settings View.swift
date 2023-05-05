@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Settings_View: View
+struct SettingsView: View
 {
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
 
@@ -23,7 +23,7 @@ struct Settings_View: View
             {
                 Section("Posts")
                 {
-                    Settings_Item(
+                    SettingsItem(
                         settingPictureSystemName: "globe",
                         settingPictureColor: .blue,
                         settingName: "Show Website Icons",
@@ -48,7 +48,7 @@ struct Settings_View: View
 
                 Section(header: Text("About me"), footer: Text("Made thanks to my perfect Elča ❤️"))
                 {
-                    NavigationLink("Hello", destination: About_Me())
+                    NavigationLink("Hello", destination: AboutMe())
                     Link("Twitter", destination: URL(string: "https://twitter.com/davidbures")!)
                 }
             }

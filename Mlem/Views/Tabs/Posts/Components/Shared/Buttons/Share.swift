@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct Share_Button: View
+struct ShareButton: View
 {
-    let urlToShare: URL
+    @State var urlToShare: URL
 
     var body: some View
     {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Comment_Item: View
+struct CommentItem: View
 {
     
     @State var comment: Comment
@@ -25,8 +25,8 @@ struct Comment_Item: View
             {
                 HStack
                 {
-                    Upvote_Button(score: comment.score)
-                    Downvote_Button()
+                    UpvoteButton(score: comment.score)
+                    DownvoteButton()
                 }
                 HStack(spacing: 4)
                 {
@@ -46,7 +46,7 @@ struct Comment_Item: View
                 HStack
                 {
                     Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: comment.published)))
-                    User_Profile_Link(userName: comment.creatorName)
+                    UserProfileLink(userName: comment.creatorName)
                 }
                 .foregroundColor(.secondary)
             }
@@ -56,7 +56,7 @@ struct Comment_Item: View
         .dynamicTypeSize(.small)
         .sheet(isPresented: $isShowingReplySheet)
         {
-            Reply_View(parentComment: comment)
+            ReplyView(parentComment: comment)
         }
         .padding(.horizontal)
     }

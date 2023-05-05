@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Downvote_Button: View
+struct DownvoteButton: View
 {
     var body: some View
     {
@@ -19,10 +19,3 @@ struct Downvote_Button: View
     }
 }
 
-struct Downvote_Button_Previews: PreviewProvider
-{
-    static var previews: some View
-    {
-        Downvote_Button()
-    }
-}

@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct User_Profile_Link: View
+struct UserProfileLink: View
 {
     @State var userName: String
 
     var body: some View
     {
-        NavigationLink(destination: User_View(userName: userName))
+        NavigationLink(destination: UserView(userName: userName))
         {
             Text(userName)
         }

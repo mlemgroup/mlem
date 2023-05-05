@@ -12,7 +12,7 @@ class IsInSpecificCommunity: ObservableObject
     @Published var isInSpecificCommunity: Bool = false
 }
 
-struct Community_View: View
+struct CommunityView: View
 {
     @EnvironmentObject var appState: AppState
     
@@ -35,7 +35,7 @@ struct Community_View: View
         {
             if postTracker.posts.isEmpty
             {
-                Loading_View(whatIsLoading: .posts)
+                LoadingView(whatIsLoading: .posts)
             }
             else
             {
@@ -45,9 +45,9 @@ struct Community_View: View
                     { post in
                         /*if post == posts.decodedPosts.last
                         {}*/
-                        NavigationLink(destination: Post_Expanded(post: post))
+                        NavigationLink(destination: PostExpanded(post: post))
                         {
-                            Post_Item(post: post, isExpanded: false)
+                            PostItem(post: post, isExpanded: false)
                                 .environmentObject(isInSpecificCommunity)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
@@ -103,7 +103,7 @@ struct Community_View: View
         }
         .sheet(isPresented: $isShowingSearch)
         {
-            Search_Sheet()
+            SearchSheet()
         }
     }
 }

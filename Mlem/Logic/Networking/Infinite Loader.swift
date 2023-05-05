@@ -29,7 +29,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, communityNam
         """
     }
 
-    print("Page counter value: \(await postTracker.page)")
+    print("Page counter value: \(postTracker.page)")
     
     print("Will try to send command: \(loadingCommand)")
     

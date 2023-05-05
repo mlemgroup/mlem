@@ -7,9 +7,8 @@
 
 import QuickLook
 import SwiftUI
-import BetterSafariView
 
-struct Post_Item: View
+struct PostItem: View
 {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
@@ -38,7 +37,7 @@ struct Post_Item: View
                             {
                                 if !isInSpecificCommunity.isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: Community_View(instanceAddress: appState.currentActiveInstance, communityName: post.communityName, communityID: post.communityID))
+                                    NavigationLink(destination: CommunityView(instanceAddress: appState.currentActiveInstance, communityName: post.communityName, communityID: post.communityID))
                                     {
                                         Text(post.communityName)
                                     }
@@ -49,7 +48,7 @@ struct Post_Item: View
 
                                 if post.stickied
                                 {
-                                    Stickied_Tag()
+                                    StickiedTag()
                                 }
                             }
 
@@ -64,7 +63,7 @@ struct Post_Item: View
 
                         if post.stickied
                         {
-                            Stickied_Tag()
+                            StickiedTag()
                         }
                     }
                 }
@@ -120,11 +119,11 @@ struct Post_Item: View
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center)
                 {
-                    Upvote_Button(score: post.score)
-                    Downvote_Button()
+                    UpvoteButton(score: post.score)
+                    DownvoteButton()
                     if let postURL = post.url
                     {
-                        Share_Button(urlToShare: postURL)
+                        ShareButton(urlToShare: postURL)
                     }
                 }
 
@@ -150,7 +149,7 @@ struct Post_Item: View
                         Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: post.published)))
                     }
 
-                    User_Profile_Link(userName: post.creatorName)
+                    UserProfileLink(userName: post.creatorName)
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)

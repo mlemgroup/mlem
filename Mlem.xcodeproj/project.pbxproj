@@ -35,7 +35,6 @@
 		6363D5DB27EE196A00E34822 /* MlemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5DA27EE196A00E34822 /* MlemTests.swift */; };
 		6363D5E527EE196A00E34822 /* MlemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5E427EE196A00E34822 /* MlemUITests.swift */; };
 		6363D5E727EE196A00E34822 /* MlemUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5E627EE196A00E34822 /* MlemUITestsLaunchTests.swift */; };
-		6363D5F827EE1BCF00E34822 /* Posts View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5F727EE1BCF00E34822 /* Posts View.swift */; };
 		6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5F927EE1BDA00E34822 /* Settings View.swift */; };
 		6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60127EE1EC400E34822 /* Comment Item.swift */; };
 		6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60327EE20A200E34822 /* Post Expanded.swift */; };
@@ -61,6 +60,7 @@
 		63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFDA227F5AEB700FEBE9C /* Reply View.swift */; };
 		63EBBF1B27FCAC3B00E70532 /* Search Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EBBF1A27FCAC3B00E70532 /* Search Sheet.swift */; };
 		63EBBF1E27FCAE0C00E70532 /* Search Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EBBF1D27FCAE0C00E70532 /* Search Field.swift */; };
+		63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,7 +113,6 @@
 		6363D5E027EE196A00E34822 /* MlemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5E427EE196A00E34822 /* MlemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITests.swift; sourceTree = "<group>"; };
 		6363D5E627EE196A00E34822 /* MlemUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		6363D5F727EE1BCF00E34822 /* Posts View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Posts View.swift"; sourceTree = "<group>"; };
 		6363D5F927EE1BDA00E34822 /* Settings View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings View.swift"; sourceTree = "<group>"; };
 		6363D60127EE1EC400E34822 /* Comment Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Item.swift"; sourceTree = "<group>"; };
 		6363D60327EE20A200E34822 /* Post Expanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Expanded.swift"; sourceTree = "<group>"; };
@@ -138,6 +137,7 @@
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
 		63EBBF1A27FCAC3B00E70532 /* Search Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Search Sheet.swift"; sourceTree = "<group>"; };
 		63EBBF1D27FCAE0C00E70532 /* Search Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Search Field.swift"; sourceTree = "<group>"; };
+		63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting Options.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,6 +324,7 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
+				63F0C7A02A05198600A18C5D /* Enums */,
 				630D753C27F65E44006E60C9 /* Info.plist */,
 				6332FDC127EFCB530009A98A /* Extensions */,
 				6318EDC527EE4E0B00BFCAE8 /* Logic */,
@@ -379,7 +380,6 @@
 			children = (
 				6363D5F627EE1BBC00E34822 /* Settings */,
 				6363D5F527EE1BB700E34822 /* Posts */,
-				6363D5F727EE1BCF00E34822 /* Posts View.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -507,6 +507,14 @@
 				63EBBF1D27FCAE0C00E70532 /* Search Field.swift */,
 			);
 			path = "Community Search";
+			sourceTree = "<group>";
+		};
+		63F0C7A02A05198600A18C5D /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -648,6 +656,7 @@
 			files = (
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
+				63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */,
 				6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */,
 				63EBBF1B27FCAC3B00E70532 /* Search Sheet.swift in Sources */,
 				6332FDDA27F083590009A98A /* About Me.swift in Sources */,
@@ -667,7 +676,6 @@
 				6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */,
 				63DF71EC2A02986B002AC14E /* Send Command.swift in Sources */,
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
-				6363D5F827EE1BCF00E34822 /* Posts View.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,

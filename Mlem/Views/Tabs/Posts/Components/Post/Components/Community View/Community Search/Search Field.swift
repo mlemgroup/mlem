@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Search_Field: View
+struct SearchField: View
 {
     @State private var searchContent: String = ""
 

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Post_Info: View
+struct PostInfo: View
 {
     let iconToTextSpacing: CGFloat = 2
 

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Search_Sheet: View
+struct SearchSheet: View
 {
     @Environment(\.dismiss) var dismiss
 
@@ -24,7 +24,7 @@ struct Search_Sheet: View
                     Text("Cancel")
                 }
             }
-            Search_Field()
+            SearchField()
 
             Spacer()
         }

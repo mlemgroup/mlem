@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Stickied_Tag: View
+struct StickiedTag: View
 {
     var body: some View
     {
@@ -20,13 +20,5 @@ struct Stickied_Tag: View
         }
         .dynamicTypeSize(.xSmall)
         .foregroundColor(.mint)
-    }
-}
-
-struct Stickied_Tag_Previews: PreviewProvider
-{
-    static var previews: some View
-    {
-        Stickied_Tag()
     }
 }
