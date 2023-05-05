@@ -49,6 +49,7 @@ struct WebsiteIconComplex: View
                     Image(systemName: overridenWebsiteFaviconName)
                         .resizable()
                         .frame(width: 25, height: 25, alignment: .center)
+                        .aspectRatio(contentMode: .fit)
                         .foregroundColor(.secondary)
                         .onAppear
                         {
@@ -60,9 +61,13 @@ struct WebsiteIconComplex: View
                             {
                                 overridenWebsiteFaviconName = "bird.fill"
                             }
-                            else if url.host!.contains("youtube")
+                            else if url.host!.contains(["youtube", "youtu.be"])
                             {
                                 overridenWebsiteFaviconName = "play.rectangle.fill"
+                            }
+                            else if url.host!.contains("wiki")
+                            {
+                                overridenWebsiteFaviconName = "book.closed.fill"
                             }
                         }
                 }
