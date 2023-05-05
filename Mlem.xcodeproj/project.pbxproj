@@ -70,6 +70,8 @@
 		63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B32A052E5400A18C5D /* Logged in User Page.swift */; };
 		63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 63F0C7B62A052F5000A18C5D /* CachedAsyncImage */; };
 		63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */; };
+		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
+		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,6 +157,8 @@
 		63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Create Empty File.swift"; sourceTree = "<group>"; };
 		63F0C7B32A052E5400A18C5D /* Logged in User Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logged in User Page.swift"; sourceTree = "<group>"; };
 		63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Add Saved Instance View.swift"; sourceTree = "<group>"; };
+		63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionWebSocketTask - Send Ping.swift"; sourceTree = "<group>"; };
+		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +203,7 @@
 			children = (
 				63A08924285E625D00EE9BC0 /* Infinite Loader.swift */,
 				63DF71EB2A02986B002AC14E /* Send Command.swift */,
+				63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -281,6 +286,7 @@
 				6386E0302A0427B6006B3C1D /* View - Conditional Modifier.swift */,
 				6386E0392A0455BC006B3C1D /* String - Contains Elements From Array.swift */,
 				6386E0462A050817006B3C1D /* Date - Parse ISO Date.swift */,
+				63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -724,6 +730,7 @@
 				6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */,
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63DF71EC2A02986B002AC14E /* Send Command.swift in Sources */,
+				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
 				63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
@@ -736,6 +743,7 @@
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
 				63EBBF1E27FCAE0C00E70532 /* Search Field.swift in Sources */,
 				6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */,
+				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				6386E0472A050817006B3C1D /* Date - Parse ISO Date.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,

@@ -15,8 +15,11 @@ enum ConnectionError: Error
 
 func sendCommand(maintainOpenConnection: Bool, instanceAddress: String, command: String) async throws -> String
 {
+    #warning("Hexbear uses v1 of the API, while all other Lemmy instances use v3. Hexbear is also the only instance that uses the www prefix, all other instances don't have www")
     guard let finalInstanceAddress = URL(string: "wss://www.\(instanceAddress)/api/v1/ws") else { throw ConnectionError.failedToEncodeAddress }
-
+    
+    print("Instance address: \(finalInstanceAddress)")
+    
     let session = URLSession(configuration: .default)
 
     let task: URLSessionWebSocketTask = session.webSocketTask(with: finalInstanceAddress)
