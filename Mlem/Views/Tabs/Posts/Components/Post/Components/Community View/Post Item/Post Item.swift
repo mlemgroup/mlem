@@ -5,18 +5,21 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
-import SwiftUI
 import QuickLook
+import SwiftUI
+import BetterSafariView
 
 struct Post_Item: View
 {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
-    
+
     @State var post: Post
-    
+
     @State var isExpanded: Bool
     
+    @State private var isShowingSafari: Bool = false
+
     let iconToTextSpacing: CGFloat = 2
 
     var body: some View
@@ -70,7 +73,8 @@ struct Post_Item: View
                 {
                     if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
                     {
-                        AsyncImage(url: postURL) { image in
+                        AsyncImage(url: postURL)
+                        { image in
                             image
                                 .resizable()
                                 .frame(maxWidth: .infinity)
@@ -79,7 +83,6 @@ struct Post_Item: View
                         } placeholder: {
                             ProgressView()
                         }
-
                     }
                     else
                     {
@@ -93,7 +96,7 @@ struct Post_Item: View
                         }
                     }
                 }
-                
+
                 if let postBody = post.body
                 {
                     if !post.stickied
@@ -102,7 +105,6 @@ struct Post_Item: View
                         {
                             Text(.init(postBody))
                                 .font(.subheadline)
-
                         }
                         else
                         {

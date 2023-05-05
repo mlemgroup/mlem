@@ -73,15 +73,23 @@ struct Community_View: View
         .navigationTitle(communityName)
         .task(priority: .userInitiated, {
             
-            appState.currentActiveInstance = instanceAddress
-            
-            if let communityID
+            if postTracker.posts.isEmpty
             {
-                await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
+                print("Post tracker is empty")
+                appState.currentActiveInstance = instanceAddress
+                
+                if let communityID
+                {
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, communityName: communityName)
+                }
+                else
+                {
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState)
+                }
             }
             else
             {
-                await loadInfiniteFeed(postTracker: postTracker, appState: appState)
+                print("Post tracker is not empty")
             }
         })
         .toolbar

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import BetterSafariView
 
 struct WebsiteIconComplex: View
 {
@@ -16,6 +17,8 @@ struct WebsiteIconComplex: View
     @State var url: URL
 
     @State private var overridenWebsiteFaviconName: String = "globe"
+    
+    @State private var isShowingSafari: Bool = false
 
     var faviconURL: URL
     {
@@ -82,6 +85,16 @@ struct WebsiteIconComplex: View
                 
                 Spacer()
             }
+        }
+        .onTapGesture {
+            print("Bool before: \(isShowingSafari)")
+            print("Tapped")
+            self.isShowingSafari = true
+            print("Bool after: \(isShowingSafari)")
+        }
+        .sheet(isPresented: $isShowingSafari) {
+            InAppSafari(urlToOpen: url)
+                .edgesIgnoringSafeArea(.bottom)
         }
     }
 }
