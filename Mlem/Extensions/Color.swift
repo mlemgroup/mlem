@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
-public extension Color
+extension Color
 {
     // This is here to give me dynamic light/dark system colors for view backgrounds
     // Maybe add more colors down the line if needed?

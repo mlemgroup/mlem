@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Error_View: View
+struct ErrorView: View
 {
     let errorMessage: String
 
@@ -20,13 +20,5 @@ struct Error_View: View
         }
         .padding()
         .foregroundColor(.secondary)
-    }
-}
-
-struct Error_View_Previews: PreviewProvider
-{
-    static var previews: some View
-    {
-        Error_View(errorMessage: "Test error message")
     }
 }
