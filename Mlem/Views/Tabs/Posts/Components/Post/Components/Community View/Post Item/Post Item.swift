@@ -7,6 +7,7 @@
 
 import QuickLook
 import SwiftUI
+import CachedAsyncImage
 
 struct PostItem: View
 {
@@ -72,7 +73,7 @@ struct PostItem: View
                 {
                     if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
                     {
-                        AsyncImage(url: postURL)
+                        CachedAsyncImage(url: postURL)
                         { image in
                             image
                                 .resizable()

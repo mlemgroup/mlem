@@ -65,6 +65,10 @@
 		63F0C7A82A0522FC00A18C5D /* Saved Community Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A72A0522FC00A18C5D /* Saved Community Tracker.swift */; };
 		63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7AA2A05233C00A18C5D /* Write Data to File.swift */; };
 		63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7AC2A05235400A18C5D /* Encode for Saving.swift */; };
+		63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */; };
+		63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */; };
+		63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B32A052E5400A18C5D /* Logged in User Page.swift */; };
+		63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 63F0C7B62A052F5000A18C5D /* CachedAsyncImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +150,9 @@
 		63F0C7A72A0522FC00A18C5D /* Saved Community Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Community Tracker.swift"; sourceTree = "<group>"; };
 		63F0C7AA2A05233C00A18C5D /* Write Data to File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Write Data to File.swift"; sourceTree = "<group>"; };
 		63F0C7AC2A05235400A18C5D /* Encode for Saving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encode for Saving.swift"; sourceTree = "<group>"; };
+		63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decode Data from File.swift"; sourceTree = "<group>"; };
+		63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Create Empty File.swift"; sourceTree = "<group>"; };
+		63F0C7B32A052E5400A18C5D /* Logged in User Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logged in User Page.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63DF71EF2A02988A002AC14E /* SwiftyJSON in Frameworks */,
+				63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +397,7 @@
 		6363D5F427EE1BAE00E34822 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				63F0C7B22A052E3300A18C5D /* Logged In User */,
 				6363D5F627EE1BBC00E34822 /* Settings */,
 				6363D5F527EE1BB700E34822 /* Posts */,
 			);
@@ -533,8 +542,18 @@
 			children = (
 				63F0C7AA2A05233C00A18C5D /* Write Data to File.swift */,
 				63F0C7AC2A05235400A18C5D /* Encode for Saving.swift */,
+				63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */,
+				63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */,
 			);
 			path = "File Management";
+			sourceTree = "<group>";
+		};
+		63F0C7B22A052E3300A18C5D /* Logged In User */ = {
+			isa = PBXGroup;
+			children = (
+				63F0C7B32A052E5400A18C5D /* Logged in User Page.swift */,
+			);
+			path = "Logged In User";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -555,6 +574,7 @@
 			name = Mlem;
 			packageProductDependencies = (
 				63DF71EE2A02988A002AC14E /* SwiftyJSON */,
+				63F0C7B62A052F5000A18C5D /* CachedAsyncImage */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -630,6 +650,7 @@
 			mainGroup = 6363D5B827EE196700E34822;
 			packageReferences = (
 				63DF71ED2A02988A002AC14E /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -675,6 +696,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63F0C7A82A0522FC00A18C5D /* Saved Community Tracker.swift in Sources */,
+				63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */,
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */,
@@ -686,6 +708,7 @@
 				63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */,
 				6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
+				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
 				6332FDCC27EFD6F90009A98A /* Post Info.swift in Sources */,
 				6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */,
 				6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */,
@@ -699,6 +722,7 @@
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63DF71EC2A02986B002AC14E /* Send Command.swift in Sources */,
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
+				63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,
@@ -1063,6 +1087,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1070,6 +1102,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63DF71ED2A02988A002AC14E /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		63F0C7B62A052F5000A18C5D /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

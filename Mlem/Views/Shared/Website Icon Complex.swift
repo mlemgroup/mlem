@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CachedAsyncImage
 
 struct WebsiteIconComplex: View
 {
@@ -32,7 +33,7 @@ struct WebsiteIconComplex: View
             {
                 if shouldShowWebsiteFavicons
                 {
-                    AsyncImage(url: faviconURL)
+                    CachedAsyncImage(url: faviconURL)
                     { image in
                         image
                             .resizable()

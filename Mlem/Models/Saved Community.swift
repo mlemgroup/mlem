@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SavedCommunity: Identifiable, Codable
+struct SavedCommunity: Identifiable, Codable, Equatable
 {
     var id: UUID = UUID()
     

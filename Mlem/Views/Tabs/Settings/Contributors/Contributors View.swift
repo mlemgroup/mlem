@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct ContributorsView: View
 {
@@ -16,7 +17,7 @@ struct ContributorsView: View
     {
         VStack(alignment: .center, spacing: 10)
         {
-            AsyncImage(url: contributor.avatarLink)
+            CachedAsyncImage(url: contributor.avatarLink)
             { image in
                 image
                     .resizable()
