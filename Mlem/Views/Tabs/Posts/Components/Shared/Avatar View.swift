@@ -23,6 +23,10 @@ struct AvatarView: View {
                     .resizable()
                     .frame(width: overridenSize, height: overridenSize, alignment: .center)
                     .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(Color(uiColor: .secondarySystemBackground), style: StrokeStyle(lineWidth: 2))
+                    )
             }
             else if phase.error != nil
             { /// Failure
