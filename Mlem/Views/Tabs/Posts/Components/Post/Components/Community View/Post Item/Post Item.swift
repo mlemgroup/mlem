@@ -42,7 +42,21 @@ struct PostItem: View
                                 {
                                     NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
                                     {
-                                        Text(post.communityName)
+                                        HStack(alignment: .center, spacing: 10) {
+                                            if let creatorAvatarURL = post.creatorAvatar
+                                            {
+                                                CachedAsyncImage(url: creatorAvatarURL) { image in
+                                                    image
+                                                        .resizable()
+                                                        .frame(width: 20, height: 20, alignment: .center)
+                                                        .clipShape(Circle())
+                                                } placeholder: {
+                                                    ProgressView()
+                                                }
+
+                                            }
+                                            Text(post.communityName)
+                                        }
                                     }
                                     .buttonStyle(.plain)
                                     .font(.footnote)
