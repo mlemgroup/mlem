@@ -17,7 +17,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
         print("Will be in COMMUNITY scope")
         
         loadingCommand = """
-        {"op": "GetPosts", "data": {"type_": "Community", "sort": "Hot", "page": \(postTracker.page), "community_name": "\(communityName)"}}
+        {"op": "GetPosts", "data": {"type_": "All", "sort": "Hot", "page": \(postTracker.page), "community_name": "\(communityName)"}}
         """
     }
     else
@@ -37,7 +37,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
     
     print("API Response: \(apiResponse)")
     
-    let parsedNewPosts: [Post] = try! await parsePosts(postResponse: apiResponse)
+    let parsedNewPosts: [Post] = try! await parsePosts(postResponse: apiResponse, instanceLink: instanceAddress)
     
     DispatchQueue.main.async {
         for post in parsedNewPosts

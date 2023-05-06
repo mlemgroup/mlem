@@ -51,6 +51,17 @@ struct InstanceCommunityListView: View
                                         .foregroundColor(.secondary)
                                 }
                             }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    let indexOfSavedCommunitytoRemove: Int = communitiesTracker.savedCommunities.firstIndex(where: { $0.id == savedCommunity.id })!
+                                    
+                                    communitiesTracker.savedCommunities.remove(at: indexOfSavedCommunitytoRemove)
+                                    
+                                } label: {
+                                    Label("Remove", systemImage: "trash")
+                                }
+                                .tint(.red)
+                            }
                         }
                     }
                 }

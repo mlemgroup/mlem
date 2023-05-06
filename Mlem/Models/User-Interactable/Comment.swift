@@ -13,40 +13,41 @@ struct Comment: Codable, Identifiable
     let id: Int
     let postID: Int
     let creatorID: Int
-    let postName: String
+    // let postName: String
     let parentID: Int?
     let content: String
     let removed: Bool
-    let read: Bool
+    //let read: Bool
     let published: String
     let deleted: Bool?
     let updated: String?
-    let apID: String
+    let apID: URL
     let local: Bool
     let communityID: Int
-    let communityActorID: String
+    let communityActorID: URL
     let communityLocal: Bool
     let communityName: String
-    let communityIcon: String?
+    let communityIcon: URL?
     let communityHideFromAll: Bool
-    let banned: Bool
-    let bannedFromCommunity: Bool?
-    let creatorActorID: String
+    let creatorBanned: Bool
+    //let creatorBannedFromCommunity: Bool?
+    let creatorActorID: URL
     let creatorLocal: Bool
     let creatorName: String
     let creatorPreferredUsername: String?
     let creatorPublished: String
-    let creatorAvatar: String?
+    let creatorAvatar: URL?
     //let creatorTags: CreatorTags_Comment?
     //let creatorCommunityTags: JSONNull?
     let score: Int
     let upvotes: Int
     let downvotes: Int
-    let hotRank: Int
-    let hotRankActive: Int?
+    //let hotRank: Int
+    //let hotRankActive: Int?
     let saved: Bool?
-    let subscribed: Bool?
+    //let subscribed: Bool?
     //let userID, myVote: JSONNull?
 
+    let childCount: Int?
     var children: [Comment]?
 }

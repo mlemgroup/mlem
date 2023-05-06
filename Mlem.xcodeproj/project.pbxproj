@@ -54,6 +54,7 @@
 		63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A08924285E625D00EE9BC0 /* Infinite Loader.swift */; };
 		63A09B69285F53E9004F0032 /* Error View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A09B68285F53E9004F0032 /* Error View.swift */; };
 		63ABCE0E27F894060047A7D0 /* User View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ABCE0D27F894060047A7D0 /* User View.swift */; };
+		63CE4E6C2A066EF200405271 /* User Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E6B2A066EF200405271 /* User Parser.swift */; };
 		63DF71EC2A02986B002AC14E /* Send Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71EB2A02986B002AC14E /* Send Command.swift */; };
 		63DF71EF2A02988A002AC14E /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 63DF71EE2A02988A002AC14E /* SwiftyJSON */; };
 		63DF71F12A02999C002AC14E /* App Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* App Constants.swift */; };
@@ -144,6 +145,7 @@
 		63A08924285E625D00EE9BC0 /* Infinite Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Infinite Loader.swift"; sourceTree = "<group>"; };
 		63A09B68285F53E9004F0032 /* Error View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error View.swift"; sourceTree = "<group>"; };
 		63ABCE0D27F894060047A7D0 /* User View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User View.swift"; sourceTree = "<group>"; };
+		63CE4E6B2A066EF200405271 /* User Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Parser.swift"; sourceTree = "<group>"; };
 		63DF71EB2A02986B002AC14E /* Send Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Send Command.swift"; sourceTree = "<group>"; };
 		63DF71F02A02999C002AC14E /* App Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Constants.swift"; sourceTree = "<group>"; };
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 			children = (
 				6367F23C27F10E4E0074C36F /* Post Parser.swift */,
 				6367F23E27F10E580074C36F /* Comment Parser.swift */,
+				63CE4E6B2A066EF200405271 /* User Parser.swift */,
 				631891152A03B0AC00EDA8D1 /* Parse JSON.swift */,
 			);
 			path = "Server Response Parsing";
@@ -762,6 +765,7 @@
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
 				6399719827F465D70057F611 /* Comment List.swift in Sources */,
 				6332FDCF27EFDD2E0009A98A /* Instance and Community List View.swift in Sources */,
+				63CE4E6C2A066EF200405271 /* User Parser.swift in Sources */,
 				6332FDCA27EFD6B70009A98A /* Post Interactions.swift in Sources */,
 				6386E0422A04F6C2006B3C1D /* In-App Safari.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */,
@@ -927,6 +931,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -959,6 +965,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mlem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
