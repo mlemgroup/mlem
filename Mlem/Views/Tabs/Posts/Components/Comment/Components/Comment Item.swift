@@ -46,7 +46,7 @@ struct CommentItem: View
                 HStack
                 {
                     Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: comment.published)))
-                    UserProfileLink(userName: comment.author.name)
+                    UserProfileLink(user: comment.author)
                 }
                 .foregroundColor(.secondary)
             }

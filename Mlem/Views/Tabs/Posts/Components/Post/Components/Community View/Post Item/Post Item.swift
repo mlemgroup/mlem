@@ -161,7 +161,7 @@ struct PostItem: View
                         Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: post.published)))
                     }
 
-                    UserProfileLink(userName: post.author.name)
+                    UserProfileLink(user: post.author )
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)
