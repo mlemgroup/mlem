@@ -20,26 +20,21 @@ struct Post: Codable, Identifiable, Equatable
     let name: String
     var url: URL?
     let body: String?
-    let creatorID: Int
     let communityID: Int
     let removed, locked: Bool?
     let published: String
     let updated: String?
-    let deleted, nsfw, stickied, featured: Bool
+    let deleted, nsfw, stickied: Bool
     let embedTitle, embedDescription, embedHTML: String?
     let thumbnailURL: String?
     let apID: String
     let local: Bool
     // let creatorActorID: String
     // let creatorLocal: Bool
-    let creatorName: String
-    let creatorPreferredUsername: String?
     let creatorPublished: String
-    let creatorAvatar: URL?
     // let creatorTags: CreatorTags?
     // let creatorCommunityTags: JSONNull?
     // let banned, bannedFromCommunity: Bool
-    let communityActorID: URL
     // let communityLocal: Bool
     let communityName: String
     let communityIcon: URL?
@@ -55,4 +50,6 @@ struct Post: Codable, Identifiable, Equatable
     //let subscribed: Bool?
     //let read: Bool?
     //let saved: Bool?
+    
+    let author: User
 }

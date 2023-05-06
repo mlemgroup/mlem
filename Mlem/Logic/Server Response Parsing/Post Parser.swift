@@ -31,7 +31,6 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     name: post["name"].stringValue,
                     url: post["url"].url,
                     body: post["body"].stringValue,
-                    creatorID: post["creator_id"].intValue,
                     communityID: post["community_id"].intValue,
                     removed: post["removed"].boolValue,
                     locked: post["locked"].boolValue,
@@ -40,18 +39,13 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     deleted: post["deleted"].boolValue,
                     nsfw: post["nsfw"].boolValue,
                     stickied: post["stickied"].boolValue,
-                    featured: post["features"].boolValue,
                     embedTitle: post["embed_title"].string,
                     embedDescription: post["embed_description"].string,
                     embedHTML: post["embed_html"].stringValue,
                     thumbnailURL: post["thumbnail_url"].stringValue,
                     apID: post["ap_id"].stringValue,
                     local: post["local"].boolValue,
-                    creatorName: post["creator_name"].stringValue,
-                    creatorPreferredUsername: post["creator_preferred_username"].stringValue,
                     creatorPublished: post["creator_published"].stringValue,
-                    creatorAvatar: post["creator_avatar"].url,
-                    communityActorID: post["community_actor_id"].url!,
                     communityName: post["community_name"].stringValue,
                     communityIcon: post["community_icon"].url,
                     communityRemoved: post["community_removed"].boolValue,
@@ -64,7 +58,24 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     downvotes: post["downvotes"].intValue,
                     hotRank: post["hot_rank"].intValue,
                     hotRankActive: post["hot_rank_active"].intValue,
-                    newestActivityTime: post["newest_activity_time"].stringValue
+                    newestActivityTime: post["newest_activity_time"].stringValue,
+                    
+                    author: User(
+                        id: post["creator_id"].intValue,
+                        name: post["creator_name"].stringValue,
+                        displayName: post["creator_preferred_username"].stringValue,
+                        avatarLink: post["creator_avatar"].url,
+                        bannerLink: nil,
+                        inboxLink: nil,
+                        bio: nil,
+                        banned: post["banned"].boolValue,
+                        actorID: post["creator_actor_id"].url!,
+                        local: post["creator_local"].boolValue,
+                        deleted: false,
+                        admin: false,
+                        bot: false,
+                        onInstanceID: 0
+                    )
                 )
                 
                 print("New post: \(newPost)")
@@ -85,7 +96,6 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     name: post["post", "name"].stringValue,
                     url: post["post", "url"].url,
                     body: post["post", "body"].stringValue,
-                    creatorID: post["creator", "id"].intValue,
                     communityID: post["community", "id"].intValue,
                     removed: post["post", "removed"].boolValue,
                     locked: post["post", "locked"].boolValue,
@@ -93,19 +103,14 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     updated: post["post", "updated"].string,
                     deleted: post["post", "deleted"].boolValue,
                     nsfw: post["post", "nsfw"].boolValue,
-                    stickied: post["post", "featured_community"].boolValue,
-                    featured: post["post", "featured_local"].boolValue,
+                    stickied: post["post", "featured_local"].boolValue,
                     embedTitle: post["post", "embed_title"].string,
                     embedDescription: post["post", "embed_description"].string,
                     embedHTML: nil,
                     thumbnailURL: post["post", "thumbnail_url"].string,
                     apID: post["post", "ap_id"].stringValue,
                     local: post["post", "local"].boolValue,
-                    creatorName: post["creator", "name"].stringValue,
-                    creatorPreferredUsername: post["creator", "display_name"].string,
                     creatorPublished: post["creator", "published"].stringValue,
-                    creatorAvatar: post["creator", "avatar"].url,
-                    communityActorID: post["creator", "actor_id"].url!,
                     communityName: post["community", "name"].stringValue,
                     communityIcon: post["community", "icon"].url,
                     communityRemoved: post["community", "removed"].boolValue,
@@ -118,7 +123,24 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     downvotes: post["counts", "downvotes"].intValue,
                     hotRank: nil,
                     hotRankActive: nil,
-                    newestActivityTime: post["counts", "newest_comment_time"].stringValue
+                    newestActivityTime: post["counts", "newest_comment_time"].stringValue,
+                    
+                    author: User(
+                        id: post["creator", "id"].intValue,
+                        name: post["creator", "name"].stringValue,
+                        displayName: post["creator", "display_name"].string,
+                        avatarLink: post["creator", "avatar"].url,
+                        bannerLink: post["creator", "banner"].url,
+                        inboxLink: post["creator", "inbox_url"].url,
+                        bio: post["creator", "bio"].stringValue,
+                        banned: post["creator", "banned"].boolValue,
+                        actorID: post["creator", "actor_id"].url!,
+                        local: post["creator", "local"].boolValue,
+                        deleted: post["creator", "deleted"].boolValue,
+                        admin: post["creator", "admin"].boolValue,
+                        bot: post["creator", "bot_account"].boolValue,
+                        onInstanceID: post["creator", "instance_id"].intValue
+                    )
                 )
                 
                 print("New post: \(newPost)")

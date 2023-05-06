@@ -6,16 +6,29 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct UserProfileLink: View
 {
-    @State var userName: String
+    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    
+    @State var user: User
 
     var body: some View
     {
-        NavigationLink(destination: UserView(userName: userName))
+        NavigationLink(destination: UserView(user: user))
         {
-            Text(userName)
+            HStack(alignment: .center, spacing: 5) {
+                if shouldShowUserAvatars
+                {
+                    if let avatarLink = user.avatarLink
+                    {
+                        AvatarView(avatarLink: avatarLink)
+                    }
+                }
+                
+                Text(user.name)
+            }
         }
     }
 }

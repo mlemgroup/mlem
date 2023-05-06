@@ -11,6 +11,9 @@ import CachedAsyncImage
 
 struct PostItem: View
 {
+    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
 
@@ -42,7 +45,18 @@ struct PostItem: View
                                 {
                                     NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
                                     {
-                                        Text(post.communityName)
+                                        HStack(alignment: .center, spacing: 10)
+                                        {                                           
+                                            if shouldShowCommunityIcons
+                                            {
+                                                if let communityAvatarLink = post.communityIcon
+                                                {
+                                                    AvatarView(avatarLink: communityAvatarLink, overridenSize: 30)
+                                                }
+                                            }
+
+                                            Text(post.communityName)
+                                        }
                                     }
                                     .buttonStyle(.plain)
                                     .font(.footnote)
@@ -101,16 +115,19 @@ struct PostItem: View
 
                 if let postBody = post.body
                 {
-                    if !post.stickied
+                    if !postBody.isEmpty
                     {
-                        if !isExpanded
+                        if !post.stickied
                         {
-                            Text(.init(postBody))
-                                .font(.subheadline)
-                        }
-                        else
-                        {
-                            Text(.init(postBody))
+                            if !isExpanded
+                            {
+                                Text(.init(postBody))
+                                    .font(.subheadline)
+                            }
+                            else
+                            {
+                                Text(.init(postBody))
+                            }
                         }
                     }
                 }
@@ -152,13 +169,21 @@ struct PostItem: View
                         Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: post.published)))
                     }
 
-                    UserProfileLink(userName: post.creatorName)
+                    UserProfileLink(user: post.author )
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)
             }
             .padding(.horizontal)
-            .padding(.bottom)
+            .if(!isExpanded, transform: { viewProxy in
+                viewProxy
+                    .padding(.bottom)
+            })
+            
+            if isExpanded
+            {
+                Divider()
+            }
         }
         .background(Color(uiColor: .systemBackground))
     }

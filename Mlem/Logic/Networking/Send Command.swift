@@ -16,6 +16,7 @@ enum ConnectionError: Error
 func sendCommand(maintainOpenConnection: Bool, instanceAddress: URL, command: String) async throws -> String
 {
     print("Instance address: \(instanceAddress)")
+    print("Will send command \(command)")
     
     let session = URLSession(configuration: .default)
 

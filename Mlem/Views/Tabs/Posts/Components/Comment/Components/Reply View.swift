@@ -40,7 +40,7 @@ struct ReplyView: View
 
             VStack(alignment: .leading, spacing: 3)
             {
-                Text(parentComment.creatorName)
+                Text(parentComment.author.name)
                     .foregroundColor(.secondary)
                 Text(.init(parentComment.content))
                     .padding()
