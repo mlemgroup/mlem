@@ -55,6 +55,7 @@
 		63A09B69285F53E9004F0032 /* Error View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A09B68285F53E9004F0032 /* Error View.swift */; };
 		63ABCE0E27F894060047A7D0 /* User View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ABCE0D27F894060047A7D0 /* User View.swift */; };
 		63CE4E6C2A066EF200405271 /* User Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E6B2A066EF200405271 /* User Parser.swift */; };
+		63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E702A06B21B00405271 /* Avatar View.swift */; };
 		63DF71EC2A02986B002AC14E /* Send Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71EB2A02986B002AC14E /* Send Command.swift */; };
 		63DF71EF2A02988A002AC14E /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 63DF71EE2A02988A002AC14E /* SwiftyJSON */; };
 		63DF71F12A02999C002AC14E /* App Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* App Constants.swift */; };
@@ -146,6 +147,7 @@
 		63A09B68285F53E9004F0032 /* Error View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error View.swift"; sourceTree = "<group>"; };
 		63ABCE0D27F894060047A7D0 /* User View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User View.swift"; sourceTree = "<group>"; };
 		63CE4E6B2A066EF200405271 /* User Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Parser.swift"; sourceTree = "<group>"; };
+		63CE4E702A06B21B00405271 /* Avatar View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Avatar View.swift"; sourceTree = "<group>"; };
 		63DF71EB2A02986B002AC14E /* Send Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Send Command.swift"; sourceTree = "<group>"; };
 		63DF71F02A02999C002AC14E /* App Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Constants.swift"; sourceTree = "<group>"; };
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 			children = (
 				6322A5CE27F8628700135D4F /* Links */,
 				632E8EE427EE63BD007E8D75 /* Buttons */,
+				63CE4E702A06B21B00405271 /* Avatar View.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -439,8 +442,8 @@
 		6363D5FE27EE1E9600E34822 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				63ABCE0B27F893F00047A7D0 /* User */,
 				632E8EE327EE63B3007E8D75 /* Shared */,
+				63ABCE0B27F893F00047A7D0 /* User */,
 				6363D60027EE1EA800E34822 /* Comment */,
 				6363D5FF27EE1EA000E34822 /* Post */,
 			);
@@ -748,6 +751,7 @@
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
+				63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */,
 				63EBBF1E27FCAE0C00E70532 /* Search Field.swift in Sources */,
 				6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,

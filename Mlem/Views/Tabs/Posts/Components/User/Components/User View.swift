@@ -9,10 +9,10 @@ import SwiftUI
 
 struct UserView: View
 {
-    @State var userName: String
+    @State var user: User
 
     var body: some View
     {
-        Text("Page for \(userName)")
+        Text("Page for \(user.name)")
     }
 }

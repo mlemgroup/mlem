@@ -6,16 +6,24 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct UserProfileLink: View
 {
-    @State var userName: String
+    @State var user: User
 
     var body: some View
     {
-        NavigationLink(destination: UserView(userName: userName))
+        NavigationLink(destination: UserView(user: user))
         {
-            Text(userName)
+            HStack(alignment: .center, spacing: 5) {
+                if let avatarLink = user.avatarLink
+                {
+                    AvatarView(avatarLink: avatarLink)
+                }
+                
+                Text(user.name)
+            }
         }
     }
 }

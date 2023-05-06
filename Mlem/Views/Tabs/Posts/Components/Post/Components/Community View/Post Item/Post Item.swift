@@ -42,7 +42,13 @@ struct PostItem: View
                                 {
                                     NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
                                     {
-                                        Text(post.communityName)
+                                        HStack(alignment: .center, spacing: 10) {
+                                            if !post.local
+                                            {
+                                                Text("Not local")
+                                            }
+                                            Text(post.communityName)
+                                        }
                                     }
                                     .buttonStyle(.plain)
                                     .font(.footnote)
@@ -155,7 +161,7 @@ struct PostItem: View
                         Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: post.published)))
                     }
 
-                    UserProfileLink(userName: post.creatorName)
+                    UserProfileLink(user: post.author )
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)
