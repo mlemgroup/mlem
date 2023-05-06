@@ -14,8 +14,8 @@
             filePath = "Mlem/Logic/Time Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
             landmarkName = "getTimeIntervalFromNow(date:)"
             landmarkType = "9">
          </BreakpointContent>

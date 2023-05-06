@@ -9,10 +9,20 @@ import Foundation
 
 func convertResponseDateToDate(responseDate: String) -> Date
 {
+    var convertedDate: Date?
+    
     let dateFormatter: DateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
     
-    return dateFormatter.date(from: responseDate)!
+    convertedDate = dateFormatter.date(from: responseDate)
+    
+    if convertedDate == nil /// Sometimes, the API returns a different date format. If that happens, try the alternative formatter
+    {
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        convertedDate = dateFormatter.date(from: responseDate)
+    }
+    
+    return convertedDate!
 }
 
 func getTimeIntervalFromNow(date: Date) -> String
