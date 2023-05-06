@@ -52,9 +52,25 @@ struct PostExpanded: View
                         {
                             commentTracker.isLoading = true
                             
-                            let commentCommand: String = """
+                            var commentCommand: String = ""
+                            
+                            if instanceAddress.absoluteString.contains("v1")
+                            {
+                                print("Older API spec")
+                                
+                                commentCommand = """
     {"op": "GetPost", "data": { "id": \(post.id) }}
     """
+                            }
+                            else
+                            {
+                                print("Newer API spec")
+                                
+                                commentCommand = """
+{"op": "GetComments", "data": { "post_id": \(post.id) }}
+"""
+                            }
+                            
                             let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: commentCommand)
                             
                             print("Comment response: \(commentResponse)")
