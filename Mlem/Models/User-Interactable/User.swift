@@ -10,13 +10,26 @@ import SwiftUI
 
 struct User: Identifiable
 {
-    let id = UUID()
+    let id: Int
 
-    let link: URL
-
-    let profilePage: URL
     let name: String
-    let avatar: Image
-
-    let dateJoined: Date
+    let displayName: String?
+    
+    let avatarLink: URL?
+    let bannerLink: URL?
+    let inboxLink: URL?
+    
+    let bio: String?
+    
+    let banned: Bool
+    
+    let actorID: URL
+    
+    let local: Bool
+    let deleted: Bool
+    let admin: Bool
+    
+    let bot: Bool
+    
+    let onInstanceID: Int
 }

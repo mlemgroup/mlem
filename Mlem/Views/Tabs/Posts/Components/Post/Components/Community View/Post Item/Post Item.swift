@@ -43,17 +43,9 @@ struct PostItem: View
                                     NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
                                     {
                                         HStack(alignment: .center, spacing: 10) {
-                                            if let creatorAvatarURL = post.creatorAvatar
+                                            if !post.local
                                             {
-                                                CachedAsyncImage(url: creatorAvatarURL) { image in
-                                                    image
-                                                        .resizable()
-                                                        .frame(width: 20, height: 20, alignment: .center)
-                                                        .clipShape(Circle())
-                                                } placeholder: {
-                                                    ProgressView()
-                                                }
-
+                                                Text("Not local")
                                             }
                                             Text(post.communityName)
                                         }
