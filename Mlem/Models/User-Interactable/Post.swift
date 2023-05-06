@@ -24,7 +24,7 @@ struct Post: Codable, Identifiable, Equatable
     let removed, locked: Bool?
     let published: String
     let updated: String?
-    let deleted, nsfw, stickied, featured: Bool
+    let deleted, nsfw, stickied: Bool
     let embedTitle, embedDescription, embedHTML: String?
     let thumbnailURL: String?
     let apID: String
