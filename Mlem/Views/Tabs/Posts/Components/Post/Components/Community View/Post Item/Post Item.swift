@@ -101,16 +101,19 @@ struct PostItem: View
 
                 if let postBody = post.body
                 {
-                    if !post.stickied
+                    if !postBody.isEmpty
                     {
-                        if !isExpanded
+                        if !post.stickied
                         {
-                            Text(.init(postBody))
-                                .font(.subheadline)
-                        }
-                        else
-                        {
-                            Text(.init(postBody))
+                            if !isExpanded
+                            {
+                                Text(.init(postBody))
+                                    .font(.subheadline)
+                            }
+                            else
+                            {
+                                Text(.init(postBody))
+                            }
                         }
                     }
                 }
@@ -158,7 +161,15 @@ struct PostItem: View
                 .dynamicTypeSize(.small)
             }
             .padding(.horizontal)
-            .padding(.bottom)
+            .if(!isExpanded, transform: { viewProxy in
+                viewProxy
+                    .padding(.bottom)
+            })
+            
+            if isExpanded
+            {
+                Divider()
+            }
         }
         .background(Color(uiColor: .systemBackground))
     }
