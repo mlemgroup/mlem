@@ -75,7 +75,7 @@ struct PostExpanded: View
                             
                             print("Comment response: \(commentResponse)")
                             
-                            commentTracker.comments = try! await parseComments(commentResponse: commentResponse)
+                            commentTracker.comments = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
                             
                             commentTracker.isLoading = false
                         }
