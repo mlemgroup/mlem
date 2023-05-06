@@ -29,21 +29,24 @@ struct Post: Codable, Identifiable, Equatable
     let embedTitle, embedDescription, embedHTML: String?
     let thumbnailURL: String?
     let apID: String
-    let local: Bool?
+    let local: Bool
     // let creatorActorID: String
     // let creatorLocal: Bool
     let creatorName: String
     let creatorPreferredUsername: String?
     let creatorPublished: String
-    let creatorAvatar: String?
+    let creatorAvatar: URL?
     // let creatorTags: CreatorTags?
     // let creatorCommunityTags: JSONNull?
     // let banned, bannedFromCommunity: Bool
-    let communityActorID: String
+    let communityActorID: URL
     // let communityLocal: Bool
     let communityName: String
-    let communityIcon: String?
-    let communityRemoved, communityDeleted, communityNsfw, communityHideFromAll: Bool?
+    let communityIcon: URL?
+    let communityRemoved: Bool
+    let communityDeleted: Bool
+    let communityNsfw: Bool
+    let communityHideFromAll: Bool
     let numberOfComments, score, upvotes, downvotes: Int
     let hotRank, hotRankActive: Int?
     let newestActivityTime: String?

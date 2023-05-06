@@ -37,7 +37,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
     
     print("API Response: \(apiResponse)")
     
-    let parsedNewPosts: [Post] = try! await parsePosts(postResponse: apiResponse)
+    let parsedNewPosts: [Post] = try! await parsePosts(postResponse: apiResponse, instanceLink: instanceAddress)
     
     DispatchQueue.main.async {
         for post in parsedNewPosts
