@@ -29,14 +29,8 @@ struct Comment: Codable, Identifiable
     let communityName: String
     let communityIcon: URL?
     let communityHideFromAll: Bool
-    let creatorBanned: Bool
     //let creatorBannedFromCommunity: Bool?
-    let creatorActorID: URL
-    let creatorLocal: Bool
-    let creatorName: String
-    let creatorPreferredUsername: String?
     let creatorPublished: String
-    let creatorAvatar: URL?
     //let creatorTags: CreatorTags_Comment?
     //let creatorCommunityTags: JSONNull?
     let score: Int
@@ -47,6 +41,8 @@ struct Comment: Codable, Identifiable
     let saved: Bool?
     //let subscribed: Bool?
     //let userID, myVote: JSONNull?
+    
+    let author: User
 
     let childCount: Int?
     var children: [Comment]?

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct User: Identifiable
+struct User: Codable, Identifiable
 {
     let id: Int
 
