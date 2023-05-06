@@ -17,7 +17,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
         print("Will be in COMMUNITY scope")
         
         loadingCommand = """
-        {"op": "GetPosts", "data": {"type_": "Community", "sort": "Hot", "page": \(postTracker.page), "community_name": "\(communityName)"}}
+        {"op": "GetPosts", "data": {"type_": "All", "sort": "Hot", "page": \(postTracker.page), "community_name": "\(communityName)"}}
         """
     }
     else
