@@ -56,6 +56,7 @@
 		63ABCE0E27F894060047A7D0 /* User View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ABCE0D27F894060047A7D0 /* User View.swift */; };
 		63CE4E6C2A066EF200405271 /* User Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E6B2A066EF200405271 /* User Parser.swift */; };
 		63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E702A06B21B00405271 /* Avatar View.swift */; };
+		63CE4E732A06F5A100405271 /* Access Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E722A06F5A100405271 /* Access Token.swift */; };
 		63DF71EC2A02986B002AC14E /* Send Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71EB2A02986B002AC14E /* Send Command.swift */; };
 		63DF71EF2A02988A002AC14E /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 63DF71EE2A02988A002AC14E /* SwiftyJSON */; };
 		63DF71F12A02999C002AC14E /* App Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* App Constants.swift */; };
@@ -148,6 +149,7 @@
 		63ABCE0D27F894060047A7D0 /* User View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User View.swift"; sourceTree = "<group>"; };
 		63CE4E6B2A066EF200405271 /* User Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Parser.swift"; sourceTree = "<group>"; };
 		63CE4E702A06B21B00405271 /* Avatar View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Avatar View.swift"; sourceTree = "<group>"; };
+		63CE4E722A06F5A100405271 /* Access Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Access Token.swift"; sourceTree = "<group>"; };
 		63DF71EB2A02986B002AC14E /* Send Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Send Command.swift"; sourceTree = "<group>"; };
 		63DF71F02A02999C002AC14E /* App Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Constants.swift"; sourceTree = "<group>"; };
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				6386E0352A042C59006B3C1D /* Contributor.swift */,
 				63F0C7A52A05225100A18C5D /* Saved Community.swift */,
 				63F0C7A72A0522FC00A18C5D /* Saved Community Tracker.swift */,
+				63CE4E722A06F5A100405271 /* Access Token.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -744,6 +747,7 @@
 				63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
+				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,
 				632E8EEA27EE63F4007E8D75 /* Share.swift in Sources */,

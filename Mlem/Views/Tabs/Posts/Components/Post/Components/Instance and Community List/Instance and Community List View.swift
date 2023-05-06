@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InstanceCommunityListView: View
 {
-    @EnvironmentObject var communitiesTracker: SavedCommunityTracker
+    @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
 
@@ -19,44 +19,32 @@ struct InstanceCommunityListView: View
         {
             VStack
             {
-                if !communitiesTracker.savedCommunities.isEmpty
+                if !accountsTracker.savedAccounts.isEmpty
                 {
                     List
                     {
-                        ForEach(communitiesTracker.savedCommunities)
-                        { savedCommunity in
+                        ForEach(accountsTracker.savedAccounts)
+                        { savedAccount in
                             NavigationLink
                             {
-                                if !savedCommunity.communityName.isEmpty
-                                {
-                                    CommunityView(instanceAddress: savedCommunity.instanceLink, communityName: savedCommunity.communityName, communityID: nil)
-                                }
-                                else
-                                {
-                                    CommunityView(instanceAddress: savedCommunity.instanceLink, communityName: nil, communityID: nil)
-                                }
+                                CommunityView(instanceAddress: savedAccount.instanceLink, accessToken: savedAccount.accessToken, communityName: nil, communityID: nil)
                             } label: {
                                 HStack(alignment: .center)
                                 {
-                                    if savedCommunity.communityName.isEmpty
-                                    {
-                                        Text("All Communities")
-                                    }
-                                    else
-                                    {
-                                        Text(savedCommunity.communityName)
-                                    }
+                                    Text(savedAccount.username)
                                     Spacer()
-                                    Text(savedCommunity.instanceLink.host!)
+                                    Text(savedAccount.instanceLink.host!)
                                         .foregroundColor(.secondary)
                                 }
                             }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button {
-                                    let indexOfSavedCommunitytoRemove: Int = communitiesTracker.savedCommunities.firstIndex(where: { $0.id == savedCommunity.id })!
-                                    
-                                    communitiesTracker.savedCommunities.remove(at: indexOfSavedCommunitytoRemove)
-                                    
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true)
+                            {
+                                Button
+                                {
+                                    let indexOfSavedAccountToRemove: Int = accountsTracker.savedAccounts.firstIndex(where: { $0.id == savedAccount.id })!
+
+                                    accountsTracker.savedAccounts.remove(at: indexOfSavedAccountToRemove)
+
                                 } label: {
                                     Label("Remove", systemImage: "trash")
                                 }
@@ -67,13 +55,14 @@ struct InstanceCommunityListView: View
                 }
                 else
                 {
-                    VStack(alignment: .center, spacing: 15) {
-                        Text("You have no saved communities")
+                    VStack(alignment: .center, spacing: 15)
+                    {
+                        Text("You have no accounts added")
                     }
                     .foregroundColor(.secondary)
                 }
             }
-            .navigationTitle("Communities")
+            .navigationTitle("Accounts")
             .toolbar
             {
                 ToolbarItem(placement: .navigationBarTrailing)

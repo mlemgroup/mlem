@@ -6,21 +6,25 @@
 //
 
 import SwiftUI
+import SwiftyJSON
 
 struct AddSavedInstanceView: View
 {
-    @EnvironmentObject var communityTracker: SavedCommunityTracker
+    @EnvironmentObject var communityTracker: SavedAccountTracker
 
     @Binding var isShowingSheet: Bool
 
     @State private var instanceLink: String = ""
-    @State private var community: String = ""
-    @State private var wantsToAddSpecificCommunity: Bool = false
-    
+    @State private var usernameOrEmail: String = ""
+    @State private var password: String = ""
+
+    @State private var token: String = ""
+
     @State private var isShowingEndpointDiscoverySpinner: Bool = false
     @State private var hasSuccessfulyConnectedToEndpoint: Bool = false
     @State private var errorOccuredWhileConnectingToEndpoint: Bool = false
-    
+    @State private var errorText: String = ""
+
     @FocusState var isFocused
 
     var body: some View
@@ -33,8 +37,10 @@ struct AddSavedInstanceView: View
                 {
                     if !hasSuccessfulyConnectedToEndpoint
                     {
-                        VStack(alignment: .center) {
-                            HStack(alignment: .center, spacing: 10) {
+                        VStack(alignment: .center)
+                        {
+                            HStack(alignment: .center, spacing: 10)
+                            {
                                 ProgressView()
                                 Text("Connecting to \(instanceLink)")
                             }
@@ -45,9 +51,12 @@ struct AddSavedInstanceView: View
                     }
                     else
                     {
-                        VStack(alignment: .center) {
-                            HStack(alignment: .center, spacing: 10) {
-                                Text("Connected to \(instanceLink)")
+                        VStack(alignment: .center)
+                        {
+                            HStack(alignment: .center, spacing: 10)
+                            {
+                                Image(systemName: "checkmark.shield.fill")
+                                Text("Logged in to \(instanceLink) as \(usernameOrEmail)")
                             }
                         }
                         .frame(maxWidth: .infinity)
@@ -58,9 +67,12 @@ struct AddSavedInstanceView: View
                 }
                 else
                 {
-                    VStack(alignment: .center) {
-                        HStack(alignment: .center, spacing: 10) {
-                            Text("Could not connect to \(instanceLink)")
+                    VStack(alignment: .center)
+                    {
+                        HStack(alignment: .center, spacing: 10)
+                        {
+                            Image(systemName: "xmark.circle.fill")
+                            Text(errorText)
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -69,71 +81,124 @@ struct AddSavedInstanceView: View
                     .foregroundColor(.black)
                 }
             }
-            
+
             Form
             {
                 Section("Homepage")
                 {
+                    TextField("Homepage:", text: $instanceLink, prompt: Text("hexbear.net"))
+                        .autocorrectionDisabled()
+                        .focused($isFocused)
+                        .keyboardType(.URL)
+                        .textInputAutocapitalization(.never)
+                }
+
+                Section("Credentials")
+                {
                     HStack
                     {
-                        Text("Homepage")
+                        Text("Username")
                         Spacer()
-                        TextField("Homepage", text: $instanceLink, prompt: Text("hexbear.net"))
+                        TextField("Username", text: $usernameOrEmail, prompt: Text("Salmoon"))
                             .autocorrectionDisabled()
-                            .focused($isFocused)
-                            .keyboardType(.URL)
+                            .keyboardType(.default)
                             .textInputAutocapitalization(.never)
+                    }
+
+                    HStack
+                    {
+                        Text("Password")
+                        Spacer()
+                        SecureField("Password", text: $password, prompt: Text("VeryStrongPassword"))
+                            .submitLabel(.go)
                     }
                 }
 
-                Section("Community")
+                Button
                 {
-                    Toggle(isOn: $wantsToAddSpecificCommunity.animation(.easeIn)) {
-                        Text("Add Specific Community")
-                    }
-                    
-                    if wantsToAddSpecificCommunity
-                    {
-                        HStack
-                        {
-                            Text("Community")
-                            Spacer()
-                            TextField("Community", text: $community, prompt: Text("news"))
-                                .autocorrectionDisabled()
-                        }
-                    }
+                    print("logged in")
+                } label: {
+                    Text("Log In")
                 }
+                .disabled(instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
             }
             .disabled(isShowingEndpointDiscoverySpinner)
             .onSubmit
             {
                 Task
                 {
-                    withAnimation {
+                    withAnimation
+                    {
                         isShowingEndpointDiscoverySpinner = true
                     }
-                    
+
                     do
                     {
                         let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: instanceLink)
                         print("Found correct endpoint: \(instanceURL)")
-                        
-                        communityTracker.savedCommunities.append(SavedCommunity(instanceLink: instanceURL, communityName: community))
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+
+                        do
                         {
-                            withAnimation {
-                                hasSuccessfulyConnectedToEndpoint = true
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                            let loginRequestResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceURL, command: """
+                            {"op": "Login", "data":{"username_or_email": "\(usernameOrEmail)", "password": "\(password)"}}
+                            """)
+                            if loginRequestResponse.contains("jwt")
                             {
-                                isShowingSheet.toggle()
+                                hasSuccessfulyConnectedToEndpoint = true
+
+                                print("Successfully got the token")
+
+                                let parsedResponse: JSON = try! parseJSON(from: loginRequestResponse)
+
+                                token = parsedResponse["data", "jwt"].stringValue
+
+                                print("Obtained token: \(token)")
                                 
+                                communityTracker.savedAccounts.append(SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail))
+
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                                {
+                                    isShowingSheet = false
+                                }
+                            }
+                            else
+                            {
+                                print("Error occured: \(loginRequestResponse)")
+
+                                errorText = "Invalid credentials"
+
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1)
                                 {
-                                    isShowingEndpointDiscoverySpinner = false
-                                    hasSuccessfulyConnectedToEndpoint = false
+                                    errorOccuredWhileConnectingToEndpoint = true
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                                    {
+                                        withAnimation
+                                        {
+                                            isShowingEndpointDiscoverySpinner = false
+                                            errorOccuredWhileConnectingToEndpoint = false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch let loginRequestError
+                        {
+                            print("Failed while sending login command: \(loginRequestError)")
+
+                            errorText = "Could not connect to \(instanceLink)"
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                            {
+                                errorOccuredWhileConnectingToEndpoint = true
+
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                                {
+                                    withAnimation
+                                    {
+                                        isShowingEndpointDiscoverySpinner = false
+                                        errorOccuredWhileConnectingToEndpoint = false
+                                    }
                                 }
                             }
                         }
@@ -141,14 +206,17 @@ struct AddSavedInstanceView: View
                     catch let endpointDiscoveryError
                     {
                         print("Failed while trying to get correct URL to endpoint: \(endpointDiscoveryError)")
-                        
+
+                        errorText = "Could not connect to \(instanceLink)"
+
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1)
                         {
                             errorOccuredWhileConnectingToEndpoint = true
-                            
+
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2)
                             {
-                                withAnimation {
+                                withAnimation
+                                {
                                     isShowingEndpointDiscoverySpinner = false
                                     errorOccuredWhileConnectingToEndpoint = false
                                 }

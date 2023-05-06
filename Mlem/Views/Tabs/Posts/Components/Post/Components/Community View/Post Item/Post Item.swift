@@ -23,6 +23,8 @@ struct PostItem: View
     
     @State var instanceAddress: URL
     
+    @State var accessToken: String
+    
     @State private var isShowingSafari: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
@@ -43,7 +45,7 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity.isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
+                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, accessToken: accessToken, communityName: post.communityName, communityID: post.communityID))
                                     {
                                         HStack(alignment: .center, spacing: 10)
                                         {                                           
@@ -186,5 +188,9 @@ struct PostItem: View
             }
         }
         .background(Color(uiColor: .systemBackground))
+        .onAppear
+        {
+            print("Access token from within the view: \(accessToken)")
+        }
     }
 }
