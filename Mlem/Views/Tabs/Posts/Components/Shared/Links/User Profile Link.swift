@@ -10,6 +10,8 @@ import CachedAsyncImage
 
 struct UserProfileLink: View
 {
+    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    
     @State var user: User
 
     var body: some View
@@ -17,9 +19,12 @@ struct UserProfileLink: View
         NavigationLink(destination: UserView(user: user))
         {
             HStack(alignment: .center, spacing: 5) {
-                if let avatarLink = user.avatarLink
+                if shouldShowUserAvatars
                 {
-                    AvatarView(avatarLink: avatarLink)
+                    if let avatarLink = user.avatarLink
+                    {
+                        AvatarView(avatarLink: avatarLink)
+                    }
                 }
                 
                 Text(user.name)

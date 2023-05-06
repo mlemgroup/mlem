@@ -11,6 +11,9 @@ import CachedAsyncImage
 
 struct PostItem: View
 {
+    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
 
@@ -42,11 +45,16 @@ struct PostItem: View
                                 {
                                     NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, communityName: post.communityName, communityID: post.communityID))
                                     {
-                                        HStack(alignment: .center, spacing: 10) {
-                                            if !post.local
+                                        HStack(alignment: .center, spacing: 10)
+                                        {                                           
+                                            if shouldShowCommunityIcons
                                             {
-                                                Text("Not local")
+                                                if let communityAvatarLink = post.communityIcon
+                                                {
+                                                    AvatarView(avatarLink: communityAvatarLink, overridenSize: 30)
+                                                }
                                             }
+
                                             Text(post.communityName)
                                         }
                                     }

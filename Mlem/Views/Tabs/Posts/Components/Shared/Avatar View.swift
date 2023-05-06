@@ -12,6 +12,8 @@ struct AvatarView: View {
     
     @State var avatarLink: URL
     
+    @State var overridenSize: CGFloat = 15
+    
     var body: some View {
         CachedAsyncImage(url: avatarLink)
         { phase in
@@ -19,20 +21,20 @@ struct AvatarView: View {
             { /// Success
                 avatar
                     .resizable()
-                    .frame(width: 15, height: 15, alignment: .center)
+                    .frame(width: overridenSize, height: overridenSize, alignment: .center)
                     .clipShape(Circle())
             }
             else if phase.error != nil
             { /// Failure
                 Image(systemName: "person.circle.fill")
                     .resizable()
-                    .frame(width: 15, height: 15, alignment: .center)
+                    .frame(width: overridenSize, height: overridenSize, alignment: .center)
                     .clipShape(Circle())
             }
             else
             { /// Placeholder
                 ProgressView()
-                    .frame(width: 15, height: 15, alignment: .center)
+                    .frame(width: overridenSize, height: overridenSize, alignment: .center)
             }
         }
     }
