@@ -31,7 +31,6 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     name: post["name"].stringValue,
                     url: post["url"].url,
                     body: post["body"].stringValue,
-                    communityID: post["community_id"].intValue,
                     removed: post["removed"].boolValue,
                     locked: post["locked"].boolValue,
                     published: post["published"].stringValue,
@@ -45,13 +44,7 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     thumbnailURL: post["thumbnail_url"].stringValue,
                     apID: post["ap_id"].stringValue,
                     local: post["local"].boolValue,
-                    creatorPublished: post["creator_published"].stringValue,
-                    communityName: post["community_name"].stringValue,
-                    communityIcon: post["community_icon"].url,
-                    communityRemoved: post["community_removed"].boolValue,
-                    communityDeleted: post["community_deleted"].boolValue,
-                    communityNsfw: post["community_nsfw"].boolValue,
-                    communityHideFromAll: post["community_hide_from_all"].boolValue,
+                    postedAt: post["creator_published"].stringValue,
                     numberOfComments: post["number_of_comments"].intValue,
                     score: post["score"].intValue,
                     upvotes: post["upvotes"].intValue,
@@ -75,6 +68,21 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                         admin: false,
                         bot: false,
                         onInstanceID: 0
+                    ),
+                    
+                    community: Community(
+                        id: post["community_id"].intValue,
+                        name: post["community_name"].stringValue,
+                        title: nil,
+                        description: nil,
+                        icon: post["community_icon"].url,
+                        banner: nil,
+                        createdAt: nil,
+                        updatedAt: nil,
+                        actorID: post["community_actor_id"].url!,
+                        local: post["community_local"].boolValue,
+                        deleted: post["community_deleted"].boolValue,
+                        nsfw: post["community_nsfw"].boolValue
                     )
                 )
                 
@@ -96,7 +104,6 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     name: post["post", "name"].stringValue,
                     url: post["post", "url"].url,
                     body: post["post", "body"].stringValue,
-                    communityID: post["community", "id"].intValue,
                     removed: post["post", "removed"].boolValue,
                     locked: post["post", "locked"].boolValue,
                     published: post["post", "published"].stringValue,
@@ -110,13 +117,7 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     thumbnailURL: post["post", "thumbnail_url"].string,
                     apID: post["post", "ap_id"].stringValue,
                     local: post["post", "local"].boolValue,
-                    creatorPublished: post["creator", "published"].stringValue,
-                    communityName: post["community", "name"].stringValue,
-                    communityIcon: post["community", "icon"].url,
-                    communityRemoved: post["community", "removed"].boolValue,
-                    communityDeleted: post["community", "deleted"].boolValue,
-                    communityNsfw: post["community", "nsfw"].boolValue,
-                    communityHideFromAll: post["community", "hidden"].boolValue,
+                    postedAt: post["creator", "published"].stringValue,
                     numberOfComments: post["counts", "comments"].intValue,
                     score: post["counts", "score"].intValue,
                     upvotes: post["counts", "upvotes"].intValue,
@@ -140,6 +141,21 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                         admin: post["creator", "admin"].boolValue,
                         bot: post["creator", "bot_account"].boolValue,
                         onInstanceID: post["creator", "instance_id"].intValue
+                    ),
+                    
+                    community: Community(
+                        id: post["community", "id"].intValue,
+                        name: post["community", "name"].stringValue,
+                        title: post["community", "title"].string,
+                        description: post["community", "desctiption"].string,
+                        icon: post["community", "icon"].url,
+                        banner: post["community", "banner"].url,
+                        createdAt: post["community", "published"].string,
+                        updatedAt: post["community", "updated"].string,
+                        actorID: post["community", "actor_id"].url!,
+                        local: post["community", "local"].boolValue,
+                        deleted: post["community", "deleted"].boolValue,
+                        nsfw: post["community", "nsfw"].boolValue
                     )
                 )
                 

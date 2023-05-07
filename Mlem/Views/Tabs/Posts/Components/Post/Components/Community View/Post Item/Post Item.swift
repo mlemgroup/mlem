@@ -23,6 +23,7 @@ struct PostItem: View
     
     @State var instanceAddress: URL
     
+    @State var username: String
     @State var accessToken: String
     
     @State private var isShowingSafari: Bool = false
@@ -45,19 +46,19 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity.isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, accessToken: accessToken, communityName: post.communityName, communityID: post.communityID))
+                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, username: username, accessToken: accessToken, community: post.community))
                                     {
                                         HStack(alignment: .center, spacing: 10)
                                         {                                           
                                             if shouldShowCommunityIcons
                                             {
-                                                if let communityAvatarLink = post.communityIcon
+                                                if let communityAvatarLink = post.community.icon
                                                 {
                                                     AvatarView(avatarLink: communityAvatarLink, overridenSize: 30)
                                                 }
                                             }
 
-                                            Text(post.communityName)
+                                            Text(post.community.name)
                                         }
                                     }
                                     .buttonStyle(.plain)
