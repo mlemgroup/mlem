@@ -12,7 +12,12 @@ internal enum DecodingError: Error
     case failedtoReadFile, failedToDecode
 }
 
-func decodeCommunitiesFromFile(fromURL: URL) throws -> [SavedAccount]
+internal enum WhatToDecode
+{
+    case accounts, filteredKeywords
+}
+
+func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Codable
 {
     do
     {
@@ -20,7 +25,12 @@ func decodeCommunitiesFromFile(fromURL: URL) throws -> [SavedAccount]
         
         do
         {
-            return try JSONDecoder().decode([SavedAccount].self, from: rawData)
+            switch whatToDecode {
+                case .accounts:
+                    return try JSONDecoder().decode([SavedAccount].self, from: rawData)
+                case .filteredKeywords:
+                    return try JSONDecoder().decode([String].self, from: rawData)
+            }
         }
         catch let decodingError
         {

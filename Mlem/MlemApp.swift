@@ -13,6 +13,7 @@ struct MlemApp: App
 {
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()
+    @StateObject var filtersTracker: FiltersTracker = .init()
 
     var body: some Scene
     {
@@ -21,6 +22,7 @@ struct MlemApp: App
             ContentView()
                 .environmentObject(appState)
                 .environmentObject(accountsTracker)
+                .environmentObject(filtersTracker)
                 .onChange(of: accountsTracker.savedAccounts)
                 { newValue in
                     do
@@ -38,7 +40,29 @@ struct MlemApp: App
                     }
                     catch let encodingError
                     {
-                        print("Failed while encoding communities to data: \(encodingError)")
+                        print("Failed while encoding accounts to data: \(encodingError)")
+                    }
+                }
+                .onChange(of: filtersTracker.filteredKeywords)
+                { newValue in
+                    print("Change detected in filtered keywords: \(newValue)")
+                    do
+                    {
+                        let encodedFilteredKeywords: Data = try encodeForSaving(object: newValue)
+
+                        print(encodedFilteredKeywords)
+                        do
+                        {
+                            try writeDataToFile(data: encodedFilteredKeywords, fileURL: AppConstants.filteredKeywordsFilePath)
+                        }
+                        catch let writingError
+                        {
+                            print("Failed while saving data to file: \(writingError)")
+                        }
+                    }
+                    catch let encodingError
+                    {
+                        print("Failed while encoding filters to data: \(encodingError)")
                     }
                 }
                 .onAppear
@@ -46,10 +70,10 @@ struct MlemApp: App
                     if FileManager.default.fileExists(atPath: AppConstants.savedAccountsFilePath.path)
                     {
                         print("Saved Accounts file exists, will attempt to load saved accounts")
-                        
+
                         do
                         {
-                            accountsTracker.savedAccounts = try decodeCommunitiesFromFile(fromURL: AppConstants.savedAccountsFilePath)
+                            accountsTracker.savedAccounts = try decodeFromFile(fromURL: AppConstants.savedAccountsFilePath, whatToDecode: .accounts) as! [SavedAccount]
                         }
                         catch let savedAccountDecodingError
                         {
@@ -59,10 +83,36 @@ struct MlemApp: App
                     else
                     {
                         print("Saved Accounts file does not exist, will try to create it")
-                        
+
                         do
                         {
                             try createEmptyFile(at: AppConstants.savedAccountsFilePath)
+                        }
+                        catch let emptyFileCreationError
+                        {
+                            print("Failed while creating an empty file: \(emptyFileCreationError)")
+                        }
+                    }
+
+                    if FileManager.default.fileExists(atPath: AppConstants.filteredKeywordsFilePath.path)
+                    {
+                        print("Filtered keywords file exists, will attempt to load blocked keywords")
+                        do
+                        {
+                            filtersTracker.filteredKeywords = try decodeFromFile(fromURL: AppConstants.filteredKeywordsFilePath, whatToDecode: .filteredKeywords) as! [String]
+                        }
+                        catch let savedKeywordsDecodingError
+                        {
+                            print("Failed while decoding saved filtered keywords: \(savedKeywordsDecodingError)")
+                        }
+                    }
+                    else
+                    {
+                        print("Filtered keywords file does not exist, will try to create it")
+
+                        do
+                        {
+                            try createEmptyFile(at: AppConstants.filteredKeywordsFilePath)
                         }
                         catch let emptyFileCreationError
                         {

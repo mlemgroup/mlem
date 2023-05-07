@@ -29,6 +29,9 @@
 		6332FDD327F080EF0009A98A /* Community View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDD227F080EF0009A98A /* Community View.swift */; };
 		6332FDDA27F083590009A98A /* About Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDD927F083590009A98A /* About Me.swift */; };
 		63344C4D2A07ABEE001BC616 /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C4C2A07ABEE001BC616 /* Community.swift */; };
+		63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */; };
+		63344C542A07D193001BC616 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C532A07D193001BC616 /* Filters.swift */; };
+		63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C552A07D81D001BC616 /* Array - Prepend.swift */; };
 		6363D5C527EE196700E34822 /* MlemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C427EE196700E34822 /* MlemApp.swift */; };
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
@@ -120,6 +123,9 @@
 		6332FDD227F080EF0009A98A /* Community View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community View.swift"; sourceTree = "<group>"; };
 		6332FDD927F083590009A98A /* About Me.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "About Me.swift"; sourceTree = "<group>"; };
 		63344C4C2A07ABEE001BC616 /* Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community.swift; sourceTree = "<group>"; };
+		63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filters Tracker.swift"; sourceTree = "<group>"; };
+		63344C532A07D193001BC616 /* Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
+		63344C552A07D81D001BC616 /* Array - Prepend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array - Prepend.swift"; sourceTree = "<group>"; };
 		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5C427EE196700E34822 /* MlemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemApp.swift; sourceTree = "<group>"; };
 		6363D5C627EE196700E34822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -287,6 +293,7 @@
 		6332FDBE27EFB04E0009A98A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				63344C522A07D189001BC616 /* Views */,
 				6332FDBF27EFB05F0009A98A /* Settings Item.swift */,
 				6332FDD927F083590009A98A /* About Me.swift */,
 			);
@@ -301,6 +308,7 @@
 				6386E0392A0455BC006B3C1D /* String - Contains Elements From Array.swift */,
 				6386E0462A050817006B3C1D /* Date - Parse ISO Date.swift */,
 				63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */,
+				63344C552A07D81D001BC616 /* Array - Prepend.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -341,6 +349,14 @@
 				6363D60327EE20A200E34822 /* Post Expanded.swift */,
 			);
 			path = "Post Item";
+			sourceTree = "<group>";
+		};
+		63344C522A07D189001BC616 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				63344C532A07D193001BC616 /* Filters.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		6363D5B827EE196700E34822 = {
@@ -489,6 +505,7 @@
 			children = (
 				6386E0292A03D0C3006B3C1D /* Post Tracker.swift */,
 				6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */,
+				63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -720,6 +737,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63F0C7A82A0522FC00A18C5D /* Saved Community Tracker.swift in Sources */,
+				63344C542A07D193001BC616 /* Filters.swift in Sources */,
 				63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */,
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
@@ -746,6 +764,7 @@
 				6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */,
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63DF71EC2A02986B002AC14E /* Send Command.swift in Sources */,
+				63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
 				63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */,
@@ -772,6 +791,7 @@
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,
 				63F0C7A62A05225100A18C5D /* Saved Community.swift in Sources */,
+				63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */,
 				6386E0362A042C59006B3C1D /* Contributor.swift in Sources */,
 				6386E0342A042C44006B3C1D /* Contributors View.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
