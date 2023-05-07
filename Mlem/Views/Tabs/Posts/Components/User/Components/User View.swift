@@ -13,41 +13,49 @@ struct UserView: View
 
     var body: some View
     {
-        if let bannerLink = user.bannerLink
+        ScrollView
         {
-            AsyncImage(url: bannerLink) { banner in
-                banner
-                    .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: 200)
-                    .scaledToFill()
-            } placeholder: {
-                ProgressView()
-            }
-
-        }
-        else
-        {
-            Rectangle()
-                .fill(LinearGradient(
-                    gradient: Gradient(colors: [
-                        [.blue, .cyan, .pink, .purple, .indigo].randomElement()!,
-                        [.blue, .cyan, .pink, .purple, .indigo].randomElement()!]),
-                    startPoint: [.bottomTrailing, .bottomLeading].randomElement()!, endPoint: [.topTrailing, .topLeading].randomElement()!))
-                .frame(maxWidth: .infinity, maxHeight: 200)
-        }
-        
-        HStack(alignment: .lastTextBaseline, spacing: 10) {
-            VStack(alignment: .leading, spacing: 5) {
-                if let displayName = user.displayName
+            VStack(alignment: .leading) {
+                if let bannerLink = user.bannerLink
                 {
-                    Text(displayName)
+                    AsyncImage(url: bannerLink) { banner in
+                        banner
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
+                    } placeholder: {
+                        ProgressView()
+                    }
+
                 }
                 else
                 {
-                    Text(user.name)
+                    Rectangle()
+                        .fill(LinearGradient(
+                            gradient: Gradient(colors: [
+                                [.blue, .cyan, .pink, .purple, .indigo].randomElement()!,
+                                [.blue, .cyan, .pink, .purple, .indigo].randomElement()!]),
+                            startPoint: [.bottomTrailing, .bottomLeading].randomElement()!, endPoint: [.topTrailing, .topLeading].randomElement()!))
+                        .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
                 }
                 
-                Text(user.actorID.absoluteString.replacingOccurrences(of: "https://", with: "").replacingOccurrences(of: "www.", with: ""))
+                VStack(alignment: .leading) {
+                    HStack(alignment: .lastTextBaseline, spacing: 10) {
+                        VStack(alignment: .leading, spacing: 5) {
+                            if let displayName = user.displayName
+                            {
+                                Text(displayName)
+                            }
+                            else
+                            {
+                                Text(user.name)
+                            }
+                            
+                            Text(user.actorID.absoluteString.replacingOccurrences(of: "https://", with: "").replacingOccurrences(of: "www.", with: ""))
+                        }
+                    }
+                }
+                .padding()
             }
         }
     }

@@ -12,7 +12,7 @@ struct SettingsView: View
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-
+    
     @State private var contributors: [Contributor] = [
         Contributor(name: "Stuart A. Malone", avatarLink: URL(string: "https://media.mstdn.social/cache/accounts/avatars/109/299/685/376/110/779/original/9ef1f88eff2118a4.png")!, reasonForAcknowledgement: "Came up with a performant and resilient way of getting data from the Lemmy API", websiteLink: URL(string: "https://elk.zone/mstdn.social/@samalone@twit.social")!),
     ]
@@ -55,6 +55,8 @@ struct SettingsView: View
                                 )
                             }
                         }
+                        .navigationTitle("Appearance")
+                        .navigationBarTitleDisplayMode(.inline)
                     } label: {
                         HStack(alignment: .center) {
                             Image(systemName: "theatermasks.circle.fill")
@@ -62,6 +64,17 @@ struct SettingsView: View
                             Text("Appearance")
                         }
                     }
+                    
+                    NavigationLink {
+                        FiltersSettingsView()
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "slash.circle.fill")
+                                .foregroundColor(.yellow)
+                            Text("Filters")
+                        }
+                    }
+
                 }
                 
                 Section
@@ -128,11 +141,6 @@ struct SettingsView: View
 
                 }
 
-                Section(header: Text("About me"), footer: Text("Made thanks to my perfect Elča ❤️"))
-                {
-                    NavigationLink("Hello", destination: AboutMe())
-                    Link("Twitter", destination: URL(string: "https://twitter.com/davidbures")!)
-                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
