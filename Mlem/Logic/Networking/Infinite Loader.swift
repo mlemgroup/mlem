@@ -8,16 +8,16 @@
 import Foundation
 import SwiftUI
 
-func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddress: URL, communityName: String? = nil) async
+func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddress: URL, communityID: Int? = nil) async
 {
     var loadingCommand: String = ""
     
-    if let communityName
+    if let communityID
     {
         print("Will be in COMMUNITY scope")
         
         loadingCommand = """
-        {"op": "GetPosts", "data": {"type_": "All", "sort": "Hot", "page": \(postTracker.page), "community_name": "\(communityName)"}}
+        {"op": "GetPosts", "data": {"type_": "All", "sort": "Hot", "page": \(postTracker.page), "community_id": "\(communityID)"}}
         """
     }
     else

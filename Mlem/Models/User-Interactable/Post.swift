@@ -20,7 +20,6 @@ struct Post: Codable, Identifiable, Equatable
     let name: String
     var url: URL?
     let body: String?
-    let communityID: Int
     let removed, locked: Bool?
     let published: String
     let updated: String?
@@ -35,13 +34,6 @@ struct Post: Codable, Identifiable, Equatable
     // let creatorTags: CreatorTags?
     // let creatorCommunityTags: JSONNull?
     // let banned, bannedFromCommunity: Bool
-    // let communityLocal: Bool
-    let communityName: String
-    let communityIcon: URL?
-    let communityRemoved: Bool
-    let communityDeleted: Bool
-    let communityNsfw: Bool
-    let communityHideFromAll: Bool
     let numberOfComments, score, upvotes, downvotes: Int
     let hotRank, hotRankActive: Int?
     let newestActivityTime: String?
@@ -52,4 +44,6 @@ struct Post: Codable, Identifiable, Equatable
     //let saved: Bool?
     
     let author: User
+    
+    let community: Community
 }
