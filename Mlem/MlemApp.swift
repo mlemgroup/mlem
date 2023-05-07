@@ -12,7 +12,7 @@ import SwiftyJSON
 struct MlemApp: App
 {
     @StateObject var appState: AppState = .init()
-    @StateObject var communitiesTracker: SavedCommunityTracker = .init()
+    @StateObject var accountsTracker: SavedAccountTracker = .init()
 
     var body: some Scene
     {
@@ -20,16 +20,16 @@ struct MlemApp: App
         {
             ContentView()
                 .environmentObject(appState)
-                .environmentObject(communitiesTracker)
-                .onChange(of: communitiesTracker.savedCommunities)
+                .environmentObject(accountsTracker)
+                .onChange(of: accountsTracker.savedAccounts)
                 { newValue in
                     do
                     {
-                        let encodedSavedCommunities: Data = try encodeForSaving(object: newValue)
+                        let encodedSavedAccounts: Data = try encodeForSaving(object: newValue)
 
                         do
                         {
-                            try writeDataToFile(data: encodedSavedCommunities, fileURL: AppConstants.savedCommunitiesFilePath)
+                            try writeDataToFile(data: encodedSavedAccounts, fileURL: AppConstants.savedAccountsFilePath)
                         }
                         catch let writingError
                         {
@@ -43,26 +43,26 @@ struct MlemApp: App
                 }
                 .onAppear
                 {
-                    if FileManager.default.fileExists(atPath: AppConstants.savedCommunitiesFilePath.path)
+                    if FileManager.default.fileExists(atPath: AppConstants.savedAccountsFilePath.path)
                     {
-                        print("Saved Communities file exists, will attempt to load saved communities")
+                        print("Saved Accounts file exists, will attempt to load saved accounts")
                         
                         do
                         {
-                            communitiesTracker.savedCommunities = try decodeCommunitiesFromFile(fromURL: AppConstants.savedCommunitiesFilePath)
+                            accountsTracker.savedAccounts = try decodeCommunitiesFromFile(fromURL: AppConstants.savedAccountsFilePath)
                         }
-                        catch let savedCommunityDecodingError
+                        catch let savedAccountDecodingError
                         {
-                            print("Failed while decoding saved communities: \(savedCommunityDecodingError)")
+                            print("Failed while decoding saved accounts: \(savedAccountDecodingError)")
                         }
                     }
                     else
                     {
-                        print("Saved Communities file does not exist, will try to create it")
+                        print("Saved Accounts file does not exist, will try to create it")
                         
                         do
                         {
-                            try createEmptyFile(at: AppConstants.savedCommunitiesFilePath)
+                            try createEmptyFile(at: AppConstants.savedAccountsFilePath)
                         }
                         catch let emptyFileCreationError
                         {

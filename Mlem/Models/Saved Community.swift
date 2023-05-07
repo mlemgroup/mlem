@@ -7,10 +7,13 @@
 
 import Foundation
 
-struct SavedCommunity: Identifiable, Codable, Equatable
+struct SavedAccount: Identifiable, Codable, Equatable
 {
     var id: UUID = UUID()
     
     let instanceLink: URL
-    let communityName: String
+    
+    let accessToken: String
+    
+    let username: String
 }

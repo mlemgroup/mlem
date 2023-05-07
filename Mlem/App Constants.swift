@@ -13,5 +13,5 @@ struct AppConstants
     
     // MARK: - Files
     private static let applicationSupportDirectoryPath: URL = try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-    static let savedCommunitiesFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Saved Communities", conformingTo: .json)
+    static let savedAccountsFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Saved Accounts", conformingTo: .json)
 }

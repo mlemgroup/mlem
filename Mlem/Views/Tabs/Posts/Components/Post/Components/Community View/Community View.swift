@@ -19,6 +19,7 @@ struct CommunityView: View
     @StateObject var postTracker: PostTracker = .init()
     
     @State var instanceAddress: URL
+    @State var accessToken: String
     
     let communityName: String?
     let communityID: Int?
@@ -45,9 +46,9 @@ struct CommunityView: View
                     { post in
                         /*if post == posts.decodedPosts.last
                         {}*/
-                        NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, post: post))
+                        NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, accessToken: accessToken, post: post))
                         {
-                            PostItem(post: post, isExpanded: false, instanceAddress: instanceAddress)
+                            PostItem(post: post, isExpanded: false, instanceAddress: instanceAddress, accessToken: accessToken)
                                 .environmentObject(isInSpecificCommunity)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling

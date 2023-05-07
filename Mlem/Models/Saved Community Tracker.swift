@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SavedCommunityTracker: ObservableObject
+class SavedAccountTracker: ObservableObject
 {
-    @Published var savedCommunities: [SavedCommunity] = .init()
+    @Published var savedAccounts: [SavedAccount] = .init()
 }

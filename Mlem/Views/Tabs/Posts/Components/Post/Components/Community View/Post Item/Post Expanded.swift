@@ -14,6 +14,8 @@ struct PostExpanded: View
     @StateObject var commentTracker: CommentTracker = .init()
     
     @State var instanceAddress: URL
+    
+    @State var accessToken: String
 
     @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
@@ -24,7 +26,7 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(post: post, isExpanded: true, instanceAddress: instanceAddress)
+            PostItem(post: post, isExpanded: true, instanceAddress: instanceAddress, accessToken: accessToken)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything
