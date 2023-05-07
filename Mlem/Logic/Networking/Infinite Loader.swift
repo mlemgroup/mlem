@@ -8,6 +8,11 @@
 import Foundation
 import SwiftUI
 
+internal enum LoadingError
+{
+    case shittyInternet
+}
+
 func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddress: URL, community: Community?) async
 {
     var loadingCommand: String = ""
@@ -33,18 +38,28 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
     
     print("Will try to send command: \(loadingCommand)")
     
-    let apiResponse = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: loadingCommand)
-    
-    print("API Response: \(apiResponse)")
-    
-    let parsedNewPosts: [Post] = try! await parsePosts(postResponse: apiResponse, instanceLink: instanceAddress)
-    
-    DispatchQueue.main.async {
-        for post in parsedNewPosts
-        {
-            postTracker.posts.append(post)
-        }
+    do
+    {
+        let apiResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: loadingCommand)
         
-        postTracker.page += 1
+        print("API Response: \(apiResponse)")
+        
+        let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: instanceAddress)
+        
+        DispatchQueue.main.async {
+            for post in parsedNewPosts
+            {
+                postTracker.posts.append(post)
+            }
+            
+            postTracker.page += 1
+        }
+    }
+    catch let connectionError
+    {
+        print("Failed while loading feed: \(connectionError)")
+        
+        appState.criticalErrorType = .shittyInternet
+        appState.isShowingCriticalError = true
     }
 }

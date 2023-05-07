@@ -10,4 +10,8 @@ import Foundation
 class AppState: ObservableObject
 {
     @Published var currentActiveInstance: String = ""
+    
+    @Published var isShowingCriticalError: Bool = false
+    
+    @Published var criticalErrorType: CriticalError = .shittyInternet
 }
