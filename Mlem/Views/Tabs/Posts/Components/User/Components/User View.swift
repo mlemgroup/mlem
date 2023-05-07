@@ -45,6 +45,12 @@ struct UserView: View
                 
                 VStack(alignment: .leading) {
                     HStack(alignment: .lastTextBaseline, spacing: 10) {
+                        
+                        if let avatarLink = user.avatarLink
+                        {
+                            AvatarView(avatarLink: avatarLink, overridenSize: 100)
+                        }
+                        
                         VStack(alignment: .leading, spacing: 5) {
                             if let displayName = user.displayName
                             {
