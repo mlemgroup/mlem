@@ -29,6 +29,16 @@ struct UserProfileLink: View
                 
                 Text(user.name)
             }
+            .if(user.admin)
+            { viewProxy in
+                viewProxy
+                    .foregroundColor(.cyan)
+            }
+            .if(user.bot)
+            { viewProxy in
+                viewProxy
+                    .foregroundColor(.yellow)
+            }
         }
     }
 }
