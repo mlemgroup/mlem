@@ -55,6 +55,8 @@ struct SettingsView: View
                                 )
                             }
                         }
+                        .navigationTitle("Appearance")
+                        .navigationBarTitleDisplayMode(.inline)
                     } label: {
                         HStack(alignment: .center) {
                             Image(systemName: "theatermasks.circle.fill")

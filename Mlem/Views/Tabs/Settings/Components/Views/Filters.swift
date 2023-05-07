@@ -140,6 +140,8 @@ struct FiltersSettingsView: View {
 
             }
         }
+        .navigationTitle("Filters")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar
         {
             ToolbarItem(placement: .automatic) {
