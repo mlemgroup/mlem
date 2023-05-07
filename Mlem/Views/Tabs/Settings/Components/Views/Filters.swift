@@ -7,11 +7,22 @@
 
 import SwiftUI
 
+internal enum ImportError
+{
+    case failedToReadFile, failedToDecodeFromFile
+}
+
 struct FiltersSettingsView: View {
     
     @EnvironmentObject var filtersTracker: FiltersTracker
     
     @State private var newFilteredKeyword: String = ""
+    @State private var isShowingKeywordImporter: Bool = false
+    
+    @State private var isShowingErrorAlert: Bool = false
+    @State private var importErrorType: ImportError = .failedToReadFile
+    
+    @State private var isShowingFilterDeletionConfirmation: Bool = false
     
     var body: some View {
         List
@@ -42,11 +53,116 @@ struct FiltersSettingsView: View {
                 Text("Posts containing these keywords in their title will not be shown")
             }
 
+            Section
+            {
+                Button {
+                    showShareSheet(URLtoShare: AppConstants.filteredKeywordsFilePath)
+                } label: {
+                    Label("Export filters", systemImage: "square.and.arrow.up")
+                }
+                .disabled(filtersTracker.filteredKeywords.isEmpty)
+
+                Button {
+                    isShowingKeywordImporter = true
+                } label: {
+                    Label("Import filters", systemImage: "square.and.arrow.down")
+                }
+                .fileImporter(isPresented: $isShowingKeywordImporter, allowedContentTypes: [.json]) { result in
+                    do
+                    {
+                        let urlOfImportedFile: URL = try result.get()
+                        
+                        urlOfImportedFile.startAccessingSecurityScopedResource()
+                        
+                        print("URL of imported file: \(urlOfImportedFile)")
+                        do
+                        {
+                            let decodedKeywords: [String] = try decodeFromFile(fromURL: urlOfImportedFile, whatToDecode: .filteredKeywords) as! [String]
+                            
+                            urlOfImportedFile.stopAccessingSecurityScopedResource()
+                            
+                            print("Decoded these: \(decodedKeywords)")
+                            
+                            withAnimation {
+                                filtersTracker.filteredKeywords = decodedKeywords
+                            }
+                        }
+                        catch let decodingError
+                        {
+                            urlOfImportedFile.stopAccessingSecurityScopedResource()
+                            importErrorType = .failedToDecodeFromFile
+                            isShowingErrorAlert = true
+                            print("Failed while decoding blocklist: \(decodingError)")
+                        }
+
+                    }
+                    catch let blocklistImportingError
+                    {
+                        importErrorType = .failedToReadFile
+                        isShowingErrorAlert = true
+                        print("Failed while reading file: \(blocklistImportingError)")
+                    }
+                }
+
+            }
+            
+            Section
+            {
+                Button(role: .destructive) {
+                    isShowingFilterDeletionConfirmation = true
+                } label: {
+                    Label("Delete all filters", systemImage: "trash")
+                        .foregroundColor(.red)
+                }
+                .confirmationDialog(
+                    "Are you sure you want to delete all your filters?",
+                    isPresented: $isShowingFilterDeletionConfirmation,
+                    titleVisibility: .visible) {
+                        Button(role: .destructive) {
+                            isShowingFilterDeletionConfirmation = false
+                            withAnimation {
+                                filtersTracker.filteredKeywords = .init()
+                                filtersTracker.filteredUsers = .init()
+                            }
+                        } label: {
+                            Text("Delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters")
+                        }
+                        
+                        Button(role: .cancel) {
+                            isShowingFilterDeletionConfirmation = false
+                        } label: {
+                            Text("Cancel")
+                        }
+                    } message: {
+                        Text("You are about to delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters.\nYou cannot undo this action.")
+                    }
+
+
+            }
         }
         .toolbar
         {
             ToolbarItem(placement: .automatic) {
                 EditButton()
+                    .disabled(filtersTracker.filteredKeywords.isEmpty && filtersTracker.filteredUsers.isEmpty)
+            }
+        }
+        .alert(isPresented: $isShowingErrorAlert) {
+            switch importErrorType {
+                case .failedToReadFile:
+                    return Alert(
+                        title: Text("Couldn't find blocklist"),
+                        message: Text("If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location."),
+                        dismissButton: .default(Text("Close"), action: {
+                        isShowingErrorAlert = false
+                    }))
+                case .failedToDecodeFromFile:
+                    return Alert(
+                        title: Text("Couldn't decode blocklist"),
+                        message: Text("Try again. If the problem keeps happening, try reinstalling Mlem"),
+                        dismissButton: .default(Text("Close"), action: {
+                            isShowingErrorAlert = false
+                        }))
             }
         }
     }
