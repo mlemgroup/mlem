@@ -70,7 +70,7 @@ struct PostExpanded: View
                                 print("Newer API spec")
                                 
                                 commentCommand = """
-{"op": "GetComments", "data": { "post_id": \(post.id), "type_": "All" }}
+{"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
 """
                             }
                             
