@@ -13,8 +13,6 @@ struct FiltersSettingsView: View {
     
     @State private var newFilteredKeyword: String = ""
     
-    @FocusState var isKeywordAdditionFieldFocused
-    
     var body: some View {
         List
         {
@@ -25,18 +23,19 @@ struct FiltersSettingsView: View {
                 }
                 .onDelete(perform: deleteKeyword)
                 
-                TextField("Add Keyword…", text: $newFilteredKeyword, prompt: Text("Add Keyword…"))
-                    .submitLabel(.done)
-                    .onSubmit {
-                        isKeywordAdditionFieldFocused = true
-                        
-                        withAnimation {
-                            filtersTracker.filteredKeywords.prepend(newFilteredKeyword)
-                        }
-                        
-                        newFilteredKeyword = ""
+                HStack(alignment: .center) {
+                    TextField("Add Keyword…", text: $newFilteredKeyword, prompt: Text("Add Keyword…"))
+                    
+                    Spacer()
+                    
+                    Button {
+                        addKeyword(newFilteredKeyword)
+                    } label: {
+                        Text("Add")
                     }
-                    .focused($isKeywordAdditionFieldFocused)
+                    .disabled(newFilteredKeyword.isEmpty)
+
+                }
             } header: {
                 Text("Filtered Keywords")
             } footer: {
@@ -52,6 +51,27 @@ struct FiltersSettingsView: View {
         }
     }
     
+    func addKeyword(_ newKeyword: String)
+    {
+        if !newKeyword.isEmpty
+        {
+            if filtersTracker.filteredKeywords.contains(newKeyword)
+            { /// If the word is already in there, just move it to the top
+                let indexOfPreviousOccurence: Int = filtersTracker.filteredKeywords.firstIndex(where: { $0 == newKeyword })!
+                withAnimation {
+                    filtersTracker.filteredKeywords.move(from: indexOfPreviousOccurence, to: 0)
+                }
+            }
+            else
+            {
+                withAnimation {
+                    filtersTracker.filteredKeywords.prepend(newKeyword)
+                }
+            }
+            
+            newFilteredKeyword = ""
+        }
+    }
     func deleteKeyword(at offsets: IndexSet)
     {
         filtersTracker.filteredKeywords.remove(atOffsets: offsets)

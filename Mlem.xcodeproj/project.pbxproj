@@ -32,6 +32,7 @@
 		63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */; };
 		63344C542A07D193001BC616 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C532A07D193001BC616 /* Filters.swift */; };
 		63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C552A07D81D001BC616 /* Array - Prepend.swift */; };
+		63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */; };
 		6363D5C527EE196700E34822 /* MlemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C427EE196700E34822 /* MlemApp.swift */; };
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
@@ -126,6 +127,7 @@
 		63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filters Tracker.swift"; sourceTree = "<group>"; };
 		63344C532A07D193001BC616 /* Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
 		63344C552A07D81D001BC616 /* Array - Prepend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array - Prepend.swift"; sourceTree = "<group>"; };
+		63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array - Move Elements Around.swift"; sourceTree = "<group>"; };
 		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5C427EE196700E34822 /* MlemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemApp.swift; sourceTree = "<group>"; };
 		6363D5C627EE196700E34822 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				6386E0462A050817006B3C1D /* Date - Parse ISO Date.swift */,
 				63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */,
 				63344C552A07D81D001BC616 /* Array - Prepend.swift */,
+				63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -748,6 +751,7 @@
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
 				631891162A03B0AC00EDA8D1 /* Parse JSON.swift in Sources */,
 				63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */,
+				63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */,
 				6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
