@@ -15,6 +15,7 @@ class IsInSpecificCommunity: ObservableObject
 struct CommunityView: View
 {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var filtersTracker: FiltersTracker
     
     @StateObject var postTracker: PostTracker = .init()
     
@@ -43,7 +44,7 @@ struct CommunityView: View
             {
                 LazyVStack
                 {
-                    ForEach(postTracker.posts)
+                    ForEach(postTracker.posts.filter({ !$0.name.contains(filtersTracker.filteredKeywords) })) /// Filter out blocked keywords
                     { post in
                         /*if post == posts.decodedPosts.last
                         {}*/
