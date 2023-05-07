@@ -30,7 +30,7 @@ struct Post: Codable, Identifiable, Equatable
     let local: Bool
     // let creatorActorID: String
     // let creatorLocal: Bool
-    let creatorPublished: String
+    let postedAt: String
     // let creatorTags: CreatorTags?
     // let creatorCommunityTags: JSONNull?
     // let banned, bannedFromCommunity: Bool

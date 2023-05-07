@@ -15,6 +15,7 @@ struct PostExpanded: View
     
     @State var instanceAddress: URL
     
+    @State var username: String
     @State var accessToken: String
 
     @State private var isReplySheetOpen: Bool = false
@@ -26,7 +27,7 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(post: post, isExpanded: true, instanceAddress: instanceAddress, accessToken: accessToken)
+            PostItem(post: post, isExpanded: true, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything
@@ -69,7 +70,7 @@ struct PostExpanded: View
                                 print("Newer API spec")
                                 
                                 commentCommand = """
-{"op": "GetComments", "data": { "post_id": \(post.id) }}
+{"op": "GetComments", "data": { "post_id": \(post.id), "type_": "All" }}
 """
                             }
                             
@@ -93,6 +94,6 @@ struct PostExpanded: View
                 }
             }
         }
-        .navigationBarTitle(post.communityName, displayMode: .inline)
+        .navigationBarTitle(post.community.name, displayMode: .inline)
     }
 }

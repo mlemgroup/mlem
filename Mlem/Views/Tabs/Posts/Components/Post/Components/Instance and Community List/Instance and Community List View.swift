@@ -27,7 +27,7 @@ struct InstanceCommunityListView: View
                         { savedAccount in
                             NavigationLink
                             {
-                                CommunityView(instanceAddress: savedAccount.instanceLink, accessToken: savedAccount.accessToken, communityName: nil, communityID: nil)
+                                CommunityView(instanceAddress: savedAccount.instanceLink, username: savedAccount.username, accessToken: savedAccount.accessToken, community: nil)
                             } label: {
                                 HStack(alignment: .center)
                                 {
