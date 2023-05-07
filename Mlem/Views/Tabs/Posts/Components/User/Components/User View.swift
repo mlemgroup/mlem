@@ -18,15 +18,19 @@ struct UserView: View
             VStack(alignment: .leading) {
                 if let bannerLink = user.bannerLink
                 {
-                    AsyncImage(url: bannerLink) { banner in
-                        banner
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
-                    } placeholder: {
-                        ProgressView()
+                    GeometryReader { proxy in
+                        AsyncImage(url: bannerLink) { banner in
+                            banner
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: proxy.size.width, height: self.getHeightForHeaderImage(proxy), alignment: .center)
+                                .clipped()
+                                .offset(x: 0, y: self.getOffsetForHeaderImage(proxy))
+                        } placeholder: {
+                            ProgressView()
+                        }
                     }
-
+                    .frame(height: 300)
                 }
                 else
                 {
@@ -36,7 +40,7 @@ struct UserView: View
                                 [.blue, .cyan, .pink, .purple, .indigo].randomElement()!,
                                 [.blue, .cyan, .pink, .purple, .indigo].randomElement()!]),
                             startPoint: [.bottomTrailing, .bottomLeading].randomElement()!, endPoint: [.topTrailing, .topLeading].randomElement()!))
-                        .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
+                        .frame(width: UIScreen.main.bounds.width, height: 300, alignment: .center)
                 }
                 
                 VStack(alignment: .leading) {
@@ -56,7 +60,39 @@ struct UserView: View
                     }
                 }
                 .padding()
+                
+                Spacer()
             }
         }
+        .edgesIgnoringSafeArea(.all)
+    }
+    
+    private func getScrollOffset(_ geometry: GeometryProxy) -> CGFloat
+    {
+        geometry.frame(in: .global).minY
+    }
+    private func getOffsetForHeaderImage(_ geometry: GeometryProxy) -> CGFloat
+    {
+        let offset = getScrollOffset(geometry)
+        
+        if offset > 0
+        {
+            return -offset
+        }
+        
+        return 0
+    }
+    private func getHeightForHeaderImage(_ geometry: GeometryProxy) -> CGFloat
+    {
+        let offset = getScrollOffset(geometry)
+        
+        let imageHeight = geometry.size.height
+        
+        if offset > 0
+        {
+            return imageHeight + offset
+        }
+        
+        return imageHeight
     }
 }
