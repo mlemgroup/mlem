@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CommunityView: View
 {
+    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     
@@ -49,6 +51,17 @@ struct CommunityView: View
             {
                 LazyVStack
                 {
+                    if isInSpecificCommunity
+                    {
+                        if shouldShowCommunityHeaders
+                        {
+                            if let communityBannerURL = community?.banner
+                            {
+                                StickyImageView(url: community?.banner)
+                            }
+                        }
+                    }
+                    
                     ForEach(postTracker.posts.filter({ !$0.name.contains(filtersTracker.filteredKeywords) })) /// Filter out blocked keywords
                     { post in
                         /*if post == posts.decodedPosts.last
@@ -78,6 +91,7 @@ struct CommunityView: View
         }
         .background(Color.secondarySystemBackground)
         .navigationTitle(community?.name ?? username)
+        .navigationBarTitleDisplayMode(shouldShowCommunityHeaders ? .inline : .large)
         .task(priority: .userInitiated, {
             
             if postTracker.posts.isEmpty

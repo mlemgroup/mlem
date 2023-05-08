@@ -17,6 +17,8 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
+    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    
     var body: some View {
         List
         {
@@ -66,6 +68,16 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowWebsiteFavicons
                 )
                 .disabled(!shouldShowWebsiteFaviconAtAll)
+            }
+            
+            Section("Communities")
+            {
+                SettingsItem(
+                    settingPictureSystemName: "rectangle.grid.1x2",
+                    settingPictureColor: .pink,
+                    settingName: "Show community headers",
+                    isTicked: $shouldShowCommunityHeaders
+                )
             }
             
             Section("Icons")
