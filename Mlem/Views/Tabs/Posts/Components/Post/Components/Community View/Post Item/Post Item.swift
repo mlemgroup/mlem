@@ -27,6 +27,7 @@ struct PostItem: View
     @State var accessToken: String
     
     @State private var isShowingSafari: Bool = false
+    @State private var isShowingEnlargedImage: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
 
@@ -99,6 +100,13 @@ struct PostItem: View
                                 .frame(maxWidth: .infinity)
                                 .scaledToFit()
                                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10), style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
+                                        .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
+                                )
+                                .onTapGesture {
+                                    isShowingEnlargedImage.toggle()
+                                }
                         } placeholder: {
                             ProgressView()
                         }
