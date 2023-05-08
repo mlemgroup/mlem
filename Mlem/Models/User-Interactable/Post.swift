@@ -25,7 +25,7 @@ struct Post: Codable, Identifiable, Equatable
     let updated: String?
     let deleted, nsfw, stickied: Bool
     let embedTitle, embedDescription, embedHTML: String?
-    let thumbnailURL: String?
+    let thumbnailURL: URL?
     let apID: String
     let local: Bool
     // let creatorActorID: String
