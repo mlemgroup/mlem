@@ -21,7 +21,7 @@ struct CommunityView: View
     @State var username: String
     @State var accessToken: String
 
-    let community: Community?
+    @State var community: Community?
 
     @State private var isSidebarShown: Bool = false
 
@@ -64,11 +64,14 @@ struct CommunityView: View
                         }
                     }
 
-                    NavigationLink(destination: CommunitySidebarView(), isActive: $isSidebarShown)
-                    { /// This is here to show the sidebar when needed
-                        Text("")
+                    if isInSpecificCommunity
+                    {
+                        NavigationLink(destination: CommunitySidebarView(community: community!), isActive: $isSidebarShown)
+                        { /// This is here to show the sidebar when needed
+                            Text("")
+                        }
+                        .hidden()
                     }
-                    .hidden()
 
                     ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
                     { post in
@@ -111,6 +114,13 @@ struct CommunityView: View
             else
             {
                 print("Post tracker is not empty")
+            }
+        }
+        .task(priority: .background)
+        {
+            if isInSpecificCommunity
+            {
+                community?.details = try! await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
             }
         }
         .toolbar

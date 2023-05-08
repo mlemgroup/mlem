@@ -8,7 +8,20 @@
 import SwiftUI
 
 struct CommunitySidebarView: View {
+    
+    @State var community: Community
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        if community.details != nil
+        {
+            Text(String(community.details!.numberOfPosts))
+        }
+        else
+        {
+            ProgressView {
+                Text("Loading details…")
+            }
+        }
+
     }
 }
