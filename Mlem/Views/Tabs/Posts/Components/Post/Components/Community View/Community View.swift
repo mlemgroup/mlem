@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-class IsInSpecificCommunity: ObservableObject
-{
-    @Published var isInSpecificCommunity: Bool = false
-}
-
 struct CommunityView: View
 {
     @EnvironmentObject var appState: AppState
@@ -25,10 +20,20 @@ struct CommunityView: View
     @State var accessToken: String
     
     let community: Community?
+    
+    var isInSpecificCommunity: Bool {
+        if community == nil
+        {
+            return false
+        }
+        else
+        {
+            return true
+        }
+    }
 
     @Environment(\.isPresented) var isPresented
 
-    @StateObject var isInSpecificCommunity = IsInSpecificCommunity()
     
     @State private var isShowingSearch: Bool = false
 
@@ -50,8 +55,7 @@ struct CommunityView: View
                         {}*/
                         NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, username: username, accessToken: accessToken, post: post))
                         {
-                            PostItem(post: post, isExpanded: false, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
-                                .environmentObject(isInSpecificCommunity)
+                            PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                         .task

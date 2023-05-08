@@ -27,7 +27,7 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(post: post, isExpanded: true, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
+            PostItem(post: post, isExpanded: true, isInSpecificCommunity: true, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything
