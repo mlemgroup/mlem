@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View
-{
-    @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    
+{    
     @State private var contributors: [Contributor] = [
         Contributor(name: "Stuart A. Malone", avatarLink: URL(string: "https://media.mstdn.social/cache/accounts/avatars/109/299/685/376/110/779/original/9ef1f88eff2118a4.png")!, reasonForAcknowledgement: "Came up with a performant and resilient way of getting data from the Lemmy API", websiteLink: URL(string: "https://elk.zone/mstdn.social/@samalone@twit.social")!),
     ]
@@ -26,37 +22,7 @@ struct SettingsView: View
                 Section
                 {
                     NavigationLink {
-                        List
-                        {
-                            Section("Posts")
-                            {
-                                SettingsItem(
-                                    settingPictureSystemName: "globe",
-                                    settingPictureColor: .pink,
-                                    settingName: "Show website icons",
-                                    isTicked: $shouldShowWebsiteFavicons
-                                )
-                            }
-                            
-                            Section("Icons")
-                            {
-                                SettingsItem(
-                                    settingPictureSystemName: "person.circle.fill",
-                                    settingPictureColor: .pink,
-                                    settingName: "Show user avatars",
-                                    isTicked: $shouldShowUserAvatars
-                                )
-                                
-                                SettingsItem(
-                                    settingPictureSystemName: "person.2.circle.fill",
-                                    settingPictureColor: .pink,
-                                    settingName: "Show community icons",
-                                    isTicked: $shouldShowCommunityIcons
-                                )
-                            }
-                        }
-                        .navigationTitle("Appearance")
-                        .navigationBarTitleDisplayMode(.inline)
+                        AppearanceSettingsView()
                     } label: {
                         HStack(alignment: .center) {
                             Image(systemName: "theatermasks.circle.fill")

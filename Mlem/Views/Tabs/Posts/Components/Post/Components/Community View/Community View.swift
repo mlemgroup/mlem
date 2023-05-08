@@ -60,7 +60,7 @@ struct CommunityView: View
                             {
                                 if community == nil
                                 {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community)
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil)
                                 }
                                 else
                                 {
