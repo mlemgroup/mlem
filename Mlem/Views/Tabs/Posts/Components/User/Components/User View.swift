@@ -18,19 +18,7 @@ struct UserView: View
             VStack(alignment: .leading) {
                 if let bannerLink = user.bannerLink
                 {
-                    GeometryReader { proxy in
-                        AsyncImage(url: bannerLink) { banner in
-                            banner
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: proxy.size.width, height: self.getHeightForHeaderImage(proxy), alignment: .center)
-                                .clipped()
-                                .offset(x: 0, y: self.getOffsetForHeaderImage(proxy))
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    }
-                    .frame(height: 300)
+                    StickyImageView(url: bannerLink)
                 }
                 else
                 {
@@ -71,34 +59,5 @@ struct UserView: View
             }
         }
         .edgesIgnoringSafeArea(.all)
-    }
-    
-    private func getScrollOffset(_ geometry: GeometryProxy) -> CGFloat
-    {
-        geometry.frame(in: .global).minY
-    }
-    private func getOffsetForHeaderImage(_ geometry: GeometryProxy) -> CGFloat
-    {
-        let offset = getScrollOffset(geometry)
-        
-        if offset > 0
-        {
-            return -offset
-        }
-        
-        return 0
-    }
-    private func getHeightForHeaderImage(_ geometry: GeometryProxy) -> CGFloat
-    {
-        let offset = getScrollOffset(geometry)
-        
-        let imageHeight = geometry.size.height
-        
-        if offset > 0
-        {
-            return imageHeight + offset
-        }
-        
-        return imageHeight
     }
 }

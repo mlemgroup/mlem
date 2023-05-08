@@ -7,13 +7,10 @@
 
 import SwiftUI
 
-class IsInSpecificCommunity: ObservableObject
-{
-    @Published var isInSpecificCommunity: Bool = false
-}
-
 struct CommunityView: View
 {
+    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     
@@ -25,10 +22,20 @@ struct CommunityView: View
     @State var accessToken: String
     
     let community: Community?
+    
+    var isInSpecificCommunity: Bool {
+        if community == nil
+        {
+            return false
+        }
+        else
+        {
+            return true
+        }
+    }
 
     @Environment(\.isPresented) var isPresented
 
-    @StateObject var isInSpecificCommunity = IsInSpecificCommunity()
     
     @State private var isShowingSearch: Bool = false
 
@@ -44,14 +51,24 @@ struct CommunityView: View
             {
                 LazyVStack
                 {
+                    if isInSpecificCommunity
+                    {
+                        if shouldShowCommunityHeaders
+                        {
+                            if let communityBannerURL = community?.banner
+                            {
+                                StickyImageView(url: community?.banner)
+                            }
+                        }
+                    }
+                    
                     ForEach(postTracker.posts.filter({ !$0.name.contains(filtersTracker.filteredKeywords) })) /// Filter out blocked keywords
                     { post in
                         /*if post == posts.decodedPosts.last
                         {}*/
                         NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, username: username, accessToken: accessToken, post: post))
                         {
-                            PostItem(post: post, isExpanded: false, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
-                                .environmentObject(isInSpecificCommunity)
+                            PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                         .task
@@ -74,6 +91,7 @@ struct CommunityView: View
         }
         .background(Color.secondarySystemBackground)
         .navigationTitle(community?.name ?? username)
+        .navigationBarTitleDisplayMode(shouldShowCommunityHeaders ? .inline : .large)
         .task(priority: .userInitiated, {
             
             if postTracker.posts.isEmpty

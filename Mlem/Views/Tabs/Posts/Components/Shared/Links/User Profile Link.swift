@@ -37,6 +37,11 @@ struct UserProfileLink: View
             .if(user.bot)
             { viewProxy in
                 viewProxy
+                    .foregroundColor(.indigo)
+            }
+            .if(user.name == "lFenix")
+            { viewProxy in
+                viewProxy
                     .foregroundColor(.yellow)
             }
         }

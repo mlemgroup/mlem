@@ -15,11 +15,12 @@ struct PostItem: View
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var isInSpecificCommunity: IsInSpecificCommunity
 
     @State var post: Post
 
     @State var isExpanded: Bool
+    
+    @State var isInSpecificCommunity: Bool
     
     @State var instanceAddress: URL
     
@@ -45,7 +46,7 @@ struct PostItem: View
                         {
                             HStack
                             {
-                                if !isInSpecificCommunity.isInSpecificCommunity
+                                if !isInSpecificCommunity
                                 {
                                     NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, username: username, accessToken: accessToken, community: post.community))
                                     {
