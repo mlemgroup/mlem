@@ -107,11 +107,11 @@ struct PostItem: View
                     {
                         if let embedTitle = post.embedTitle
                         {
-                            WebsiteIconComplex(title: embedTitle, url: postURL)
+                            WebsiteIconComplex(post: post)
                         }
                         else
                         {
-                            WebsiteIconComplex(url: postURL)
+                            WebsiteIconComplex(post: post)
                         }
                     }
                 }

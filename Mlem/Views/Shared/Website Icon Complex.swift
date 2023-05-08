@@ -13,84 +13,120 @@ struct WebsiteIconComplex: View
 {
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
 
-    @State var title: String?
-    @State var url: URL
+    @State var post: Post
 
     @State private var overridenWebsiteFaviconName: String = "globe"
     
     @State private var isShowingSafari: Bool = false
 
-    var faviconURL: URL
+    var faviconURL: URL?
     {
-        return URL(string: "https://www.google.com/s2/favicons?sz=32&domain=\(url)")!
+        if let baseURL = post.url?.host
+        {
+            return URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")!
+        }
+        else
+        {
+            return nil
+        }
     }
 
     var body: some View
     {
         GroupBox
         {
-            HStack(alignment: .center, spacing: 15)
-            {
-                if shouldShowWebsiteFavicons
+            VStack(alignment: .leading, spacing: 0) {
+                if let thumbnailURL = post.thumbnailURL
                 {
-                    CachedAsyncImage(url: faviconURL)
-                    { image in
-                        image
-                            .resizable()
-                            .frame(width: 25, height: 25, alignment: .center)
-                            .saturation(0)
-                            .clipShape(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5), style: .continuous))
-                    } placeholder: {
-                        Image(systemName: "globe")
-                    }
-                }
-                else
-                {
-                    Image(systemName: overridenWebsiteFaviconName)
-                        .resizable()
-                        .frame(width: 25, height: 25, alignment: .center)
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(.secondary)
-                        .onAppear
-                        {
-                            if url.host!.contains("theonion")
-                            {
-                                overridenWebsiteFaviconName = "carrot"
-                            }
-                            else if url.host!.contains("twitter")
-                            {
-                                overridenWebsiteFaviconName = "bird.fill"
-                            }
-                            else if url.host!.contains(["youtube", "youtu.be"])
-                            {
-                                overridenWebsiteFaviconName = "play.rectangle.fill"
-                            }
-                            else if url.host!.contains("wiki")
-                            {
-                                overridenWebsiteFaviconName = "book.closed.fill"
+                    VStack(alignment: .center, spacing: 0) {
+                        CachedAsyncImage(url: thumbnailURL) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: .infinity, maxHeight: 400)
+                        } placeholder: {
+                            ZStack(alignment: .center) {
+                                Text("Loading image…")
+                                Rectangle()
+                                    .frame(maxWidth: .infinity, maxHeight: 400)
+                                    .background(Color.secondarySystemBackground)
                             }
                         }
+                        
+                        Divider()
+                    }
                 }
-
-                Divider()
-
-                VStack(alignment: .leading, spacing: 10)
+                HStack(alignment: .center, spacing: 0)
                 {
-                    if let title
+                    if shouldShowWebsiteFavicons
                     {
-                        Text(title)
-                            .multilineTextAlignment(.leading)
+                        CachedAsyncImage(url: faviconURL)
+                        { image in
+                            image
+                                .resizable()
+                                .frame(width: 30, height: 30, alignment: .center)
+                                .saturation(0)
+                                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5), style: .continuous))
+                                .padding()
+                        } placeholder: {
+                            Image(systemName: "globe")
+                                .frame(width: 30, height: 30, alignment: .center)
+                                .padding()
+                        }
+                    }
+                    else
+                    {
+                        Image(systemName: overridenWebsiteFaviconName)
+                            .resizable()
+                            .frame(width: 25, height: 25, alignment: .center)
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.secondary)
+                            .padding()
+                            .onAppear
+                            {
+                                if let url = post.url
+                                {
+                                    if url.host!.contains("theonion")
+                                    {
+                                        overridenWebsiteFaviconName = "carrot"
+                                    }
+                                    else if url.host!.contains("twitter")
+                                    {
+                                        overridenWebsiteFaviconName = "bird.fill"
+                                    }
+                                    else if url.host!.contains(["youtube", "youtu.be"])
+                                    {
+                                        overridenWebsiteFaviconName = "play.rectangle.fill"
+                                    }
+                                    else if url.host!.contains("wiki")
+                                    {
+                                        overridenWebsiteFaviconName = "book.closed.fill"
+                                    }
+                                }
+                            }
                     }
 
-                    Text(url.host!)
-                        .lineLimit(1)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    Divider()
+
+                    VStack(alignment: .leading, spacing: 2)
+                    {
+                        Text(post.name)
+
+                        if let url = post.url
+                        {
+                            Text(url.host!)
+                                .lineLimit(1)
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                        }
+                    }
+                    .padding()
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             }
         }
+        .groupBoxStyle(OutlinedWebComplexStyle())
         .onTapGesture {
             print("Bool before: \(isShowingSafari)")
             print("Tapped")
@@ -98,7 +134,7 @@ struct WebsiteIconComplex: View
             print("Bool after: \(isShowingSafari)")
         }
         .sheet(isPresented: $isShowingSafari) {
-            InAppSafari(urlToOpen: url)
+            InAppSafari(urlToOpen: post.url!)
                 .edgesIgnoringSafeArea(.bottom)
         }
     }

@@ -59,7 +59,9 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
     {
         print("Failed while loading feed: \(connectionError)")
         
-        appState.criticalErrorType = .shittyInternet
-        appState.isShowingCriticalError = true
+        DispatchQueue.main.async {
+            appState.criticalErrorType = .shittyInternet
+            appState.isShowingCriticalError = true
+        }
     }
 }
