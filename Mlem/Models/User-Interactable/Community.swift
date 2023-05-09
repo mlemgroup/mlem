@@ -34,7 +34,7 @@ struct CommunityDetails: Codable
 {
     let numberOfSubscribers: Int
     let numberOfPosts: Int
-    let numberOfActiveUsersOverall: Int
+    let numberOfActiveUsersOverall: Int?
     
     let numberOfUsersOnline: Int
     
