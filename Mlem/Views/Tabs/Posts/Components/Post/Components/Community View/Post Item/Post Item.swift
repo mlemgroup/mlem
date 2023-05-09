@@ -8,6 +8,7 @@
 import QuickLook
 import SwiftUI
 import CachedAsyncImage
+import ImageViewer
 
 struct PostItem: View
 {
@@ -104,6 +105,15 @@ struct PostItem: View
                                 .overlay(
                                     RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
                                         .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
+                                )
+                                .overlay(
+                                    ImageViewer(image: Binding<Image>(
+                                        get: {
+                                            return image
+                                        }, set: { _, _ in
+                                            
+                                        }
+                                    ), viewerShown: $isShowingEnlargedImage)
                                 )
                                 .onTapGesture {
                                     isShowingEnlargedImage.toggle()

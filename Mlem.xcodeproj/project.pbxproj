@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		631262062A0ADD8400954A65 /* ImageViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 631262052A0ADD8400954A65 /* ImageViewer */; };
+		631262082A0ADD8400954A65 /* ImageViewerRemote in Frameworks */ = {isa = PBXBuildFile; productRef = 631262072A0ADD8400954A65 /* ImageViewerRemote */; };
 		631891162A03B0AC00EDA8D1 /* Parse JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631891152A03B0AC00EDA8D1 /* Parse JSON.swift */; };
 		6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */; };
 		6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */; };
@@ -203,6 +205,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				63DF71EF2A02988A002AC14E /* SwiftyJSON in Frameworks */,
+				631262062A0ADD8400954A65 /* ImageViewer in Frameworks */,
+				631262082A0ADD8400954A65 /* ImageViewerRemote in Frameworks */,
 				63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,6 +682,8 @@
 			packageProductDependencies = (
 				63DF71EE2A02988A002AC14E /* SwiftyJSON */,
 				63F0C7B62A052F5000A18C5D /* CachedAsyncImage */,
+				631262052A0ADD8400954A65 /* ImageViewer */,
+				631262072A0ADD8400954A65 /* ImageViewerRemote */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -754,6 +760,7 @@
 			packageReferences = (
 				63DF71ED2A02988A002AC14E /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+				631262042A0ADD8400954A65 /* XCRemoteSwiftPackageReference "swiftui-image-viewer" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1209,6 +1216,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		631262042A0ADD8400954A65 /* XCRemoteSwiftPackageReference "swiftui-image-viewer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Jake-Short/swiftui-image-viewer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		63DF71ED2A02988A002AC14E /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
@@ -1228,6 +1243,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		631262052A0ADD8400954A65 /* ImageViewer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 631262042A0ADD8400954A65 /* XCRemoteSwiftPackageReference "swiftui-image-viewer" */;
+			productName = ImageViewer;
+		};
+		631262072A0ADD8400954A65 /* ImageViewerRemote */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 631262042A0ADD8400954A65 /* XCRemoteSwiftPackageReference "swiftui-image-viewer" */;
+			productName = ImageViewerRemote;
+		};
 		63DF71EE2A02988A002AC14E /* SwiftyJSON */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 63DF71ED2A02988A002AC14E /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
