@@ -9,7 +9,7 @@ import Foundation
 
 enum SortingOptions: String
 {
-    case active, unspecified = "Active"
+    case active = "Active"
     case hot = "Hot"
     case new = "New"
     case topDay = "TopDay"

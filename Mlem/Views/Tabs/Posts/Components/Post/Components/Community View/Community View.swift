@@ -23,7 +23,7 @@ struct CommunityView: View
 
     @State var community: Community?
 
-    @State private var selectedSortingOption: SortingOptions = .unspecified
+    @State private var selectedSortingOption: SortingOptions = .active
     
     @State private var isSidebarShown: Bool = false
 
@@ -98,6 +98,24 @@ struct CommunityView: View
                                 }
                             }
                         }
+                        .onChange(of: selectedSortingOption, perform: { newValue in
+                            Task
+                            {
+                                print("Selected sorting option: \(newValue), \(newValue.rawValue)")
+                                
+                                postTracker.posts = .init()
+                                postTracker.page = 1
+                                
+                                if community == nil
+                                {
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
+                                }
+                                else
+                                {
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
+                                }
+                            }
+                        })
                     }
                 }
             }
@@ -222,8 +240,10 @@ struct CommunityView: View
                         Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
                     case .topAll:
                         Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
-                    case .unspecified:
-                        Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")
+                        
+                    #warning("TODO: Make this the default icon for the sorting")
+                    /*case .unspecified:
+                        Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")*/
                 }
             }
             
@@ -261,9 +281,6 @@ struct CommunityView: View
                 Label("More", systemImage: "info.circle")
             }
         }
-        .onChange(of: selectedSortingOption, perform: { newValue in
-            print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-        })
         .sheet(isPresented: $isShowingSearch)
         {
             SearchSheet()
