@@ -134,12 +134,12 @@ struct CommunityView: View
         }
         .toolbar
         {
-            Button
+            /*Button
             {
                 isShowingSearch.toggle()
             } label: {
                 Image(systemName: "magnifyingglass")
-            }
+            }*/
 
             Menu
             {
@@ -159,6 +159,17 @@ struct CommunityView: View
                     } label: {
                         Label("Sidebar", systemImage: "sidebar.right")
                     }
+                }
+                
+                Divider()
+                
+                if isInSpecificCommunity
+                {
+                    ShareButton(urlToShare: community!.actorID)
+                }
+                else
+                {
+                    ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!)
                 }
             } label: {
                 Label("More", systemImage: "info.circle")

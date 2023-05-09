@@ -10,6 +10,7 @@ import SwiftUI
 struct ShareButton: View
 {
     @State var urlToShare: URL
+    @State var customText: String?
 
     var body: some View
     {
@@ -17,7 +18,14 @@ struct ShareButton: View
             showShareSheet(URLtoShare: urlToShare)
             print("Shared")
         }, label: {
-            Image(systemName: "square.and.arrow.up")
+            if let customText
+            {
+                Label(customText, systemImage: "square.and.arrow.up")
+            }
+            else
+            {
+                Label("Share…", systemImage: "square.and.arrow.up")
+            }
         })
     }
 }

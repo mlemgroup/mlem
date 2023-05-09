@@ -74,6 +74,8 @@ struct CommunitySidebarView: View
                                 UserProfileLink(user: moderator)
                             }
                         }
+                        .navigationTitle("Moderators")
+                        .navigationBarTitleDisplayMode(.inline)
                     } label: {
                         Text("Moderators")
                     }
@@ -87,6 +89,8 @@ struct CommunitySidebarView: View
                 }
             }
         }
+        .navigationTitle("Sidebar")
+        .navigationBarTitleDisplayMode(.inline)
         .onDisappear
         {
             isActive = false

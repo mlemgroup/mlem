@@ -32,7 +32,7 @@ struct UserProfileLink: View
             .if(user.admin)
             { viewProxy in
                 viewProxy
-                    .foregroundColor(.cyan)
+                    .foregroundColor(.red)
             }
             .if(user.bot)
             { viewProxy in
