@@ -59,14 +59,14 @@ struct CommunityView: View
                         {
                             if let communityBannerURL = community?.banner
                             {
-                                StickyImageView(url: community?.banner)
+                                StickyImageView(url: communityBannerURL)
                             }
                         }
                     }
 
                     if isInSpecificCommunity
                     {
-                        NavigationLink(destination: CommunitySidebarView(community: community!), isActive: $isSidebarShown)
+                        NavigationLink(destination: CommunitySidebarView(community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
                         { /// This is here to show the sidebar when needed
                             Text("")
                         }

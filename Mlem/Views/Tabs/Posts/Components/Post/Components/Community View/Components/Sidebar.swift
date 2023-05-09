@@ -7,21 +7,30 @@
 
 import SwiftUI
 
-struct CommunitySidebarView: View {
-    
+struct CommunitySidebarView: View
+{
     @State var community: Community
-    
-    var body: some View {
-        if community.details != nil
+    @Binding var isActive: Bool
+
+    var body: some View
+    {
+        VStack(alignment: .leading, spacing: 15)
         {
-            Text(String(community.details!.numberOfPosts))
-        }
-        else
-        {
-            ProgressView {
-                Text("Loading details…")
+            if community.details != nil
+            {
+                Text(String(community.details!.numberOfPosts))
+            }
+            else
+            {
+                ProgressView
+                {
+                    Text("Loading details…")
+                }
             }
         }
-
+        .onDisappear
+        {
+            isActive = false
+        }
     }
 }
