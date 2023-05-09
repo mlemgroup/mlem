@@ -23,6 +23,8 @@ struct CommunityView: View
 
     @State var community: Community?
 
+    @State private var selectedSortingOption: SortingOptions = .active
+    
     @State private var isSidebarShown: Bool = false
 
     var isInSpecificCommunity: Bool
@@ -88,14 +90,32 @@ struct CommunityView: View
                             {
                                 if community == nil
                                 {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil)
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
                                 }
                                 else
                                 {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community)
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
                                 }
                             }
                         }
+                        .onChange(of: selectedSortingOption, perform: { newValue in
+                            Task
+                            {
+                                print("Selected sorting option: \(newValue), \(newValue.rawValue)")
+                                
+                                postTracker.posts = .init()
+                                postTracker.page = 1
+                                
+                                if community == nil
+                                {
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
+                                }
+                                else
+                                {
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
+                                }
+                            }
+                        })
                     }
                 }
             }
@@ -109,7 +129,7 @@ struct CommunityView: View
             {
                 print("Post tracker is empty")
 
-                await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community)
+                await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption)
             }
             else
             {
@@ -143,12 +163,98 @@ struct CommunityView: View
 
             Menu
             {
+                Button {
+                    selectedSortingOption = .active
+                } label: {
+                    Label("Active", systemImage: "bubble.left.and.bubble.right")
+                }
+
+                Button
+                {
+                    selectedSortingOption = .hot
+                } label: {
+                    Label("Hot", systemImage: "flame")
+                }
+                
+                Button
+                {
+                    selectedSortingOption = .new
+                } label: {
+                    Label("New", systemImage: "sun.max")
+                }
+                
+                Menu
+                {
+                    Button
+                    {
+                        selectedSortingOption = .topDay
+                    } label: {
+                        Label("Day", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topWeek
+                    } label: {
+                        Label("Week", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topMonth
+                    } label: {
+                        Label("Month", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topYear
+                    } label: {
+                        Label("Year", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topAll
+                    } label: {
+                        Label("All time", systemImage: "calendar.day.timeline.left")
+                    }
+                } label: {
+                    Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
+                }
+            } label: {
+                switch selectedSortingOption {
+                    case .active:
+                        Label("Selected sorting by  \"Active\"", systemImage: "bubble.left.and.bubble.right")
+                    case .hot:
+                        Label("Selected sorting by \"Hot\"", systemImage: "flame")
+                    case .new:
+                        Label("Selected sorting by \"New\"", systemImage: "sun.max")
+                    case .topDay:
+                        Label("Selected sorting by \"Top of Day\"", systemImage: "calendar.day.timeline.left")
+                    case .topWeek:
+                        Label("Selected sorting by \"Top of Week\"", systemImage: "calendar.day.timeline.left")
+                    case .topMonth:
+                        Label("Selected sorting by \"Top of Month\"", systemImage: "calendar.day.timeline.left")
+                    case .topYear:
+                        Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
+                    case .topAll:
+                        Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
+                        
+                    #warning("TODO: Make this the default icon for the sorting")
+                    /*case .unspecified:
+                        Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")*/
+                }
+            }
+            
+            Menu
+            {
                 #warning("TODO: Add a [submit post] feature")
                 Button
                 {
                     print("Submit post")
                 } label: {
-                    Label("Submit Post", systemImage: "plus.bubble")
+                    Label("Submit Post…", systemImage: "plus.bubble")
                 }
 
                 if isInSpecificCommunity
