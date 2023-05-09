@@ -8,8 +8,16 @@
 import Foundation
 import SwiftUI
 
-struct Comment: Codable, Identifiable
+struct Comment: Codable, Identifiable, Hashable
 {
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     let id: Int
     let postID: Int
     let creatorID: Int

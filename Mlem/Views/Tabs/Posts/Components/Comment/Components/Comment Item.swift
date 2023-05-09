@@ -53,6 +53,7 @@ struct CommentItem: View
             
             Divider()
         }
+        .background(comment.parentID == nil ? .red : .blue) /// Red when top level, otherwise blue
         .dynamicTypeSize(.small)
         .sheet(isPresented: $isShowingReplySheet)
         {

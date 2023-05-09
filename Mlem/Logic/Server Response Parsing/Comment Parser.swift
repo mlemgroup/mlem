@@ -91,7 +91,19 @@ func parseComments(commentResponse: String, instanceLink: URL) async throws -> [
                     postID: comment["post", "id"].intValue,
                     creatorID: comment["comment", "creator_id"].intValue,
                     //postName: <#T##String#>,
-                    parentID: nil,
+                    parentID: {
+                        let stringRepresentationOfPath: String = comment["comment", "path"].stringValue
+                        let componentsOfPath = stringRepresentationOfPath.components(separatedBy: ".")
+                        
+                        if componentsOfPath.count == 2 /// If there are two elements, it'ß the root (0) and the comment itself. That means there is no parent and parentID should be nil
+                        {
+                            return nil
+                        }
+                        else
+                        {
+                            return Int(componentsOfPath.last!)
+                        }
+                    }(),
                     content: comment["comment", "content"].stringValue,
                     removed: comment["comment", "removed"].boolValue,
                     //read: comment[""],
