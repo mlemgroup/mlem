@@ -19,11 +19,32 @@ struct CommunitySidebarView: View
             if community.details != nil
             {
                 HStack(alignment: .center, spacing: 10) {
-                    Text("\(community.details!.numberOfSubscribers.formatted(.number)) subs")
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
+                        Text(community.details!.numberOfSubscribers.formatted())
+                        Text("subs")
+                            .font(.caption)
+                    }
+                    .padding(.vertical, 5)
                     
+                    Divider()
                     
-                    Text("\(community.details!.numberOfPosts.formatted(.number)) posts")
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
+                        Text(community.details!.numberOfPosts.formatted())
+                        Text("posts")
+                            .font(.caption)
+                    }
+                    .padding(.vertical, 5)
+                    
+                    Divider()
+                    
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
+                        Text(community.details!.numberOfUsersOnline.formatted())
+                        Text("online")
+                            .font(.caption)
+                    }
+                    .padding(.vertical, 5)
                 }
+                .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity)
                 .background(.thinMaterial)
                 
