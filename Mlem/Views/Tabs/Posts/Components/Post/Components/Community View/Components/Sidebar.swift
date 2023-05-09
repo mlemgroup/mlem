@@ -18,7 +18,31 @@ struct CommunitySidebarView: View
         {
             if community.details != nil
             {
-                Text(String(community.details!.numberOfPosts))
+                List {
+                        Section("Community Info") {
+                            if let communityDescription = community.description
+                            {
+                                Text(communityDescription)
+                            }
+                            else
+                            {
+                                Text("Community has no description")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                        NavigationLink {
+                            List {
+                                ForEach(community.details!.moderators)
+                                { moderator in
+                                    UserProfileLink(user: moderator)
+                                }
+                            }
+                        } label: {
+                            Text("Moderators")
+                        }
+                    }
+                
             }
             else
             {
