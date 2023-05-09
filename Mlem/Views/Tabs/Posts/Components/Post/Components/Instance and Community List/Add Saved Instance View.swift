@@ -116,120 +116,122 @@ struct AddSavedInstanceView: View
 
                 Button
                 {
-                    print("logged in")
+                    Task
+                    {
+                        await tryToAddAccount()
+                    }
                 } label: {
                     Text("Log In")
                 }
                 .disabled(instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
             }
             .disabled(isShowingEndpointDiscoverySpinner)
-            .onSubmit
+        }
+        .onAppear
+        {
+            isFocused = true
+        }
+    }
+    
+    func tryToAddAccount() async -> Void
+    {
+        print("Will start the account addition process")
+        
+        withAnimation
+        {
+            isShowingEndpointDiscoverySpinner = true
+        }
+
+        do
+        {
+            let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: instanceLink)
+            print("Found correct endpoint: \(instanceURL)")
+
+            do
             {
-                Task
+                let loginRequestResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceURL, command: """
+                {"op": "Login", "data":{"username_or_email": "\(usernameOrEmail)", "password": "\(password)"}}
+                """)
+                if loginRequestResponse.contains("jwt")
                 {
-                    withAnimation
+                    hasSuccessfulyConnectedToEndpoint = true
+
+                    print("Successfully got the token")
+
+                    let parsedResponse: JSON = try! parseJSON(from: loginRequestResponse)
+
+                    token = parsedResponse["data", "jwt"].stringValue
+
+                    print("Obtained token: \(token)")
+                    
+                    communityTracker.savedAccounts.append(SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail))
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2)
                     {
-                        isShowingEndpointDiscoverySpinner = true
+                        isShowingSheet = false
                     }
+                }
+                else
+                {
+                    print("Error occured: \(loginRequestResponse)")
 
-                    do
+                    errorText = "Invalid credentials"
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1)
                     {
-                        let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: instanceLink)
-                        print("Found correct endpoint: \(instanceURL)")
+                        errorOccuredWhileConnectingToEndpoint = true
 
-                        do
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2)
                         {
-                            let loginRequestResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceURL, command: """
-                            {"op": "Login", "data":{"username_or_email": "\(usernameOrEmail)", "password": "\(password)"}}
-                            """)
-                            if loginRequestResponse.contains("jwt")
+                            withAnimation
                             {
-                                hasSuccessfulyConnectedToEndpoint = true
-
-                                print("Successfully got the token")
-
-                                let parsedResponse: JSON = try! parseJSON(from: loginRequestResponse)
-
-                                token = parsedResponse["data", "jwt"].stringValue
-
-                                print("Obtained token: \(token)")
-                                
-                                communityTracker.savedAccounts.append(SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail))
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2)
-                                {
-                                    isShowingSheet = false
-                                }
-                            }
-                            else
-                            {
-                                print("Error occured: \(loginRequestResponse)")
-
-                                errorText = "Invalid credentials"
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1)
-                                {
-                                    errorOccuredWhileConnectingToEndpoint = true
-
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2)
-                                    {
-                                        withAnimation
-                                        {
-                                            isShowingEndpointDiscoverySpinner = false
-                                            errorOccuredWhileConnectingToEndpoint = false
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch let loginRequestError
-                        {
-                            print("Failed while sending login command: \(loginRequestError)")
-
-                            errorText = "Could not connect to \(instanceLink)"
-
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1)
-                            {
-                                errorOccuredWhileConnectingToEndpoint = true
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2)
-                                {
-                                    withAnimation
-                                    {
-                                        isShowingEndpointDiscoverySpinner = false
-                                        errorOccuredWhileConnectingToEndpoint = false
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch let endpointDiscoveryError
-                    {
-                        print("Failed while trying to get correct URL to endpoint: \(endpointDiscoveryError)")
-
-                        errorText = "Could not connect to \(instanceLink)"
-
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
-                        {
-                            errorOccuredWhileConnectingToEndpoint = true
-
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2)
-                            {
-                                withAnimation
-                                {
-                                    isShowingEndpointDiscoverySpinner = false
-                                    errorOccuredWhileConnectingToEndpoint = false
-                                }
+                                isShowingEndpointDiscoverySpinner = false
+                                errorOccuredWhileConnectingToEndpoint = false
                             }
                         }
                     }
                 }
             }
-            .padding()
+            catch let loginRequestError
+            {
+                print("Failed while sending login command: \(loginRequestError)")
+
+                errorText = "Could not connect to \(instanceLink)"
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                {
+                    errorOccuredWhileConnectingToEndpoint = true
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                    {
+                        withAnimation
+                        {
+                            isShowingEndpointDiscoverySpinner = false
+                            errorOccuredWhileConnectingToEndpoint = false
+                        }
+                    }
+                }
+            }
         }
-        .onAppear
+        catch let endpointDiscoveryError
         {
-            isFocused = true
+            print("Failed while trying to get correct URL to endpoint: \(endpointDiscoveryError)")
+
+            errorText = "Could not connect to \(instanceLink)"
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+            {
+                errorOccuredWhileConnectingToEndpoint = true
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                {
+                    withAnimation
+                    {
+                        isShowingEndpointDiscoverySpinner = false
+                        errorOccuredWhileConnectingToEndpoint = false
+                    }
+                }
+            }
         }
     }
 }
