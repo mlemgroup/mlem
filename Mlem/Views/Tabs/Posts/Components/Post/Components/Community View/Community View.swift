@@ -120,7 +120,16 @@ struct CommunityView: View
         {
             if isInSpecificCommunity
             {
-                community?.details = try! await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
+                do
+                {
+                    community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
+                }
+                catch let communityDetailsFetchingError
+                {
+                    print("Failed while fetching community details: \(communityDetailsFetchingError)")
+                    appState.criticalErrorType = .shittyInternet
+                    appState.isShowingCriticalError = true
+                }
             }
         }
         .toolbar
