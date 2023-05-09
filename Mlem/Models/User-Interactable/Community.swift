@@ -26,4 +26,17 @@ struct Community: Identifiable, Codable
     
     let deleted: Bool
     let nsfw: Bool
+    
+    var details: CommunityDetails?
+}
+
+struct CommunityDetails: Codable
+{
+    let numberOfSubscribers: Int
+    let numberOfPosts: Int
+    let numberOfActiveUsersOverall: Int?
+    
+    let numberOfUsersOnline: Int
+    
+    let moderators: [User]
 }

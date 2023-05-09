@@ -10,20 +10,23 @@ import SwiftUI
 struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
-    
+
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
-    
+
     @StateObject var postTracker: PostTracker = .init()
-    
+
     @State var instanceAddress: URL
-    
+
     @State var username: String
     @State var accessToken: String
-    
-    let community: Community?
-    
-    var isInSpecificCommunity: Bool {
+
+    @State var community: Community?
+
+    @State private var isSidebarShown: Bool = false
+
+    var isInSpecificCommunity: Bool
+    {
         if community == nil
         {
             return false
@@ -36,7 +39,6 @@ struct CommunityView: View
 
     @Environment(\.isPresented) var isPresented
 
-    
     @State private var isShowingSearch: Bool = false
 
     var body: some View
@@ -57,15 +59,24 @@ struct CommunityView: View
                         {
                             if let communityBannerURL = community?.banner
                             {
-                                StickyImageView(url: community?.banner)
+                                StickyImageView(url: communityBannerURL)
                             }
                         }
                     }
-                    
-                    ForEach(postTracker.posts.filter({ !$0.name.contains(filtersTracker.filteredKeywords) })) /// Filter out blocked keywords
+
+                    if isInSpecificCommunity
+                    {
+                        NavigationLink(destination: CommunitySidebarView(community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
+                        { /// This is here to show the sidebar when needed
+                            Text("")
+                        }
+                        .hidden()
+                    }
+
+                    ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
                     { post in
-                        /*if post == posts.decodedPosts.last
-                        {}*/
+                        /* if post == posts.decodedPosts.last
+                         {} */
                         NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, username: username, accessToken: accessToken, post: post))
                         {
                             PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
@@ -92,27 +103,76 @@ struct CommunityView: View
         .background(Color.secondarySystemBackground)
         .navigationTitle(community?.name ?? username)
         .navigationBarTitleDisplayMode(shouldShowCommunityHeaders ? .inline : .large)
-        .task(priority: .userInitiated, {
-            
+        .task(priority: .userInitiated)
+        {
             if postTracker.posts.isEmpty
             {
                 print("Post tracker is empty")
-                
+
                 await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community)
-                
             }
             else
             {
                 print("Post tracker is not empty")
             }
-        })
+        }
+        .task(priority: .background)
+        {
+            if isInSpecificCommunity
+            {
+                do
+                {
+                    community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
+                }
+                catch let communityDetailsFetchingError
+                {
+                    print("Failed while fetching community details: \(communityDetailsFetchingError)")
+                    appState.criticalErrorType = .shittyInternet
+                    appState.isShowingCriticalError = true
+                }
+            }
+        }
         .toolbar
         {
-            Button
+            /*Button
             {
                 isShowingSearch.toggle()
             } label: {
                 Image(systemName: "magnifyingglass")
+            }*/
+
+            Menu
+            {
+                #warning("TODO: Add a [submit post] feature")
+                Button
+                {
+                    print("Submit post")
+                } label: {
+                    Label("Submit Post", systemImage: "plus.bubble")
+                }
+
+                if isInSpecificCommunity
+                {
+                    Button
+                    {
+                        self.isSidebarShown = true
+                    } label: {
+                        Label("Sidebar", systemImage: "sidebar.right")
+                    }
+                }
+                
+                Divider()
+                
+                if isInSpecificCommunity
+                {
+                    ShareButton(urlToShare: community!.actorID)
+                }
+                else
+                {
+                    ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!)
+                }
+            } label: {
+                Label("More", systemImage: "info.circle")
             }
         }
         .sheet(isPresented: $isShowingSearch)

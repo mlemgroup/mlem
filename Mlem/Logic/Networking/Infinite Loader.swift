@@ -40,7 +40,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
     
     do
     {
-        let apiResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: loadingCommand)
+        let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: instanceAddress, command: loadingCommand)
         
         print("API Response: \(apiResponse)")
         

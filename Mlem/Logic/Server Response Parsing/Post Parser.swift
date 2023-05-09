@@ -147,7 +147,7 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                         id: post["community", "id"].intValue,
                         name: post["community", "name"].stringValue,
                         title: post["community", "title"].string,
-                        description: post["community", "desctiption"].string,
+                        description: post["community", "description"].string,
                         icon: post["community", "icon"].url,
                         banner: post["community", "banner"].url,
                         createdAt: post["community", "published"].string,

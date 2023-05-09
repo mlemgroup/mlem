@@ -34,7 +34,11 @@ func sendCommand(maintainOpenConnection: Bool, instanceAddress: URL, command: St
     {
         case let .string(responseString):
             print("Received a valid string")
-            task.cancel(with: .goingAway, reason: nil)
+            
+            if !maintainOpenConnection
+            {
+                task.cancel(with: .goingAway, reason: nil)
+            }
             return responseString
             
         case let .data(responseData):
