@@ -23,6 +23,8 @@ struct CommunityView: View
 
     @State var community: Community?
 
+    @State private var selectedSortingOption: SortingOptions = .active
+    
     @State private var isSidebarShown: Bool = false
 
     var isInSpecificCommunity: Bool
@@ -88,11 +90,11 @@ struct CommunityView: View
                             {
                                 if community == nil
                                 {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil)
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
                                 }
                                 else
                                 {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community)
+                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
                                 }
                             }
                         }
@@ -109,7 +111,7 @@ struct CommunityView: View
             {
                 print("Post tracker is empty")
 
-                await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community)
+                await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption)
             }
             else
             {
@@ -141,6 +143,71 @@ struct CommunityView: View
                 Image(systemName: "magnifyingglass")
             }*/
 
+            Menu
+            {
+                Button {
+                    selectedSortingOption = .active
+                } label: {
+                    Label("Active", systemImage: "bubble.left.and.bubble.right")
+                }
+
+                Button
+                {
+                    selectedSortingOption = .hot
+                } label: {
+                    Label("Hot", systemImage: "flame")
+                }
+                
+                Button
+                {
+                    selectedSortingOption = .new
+                } label: {
+                    Label("New", systemImage: "sun.max")
+                }
+                
+                Menu
+                {
+                    Button
+                    {
+                        selectedSortingOption = .topDay
+                    } label: {
+                        Label("Day", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topWeek
+                    } label: {
+                        Label("Week", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topMonth
+                    } label: {
+                        Label("Month", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topYear
+                    } label: {
+                        Label("Year", systemImage: "calendar.day.timeline.left")
+                    }
+                    
+                    Button
+                    {
+                        selectedSortingOption = .topAll
+                    } label: {
+                        Label("All time", systemImage: "calendar.day.timeline.left")
+                    }
+                } label: {
+                    Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
+                }
+            } label: {
+                Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")
+            }
+            
             Menu
             {
                 #warning("TODO: Add a [submit post] feature")
@@ -175,6 +242,9 @@ struct CommunityView: View
                 Label("More", systemImage: "info.circle")
             }
         }
+        .onChange(of: selectedSortingOption, perform: { newValue in
+            print("Selected sorting option: \(newValue), \(newValue.rawValue)")
+        })
         .sheet(isPresented: $isShowingSearch)
         {
             SearchSheet()
