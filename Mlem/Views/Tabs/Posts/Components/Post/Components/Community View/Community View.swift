@@ -23,7 +23,7 @@ struct CommunityView: View
 
     @State var community: Community?
 
-    @State private var selectedSortingOption: SortingOptions = .active
+    @State private var selectedSortingOption: SortingOptions = .unspecified
     
     @State private var isSidebarShown: Bool = false
 
@@ -205,7 +205,26 @@ struct CommunityView: View
                     Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
                 }
             } label: {
-                Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")
+                switch selectedSortingOption {
+                    case .active:
+                        Label("Selected sorting by  \"Active\"", systemImage: "bubble.left.and.bubble.right")
+                    case .hot:
+                        Label("Selected sorting by \"Hot\"", systemImage: "flame")
+                    case .new:
+                        Label("Selected sorting by \"New\"", systemImage: "sun.max")
+                    case .topDay:
+                        Label("Selected sorting by \"Top of Day\"", systemImage: "calendar.day.timeline.left")
+                    case .topWeek:
+                        Label("Selected sorting by \"Top of Week\"", systemImage: "calendar.day.timeline.left")
+                    case .topMonth:
+                        Label("Selected sorting by \"Top of Month\"", systemImage: "calendar.day.timeline.left")
+                    case .topYear:
+                        Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
+                    case .topAll:
+                        Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
+                    case .unspecified:
+                        Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")
+                }
             }
             
             Menu
@@ -215,7 +234,7 @@ struct CommunityView: View
                 {
                     print("Submit post")
                 } label: {
-                    Label("Submit Post", systemImage: "plus.bubble")
+                    Label("Submit Post…", systemImage: "plus.bubble")
                 }
 
                 if isInSpecificCommunity
