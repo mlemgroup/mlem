@@ -15,6 +15,8 @@ struct MlemApp: App
     @StateObject var accountsTracker: SavedAccountTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
 
+    @StateObject var selectedImageTracker: SelectedImageTracker = .init()
+    
     var body: some Scene
     {
         WindowGroup
@@ -23,6 +25,7 @@ struct MlemApp: App
                 .environmentObject(appState)
                 .environmentObject(accountsTracker)
                 .environmentObject(filtersTracker)
+                .environmentObject(selectedImageTracker)
                 .onChange(of: accountsTracker.savedAccounts)
                 { newValue in
                     do

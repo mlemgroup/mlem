@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		631262062A0ADD8400954A65 /* ImageViewer in Frameworks */ = {isa = PBXBuildFile; productRef = 631262052A0ADD8400954A65 /* ImageViewer */; };
 		631262082A0ADD8400954A65 /* ImageViewerRemote in Frameworks */ = {isa = PBXBuildFile; productRef = 631262072A0ADD8400954A65 /* ImageViewerRemote */; };
+		6312620E2A0D2C2900954A65 /* Selected Image Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6312620D2A0D2C2900954A65 /* Selected Image Tracker.swift */; };
 		631891162A03B0AC00EDA8D1 /* Parse JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631891152A03B0AC00EDA8D1 /* Parse JSON.swift */; };
 		6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */; };
 		6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */; };
@@ -113,6 +114,7 @@
 
 /* Begin PBXFileReference section */
 		630D753C27F65E44006E60C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6312620D2A0D2C2900954A65 /* Selected Image Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Selected Image Tracker.swift"; sourceTree = "<group>"; };
 		631891152A03B0AC00EDA8D1 /* Parse JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parse JSON.swift"; sourceTree = "<group>"; };
 		6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stickied Tag.swift"; sourceTree = "<group>"; };
 		6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share Sheet.swift"; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				63F0C7A52A05225100A18C5D /* Saved Account.swift */,
 				63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */,
 				63CE4E722A06F5A100405271 /* Access Token.swift */,
+				6312620D2A0D2C2900954A65 /* Selected Image Tracker.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -808,6 +811,7 @@
 				63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */,
 				63344C542A07D193001BC616 /* Filters.swift in Sources */,
 				63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */,
+				6312620E2A0D2C2900954A65 /* Selected Image Tracker.swift in Sources */,
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */,

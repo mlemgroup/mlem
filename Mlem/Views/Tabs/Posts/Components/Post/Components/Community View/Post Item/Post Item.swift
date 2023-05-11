@@ -16,6 +16,7 @@ struct PostItem: View
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var selectedImageTracker: SelectedImageTracker
 
     @State var post: Post
 
@@ -29,7 +30,6 @@ struct PostItem: View
     @State var accessToken: String
     
     @State private var isShowingSafari: Bool = false
-    @State private var isShowingEnlargedImage: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
 
@@ -106,17 +106,9 @@ struct PostItem: View
                                     RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
                                         .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
                                 )
-                                .overlay(
-                                    ImageViewer(image: Binding<Image>(
-                                        get: {
-                                            return image
-                                        }, set: { _, _ in
-                                            
-                                        }
-                                    ), viewerShown: $isShowingEnlargedImage)
-                                )
                                 .onTapGesture {
-                                    isShowingEnlargedImage.toggle()
+                                    selectedImageTracker.image = image
+                                    selectedImageTracker.isShowingImage.toggle()
                                 }
                         } placeholder: {
                             ProgressView()

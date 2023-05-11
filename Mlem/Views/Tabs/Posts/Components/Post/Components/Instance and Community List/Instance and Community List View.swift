@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import ImageViewer
 
 struct InstanceCommunityListView: View
 {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
+    
+    @EnvironmentObject var selectedImageTracker: SelectedImageTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
 
@@ -94,5 +97,8 @@ struct InstanceCommunityListView: View
                     )
             }
         }
+        .overlay(
+            ImageViewer(image: $selectedImageTracker.image, viewerShown: $selectedImageTracker.isShowingImage)
+        )
     }
 }
