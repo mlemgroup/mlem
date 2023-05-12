@@ -14,10 +14,6 @@ struct Comment: Codable, Identifiable, Hashable
         lhs.id == rhs.id
     }
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
     let id: Int
     let postID: Int
     let creatorID: Int
