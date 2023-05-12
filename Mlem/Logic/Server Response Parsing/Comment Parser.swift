@@ -10,7 +10,7 @@ import SwiftyJSON
 
 func parseComments(commentResponse: String, instanceLink: URL) async throws -> [Comment]
 {
-    var commentTracker: [Comment] = .init()
+    var commentTracker: Set<Comment> = .init()
     
     do
     {
@@ -75,7 +75,7 @@ func parseComments(commentResponse: String, instanceLink: URL) async throws -> [
                 
                 print("New comment: \(newComment)")
                 
-                commentTracker.append(
+                commentTracker.insert(
                     newComment
                 )
             }
@@ -147,13 +147,42 @@ func parseComments(commentResponse: String, instanceLink: URL) async throws -> [
                 
                 print("New comment: \(newComment)")
                 
-                commentTracker.append(
+                commentTracker.insert(
                     newComment
                 )
             }
         }
+                
+        print("Comment set: \(commentTracker)")
         
-        return commentTracker
+        let topLevelComments: [Comment] = commentTracker.filter({ $0.parentID == nil }) /// First, get all the comments with no parentID. Those will be the root of all other comments
+        for topLevelComment in topLevelComments {
+            commentTracker.remove(topLevelComment) /// Remove all the top level comments from the initial set
+        }
+        
+        var finalComments: [Comment] = topLevelComments /// Create a final array of all the comments. Here, set it to all the top-level comments
+        
+        print("Found these parent comments \(finalComments.count): \(finalComments)")
+        
+        while !commentTracker.isEmpty
+        { /// These comments should have a parentID
+            for comment in finalComments
+            {
+                
+                let matchedComment: Comment = finalComments.filter({ $0.id == comment.id }).first!
+                let indiceOfMatchedComment: Int = finalComments.firstIndex(of: matchedComment)!
+                
+                print("Matched this comment: \(matchedComment)")
+                
+                print("Found indice of matched comment: \(indiceOfMatchedComment)")
+                
+                finalComments[indiceOfMatchedComment].children?.append(matchedComment)
+                
+                commentTracker.remove(matchedComment)
+            }
+        }
+        
+        return finalComments
     }
     catch let parsingError
     {
