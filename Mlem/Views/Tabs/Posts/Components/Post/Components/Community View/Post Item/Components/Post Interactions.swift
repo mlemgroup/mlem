@@ -19,7 +19,7 @@ struct PostInteractions: View
         {
             UpvoteButton(score: score)
             DownvoteButton()
-            ShareButton(urlToShare: urlToPost)
+            ShareButton(urlToShare: urlToPost, isShowingButtonText: false)
         }
     }
 }
