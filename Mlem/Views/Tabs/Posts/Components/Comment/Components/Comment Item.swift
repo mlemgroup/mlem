@@ -52,13 +52,18 @@ struct CommentItem: View
             }
             
             Divider()
+
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(comment.children) { comment in
+                    CommentItem(comment: comment)
+                }
+            }
         }
-        .background(comment.parentID == nil ? .red : .blue) /// Red when top level, otherwise blue
         .dynamicTypeSize(.small)
         .sheet(isPresented: $isShowingReplySheet)
         {
             ReplyView(parentComment: comment)
         }
-        .padding(.horizontal)
+        .padding(comment.parentID == nil ? .horizontal : .leading)
     }
 }
