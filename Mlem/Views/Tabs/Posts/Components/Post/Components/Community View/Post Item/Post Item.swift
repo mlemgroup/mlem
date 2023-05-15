@@ -155,7 +155,7 @@ struct PostItem: View
                     DownvoteButton()
                     if let postURL = post.url
                     {
-                        ShareButton(urlToShare: postURL)
+                        ShareButton(urlToShare: postURL, isShowingButtonText: false)
                     }
                 }
 
