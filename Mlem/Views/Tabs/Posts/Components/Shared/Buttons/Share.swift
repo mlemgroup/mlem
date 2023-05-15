@@ -10,22 +10,30 @@ import SwiftUI
 struct ShareButton: View
 {
     @State var urlToShare: URL
+    @State var isShowingButtonText: Bool
     @State var customText: String?
 
     var body: some View
     {
-        Button(action: {
+        Button {
             showShareSheet(URLtoShare: urlToShare)
             print("Shared")
-        }, label: {
-            if let customText
+        } label: {
+            if !isShowingButtonText
             {
-                Label(customText, systemImage: "square.and.arrow.up")
+                Image(systemName: "square.and.arrow.up")
             }
             else
             {
-                Label("Share…", systemImage: "square.and.arrow.up")
+                if let customText
+                {
+                    Label(customText, systemImage: "square.and.arrow.up")
+                }
+                else
+                {
+                    Label("Share…", systemImage: "square.and.arrow.up")
+                }
             }
-        })
+        }
     }
 }

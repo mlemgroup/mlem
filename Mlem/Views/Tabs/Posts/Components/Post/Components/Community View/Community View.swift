@@ -271,11 +271,11 @@ struct CommunityView: View
                 
                 if isInSpecificCommunity
                 {
-                    ShareButton(urlToShare: community!.actorID)
+                    ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
                 }
                 else
                 {
-                    ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!)
+                    ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!, isShowingButtonText: true)
                 }
             } label: {
                 Label("More", systemImage: "info.circle")
