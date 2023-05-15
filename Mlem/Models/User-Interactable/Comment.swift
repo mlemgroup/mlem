@@ -49,5 +49,5 @@ struct Comment: Codable, Identifiable, Hashable
     let author: User
 
     let childCount: Int?
-    var children: [Comment]?
+    var children: [Comment]
 }
