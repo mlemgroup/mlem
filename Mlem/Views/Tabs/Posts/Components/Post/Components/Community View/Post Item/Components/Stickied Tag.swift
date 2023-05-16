@@ -11,8 +11,6 @@ struct StickiedTag: View
 {
     var body: some View
     {
-        Spacer()
-
         HStack
         { // TODO: Make it align properly with the text
             Text("Stickied")
