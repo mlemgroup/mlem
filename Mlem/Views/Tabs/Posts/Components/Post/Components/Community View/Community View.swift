@@ -121,7 +121,7 @@ struct CommunityView: View
             }
         }
         .background(Color.secondarySystemBackground)
-        .navigationTitle(community?.name ?? username)
+        .navigationTitle(community?.name ?? "Home")
         .navigationBarTitleDisplayMode(shouldShowCommunityHeaders ? .inline : .large)
         .task(priority: .userInitiated)
         {
