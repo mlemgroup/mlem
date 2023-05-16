@@ -25,18 +25,18 @@ func parseCommunities(communityResponse: String, instanceLink: URL) throws -> [C
             for community in communityArray
             {
                 let newCommunity: Community = .init(
-                    id: community["community_id"].intValue,
-                    name: community["community_name"].stringValue,
+                    id: community["id"].intValue,
+                    name: community["name"].stringValue,
                     title: nil,
                     description: nil,
-                    icon: community["community_icon"].url,
+                    icon: community["icon"].url,
                     banner: nil,
                     createdAt: nil,
                     updatedAt: nil,
-                    actorID: community["community_actor_id"].url!,
-                    local: community["community_local"].boolValue,
-                    deleted: community["community_deleted"].boolValue,
-                    nsfw: community["community_nsfw"].boolValue
+                    actorID: community["actor_id"].url!,
+                    local: community["local"].boolValue,
+                    deleted: community["deleted"].boolValue,
+                    nsfw: community["nsfw"].boolValue
                 )
                 
                 communitiesTracker.append(newCommunity)

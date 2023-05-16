@@ -32,7 +32,6 @@ struct CommunitySearchResultsView: View
                         Text(foundCommunity.name)
                     }
                 }
-                .buttonStyle(.plain)
             }
             .frame(height: 300)
         }
