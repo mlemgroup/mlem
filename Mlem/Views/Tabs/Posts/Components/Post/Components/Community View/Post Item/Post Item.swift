@@ -70,6 +70,8 @@ struct PostItem: View
 
                                 if post.stickied
                                 {
+                                    Spacer()
+                                    
                                     StickiedTag()
                                 }
                             }
@@ -80,12 +82,15 @@ struct PostItem: View
                     }
                     else
                     { // Show this when the post is expanded
-                        Text(post.name)
-                            .font(.headline)
-
-                        if post.stickied
+                        VStack(alignment: .leading, spacing: 5)
                         {
-                            StickiedTag()
+                            if post.stickied
+                            {
+                                StickiedTag()
+                            }
+                            
+                            Text(post.name)
+                                .font(.headline)
                         }
                     }
                 }
