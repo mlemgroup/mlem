@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InstanceCommunityListView: View
+struct AccountsPage: View
 {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
@@ -64,6 +64,7 @@ struct InstanceCommunityListView: View
                 }
             }
             .navigationTitle("Accounts")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar
             {
                 ToolbarItem(placement: .navigationBarTrailing)

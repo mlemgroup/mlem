@@ -13,7 +13,7 @@ struct ContentView: View
     {
         TabView
         {
-            InstanceCommunityListView()
+            AccountsPage()
                 .tabItem
                 {
                     Label("Posts", systemImage: "text.bubble")
