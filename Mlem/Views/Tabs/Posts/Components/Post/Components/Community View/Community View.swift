@@ -26,6 +26,7 @@ struct CommunityView: View
     @State private var selectedSortingOption: SortingOptions = .active
 
     @State private var isSidebarShown: Bool = false
+    @State private var isShowingCommunitySearch: Bool = false
 
     var isInSpecificCommunity: Bool
     {
@@ -121,6 +122,14 @@ struct CommunityView: View
             }
         }
         .background(Color.secondarySystemBackground)
+        .overlay(alignment: .top)
+        {
+            if isShowingCommunitySearch
+            {
+                CommunitySearchView()
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
         .task(priority: .userInitiated)
         {
             if postTracker.posts.isEmpty
@@ -153,7 +162,7 @@ struct CommunityView: View
         .toolbar
         {
             ToolbarItem(placement: .principal)
-            {
+            { /// This is here to replace the default navigationTitle and make it possible to tap it
                 HStack(alignment: .center, spacing: 0)
                 {
                     Text(community?.name ?? "Home")
@@ -162,7 +171,9 @@ struct CommunityView: View
                         .scaleEffect(0.7)
                 }
                 .onTapGesture {
-                    print("Tapped community header")
+                    withAnimation {
+                        isShowingCommunitySearch.toggle()
+                    }
                 }
             }
 
@@ -293,10 +304,6 @@ struct CommunityView: View
                     Label("More", systemImage: "info.circle")
                 }
             }
-        }
-        .sheet(isPresented: $isShowingSearch)
-        {
-            SearchSheet()
         }
     }
 }
