@@ -128,6 +128,7 @@ struct CommunityView: View
             {
                 CommunitySearchView()
                     .transition(.move(edge: .top).combined(with: .opacity))
+                    .padding()
             }
         }
         .task(priority: .userInitiated)
@@ -171,7 +172,7 @@ struct CommunityView: View
                         .scaleEffect(0.7)
                 }
                 .onTapGesture {
-                    withAnimation {
+                    withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
                         isShowingCommunitySearch.toggle()
                     }
                 }

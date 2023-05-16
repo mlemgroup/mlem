@@ -75,6 +75,7 @@
 		63DF71EF2A02988A002AC14E /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 63DF71EE2A02988A002AC14E /* SwiftyJSON */; };
 		63DF71F12A02999C002AC14E /* App Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* App Constants.swift */; };
 		63E5D3822A13831800EC1FBD /* Community Search View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3812A13831800EC1FBD /* Community Search View.swift */; };
+		63E5D3852A1384AB00EC1FBD /* Custom Search Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3842A1384AB00EC1FBD /* Custom Search Field.swift */; };
 		63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFDA227F5AEB700FEBE9C /* Reply View.swift */; };
 		63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */; };
 		63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A52A05225100A18C5D /* Saved Account.swift */; };
@@ -180,6 +181,7 @@
 		63DF71EB2A02986B002AC14E /* Send Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Send Command.swift"; sourceTree = "<group>"; };
 		63DF71F02A02999C002AC14E /* App Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Constants.swift"; sourceTree = "<group>"; };
 		63E5D3812A13831800EC1FBD /* Community Search View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Search View.swift"; sourceTree = "<group>"; };
+		63E5D3842A1384AB00EC1FBD /* Custom Search Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Search Field.swift"; sourceTree = "<group>"; };
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
 		63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting Options.swift"; sourceTree = "<group>"; };
 		63F0C7A52A05225100A18C5D /* Saved Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account.swift"; sourceTree = "<group>"; };
@@ -620,9 +622,18 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		63E5D3832A1384A000EC1FBD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				63E5D3842A1384AB00EC1FBD /* Custom Search Field.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		63EBBF1C27FCADEA00E70532 /* Community Search */ = {
 			isa = PBXGroup;
 			children = (
+				63E5D3832A1384A000EC1FBD /* Components */,
 				63E5D3812A13831800EC1FBD /* Community Search View.swift */,
 			);
 			path = "Community Search";
@@ -801,6 +812,7 @@
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */,
+				63E5D3852A1384AB00EC1FBD /* Custom Search Field.swift in Sources */,
 				63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */,
 				6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */,
 				6332FDDA27F083590009A98A /* About Me.swift in Sources */,

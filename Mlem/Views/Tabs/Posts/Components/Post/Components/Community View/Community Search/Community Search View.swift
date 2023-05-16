@@ -7,8 +7,28 @@
 
 import SwiftUI
 
-struct CommunitySearchView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct CommunitySearchView: View
+{
+    @FocusState var isSearchFieldFocused: Bool
+    
+    @State private var searchText: String = ""
+
+    var body: some View
+    {
+        VStack(alignment: .leading, spacing: 10)
+        {
+            CustomSearchField(text: $searchText, placeholder: "Communities")
+                .focused($isSearchFieldFocused)
+            Text("Ahoj")
+        }
+        .background(.background)
+        .onAppear
+        {
+            isSearchFieldFocused = true
+        }
+        .onDisappear
+        {
+            isSearchFieldFocused = false
+        }
     }
 }
