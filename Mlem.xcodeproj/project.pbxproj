@@ -82,6 +82,8 @@
 		63E5D3902A13CE4100EC1FBD /* DebouncedOnChange in Frameworks */ = {isa = PBXBuildFile; productRef = 63E5D38F2A13CE4100EC1FBD /* DebouncedOnChange */; };
 		63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3912A13CF2300EC1FBD /* Favorite Community Tracker.swift */; };
 		63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3932A13CF3600EC1FBD /* Favorite Community.swift */; };
+		63E5D3962A13DAF200EC1FBD /* Mark Community as Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */; };
+		63E5D3982A13DCFB00EC1FBD /* Remove Community from Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3972A13DCFB00EC1FBD /* Remove Community from Favorites.swift */; };
 		63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFDA227F5AEB700FEBE9C /* Reply View.swift */; };
 		63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */; };
 		63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A52A05225100A18C5D /* Saved Account.swift */; };
@@ -193,6 +195,8 @@
 		63E5D38C2A13BCDE00EC1FBD /* Community Search Result Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Search Result Tracker.swift"; sourceTree = "<group>"; };
 		63E5D3912A13CF2300EC1FBD /* Favorite Community Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Favorite Community Tracker.swift"; sourceTree = "<group>"; };
 		63E5D3932A13CF3600EC1FBD /* Favorite Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Favorite Community.swift"; sourceTree = "<group>"; };
+		63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mark Community as Favorite.swift"; sourceTree = "<group>"; };
+		63E5D3972A13DCFB00EC1FBD /* Remove Community from Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remove Community from Favorites.swift"; sourceTree = "<group>"; };
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
 		63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting Options.swift"; sourceTree = "<group>"; };
 		63F0C7A52A05225100A18C5D /* Saved Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account.swift"; sourceTree = "<group>"; };
@@ -291,6 +295,8 @@
 				630049EB27EF390900D5105B /* Networking */,
 				6322A5D127F88CFD00135D4F /* Time Parser.swift */,
 				6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */,
+				63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */,
+				63E5D3972A13DCFB00EC1FBD /* Remove Community from Favorites.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -867,6 +873,7 @@
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
 				63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
+				63E5D3962A13DAF200EC1FBD /* Mark Community as Favorite.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
 				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,
@@ -888,6 +895,7 @@
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
 				63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
+				63E5D3982A13DCFB00EC1FBD /* Remove Community from Favorites.swift in Sources */,
 				63ABCE0E27F894060047A7D0 /* User View.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,

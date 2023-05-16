@@ -300,6 +300,12 @@ struct CommunityView: View
 
                         if isInSpecificCommunity
                         {
+                            Button {
+                                print("Would favorite community \(community!.name) for the user \(account.username)")
+                            } label: {
+                                Label("Favorite", systemImage: "star")
+                            }
+                            
                             ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
                         }
                         else

@@ -14,6 +14,8 @@ struct MlemApp: App
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
+
+    @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
 
     var body: some Scene
@@ -24,6 +26,7 @@ struct MlemApp: App
                 .environmentObject(appState)
                 .environmentObject(accountsTracker)
                 .environmentObject(filtersTracker)
+                .environmentObject(favoriteCommunitiesTracker)
                 .environmentObject(communitySearchResultsTracker)
                 .onChange(of: accountsTracker.savedAccounts)
                 { newValue in
@@ -65,6 +68,28 @@ struct MlemApp: App
                     catch let encodingError
                     {
                         print("Failed while encoding filters to data: \(encodingError)")
+                    }
+                }
+                .onChange(of: favoriteCommunitiesTracker.favoriteCommunities)
+                { newValue in
+                    print("Change detected in favorited communities: \(newValue)")
+
+                    do
+                    {
+                        let encodedFavoriteCommunities: Data = try encodeForSaving(object: newValue)
+
+                        do
+                        {
+                            try writeDataToFile(data: encodedFavoriteCommunities, fileURL: AppConstants.favoriteCommunitiesFilePath)
+                        }
+                        catch let writingError
+                        {
+                            print("Failed while saving data to file: \(writingError)")
+                        }
+                    }
+                    catch let encodingError
+                    {
+                        print("Failed while encoding favorited communities to data: \(encodingError)")
                     }
                 }
                 .onAppear
@@ -119,6 +144,32 @@ struct MlemApp: App
                         catch let emptyFileCreationError
                         {
                             print("Failed while creating an empty file: \(emptyFileCreationError)")
+                        }
+                    }
+
+                    if FileManager.default.fileExists(atPath: AppConstants.favoriteCommunitiesFilePath.path)
+                    {
+                        print("Favorite communities file exists, will attempt to load favorite communities")
+                        do
+                        {
+                            favoriteCommunitiesTracker.favoriteCommunities = try decodeFromFile(fromURL: AppConstants.favoriteCommunitiesFilePath, whatToDecode: .favoriteCommunities) as! [FavoriteCommunity]
+                        }
+                        catch let favoriteCommunitiesDecodingError
+                        {
+                            print("Failed while decoding favorite communities: \(favoriteCommunitiesDecodingError)")
+                        }
+                    }
+                    else
+                    {
+                        print("Favorite communities file does not exist, will try to create it")
+
+                        do
+                        {
+                            try createEmptyFile(at: AppConstants.favoriteCommunitiesFilePath)
+                        }
+                        catch let emptyFileCreationError
+                        {
+                            print("Failed while creating empty file: \(emptyFileCreationError)")
                         }
                     }
                 }
