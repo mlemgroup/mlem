@@ -75,7 +75,9 @@
 		63DF71EF2A02988A002AC14E /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 63DF71EE2A02988A002AC14E /* SwiftyJSON */; };
 		63DF71F12A02999C002AC14E /* App Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* App Constants.swift */; };
 		63E5D3822A13831800EC1FBD /* Community Search View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3812A13831800EC1FBD /* Community Search View.swift */; };
-		63E5D3852A1384AB00EC1FBD /* Custom Search Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3842A1384AB00EC1FBD /* Custom Search Field.swift */; };
+		63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3862A138AA500EC1FBD /* Community Search Field.swift */; };
+		63E5D3892A13AE5800EC1FBD /* Search Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3882A13AE5800EC1FBD /* Search Parser.swift */; };
+		63E5D38B2A13AF3800EC1FBD /* Community Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D38A2A13AF3800EC1FBD /* Community Parser.swift */; };
 		63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFDA227F5AEB700FEBE9C /* Reply View.swift */; };
 		63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */; };
 		63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A52A05225100A18C5D /* Saved Account.swift */; };
@@ -181,7 +183,9 @@
 		63DF71EB2A02986B002AC14E /* Send Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Send Command.swift"; sourceTree = "<group>"; };
 		63DF71F02A02999C002AC14E /* App Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Constants.swift"; sourceTree = "<group>"; };
 		63E5D3812A13831800EC1FBD /* Community Search View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Search View.swift"; sourceTree = "<group>"; };
-		63E5D3842A1384AB00EC1FBD /* Custom Search Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Search Field.swift"; sourceTree = "<group>"; };
+		63E5D3862A138AA500EC1FBD /* Community Search Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Search Field.swift"; sourceTree = "<group>"; };
+		63E5D3882A13AE5800EC1FBD /* Search Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Search Parser.swift"; sourceTree = "<group>"; };
+		63E5D38A2A13AF3800EC1FBD /* Community Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Parser.swift"; sourceTree = "<group>"; };
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
 		63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting Options.swift"; sourceTree = "<group>"; };
 		63F0C7A52A05225100A18C5D /* Saved Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account.swift"; sourceTree = "<group>"; };
@@ -557,6 +561,8 @@
 				63CE4E6B2A066EF200405271 /* User Parser.swift */,
 				631891152A03B0AC00EDA8D1 /* Parse JSON.swift */,
 				63344C722A09AA21001BC616 /* Community Details Parser.swift */,
+				63E5D3882A13AE5800EC1FBD /* Search Parser.swift */,
+				63E5D38A2A13AF3800EC1FBD /* Community Parser.swift */,
 			);
 			path = "Server Response Parsing";
 			sourceTree = "<group>";
@@ -625,7 +631,7 @@
 		63E5D3832A1384A000EC1FBD /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				63E5D3842A1384AB00EC1FBD /* Custom Search Field.swift */,
+				63E5D3862A138AA500EC1FBD /* Community Search Field.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -812,12 +818,12 @@
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */,
-				63E5D3852A1384AB00EC1FBD /* Custom Search Field.swift in Sources */,
 				63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */,
 				6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */,
 				6332FDDA27F083590009A98A /* About Me.swift in Sources */,
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
 				631891162A03B0AC00EDA8D1 /* Parse JSON.swift in Sources */,
+				63E5D38B2A13AF3800EC1FBD /* Community Parser.swift in Sources */,
 				63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */,
 				63344C622A08460D001BC616 /* View - Border on Specific Sides.swift in Sources */,
@@ -832,6 +838,7 @@
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Post Item.swift in Sources */,
 				63344C752A09B075001BC616 /* Get Community Details.swift in Sources */,
+				63E5D3892A13AE5800EC1FBD /* Search Parser.swift in Sources */,
 				63344C4D2A07ABEE001BC616 /* Community.swift in Sources */,
 				63344C672A08D4E3001BC616 /* Appearance.swift in Sources */,
 				63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */,
@@ -864,6 +871,7 @@
 				6386E0472A050817006B3C1D /* Date - Parse ISO Date.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
+				63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
 				63ABCE0E27F894060047A7D0 /* User View.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
