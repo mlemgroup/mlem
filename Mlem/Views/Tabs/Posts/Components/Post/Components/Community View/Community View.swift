@@ -24,7 +24,7 @@ struct CommunityView: View
     @State var community: Community?
 
     @State private var selectedSortingOption: SortingOptions = .active
-    
+
     @State private var isSidebarShown: Bool = false
 
     var isInSpecificCommunity: Bool
@@ -102,10 +102,10 @@ struct CommunityView: View
                             Task
                             {
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-                                
+
                                 postTracker.posts = .init()
                                 postTracker.page = 1
-                                
+
                                 if community == nil
                                 {
                                     await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
@@ -121,8 +121,6 @@ struct CommunityView: View
             }
         }
         .background(Color.secondarySystemBackground)
-        .navigationTitle(community?.name ?? "Home")
-        .navigationBarTitleDisplayMode(shouldShowCommunityHeaders ? .inline : .large)
         .task(priority: .userInitiated)
         {
             if postTracker.posts.isEmpty
@@ -154,76 +152,87 @@ struct CommunityView: View
         }
         .toolbar
         {
-            /*Button
+            ToolbarItem(placement: .principal)
             {
-                isShowingSearch.toggle()
-            } label: {
-                Image(systemName: "magnifyingglass")
-            }*/
+                HStack(alignment: .center, spacing: 0)
+                {
+                    Text(community?.name ?? "Home")
+                        .font(.headline)
+                    Image(systemName: "chevron.down")
+                        .scaleEffect(0.7)
+                }
+                .onTapGesture {
+                    print("Tapped community header")
+                }
+            }
 
-            Menu
+            ToolbarItem(placement: .navigationBarTrailing)
             {
-                Button {
-                    selectedSortingOption = .active
-                } label: {
-                    Label("Active", systemImage: "bubble.left.and.bubble.right")
-                }
-
-                Button
-                {
-                    selectedSortingOption = .hot
-                } label: {
-                    Label("Hot", systemImage: "flame")
-                }
-                
-                Button
-                {
-                    selectedSortingOption = .new
-                } label: {
-                    Label("New", systemImage: "sun.max")
-                }
-                
                 Menu
                 {
                     Button
                     {
-                        selectedSortingOption = .topDay
+                        selectedSortingOption = .active
                     } label: {
-                        Label("Day", systemImage: "calendar.day.timeline.left")
+                        Label("Active", systemImage: "bubble.left.and.bubble.right")
                     }
-                    
+
                     Button
                     {
-                        selectedSortingOption = .topWeek
+                        selectedSortingOption = .hot
                     } label: {
-                        Label("Week", systemImage: "calendar.day.timeline.left")
+                        Label("Hot", systemImage: "flame")
                     }
-                    
+
                     Button
                     {
-                        selectedSortingOption = .topMonth
+                        selectedSortingOption = .new
                     } label: {
-                        Label("Month", systemImage: "calendar.day.timeline.left")
+                        Label("New", systemImage: "sun.max")
                     }
-                    
-                    Button
+
+                    Menu
                     {
-                        selectedSortingOption = .topYear
+                        Button
+                        {
+                            selectedSortingOption = .topDay
+                        } label: {
+                            Label("Day", systemImage: "calendar.day.timeline.left")
+                        }
+
+                        Button
+                        {
+                            selectedSortingOption = .topWeek
+                        } label: {
+                            Label("Week", systemImage: "calendar.day.timeline.left")
+                        }
+
+                        Button
+                        {
+                            selectedSortingOption = .topMonth
+                        } label: {
+                            Label("Month", systemImage: "calendar.day.timeline.left")
+                        }
+
+                        Button
+                        {
+                            selectedSortingOption = .topYear
+                        } label: {
+                            Label("Year", systemImage: "calendar.day.timeline.left")
+                        }
+
+                        Button
+                        {
+                            selectedSortingOption = .topAll
+                        } label: {
+                            Label("All time", systemImage: "calendar.day.timeline.left")
+                        }
                     } label: {
-                        Label("Year", systemImage: "calendar.day.timeline.left")
-                    }
-                    
-                    Button
-                    {
-                        selectedSortingOption = .topAll
-                    } label: {
-                        Label("All time", systemImage: "calendar.day.timeline.left")
+                        Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
                     }
                 } label: {
-                    Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
-                }
-            } label: {
-                switch selectedSortingOption {
+                    switch selectedSortingOption
+                    {
                     case .active:
                         Label("Selected sorting by  \"Active\"", systemImage: "bubble.left.and.bubble.right")
                     case .hot:
@@ -240,45 +249,49 @@ struct CommunityView: View
                         Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
                     case .topAll:
                         Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
-                        
-                    #warning("TODO: Make this the default icon for the sorting")
-                    /*case .unspecified:
-                        Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")*/
-                }
-            }
-            
-            Menu
-            {
-                #warning("TODO: Add a [submit post] feature")
-                Button
-                {
-                    print("Submit post")
-                } label: {
-                    Label("Submit Post…", systemImage: "plus.bubble")
-                }
 
-                if isInSpecificCommunity
-                {
-                    Button
-                    {
-                        self.isSidebarShown = true
-                    } label: {
-                        Label("Sidebar", systemImage: "sidebar.right")
+                        #warning("TODO: Make this the default icon for the sorting")
+                        /* case .unspecified:
+                         Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal") */
                     }
                 }
-                
-                Divider()
-                
-                if isInSpecificCommunity
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing)
+            {
+                Menu
                 {
-                    ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
+                    #warning("TODO: Add a [submit post] feature")
+                    Button
+                    {
+                        print("Submit post")
+                    } label: {
+                        Label("Submit Post…", systemImage: "plus.bubble")
+                    }
+
+                    if isInSpecificCommunity
+                    {
+                        Button
+                        {
+                            self.isSidebarShown = true
+                        } label: {
+                            Label("Sidebar", systemImage: "sidebar.right")
+                        }
+                    }
+
+                    Divider()
+
+                    if isInSpecificCommunity
+                    {
+                        ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
+                    }
+                    else
+                    {
+                        ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!, isShowingButtonText: true)
+                    }
+                } label: {
+                    Label("More", systemImage: "info.circle")
                 }
-                else
-                {
-                    ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!, isShowingButtonText: true)
-                }
-            } label: {
-                Label("More", systemImage: "info.circle")
             }
         }
         .sheet(isPresented: $isShowingSearch)
