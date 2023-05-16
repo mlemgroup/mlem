@@ -24,8 +24,7 @@ struct PostItem: View
     
     @State var instanceAddress: URL
     
-    @State var username: String
-    @State var accessToken: String
+    @State var account: SavedAccount
     
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
@@ -48,7 +47,7 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, username: username, accessToken: accessToken, community: post.community))
+                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, account: account, community: post.community))
                                     {
                                         HStack(alignment: .center, spacing: 10)
                                         {                                           
@@ -205,7 +204,7 @@ struct PostItem: View
         .background(Color(uiColor: .systemBackground))
         .onAppear
         {
-            print("Access token from within the view: \(accessToken)")
+            print("Access token from within the view: \(account.accessToken)")
         }
     }
 }

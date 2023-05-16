@@ -14,8 +14,8 @@ struct CommunitySearchResultsView: View
     @State var searchResults: [Community]?
     
     var instanceAddress: URL
-    var username: String
-    var accessToken: String
+    
+    var account: SavedAccount
     
     @State private var isShowingDarkBackground: Bool = false
     
@@ -25,7 +25,7 @@ struct CommunitySearchResultsView: View
         {
             List(communitySearchResultsTracker.foundCommunities)
             { foundCommunity in
-                NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, username: username, accessToken: accessToken, community: foundCommunity))
+                NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, account: account, community: foundCommunity))
                 {
                     HStack(alignment: .center, spacing: 10)
                     {

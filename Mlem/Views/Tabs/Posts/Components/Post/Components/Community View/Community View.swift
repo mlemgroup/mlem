@@ -19,9 +19,7 @@ struct CommunityView: View
 
     @State var instanceAddress: URL
 
-    @State var username: String
-    @State var accessToken: String
-
+    @State var account: SavedAccount
     @State var community: Community?
 
     @State private var selectedSortingOption: SortingOptions = .active
@@ -57,7 +55,7 @@ struct CommunityView: View
             {
                 if isShowingCommunitySearch
                 {
-                    CommunitySearchResultsView(instanceAddress: instanceAddress, username: username, accessToken: accessToken)
+                    CommunitySearchResultsView(instanceAddress: instanceAddress, account: account)
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }
                 LazyVStack
@@ -86,9 +84,9 @@ struct CommunityView: View
                     { post in
                         /* if post == posts.decodedPosts.last
                          {} */
-                        NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, username: username, accessToken: accessToken, post: post))
+                        NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, account: account, post: post))
                         {
-                            PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
+                            PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, account: account)
                         }
                         .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                         .task

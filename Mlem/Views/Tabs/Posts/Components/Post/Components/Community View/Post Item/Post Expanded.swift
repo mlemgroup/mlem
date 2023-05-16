@@ -15,8 +15,7 @@ struct PostExpanded: View
     
     @State var instanceAddress: URL
     
-    @State var username: String
-    @State var accessToken: String
+    @State var account: SavedAccount
 
     @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
@@ -27,7 +26,7 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(post: post, isExpanded: true, isInSpecificCommunity: true, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
+            PostItem(post: post, isExpanded: true, isInSpecificCommunity: true, instanceAddress: instanceAddress, account: account)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything
