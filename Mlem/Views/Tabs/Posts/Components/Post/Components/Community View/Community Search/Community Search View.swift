@@ -7,10 +7,15 @@
 
 import SwiftUI
 
-struct CommunitySearchView: View
+struct CommunitySearchResultsView: View
 {
+    @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     
     @State var searchResults: [Community]?
+    
+    var instanceAddress: URL
+    var username: String
+    var accessToken: String
     
     @State private var isShowingDarkBackground: Bool = false
     
@@ -18,8 +23,18 @@ struct CommunitySearchView: View
     {
         VStack(alignment: .leading, spacing: 10)
         {
-            Text("Ahoj")
+            List(communitySearchResultsTracker.foundCommunities)
+            { foundCommunity in
+                NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, username: username, accessToken: accessToken, community: foundCommunity))
+                {
+                    HStack(alignment: .center, spacing: 10)
+                    {
+                        Text(foundCommunity.name)
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+            .frame(height: 300)
         }
-        .background(.background)
     }
 }

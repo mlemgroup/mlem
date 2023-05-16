@@ -14,6 +14,7 @@ struct MlemApp: App
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
+    @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
 
     var body: some Scene
     {
@@ -23,6 +24,7 @@ struct MlemApp: App
                 .environmentObject(appState)
                 .environmentObject(accountsTracker)
                 .environmentObject(filtersTracker)
+                .environmentObject(communitySearchResultsTracker)
                 .onChange(of: accountsTracker.savedAccounts)
                 { newValue in
                     do

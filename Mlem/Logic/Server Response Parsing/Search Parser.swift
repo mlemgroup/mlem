@@ -8,6 +8,7 @@
 import Foundation
 import SwiftyJSON
 
+/*
 func parseSearchResult(searchResponse: String) throws -> [Community]
 {
     var communityTracker: [Community] = .init()
@@ -22,3 +23,4 @@ func parseSearchResult(searchResponse: String) throws -> [Community]
         throw JSONParsingError.failedToParse
     }
 }
+*/

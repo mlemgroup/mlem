@@ -78,6 +78,7 @@
 		63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3862A138AA500EC1FBD /* Community Search Field.swift */; };
 		63E5D3892A13AE5800EC1FBD /* Search Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3882A13AE5800EC1FBD /* Search Parser.swift */; };
 		63E5D38B2A13AF3800EC1FBD /* Community Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D38A2A13AF3800EC1FBD /* Community Parser.swift */; };
+		63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D38C2A13BCDE00EC1FBD /* Community Search Result Tracker.swift */; };
 		63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFDA227F5AEB700FEBE9C /* Reply View.swift */; };
 		63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */; };
 		63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A52A05225100A18C5D /* Saved Account.swift */; };
@@ -186,6 +187,7 @@
 		63E5D3862A138AA500EC1FBD /* Community Search Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Search Field.swift"; sourceTree = "<group>"; };
 		63E5D3882A13AE5800EC1FBD /* Search Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Search Parser.swift"; sourceTree = "<group>"; };
 		63E5D38A2A13AF3800EC1FBD /* Community Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Parser.swift"; sourceTree = "<group>"; };
+		63E5D38C2A13BCDE00EC1FBD /* Community Search Result Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Search Result Tracker.swift"; sourceTree = "<group>"; };
 		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
 		63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting Options.swift"; sourceTree = "<group>"; };
 		63F0C7A52A05225100A18C5D /* Saved Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account.swift"; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 				6386E0292A03D0C3006B3C1D /* Post Tracker.swift */,
 				6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */,
 				63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */,
+				63E5D38C2A13BCDE00EC1FBD /* Community Search Result Tracker.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -870,6 +873,7 @@
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				6386E0472A050817006B3C1D /* Date - Parse ISO Date.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
+				63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
 				63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,

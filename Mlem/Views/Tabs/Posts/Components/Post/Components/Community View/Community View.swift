@@ -13,6 +13,7 @@ struct CommunityView: View
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
+    @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
 
     @StateObject var postTracker: PostTracker = .init()
 
@@ -27,9 +28,9 @@ struct CommunityView: View
 
     @State private var isSidebarShown: Bool = false
     @State private var isShowingCommunitySearch: Bool = false
-    
+
     @State private var searchText: String = ""
-    
+
     @FocusState var isSearchFieldFocused: Bool
 
     var isInSpecificCommunity: Bool
@@ -54,6 +55,11 @@ struct CommunityView: View
             }
             else
             {
+                if isShowingCommunitySearch
+                {
+                    CommunitySearchResultsView(instanceAddress: instanceAddress, username: username, accessToken: accessToken)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
                 LazyVStack
                 {
                     if isInSpecificCommunity
@@ -122,18 +128,6 @@ struct CommunityView: View
             }
         }
         .background(Color.secondarySystemBackground)
-        .overlay(alignment: .top)
-        {
-            if isShowingCommunitySearch
-            {
-                CommunitySearchView()
-                    .transition(.move(edge: .top).combined(with: .opacity))
-                    .padding()
-                    .onChange(of: searchText) { newValue in
-                        print("Search text: \(newValue)")
-                    }
-            }
-        }
         .task(priority: .userInitiated)
         {
             if postTracker.posts.isEmpty
@@ -176,23 +170,24 @@ struct CommunityView: View
                         Image(systemName: "chevron.down")
                             .scaleEffect(0.7)
                     }
-                    .onTapGesture {
-                        isSearchFieldFocused.toggle()
-                        
-                        print("search field focus: \(isSearchFieldFocused)")
-                        
-                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
+                    .onTapGesture
+                    {
+                        isSearchFieldFocused = true
+
+                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                        {
                             isShowingCommunitySearch.toggle()
                         }
                     }
                 }
                 else
                 {
-                    CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText)
+                    CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, instanceAddress: instanceAddress)
                 }
             }
 
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing)
+            {
                 if !isShowingCommunitySearch
                 {
                     Menu
@@ -203,21 +198,21 @@ struct CommunityView: View
                         } label: {
                             Label("Active", systemImage: "bubble.left.and.bubble.right")
                         }
-                        
+
                         Button
                         {
                             selectedSortingOption = .hot
                         } label: {
                             Label("Hot", systemImage: "flame")
                         }
-                        
+
                         Button
                         {
                             selectedSortingOption = .new
                         } label: {
                             Label("New", systemImage: "sun.max")
                         }
-                        
+
                         Menu
                         {
                             Button
@@ -226,28 +221,28 @@ struct CommunityView: View
                             } label: {
                                 Label("Day", systemImage: "calendar.day.timeline.left")
                             }
-                            
+
                             Button
                             {
                                 selectedSortingOption = .topWeek
                             } label: {
                                 Label("Week", systemImage: "calendar.day.timeline.left")
                             }
-                            
+
                             Button
                             {
                                 selectedSortingOption = .topMonth
                             } label: {
                                 Label("Month", systemImage: "calendar.day.timeline.left")
                             }
-                            
+
                             Button
                             {
                                 selectedSortingOption = .topYear
                             } label: {
                                 Label("Year", systemImage: "calendar.day.timeline.left")
                             }
-                            
+
                             Button
                             {
                                 selectedSortingOption = .topAll
@@ -260,39 +255,39 @@ struct CommunityView: View
                     } label: {
                         switch selectedSortingOption
                         {
-                            case .active:
-                                Label("Selected sorting by  \"Active\"", systemImage: "bubble.left.and.bubble.right")
-                            case .hot:
-                                Label("Selected sorting by \"Hot\"", systemImage: "flame")
-                            case .new:
-                                Label("Selected sorting by \"New\"", systemImage: "sun.max")
-                            case .topDay:
-                                Label("Selected sorting by \"Top of Day\"", systemImage: "calendar.day.timeline.left")
-                            case .topWeek:
-                                Label("Selected sorting by \"Top of Week\"", systemImage: "calendar.day.timeline.left")
-                            case .topMonth:
-                                Label("Selected sorting by \"Top of Month\"", systemImage: "calendar.day.timeline.left")
-                            case .topYear:
-                                Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
-                            case .topAll:
-                                Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
-                                
-#warning("TODO: Make this the default icon for the sorting")
-                                /* case .unspecified:
-                                 Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal") */
+                        case .active:
+                            Label("Selected sorting by  \"Active\"", systemImage: "bubble.left.and.bubble.right")
+                        case .hot:
+                            Label("Selected sorting by \"Hot\"", systemImage: "flame")
+                        case .new:
+                            Label("Selected sorting by \"New\"", systemImage: "sun.max")
+                        case .topDay:
+                            Label("Selected sorting by \"Top of Day\"", systemImage: "calendar.day.timeline.left")
+                        case .topWeek:
+                            Label("Selected sorting by \"Top of Week\"", systemImage: "calendar.day.timeline.left")
+                        case .topMonth:
+                            Label("Selected sorting by \"Top of Month\"", systemImage: "calendar.day.timeline.left")
+                        case .topYear:
+                            Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
+                        case .topAll:
+                            Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
+
+                            #warning("TODO: Make this the default icon for the sorting")
+                            /* case .unspecified:
+                             Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal") */
                         }
                     }
-                    
+
                     Menu
                     {
-#warning("TODO: Add a [submit post] feature")
+                        #warning("TODO: Add a [submit post] feature")
                         Button
                         {
                             print("Submit post")
                         } label: {
                             Label("Submit Post…", systemImage: "plus.bubble")
                         }
-                        
+
                         if isInSpecificCommunity
                         {
                             Button
@@ -302,9 +297,9 @@ struct CommunityView: View
                                 Label("Sidebar", systemImage: "sidebar.right")
                             }
                         }
-                        
+
                         Divider()
-                        
+
                         if isInSpecificCommunity
                         {
                             ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
@@ -319,9 +314,19 @@ struct CommunityView: View
                 }
                 else
                 {
-                    Button {
-                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
+                    Button
+                    {
+                        isSearchFieldFocused = false
+
+                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                        {
                             isShowingCommunitySearch.toggle()
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                        { /// Clear the search text and results one second after it disappears so it doesn't just disappear in the middle of the animation
+                            searchText = ""
+                            communitySearchResultsTracker.foundCommunities = .init()
                         }
                     } label: {
                         Text("Cancel")
