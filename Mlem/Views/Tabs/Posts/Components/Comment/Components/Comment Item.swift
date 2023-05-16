@@ -18,8 +18,17 @@ struct CommentItem: View
     {
         VStack(alignment: .leading, spacing: 10)
         {
-            Text(.init(comment.content)) // .init makes the comments have Markdown support
-                .frame(maxWidth: .infinity, alignment: .topLeading)
+            HStack(alignment: .center, spacing: 10) {
+                if comment.parentID != nil
+                {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(.red)
+                        .frame(width: 2)
+                }
+                
+                Text(.init(comment.content)) // .init makes the comments have Markdown support
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+            }
 
             HStack(spacing: 12)
             {
