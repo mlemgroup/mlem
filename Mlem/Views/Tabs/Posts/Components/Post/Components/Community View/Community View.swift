@@ -22,7 +22,7 @@ struct CommunityView: View
     @State var account: SavedAccount
     @State var community: Community?
 
-    @State private var selectedSortingOption: SortingOptions = .active
+    @State private var selectedSortingOption: SortingOptions = .hot
 
     @State private var isSidebarShown: Bool = false
     @State private var isShowingCommunitySearch: Bool = false
