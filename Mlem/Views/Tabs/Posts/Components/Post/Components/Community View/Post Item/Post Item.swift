@@ -168,10 +168,6 @@ struct PostItem: View
                 // TODO: Refactor this into Post Info once I learn how to pass the vars further down
                 HStack(spacing: 8)
                 {
-                    /* HStack(spacing: iconToTextSpacing) { // Number of upvotes
-                         Image(systemName: "arrow.up")
-                         Text(String(score))
-                     } */
 
                     HStack(spacing: iconToTextSpacing)
                     { // Number of comments
