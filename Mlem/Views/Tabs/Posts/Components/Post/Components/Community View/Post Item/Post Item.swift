@@ -28,6 +28,8 @@ struct PostItem: View
     
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
+    
+    @State private var isPostCollapsed: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
 
@@ -91,58 +93,78 @@ struct PostItem: View
                             Text(post.name)
                                 .font(.headline)
                         }
+                        .onTapGesture {
+                            print("Tapped")
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                isPostCollapsed.toggle()
+                            }
+                        }
                     }
                 }
 
-                if let postURL = post.url
-                {
-                    if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
+                VStack(alignment: .leading) {
+                    if let postURL = post.url
                     {
-                        CachedAsyncImage(url: postURL)
-                        { image in
-                            image
-                                .resizable()
-                                .frame(maxWidth: .infinity)
-                                .scaledToFit()
-                                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10), style: .continuous))
-                                .overlay(
-                                    RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
-                                        .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
-                                )
-                                .onTapGesture {
-                                    isShowingEnlargedImage.toggle()
-                                }
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    }
-                    else
-                    {
-                        if let embedTitle = post.embedTitle
+                        if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
                         {
-                            WebsiteIconComplex(post: post)
+                            if !isPostCollapsed
+                            {
+                                CachedAsyncImage(url: postURL)
+                                { image in
+                                    image
+                                        .resizable()
+                                        .frame(maxWidth: .infinity)
+                                        .scaledToFit()
+                                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10), style: .continuous))
+                                        .overlay(
+                                            RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
+                                                .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
+                                        )
+                                        .onTapGesture {
+                                            isShowingEnlargedImage.toggle()
+                                        }
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                            }
                         }
                         else
                         {
-                            WebsiteIconComplex(post: post)
-                        }
-                    }
-                }
-
-                if let postBody = post.body
-                {
-                    if !postBody.isEmpty
-                    {
-                        if !post.stickied
-                        {
-                            if !isExpanded
+                            if let embedTitle = post.embedTitle
                             {
-                                Text(.init(postBody))
-                                    .font(.subheadline)
+                                WebsiteIconComplex(post: post)
                             }
                             else
                             {
-                                Text(.init(postBody))
+                                WebsiteIconComplex(post: post)
+                            }
+                        }
+                    }
+                    
+                    if let postBody = post.body
+                    {
+                        if !postBody.isEmpty
+                        {
+                            if !post.stickied
+                            {
+                                if !isExpanded
+                                {
+                                    Text(.init(postBody))
+                                        .font(.subheadline)
+                                }
+                                else
+                                {
+                                    if !isPostCollapsed
+                                    {
+                                        Text(.init(postBody))
+                                            .onTapGesture {
+                                                print("Tapped")
+                                                withAnimation(.easeInOut(duration: 0.2)) {
+                                                    isPostCollapsed.toggle()
+                                                }
+                                            }
+                                    }
+                                }
                             }
                         }
                     }
