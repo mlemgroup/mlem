@@ -13,7 +13,7 @@ struct SavedAccount: Identifiable, Codable, Equatable
     
     let instanceLink: URL
     
-    let accessToken: String
+    var accessToken: String
     
     let username: String
 }
