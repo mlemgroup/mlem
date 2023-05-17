@@ -52,34 +52,7 @@ struct PostExpanded: View
                     LoadingView(whatIsLoading: .comments)
                         .task(priority: .userInitiated)
                         {
-                            commentTracker.isLoading = true
-                            
-                            var commentCommand: String = ""
-                            
-                            if instanceAddress.absoluteString.contains("v1")
-                            {
-                                print("Older API spec")
-                                
-                                commentCommand = """
-    {"op": "GetPost", "data": { "id": \(post.id) }}
-    """
-                            }
-                            else
-                            {
-                                print("Newer API spec")
-                                
-                                commentCommand = """
-{"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
-"""
-                            }
-                            
-                            let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: commentCommand)
-                            
-                            print("Comment response: \(commentResponse)")
-                            
-                            commentTracker.comments = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
-                            
-                            commentTracker.isLoading = false
+                            await loadComments()
                         }
                 }
                 else
@@ -94,5 +67,44 @@ struct PostExpanded: View
             }
         }
         .navigationBarTitle(post.community.name, displayMode: .inline)
+        .refreshable {
+            Task(priority: .userInitiated) {
+                commentTracker.comments = .init()
+                
+                await loadComments()
+            }
+        }
+    }
+    
+    internal func loadComments() async -> Void
+    {
+        commentTracker.isLoading = true
+        
+        var commentCommand: String = ""
+        
+        if instanceAddress.absoluteString.contains("v1")
+        {
+            print("Older API spec")
+            
+            commentCommand = """
+    {"op": "GetPost", "data": { "id": \(post.id) }}
+    """
+        }
+        else
+        {
+            print("Newer API spec")
+            
+            commentCommand = """
+{"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
+"""
+        }
+        
+        let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: commentCommand)
+        
+        print("Comment response: \(commentResponse)")
+        
+        commentTracker.comments = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
+        
+        commentTracker.isLoading = false
     }
 }
