@@ -8,8 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct Comment: Codable, Identifiable
+struct Comment: Codable, Identifiable, Hashable
 {
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     let id: Int
     let postID: Int
     let creatorID: Int
@@ -45,5 +49,5 @@ struct Comment: Codable, Identifiable
     let author: User
 
     let childCount: Int?
-    var children: [Comment]?
+    var children: [Comment]
 }

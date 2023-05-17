@@ -13,19 +13,23 @@ struct CommunityView: View
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
+    @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
 
     @StateObject var postTracker: PostTracker = .init()
 
     @State var instanceAddress: URL
 
-    @State var username: String
-    @State var accessToken: String
-
+    @State var account: SavedAccount
     @State var community: Community?
 
-    @State private var selectedSortingOption: SortingOptions = .active
-    
+    @State private var selectedSortingOption: SortingOptions = .hot
+
     @State private var isSidebarShown: Bool = false
+    @State private var isShowingCommunitySearch: Bool = false
+
+    @State private var searchText: String = ""
+
+    @FocusState var isSearchFieldFocused: Bool
 
     var isInSpecificCommunity: Bool
     {
@@ -39,251 +43,299 @@ struct CommunityView: View
         }
     }
 
-    @Environment(\.isPresented) var isPresented
-
-    @State private var isShowingSearch: Bool = false
-
     var body: some View
     {
-        ScrollView
-        {
-            if postTracker.posts.isEmpty
-            {
-                LoadingView(whatIsLoading: .posts)
-            }
-            else
-            {
-                LazyVStack
-                {
-                    if isInSpecificCommunity
-                    {
-                        if shouldShowCommunityHeaders
-                        {
-                            if let communityBannerURL = community?.banner
-                            {
-                                StickyImageView(url: communityBannerURL)
-                            }
-                        }
-                    }
-
-                    if isInSpecificCommunity
-                    {
-                        NavigationLink(destination: CommunitySidebarView(community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
-                        { /// This is here to show the sidebar when needed
-                            Text("")
-                        }
-                        .hidden()
-                    }
-
-                    ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
-                    { post in
-                        /* if post == posts.decodedPosts.last
-                         {} */
-                        NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, username: username, accessToken: accessToken, post: post))
-                        {
-                            PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, username: username, accessToken: accessToken)
-                        }
-                        .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
-                        .task
-                        {
-                            if post == postTracker.posts.last
-                            {
-                                if community == nil
-                                {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
-                                }
-                                else
-                                {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
-                                }
-                            }
-                        }
-                        .onChange(of: selectedSortingOption, perform: { newValue in
-                            Task
-                            {
-                                print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-                                
-                                postTracker.posts = .init()
-                                postTracker.page = 1
-                                
-                                if community == nil
-                                {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
-                                }
-                                else
-                                {
-                                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-        }
-        .background(Color.secondarySystemBackground)
-        .navigationTitle(community?.name ?? "Home")
-        .navigationBarTitleDisplayMode(shouldShowCommunityHeaders ? .inline : .large)
-        .task(priority: .userInitiated)
-        {
-            if postTracker.posts.isEmpty
-            {
-                print("Post tracker is empty")
-
-                await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption)
-            }
-            else
-            {
-                print("Post tracker is not empty")
-            }
-        }
-        .task(priority: .background)
-        {
-            if isInSpecificCommunity
-            {
-                do
-                {
-                    community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
-                }
-                catch let communityDetailsFetchingError
-                {
-                    print("Failed while fetching community details: \(communityDetailsFetchingError)")
-                    appState.criticalErrorType = .shittyInternet
-                    appState.isShowingCriticalError = true
-                }
-            }
-        }
-        .toolbar
-        {
-            /*Button
-            {
-                isShowingSearch.toggle()
-            } label: {
-                Image(systemName: "magnifyingglass")
-            }*/
-
-            Menu
-            {
-                Button {
-                    selectedSortingOption = .active
-                } label: {
-                    Label("Active", systemImage: "bubble.left.and.bubble.right")
-                }
-
-                Button
-                {
-                    selectedSortingOption = .hot
-                } label: {
-                    Label("Hot", systemImage: "flame")
-                }
-                
-                Button
-                {
-                    selectedSortingOption = .new
-                } label: {
-                    Label("New", systemImage: "sun.max")
-                }
-                
-                Menu
-                {
-                    Button
-                    {
-                        selectedSortingOption = .topDay
-                    } label: {
-                        Label("Day", systemImage: "calendar.day.timeline.left")
-                    }
-                    
-                    Button
-                    {
-                        selectedSortingOption = .topWeek
-                    } label: {
-                        Label("Week", systemImage: "calendar.day.timeline.left")
-                    }
-                    
-                    Button
-                    {
-                        selectedSortingOption = .topMonth
-                    } label: {
-                        Label("Month", systemImage: "calendar.day.timeline.left")
-                    }
-                    
-                    Button
-                    {
-                        selectedSortingOption = .topYear
-                    } label: {
-                        Label("Year", systemImage: "calendar.day.timeline.left")
-                    }
-                    
-                    Button
-                    {
-                        selectedSortingOption = .topAll
-                    } label: {
-                        Label("All time", systemImage: "calendar.day.timeline.left")
-                    }
-                } label: {
-                    Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
-                }
-            } label: {
-                switch selectedSortingOption {
-                    case .active:
-                        Label("Selected sorting by  \"Active\"", systemImage: "bubble.left.and.bubble.right")
-                    case .hot:
-                        Label("Selected sorting by \"Hot\"", systemImage: "flame")
-                    case .new:
-                        Label("Selected sorting by \"New\"", systemImage: "sun.max")
-                    case .topDay:
-                        Label("Selected sorting by \"Top of Day\"", systemImage: "calendar.day.timeline.left")
-                    case .topWeek:
-                        Label("Selected sorting by \"Top of Week\"", systemImage: "calendar.day.timeline.left")
-                    case .topMonth:
-                        Label("Selected sorting by \"Top of Month\"", systemImage: "calendar.day.timeline.left")
-                    case .topYear:
-                        Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
-                    case .topAll:
-                        Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
-                        
-                    #warning("TODO: Make this the default icon for the sorting")
-                    /*case .unspecified:
-                        Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal")*/
-                }
-            }
+        ZStack(alignment: .top) {
+            CommunitySearchResultsView(instanceAddress: instanceAddress, account: account)
+                //.transition(.move(edge: .top).combined(with: .opacity))
             
-            Menu
+            ScrollView
             {
-                #warning("TODO: Add a [submit post] feature")
-                Button
+                if postTracker.posts.isEmpty
                 {
-                    print("Submit post")
-                } label: {
-                    Label("Submit Post…", systemImage: "plus.bubble")
-                }
-
-                if isInSpecificCommunity
-                {
-                    Button
-                    {
-                        self.isSidebarShown = true
-                    } label: {
-                        Label("Sidebar", systemImage: "sidebar.right")
-                    }
-                }
-                
-                Divider()
-                
-                if isInSpecificCommunity
-                {
-                    ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
+                    LoadingView(whatIsLoading: .posts)
                 }
                 else
                 {
-                    ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!, isShowingButtonText: true)
+                    LazyVStack
+                    {
+                        if isInSpecificCommunity
+                        {
+                            if shouldShowCommunityHeaders
+                            {
+                                if let communityBannerURL = community?.banner
+                                {
+                                    StickyImageView(url: communityBannerURL)
+                                }
+                            }
+                        }
+                        
+                        if isInSpecificCommunity
+                        {
+                            NavigationLink(destination: CommunitySidebarView(community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
+                            { /// This is here to show the sidebar when needed
+                                Text("")
+                            }
+                            .hidden()
+                        }
+                        
+                        ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
+                        { post in
+                            NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, account: account, post: post))
+                            {
+                                PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, account: account)
+                            }
+                            .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
+                            .task
+                            {
+                                if post == postTracker.posts.last
+                                {
+                                    if community == nil
+                                    {
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
+                                    }
+                                    else
+                                    {
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
+                                    }
+                                }
+                            }
+                            .onChange(of: selectedSortingOption, perform: { newValue in
+                                Task
+                                {
+                                    print("Selected sorting option: \(newValue), \(newValue.rawValue)")
+                                    
+                                    postTracker.posts = .init()
+                                    postTracker.page = 1
+                                    
+                                    if community == nil
+                                    {
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
+                                    }
+                                    else
+                                    {
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
+                                    }
+                                }
+                            })
+                        }
+                    }
                 }
-            } label: {
-                Label("More", systemImage: "info.circle")
             }
-        }
-        .sheet(isPresented: $isShowingSearch)
-        {
-            SearchSheet()
+            .background(Color.secondarySystemBackground)
+            .offset(y: isShowingCommunitySearch ? 300 : 0)
+            .task(priority: .userInitiated)
+            {
+                if postTracker.posts.isEmpty
+                {
+                    print("Post tracker is empty")
+                    
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption)
+                }
+                else
+                {
+                    print("Post tracker is not empty")
+                }
+            }
+            .task(priority: .background)
+            {
+                if isInSpecificCommunity
+                {
+                    do
+                    {
+                        community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
+                    }
+                    catch let communityDetailsFetchingError
+                    {
+                        print("Failed while fetching community details: \(communityDetailsFetchingError)")
+                        appState.criticalErrorType = .shittyInternet
+                        appState.isShowingCriticalError = true
+                    }
+                }
+            }
+            .toolbar
+            {
+                ToolbarItem(placement: .principal)
+                { /// This is here to replace the default navigationTitle and make it possible to tap it
+                    if !isShowingCommunitySearch
+                    {
+                        HStack(alignment: .center, spacing: 0)
+                        {
+                            Text(community?.name ?? "Home")
+                                .font(.headline)
+                            Image(systemName: "chevron.down")
+                                .scaleEffect(0.7)
+                        }
+                        .onTapGesture
+                        {
+                            isSearchFieldFocused = true
+                            
+                            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                            {
+                                isShowingCommunitySearch.toggle()
+                            }
+                        }
+                    }
+                    else
+                    {
+                        CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, instanceAddress: instanceAddress)
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .navigationBarTrailing)
+                {
+                    if !isShowingCommunitySearch
+                    {
+                        Menu
+                        {
+                            Button
+                            {
+                                selectedSortingOption = .active
+                            } label: {
+                                Label("Active", systemImage: "bubble.left.and.bubble.right")
+                            }
+                            
+                            Button
+                            {
+                                selectedSortingOption = .hot
+                            } label: {
+                                Label("Hot", systemImage: "flame")
+                            }
+                            
+                            Button
+                            {
+                                selectedSortingOption = .new
+                            } label: {
+                                Label("New", systemImage: "sun.max")
+                            }
+                            
+                            Menu
+                            {
+                                Button
+                                {
+                                    selectedSortingOption = .topDay
+                                } label: {
+                                    Label("Day", systemImage: "calendar.day.timeline.left")
+                                }
+                                
+                                Button
+                                {
+                                    selectedSortingOption = .topWeek
+                                } label: {
+                                    Label("Week", systemImage: "calendar.day.timeline.left")
+                                }
+                                
+                                Button
+                                {
+                                    selectedSortingOption = .topMonth
+                                } label: {
+                                    Label("Month", systemImage: "calendar.day.timeline.left")
+                                }
+                                
+                                Button
+                                {
+                                    selectedSortingOption = .topYear
+                                } label: {
+                                    Label("Year", systemImage: "calendar.day.timeline.left")
+                                }
+                                
+                                Button
+                                {
+                                    selectedSortingOption = .topAll
+                                } label: {
+                                    Label("All time", systemImage: "calendar.day.timeline.left")
+                                }
+                            } label: {
+                                Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
+                            }
+                        } label: {
+                            switch selectedSortingOption
+                            {
+                                case .active:
+                                    Label("Selected sorting by  \"Active\"", systemImage: "bubble.left.and.bubble.right")
+                                case .hot:
+                                    Label("Selected sorting by \"Hot\"", systemImage: "flame")
+                                case .new:
+                                    Label("Selected sorting by \"New\"", systemImage: "sun.max")
+                                case .topDay:
+                                    Label("Selected sorting by \"Top of Day\"", systemImage: "calendar.day.timeline.left")
+                                case .topWeek:
+                                    Label("Selected sorting by \"Top of Week\"", systemImage: "calendar.day.timeline.left")
+                                case .topMonth:
+                                    Label("Selected sorting by \"Top of Month\"", systemImage: "calendar.day.timeline.left")
+                                case .topYear:
+                                    Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
+                                case .topAll:
+                                    Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
+                                    
+#warning("TODO: Make this the default icon for the sorting")
+                                    /* case .unspecified:
+                                     Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal") */
+                            }
+                        }
+                        
+                        Menu
+                        {
+#warning("TODO: Add a [submit post] feature")
+                            Button
+                            {
+                                print("Submit post")
+                            } label: {
+                                Label("Submit Post…", systemImage: "plus.bubble")
+                            }
+                            
+                            if isInSpecificCommunity
+                            {
+                                Button
+                                {
+                                    self.isSidebarShown = true
+                                } label: {
+                                    Label("Sidebar", systemImage: "sidebar.right")
+                                }
+                            }
+                            
+                            Divider()
+                            
+                            if isInSpecificCommunity
+                            {
+                                Button {
+                                    print("Would favorite community \(community!.name) for the user \(account.username)")
+                                } label: {
+                                    Label("Favorite", systemImage: "star")
+                                }
+                                
+                                ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
+                            }
+                            else
+                            {
+                                ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!, isShowingButtonText: true)
+                            }
+                        } label: {
+                            Label("More", systemImage: "info.circle")
+                        }
+                    }
+                    else
+                    {
+                        Button
+                        {
+                            isSearchFieldFocused = false
+                            
+                            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                            {
+                                isShowingCommunitySearch.toggle()
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                            { /// Clear the search text and results one second after it disappears so it doesn't just disappear in the middle of the animation
+                                searchText = ""
+                                communitySearchResultsTracker.foundCommunities = .init()
+                            }
+                        } label: {
+                            Text("Cancel")
+                        }
+                    }
+                }
+            }
         }
     }
 }

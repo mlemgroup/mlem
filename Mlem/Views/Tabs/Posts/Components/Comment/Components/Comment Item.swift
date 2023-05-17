@@ -11,6 +11,7 @@ struct CommentItem: View
 {
     
     @State var comment: Comment
+    @State var isCollapsed = false
 
     @State private var isShowingReplySheet = false
 
@@ -18,8 +19,11 @@ struct CommentItem: View
     {
         VStack(alignment: .leading, spacing: 10)
         {
-            Text(.init(comment.content)) // .init makes the comments have Markdown support
-                .frame(maxWidth: .infinity, alignment: .topLeading)
+            if !isCollapsed
+            {
+                Text(.init(comment.content)) // .init makes the comments have Markdown support
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+            }
 
             HStack(spacing: 12)
             {
@@ -52,12 +56,31 @@ struct CommentItem: View
             }
             
             Divider()
+
+            if !isCollapsed
+            {
+                VStack(alignment: .leading, spacing: 10)
+                {
+                    ForEach(comment.children)
+                    { comment in
+                        CommentItem(comment: comment)
+                    }
+                }
+            }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture
+        {
+            withAnimation(.easeInOut(duration: 0.2))
+            {
+                isCollapsed.toggle()
+            }
         }
         .dynamicTypeSize(.small)
         .sheet(isPresented: $isShowingReplySheet)
         {
             ReplyView(parentComment: comment)
         }
-        .padding(.horizontal)
+        .padding(comment.parentID == nil ? .horizontal : .leading)
     }
 }

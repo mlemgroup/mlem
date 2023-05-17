@@ -95,6 +95,8 @@ struct SettingsView: View
                                     }
                                 } header: {
                                     Text("Special Contributors")
+                                } footer: {
+                                    Text("Without Seb's help, none of my apps would exist.\nI am forever grateful.")
                                 }
                                 
                                 Section
