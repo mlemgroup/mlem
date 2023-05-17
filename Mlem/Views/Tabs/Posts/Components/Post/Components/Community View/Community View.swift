@@ -26,6 +26,8 @@ struct CommunityView: View
 
     @State private var isSidebarShown: Bool = false
     @State private var isShowingCommunitySearch: Bool = false
+    
+    @State private var isRefreshing: Bool = false
 
     @State private var searchText: String = ""
 
@@ -124,6 +126,18 @@ struct CommunityView: View
             }
             .background(Color.secondarySystemBackground)
             .offset(y: isShowingCommunitySearch ? 300 : 0)
+            .refreshable {
+                Task(priority: .userInitiated) {
+                    isRefreshing = true
+                    
+                    postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
+                    postTracker.posts = .init()
+                    
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption)
+                    
+                    isRefreshing = false
+                }
+            }
             .task(priority: .userInitiated)
             {
                 if postTracker.posts.isEmpty
