@@ -149,14 +149,14 @@ struct PostItem: View
                             {
                                 if !isExpanded
                                 {
-                                    Text(.init(postBody))
+                                    MarkdownView(text: postBody)
                                         .font(.subheadline)
                                 }
                                 else
                                 {
                                     if !isPostCollapsed
                                     {
-                                        Text(.init(postBody))
+                                        MarkdownView(text: postBody)
                                             .onTapGesture {
                                                 print("Tapped")
                                                 withAnimation(.easeInOut(duration: 0.2)) {
