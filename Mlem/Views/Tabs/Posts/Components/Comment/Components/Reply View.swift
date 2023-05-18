@@ -42,7 +42,7 @@ struct ReplyView: View
             {
                 Text(parentComment.author.name)
                     .foregroundColor(.secondary)
-                Text(.init(parentComment.content))
+                MarkdownView(text: parentComment.content)
                     .padding()
                     .background(Color.secondarySystemBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .circular))

@@ -21,7 +21,7 @@ struct CommentItem: View
         {
             if !isCollapsed
             {
-                Text(.init(comment.content)) // .init makes the comments have Markdown support
+                MarkdownView(text: comment.content)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
 
