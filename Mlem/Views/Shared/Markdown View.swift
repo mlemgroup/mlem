@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MarkdownUI
+import SafariServices
 
 extension Theme
 {
@@ -20,11 +21,19 @@ extension Theme
 }
 
 struct MarkdownView: View {
+    @Environment(\.openURL) private var openURL
     
     @State var text: String
     
     var body: some View {
         Markdown(text)
             .markdownTheme(.gitHub)
+            .environment(\.openURL, OpenURLAction { interceptedURL in
+                let safariViewController = SFSafariViewController(url: interceptedURL, configuration: AppConstants.inAppSafariConfiguration)
+                
+                UIApplication.shared.firstKeyWindow?.rootViewController?.present(safariViewController, animated: true)
+                
+                return .handled
+            })
     }
 }
