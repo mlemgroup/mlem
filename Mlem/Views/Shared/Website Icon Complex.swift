@@ -5,23 +5,22 @@
 //  Created by David Bureš on 04.05.2023.
 //
 
-import Foundation
-import SwiftUI
 import CachedAsyncImage
+import Foundation
+import SafariServices
+import SwiftUI
 
 struct WebsiteIconComplex: View
 {
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
-    
+
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
 
     @State var post: Post
 
     @State private var overridenWebsiteFaviconName: String = "globe"
-    
-    @State private var isShowingSafari: Bool = false
 
     var faviconURL: URL?
     {
@@ -39,31 +38,35 @@ struct WebsiteIconComplex: View
     {
         GroupBox
         {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 0)
+            {
                 if shouldShowWebsitePreviews
                 {
                     if let thumbnailURL = post.thumbnailURL
                     {
-                        VStack(alignment: .center, spacing: 0) {
-                            CachedAsyncImage(url: thumbnailURL) { image in
+                        VStack(alignment: .center, spacing: 0)
+                        {
+                            CachedAsyncImage(url: thumbnailURL)
+                            { image in
                                 image
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(maxWidth: .infinity, maxHeight: 400)
                             } placeholder: {
-                                ZStack(alignment: .center) {
+                                ZStack(alignment: .center)
+                                {
                                     Text("Loading image…")
                                     Rectangle()
                                         .frame(maxWidth: .infinity, maxHeight: 400)
                                         .background(Color.secondarySystemBackground)
                                 }
                             }
-                            
+
                             Divider()
                         }
                     }
                 }
-                
+
                 HStack(alignment: .center, spacing: 0)
                 {
                     if shouldShowWebsiteFaviconAtAll
@@ -142,21 +145,17 @@ struct WebsiteIconComplex: View
                         }
                     }
                     .padding()
-                    
+
                     Spacer()
                 }
             }
         }
         .groupBoxStyle(OutlinedWebComplexStyle())
-        .onTapGesture {
-            print("Bool before: \(isShowingSafari)")
-            print("Tapped")
-            self.isShowingSafari = true
-            print("Bool after: \(isShowingSafari)")
-        }
-        .sheet(isPresented: $isShowingSafari) {
-            InAppSafari(urlToOpen: post.url!)
-                .edgesIgnoringSafeArea(.bottom)
+        .onTapGesture
+        { /// Open in-app safari
+            let safariViewController = SFSafariViewController(url: post.url!, configuration: AppConstants.inAppSafariConfiguration)
+
+            UIApplication.shared.firstKeyWindow?.rootViewController?.present(safariViewController, animated: true)
         }
     }
 }
