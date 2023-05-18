@@ -56,7 +56,7 @@ struct CommunitySidebarView: View
                     {
                         if let communityDescription = community.description
                         {
-                            Text(.init(communityDescription))
+                            MarkdownView(text: communityDescription)
                         }
                         else
                         {
