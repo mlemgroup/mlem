@@ -15,7 +15,7 @@ struct GeneralSettingsView: View
     {
         List
         {
-            Section("Sorting")
+            Section("Default Sorting")
             {
                 Picker(selection: $defaultCommentSorting)
                 {
@@ -24,7 +24,11 @@ struct GeneralSettingsView: View
                         Text(String(describing: sortingOption))
                     }
                 } label: {
-                    Label("Default comment sorting", systemImage: "arrow.up.arrow.down.square.fill")
+                    HStack(alignment: .center) {
+                        Image(systemName: "arrow.up.arrow.down.square.fill")
+                            .foregroundColor(.gray)
+                        Text("Comment sorting")
+                    }
                 }
             }
         }

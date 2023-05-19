@@ -36,6 +36,18 @@ struct SettingsView: View
                 {
                     NavigationLink
                     {
+                        GeneralSettingsView()
+                    } label: {
+                        HStack(alignment: .center)
+                        {
+                            Image(systemName: "gearshape.circle.fill")
+                                .foregroundColor(.gray)
+                            Text("General")
+                        }
+                    }
+
+                    NavigationLink
+                    {
                         AppearanceSettingsView()
                     } label: {
                         HStack(alignment: .center)

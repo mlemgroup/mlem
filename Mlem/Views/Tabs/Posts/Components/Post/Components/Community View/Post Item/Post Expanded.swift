@@ -84,21 +84,21 @@ struct PostExpanded: View
                 {
                     Button
                     {
-                        commentTracker.comments = sortComments(sortBy: .active)
+                        commentSortingType = .active
                     } label: {
                         Label("Active", systemImage: "bubble.left.and.bubble.right")
                     }
 
                     Button
                     {
-                        commentTracker.comments = sortComments(sortBy: .new)
+                        commentSortingType = .new
                     } label: {
                         Label("New", systemImage: "sun.max")
                     }
 
                     Button
                     {
-                        commentTracker.comments = sortComments(sortBy: .top)
+                        commentSortingType = .top
                     } label: {
                         Label("Top", systemImage: "calendar.day.timeline.left")
                     }
@@ -125,7 +125,11 @@ struct PostExpanded: View
                 await loadComments()
             }
         }
+        .onChange(of: commentSortingType) { newSortingType in
+            commentTracker.comments = sortComments(sortBy: newSortingType)
+        }
     }
+
 
     internal func loadComments() async
     {
