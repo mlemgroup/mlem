@@ -200,7 +200,7 @@ struct PostItem: View
                     HStack(spacing: iconToTextSpacing)
                     { // Time since posted
                         Image(systemName: "clock")
-                        Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: post.published)))
+                        Text(getTimeIntervalFromNow(date: post.published))
                     }
 
                     UserProfileLink(user: post.author )
