@@ -21,7 +21,7 @@ struct Post: Codable, Identifiable, Equatable
     var url: URL?
     let body: String?
     let removed, locked: Bool?
-    let published: String
+    let published: Date
     let updated: String?
     let deleted, nsfw, stickied: Bool
     let embedTitle, embedDescription, embedHTML: String?

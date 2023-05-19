@@ -76,7 +76,9 @@ private extension JSON {
             content: self["content"].stringValue,
             removed: self["removed"].boolValue,
             //read: self["read"].boolValue,
-            published: self["published"].stringValue,
+            published: {
+                return convertResponseDateToDate(responseDate: self["published"].stringValue)
+            }(),
             deleted: self["deleted"].boolValue,
             updated: self["updated"].string,
             apID: self["ap_id"].url!,
@@ -139,7 +141,9 @@ private extension JSON {
             content: self["comment", "content"].stringValue,
             removed: self["comment", "removed"].boolValue,
             //read: self[""],
-            published: self["comment", "published"].stringValue,
+            published: {
+                return convertResponseDateToDate(responseDate: self["comment", "published"].stringValue)
+            }(),
             deleted: self["comment", "deleted"].boolValue,
             updated: self["comment", "updated"].string,
             apID: self["comment", "ap_id"].url!,

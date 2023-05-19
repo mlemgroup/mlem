@@ -33,7 +33,9 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     body: post["body"].stringValue,
                     removed: post["removed"].boolValue,
                     locked: post["locked"].boolValue,
-                    published: post["published"].stringValue,
+                    published: {
+                        return convertResponseDateToDate(responseDate: post["published"].stringValue)
+                    }(),
                     updated: post["updated"].string,
                     deleted: post["deleted"].boolValue,
                     nsfw: post["nsfw"].boolValue,
@@ -106,7 +108,9 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     body: post["post", "body"].stringValue,
                     removed: post["post", "removed"].boolValue,
                     locked: post["post", "locked"].boolValue,
-                    published: post["post", "published"].stringValue,
+                    published: {
+                        return convertResponseDateToDate(responseDate: post["post", "published"].stringValue)
+                    }(),
                     updated: post["post", "updated"].string,
                     deleted: post["post", "deleted"].boolValue,
                     nsfw: post["post", "nsfw"].boolValue,

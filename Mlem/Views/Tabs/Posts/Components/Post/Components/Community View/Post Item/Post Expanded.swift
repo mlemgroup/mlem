@@ -9,18 +9,22 @@ import SwiftUI
 
 struct PostExpanded: View
 {
+    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
+
     @EnvironmentObject var appState: AppState
-    
+
     @StateObject var commentTracker: CommentTracker = .init()
-    
+
     @State var instanceAddress: URL
-    
+
     @State var account: SavedAccount
+
+    let post: Post
 
     @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
-    
-    let post: Post
+
+    @State private var commentSortingType: CommentSortTypes = .top
 
     var body: some View
     {
@@ -54,10 +58,15 @@ struct PostExpanded: View
                         {
                             await loadComments()
                         }
+                        .onAppear
+                        {
+                            commentSortingType = defaultCommentSorting
+                        }
                 }
                 else
                 {
-                    LazyVStack(alignment: .leading, spacing: 15) {
+                    LazyVStack(alignment: .leading, spacing: 15)
+                    {
                         ForEach(commentTracker.comments)
                         { comment in
                             CommentItem(comment: comment)
@@ -67,44 +76,121 @@ struct PostExpanded: View
             }
         }
         .navigationBarTitle(post.community.name, displayMode: .inline)
-        .refreshable {
-            Task(priority: .userInitiated) {
+        .toolbar
+        {
+            ToolbarItemGroup(placement: .navigationBarTrailing)
+            {
+                Menu
+                {
+                    Button
+                    {
+                        commentSortingType = .active
+                    } label: {
+                        Label("Active", systemImage: "bubble.left.and.bubble.right")
+                    }
+
+                    Button
+                    {
+                        commentSortingType = .new
+                    } label: {
+                        Label("New", systemImage: "sun.max")
+                    }
+
+                    Button
+                    {
+                        commentSortingType = .top
+                    } label: {
+                        Label("Top", systemImage: "calendar.day.timeline.left")
+                    }
+
+                } label: {
+                    switch commentSortingType
+                    {
+                    case .new:
+                        Label("New", systemImage: "sun.max")
+                    case .top:
+                        Label("Top", systemImage: "calendar.day.timeline.left")
+                    case .active:
+                        Label("Active", systemImage: "bubble.left.and.bubble.right")
+                    }
+                }
+            }
+        }
+        .refreshable
+        {
+            Task(priority: .userInitiated)
+            {
                 commentTracker.comments = .init()
-                
+
                 await loadComments()
             }
         }
+        .onChange(of: commentSortingType) { newSortingType in
+            withAnimation(.easeIn(duration: 0.4))
+            {
+                commentTracker.comments = sortComments(sortBy: newSortingType)
+            }
+        }
     }
-    
-    internal func loadComments() async -> Void
+
+    internal func loadComments() async
     {
         commentTracker.isLoading = true
-        
-        var commentCommand: String = ""
-        
+
+        var commentCommand = ""
+
         if instanceAddress.absoluteString.contains("v1")
         {
             print("Older API spec")
-            
+
             commentCommand = """
-    {"op": "GetPost", "data": { "id": \(post.id) }}
-    """
+            {"op": "GetPost", "data": { "id": \(post.id) }}
+            """
         }
         else
         {
             print("Newer API spec")
-            
+
             commentCommand = """
-{"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
-"""
+            {"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
+            """
         }
-        
+
         let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: commentCommand)
-        
+
         print("Comment response: \(commentResponse)")
-        
-        commentTracker.comments = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
+
+        var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
+
+        commentTracker.comments = sortComments(comments: parsedComments, sortBy: defaultCommentSorting)
         
         commentTracker.isLoading = false
+        
+        parsedComments = .init()
+    }
+
+    internal func sortComments(comments: [Comment]? = nil, sortBy: CommentSortTypes) -> [Comment]
+    {
+        var unsortedComments: [Comment] = .init()
+        
+        /// This check has to be there, because during the initial load, the comment tracker is empty, and we have to use a forced array of comments instead
+        if let comments
+        {
+            unsortedComments = comments
+        }
+        else
+        {
+            unsortedComments = commentTracker.comments
+        }
+        
+        switch sortBy
+        {
+        case .new:
+            return unsortedComments.sorted(by: { $0.published > $1.published })
+        case .top:
+            return unsortedComments.sorted(by: { $0.score > $1.score })
+        case .active:
+            return unsortedComments.sorted(by: { $0.children.count > $1.children.count })
+        }
     }
 }

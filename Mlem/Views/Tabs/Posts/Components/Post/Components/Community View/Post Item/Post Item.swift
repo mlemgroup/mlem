@@ -95,7 +95,7 @@ struct PostItem: View
                         }
                         .onTapGesture {
                             print("Tapped")
-                            withAnimation(.easeInOut(duration: 0.2)) {
+                            withAnimation(.easeIn(duration: 0.2)) {
                                 isPostCollapsed.toggle()
                             }
                         }
@@ -159,7 +159,7 @@ struct PostItem: View
                                         MarkdownView(text: postBody)
                                             .onTapGesture {
                                                 print("Tapped")
-                                                withAnimation(.easeInOut(duration: 0.2)) {
+                                                withAnimation(.easeIn(duration: 0.2)) {
                                                     isPostCollapsed.toggle()
                                                 }
                                             }
@@ -200,7 +200,7 @@ struct PostItem: View
                     HStack(spacing: iconToTextSpacing)
                     { // Time since posted
                         Image(systemName: "clock")
-                        Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: post.published)))
+                        Text(getTimeIntervalFromNow(date: post.published))
                     }
 
                     UserProfileLink(user: post.author )

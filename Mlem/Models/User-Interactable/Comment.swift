@@ -22,7 +22,7 @@ struct Comment: Codable, Identifiable, Hashable
     let content: String
     let removed: Bool
     //let read: Bool
-    let published: String
+    let published: Date
     let deleted: Bool?
     let updated: String?
     let apID: URL

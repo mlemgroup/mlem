@@ -23,6 +23,7 @@ struct CommentItem: View
             {
                 MarkdownView(text: comment.content)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .transition(.move(edge: .top).combined(with: .opacity))
             }
 
             HStack(spacing: 12)
@@ -49,7 +50,7 @@ struct CommentItem: View
 
                 HStack
                 {
-                    Text(getTimeIntervalFromNow(date: convertResponseDateToDate(responseDate: comment.published)))
+                    Text(getTimeIntervalFromNow(date: comment.published))
                     UserProfileLink(user: comment.author)
                 }
                 .foregroundColor(.secondary)
@@ -66,17 +67,21 @@ struct CommentItem: View
                         CommentItem(comment: comment)
                     }
                 }
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .clipped()
             }
         }
+        .clipped()
         .contentShape(Rectangle())
         .onTapGesture
         {
-            withAnimation(.easeInOut(duration: 0.2))
+            withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
             {
                 isCollapsed.toggle()
             }
         }
         .dynamicTypeSize(.small)
+        .background(Color.systemBackground)
         .sheet(isPresented: $isShowingReplySheet)
         {
             ReplyView(parentComment: comment)
