@@ -42,9 +42,14 @@ struct AccountsPage: View
                             {
                                 Button
                                 {
-                                    let indexOfSavedAccountToRemove: Int = accountsTracker.savedAccounts.firstIndex(where: { $0.id == savedAccount.id })!
+                                    let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts.first(where: { $0.id == savedAccount.id })!
 
-                                    accountsTracker.savedAccounts.remove(at: indexOfSavedAccountToRemove)
+                                    // MARK: - Purge the account information from the Keychain
+                                    AppConstants.keychain["\(savedAccountToRemove.id)_password"] = nil
+                                    AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
+                                    
+                                    // MARK: - Remove the account from the tracker
+                                    accountsTracker.savedAccounts.removeAll(where: { $0.id == savedAccountToRemove.id })
 
                                 } label: {
                                     Label("Remove", systemImage: "trash")
