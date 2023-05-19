@@ -18,6 +18,7 @@ struct OutlinedWebComplexStyle: GroupBoxStyle
             configuration.label
             configuration.content
         }
+        .background(Color.systemBackground)
         .clipShape(roundedRectangle)
         .overlay(
             roundedRectangle

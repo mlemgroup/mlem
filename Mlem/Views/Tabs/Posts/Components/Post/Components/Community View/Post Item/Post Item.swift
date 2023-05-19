@@ -145,25 +145,23 @@ struct PostItem: View
                     {
                         if !postBody.isEmpty
                         {
-                            if !post.stickied
+                            
+                            if !isExpanded
                             {
-                                if !isExpanded
+                                MarkdownView(text: postBody)
+                                    .font(.subheadline)
+                            }
+                            else
+                            {
+                                if !isPostCollapsed
                                 {
                                     MarkdownView(text: postBody)
-                                        .font(.subheadline)
-                                }
-                                else
-                                {
-                                    if !isPostCollapsed
-                                    {
-                                        MarkdownView(text: postBody)
-                                            .onTapGesture {
-                                                print("Tapped")
-                                                withAnimation(.easeIn(duration: 0.2)) {
-                                                    isPostCollapsed.toggle()
-                                                }
+                                        .onTapGesture {
+                                            print("Tapped")
+                                            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
+                                                isPostCollapsed.toggle()
                                             }
-                                    }
+                                        }
                                 }
                             }
                         }
