@@ -16,7 +16,7 @@ struct ContentView: View
             AccountsPage()
                 .tabItem
                 {
-                    Label("Posts", systemImage: "text.bubble")
+                    Label("Feeds", systemImage: "text.bubble")
                 }
             
             LoggedInUserPage()
