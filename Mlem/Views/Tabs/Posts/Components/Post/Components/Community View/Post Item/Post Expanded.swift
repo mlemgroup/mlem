@@ -126,10 +126,11 @@ struct PostExpanded: View
             }
         }
         .onChange(of: commentSortingType) { newSortingType in
-            commentTracker.comments = sortComments(sortBy: newSortingType)
+            withAnimation {
+                commentTracker.comments = sortComments(sortBy: newSortingType)
+            }
         }
     }
-
 
     internal func loadComments() async
     {

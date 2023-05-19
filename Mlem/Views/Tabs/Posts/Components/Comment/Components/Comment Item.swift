@@ -77,6 +77,7 @@ struct CommentItem: View
             }
         }
         .dynamicTypeSize(.small)
+        .background(Color.systemBackground)
         .sheet(isPresented: $isShowingReplySheet)
         {
             ReplyView(parentComment: comment)
