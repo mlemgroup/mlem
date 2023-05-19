@@ -7,13 +7,10 @@
 
 import SwiftUI
 
-internal enum CommentSortTypes
-{
-    case new, top, active
-}
-
 struct PostExpanded: View
 {
+    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
+
     @EnvironmentObject var appState: AppState
 
     @StateObject var commentTracker: CommentTracker = .init()
@@ -60,6 +57,10 @@ struct PostExpanded: View
                         .task(priority: .userInitiated)
                         {
                             await loadComments()
+                        }
+                        .onAppear
+                        {
+                            commentSortingType = defaultCommentSorting
                         }
                 }
                 else
@@ -153,21 +154,37 @@ struct PostExpanded: View
 
         print("Comment response: \(commentResponse)")
 
-        commentTracker.comments = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
+        var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
 
+        commentTracker.comments = sortComments(comments: parsedComments, sortBy: defaultCommentSorting)
+        
         commentTracker.isLoading = false
+        
+        parsedComments = .init()
     }
 
-    internal func sortComments(sortBy: CommentSortTypes) -> [Comment]
+    internal func sortComments(comments: [Comment]? = nil, sortBy: CommentSortTypes) -> [Comment]
     {
+        var unsortedComments: [Comment] = .init()
+        
+        /// This check has to be there, because during the initial load, the comment tracker is empty, and we have to use a forced array of comments instead
+        if let comments
+        {
+            unsortedComments = comments
+        }
+        else
+        {
+            unsortedComments = commentTracker.comments
+        }
+        
         switch sortBy
         {
         case .new:
-            return commentTracker.comments.sorted(by: { $0.published > $1.published })
+            return unsortedComments.sorted(by: { $0.published > $1.published })
         case .top:
-            return commentTracker.comments.sorted(by: { $0.score > $1.score })
+            return unsortedComments.sorted(by: { $0.score > $1.score })
         case .active:
-            return commentTracker.comments.sorted(by: { $0.children.count > $1.children.count })
+            return unsortedComments.sorted(by: { $0.children.count > $1.children.count })
         }
     }
 }
