@@ -9,7 +9,7 @@ import MarkdownUI
 import SafariServices
 import SwiftUI
 
-public extension Theme
+extension Theme
 {
     static let mlem = Theme()
         .text
