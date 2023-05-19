@@ -194,6 +194,7 @@ extension Theme
         .image
         { image in
             image.label
+                .scaledToFit()
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10), style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
