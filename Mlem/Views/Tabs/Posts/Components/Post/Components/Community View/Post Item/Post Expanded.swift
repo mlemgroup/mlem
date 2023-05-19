@@ -126,7 +126,7 @@ struct PostExpanded: View
             }
         }
         .onChange(of: commentSortingType) { newSortingType in
-            withAnimation(.easeIn(duration: 0.5))
+            withAnimation(.easeIn(duration: 0.4))
             {
                 commentTracker.comments = sortComments(sortBy: newSortingType)
             }

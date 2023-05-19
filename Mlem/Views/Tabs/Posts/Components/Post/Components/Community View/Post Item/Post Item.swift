@@ -95,7 +95,7 @@ struct PostItem: View
                         }
                         .onTapGesture {
                             print("Tapped")
-                            withAnimation(.easeIn(duration: 0.4)) {
+                            withAnimation(.easeIn(duration: 0.2)) {
                                 isPostCollapsed.toggle()
                             }
                         }
@@ -159,7 +159,7 @@ struct PostItem: View
                                         MarkdownView(text: postBody)
                                             .onTapGesture {
                                                 print("Tapped")
-                                                withAnimation(.easeIn(duration: 0.4)) {
+                                                withAnimation(.easeIn(duration: 0.2)) {
                                                     isPostCollapsed.toggle()
                                                 }
                                             }
