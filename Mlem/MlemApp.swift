@@ -98,9 +98,25 @@ struct MlemApp: App
                     {
                         print("Saved Accounts file exists, will attempt to load saved accounts")
 
+                        // try! FileManager.default.removeItem(at: AppConstants.savedAccountsFilePath)
+                        // try! createEmptyFile(at: AppConstants.savedAccountsFilePath)
+                        
                         do
                         {
-                            accountsTracker.savedAccounts = try decodeFromFile(fromURL: AppConstants.savedAccountsFilePath, whatToDecode: .accounts) as! [SavedAccount]
+                            let loadedUpAccounts = try decodeFromFile(fromURL: AppConstants.savedAccountsFilePath, whatToDecode: .accounts) as! [SavedAccount]
+                            
+                            // MARK: - Associate the accounts with their secret credentials
+                            if !loadedUpAccounts.isEmpty
+                            {
+                                var loadedUpAccountTracker: [SavedAccount] = .init()
+                                
+                                for account in loadedUpAccounts
+                                {
+                                    loadedUpAccountTracker.append(SavedAccount(id: account.id, instanceLink: account.instanceLink, accessToken: AppConstants.keychain["\(account.id)_accessToken"]!, username: account.username, password: AppConstants.keychain["\(account.id)_password"]!))
+                                }
+                                
+                                accountsTracker.savedAccounts = loadedUpAccountTracker
+                            }
                         }
                         catch let savedAccountDecodingError
                         {

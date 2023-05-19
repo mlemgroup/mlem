@@ -164,7 +164,13 @@ struct AddSavedInstanceView: View
 
                     print("Obtained token: \(token)")
                     
-                    communityTracker.savedAccounts.append(SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail))
+                    let newAccount: SavedAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail, password: password)
+                    
+                    // MARK: - Save the account's credentials into the keychain
+                    AppConstants.keychain["\(newAccount.id)_password"] = password
+                    AppConstants.keychain["\(newAccount.id)_accessToken"] = token
+                    
+                    communityTracker.savedAccounts.append(newAccount)
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2)
                     {
