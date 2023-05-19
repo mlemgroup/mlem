@@ -42,6 +42,7 @@
 		63344C712A098060001BC616 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C702A098060001BC616 /* Sidebar.swift */; };
 		63344C732A09AA21001BC616 /* Community Details Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C722A09AA21001BC616 /* Community Details Parser.swift */; };
 		63344C752A09B075001BC616 /* Get Community Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C742A09B075001BC616 /* Get Community Details.swift */; };
+		636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 636250DB2A18111400FC59B4 /* KeychainAccess */; };
 		6363D5C527EE196700E34822 /* MlemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C427EE196700E34822 /* MlemApp.swift */; };
 		6363D5C727EE196700E34822 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C627EE196700E34822 /* ContentView.swift */; };
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
@@ -228,6 +229,7 @@
 				63E5D3902A13CE4100EC1FBD /* DebouncedOnChange in Frameworks */,
 				63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */,
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
+				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,6 +724,7 @@
 				63F0C7B62A052F5000A18C5D /* CachedAsyncImage */,
 				63E5D38F2A13CE4100EC1FBD /* DebouncedOnChange */,
 				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
+				636250DB2A18111400FC59B4 /* KeychainAccess */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -800,6 +803,7 @@
 				63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				63E5D38E2A13CE4100EC1FBD /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
 				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1265,6 +1269,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui.git";
@@ -1300,6 +1312,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		636250DB2A18111400FC59B4 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
 		63D24EDB2A169F12005CCA81 /* MarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;

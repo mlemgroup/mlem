@@ -82,6 +82,10 @@ struct AccountsPage: View
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
             }
         }
+        .onAppear
+        {
+            print("Saved thing from keychain: \(AppConstants.keychain["test"])")
+        }
         .alert(isPresented: $appState.isShowingCriticalError) {
             switch appState.criticalErrorType
             {

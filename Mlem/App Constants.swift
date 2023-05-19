@@ -7,10 +7,14 @@
 
 import Foundation
 import SafariServices
+import KeychainAccess
 
 struct AppConstants
 {
     static let webSocketSession: URLSession = URLSession(configuration: .default)
+    
+    // MARK: - Keychain
+    static let keychain: Keychain = Keychain(service: "com.davidbures.Mlem-keychain")
     
     // MARK: - In-app Safari
     static let inAppSafariConfiguration: SFSafariViewController.Configuration =

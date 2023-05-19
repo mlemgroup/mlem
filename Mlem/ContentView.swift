@@ -31,6 +31,8 @@ struct ContentView: View
                 }
         }
         .onAppear
-        {}
+        {
+            AppConstants.keychain["test"] = "I-am-a-saved-thing"
+        }
     }
 }
