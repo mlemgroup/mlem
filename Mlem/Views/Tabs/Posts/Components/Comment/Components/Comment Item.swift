@@ -17,11 +17,29 @@ struct CommentItem: View
     {
         VStack(alignment: .leading, spacing: 10)
         {
-            if !isCollapsed
+            if comment.deleted!
             {
-                MarkdownView(text: comment.content)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    .transition(.move(edge: .top).combined(with: .opacity))
+                Text("Comment was deleted")
+                    .italic()
+                    .foregroundColor(.secondary)
+            }
+            else
+            {
+                if comment.removed
+                {
+                    Text("Comment was removed")
+                        .italic()
+                        .foregroundColor(.secondary)
+                }
+                else
+                {
+                    if !isCollapsed
+                    {
+                        MarkdownView(text: comment.content)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                    }
+                }
             }
 
             HStack(spacing: 12)

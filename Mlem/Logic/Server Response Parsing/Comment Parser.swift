@@ -13,7 +13,12 @@ func parseComments(commentResponse: String, instanceLink: URL) async throws -> [
     do
     {
         let parsedJSON: JSON = try parseJSON(from: commentResponse)
-        let jsonComments = parsedJSON["data", "comments"].arrayValue
+        var jsonComments = parsedJSON["data", "comments"].arrayValue
+        
+        if jsonComments.isEmpty
+        { /// This has to be here because I'm also using this function for parsing coments that the user posted, which has a different format. If the first attempt to get the array of comments fails, try the one that's for responses for posting comments
+            jsonComments = [parsedJSON["data", "comment_view"]]
+        }
 
         let isV1 = instanceLink.absoluteString.contains("v1")
         var allComments = jsonComments.map { isV1 ? $0.v1ToComment() : $0.v2ToComment() }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 internal enum CommentPostingFailure: Error
 {
@@ -24,7 +25,11 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
         
         if !commentPostingCommandResult.contains("error")
         {
-            await commentTracker.comments.prepend(try! parseComments(commentResponse: commentPostingCommandResult, instanceLink: account.instanceLink).first!)
+            let postedComment: Comment = try! await parseComments(commentResponse: commentPostingCommandResult, instanceLink: account.instanceLink).first!
+            
+            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
+                commentTracker.comments.prepend(postedComment)
+            }
         }
         else
         {
