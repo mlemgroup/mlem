@@ -25,6 +25,10 @@ struct PostExpanded: View
     @State private var sortSelection = 0
 
     @State private var commentSortingType: CommentSortTypes = .top
+    
+    @State private var textFieldContents: String = ""
+    
+    @State private var isShowingReplySheet: Bool = false
 
     var body: some View
     {
@@ -76,6 +80,23 @@ struct PostExpanded: View
             }
         }
         .navigationBarTitle(post.community.name, displayMode: .inline)
+        .sheet(isPresented: $isShowingReplySheet)
+        {
+            ReplySheet(isShowingSheet: $isShowingReplySheet, post: post, account: account)
+        }
+        .safeAreaInset(edge: .bottom)
+        {
+            VStack {
+                CustomTextField(placeholder: "\(account.username):", text: $textFieldContents)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(10)
+                    .onTapGesture {
+                        isShowingReplySheet.toggle()
+                    }
+                Divider()
+            }
+            .background(.regularMaterial)
+        }
         .toolbar
         {
             ToolbarItemGroup(placement: .navigationBarTrailing)

@@ -13,8 +13,6 @@ struct CommentItem: View
     @State var comment: Comment
     @State var isCollapsed = false
 
-    @State private var isShowingReplySheet = false
-
     var body: some View
     {
         VStack(alignment: .leading, spacing: 10)
@@ -37,7 +35,6 @@ struct CommentItem: View
                 {
                     Button(action: {
                         print("Would reply to comment ID \(comment.id)")
-                        isShowingReplySheet.toggle()
                     }, label: {
                         Image(systemName: "arrowshape.turn.up.backward")
                     })
@@ -82,10 +79,6 @@ struct CommentItem: View
         }
         .dynamicTypeSize(.small)
         .background(Color.systemBackground)
-        .sheet(isPresented: $isShowingReplySheet)
-        {
-            ReplyView(parentComment: comment)
-        }
         .padding(comment.parentID == nil ? .horizontal : .leading)
     }
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6314C9E92A18D33800B08405 /* Reply Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9E82A18D33800B08405 /* Reply Sheet.swift */; };
+		6314C9EB2A18D9C500B08405 /* Reply Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9EA2A18D9C500B08405 /* Reply Editor.swift */; };
+		6314C9EE2A18EF3A00B08405 /* Keyboard Accessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */; };
 		631891162A03B0AC00EDA8D1 /* Parse JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631891152A03B0AC00EDA8D1 /* Parse JSON.swift */; };
 		6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */; };
 		6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */; };
@@ -55,6 +58,7 @@
 		6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60327EE20A200E34822 /* Post Expanded.swift */; };
 		6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F23C27F10E4E0074C36F /* Post Parser.swift */; };
 		6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6367F23E27F10E580074C36F /* Comment Parser.swift */; };
+		637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6374570F2A18CB6600B69C03 /* Custom Text Field.swift */; };
 		638535712A1779BC00815781 /* General.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535702A1779BC00815781 /* General.swift */; };
 		638535732A1779FC00815781 /* Comment Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535722A1779FC00815781 /* Comment Sorting Options.swift */; };
 		6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E0292A03D0C3006B3C1D /* Post Tracker.swift */; };
@@ -88,7 +92,6 @@
 		63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3932A13CF3600EC1FBD /* Favorite Community.swift */; };
 		63E5D3962A13DAF200EC1FBD /* Mark Community as Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */; };
 		63E5D3982A13DCFB00EC1FBD /* Remove Community from Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3972A13DCFB00EC1FBD /* Remove Community from Favorites.swift */; };
-		63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EAFDA227F5AEB700FEBE9C /* Reply View.swift */; };
 		63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */; };
 		63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A52A05225100A18C5D /* Saved Account.swift */; };
 		63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */; };
@@ -123,6 +126,9 @@
 
 /* Begin PBXFileReference section */
 		630D753C27F65E44006E60C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6314C9E82A18D33800B08405 /* Reply Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply Sheet.swift"; sourceTree = "<group>"; };
+		6314C9EA2A18D9C500B08405 /* Reply Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply Editor.swift"; sourceTree = "<group>"; };
+		6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard Accessories.swift"; sourceTree = "<group>"; };
 		631891152A03B0AC00EDA8D1 /* Parse JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parse JSON.swift"; sourceTree = "<group>"; };
 		6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stickied Tag.swift"; sourceTree = "<group>"; };
 		6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share Sheet.swift"; sourceTree = "<group>"; };
@@ -173,6 +179,7 @@
 		6363D60327EE20A200E34822 /* Post Expanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Expanded.swift"; sourceTree = "<group>"; };
 		6367F23C27F10E4E0074C36F /* Post Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Parser.swift"; sourceTree = "<group>"; };
 		6367F23E27F10E580074C36F /* Comment Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Parser.swift"; sourceTree = "<group>"; };
+		6374570F2A18CB6600B69C03 /* Custom Text Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Text Field.swift"; sourceTree = "<group>"; };
 		638535702A1779BC00815781 /* General.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = General.swift; sourceTree = "<group>"; };
 		638535722A1779FC00815781 /* Comment Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Sorting Options.swift"; sourceTree = "<group>"; };
 		6386E0292A03D0C3006B3C1D /* Post Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Tracker.swift"; sourceTree = "<group>"; };
@@ -203,7 +210,6 @@
 		63E5D3932A13CF3600EC1FBD /* Favorite Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Favorite Community.swift"; sourceTree = "<group>"; };
 		63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mark Community as Favorite.swift"; sourceTree = "<group>"; };
 		63E5D3972A13DCFB00EC1FBD /* Remove Community from Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remove Community from Favorites.swift"; sourceTree = "<group>"; };
-		63EAFDA227F5AEB700FEBE9C /* Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply View.swift"; sourceTree = "<group>"; };
 		63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sorting Options.swift"; sourceTree = "<group>"; };
 		63F0C7A52A05225100A18C5D /* Saved Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account.swift"; sourceTree = "<group>"; };
 		63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account Tracker.swift"; sourceTree = "<group>"; };
@@ -271,6 +277,15 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
+		6314C9EC2A18EF2D00B08405 /* Reply Editor */ = {
+			isa = PBXGroup;
+			children = (
+				6314C9EA2A18D9C500B08405 /* Reply Editor.swift */,
+				6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */,
+			);
+			path = "Reply Editor";
+			sourceTree = "<group>";
+		};
 		6318DE5227FB956D00CC2AD6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,6 +339,7 @@
 				6322A5CE27F8628700135D4F /* Links */,
 				632E8EE427EE63BD007E8D75 /* Buttons */,
 				63CE4E702A06B21B00405271 /* Avatar View.swift */,
+				6314C9E82A18D33800B08405 /* Reply Sheet.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -621,10 +637,12 @@
 		6386E03E2A04570F006B3C1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				6314C9EC2A18EF2D00B08405 /* Reply Editor */,
 				63A09B68285F53E9004F0032 /* Error View.swift */,
 				6322A5CA27F77A4D00135D4F /* Loading View.swift */,
 				6386E03F2A045723006B3C1D /* Website Icon Complex.swift */,
 				63D24EDD2A169F2A005CCA81 /* Markdown View.swift */,
+				6374570F2A18CB6600B69C03 /* Custom Text Field.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -633,7 +651,6 @@
 			isa = PBXGroup;
 			children = (
 				6363D60127EE1EC400E34822 /* Comment Item.swift */,
-				63EAFDA227F5AEB700FEBE9C /* Reply View.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -861,6 +878,7 @@
 				63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */,
 				63344C622A08460D001BC616 /* View - Border on Specific Sides.swift in Sources */,
+				6314C9EB2A18D9C500B08405 /* Reply Editor.swift in Sources */,
 				6367F23D27F10E4E0074C36F /* Post Parser.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
@@ -878,8 +896,8 @@
 				63344C4D2A07ABEE001BC616 /* Community.swift in Sources */,
 				63344C672A08D4E3001BC616 /* Appearance.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication - First Key Window.swift in Sources */,
-				63EAFDA327F5AEB700FEBE9C /* Reply View.swift in Sources */,
 				6386E0312A0427B6006B3C1D /* View - Conditional Modifier.swift in Sources */,
+				6314C9E92A18D33800B08405 /* Reply Sheet.swift in Sources */,
 				6367F23F27F10E580074C36F /* Comment Parser.swift in Sources */,
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63344C712A098060001BC616 /* Sidebar.swift in Sources */,
@@ -917,7 +935,9 @@
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,
 				63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */,
+				637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */,
 				63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */,
+				6314C9EE2A18EF3A00B08405 /* Keyboard Accessories.swift in Sources */,
 				6386E0362A042C59006B3C1D /* Contributor.swift in Sources */,
 				6386E0342A042C44006B3C1D /* Contributors View.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,

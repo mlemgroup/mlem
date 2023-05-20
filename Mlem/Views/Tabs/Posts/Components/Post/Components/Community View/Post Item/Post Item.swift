@@ -29,7 +29,7 @@ struct PostItem: View
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     
-    @State private var isPostCollapsed: Bool = false
+    @State var isPostCollapsed: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
 
