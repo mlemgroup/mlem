@@ -10,6 +10,8 @@
 		6314C9E92A18D33800B08405 /* Reply Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9E82A18D33800B08405 /* Reply Sheet.swift */; };
 		6314C9EB2A18D9C500B08405 /* Reply Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9EA2A18D9C500B08405 /* Reply Editor.swift */; };
 		6314C9EE2A18EF3A00B08405 /* Keyboard Accessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */; };
+		6314C9F12A194FFA00B08405 /* Post Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9F02A194FFA00B08405 /* Post Comment.swift */; };
+		6314C9F32A19500100B08405 /* Post Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9F22A19500100B08405 /* Post Reply.swift */; };
 		631891162A03B0AC00EDA8D1 /* Parse JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631891152A03B0AC00EDA8D1 /* Parse JSON.swift */; };
 		6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */; };
 		6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */; };
@@ -129,6 +131,8 @@
 		6314C9E82A18D33800B08405 /* Reply Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply Sheet.swift"; sourceTree = "<group>"; };
 		6314C9EA2A18D9C500B08405 /* Reply Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply Editor.swift"; sourceTree = "<group>"; };
 		6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard Accessories.swift"; sourceTree = "<group>"; };
+		6314C9F02A194FFA00B08405 /* Post Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Comment.swift"; sourceTree = "<group>"; };
+		6314C9F22A19500100B08405 /* Post Reply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Reply.swift"; sourceTree = "<group>"; };
 		631891152A03B0AC00EDA8D1 /* Parse JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parse JSON.swift"; sourceTree = "<group>"; };
 		6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stickied Tag.swift"; sourceTree = "<group>"; };
 		6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share Sheet.swift"; sourceTree = "<group>"; };
@@ -286,6 +290,15 @@
 			path = "Reply Editor";
 			sourceTree = "<group>";
 		};
+		6314C9EF2A194FEE00B08405 /* Participating */ = {
+			isa = PBXGroup;
+			children = (
+				6314C9F02A194FFA00B08405 /* Post Comment.swift */,
+				6314C9F22A19500100B08405 /* Post Reply.swift */,
+			);
+			path = Participating;
+			sourceTree = "<group>";
+		};
 		6318DE5227FB956D00CC2AD6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,6 +326,7 @@
 		6318EDC527EE4E0B00BFCAE8 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				6314C9EF2A194FEE00B08405 /* Participating */,
 				63F0C7A92A05232D00A18C5D /* File Management */,
 				6367F23B27F10E2D0074C36F /* Server Response Parsing */,
 				630049EB27EF390900D5105B /* Networking */,
@@ -888,6 +902,7 @@
 				638535732A1779FC00815781 /* Comment Sorting Options.swift in Sources */,
 				63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
+				6314C9F32A19500100B08405 /* Post Reply.swift in Sources */,
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Post Item.swift in Sources */,
@@ -908,6 +923,7 @@
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
 				63F0C7B42A052E5400A18C5D /* Logged in User Page.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
+				6314C9F12A194FFA00B08405 /* Post Comment.swift in Sources */,
 				63E5D3962A13DAF200EC1FBD /* Mark Community as Favorite.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
 				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
@@ -1119,7 +1135,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1153,7 +1169,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

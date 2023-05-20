@@ -15,19 +15,19 @@ struct ReplySheet: View
     var account: SavedAccount
 
     @State private var replyText: String = ""
+    @State private var cursorPosition: Int = 0
 
     @FocusState var isReplyFieldFocused
 
     var body: some View
     {
-        NavigationView
-        {
+        NavigationView {
             VStack(alignment: .leading, spacing: 0)
             {
                 HStack(alignment: .center, spacing: 10)
                 {
                     Spacer()
-
+                    
                     Button
                     {
                         isShowingSheet.toggle()
@@ -37,48 +37,37 @@ struct ReplySheet: View
                 }
                 .padding()
                 .background(.thinMaterial)
-
+                
                 Divider()
-
+                
                 /*
                  ScrollView
                  {
-                     PostItem(post: post, isExpanded: true, isInSpecificCommunity: false, instanceAddress: account.instanceLink, account: account, isPostCollapsed: true)
+                 PostItem(post: post, isExpanded: true, isInSpecificCommunity: false, instanceAddress: account.instanceLink, account: account, isPostCollapsed: true)
                  }
-                  */
+                 */
+                
+                Button {
+                    print("Would send \(replyText)")
+                } label: {
+                    Text("Send")
+                }
+                
                 
                 ReplyEditor(text: $replyText)
-                    
             }
         }
-        .toolbar
-        {
-            ToolbarItem(placement: .keyboard) {
-                Text("Ahoj")
-            }
-            /*
+        .navigationTitle("Some Text").toolbar {
             ToolbarItemGroup(placement: .keyboard)
             {
-                HStack(alignment: .center, spacing: 10)
-                {
-                    Button
-                    {
-                        print("Would make bold")
-                    } label: {
-                        Label("Insert bold text", systemImage: "bold")
-                    }
-                    
-                    Spacer()
-                    
-                    Button
-                    {
-                        print("Would send reply")
-                    } label: {
-                        Label("Reply", systemImage: "paperplane")
-                    }
+                Spacer()
+                Button {
+                    print("Ahoj")
+                } label: {
+                    Text("Ahoj")
                 }
+                
             }
-             */
         }
     }
 }

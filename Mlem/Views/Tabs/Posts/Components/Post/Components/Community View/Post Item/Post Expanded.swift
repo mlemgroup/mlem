@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+internal enum PossibleStyling
+{
+    case bold, italics
+}
+
 struct PostExpanded: View
 {
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
@@ -25,10 +30,14 @@ struct PostExpanded: View
     @State private var sortSelection = 0
 
     @State private var commentSortingType: CommentSortTypes = .top
-    
+
+    @FocusState var isReplyFieldFocused
+
     @State private var textFieldContents: String = ""
-    
-    @State private var isShowingReplySheet: Bool = false
+    @State private var replyingToCommentID: Int? = nil
+
+    @State private var isInTheMiddleOfStyling: Bool = false
+    @State private var isPostingComment: Bool = false
 
     var body: some View
     {
@@ -80,22 +89,61 @@ struct PostExpanded: View
             }
         }
         .navigationBarTitle(post.community.name, displayMode: .inline)
-        .sheet(isPresented: $isShowingReplySheet)
-        {
-            ReplySheet(isShowingSheet: $isShowingReplySheet, post: post, account: account)
-        }
         .safeAreaInset(edge: .bottom)
         {
-            VStack {
-                CustomTextField(placeholder: "\(account.username):", text: $textFieldContents)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(10)
-                    .onTapGesture {
-                        isShowingReplySheet.toggle()
+            VStack
+            {
+                HStack(alignment: .center, spacing: 10)
+                {
+                    TextField("Reply to post", text: $textFieldContents, prompt: Text("\(account.username):"), axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .focused($isReplyFieldFocused)
+
+                    if !textFieldContents.isEmpty
+                    {
+                        if !isPostingComment
+                        {
+                            Button
+                            {
+                                Task(priority: .userInitiated)
+                                {
+                                    isPostingComment = true
+
+                                    print("Will post comment")
+
+                                    defer
+                                    {
+                                        isPostingComment = false
+                                    }
+
+                                    do
+                                    {
+                                        try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
+                                        
+                                        isReplyFieldFocused = false
+                                        textFieldContents = ""
+                                    }
+                                    catch let commentPostingError
+                                    {
+                                        print("Failed while posting error: \(commentPostingError)")
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "paperplane")
+                            }
+                        }
+                        else
+                        {
+                            ProgressView()
+                        }
                     }
+                }
+                .padding()
+
                 Divider()
             }
             .background(.regularMaterial)
+            .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: textFieldContents)
         }
         .toolbar
         {
@@ -136,6 +184,24 @@ struct PostExpanded: View
                     }
                 }
             }
+
+            /*
+             ToolbarItemGroup(placement: .keyboard)
+             {
+                 Button {
+                     print("Would make text bold")
+                 } label: {
+                     Label("Make text bold", systemImage: "bold")
+                 }
+
+                 Button {
+                     print("Would make text italics")
+                 } label: {
+                     Label("Make text italics", systemImage: "italic")
+                 }
+
+             }
+              */
         }
         .refreshable
         {
@@ -146,7 +212,8 @@ struct PostExpanded: View
                 await loadComments()
             }
         }
-        .onChange(of: commentSortingType) { newSortingType in
+        .onChange(of: commentSortingType)
+        { newSortingType in
             withAnimation(.easeIn(duration: 0.4))
             {
                 commentTracker.comments = sortComments(sortBy: newSortingType)
@@ -184,16 +251,16 @@ struct PostExpanded: View
         var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
 
         commentTracker.comments = sortComments(comments: parsedComments, sortBy: defaultCommentSorting)
-        
+
         commentTracker.isLoading = false
-        
+
         parsedComments = .init()
     }
 
     internal func sortComments(comments: [Comment]? = nil, sortBy: CommentSortTypes) -> [Comment]
     {
         var unsortedComments: [Comment] = .init()
-        
+
         /// This check has to be there, because during the initial load, the comment tracker is empty, and we have to use a forced array of comments instead
         if let comments
         {
@@ -203,7 +270,7 @@ struct PostExpanded: View
         {
             unsortedComments = commentTracker.comments
         }
-        
+
         switch sortBy
         {
         case .new:
