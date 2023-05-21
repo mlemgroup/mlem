@@ -38,6 +38,8 @@ struct PostExpanded: View
 
     @State private var isInTheMiddleOfStyling: Bool = false
     @State private var isPostingComment: Bool = false
+    
+    @State private var isShowingError: Bool = false
 
     var body: some View
     {
@@ -125,6 +127,7 @@ struct PostExpanded: View
                                     }
                                     catch let commentPostingError
                                     {
+                                        isShowingError = true
                                         print("Failed while posting error: \(commentPostingError)")
                                     }
                                 }
@@ -218,6 +221,11 @@ struct PostExpanded: View
             {
                 commentTracker.comments = sortComments(sortBy: newSortingType)
             }
+        }
+        .alert(isPresented: $isShowingError) {
+            Alert(title: Text("Could not post comment"), message: Text("An error occured when posting the comment.\nTry again later, or restart Mlem"), dismissButton: .default(Text("Close"), action: {
+                isShowingError.toggle()
+            }))
         }
     }
 
