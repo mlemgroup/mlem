@@ -197,24 +197,6 @@ struct CommunityView: View
                                             .focused($focusedNewPostField, equals: .newPostURL)
                                     }
                                     
-                                    Button
-                                    {
-                                        withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
-                                        {
-                                            isComposingPost = false
-                                            newPostTitle = ""
-                                            newPostBody = ""
-                                            newPostURL = ""
-                                        }
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6)
-                                        {
-                                            focusedNewPostField = nil
-                                        }
-
-                                    } label: {
-                                        Text("Cancel")
-                                    }
                                 }
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
                             }
@@ -455,6 +437,29 @@ struct CommunityView: View
                         } label: {
                             Text("Cancel")
                         }
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    
+                    Button
+                    {
+                        withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
+                        {
+                            isComposingPost = false
+                            newPostTitle = ""
+                            newPostBody = ""
+                            newPostURL = ""
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6)
+                        {
+                            focusedNewPostField = nil
+                        }
+                        
+                    } label: {
+                        Text("Cancel")
                     }
                 }
             }

@@ -188,23 +188,17 @@ struct PostExpanded: View
                 }
             }
 
-            /*
-             ToolbarItemGroup(placement: .keyboard)
-             {
-                 Button {
-                     print("Would make text bold")
-                 } label: {
-                     Label("Make text bold", systemImage: "bold")
-                 }
+            ToolbarItemGroup(placement: .keyboard) {
+                
+                Spacer()
+                
+                Button {
+                    isReplyFieldFocused = false
+                } label: {
+                    Text("Cancel")
+                }
 
-                 Button {
-                     print("Would make text italics")
-                 } label: {
-                     Label("Make text italics", systemImage: "italic")
-                 }
-
-             }
-              */
+            }
         }
         .refreshable
         {
