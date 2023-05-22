@@ -159,7 +159,25 @@ struct CommunityView: View
                                     {
                                         Button
                                         {
-                                            print("Ahoj")
+                                            Task(priority: .userInitiated) {
+                                                isPostingPost = true
+                                                
+                                                print("Will try to post comment")
+                                                
+                                                defer
+                                                {
+                                                    isPostingPost = false
+                                                }
+                                                
+                                                do
+                                                {
+                                                    try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account)
+                                                }
+                                                catch let postPostingError
+                                                {
+                                                    print("Failed while posting post: \(postPostingError)")
+                                                }
+                                            }
                                         } label: {
                                             Image(systemName: "paperplane")
                                         }
