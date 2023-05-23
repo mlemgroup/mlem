@@ -7,11 +7,11 @@
 
 import Foundation
 
-func loadCommunityDetails(community: Community, instanceAddress: URL) async throws -> CommunityDetails
+func loadCommunityDetails(community: Community, instanceAddress: URL, account: SavedAccount) async throws -> CommunityDetails
 {
     let response: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: """
-{"op": "GetCommunity", "data": {"id": \(community.id)}}
-""")
+    {"op": "GetCommunity", "data": {"auth": "\(account.accessToken)", "id": \(community.id)}}
+    """)
     
     do
     {
