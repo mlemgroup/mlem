@@ -35,4 +35,7 @@ struct AppConstants
     static let savedAccountsFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Saved Accounts", conformingTo: .json)
     static let filteredKeywordsFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Blocked Keywords", conformingTo: .json)
     static let favoriteCommunitiesFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Favorite Communities", conformingTo: .json)
+    
+    // MARK: - Haptics
+    static let hapticManager: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
 }

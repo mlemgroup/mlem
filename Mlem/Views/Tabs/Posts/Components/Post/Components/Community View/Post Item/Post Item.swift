@@ -16,7 +16,9 @@ struct PostItem: View
     
     @EnvironmentObject var appState: AppState
 
-    @State var post: Post
+    @State var postTracker: PostTracker
+    
+    let post: Post
 
     @State var isExpanded: Bool
     
@@ -175,8 +177,50 @@ struct PostItem: View
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center)
                 {
-                    UpvoteButton(score: post.score)
-                    DownvoteButton()
+                    PostUpvoteButton(upvotes: post.upvotes, downvotes: post.downvotes, myVote: post.myVote)
+                        .onTapGesture {
+                            if post.myVote != .upvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would upvote post")
+                                    try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else if post.myVote == .upvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would remove upvote")
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else
+                            {
+                                print("This should never happen")
+                            }
+                        }
+                    
+                    PostDownvoteButton(myVote: post.myVote)
+                        .onTapGesture {
+                            if post.myVote != .downvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would downvote post")
+                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else if post.myVote == .downvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would remove downvote")
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else
+                            {
+                                print("This should never happen")
+                            }
+                        }
+                    
                     if let postURL = post.url
                     {
                         ShareButton(urlToShare: postURL, isShowingButtonText: false)
@@ -218,9 +262,5 @@ struct PostItem: View
             }
         }
         .background(Color(uiColor: .systemBackground))
-        .onAppear
-        {
-            print("Access token from within the view: \(account.accessToken)")
-        }
     }
 }

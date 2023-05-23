@@ -13,16 +13,12 @@ struct UpvoteButton: View
 
     var body: some View
     {
-        HStack(spacing: 2)
+        HStack(alignment: .center, spacing: 2)
         {
-            Button(action: {
-                print("Upvoted")
-            }, label: {
-                Image(systemName: "arrow.up")
-            })
+            Image(systemName: "arrow.up")
 
             Text(String(score))
-                .foregroundColor(.accentColor)
         }
+        .foregroundColor(.accentColor)
     }
 }

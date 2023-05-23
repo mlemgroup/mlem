@@ -23,7 +23,7 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
             postArray = [parsedJSON["data", "post_view"]]
         }
         
-        print("Post array: \(postArray)")
+        //print("Post array: \(postArray)")
         
         if instanceLink.absoluteString.contains("v1")
         {
@@ -56,6 +56,9 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     score: post["score"].intValue,
                     upvotes: post["upvotes"].intValue,
                     downvotes: post["downvotes"].intValue,
+                    myVote: {
+                        return MyVote.none
+                    }(),
                     hotRank: post["hot_rank"].intValue,
                     hotRankActive: post["hot_rank_active"].intValue,
                     newestActivityTime: post["newest_activity_time"].stringValue,
@@ -93,8 +96,6 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     )
                 )
                 
-                print("New post: \(newPost)")
-                
                 postTracker.append(
                     newPost
                 )
@@ -131,6 +132,22 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                     score: post["counts", "score"].intValue,
                     upvotes: post["counts", "upvotes"].intValue,
                     downvotes: post["counts", "downvotes"].intValue,
+                    myVote: {
+                        let parsedResponse = post["my_vote"].int
+                        
+                        if parsedResponse == nil
+                        {
+                            return MyVote.none
+                        }
+                        else if parsedResponse == 1
+                        {
+                            return MyVote.upvoted
+                        }
+                        else
+                        {
+                            return MyVote.downvoted
+                        }
+                    }(),
                     hotRank: nil,
                     hotRankActive: nil,
                     newestActivityTime: post["counts", "newest_comment_time"].stringValue,
@@ -167,8 +184,6 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                         nsfw: post["community", "nsfw"].boolValue
                     )
                 )
-                
-                print("New post: \(newPost)")
                 
                 postTracker.append(
                     newPost

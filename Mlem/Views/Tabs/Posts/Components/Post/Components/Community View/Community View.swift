@@ -98,9 +98,17 @@ struct CommunityView: View
 
                         ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
                         { post in
-                            NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, account: account, post: post))
+                            NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, account: account, postTracker: postTracker, post: post))
                             {
-                                PostItem(post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, account: account)
+                                PostItem(postTracker: postTracker, post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, account: account)
+                                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                        Button {
+                                            print("Ahoj")
+                                        } label: {
+                                            Text("Ahoj")
+                                        }
+
+                                    }
                             }
                             .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                             .task
@@ -109,11 +117,11 @@ struct CommunityView: View
                                 {
                                     if community == nil
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption, account: account)
                                     }
                                     else
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption, account: account)
                                     }
                                 }
                             }
@@ -127,11 +135,11 @@ struct CommunityView: View
 
                                     if community == nil
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption, account: account)
                                     }
                                     else
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption, account: account)
                                     }
                                 }
                             })
@@ -247,7 +255,7 @@ struct CommunityView: View
                     postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
                     postTracker.posts = .init()
 
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption)
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption, account: account)
 
                     isRefreshing = false
                 }
@@ -258,7 +266,7 @@ struct CommunityView: View
                 {
                     print("Post tracker is empty")
 
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption)
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption, account: account)
                 }
                 else
                 {
@@ -271,7 +279,7 @@ struct CommunityView: View
                 {
                     do
                     {
-                        community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
+                        community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress, account: account)
                     }
                     catch let communityDetailsFetchingError
                     {
@@ -404,14 +412,6 @@ struct CommunityView: View
 
                         Menu
                         {
-                            #warning("TODO: Add a [submit post] feature")
-                            Button
-                            {
-                                print("Submit post")
-                            } label: {
-                                Label("Submit Post…", systemImage: "plus.bubble")
-                            }
-
                             if isInSpecificCommunity
                             {
                                 Button

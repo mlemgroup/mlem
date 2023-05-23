@@ -37,9 +37,10 @@ struct Comment: Codable, Identifiable, Hashable
     let creatorPublished: String
     //let creatorTags: CreatorTags_Comment?
     //let creatorCommunityTags: JSONNull?
-    let score: Int
-    let upvotes: Int
-    let downvotes: Int
+    var score: Int
+    var upvotes: Int
+    var downvotes: Int
+    var myVote: MyVote
     //let hotRank: Int
     //let hotRankActive: Int?
     let saved: Bool?
