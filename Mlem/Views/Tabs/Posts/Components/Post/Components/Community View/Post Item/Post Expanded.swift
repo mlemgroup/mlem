@@ -24,6 +24,8 @@ struct PostExpanded: View
 
     @State var account: SavedAccount
 
+    @State var postTracker: PostTracker
+    
     let post: Post
 
     @State private var isReplySheetOpen: Bool = false
@@ -45,7 +47,7 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(post: post, isExpanded: true, isInSpecificCommunity: true, instanceAddress: instanceAddress, account: account)
+            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, instanceAddress: instanceAddress, account: account)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything

@@ -17,7 +17,7 @@ struct Post: Codable, Identifiable, Equatable
     }
 
     let id: Int
-    let name: String
+    var name: String
     var url: URL?
     let body: String?
     let removed, locked: Bool?
@@ -34,7 +34,8 @@ struct Post: Codable, Identifiable, Equatable
     // let creatorTags: CreatorTags?
     // let creatorCommunityTags: JSONNull?
     // let banned, bannedFromCommunity: Bool
-    let numberOfComments, score, upvotes, downvotes: Int
+    var numberOfComments, score, upvotes, downvotes: Int
+    var myVote: MyVote
     let hotRank, hotRankActive: Int?
     let newestActivityTime: String?
     //let userID: Int?

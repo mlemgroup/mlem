@@ -16,6 +16,8 @@ struct PostItem: View
     
     @EnvironmentObject var appState: AppState
 
+    @State var postTracker: PostTracker
+    
     @State var post: Post
 
     @State var isExpanded: Bool
@@ -175,8 +177,19 @@ struct PostItem: View
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center)
                 {
-                    UpvoteButton(score: post.score)
-                    DownvoteButton()
+                    PostUpvoteButton(post: post)
+                        .onTapGesture {
+                            Task(priority: .userInitiated) {
+                                print("Would upvote post")
+                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                            }
+                        }
+                    
+                    PostDownvoteButton(post: post)
+                        .onTapGesture {
+                            print("Would downvote post")
+                        }
+                    
                     if let postURL = post.url
                     {
                         ShareButton(urlToShare: postURL, isShowingButtonText: false)
@@ -218,9 +231,5 @@ struct PostItem: View
             }
         }
         .background(Color(uiColor: .systemBackground))
-        .onAppear
-        {
-            print("Access token from within the view: \(account.accessToken)")
-        }
     }
 }

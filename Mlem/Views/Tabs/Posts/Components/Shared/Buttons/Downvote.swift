@@ -11,11 +11,9 @@ struct DownvoteButton: View
 {
     var body: some View
     {
-        Button(action: {
-            print("Downvoted")
-        }, label: {
-            Image(systemName: "arrow.down")
-        })
+        
+        Label("", systemImage: "arrow.down")
+            .foregroundColor(.accentColor)
     }
 }
 

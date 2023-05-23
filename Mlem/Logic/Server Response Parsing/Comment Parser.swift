@@ -99,6 +99,7 @@ private extension JSON {
             score: self["score"].intValue,
             upvotes: self["upvotes"].intValue,
             downvotes: self["downvotes"].intValue,
+            myVote: MyVote.none,
             //hotRank: self["hot_rank"].intValue,
             //hotRankActive: self["hot_rank_active"].intValue,
             saved: self["saved"].boolValue,
@@ -163,6 +164,22 @@ private extension JSON {
             score: self["counts", "score"].intValue,
             upvotes: self["counts", "upvotes"].intValue,
             downvotes: self["counts", "downvotes"].intValue,
+            myVote: {
+                let parsedResponse = self["my_vote"].int
+                
+                if parsedResponse == nil
+                {
+                    return MyVote.none
+                }
+                else if parsedResponse == 1
+                {
+                    return MyVote.upvoted
+                }
+                else
+                {
+                    return MyVote.downvoted
+                }
+            }(),
             //hotRank: <#T##Int#>,
             //hotRankActive: <#T##Int?#>,
             saved: self["saved"].boolValue,
