@@ -18,7 +18,7 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
     do
     {
         let commentPostingCommandResult: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-        {"op": "CreateComment", "data": {"auth": "\(account.accessToken)", "content": "\(commentContents.withEscapedCharacters())", "language_id": 37, "post_id": \(post.id)}}
+        {"op": "CreateComment", "data": {"auth": "\(account.accessToken)", "content": \(commentContents.withEscapedCharacters()), "language_id": 37, "post_id": \(post.id)}}
         """)
 
         print("Successfuly posted comment: \(commentPostingCommandResult)")

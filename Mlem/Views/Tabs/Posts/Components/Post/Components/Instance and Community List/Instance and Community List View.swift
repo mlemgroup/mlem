@@ -45,7 +45,6 @@ struct AccountsPage: View
                                     let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts.first(where: { $0.id == savedAccount.id })!
 
                                     // MARK: - Purge the account information from the Keychain
-                                    AppConstants.keychain["\(savedAccountToRemove.id)_password"] = nil
                                     AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
                                     
                                     // MARK: - Remove the account from the tracker

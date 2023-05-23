@@ -112,7 +112,7 @@ struct MlemApp: App
                                 
                                 for account in loadedUpAccounts
                                 {
-                                    loadedUpAccountTracker.append(SavedAccount(id: account.id, instanceLink: account.instanceLink, accessToken: AppConstants.keychain["\(account.id)_accessToken"]!, username: account.username, password: AppConstants.keychain["\(account.id)_password"]!))
+                                    loadedUpAccountTracker.append(SavedAccount(id: account.id, instanceLink: account.instanceLink, accessToken: AppConstants.keychain["\(account.id)_accessToken"]!, username: account.username))
                                 }
                                 
                                 accountsTracker.savedAccounts = loadedUpAccountTracker

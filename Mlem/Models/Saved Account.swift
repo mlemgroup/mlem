@@ -16,5 +16,4 @@ struct SavedAccount: Identifiable, Codable, Equatable
     var accessToken: String
     
     let username: String
-    var password: String
 }
