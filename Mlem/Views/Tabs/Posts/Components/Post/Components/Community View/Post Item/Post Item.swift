@@ -18,7 +18,7 @@ struct PostItem: View
 
     @State var postTracker: PostTracker
     
-    @State var post: Post
+    let post: Post
 
     @State var isExpanded: Bool
     
@@ -177,11 +177,21 @@ struct PostItem: View
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center)
                 {
-                    PostUpvoteButton(post: post)
+                    PostUpvoteButton(upvotes: post.upvotes, downvotes: post.downvotes, myVote: post.myVote)
                         .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                print("Would upvote post")
-                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                            if post.myVote != .upvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would upvote post")
+                                    try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would remove upvote")
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                }
                             }
                         }
                     

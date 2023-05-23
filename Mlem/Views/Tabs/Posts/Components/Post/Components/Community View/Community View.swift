@@ -271,7 +271,7 @@ struct CommunityView: View
                 {
                     do
                     {
-                        community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress)
+                        community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress, account: account)
                     }
                     catch let communityDetailsFetchingError
                     {

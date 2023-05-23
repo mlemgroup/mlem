@@ -9,7 +9,10 @@ import SwiftUI
 
 struct PostUpvoteButton: View
 {
-    @State var post: Post
+    let upvotes: Int
+    let downvotes: Int
+    
+    let myVote: MyVote
 
     var body: some View
     {
@@ -17,17 +20,20 @@ struct PostUpvoteButton: View
         {
             Image(systemName: "arrow.up")
 
-            Text(String(post.score))
+            Text(String(upvotes - downvotes))
         }
-        .if(post.myVote == .none)
+        .if(myVote == .none)
         { viewProxy in
             viewProxy
                 .foregroundColor(.accentColor)
         }
-        .if(post.myVote == .upvoted)
+        .if(myVote == .upvoted)
         { viewProxy in
             viewProxy
                 .foregroundColor(.green)
+        }
+        .onChange(of: upvotes) { newValue in
+            print("Detected change in upvotes: \(upvotes)")
         }
     }
 }

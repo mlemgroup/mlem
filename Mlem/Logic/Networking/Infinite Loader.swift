@@ -30,7 +30,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
         print("Will be in GLOBAL scope")
         
         loadingCommand = """
-        {"op": "GetPosts", "data": {"auth": "\(account.accessToken)", "type_": "All", "sort":"\(sortingType.rawValue)", "page": \(postTracker.page)}}
+        {"op": "GetPosts", "data": {"auth": "\(account.accessToken)", "type_": "All", "sort": "\(sortingType.rawValue)", "page": \(postTracker.page)}}
         """
     }
 

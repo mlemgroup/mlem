@@ -9,21 +9,12 @@ import SwiftUI
 
 struct PostDownvoteButton: View
 {
-    @State var post: Post
+    var post: Post
 
     var body: some View
     {
         Image(systemName: "arrow.down")
-            .if(post.myVote == .none)
-            { viewProxy in
-                viewProxy
-                    .foregroundColor(.accentColor)
-            }
-            .if(post.myVote == .none)
-            { viewProxy in
-                viewProxy
-                    .foregroundColor(.accentColor)
-            }
+            .foregroundColor(.accentColor)
             .if(post.myVote == .downvoted)
             { viewProxy in
                 viewProxy
