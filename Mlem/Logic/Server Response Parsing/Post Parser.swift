@@ -16,7 +16,12 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
     {
         let parsedJSON: JSON = try parseJSON(from: postResponse)
         
-        let postArray = parsedJSON["data", "posts"].arrayValue
+        var postArray = parsedJSON["data", "posts"].arrayValue
+        
+        if postArray.isEmpty
+        {
+            postArray = [parsedJSON["data", "post_view"]]
+        }
         
         print("Post array: \(postArray)")
         

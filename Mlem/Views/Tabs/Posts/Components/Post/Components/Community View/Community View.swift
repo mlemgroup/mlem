@@ -166,7 +166,13 @@ struct CommunityView: View
                                                 
                                                 defer
                                                 {
+                                                    newPostTitle = ""
+                                                    newPostURL = ""
+                                                    newPostBody = ""
+                                                    newPostIsNSFW = false
+                                                    
                                                     isPostingPost = false
+                                                    focusedNewPostField = nil
                                                 }
                                                 
                                                 do
@@ -212,6 +218,7 @@ struct CommunityView: View
                                         TextField("https://corkmac.app", text: $newPostURL, axis: .vertical)
                                             .textFieldStyle(.roundedBorder)
                                             .keyboardType(.URL)
+                                            .autocorrectionDisabled()
                                             .focused($focusedNewPostField, equals: .newPostURL)
                                     }
                                     
