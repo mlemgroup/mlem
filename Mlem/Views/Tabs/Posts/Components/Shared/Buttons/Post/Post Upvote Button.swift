@@ -25,7 +25,7 @@ struct PostUpvoteButton: View
         .if(myVote == .none)
         { viewProxy in
             viewProxy
-                .foregroundColor(.accentColor)
+                
         }
         .if(myVote == .upvoted)
         { viewProxy in

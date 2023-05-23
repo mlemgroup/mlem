@@ -101,6 +101,14 @@ struct CommunityView: View
                             NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, account: account, postTracker: postTracker, post: post))
                             {
                                 PostItem(postTracker: postTracker, post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, account: account)
+                                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                        Button {
+                                            print("Ahoj")
+                                        } label: {
+                                            Text("Ahoj")
+                                        }
+
+                                    }
                             }
                             .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
                             .task
@@ -404,14 +412,6 @@ struct CommunityView: View
 
                         Menu
                         {
-                            #warning("TODO: Add a [submit post] feature")
-                            Button
-                            {
-                                print("Submit post")
-                            } label: {
-                                Label("Submit Post…", systemImage: "plus.bubble")
-                            }
-
                             if isInSpecificCommunity
                             {
                                 Button

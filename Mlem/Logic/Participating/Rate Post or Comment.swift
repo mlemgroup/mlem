@@ -19,6 +19,7 @@ internal enum RatingFailure: Error
     case failedToPostScore, receivedInvalidResponse
 }
 
+// Abandon all hope, ye who has to read this function
 @MainActor
 func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, postTracker: PostTracker) async throws -> Void
 {

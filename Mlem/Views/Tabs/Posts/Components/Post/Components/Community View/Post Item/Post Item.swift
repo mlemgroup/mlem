@@ -186,18 +186,39 @@ struct PostItem: View
                                     try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
                                 }
                             }
-                            else
+                            else if post.myVote == .upvoted
                             {
                                 Task(priority: .userInitiated) {
                                     print("Would remove upvote")
                                     try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
                                 }
                             }
+                            else
+                            {
+                                print("This should never happen")
+                            }
                         }
                     
-                    PostDownvoteButton(post: post)
+                    PostDownvoteButton(myVote: post.myVote)
                         .onTapGesture {
-                            print("Would downvote post")
+                            if post.myVote != .downvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would downvote post")
+                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else if post.myVote == .downvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would remove downvote")
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else
+                            {
+                                print("This should never happen")
+                            }
                         }
                     
                     if let postURL = post.url
