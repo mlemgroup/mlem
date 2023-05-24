@@ -7,15 +7,15 @@
 
 import Foundation
 
-func loadCommunityDetails(community: Community, instanceAddress: URL, account: SavedAccount) async throws -> CommunityDetails
+func loadCommunityDetails(community: Community, account: SavedAccount) async throws -> CommunityDetails
 {
-    let response: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: """
+    let response: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
     {"op": "GetCommunity", "data": {"auth": "\(account.accessToken)", "id": \(community.id)}}
     """)
     
     do
     {
-        return try await parseCommunityDetails(response: response, instanceLink: instanceAddress)
+        return try await parseCommunityDetails(response: response, instanceLink: account.instanceLink)
     }
     catch let communityDetailsParsingError
     {

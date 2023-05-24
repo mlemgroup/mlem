@@ -14,8 +14,6 @@ struct CommunitySearchResultsView: View
 
     @State var searchResults: [Community]?
 
-    var instanceAddress: URL
-
     var account: SavedAccount
 
     @State private var isShowingDarkBackground: Bool = false
@@ -33,7 +31,7 @@ struct CommunitySearchResultsView: View
                         Section {
                             ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker))
                             { favoritedCommunity in
-                                NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, account: account, community: favoritedCommunity.community))
+                                NavigationLink(destination: CommunityView(account: account, community: favoritedCommunity.community))
                                 {
                                     Text(favoritedCommunity.community.name)
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -66,7 +64,7 @@ struct CommunitySearchResultsView: View
                     Section {
                         ForEach(communitySearchResultsTracker.foundCommunities)
                         { foundCommunity in
-                            NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, account: account, community: foundCommunity))
+                            NavigationLink(destination: CommunityView(account: account, community: foundCommunity))
                             {
                                 Text(foundCommunity.name)
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {

@@ -17,8 +17,6 @@ struct CommunityView: View
 
     @StateObject var postTracker: PostTracker = .init()
 
-    @State var instanceAddress: URL
-
     @State var account: SavedAccount
     @State var community: Community?
 
@@ -63,7 +61,7 @@ struct CommunityView: View
     {
         ZStack(alignment: .top)
         {
-            CommunitySearchResultsView(instanceAddress: instanceAddress, account: account)
+            CommunitySearchResultsView(account: account)
             // .transition(.move(edge: .top).combined(with: .opacity))
 
             ScrollView
@@ -87,20 +85,11 @@ struct CommunityView: View
                             }
                         }
 
-                        if isInSpecificCommunity
-                        {
-                            NavigationLink(destination: CommunitySidebarView(community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
-                            { /// This is here to show the sidebar when needed
-                                Text("")
-                            }
-                            .hidden()
-                        }
-
                         ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
                         { post in
-                            NavigationLink(destination: PostExpanded(instanceAddress: instanceAddress, account: account, postTracker: postTracker, post: post))
+                            NavigationLink(destination: PostExpanded(account: account, postTracker: postTracker, post: post))
                             {
-                                PostItem(postTracker: postTracker, post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, instanceAddress: instanceAddress, account: account)
+                                PostItem(postTracker: postTracker, post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, account: account)
                                     .swipeActions(edge: .leading, allowsFullSwipe: true) {
                                         Button {
                                             print("Ahoj")
@@ -117,11 +106,11 @@ struct CommunityView: View
                                 {
                                     if community == nil
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, sortingType: selectedSortingOption, account: account)
                                     }
                                     else
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, sortingType: selectedSortingOption, account: account)
                                     }
                                 }
                             }
@@ -135,11 +124,11 @@ struct CommunityView: View
 
                                     if community == nil
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: nil, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, sortingType: selectedSortingOption, account: account)
                                     }
                                     else
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: post.community, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, sortingType: selectedSortingOption, account: account)
                                     }
                                 }
                             })
@@ -151,97 +140,105 @@ struct CommunityView: View
             {
                 if isInSpecificCommunity
                 {
-                    VStack(alignment: .leading, spacing: 15)
-                    {
+                    ZStack(alignment: .bottom) {
+                        NavigationLink(destination: CommunitySidebarView(community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
+                        { /// This is here to show the sidebar when needed
+                            Text("")
+                        }
+                        .hidden()
+                        
                         VStack(alignment: .leading, spacing: 15)
                         {
-                            HStack(alignment: .center, spacing: 10)
+                            VStack(alignment: .leading, spacing: 15)
                             {
-                                TextField("New post title…", text: $newPostTitle, axis: .vertical)
-                                    .textFieldStyle(.roundedBorder)
-                                    .focused($focusedNewPostField, equals: .newPostTitle)
-
-                                if !newPostTitle.isEmpty
+                                HStack(alignment: .center, spacing: 10)
                                 {
-                                    if !isPostingPost
+                                    TextField("New post title…", text: $newPostTitle, axis: .vertical)
+                                        .textFieldStyle(.roundedBorder)
+                                        .focused($focusedNewPostField, equals: .newPostTitle)
+                                    
+                                    if !newPostTitle.isEmpty
                                     {
-                                        Button
+                                        if !isPostingPost
                                         {
-                                            Task(priority: .userInitiated) {
-                                                isPostingPost = true
-                                                
-                                                print("Will try to post comment")
-                                                
-                                                defer
-                                                {
-                                                    newPostTitle = ""
-                                                    newPostURL = ""
-                                                    newPostBody = ""
-                                                    newPostIsNSFW = false
+                                            Button
+                                            {
+                                                Task(priority: .userInitiated) {
+                                                    isPostingPost = true
                                                     
-                                                    isPostingPost = false
-                                                    focusedNewPostField = nil
+                                                    print("Will try to post comment")
+                                                    
+                                                    defer
+                                                    {
+                                                        newPostTitle = ""
+                                                        newPostURL = ""
+                                                        newPostBody = ""
+                                                        newPostIsNSFW = false
+                                                        
+                                                        isPostingPost = false
+                                                        focusedNewPostField = nil
+                                                    }
+                                                    
+                                                    do
+                                                    {
+                                                        try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account)
+                                                    }
+                                                    catch let postPostingError
+                                                    {
+                                                        print("Failed while posting post: \(postPostingError)")
+                                                    }
                                                 }
-                                                
-                                                do
-                                                {
-                                                    try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account)
-                                                }
-                                                catch let postPostingError
-                                                {
-                                                    print("Failed while posting post: \(postPostingError)")
-                                                }
+                                            } label: {
+                                                Image(systemName: "paperplane")
                                             }
-                                        } label: {
-                                            Image(systemName: "paperplane")
+                                        }
+                                        else
+                                        {
+                                            ProgressView()
                                         }
                                     }
-                                    else
-                                    {
-                                        ProgressView()
+                                }
+                                
+                                if !newPostTitle.isEmpty
+                                {
+                                    VStack(alignment: .leading) {
+                                        VStack(alignment: .leading, spacing: 5)
+                                        {
+                                            Text("Post body (Optional)")
+                                                .foregroundColor(.secondary)
+                                                .font(.caption)
+                                            
+                                            TextField("Unleash your inner author", text: $newPostBody, axis: .vertical)
+                                                .textFieldStyle(.roundedBorder)
+                                                .focused($focusedNewPostField, equals: .newPostBody)
+                                        }
+                                        
+                                        VStack(alignment: .leading, spacing: 5)
+                                        {
+                                            Text("Post URL (Optional)")
+                                                .foregroundColor(.secondary)
+                                                .font(.caption)
+                                            
+                                            TextField("https://corkmac.app", text: $newPostURL, axis: .vertical)
+                                                .textFieldStyle(.roundedBorder)
+                                                .keyboardType(.URL)
+                                                .autocorrectionDisabled()
+                                                .focused($focusedNewPostField, equals: .newPostURL)
+                                        }
+                                        
                                     }
+                                    .transition(.move(edge: .bottom).combined(with: .opacity))
                                 }
                             }
-
-                            if !newPostTitle.isEmpty
-                            {
-                                VStack(alignment: .leading) {
-                                    VStack(alignment: .leading, spacing: 5)
-                                    {
-                                        Text("Post body (Optional)")
-                                            .foregroundColor(.secondary)
-                                            .font(.caption)
-                                        
-                                        TextField("Unleash your inner author", text: $newPostBody, axis: .vertical)
-                                            .textFieldStyle(.roundedBorder)
-                                            .focused($focusedNewPostField, equals: .newPostBody)
-                                    }
-                                    
-                                    VStack(alignment: .leading, spacing: 5)
-                                    {
-                                        Text("Post URL (Optional)")
-                                            .foregroundColor(.secondary)
-                                            .font(.caption)
-                                        
-                                        TextField("https://corkmac.app", text: $newPostURL, axis: .vertical)
-                                            .textFieldStyle(.roundedBorder)
-                                            .keyboardType(.URL)
-                                            .autocorrectionDisabled()
-                                            .focused($focusedNewPostField, equals: .newPostURL)
-                                    }
-                                    
-                                }
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                            }
+                            .padding()
+                            
+                            Divider()
                         }
-                        .padding()
-
-                        Divider()
+                        .background(.regularMaterial)
+                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostTitle)
+                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostBody)
+                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostURL)
                     }
-                    .background(.regularMaterial)
-                    .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostTitle)
-                    .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostBody)
-                    .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostURL)
                 }
             }
             .background(Color.secondarySystemBackground)
@@ -255,7 +252,7 @@ struct CommunityView: View
                     postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
                     postTracker.posts = .init()
 
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption, account: account)
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, sortingType: selectedSortingOption, account: account)
 
                     isRefreshing = false
                 }
@@ -266,7 +263,7 @@ struct CommunityView: View
                 {
                     print("Post tracker is empty")
 
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, instanceAddress: instanceAddress, community: community, sortingType: selectedSortingOption, account: account)
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, sortingType: selectedSortingOption, account: account)
                 }
                 else
                 {
@@ -279,7 +276,7 @@ struct CommunityView: View
                 {
                     do
                     {
-                        community?.details = try await loadCommunityDetails(community: community!, instanceAddress: instanceAddress, account: account)
+                        community?.details = try await loadCommunityDetails(community: community!, account: account)
                     }
                     catch let communityDetailsFetchingError
                     {
@@ -314,7 +311,7 @@ struct CommunityView: View
                     }
                     else
                     {
-                        CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, instanceAddress: instanceAddress)
+                        CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, account: account)
                     }
                 }
 
@@ -416,7 +413,9 @@ struct CommunityView: View
                             {
                                 Button
                                 {
-                                    self.isSidebarShown = true
+                                    print("Will toggle sidebar")
+                                    isSidebarShown.toggle()
+                                    print("Sidebar value: \(isSidebarShown)")
                                 } label: {
                                     Label("Sidebar", systemImage: "sidebar.right")
                                 }
@@ -437,7 +436,7 @@ struct CommunityView: View
                             }
                             else
                             {
-                                ShareButton(urlToShare: URL(string: "https://\(instanceAddress.host!)")!, isShowingButtonText: true)
+                                ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
                             }
                         } label: {
                             Label("More", systemImage: "info.circle")

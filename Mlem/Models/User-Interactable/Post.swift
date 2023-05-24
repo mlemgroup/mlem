@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Post: Codable, Identifiable, Equatable
+struct Post: Codable, Identifiable, Equatable, Hashable
 {
     // This is here to make Post equatable
     static func == (lhs: Post, rhs: Post) -> Bool

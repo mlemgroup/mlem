@@ -24,8 +24,6 @@ struct PostItem: View
     
     @State var isInSpecificCommunity: Bool
     
-    @State var instanceAddress: URL
-    
     @State var account: SavedAccount
     
     @State private var isShowingSafari: Bool = false
@@ -51,7 +49,7 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, account: account, community: post.community))
+                                    NavigationLink(destination: CommunityView(account: account, community: post.community))
                                     {
                                         HStack(alignment: .center, spacing: 10)
                                         {                                           

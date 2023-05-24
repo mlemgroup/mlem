@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Community: Identifiable, Codable, Equatable
+struct Community: Identifiable, Codable, Equatable, Hashable
 {
     let id: Int
     
@@ -30,7 +30,7 @@ struct Community: Identifiable, Codable, Equatable
     var details: CommunityDetails?
 }
 
-struct CommunityDetails: Codable, Equatable
+struct CommunityDetails: Codable, Equatable, Hashable
 {
     let numberOfSubscribers: Int
     let numberOfPosts: Int
