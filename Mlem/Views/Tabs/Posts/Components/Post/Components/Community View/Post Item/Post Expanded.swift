@@ -20,8 +20,6 @@ struct PostExpanded: View
 
     @StateObject var commentTracker: CommentTracker = .init()
 
-    @State var instanceAddress: URL
-
     @State var account: SavedAccount
 
     @State var postTracker: PostTracker
@@ -47,7 +45,7 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, instanceAddress: instanceAddress, account: account)
+            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account)
 
             if post.numberOfComments == 0
             { // If there are no comments, just don't show anything
@@ -231,7 +229,7 @@ struct PostExpanded: View
 
         var commentCommand = ""
 
-        if instanceAddress.absoluteString.contains("v1")
+        if account.instanceLink.absoluteString.contains("v1")
         {
             print("Older API spec")
 
@@ -248,11 +246,11 @@ struct PostExpanded: View
             """
         }
 
-        let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: instanceAddress, command: commentCommand)
+        let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: commentCommand)
 
         print("Comment response: \(commentResponse)")
 
-        var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: instanceAddress)
+        var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: account.instanceLink)
 
         commentTracker.comments = sortComments(comments: parsedComments, sortBy: defaultCommentSorting)
 

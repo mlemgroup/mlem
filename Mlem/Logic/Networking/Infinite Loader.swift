@@ -13,7 +13,7 @@ internal enum LoadingError
     case shittyInternet
 }
 
-func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddress: URL, community: Community?, sortingType: SortingOptions, account: SavedAccount) async
+func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, sortingType: SortingOptions, account: SavedAccount) async
 {
     var loadingCommand: String = ""
     
@@ -40,11 +40,11 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
     
     do
     {
-        let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: instanceAddress, command: loadingCommand)
+        let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: loadingCommand)
         
         print("API Response: \(apiResponse)")
         
-        let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: instanceAddress)
+        let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: account.instanceLink)
         
         DispatchQueue.main.async {
             for post in parsedNewPosts

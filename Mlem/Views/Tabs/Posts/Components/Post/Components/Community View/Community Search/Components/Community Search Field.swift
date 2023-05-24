@@ -16,7 +16,7 @@ struct CommunitySearchField: View {
     
     @Binding var searchText: String
     
-    let instanceAddress: URL
+    @State var account: SavedAccount
     
     @State private var debouncedTextReadyForSearching: String = ""
     
@@ -26,7 +26,6 @@ struct CommunitySearchField: View {
         VStack(alignment: .center, spacing: 0) {
             HStack
             {
-                Spacer()
                 TextField("Community…", text: $searchText)
                     .focused($isSearchFieldFocused)
                     .frame(width: 100)
@@ -44,15 +43,14 @@ struct CommunitySearchField: View {
                     }
                     .onChange(of: debouncedTextReadyForSearching) { searchText in
                         Task(priority: .userInitiated) {
-                            let searchResponse: String = try! await sendCommand(maintainOpenConnection: true, instanceAddress: instanceAddress, command: """
+                            let searchResponse: String = try! await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: """
 {"op": "Search", "data": {"type_": "Communities", "sort": "TopAll", "listing_type": "All", "q": "\(searchText)"}}
 """)
                             print("Search response: \(searchResponse)")
                             
-                            communitySearchResultsTracker.foundCommunities = try! parseCommunities(communityResponse: searchResponse, instanceLink: instanceAddress)
+                            communitySearchResultsTracker.foundCommunities = try! parseCommunities(communityResponse: searchResponse, instanceLink: account.instanceLink)
                         }
                     }
-                Spacer()
             }
         }
     }
