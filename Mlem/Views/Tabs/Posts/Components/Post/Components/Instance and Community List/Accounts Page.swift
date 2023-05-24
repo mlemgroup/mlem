@@ -88,7 +88,7 @@ struct AccountsPage: View
         }
         .onAppear
         {
-            print("Saved thing from keychain: \(AppConstants.keychain["test"])")
+            print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
         }
         .alert(isPresented: $appState.isShowingCriticalError)
         {

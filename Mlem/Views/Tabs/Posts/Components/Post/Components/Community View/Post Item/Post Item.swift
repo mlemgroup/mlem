@@ -130,7 +130,7 @@ struct PostItem: View
                         }
                         else
                         {
-                            if let embedTitle = post.embedTitle
+                            if post.embedTitle != nil
                             {
                                 WebsiteIconComplex(post: post)
                             }

@@ -26,7 +26,6 @@ struct CommunitySearchField: View {
         VStack(alignment: .center, spacing: 0) {
             HStack
             {
-                Spacer()
                 TextField("Community…", text: $searchText)
                     .focused($isSearchFieldFocused)
                     .frame(width: 100)
@@ -52,7 +51,6 @@ struct CommunitySearchField: View {
                             communitySearchResultsTracker.foundCommunities = try! parseCommunities(communityResponse: searchResponse, instanceLink: account.instanceLink)
                         }
                     }
-                Spacer()
             }
         }
     }
