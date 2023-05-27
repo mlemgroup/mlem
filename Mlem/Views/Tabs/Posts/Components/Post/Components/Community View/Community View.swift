@@ -14,6 +14,7 @@ struct CommunityView: View
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
+    @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
 
     @StateObject var postTracker: PostTracker = .init()
 
@@ -425,11 +426,22 @@ struct CommunityView: View
 
                             if isInSpecificCommunity
                             {
-                                Button
+                                if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
+                                { /// This is when a community is already favorited
+                                    Button(role: .destructive) {
+                                        unfavoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                    } label: {
+                                        Label("Unfavorite", systemImage: "star.slash")
+                                    }
+                                }
+                                else
                                 {
-                                    print("Would favorite community \(community!.name) for the user \(account.username)")
-                                } label: {
-                                    Label("Favorite", systemImage: "star")
+                                    Button {
+                                        favoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                    } label: {
+                                        Label("Favorite", systemImage: "star")
+                                    }
+                                    .tint(.yellow)
                                 }
 
                                 ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
@@ -439,7 +451,7 @@ struct CommunityView: View
                                 ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
                             }
                         } label: {
-                            Label("More", systemImage: "info.circle")
+                            Label("More", systemImage: "ellipsis")
                         }
                     }
                     else
