@@ -213,7 +213,7 @@ struct PostExpanded: View
         { newSortingType in
             withAnimation(.easeIn(duration: 0.4))
             {
-                commentTracker.comments = sortComments(sortBy: newSortingType)
+                commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
             }
         }
         .alert(isPresented: $isShowingError) {
@@ -252,28 +252,11 @@ struct PostExpanded: View
 
         var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: account.instanceLink)
 
-        commentTracker.comments = sortComments(comments: parsedComments, sortBy: defaultCommentSorting)
+        commentTracker.comments = sortComments(parsedComments, by: defaultCommentSorting)
 
         commentTracker.isLoading = false
 
         parsedComments = .init()
-    }
-
-    internal func sortComments(comments: [Comment]? = nil, sortBy: CommentSortTypes) -> [Comment]
-    {
-        var unsortedComments: [Comment] = .init()
-
-        /// This check has to be there, because during the initial load, the comment tracker is empty, and we have to use a forced array of comments instead
-        if let comments
-        {
-            unsortedComments = comments
-        }
-        else
-        {
-            unsortedComments = commentTracker.comments
-        }
-
-        return sortComments(unsortedComments, by: sortBy)
     }
 
     private func sortComments(_ comments: [Comment], by sort: CommentSortTypes) -> [Comment]
