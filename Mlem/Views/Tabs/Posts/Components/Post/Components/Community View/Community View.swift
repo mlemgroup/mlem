@@ -451,7 +451,7 @@ struct CommunityView: View
                                 ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
                             }
                         } label: {
-                            Label("More", systemImage: "info.circle")
+                            Label("More", systemImage: "ellipsis")
                         }
                     }
                     else
