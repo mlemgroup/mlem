@@ -273,14 +273,26 @@ struct PostExpanded: View
             unsortedComments = commentTracker.comments
         }
 
-        switch sortBy
+        return sortComments(unsortedComments, by: sortBy)
+    }
+
+    private func sortComments(_ comments: [Comment], by sort: CommentSortTypes) -> [Comment]
+    {
+        let sortedComments: [Comment]
+        switch sort
         {
         case .new:
-            return unsortedComments.sorted(by: { $0.published > $1.published })
+            sortedComments = comments.sorted(by: { $0.published > $1.published })
         case .top:
-            return unsortedComments.sorted(by: { $0.score > $1.score })
+            sortedComments = comments.sorted(by: { $0.score > $1.score })
         case .active:
-            return unsortedComments.sorted(by: { $0.children.count > $1.children.count })
+            sortedComments = comments.sorted(by: { $0.children.count > $1.children.count })
+        }
+
+        return sortedComments.map { comment in
+            var newComment = comment
+            newComment.children = sortComments(comment.children, by: sort)
+            return newComment
         }
     }
 }
