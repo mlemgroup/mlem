@@ -19,11 +19,6 @@ struct ContentView: View
                     Label("Feeds", systemImage: "text.bubble")
                 }
             
-            LoggedInUserPage()
-                .tabItem {
-                    Label("User", systemImage: "person.fill")
-                }
-            
             SettingsView()
                 .tabItem
                 {
