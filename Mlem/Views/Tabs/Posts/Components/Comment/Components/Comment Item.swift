@@ -15,6 +15,8 @@ struct CommentItem: View
     
     let comment: Comment
     
+    var forceReload: () -> Void
+    
     @State var isCollapsed = false
     
     @State private var isShowingTextSelectionSheet: Bool = false
@@ -50,8 +52,16 @@ struct CommentItem: View
 
             HStack(spacing: 12)
             {
+                switch comment.myVote
+                {
+                    case .none:
+                        Text("Hasn't voted")
+                    case .upvoted:
+                        Text("Upvoted")
+                    case .downvoted:
+                        Text("Downvoted")
+                }
                 #warning("TODO: Add post rating")
-                /*
                 HStack
                 {
                     HStack(alignment: .center, spacing: 2) {
@@ -61,18 +71,22 @@ struct CommentItem: View
                     }
                     .onTapGesture {
                         Task(priority: .userInitiated) {
-                            try await rateComment(comment: comment, operation: .upvote, accout: account)
+                            try await rateComment(comment: comment, operation: .upvote, account: account)
+                            
+                            self.forceReload()
                         }
                     }
                     
                     Image(systemName: "arrow.down")
                         .onTapGesture {
                             Task(priority: .userInitiated) {
-                                try await rateComment(comment: comment, operation: .downvote, accout: account)
+                                try await rateComment(comment: comment, operation: .downvote, account: account)
+                                
+                                self.forceReload()
                             }
                         }
                 }
-                 */
+
                 HStack(spacing: 4)
                 {
                     Button(action: {
@@ -130,7 +144,7 @@ struct CommentItem: View
                 {
                     ForEach(comment.children)
                     { comment in
-                        CommentItem(account: account, comment: comment)
+                        CommentItem(account: account, comment: comment, forceReload: forceReload)
                     }
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))

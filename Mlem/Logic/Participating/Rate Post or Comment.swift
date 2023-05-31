@@ -115,7 +115,18 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
     }
 }
 
-func rateComment(comment: Comment, operation: ScoringOperation, accout: SavedAccount) async throws -> Void
+func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAccount) async throws -> Void
 { 
-    
+    do
+    {
+        let commentRatingReponse: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
+            {"op": "CreateCommentLike", "data": {"auth": "\(account.accessToken)", "comment_id": \(comment.id), "score": \(operation.rawValue)}}
+            """)
+    }
+    catch let ratingOperationError
+    {
+        await AppConstants.hapticManager.notificationOccurred(.error)
+        print("Failed while trying to score: \(ratingOperationError)")
+        throw RatingFailure.failedToPostScore
+    }
 }

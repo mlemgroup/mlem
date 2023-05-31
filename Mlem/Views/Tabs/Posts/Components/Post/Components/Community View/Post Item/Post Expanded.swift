@@ -46,6 +46,7 @@ struct PostExpanded: View
     #warning("TODO: This is an absolute abomination. Remove this in favor of proper view updating")
     private func forceReloadView()
     {
+        print("Will force-reload view")
         viewID = UUID()
     }
 
@@ -99,7 +100,7 @@ struct PostExpanded: View
                     {
                         ForEach(commentTracker.comments)
                         { comment in
-                            CommentItem(account: account, comment: comment)
+                            CommentItem(account: account, comment: comment, forceReload: forceReloadView)
                         }
                     }
                     .id(viewID)
