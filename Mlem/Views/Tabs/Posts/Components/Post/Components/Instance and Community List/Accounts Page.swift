@@ -28,7 +28,7 @@ struct AccountsPage: View
                         { savedAccount in
                             NavigationLink
                             {
-                                CommunityView(instanceAddress: savedAccount.instanceLink, account: savedAccount, community: nil)
+                                CommunityView(account: savedAccount, community: nil)
                             } label: {
                                 HStack(alignment: .center)
                                 {
@@ -45,7 +45,6 @@ struct AccountsPage: View
                                     let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts.first(where: { $0.id == savedAccount.id })!
 
                                     // MARK: - Purge the account information from the Keychain
-                                    AppConstants.keychain["\(savedAccountToRemove.id)_password"] = nil
                                     AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
                                     
                                     // MARK: - Remove the account from the tracker
@@ -89,19 +88,20 @@ struct AccountsPage: View
         }
         .onAppear
         {
-            print("Saved thing from keychain: \(AppConstants.keychain["test"])")
+            print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
         }
-        .alert(isPresented: $appState.isShowingCriticalError) {
+        .alert(isPresented: $appState.isShowingCriticalError)
+        {
             switch appState.criticalErrorType
             {
-                case .shittyInternet:
-                    return Alert(
-                        title: Text("Lost connection to Lemmy"),
-                        message: Text("Your internet is not stable enough to connect to Lemmy.\nTry again later."),
-                        dismissButton: .default(Text("Close"), action: {
+            case .shittyInternet:
+                return Alert(
+                    title: Text("Lost connection to Lemmy"),
+                    message: Text("Your internet is not stable enough to connect to Lemmy.\nTry again later."),
+                    dismissButton: .default(Text("Close"), action: {
                         appState.isShowingCriticalError = false
                     })
-                    )
+                )
             }
         }
     }

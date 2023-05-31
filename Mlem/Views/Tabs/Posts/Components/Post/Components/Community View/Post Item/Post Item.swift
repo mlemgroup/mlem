@@ -16,20 +16,20 @@ struct PostItem: View
     
     @EnvironmentObject var appState: AppState
 
-    @State var post: Post
+    @State var postTracker: PostTracker
+    
+    let post: Post
 
     @State var isExpanded: Bool
     
     @State var isInSpecificCommunity: Bool
-    
-    @State var instanceAddress: URL
     
     @State var account: SavedAccount
     
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     
-    @State private var isPostCollapsed: Bool = false
+    @State var isPostCollapsed: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
 
@@ -49,7 +49,7 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(instanceAddress: instanceAddress, account: account, community: post.community))
+                                    NavigationLink(destination: CommunityView(account: account, community: post.community))
                                     {
                                         HStack(alignment: .center, spacing: 10)
                                         {                                           
@@ -130,7 +130,7 @@ struct PostItem: View
                         }
                         else
                         {
-                            if let embedTitle = post.embedTitle
+                            if post.embedTitle != nil
                             {
                                 WebsiteIconComplex(post: post)
                             }
@@ -175,8 +175,50 @@ struct PostItem: View
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center)
                 {
-                    UpvoteButton(score: post.score)
-                    DownvoteButton()
+                    PostUpvoteButton(upvotes: post.upvotes, downvotes: post.downvotes, myVote: post.myVote)
+                        .onTapGesture {
+                            if post.myVote != .upvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would upvote post")
+                                    try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else if post.myVote == .upvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would remove upvote")
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else
+                            {
+                                print("This should never happen")
+                            }
+                        }
+                    
+                    PostDownvoteButton(myVote: post.myVote)
+                        .onTapGesture {
+                            if post.myVote != .downvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would downvote post")
+                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else if post.myVote == .downvoted
+                            {
+                                Task(priority: .userInitiated) {
+                                    print("Would remove downvote")
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                }
+                            }
+                            else
+                            {
+                                print("This should never happen")
+                            }
+                        }
+                    
                     if let postURL = post.url
                     {
                         ShareButton(urlToShare: postURL, isShowingButtonText: false)
@@ -218,9 +260,5 @@ struct PostItem: View
             }
         }
         .background(Color(uiColor: .systemBackground))
-        .onAppear
-        {
-            print("Access token from within the view: \(account.accessToken)")
-        }
     }
 }

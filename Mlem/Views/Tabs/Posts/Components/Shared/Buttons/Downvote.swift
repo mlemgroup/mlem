@@ -9,13 +9,13 @@ import SwiftUI
 
 struct DownvoteButton: View
 {
+    @Binding var score: Int
+    
     var body: some View
     {
-        Button(action: {
-            print("Downvoted")
-        }, label: {
-            Image(systemName: "arrow.down")
-        })
+        
+        Label("", systemImage: "arrow.down")
+            .foregroundColor(.accentColor)
     }
 }
 

@@ -164,10 +164,9 @@ struct AddSavedInstanceView: View
 
                     print("Obtained token: \(token)")
                     
-                    let newAccount: SavedAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail, password: password)
+                    let newAccount: SavedAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail)
                     
                     // MARK: - Save the account's credentials into the keychain
-                    AppConstants.keychain["\(newAccount.id)_password"] = password
                     AppConstants.keychain["\(newAccount.id)_accessToken"] = token
                     
                     communityTracker.savedAccounts.append(newAccount)

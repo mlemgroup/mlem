@@ -14,9 +14,289 @@
             filePath = "Mlem/Logic/Time Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "getTimeIntervalFromNow(date:)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "423FE978-5179-4960-89D1-F96996CADE83"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mlem/Logic/Server Response Parsing/Comment Parser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "parseComments(commentResponse:instanceLink:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "423FE978-5179-4960-89D1-F96996CADE83 - bc0f091b9127dfc1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.parseComments(commentResponse: Swift.String, instanceLink: Foundation.URL) async throws -&gt; Swift.Array&lt;Mlem.Comment&gt;"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Server%20Response%20Parsing/Comment%20Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "2704">
+               </Location>
+               <Location
+                  uuid = "423FE978-5179-4960-89D1-F96996CADE83 - bc0f091b9127dfc1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.parseComments(commentResponse: Swift.String, instanceLink: Foundation.URL) async throws -&gt; Swift.Array&lt;Mlem.Comment&gt;"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Server%20Response%20Parsing/Comment%20Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "3104">
+               </Location>
+               <Location
+                  uuid = "423FE978-5179-4960-89D1-F96996CADE83 - bc0f091b9127dfc1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.parseComments(commentResponse: Swift.String, instanceLink: Foundation.URL) async throws -&gt; Swift.Array&lt;Mlem.Comment&gt;"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Server%20Response%20Parsing/Comment%20Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "2756">
+               </Location>
+               <Location
+                  uuid = "423FE978-5179-4960-89D1-F96996CADE83 - bc0f091b9127dfc1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.parseComments(commentResponse: Swift.String, instanceLink: Foundation.URL) async throws -&gt; Swift.Array&lt;Mlem.Comment&gt;"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Server%20Response%20Parsing/Comment%20Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "3156">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mlem/Logic/Participating/Post Post.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "postPost(to:postTitle:postBody:postURL:postIsNSFW:postTracker:account:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - 34c8838b7d02d0dd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "1940">
+               </Location>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - 34c8838b7d02cd60"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "260">
+               </Location>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - 34c8838b7d02cd60"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "368">
+               </Location>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - f0188c004725cbd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - 72c2b30dd83b8962"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "232">
+               </Location>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - b8bca28c84dc459c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "136">
+               </Location>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - 9bb3aa4fd161a79d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "0409899A-F924-4256-BD86-D3FAFB40EFE7 - e6b6d20f63f5019e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for Mlem.postPost(to: Mlem.Community, postTitle: Swift.String, postBody: Swift.String, postURL: Swift.String, postIsNSFW: Swift.Bool, postTracker: Mlem.PostTracker, account: Mlem.SavedAccount) async throws -&gt; ()"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Participating/Post%20Post.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "84">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E9B42484-3F66-4E20-BAB9-DF8106C4B8C8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mlem/Logic/Server Response Parsing/Comment Parser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "parseComments(commentResponse:instanceLink:)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "E9B42484-3F66-4E20-BAB9-DF8106C4B8C8 - bc0f091b9127e20c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Mlem.parseComments(commentResponse: Swift.String, instanceLink: Foundation.URL) async throws -&gt; Swift.Array&lt;Mlem.Comment&gt;"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Server%20Response%20Parsing/Comment%20Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "1488">
+               </Location>
+               <Location
+                  uuid = "E9B42484-3F66-4E20-BAB9-DF8106C4B8C8 - 5e6745b2c290b9b9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Mlem.Comment) -&gt; Swift.Bool in Mlem.parseComments(commentResponse: Swift.String, instanceLink: Foundation.URL) async throws -&gt; Swift.Array&lt;Mlem.Comment&gt;"
+                  moduleName = "Mlem"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/david/Documents/xCode%20Projekty/iOS/Mlem/Mlem/Logic/Server%20Response%20Parsing/Comment%20Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0795C12D-2220-4CFC-AE9A-C5C10EFE8844"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mlem/Logic/Server Response Parsing/Comment Parser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "parseComments(commentResponse:instanceLink:)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

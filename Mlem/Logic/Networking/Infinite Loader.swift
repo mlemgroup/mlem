@@ -13,7 +13,7 @@ internal enum LoadingError
     case shittyInternet
 }
 
-func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddress: URL, community: Community?, sortingType: SortingOptions) async
+func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, sortingType: SortingOptions, account: SavedAccount) async
 {
     var loadingCommand: String = ""
     
@@ -22,7 +22,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
         print("Will be in COMMUNITY scope")
         
         loadingCommand = """
-        {"op": "GetPosts", "data": {"type_": "All", "sort": "\(sortingType.rawValue)", "page": \(postTracker.page), "community_id": \(community.id)}}
+        {"op": "GetPosts", "data": {"auth": "\(account.accessToken)", "type_": "All", "sort": "\(sortingType.rawValue)", "page": \(postTracker.page), "community_id": \(community.id)}}
         """
     }
     else
@@ -30,7 +30,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
         print("Will be in GLOBAL scope")
         
         loadingCommand = """
-        {"op": "GetPosts", "data": {"type_": "All", "sort":"\(sortingType.rawValue)", "page": \(postTracker.page)}}
+        {"op": "GetPosts", "data": {"auth": "\(account.accessToken)", "type_": "All", "sort": "\(sortingType.rawValue)", "page": \(postTracker.page)}}
         """
     }
 
@@ -40,19 +40,24 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, instanceAddr
     
     do
     {
-        let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: instanceAddress, command: loadingCommand)
+        let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: loadingCommand)
         
         print("API Response: \(apiResponse)")
         
-        let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: instanceAddress)
-        
-        DispatchQueue.main.async {
-            for post in parsedNewPosts
-            {
-                postTracker.posts.append(post)
-            }
+        if !apiResponse.contains("""
+        "posts":[]}
+        """)
+        {
+            let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: account.instanceLink)
             
-            postTracker.page += 1
+            DispatchQueue.main.async {
+                for post in parsedNewPosts
+                {
+                    postTracker.posts.append(post)
+                }
+                
+                postTracker.page += 1
+            }
         }
     }
     catch let connectionError
