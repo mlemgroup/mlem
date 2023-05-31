@@ -41,6 +41,13 @@ struct PostExpanded: View
     @State private var isPostingComment: Bool = false
 
     @State private var isShowingError: Bool = false
+    @State private var viewID: UUID = UUID()
+    
+    #warning("TODO: This is an absolute abomination. Remove this in favor of proper view updating")
+    private func forceReloadView()
+    {
+        viewID = UUID()
+    }
 
     var body: some View
     {
@@ -95,6 +102,7 @@ struct PostExpanded: View
                             CommentItem(account: account, comment: comment)
                         }
                     }
+                    .id(viewID)
                 }
             }
         }
@@ -188,6 +196,8 @@ struct PostExpanded: View
                                             commentReplyTracker.commentToReplyTo = nil
                                             isReplyFieldFocused = false
                                             textFieldContents = ""
+                                            
+                                            forceReloadView()
                                         }
                                         catch let replyPostingError
                                         {
