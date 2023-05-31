@@ -142,30 +142,60 @@ struct PostExpanded: View
                         {
                             Button
                             {
-                                Task(priority: .userInitiated)
+                                if commentReplyTracker.commentToReplyTo == nil
                                 {
-                                    isPostingComment = true
-
-                                    print("Will post comment")
-
-                                    defer
+                                    Task(priority: .userInitiated)
                                     {
-                                        isPostingComment = false
-                                    }
-
-                                    do
-                                    {
-                                        try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
-
-                                        isReplyFieldFocused = false
-                                        textFieldContents = ""
-                                    }
-                                    catch let commentPostingError
-                                    {
-                                        isShowingError = true
-                                        print("Failed while posting error: \(commentPostingError)")
+                                        isPostingComment = true
+                                        
+                                        print("Will post comment")
+                                        
+                                        defer
+                                        {
+                                            isPostingComment = false
+                                        }
+                                        
+                                        do
+                                        {
+                                            try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
+                                            
+                                            isReplyFieldFocused = false
+                                            textFieldContents = ""
+                                        }
+                                        catch let commentPostingError
+                                        {
+                                            isShowingError = true
+                                            print("Failed while posting error: \(commentPostingError)")
+                                        }
                                     }
                                 }
+                                else
+                                {
+                                    Task(priority: .userInitiated) {
+                                        isPostingComment = true
+                                        
+                                        print("Will post reply")
+                                        
+                                        defer
+                                        {
+                                            isPostingComment = false
+                                        }
+                                        
+                                        do
+                                        {
+                                            try await postComment(to: commentReplyTracker.commentToReplyTo!, post: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
+                                            
+                                            isReplyFieldFocused = false
+                                            textFieldContents = ""
+                                        }
+                                        catch let replyPostingError
+                                        {
+                                            isShowingError = true
+                                            print("Failed while posting response: \(replyPostingError)")
+                                        }
+                                    }
+                                }
+                                
                             } label: {
                                 Image(systemName: "paperplane")
                             }
