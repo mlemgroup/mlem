@@ -11,6 +11,8 @@ import SwiftyJSON
 @main
 struct MlemApp: App
 {
+    @AppStorage("hasUndergoneLegacyAccountDeletion_debug") var hasUndergoneLegaryAccountDeletion_debug: Bool = false
+    
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -98,8 +100,19 @@ struct MlemApp: App
                     {
                         print("Saved Accounts file exists, will attempt to load saved accounts")
 
-                        // try! FileManager.default.removeItem(at: AppConstants.savedAccountsFilePath)
-                        // try! createEmptyFile(at: AppConstants.savedAccountsFilePath)
+                        if !hasUndergoneLegaryAccountDeletion_debug
+                        {
+                            print("Has not undergone legacy account deletion")
+                            
+                            try! FileManager.default.removeItem(at: AppConstants.savedAccountsFilePath)
+                            try! createEmptyFile(at: AppConstants.savedAccountsFilePath)
+                            
+                            hasUndergoneLegaryAccountDeletion_debug = true
+                        }
+                        else
+                        {
+                            print("Has undergone legacy account deletion")
+                        }
                         
                         do
                         {
