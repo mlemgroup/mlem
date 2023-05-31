@@ -17,6 +17,7 @@
 		6314C9EE2A18EF3A00B08405 /* Keyboard Accessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */; };
 		6314C9F12A194FFA00B08405 /* Post Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9F02A194FFA00B08405 /* Post Comment.swift */; };
 		6314C9F32A19500100B08405 /* Post Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9F22A19500100B08405 /* Post Reply.swift */; };
+		631711552A27C45900FE08C4 /* Selectable Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631711542A27C45900FE08C4 /* Selectable Text.swift */; };
 		631891162A03B0AC00EDA8D1 /* Parse JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631891152A03B0AC00EDA8D1 /* Parse JSON.swift */; };
 		6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */; };
 		6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */; };
@@ -33,7 +34,6 @@
 		6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6332FDBC27EFAF7B0009A98A /* Settings.bundle */; };
 		6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDBF27EFB05F0009A98A /* Settings Item.swift */; };
 		6332FDC327EFCB5F0009A98A /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDC227EFCB5F0009A98A /* Color.swift */; };
-		6332FDCA27EFD6B70009A98A /* Post Interactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDC927EFD6B70009A98A /* Post Interactions.swift */; };
 		6332FDCC27EFD6F90009A98A /* Post Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDCB27EFD6F90009A98A /* Post Info.swift */; };
 		6332FDCF27EFDD2E0009A98A /* Accounts Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDCE27EFDD2E0009A98A /* Accounts Page.swift */; };
 		6332FDD327F080EF0009A98A /* Community View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDD227F080EF0009A98A /* Community View.swift */; };
@@ -144,6 +144,7 @@
 		6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard Accessories.swift"; sourceTree = "<group>"; };
 		6314C9F02A194FFA00B08405 /* Post Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Comment.swift"; sourceTree = "<group>"; };
 		6314C9F22A19500100B08405 /* Post Reply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Reply.swift"; sourceTree = "<group>"; };
+		631711542A27C45900FE08C4 /* Selectable Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Selectable Text.swift"; sourceTree = "<group>"; };
 		631891152A03B0AC00EDA8D1 /* Parse JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parse JSON.swift"; sourceTree = "<group>"; };
 		6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stickied Tag.swift"; sourceTree = "<group>"; };
 		6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share Sheet.swift"; sourceTree = "<group>"; };
@@ -160,7 +161,6 @@
 		6332FDBC27EFAF7B0009A98A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6332FDBF27EFB05F0009A98A /* Settings Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Item.swift"; sourceTree = "<group>"; };
 		6332FDC227EFCB5F0009A98A /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		6332FDC927EFD6B70009A98A /* Post Interactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Interactions.swift"; sourceTree = "<group>"; };
 		6332FDCB27EFD6F90009A98A /* Post Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Info.swift"; sourceTree = "<group>"; };
 		6332FDCE27EFDD2E0009A98A /* Accounts Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Accounts Page.swift"; sourceTree = "<group>"; };
 		6332FDD227F080EF0009A98A /* Community View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community View.swift"; sourceTree = "<group>"; };
@@ -333,7 +333,6 @@
 			isa = PBXGroup;
 			children = (
 				6332FDCB27EFD6F90009A98A /* Post Info.swift */,
-				6332FDC927EFD6B70009A98A /* Post Interactions.swift */,
 				6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */,
 			);
 			path = Components;
@@ -384,6 +383,7 @@
 				632E8EE427EE63BD007E8D75 /* Buttons */,
 				63CE4E702A06B21B00405271 /* Avatar View.swift */,
 				6314C9E82A18D33800B08405 /* Reply Sheet.swift */,
+				631711542A27C45900FE08C4 /* Selectable Text.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -949,6 +949,7 @@
 				63344C4D2A07ABEE001BC616 /* Community.swift in Sources */,
 				63344C672A08D4E3001BC616 /* Appearance.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication - First Key Window.swift in Sources */,
+				631711552A27C45900FE08C4 /* Selectable Text.swift in Sources */,
 				6386E0312A0427B6006B3C1D /* View - Conditional Modifier.swift in Sources */,
 				6314C9E92A18D33800B08405 /* Reply Sheet.swift in Sources */,
 				630737912A1CED4600039852 /* Post Upvote Button.swift in Sources */,
@@ -1002,7 +1003,6 @@
 				63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */,
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				63CE4E6C2A066EF200405271 /* User Parser.swift in Sources */,
-				6332FDCA27EFD6B70009A98A /* Post Interactions.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */,
 				63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */,
 			);

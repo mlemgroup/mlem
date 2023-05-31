@@ -116,6 +116,6 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
 }
 
 func rateComment(comment: Comment, operation: ScoringOperation, accout: SavedAccount) async throws -> Void
-{ /// Returns the post, so I will have to do the replacing/processing outside the function
+{ 
     
 }

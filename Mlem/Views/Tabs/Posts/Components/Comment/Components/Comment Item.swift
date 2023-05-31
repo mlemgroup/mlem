@@ -9,9 +9,13 @@ import SwiftUI
 
 struct CommentItem: View
 {
+    @State var account: SavedAccount
     
-    @State var comment: Comment
+    let comment: Comment
+    
     @State var isCollapsed = false
+    
+    @State private var isShowingTextSelectionSheet: Bool = false
 
     var body: some View
     {
@@ -44,11 +48,29 @@ struct CommentItem: View
 
             HStack(spacing: 12)
             {
+                #warning("TODO: Add post rating")
+                /*
                 HStack
                 {
-                    UpvoteButton(score: comment.score)
-                    DownvoteButton()
+                    HStack(alignment: .center, spacing: 2) {
+                        Image(systemName: "arrow.up")
+                        
+                        Text(String(comment.score))
+                    }
+                    .onTapGesture {
+                        Task(priority: .userInitiated) {
+                            try await rateComment(comment: comment, operation: .upvote, accout: account)
+                        }
+                    }
+                    
+                    Image(systemName: "arrow.down")
+                        .onTapGesture {
+                            Task(priority: .userInitiated) {
+                                try await rateComment(comment: comment, operation: .downvote, accout: account)
+                            }
+                        }
                 }
+                 */
                 HStack(spacing: 4)
                 {
                     Button(action: {
@@ -65,6 +87,21 @@ struct CommentItem: View
 
                 HStack
                 {
+                    #warning("TODO: Make the text selection work")
+                    /*
+                    Menu {
+                        Button {
+                            isShowingTextSelectionSheet.toggle()
+                        } label: {
+                            Label("Select text", systemImage: "selection.pin.in.out")
+                        }
+
+                    } label: {
+                        Label("More Actions", systemImage: "ellipsis")
+                            .labelStyle(.iconOnly)
+                    }
+                     */
+                    
                     Text(getTimeIntervalFromNow(date: comment.published))
                     UserProfileLink(user: comment.author)
                 }
@@ -89,7 +126,7 @@ struct CommentItem: View
                 {
                     ForEach(comment.children)
                     { comment in
-                        CommentItem(comment: comment)
+                        CommentItem(account: account, comment: comment)
                     }
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))
@@ -108,5 +145,27 @@ struct CommentItem: View
         .dynamicTypeSize(.small)
         .background(Color.systemBackground)
         .padding(comment.parentID == nil ? .horizontal : .leading)
+        .sheet(isPresented: $isShowingTextSelectionSheet) {
+            NavigationView {
+                VStack(alignment: .center, spacing: 0) {
+                    Text(comment.content)
+                        .textSelection(.enabled)
+                    Spacer()
+                }
+                .navigationTitle("Select text")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            isShowingTextSelectionSheet.toggle()
+                        } label: {
+                            Text("Close")
+                        }
+                        
+                    }
+                }
+            }
+            .presentationDetents([.medium])
+        }
     }
 }

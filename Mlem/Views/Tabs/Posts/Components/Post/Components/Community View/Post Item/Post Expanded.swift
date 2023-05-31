@@ -91,7 +91,7 @@ struct PostExpanded: View
                     {
                         ForEach(commentTracker.comments)
                         { comment in
-                            CommentItem(comment: comment)
+                            CommentItem(account: account, comment: comment)
                         }
                     }
                 }

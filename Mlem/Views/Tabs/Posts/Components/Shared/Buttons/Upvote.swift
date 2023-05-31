@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UpvoteButton: View
 {
-    @State var score: Int
+    @Binding var score: Int
 
     var body: some View
     {
