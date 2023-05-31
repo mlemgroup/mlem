@@ -98,6 +98,23 @@ struct SettingsView: View
                                         .foregroundColor(.secondary)
                                     Text("David Bureš")
                                         .font(.title)
+                                    
+                                    VStack(alignment: .center, spacing: 0) {
+                                        HStack(alignment: .center, spacing: 10) {
+                                            Button {
+                                                UIApplication.shared.open(URL(string: "https://mstdn.social/@davidbures")!)
+                                            } label: {
+                                                Label("Mastodon", systemImage: "link")
+                                            }
+                                            .buttonStyle(.bordered)
+                                            Button {
+                                                UIApplication.shared.open(URL(string: "https://twitter.com/davidbures")!)
+                                            } label: {
+                                                Label("Twitter", systemImage: "link")
+                                            }
+                                            .buttonStyle(.bordered)
+                                        }
+                                    }
                                 }
                             }
                             .padding()
