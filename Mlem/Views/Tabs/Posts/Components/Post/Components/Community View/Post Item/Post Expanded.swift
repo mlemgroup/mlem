@@ -322,7 +322,7 @@ struct PostExpanded: View
             print("Older API spec")
 
             commentCommand = """
-            {"op": "GetPost", "data": { "id": \(post.id) }}
+            {"op": "GetPost", "data": { "auth": "\(account.accessToken)", "id": \(post.id) }}
             """
         }
         else
@@ -330,7 +330,7 @@ struct PostExpanded: View
             print("Newer API spec")
 
             commentCommand = """
-            {"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
+            {"op": "GetComments", "data": { "auth": "\(account.accessToken)", "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
             """
         }
 
