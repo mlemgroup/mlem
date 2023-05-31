@@ -185,6 +185,7 @@ struct PostExpanded: View
                                         {
                                             try await postComment(to: commentReplyTracker.commentToReplyTo!, post: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
                                             
+                                            commentReplyTracker.commentToReplyTo = nil
                                             isReplyFieldFocused = false
                                             textFieldContents = ""
                                         }
