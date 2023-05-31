@@ -52,15 +52,6 @@ struct CommentItem: View
 
             HStack(spacing: 12)
             {
-                switch comment.myVote
-                {
-                    case .none:
-                        Text("Hasn't voted")
-                    case .upvoted:
-                        Text("Upvoted")
-                    case .downvoted:
-                        Text("Downvoted")
-                }
                 #warning("TODO: Add post rating")
                 HStack
                 {
@@ -68,6 +59,16 @@ struct CommentItem: View
                         Image(systemName: "arrow.up")
                         
                         Text(String(comment.score))
+                    }
+                    .if(comment.myVote == .none || comment.myVote == .downvoted)
+                    { viewProxy in
+                        viewProxy
+                            .foregroundColor(.accentColor)
+                    }
+                    .if(comment.myVote == .upvoted)
+                    { viewProxy in
+                        viewProxy
+                            .foregroundColor(.green)
                     }
                     .onTapGesture {
                         Task(priority: .userInitiated) {
@@ -78,6 +79,16 @@ struct CommentItem: View
                     }
                     
                     Image(systemName: "arrow.down")
+                        .if(comment.myVote == .downvoted)
+                        { viewProxy in
+                            viewProxy
+                                .foregroundColor(.red)
+                        }
+                        .if(comment.myVote == .upvoted || comment.myVote == .none)
+                        { viewProxy in
+                            viewProxy
+                                .foregroundColor(.accentColor)
+                        }
                         .onTapGesture {
                             Task(priority: .userInitiated) {
                                 try await rateComment(comment: comment, operation: .downvote, account: account)
