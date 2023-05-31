@@ -49,6 +49,12 @@ struct PostExpanded: View
         print("Will force-reload view")
         viewID = UUID()
     }
+    private func updateCommentTrackerAndForceReloadView() async
+    {
+        print("Will force-reload view and pull new comments")
+        await loadComments()
+        viewID = UUID()
+    }
 
     var body: some View
     {
@@ -100,7 +106,7 @@ struct PostExpanded: View
                     {
                         ForEach(commentTracker.comments)
                         { comment in
-                            CommentItem(account: account, comment: comment, forceReload: forceReloadView)
+                            CommentItem(account: account, comment: comment, forceReload: updateCommentTrackerAndForceReloadView)
                         }
                     }
                     .id(viewID)

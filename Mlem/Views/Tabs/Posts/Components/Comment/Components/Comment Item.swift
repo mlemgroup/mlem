@@ -15,7 +15,7 @@ struct CommentItem: View
     
     let comment: Comment
     
-    var forceReload: () -> Void
+    var forceReload: () async -> Void
     
     @State var isCollapsed = false
     
@@ -73,7 +73,7 @@ struct CommentItem: View
                         Task(priority: .userInitiated) {
                             try await rateComment(comment: comment, operation: .upvote, account: account)
                             
-                            self.forceReload()
+                            await self.forceReload()
                         }
                     }
                     
@@ -82,7 +82,7 @@ struct CommentItem: View
                             Task(priority: .userInitiated) {
                                 try await rateComment(comment: comment, operation: .downvote, account: account)
                                 
-                                self.forceReload()
+                                await self.forceReload()
                             }
                         }
                 }
