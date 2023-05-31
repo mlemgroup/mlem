@@ -44,15 +44,20 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
         
         print("API Response: \(apiResponse)")
         
-        let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: account.instanceLink)
-        
-        DispatchQueue.main.async {
-            for post in parsedNewPosts
-            {
-                postTracker.posts.append(post)
-            }
+        if !apiResponse.contains("""
+        "posts":[]}
+        """)
+        {
+            let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: account.instanceLink)
             
-            postTracker.page += 1
+            DispatchQueue.main.async {
+                for post in parsedNewPosts
+                {
+                    postTracker.posts.append(post)
+                }
+                
+                postTracker.page += 1
+            }
         }
     }
     catch let connectionError

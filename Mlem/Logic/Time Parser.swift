@@ -21,6 +21,12 @@ func convertResponseDateToDate(responseDate: String) -> Date
         convertedDate = AppConstants.dateFormatter.date(from: responseDate)
     }
     
+    #warning("TODO: Remove this in favor of figuring out WTF is crashing it")
+    if convertedDate == nil
+    {
+        convertedDate = Date()
+    }
+    
     return convertedDate!
 }
 
