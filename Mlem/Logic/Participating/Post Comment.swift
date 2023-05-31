@@ -60,7 +60,7 @@ func postComment(to comment: Comment, post: Post, commentContents: String, comme
         if !commentPostingCommandResult.contains("\"error\"")
         {
             let updatedCommentReponse: String = try await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: """
-                {"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
+                {"op": "GetComments", "data": { "auth": "\(account.accessToken)", "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
                 """)
             
             do

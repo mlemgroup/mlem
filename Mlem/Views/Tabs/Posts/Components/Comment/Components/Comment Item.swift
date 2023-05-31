@@ -15,6 +15,8 @@ struct CommentItem: View
     
     let comment: Comment
     
+    var forceReload: () async -> Void
+    
     @State var isCollapsed = false
     
     @State private var isShowingTextSelectionSheet: Bool = false
@@ -51,7 +53,6 @@ struct CommentItem: View
             HStack(spacing: 12)
             {
                 #warning("TODO: Add post rating")
-                /*
                 HStack
                 {
                     HStack(alignment: .center, spacing: 2) {
@@ -59,20 +60,44 @@ struct CommentItem: View
                         
                         Text(String(comment.score))
                     }
+                    .if(comment.myVote == .none || comment.myVote == .downvoted)
+                    { viewProxy in
+                        viewProxy
+                            .foregroundColor(.accentColor)
+                    }
+                    .if(comment.myVote == .upvoted)
+                    { viewProxy in
+                        viewProxy
+                            .foregroundColor(.green)
+                    }
                     .onTapGesture {
                         Task(priority: .userInitiated) {
-                            try await rateComment(comment: comment, operation: .upvote, accout: account)
+                            try await rateComment(comment: comment, operation: .upvote, account: account)
+                            
+                            await self.forceReload()
                         }
                     }
                     
                     Image(systemName: "arrow.down")
+                        .if(comment.myVote == .downvoted)
+                        { viewProxy in
+                            viewProxy
+                                .foregroundColor(.red)
+                        }
+                        .if(comment.myVote == .upvoted || comment.myVote == .none)
+                        { viewProxy in
+                            viewProxy
+                                .foregroundColor(.accentColor)
+                        }
                         .onTapGesture {
                             Task(priority: .userInitiated) {
-                                try await rateComment(comment: comment, operation: .downvote, accout: account)
+                                try await rateComment(comment: comment, operation: .downvote, account: account)
+                                
+                                await self.forceReload()
                             }
                         }
                 }
-                 */
+
                 HStack(spacing: 4)
                 {
                     Button(action: {
@@ -130,7 +155,7 @@ struct CommentItem: View
                 {
                     ForEach(comment.children)
                     { comment in
-                        CommentItem(account: account, comment: comment)
+                        CommentItem(account: account, comment: comment, forceReload: forceReload)
                     }
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))

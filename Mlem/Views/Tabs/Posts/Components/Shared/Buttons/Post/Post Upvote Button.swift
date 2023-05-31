@@ -22,7 +22,7 @@ struct PostUpvoteButton: View
 
             Text(String(upvotes - downvotes))
         }
-        .if(myVote == .none)
+        .if(myVote == .none || myVote == .downvoted)
         { viewProxy in
             viewProxy
                 .foregroundColor(.accentColor)

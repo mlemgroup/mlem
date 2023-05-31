@@ -20,5 +20,10 @@ struct PostDownvoteButton: View
                 viewProxy
                     .foregroundColor(.red)
             }
+            .if(myVote == .none || myVote == .upvoted)
+            { viewProxy in
+                viewProxy
+                    .foregroundColor(.accentColor)
+            }
     }
 }

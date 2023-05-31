@@ -46,6 +46,13 @@ struct PostExpanded: View
     #warning("TODO: This is an absolute abomination. Remove this in favor of proper view updating")
     private func forceReloadView()
     {
+        print("Will force-reload view")
+        viewID = UUID()
+    }
+    private func updateCommentTrackerAndForceReloadView() async
+    {
+        print("Will force-reload view and pull new comments")
+        await loadComments()
         viewID = UUID()
     }
 
@@ -99,7 +106,7 @@ struct PostExpanded: View
                     {
                         ForEach(commentTracker.comments)
                         { comment in
-                            CommentItem(account: account, comment: comment)
+                            CommentItem(account: account, comment: comment, forceReload: updateCommentTrackerAndForceReloadView)
                         }
                     }
                     .id(viewID)
@@ -322,7 +329,7 @@ struct PostExpanded: View
             print("Older API spec")
 
             commentCommand = """
-            {"op": "GetPost", "data": { "id": \(post.id) }}
+            {"op": "GetPost", "data": { "auth": "\(account.accessToken)", "id": \(post.id) }}
             """
         }
         else
@@ -330,7 +337,7 @@ struct PostExpanded: View
             print("Newer API spec")
 
             commentCommand = """
-            {"op": "GetComments", "data": { "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
+            {"op": "GetComments", "data": { "auth": "\(account.accessToken)", "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
             """
         }
 
