@@ -23,8 +23,8 @@ struct PostExpanded: View
     @State var account: SavedAccount
 
     @State var postTracker: PostTracker
-    
-    let post: Post
+
+    var post: Post
 
     @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
@@ -38,7 +38,7 @@ struct PostExpanded: View
 
     @State private var isInTheMiddleOfStyling: Bool = false
     @State private var isPostingComment: Bool = false
-    
+
     @State private var isShowingError: Bool = false
 
     var body: some View
@@ -47,44 +47,51 @@ struct PostExpanded: View
         {
             PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account)
 
-            if post.numberOfComments == 0
-            { // If there are no comments, just don't show anything
-                VStack
-                {
-                    VStack
+            if commentTracker.isLoading
+            {
+                ProgressView("Loading comments…")
+                    .task(priority: .userInitiated)
                     {
-                        Image(systemName: "binoculars")
-                            .aspectRatio(contentMode: .fill)
-                        Text("No comments to be found")
-                            .font(.headline)
-                    }
-                    Text("Why not post the first one?")
-                        .font(.subheadline)
-                }
-                .foregroundColor(.secondary)
-                .padding()
-            }
-            else
-            { // Otherwise we'll have to do some actual work
-                if commentTracker.isLoading
-                {
-                    LoadingView(whatIsLoading: .comments)
-                        .task(priority: .userInitiated)
+                        if post.numberOfComments != 0
                         {
                             await loadComments()
                         }
-                        .onAppear
+                        else
                         {
-                            commentSortingType = defaultCommentSorting
+                            commentTracker.isLoading = false
                         }
+                    }
+                    .onAppear
+                    {
+                        commentSortingType = defaultCommentSorting
+                    }
+            }
+            else
+            {
+                if commentTracker.comments.count == 0
+                { // If there are no comments, just don't show anything
+                    VStack
+                    {
+                        VStack
+                        {
+                            Image(systemName: "binoculars")
+                                .aspectRatio(contentMode: .fill)
+                            Text("No comments to be found")
+                                .font(.headline)
+                        }
+                        Text("Why not post the first one?")
+                            .font(.subheadline)
+                    }
+                    .foregroundColor(.secondary)
+                    .padding()
                 }
                 else
-                {
+                { // Otherwise we'll have to do some actual work
                     LazyVStack(alignment: .leading, spacing: 15)
                     {
                         ForEach(commentTracker.comments)
                         { comment in
-                            CommentItem(comment: comment)
+                            CommentItem(account: account, comment: comment)
                         }
                     }
                 }
@@ -121,7 +128,7 @@ struct PostExpanded: View
                                     do
                                     {
                                         try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
-                                        
+
                                         isReplyFieldFocused = false
                                         textFieldContents = ""
                                     }
@@ -188,16 +195,16 @@ struct PostExpanded: View
                 }
             }
 
-            ToolbarItemGroup(placement: .keyboard) {
-                
+            ToolbarItemGroup(placement: .keyboard)
+            {
                 Spacer()
-                
-                Button {
+
+                Button
+                {
                     isReplyFieldFocused = false
                 } label: {
                     Text("Cancel")
                 }
-
             }
         }
         .refreshable
@@ -216,7 +223,8 @@ struct PostExpanded: View
                 commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
             }
         }
-        .alert(isPresented: $isShowingError) {
+        .alert(isPresented: $isShowingError)
+        {
             Alert(title: Text("Could not post comment"), message: Text("An error occured when posting the comment.\nTry again later, or restart Mlem"), dismissButton: .default(Text("Close"), action: {
                 isShowingError.toggle()
             }))
@@ -272,7 +280,8 @@ struct PostExpanded: View
             sortedComments = comments.sorted(by: { $0.children.count > $1.children.count })
         }
 
-        return sortedComments.map { comment in
+        return sortedComments.map
+        { comment in
             var newComment = comment
             newComment.children = sortComments(comment.children, by: sort)
             return newComment
