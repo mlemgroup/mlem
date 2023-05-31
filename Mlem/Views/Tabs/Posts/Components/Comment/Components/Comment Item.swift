@@ -70,6 +70,16 @@ struct CommentItem: View
                 }
                 .foregroundColor(.secondary)
             }
+            .disabled(isCollapsed)
+            .onTapGesture {
+                if isCollapsed
+                {
+                    withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
+                    {
+                        isCollapsed.toggle()
+                    }
+                }
+            }
             
             Divider()
 
