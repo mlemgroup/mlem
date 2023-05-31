@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CommentItem: View
 {
+    @EnvironmentObject var commentReplyTracker: CommentReplyTracker
+    
     @State var account: SavedAccount
     
     let comment: Comment
@@ -75,6 +77,8 @@ struct CommentItem: View
                 {
                     Button(action: {
                         print("Would reply to comment ID \(comment.id)")
+                        
+                        commentReplyTracker.commentToReplyTo = comment
                     }, label: {
                         Image(systemName: "arrowshape.turn.up.backward")
                     })

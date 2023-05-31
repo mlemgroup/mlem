@@ -19,6 +19,7 @@ struct PostExpanded: View
     @EnvironmentObject var appState: AppState
 
     @StateObject var commentTracker: CommentTracker = .init()
+    @StateObject var commentReplyTracker: CommentReplyTracker = .init()
 
     @State var account: SavedAccount
 
@@ -97,11 +98,38 @@ struct PostExpanded: View
                 }
             }
         }
+        .environmentObject(commentReplyTracker)
         .navigationBarTitle(post.community.name, displayMode: .inline)
         .safeAreaInset(edge: .bottom)
         {
             VStack
             {
+                if commentReplyTracker.commentToReplyTo != nil
+                {
+                    HStack(alignment: .top)
+                    {
+                        VStack(alignment: .leading, spacing: 5) {
+                            HStack(alignment: .center, spacing: 2) {
+                                Text("Replying to \(commentReplyTracker.commentToReplyTo!.author.name):")
+                                    .font(.caption)
+                                
+                            #warning("TODO: Add the user avatar")
+                                // UserProfileLink(shouldShowUserAvatars: true, user: commentReplyTracker.commentToReplyTo!.author)
+                            }
+                            .foregroundColor(.secondary)
+                            
+                            Text(commentReplyTracker.commentToReplyTo!.content)
+                                .font(.system(size: 16))
+                        }
+                        
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    
+                    Divider()
+                }
+                
                 HStack(alignment: .center, spacing: 10)
                 {
                     TextField("Reply to post", text: $textFieldContents, prompt: Text("\(account.username):"), axis: .vertical)
@@ -154,6 +182,12 @@ struct PostExpanded: View
             }
             .background(.regularMaterial)
             .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: textFieldContents)
+            .onChange(of: commentReplyTracker.commentToReplyTo) { newValue in
+                if newValue != nil
+                {
+                    isReplyFieldFocused.toggle()
+                }
+            }
         }
         .toolbar
         {
@@ -202,6 +236,11 @@ struct PostExpanded: View
                 Button
                 {
                     isReplyFieldFocused = false
+                    
+                    if commentReplyTracker.commentToReplyTo != nil
+                    {
+                        commentReplyTracker.commentToReplyTo = nil
+                    }
                 } label: {
                     Text("Cancel")
                 }
