@@ -47,7 +47,7 @@ struct PostExpanded: View
         {
             PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account)
 
-            if post.numberOfComments == 0
+            if commentTracker.comments.count == 0
             { // If there are no comments, just don't show anything
                 VStack
                 {
