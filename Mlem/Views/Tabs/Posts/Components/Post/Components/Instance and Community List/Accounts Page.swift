@@ -37,6 +37,8 @@ struct AccountsPage: View
                                     Text(savedAccount.instanceLink.host!)
                                         .foregroundColor(.secondary)
                                 }
+                                .minimumScaleFactor(0.01)
+                                .lineLimit(1)
                             }
                             .swipeActions(edge: .trailing, allowsFullSwipe: true)
                             {
@@ -56,6 +58,24 @@ struct AccountsPage: View
                                 .tint(.red)
                             }
                         }
+                        .onDelete(perform: deleteAccount)
+                    }
+                    .toolbar
+                    {
+                        ToolbarItem(placement: .navigationBarTrailing)
+                        {
+                            Button
+                            {
+                                isShowingInstanceAdditionSheet.toggle()
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                        }
+                        
+                        ToolbarItem(placement: .navigationBarLeading)
+                        {
+                            EditButton()
+                        }
                     }
                 }
                 else
@@ -69,18 +89,6 @@ struct AccountsPage: View
             }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar
-            {
-                ToolbarItem(placement: .navigationBarTrailing)
-                {
-                    Button
-                    {
-                        isShowingInstanceAdditionSheet.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
             .sheet(isPresented: $isShowingInstanceAdditionSheet)
             {
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
@@ -104,5 +112,10 @@ struct AccountsPage: View
                 )
             }
         }
+    }
+    
+    internal func deleteAccount(at offsets: IndexSet)
+    {
+        accountsTracker.savedAccounts.remove(atOffsets: offsets)
     }
 }
