@@ -134,8 +134,11 @@ private extension JSON {
             parentID: {
                 let stringRepresentationOfPath: String = self["comment", "path"].stringValue
                 let componentsOfPath = stringRepresentationOfPath.components(separatedBy: ".")
+                
+                print("Will try to parse path \(stringRepresentationOfPath)")
+                print("Will try to parse path \(componentsOfPath)")
 
-                if componentsOfPath.count == 2 /// If there are two elements, it'ß the root (0) and the comment itself. That means there is no parent and parentID should be nil
+                if componentsOfPath.count == 2 || stringRepresentationOfPath == "0"/// If there are two elements, it'ß the root (0) and the comment itself. That means there is no parent and parentID should be nil
                 {
                     return nil
                 }
