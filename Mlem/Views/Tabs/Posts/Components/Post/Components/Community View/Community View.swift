@@ -38,7 +38,7 @@ struct CommunityView: View
 
     @FocusState var isSearchFieldFocused: Bool
     
-    @State var feedType: FeedType
+    @State var feedType: FeedType = .subscribed
 
     @State private var isComposingPost: Bool = false
     @State private var newPostTitle: String = ""
