@@ -26,6 +26,8 @@ struct PostItem: View
     
     @State var account: SavedAccount
     
+    @Binding var feedType: FeedType
+    
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     
@@ -49,7 +51,7 @@ struct PostItem: View
                             {
                                 if !isInSpecificCommunity
                                 {
-                                    NavigationLink(destination: CommunityView(account: account, community: post.community))
+                                    NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: feedType))
                                     {
                                         HStack(alignment: .center, spacing: 10)
                                         {                                           

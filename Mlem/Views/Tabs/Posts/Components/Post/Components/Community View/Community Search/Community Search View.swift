@@ -15,6 +15,10 @@ struct CommunitySearchResultsView: View
     @State var searchResults: [Community]?
 
     var account: SavedAccount
+    var community: Community?
+
+    @Binding var feedType: FeedType
+    @Binding var isShowingSearch: Bool
 
     @State private var isShowingDarkBackground: Bool = false
 
@@ -22,70 +26,107 @@ struct CommunitySearchResultsView: View
     {
         VStack(alignment: .leading, spacing: 10)
         {
-            if communitySearchResultsTracker.foundCommunities.isEmpty
+            List
             {
-                if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty
+                if communitySearchResultsTracker.foundCommunities.isEmpty
                 {
-                    List
+                    if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty
                     {
-                        Section {
+                        if community == nil
+                        {
+                            Section
+                            {
+                                Button
+                                {
+                                    feedType = .subscribed
+                                    withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                                    {
+                                        isShowingSearch.toggle()
+                                    }
+                                } label: {
+                                    Label("Subscribed", systemImage: "house")
+                                }
+                                .disabled(feedType == .subscribed)
+                                
+                                Button
+                                {
+                                    feedType = .all
+                                    withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                                    {
+                                        isShowingSearch.toggle()
+                                    }
+                                } label: {
+                                    Label("All Posts", systemImage: "rectangle.stack.fill")
+                                }
+                                .disabled(feedType == .all)
+                                
+                            } header: {
+                                Text("Feeds")
+                            }
+                        }
+                        
+                        Section
+                        {
                             ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker))
                             { favoritedCommunity in
-                                NavigationLink(destination: CommunityView(account: account, community: favoritedCommunity.community))
+                                NavigationLink(destination: CommunityView(account: account, community: favoritedCommunity.community, feedType: .all))
                                 {
                                     Text(favoritedCommunity.community.name)
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                            Button(role: .destructive) {
-                                                unfavoriteCommunity(account: account, community: favoritedCommunity.community, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
-                                            } label: {
-                                                Label("Unfavorite", systemImage: "star.slash")
-                                            }
-                                            
+                                        .swipeActions(edge: .trailing, allowsFullSwipe: true)
+                                    {
+                                        Button(role: .destructive)
+                                        {
+                                            unfavoriteCommunity(account: account, community: favoritedCommunity.community, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
+                                        } label: {
+                                            Label("Unfavorite", systemImage: "star.slash")
                                         }
+                                    }
                                 }
                             }
                         } header: {
                             Text("Favorites")
                         }
                     }
+                    else
+                    {
+                        VStack(alignment: .center, spacing: 10)
+                        {
+                            Image(systemName: "star.slash")
+                            Text("You have no communities favorited")
+                        }
+                    }
                 }
                 else
                 {
-                    VStack(alignment: .center, spacing: 10) {
-                        Image(systemName: "star.slash")
-                        Text("You have no communities favorites")
-                    }
-                }
-            }
-            else
-            {
-                List
-                {
-                    Section {
+                    Section
+                    {
                         ForEach(communitySearchResultsTracker.foundCommunities)
                         { foundCommunity in
-                            NavigationLink(destination: CommunityView(account: account, community: foundCommunity))
+                            NavigationLink(destination: CommunityView(account: account, community: foundCommunity, feedType: .all))
                             {
                                 Text(foundCommunity.name)
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                        if favoritedCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == foundCommunity.id })
-                                        { /// This is when a community is already favorited
-                                            Button(role: .destructive) {
-                                                unfavoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
-                                            } label: {
-                                                Label("Unfavorite", systemImage: "star.slash")
-                                            }
-                                        }
-                                        else
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true)
+                                {
+                                    if favoritedCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == foundCommunity.id })
+                                    { /// This is when a community is already favorited
+                                        Button(role: .destructive)
                                         {
-                                            Button {
-                                                favoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
-                                            } label: {
-                                                Label("Favorite", systemImage: "star")
-                                            }
-                                            .tint(.yellow)
+                                            unfavoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
+                                        } label: {
+                                            Label("Unfavorite", systemImage: "star.slash")
                                         }
                                     }
+                                    else
+                                    {
+                                        Button
+                                        {
+                                            favoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
+                                        } label: {
+                                            Label("Favorite", systemImage: "star")
+                                        }
+                                        .tint(.yellow)
+                                    }
+                                }
                             }
                         }
                     } header: {
