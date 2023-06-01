@@ -296,7 +296,13 @@ struct CommunityView: View
                 }
             }
             .onChange(of: feedType, perform: { newValue in
-                print("new value of feed type: \(newValue)")
+                Task(priority: .userInitiated) {
+                    postTracker.page = 1
+                    
+                    postTracker.posts = .init()
+                    
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                }
             })
             .toolbar
             {
