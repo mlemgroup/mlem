@@ -28,7 +28,7 @@ struct AccountsPage: View
                         { savedAccount in
                             NavigationLink
                             {
-                                CommunityView(account: savedAccount, community: nil)
+                                CommunityView(account: savedAccount, community: nil, feedType: .all)
                             } label: {
                                 HStack(alignment: .center)
                                 {

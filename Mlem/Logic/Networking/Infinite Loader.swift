@@ -13,7 +13,7 @@ internal enum LoadingError
     case shittyInternet
 }
 
-func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, sortingType: SortingOptions, account: SavedAccount) async
+func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, feedType: FeedType, sortingType: SortingOptions, account: SavedAccount) async
 {
     var loadingCommand: String = ""
     
@@ -30,7 +30,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
         print("Will be in GLOBAL scope")
         
         loadingCommand = """
-        {"op": "GetPosts", "data": {"auth": "\(account.accessToken)", "type_": "All", "sort": "\(sortingType.rawValue)", "page": \(postTracker.page)}}
+        {"op": "GetPosts", "data": {"auth": "\(account.accessToken)", "type_": "\(feedType.rawValue)", "sort": "\(sortingType.rawValue)", "page": \(postTracker.page)}}
         """
     }
 

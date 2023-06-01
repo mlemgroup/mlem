@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+internal enum FeedType: String
+{
+    case all = "All"
+    case subscribed = "Subscribed"
+}
+
 struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
@@ -31,6 +37,8 @@ struct CommunityView: View
     @State private var searchText: String = ""
 
     @FocusState var isSearchFieldFocused: Bool
+    
+    @State var feedType: FeedType
 
     @State private var isComposingPost: Bool = false
     @State private var newPostTitle: String = ""
@@ -62,7 +70,7 @@ struct CommunityView: View
     {
         ZStack(alignment: .top)
         {
-            CommunitySearchResultsView(account: account)
+            CommunitySearchResultsView(account: account, community: community, feedType: $feedType, isShowingSearch: $isShowingCommunitySearch)
             // .transition(.move(edge: .top).combined(with: .opacity))
 
             ScrollView
@@ -88,9 +96,9 @@ struct CommunityView: View
 
                         ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
                         { post in
-                            NavigationLink(destination: PostExpanded(account: account, postTracker: postTracker, post: post))
+                            NavigationLink(destination: PostExpanded(account: account, postTracker: postTracker, post: post, feedType: $feedType))
                             {
-                                PostItem(postTracker: postTracker, post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, account: account)
+                                PostItem(postTracker: postTracker, post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, account: account, feedType: $feedType)
                                     .swipeActions(edge: .leading, allowsFullSwipe: true) {
                                         Button {
                                             print("Ahoj")
@@ -107,11 +115,11 @@ struct CommunityView: View
                                 {
                                     if community == nil
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
                                     }
                                     else
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: .all, sortingType: selectedSortingOption, account: account)
                                     }
                                 }
                             }
@@ -125,11 +133,11 @@ struct CommunityView: View
 
                                     if community == nil
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
                                     }
                                     else
                                     {
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, sortingType: selectedSortingOption, account: account)
+                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: feedType, sortingType: selectedSortingOption, account: account)
                                     }
                                 }
                             })
@@ -253,7 +261,7 @@ struct CommunityView: View
                     postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
                     postTracker.posts = .init()
 
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, sortingType: selectedSortingOption, account: account)
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
 
                     isRefreshing = false
                 }
@@ -264,7 +272,7 @@ struct CommunityView: View
                 {
                     print("Post tracker is empty")
 
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, sortingType: selectedSortingOption, account: account)
+                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
                 }
                 else
                 {
@@ -287,6 +295,9 @@ struct CommunityView: View
                     }
                 }
             }
+            .onChange(of: feedType, perform: { newValue in
+                print("new value of feed type: \(newValue)")
+            })
             .toolbar
             {
                 ToolbarItem(placement: .principal)
@@ -295,7 +306,7 @@ struct CommunityView: View
                     {
                         HStack(alignment: .center, spacing: 0)
                         {
-                            Text(community?.name ?? "Home")
+                            Text(community?.name ?? feedType.rawValue)
                                 .font(.headline)
                             Image(systemName: "chevron.down")
                                 .scaleEffect(0.7)

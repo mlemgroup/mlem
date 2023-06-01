@@ -33,6 +33,8 @@ struct PostExpanded: View
     @State private var commentSortingType: CommentSortTypes = .top
 
     @FocusState var isReplyFieldFocused
+    
+    @Binding var feedType: FeedType
 
     @State private var textFieldContents: String = ""
     @State private var replyingToCommentID: Int? = nil
@@ -60,7 +62,7 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account)
+            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account, feedType: $feedType)
 
             if commentTracker.isLoading
             {
