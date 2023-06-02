@@ -28,43 +28,45 @@ struct CommunitySearchResultsView: View
         {
             List
             {
+                if community == nil
+                {
+                    if communitySearchResultsTracker.foundCommunities.isEmpty
+                    {
+                        Section
+                        {
+                            Button
+                            {
+                                feedType = .subscribed
+                                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                                {
+                                    isShowingSearch.toggle()
+                                }
+                            } label: {
+                                Label("Subscribed", systemImage: "house")
+                            }
+                            .disabled(feedType == .subscribed)
+                            
+                            Button
+                            {
+                                feedType = .all
+                                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                                {
+                                    isShowingSearch.toggle()
+                                }
+                            } label: {
+                                Label("All Posts", systemImage: "rectangle.stack.fill")
+                            }
+                            .disabled(feedType == .all)
+                            
+                        } header: {
+                            Text("Feeds")
+                        }
+                    }
+                }
                 if communitySearchResultsTracker.foundCommunities.isEmpty
                 {
                     if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty
                     {
-                        if community == nil
-                        {
-                            Section
-                            {
-                                Button
-                                {
-                                    feedType = .subscribed
-                                    withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
-                                    {
-                                        isShowingSearch.toggle()
-                                    }
-                                } label: {
-                                    Label("Subscribed", systemImage: "house")
-                                }
-                                .disabled(feedType == .subscribed)
-                                
-                                Button
-                                {
-                                    feedType = .all
-                                    withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
-                                    {
-                                        isShowingSearch.toggle()
-                                    }
-                                } label: {
-                                    Label("All Posts", systemImage: "rectangle.stack.fill")
-                                }
-                                .disabled(feedType == .all)
-                                
-                            } header: {
-                                Text("Feeds")
-                            }
-                        }
-                        
                         Section
                         {
                             ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker))
