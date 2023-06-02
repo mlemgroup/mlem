@@ -40,38 +40,11 @@ struct AccountsPage: View
                                 .minimumScaleFactor(0.01)
                                 .lineLimit(1)
                             }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true)
-                            {
-                                Button
-                                {
-                                    let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts.first(where: { $0.id == savedAccount.id })!
-
-                                    // MARK: - Purge the account information from the Keychain
-                                    AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
-                                    
-                                    // MARK: - Remove the account from the tracker
-                                    accountsTracker.savedAccounts.removeAll(where: { $0.id == savedAccountToRemove.id })
-
-                                } label: {
-                                    Label("Remove", systemImage: "trash")
-                                }
-                                .tint(.red)
-                            }
                         }
                         .onDelete(perform: deleteAccount)
                     }
                     .toolbar
                     {
-                        ToolbarItem(placement: .navigationBarTrailing)
-                        {
-                            Button
-                            {
-                                isShowingInstanceAdditionSheet.toggle()
-                            } label: {
-                                Image(systemName: "plus")
-                            }
-                        }
-                        
                         ToolbarItem(placement: .navigationBarLeading)
                         {
                             EditButton()
@@ -89,6 +62,18 @@ struct AccountsPage: View
             }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar
+            {
+                ToolbarItem(placement: .navigationBarTrailing)
+                {
+                    Button
+                    {
+                        isShowingInstanceAdditionSheet.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
             .sheet(isPresented: $isShowingInstanceAdditionSheet)
             {
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
@@ -113,9 +98,17 @@ struct AccountsPage: View
             }
         }
     }
-    
+
     internal func deleteAccount(at offsets: IndexSet)
     {
-        accountsTracker.savedAccounts.remove(atOffsets: offsets)
+        for index in offsets
+        {
+            let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts[index]
+
+            accountsTracker.savedAccounts.remove(at: index)
+
+            // MARK: - Purge the account information from the Keychain
+            AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
+        }
     }
 }
