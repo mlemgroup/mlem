@@ -40,23 +40,6 @@ struct AccountsPage: View
                                 .minimumScaleFactor(0.01)
                                 .lineLimit(1)
                             }
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true)
-                            {
-                                Button
-                                {
-                                    let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts.first(where: { $0.id == savedAccount.id })!
-
-                                    // MARK: - Purge the account information from the Keychain
-                                    AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
-                                    
-                                    // MARK: - Remove the account from the tracker
-                                    accountsTracker.savedAccounts.removeAll(where: { $0.id == savedAccountToRemove.id })
-
-                                } label: {
-                                    Label("Remove", systemImage: "trash")
-                                }
-                                .tint(.red)
-                            }
                         }
                         .onDelete(perform: deleteAccount)
                     }
@@ -118,6 +101,18 @@ struct AccountsPage: View
     
     internal func deleteAccount(at offsets: IndexSet)
     {
-        accountsTracker.savedAccounts.remove(atOffsets: offsets)
+        for index in offsets
+        {
+            let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts[index]
+            
+            accountsTracker.savedAccounts.remove(at: index)
+            
+            print(AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] as Any)
+            
+            // MARK: - Purge the account information from the Keychain
+            AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
+            
+            print(AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] as Any)
+        }
     }
 }
