@@ -69,6 +69,29 @@ func parseComments(commentResponse: String, instanceLink: URL) async throws -> [
     }
 }
 
+func parseReply(replyResponse: String, instanceLink: URL) async throws -> Comment
+{
+    do
+    {
+        let parsedJSON: JSON = try parseJSON(from: replyResponse)
+        var jsonComments = parsedJSON["data", "comments"].arrayValue
+        
+        if jsonComments.isEmpty
+        { /// This has to be here because I'm also using this function for parsing coments that the user posted, which has a different format. If the first attempt to get the array of comments fails, try the one that's for responses for posting comments
+            jsonComments = [parsedJSON["data", "comment_view"]]
+        }
+        
+        let isV1 = instanceLink.absoluteString.contains("v1")
+        
+        return jsonComments.map { isV1 ? $0.v1ToComment() : $0.v2ToComment() }.first!
+    }
+    catch let parsingError
+    {
+        print("Failed while parsing comment JSON: \(parsingError)")
+        throw JSONParsingError.failedToParse
+    }
+}
+
 private extension JSON {
 
     func v1ToComment() -> Comment {

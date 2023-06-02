@@ -47,6 +47,7 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
     }
 }
 
+@MainActor
 func postComment(to comment: Comment, post: Post, commentContents: String, commentTracker: CommentTracker, account: SavedAccount) async throws
 {
     do
@@ -59,21 +60,15 @@ func postComment(to comment: Comment, post: Post, commentContents: String, comme
         
         if !commentPostingCommandResult.contains("\"error\"")
         {
-            let updatedCommentReponse: String = try await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: """
-                {"op": "GetComments", "data": { "auth": "\(account.accessToken)", "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
-                """)
+            let newComment: Comment = try! await parseReply(replyResponse: commentPostingCommandResult, instanceLink: account.instanceLink)
             
-            do
+            print(newComment)
+            
+            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
             {
-                let parsedUpdatedComments: [Comment] = try! await parseComments(commentResponse: updatedCommentReponse, instanceLink: account.instanceLink)
+                commentTracker.comments = commentTracker.comments.map({ $0.insertReply(newComment) })
                 
-                commentTracker.comments = parsedUpdatedComments
-            }
-            catch let updatedCommentResponseParsingError
-            {
-                print("Failed while parsing updated comment response: \(updatedCommentResponseParsingError)")
-                
-                throw CommentPostingFailure.coundNotParseUpdatedComments
+                print("New comment tracker state: \(commentTracker.comments)")
             }
         }
         else
