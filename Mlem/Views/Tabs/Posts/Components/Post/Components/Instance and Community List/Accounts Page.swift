@@ -98,21 +98,17 @@ struct AccountsPage: View
             }
         }
     }
-    
+
     internal func deleteAccount(at offsets: IndexSet)
     {
         for index in offsets
         {
             let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts[index]
-            
+
             accountsTracker.savedAccounts.remove(at: index)
-            
-            print(AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] as Any)
-            
+
             // MARK: - Purge the account information from the Keychain
             AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
-            
-            print(AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] as Any)
         }
     }
 }
