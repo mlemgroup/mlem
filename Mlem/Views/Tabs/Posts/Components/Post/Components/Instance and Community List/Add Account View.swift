@@ -154,7 +154,7 @@ struct AddSavedInstanceView: View
             do
             {
                 let loginRequestResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceURL, command: """
-                {"op": "Login", "data":{"username_or_email": "\(usernameOrEmail)", "password": "\(password)"}}
+                {"op": "Login", "data":{"username_or_email": "\(usernameOrEmail)", "password": \(password.withEscapedCharacters())}}
                 """)
                 if loginRequestResponse.contains("jwt")
                 {
