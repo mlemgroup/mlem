@@ -62,16 +62,6 @@ struct AccountsPage: View
                     }
                     .toolbar
                     {
-                        ToolbarItem(placement: .navigationBarTrailing)
-                        {
-                            Button
-                            {
-                                isShowingInstanceAdditionSheet.toggle()
-                            } label: {
-                                Image(systemName: "plus")
-                            }
-                        }
-                        
                         ToolbarItem(placement: .navigationBarLeading)
                         {
                             EditButton()
@@ -89,6 +79,18 @@ struct AccountsPage: View
             }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar
+            {
+                ToolbarItem(placement: .navigationBarTrailing)
+                {
+                    Button
+                    {
+                        isShowingInstanceAdditionSheet.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
             .sheet(isPresented: $isShowingInstanceAdditionSheet)
             {
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
