@@ -29,7 +29,7 @@ struct AddSavedInstanceView: View
 
     var body: some View
     {
-        VStack(alignment: .leading, spacing: 15)
+        VStack(alignment: .leading, spacing: 0)
         {
             if isShowingEndpointDiscoverySpinner
             {
@@ -86,11 +86,15 @@ struct AddSavedInstanceView: View
             {
                 Section("Homepage")
                 {
-                    TextField("Homepage:", text: $instanceLink, prompt: Text("hexbear.net"))
+                    TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
                         .autocorrectionDisabled()
                         .focused($isFocused)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
+                        .onAppear
+                        {
+                            isFocused = true
+                        }
                 }
 
                 Section("Credentials")
@@ -127,16 +131,12 @@ struct AddSavedInstanceView: View
             }
             .disabled(isShowingEndpointDiscoverySpinner)
         }
-        .onAppear
-        {
-            isFocused = true
-        }
     }
-    
-    func tryToAddAccount() async -> Void
+
+    func tryToAddAccount() async
     {
         print("Will start the account addition process")
-        
+
         withAnimation
         {
             isShowingEndpointDiscoverySpinner = true
@@ -163,12 +163,13 @@ struct AddSavedInstanceView: View
                     token = parsedResponse["data", "jwt"].stringValue
 
                     print("Obtained token: \(token)")
-                    
-                    let newAccount: SavedAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail)
-                    
+
+                    let newAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail)
+
                     // MARK: - Save the account's credentials into the keychain
+
                     AppConstants.keychain["\(newAccount.id)_accessToken"] = token
-                    
+
                     communityTracker.savedAccounts.append(newAccount)
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2)
