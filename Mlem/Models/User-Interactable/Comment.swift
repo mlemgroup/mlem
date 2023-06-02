@@ -51,4 +51,20 @@ struct Comment: Codable, Identifiable, Hashable
 
     let childCount: Int?
     var children: [Comment]
+    
+    func insertReply(_ reply: Comment) -> Comment {
+        if id == reply.parentID {
+            var result = self
+            result.children.append(reply)
+            return result
+        }
+        else if children.isEmpty {
+            return self
+        }
+        else {
+            var result = self
+            result.children = children.map { $0.insertReply(reply) }
+            return result
+        }
+    }
 }
