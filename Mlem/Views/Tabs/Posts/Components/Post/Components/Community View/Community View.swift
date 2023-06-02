@@ -357,6 +357,13 @@ struct CommunityView: View
 
                             if isInSpecificCommunity
                             {
+                                Button
+                                {
+                                    print("Will subscribe")
+                                } label: {
+                                    Label("Subscribe to \(community!.name)", systemImage: "person.badge.plus")
+                                }
+                                
                                 if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
                                 { /// This is when a community is already favorited
                                     Button(role: .destructive) {
@@ -375,6 +382,8 @@ struct CommunityView: View
                                     .tint(.yellow)
                                 }
 
+                                Divider()
+                                
                                 ShareButton(urlToShare: community!.actorID, isShowingButtonText: true)
                             }
                             else
