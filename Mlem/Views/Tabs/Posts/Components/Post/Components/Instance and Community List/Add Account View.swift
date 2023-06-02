@@ -144,7 +144,11 @@ struct AddSavedInstanceView: View
 
         do
         {
-            let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: instanceLink)
+            let sanitizedLink: String = instanceLink.replacingOccurrences(of: "https://", with: "").replacingOccurrences(of: "http://", with: "").replacingOccurrences(of: "www.", with: "")
+            
+            print("Sanitized link: \(sanitizedLink)")
+            
+            let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: sanitizedLink)
             print("Found correct endpoint: \(instanceURL)")
 
             do

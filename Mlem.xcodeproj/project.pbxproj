@@ -108,7 +108,7 @@
 		63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */; };
 		63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */; };
 		63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 63F0C7B62A052F5000A18C5D /* CachedAsyncImage */; };
-		63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */; };
+		63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Account View.swift */; };
 		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
 		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
 		63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */; };
@@ -232,7 +232,7 @@
 		63F0C7AC2A05235400A18C5D /* Encode for Saving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encode for Saving.swift"; sourceTree = "<group>"; };
 		63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decode Data from File.swift"; sourceTree = "<group>"; };
 		63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Create Empty File.swift"; sourceTree = "<group>"; };
-		63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Add Saved Instance View.swift"; sourceTree = "<group>"; };
+		63F0C7B82A0533C700A18C5D /* Add Account View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Add Account View.swift"; sourceTree = "<group>"; };
 		63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionWebSocketTask - Send Ping.swift"; sourceTree = "<group>"; };
 		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
 		63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Correct URL to Endpoint.swift"; sourceTree = "<group>"; };
@@ -437,7 +437,7 @@
 			isa = PBXGroup;
 			children = (
 				6332FDCE27EFDD2E0009A98A /* Accounts Page.swift */,
-				63F0C7B82A0533C700A18C5D /* Add Saved Instance View.swift */,
+				63F0C7B82A0533C700A18C5D /* Add Account View.swift */,
 			);
 			path = "Instance and Community List";
 			sourceTree = "<group>";
@@ -991,7 +991,7 @@
 				63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */,
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				63CE4E6C2A066EF200405271 /* User Parser.swift in Sources */,
-				63F0C7B92A0533C700A18C5D /* Add Saved Instance View.swift in Sources */,
+				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
 				63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1149,7 +1149,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
 				DEVELOPMENT_TEAM = ZSVA6DVZHM;
 				ENABLE_PREVIEWS = YES;
@@ -1183,7 +1183,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
 				DEVELOPMENT_TEAM = ZSVA6DVZHM;
 				ENABLE_PREVIEWS = YES;
