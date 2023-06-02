@@ -65,9 +65,9 @@ struct CommunitySearchResultsView: View
                 }
                 if communitySearchResultsTracker.foundCommunities.isEmpty
                 {
-                    if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty
+                    Section
                     {
-                        Section
+                        if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty
                         {
                             ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker))
                             { favoritedCommunity in
@@ -85,17 +85,17 @@ struct CommunitySearchResultsView: View
                                     }
                                 }
                             }
-                        } header: {
-                            Text("Favorites")
                         }
-                    }
-                    else
-                    {
-                        VStack(alignment: .center, spacing: 10)
+                        else
                         {
-                            Image(systemName: "star.slash")
-                            Text("You have no communities favorited")
+                            VStack(alignment: .center, spacing: 10)
+                            {
+                                Image(systemName: "star.slash")
+                                Text("You have no communities favorited")
+                            }
                         }
+                    } header: {
+                        Text("Favorites")
                     }
                 }
                 else
