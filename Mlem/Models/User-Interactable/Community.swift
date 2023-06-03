@@ -32,6 +32,8 @@ struct Community: Identifiable, Codable, Equatable, Hashable
 
 struct CommunityDetails: Codable, Equatable, Hashable
 {
+    var isSubscribed: Bool
+    
     let numberOfSubscribers: Int
     let numberOfPosts: Int
     let numberOfActiveUsersOverall: Int?
