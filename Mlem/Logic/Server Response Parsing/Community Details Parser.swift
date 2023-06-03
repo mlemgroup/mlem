@@ -43,6 +43,18 @@ func parseCommunityDetails(response: String, instanceLink: URL) async throws -> 
         }
         
         let parsedDetails: CommunityDetails = CommunityDetails(
+            isSubscribed: {
+                let rawParsedData = parsedJSON["data", "community_view", "subscribed"].stringValue
+                
+                if rawParsedData == "NotSubscribed"
+                {
+                    return false
+                }
+                else
+                {
+                    return true
+                }
+            }(),
             numberOfSubscribers: parsedJSON["data", "community_view", "counts", "subscribers"].intValue,
             numberOfPosts: parsedJSON["data", "community_view", "counts", "posts"].intValue,
             numberOfActiveUsersOverall: parsedJSON["data", "community_view", "counts", "users_active_half_year"].intValue,

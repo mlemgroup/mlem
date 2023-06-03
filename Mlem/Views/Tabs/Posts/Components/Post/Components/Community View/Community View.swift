@@ -357,11 +357,26 @@ struct CommunityView: View
 
                             if isInSpecificCommunity
                             {
-                                Button
+                                if let communityDetails = community!.details
                                 {
-                                    print("Will subscribe")
-                                } label: {
-                                    Label("Subscribe to \(community!.name)", systemImage: "person.badge.plus")
+                                    if !communityDetails.isSubscribed
+                                    {
+                                        Button
+                                        {
+                                            print("Will subscribe")
+                                        } label: {
+                                            Label("Subscribe to \(community!.name)", systemImage: "person.badge.plus")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Button(role: .destructive)
+                                        {
+                                            print("Will unsubscribe")
+                                        } label: {
+                                            Label("Unsubscribe from \(community!.name)", systemImage: "person.badge.minus")
+                                        }
+                                    }
                                 }
                                 
                                 if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
