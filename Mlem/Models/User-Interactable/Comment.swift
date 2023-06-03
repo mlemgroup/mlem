@@ -67,4 +67,46 @@ struct Comment: Codable, Identifiable, Hashable
             return result
         }
     }
+    
+    /// Locate the reply with the matching ID in the Comment tree
+    /// and replace it with the specified reply. Note that this
+    /// cannot change the parent of the reply!
+    func replaceReply(_ reply: Comment) -> Comment
+    {
+        if id == reply.id
+        {
+            assert(parentID == reply.parentID)
+            return reply
+        }
+        else if children.isEmpty
+        {
+            return self
+        }
+        else
+        {
+            var result = self
+            result.children = children.map { $0.replaceReply(reply) }
+            return result
+        }
+    }
+    
+    /// Remove the reply with the specified ID from the Comment tree,
+    /// along with all of its descendents.
+    func removeReply(id: Int) -> Comment?
+    {
+        if self.id == id
+        {
+            return nil
+        }
+        else if children.isEmpty
+        {
+            return self
+        }
+        else
+        {
+            var result = self
+            result.children = children.compactMap { $0.removeReply(id: id) }
+            return result
+        }
+    }
 }
