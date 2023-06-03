@@ -357,27 +357,7 @@ struct CommunityView: View
 
                             if isInSpecificCommunity
                             {
-                                if let communityDetails = community!.details
-                                {
-                                    if !communityDetails.isSubscribed
-                                    {
-                                        Button
-                                        {
-                                            print("Will subscribe")
-                                        } label: {
-                                            Label("Subscribe to \(community!.name)", systemImage: "person.badge.plus")
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Button(role: .destructive)
-                                        {
-                                            print("Will unsubscribe")
-                                        } label: {
-                                            Label("Unsubscribe from \(community!.name)", systemImage: "person.badge.minus")
-                                        }
-                                    }
-                                }
+                                SubscribeButton(community: $community, account: account)
                                 
                                 if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
                                 { /// This is when a community is already favorited
