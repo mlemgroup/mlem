@@ -10,6 +10,7 @@ import SwiftUI
 struct CommentItem: View
 {
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
+    @EnvironmentObject var commentTracker: CommentTracker
     
     @State var account: SavedAccount
     
@@ -70,7 +71,7 @@ struct CommentItem: View
                     }
                     .onTapGesture {
                         Task(priority: .userInitiated) {
-                            try await rateComment(comment: comment, operation: .upvote, account: account)
+                            try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker)
                         }
                     }
                     
@@ -87,7 +88,7 @@ struct CommentItem: View
                         }
                         .onTapGesture {
                             Task(priority: .userInitiated) {
-                                try await rateComment(comment: comment, operation: .downvote, account: account)
+                                try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker)
                             }
                         }
                 }

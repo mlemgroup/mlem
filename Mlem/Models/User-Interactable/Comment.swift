@@ -15,11 +15,11 @@ struct Comment: Codable, Identifiable, Hashable
     let creatorID: Int
     // let postName: String
     let parentID: Int?
-    let content: String
-    let removed: Bool
+    var content: String
+    var removed: Bool
     // let read: Bool
     let published: Date
-    let deleted: Bool?
+    var deleted: Bool?
     let updated: String?
     let apID: URL
     let local: Bool
