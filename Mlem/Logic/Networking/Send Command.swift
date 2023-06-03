@@ -10,7 +10,50 @@ import SwiftyJSON
 
 enum ConnectionError: Error
 {
-    case failedToEncodeAddress, receivedInvalidResponseFormat
+    case failedToEncodeAddress, receivedInvalidResponseFormat, failedToSendRequest
+}
+internal enum EncodingFailure: Error
+{
+    case failedToConvertURLToComponents, failedToSendRequest
+}
+
+func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQueryItem]) async throws -> String
+{
+    var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
+    var finalParameters: [URLQueryItem] = parameters
+    
+    guard var urlComponents = URLComponents(url: finalURL, resolvingAgainstBaseURL: true) else
+    {
+        throw EncodingFailure.failedToConvertURLToComponents
+    }
+    
+    finalParameters.append(URLQueryItem(name: "auth", value: account.accessToken))
+    
+    urlComponents.queryItems = finalParameters
+    
+    finalURL = urlComponents.url!
+    
+    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
+    request.httpMethod = "GET"
+    
+    do
+    {
+        let (data, response) = try await AppConstants.urlSession.data(for: request)
+        
+        let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
+        
+        if httpResponse.statusCode != 200
+        {
+            throw ConnectionError.receivedInvalidResponseFormat
+        }
+        
+        return String(decoding: data, as: UTF8.self)
+    }
+    catch let requestError
+    {
+        print("Failed while sending GET request: \(requestError.localizedDescription)")
+        throw ConnectionError.failedToSendRequest
+    }
 }
 
 func sendCommand(maintainOpenConnection: Bool, instanceAddress: URL, command: String) async throws -> String
