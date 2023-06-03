@@ -324,26 +324,9 @@ struct PostExpanded: View
     {
         commentTracker.isLoading = true
 
-        var commentCommand = ""
-
-        if account.instanceLink.absoluteString.contains("v1")
-        {
-            print("Older API spec")
-
-            commentCommand = """
-            {"op": "GetPost", "data": { "auth": "\(account.accessToken)", "id": \(post.id) }}
-            """
-        }
-        else
-        {
-            print("Newer API spec")
-
-            commentCommand = """
-            {"op": "GetComments", "data": { "auth": "\(account.accessToken)", "max_depth": 90, "post_id": \(post.id), "type_": "All" }}
-            """
-        }
-
-        let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: commentCommand)
+        let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
+            {"op": "GetComments", "data": { "auth": "\(account.accessToken)", "max_depth": 15, "post_id": \(post.id), "type_": "All" }}
+            """)
 
         print("Comment response: \(commentResponse)")
 
