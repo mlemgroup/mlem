@@ -15,8 +15,6 @@ struct CommentItem: View
     
     let comment: Comment
     
-    var forceReload: () async -> Void
-    
     @State var isCollapsed = false
     
     @State private var isShowingTextSelectionSheet: Bool = false
@@ -73,8 +71,6 @@ struct CommentItem: View
                     .onTapGesture {
                         Task(priority: .userInitiated) {
                             try await rateComment(comment: comment, operation: .upvote, account: account)
-                            
-                            await self.forceReload()
                         }
                     }
                     
@@ -92,8 +88,6 @@ struct CommentItem: View
                         .onTapGesture {
                             Task(priority: .userInitiated) {
                                 try await rateComment(comment: comment, operation: .downvote, account: account)
-                                
-                                await self.forceReload()
                             }
                         }
                 }
@@ -155,7 +149,7 @@ struct CommentItem: View
                 {
                     ForEach(comment.children)
                     { comment in
-                        CommentItem(account: account, comment: comment, forceReload: forceReload)
+                        CommentItem(account: account, comment: comment)
                     }
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))
