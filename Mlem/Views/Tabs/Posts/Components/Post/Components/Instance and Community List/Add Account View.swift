@@ -24,6 +24,8 @@ struct AddSavedInstanceView: View
     @State private var hasSuccessfulyConnectedToEndpoint: Bool = false
     @State private var errorOccuredWhileConnectingToEndpoint: Bool = false
     @State private var errorText: String = ""
+    
+    @State private var isShowingDeprecatedInstanceError: Bool = false
 
     @FocusState var isFocused
 
@@ -131,6 +133,17 @@ struct AddSavedInstanceView: View
             }
             .disabled(isShowingEndpointDiscoverySpinner)
         }
+        .alert("Unsupported Lemmy Version", isPresented: $isShowingDeprecatedInstanceError) {
+            Button(role: .cancel) {
+                isShowingDeprecatedInstanceError.toggle()
+            } label: {
+                Text("Close")
+            }
+
+        } message: {
+            Text("\(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support.\nContanct \(instanceLink) developers for more information.")
+        }
+
     }
 
     func tryToAddAccount() async
@@ -151,46 +164,80 @@ struct AddSavedInstanceView: View
             let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: sanitizedLink)
             print("Found correct endpoint: \(instanceURL)")
 
-            do
+            if instanceURL.absoluteString.contains("v1")
+            { /// If the link is to a v1 instance, stop and show an error
+                
+                withAnimation {
+                    isShowingEndpointDiscoverySpinner.toggle()
+                }
+                
+                isShowingDeprecatedInstanceError.toggle()
+                
+                return
+            }
+            else
             {
-                let loginRequestResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceURL, command: """
+                do
+                {
+                    let loginRequestResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceURL, command: """
                 {"op": "Login", "data":{"username_or_email": "\(usernameOrEmail)", "password": \(password.withEscapedCharacters())}}
                 """)
-                if loginRequestResponse.contains("jwt")
-                {
-                    hasSuccessfulyConnectedToEndpoint = true
-
-                    print("Successfully got the token")
-
-                    let parsedResponse: JSON = try! parseJSON(from: loginRequestResponse)
-
-                    token = parsedResponse["data", "jwt"].stringValue
-
-                    print("Obtained token: \(token)")
-
-                    let newAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail)
-
-                    // MARK: - Save the account's credentials into the keychain
-
-                    AppConstants.keychain["\(newAccount.id)_accessToken"] = token
-
-                    communityTracker.savedAccounts.append(newAccount)
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                    if loginRequestResponse.contains("jwt")
                     {
-                        isShowingSheet = false
+                        hasSuccessfulyConnectedToEndpoint = true
+                        
+                        print("Successfully got the token")
+                        
+                        let parsedResponse: JSON = try! parseJSON(from: loginRequestResponse)
+                        
+                        token = parsedResponse["data", "jwt"].stringValue
+                        
+                        print("Obtained token: \(token)")
+                        
+                        let newAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail)
+                        
+                        // MARK: - Save the account's credentials into the keychain
+                        
+                        AppConstants.keychain["\(newAccount.id)_accessToken"] = token
+                        
+                        communityTracker.savedAccounts.append(newAccount)
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                        {
+                            isShowingSheet = false
+                        }
+                    }
+                    else
+                    {
+                        print("Error occured: \(loginRequestResponse)")
+                        
+                        errorText = "Invalid credentials"
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                        {
+                            errorOccuredWhileConnectingToEndpoint = true
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                            {
+                                withAnimation
+                                {
+                                    isShowingEndpointDiscoverySpinner = false
+                                    errorOccuredWhileConnectingToEndpoint = false
+                                }
+                            }
+                        }
                     }
                 }
-                else
+                catch let loginRequestError
                 {
-                    print("Error occured: \(loginRequestResponse)")
-
-                    errorText = "Invalid credentials"
-
+                    print("Failed while sending login command: \(loginRequestError)")
+                    
+                    errorText = "Could not connect to \(instanceLink)"
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1)
                     {
                         errorOccuredWhileConnectingToEndpoint = true
-
+                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2)
                         {
                             withAnimation
@@ -202,26 +249,7 @@ struct AddSavedInstanceView: View
                     }
                 }
             }
-            catch let loginRequestError
-            {
-                print("Failed while sending login command: \(loginRequestError)")
-
-                errorText = "Could not connect to \(instanceLink)"
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1)
-                {
-                    errorOccuredWhileConnectingToEndpoint = true
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2)
-                    {
-                        withAnimation
-                        {
-                            isShowingEndpointDiscoverySpinner = false
-                            errorOccuredWhileConnectingToEndpoint = false
-                        }
-                    }
-                }
-            }
+            
         }
         catch let endpointDiscoveryError
         {
