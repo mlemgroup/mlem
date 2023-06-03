@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+internal enum CommandError: Error
+{
+    case receivedUnexpectedResponseFromServer
+}
+
 struct SubscribeButton: View {
     
     @Binding var community: Community?
@@ -33,6 +38,13 @@ struct SubscribeButton: View {
                             let subscribingCommandResult: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
                             {"op": "FollowCommunity", "data": { "auth": "\(account.accessToken)", "community_id": \(community!.id), "follow": true }}
                             """)
+                            
+                            print(subscribingCommandResult)
+                            
+                            if subscribingCommandResult.contains("\"error\"")
+                            {
+                                throw CommandError.receivedUnexpectedResponseFromServer
+                            }
                         }
                         catch let subscribingError
                         {
@@ -61,7 +73,7 @@ struct SubscribeButton: View {
                 Button(role: .destructive)
                 {
                     Task(priority: .userInitiated) {
-                        print("Will subscribe")
+                        print("Will unsubscribe")
                         
                         community?.details?.isSubscribed.toggle()
                         
@@ -70,6 +82,13 @@ struct SubscribeButton: View {
                             let unsubscribingCommandResult: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
                             {"op": "FollowCommunity", "data": { "auth": "\(account.accessToken)", "community_id": \(community!.id), "follow": false }}
                             """)
+                            
+                            print(unsubscribingCommandResult)
+                            
+                            if unsubscribingCommandResult.contains("\"error\"")
+                            {
+                                throw CommandError.receivedUnexpectedResponseFromServer
+                            }
                         }
                         catch let unsubscribingError
                         {
