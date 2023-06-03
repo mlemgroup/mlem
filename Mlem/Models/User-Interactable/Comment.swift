@@ -10,11 +10,6 @@ import SwiftUI
 
 struct Comment: Codable, Identifiable, Hashable
 {
-    static func == (lhs: Comment, rhs: Comment) -> Bool
-    {
-        lhs.id == rhs.id
-    }
-
     let id: Int
     let postID: Int
     let creatorID: Int
