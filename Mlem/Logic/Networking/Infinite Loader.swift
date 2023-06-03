@@ -40,7 +40,13 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
     
     do
     {
-        let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: loadingCommand)
+        let apiResponse = try await sendGetCommand(account: account, endpoint: "/post/list", parameters: [
+            URLQueryItem(name: "type_", value: feedType.rawValue),
+            URLQueryItem(name: "sort", value: sortingType.rawValue),
+            URLQueryItem(name: "page", value: "1")
+        ])
+        
+        //let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: loadingCommand)
         
         print("API Response: \(apiResponse)")
         

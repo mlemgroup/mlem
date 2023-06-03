@@ -17,18 +17,17 @@ func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL
     var validAddress: URL?
     
     let possibleInstanceAddresses: [URL] = [
-        URL(string: "wss://www.\(baseInstanceAddress)/api/v1/ws")!,
-        URL(string: "wss://www.\(baseInstanceAddress)/api/v2/ws")!,
-        URL(string: "wss://www.\(baseInstanceAddress)/api/v3/ws")!,
-        URL(string: "wss://\(baseInstanceAddress)/api/v1/ws")!,
-        URL(string: "wss://\(baseInstanceAddress)/api/v2/ws")!,
-        URL(string: "wss://\(baseInstanceAddress)/api/v3/ws")!
+        URL(string: "https://www.\(baseInstanceAddress)/api/v1/")!,
+        URL(string: "https://www.\(baseInstanceAddress)/api/v2/")!,
+        URL(string: "https://www.\(baseInstanceAddress)/api/v3/")!,
+        URL(string: "https://\(baseInstanceAddress)/api/v1/")!,
+        URL(string: "https://\(baseInstanceAddress)/api/v2/")!,
+        URL(string: "https://\(baseInstanceAddress)/api/v3/")!
     ]
     
     for address in possibleInstanceAddresses
     {
-        print("Will check \(address)")
-        if await checkIfWebSocketEndpointExists(at: address)
+        if await checkIfEndpointExists(at: address)
         {
             print("\(address) is valid")
             validAddress = address

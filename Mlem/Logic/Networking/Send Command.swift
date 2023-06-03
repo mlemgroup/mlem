@@ -33,6 +33,8 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     
     finalURL = urlComponents.url!
     
+    print("Final URL: \(finalURL)")
+    
     var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
     request.httpMethod = "GET"
     
@@ -41,6 +43,8 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
         let (data, response) = try await AppConstants.urlSession.data(for: request)
         
         let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
+        
+        print("Received response code \(httpResponse.statusCode)")
         
         if httpResponse.statusCode != 200
         {
@@ -51,7 +55,7 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     }
     catch let requestError
     {
-        print("Failed while sending GET request: \(requestError.localizedDescription)")
+        print("Failed while sending GET request: \(requestError)")
         throw ConnectionError.failedToSendRequest
     }
 }
