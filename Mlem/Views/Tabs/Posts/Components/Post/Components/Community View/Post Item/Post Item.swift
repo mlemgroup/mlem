@@ -11,6 +11,8 @@ import CachedAsyncImage
 
 struct PostItem: View
 {
+    @AppStorage("postDisplayType") var postDisplayType: PostDisplayOptions = .fullDisplay
+    
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
@@ -105,68 +107,21 @@ struct PostItem: View
                 }
 
                 VStack(alignment: .leading) {
-                    if let postURL = post.url
+                    if !isExpanded && postDisplayType == .fullDisplay
                     {
-                        if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
-                        {
-                            if !isPostCollapsed
-                            {
-                                CachedAsyncImage(url: postURL)
-                                { image in
-                                    image
-                                        .resizable()
-                                        .frame(maxWidth: .infinity)
-                                        .scaledToFit()
-                                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10), style: .continuous))
-                                        .overlay(
-                                            RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
-                                                .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
-                                        )
-                                        .onTapGesture {
-                                            isShowingEnlargedImage.toggle()
-                                        }
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if post.embedTitle != nil
-                            {
-                                WebsiteIconComplex(post: post)
-                            }
-                            else
-                            {
-                                WebsiteIconComplex(post: post)
-                            }
-                        }
+                        FullPostView(post: post, isPostCollapsed: $isPostCollapsed, isShowingEnlargedImage: $isShowingEnlargedImage, isExpanded: $isExpanded)
                     }
-                    
-                    if let postBody = post.body
+                    else if !isExpanded && postDisplayType == .compactDisplay
                     {
-                        if !postBody.isEmpty
-                        {
-                            
-                            if !isExpanded
-                            {
-                                MarkdownView(text: postBody)
-                                    .font(.subheadline)
-                            }
-                            else
-                            {
-                                if !isPostCollapsed
-                                {
-                                    MarkdownView(text: postBody)
-                                        .onTapGesture {
-                                            print("Tapped")
-                                            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
-                                                isPostCollapsed.toggle()
-                                            }
-                                        }
-                                }
-                            }
-                        }
+                        
+                    }
+                    else if isExpanded
+                    {
+                        FullPostView(post: post, isPostCollapsed: $isPostCollapsed, isShowingEnlargedImage: $isShowingEnlargedImage, isExpanded: $isExpanded)
+                    }
+                    else
+                    {
+                        FullPostView(post: post, isPostCollapsed: $isPostCollapsed, isShowingEnlargedImage: $isShowingEnlargedImage, isExpanded: $isExpanded)
                     }
                 }
             }

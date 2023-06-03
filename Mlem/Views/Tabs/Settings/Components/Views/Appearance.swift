@@ -14,6 +14,8 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
+    @AppStorage("postDisplayType") var postDisplayType: PostDisplayOptions = .fullDisplay
+    
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
@@ -68,6 +70,19 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowWebsiteFavicons
                 )
                 .disabled(!shouldShowWebsiteFaviconAtAll)
+                
+                HStack {
+                    Image(systemName: "tv.circle.fill")
+                        .foregroundColor(.pink)
+                    
+                    Picker("Post display type", selection: $postDisplayType) {
+                        ForEach(PostDisplayOptions.allCases, id: \.rawValue)
+                        { displayType in
+                            Text(displayType.localizedName)
+                                .tag(displayType)
+                        }
+                    }
+                }
             }
             
             Section("Communities")
