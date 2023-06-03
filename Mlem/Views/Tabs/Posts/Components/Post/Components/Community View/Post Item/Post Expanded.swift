@@ -27,7 +27,6 @@ struct PostExpanded: View
 
     var post: Post
 
-    @State private var isReplySheetOpen: Bool = false
     @State private var sortSelection = 0
 
     @State private var commentSortingType: CommentSortTypes = .top
@@ -98,7 +97,7 @@ struct PostExpanded: View
                             CommentItem(account: account, comment: comment)
                         }
                     }
-                    .id(viewID)
+                    .environmentObject(commentTracker)
                 }
             }
         }

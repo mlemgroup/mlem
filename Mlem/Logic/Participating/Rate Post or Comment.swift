@@ -115,13 +115,48 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
     }
 }
 
-func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAccount) async throws -> Void
+@MainActor
+func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAccount, commentTracker: CommentTracker) async throws -> Void
 { 
     do
     {
-        let commentRatingReponse: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
+        async let commentRatingReponse: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
             {"op": "CreateCommentLike", "data": {"auth": "\(account.accessToken)", "comment_id": \(comment.id), "score": \(operation.rawValue)}}
             """)
+        
+        var updatedComment: Comment = comment
+        
+        switch operation {
+            case .upvote:
+                updatedComment.myVote = .upvoted
+                updatedComment.score += 1
+                
+            case .downvote:
+                updatedComment.myVote = .downvoted
+                updatedComment.score -= 1
+                
+            case .resetVote:
+                updatedComment.myVote = .none
+                if comment.myVote == .upvoted
+                {
+                    updatedComment.score -= 1
+                }
+                else if comment.myVote == .downvoted
+                {
+                    updatedComment.score += 1
+                }
+        }
+        
+        updatedComment.content = "OH HEY"
+        
+        commentTracker.comments = commentTracker.comments.map { $0.replaceReply(updatedComment) }
+        
+        await AppConstants.hapticManager.notificationOccurred(.success)
+        
+        if try await !commentRatingReponse.contains("\"error\"")
+        {
+            print("Successfully rated comment")
+        }
     }
     catch let ratingOperationError
     {
