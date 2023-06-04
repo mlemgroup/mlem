@@ -31,17 +31,17 @@ func checkIfEndpointExists(at url: URL) async -> Bool
 {
     var request: URLRequest = URLRequest(url: url)
     
-    request.httpMethod = "HEAD"
+    request.httpMethod = "GET"
     
     do
     {
-        let (data , response) = try await AppConstants.urlSession.data(for: request)
+        let (_, response) = try await AppConstants.urlSession.data(for: request)
         
         let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
         
         print("Response for endpoint \(url) is \(httpResponse.statusCode)")
         
-        if httpResponse.statusCode == 200
+        if httpResponse.statusCode != 404
         {
             return true
         }
