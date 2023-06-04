@@ -31,37 +31,52 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
 
         let modifiedPostIndex: Int = postTracker.posts.firstIndex(where: { $0.id == post.id })!
 
-        if operation == .upvote
+        var updatedPost: Post = post
+        
+        switch post.myVote
         {
-            print("Old upvotes: \(postTracker.posts[modifiedPostIndex].upvotes)")
-
-            postTracker.posts[modifiedPostIndex].myVote = .upvoted
-            postTracker.posts[modifiedPostIndex].upvotes += 1
-
-            print("New upvotes: \(postTracker.posts[modifiedPostIndex].upvotes)")
-        }
-        else if operation == .downvote
-        {
-            postTracker.posts[modifiedPostIndex].myVote = .downvoted
-            postTracker.posts[modifiedPostIndex].downvotes += 1
-        }
-        else if operation == .resetVote
-        {
-            if postTracker.posts[modifiedPostIndex].myVote == .upvoted
-            { /// If the post was previously upvoted, remove an upvote from the score
-                postTracker.posts[modifiedPostIndex].upvotes -= 1
+        case .upvoted:
+            switch operation
+            {
+            case .upvote:
+                    updatedPost.myVote = .none
+                    updatedPost.score -= 1
+            case .resetVote:
+                    updatedPost.myVote = .none
+                    updatedPost.score -= 1
+            case .downvote:
+                    updatedPost.myVote = .downvoted
+                    updatedPost.score -= 2
             }
-            else if postTracker.posts[modifiedPostIndex].myVote == .downvoted
-            { /// If the post was previously downvotes, remove a downvote from the score
-                postTracker.posts[modifiedPostIndex].downvotes -= 1
+        case .downvoted:
+            switch operation
+            {
+            case .upvote:
+                    updatedPost.myVote = .upvoted
+                    updatedPost.score += 2
+            case .resetVote:
+                    updatedPost.myVote = .none
+                    updatedPost.score += 1
+            case .downvote:
+                    updatedPost.myVote = .none
+                    updatedPost.score += 1
             }
-
-            postTracker.posts[modifiedPostIndex].myVote = .none /// Finally, set the status of my vote to none
+        case .none:
+            switch operation
+            {
+            case .upvote:
+                    updatedPost.myVote = .upvoted
+                    updatedPost.score += 1
+            case .resetVote:
+                    updatedPost.myVote = .none
+                    updatedPost.score += 0
+            case .downvote:
+                    updatedPost.myVote = .downvoted
+                    updatedPost.score -= 1
+            }
         }
-        else
-        {
-            print("This should never happen")
-        }
+        
+        postTracker.posts[modifiedPostIndex] = updatedPost
 
         AppConstants.hapticManager.notificationOccurred(.success)
 
@@ -123,7 +138,7 @@ func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAc
         async let commentRatingReponse: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
         {"op": "CreateCommentLike", "data": {"auth": "\(account.accessToken)", "comment_id": \(comment.id), "score": \(operation.rawValue)}}
         """)
-        
+
         var updatedComment: Comment = comment
 
         switch comment.myVote
@@ -169,13 +184,13 @@ func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAc
                 updatedComment.score -= 1
             }
         }
-        
-        //updatedComment.content = "OH HEY"
+
+        // updatedComment.content = "OH HEY"
 
         commentTracker.comments = commentTracker.comments.map { $0.replaceReply(updatedComment) }
-        
+
         AppConstants.hapticManager.notificationOccurred(.success)
-        
+
         if try await !commentRatingReponse.contains("\"error\"")
         {
             print("Successfully rated comment")
