@@ -5,32 +5,32 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
+import CachedAsyncImage
 import QuickLook
 import SwiftUI
-import CachedAsyncImage
 
 struct PostItem: View
 {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    
+
     @EnvironmentObject var appState: AppState
 
     @State var postTracker: PostTracker
-    
+
     let post: Post
 
     @State var isExpanded: Bool
-    
+
     @State var isInSpecificCommunity: Bool
-    
+
     @State var account: SavedAccount
-    
+
     @Binding var feedType: FeedType
-    
+
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
-    
+
     @State var isPostCollapsed: Bool = false
 
     let iconToTextSpacing: CGFloat = 2
@@ -54,7 +54,7 @@ struct PostItem: View
                                     NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: feedType))
                                     {
                                         HStack(alignment: .center, spacing: 10)
-                                        {                                           
+                                        {
                                             if shouldShowCommunityIcons
                                             {
                                                 if let communityAvatarLink = post.community.icon
@@ -74,7 +74,7 @@ struct PostItem: View
                                 if post.stickied
                                 {
                                     Spacer()
-                                    
+
                                     StickiedTag()
                                 }
                             }
@@ -91,20 +91,23 @@ struct PostItem: View
                             {
                                 StickiedTag()
                             }
-                            
+
                             Text(post.name)
                                 .font(.headline)
                         }
-                        .onTapGesture {
+                        .onTapGesture
+                        {
                             print("Tapped")
-                            withAnimation(.easeIn(duration: 0.2)) {
+                            withAnimation(.easeIn(duration: 0.2))
+                            {
                                 isPostCollapsed.toggle()
                             }
                         }
                     }
                 }
 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading)
+                {
                     if let postURL = post.url
                     {
                         if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
@@ -122,7 +125,8 @@ struct PostItem: View
                                             RoundedRectangle(cornerSize: CGSize(width: 10, height: 10))
                                                 .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
                                         )
-                                        .onTapGesture {
+                                        .onTapGesture
+                                        {
                                             isShowingEnlargedImage.toggle()
                                         }
                                 } placeholder: {
@@ -142,12 +146,11 @@ struct PostItem: View
                             }
                         }
                     }
-                    
+
                     if let postBody = post.body
                     {
                         if !postBody.isEmpty
                         {
-                            
                             if !isExpanded
                             {
                                 MarkdownView(text: postBody)
@@ -158,9 +161,11 @@ struct PostItem: View
                                 if !isPostCollapsed
                                 {
                                     MarkdownView(text: postBody)
-                                        .onTapGesture {
+                                        .onTapGesture
+                                        {
                                             print("Tapped")
-                                            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
+                                            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                                            {
                                                 isPostCollapsed.toggle()
                                             }
                                         }
@@ -177,50 +182,65 @@ struct PostItem: View
                 // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
                 HStack(alignment: .center)
                 {
-                    PostUpvoteButton(upvotes: post.upvotes, downvotes: post.downvotes, myVote: post.myVote)
-                        .onTapGesture {
-                            if post.myVote != .upvoted
+                    HStack(alignment: .center, spacing: 2)
+                    {
+                        Image(systemName: "arrow.up")
+
+                        Text(String(post.score))
+                    }
+                    .if(post.myVote == .none || post.myVote == .downvoted)
+                    { viewProxy in
+                        viewProxy
+                            .foregroundColor(.accentColor)
+                    }
+                    .if(post.myVote == .upvoted)
+                    { viewProxy in
+                        viewProxy
+                            .foregroundColor(.green)
+                    }
+                    .onTapGesture
+                    {
+                        Task(priority: .userInitiated)
+                        {
+                            switch post.myVote
                             {
-                                Task(priority: .userInitiated) {
-                                    print("Would upvote post")
-                                    try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
-                                }
-                            }
-                            else if post.myVote == .upvoted
-                            {
-                                Task(priority: .userInitiated) {
-                                    print("Would remove upvote")
-                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
-                                }
-                            }
-                            else
-                            {
-                                print("This should never happen")
+                            case .upvoted:
+                                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                            case .downvoted:
+                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                            case .none:
+                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
                             }
                         }
-                    
-                    PostDownvoteButton(myVote: post.myVote)
-                        .onTapGesture {
-                            if post.myVote != .downvoted
+                    }
+
+                    Image(systemName: "arrow.down")
+                        .if(post.myVote == .downvoted)
+                        { viewProxy in
+                            viewProxy
+                                .foregroundColor(.red)
+                        }
+                        .if(post.myVote == .upvoted || post.myVote == .none)
+                        { viewProxy in
+                            viewProxy
+                                .foregroundColor(.accentColor)
+                        }
+                        .onTapGesture
+                        {
+                            Task(priority: .userInitiated)
                             {
-                                Task(priority: .userInitiated) {
-                                    print("Would downvote post")
+                                switch post.myVote
+                                {
+                                case .upvoted:
+                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker)
+                                case .downvoted:
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                case .none:
                                     try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker)
                                 }
                             }
-                            else if post.myVote == .downvoted
-                            {
-                                Task(priority: .userInitiated) {
-                                    print("Would remove downvote")
-                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
-                                }
-                            }
-                            else
-                            {
-                                print("This should never happen")
-                            }
                         }
-                    
+
                     if let postURL = post.url
                     {
                         ShareButton(urlToShare: postURL, isShowingButtonText: false)
@@ -232,7 +252,6 @@ struct PostItem: View
                 // TODO: Refactor this into Post Info once I learn how to pass the vars further down
                 HStack(spacing: 8)
                 {
-
                     HStack(spacing: iconToTextSpacing)
                     { // Number of comments
                         Image(systemName: "bubble.left")
@@ -245,7 +264,7 @@ struct PostItem: View
                         Text(getTimeIntervalFromNow(date: post.published))
                     }
 
-                    UserProfileLink(user: post.author )
+                    UserProfileLink(user: post.author)
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)
@@ -255,7 +274,7 @@ struct PostItem: View
                 viewProxy
                     .padding(.bottom)
             })
-            
+
             if isExpanded
             {
                 Divider()

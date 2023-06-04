@@ -21,60 +21,75 @@ internal enum RatingFailure: Error
 
 // Abandon all hope, ye who has to read this function
 @MainActor
-func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, postTracker: PostTracker) async throws -> Void
+func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, postTracker: PostTracker) async throws
 {
     do
     {
         async let postRatingResponse: String = try sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
         {"op": "CreatePostLike", "data": {"auth": "\(account.accessToken)", "post_id": \(post.id), "score": \(operation.rawValue)}}
         """)
-        
+
         let modifiedPostIndex: Int = postTracker.posts.firstIndex(where: { $0.id == post.id })!
+
+        var updatedPost: Post = post
         
-        if operation == .upvote
+        switch post.myVote
         {
-            print("Old upvotes: \(postTracker.posts[modifiedPostIndex].upvotes)")
-            
-            postTracker.posts[modifiedPostIndex].myVote = .upvoted
-            postTracker.posts[modifiedPostIndex].upvotes += 1
-            
-            print("New upvotes: \(postTracker.posts[modifiedPostIndex].upvotes)")
-        }
-        else if operation == .downvote
-        {
-            postTracker.posts[modifiedPostIndex].myVote = .downvoted
-            postTracker.posts[modifiedPostIndex].downvotes += 1
-        }
-        else if operation == .resetVote
-        {
-            if postTracker.posts[modifiedPostIndex].myVote == .upvoted
-            { /// If the post was previously upvoted, remove an upvote from the score
-                postTracker.posts[modifiedPostIndex].upvotes -= 1
+        case .upvoted:
+            switch operation
+            {
+            case .upvote:
+                    updatedPost.myVote = .none
+                    updatedPost.score -= 1
+            case .resetVote:
+                    updatedPost.myVote = .none
+                    updatedPost.score -= 1
+            case .downvote:
+                    updatedPost.myVote = .downvoted
+                    updatedPost.score -= 2
             }
-            else if postTracker.posts[modifiedPostIndex].myVote == .downvoted
-            { /// If the post was previously downvotes, remove a downvote from the score
-                postTracker.posts[modifiedPostIndex].downvotes -= 1
+        case .downvoted:
+            switch operation
+            {
+            case .upvote:
+                    updatedPost.myVote = .upvoted
+                    updatedPost.score += 2
+            case .resetVote:
+                    updatedPost.myVote = .none
+                    updatedPost.score += 1
+            case .downvote:
+                    updatedPost.myVote = .none
+                    updatedPost.score += 1
             }
-            
-            postTracker.posts[modifiedPostIndex].myVote = .none /// Finally, set the status of my vote to none
-        }
-        else
-        {
-            print("This should never happen")
+        case .none:
+            switch operation
+            {
+            case .upvote:
+                    updatedPost.myVote = .upvoted
+                    updatedPost.score += 1
+            case .resetVote:
+                    updatedPost.myVote = .none
+                    updatedPost.score += 0
+            case .downvote:
+                    updatedPost.myVote = .downvoted
+                    updatedPost.score -= 1
+            }
         }
         
+        postTracker.posts[modifiedPostIndex] = updatedPost
+
         AppConstants.hapticManager.notificationOccurred(.success)
-        
+
         if try await !postRatingResponse.contains("\"error\"")
         {
             print("Sucessfully rated post")
         }
         else
         {
-            print("Received bad response from the server: \(try await postRatingResponse)")
-            
+            try print("Received bad response from the server: \(await postRatingResponse)")
+
             AppConstants.hapticManager.notificationOccurred(.error)
-            
+
             /// Revert the score in case there was an error
             if operation == .upvote
             {
@@ -96,14 +111,14 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
                 { /// If the post was previously downvoted, add a downvote to the score
                     postTracker.posts[modifiedPostIndex].downvotes += 1
                 }
-                
+
                 postTracker.posts[modifiedPostIndex].myVote = .none /// Finally, set the status of my vote to none
             }
             else
             {
                 print("This should never happen")
             }
-            
+
             throw RatingFailure.receivedInvalidResponse
         }
     }
@@ -116,43 +131,66 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
 }
 
 @MainActor
-func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAccount, commentTracker: CommentTracker) async throws -> Void
-{ 
+func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAccount, commentTracker: CommentTracker) async throws
+{
     do
     {
         async let commentRatingReponse: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-            {"op": "CreateCommentLike", "data": {"auth": "\(account.accessToken)", "comment_id": \(comment.id), "score": \(operation.rawValue)}}
-            """)
-        
+        {"op": "CreateCommentLike", "data": {"auth": "\(account.accessToken)", "comment_id": \(comment.id), "score": \(operation.rawValue)}}
+        """)
+
         var updatedComment: Comment = comment
-        
-        switch operation {
+
+        switch comment.myVote
+        {
+        case .upvoted:
+            switch operation
+            {
+            case .upvote:
+                updatedComment.myVote = .none
+                updatedComment.score -= 1
+            case .resetVote:
+                updatedComment.myVote = .none
+                updatedComment.score -= 1
+            case .downvote:
+                updatedComment.myVote = .downvoted
+                updatedComment.score -= 2
+            }
+
+        case .downvoted:
+            switch operation
+            {
+            case .upvote:
+                updatedComment.myVote = .upvoted
+                updatedComment.score += 2
+            case .resetVote:
+                updatedComment.myVote = .none
+                updatedComment.score += 1
+            case .downvote:
+                updatedComment.myVote = .none
+                updatedComment.score += 1
+            }
+        case .none:
+            switch operation
+            {
             case .upvote:
                 updatedComment.myVote = .upvoted
                 updatedComment.score += 1
-                
+            case .resetVote:
+                updatedComment.myVote = .none
+                updatedComment.score += 0
             case .downvote:
                 updatedComment.myVote = .downvoted
                 updatedComment.score -= 1
-                
-            case .resetVote:
-                updatedComment.myVote = .none
-                if comment.myVote == .upvoted
-                {
-                    updatedComment.score -= 1
-                }
-                else if comment.myVote == .downvoted
-                {
-                    updatedComment.score += 1
-                }
+            }
         }
-        
-        updatedComment.content = "OH HEY"
-        
+
+        // updatedComment.content = "OH HEY"
+
         commentTracker.comments = commentTracker.comments.map { $0.replaceReply(updatedComment) }
-        
-        await AppConstants.hapticManager.notificationOccurred(.success)
-        
+
+        AppConstants.hapticManager.notificationOccurred(.success)
+
         if try await !commentRatingReponse.contains("\"error\"")
         {
             print("Successfully rated comment")
@@ -160,7 +198,7 @@ func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAc
     }
     catch let ratingOperationError
     {
-        await AppConstants.hapticManager.notificationOccurred(.error)
+        AppConstants.hapticManager.notificationOccurred(.error)
         print("Failed while trying to score: \(ratingOperationError)")
         throw RatingFailure.failedToPostScore
     }
