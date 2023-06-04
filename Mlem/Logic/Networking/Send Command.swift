@@ -61,50 +61,96 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     }
 }
 
-/// Sends a POST command to a specified endpoint with specified arguments in the body
+/// Send an authorized POST command to a specified endpoint with specified arguments in the body
 /// The arguments get serialized into JSON
 func sendPostCommand(account: SavedAccount, endpoint: String, arguments: [String: Any]) async throws -> String
 {
     var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
+    
+    print("Request will be sent to url \(finalURL)")
     
     var finalArguments = arguments
     finalArguments.updateValue(account.accessToken, forKey: "auth") /// Add the "auth" field to the arguments
     
     var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
     request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    let jsonData = try! JSONSerialization.data(withJSONObject: finalArguments)
+    
+    request.httpBody = jsonData as Data
     
     do
     {
-        let jsonData = try JSONSerialization.data(withJSONObject: finalArguments)
+        let (data, response) = try await AppConstants.urlSession.data(for: request)
         
-        request.httpBody = jsonData
+        let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
         
-        do
+        print("Received response code \(httpResponse.statusCode)")
+        
+        if httpResponse.statusCode != 200
         {
-            let (data, response) = try await AppConstants.urlSession.data(for: request)
-            
-            let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
-            
-            print("Received response code \(httpResponse.statusCode)")
-            
-            if httpResponse.statusCode != 200
-            {
-                throw ConnectionError.receivedInvalidResponseFormat
-            }
-            
-            return String(decoding: data, as: UTF8.self)
+            throw ConnectionError.receivedInvalidResponseFormat
         }
-        catch let requestError
+        
+        return String(decoding: data, as: UTF8.self)
+    }
+    catch let requestError
+    {
+        print("Failed while sending POST request: \(requestError)")
+        throw ConnectionError.failedToSendRequest
+    }
+}
+
+/// Send a POST command to a specified endpoint with specified arguments in the body, without authorization
+func sendPostCommand(baseURL: URL, endpoint: String, arguments: [String: Any]) async throws -> String
+{
+    var finalURL: URL = baseURL.appendingPathComponent(endpoint, conformingTo: .url)
+    
+    print("Request will be sent to url \(finalURL)")
+    
+    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    let jsonData = try! JSONSerialization.data(withJSONObject: arguments)
+    
+    print("Will use this JSON body: \(String(describing: String(data: jsonData, encoding: .utf8)))")
+    
+    request.httpBody = jsonData as Data
+    
+    do
+    {
+        let (data, response) = try await AppConstants.urlSession.data(for: request)
+        
+        let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
+        
+        print("Received response code \(httpResponse.statusCode)")
+        
+        if httpResponse.statusCode != 200
         {
-            print("Failed while sending POST request: \(requestError)")
-            throw ConnectionError.failedToSendRequest
+            throw ConnectionError.receivedInvalidResponseFormat
         }
+        
+        return String(decoding: data, as: UTF8.self)
+    }
+    catch let requestError
+    {
+        print("Failed while sending POST request: \(requestError)")
+        throw ConnectionError.failedToSendRequest
+    }
+    
+    /*
+    do
+    {
+        
     }
     catch let encodingError
     {
         print("Failed while encoding JSON string to data: \(encodingError)")
         throw EncodingFailure.failedToEncodeJSON
     }
+     */
 }
 
 func sendCommand(maintainOpenConnection: Bool, instanceAddress: URL, command: String) async throws -> String
