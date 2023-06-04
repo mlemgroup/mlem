@@ -17,6 +17,7 @@ internal enum EncodingFailure: Error
     case failedToConvertURLToComponents, failedToSendRequest, failedToEncodeJSON
 }
 
+/// Send a GET command to a specified endpoint with specified parameters
 func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQueryItem]) async throws -> String
 {
     var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
@@ -60,16 +61,21 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     }
 }
 
-func sendPostCommand(account: SavedAccount, endpoint: String, body: String) async throws -> String
+/// Sends a POST command to a specified endpoint with specified arguments in the body
+/// The arguments get serialized into JSON
+func sendPostCommand(account: SavedAccount, endpoint: String, arguments: [String: Any]) async throws -> String
 {
     var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
+    
+    var finalArguments = arguments
+    finalArguments.updateValue(account.accessToken, forKey: "auth") /// Add the "auth" field to the arguments
     
     var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
     request.httpMethod = "POST"
     
     do
     {
-        let jsonData = try JSONSerialization.jsonObject(with: body.data(using: .utf8, allowLossyConversion: false)!) as! Data
+        let jsonData = try JSONSerialization.data(withJSONObject: finalArguments)
         
         request.httpBody = jsonData
         
