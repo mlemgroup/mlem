@@ -14,7 +14,7 @@ enum ConnectionError: Error
 }
 internal enum EncodingFailure: Error
 {
-    case failedToConvertURLToComponents, failedToSendRequest
+    case failedToConvertURLToComponents, failedToSendRequest, failedToEncodeJSON
 }
 
 func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQueryItem]) async throws -> String
@@ -57,6 +57,47 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     {
         print("Failed while sending GET request: \(requestError)")
         throw ConnectionError.failedToSendRequest
+    }
+}
+
+func sendPostCommand(account: SavedAccount, endpoint: String, body: String) async throws -> String
+{
+    var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
+    
+    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
+    request.httpMethod = "POST"
+    
+    do
+    {
+        let jsonData = try JSONSerialization.jsonObject(with: body.data(using: .utf8, allowLossyConversion: false)!) as! Data
+        
+        request.httpBody = jsonData
+        
+        do
+        {
+            let (data, response) = try await AppConstants.urlSession.data(for: request)
+            
+            let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
+            
+            print("Received response code \(httpResponse.statusCode)")
+            
+            if httpResponse.statusCode != 200
+            {
+                throw ConnectionError.receivedInvalidResponseFormat
+            }
+            
+            return String(decoding: data, as: UTF8.self)
+        }
+        catch let requestError
+        {
+            print("Failed while sending POST request: \(requestError)")
+            throw ConnectionError.failedToSendRequest
+        }
+    }
+    catch let encodingError
+    {
+        print("Failed while encoding JSON string to data: \(encodingError)")
+        throw EncodingFailure.failedToEncodeJSON
     }
 }
 
