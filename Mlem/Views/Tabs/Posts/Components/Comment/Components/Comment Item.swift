@@ -71,7 +71,14 @@ struct CommentItem: View
                     }
                     .onTapGesture {
                         Task(priority: .userInitiated) {
-                            try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker)
+                            switch comment.myVote {
+                                case .upvoted:
+                                    try await rateComment(comment: comment, operation: .resetVote, account: account, commentTracker: commentTracker)
+                                case .downvoted:
+                                    try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker)
+                                case .none:
+                                    try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker)
+                            }
                         }
                     }
                     
@@ -88,7 +95,14 @@ struct CommentItem: View
                         }
                         .onTapGesture {
                             Task(priority: .userInitiated) {
-                                try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker)
+                                switch comment.myVote {
+                                    case .upvoted:
+                                        try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker)
+                                    case .downvoted:
+                                        try await rateComment(comment: comment, operation: .resetVote, account: account, commentTracker: commentTracker)
+                                    case .none:
+                                        try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker)
+                                }
                             }
                         }
                 }
