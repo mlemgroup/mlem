@@ -24,6 +24,7 @@ func sendCommand(maintainOpenConnection: Bool, instanceAddress: URL, command: St
 
     let finalCommand = URLSessionWebSocketTask.Message.string(command)
     
+    task.maximumMessageSize = 1048576 * 2 // temporarily increased in lieu of REST migration
     task.resume()
     
     try await task.send(finalCommand)
