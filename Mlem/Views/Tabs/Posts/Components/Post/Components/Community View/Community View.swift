@@ -285,13 +285,13 @@ struct CommunityView: View
                 {
                     do
                     {
-                        community?.details = try await loadCommunityDetails(community: community!, account: account)
+                        community?.details = try await loadCommunityDetails(community: community!, account: account, appState: appState)
                     }
                     catch let communityDetailsFetchingError
                     {
                         print("Failed while fetching community details: \(communityDetailsFetchingError)")
                         
-                        appState.alertType = .customError(title: "Could not load community information", message: "The server might be overloaded\nTry again later.")
+                        appState.alertType = .customError(title: "Could not load community information", message: "The server might be overloaded.\nTry again later.")
                     }
                 }
             }

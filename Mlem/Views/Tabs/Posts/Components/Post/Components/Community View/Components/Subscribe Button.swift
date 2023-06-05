@@ -33,7 +33,7 @@ struct SubscribeButton: View {
                         
                         do
                         {
-                            let subscribingCommandResult: String = try await sendPostCommand(account: account, endpoint: "community/follow", arguments: [
+                            let subscribingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "community/follow", arguments: [
                                 "community_id": community!.id,
                                 "follow": true
                             ])
@@ -71,7 +71,7 @@ struct SubscribeButton: View {
                         
                         do
                         {
-                            let unsubscribingCommandResult: String = try await sendPostCommand(account: account, endpoint: "community/follow", arguments: [
+                            let unsubscribingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "community/follow", arguments: [
                                 "community_id": community!.id,
                                 "follow": false
                             ])

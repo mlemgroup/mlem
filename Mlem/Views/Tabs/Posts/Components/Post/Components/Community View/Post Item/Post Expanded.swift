@@ -303,7 +303,7 @@ struct PostExpanded: View
     {
         commentTracker.isLoading = true
 
-        let commentResponse: String = try! await sendGetCommand(account: account, endpoint: "comment/list", parameters: [
+        let commentResponse: String = try! await sendGetCommand(appState: appState, account: account, endpoint: "comment/list", parameters: [
             URLQueryItem(name: "max_depth", value: "15"),
             URLQueryItem(name: "post_id", value: "\(post.id)"),
             URLQueryItem(name: "type_", value: "All")

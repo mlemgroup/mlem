@@ -18,7 +18,7 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
 {
     do
     {
-        let commentPostingCommandResult: String = try await sendPostCommand(account: account, endpoint: "comment", arguments: [
+        let commentPostingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "comment", arguments: [
             "content": commentContents,
             "post_id": post.id
         ])
@@ -64,7 +64,7 @@ func postComment(to comment: Comment, post: Post, commentContents: String, comme
 {
     do
     {
-        let commentPostingCommandResult: String = try await sendPostCommand(account: account, endpoint: "comment", arguments: [
+        let commentPostingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "comment", arguments: [
             "content": commentContents,
             "parent_id": comment.id,
             "post_id": post.id

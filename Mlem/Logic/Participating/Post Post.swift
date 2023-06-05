@@ -33,7 +33,7 @@ func postPost(to community: Community, postTitle: String, postBody: String, post
             createPostCommandBody.append("url", postURL)
         }
         
-        let postPostingCommandResult: String = try await sendPostCommand(account: account, endpoint: "post", arguments: createPostCommandBody)
+        let postPostingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "post", arguments: createPostCommandBody)
         
         print("Successfuly posted post: \(postPostingCommandResult)")
 

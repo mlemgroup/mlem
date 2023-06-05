@@ -186,7 +186,7 @@ struct AddSavedInstanceView: View
             {
                 do
                 {
-                    let loginRequestResponse = try await sendPostCommand(baseURL: instanceURL, endpoint: "user/login", arguments: ["username_or_email": "\(usernameOrEmail)", "password": "\(password)"])
+                    let loginRequestResponse = try await sendPostCommand(appState: appState, baseURL: instanceURL, endpoint: "user/login", arguments: ["username_or_email": "\(usernameOrEmail)", "password": "\(password)"])
                     if loginRequestResponse.contains("jwt")
                     {
                         hasSuccessfulyConnectedToEndpoint = true

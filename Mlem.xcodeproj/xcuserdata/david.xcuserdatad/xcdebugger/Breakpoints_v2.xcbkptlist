@@ -110,7 +110,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "20"
             endingLineNumber = "20"
-            landmarkName = "postPost(to:postTitle:postBody:postURL:postIsNSFW:postTracker:account:)"
+            landmarkName = "postPost(to:postTitle:postBody:postURL:postIsNSFW:postTracker:account:appState:)"
             landmarkType = "9">
             <Locations>
                <Location

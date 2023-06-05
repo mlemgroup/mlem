@@ -12,6 +12,8 @@ struct CommunitySearchField: View {
     
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     
+    @EnvironmentObject var appState: AppState
+    
     @FocusState.Binding var isSearchFieldFocused: Bool
     
     @Binding var searchText: String
@@ -43,7 +45,7 @@ struct CommunitySearchField: View {
                     }
                     .onChange(of: debouncedTextReadyForSearching) { searchText in
                         Task(priority: .userInitiated) {
-                            let searchResponse: String = try! await sendGetCommand(account: account, endpoint: "search", parameters: [
+                            let searchResponse: String = try! await sendGetCommand(appState: appState, account: account, endpoint: "search", parameters: [
                                 URLQueryItem(name: "type_", value: "Communities"),
                                 URLQueryItem(name: "sort", value: "TopAll"),
                                 URLQueryItem(name: "listing_type", value: "All"),

@@ -205,11 +205,11 @@ struct PostItem: View
                             switch post.myVote
                             {
                             case .upvoted:
-                                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
                             case .downvoted:
-                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
                             case .none:
-                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker)
+                                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
                             }
                         }
                     }
@@ -232,11 +232,11 @@ struct PostItem: View
                                 switch post.myVote
                                 {
                                 case .upvoted:
-                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker)
+                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
                                 case .downvoted:
-                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker)
+                                    try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
                                 case .none:
-                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker)
+                                    try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
                                 }
                             }
                         }
