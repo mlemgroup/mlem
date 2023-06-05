@@ -141,16 +141,4 @@ func sendPostCommand(baseURL: URL, endpoint: String, arguments: [String: Any]) a
         print("Failed while sending POST request: \(requestError)")
         throw ConnectionError.failedToSendRequest
     }
-    
-    /*
-    do
-    {
-        
-    }
-    catch let encodingError
-    {
-        print("Failed while encoding JSON string to data: \(encodingError)")
-        throw EncodingFailure.failedToEncodeJSON
-    }
-     */
 }
