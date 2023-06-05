@@ -108,8 +108,17 @@ func sendPostCommand(appState: AppState, account: SavedAccount, endpoint: String
     {
         print("Failed while sending POST request: \(requestError)")
         
-        appState.alertTitle = "Couldn't connect to Lemmy"
-        appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+        if requestError as! ConnectionError == ConnectionError.receivedInvalidResponseFormat
+        {
+            appState.alertTitle = "Request rejected by server"
+            appState.alertMessage = "For some reason, the Lemmy server you're connected to rejected this request."
+        }
+        else
+        {
+            appState.alertTitle = "Couldn't connect to Lemmy"
+            appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+        }
+        
         appState.isShowingAlert.toggle()
         
         throw ConnectionError.failedToSendRequest

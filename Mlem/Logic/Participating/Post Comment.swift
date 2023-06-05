@@ -64,13 +64,26 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
 @MainActor
 func postComment(to comment: Comment, post: Post, commentContents: String, commentTracker: CommentTracker, account: SavedAccount, appState: AppState) async throws
 {
+    
+    let dominantLanguage = NSLinguisticTagger.dominantLanguage(for: commentContents)
+    
+    print("Dominant language: \(dominantLanguage)")
+    
     do
     {
-        let commentPostingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "comment", arguments: [
+        
+        var arguments: [String: Any] = [
             "content": commentContents,
             "parent_id": comment.id,
             "post_id": post.id
-        ])
+        ]
+        
+        if dominantLanguage == "en"
+        {
+            arguments.append("language_id", 37)
+        }
+        
+        var commentPostingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "comment", arguments: arguments)
         
         print("Successfuly posted comment: \(commentPostingCommandResult)")
         

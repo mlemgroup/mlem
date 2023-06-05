@@ -18,6 +18,8 @@ class AppState: ObservableObject
     
     @Published var currentActiveInstance: String = ""
     
+    @Published var isShowingOutdatedInstanceVersionAlert: Bool = false
+    
     @Published var isShowingAlert: Bool = false
     @Published var alertTitle: LocalizedStringKey = ""
     @Published var alertMessage: LocalizedStringKey = ""
