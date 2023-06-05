@@ -14,7 +14,7 @@ internal enum CommentPostingFailure: Error
 }
 
 @MainActor
-func postComment(to post: Post, commentContents: String, commentTracker: CommentTracker, account: SavedAccount) async throws
+func postComment(to post: Post, commentContents: String, commentTracker: CommentTracker, account: SavedAccount, appState: AppState) async throws
 {
     do
     {
@@ -27,11 +27,21 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
 
         if !commentPostingCommandResult.contains("\"error\"")
         {
-            let postedComment: Comment = try! await parseComments(commentResponse: commentPostingCommandResult, instanceLink: account.instanceLink).first!
-
-            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
+            do
             {
-                commentTracker.comments.prepend(postedComment)
+                let postedComment: Comment = try await parseComments(commentResponse: commentPostingCommandResult, instanceLink: account.instanceLink).first!
+                
+                withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
+                {
+                    commentTracker.comments.prepend(postedComment)
+                }
+            }
+            catch let commentParsingError
+            {
+                
+                appState.alertType = .customError(title: "Couldn't read updated comment", message: "Refresh comments to see your new comment.")
+                
+                print("Failed while parsing updated comment: \(commentParsingError)")
             }
         }
         else
@@ -50,7 +60,7 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
 }
 
 @MainActor
-func postComment(to comment: Comment, post: Post, commentContents: String, commentTracker: CommentTracker, account: SavedAccount) async throws
+func postComment(to comment: Comment, post: Post, commentContents: String, commentTracker: CommentTracker, account: SavedAccount, appState: AppState) async throws
 {
     do
     {
@@ -64,15 +74,25 @@ func postComment(to comment: Comment, post: Post, commentContents: String, comme
         
         if !commentPostingCommandResult.contains("\"error\"")
         {
-            let newComment: Comment = try! await parseReply(replyResponse: commentPostingCommandResult, instanceLink: account.instanceLink)
-            
-            print(newComment)
-            
-            withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+            do
             {
-                commentTracker.comments = commentTracker.comments.map({ $0.insertReply(newComment) })
+                let newComment: Comment = try await parseReply(replyResponse: commentPostingCommandResult, instanceLink: account.instanceLink)
                 
-                print("New comment tracker state: \(commentTracker.comments)")
+                print(newComment)
+                
+                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                {
+                    commentTracker.comments = commentTracker.comments.map({ $0.insertReply(newComment) })
+                    
+                    print("New comment tracker state: \(commentTracker.comments)")
+                }
+            }
+            catch let commentParsingError
+            {
+                
+                appState.alertType = .customError(title: "Couldn't read updated comment", message: "Refresh comments to see your new comment.")
+                
+                print("Failed while parsing updated comment: \(commentParsingError)")
             }
         }
         else

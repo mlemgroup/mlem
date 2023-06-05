@@ -159,7 +159,7 @@ struct PostExpanded: View
                                         
                                         do
                                         {
-                                            try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
+                                            try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account, appState: appState)
                                             
                                             isReplyFieldFocused = false
                                             textFieldContents = ""
@@ -186,7 +186,7 @@ struct PostExpanded: View
                                         
                                         do
                                         {
-                                            try await postComment(to: commentReplyTracker.commentToReplyTo!, post: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
+                                            try await postComment(to: commentReplyTracker.commentToReplyTo!, post: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account, appState: appState)
                                             
                                             commentReplyTracker.commentToReplyTo = nil
                                             isReplyFieldFocused = false
