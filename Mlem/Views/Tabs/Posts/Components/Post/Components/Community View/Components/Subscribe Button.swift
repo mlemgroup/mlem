@@ -48,7 +48,7 @@ struct SubscribeButton: View {
                         catch let subscribingError
                         {
                             
-                            appState.alertType = .customError(title: "Could not subscribe to \(community!.name)", message: "Mlem received an unexpected response from the server")
+                            appState.alertType = .customError(title: "Couldn't subscribe to \(community!.name)", message: "Mlem received an unexpected response from the server")
                             
                             print("Failed while subscribing: \(subscribingError)")
                             
@@ -85,7 +85,7 @@ struct SubscribeButton: View {
                         }
                         catch let unsubscribingError
                         {
-                            appState.alertType = .customError(title: "Could not unsubscribe from \(community!.name)", message: "Mlem received an unexpected response from the server")
+                            appState.alertType = .customError(title: "Couldn't unsubscribe from \(community!.name)", message: "Mlem received an unexpected response from the server")
                             
                             print("Failed while unsubscribing: \(unsubscribingError)")
                             

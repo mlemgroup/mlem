@@ -45,16 +45,33 @@ struct CommunitySearchField: View {
                     }
                     .onChange(of: debouncedTextReadyForSearching) { searchText in
                         Task(priority: .userInitiated) {
-                            let searchResponse: String = try! await sendGetCommand(appState: appState, account: account, endpoint: "search", parameters: [
-                                URLQueryItem(name: "type_", value: "Communities"),
-                                URLQueryItem(name: "sort", value: "TopAll"),
-                                URLQueryItem(name: "listing_type", value: "All"),
-                                URLQueryItem(name: "q", value: searchText)
-                            ])
-                            
-                            print("Search response: \(searchResponse)")
-                            
-                            communitySearchResultsTracker.foundCommunities = try! parseCommunities(communityResponse: searchResponse, instanceLink: account.instanceLink)
+                            do
+                            {
+                                let searchResponse: String = try await sendGetCommand(appState: appState, account: account, endpoint: "search", parameters: [
+                                    URLQueryItem(name: "type_", value: "Communities"),
+                                    URLQueryItem(name: "sort", value: "TopAll"),
+                                    URLQueryItem(name: "listing_type", value: "All"),
+                                    URLQueryItem(name: "q", value: searchText)
+                                ])
+                                
+                                print("Search response: \(searchResponse)")
+                                
+                                do
+                                {
+                                    communitySearchResultsTracker.foundCommunities = try parseCommunities(communityResponse: searchResponse, instanceLink: account.instanceLink)
+                                }
+                                catch let searchResultParsingError
+                                {
+                                    print("Failed while parsing search results: \(searchResultParsingError)")
+                                    communitySearchResultsTracker.foundCommunities = []
+                                }
+                            }
+                            catch let searchCommandError
+                            {
+                                print("Search command error: \(searchCommandError)")
+                                
+                                appState.alertType = .connectionToLemmyError
+                            }
                         }
                     }
                     .onAppear

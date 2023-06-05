@@ -12,6 +12,12 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
 {
     var postTracker: [Post] = .init()
     
+    if postResponse.contains("{\"posts\":[]}")
+    {
+        print("No posts")
+        return .init()
+    }
+    
     do
     {
         let parsedJSON: JSON = try parseJSON(from: postResponse)

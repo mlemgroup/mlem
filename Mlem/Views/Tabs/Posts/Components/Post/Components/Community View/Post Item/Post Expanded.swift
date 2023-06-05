@@ -303,21 +303,43 @@ struct PostExpanded: View
     {
         commentTracker.isLoading = true
 
-        let commentResponse: String = try! await sendGetCommand(appState: appState, account: account, endpoint: "comment/list", parameters: [
-            URLQueryItem(name: "max_depth", value: "15"),
-            URLQueryItem(name: "post_id", value: "\(post.id)"),
-            URLQueryItem(name: "type_", value: "All")
-        ])
-
-        print("Comment response: \(commentResponse)")
-
-        var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: account.instanceLink)
-
-        commentTracker.comments = sortComments(parsedComments, by: defaultCommentSorting)
-
-        commentTracker.isLoading = false
-
-        parsedComments = .init()
+        var parsedComments: [Comment] = .init()
+        
+        defer
+        {
+            commentTracker.isLoading = false
+            
+            parsedComments = .init()
+        }
+        
+        do
+        {
+            let commentResponse: String = try await sendGetCommand(appState: appState, account: account, endpoint: "comment/list", parameters: [
+                URLQueryItem(name: "max_depth", value: "15"),
+                URLQueryItem(name: "post_id", value: "\(post.id)"),
+                URLQueryItem(name: "type_", value: "All")
+            ])
+            
+            print("Comment response: \(commentResponse)")
+            
+            do
+            {
+                parsedComments = try await parseComments(commentResponse: commentResponse, instanceLink: account.instanceLink)
+                
+                commentTracker.comments = sortComments(parsedComments, by: defaultCommentSorting)
+            }
+            catch let commentParsingError
+            {
+                appState.alertType = .customError(title: "Couldn't decode updated comments", message: "Try manually refreshing the comments")
+                
+                print("Failed while parsing comments: \(commentParsingError)")
+            }
+        }
+        catch let commentLoadingError
+        {
+            appState.alertType = .customError(title: "Couldn't load new comments", message: "The Lemmy server you're connected to might be overloaded.")
+            print("Failed while loading comments: \(commentLoadingError)")
+        }
     }
 
     private func sortComments(_ comments: [Comment], by sort: CommentSortTypes) -> [Comment]
