@@ -32,6 +32,8 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     
     urlComponents.queryItems = finalParameters
     
+    print("Will try to send these parameters: \(finalParameters)")
+    
     finalURL = urlComponents.url!
     
     print("Final URL: \(finalURL)")

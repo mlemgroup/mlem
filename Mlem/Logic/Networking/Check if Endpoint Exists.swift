@@ -41,7 +41,7 @@ func checkIfEndpointExists(at url: URL) async -> Bool
         
         print("Response for endpoint \(url) is \(httpResponse.statusCode)")
         
-        if httpResponse.statusCode != 404
+        if httpResponse.statusCode == 400
         {
             return true
         }

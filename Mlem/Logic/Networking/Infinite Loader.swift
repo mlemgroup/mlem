@@ -41,8 +41,6 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
 
     print("Page counter value: \(postTracker.page)")
     
-    print("Will try to send these parameters: \(loadingParameters)")
-    
     do
     {
         let apiResponse = try await sendGetCommand(account: account, endpoint: "post/list", parameters: loadingParameters)
