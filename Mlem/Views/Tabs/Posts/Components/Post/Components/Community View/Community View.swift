@@ -190,7 +190,7 @@ struct CommunityView: View
                                                     
                                                     do
                                                     {
-                                                        try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account)
+                                                        try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account, appState: appState)
                                                     }
                                                     catch let postPostingError
                                                     {
