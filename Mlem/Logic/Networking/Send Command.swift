@@ -38,7 +38,7 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     
     print("Final URL: \(finalURL)")
     
-    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
+    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 20)
     request.httpMethod = "GET"
     
     do
@@ -74,7 +74,7 @@ func sendPostCommand(account: SavedAccount, endpoint: String, arguments: [String
     var finalArguments = arguments
     finalArguments.updateValue(account.accessToken, forKey: "auth") /// Add the "auth" field to the arguments
     
-    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
+    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 20)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
@@ -111,7 +111,7 @@ func sendPostCommand(baseURL: URL, endpoint: String, arguments: [String: Any]) a
     
     print("Request will be sent to url \(finalURL)")
     
-    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 20)
+    var request: URLRequest = URLRequest(url: finalURL, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 20)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
