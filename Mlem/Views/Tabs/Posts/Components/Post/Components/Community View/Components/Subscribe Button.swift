@@ -35,9 +35,10 @@ struct SubscribeButton: View {
                         
                         do
                         {
-                            let subscribingCommandResult: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-                            {"op": "FollowCommunity", "data": { "auth": "\(account.accessToken)", "community_id": \(community!.id), "follow": true }}
-                            """)
+                            let subscribingCommandResult: String = try await sendPostCommand(account: account, endpoint: "community/follow", arguments: [
+                                "community_id": community!.id,
+                                "follow": true
+                            ])
                             
                             print(subscribingCommandResult)
                             
@@ -79,9 +80,10 @@ struct SubscribeButton: View {
                         
                         do
                         {
-                            let unsubscribingCommandResult: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-                            {"op": "FollowCommunity", "data": { "auth": "\(account.accessToken)", "community_id": \(community!.id), "follow": false }}
-                            """)
+                            let unsubscribingCommandResult: String = try await sendPostCommand(account: account, endpoint: "community/follow", arguments: [
+                                "community_id": community!.id,
+                                "follow": false
+                            ])
                             
                             print(unsubscribingCommandResult)
                             
