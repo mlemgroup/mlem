@@ -39,7 +39,9 @@ func postComment(to post: Post, commentContents: String, commentTracker: Comment
             catch let commentParsingError
             {
                 
-                appState.alertType = .customError(title: "Couldn't read updated comment", message: "Refresh comments to see your new comment.")
+                appState.alertTitle = "Couldn't read updated comment"
+                appState.alertMessage = "Refresh comments to see your new comment."
+                appState.isShowingAlert.toggle()
                 
                 print("Failed while parsing updated comment: \(commentParsingError)")
             }
@@ -89,8 +91,9 @@ func postComment(to comment: Comment, post: Post, commentContents: String, comme
             }
             catch let commentParsingError
             {
-                
-                appState.alertType = .customError(title: "Couldn't read updated comment", message: "Refresh comments to see your new comment.")
+                appState.alertTitle = "Couldn't read updated comment"
+                appState.alertMessage = "Refresh comments to see your new comment."
+                appState.isShowingAlert.toggle()
                 
                 print("Failed while parsing updated comment: \(commentParsingError)")
             }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class AppState: ObservableObject
 {
@@ -18,7 +19,8 @@ class AppState: ObservableObject
     @Published var currentActiveInstance: String = ""
     
     @Published var isShowingAlert: Bool = false
-    @Published var alertType: ActiveAlert?
+    @Published var alertTitle: LocalizedStringKey = ""
+    @Published var alertMessage: LocalizedStringKey = ""
     
     @Published var criticalErrorType: CriticalError = .shittyInternet
 }

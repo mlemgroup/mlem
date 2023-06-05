@@ -70,7 +70,9 @@ struct CommunitySearchField: View {
                             {
                                 print("Search command error: \(searchCommandError)")
                                 
-                                appState.alertType = .connectionToLemmyError
+                                appState.alertTitle = "Couldn't connect to Lemmy"
+                                appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+                                appState.isShowingAlert.toggle()
                             }
                         }
                     }

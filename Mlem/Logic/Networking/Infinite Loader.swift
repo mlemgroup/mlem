@@ -67,6 +67,8 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
     {
         print("Failed while loading feed: \(connectionError)")
         
-        appState.alertType = .connectionToLemmyError
+        appState.alertTitle = "Couldn't connect to Lemmy"
+        appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+        appState.isShowingAlert.toggle()
     }
 }
