@@ -12,7 +12,7 @@ import SwiftyJSON
 struct MlemApp: App
 {
     @AppStorage("hasUndergoneLegacyAccountDeletion_debug") var hasUndergoneLegaryAccountDeletion_debug: Bool = false
-    
+
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -103,31 +103,32 @@ struct MlemApp: App
                         if !hasUndergoneLegaryAccountDeletion_debug
                         {
                             print("Has not undergone legacy account deletion")
-                            
+
                             try! FileManager.default.removeItem(at: AppConstants.savedAccountsFilePath)
                             try! createEmptyFile(at: AppConstants.savedAccountsFilePath)
-                            
+
                             hasUndergoneLegaryAccountDeletion_debug = true
                         }
                         else
                         {
                             print("Has undergone legacy account deletion")
                         }
-                        
+
                         do
                         {
                             let loadedUpAccounts = try decodeFromFile(fromURL: AppConstants.savedAccountsFilePath, whatToDecode: .accounts) as! [SavedAccount]
-                            
+
                             // MARK: - Associate the accounts with their secret credentials
+
                             if !loadedUpAccounts.isEmpty
                             {
                                 var loadedUpAccountTracker: [SavedAccount] = .init()
-                                
+
                                 for account in loadedUpAccounts
                                 {
                                     loadedUpAccountTracker.append(SavedAccount(id: account.id, instanceLink: account.instanceLink, accessToken: AppConstants.keychain["\(account.id)_accessToken"]!, username: account.username))
                                 }
-                                
+
                                 accountsTracker.savedAccounts = loadedUpAccountTracker
                             }
                         }

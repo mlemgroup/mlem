@@ -17,11 +17,9 @@ struct GeneralSettingsView: View
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
     
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
+    @EnvironmentObject var appState: AppState
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
-    
-    @State private var isShowingFatalError: Bool = false
-    @State private var favoritesPurgingError: FavoritesPurgingError = .failedToDeleteOldFavoritesFile
     
     var body: some View
     {
@@ -70,14 +68,16 @@ struct GeneralSettingsView: View
                                 }
                                 catch let emptyFileCreationError
                                 {
+                                    appState.alertType = .customError(title: "Couldn't recreate favorites file", message: "Try restarting Mlem")
+                                    
                                     print("Failed while creting empty file: \(emptyFileCreationError)")
-                                    favoritesPurgingError = .failedToCreateNewEmptyFile
                                 }
                             }
                             catch let fileDeletionError
                             {
+                                appState.alertType = .customError(title: "Could not delete favorites", message: "Try restarting Mlem")
+                                
                                 print("Failed while deleting favorites: \(fileDeletionError)")
-                                favoritesPurgingError = .failedToDeleteOldFavoritesFile
                             }
                         } label: {
                             Text("Delete all favorites")
@@ -93,24 +93,6 @@ struct GeneralSettingsView: View
                     Text("Would you like to delete all your favorited communities for all accounts?\nYou cannot undo this action.")
                 }
 
-            }
-        }
-        .alert(isPresented: $isShowingFatalError) {
-            switch favoritesPurgingError {
-                case .failedToDeleteOldFavoritesFile:
-                    return Alert(
-                        title: Text("Could not delete favorites"),
-                        message: Text("Try restarting Mlem"),
-                        dismissButton: .default(Text("Close"), action: {
-                            isShowingFatalError = false
-                    }))
-                case .failedToCreateNewEmptyFile:
-                    return Alert(
-                        title: Text("Could not recreate favorites file"),
-                        message: Text("Try restarting Mlem"),
-                        dismissButton: .default(Text("Close"), action: {
-                        isShowingFatalError = false
-                    }))
             }
         }
     }

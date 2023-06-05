@@ -17,9 +17,9 @@ func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL
     var validAddress: URL?
     
     let possibleInstanceAddresses: [URL] = [
-        URL(string: "https://\(baseInstanceAddress)/api/v1/community")!,
-        URL(string: "https://\(baseInstanceAddress)/api/v2/community")!,
-        URL(string: "https://\(baseInstanceAddress)/api/v3/community")!
+        URL(string: "https://\(baseInstanceAddress)/api/v1/user")!,
+        URL(string: "https://\(baseInstanceAddress)/api/v2/user")!,
+        URL(string: "https://\(baseInstanceAddress)/api/v3/user")!
     ]
     
     for address in possibleInstanceAddresses

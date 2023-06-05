@@ -41,7 +41,6 @@ struct PostExpanded: View
     @State private var isInTheMiddleOfStyling: Bool = false
     @State private var isPostingComment: Bool = false
 
-    @State private var isShowingError: Bool = false
     @State private var viewID: UUID = UUID()
 
     var body: some View
@@ -167,7 +166,8 @@ struct PostExpanded: View
                                         }
                                         catch let commentPostingError
                                         {
-                                            isShowingError = true
+                                            appState.alertType = .customError(title: "Couldn't post comment", message: "An error occured when posting the comment.\nTry again later, or restart Mlem")
+                                            
                                             print("Failed while posting error: \(commentPostingError)")
                                         }
                                     }
@@ -194,7 +194,8 @@ struct PostExpanded: View
                                         }
                                         catch let replyPostingError
                                         {
-                                            isShowingError = true
+                                            appState.alertType = .customError(title: "Couldn't post reply", message: "An error occured when posting the reply.\nTry again later, or restart Mlem")
+                                            
                                             print("Failed while posting response: \(replyPostingError)")
                                         }
                                     }
@@ -295,12 +296,6 @@ struct PostExpanded: View
             {
                 commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
             }
-        }
-        .alert(isPresented: $isShowingError)
-        {
-            Alert(title: Text("Could not post comment"), message: Text("An error occured when posting the comment.\nTry again later, or restart Mlem"), dismissButton: .default(Text("Close"), action: {
-                isShowingError.toggle()
-            }))
         }
     }
 

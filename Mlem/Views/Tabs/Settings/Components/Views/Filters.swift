@@ -7,20 +7,13 @@
 
 import SwiftUI
 
-internal enum ImportError
-{
-    case failedToReadFile, failedToDecodeFromFile
-}
-
 struct FiltersSettingsView: View {
     
     @EnvironmentObject var filtersTracker: FiltersTracker
+    @EnvironmentObject var appState: AppState
     
     @State private var newFilteredKeyword: String = ""
     @State private var isShowingKeywordImporter: Bool = false
-    
-    @State private var isShowingErrorAlert: Bool = false
-    @State private var importErrorType: ImportError = .failedToReadFile
     
     @State private var isShowingFilterDeletionConfirmation: Bool = false
     
@@ -90,16 +83,17 @@ struct FiltersSettingsView: View {
                         catch let decodingError
                         {
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
-                            importErrorType = .failedToDecodeFromFile
-                            isShowingErrorAlert = true
+                            
+                            appState.alertType = .customError(title: "Couldn't decode blocklist", message: "Try again. If the problem keeps happening, try reinstalling Mlem")
+                            
                             print("Failed while decoding blocklist: \(decodingError)")
                         }
 
                     }
                     catch let blocklistImportingError
                     {
-                        importErrorType = .failedToReadFile
-                        isShowingErrorAlert = true
+                        appState.alertType = .customError(title: "Couldn't find blocklist", message: "If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location.")
+                        
                         print("Failed while reading file: \(blocklistImportingError)")
                     }
                 }
@@ -147,24 +141,6 @@ struct FiltersSettingsView: View {
             ToolbarItem(placement: .automatic) {
                 EditButton()
                     .disabled(filtersTracker.filteredKeywords.isEmpty && filtersTracker.filteredUsers.isEmpty)
-            }
-        }
-        .alert(isPresented: $isShowingErrorAlert) {
-            switch importErrorType {
-                case .failedToReadFile:
-                    return Alert(
-                        title: Text("Couldn't find blocklist"),
-                        message: Text("If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location."),
-                        dismissButton: .default(Text("Close"), action: {
-                        isShowingErrorAlert = false
-                    }))
-                case .failedToDecodeFromFile:
-                    return Alert(
-                        title: Text("Couldn't decode blocklist"),
-                        message: Text("Try again. If the problem keeps happening, try reinstalling Mlem"),
-                        dismissButton: .default(Text("Close"), action: {
-                            isShowingErrorAlert = false
-                        }))
             }
         }
     }
