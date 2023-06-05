@@ -88,6 +88,7 @@ struct CommunityView: View
                             
                             Text("No posts to be found")
                         }
+                        .padding()
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity)
                     }

@@ -72,17 +72,16 @@ struct PostExpanded: View
             {
                 if commentTracker.comments.count == 0
                 { // If there are no comments, just don't show anything
-                    VStack
+                    VStack(spacing: 2)
                     {
-                        VStack
+                        VStack(spacing: 5)
                         {
                             Image(systemName: "binoculars")
-                                .aspectRatio(contentMode: .fill)
+                                
                             Text("No comments to be found")
-                                .font(.headline)
                         }
                         Text("Why not post the first one?")
-                            .font(.subheadline)
+                            .font(.caption)
                     }
                     .foregroundColor(.secondary)
                     .padding()
