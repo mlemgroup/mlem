@@ -45,8 +45,6 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
     {
         let apiResponse = try await sendGetCommand(account: account, endpoint: "post/list", parameters: loadingParameters)
         
-        //let apiResponse = try await sendCommand(maintainOpenConnection: true, instanceAddress: account.instanceLink, command: loadingCommand)
-        
         print("API Response: \(apiResponse)")
         
         if !apiResponse.contains("""
