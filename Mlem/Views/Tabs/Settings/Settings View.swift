@@ -177,6 +177,17 @@ struct SettingsView: View
                             .foregroundColor(.blue)
                         Text("About Mlem")
                     }
+                    
+                    NavigationLink {
+                        
+                    } label: {
+                        Image(systemName: "person.2.circle.fill")
+                            .foregroundColor(.purple)
+                        Text("c/mlemapp")
+                    }
+                    .onTapGesture {
+                        UIApplication.shared.open(URL(string: "https://lemmy.ml/c/mlemapp")!)
+                    }
                 }
             }
             .navigationTitle("Settings")
