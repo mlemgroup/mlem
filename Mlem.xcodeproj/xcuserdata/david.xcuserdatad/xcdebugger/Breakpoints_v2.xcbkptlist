@@ -108,8 +108,8 @@
             filePath = "Mlem/Logic/Participating/Post Post.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
             landmarkName = "postPost(to:postTitle:postBody:postURL:postIsNSFW:postTracker:account:)"
             landmarkType = "9">
             <Locations>
