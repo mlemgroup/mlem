@@ -11,6 +11,7 @@ import SwiftyJSON
 struct AddSavedInstanceView: View
 {
     @EnvironmentObject var communityTracker: SavedAccountTracker
+    @EnvironmentObject var appState: AppState
 
     @Binding var isShowingSheet: Bool
 
@@ -24,8 +25,6 @@ struct AddSavedInstanceView: View
     @State private var hasSuccessfulyConnectedToEndpoint: Bool = false
     @State private var errorOccuredWhileConnectingToEndpoint: Bool = false
     @State private var errorText: String = ""
-    
-    @State private var isShowingDeprecatedInstanceError: Bool = false
 
     @FocusState var isFocused
 
@@ -133,15 +132,23 @@ struct AddSavedInstanceView: View
             }
             .disabled(isShowingEndpointDiscoverySpinner)
         }
-        .alert("Unsupported Lemmy Version", isPresented: $isShowingDeprecatedInstanceError) {
-            Button(role: .cancel) {
-                isShowingDeprecatedInstanceError.toggle()
-            } label: {
-                Text("Close")
+        .alert(using: $appState.alertType)
+        { alert in
+            switch alert
+            {
+                case .generalError:
+                    return Alert(title: Text("Something went wrong"), message: Text("Try restarting Mlem"), dismissButton: .default(Text("Close"), action: {
+                        appState.alertType = nil
+                    }))
+                case .connectionToLemmyError:
+                    return Alert(title: Text("Lost connection to Lemmy"), message: Text("Your network connection might not be strong enough, or the Lemmy server you're connected to is overloaded."), dismissButton: .default(Text("Close"), action: {
+                        appState.alertType = nil
+                    }))
+                case .customError(title: let title, message: let message):
+                    return Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("Close"), action: {
+                        appState.alertType = nil
+                    }))
             }
-
-        } message: {
-            Text("\(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support.\nContanct \(instanceLink) developers for more information.")
         }
 
     }
@@ -171,7 +178,7 @@ struct AddSavedInstanceView: View
                     isShowingEndpointDiscoverySpinner.toggle()
                 }
                 
-                isShowingDeprecatedInstanceError.toggle()
+                appState.alertType = .customError(title: "Unsupported Lemmy Version", message: "\(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support.\nContanct \(instanceLink) developers for more information.")
                 
                 return
             }
@@ -179,7 +186,7 @@ struct AddSavedInstanceView: View
             {
                 do
                 {
-                    let loginRequestResponse = try await sendPostCommand(baseURL: instanceURL, endpoint: "user/login", arguments: ["username_or_email": "\(usernameOrEmail)", "password": "\(password)"])
+                    let loginRequestResponse = try await sendPostCommand(appState: appState, baseURL: instanceURL, endpoint: "user/login", arguments: ["username_or_email": "\(usernameOrEmail)", "password": "\(password)"])
                     if loginRequestResponse.contains("jwt")
                     {
                         hasSuccessfulyConnectedToEndpoint = true

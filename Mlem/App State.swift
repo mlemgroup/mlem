@@ -9,9 +9,16 @@ import Foundation
 
 class AppState: ObservableObject
 {
+    
+    enum ActiveAlert
+    {
+        case generalError, connectionToLemmyError, customError(title: String, message: String)
+    }
+    
     @Published var currentActiveInstance: String = ""
     
-    @Published var isShowingCriticalError: Bool = false
+    @Published var isShowingAlert: Bool = false
+    @Published var alertType: ActiveAlert?
     
     @Published var criticalErrorType: CriticalError = .shittyInternet
 }

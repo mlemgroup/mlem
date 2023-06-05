@@ -30,8 +30,8 @@
             filePath = "Mlem/Logic/Server Response Parsing/Comment Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "parseComments(commentResponse:instanceLink:)"
             landmarkType = "9">
             <Locations>
@@ -110,7 +110,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "20"
             endingLineNumber = "20"
-            landmarkName = "postPost(to:postTitle:postBody:postURL:postIsNSFW:postTracker:account:)"
+            landmarkName = "postPost(to:postTitle:postBody:postURL:postIsNSFW:postTracker:account:appState:)"
             landmarkType = "9">
             <Locations>
                <Location
@@ -246,8 +246,8 @@
             filePath = "Mlem/Logic/Server Response Parsing/Comment Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
             landmarkName = "parseComments(commentResponse:instanceLink:)"
             landmarkType = "9">
             <Locations>
@@ -294,8 +294,8 @@
             filePath = "Mlem/Logic/Server Response Parsing/Comment Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
             landmarkName = "parseComments(commentResponse:instanceLink:)"
             landmarkType = "9">
          </BreakpointContent>

@@ -83,20 +83,6 @@ struct AccountsPage: View
         {
             print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
         }
-        .alert(isPresented: $appState.isShowingCriticalError)
-        {
-            switch appState.criticalErrorType
-            {
-            case .shittyInternet:
-                return Alert(
-                    title: Text("Lost connection to Lemmy"),
-                    message: Text("Your internet is not stable enough to connect to Lemmy.\nTry again later."),
-                    dismissButton: .default(Text("Close"), action: {
-                        appState.isShowingCriticalError = false
-                    })
-                )
-            }
-        }
     }
 
     internal func deleteAccount(at offsets: IndexSet)

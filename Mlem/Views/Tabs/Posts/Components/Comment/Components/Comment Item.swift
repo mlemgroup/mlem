@@ -12,6 +12,8 @@ struct CommentItem: View
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
     @EnvironmentObject var commentTracker: CommentTracker
     
+    @EnvironmentObject var appState: AppState
+    
     @State var account: SavedAccount
     
     let comment: Comment
@@ -73,11 +75,11 @@ struct CommentItem: View
                         Task(priority: .userInitiated) {
                             switch comment.myVote {
                                 case .upvoted:
-                                    try await rateComment(comment: comment, operation: .resetVote, account: account, commentTracker: commentTracker)
+                                    try await rateComment(comment: comment, operation: .resetVote, account: account, commentTracker: commentTracker, appState: appState)
                                 case .downvoted:
-                                    try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker)
+                                    try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker, appState: appState)
                                 case .none:
-                                    try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker)
+                                    try await rateComment(comment: comment, operation: .upvote, account: account, commentTracker: commentTracker, appState: appState)
                             }
                         }
                     }
@@ -97,11 +99,11 @@ struct CommentItem: View
                             Task(priority: .userInitiated) {
                                 switch comment.myVote {
                                     case .upvoted:
-                                        try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker)
+                                        try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker, appState: appState)
                                     case .downvoted:
-                                        try await rateComment(comment: comment, operation: .resetVote, account: account, commentTracker: commentTracker)
+                                        try await rateComment(comment: comment, operation: .resetVote, account: account, commentTracker: commentTracker, appState: appState)
                                     case .none:
-                                        try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker)
+                                        try await rateComment(comment: comment, operation: .downvote, account: account, commentTracker: commentTracker, appState: appState)
                                 }
                             }
                         }

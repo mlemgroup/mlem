@@ -43,7 +43,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
     
     do
     {
-        let apiResponse = try await sendGetCommand(account: account, endpoint: "post/list", parameters: loadingParameters)
+        let apiResponse = try await sendGetCommand(appState: appState, account: account, endpoint: "post/list", parameters: loadingParameters)
         
         print("API Response: \(apiResponse)")
         
@@ -67,9 +67,6 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
     {
         print("Failed while loading feed: \(connectionError)")
         
-        DispatchQueue.main.async {
-            appState.criticalErrorType = .shittyInternet
-            appState.isShowingCriticalError = true
-        }
+        appState.alertType = .connectionToLemmyError
     }
 }

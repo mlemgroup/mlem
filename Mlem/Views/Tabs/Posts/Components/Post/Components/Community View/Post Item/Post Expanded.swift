@@ -41,7 +41,6 @@ struct PostExpanded: View
     @State private var isInTheMiddleOfStyling: Bool = false
     @State private var isPostingComment: Bool = false
 
-    @State private var isShowingError: Bool = false
     @State private var viewID: UUID = UUID()
 
     var body: some View
@@ -73,17 +72,16 @@ struct PostExpanded: View
             {
                 if commentTracker.comments.count == 0
                 { // If there are no comments, just don't show anything
-                    VStack
+                    VStack(spacing: 2)
                     {
-                        VStack
+                        VStack(spacing: 5)
                         {
                             Image(systemName: "binoculars")
-                                .aspectRatio(contentMode: .fill)
+                                
                             Text("No comments to be found")
-                                .font(.headline)
                         }
                         Text("Why not post the first one?")
-                            .font(.subheadline)
+                            .font(.caption)
                     }
                     .foregroundColor(.secondary)
                     .padding()
@@ -160,14 +158,15 @@ struct PostExpanded: View
                                         
                                         do
                                         {
-                                            try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
+                                            try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account, appState: appState)
                                             
                                             isReplyFieldFocused = false
                                             textFieldContents = ""
                                         }
                                         catch let commentPostingError
                                         {
-                                            isShowingError = true
+                                            appState.alertType = .customError(title: "Couldn't post comment", message: "An error occured when posting the comment.\nTry again later, or restart Mlem")
+                                            
                                             print("Failed while posting error: \(commentPostingError)")
                                         }
                                     }
@@ -186,7 +185,7 @@ struct PostExpanded: View
                                         
                                         do
                                         {
-                                            try await postComment(to: commentReplyTracker.commentToReplyTo!, post: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account)
+                                            try await postComment(to: commentReplyTracker.commentToReplyTo!, post: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account, appState: appState)
                                             
                                             commentReplyTracker.commentToReplyTo = nil
                                             isReplyFieldFocused = false
@@ -194,7 +193,8 @@ struct PostExpanded: View
                                         }
                                         catch let replyPostingError
                                         {
-                                            isShowingError = true
+                                            appState.alertType = .customError(title: "Couldn't post reply", message: "An error occured when posting the reply.\nTry again later, or restart Mlem")
+                                            
                                             print("Failed while posting response: \(replyPostingError)")
                                         }
                                     }
@@ -296,33 +296,49 @@ struct PostExpanded: View
                 commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
             }
         }
-        .alert(isPresented: $isShowingError)
-        {
-            Alert(title: Text("Could not post comment"), message: Text("An error occured when posting the comment.\nTry again later, or restart Mlem"), dismissButton: .default(Text("Close"), action: {
-                isShowingError.toggle()
-            }))
-        }
     }
 
     internal func loadComments() async
     {
         commentTracker.isLoading = true
 
-        let commentResponse: String = try! await sendGetCommand(account: account, endpoint: "comment/list", parameters: [
-            URLQueryItem(name: "max_depth", value: "15"),
-            URLQueryItem(name: "post_id", value: "\(post.id)"),
-            URLQueryItem(name: "type_", value: "All")
-        ])
-
-        print("Comment response: \(commentResponse)")
-
-        var parsedComments: [Comment] = try! await parseComments(commentResponse: commentResponse, instanceLink: account.instanceLink)
-
-        commentTracker.comments = sortComments(parsedComments, by: defaultCommentSorting)
-
-        commentTracker.isLoading = false
-
-        parsedComments = .init()
+        var parsedComments: [Comment] = .init()
+        
+        defer
+        {
+            commentTracker.isLoading = false
+            
+            parsedComments = .init()
+        }
+        
+        do
+        {
+            let commentResponse: String = try await sendGetCommand(appState: appState, account: account, endpoint: "comment/list", parameters: [
+                URLQueryItem(name: "max_depth", value: "15"),
+                URLQueryItem(name: "post_id", value: "\(post.id)"),
+                URLQueryItem(name: "type_", value: "All")
+            ])
+            
+            print("Comment response: \(commentResponse)")
+            
+            do
+            {
+                parsedComments = try await parseComments(commentResponse: commentResponse, instanceLink: account.instanceLink)
+                
+                commentTracker.comments = sortComments(parsedComments, by: defaultCommentSorting)
+            }
+            catch let commentParsingError
+            {
+                appState.alertType = .customError(title: "Couldn't decode updated comments", message: "Try manually refreshing the comments")
+                
+                print("Failed while parsing comments: \(commentParsingError)")
+            }
+        }
+        catch let commentLoadingError
+        {
+            appState.alertType = .customError(title: "Couldn't load new comments", message: "The Lemmy server you're connected to might be overloaded.")
+            print("Failed while loading comments: \(commentLoadingError)")
+        }
     }
 
     private func sortComments(_ comments: [Comment], by sort: CommentSortTypes) -> [Comment]

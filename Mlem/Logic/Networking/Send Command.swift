@@ -18,7 +18,7 @@ internal enum EncodingFailure: Error
 }
 
 /// Send a GET command to a specified endpoint with specified parameters
-func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQueryItem]) async throws -> String
+func sendGetCommand(appState: AppState, account: SavedAccount, endpoint: String, parameters: [URLQueryItem]) async throws -> String
 {
     var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
     var finalParameters: [URLQueryItem] = parameters
@@ -59,13 +59,16 @@ func sendGetCommand(account: SavedAccount, endpoint: String, parameters: [URLQue
     catch let requestError
     {
         print("Failed while sending GET request: \(requestError)")
+        
+        appState.alertType = .connectionToLemmyError
+        
         throw ConnectionError.failedToSendRequest
     }
 }
 
 /// Send an authorized POST command to a specified endpoint with specified arguments in the body
 /// The arguments get serialized into JSON
-func sendPostCommand(account: SavedAccount, endpoint: String, arguments: [String: Any]) async throws -> String
+func sendPostCommand(appState: AppState, account: SavedAccount, endpoint: String, arguments: [String: Any]) async throws -> String
 {
     var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
     
@@ -100,12 +103,15 @@ func sendPostCommand(account: SavedAccount, endpoint: String, arguments: [String
     catch let requestError
     {
         print("Failed while sending POST request: \(requestError)")
+        
+        appState.alertType = .connectionToLemmyError
+        
         throw ConnectionError.failedToSendRequest
     }
 }
 
 /// Send a POST command to a specified endpoint with specified arguments in the body, without authorization
-func sendPostCommand(baseURL: URL, endpoint: String, arguments: [String: Any]) async throws -> String
+func sendPostCommand(appState: AppState, baseURL: URL, endpoint: String, arguments: [String: Any]) async throws -> String
 {
     var finalURL: URL = baseURL.appendingPathComponent(endpoint, conformingTo: .url)
     
@@ -139,6 +145,9 @@ func sendPostCommand(baseURL: URL, endpoint: String, arguments: [String: Any]) a
     catch let requestError
     {
         print("Failed while sending POST request: \(requestError)")
+        
+        appState.alertType = .connectionToLemmyError
+        
         throw ConnectionError.failedToSendRequest
     }
 }

@@ -21,11 +21,11 @@ internal enum RatingFailure: Error
 
 // Abandon all hope, ye who has to read this function
 @MainActor
-func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, postTracker: PostTracker) async throws
+func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, postTracker: PostTracker, appState: AppState) async throws
 {
     do
     {
-        async let postRatingResponse: String = try sendPostCommand(account: account, endpoint: "post/like", arguments: [
+        async let postRatingResponse: String = try sendPostCommand(appState: appState, account: account, endpoint: "post/like", arguments: [
             "post_id": post.id,
             "score": operation.rawValue
         ])
@@ -132,11 +132,11 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
 }
 
 @MainActor
-func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAccount, commentTracker: CommentTracker) async throws
+func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAccount, commentTracker: CommentTracker, appState: AppState) async throws
 {
     do
     {
-        async let commentRatingReponse: String = try await sendPostCommand(account: account, endpoint: "comment/like", arguments: [
+        async let commentRatingReponse: String = try await sendPostCommand(appState: appState, account: account, endpoint: "comment/like", arguments: [
             "comment_id": comment.id,
             "score": operation.rawValue
         ])

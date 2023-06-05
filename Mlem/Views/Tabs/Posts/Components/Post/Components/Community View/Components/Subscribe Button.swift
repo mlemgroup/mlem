@@ -13,13 +13,11 @@ internal enum CommandError: Error
 }
 
 struct SubscribeButton: View {
+    @EnvironmentObject var appState: AppState
     
     @Binding var community: Community?
     
     @State var account: SavedAccount
-    
-    @State private var isShowingSubscribingAlert: Bool = true
-    @State private var isShowingUnsubscribingAlert: Bool = false
     
     var body: some View {
         if let communityDetails = community!.details
@@ -35,7 +33,7 @@ struct SubscribeButton: View {
                         
                         do
                         {
-                            let subscribingCommandResult: String = try await sendPostCommand(account: account, endpoint: "community/follow", arguments: [
+                            let subscribingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "community/follow", arguments: [
                                 "community_id": community!.id,
                                 "follow": true
                             ])
@@ -49,23 +47,16 @@ struct SubscribeButton: View {
                         }
                         catch let subscribingError
                         {
+                            
+                            appState.alertType = .customError(title: "Couldn't subscribe to \(community!.name)", message: "Mlem received an unexpected response from the server")
+                            
                             print("Failed while subscribing: \(subscribingError)")
-                            isShowingSubscribingAlert.toggle()
                             
                             community?.details?.isSubscribed.toggle()
                         }
                     }
                 } label: {
                     Label("Subscribe", systemImage: "person.badge.plus")
-                }
-                .alert("Could not subscribe to \(community!.name)", isPresented: $isShowingSubscribingAlert) {
-                    Button(role: .cancel) {
-                        isShowingSubscribingAlert.toggle()
-                    } label: {
-                        Text("Close")
-                    }
-                } message: {
-                    Text("Mlem received an unexpected response from the server")
                 }
 
             }
@@ -80,7 +71,7 @@ struct SubscribeButton: View {
                         
                         do
                         {
-                            let unsubscribingCommandResult: String = try await sendPostCommand(account: account, endpoint: "community/follow", arguments: [
+                            let unsubscribingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "community/follow", arguments: [
                                 "community_id": community!.id,
                                 "follow": false
                             ])
@@ -94,8 +85,9 @@ struct SubscribeButton: View {
                         }
                         catch let unsubscribingError
                         {
+                            appState.alertType = .customError(title: "Couldn't unsubscribe from \(community!.name)", message: "Mlem received an unexpected response from the server")
+                            
                             print("Failed while unsubscribing: \(unsubscribingError)")
-                            isShowingUnsubscribingAlert.toggle()
                             
                             community?.details?.isSubscribed.toggle()
                         }
@@ -103,16 +95,6 @@ struct SubscribeButton: View {
                 } label: {
                     Label("Unsubscribe", systemImage: "person.badge.minus")
                 }
-                .alert("Could not unsubscribe from \(community!.name)", isPresented: $isShowingUnsubscribingAlert) {
-                    Button(role: .cancel) {
-                        isShowingUnsubscribingAlert.toggle()
-                    } label: {
-                        Text("Close")
-                    }
-                } message: {
-                    Text("Mlem received an unexpected response from the server")
-                }
-
             }
         }
         else

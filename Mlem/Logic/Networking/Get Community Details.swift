@@ -7,12 +7,12 @@
 
 import Foundation
 
-func loadCommunityDetails(community: Community, account: SavedAccount) async throws -> CommunityDetails
+func loadCommunityDetails(community: Community, account: SavedAccount, appState: AppState) async throws -> CommunityDetails
 {
     
     do
     {
-        let response: String = try await sendGetCommand(account: account, endpoint: "community", parameters: [
+        let response: String = try await sendGetCommand(appState: appState, account: account, endpoint: "community", parameters: [
             URLQueryItem(name: "id", value: "\(community.id)")
         ])
         

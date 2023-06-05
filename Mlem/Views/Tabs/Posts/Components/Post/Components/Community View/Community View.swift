@@ -77,7 +77,21 @@ struct CommunityView: View
             {
                 if postTracker.posts.isEmpty
                 {
-                    LoadingView(whatIsLoading: .posts)
+                    if postTracker.isLoading
+                    {
+                        LoadingView(whatIsLoading: .posts)
+                    }
+                    else
+                    {
+                        VStack(alignment: .center, spacing: 5) {
+                            Image(systemName: "text.bubble")
+                            
+                            Text("No posts to be found")
+                        }
+                        .padding()
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity)
+                    }
                 }
                 else
                 {
@@ -115,11 +129,23 @@ struct CommunityView: View
                                 {
                                     if community == nil
                                     {
+                                        if postTracker.posts.isEmpty
+                                        {
+                                            postTracker.isLoading = true
+                                        }
+                                        
                                         await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                                        postTracker.isLoading = false
                                     }
                                     else
                                     {
+                                        if postTracker.posts.isEmpty
+                                        {
+                                            postTracker.isLoading = true
+                                        }
+                                        
                                         await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: .all, sortingType: selectedSortingOption, account: account)
+                                        postTracker.isLoading = false
                                     }
                                 }
                             }
@@ -133,11 +159,24 @@ struct CommunityView: View
 
                                     if community == nil
                                     {
+                                        
+                                        if postTracker.posts.isEmpty
+                                        {
+                                            postTracker.isLoading = true
+                                        }
+                                        
                                         await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                                        postTracker.isLoading = false
                                     }
                                     else
                                     {
+                                        if postTracker.posts.isEmpty
+                                        {
+                                            postTracker.isLoading = true
+                                        }
+                                        
                                         await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                                        postTracker.isLoading = false
                                     }
                                 }
                             })
@@ -190,7 +229,7 @@ struct CommunityView: View
                                                     
                                                     do
                                                     {
-                                                        try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account)
+                                                        try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account, appState: appState)
                                                     }
                                                     catch let postPostingError
                                                     {
@@ -272,7 +311,14 @@ struct CommunityView: View
                 {
                     print("Post tracker is empty")
 
+                    if postTracker.posts.isEmpty
+                    {
+                        postTracker.isLoading = true
+                    }
+                    
                     await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                    
+                    postTracker.isLoading = false
                 }
                 else
                 {
@@ -285,13 +331,13 @@ struct CommunityView: View
                 {
                     do
                     {
-                        community?.details = try await loadCommunityDetails(community: community!, account: account)
+                        community?.details = try await loadCommunityDetails(community: community!, account: account, appState: appState)
                     }
                     catch let communityDetailsFetchingError
                     {
                         print("Failed while fetching community details: \(communityDetailsFetchingError)")
-                        appState.criticalErrorType = .shittyInternet
-                        appState.isShowingCriticalError = true
+                        
+                        appState.alertType = .customError(title: "Could not load community information", message: "The server might be overloaded.\nTry again later.")
                     }
                 }
             }
@@ -301,7 +347,18 @@ struct CommunityView: View
                     
                     postTracker.posts = .init()
                     
+                    if postTracker.posts.isEmpty
+                    {
+                        postTracker.isLoading = true
+                    }
+                    
+                    if postTracker.posts.isEmpty
+                    {
+                        postTracker.isLoading = true
+                    }
+                    
                     await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                    postTracker.isLoading = false
                 }
             })
             .toolbar

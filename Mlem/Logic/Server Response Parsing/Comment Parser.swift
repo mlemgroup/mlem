@@ -10,6 +10,12 @@ import SwiftyJSON
 
 func parseComments(commentResponse: String, instanceLink: URL) async throws -> [Comment]
 {
+    #warning("TODO: Improve this so it doesn't check for the string, but maybe let it get parsed first and then check if the jsonComments array is empty")
+    if commentResponse.contains("{\"comments\":[]}")
+    { /// If there are no comments, just return an empty array
+        print("There are no comments")
+        return .init()
+    }
     do
     {
         let parsedJSON: JSON = try parseJSON(from: commentResponse)
@@ -19,9 +25,8 @@ func parseComments(commentResponse: String, instanceLink: URL) async throws -> [
         { /// This has to be here because I'm also using this function for parsing coments that the user posted, which has a different format. If the first attempt to get the array of comments fails, try the one that's for responses for posting comments
             jsonComments = [parsedJSON["comment_view"]]
         }
-
-        let isV1 = instanceLink.absoluteString.contains("v1")
-        var allComments = jsonComments.map { isV1 ? $0.v1ToComment() : $0.v2ToComment() }
+        
+        var allComments = jsonComments.map { $0.v2ToComment() }
 
         let childrenStartIndex = allComments.partition(by: { $0.parentID != nil })
         let children = allComments[childrenStartIndex...]
@@ -81,9 +86,7 @@ func parseReply(replyResponse: String, instanceLink: URL) async throws -> Commen
             jsonComments = [parsedJSON["comment_view"]]
         }
         
-        let isV1 = instanceLink.absoluteString.contains("v1")
-        
-        return jsonComments.map { isV1 ? $0.v1ToComment() : $0.v2ToComment() }.first!
+        return jsonComments.map { $0.v2ToComment() }.first!
     }
     catch let parsingError
     {
@@ -93,61 +96,6 @@ func parseReply(replyResponse: String, instanceLink: URL) async throws -> Commen
 }
 
 private extension JSON {
-
-    func v1ToComment() -> Comment {
-        Comment(
-            id: self["id"].intValue,
-            postID: self["post_id"].intValue,
-            creatorID: self["creator_id"].intValue,
-            //postName: self["post_name"].stringValue,
-            parentID: self["parent_id"].int,
-            content: self["content"].stringValue,
-            removed: self["removed"].boolValue,
-            //read: self["read"].boolValue,
-            published: {
-                return convertResponseDateToDate(responseDate: self["published"].stringValue)
-            }(),
-            deleted: self["deleted"].boolValue,
-            updated: self["updated"].string,
-            apID: self["ap_id"].url!,
-            local: self["local"].boolValue,
-            communityID: self["community_id"].intValue,
-            communityActorID: self["community_actor_id"].url!,
-            communityLocal: self["local"].boolValue,
-            communityName: self["community_name"].stringValue,
-            communityIcon: self["community_icon"].url,
-            communityHideFromAll: self["community_hide_from_all"].boolValue,
-            //bannedFromCommunity: self["banned_from_community"].boolValue,
-            creatorPublished: self["creator_published"].stringValue,
-            score: self["score"].intValue,
-            upvotes: self["upvotes"].intValue,
-            downvotes: self["downvotes"].intValue,
-            myVote: MyVote.none,
-            //hotRank: self["hot_rank"].intValue,
-            //hotRankActive: self["hot_rank_active"].intValue,
-            saved: self["saved"].boolValue,
-            author: User(
-                id: 0,
-                name: self["creator_name"].stringValue,
-                displayName: self["creator_preferred_username"].stringValue,
-                avatarLink: self["creator_avatar"].url,
-                bannerLink: nil,
-                inboxLink: nil,
-                bio: nil,
-                banned: self["banned"].boolValue,
-                actorID: self["creator_actor_id"].url!,
-                local: self["creator_local"].boolValue,
-                deleted: false,
-                admin: false,
-                bot: false,
-                onInstanceID: 0
-            ),
-            childCount: nil,
-            //subscribed: comment["subscribed"].boolValue,
-            children: .init()
-        )
-    }
-
     func v2ToComment() -> Comment {
         Comment(
             id: self["comment", "id"].intValue,
