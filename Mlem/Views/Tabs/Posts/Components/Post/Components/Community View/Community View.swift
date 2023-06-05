@@ -290,8 +290,8 @@ struct CommunityView: View
                     catch let communityDetailsFetchingError
                     {
                         print("Failed while fetching community details: \(communityDetailsFetchingError)")
-                        appState.criticalErrorType = .shittyInternet
-                        appState.isShowingCriticalError = true
+                        
+                        appState.alertType = .customError(title: "Could not load community information", message: "The server might be overloaded\nTry again later.")
                     }
                 }
             }
