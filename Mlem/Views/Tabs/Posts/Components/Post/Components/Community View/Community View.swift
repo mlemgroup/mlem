@@ -337,7 +337,9 @@ struct CommunityView: View
                     {
                         print("Failed while fetching community details: \(communityDetailsFetchingError)")
                         
-                        appState.alertType = .customError(title: "Could not load community information", message: "The server might be overloaded.\nTry again later.")
+                        appState.alertTitle = "Could not load community information"
+                        appState.alertMessage = "The server might be overloaded.\nTry again later."
+                        appState.isShowingAlert.toggle()
                     }
                 }
             }

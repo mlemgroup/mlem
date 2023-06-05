@@ -165,7 +165,10 @@ struct PostExpanded: View
                                         }
                                         catch let commentPostingError
                                         {
-                                            appState.alertType = .customError(title: "Couldn't post comment", message: "An error occured when posting the comment.\nTry again later, or restart Mlem")
+                                            
+                                            appState.alertTitle = "Couldn't post comment"
+                                            appState.alertMessage = "An error occured when posting the comment.\nTry again later, or restart Mlem."
+                                            appState.isShowingAlert.toggle()
                                             
                                             print("Failed while posting error: \(commentPostingError)")
                                         }
@@ -192,9 +195,7 @@ struct PostExpanded: View
                                             textFieldContents = ""
                                         }
                                         catch let replyPostingError
-                                        {
-                                            appState.alertType = .customError(title: "Couldn't post reply", message: "An error occured when posting the reply.\nTry again later, or restart Mlem")
-                                            
+                                        {                                            
                                             print("Failed while posting response: \(replyPostingError)")
                                         }
                                     }
@@ -329,14 +330,21 @@ struct PostExpanded: View
             }
             catch let commentParsingError
             {
-                appState.alertType = .customError(title: "Couldn't decode updated comments", message: "Try manually refreshing the comments")
+                
+                appState.alertTitle = "Couldn't decode updated comments"
+                appState.alertMessage = "Try manually refreshing the comments."
+                appState.isShowingAlert.toggle()
                 
                 print("Failed while parsing comments: \(commentParsingError)")
             }
         }
         catch let commentLoadingError
         {
-            appState.alertType = .customError(title: "Couldn't load new comments", message: "The Lemmy server you're connected to might be overloaded.")
+            
+            appState.alertTitle = "Couldn't load new comments"
+            appState.alertMessage = "The Lemmy server you're connected to might be overloaded."
+            appState.isShowingAlert.toggle()
+            
             print("Failed while loading comments: \(commentLoadingError)")
         }
     }

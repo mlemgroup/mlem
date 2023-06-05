@@ -132,25 +132,6 @@ struct AddSavedInstanceView: View
             }
             .disabled(isShowingEndpointDiscoverySpinner)
         }
-        .alert(using: $appState.alertType)
-        { alert in
-            switch alert
-            {
-                case .generalError:
-                    return Alert(title: Text("Something went wrong"), message: Text("Try restarting Mlem"), dismissButton: .default(Text("Close"), action: {
-                        appState.alertType = nil
-                    }))
-                case .connectionToLemmyError:
-                    return Alert(title: Text("Lost connection to Lemmy"), message: Text("Your network connection might not be strong enough, or the Lemmy server you're connected to is overloaded."), dismissButton: .default(Text("Close"), action: {
-                        appState.alertType = nil
-                    }))
-                case .customError(title: let title, message: let message):
-                    return Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("Close"), action: {
-                        appState.alertType = nil
-                    }))
-            }
-        }
-
     }
 
     func tryToAddAccount() async
@@ -178,8 +159,10 @@ struct AddSavedInstanceView: View
                     isShowingEndpointDiscoverySpinner.toggle()
                 }
                 
-                appState.alertType = .customError(title: "Unsupported Lemmy Version", message: "\(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support.\nContanct \(instanceLink) developers for more information.")
-                
+                appState.alertTitle = "Unsupported Lemmy Version"
+                appState.alertMessage = "\(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support.\nContanct \(instanceLink) developers for more information."
+                appState.isShowingAlert.toggle()
+                                
                 return
             }
             else

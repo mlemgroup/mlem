@@ -84,7 +84,9 @@ struct FiltersSettingsView: View {
                         {
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
                             
-                            appState.alertType = .customError(title: "Couldn't decode blocklist", message: "Try again. If the problem keeps happening, try reinstalling Mlem")
+                            appState.alertTitle = "Couldn't decode blocklist"
+                            appState.alertMessage = "Try again. If the problem keeps happening, try reinstalling Mlem."
+                            appState.isShowingAlert.toggle()
                             
                             print("Failed while decoding blocklist: \(decodingError)")
                         }
@@ -92,7 +94,10 @@ struct FiltersSettingsView: View {
                     }
                     catch let blocklistImportingError
                     {
-                        appState.alertType = .customError(title: "Couldn't find blocklist", message: "If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location.")
+                        
+                        appState.alertTitle = "Couldn't find blocklist"
+                        appState.alertMessage = "If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location."
+                        appState.isShowingAlert.toggle()
                         
                         print("Failed while reading file: \(blocklistImportingError)")
                     }

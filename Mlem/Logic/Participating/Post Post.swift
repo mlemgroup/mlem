@@ -52,7 +52,9 @@ func postPost(to community: Community, postTitle: String, postBody: String, post
             {
                 print("Failed while parsing new post: \(newPostParsingError)")
                 
-                appState.alertType = .customError(title: "Couldn't read updated posts", message: "Refresh your feed to see the new post.")
+                appState.alertTitle = "Couldn't read updated posts"
+                appState.alertMessage = "Refresh your feed to see the new post."
+                appState.isShowingAlert.toggle()
                 
                 throw PostPostingFailure.couldNotParseNewPost
             }
@@ -61,7 +63,9 @@ func postPost(to community: Community, postTitle: String, postBody: String, post
         {
             print("Received error from the server")
             
-            appState.alertType = .customError(title: "Received unexpected response from Lemmy", message: "Mlem received unexpected data.\nTry restarting the app and posting again.")
+            appState.alertTitle = "Received unexpected response from Lemmy"
+            appState.alertMessage = "Mlem received unexpected data.\nTry restarting the app and posting again."
+            appState.isShowingAlert.toggle()
 
             throw PostPostingFailure.receivedInvalidServerResponse
         }
@@ -70,7 +74,9 @@ func postPost(to community: Community, postTitle: String, postBody: String, post
     {
         print("Failed while posting post: \(postPostingError)")
         
-        appState.alertType = .customError(title: "Couldn't create post", message: "Restart Mlem and try again.")
+        appState.alertTitle = "Couldn't create post"
+        appState.alertMessage = "Restart Mlem and try again."
+        appState.isShowingAlert.toggle()
 
         throw PostPostingFailure.couldNotPost
     }

@@ -18,6 +18,7 @@ internal enum EncodingFailure: Error
 }
 
 /// Send a GET command to a specified endpoint with specified parameters
+@MainActor
 func sendGetCommand(appState: AppState, account: SavedAccount, endpoint: String, parameters: [URLQueryItem]) async throws -> String
 {
     var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
@@ -60,7 +61,9 @@ func sendGetCommand(appState: AppState, account: SavedAccount, endpoint: String,
     {
         print("Failed while sending GET request: \(requestError)")
         
-        appState.alertType = .connectionToLemmyError
+        appState.alertTitle = "Couldn't connect to Lemmy"
+        appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+        appState.isShowingAlert.toggle()
         
         throw ConnectionError.failedToSendRequest
     }
@@ -68,6 +71,7 @@ func sendGetCommand(appState: AppState, account: SavedAccount, endpoint: String,
 
 /// Send an authorized POST command to a specified endpoint with specified arguments in the body
 /// The arguments get serialized into JSON
+@MainActor
 func sendPostCommand(appState: AppState, account: SavedAccount, endpoint: String, arguments: [String: Any]) async throws -> String
 {
     var finalURL: URL = account.instanceLink.appendingPathComponent(endpoint, conformingTo: .url)
@@ -104,13 +108,25 @@ func sendPostCommand(appState: AppState, account: SavedAccount, endpoint: String
     {
         print("Failed while sending POST request: \(requestError)")
         
-        appState.alertType = .connectionToLemmyError
+        if requestError as! ConnectionError == ConnectionError.receivedInvalidResponseFormat
+        {
+            appState.alertTitle = "Request rejected by server"
+            appState.alertMessage = "For some reason, the Lemmy server you're connected to rejected this request."
+        }
+        else
+        {
+            appState.alertTitle = "Couldn't connect to Lemmy"
+            appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+        }
+        
+        appState.isShowingAlert.toggle()
         
         throw ConnectionError.failedToSendRequest
     }
 }
 
 /// Send a POST command to a specified endpoint with specified arguments in the body, without authorization
+@MainActor
 func sendPostCommand(appState: AppState, baseURL: URL, endpoint: String, arguments: [String: Any]) async throws -> String
 {
     var finalURL: URL = baseURL.appendingPathComponent(endpoint, conformingTo: .url)
@@ -146,7 +162,9 @@ func sendPostCommand(appState: AppState, baseURL: URL, endpoint: String, argumen
     {
         print("Failed while sending POST request: \(requestError)")
         
-        appState.alertType = .connectionToLemmyError
+        appState.alertTitle = "Couldn't connect to Lemmy"
+        appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+        appState.isShowingAlert.toggle()
         
         throw ConnectionError.failedToSendRequest
     }

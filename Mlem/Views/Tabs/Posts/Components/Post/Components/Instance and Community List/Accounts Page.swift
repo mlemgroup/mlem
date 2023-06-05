@@ -16,7 +16,7 @@ struct AccountsPage: View
 
     var body: some View
     {
-        NavigationView
+        NavigationStack
         {
             VStack
             {
@@ -78,6 +78,16 @@ struct AccountsPage: View
             {
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
             }
+        }
+        .alert(appState.alertTitle, isPresented: $appState.isShowingAlert) {
+            Button(role: .cancel) {
+                appState.isShowingAlert.toggle()
+            } label: {
+                Text("Close")
+            }
+            
+        } message: {
+            Text(appState.alertMessage)
         }
         .onAppear
         {

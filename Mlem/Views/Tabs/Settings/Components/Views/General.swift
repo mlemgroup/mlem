@@ -68,14 +68,19 @@ struct GeneralSettingsView: View
                                 }
                                 catch let emptyFileCreationError
                                 {
-                                    appState.alertType = .customError(title: "Couldn't recreate favorites file", message: "Try restarting Mlem")
+                                    
+                                    appState.alertTitle = "Couldn't recreate favorites file"
+                                    appState.alertMessage = "Try restarting Mlem."
+                                    appState.isShowingAlert.toggle()
                                     
                                     print("Failed while creting empty file: \(emptyFileCreationError)")
                                 }
                             }
                             catch let fileDeletionError
                             {
-                                appState.alertType = .customError(title: "Could not delete favorites", message: "Try restarting Mlem")
+                                appState.alertTitle = "Couldn't delete favorites"
+                                appState.alertMessage = "Try restarting Mlem."
+                                appState.isShowingAlert.toggle()
                                 
                                 print("Failed while deleting favorites: \(fileDeletionError)")
                             }
