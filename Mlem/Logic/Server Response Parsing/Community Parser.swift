@@ -16,7 +16,7 @@ func parseCommunities(communityResponse: String, instanceLink: URL) throws -> [C
     {
         let parsedJSON: JSON = try parseJSON(from: communityResponse)
 
-        let communityArray = parsedJSON["data", "communities"].arrayValue
+        let communityArray = parsedJSON["communities"].arrayValue
 
         for community in communityArray
         {

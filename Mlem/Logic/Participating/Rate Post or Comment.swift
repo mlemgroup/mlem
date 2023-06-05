@@ -25,9 +25,10 @@ func ratePost(post: Post, operation: ScoringOperation, account: SavedAccount, po
 {
     do
     {
-        async let postRatingResponse: String = try sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-        {"op": "CreatePostLike", "data": {"auth": "\(account.accessToken)", "post_id": \(post.id), "score": \(operation.rawValue)}}
-        """)
+        async let postRatingResponse: String = try sendPostCommand(account: account, endpoint: "post/like", arguments: [
+            "post_id": post.id,
+            "score": operation.rawValue
+        ])
 
         let modifiedPostIndex: Int = postTracker.posts.firstIndex(where: { $0.id == post.id })!
 
@@ -135,9 +136,10 @@ func rateComment(comment: Comment, operation: ScoringOperation, account: SavedAc
 {
     do
     {
-        async let commentRatingReponse: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-        {"op": "CreateCommentLike", "data": {"auth": "\(account.accessToken)", "comment_id": \(comment.id), "score": \(operation.rawValue)}}
-        """)
+        async let commentRatingReponse: String = try await sendPostCommand(account: account, endpoint: "comment/like", arguments: [
+            "comment_id": comment.id,
+            "score": operation.rawValue
+        ])
 
         var updatedComment: Comment = comment
 

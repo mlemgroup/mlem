@@ -15,18 +15,26 @@ internal enum PostPostingFailure: Error
 
 func postPost(to community: Community, postTitle: String, postBody: String, postURL: String, postIsNSFW: Bool, postTracker: PostTracker, account: SavedAccount) async throws
 {
-    /*
-    let postPostCommand: String = """
-        {"op": "CreatePost", "data": {"auth": "\(account.accessToken)", "name": "\(postTitle)", \(!postBody.isEmpty ? "\"body\": \"\(postBody)\"," : "") \(!postURL.isEmpty ? "\"url\": \"\(postURL)\"," : "")"nsfw": \(postIsNSFW), "community_id": \(community.id)}}
-        """
-    
-    print(postPostCommand)*/
     
     do
     {
-        let postPostingCommandResult: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-        {"op": "CreatePost", "data": {"auth": "\(account.accessToken)", "name": \(postTitle.withEscapedCharacters()), \(!postBody.isEmpty ? "\"body\": \(postBody.withEscapedCharacters())," : "") \(!postURL.isEmpty ? "\"url\": \"\(postURL)\"," : "") "nsfw": \(postIsNSFW), "community_id": \(community.id)}}
-        """)
+        var createPostCommandBody: [String: Any] = [
+            "community_id": community.id,
+            "name": postTitle,
+            "nsfw": postIsNSFW
+        ]
+        
+        if !postBody.isEmpty
+        {
+            createPostCommandBody.append("body", postBody)
+        }
+        if !postURL.isEmpty
+        {
+            createPostCommandBody.append("url", postURL)
+        }
+        
+        let postPostingCommandResult: String = try await sendPostCommand(account: account, endpoint: "post", arguments: createPostCommandBody)
+        
         print("Successfuly posted post: \(postPostingCommandResult)")
 
         if !postPostingCommandResult.contains("\"error\"")

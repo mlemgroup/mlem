@@ -9,17 +9,28 @@ import Foundation
 
 func loadCommunityDetails(community: Community, account: SavedAccount) async throws -> CommunityDetails
 {
-    let response: String = try await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-    {"op": "GetCommunity", "data": {"auth": "\(account.accessToken)", "id": \(community.id)}}
-    """)
     
     do
     {
-        return try await parseCommunityDetails(response: response, instanceLink: account.instanceLink)
+        let response: String = try await sendGetCommand(account: account, endpoint: "community", parameters: [
+            URLQueryItem(name: "id", value: "\(community.id)")
+        ])
+        
+        print("Community details response: \(response)")
+        
+        do
+        {
+            return try await parseCommunityDetails(response: response, instanceLink: account.instanceLink)
+        }
+        catch let communityDetailsParsingError
+        {
+            print("Failed while parsing community details: \(communityDetailsParsingError)")
+            throw JSONParsingError.failedToParse
+        }
     }
-    catch let communityDetailsParsingError
+    catch let communityDetailsRetrievalError
     {
-        print("Failed while parsing community details: \(communityDetailsParsingError)")
-        throw JSONParsingError.failedToParse
+        print("Failed while getting community details: \(communityDetailsRetrievalError)")
+        throw ConnectionError.failedToSendRequest
     }
 }

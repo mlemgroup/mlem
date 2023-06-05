@@ -12,6 +12,7 @@ import KeychainAccess
 struct AppConstants
 {
     static let webSocketSession: URLSession = URLSession(configuration: .default)
+    static let urlSession: URLSession = URLSession(configuration: .default)
     
     // MARK: - Date parsing
     static let dateFormatter: DateFormatter = DateFormatter()

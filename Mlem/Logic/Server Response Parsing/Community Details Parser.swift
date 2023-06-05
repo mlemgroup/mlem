@@ -16,7 +16,7 @@ func parseCommunityDetails(response: String, instanceLink: URL) async throws -> 
         
         var moderatorTracker: [User] = .init()
         
-        let moderatorArray = parsedJSON["data", "moderators"].arrayValue
+        let moderatorArray = parsedJSON["moderators"].arrayValue
         
         for moderator in moderatorArray
         {
@@ -44,7 +44,7 @@ func parseCommunityDetails(response: String, instanceLink: URL) async throws -> 
         
         let parsedDetails: CommunityDetails = CommunityDetails(
             isSubscribed: {
-                let rawParsedData = parsedJSON["data", "community_view", "subscribed"].stringValue
+                let rawParsedData = parsedJSON["community_view", "subscribed"].stringValue
                 
                 if rawParsedData == "NotSubscribed"
                 {
@@ -55,10 +55,10 @@ func parseCommunityDetails(response: String, instanceLink: URL) async throws -> 
                     return true
                 }
             }(),
-            numberOfSubscribers: parsedJSON["data", "community_view", "counts", "subscribers"].intValue,
-            numberOfPosts: parsedJSON["data", "community_view", "counts", "posts"].intValue,
-            numberOfActiveUsersOverall: parsedJSON["data", "community_view", "counts", "users_active_half_year"].intValue,
-            numberOfUsersOnline: parsedJSON["data", "online"].intValue,
+            numberOfSubscribers: parsedJSON["community_view", "counts", "subscribers"].intValue,
+            numberOfPosts: parsedJSON["community_view", "counts", "posts"].intValue,
+            numberOfActiveUsersOverall: parsedJSON["community_view", "counts", "users_active_half_year"].intValue,
+            numberOfUsersOnline: parsedJSON["online"].intValue,
             moderators: moderatorTracker
         )
         

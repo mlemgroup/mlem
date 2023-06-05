@@ -179,9 +179,7 @@ struct AddSavedInstanceView: View
             {
                 do
                 {
-                    let loginRequestResponse = try await sendCommand(maintainOpenConnection: false, instanceAddress: instanceURL, command: """
-                {"op": "Login", "data":{"username_or_email": "\(usernameOrEmail)", "password": \(password.withEscapedCharacters())}}
-                """)
+                    let loginRequestResponse = try await sendPostCommand(baseURL: instanceURL, endpoint: "user/login", arguments: ["username_or_email": "\(usernameOrEmail)", "password": "\(password)"])
                     if loginRequestResponse.contains("jwt")
                     {
                         hasSuccessfulyConnectedToEndpoint = true
@@ -190,7 +188,7 @@ struct AddSavedInstanceView: View
                         
                         let parsedResponse: JSON = try! parseJSON(from: loginRequestResponse)
                         
-                        token = parsedResponse["data", "jwt"].stringValue
+                        token = parsedResponse["jwt"].stringValue
                         
                         print("Obtained token: \(token)")
                         
