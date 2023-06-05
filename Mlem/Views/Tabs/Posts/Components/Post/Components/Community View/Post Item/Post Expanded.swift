@@ -313,9 +313,6 @@ struct PostExpanded: View
             URLQueryItem(name: "post_id", value: "\(post.id)"),
             URLQueryItem(name: "type_", value: "All")
         ])
-        let commentResponse: String = try! await sendCommand(maintainOpenConnection: false, instanceAddress: account.instanceLink, command: """
-            {"op": "GetComments", "data": { "auth": "\(account.accessToken)", "max_depth": 15, "post_id": \(post.id), "type_": "All" }}
-            """)
 
         print("Comment response: \(commentResponse)")
 
