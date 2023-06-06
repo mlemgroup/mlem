@@ -84,21 +84,33 @@ struct UserView: View
                     }
                     .listRowBackground(Color.clear)
 
+                    #warning("TODO: Make showing a user's posts and comments work")
+                    /*
                     Section
                     {
                         NavigationLink {
                             ScrollView
                             {
-                                ForEach(privatePostTracker.posts)
-                                { post in
-                                    PostItem(postTracker: privatePostTracker, post: post, isExpanded: false, isInSpecificCommunity: false, account: account, feedType: .constant(.all))
+                                LazyVStack {
+                                    ForEach(privatePostTracker.posts)
+                                    { post in
+                                        NavigationLink {
+                                            PostExpanded(account: account, postTracker: privatePostTracker, post: post, feedType: .constant(.subscribed))
+                                        } label: {
+                                            PostItem(postTracker: privatePostTracker, post: post, isExpanded: false, isInSpecificCommunity: false, account: account, feedType: .constant(.subscribed))
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
                                 }
                             }
+                            .navigationTitle("Recents by \(userDetails.name)")
+                            .navigationBarTitleDisplayMode(.inline)
                         } label: {
-                            Text("Posts")
+                            Text("Recent Posts")
                         }
 
                     }
+                     */
                 }
                 .navigationTitle(userDetails.name)
                 .navigationBarTitleDisplayMode(.inline)
