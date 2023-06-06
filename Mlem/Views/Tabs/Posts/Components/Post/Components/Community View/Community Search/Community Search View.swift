@@ -93,6 +93,8 @@ struct CommunitySearchResultsView: View
                                 Image(systemName: "star.slash")
                                 Text("You have no communities favorited")
                             }
+                            .listRowBackground(Color.clear)
+                            .frame(maxWidth: .infinity)
                         }
                     } header: {
                         Text("Favorites")
