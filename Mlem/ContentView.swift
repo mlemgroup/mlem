@@ -24,9 +24,14 @@ struct ContentView: View
             
             if let currentActiveAccount = appState.currentActiveAccount
             {
-                Text(currentActiveAccount.username)
+                Text("\(currentActiveAccount.username): \(currentActiveAccount.id)")
                     .tabItem {
                         Label("Messages", systemImage: "mail.stack")
+                    }
+                
+                Text(currentActiveAccount.username)
+                    .tabItem {
+                        Label(currentActiveAccount.username, systemImage: "person")
                     }
             }
             
