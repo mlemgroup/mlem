@@ -18,7 +18,7 @@ struct UserProfileLink: View
 
     var body: some View
     {
-        NavigationLink(destination: UserView(userID: user.id, account: account, userDetails: user))
+        NavigationLink(destination: UserView(userID: user.id, account: account))
         {
             HStack(alignment: .center, spacing: 5) {
                 if shouldShowUserAvatars

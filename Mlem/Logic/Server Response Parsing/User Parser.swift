@@ -29,7 +29,13 @@ func parseUser(userResponse: String) async throws -> User
             deleted: parsedJSON["person_view", "person", "deleted"].boolValue,
             admin: parsedJSON["person_view", "person", "admin"].boolValue,
             bot: parsedJSON["person_view", "person", "bot_account"].boolValue,
-            onInstanceID: parsedJSON["person_view", "person", "instance_id"].intValue
+            onInstanceID: parsedJSON["person_view", "person", "instance_id"].intValue,
+            details: UserDetails(
+                commentScore: parsedJSON["person_view", "counts", "comment_score"].intValue,
+                postScore: parsedJSON["person_view", "counts", "post_score"].intValue,
+                commentNumber: parsedJSON["person_view", "counts", "comment_count"].intValue,
+                postNumber: parsedJSON["person_view", "counts", "post_count"].intValue
+            )
         )
     }
     catch let parsingError

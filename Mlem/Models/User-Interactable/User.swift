@@ -32,4 +32,15 @@ struct User: Codable, Identifiable, Hashable
     let bot: Bool
     
     let onInstanceID: Int
+    
+    var details: UserDetails? = nil
+}
+
+struct UserDetails: Codable, Hashable
+{
+    let commentScore: Int
+    let postScore: Int
+    
+    let commentNumber: Int
+    let postNumber: Int
 }
