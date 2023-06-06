@@ -47,7 +47,10 @@ struct ContentView: View
             AppConstants.keychain["test"] = "I-am-a-saved-thing"
         }
         .environment(\.openURL, OpenURLAction(handler: handleURL))
-        .sheet(item: $urlToDisplay) { SafariView(url: $0) }
+        .fullScreenCover(item: $urlToDisplay) {
+            SafariView(url: $0)
+                .ignoresSafeArea()
+        }
     }
     
     private func handleURL(_ url: URL) -> OpenURLAction.Result {
