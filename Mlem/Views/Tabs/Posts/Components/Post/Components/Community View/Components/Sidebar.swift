@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CommunitySidebarView: View
 {
+    @State var account: SavedAccount
     @State var community: Community
     @Binding var isActive: Bool
 
@@ -71,7 +72,7 @@ struct CommunitySidebarView: View
                         {
                             ForEach(community.details!.moderators)
                             { moderator in
-                                UserProfileLink(user: moderator)
+                                UserProfileLink(account: account, user: moderator)
                             }
                         }
                         .navigationTitle("Moderators")

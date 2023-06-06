@@ -7,57 +7,89 @@
 
 import SwiftUI
 
+/// View for showing user profiles
+/// Accepts the following parameters:
+/// - **userID**: Non-optional ID of the user
+/// - **account**: Authenticated account to make the requests
+/// - **userDetails**: Optional. If provided, uses already-available user details instead of fetching them from the view itself
 struct UserView: View
 {
-    @State var user: User
+    @EnvironmentObject var appState: AppState
+    
+    @State var userID: Int
+    @State var account: SavedAccount
+    
+    @State var userDetails: User?
+    @State private var userPosts: [Post]?
+    @State private var userComments: [Comment]?
 
     var body: some View
     {
-        ScrollView
-        {
-            VStack(alignment: .leading) {
-                if let bannerLink = user.bannerLink
-                {
-                    StickyImageView(url: bannerLink)
+        ScrollView {
+            if let userDetails
+            {
+                Text(userDetails.name)
+            }
+            else
+            {
+                ProgressView {
+                    Text("Loading user details…")
                 }
-                else
-                {
-                    Rectangle()
-                        .fill(LinearGradient(
-                            gradient: Gradient(colors: [
-                                [.blue, .cyan, .pink, .purple, .indigo].randomElement()!,
-                                [.blue, .cyan, .pink, .purple, .indigo].randomElement()!]),
-                            startPoint: [.bottomTrailing, .bottomLeading].randomElement()!, endPoint: [.topTrailing, .topLeading].randomElement()!))
-                        .frame(width: UIScreen.main.bounds.width, height: 300, alignment: .center)
-                }
-                
-                VStack(alignment: .leading) {
-                    HStack(alignment: .lastTextBaseline, spacing: 10) {
-                        
-                        if let avatarLink = user.avatarLink
-                        {
-                            AvatarView(avatarLink: avatarLink, overridenSize: 100)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 5) {
-                            if let displayName = user.displayName
-                            {
-                                Text(displayName)
-                            }
-                            else
-                            {
-                                Text(user.name)
-                            }
-                            
-                            Text(user.actorID.absoluteString.replacingOccurrences(of: "https://", with: "").replacingOccurrences(of: "www.", with: ""))
+                .task(priority: .background) {
+                    do
+                    {
+                        userDetails = try await loadUser()
+                    }
+                    catch let userRetrievalError as ConnectionError
+                    {
+                        switch userRetrievalError {
+                            case .failedToEncodeAddress:
+                                print("What")
+                                
+                            case .receivedInvalidResponseFormat:
+                                appState.alertTitle = "Couldn't read user info"
+                                appState.alertMessage = "Lemmy sent unexpected data"
+                                appState.isShowingAlert = true
+                                
+                            case .failedToSendRequest:
+                                appState.alertTitle = "Couldn't load user info"
+                                appState.alertMessage = "There was an error while loading user information.\nTry again later."
+                                appState.isShowingAlert = true
                         }
                     }
+                    catch
+                    {
+                        print("What")
+                    }
                 }
-                .padding()
-                
-                Spacer()
             }
         }
-        .edgesIgnoringSafeArea(.all)
+    }
+    
+    func loadUser() async throws -> User
+    {
+        do
+        {
+            let userDetailsResponse: String = try await sendGetCommand(appState: appState, account: account, endpoint: "user", parameters: [
+                URLQueryItem(name: "person_id", value: "\(userID)")
+            ])
+            
+            do
+            {
+                return try await parseUser(userResponse: userDetailsResponse)
+            }
+            catch let userParsingError
+            {
+                print("Failed while parsing user info: \(userParsingError)")
+                
+                throw ConnectionError.receivedInvalidResponseFormat
+            }
+        }
+        catch let userInfoRetrievalError
+        {
+            print("Failed while getting user info: \(userInfoRetrievalError)")
+            
+            throw ConnectionError.failedToSendRequest
+        }
     }
 }

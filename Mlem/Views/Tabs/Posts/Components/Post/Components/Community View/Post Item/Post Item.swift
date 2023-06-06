@@ -264,7 +264,7 @@ struct PostItem: View
                         Text(getTimeIntervalFromNow(date: post.published))
                     }
 
-                    UserProfileLink(user: post.author)
+                    UserProfileLink(account: account, user: post.author)
                 }
                 .foregroundColor(.secondary)
                 .dynamicTypeSize(.small)

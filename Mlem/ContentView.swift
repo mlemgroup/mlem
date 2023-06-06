@@ -29,7 +29,7 @@ struct ContentView: View
                         Label("Messages", systemImage: "mail.stack")
                     }
                 
-                Text(currentActiveAccount.username)
+                UserView(userID: currentActiveAccount.id, account: currentActiveAccount)
                     .tabItem {
                         Label(currentActiveAccount.username, systemImage: "person")
                     }

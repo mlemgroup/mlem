@@ -11,7 +11,7 @@ import SwiftyJSON
 @main
 struct MlemApp: App
 {
-    @AppStorage("hasUndergoneLegacyAccountDeletion_debug_2") var hasUndergoneLegaryAccountDeletion_debug: Bool = false
+    @AppStorage("hasUndergoneLegacyAccountDeletion_debug_3") var hasUndergoneLegaryAccountDeletion_debug: Bool = false
 
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()

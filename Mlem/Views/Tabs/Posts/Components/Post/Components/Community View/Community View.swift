@@ -191,7 +191,7 @@ struct CommunityView: View
                 if isInSpecificCommunity
                 {
                     ZStack(alignment: .bottom) {
-                        NavigationLink(destination: CommunitySidebarView(community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
+                        NavigationLink(destination: CommunitySidebarView(account: account, community: community!, isActive: $isSidebarShown), isActive: $isSidebarShown)
                         { /// This is here to show the sidebar when needed
                             Text("")
                         }
