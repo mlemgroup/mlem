@@ -22,6 +22,14 @@ struct ContentView: View
                     Label("Feeds", systemImage: "text.bubble")
                 }
             
+            if let currentActiveAccount = appState.currentActiveAccount
+            {
+                Text(currentActiveAccount.username)
+                    .tabItem {
+                        Label("Messages", systemImage: "mail.stack")
+                    }
+            }
+            
             SettingsView()
                 .tabItem
                 {

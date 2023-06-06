@@ -11,12 +11,8 @@ import SwiftUI
 class AppState: ObservableObject
 {
     
-    enum ActiveAlert
-    {
-        case generalError, connectionToLemmyError, customError(title: String, message: String)
-    }
-    
     @Published var currentActiveInstance: String = ""
+    @Published var currentActiveAccount: SavedAccount?
     
     @Published var isShowingOutdatedInstanceVersionAlert: Bool = false
     

@@ -46,6 +46,8 @@ struct CommunityView: View
     @State private var newPostURL: String = ""
     @State private var newPostIsNSFW: Bool = false
     @State private var isPostingPost: Bool = false
+    
+    @Environment(\.isPresented) var isPresented
 
     enum FocusedNewPostField
     {

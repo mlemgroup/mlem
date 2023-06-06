@@ -29,6 +29,10 @@ struct AccountsPage: View
                             NavigationLink
                             {
                                 CommunityView(account: savedAccount, community: nil)
+                                    .onAppear
+                                    {
+                                        appState.currentActiveAccount = savedAccount
+                                    }
                             } label: {
                                 HStack(alignment: .center)
                                 {
@@ -60,6 +64,10 @@ struct AccountsPage: View
                     .foregroundColor(.secondary)
                 }
             }
+            .onAppear
+            {
+                appState.currentActiveAccount = nil
+            }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar
@@ -79,13 +87,15 @@ struct AccountsPage: View
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
             }
         }
-        .alert(appState.alertTitle, isPresented: $appState.isShowingAlert) {
-            Button(role: .cancel) {
+        .alert(appState.alertTitle, isPresented: $appState.isShowingAlert)
+        {
+            Button(role: .cancel)
+            {
                 appState.isShowingAlert.toggle()
             } label: {
                 Text("Close")
             }
-            
+
         } message: {
             Text(appState.alertMessage)
         }
@@ -104,6 +114,7 @@ struct AccountsPage: View
             accountsTracker.savedAccounts.remove(at: index)
 
             // MARK: - Purge the account information from the Keychain
+
             AppConstants.keychain["\(savedAccountToRemove.id)_accessToken"] = nil
         }
     }

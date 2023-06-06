@@ -13,6 +13,7 @@ internal enum LoadingError
     case shittyInternet
 }
 
+@MainActor
 func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, feedType: FeedType, sortingType: SortingOptions, account: SavedAccount) async
 {
     var loadingParameters: [URLQueryItem] = []
