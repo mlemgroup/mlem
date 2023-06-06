@@ -19,11 +19,14 @@ struct UserView: View
     @State var userID: Int
     @State var account: SavedAccount
 
+    @State private var userDetailsResponse: String = ""
+    
     @State var userDetails: User?
-    @State private var userPosts: [Post]?
-    @State private var userComments: [Comment]?
 
     @State private var imageHeader: Image?
+    
+    @StateObject var privatePostTracker: PostTracker = .init()
+    @StateObject var privateCommentTracker: CommentTracker = .init()
 
     var body: some View
     {
@@ -83,10 +86,18 @@ struct UserView: View
 
                     Section
                     {
-                        NavigationLink(destination: Text("Test"))
-                        {
-                            Text("Test link")
+                        NavigationLink {
+                            ScrollView
+                            {
+                                ForEach(privatePostTracker.posts)
+                                { post in
+                                    PostItem(postTracker: privatePostTracker, post: post, isExpanded: false, isInSpecificCommunity: false, account: account, feedType: .constant(.all))
+                                }
+                            }
+                        } label: {
+                            Text("Posts")
                         }
+
                     }
                 }
                 .navigationTitle(userDetails.name)
@@ -104,6 +115,9 @@ struct UserView: View
                     do
                     {
                         userDetails = try await loadUser()
+                        
+                        privateCommentTracker.comments = try await parseComments(commentResponse: userDetailsResponse, instanceLink: account.instanceLink)
+                        privatePostTracker.posts = try await parsePosts(postResponse: userDetailsResponse, instanceLink: account.instanceLink)
                     }
                     catch let userRetrievalError as ConnectionError
                     {
@@ -136,7 +150,7 @@ struct UserView: View
     {
         do
         {
-            let userDetailsResponse: String = try await sendGetCommand(appState: appState, account: account, endpoint: "user", parameters: [
+            userDetailsResponse = try await sendGetCommand(appState: appState, account: account, endpoint: "user", parameters: [
                 URLQueryItem(name: "person_id", value: "\(userID)"),
             ])
 
