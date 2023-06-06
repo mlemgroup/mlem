@@ -11,7 +11,7 @@ struct FavoriteCommunity: Identifiable, Codable, Equatable
 {
     var id: UUID = UUID()
     
-    let forAccountID: UUID
+    let forAccountID: Int
     
     let community: Community
 }
