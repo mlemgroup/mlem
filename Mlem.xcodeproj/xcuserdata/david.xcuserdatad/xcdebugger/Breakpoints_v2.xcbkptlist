@@ -294,8 +294,8 @@
             filePath = "Mlem/Logic/Server Response Parsing/Comment Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
             landmarkName = "parseComments(commentResponse:instanceLink:)"
             landmarkType = "9">
          </BreakpointContent>

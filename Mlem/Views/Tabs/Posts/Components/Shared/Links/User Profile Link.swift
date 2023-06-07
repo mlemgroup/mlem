@@ -12,11 +12,13 @@ struct UserProfileLink: View
 {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
+    @State var account: SavedAccount
+    
     @State var user: User
 
     var body: some View
     {
-        NavigationLink(destination: UserView(user: user))
+        NavigationLink(destination: UserView(userID: user.id, account: account))
         {
             HStack(alignment: .center, spacing: 5) {
                 if shouldShowUserAvatars
@@ -28,6 +30,8 @@ struct UserProfileLink: View
                 }
                 
                 Text(user.name)
+                    .minimumScaleFactor(0.01)
+                    .lineLimit(1)
             }
             .if(user.admin)
             { viewProxy in

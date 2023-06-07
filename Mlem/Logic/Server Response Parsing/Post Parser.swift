@@ -12,12 +12,6 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
 {
     var postTracker: [Post] = .init()
     
-    if postResponse.contains("{\"posts\":[]}")
-    {
-        print("No posts")
-        return .init()
-    }
-    
     do
     {
         let parsedJSON: JSON = try parseJSON(from: postResponse)
@@ -29,7 +23,13 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
             postArray = [parsedJSON["post_view"]]
         }
         
-        //print("Post array: \(postArray)")
+        print("Post array: \(postArray)")
+        
+        if postArray == [JSON.null]
+        {
+            print("Array is empty")
+            return .init()
+        }
         
         for post in postArray
         {
@@ -77,6 +77,11 @@ func parsePosts(postResponse: String, instanceLink: URL) async throws -> [Post]
                 hotRank: nil,
                 hotRankActive: nil,
                 newestActivityTime: post["counts", "newest_comment_time"].stringValue,
+                
+                saved: post["saved"].boolValue,
+                read: post["read"].boolValue,
+                
+                unreadComments: post["unread_comments"].intValue,
                 
                 author: User(
                     id: post["creator", "id"].intValue,

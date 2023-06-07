@@ -182,10 +182,11 @@ struct AddSavedInstanceView: View
                         
                         print("Obtained token: \(token)")
                         
-                        let newAccount = SavedAccount(instanceLink: instanceURL, accessToken: token, username: usernameOrEmail)
+                        let newAccount = SavedAccount(id: try await getUserID(instanceURL: instanceURL), instanceLink: instanceURL, accessToken: token, username: usernameOrEmail)
+                        
+                        print("New account: \(newAccount)")
                         
                         // MARK: - Save the account's credentials into the keychain
-                        
                         AppConstants.keychain["\(newAccount.id)_accessToken"] = token
                         
                         communityTracker.savedAccounts.append(newAccount)
@@ -258,6 +259,48 @@ struct AddSavedInstanceView: View
                     }
                 }
             }
+        }
+    }
+    
+    func getUserID(instanceURL: URL) async throws -> Int
+    {
+        
+        enum UserIDRetrievalError: Error
+        {
+            case couldNotFetchUserInformation, couldNotParseUserInformation
+        }
+        
+        do
+        {
+            let detailsAboutAccountResponse: String = try await sendGetCommand(appState: appState, baseURL: instanceURL, endpoint: "user", parameters: [
+                URLQueryItem(name: "username", value: "\(usernameOrEmail)@\(instanceURL.host!)")
+            ])
+            
+            print("Information about this user: \(detailsAboutAccountResponse)")
+                
+                do
+                {
+                    let parsedUserDetails: JSON = try parseJSON(from: detailsAboutAccountResponse)
+                    let parsedUserID: Int = parsedUserDetails["person_view", "person", "id"].intValue
+                    
+                    print("Parsed user ID: \(parsedUserID)")
+                    
+                    return parsedUserID
+                }
+                catch
+                {
+                    
+                    throw UserIDRetrievalError.couldNotParseUserInformation
+                }
+        }
+        catch
+        {
+            appState.alertTitle = "Couldn't fetch user information"
+            appState.alertMessage = "Mlem couldn't fetch you account's information.\nFile a bug report."
+            
+            appState.isShowingAlert = true
+            
+            throw UserIDRetrievalError.couldNotFetchUserInformation
         }
     }
 }

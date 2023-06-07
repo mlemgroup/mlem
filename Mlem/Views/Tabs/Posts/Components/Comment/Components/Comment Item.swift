@@ -143,7 +143,7 @@ struct CommentItem: View
                      */
                     
                     Text(getTimeIntervalFromNow(date: comment.published))
-                    UserProfileLink(user: comment.author)
+                    UserProfileLink(account: account, user: comment.author)
                 }
                 .foregroundColor(.secondary)
             }

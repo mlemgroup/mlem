@@ -9,7 +9,7 @@ import Foundation
 
 struct SavedAccount: Identifiable, Codable, Equatable, Hashable
 {
-    var id: UUID = UUID()
+    var id: Int
     
     let instanceLink: URL
     
