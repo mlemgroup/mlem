@@ -30,6 +30,8 @@ struct UserProfileLink: View
                 }
                 
                 Text(user.name)
+                    .minimumScaleFactor(0.01)
+                    .lineLimit(1)
             }
             .if(user.admin)
             { viewProxy in

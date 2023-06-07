@@ -10,12 +10,6 @@ import SwiftyJSON
 
 func parseComments(commentResponse: String, instanceLink: URL) async throws -> [Comment]
 {
-    #warning("TODO: Improve this so it doesn't check for the string, but maybe let it get parsed first and then check if the jsonComments array is empty")
-    if commentResponse.contains("{\"comments\":[]}")
-    { /// If there are no comments, just return an empty array
-        print("There are no comments")
-        return .init()
-    }
     do
     {
         let parsedJSON: JSON = try parseJSON(from: commentResponse)
@@ -24,6 +18,12 @@ func parseComments(commentResponse: String, instanceLink: URL) async throws -> [
         if jsonComments.isEmpty
         { /// This has to be here because I'm also using this function for parsing coments that the user posted, which has a different format. If the first attempt to get the array of comments fails, try the one that's for responses for posting comments
             jsonComments = [parsedJSON["comment_view"]]
+        }
+        
+        if jsonComments == [JSON.null]
+        {
+            print("There are no comments")
+            return .init()
         }
         
         var allComments = jsonComments.map { $0.v2ToComment() }

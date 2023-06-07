@@ -15,6 +15,12 @@ func parseUser(userResponse: String) async throws -> User
     {
         let parsedJSON: JSON = try parseJSON(from: userResponse)
         
+        if parsedJSON == [JSON.null]
+        {
+            print("No users to be found")
+            throw JSONParsingError.failedToConvertToData
+        }
+        
         return User(
             id: parsedJSON["person_view", "person", "id"].intValue,
             name: parsedJSON["person_view", "person", "name"].stringValue,

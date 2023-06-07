@@ -30,7 +30,6 @@ struct CommunityView: View
     @State private var selectedSortingOption: SortingOptions = .hot
 
     @State private var isSidebarShown: Bool = false
-    @State private var isShowingCommunitySearch: Bool = false
 
     @State private var isRefreshing: Bool = false
 
@@ -72,7 +71,7 @@ struct CommunityView: View
     {
         ZStack(alignment: .top)
         {
-            CommunitySearchResultsView(account: account, community: community, feedType: $feedType, isShowingSearch: $isShowingCommunitySearch)
+            CommunitySearchResultsView(account: account, community: community, feedType: $feedType, isShowingSearch: $appState.isShowingCommunitySearch)
             // .transition(.move(edge: .top).combined(with: .opacity))
 
             ScrollView
@@ -136,8 +135,19 @@ struct CommunityView: View
                                             postTracker.isLoading = true
                                         }
                                         
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
+                                        defer
+                                        {
+                                            postTracker.isLoading = false
+                                        }
+                                        
+                                        do
+                                        {
+                                            try await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                                        }
+                                        catch let error
+                                        {
+                                            print("Error while loading feed: \(error)")
+                                        }
                                     }
                                     else
                                     {
@@ -146,8 +156,20 @@ struct CommunityView: View
                                             postTracker.isLoading = true
                                         }
                                         
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: .all, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
+                                        defer
+                                        {
+                                            postTracker.isLoading = false
+                                        }
+                                        
+                                        do
+                                        {
+                                            try await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: .all, sortingType: selectedSortingOption, account: account)
+                                        }
+                                        catch let error
+                                        {
+                                            print("Error while loading feed: \(error)")
+                                        }
+                                        
                                     }
                                 }
                             }
@@ -167,8 +189,20 @@ struct CommunityView: View
                                             postTracker.isLoading = true
                                         }
                                         
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
+                                        defer
+                                        {
+                                            postTracker.isLoading = false
+                                        }
+                                        
+                                        do
+                                        {
+                                            try await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                                        }
+                                        catch let error
+                                        {
+                                            print("Error while loading feed: \(error)")
+                                        }
+                                        
                                     }
                                     else
                                     {
@@ -177,8 +211,20 @@ struct CommunityView: View
                                             postTracker.isLoading = true
                                         }
                                         
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: feedType, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
+                                        defer
+                                        {
+                                            postTracker.isLoading = false
+                                        }
+                                        
+                                        do
+                                        {
+                                            try await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                                        }
+                                        catch let error
+                                        {
+                                            print("Error while loading feed: \(error)")
+                                        }
+                                        
                                     }
                                 }
                             })
@@ -292,7 +338,7 @@ struct CommunityView: View
                 }
             }
             .background(Color.secondarySystemBackground)
-            .offset(y: isShowingCommunitySearch ? 300 : 0)
+            .offset(y: appState.isShowingCommunitySearch ? 300 : 0)
             .refreshable
             {
                 Task(priority: .userInitiated)
@@ -302,9 +348,21 @@ struct CommunityView: View
                     postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
                     postTracker.posts = .init()
 
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
-
-                    isRefreshing = false
+                    defer
+                    {
+                        isRefreshing = false
+                    }
+                    
+                    do
+                    {
+                        try await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                        
+                    }
+                    catch let error
+                    {
+                        print("Error while loading feed: \(error)")
+                    }
+                    
                 }
             }
             .task(priority: .userInitiated)
@@ -318,9 +376,19 @@ struct CommunityView: View
                         postTracker.isLoading = true
                     }
                     
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                    defer
+                    {
+                        postTracker.isLoading = false
+                    }
                     
-                    postTracker.isLoading = false
+                    do
+                    {
+                        try await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                    }
+                    catch let error
+                    {
+                        print("Error while loading feed: \(error)")
+                    }
                 }
                 else
                 {
@@ -361,15 +429,26 @@ struct CommunityView: View
                         postTracker.isLoading = true
                     }
                     
-                    await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
-                    postTracker.isLoading = false
+                    defer
+                    {
+                        postTracker.isLoading = false
+                    }
+                    
+                    do
+                    {
+                        try await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                    }
+                    catch let error
+                    {
+                        print("Error while loading feed: \(error)")
+                    }
                 }
             })
             .toolbar
             {
                 ToolbarItem(placement: .principal)
                 { /// This is here to replace the default navigationTitle and make it possible to tap it
-                    if !isShowingCommunitySearch
+                    if !appState.isShowingCommunitySearch
                     {
                         HStack(alignment: .center, spacing: 0)
                         {
@@ -384,7 +463,7 @@ struct CommunityView: View
 
                             withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
                             {
-                                isShowingCommunitySearch.toggle()
+                                appState.isShowingCommunitySearch.toggle()
                             }
                         }
                     }
@@ -396,7 +475,7 @@ struct CommunityView: View
 
                 ToolbarItemGroup(placement: .navigationBarTrailing)
                 {
-                    if !isShowingCommunitySearch
+                    if !appState.isShowingCommunitySearch
                     {
                         SortingMenu(selectedSortingOption: $selectedSortingOption)
 
@@ -458,7 +537,7 @@ struct CommunityView: View
 
                             withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
                             {
-                                isShowingCommunitySearch.toggle()
+                                appState.isShowingCommunitySearch.toggle()
                             }
 
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1)

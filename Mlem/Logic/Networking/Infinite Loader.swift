@@ -14,7 +14,7 @@ internal enum LoadingError
 }
 
 @MainActor
-func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, feedType: FeedType, sortingType: SortingOptions, account: SavedAccount) async
+func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, feedType: FeedType, sortingType: SortingOptions, account: SavedAccount) async throws
 {
     var loadingParameters: [URLQueryItem] = []
     
@@ -71,5 +71,7 @@ func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: C
         appState.alertTitle = "Couldn't connect to Lemmy"
         appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
         appState.isShowingAlert.toggle()
+        
+        throw ConnectionError.failedToSendRequest
     }
 }

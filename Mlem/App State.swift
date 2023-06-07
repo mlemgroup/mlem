@@ -14,6 +14,8 @@ class AppState: ObservableObject
     @Published var currentActiveInstance: String = ""
     @Published var currentActiveAccount: SavedAccount?
     
+    @Published var isShowingCommunitySearch: Bool = false
+    
     @Published var isShowingOutdatedInstanceVersionAlert: Bool = false
     
     @Published var isShowingAlert: Bool = false
