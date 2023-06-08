@@ -24,7 +24,6 @@ struct Comment: Codable, Identifiable, Hashable
     let apID: URL
     let local: Bool
     let communityID: Int
-    let communityActorID: URL
     let communityLocal: Bool
     let communityName: String
     let communityIcon: URL?
