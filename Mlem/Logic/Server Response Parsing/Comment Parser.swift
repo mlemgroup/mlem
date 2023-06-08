@@ -129,7 +129,6 @@ private extension JSON {
             apID: self["comment", "ap_id"].url!,
             local: self["comment", "local"].boolValue,
             communityID: self["community", "id"].intValue,
-            communityActorID: self["community", "actor_id"].url!,
             communityLocal: self["community", "local"].boolValue,
             communityName: self["community", "name"].stringValue,
             communityIcon: self["community", "icon"].url,

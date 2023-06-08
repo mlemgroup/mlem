@@ -22,16 +22,15 @@ struct WebsiteIconComplex: View
 
     @State private var overridenWebsiteFaviconName: String = "globe"
 
-    var faviconURL: URL?
-    {
-        if let baseURL = post.url?.host
-        {
-            return URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")!
-        }
-        else
-        {
+    var faviconURL: URL? {
+        guard
+            let baseURL = post.url?.host,
+            let imageURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")
+        else {
             return nil
         }
+        
+        return imageURL
     }
 
     var body: some View

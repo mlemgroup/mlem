@@ -7,45 +7,34 @@
 
 import Foundation
 
-fileprivate enum EndpointDiscoveryError: Error
-{
+enum EndpointDiscoveryError: Error {
     case couldNotFindAnyCorrectEndpoints
 }
 
-func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL
-{
+func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL {
     var validAddress: URL?
     
-    let possibleInstanceAddresses: [URL] = [
-        URL(string: "https://\(baseInstanceAddress)/api/v1/user")!,
-        URL(string: "https://\(baseInstanceAddress)/api/v2/user")!,
-        URL(string: "https://\(baseInstanceAddress)/api/v3/user")!
+    let possibleInstanceAddresses = [
+        URL(string: "https://\(baseInstanceAddress)/api/v1/user"),
+        URL(string: "https://\(baseInstanceAddress)/api/v2/user"),
+        URL(string: "https://\(baseInstanceAddress)/api/v3/user")
     ]
+        .compactMap { $0 }
     
-    for address in possibleInstanceAddresses
-    {
-        if await checkIfEndpointExists(at: address)
-        {
+    for address in possibleInstanceAddresses {
+        if await checkIfEndpointExists(at: address) {
             print("\(address) is valid")
             validAddress = address.deletingLastPathComponent()
-            
-            print("Will use address \(validAddress)")
-            
             break
-        }
-        else
-        {
+        } else {
             print("\(address) is invalid")
             continue
         }
     }
     
-    if validAddress != nil
-    {
-        return validAddress!
+    if let validAddress {
+        return validAddress
     }
-    else
-    {
-        throw EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints
-    }
+    
+    throw EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints
 }
