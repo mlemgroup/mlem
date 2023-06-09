@@ -145,7 +145,7 @@ struct AddSavedInstanceView: View
 
         do
         {
-            let sanitizedLink: String = instanceLink.replacingOccurrences(of: "https://", with: "").replacingOccurrences(of: "http://", with: "").replacingOccurrences(of: "www.", with: "")
+            let sanitizedLink: String = instanceLink.replacingOccurrences(of: "https://", with: "").replacingOccurrences(of: "http://", with: "").replacingOccurrences(of: "www.", with: "").lowercased()
             
             print("Sanitized link: \(sanitizedLink)")
             

@@ -100,20 +100,6 @@ struct MlemApp: App
                     {
                         print("Saved Accounts file exists, will attempt to load saved accounts")
 
-                        if !hasUndergoneLegaryAccountDeletion_debug
-                        {
-                            print("Has not undergone legacy account deletion")
-
-                            try! FileManager.default.removeItem(at: AppConstants.savedAccountsFilePath)
-                            try! createEmptyFile(at: AppConstants.savedAccountsFilePath)
-
-                            hasUndergoneLegaryAccountDeletion_debug = true
-                        }
-                        else
-                        {
-                            print("Has undergone legacy account deletion")
-                        }
-
                         do
                         {
                             let loadedUpAccounts = try decodeFromFile(fromURL: AppConstants.savedAccountsFilePath, whatToDecode: .accounts) as! [SavedAccount]
