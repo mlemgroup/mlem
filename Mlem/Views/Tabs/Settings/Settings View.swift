@@ -177,6 +177,13 @@ struct SettingsView: View
                             .foregroundColor(.blue)
                         Text("About Mlem")
                     }
+                    
+                    Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
+                        Image(systemName: "person.2.circle.fill")
+                            .foregroundColor(.purple)
+                        Text("c/mlemapp")
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .navigationTitle("Settings")
