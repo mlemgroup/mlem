@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-internal enum FeedType: String
+internal enum FeedType: String, Encodable
 {
     case all = "All"
     case subscribed = "Subscribed"

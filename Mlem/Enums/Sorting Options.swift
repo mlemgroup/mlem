@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SortingOptions: String
+enum SortingOptions: String, Encodable
 {
     case active = "Active"
     case hot = "Hot"
