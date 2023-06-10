@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
+		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
 		630737892A1CD1E900039852 /* String - Escape Special Characters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630737882A1CD1E900039852 /* String - Escape Special Characters.swift */; };
 		6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */; };
 		6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6307378C2A1CEB7C00039852 /* My Vote.swift */; };
@@ -136,6 +138,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
+		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
 		630737882A1CD1E900039852 /* String - Escape Special Characters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String - Escape Special Characters.swift"; sourceTree = "<group>"; };
 		6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rate Post or Comment.swift"; sourceTree = "<group>"; };
 		6307378C2A1CEB7C00039852 /* My Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "My Vote.swift"; sourceTree = "<group>"; };
@@ -369,6 +373,7 @@
 				6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */,
 				63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */,
 				63E5D3972A13DCFB00EC1FBD /* Remove Community from Favorites.swift */,
+				50EC39B12A346DDC00E014C2 /* URLHandler.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				630737882A1CD1E900039852 /* String - Escape Special Characters.swift */,
 				63A200522A2DDD38005CDDE3 /* Dictionary - Append.swift */,
 				6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */,
+				503BA26E2A2C94540052516C /* URL+Identifiable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -972,6 +978,7 @@
 				63E5D3962A13DAF200EC1FBD /* Mark Community as Favorite.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
 				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
+				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,
@@ -993,6 +1000,7 @@
 				63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
 				63E5D3982A13DCFB00EC1FBD /* Remove Community from Favorites.swift in Sources */,
+				503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */,
 				63ABCE0E27F894060047A7D0 /* User View.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,

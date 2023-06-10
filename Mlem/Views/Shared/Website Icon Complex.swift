@@ -7,7 +7,6 @@
 
 import CachedAsyncImage
 import Foundation
-import SafariServices
 import SwiftUI
 
 struct WebsiteIconComplex: View
@@ -21,6 +20,8 @@ struct WebsiteIconComplex: View
     @State var post: Post
 
     @State private var overridenWebsiteFaviconName: String = "globe"
+    
+    @Environment(\.openURL) private var openURL
 
     var faviconURL: URL? {
         guard
@@ -150,11 +151,10 @@ struct WebsiteIconComplex: View
             }
         }
         .groupBoxStyle(OutlinedWebComplexStyle())
-        .onTapGesture
-        { /// Open in-app safari
-            let safariViewController = SFSafariViewController(url: post.url!, configuration: AppConstants.inAppSafariConfiguration)
-
-            UIApplication.shared.firstKeyWindow?.rootViewController?.present(safariViewController, animated: true)
+        .onTapGesture {
+            if let url = post.url {
+                openURL(url)
+            }
         }
     }
 }

@@ -45,5 +45,6 @@ struct ContentView: View
         {
             AppConstants.keychain["test"] = "I-am-a-saved-thing"
         }
+        .environment(\.openURL, OpenURLAction(handler: URLHandler.handle))
     }
 }

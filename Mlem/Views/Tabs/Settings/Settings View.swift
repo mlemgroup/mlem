@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingsView: View
 {
+    @Environment(\.openURL) private var openURL
+    
     @State private var specialContributors: [Contributor] = [
         Contributor(
             name: "Seb Jachec",
@@ -102,13 +104,13 @@ struct SettingsView: View
                                     VStack(alignment: .center, spacing: 0) {
                                         HStack(alignment: .center, spacing: 10) {
                                             Button {
-                                                UIApplication.shared.open(URL(string: "https://mstdn.social/@davidbures")!)
+                                                openURL(URL(string: "https://mstdn.social/@davidbures")!)
                                             } label: {
                                                 Label("Mastodon", systemImage: "link")
                                             }
                                             .buttonStyle(.bordered)
                                             Button {
-                                                UIApplication.shared.open(URL(string: "https://twitter.com/davidbures")!)
+                                                openURL(URL(string: "https://twitter.com/davidbures")!)
                                             } label: {
                                                 Label("Twitter", systemImage: "link")
                                             }

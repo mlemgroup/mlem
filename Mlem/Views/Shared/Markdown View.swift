@@ -6,7 +6,6 @@
 //
 
 import MarkdownUI
-import SafariServices
 import SwiftUI
 
 extension Theme
@@ -235,7 +234,6 @@ private extension Color
 
 struct MarkdownView: View
 {
-    @Environment(\.openURL) private var openURL
 
     @State var text: String
 
@@ -244,13 +242,5 @@ struct MarkdownView: View
         Markdown(text)
             .markdownTheme(.mlem)
             .background(Color.systemBackground)
-            .environment(\.openURL, OpenURLAction
-            { interceptedURL in
-                let safariViewController = SFSafariViewController(url: interceptedURL, configuration: AppConstants.inAppSafariConfiguration)
-
-                UIApplication.shared.firstKeyWindow?.rootViewController?.present(safariViewController, animated: true)
-
-                return .handled
-            })
     }
 }

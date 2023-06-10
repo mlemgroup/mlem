@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SafariServices
 import KeychainAccess
+import UIKit
 
 struct AppConstants
 {
@@ -20,16 +20,6 @@ struct AppConstants
     
     // MARK: - Keychain
     static let keychain: Keychain = Keychain(service: "com.davidbures.Mlem-keychain")
-    
-    // MARK: - In-app Safari
-    static let inAppSafariConfiguration: SFSafariViewController.Configuration =
-    {
-        let configuration = SFSafariViewController.Configuration()
-        configuration.barCollapsingEnabled = true
-        configuration.entersReaderIfAvailable = false
-        
-        return configuration
-    }()
     
     // MARK: - Files
     private static let applicationSupportDirectoryPath: URL = try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
