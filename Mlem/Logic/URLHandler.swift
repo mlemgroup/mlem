@@ -20,5 +20,13 @@ class URLHandler {
         UIApplication.shared.firstKeyWindow?.rootViewController?.present(viewController, animated: true)
         return .handled
     }
-    
+}
+
+extension SFSafariViewController.Configuration {
+    /// The default settings used in this application
+    static var `default`: Self {
+        let configuration = Self.init()
+        configuration.entersReaderIfAvailable = false
+        return configuration
+    }
 }
