@@ -151,37 +151,6 @@ struct CommunityView: View
                                     }
                                 }
                             }
-                            .onChange(of: selectedSortingOption, perform: { newValue in
-                                Task
-                                {
-                                    print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-
-                                    postTracker.posts = .init()
-                                    postTracker.page = 1
-
-                                    if community == nil
-                                    {
-                                        
-                                        if postTracker.posts.isEmpty
-                                        {
-                                            postTracker.isLoading = true
-                                        }
-                                        
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
-                                    }
-                                    else
-                                    {
-                                        if postTracker.posts.isEmpty
-                                        {
-                                            postTracker.isLoading = true
-                                        }
-                                        
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: feedType, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
-                                    }
-                                }
-                            })
                         }
                     }
                 }
@@ -398,7 +367,26 @@ struct CommunityView: View
                 {
                     if !isShowingCommunitySearch
                     {
-                        SortingMenu(selectedSortingOption: $selectedSortingOption)
+                        SortingMenu(selectedSortingOption: Binding(get: {
+                            selectedSortingOption
+                        }, set: { newValue in
+                            self.selectedSortingOption = newValue
+                            Task {
+                                print("Selected sorting option: \(newValue), \(newValue.rawValue)")
+                                
+                                postTracker.posts = .init()
+                                postTracker.page = 1
+                                
+                                
+                                if postTracker.posts.isEmpty {
+                                    postTracker.isLoading = true
+                                }
+                                
+                                await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: community, feedType: feedType, sortingType: selectedSortingOption, account: account)
+                                postTracker.isLoading = false
+                                
+                            }
+                        }))
 
                         Menu
                         {
