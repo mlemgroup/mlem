@@ -15,9 +15,9 @@ func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL {
     var validAddress: URL?
     
     let possibleInstanceAddresses = [
-        URL(string: "https://\(baseInstanceAddress)/api/v1/user"),
+        URL(string: "https://\(baseInstanceAddress)/api/v3/user"),
         URL(string: "https://\(baseInstanceAddress)/api/v2/user"),
-        URL(string: "https://\(baseInstanceAddress)/api/v3/user")
+        URL(string: "https://\(baseInstanceAddress)/api/v1/user")
     ]
         .compactMap { $0 }
     
