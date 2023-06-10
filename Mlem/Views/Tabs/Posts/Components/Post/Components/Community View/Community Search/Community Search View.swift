@@ -73,7 +73,7 @@ struct CommunitySearchResultsView: View
                             { favoritedCommunity in
                                 NavigationLink(destination: CommunityView(account: account, community: favoritedCommunity.community, feedType: .all))
                                 {
-                                    Text(favoritedCommunity.community.name)
+                                    Text("\(favoritedCommunity.community.name)\(Text("@\(favoritedCommunity.community.actorID.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true)
                                     {
                                         Button(role: .destructive)
@@ -108,7 +108,7 @@ struct CommunitySearchResultsView: View
                         { foundCommunity in
                             NavigationLink(destination: CommunityView(account: account, community: foundCommunity, feedType: .all))
                             {
-                                Text(foundCommunity.name)
+                                Text("\(foundCommunity.name)\(Text("@\(foundCommunity.actorID.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true)
                                 {
                                     if favoritedCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == foundCommunity.id })
