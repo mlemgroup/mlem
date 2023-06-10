@@ -14,63 +14,62 @@ struct SortingMenu: View {
     var body: some View {
         Menu
         {
-            Button
-            {
-                selectedSortingOption = .active
-            } label: {
-                Label("Active", systemImage: "bubble.left.and.bubble.right")
-            }
+            OptionButton(
+                title: "Active",
+                imageName: "bubble.left.and.bubble.right",
+                option: .active,
+                selectedOption: $selectedSortingOption
+            )
             
-            Button
-            {
-                selectedSortingOption = .hot
-            } label: {
-                Label("Hot", systemImage: "flame")
-            }
+            OptionButton(
+                title: "Hot",
+                imageName: "flame",
+                option: .hot,
+                selectedOption: $selectedSortingOption
+            )
+
+            OptionButton(
+                title: "New",
+                imageName: "sun.max",
+                option: .new,
+                selectedOption: $selectedSortingOption
+            )
             
-            Button
-            {
-                selectedSortingOption = .new
-            } label: {
-                Label("New", systemImage: "sun.max")
-            }
-            
-            Menu
-            {
-                Button
-                {
-                    selectedSortingOption = .topDay
-                } label: {
-                    Label("Day", systemImage: "calendar.day.timeline.left")
-                }
+            Menu {
+                OptionButton(
+                    title: "Day",
+                    imageName: "calendar.day.timeline.left",
+                    option: .topDay,
+                    selectedOption: $selectedSortingOption
+                )
+
+                OptionButton(
+                    title: "Week",
+                    imageName: "calendar.day.timeline.left",
+                    option: .topWeek,
+                    selectedOption: $selectedSortingOption
+                )
                 
-                Button
-                {
-                    selectedSortingOption = .topWeek
-                } label: {
-                    Label("Week", systemImage: "calendar.day.timeline.left")
-                }
-                
-                Button
-                {
-                    selectedSortingOption = .topMonth
-                } label: {
-                    Label("Month", systemImage: "calendar.day.timeline.left")
-                }
-                
-                Button
-                {
-                    selectedSortingOption = .topYear
-                } label: {
-                    Label("Year", systemImage: "calendar.day.timeline.left")
-                }
-                
-                Button
-                {
-                    selectedSortingOption = .topAll
-                } label: {
-                    Label("All time", systemImage: "calendar.day.timeline.left")
-                }
+                OptionButton(
+                    title: "Month",
+                    imageName: "calendar.day.timeline.left",
+                    option: .topMonth,
+                    selectedOption: $selectedSortingOption
+                )
+
+                OptionButton(
+                    title: "Year",
+                    imageName: "calendar.day.timeline.left",
+                    option: .topYear,
+                    selectedOption: $selectedSortingOption
+                )
+
+                OptionButton(
+                    title: "All time",
+                    imageName: "calendar.day.timeline.left",
+                    option: .topAll,
+                    selectedOption: $selectedSortingOption
+                )
             } label: {
                 Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
             }
@@ -93,11 +92,24 @@ struct SortingMenu: View {
                     Label("Selected sorting by \"Top of Year\"", systemImage: "calendar.day.timeline.left")
                 case .topAll:
                     Label("Selected sorting by \"Top of All Time\"", systemImage: "calendar.day.timeline.left")
-                    
-#warning("TODO: Make this the default icon for the sorting")
-                    /* case .unspecified:
-                     Label("Sort posts", systemImage: "arrow.up.and.down.text.horizontal") */
             }
         }
+    }
+}
+
+struct OptionButton<Option: Equatable>: View {
+    
+    let title: String
+    let imageName: String
+    let option: Option
+    @Binding var selectedOption: Option
+    
+    var body: some View {
+        Button {
+            selectedOption = option
+        } label: {
+            Label(title, systemImage: imageName)
+        }
+        .disabled(option == selectedOption)
     }
 }
