@@ -8,68 +8,43 @@
 import Foundation
 import SwiftUI
 
-internal enum LoadingError
-{
+enum LoadingError {
     case shittyInternet
 }
 
 @MainActor
-func loadInfiniteFeed(postTracker: PostTracker, appState: AppState, community: Community?, feedType: FeedType, sortingType: SortingOptions, account: SavedAccount) async
-{
-    var loadingParameters: [URLQueryItem] = []
-    
-    if let community
-    {
-        print("Will be in COMMUNITY scope")
-        
-        loadingParameters = [
-            URLQueryItem(name: "type_", value: feedType.rawValue),
-            URLQueryItem(name: "sort", value: sortingType.rawValue),
-            URLQueryItem(name: "page", value: "\(postTracker.page)"),
-            URLQueryItem(name: "community_id", value: "\(community.id)")
-        ]
-    }
-    else
-    {
-        print("Will be in GLOBAL scope")
-        
-        loadingParameters = [
-            URLQueryItem(name: "type_", value: feedType.rawValue),
-            URLQueryItem(name: "sort", value: sortingType.rawValue),
-            URLQueryItem(name: "page", value: "\(postTracker.page)"),
-        ]
-    }
-
+func loadInfiniteFeed(
+    postTracker: PostTracker,
+    appState: AppState,
+    communityId: Int?,
+    feedType: FeedType,
+    sortingType: SortingOptions,
+    account: SavedAccount
+) async throws {
     print("Page counter value: \(postTracker.page)")
+    let request = GetPostsRequest(
+        account: account,
+        communityId: communityId,
+        page: postTracker.page,
+        sort: sortingType
+    )
     
-    do
-    {
-        let apiResponse = try await sendGetCommand(appState: appState, account: account, endpoint: "post/list", parameters: loadingParameters)
+    do {
         
-        print("API Response: \(apiResponse)")
+        let response = try await APIClient().perform(request: request)
         
-        if !apiResponse.contains("""
-        "posts":[]}
-        """)
-        {
-            let parsedNewPosts: [Post] = try await parsePosts(postResponse: apiResponse, instanceLink: account.instanceLink)
-            
-            for post in parsedNewPosts
-            {
-                postTracker.posts.append(post)
-            }
-            
+        guard !response.posts.isEmpty else {
+            return
+        }
+        
+        await MainActor.run {
+            postTracker.posts.append(contentsOf: response.posts)
             postTracker.page += 1
         }
-    }
-    catch let connectionError
-    {
-        print("Failed while loading feed: \(connectionError)")
-        
-        appState.alertTitle = "Couldn't connect to Lemmy"
-        appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
-        appState.isShowingAlert.toggle()
-        
-        //throw ConnectionError.failedToSendRequest
+    } catch {
+        // appState.alertTitle = "Couldn't connect to Lemmy"
+        // appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+        // appState.isShowingAlert.toggle()
+        throw error
     }
 }

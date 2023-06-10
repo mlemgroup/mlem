@@ -9,7 +9,7 @@ import Foundation
 
 class PostTracker: ObservableObject
 {
-    @Published var posts: [Post] = .init()
+    @Published var posts: [APIPostView] = .init()
     @Published var page: Int = 1
     @Published var isLoading: Bool = true
 }

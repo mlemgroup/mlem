@@ -13,8 +13,7 @@ struct UserProfileLink: View
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
     @State var account: SavedAccount
-    
-    @State var user: User
+    @State var user: APIPerson
 
     var body: some View
     {
@@ -23,7 +22,7 @@ struct UserProfileLink: View
             HStack(alignment: .center, spacing: 5) {
                 if shouldShowUserAvatars
                 {
-                    if let avatarLink = user.avatarLink
+                    if let avatarLink = user.avatar
                     {
                         AvatarView(avatarLink: avatarLink)
                     }
@@ -38,7 +37,7 @@ struct UserProfileLink: View
                 viewProxy
                     .foregroundColor(.red)
             }
-            .if(user.bot)
+            .if(user.botAccount == true)
             { viewProxy in
                 viewProxy
                     .foregroundColor(.indigo)
