@@ -135,7 +135,7 @@ struct UserView: View
                     {
                         switch userRetrievalError
                         {
-                        case .failedToEncodeAddress:
+                        case .failedToEncodeAddress, .missingTotpToken:
                             print("What")
 
                         case .receivedInvalidResponseFormat:

@@ -10,7 +10,7 @@ import SwiftyJSON
 
 enum ConnectionError: Error
 {
-    case failedToEncodeAddress, receivedInvalidResponseFormat, failedToSendRequest
+    case failedToEncodeAddress, receivedInvalidResponseFormat, failedToSendRequest, missingTotpToken
 }
 internal enum EncodingFailure: Error
 {
@@ -203,6 +203,10 @@ func sendPostCommand(appState: AppState, baseURL: URL, endpoint: String, argumen
         
         if httpResponse.statusCode != 200
         {
+            // TODO: we needn't check this for every non-200 response. Additionally, could it throw its own error?
+            if (String(decoding: data, as: UTF8.self).contains("missing_totp_token")) {
+                throw ConnectionError.missingTotpToken
+            }
             throw ConnectionError.receivedInvalidResponseFormat
         }
         
@@ -210,6 +214,12 @@ func sendPostCommand(appState: AppState, baseURL: URL, endpoint: String, argumen
     }
     catch let requestError
     {
+        switch requestError {
+        case ConnectionError.missingTotpToken:
+            throw requestError
+        default:
+            break
+        }
         print("Failed while sending POST request: \(requestError)")
         
         appState.alertTitle = "Couldn't connect to Lemmy"

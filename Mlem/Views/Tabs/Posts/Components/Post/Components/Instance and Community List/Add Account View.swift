@@ -18,6 +18,7 @@ struct AddSavedInstanceView: View
     @State private var instanceLink: String = ""
     @State private var usernameOrEmail: String = ""
     @State private var password: String = ""
+    @State private var twoFactorToken: String = ""
 
     @State private var token: String = ""
 
@@ -25,6 +26,7 @@ struct AddSavedInstanceView: View
     @State private var hasSuccessfulyConnectedToEndpoint: Bool = false
     @State private var errorOccuredWhileConnectingToEndpoint: Bool = false
     @State private var errorText: String = ""
+    @State private var isShowingTwoFactorSection: Bool = false
 
     @FocusState var isFocused
 
@@ -117,6 +119,16 @@ struct AddSavedInstanceView: View
                         SecureField("Password", text: $password, prompt: Text("VeryStrongPassword"))
                             .submitLabel(.go)
                     }
+
+                    if isShowingTwoFactorSection {
+                        HStack
+                        {
+                            Text("2FA Token")
+                            Spacer()
+                            SecureField("TwoFactorToken", text: $twoFactorToken, prompt: Text("000000"))
+                                .submitLabel(.go)
+                        }
+                    }
                 }
 
                 Button
@@ -169,7 +181,11 @@ struct AddSavedInstanceView: View
             {
                 do
                 {
-                    let loginRequestResponse = try await sendPostCommand(appState: appState, baseURL: instanceURL, endpoint: "user/login", arguments: ["username_or_email": "\(usernameOrEmail)", "password": "\(password)"])
+                    var loginArguments = ["username_or_email": "\(usernameOrEmail)", "password": "\(password)"]
+                    if twoFactorToken != "" {
+                        loginArguments["totp_2fa_token"] = twoFactorToken
+                    }
+                    let loginRequestResponse = try await sendPostCommand(appState: appState, baseURL: instanceURL, endpoint: "user/login", arguments: loginArguments)
                     if loginRequestResponse.contains("jwt")
                     {
                         hasSuccessfulyConnectedToEndpoint = true
@@ -217,11 +233,16 @@ struct AddSavedInstanceView: View
                         }
                     }
                 }
-                catch let loginRequestError
+                catch let loginRequestError as ConnectionError
                 {
-                    print("Failed while sending login command: \(loginRequestError)")
-                    
-                    errorText = "Could not connect to \(instanceLink)"
+                    switch loginRequestError {
+                    case .missingTotpToken:
+                        isShowingTwoFactorSection = true
+                        errorText = "Please enter the 2FA token"
+                    default:
+                        print("Failed while sending login command: \(loginRequestError)")
+                        errorText = "Could not connect to \(instanceLink)"
+                    }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1)
                     {
