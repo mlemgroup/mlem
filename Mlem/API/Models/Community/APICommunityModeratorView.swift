@@ -13,5 +13,5 @@ struct APICommunityModeratorView: Decodable {
 }
 
 extension APICommunityModeratorView: Identifiable {
-    var id: Int { moderator.id }
+    var id: String { "\(moderator.id)-\(community.id)" }
 }
