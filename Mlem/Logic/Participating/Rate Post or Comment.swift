@@ -27,7 +27,7 @@ func ratePost(
 ) async throws {
     do {
         
-        let request = try CreatePostLikeRequest(
+        let request = CreatePostLikeRequest(
             account: account,
             postId: post.id,
             score: operation
@@ -57,7 +57,7 @@ func rateComment(
     appState: AppState
 ) async throws -> HierarchicalComment? {
     do {
-        let request = try CreateCommentLikeRequest(
+        let request = CreateCommentLikeRequest(
             account: account,
             commentId: comment.id,
             score: operation

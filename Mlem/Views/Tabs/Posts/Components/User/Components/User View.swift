@@ -149,7 +149,7 @@ struct UserView: View {
     
     private func handle(_ error: Error) {
         switch error {
-        case APIClientError.response(let message):
+        case APIClientError.response(let message, _):
             errorAlert = .init(
                 title: "Error",
                 message: message.error

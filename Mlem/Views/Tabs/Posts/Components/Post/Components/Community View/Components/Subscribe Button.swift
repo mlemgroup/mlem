@@ -56,7 +56,7 @@ struct SubscribeButton: View {
     
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         do {
-            let request = try FollowCommunityRequest(
+            let request = FollowCommunityRequest(
                 account: account,
                 communityId: communityId,
                 follow: shouldSubscribe

@@ -16,7 +16,7 @@ func postComment(
     account: SavedAccount,
     appState: AppState
 ) async throws {
-    let request = try CreateCommentRequest(
+    let request = CreateCommentRequest(
         account: account,
         content: commentContents,
         languageId: nil,
@@ -41,7 +41,7 @@ func postComment(
     appState: AppState
 ) async throws {
     let dominantLanguage = NSLinguisticTagger.dominantLanguage(for: commentContents)
-    let request = try CreateCommentRequest(
+    let request = CreateCommentRequest(
         account: account,
         content: commentContents,
         languageId: dominantLanguage == "en" ? 37 : nil,

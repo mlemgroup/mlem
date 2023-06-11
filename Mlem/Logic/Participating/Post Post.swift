@@ -18,7 +18,7 @@ func postPost(
     account: SavedAccount,
     appState: AppState
 ) async throws {
-    let request = try CreatePostRequest(
+    let request = CreatePostRequest(
         account: account,
         communityId: community.id,
         name: postTitle,

@@ -59,7 +59,7 @@ extension [HierarchicalComment] {
             if element.id == parentId {
                 // we've found the comment we're replying too, so re-create it and append this to it's children
                 let reply = HierarchicalComment(comment: commentView, children: [])
-                var updatedParent = self[index]
+                let updatedParent = self[index]
                 updatedParent.children.append(reply)
                 self[index] = updatedParent
                 return reply

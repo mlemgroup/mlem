@@ -182,7 +182,7 @@ struct AddSavedInstanceView: View
                 return
             }
             
-            let loginRequest = try LoginRequest(
+            let loginRequest = LoginRequest(
                 instanceURL: instanceURL,
                 username: usernameOrEmail,
                 password: password
@@ -235,13 +235,13 @@ struct AddSavedInstanceView: View
                 switch error {
                 case EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints:
                     message = "Could not connect to \(instanceLink)"
-                case APIRequestError.encoding:
-                    message = "Invalid credentials"
                 case UserIDRetrievalError.couldNotFetchUserInformation:
                     message = "Mlem couldn't fetch you account's information.\nFile a bug report."
+                case APIClientError.encoding:
+                    message = "Invalid credentials"
                 case APIClientError.networking:
                     message = "Please check your internet connection and try again"
-                case APIClientError.response(let errorResponse):
+                case APIClientError.response(let errorResponse, _):
                     message = errorResponse.error
                 default:
                     // unhandled error encountered...

@@ -317,7 +317,7 @@ struct PostExpanded: View
             let request = GetCommentsRequest(account: account, postId: post.id)
             let response = try await APIClient().perform(request: request)
             commentTracker.comments = sortComments(response.comments.hierarchicalRepresentation, by: defaultCommentSorting)
-        } catch APIClientError.response(let message) {
+        } catch APIClientError.response(let message, _) {
             errorAlert = .init(title: "API error", message: message.error)
         } catch {
             errorAlert = .init(title: "Failed to load comments", message: "Please refresh to try again")

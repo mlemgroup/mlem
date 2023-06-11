@@ -464,7 +464,7 @@ struct CommunityView: View
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"
             )
-        } catch APIClientError.response(let message) {
+        } catch APIClientError.response(let message, _) {
             errorAlert = .init(
                 title: "Error",
                 message: message.error
