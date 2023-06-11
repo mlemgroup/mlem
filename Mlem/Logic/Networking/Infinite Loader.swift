@@ -28,23 +28,14 @@ func loadInfiniteFeed(
         page: postTracker.page,
         sort: sortingType
     )
+    let response = try await APIClient().perform(request: request)
     
-    do {
-        
-        let response = try await APIClient().perform(request: request)
-        
-        guard !response.posts.isEmpty else {
-            return
-        }
-        
-        await MainActor.run {
-            postTracker.posts.append(contentsOf: response.posts)
-            postTracker.page += 1
-        }
-    } catch {
-        // appState.alertTitle = "Couldn't connect to Lemmy"
-        // appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
-        // appState.isShowingAlert.toggle()
-        throw error
+    guard !response.posts.isEmpty else {
+        return
+    }
+    
+    await MainActor.run {
+        postTracker.posts.append(contentsOf: response.posts)
+        postTracker.page += 1
     }
 }
