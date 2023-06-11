@@ -238,7 +238,9 @@ struct AddSavedInstanceView: View
                 case UserIDRetrievalError.couldNotFetchUserInformation:
                     message = "Mlem couldn't fetch you account's information.\nFile a bug report."
                 case APIClientError.encoding:
-                    message = "Invalid credentials"
+                    // TODO: we should add better validation at the UI layer as encoding failures can be caught
+                    // at an earlier stage
+                    message = "Please check your username and password"
                 case APIClientError.networking:
                     message = "Please check your internet connection and try again"
                 case APIClientError.response(let errorResponse, _):
