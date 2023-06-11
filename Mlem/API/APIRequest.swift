@@ -40,20 +40,24 @@ extension APIGetRequest {
     }
 }
 
-// MARK: - APIPostRequest
+// MARK: - APIRequestBodyProviding
 
-protocol APIPostRequest: APIRequest {
+protocol APIRequestBodyProviding: APIRequest {
     associatedtype Body: Encodable
     var body: Body { get }
 }
 
-extension APIPostRequest {
+extension APIRequestBodyProviding {
     var endpoint: URL {
         instanceURL
         .appending(path: path)
     }
 }
 
+// MARK: - APIPostRequest
+
+protocol APIPostRequest: APIRequestBodyProviding {}
+
 // MARK: - APIPutRequest
 
-protocol APIPutRequest: APIPostRequest {}
+protocol APIPutRequest: APIRequestBodyProviding {}

@@ -71,7 +71,7 @@ class APIClient {
         return urlRequest
     }
     
-    private func createBodyData(for defintion: any APIPostRequest) throws -> Data {
+    private func createBodyData(for defintion: any APIRequestBodyProviding) throws -> Data {
         do {
             return try JSONEncoder().encode(defintion.body)
         } catch {
