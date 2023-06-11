@@ -9,6 +9,6 @@ import Foundation
 
 class CommentTracker: ObservableObject
 {
-    @Published var comments: [Comment] = .init()
+    @Published var comments: [HierarchicalComment] = .init()
     @Published var isLoading: Bool = true
 }

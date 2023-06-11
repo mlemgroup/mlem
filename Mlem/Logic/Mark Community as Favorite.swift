@@ -7,7 +7,7 @@
 
 import Foundation
 
-func favoriteCommunity(account: SavedAccount, community: Community, favoritedCommunitiesTracker: FavoriteCommunitiesTracker) -> Void
+func favoriteCommunity(account: SavedAccount, community: APICommunity, favoritedCommunitiesTracker: FavoriteCommunitiesTracker) -> Void
 {
     favoritedCommunitiesTracker.favoriteCommunities.append(FavoriteCommunity(forAccountID: account.id, community: community))
 }

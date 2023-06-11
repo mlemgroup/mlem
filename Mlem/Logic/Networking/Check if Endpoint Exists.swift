@@ -7,26 +7,6 @@
 
 import Foundation
 
-func checkIfWebSocketEndpointExists(at url: URL) async -> Bool
-{
-    let session = URLSession(configuration: .default)
-    let task = session.webSocketTask(with: url)
-    task.resume()
-    
-    do
-    {
-        //try await task.sendPing() <--- This would be the most idea, but unfortunately it doesn't work for lemmy.ml and others
-        
-        try await task.send(URLSessionWebSocketTask.Message.string(""))
-        
-        return true
-    }
-    catch
-    {
-        return false
-    }
-}
-
 func checkIfEndpointExists(at url: URL) async -> Bool
 {
     var request: URLRequest = URLRequest(url: url)

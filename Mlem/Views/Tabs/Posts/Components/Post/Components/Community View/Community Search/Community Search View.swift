@@ -15,7 +15,7 @@ struct CommunitySearchResultsView: View
     @State var searchResults: [Community]?
 
     var account: SavedAccount
-    var community: Community?
+    var community: APICommunity?
 
     @Binding var feedType: FeedType
     @Binding var isShowingSearch: Bool
@@ -73,7 +73,7 @@ struct CommunitySearchResultsView: View
                             { favoritedCommunity in
                                 NavigationLink(destination: CommunityView(account: account, community: favoritedCommunity.community, feedType: .all))
                                 {
-                                    Text("\(favoritedCommunity.community.name)\(Text("@\(favoritedCommunity.community.actorID.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
+                                    Text("\(favoritedCommunity.community.name)\(Text("@\(favoritedCommunity.community.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true)
                                     {
                                         Button(role: .destructive)
@@ -108,7 +108,7 @@ struct CommunitySearchResultsView: View
                         { foundCommunity in
                             NavigationLink(destination: CommunityView(account: account, community: foundCommunity, feedType: .all))
                             {
-                                Text("\(foundCommunity.name)\(Text("@\(foundCommunity.actorID.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
+                                Text("\(foundCommunity.name)\(Text("@\(foundCommunity.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true)
                                 {
                                     if favoritedCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == foundCommunity.id })

@@ -9,5 +9,5 @@ import Foundation
 
 class CommentReplyTracker: ObservableObject
 {
-    @Published var commentToReplyTo: Comment?
+    @Published var commentToReplyTo: APICommentView?
 }
