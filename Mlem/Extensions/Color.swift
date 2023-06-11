@@ -16,6 +16,11 @@ extension Color
     static let systemBackground = Color(UIColor.systemBackground)
     static let secondarySystemBackground = Color(UIColor.secondarySystemBackground)
     static let tertiarySystemBackground = Color(UIColor.tertiarySystemBackground)
+    
+    // Interaction colors
+    static let upvoteColor = Color(UIColor.blue)
+    static let downvoteColor = Color(UIColor.red)
+    static let saveColor = Color(UIColor.green)
 }
 
 public extension Color

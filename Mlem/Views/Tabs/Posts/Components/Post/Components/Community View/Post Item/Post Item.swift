@@ -13,21 +13,21 @@ struct PostItem: View
 {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-
+    
     @EnvironmentObject var appState: AppState
-
+    
     @State var postTracker: PostTracker
 
     let post: APIPostView
 
     @State var isExpanded: Bool
-
+    
     @State var isInSpecificCommunity: Bool
-
+    
     @State var account: SavedAccount
-
+    
     @Binding var feedType: FeedType
-
+    
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
 
@@ -71,7 +71,7 @@ struct PostItem: View
                                     .foregroundColor(.secondary)
                                 }
 
-                                if post.post.featuredLocal
+                                if post.stickied
                                 {
                                     Spacer()
 
@@ -79,7 +79,7 @@ struct PostItem: View
                                 }
                             }
 
-                            Text(post.post.name)
+                            Text(post.name)
                                 .font(.headline)
                         }
                     }
@@ -87,12 +87,12 @@ struct PostItem: View
                     { // Show this when the post is expanded
                         VStack(alignment: .leading, spacing: 5)
                         {
-                            if post.post.featuredLocal
+                            if post.stickied
                             {
                                 StickiedTag()
                             }
 
-                            Text(post.post.name)
+                            Text(post.name)
                                 .font(.headline)
                         }
                         .onTapGesture
@@ -108,7 +108,7 @@ struct PostItem: View
 
                 VStack(alignment: .leading)
                 {
-                    if let postURL = post.post.url
+                    if let postURL = post.url
                     {
                         if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) /// The post is an image, so show an image
                         {
@@ -136,11 +136,18 @@ struct PostItem: View
                         }
                         else
                         {
-                            WebsiteIconComplex(post: post.post)
+                            if post.embedTitle != nil
+                            {
+                                WebsiteIconComplex(post: post)
+                            }
+                            else
+                            {
+                                WebsiteIconComplex(post: post)
+                            }
                         }
                     }
 
-                    if let postBody = post.post.body
+                    if let postBody = post.body
                     {
                         if !postBody.isEmpty
                         {
@@ -172,127 +179,75 @@ struct PostItem: View
 
             HStack
             {
-                // TODO: Refactor this into Post Interactions once I learn how to pass the vars further down
-                HStack(alignment: .center)
-                {
-                    HStack(alignment: .center, spacing: 2)
-                    {
-                        Image(systemName: "arrow.up")
-
-                        Text(String(post.counts.score))
-                    }
-                    .if(post.myVote == .none || post.myVote == .downvote)
-                    { viewProxy in
-                        viewProxy
-                            .foregroundColor(.accentColor)
-                    }
-                    .if(post.myVote == .upvote)
-                    { viewProxy in
-                        viewProxy
-                            .foregroundColor(.green)
-                    }
-                    .onTapGesture
-                    {
-                        Task(priority: .userInitiated)
-                        {
-                            switch post.myVote
-                            {
-                            case .upvote:
-                                try await ratePost(
-                                    post: post.post,
-                                    operation: .resetVote,
-                                    account: account,
-                                    postTracker: postTracker,
-                                    appState: appState
-                                )
-                            case .downvote, .resetVote, .none:
-                                try await ratePost(
-                                    post: post.post,
-                                    operation: .upvote,
-                                    account: account,
-                                    postTracker: postTracker,
-                                    appState: appState
-                                )
-                            }
-                        }
-                    }
-
-                    Image(systemName: "arrow.down")
-                        .if(post.myVote == .downvote)
-                        { viewProxy in
-                            viewProxy
-                                .foregroundColor(.red)
-                        }
-                        .if(post.myVote == .upvote || post.myVote == .none)
-                        { viewProxy in
-                            viewProxy
-                                .foregroundColor(.accentColor)
-                        }
-                        .onTapGesture
-                        {
-                            Task(priority: .userInitiated)
-                            {
-                                switch post.myVote
-                                {
-                                case .downvote:
-                                    try await ratePost(
-                                        post: post.post,
-                                        operation: .resetVote,
-                                        account: account,
-                                        postTracker: postTracker,
-                                        appState: appState
-                                    )
-                                case .upvote, .resetVote, .none:
-                                    try await ratePost(
-                                        post: post.post,
-                                        operation: .downvote,
-                                        account: account,
-                                        postTracker: postTracker,
-                                        appState: appState
-                                    )
-                                }
-                            }
-                        }
-
-                    if let postURL = post.post.url
-                    {
-                        ShareButton(urlToShare: postURL, isShowingButtonText: false)
-                    }
-                }
-
-                Spacer()
-
-                // TODO: Refactor this into Post Info once I learn how to pass the vars further down
-                HStack(spacing: 8)
-                {
-                    HStack(spacing: iconToTextSpacing)
-                    { // Number of comments
-                        Image(systemName: "bubble.left")
-                        Text(String(post.counts.comments))
-                    }
-
-                    HStack(spacing: iconToTextSpacing)
-                    { // Time since posted
-                        Image(systemName: "clock")
-                        Text(getTimeIntervalFromNow(date: post.post.published))
-                    }
-
-                    UserProfileLink(account: account, user: post.creator)
-                }
-                .foregroundColor(.secondary)
-                .dynamicTypeSize(.small)
+            case .upvoted:
+                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
+            case .downvoted:
+                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
+            case .none:
+                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
             }
-            .padding(.horizontal)
-            .if(!isExpanded, transform: { viewProxy in
-                viewProxy
-                    .padding(.bottom)
-            })
-
-            if isExpanded
-            {
-                Divider()
-            }
+        } catch {
+            return false
         }
-        .background(Color(uiColor: .systemBackground))
+        return true
     }
+    
+    func downvotePost() async -> Bool {
+        do {
+            switch post.myVote
+            {
+            case .upvoted:
+                try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
+            case .downvoted:
+                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
+            case .none:
+                try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
+            }
+        } catch {
+            return false
+        }
+        
+        return true
+    }
+    
+    func savePost() async -> Bool {
+        do {
+#warning("TODO: Make this actually save a post")
+        } catch {
+            return false
+        }
+        return true
+    }
+    
+    // TODO: move this to user settings
+    let compact = false
+    
+    var body: some View {
+        NavigationLink(destination: PostExpanded(account: account, postTracker: postTracker, post: post, feedType: $feedType)) {
+            VStack(spacing: 0) {
+                // show large or small post view
+                if (!compact){
+                    LargePostPreview(post: post, account: account)
+                        .padding(.bottom)
+                }
+                
+                // TODO: compact post preview
+                
+                if !compact {
+                    Divider()
+                }
+                
+                PostInteractionBar(post: post, upvoteCallback: upvotePost, downvoteCallback: downvotePost, saveCallback: savePost)
+                    .if(!compact) { viewProxy in
+                        viewProxy.padding(.vertical, 4)
+                    }
+            }.if(!compact) { viewProxy in
+                viewProxy.padding(.top)
+            }
+            .background(Color.systemBackground)
+        }
+        .buttonStyle(EmptyButtonStyle())
+    }
+    
 }
+
