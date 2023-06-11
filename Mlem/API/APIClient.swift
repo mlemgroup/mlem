@@ -7,36 +7,6 @@
 
 import Foundation
 
-extension JSONDecoder {
-    static var defaultDecoder: JSONDecoder {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        
-        let formatter = DateFormatter()
-        
-        decoder.dateDecodingStrategy = .custom({ decoder in
-            let container = try decoder.singleValueContainer()
-            let string = try container.decode(String.self)
-            
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-            if let date = formatter.date(from: string) {
-                return date
-            }
-            
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            if let date = formatter.date(from: string) {
-                return date
-            }
-            
-            // TODO: is there somewhere that covers all the formats lemmy instances may return?
-            // for now we'll return the current date until we know what other formats will
-            // be encountered.
-            return .now
-        })
-        return decoder
-    }
-}
-
 enum HTTPMethod {
     case get
     case post(Data)
