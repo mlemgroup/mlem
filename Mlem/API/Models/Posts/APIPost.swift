@@ -27,7 +27,7 @@ struct APIPost: Decodable {
     let published: Date
     let removed: Bool
     let thumbnailUrl: URL?
-    let updated: String?
+    let updated: Date?
     let url: URL?
 }
 

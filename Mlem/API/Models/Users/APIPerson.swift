@@ -26,5 +26,5 @@ struct APIPerson: Decodable {
     let name: String
     let published: String
     let sharedInboxUrl: URL?
-    let updated: String?
+    let updated: Date?
 }

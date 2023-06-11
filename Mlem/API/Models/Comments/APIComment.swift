@@ -20,7 +20,7 @@ struct APIComment: Decodable, Identifiable {
     let postId: Int
     let published: Date
     let removed: Bool
-    let updated: String?
+    let updated: Date?
 }
 
 extension APIComment {

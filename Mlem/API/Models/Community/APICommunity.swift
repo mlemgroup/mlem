@@ -23,7 +23,7 @@ struct APICommunity: Codable, Identifiable {
     let published: Date
     let removed: Bool
     let title: String
-    let updated: String?
+    let updated: Date?
 }
 
 extension APICommunity: Equatable {
