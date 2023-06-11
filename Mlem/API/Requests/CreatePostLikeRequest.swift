@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct CreatePostLikeRequest: APIRequest {
+struct CreatePostLikeRequest: APIPostRequest {
     
     typealias Response = CreatePostLikeResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "post/like"
+    let body: Body
     
     struct Body: Encodable {
         let auth: String
@@ -24,23 +25,9 @@ struct CreatePostLikeRequest: APIRequest {
         account: SavedAccount,
         postId: Int,
         score: ScoringOperation
-    ) throws {
-        do {
-            let data = try JSONEncoder().encode(
-                Body(
-                    auth: account.accessToken,
-                    post_id: postId,
-                    score: score.rawValue
-                )
-            )
-            self.endpoint = account.instanceLink
-                .appending(path: "post")
-                .appending(path: "like")
-            
-            self.method = .post(data)
-        } catch {
-            throw APIRequestError.encoding
-        }
+    ) {
+        self.instanceURL = account.instanceLink
+        self.body = .init(auth: account.accessToken, post_id: postId, score: score.rawValue)
     }
 }
 

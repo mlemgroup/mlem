@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct GetCommentsRequest: APIRequest {
+struct GetCommentsRequest: APIGetRequest {
     
     typealias Response = GetCommentsResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "comment/list"
     let queryItems: [URLQueryItem]
     
     init(
@@ -21,19 +21,13 @@ struct GetCommentsRequest: APIRequest {
         maxDepth: Int = 15,
         type: FeedType = .all
     ) {
-        let queryItems: [URLQueryItem] = [
+        self.instanceURL = account.instanceLink
+        self.queryItems = [
             .init(name: "auth", value: account.accessToken),
             .init(name: "post_id", value: "\(postId)"),
             .init(name: "max_depth", value: "\(maxDepth)"),
             .init(name: "type_", value: type.rawValue)
         ]
-        
-        self.queryItems = queryItems
-        self.endpoint = account.instanceLink
-            .appending(path: "comment")
-            .appending(path: "list")
-            .appending(queryItems: queryItems)
-        self.method = .get
     }
 }
 

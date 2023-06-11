@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct DeleteCommentRequest: APIRequest {
+struct DeleteCommentRequest: APIPostRequest {
     
     typealias Response = CreateCommentResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "comment/delete"
+    let body: Body
     
     struct Body: Encodable {
         let auth: String
@@ -24,22 +25,13 @@ struct DeleteCommentRequest: APIRequest {
         account: SavedAccount,
         commentId: Int,
         deleted: Bool = true
-    ) throws {
-        do {
-            let data = try JSONEncoder().encode(
-                Body(
-                    auth: account.accessToken,
-                    comment_id: commentId,
-                    deleted: deleted
-                )
-            )
-            self.endpoint = account.instanceLink
-                .appending(path: "comment")
-                .appending(path: "delete")
-            self.method = .post(data)
-        } catch {
-            throw APIRequestError.encoding
-        }
+    ) {
+        self.instanceURL = account.instanceLink
+        self.body = .init(
+            auth: account.accessToken,
+            comment_id: commentId,
+            deleted: deleted
+        )
     }
 }
 

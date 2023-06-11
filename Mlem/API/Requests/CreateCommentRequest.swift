@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct CreateCommentRequest: APIRequest {
+struct CreateCommentRequest: APIPostRequest {
     
     typealias Response = CreateCommentResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "comment"
+    let body: Body
     
     struct Body: Encodable {
         let auth: String
@@ -29,24 +30,16 @@ struct CreateCommentRequest: APIRequest {
         languageId: Int?,
         parentId: Int?,
         postId: Int
-    ) throws {
-        do {
-            let data = try JSONEncoder().encode(
-                Body(
-                    auth: account.accessToken,
-                    content: content,
-                    form_id: nil,
-                    language_id: languageId,
-                    parent_id: parentId,
-                    post_id: postId
-                )
-            )
-            self.endpoint = account.instanceLink
-                .appending(path: "comment")
-            self.method = .post(data)
-        } catch {
-            throw APIRequestError.encoding
-        }
+    ) {
+        self.instanceURL = account.instanceLink
+        self.body = .init(
+            auth: account.accessToken,
+            content: content,
+            form_id: nil,
+            language_id: languageId,
+            parent_id: parentId,
+            post_id: postId
+        )
     }
 }
 

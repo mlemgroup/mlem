@@ -7,17 +7,15 @@
 
 import Foundation
 
-enum APIRequestError: Error {
-    case encoding
-}
+// MARK: - APIRequest
 
 protocol APIRequest {
     associatedtype Response: Decodable
     
+    var path: String { get }
+    var instanceURL: URL { get }
     var endpoint: URL { get }
-    var method: HTTPMethod { get }
     var headers: [String: String] { get }
-    var queryItems: [URLQueryItem] { get }
 }
 
 extension APIRequest {
@@ -26,6 +24,36 @@ extension APIRequest {
     var defaultHeaders: [String: String] {
         ["Content-Type": "application/json"]
     }
-    
-    var queryItems: [URLQueryItem] { .init() }
 }
+
+// MARK: - APIGetRequest
+
+protocol APIGetRequest: APIRequest {
+    var queryItems: [URLQueryItem] { get }
+}
+
+extension APIGetRequest {
+    var endpoint: URL {
+        instanceURL
+        .appending(path: path)
+        .appending(queryItems: queryItems)
+    }
+}
+
+// MARK: - APIPostRequest
+
+protocol APIPostRequest: APIRequest {
+    associatedtype Body: Encodable
+    var body: Body { get }
+}
+
+extension APIPostRequest {
+    var endpoint: URL {
+        instanceURL
+        .appending(path: path)
+    }
+}
+
+// MARK: - APIPutRequest
+
+protocol APIPutRequest: APIPostRequest {}

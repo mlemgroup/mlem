@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct GetPostsRequest: APIRequest {
+struct GetPostsRequest: APIGetRequest {
     
     typealias Response = GetPostsResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "post/list"
     let queryItems: [URLQueryItem]
     
     init(
@@ -22,6 +22,8 @@ struct GetPostsRequest: APIRequest {
         sort: SortingOptions?,
         type: FeedType = .all
     ) {
+        self.instanceURL = account.instanceLink
+
         var queryItems: [URLQueryItem] = [
             .init(name: "auth", value: account.accessToken),
             .init(name: "page", value: "\(page)"),
@@ -41,11 +43,6 @@ struct GetPostsRequest: APIRequest {
         }
         
         self.queryItems = queryItems
-        self.endpoint = account.instanceLink
-            .appending(path: "post")
-            .appending(path: "list")
-            .appending(queryItems: queryItems)
-        self.method = .get
     }
 }
 

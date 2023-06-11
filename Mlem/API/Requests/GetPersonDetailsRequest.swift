@@ -12,12 +12,12 @@ enum GetPersonDetailsRequestError: Error {
     case unableToDetermineInstanceHost
 }
 
-struct GetPersonDetailsRequest: APIRequest {
+struct GetPersonDetailsRequest: APIGetRequest {
     
     typealias Response = GetPersonDetailsResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "user"
     let queryItems: [URLQueryItem]
     
     init(
@@ -31,6 +31,7 @@ struct GetPersonDetailsRequest: APIRequest {
             throw GetPersonDetailsRequestError.invalidArguments
         }
         
+        self.instanceURL = instanceURL
         var queryItems: [URLQueryItem] = [.init(name: "auth", value: accessToken)]
         
         if let username {
@@ -44,10 +45,6 @@ struct GetPersonDetailsRequest: APIRequest {
         }
 
         self.queryItems = queryItems
-        self.endpoint = instanceURL
-            .appending(path: "user")
-            .appending(queryItems: queryItems)
-        self.method = .get
     }
 }
 

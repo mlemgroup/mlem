@@ -16,12 +16,12 @@ enum SearchType: String, Codable {
     case users = "Users"
 }
 
-struct SearchRequest: APIRequest {
+struct SearchRequest: APIGetRequest {
     
     typealias Response = SearchResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "search"
     let queryItems: [URLQueryItem]
     
     init(
@@ -31,19 +31,14 @@ struct SearchRequest: APIRequest {
         sortOption: SortingOptions = .topAll,
         listingType: FeedType = .all
     ) {
-        let queryItems: [URLQueryItem] = [
+        self.instanceURL = account.instanceLink
+        self.queryItems = [
             .init(name: "auth", value: account.accessToken),
             .init(name: "type_", value: searchType.rawValue),
             .init(name: "sort", value: sortOption.rawValue),
             .init(name: "listing_type", value: listingType.rawValue),
             .init(name: "q", value: query)
         ]
-        
-        self.queryItems = queryItems
-        self.endpoint = account.instanceLink
-            .appending(path: "search")
-            .appending(queryItems: queryItems)
-        self.method = .get
     }
 }
 

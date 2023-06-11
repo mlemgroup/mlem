@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct CreateCommentLikeRequest: APIRequest {
+struct CreateCommentLikeRequest: APIPostRequest {
     
     typealias Response = CreateCommentLikeResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "comment/like"
+    let body: Body
     
     struct Body: Encodable {
         let auth: String
@@ -24,23 +25,13 @@ struct CreateCommentLikeRequest: APIRequest {
         account: SavedAccount,
         commentId: Int,
         score: ScoringOperation
-    ) throws {
-        do {
-            let data = try JSONEncoder().encode(
-                Body(
-                    auth: account.accessToken,
-                    comment_id: commentId,
-                    score: score.rawValue
-                )
-            )
-            self.endpoint = account.instanceLink
-                .appending(path: "comment")
-                .appending(path: "like")
-            
-            self.method = .post(data)
-        } catch {
-            throw APIRequestError.encoding
-        }
+    ) {
+        self.instanceURL = account.instanceLink
+        self.body = .init(
+            auth: account.accessToken,
+            comment_id: commentId,
+            score: score.rawValue
+        )
     }
 }
 

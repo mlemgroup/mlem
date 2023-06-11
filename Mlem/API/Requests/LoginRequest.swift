@@ -7,31 +7,22 @@
 
 import Foundation
 
-struct LoginRequest: APIRequest {
-    
+struct LoginRequest: APIPostRequest {
+        
     typealias Response = LoginResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "user/login"
+    let body: Body
     
     struct Body: Encodable {
         let username_or_email: String
         let password: String
     }
     
-    init(instanceURL: URL, username: String, password: String) throws {
-        self.endpoint = instanceURL
-            .appending(path: "user")
-            .appending(path: "login")
-        do {
-            let data = try JSONEncoder().encode(
-                Body(username_or_email: username, password: password)
-            )
-            
-            self.method = .post(data)
-        } catch {
-            throw APIRequestError.encoding
-        }
+    init(instanceURL: URL, username: String, password: String) {
+        self.instanceURL = instanceURL
+        self.body = .init(username_or_email: username, password: password)
     }
 }
 

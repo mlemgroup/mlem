@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct FollowCommunityRequest: APIRequest {
+struct FollowCommunityRequest: APIPostRequest {
     
     typealias Response = FollowCommunityResponse
     
-    let endpoint: URL
-    let method: HTTPMethod
+    let instanceURL: URL
+    let path = "community/follow"
+    let body: Body
     
     struct Body: Encodable {
         let auth: String
@@ -24,22 +25,13 @@ struct FollowCommunityRequest: APIRequest {
         account: SavedAccount,
         communityId: Int,
         follow: Bool
-    ) throws {
-        do {
-            let data = try JSONEncoder().encode(
-                Body(
-                    auth: account.accessToken,
-                    community_id: communityId,
-                    follow: follow
-                )
-            )
-            self.endpoint = account.instanceLink
-                .appending(path: "community")
-                .appending(path: "follow")
-            self.method = .post(data)
-        } catch {
-            throw APIRequestError.encoding
-        }
+    ) {
+        self.instanceURL = account.instanceLink
+        self.body = .init(
+            auth: account.accessToken,
+            community_id: communityId,
+            follow: follow
+        )
     }
 }
 
