@@ -44,6 +44,7 @@ func postComment(
     let request = CreateCommentRequest(
         account: account,
         content: commentContents,
+        // TODO: we should map out all the language options...
         languageId: dominantLanguage == "en" ? 37 : nil,
         parentId: comment.id,
         postId: post.id
