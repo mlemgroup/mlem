@@ -28,6 +28,16 @@ extension JSONDecoder {
                 return date
             }
             
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSS"
+            if let date = formatter.date(from: string) {
+                return date
+            }
+            
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            if let date = formatter.date(from: string) {
+                return date
+            }
+            
             // after some discussion we've agreed to fail the modelling if the date
             // does match either of the above, as based on the current API source code
             // it should be one of those
