@@ -13,5 +13,5 @@ struct FavoriteCommunity: Identifiable, Codable, Equatable
     
     let forAccountID: Int
     
-    let community: Community
+    let community: APICommunity
 }

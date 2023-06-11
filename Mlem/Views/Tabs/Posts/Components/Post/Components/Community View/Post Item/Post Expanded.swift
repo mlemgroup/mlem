@@ -25,7 +25,7 @@ struct PostExpanded: View
 
     @State var postTracker: PostTracker
 
-    var post: Post
+    var post: APIPostView
 
     @State private var sortSelection = 0
 
@@ -42,6 +42,8 @@ struct PostExpanded: View
     @State private var isPostingComment: Bool = false
 
     @State private var viewID: UUID = UUID()
+    
+    @State private var errorAlert: ErrorAlert?
 
     var body: some View
     {
@@ -54,7 +56,7 @@ struct PostExpanded: View
                 ProgressView("Loading comments…")
                     .task(priority: .userInitiated)
                     {
-                        if post.numberOfComments != 0
+                        if post.counts.comments != 0
                         {
                             await loadComments()
                         }
@@ -92,7 +94,7 @@ struct PostExpanded: View
                     {
                         ForEach(commentTracker.comments)
                         { comment in
-                            CommentItem(account: account, comment: comment)
+                            CommentItem(account: account, hierarchicalComment: comment)
                         }
                     }
                     .environmentObject(commentTracker)
@@ -105,21 +107,18 @@ struct PostExpanded: View
         {
             VStack
             {
-                if commentReplyTracker.commentToReplyTo != nil
-                {
+                if let commentToReplyTo = commentReplyTracker.commentToReplyTo {
                     HStack(alignment: .top)
                     {
                         VStack(alignment: .leading, spacing: 5) {
                             HStack(alignment: .center, spacing: 2) {
-                                Text("Replying to \(commentReplyTracker.commentToReplyTo!.author.name):")
+                                Text("Replying to \(commentToReplyTo.creator.name):")
                                     .font(.caption)
-                                
-                            #warning("TODO: Add the user avatar")
-                                // UserProfileLink(shouldShowUserAvatars: true, user: commentReplyTracker.commentToReplyTo!.author)
+                                // UserProfileLink(shouldShowUserAvatars: true, user: commentToReplyTo.creator)
                             }
                             .foregroundColor(.secondary)
                             
-                            Text(commentReplyTracker.commentToReplyTo!.content)
+                            Text(commentToReplyTo.comment.content)
                                 .font(.system(size: 16))
                         }
                         
@@ -158,7 +157,13 @@ struct PostExpanded: View
                                         
                                         do
                                         {
-                                            try await postComment(to: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account, appState: appState)
+                                            try await postComment(
+                                                to: post,
+                                                commentContents: textFieldContents,
+                                                commentTracker: commentTracker,
+                                                account: account,
+                                                appState: appState
+                                            )
                                             
                                             isReplyFieldFocused = false
                                             textFieldContents = ""
@@ -188,7 +193,14 @@ struct PostExpanded: View
                                         
                                         do
                                         {
-                                            try await postComment(to: commentReplyTracker.commentToReplyTo!, post: post, commentContents: textFieldContents, commentTracker: commentTracker, account: account, appState: appState)
+                                            try await postComment(
+                                                to: commentReplyTracker.commentToReplyTo!,
+                                                post: post,
+                                                commentContents: textFieldContents,
+                                                commentTracker: commentTracker,
+                                                account: account,
+                                                appState: appState
+                                            )
                                             
                                             commentReplyTracker.commentToReplyTo = nil
                                             isReplyFieldFocused = false
@@ -281,90 +293,52 @@ struct PostExpanded: View
                 }
             }
         }
-        .refreshable
-        {
-            Task(priority: .userInitiated)
-            {
+        .refreshable {
+            Task(priority: .userInitiated) {
                 commentTracker.comments = .init()
-
                 await loadComments()
             }
         }
-        .onChange(of: commentSortingType)
-        { newSortingType in
-            withAnimation(.easeIn(duration: 0.4))
-            {
+        .onChange(of: commentSortingType) { newSortingType in
+            withAnimation(.easeIn(duration: 0.4)) {
                 commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
             }
         }
+        .alert(using: $errorAlert) { content in
+            Alert(title: Text(content.title), message: Text(content.message))
+        }
     }
 
-    internal func loadComments() async
-    {
+    func loadComments() async {
+        defer { commentTracker.isLoading = false }
+        
         commentTracker.isLoading = true
-
-        var parsedComments: [Comment] = .init()
-        
-        defer
-        {
-            commentTracker.isLoading = false
-            
-            parsedComments = .init()
-        }
-        
-        do
-        {
-            let commentResponse: String = try await sendGetCommand(appState: appState, account: account, endpoint: "comment/list", parameters: [
-                URLQueryItem(name: "max_depth", value: "15"),
-                URLQueryItem(name: "post_id", value: "\(post.id)"),
-                URLQueryItem(name: "type_", value: "All")
-            ])
-            
-            print("Comment response: \(commentResponse)")
-            
-            do
-            {
-                parsedComments = try await parseComments(commentResponse: commentResponse, instanceLink: account.instanceLink)
-                
-                commentTracker.comments = sortComments(parsedComments, by: defaultCommentSorting)
-            }
-            catch let commentParsingError
-            {
-                
-                appState.alertTitle = "Couldn't decode updated comments"
-                appState.alertMessage = "Try manually refreshing the comments."
-                appState.isShowingAlert.toggle()
-                
-                print("Failed while parsing comments: \(commentParsingError)")
-            }
-        }
-        catch let commentLoadingError
-        {
-            
-            appState.alertTitle = "Couldn't load new comments"
-            appState.alertMessage = "The Lemmy server you're connected to might be overloaded."
-            appState.isShowingAlert.toggle()
-            
-            print("Failed while loading comments: \(commentLoadingError)")
+        do {
+            let request = GetCommentsRequest(account: account, postId: post.id)
+            let response = try await APIClient().perform(request: request)
+            commentTracker.comments = sortComments(response.comments.hierarchicalRepresentation, by: defaultCommentSorting)
+        } catch APIClientError.response(let message, _) {
+            errorAlert = .init(title: "API error", message: message.error)
+        } catch {
+            errorAlert = .init(title: "Failed to load comments", message: "Please refresh to try again")
         }
     }
 
-    private func sortComments(_ comments: [Comment], by sort: CommentSortTypes) -> [Comment]
+    private func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortTypes) -> [HierarchicalComment]
     {
-        let sortedComments: [Comment]
+        let sortedComments: [HierarchicalComment]
         switch sort
         {
         case .new:
-            sortedComments = comments.sorted(by: { $0.published > $1.published })
+            sortedComments = comments.sorted(by: { $0.commentView.comment.published > $1.commentView.comment.published })
         case .top:
-            sortedComments = comments.sorted(by: { $0.score > $1.score })
+            sortedComments = comments.sorted(by: { $0.commentView.counts.score > $1.commentView.counts.score })
         case .active:
-            sortedComments = comments.sorted(by: { $0.children.count > $1.children.count })
+            sortedComments = comments.sorted(by: { $0.commentView.counts.childCount > $1.commentView.counts.childCount })
         }
 
-        return sortedComments.map
-        { comment in
-            var newComment = comment
+        return sortedComments.map { comment in
+            let newComment = comment
             newComment.children = sortComments(comment.children, by: sort)
             return newComment
         }

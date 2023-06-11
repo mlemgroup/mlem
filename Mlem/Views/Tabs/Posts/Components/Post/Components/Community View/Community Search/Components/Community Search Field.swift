@@ -22,6 +22,8 @@ struct CommunitySearchField: View {
     
     @State private var debouncedTextReadyForSearching: String = ""
     
+    @State private var errorAlert: ErrorAlert?
+    
     let searchTextPublisher: PassthroughSubject = PassthroughSubject<String, Never>()
     
     var body: some View {
@@ -45,34 +47,24 @@ struct CommunitySearchField: View {
                     }
                     .onChange(of: debouncedTextReadyForSearching) { searchText in
                         Task(priority: .userInitiated) {
-                            do
-                            {
-                                let searchResponse: String = try await sendGetCommand(appState: appState, account: account, endpoint: "search", parameters: [
-                                    URLQueryItem(name: "type_", value: "Communities"),
-                                    URLQueryItem(name: "sort", value: "TopAll"),
-                                    URLQueryItem(name: "listing_type", value: "All"),
-                                    URLQueryItem(name: "q", value: searchText)
-                                ])
+                            do {
+                                let request = SearchRequest(
+                                    account: account,
+                                    query: searchText,
+                                    searchType: .communities,
+                                    sortOption: .topAll,
+                                    listingType: .all
+                                )
                                 
-                                print("Search response: \(searchResponse)")
-                                
-                                do
-                                {
-                                    communitySearchResultsTracker.foundCommunities = try parseCommunities(communityResponse: searchResponse, instanceLink: account.instanceLink)
-                                }
-                                catch let searchResultParsingError
-                                {
-                                    print("Failed while parsing search results: \(searchResultParsingError)")
-                                    communitySearchResultsTracker.foundCommunities = []
-                                }
-                            }
-                            catch let searchCommandError
-                            {
-                                print("Search command error: \(searchCommandError)")
-                                
-                                appState.alertTitle = "Couldn't connect to Lemmy"
-                                appState.alertMessage = "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
-                                appState.isShowingAlert.toggle()
+                                let response = try await APIClient().perform(request: request)
+                                let communities = response.communities.map { $0.community }
+                                communitySearchResultsTracker.foundCommunities = communities
+                            } catch {
+                                print("Search command error: \(error)")
+                                errorAlert = .init(
+                                    title: "Couldn't connect to Lemmy",
+                                    message: "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+                                )
                             }
                         }
                     }
@@ -81,6 +73,12 @@ struct CommunitySearchField: View {
                     isSearchFieldFocused.toggle()
                 }
             }
+        }
+        .alert(using: $errorAlert) { content in
+            Alert(
+                title: Text(content.title),
+                message: Text(content.message)
+            )
         }
     }
 }

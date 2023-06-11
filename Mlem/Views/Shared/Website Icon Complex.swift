@@ -17,7 +17,7 @@ struct WebsiteIconComplex: View
 
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
 
-    @State var post: Post
+    @State var post: APIPost
 
     @State private var overridenWebsiteFaviconName: String = "globe"
     
@@ -42,7 +42,7 @@ struct WebsiteIconComplex: View
             {
                 if shouldShowWebsitePreviews
                 {
-                    if let thumbnailURL = post.thumbnailURL
+                    if let thumbnailURL = post.thumbnailUrl
                     {
                         VStack(alignment: .center, spacing: 0)
                         {

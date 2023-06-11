@@ -9,6 +9,6 @@ import Foundation
 
 class CommunitySearchResultsTracker: ObservableObject
 {
-    @Published var foundCommunities: [Community] = .init()
+    @Published var foundCommunities: [APICommunity] = .init()
     @Published var isLoading: Bool = false
 }

@@ -15,47 +15,19 @@ internal enum CommandError: Error
 struct SubscribeButton: View {
     @EnvironmentObject var appState: AppState
     
-    @Binding var community: Community?
+    @Binding var communityDetails: APICommunityView?
     
     @State var account: SavedAccount
     
     var body: some View {
-        if let communityDetails = community!.details
-        {
-            if !communityDetails.isSubscribed
+        if let communityDetails {
+            if communityDetails.subscribed == .notSubscribed
             {
                 Button
                 {
                     Task(priority: .userInitiated) {
                         print("Will subscribe")
-                        
-                        community?.details?.isSubscribed.toggle()
-                        
-                        do
-                        {
-                            let subscribingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "community/follow", arguments: [
-                                "community_id": community!.id,
-                                "follow": true
-                            ])
-                            
-                            print(subscribingCommandResult)
-                            
-                            if subscribingCommandResult.contains("\"error\"")
-                            {
-                                throw CommandError.receivedUnexpectedResponseFromServer
-                            }
-                        }
-                        catch let subscribingError
-                        {
-                            
-                            appState.alertTitle = "Couldn't subscribe to \(community!.name)"
-                            appState.alertMessage = "Mlem received an unexpected response from the server."
-                            appState.isShowingAlert.toggle()
-                            
-                            print("Failed while subscribing: \(subscribingError)")
-                            
-                            community?.details?.isSubscribed.toggle()
-                        }
+                        await subscribe(communityId: communityDetails.community.id, shouldSubscribe: true)
                     }
                 } label: {
                     Label("Subscribe", systemImage: "person.badge.plus")
@@ -68,34 +40,7 @@ struct SubscribeButton: View {
                 {
                     Task(priority: .userInitiated) {
                         print("Will unsubscribe")
-                        
-                        community?.details?.isSubscribed.toggle()
-                        
-                        do
-                        {
-                            let unsubscribingCommandResult: String = try await sendPostCommand(appState: appState, account: account, endpoint: "community/follow", arguments: [
-                                "community_id": community!.id,
-                                "follow": false
-                            ])
-                            
-                            print(unsubscribingCommandResult)
-                            
-                            if unsubscribingCommandResult.contains("\"error\"")
-                            {
-                                throw CommandError.receivedUnexpectedResponseFromServer
-                            }
-                        }
-                        catch let unsubscribingError
-                        {
-                            
-                            appState.alertTitle = "Couldn't unsubscribe from \(community!.name)"
-                            appState.alertMessage = "Mlem received an unexpected response from the server"
-                            appState.isShowingAlert.toggle()
-                            
-                            print("Failed while unsubscribing: \(unsubscribingError)")
-                            
-                            community?.details?.isSubscribed.toggle()
-                        }
+                        await subscribe(communityId: communityDetails.community.id, shouldSubscribe: false)
                     }
                 } label: {
                     Label("Unsubscribe", systemImage: "person.badge.minus")
@@ -106,6 +51,26 @@ struct SubscribeButton: View {
         {
             Label("Loading community info…", systemImage: "clock.arrow.2.circlepath")
                 .disabled(true)
+        }
+    }
+    
+    private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
+        do {
+            let request = FollowCommunityRequest(
+                account: account,
+                communityId: communityId,
+                follow: shouldSubscribe
+            )
+            
+            let response = try await APIClient().perform(request: request)
+            self.communityDetails = response.communityView
+        } catch {
+            // TODO: If we fail here and want to notify the user we'd ideally
+            // want to do so from the parent view, I think it would be worth refactoring
+            // this view so that the responsibility for performing the call is removed
+            // and handled by the parent, for now we will fail silently the UI state
+            // will not update so will continue to be accurate
+            print(error)
         }
     }
 }
