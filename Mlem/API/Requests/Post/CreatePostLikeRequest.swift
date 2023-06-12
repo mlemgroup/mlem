@@ -8,19 +8,20 @@
 import Foundation
 
 struct CreatePostLikeRequest: APIPostRequest {
-    
-    typealias Response = CreatePostLikeResponse
-    
+
+    typealias Response = PostResponse
+
     let instanceURL: URL
     let path = "post/like"
     let body: Body
-    
+
+    // lemmy_api_common::post::CreatePostLike
     struct Body: Encodable {
         let auth: String
         let post_id: Int
         let score: Int
     }
-    
+
     init(
         account: SavedAccount,
         postId: Int,
@@ -31,6 +32,6 @@ struct CreatePostLikeRequest: APIPostRequest {
     }
 }
 
-struct CreatePostLikeResponse: Decodable {
+struct PostResponse: Decodable {
     let postView: APIPostView
 }

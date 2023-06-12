@@ -8,22 +8,24 @@
 import Foundation
 
 struct CreatePostRequest: APIPostRequest {
-    
+
     typealias Response = CreatePostResponse
-    
+
     let instanceURL: URL
     let path = "post"
     let body: Body
-    
+
     struct Body: Encodable {
+        // missing: honeypot field
         let auth: String
         let community_id: Int
         let name: String
         let nsfw: Bool?
         let body: String?
+        let language_id: Int?
         let url: URL?
     }
-    
+
     init(
         account: SavedAccount,
         communityId: Int,
@@ -39,6 +41,8 @@ struct CreatePostRequest: APIPostRequest {
                 name: name,
                 nsfw: nsfw,
                 body: body,
+                // TODO add to init params
+                language_id: nil,
                 // TODO: some work is needed here as the current UI implementation
                 // always passes an empty String, which if encoded directly will cause the request to fail
                 // however if user enters a "valid" URL such as `beehaw.org` the request will also fail

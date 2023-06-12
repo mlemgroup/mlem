@@ -7,11 +7,12 @@
 
 import Foundation
 
+// lemmy_db_schema::aggregates::structs::PersonAggregates
 struct APIPersonAggregates: Decodable {
-    let commentCount: Int
-    let commentScore: Int
     let id: Int
     let personId: Int
     let postCount: Int
     let postScore: Int
+    let commentCount: Int
+    let commentScore: Int
 }

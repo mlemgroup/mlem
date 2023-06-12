@@ -13,13 +13,15 @@ enum GetPersonDetailsRequestError: Error {
 }
 
 struct GetPersonDetailsRequest: APIGetRequest {
-    
+
     typealias Response = GetPersonDetailsResponse
-    
+
     let instanceURL: URL
     let path = "user"
     let queryItems: [URLQueryItem]
-    
+
+    // lemmy_api_common::person::GetPersonDetails
+    // TODO add more fields
     init(
         accessToken: String,
         instanceURL: URL,
@@ -30,15 +32,15 @@ struct GetPersonDetailsRequest: APIGetRequest {
             // either `username` OR `personId` must be supplied
             throw GetPersonDetailsRequestError.invalidArguments
         }
-        
+
         self.instanceURL = instanceURL
         var queryItems: [URLQueryItem] = [.init(name: "auth", value: accessToken)]
-        
+
         if let username {
             guard let host = instanceURL.host() else {
                 throw GetPersonDetailsRequestError.unableToDetermineInstanceHost
             }
-            
+
             queryItems.append(.init(name: "username", value: "\(username)@\(host)"))
         } else if let personId {
             queryItems.append(.init(name: "person_id", value: "\(personId)"))
@@ -48,6 +50,7 @@ struct GetPersonDetailsRequest: APIGetRequest {
     }
 }
 
+// lemmy_api_common::person::GetPersonDetailsResponse
 struct GetPersonDetailsResponse: Decodable {
     let comments: [APICommentView]
     let moderates: [APICommunityModeratorView]

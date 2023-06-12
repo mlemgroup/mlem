@@ -7,24 +7,25 @@
 
 import Foundation
 
+// lemmy_db_schema::source::person::PersonSafe
 struct APIPerson: Decodable {
-    let actorId: URL
-    let admin: Bool
-    let avatar: URL?
-    let banExpires: String?
-    let banned: Bool
-    let banner: URL?
-    let bio: String?
-    let botAccount: Bool?
-    let deleted: Bool
-    let displayName: String?
     let id: Int
-    let inboxUrl: URL
-    let instanceId: Int
-    let local: Bool
-    let matrixUserId: String?
     let name: String
+    let displayName: String?
+    let avatar: URL?
+    let banned: Bool
     let published: String
-    let sharedInboxUrl: URL?
     let updated: Date?
+    let actorId: URL
+    let bio: String?
+    let local: Bool
+    let banner: URL?
+    let deleted: Bool
+    let inboxUrl: URL
+    let sharedInboxUrl: URL?
+    let matrixUserId: String?
+    let admin: Bool
+    let botAccount: Bool
+    let banExpires: Date?
+    let instanceId: Int
 }

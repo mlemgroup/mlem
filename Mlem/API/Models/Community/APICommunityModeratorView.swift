@@ -7,6 +7,7 @@
 
 import Foundation
 
+// lemmy_db_views_actor::structs::CommunityModeratorView
 struct APICommunityModeratorView: Decodable {
     let community: APICommunity
     let moderator: APIPerson

@@ -8,22 +8,23 @@
 import Foundation
 
 struct CreateCommentRequest: APIPostRequest {
-    
-    typealias Response = CreateCommentResponse
-    
+
+    typealias Response = CommentResponse
+
     let instanceURL: URL
     let path = "comment"
     let body: Body
-    
+
+    // lemmy_api_common::comment::CreateComment
     struct Body: Encodable {
-        let auth: String
         let content: String
-        let form_id: String?
-        let language_id: Int?
-        let parent_id: Int?
         let post_id: Int
+        let parent_id: Int?
+        let language_id: Int?
+        let form_id: String?
+        let auth: String
     }
-    
+
     init(
         account: SavedAccount,
         content: String,
@@ -33,16 +34,19 @@ struct CreateCommentRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            auth: account.accessToken,
             content: content,
-            form_id: nil,
-            language_id: languageId,
+            post_id: postId,
             parent_id: parentId,
-            post_id: postId
+            language_id: languageId,
+            form_id: nil,
+            auth: account.accessToken
         )
     }
 }
 
-struct CreateCommentResponse: Decodable {
+// lemmy_api_common::comment::CommentResponse
+struct CommentResponse: Decodable {
     let commentView: APICommentView
+    let recipientIds: [Int]
+    let formId: String?
 }

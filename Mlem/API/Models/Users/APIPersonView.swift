@@ -7,7 +7,8 @@
 
 import Foundation
 
+// lemmy_db_views_actor::structs::PersonView
 struct APIPersonView: Decodable {
-    let counts: APIPersonAggregates
     let person: APIPerson
+    let counts: APIPersonAggregates
 }

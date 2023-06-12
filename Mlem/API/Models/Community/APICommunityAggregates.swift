@@ -7,14 +7,16 @@
 
 import Foundation
 
+// lemmy_db_schema::aggregates::structs::CommunityAggregates
 struct APICommunityAggregates: Decodable {
-    let comments: Int
-    let communityId: Int
     let id: Int
-    let posts: Int
+    let communityId: Int
     let subscribers: Int
+    let posts: Int
+    let comments: Int
+    let published: Date
     let usersActiveDay: Int
-    let usersActiveHalfYear: Int
-    let usersActiveMonth: Int
     let usersActiveWeek: Int
+    let usersActiveMonth: Int
+    let usersActiveHalfYear: Int
 }

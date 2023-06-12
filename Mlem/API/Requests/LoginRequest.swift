@@ -8,18 +8,19 @@
 import Foundation
 
 struct LoginRequest: APIPostRequest {
-        
+
     typealias Response = LoginResponse
-    
+
     let instanceURL: URL
     let path = "user/login"
     let body: Body
-    
+
+    // lemmy_api_common::person::Login
     struct Body: Encodable {
         let username_or_email: String
         let password: String
     }
-    
+
     init(instanceURL: URL, username: String, password: String) {
         self.instanceURL = instanceURL
         self.body = .init(username_or_email: username, password: password)
@@ -28,4 +29,6 @@ struct LoginRequest: APIPostRequest {
 
 struct LoginResponse: Decodable {
     let jwt: String
+    let registrationCreated: Bool
+    let verifyEmailSent: Bool
 }
