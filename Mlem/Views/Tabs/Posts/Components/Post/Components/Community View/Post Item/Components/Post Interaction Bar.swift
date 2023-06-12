@@ -22,11 +22,9 @@ struct PostInteractionBar: View {
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
     
-    // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
-    @State var dirtyVote: ScoringOperation
-    @State var dirtyScore: Int
-    @State var dirtySaved: Bool
-    @State var dirty: Bool
+    // passed in
+    
+    let post: Post
     
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : post.myVote ?? .resetVote }
@@ -52,140 +50,64 @@ struct PostInteractionBar: View {
      }
     
     var body: some View {
-        VStack(spacing: 0) {
-            if !compact { Divider() }
+        // nested inside a ZStack so the center items are always perfectly centered
+        ZStack {
+            HStack {
+                // upvote/downvote component
+                HStack(spacing: 6) {
+                    UpvoteButton(myVote: post.myVote)
+                        .onTapGesture {
+                            Task(priority: .userInitiated) {
+                                await upvoteCallback()
+                            }
+                        }
+                    
+                    // TODO: something clever to keep time and comment count from shifting with upvote/downvote
+                    Text(String(post.score))
+                        .if (post.myVote == .upvoted) { viewProxy in
+                            viewProxy.foregroundColor(.upvoteColor)
+                        }
+                        .if (post.myVote == .none) { viewProxy in
+                            viewProxy.foregroundColor(.accentColor)
+                        }
+                        .if (post.myVote == .downvoted) { viewProxy in
+                            viewProxy.foregroundColor(.downvoteColor)
+                        }
+                    DownvoteButton(myVote: post.myVote)
+                        .onTapGesture {
+                            Task(priority: .userInitiated) {
+                                await downvoteCallback()
+                            }
+                        }
+                }
+                
+                Spacer()
+                
+                // save/reply component
+                HStack(spacing: 16) {
+                    SaveButton(saved: post.saved)
+                        .onTapGesture {
+                            Task(priority: .userInitiated) {
+                                await saveCallback()
+                            }
+                        }
+                    ReplyButton()
+                }
+            }
             
-            // nested inside a ZStack so the info block is always perfectly centered
-            ZStack {
-                HStack {
-                    voteBlock
-                    Spacer()
-                    saveReplyBlock
+            // post info component
+            HStack(spacing: 8) {
+                HStack(spacing: iconToTextSpacing) {
+                    Image(systemName: "clock")
+                    Text(getTimeIntervalFromNow(date: post.published))
                 }
-                infoBlock
+                HStack(spacing: iconToTextSpacing) {
+                    Image(systemName: "bubble.left")
+                    Text(String(post.numberOfComments))
+                }
             }
-            .padding(.horizontal)
-            .padding(.vertical, compact ? 2 : 4)
-        }
-        .dynamicTypeSize(compact ? .small : .medium)
-    }
-    
-    // subviews
-    
-    /**
-     Displays the upvote/downvote button and the score
-     */
-    var voteBlock: some View {
-        HStack(spacing: 6) {
-            UpvoteButton(myVote: displayedVote)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        fakeUpvote()
-                        await voteOnPost(.upvote)
-                        dirty = false
-                    }
-                }
-            Text(String(displayedScore))
-                .if (displayedVote == .upvote) { viewProxy in
-                    viewProxy.foregroundColor(.upvoteColor)
-                }
-                .if (displayedVote == .resetVote) { viewProxy in
-                    viewProxy.foregroundColor(.primary)
-                }
-                .if (displayedVote == .downvote) { viewProxy in
-                    viewProxy.foregroundColor(.downvoteColor)
-                }
-            DownvoteButton(myVote: displayedVote)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        fakeDownvote()
-                        await voteOnPost(.downvote)
-                        dirty = false
-                    }
-                }
-        }
-    }
-    
-    /**
-     Displays the save and reply buttons
-     */
-    var saveReplyBlock: some View {
-        HStack(spacing: 16) {
-            // TODO: change all this once saving is implemented
-            // SaveButton(saved: dirtySaved)
-            SaveButton(saved: false)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        await savePost()
-                    }
-                }
-            ReplyButton()
-        }
-    }
-    
-    var infoBlock: some View {
-        // post info component
-        HStack(spacing: 8) {
-            HStack(spacing: iconToTextSpacing) {
-                Image(systemName: "clock")
-                Text(getTimeIntervalFromNow(date: post.post.published))
-            }
-            HStack(spacing: iconToTextSpacing) {
-                Image(systemName: "bubble.left")
-                Text(String(post.counts.comments))
-            }
-        }
-        .foregroundColor(.secondary)
-    }
-    
-    // helper functions
-    
-    /**
-     Sends a save request for the current post
-     */
-    func savePost() async -> Bool {
-        do {
-#warning("TODO: Make this actually save a post")
-            print("Mocking saving a post")
-            dirtySaved = !dirtySaved
-        } catch {
-            return false
-        }
-        return true
-    }
-    
-    /**
-     Fakes an upvote, immediately updating the displayed values
-     */
-    func fakeUpvote() {
-        switch (displayedVote) {
-        case .upvote:
-            dirtyVote = .resetVote
-            dirtyScore = displayedScore - 1
-        case .resetVote:
-            dirtyVote = .upvote
-            dirtyScore = displayedScore + 1
-        case .downvote:
-            dirtyVote = .upvote
-            dirtyScore = displayedScore + 2
-        }
-        dirty = true
-    }
-    
-    /**
-     Fakes a downvote, immediately updating the displayed values
-     */
-    func fakeDownvote() {
-        switch (displayedVote) {
-        case .upvote:
-            dirtyVote = .downvote
-            dirtyScore = displayedScore - 2
-        case .resetVote:
-            dirtyVote = .downvote
-            dirtyScore = displayedScore - 1
-        case .downvote:
-            dirtyVote = .resetVote
-            dirtyScore = displayedScore + 1
+            .foregroundColor(.secondary)
+            .dynamicTypeSize(.small)
         }
         dirty = true
     }
