@@ -25,8 +25,7 @@ struct SaveButton: View {
             .if (!saved) { viewProxy in
                 viewProxy
                     .padding(4)
-                    .foregroundColor(.secondary)
-                    // .foregroundColor(.accentColor) TODO: update this when save is hooked up to backend
+                    .foregroundColor(.primary)
             }
     }
 }

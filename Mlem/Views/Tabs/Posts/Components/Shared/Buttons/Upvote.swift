@@ -23,7 +23,7 @@ struct UpvoteButton: View {
             .if (myVote == .none || myVote == .downvoted) { viewProxy in
                 viewProxy
                     .padding(4)
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.primary)
             }
     }
 }

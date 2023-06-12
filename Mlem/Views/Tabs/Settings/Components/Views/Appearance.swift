@@ -13,6 +13,7 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     
+    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
@@ -90,6 +91,11 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowWebsiteFavicons
                 )
                 .disabled(!shouldShowWebsiteFaviconAtAll)
+                
+                SettingsItem(settingPictureSystemName: "rectangle.compress.vertical",
+                             settingPictureColor: .pink,
+                             settingName: "Compact post view",
+                             isTicked: $shouldShowCompactPosts)
             }
             
             Section("Communities")

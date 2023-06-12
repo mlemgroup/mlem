@@ -44,13 +44,64 @@ struct PostExpanded: View
     @State private var viewID: UUID = UUID()
     
     @State private var errorAlert: ErrorAlert?
+    
+    // TODO: extract these to a common location
+    func upvotePost() async -> Bool {
+        do {
+            switch post.myVote
+            {
+            case .upvoted:
+                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
+            case .downvoted:
+                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
+            case .none:
+                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
+            }
+        } catch {
+            return false
+        }
+        return true
+    }
+    
+    func downvotePost() async -> Bool {
+        do {
+            switch post.myVote
+            {
+            case .upvoted:
+                try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
+            case .downvoted:
+                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
+            case .none:
+                try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
+            }
+        } catch {
+            return false
+        }
+        
+        return true
+    }
+    
+    func savePost() async -> Bool {
+        do {
+#warning("TODO: Make this actually save a post")
+        } catch {
+            return false
+        }
+        return true
+    }
 
     var body: some View
     {
         ScrollView
         {
-            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account, feedType: $feedType)
-
+            // PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account, feedType: $feedType)
+            
+            VStack(spacing: 0) {
+                LargePost(post: post, account: account, isExpanded: true, upvoteCallback: upvotePost, downvoteCallback: downvotePost, saveCallback: savePost)
+                
+                Divider().background(.black)
+            }
+            
             if commentTracker.isLoading
             {
                 ProgressView("Loading comments…")

@@ -23,7 +23,11 @@ struct PostInteractionBar: View {
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
     
+    // passed in
+    
     let post: Post
+    
+    let compact: Bool
     
     var upvoteCallback: () async -> Bool
     
@@ -34,66 +38,73 @@ struct PostInteractionBar: View {
     // MARK Body
     
     var body: some View {
-        // nested inside a ZStack so the center items are always perfectly centered
-        ZStack {
-            HStack {
-                // upvote/downvote component
-                HStack(spacing: 6) {
-                    UpvoteButton(myVote: post.myVote)
-                        .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                await upvoteCallback()
-                            }
-                        }
-                    
-                    // TODO: something clever to keep time and comment count from shifting with upvote/downvote
-                    Text(String(post.score))
-                        .if (post.myVote == .upvoted) { viewProxy in
-                            viewProxy.foregroundColor(.upvoteColor)
-                        }
-                        .if (post.myVote == .none) { viewProxy in
-                            viewProxy.foregroundColor(.accentColor)
-                        }
-                        .if (post.myVote == .downvoted) { viewProxy in
-                            viewProxy.foregroundColor(.downvoteColor)
-                        }
-                    DownvoteButton(myVote: post.myVote)
-                        .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                await downvoteCallback()
-                            }
-                        }
-                }
-                
-                Spacer()
-                
-                // save/reply component
-                HStack(spacing: 16) {
-                    SaveButton(saved: post.saved)
-                        .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                await saveCallback()
-                            }
-                        }
-                    ReplyButton()
-                }
+        VStack(spacing: 0) {
+            if (!compact) {
+                Divider()
             }
             
-            // post info component
-            HStack(spacing: 8) {
-                HStack(spacing: iconToTextSpacing) {
-                    Image(systemName: "clock")
-                    Text(getTimeIntervalFromNow(date: post.published))
+            // nested inside a ZStack so the center items are always perfectly centered
+            ZStack {
+                HStack {
+                    // upvote/downvote component
+                    HStack(spacing: 6) {
+                        UpvoteButton(myVote: post.myVote)
+                            .onTapGesture {
+                                Task(priority: .userInitiated) {
+                                    await upvoteCallback()
+                                }
+                            }
+                        
+                        // TODO: something clever to keep time and comment count from shifting with upvote/downvote
+                        Text(String(post.score))
+                            .if (post.myVote == .upvoted) { viewProxy in
+                                viewProxy.foregroundColor(.upvoteColor)
+                            }
+                            .if (post.myVote == .none) { viewProxy in
+                                viewProxy.foregroundColor(.primary)
+                            }
+                            .if (post.myVote == .downvoted) { viewProxy in
+                                viewProxy.foregroundColor(.downvoteColor)
+                            }
+                        DownvoteButton(myVote: post.myVote)
+                            .onTapGesture {
+                                Task(priority: .userInitiated) {
+                                    await downvoteCallback()
+                                }
+                            }
+                    }
+                    
+                    Spacer()
+                    
+                    // save/reply component
+                    HStack(spacing: 16) {
+                        SaveButton(saved: post.saved)
+                            .onTapGesture {
+                                Task(priority: .userInitiated) {
+                                    await saveCallback()
+                                }
+                            }
+                        ReplyButton()
+                    }
                 }
-                HStack(spacing: iconToTextSpacing) {
-                    Image(systemName: "bubble.left")
-                    Text(String(post.numberOfComments))
+                
+                // post info component
+                HStack(spacing: 8) {
+                    HStack(spacing: iconToTextSpacing) {
+                        Image(systemName: "clock")
+                        Text(getTimeIntervalFromNow(date: post.published))
+                    }
+                    HStack(spacing: iconToTextSpacing) {
+                        Image(systemName: "bubble.left")
+                        Text(String(post.numberOfComments))
+                    }
                 }
+                .foregroundColor(.secondary)
             }
-            .foregroundColor(.secondary)
-            .dynamicTypeSize(.small)
+            .padding(.horizontal)
+            .padding(.vertical, compact ? 2 : 4)
         }
-        .padding(.horizontal)
+        .dynamicTypeSize(compact ? .small : .medium)
     }
 }
 
