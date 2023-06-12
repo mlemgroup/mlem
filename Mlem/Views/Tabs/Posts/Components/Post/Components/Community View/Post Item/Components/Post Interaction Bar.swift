@@ -13,9 +13,6 @@ import Foundation
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
 struct PostInteractionBar: View {
-//    @EnvironmentObject var appState: AppState
-//    @EnvironmentObject var postTracker: PostTracker
-    
     // constants
     let iconToTextSpacing: CGFloat = 2
     let iconPadding: CGFloat = 4
@@ -23,36 +20,31 @@ struct PostInteractionBar: View {
     let scoreItemWidth: CGFloat = 12
     
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
-//    @State var displayedVote: ScoringOperation
-//    @State var displayedScore: Int
-//    @State var displayedSaved: Bool
-//    var dirty: Bool
-    
-    
-    // passed in
-    
-    let post: APIPostView
-    
-    let account: SavedAccount
+    @State var dirtyVote: ScoringOperation
+    @State var dirtyScore: Int
+    @State var dirtySaved: Bool
+    @State var dirty: Bool
     
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : post.myVote ?? .resetVote }
     var displayedScore: Int { dirty ? dirtyScore : post.counts.score }
     
-    // arguments
+    // parameters
     let post: APIPostView
     let account: SavedAccount
     let compact: Bool
+    let voteOnPost: (ScoringOperation) async -> Bool
     
-//    init(post: APIPostView, account: SavedAccount, compact: Bool) {
-//        self.post = post
-//        self.account = account
-//        self.compact = compact
-//        self.dirty = false
-//        _displayedVote = State(initialValue: post.myVote ?? .resetVote)
-//        _displayedScore = State(initialValue: post.counts.score)
-//        _displayedSaved = State(initialValue: false)
-    // }
+    init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Bool) {
+        self.post = post
+        self.account = account
+        self.compact = compact
+        self.voteOnPost = voteOnPost
+        _dirtyVote = State(initialValue: post.myVote ?? .resetVote)
+        _dirtyScore = State(initialValue: post.counts.score)
+        _dirtySaved = State(initialValue: false)
+        _dirty = State(initialValue: false)
+     }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -82,30 +74,32 @@ struct PostInteractionBar: View {
      */
     var voteBlock: some View {
         HStack(spacing: 6) {
-            UpvoteButton(myVote: post.myVote ?? .resetVote)
+            UpvoteButton(myVote: displayedVote)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         // update the fakers. if the upvote fails, reset the fakers
-                        // fakeUpvote()
-                        await voteOnPost(inputOp: .upvote)
+                        fakeUpvote()
+                        await voteOnPost(.upvote)
+                        dirty = false
                     }
                 }
-            Text(String(post.counts.score))
-                .if (post.myVote == .upvote) { viewProxy in
+            Text(String(displayedScore))
+                .if (displayedVote == .upvote) { viewProxy in
                     viewProxy.foregroundColor(.upvoteColor)
                 }
-                .if (post.myVote == .resetVote) { viewProxy in
+                .if (displayedVote == .resetVote) { viewProxy in
                     viewProxy.foregroundColor(.primary)
                 }
-                .if (post.myVote == .downvote) { viewProxy in
+                .if (displayedVote == .downvote) { viewProxy in
                     viewProxy.foregroundColor(.downvoteColor)
                 }
-            DownvoteButton(myVote: post.myVote ?? .resetVote)
+            DownvoteButton(myVote: displayedVote)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         // update the fakers. if the downvote fails, reset the fakers
-                        // fakeDownvote()
-                        await voteOnPost(inputOp: .downvote)
+                        fakeDownvote()
+                        await voteOnPost(.downvote)
+                        dirty = false
                     }
                 }
         }
@@ -145,15 +139,37 @@ struct PostInteractionBar: View {
     // helper functions
     
     /**
-     Sends a vote request for the current post
+     Fakes an upvote, immediately updating the displayed values
      */
-    func voteOnPost(inputOp: ScoringOperation) async -> Bool {
-        do {
-            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await ratePost(post: post.post, operation: operation, account: account, postTracker: postTracker, appState: appState)
-        } catch {
-            print("vote failed")
-            return false
+    func fakeUpvote() {
+        switch (displayedVote) {
+        case .upvote:
+            dirtyVote = .resetVote
+            dirtyScore = displayedScore - 1
+        case .resetVote:
+            dirtyVote = .upvote
+            dirtyScore = displayedScore + 1
+        case .downvote:
+            dirtyVote = .upvote
+            dirtyScore = displayedScore + 2
+        }
+        dirty = true
+    }
+    
+    /**
+     Fakes a downvote, immediately updating the displayed values
+     */
+    func fakeDownvote() {
+        switch (displayedVote) {
+        case .upvote:
+            dirtyVote = .downvote
+            dirtyScore = displayedScore - 2
+        case .resetVote:
+            dirtyVote = .downvote
+            dirtyScore = displayedScore - 1
+        case .downvote:
+            dirtyVote = .resetVote
+            dirtyScore = displayedScore + 1
         }
         dirty = true
     }
@@ -169,46 +185,4 @@ struct PostInteractionBar: View {
         }
         return true
     }
-    
-    /**
-     Fakes an upvote, immediately updating the displayed values
-     */
-//    func fakeUpvote() {
-//        switch (post.myVote) {
-//        case .upvote:
-//            displayedVote = .resetVote
-//            displayedScore -= 1
-//        case .resetVote:
-//            displayedVote = .upvote
-//            displayedScore += 1
-//        case .downvote:
-//            displayedVote = .upvote
-//            displayedScore += 2
-//        }
-//    }
-    
-    /**
-     Fakes a downvote, immediately updating the displayed values
-     */
-//    func fakeDownvote() {
-//        switch (displayedVote) {
-//        case .upvote:
-//            displayedVote = .downvote
-//            displayedScore -= 2
-//        case .resetVote:
-//            displayedVote = .downvote
-//            displayedScore -= 1
-//        case .downvote:
-//            displayedVote = .resetVote
-//            displayedScore += 1
-//        }
-//    }
-    
-    /**
-     Reverts the displayed vote and score to the value from post
-     */
-//    func displayTrueVoteAndScore() {
-//        displayedVote = post.myVote ?? .resetVote
-//        displayedScore = post.counts.score
-//    }
 }

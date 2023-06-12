@@ -11,6 +11,9 @@ import SwiftUI
 import Foundation
 
 struct LargePost: View {
+    @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var appState: AppState
+    
     // parameters
     let post: APIPostView
     let account: SavedAccount
@@ -67,7 +70,7 @@ struct LargePost: View {
                 }
             }
             
-            PostInteractionBar(postTracker: postTracker, post: post, account: account, compact: false)
+            PostInteractionBar(post: post, account: account, compact: false, voteOnPost: voteOnPost)
         }
     }
 }
