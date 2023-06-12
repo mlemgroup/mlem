@@ -12,21 +12,18 @@ import SwiftUI
 struct CompactPost: View {
     let thumbnailSize: CGFloat = 60
     
-    let post: Post
+    // @EnvironmentObject var postTracker: PostTracker
+    @State var postTracker: PostTracker
+    
+    let post: APIPostView
     
     var account: SavedAccount
-    
-    var upvoteCallback: () async -> Bool
-    
-    var downvoteCallback: () async -> Bool
-    
-    var saveCallback: () async -> Bool
     
     var body: some View {
         VStack(spacing: 0) {
             HStack() {
                 
-                if let postURL = post.url {
+                if let postURL = post.post.url {
                     // image post: display image
                     if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) {
                         CachedAsyncImage(url: postURL) { image in
@@ -59,7 +56,7 @@ struct CompactPost: View {
                 }
                 
                 
-                Text(post.name)
+                Text(post.post.name)
                     .font(.callout)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(.trailing)
@@ -70,7 +67,7 @@ struct CompactPost: View {
             .padding(.horizontal, 8)
             .padding(.top, 8)
             
-            PostInteractionBar(post: post, compact: true, upvoteCallback: upvoteCallback, downvoteCallback: downvoteCallback, saveCallback: saveCallback)
+            PostInteractionBar(postTracker: postTracker, post: post, account: account, compact: true)
         }
     }
 }

@@ -15,11 +15,10 @@ struct PostItem: View
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     
-    @EnvironmentObject var appState: AppState
-    
     @State var postTracker: PostTracker
+    // @EnvironmentObject var postTracker: PostTracker
 
-    let post: APIPostView
+    @State var post: APIPostView
 
     @State var isExpanded: Bool
     
@@ -34,69 +33,15 @@ struct PostItem: View
     
     // MARK interaction callbacks
     
-    // TODO: extract these to a common location
-    func upvotePost() async -> Bool {
-        do {
-            switch post.myVote
-            {
-            case .upvoted:
-                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
-            case .downvoted:
-                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
-            case .none:
-                try await ratePost(post: post, operation: .upvote, account: account, postTracker: postTracker, appState: appState)
-            }
-        } catch {
-            return false
-        }
-        return true
-    }
-    
-    func downvotePost() async -> Bool {
-        do {
-            switch post.myVote
-            {
-            case .upvoted:
-                try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
-            case .downvoted:
-                try await ratePost(post: post, operation: .resetVote, account: account, postTracker: postTracker, appState: appState)
-            case .none:
-                try await ratePost(post: post, operation: .downvote, account: account, postTracker: postTracker, appState: appState)
-            }
-        } catch {
-            return false
-        }
-        
-        return true
-    }
-    
-    func savePost() async -> Bool {
-        do {
-#warning("TODO: Make this actually save a post")
-        } catch {
-            return false
-        }
-        return true
-    }
-    
     var body: some View {
         NavigationLink(destination: PostExpanded(account: account, postTracker: postTracker, post: post, feedType: $feedType)) {
             VStack(spacing: 0) {
                 // show large or small post view
                 if (shouldShowCompactPosts){
-                    CompactPost(post: post,
-                                account: account,
-                                upvoteCallback: upvotePost,
-                                downvoteCallback: downvotePost,
-                                saveCallback: savePost)
+                    CompactPost(postTracker: postTracker, post: post, account: account)
                 }
                 else {
-                    LargePost(post: post,
-                              account: account,
-                              isExpanded: false,
-                              upvoteCallback: upvotePost,
-                              downvoteCallback: downvotePost,
-                              saveCallback: savePost)
+                    LargePost(postTracker: postTracker, account: account, post: post, isExpanded: false)
                 }
                 
                 // divider--thicken it up a little for large posts

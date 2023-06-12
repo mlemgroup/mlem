@@ -16,6 +16,8 @@ struct PostInteractionBar: View {
     // MARK constants and variables
     
     @EnvironmentObject var appState: AppState
+    // @EnvironmentObject var postTracker: PostTracker
+    @StateObject var postTracker: PostTracker
     
     // constants
     let iconToTextSpacing: CGFloat = 2
@@ -25,15 +27,33 @@ struct PostInteractionBar: View {
     
     // passed in
     
-    let post: Post
+    @State var post: APIPostView
+    
+    let account: SavedAccount
     
     let compact: Bool
     
-    var upvoteCallback: () async -> Bool
+    func voteOnPost(inputOp: ScoringOperation) async -> Bool {
+        do {
+            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+            print("attempting to perform \(operation) on post")
+            try await ratePost(post: post.post, operation: operation, account: account, postTracker: postTracker, appState: appState)
+        } catch {
+            return false
+        }
+        return true
+    }
     
-    var downvoteCallback: () async -> Bool
+    func savePost() async -> Bool {
+        do {
+#warning("TODO: Make this actually save a post")
+        } catch {
+            return false
+        }
+        return true
+    }
     
-    var saveCallback: () async -> Bool
+    
     
     // MARK Body
     
@@ -48,28 +68,27 @@ struct PostInteractionBar: View {
                 HStack {
                     // upvote/downvote component
                     HStack(spacing: 6) {
-                        UpvoteButton(myVote: post.myVote)
+                        UpvoteButton(myVote: post.myVote ?? .resetVote)
                             .onTapGesture {
                                 Task(priority: .userInitiated) {
-                                    await upvoteCallback()
+                                    // await upvotePost()
+                                    await voteOnPost(inputOp: .upvote)
                                 }
                             }
-                        
-                        // TODO: something clever to keep time and comment count from shifting with upvote/downvote
-                        Text(String(post.score))
-                            .if (post.myVote == .upvoted) { viewProxy in
+                        Text(String(post.counts.score))
+                            .if (post.myVote == .upvote) { viewProxy in
                                 viewProxy.foregroundColor(.upvoteColor)
                             }
                             .if (post.myVote == .none) { viewProxy in
                                 viewProxy.foregroundColor(.primary)
                             }
-                            .if (post.myVote == .downvoted) { viewProxy in
+                            .if (post.myVote == .downvote) { viewProxy in
                                 viewProxy.foregroundColor(.downvoteColor)
                             }
-                        DownvoteButton(myVote: post.myVote)
+                        DownvoteButton(myVote: post.myVote ?? .resetVote)
                             .onTapGesture {
                                 Task(priority: .userInitiated) {
-                                    await downvoteCallback()
+                                    await voteOnPost(inputOp: .downvote)
                                 }
                             }
                     }
@@ -78,10 +97,12 @@ struct PostInteractionBar: View {
                     
                     // save/reply component
                     HStack(spacing: 16) {
-                        SaveButton(saved: post.saved)
+                        // TODO: change all this once saving is implemented
+                        SaveButton(saved: false)
+                        // SaveButton(saved: post.saved)
                             .onTapGesture {
                                 Task(priority: .userInitiated) {
-                                    await saveCallback()
+                                    await savePost()
                                 }
                             }
                         ReplyButton()
@@ -92,11 +113,11 @@ struct PostInteractionBar: View {
                 HStack(spacing: 8) {
                     HStack(spacing: iconToTextSpacing) {
                         Image(systemName: "clock")
-                        Text(getTimeIntervalFromNow(date: post.published))
+                        Text(getTimeIntervalFromNow(date: post.post.published))
                     }
                     HStack(spacing: iconToTextSpacing) {
                         Image(systemName: "bubble.left")
-                        Text(String(post.numberOfComments))
+                        Text(String(post.counts.comments))
                     }
                 }
                 .foregroundColor(.secondary)
@@ -107,4 +128,3 @@ struct PostInteractionBar: View {
         .dynamicTypeSize(compact ? .small : .medium)
     }
 }
-

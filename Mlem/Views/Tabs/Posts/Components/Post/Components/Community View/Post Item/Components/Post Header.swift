@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PostHeader: View {
     // passed in
-    var post: Post
+    var post: APIPostView
     var account: SavedAccount
     
     // constants
@@ -32,18 +32,18 @@ struct PostHeader: View {
                 }
                 Text("by")
                 // poster
-                NavigationLink(destination: UserView(userID: post.author.id, account: account)) {
-                    Text(post.author.name)
+                NavigationLink(destination: UserView(userID: post.creator.id, account: account)) {
+                    Text(post.creator.name)
                         .italic()
-                        .if(post.author.admin) { viewProxy in
+                        .if(post.creator.admin) { viewProxy in
                             viewProxy
                                 .foregroundColor(.red)
                         }
-                        .if(post.author.bot) { viewProxy in
+                        .if(post.creator.botAccount ?? false) { viewProxy in
                             viewProxy
                                 .foregroundColor(.indigo)
                         }
-                        .if(post.author.name == "lFenix") { viewProxy in
+                        .if(post.creator.name == "lFenix") { viewProxy in
                             viewProxy
                                 .foregroundColor(.yellow)
                         }

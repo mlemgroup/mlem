@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct UpvoteButton: View {
-    var myVote: MyVote
+    @State var myVote: ScoringOperation
 
     var body: some View {
         Image(systemName: "arrow.up")
-            .if (myVote == .upvoted) { viewProxy in
+            .if (myVote == .upvote) { viewProxy in
                 viewProxy
                     .padding(4)
                     .foregroundColor(.white)
@@ -20,7 +20,7 @@ struct UpvoteButton: View {
                         .aspectRatio(1, contentMode: .fit)
                         .foregroundColor(.upvoteColor))
             }
-            .if (myVote == .none || myVote == .downvoted) { viewProxy in
+            .if (myVote == .resetVote || myVote == .downvote) { viewProxy in
                 viewProxy
                     .padding(4)
                     .foregroundColor(.primary)
