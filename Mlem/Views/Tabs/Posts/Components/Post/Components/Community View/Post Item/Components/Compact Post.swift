@@ -55,7 +55,6 @@ struct CompactPost: View {
                             .stroke(.secondary, lineWidth: 1))
                 }
                 
-                
                 VStack(spacing: 2) {
                     Text(post.post.name)
                         .font(.subheadline)

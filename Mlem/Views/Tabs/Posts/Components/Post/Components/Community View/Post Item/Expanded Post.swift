@@ -269,7 +269,6 @@ struct ExpandedPost: View
             Alert(title: Text(content.title), message: Text(content.message))
         }
     }
-
     // subviews
     
     /**

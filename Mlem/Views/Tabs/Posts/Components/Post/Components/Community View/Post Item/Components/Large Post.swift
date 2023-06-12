@@ -67,7 +67,7 @@ struct LargePost: View {
                 }
             }
             
-            PostInteractionBar(post: post, account: account, compact: false, voteOnPost: voteOnPost)
+            PostInteractionBar(postTracker: postTracker, post: post, account: account, compact: false)
         }
     }
 }
