@@ -61,10 +61,8 @@ struct CommunityView: View
         }
     }
 
-    var body: some View
-    {
-        ZStack(alignment: .top)
-        {
+    var body: some View {
+        ZStack(alignment: .top) {
             searchResultsView
             ScrollView {
                 if postTracker.posts.isEmpty {
