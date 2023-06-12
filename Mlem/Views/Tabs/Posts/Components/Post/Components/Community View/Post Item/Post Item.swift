@@ -32,10 +32,6 @@ struct PostItem: View
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     
-    // @State var isPostCollapsed: Bool = false
-    
-    // let iconToTextSpacing: CGFloat = 2
-    
     // MARK interaction callbacks
     
     // TODO: extract these to a common location
@@ -82,9 +78,6 @@ struct PostItem: View
         }
         return true
     }
-    
-    // TODO: move this to user settings
-    let compact = false
     
     var body: some View {
         NavigationLink(destination: PostExpanded(account: account, postTracker: postTracker, post: post, feedType: $feedType)) {
