@@ -18,7 +18,7 @@ struct APISite: Decodable {
     let description: String?
     let actorId: String?
     let lastRefreshedAt: Date
-    let inboxUrl: Date
+    let inboxUrl: String
     let publicKey: String
     let instanceId: Int
 }
