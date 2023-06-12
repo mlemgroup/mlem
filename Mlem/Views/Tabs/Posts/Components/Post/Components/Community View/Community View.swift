@@ -262,90 +262,113 @@ struct CommunityView: View
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                SortingMenu(selectedSortingOption: Binding(get: {
-                    selectedSortingOption
-                }, set: { newValue in
-                    self.selectedSortingOption = newValue
-                    Task {
-                        print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-                        
-                        postTracker.posts = .init()
-                        postTracker.page = 1
-                        
-                        
-                        if postTracker.posts.isEmpty {
-                            postTracker.isLoading = true
-                        }
-                        
-                        await loadFeed()
-                        postTracker.isLoading = false
-                        
-                    }
-                }))
-                
-                Menu
-                {
-                    if isInSpecificCommunity
-                    {
-                        Button
-                        {
-                            print("Will toggle sidebar")
-                            isSidebarShown.toggle()
-                            print("Sidebar value: \(isSidebarShown)")
-                        } label: {
-                            Label("Sidebar", systemImage: "sidebar.right")
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    if let communityDetails
-                    {
-                        SubscribeButton(
-                            communityDetails: Binding(
-                                get: {
-                                    communityDetails.communityView
-                            },
-                                set: { newValue in
-                                    guard let newValue else { return }
-                                    self.communityDetails?.communityView = newValue
-                                }),
-                            account: account
-                        )
-                        
-                        if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
-                        { /// This is when a community is already favorited
-                            Button(role: .destructive) {
-                                unfavoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
-                            } label: {
-                                Label("Unfavorite", systemImage: "star.slash")
+                if !isShowingCommunitySearch {
+                    SortingMenu(selectedSortingOption: Binding(
+                        get: {
+                            selectedSortingOption
+                        },
+                        set: { newValue in
+                            self.selectedSortingOption = newValue
+                            Task {
+                                print("Selected sorting option: \(newValue), \(newValue.rawValue)")
+                                
+                                postTracker.posts = .init()
+                                postTracker.page = 1
+                                
+                                
+                                if postTracker.posts.isEmpty {
+                                    postTracker.isLoading = true
+                                }
+                                
+                                await loadFeed()
+                                postTracker.isLoading = false
+                                
                             }
                         }
-                        else
+                    ))
+                    
+                    Menu
+                    {
+                        if isInSpecificCommunity
                         {
-                            Button {
-                                favoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                            Button
+                            {
+                                print("Will toggle sidebar")
+                                isSidebarShown.toggle()
+                                print("Sidebar value: \(isSidebarShown)")
                             } label: {
-                                Label("Favorite", systemImage: "star")
+                                Label("Sidebar", systemImage: "sidebar.right")
                             }
-                            .tint(.yellow)
                         }
                         
                         Divider()
                         
-                        if let actorId = community?.actorId {
-                            ShareButton(
-                                urlToShare: actorId,
-                                isShowingButtonText: true
+                        if let communityDetails
+                        {
+                            SubscribeButton(
+                                communityDetails: Binding(
+                                    get: {
+                                        communityDetails.communityView
+                                    },
+                                    set: { newValue in
+                                        guard let newValue else { return }
+                                        self.communityDetails?.communityView = newValue
+                                    }),
+                                account: account
                             )
+                            
+                            if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
+                            { /// This is when a community is already favorited
+                                Button(role: .destructive) {
+                                    unfavoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                } label: {
+                                    Label("Unfavorite", systemImage: "star.slash")
+                                }
+                            }
+                            else
+                            {
+                                Button {
+                                    favoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                } label: {
+                                    Label("Favorite", systemImage: "star")
+                                }
+                                .tint(.yellow)
+                            }
+                            
+                            Divider()
+                            
+                            if let actorId = community?.actorId {
+                                ShareButton(
+                                    urlToShare: actorId,
+                                    isShowingButtonText: true
+                                )
+                            }
                         }
+                        else
+                        {
+                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
+                        }
+                    } label: {
+                        Label("More", systemImage: "ellipsis")
                     }
-                    else
+                } else {
+                    Button
                     {
-                        ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
+                        isSearchFieldFocused = false
+                        
+                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
+                        {
+                            isShowingCommunitySearch.toggle()
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                        { /// Clear the search text and results one second after it disappears so it doesn't just disappear in the middle of the animation
+                            searchText = ""
+                            communitySearchResultsTracker.foundCommunities = .init()
+                        }
+                    } label: {
+                        Text("Cancel")
                     }
-                } label: {
-                    Label("More", systemImage: "ellipsis")
                 }
             }
         }
