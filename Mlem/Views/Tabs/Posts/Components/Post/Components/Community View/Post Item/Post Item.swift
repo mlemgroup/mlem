@@ -15,11 +15,10 @@ struct PostItem: View
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     
-    @EnvironmentObject var appState: AppState
-    
     @State var postTracker: PostTracker
+    // @EnvironmentObject var postTracker: PostTracker
 
-    let post: APIPostView
+    @State var post: APIPostView
 
     @State var isExpanded: Bool
     
@@ -91,19 +90,10 @@ struct PostItem: View
             VStack(spacing: 0) {
                 // show large or small post view
                 if (shouldShowCompactPosts){
-                    CompactPost(post: post,
-                                account: account,
-                                upvoteCallback: upvotePost,
-                                downvoteCallback: downvotePost,
-                                saveCallback: savePost)
+                    CompactPost(postTracker: postTracker, post: post, account: account)
                 }
                 else {
-                    LargePost(post: post,
-                              account: account,
-                              isExpanded: false,
-                              upvoteCallback: upvotePost,
-                              downvoteCallback: downvotePost,
-                              saveCallback: savePost)
+                    LargePost(postTracker: postTracker, account: account, post: post, isExpanded: false)
                 }
                 
                 // divider--thicken it up a little for large posts

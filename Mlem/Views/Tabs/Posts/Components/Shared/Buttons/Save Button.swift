@@ -10,7 +10,7 @@ import SwiftUI
 import Foundation
 
 struct SaveButton: View {
-    var saved: Bool
+    @State var saved: Bool
     
     var body: some View {
         Image(systemName: "bookmark")

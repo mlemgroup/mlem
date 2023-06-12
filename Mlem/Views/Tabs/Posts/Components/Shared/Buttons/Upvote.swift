@@ -8,17 +8,23 @@
 import SwiftUI
 
 struct UpvoteButton: View {
-    let myVote: ScoringOperation
+    @State var myVote: ScoringOperation
 
-    var body: some View
-    {
-        HStack(alignment: .center, spacing: 2)
-        {
-            Image(systemName: "arrow.up")
-
-            Text(String(score))
-        }
-        .foregroundColor(.accentColor)
+    var body: some View {
+        Image(systemName: "arrow.up")
+            .if (myVote == .upvote) { viewProxy in
+                viewProxy
+                    .padding(4)
+                    .foregroundColor(.white)
+                    .background(RoundedRectangle(cornerRadius: 2)
+                        .aspectRatio(1, contentMode: .fit)
+                        .foregroundColor(.upvoteColor))
+            }
+            .if (myVote == .resetVote || myVote == .downvote) { viewProxy in
+                viewProxy
+                    .padding(4)
+                    .foregroundColor(.primary)
+            }
     }
 }
 

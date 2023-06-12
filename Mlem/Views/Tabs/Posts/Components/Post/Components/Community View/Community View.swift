@@ -61,8 +61,10 @@ struct CommunityView: View
         }
     }
 
-    var body: some View {
-        ZStack(alignment: .top) {
+    var body: some View
+    {
+        ZStack(alignment: .top)
+        {
             searchResultsView
             ScrollView {
                 if postTracker.posts.isEmpty {
@@ -72,59 +74,6 @@ struct CommunityView: View
                         bannerView
                         postListView
                     }
-                }
-                else
-                {
-                    // LazyVStack(spacing: shouldShowCompactPosts ? 2.5 : 15)
-                    LazyVStack(spacing: 0)
-                    {
-                        if isInSpecificCommunity
-                        {
-                            if shouldShowCommunityHeaders
-                            {
-                                if let communityBannerURL = community?.banner
-                                {
-                                    StickyImageView(url: communityBannerURL)
-                                }
-                            }
-                        }
-
-                        ForEach(postTracker.posts.filter { !$0.name.contains(filtersTracker.filteredKeywords) }) /// Filter out blocked keywords
-                        { post in
-                            NavigationLink(destination: PostExpanded(account: account, postTracker: postTracker, post: post, feedType: $feedType))
-                            {
-                                PostItem(postTracker: postTracker, post: post, isExpanded: false, isInSpecificCommunity: isInSpecificCommunity, account: account, feedType: $feedType)
-                            }
-                            .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
-                            .task
-                            {
-                                if post == postTracker.posts.last
-                                {
-                                    if community == nil
-                                    {
-                                        if postTracker.posts.isEmpty
-                                        {
-                                            postTracker.isLoading = true
-                                        }
-                                        
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: nil, feedType: feedType, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
-                                    }
-                                    else
-                                    {
-                                        if postTracker.posts.isEmpty
-                                        {
-                                            postTracker.isLoading = true
-                                        }
-                                        
-                                        await loadInfiniteFeed(postTracker: postTracker, appState: appState, community: post.community, feedType: .all, sortingType: selectedSortingOption, account: account)
-                                        postTracker.isLoading = false
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .background(.regularMaterial)
                 }
             }
             .safeAreaInset(edge: .bottom) {
