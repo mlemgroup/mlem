@@ -18,6 +18,9 @@ struct FeedPost: View
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     
+    @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var appState: AppState
+    
     // arguments
     let post: APIPostView
     let account: SavedAccount
@@ -29,12 +32,16 @@ struct FeedPost: View
     
     var body: some View {
         VStack(spacing: 0) {
+//            if post.myVote == .upvote {
+//                Text("POST IS UPVOTED (FEED)")
+//            }
+            
             // show large or small post view
             if (shouldShowCompactPosts){
-                CompactPost(post: post, account: account)
+                CompactPost(post: post, account: account, voteOnPost: voteOnPost)
             }
             else {
-                LargePost(post: post, account: account, isExpanded: false)
+                LargePost(post: post, account: account, isExpanded: false, voteOnPost: voteOnPost)
             }
             
             // thicken up the divider a little for large posts
@@ -46,6 +53,23 @@ struct FeedPost: View
             viewProxy.padding(.top)
         }
             .background(Color.systemBackground)
+    }
+    
+    /**
+     Votes on a post
+     NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly.
+     */
+    func voteOnPost(inputOp: ScoringOperation) async -> Bool {
+        do {
+            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+            try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
+            // try await ratePost(post: post.post, operation: operation, account: account, postTracker: postTracker, appState: appState)
+        } catch {
+            print("vote failed")
+            return false
+        }
+        print("vote succeeded")
+        return true
     }
 }
 

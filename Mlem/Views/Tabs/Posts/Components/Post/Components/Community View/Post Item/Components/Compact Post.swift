@@ -15,10 +15,15 @@ struct CompactPost: View {
     
     // arguments
     let post: APIPostView
-    var account: SavedAccount
+    let account: SavedAccount
+    let voteOnPost: (ScoringOperation) async -> Bool
     
     var body: some View {
         VStack(spacing: 0) {
+//            if (post.myVote == .upvote) {
+//                Text("POST IS UPVOTED")
+//            }
+            
             HStack() {
                 // URL posts are either images or web posts
                 if let postURL = post.post.url {
@@ -62,7 +67,7 @@ struct CompactPost: View {
             .padding(.horizontal, 8)
             .padding(.top, 8)
             
-            PostInteractionBar(post: post, account: account, compact: true)
+            PostInteractionBar(post: post, account: account, compact: true, voteOnPost: voteOnPost)
         }
     }
 }

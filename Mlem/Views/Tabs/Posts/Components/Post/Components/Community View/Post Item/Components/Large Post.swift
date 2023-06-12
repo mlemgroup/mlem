@@ -14,13 +14,13 @@ struct LargePost: View {
     let communityIconSize: CGFloat = 30
     
     let post: APIPostView
-    
     let account: SavedAccount
-    
     /**
      Whether the post is expanded or in feed
      */
     let isExpanded: Bool
+    
+    let voteOnPost: (ScoringOperation) async -> Bool
     
     var body: some View {
         VStack() {
@@ -72,7 +72,7 @@ struct LargePost: View {
                 }
             }
             
-            PostInteractionBar(post: post, account: account, compact: false)
+            PostInteractionBar(post: post, account: account, compact: false, voteOnPost: voteOnPost)
         }
     }
 }

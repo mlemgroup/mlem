@@ -39,6 +39,8 @@ struct PostInteractionBar: View {
     
     let compact: Bool
     
+    var voteOnPost: (ScoringOperation) async -> Bool
+    
 //    init(post: APIPostView, account: SavedAccount, compact: Bool) {
 //        self.post = post
 //        self.account = account
@@ -80,9 +82,8 @@ struct PostInteractionBar: View {
             UpvoteButton(myVote: post.myVote ?? .resetVote)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
-                        // update the fakers. if the upvote fails, reset the fakers
-                        // fakeUpvote()
-                        await voteOnPost(inputOp: .upvote)
+                        // await voteOnPost(inputOp: .upvote)
+                        await voteOnPost(.upvote)
                     }
                 }
             Text(String(post.counts.score))
@@ -100,7 +101,8 @@ struct PostInteractionBar: View {
                     Task(priority: .userInitiated) {
                         // update the fakers. if the downvote fails, reset the fakers
                         // fakeDownvote()
-                        await voteOnPost(inputOp: .downvote)
+                        // await voteOnPost(inputOp: .downvote)
+                        await voteOnPost(.downvote)
                     }
                 }
         }
@@ -142,17 +144,18 @@ struct PostInteractionBar: View {
     /**
      Sends a vote request for the current post
      */
-    func voteOnPost(inputOp: ScoringOperation) async -> Bool {
-        do {
-            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await ratePost(post: post.post, operation: operation, account: account, postTracker: postTracker, appState: appState)
-        } catch {
-            print("vote failed")
-            return false
-        }
-        print("vote succeeded")
-        return true
-    }
+//    func voteOnPost(inputOp: ScoringOperation) async -> Bool {
+//        do {
+//            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+//            try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
+//            // try await ratePost(post: post.post, operation: operation, account: account, postTracker: postTracker, appState: appState)
+//        } catch {
+//            print("vote failed")
+//            return false
+//        }
+//        print("vote succeeded")
+//        return true
+//    }
     
     /**
      Sends a save request for the current post
