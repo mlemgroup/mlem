@@ -11,15 +11,10 @@ import SwiftUI
 import Foundation
 
 struct LargePost: View {
-    let communityIconSize: CGFloat = 30
-    
+    // parameters
     let post: APIPostView
     let account: SavedAccount
-    /**
-     Whether the post is expanded or in feed
-     */
     let isExpanded: Bool
-    
     let voteOnPost: (ScoringOperation) async -> Bool
     
     var body: some View {

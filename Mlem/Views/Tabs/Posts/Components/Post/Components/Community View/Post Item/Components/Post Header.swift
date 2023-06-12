@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 struct PostHeader: View {
-    // passed in
+    // parameters
     var post: APIPostView
     var account: SavedAccount
     
     // constants
-    let communityIconSize: CGFloat = 32
+    private let communityIconSize: CGFloat = 32
     
     var body: some View {
         HStack {
