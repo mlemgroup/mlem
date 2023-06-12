@@ -10,19 +10,17 @@ import Foundation
 import SwiftUI
 
 struct CompactPost: View {
+    // constants
     let thumbnailSize: CGFloat = 60
     
-    // @EnvironmentObject var postTracker: PostTracker
-    @State var postTracker: PostTracker
-    
+    // arguments
     let post: APIPostView
-    
     var account: SavedAccount
     
     var body: some View {
         VStack(spacing: 0) {
             HStack() {
-                
+                // URL posts are either images or web posts
                 if let postURL = post.post.url {
                     // image post: display image
                     if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) {
@@ -44,7 +42,7 @@ struct CompactPost: View {
                             .frame(width: thumbnailSize, height: thumbnailSize)
                             .cornerRadius(10)
                             .overlay(RoundedRectangle(cornerRadius: 4)
-                                .stroke(.secondary, lineWidth: 2))
+                                .stroke(.secondary, lineWidth: 1))
                     }
                 }
                 else {
@@ -52,22 +50,19 @@ struct CompactPost: View {
                         .frame(width: thumbnailSize, height: thumbnailSize)
                         .cornerRadius(10)
                         .overlay(RoundedRectangle(cornerRadius: 4)
-                            .stroke(.secondary, lineWidth: 2))
+                            .stroke(.secondary, lineWidth: 1))
                 }
-                
                 
                 Text(post.post.name)
                     .font(.callout)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(.trailing)
-                    //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    //.padding(.top, 4)
                     
             }
             .padding(.horizontal, 8)
             .padding(.top, 8)
             
-            PostInteractionBar(postTracker: postTracker, post: post, account: account, compact: true)
+            PostInteractionBar(post: post, account: account, compact: true)
         }
     }
 }

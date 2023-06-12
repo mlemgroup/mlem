@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DownvoteButton: View {
-    @State var myVote: ScoringOperation
+    let myVote: ScoringOperation
 
     var body: some View {
         Image(systemName: "arrow.down")

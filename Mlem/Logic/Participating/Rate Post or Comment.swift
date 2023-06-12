@@ -32,22 +32,14 @@ func ratePost(
             score: operation
         )
         
-        print("request created, awaiting response")
-        
         let response = try await APIClient().perform(request: request)
-        
-        print("got response")
         
         guard let indexToReplace = postTracker.posts.firstIndex(where: { $0.post.id == post.id }) else {
             // shouldn't happen, but safer than force unwrapping
             return
         }
         
-        print(postTracker.posts[indexToReplace])
-        
         postTracker.posts[indexToReplace] = response.postView
-        
-        print(postTracker.posts[indexToReplace])
         
         AppConstants.hapticManager.notificationOccurred(.success)
     } catch {

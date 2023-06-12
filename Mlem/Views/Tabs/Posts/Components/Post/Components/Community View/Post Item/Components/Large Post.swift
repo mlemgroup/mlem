@@ -13,10 +13,9 @@ import Foundation
 struct LargePost: View {
     let communityIconSize: CGFloat = 30
     
-    // @EnvironmentObject var postTracker: PostTracker
-    @State var postTracker: PostTracker
-    let account: SavedAccount
     let post: APIPostView
+    
+    let account: SavedAccount
     
     /**
      Whether the post is expanded or in feed
@@ -73,7 +72,7 @@ struct LargePost: View {
                 }
             }
             
-            PostInteractionBar(postTracker: postTracker, post: post, account: account, compact: false)
+            PostInteractionBar(post: post, account: account, compact: false)
         }
     }
 }
