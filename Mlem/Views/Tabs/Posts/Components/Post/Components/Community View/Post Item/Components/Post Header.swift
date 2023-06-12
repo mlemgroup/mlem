@@ -14,7 +14,7 @@ struct PostHeader: View {
     var account: SavedAccount
     
     // constants
-    let communityIconSize: CGFloat = 30
+    let communityIconSize: CGFloat = 32
     
     var body: some View {
         HStack {
@@ -49,7 +49,7 @@ struct PostHeader: View {
                         }
                 }
             }
-                
+            
             Spacer()
             
             if (post.post.featuredLocal) {
@@ -58,8 +58,26 @@ struct PostHeader: View {
             
             // ellipsis menu TODO: implement
             Image(systemName: "ellipsis")
-                .foregroundColor(.secondary)
+                // circle background provides some tap leniency
+                .background(Circle()
+                    .frame(width: 16, height: 16)
+                    .foregroundColor(.white))
+                .foregroundColor(.black)
+                .contextMenu {
+                    // general-purpose button template for adding more stuff--also nice for debugging :)
+//                    Button {
+//                        print(post)
+//                    } label: {
+//                        Label("Do things", systemImage: "heart")
+//                    }
+                    
+                    // only display share if URL is valid
+                    if let postUrl: URL = URL(string: post.post.apId) {
+                        ShareButton(urlToShare: postUrl, isShowingButtonText: true)
+                    }
+                }
         }
+        .font(.subheadline)
         .foregroundColor(.secondary)
     }
 }

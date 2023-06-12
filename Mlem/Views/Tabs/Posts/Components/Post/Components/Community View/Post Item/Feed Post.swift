@@ -35,6 +35,19 @@ struct FeedPost: View
             // show large or small post view
             if (shouldShowCompactPosts){
                 CompactPost(post: post, account: account, voteOnPost: voteOnPost)
+                    .contextMenu {
+                        // general-purpose button template for adding more stuff--also nice for debugging :)
+//                        Button {
+//                            print(post)
+//                        } label: {
+//                            Label("Do things", systemImage: "heart")
+//                        }
+                        
+                        // only display share if URL is valid
+                        if let postUrl: URL = URL(string: post.post.apId) {
+                            ShareButton(urlToShare: postUrl, isShowingButtonText: true)
+                        }
+                    }
             }
             else {
                 LargePost(post: post, account: account, isExpanded: false, voteOnPost: voteOnPost)
@@ -53,18 +66,15 @@ struct FeedPost: View
     
     /**
      Votes on a post
-     NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly.
+     NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
      */
     func voteOnPost(inputOp: ScoringOperation) async -> Bool {
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
-            // try await ratePost(post: post.post, operation: operation, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            print("vote failed")
             return false
         }
-        print("vote succeeded")
         return true
     }
 }

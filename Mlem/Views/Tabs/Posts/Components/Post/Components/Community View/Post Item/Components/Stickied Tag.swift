@@ -18,7 +18,6 @@ struct StickiedTag: View
             if !compact { Text("Stickied") }
             Image(systemName: "bandage.fill")
         }
-        .dynamicTypeSize(.xSmall)
         .foregroundColor(.mint)
     }
 }

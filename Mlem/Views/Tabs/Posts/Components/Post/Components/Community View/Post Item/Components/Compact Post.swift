@@ -29,8 +29,8 @@ struct CompactPost: View {
                         CachedAsyncImage(url: postURL) { image in
                             image
                                 .resizable()
-                                .frame(width: thumbnailSize, height: thumbnailSize)
                                 .scaledToFill()
+                                .frame(width: thumbnailSize, height: thumbnailSize)
                                 .clipShape(RoundedRectangle(cornerRadius: 4))
                         } placeholder: {
                             ProgressView()
@@ -57,55 +57,53 @@ struct CompactPost: View {
                 
                 VStack(spacing: 2) {
                     Text(post.post.name)
-                        .font(.callout)
+                        .font(.subheadline)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         .padding(.trailing)
                     
-                    HStack {
-                        HStack(spacing: 4) {
-                            // stickied
-                            if post.post.featuredLocal { StickiedTag(compact: true) }
-                            
-                            // community name
-                            NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
-                                Text(post.community.name)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .bold()
-                            }
-                            Text("by")
-                                .foregroundColor(.secondary)
+                    HStack(spacing: 4) {
+                        // stickied
+                        if post.post.featuredLocal { StickiedTag(compact: true) }
+                        
+                        // community name
+                        NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
+                            Text(post.community.name)
                                 .font(.caption)
-                            // poster
-                            NavigationLink(destination: UserView(userID: post.creator.id, account: account)) {
-                                Text(post.creator.name)
-                                    .font(.caption)
-                                    .italic()
-                                    .if (post.creator.admin) { viewProxy in
-                                        viewProxy
-                                            .foregroundColor(.red)
-                                    }
-                                    .if (post.creator.botAccount ?? false) { viewProxy in
-                                        viewProxy
-                                            .foregroundColor(.indigo)
-                                    }
-                                    .if (post.creator.name == "lFenix") { viewProxy in
-                                        viewProxy
-                                            .foregroundColor(.yellow)
-                                    }
-                                    .if (!(post.creator.admin || post.creator.botAccount ?? false || post.creator.name == "lFenix")) { viewProxy in
-                                        viewProxy
-                                            .foregroundColor(.secondary)
-                                    }
-                            }
-                            
-                            Spacer()
+                                .foregroundColor(.secondary)
+                                .bold()
                         }
+                        Text("by")
+                            .foregroundColor(.secondary)
+                            .font(.caption)
+                        // poster
+                        NavigationLink(destination: UserView(userID: post.creator.id, account: account)) {
+                            Text(post.creator.name)
+                                .font(.caption)
+                                .italic()
+                                .if (post.creator.admin) { viewProxy in
+                                    viewProxy
+                                        .foregroundColor(.red)
+                                }
+                                .if (post.creator.botAccount ?? false) { viewProxy in
+                                    viewProxy
+                                        .foregroundColor(.indigo)
+                                }
+                                .if (post.creator.name == "lFenix") { viewProxy in
+                                    viewProxy
+                                        .foregroundColor(.yellow)
+                                }
+                                .if (!(post.creator.admin || post.creator.botAccount ?? false || post.creator.name == "lFenix")) { viewProxy in
+                                    viewProxy
+                                        .foregroundColor(.secondary)
+                                }
+                        }
+                        
+                        Spacer()
                     }
                 }
-                    
+                
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 16)
             .padding(.top, 8)
             
             PostInteractionBar(post: post, account: account, compact: true, voteOnPost: voteOnPost)

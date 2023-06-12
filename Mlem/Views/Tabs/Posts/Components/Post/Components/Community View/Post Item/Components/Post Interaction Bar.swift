@@ -112,7 +112,7 @@ struct PostInteractionBar: View {
     var saveReplyBlock: some View {
         HStack(spacing: 16) {
             // TODO: change all this once saving is implemented
-            SaveButton(saved: false)
+            SaveButton(saved: dirtySaved)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         await savePost()
@@ -145,6 +145,8 @@ struct PostInteractionBar: View {
     func savePost() async -> Bool {
         do {
 #warning("TODO: Make this actually save a post")
+            print("Mocking saving a post")
+            dirtySaved = !dirtySaved
         } catch {
             return false
         }
