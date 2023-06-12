@@ -21,7 +21,7 @@ struct CompactPost: View {
     var body: some View {
         VStack(spacing: 0) {
             
-            HStack() {
+            HStack(alignment: .top) {
                 // URL posts are either images or web posts
                 if let postURL = post.post.url {
                     // image post: display image
@@ -55,10 +55,11 @@ struct CompactPost: View {
                             .stroke(.secondary, lineWidth: 1))
                 }
                 
+                
                 VStack(spacing: 2) {
                     Text(post.post.name)
                         .font(.subheadline)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         .padding(.trailing)
                     
                     HStack(spacing: 4) {
@@ -103,6 +104,7 @@ struct CompactPost: View {
                 }
                 
             }
+            
             .padding(.horizontal, 16)
             .padding(.top, 8)
             

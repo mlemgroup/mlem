@@ -112,7 +112,8 @@ struct PostInteractionBar: View {
     var saveReplyBlock: some View {
         HStack(spacing: 16) {
             // TODO: change all this once saving is implemented
-            SaveButton(saved: dirtySaved)
+            // SaveButton(saved: dirtySaved)
+            SaveButton(saved: false)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         await savePost()
