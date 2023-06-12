@@ -7,11 +7,13 @@
 
 import Foundation
 
+// lemmy_db_schema::aggregates::structs::CommentAggregates
 struct APICommentAggregates: Decodable {
-    let childCount: Int
-    let commentId: Int
-    let downvotes: Int
     let id: Int
+    let commentId: Int
     let score: Int
     let upvotes: Int
+    let downvotes: Int
+    let published: Date
+    let childCount: Int
 }

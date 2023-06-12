@@ -7,11 +7,18 @@
 
 import Foundation
 
+// lemmy_db_views::structs::CommentView
 struct APICommentView: Decodable {
     let comment: APIComment
-    let counts: APICommentAggregates
-    var myVote: ScoringOperation?
     let creator: APIPerson
+    let post: APIPost
+    let community: APICommunity
+    let counts: APICommentAggregates
+    let creatorBannedFromCommunity: Bool
+    let subscribed: APISubscribedStatus
+    let saved: Bool
+    let creatorBlocked: Bool
+    var myVote: ScoringOperation?
 }
 
 extension APICommentView: Identifiable {

@@ -8,19 +8,20 @@
 import Foundation
 
 struct DeleteCommentRequest: APIPostRequest {
-    
-    typealias Response = CreateCommentResponse
-    
+
+    typealias Response = CommentResponse
+
     let instanceURL: URL
     let path = "comment/delete"
     let body: Body
-    
+
+    // lemmy_api_common::comment::DeleteComment
     struct Body: Encodable {
-        let auth: String
         let comment_id: Int
         let deleted: Bool
+        let auth: String
     }
-    
+
     init(
         account: SavedAccount,
         commentId: Int,
@@ -28,9 +29,9 @@ struct DeleteCommentRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            auth: account.accessToken,
             comment_id: commentId,
-            deleted: deleted
+            deleted: deleted,
+            auth: account.accessToken
         )
     }
 }

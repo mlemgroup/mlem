@@ -26,8 +26,10 @@ func loadInfiniteFeed(
         account: account,
         communityId: communityId,
         page: postTracker.page,
-        sort: sortingType
+        sort: sortingType,
+        type: feedType
     )
+    
     let response = try await APIClient().perform(request: request)
     
     guard !response.posts.isEmpty else {

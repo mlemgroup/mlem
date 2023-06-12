@@ -7,6 +7,7 @@
 
 import Foundation
 
+// lemmy_db_schema::SubscribedType
 enum APISubscribedStatus: String, Decodable {
     case subscribed = "Subscribed"
     case pending = "Pending"

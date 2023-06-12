@@ -11,7 +11,7 @@ import Foundation
 
 protocol APIRequest {
     associatedtype Response: Decodable
-    
+
     var path: String { get }
     var instanceURL: URL { get }
     var endpoint: URL { get }
@@ -20,7 +20,7 @@ protocol APIRequest {
 
 extension APIRequest {
     var headers: [String: String] { defaultHeaders }
-    
+
     var defaultHeaders: [String: String] {
         ["Content-Type": "application/json"]
     }
@@ -36,7 +36,9 @@ extension APIGetRequest {
     var endpoint: URL {
         instanceURL
         .appending(path: path)
-        .appending(queryItems: queryItems)
+        .appending(queryItems: queryItems.filter {
+            item in item.value != nil
+        })
     }
 }
 

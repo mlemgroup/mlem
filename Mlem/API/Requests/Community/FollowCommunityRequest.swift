@@ -8,19 +8,20 @@
 import Foundation
 
 struct FollowCommunityRequest: APIPostRequest {
-    
-    typealias Response = FollowCommunityResponse
-    
+
+    typealias Response = CommunityResponse
+
     let instanceURL: URL
     let path = "community/follow"
     let body: Body
-    
+
+    // lemmy_api_common::community::FollowCommunity
     struct Body: Encodable {
-        let auth: String
         let community_id: Int
         let follow: Bool
+        let auth: String
     }
-    
+
     init(
         account: SavedAccount,
         communityId: Int,
@@ -28,13 +29,15 @@ struct FollowCommunityRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            auth: account.accessToken,
             community_id: communityId,
-            follow: follow
+            follow: follow,
+            auth: account.accessToken
         )
     }
 }
 
-struct FollowCommunityResponse: Decodable {
+// lemmy_api_common::community::CommunityResponse
+struct CommunityResponse: Decodable {
     let communityView: APICommunityView
+    let discussionLanguages: [Int]
 }

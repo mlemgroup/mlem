@@ -7,6 +7,8 @@
 
 import Foundation
 
+// lemmy_db_schema::CommentSortType
+// TODO this is not accurate to the Lemmy enum, active -> hot, and "old" is missing
 enum CommentSortTypes: String, Codable, CaseIterable, Identifiable
 {
     case new, top, active

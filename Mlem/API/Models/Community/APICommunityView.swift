@@ -7,8 +7,10 @@
 
 import Foundation
 
+// lemmy_db_views_actor::structs::CommunityView
 struct APICommunityView: Decodable {
-    let counts: APICommunityAggregates
-    let subscribed: APISubscribedStatus
     let community: APICommunity
+    let subscribed: APISubscribedStatus
+    let blocked: Bool
+    let counts: APICommunityAggregates
 }

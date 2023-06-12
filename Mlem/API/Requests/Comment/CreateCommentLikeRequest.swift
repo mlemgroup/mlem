@@ -8,19 +8,20 @@
 import Foundation
 
 struct CreateCommentLikeRequest: APIPostRequest {
-    
-    typealias Response = CreateCommentLikeResponse
-    
+
+    typealias Response = CommentResponse
+
     let instanceURL: URL
     let path = "comment/like"
     let body: Body
-    
+
+    // lemmy_api_common::comment::CreateCommentLike
     struct Body: Encodable {
-        let auth: String
         let comment_id: Int
         let score: Int
+        let auth: String
     }
-    
+
     init(
         account: SavedAccount,
         commentId: Int,
@@ -28,13 +29,9 @@ struct CreateCommentLikeRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            auth: account.accessToken,
             comment_id: commentId,
-            score: score.rawValue
+            score: score.rawValue,
+            auth: account.accessToken
         )
     }
-}
-
-struct CreateCommentLikeResponse: Decodable {
-    let commentView: APICommentView
 }

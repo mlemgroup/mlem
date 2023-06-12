@@ -7,23 +7,24 @@
 
 import Foundation
 
+// lemmy_db_schema::source::community::CommunitySafe
 struct APICommunity: Codable, Identifiable {
-    let actorId: URL
-    let banner: URL?
-    let deleted: Bool
-    let description: String?
-    let hidden: Bool
-    let icon: URL?
     let id: Int
-    let instanceId: Int
-    let local: Bool
     let name: String
-    let nsfw: Bool
-    let postingRestrictedToMods: Bool
-    let published: Date
-    let removed: Bool
     let title: String
+    let description: String?
+    let published: Date
     let updated: Date?
+    let removed: Bool
+    let deleted: Bool
+    let nsfw: Bool
+    let actorId: URL
+    let local: Bool
+    let icon: URL?
+    let banner: URL?
+    let hidden: Bool
+    let postingRestrictedToMods: Bool
+    let instanceId: Int
 }
 
 extension APICommunity: Equatable {
