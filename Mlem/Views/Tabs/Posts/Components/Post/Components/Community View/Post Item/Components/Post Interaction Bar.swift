@@ -37,7 +37,7 @@ struct PostInteractionBar: View {
     let account: SavedAccount
     let compact: Bool
     
-    // callback to upvote the post. I don't like that this is passed in, but I can't make the post update properly if I define it here :/
+    // callback to upvote the post. I don't like that this is passed in, but I can't make the post update properly if I define it here--the delay between the value being updated in the postTracker and that value being propagated down here makes it flicker in a way that's not very nice
     var voteOnPost: (ScoringOperation) async -> Bool
     
     init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Bool) {
@@ -53,9 +53,7 @@ struct PostInteractionBar: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if (!compact) {
-                Divider()
-            }
+            if !compact { Divider() }
             
             // nested inside a ZStack so the info block is always perfectly centered
             ZStack {

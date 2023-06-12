@@ -52,6 +52,10 @@ struct PostHeader: View {
                 
             Spacer()
             
+            if (post.post.featuredLocal) {
+                StickiedTag(compact: false)
+            }
+            
             // ellipsis menu TODO: implement
             Image(systemName: "ellipsis")
                 .foregroundColor(.secondary)

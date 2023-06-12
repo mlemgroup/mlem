@@ -55,10 +55,54 @@ struct CompactPost: View {
                             .stroke(.secondary, lineWidth: 1))
                 }
                 
-                Text(post.post.name)
-                    .font(.callout)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    .padding(.trailing)
+                VStack(spacing: 2) {
+                    Text(post.post.name)
+                        .font(.callout)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(.trailing)
+                    
+                    HStack {
+                        HStack(spacing: 4) {
+                            // stickied
+                            if post.post.featuredLocal { StickiedTag(compact: true) }
+                            
+                            // community name
+                            NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
+                                Text(post.community.name)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .bold()
+                            }
+                            Text("by")
+                                .foregroundColor(.secondary)
+                                .font(.caption)
+                            // poster
+                            NavigationLink(destination: UserView(userID: post.creator.id, account: account)) {
+                                Text(post.creator.name)
+                                    .font(.caption)
+                                    .italic()
+                                    .if (post.creator.admin) { viewProxy in
+                                        viewProxy
+                                            .foregroundColor(.red)
+                                    }
+                                    .if (post.creator.botAccount ?? false) { viewProxy in
+                                        viewProxy
+                                            .foregroundColor(.indigo)
+                                    }
+                                    .if (post.creator.name == "lFenix") { viewProxy in
+                                        viewProxy
+                                            .foregroundColor(.yellow)
+                                    }
+                                    .if (!(post.creator.admin || post.creator.botAccount ?? false || post.creator.name == "lFenix")) { viewProxy in
+                                        viewProxy
+                                            .foregroundColor(.secondary)
+                                    }
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                }
                     
             }
             .padding(.horizontal, 8)
