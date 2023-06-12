@@ -20,9 +20,6 @@ struct CompactPost: View {
     
     var body: some View {
         VStack(spacing: 0) {
-//            if (post.myVote == .upvote) {
-//                Text("POST IS UPVOTED")
-//            }
             
             HStack() {
                 // URL posts are either images or web posts

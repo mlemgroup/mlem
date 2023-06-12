@@ -32,10 +32,6 @@ struct FeedPost: View
     
     var body: some View {
         VStack(spacing: 0) {
-//            if post.myVote == .upvote {
-//                Text("POST IS UPVOTED (FEED)")
-//            }
-            
             // show large or small post view
             if (shouldShowCompactPosts){
                 CompactPost(post: post, account: account, voteOnPost: voteOnPost)
