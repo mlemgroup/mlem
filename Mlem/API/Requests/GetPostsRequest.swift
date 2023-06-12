@@ -20,7 +20,7 @@ struct GetPostsRequest: APIGetRequest {
         communityId: Int?,
         page: Int,
         sort: SortingOptions?,
-        type: FeedType = .all
+        type: FeedType
     ) {
         self.instanceURL = account.instanceLink
 
