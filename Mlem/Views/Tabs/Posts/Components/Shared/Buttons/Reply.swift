@@ -13,6 +13,7 @@ struct ReplyButton: View {
     var body: some View {
         Image(systemName: "arrowshape.turn.up.left.fill")
             .padding(4)
-            .foregroundColor(.primary)
+            .foregroundColor(.secondary)
+            // .foregroundColor(.primary)
     }
 }

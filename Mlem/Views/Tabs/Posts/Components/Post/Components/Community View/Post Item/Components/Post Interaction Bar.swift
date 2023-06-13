@@ -52,7 +52,7 @@ struct PostInteractionBar: View {
                 VoteComplex(vote: displayedVote, score: displayedScore, upvote: upvote, downvote: downvote)
                     .padding(.trailing, 8)
                 // TODO: change all this once saving is implemented
-                SaveButton(saved: true)
+                SaveButton(saved: false)
                     .onTapGesture {
                         Task(priority: .userInitiated) {
                             await savePost()
