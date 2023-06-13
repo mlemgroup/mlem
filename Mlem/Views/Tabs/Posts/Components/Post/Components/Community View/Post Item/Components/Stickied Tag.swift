@@ -11,10 +11,8 @@ struct StickiedTag: View
 {
     let compact: Bool
     
-    var body: some View
-    {
-        HStack
-        {
+    var body: some View {
+        HStack {
             if !compact { Text("Stickied") }
             Image(systemName: "bandage.fill")
         }

@@ -21,52 +21,60 @@ struct LargePost: View {
     let voteOnPost: (ScoringOperation) async -> Bool
     
     var body: some View {
-        VStack() {
-            // header--community/poster/ellipsis menu
-            PostHeader(post: post, account: account)
-                .padding(.horizontal)
-            
-            // post title
-            Text(post.post.name)
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                // no padding if text post with no body
-                .if(post.post.url != nil || !(post.post.body?.isEmpty ?? true)) { viewProxy in
-                    viewProxy.padding(.bottom)
-                }
-                .padding(.horizontal)
-            
-            // post body preview
-            if let postURL = post.post.url {
-                // image post: display image
-                if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) {
-                    CachedAsyncImage(url: postURL) { image in
-                        image
-                            .resizable()
-                            .frame(maxWidth: .infinity)
-                            .scaledToFit()
+        VStack(spacing: 0) {
+            VStack {
+                // header--community/poster/ellipsis menu
+                PostHeader(post: post, account: account)
+                    .padding(.horizontal)
+                
+                // post title
+                Text(post.post.name)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    // no padding if text post with no body
+                    .if(post.post.url != nil || !(post.post.body?.isEmpty ?? true)) { viewProxy in
+                        viewProxy.padding(.bottom)
+                    }
+                    .padding(.horizontal)
+                
+                // post body preview
+                if let postURL = post.post.url {
+                    // image post: display image
+                    if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) {
+                        CachedAsyncImage(url: postURL) { image in
+                            image
+                                .resizable()
+                                .frame(maxWidth: .infinity)
+                                .scaledToFill()
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .overlay(RoundedRectangle(cornerRadius: 8)
+                                    .stroke(.secondary, lineWidth: 1))
+                                .padding(.horizontal)
+                            
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    }
+                    
+                    // web post: display link
+                    else {
+                        WebsiteIconComplex(post: post.post)
                             .padding(.horizontal)
-                    } placeholder: {
-                        ProgressView()
                     }
                 }
-                
-                // web post: display link
-                else {
-                    WebsiteIconComplex(post: post.post)
-                }
-            }
-            else if let postBody = post.post.body {
-                if !postBody.isEmpty {
-                    // TODO: visual indicator of truncation. This is way harder than it seems :(
-                    MarkdownView(text: postBody)
-                        .padding(.horizontal)
-                        .if(!isExpanded) { viewProxy in
-                            viewProxy
-                                .frame(maxHeight: 200, alignment: .topLeading)
-                                .clipShape(Rectangle())
-                                
+                else if let postBody = post.post.body {
+                    if !postBody.isEmpty {
+                        if isExpanded {
+                            MarkdownView(text: postBody)
+                                .font(.subheadline)
+                                .padding(.horizontal)
+                        } else {
+                            MarkdownView(text: postBody.components(separatedBy: .newlines).joined())
+                                .lineLimit(8)
+                                .font(.subheadline)
+                                .padding(.horizontal)
                         }
+                    }
                 }
             }
             

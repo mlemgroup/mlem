@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CachedAsyncImage
 
 struct PostHeader: View {
     // parameters
@@ -15,18 +16,18 @@ struct PostHeader: View {
     
     // constants
     private let communityIconSize: CGFloat = 32
+    private let defaultCommunityIconSize: CGFloat = 24 // a little smaller so it looks nice
     
     var body: some View {
         HStack {
             HStack(spacing: 4) {
                 // community avatar and name
                 NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
-                    if let communityAvatarLink = post.community.icon {
-                        AvatarView(avatarLink: communityAvatarLink, overridenSize: communityIconSize)
-                    }
-                    else {
-                        Image("Default Community").frame(width: communityIconSize, height: communityIconSize)
-                    }
+                    communityAvatar
+                        .frame(width: communityIconSize, height: communityIconSize)
+                        .clipShape(Circle())
+                        .overlay(Circle()
+                            .stroke(.secondary, lineWidth: 1))
                     Text(post.community.name)
                         .bold()
                 }
@@ -39,7 +40,7 @@ struct PostHeader: View {
                             viewProxy
                                 .foregroundColor(.red)
                         }
-                        .if(post.creator.botAccount ?? false) { viewProxy in
+                        .if(post.creator.botAccount) { viewProxy in
                             viewProxy
                                 .foregroundColor(.indigo)
                         }
@@ -79,5 +80,31 @@ struct PostHeader: View {
         }
         .font(.subheadline)
         .foregroundColor(.secondary)
+    }
+    
+    @ViewBuilder
+    private var communityAvatar: some View {
+        if let communityAvatarLink = post.community.icon {
+            CachedAsyncImage(url: communityAvatarLink) { image in
+                if let avatar = image.image {
+                    avatar
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: communityIconSize, height: communityIconSize)
+                }
+                else {
+                    Image("Default Community")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
+                }
+            }
+        }
+        else {
+            Image("Default Community")
+                .resizable()
+                .scaledToFit()
+                .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
+        }
     }
 }

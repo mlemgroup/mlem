@@ -52,12 +52,8 @@ struct FeedPost: View
             else {
                 LargePost(post: post, account: account, isExpanded: false, voteOnPost: voteOnPost)
             }
-            
-            // thicken up the divider a little for large posts
+
             Divider()
-                .if (!shouldShowCompactPosts) { viewProxy in
-                    viewProxy.background(.black)
-                }
         }.if (!shouldShowCompactPosts) { viewProxy in
             viewProxy.padding(.top)
         }

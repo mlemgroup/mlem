@@ -10,9 +10,8 @@ import CachedAsyncImage
 
 struct AvatarView: View {
     
-    @State var avatarLink: URL
-    
-    @State var overridenSize: CGFloat = 15
+    let avatarLink: URL
+    var overridenSize: CGFloat = 15
     
     var body: some View {
         CachedAsyncImage(url: avatarLink)
@@ -25,7 +24,7 @@ struct AvatarView: View {
                     .clipShape(Circle())
                     .overlay(
                         Circle()
-                            .stroke(Color(uiColor: .secondarySystemBackground), style: StrokeStyle(lineWidth: 2))
+                            .stroke(Color .secondary, style: StrokeStyle(lineWidth: 2))
                     )
             }
             else if phase.error != nil

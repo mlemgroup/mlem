@@ -13,7 +13,7 @@ struct SaveButton: View {
     let saved: Bool
     
     var body: some View {
-        Image(systemName: "bookmark")
+        Image(systemName: "bookmark.fill")
             .if (saved) { viewProxy in
                 viewProxy
                     .padding(4)

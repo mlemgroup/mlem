@@ -20,6 +20,8 @@ struct AppearanceSettingsView: View {
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     
+    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
+    
     var body: some View {
         List
         {
@@ -123,6 +125,15 @@ struct AppearanceSettingsView: View {
                     settingName: "Show community icons",
                     isTicked: $shouldShowCommunityIcons
                 )
+            }
+            
+            Section("Customization") {
+                Picker("Vote complex style", selection: $voteComplexStyle) {
+                    ForEach(VoteComplexStyle.allCases) { style in
+                        Text(style.rawValue.capitalized)
+                    }
+                }
+
             }
         }
         .navigationTitle("Appearance")

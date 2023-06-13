@@ -48,79 +48,28 @@ struct PostInteractionBar: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if (!compact) {
-                Divider()
-            }
-            
-            // nested inside a ZStack so the info block is always perfectly centered
-            ZStack {
-                HStack {
-                    voteBlock
-                    Spacer()
-                    saveReplyBlock
-                }
+            HStack(spacing: 8) {
+                VoteComplex(vote: displayedVote, score: displayedScore, upvote: upvote, downvote: downvote)
+                    .padding(.trailing, 8)
+                // TODO: change all this once saving is implemented
+                SaveButton(saved: true)
+                    .onTapGesture {
+                        Task(priority: .userInitiated) {
+                            await savePost()
+                        }
+                    }
+                ReplyButton()
+                Spacer()
                 infoBlock
             }
             .padding(.horizontal)
-            .padding(.vertical, compact ? 2 : 4)
+            .padding(.vertical, compact ? 2 : 6)
         }
         .dynamicTypeSize(compact ? .small : .medium)
     }
     
     // subviews
-    
-    /**
-     Displays the upvote/downvote button and the score
-     */
-    var voteBlock: some View {
-        HStack(spacing: 6) {
-            UpvoteButton(myVote: displayedVote)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        // update the fakers. if the upvote fails, reset the fakers
-                        fakeUpvote()
-                        await voteOnPost(.upvote)
-                        dirty = false
-                    }
-                }
-            Text(String(displayedScore))
-                .if (displayedVote == .upvote) { viewProxy in
-                    viewProxy.foregroundColor(.upvoteColor)
-                }
-                .if (displayedVote == .resetVote) { viewProxy in
-                    viewProxy.foregroundColor(.primary)
-                }
-                .if (displayedVote == .downvote) { viewProxy in
-                    viewProxy.foregroundColor(.downvoteColor)
-                }
-            DownvoteButton(myVote: displayedVote)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        // update the fakers. if the downvote fails, reset the fakers
-                        fakeDownvote()
-                        await voteOnPost(.downvote)
-                        dirty = false
-                    }
-                }
-        }
-    }
-    
-    /**
-     Displays the save and reply buttons
-     */
-    var saveReplyBlock: some View {
-        HStack(spacing: 16) {
-            // TODO: change all this once saving is implemented
-            SaveButton(saved: false)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        await savePost()
-                    }
-                }
-            ReplyButton()
-        }
-    }
-    
+
     var infoBlock: some View {
         // post info component
         HStack(spacing: 8) {
@@ -137,6 +86,18 @@ struct PostInteractionBar: View {
     }
     
     // helper functions
+    
+    func upvote() async -> Void {
+        fakeUpvote()
+        await voteOnPost(.upvote)
+        dirty = false
+    }
+    
+    func downvote() async -> Void {
+        fakeDownvote()
+        await voteOnPost(.downvote)
+        dirty = false
+    }
     
     /**
      Fakes an upvote, immediately updating the displayed values

@@ -42,7 +42,6 @@ struct CompactPost: View {
                     else {
                         Image(systemName: "safari")
                             .frame(width: thumbnailSize, height: thumbnailSize)
-                            .cornerRadius(10)
                             .overlay(RoundedRectangle(cornerRadius: 4)
                                 .stroke(.secondary, lineWidth: 1))
                     }
@@ -50,7 +49,6 @@ struct CompactPost: View {
                 else {
                     Image(systemName: "text.book.closed")
                         .frame(width: thumbnailSize, height: thumbnailSize)
-                        .cornerRadius(10)
                         .overlay(RoundedRectangle(cornerRadius: 4)
                             .stroke(.secondary, lineWidth: 1))
                 }
