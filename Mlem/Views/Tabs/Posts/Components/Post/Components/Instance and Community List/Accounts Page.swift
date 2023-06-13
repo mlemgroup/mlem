@@ -57,7 +57,7 @@ struct AccountsPage: View
                                 CommunityView(account: account, community: nil)
                                     .onAppear
                                 {
-                                    appState.currentActiveAccount = accountsTracker.savedAccounts.first!
+                                    appState.currentActiveAccount = account
                                 }
                             }
                         })
