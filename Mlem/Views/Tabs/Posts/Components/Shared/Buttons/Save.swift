@@ -18,7 +18,7 @@ struct SaveButton: View {
                 viewProxy
                     .padding(4)
                     .foregroundColor(.white)
-                    .background(RoundedRectangle(cornerRadius: 2)
+                    .background(RoundedRectangle(cornerRadius: 4)
                         .aspectRatio(1, contentMode: .fit)
                         .foregroundColor(.saveColor))
             }

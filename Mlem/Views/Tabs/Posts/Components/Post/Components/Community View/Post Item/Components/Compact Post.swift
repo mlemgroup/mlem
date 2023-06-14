@@ -16,38 +16,39 @@ struct CompactPost: View {
     // arguments
     let post: APIPostView
     let account: SavedAccount
-    let voteOnPost: (ScoringOperation) async -> Bool
+    let voteOnPost: (ScoringOperation) async -> Void
     
     var body: some View {
         VStack(spacing: 0) {
             
             HStack(alignment: .top) {
-                // URL posts are either images or web posts
-                if let postURL = post.post.url {
-                    // image post: display image
-                    if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) {
-                        CachedAsyncImage(url: postURL) { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: thumbnailSize, height: thumbnailSize)
-                                .clipShape(RoundedRectangle(cornerRadius: 4))
-                        } placeholder: {
-                            ProgressView()
-                                .frame(width: thumbnailSize, height: thumbnailSize)
-                        }
-                    }
-                    
-                    // web post: display link
-                    else {
-                        Image(systemName: "safari")
+                switch post.postType {
+                case .image:
+                    // force unwrapping safe because postType performs nil check
+                    CachedAsyncImage(url: post.post.url!) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
                             .frame(width: thumbnailSize, height: thumbnailSize)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
                             .overlay(RoundedRectangle(cornerRadius: 4)
                                 .stroke(.secondary, lineWidth: 1))
+                    } placeholder: {
+                        ProgressView()
+                            .frame(width: thumbnailSize, height: thumbnailSize)
                     }
-                }
-                else {
+                case .link:
+                    Image(systemName: "safari")
+                        .frame(width: thumbnailSize, height: thumbnailSize)
+                        .overlay(RoundedRectangle(cornerRadius: 4)
+                            .stroke(.secondary, lineWidth: 1))
+                case .text:
                     Image(systemName: "text.book.closed")
+                        .frame(width: thumbnailSize, height: thumbnailSize)
+                        .overlay(RoundedRectangle(cornerRadius: 4)
+                            .stroke(.secondary, lineWidth: 1))
+                case .error:
+                    Image(systemName: "exclamationmark.triangle")
                         .frame(width: thumbnailSize, height: thumbnailSize)
                         .overlay(RoundedRectangle(cornerRadius: 4)
                             .stroke(.secondary, lineWidth: 1))
@@ -82,7 +83,7 @@ struct CompactPost: View {
                                     viewProxy
                                         .foregroundColor(.red)
                                 }
-                                .if (post.creator.botAccount ?? false) { viewProxy in
+                                .if (post.creator.botAccount) { viewProxy in
                                     viewProxy
                                         .foregroundColor(.indigo)
                                 }
@@ -90,7 +91,7 @@ struct CompactPost: View {
                                     viewProxy
                                         .foregroundColor(.yellow)
                                 }
-                                .if (!(post.creator.admin || post.creator.botAccount ?? false || post.creator.name == "lFenix")) { viewProxy in
+                                .if (!(post.creator.admin || post.creator.botAccount || post.creator.name == "lFenix")) { viewProxy in
                                     viewProxy
                                         .foregroundColor(.secondary)
                                 }

@@ -15,14 +15,14 @@ struct StandardVoteComplex: View {
     let downvote: () async -> Void
     
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 4) {
             HStack(spacing: 2) {
                 Image(systemName: "arrow.up")
                 Text(String(score))
             }
             .padding(4)
-            .background(RoundedRectangle(cornerRadius: 2)
-                .foregroundColor(vote == .upvote ? .upvoteColor : .white))
+            .background(RoundedRectangle(cornerRadius: 4)
+                .foregroundColor(vote == .upvote ? .upvoteColor : .transparent))
             .foregroundColor(vote == .upvote ? .white : .primary)
             .onTapGesture {
                 Task(priority: .userInitiated) {

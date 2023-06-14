@@ -18,7 +18,7 @@ struct LargePost: View {
     let post: APIPostView
     let account: SavedAccount
     let isExpanded: Bool
-    let voteOnPost: (ScoringOperation) async -> Bool
+    let voteOnPost: (ScoringOperation) async -> Void
     
     var body: some View {
         VStack(spacing: 0) {
@@ -31,38 +31,32 @@ struct LargePost: View {
                 Text(post.post.name)
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    // no padding if text post with no body
-                    .if(post.post.url != nil || !(post.post.body?.isEmpty ?? true)) { viewProxy in
-                        viewProxy.padding(.bottom)
-                    }
                     .padding(.horizontal)
+                    // no padding iff text post with no body
+                    .padding(.bottom, (post.postType == .text && post.post.body?.isEmpty ?? true) ? 0 : nil)
                 
-                // post body preview
-                if let postURL = post.post.url {
-                    // image post: display image
-                    if postURL.pathExtension.contains(["jpg", "jpeg", "png"]) {
-                        CachedAsyncImage(url: postURL) { image in
-                            image
-                                .resizable()
-                                .frame(maxWidth: .infinity)
-                                .scaledToFill()
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .overlay(RoundedRectangle(cornerRadius: 8)
-                                    .stroke(.secondary, lineWidth: 1))
-                                .padding(.horizontal)
-                            
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    }
-                    
-                    // web post: display link
-                    else {
-                        WebsiteIconComplex(post: post.post)
+                switch post.postType {
+                case .image:
+                    // force unwrapping safe because postType performs nil check
+                    CachedAsyncImage(url: post.post.url!) { image in
+                        image
+                            .resizable()
+                            .frame(maxWidth: .infinity)
+                            .scaledToFill()
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .overlay(RoundedRectangle(cornerRadius: 8)
+                                .stroke(.secondary, lineWidth: 1))
                             .padding(.horizontal)
+                        
+                    } placeholder: {
+                        ProgressView()
                     }
-                }
-                else if let postBody = post.post.body {
+                case .link:
+                    WebsiteIconComplex(post: post.post)
+                        .padding(.horizontal)
+                case .text:
+                    // force unwrapping safe because postType performs nil check
+                    let postBody = post.post.body!
                     if !postBody.isEmpty {
                         if isExpanded {
                             MarkdownView(text: postBody)
@@ -75,6 +69,8 @@ struct LargePost: View {
                                 .padding(.horizontal)
                         }
                     }
+                case .error:
+                    Image(systemName: "exclamationmark.triangle")
                 }
             }
             

@@ -370,13 +370,12 @@ struct ExpandedPost: View
      Votes on a post
      NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
      */
-    func voteOnPost(inputOp: ScoringOperation) async -> Bool {
+    func voteOnPost(inputOp: ScoringOperation) async -> Void {
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            return false
+            print("failed to vote!")
         }
-        return true
     }
 }

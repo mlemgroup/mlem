@@ -14,9 +14,9 @@ struct UpvoteButton: View {
         Image(systemName: "arrow.up")
             .padding(4)
             .foregroundColor(vote == .upvote ? .white : .primary)
-            .background(RoundedRectangle(cornerRadius: 2)
+            .background(RoundedRectangle(cornerRadius: 4)
                 .aspectRatio(1, contentMode: .fit)
-                .foregroundColor(vote == .upvote ? .upvoteColor : .white))
+                .foregroundColor(vote == .upvote ? .upvoteColor : .transparent))
     }
 }
 

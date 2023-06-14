@@ -32,26 +32,20 @@ struct FeedPost: View
     
     var body: some View {
         VStack(spacing: 0) {
-            // show large or small post view
-            if (shouldShowCompactPosts){
-                CompactPost(post: post, account: account, voteOnPost: voteOnPost)
-                    .contextMenu {
-                        // general-purpose button template for adding more stuff--also nice for debugging :)
+            postItem
+                .contextMenu {
+                    // general-purpose button template for adding more stuff--also nice for debugging :)
 //                        Button {
 //                            print(post)
 //                        } label: {
 //                            Label("Do things", systemImage: "heart")
 //                        }
-                        
-                        // only display share if URL is valid
-                        if let postUrl: URL = URL(string: post.post.apId) {
-                            ShareButton(urlToShare: postUrl, isShowingButtonText: true)
-                        }
+                    
+                    // only display share if URL is valid
+                    if let postUrl: URL = URL(string: post.post.apId) {
+                        ShareButton(urlToShare: postUrl, isShowingButtonText: true)
                     }
-            }
-            else {
-                LargePost(post: post, account: account, isExpanded: false, voteOnPost: voteOnPost)
-            }
+                }
 
             Divider()
         }.if (!shouldShowCompactPosts) { viewProxy in
@@ -60,18 +54,27 @@ struct FeedPost: View
             .background(Color.systemBackground)
     }
     
+    @ViewBuilder
+    var postItem: some View {
+        if (shouldShowCompactPosts){
+            CompactPost(post: post, account: account, voteOnPost: voteOnPost)
+        }
+        else {
+            LargePost(post: post, account: account, isExpanded: false, voteOnPost: voteOnPost)
+        }
+    }
+    
     /**
      Votes on a post
      NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
      */
-    func voteOnPost(inputOp: ScoringOperation) async -> Bool {
+    func voteOnPost(inputOp: ScoringOperation) async -> Void {
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            return false
+            print("failed to vote!")
         }
-        return true
     }
 }
 

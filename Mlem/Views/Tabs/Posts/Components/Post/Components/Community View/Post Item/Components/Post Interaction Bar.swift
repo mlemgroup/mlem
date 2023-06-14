@@ -13,6 +13,10 @@ import Foundation
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
 struct PostInteractionBar: View {
+    // ==== TEMPORARY ====
+    @State var isPresentingAlert: Bool = false
+    // ==== END TEMPORARY ==== //
+    
     // constants
     let iconToTextSpacing: CGFloat = 2
     let iconPadding: CGFloat = 4
@@ -33,9 +37,9 @@ struct PostInteractionBar: View {
     let post: APIPostView
     let account: SavedAccount
     let compact: Bool
-    let voteOnPost: (ScoringOperation) async -> Bool
+    let voteOnPost: (ScoringOperation) async -> Void
     
-    init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Bool) {
+    init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
         self.post = post
         self.account = account
         self.compact = compact
@@ -44,21 +48,34 @@ struct PostInteractionBar: View {
         _dirtyScore = State(initialValue: post.counts.score)
         _dirtySaved = State(initialValue: false)
         _dirty = State(initialValue: false)
-     }
+    }
     
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 8) {
                 VoteComplex(vote: displayedVote, score: displayedScore, upvote: upvote, downvote: downvote)
                     .padding(.trailing, 8)
-                // TODO: change all this once saving is implemented
                 SaveButton(saved: false)
                     .onTapGesture {
                         Task(priority: .userInitiated) {
                             await savePost()
                         }
+                        // ==== TEMPORARY ==== //
+                        isPresentingAlert = true
                     }
+                    .alert("That feature isn't implemented yet!",
+                           isPresented: $isPresentingAlert) {
+                    }
+                // ==== END TEMPORARY ==== //
                 ReplyButton()
+                    .onTapGesture {
+                        // ==== TEMPORARY ==== //
+                        isPresentingAlert = true
+                    }
+                    .alert("That feature isn't implemented yet!",
+                           isPresented: $isPresentingAlert) {
+                    }
+                // ==== END TEMPORARY ==== //
                 Spacer()
                 infoBlock
             }
@@ -69,7 +86,7 @@ struct PostInteractionBar: View {
     }
     
     // subviews
-
+    
     var infoBlock: some View {
         // post info component
         HStack(spacing: 8) {
@@ -88,21 +105,7 @@ struct PostInteractionBar: View {
     // helper functions
     
     func upvote() async -> Void {
-        fakeUpvote()
-        await voteOnPost(.upvote)
-        dirty = false
-    }
-    
-    func downvote() async -> Void {
-        fakeDownvote()
-        await voteOnPost(.downvote)
-        dirty = false
-    }
-    
-    /**
-     Fakes an upvote, immediately updating the displayed values
-     */
-    func fakeUpvote() {
+        // fake downvote
         switch (displayedVote) {
         case .upvote:
             dirtyVote = .resetVote
@@ -115,12 +118,16 @@ struct PostInteractionBar: View {
             dirtyScore = displayedScore + 2
         }
         dirty = true
+        
+        // wait for vote
+        await voteOnPost(.upvote)
+        
+        // unfake downvote
+        dirty = false
     }
     
-    /**
-     Fakes a downvote, immediately updating the displayed values
-     */
-    func fakeDownvote() {
+    func downvote() async -> Void {
+        // fake upvote
         switch (displayedVote) {
         case .upvote:
             dirtyVote = .downvote
@@ -133,17 +140,18 @@ struct PostInteractionBar: View {
             dirtyScore = displayedScore + 1
         }
         dirty = true
+        
+        // wait for vote
+        await voteOnPost(.downvote)
+        
+        // unfake upvote
+        dirty = false
     }
     
     /**
      Sends a save request for the current post
      */
-    func savePost() async -> Bool {
-        do {
-#warning("TODO: Make this actually save a post")
-        } catch {
-            return false
-        }
-        return true
+    func savePost() async {
+        // TODO: implement
     }
 }
