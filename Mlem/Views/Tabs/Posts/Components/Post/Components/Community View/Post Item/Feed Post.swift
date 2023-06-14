@@ -48,101 +48,25 @@ struct FeedPost: View
    
     
     var body: some View {
-            ZStack {
-                dragBackground
-                HStack(spacing: 0) {
-                    Image(systemName: leftSwipeSymbol)
-                        .font(.title)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                    Spacer()
-                    Image(systemName: rightSwipeSymbol)
-                        .font(.title)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
+        VStack(spacing: 0) {
+            postItem
+                .contextMenu {
+                    // general-purpose button template for adding more stuff--also nice for debugging :)
+//                        Button {
+//                            print(post)
+//                        } label: {
+//                            Label("Do things", systemImage: "heart")
+//                        }
+                    
+                    // only display share if URL is valid
+                    if let postUrl: URL = URL(string: postView.post.apId) {
+                        ShareButton(urlToShare: postUrl, isShowingButtonText: true)
+                    }
                 }
-                postItem
-                    .background(Color.systemBackground)
-                    .offset(x: dragPosition.width)
-                    .highPriorityGesture(
-                        DragGesture(minimumDistance: 15) // min distance prevents conflict with scrolling drag gesture
-                            .onChanged {
-                                let w = $0.translation.width
-                                
-                                if w < -1 * AppConstants.longSwipeDragMin {
-                                    rightSwipeSymbol = "arrowshape.turn.up.left.fill"
-                                    dragBackground = .accentColor
-                                    if prevDragPosition >= -1 * AppConstants.longSwipeDragMin {
-                                        AppConstants.hapticManager.notificationOccurred(.success)
-                                    }
-                                }
-                                else if w < -1 * AppConstants.shortSwipeDragMin {
-                                    rightSwipeSymbol = "bookmark.fill"
-                                    dragBackground = .saveColor
-                                    if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
-                                        AppConstants.hapticManager.notificationOccurred(.success)
-                                    }
-                                }
-                                else if w < 0 {
-                                    rightSwipeSymbol = "bookmark"
-                                    dragBackground = .saveColor.opacity(-1 * w / AppConstants.shortSwipeDragMin)
-                                }
-                                else if w < AppConstants.shortSwipeDragMin {
-                                    leftSwipeSymbol = "arrow.up.square"
-                                    dragBackground = .upvoteColor.opacity(w / AppConstants.shortSwipeDragMin)
-                                }
-                                else if w < AppConstants.longSwipeDragMin {
-                                    leftSwipeSymbol = "arrow.up.square.fill"
-                                    dragBackground = .upvoteColor
-                                    if prevDragPosition <= AppConstants.shortSwipeDragMin {
-                                        AppConstants.hapticManager.notificationOccurred(.success)
-                                    }
-                                }
-                                else {
-                                    leftSwipeSymbol = "arrow.down.square.fill"
-                                    dragBackground = .downvoteColor
-                                    if prevDragPosition <= AppConstants.longSwipeDragMin {
-                                        AppConstants.hapticManager.notificationOccurred(.success)
-                                    }
-                                }
-                                prevDragPosition = w
-                                dragPosition = $0.translation
-                            }
-                            .onEnded {
-                                let w = $0.translation.width
-                                // TODO: instant upvote feedback (waiting on backend)
-                                if w < -1 * AppConstants.longSwipeDragMin {
-                                    replyIsPresented = true
-                                }
-                                else if w < -1 * AppConstants.shortSwipeDragMin {
-                                    Task(priority: .userInitiated) {
-                                        await savePost(save: !postView.saved)
-                                    }
-                                }
-                                else if w > AppConstants.longSwipeDragMin {
-                                    Task(priority: .userInitiated) {
-                                        await voteOnPost(inputOp: .downvote)
-                                    }
-                                }
-                                else if w > AppConstants.shortSwipeDragMin {
-                                    Task(priority: .userInitiated) {
-                                        await voteOnPost(inputOp: .upvote)
-                                    }
-                                }
-                                withAnimation(.interactiveSpring()) {
-                                    dragPosition = .zero
-                                    leftSwipeSymbol = "arrow.up"
-                                    rightSwipeSymbol = "bookmark"
-                                    dragBackground = .systemBackground
-                                }
-                            }
-                    )
-            }
-            .sheet(isPresented: $replyIsPresented) {
-                replySheetBody
-            }
+
+            Divider()
+        }.if (!shouldShowCompactPosts) { viewProxy in
+            viewProxy.padding(.top)
         }
     
     @ViewBuilder
