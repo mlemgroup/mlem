@@ -21,17 +21,15 @@ struct LargePost: View {
     let voteOnPost: (ScoringOperation) async -> Void
     
     var body: some View {
-        VStack(spacing: 0) {
-            VStack {
+        VStack(spacing: 10) {
+            // VStack {
                 // header--community/poster/ellipsis menu
                 PostHeader(postView: postView, account: account)
-                    .padding(.horizontal)
                 
                 // post title
                 Text(postView.post.name)
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
                     // no padding iff text post with no body
                     .padding(.bottom, post.postType == .titleOnly ? 0 : nil)
                 
