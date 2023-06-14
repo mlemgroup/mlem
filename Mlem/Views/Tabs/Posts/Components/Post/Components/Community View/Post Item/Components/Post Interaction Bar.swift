@@ -76,7 +76,7 @@ struct PostInteractionBar: View {
                 infoBlock
             }
             .padding(.horizontal)
-            .padding(.vertical, compact ? 2 : 6)
+            // .padding(.vertical, compact ? 6 : 10)
         }
         .dynamicTypeSize(compact ? .small : .medium)
     }

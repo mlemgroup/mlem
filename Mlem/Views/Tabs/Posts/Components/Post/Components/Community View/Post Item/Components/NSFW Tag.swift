@@ -17,6 +17,6 @@ struct NSFWTag: View
             .padding(2)
             .background(RoundedRectangle(cornerRadius: 4)
                 .foregroundColor(.red))
-            .font(compact ? .caption : .subheadline)
+            .font((compact ? Font.caption : Font.subheadline).weight(Font.Weight.black))
     }
 }

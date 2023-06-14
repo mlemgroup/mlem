@@ -67,6 +67,7 @@ struct PostHeader: View {
         .accessibilityLabel("in \(post.community.name) by \(post.creator.name)")
         .font(.subheadline)
         .foregroundColor(.secondary)
+        .background(.red)
     }
     
     @ViewBuilder

@@ -35,11 +35,11 @@ struct FeedPost: View
             postItem
                 .contextMenu {
                     // general-purpose button template for adding more stuff--also nice for debugging :)
-//                        Button {
-//                            print(post)
-//                        } label: {
-//                            Label("Do things", systemImage: "heart")
-//                        }
+                    //                        Button {
+                    //                            print(post)
+                    //                        } label: {
+                    //                            Label("Do things", systemImage: "heart")
+                    //                        }
                     
                     // only display share if URL is valid
                     if let postUrl: URL = URL(string: postView.post.apId) {
@@ -50,10 +50,11 @@ struct FeedPost: View
                         ShareButton(urlToShare: postContentUrl, isShowingButtonText: true, customText: customText)
                     }
                 }
-
+            
             Divider()
-        }.if (!shouldShowCompactPosts) { viewProxy in
-            viewProxy.padding(.top)
+            //        }.if (!shouldShowCompactPosts) { viewProxy in
+            //            viewProxy.padding(.top)
+            //        }
         }
             .background(Color.systemBackground)
     }
