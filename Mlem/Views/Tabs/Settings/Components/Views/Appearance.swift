@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AppearanceSettingsView: View {
     
+    @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
+    
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
@@ -25,6 +27,17 @@ struct AppearanceSettingsView: View {
     var body: some View {
         List
         {
+            Section("Theme") {
+                Picker("Light or dark mode", selection: $lightOrDarkMode) {
+                    Image(systemName: "circle")
+                        .tag(UIUserInterfaceStyle.light)
+                    Image(systemName: "circle.righthalf.filled")
+                        .tag(UIUserInterfaceStyle.unspecified)
+                    Image(systemName: "circle.fill")
+                        .tag(UIUserInterfaceStyle.dark)
+                }
+                .pickerStyle(.segmented)
+            }
             Section("Website Previews")
             {
                 WebsiteIconComplex(post:

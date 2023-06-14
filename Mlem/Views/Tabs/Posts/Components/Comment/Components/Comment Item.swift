@@ -162,7 +162,7 @@ struct CommentItem: View
                 isCollapsed.toggle()
             }
         }
-        .dynamicTypeSize(.small)
+        .font(.body)
         .background(Color.systemBackground)
         .padding(hierarchicalComment.commentView.comment.parentId == nil ? .horizontal : .leading)
         .sheet(isPresented: $isShowingTextSelectionSheet) {
