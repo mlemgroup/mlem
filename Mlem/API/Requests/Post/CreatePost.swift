@@ -1,5 +1,5 @@
 //
-//  CreatePostRequest.swift
+//  CreatePost.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 07/06/2023.
@@ -9,12 +9,13 @@ import Foundation
 
 struct CreatePostRequest: APIPostRequest {
 
-    typealias Response = CreatePostResponse
+    typealias Response = PostResponse
 
     let instanceURL: URL
     let path = "post"
     let body: Body
 
+    // lemmy_api_common::post::CreatePost
     struct Body: Encodable {
         // missing: honeypot field
         let auth: String
@@ -32,6 +33,7 @@ struct CreatePostRequest: APIPostRequest {
         name: String,
         nsfw: Bool?,
         body: String?,
+        // TODO change to `URL?`
         url: String?
     ) {
         self.instanceURL = account.instanceLink
@@ -53,6 +55,7 @@ struct CreatePostRequest: APIPostRequest {
     }
 }
 
-struct CreatePostResponse: Decodable {
+// lemmy_api_common::post::PostResponse
+struct PostResponse: Decodable {
     let postView: APIPostView
 }

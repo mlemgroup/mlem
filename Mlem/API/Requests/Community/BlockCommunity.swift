@@ -1,43 +1,46 @@
 //
-//  FollowCommunityRequest.swift
+//  BlockCommunity.swift
 //  Mlem
 //
-//  Created by Nicholas Lawson on 08/06/2023.
+//  Created by Jonathan de Jong on 12.06.2023.
 //
 
 import Foundation
 
-struct FollowCommunityRequest: APIPostRequest {
+struct BlockCommunityRequest: APIPostRequest {
 
-    typealias Response = CommunityResponse
+    typealias Response = BlockCommunityResponse
 
     let instanceURL: URL
-    let path = "community/follow"
+    let path = "community/block"
     let body: Body
 
-    // lemmy_api_common::community::FollowCommunity
+    // lemmy_api_common::community::BlockCommunity
     struct Body: Encodable {
         let community_id: Int
-        let follow: Bool
+        let block: Bool
+
         let auth: String
     }
 
     init(
         account: SavedAccount,
+
         communityId: Int,
-        follow: Bool
+        block: Bool
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
             community_id: communityId,
-            follow: follow,
+            block: block,
+
             auth: account.accessToken
         )
     }
 }
 
-// lemmy_api_common::community::CommunityResponse
-struct CommunityResponse: Decodable {
+// lemmy_api_common::community::BlockCommunityResponse
+struct BlockCommunityResponse: Decodable {
     let communityView: APICommunityView
-    let discussionLanguages: [Int]
+    let blocked: Bool
 }

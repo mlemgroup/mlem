@@ -21,10 +21,14 @@ struct GetPersonDetailsRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     // lemmy_api_common::person::GetPersonDetails
-    // TODO add more fields
     init(
         accessToken: String,
         instanceURL: URL,
+        sort: SortingOptions? = nil,
+        page: Int? = nil,
+        limit: Int? = nil,
+        communityId: Int? = nil,
+        savedOnly: Bool = false,
         username: String? = nil,
         personId: Int? = nil
     ) throws {
@@ -34,14 +38,24 @@ struct GetPersonDetailsRequest: APIGetRequest {
         }
 
         self.instanceURL = instanceURL
-        var queryItems: [URLQueryItem] = [.init(name: "auth", value: accessToken)]
+        var queryItems: [URLQueryItem] = [
+            .init(name: "auth", value: accessToken),
+            .init(name: "sort", value: sort?.rawValue),
+            .init(name: "page", value: page?.description),
+            .init(name: "limit", value: limit?.description),
+            .init(name: "community_id", value: communityId?.description),
+            .init(name: "saved_only", value: String(savedOnly))
+        ]
 
-        if let username {
-            guard let host = instanceURL.host() else {
-                throw GetPersonDetailsRequestError.unableToDetermineInstanceHost
+        if var username {
+            if !username.contains("@") {
+                guard let host = instanceURL.host() else {
+                    throw GetPersonDetailsRequestError.unableToDetermineInstanceHost
+                }
+                username = "\(username)@\(host)"
             }
 
-            queryItems.append(.init(name: "username", value: "\(username)@\(host)"))
+            queryItems.append(.init(name: "username", value: username))
         } else if let personId {
             queryItems.append(.init(name: "person_id", value: "\(personId)"))
         }
@@ -52,8 +66,8 @@ struct GetPersonDetailsRequest: APIGetRequest {
 
 // lemmy_api_common::person::GetPersonDetailsResponse
 struct GetPersonDetailsResponse: Decodable {
-    let comments: [APICommentView]
-    let moderates: [APICommunityModeratorView]
     let personView: APIPersonView
+    let comments: [APICommentView]
     let posts: [APIPostView]
+    let moderates: [APICommunityModeratorView]
 }

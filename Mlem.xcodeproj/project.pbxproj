@@ -7,26 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		503085D42A2FCCCE00DB2017 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503085D32A2FCCCE00DB2017 /* APIClient.swift */; };
-		503085D62A2FCCEE00DB2017 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503085D52A2FCCEE00DB2017 /* APIRequest.swift */; };
-		503085D92A2FCD4800DB2017 /* APIErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503085D82A2FCD4800DB2017 /* APIErrorResponse.swift */; };
-		503085DC2A2FCE3100DB2017 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503085DB2A2FCE3100DB2017 /* LoginRequest.swift */; };
-		503085EC2A30DED100DB2017 /* SearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503085EB2A30DED100DB2017 /* SearchRequest.swift */; };
-		503085FD2A3275A100DB2017 /* HierarchicalComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503085FC2A3275A100DB2017 /* HierarchicalComment.swift */; };
-		503086002A32A06C00DB2017 /* APIPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503085FF2A32A06C00DB2017 /* APIPostView.swift */; };
-		503086022A32A8F200DB2017 /* APIPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086012A32A8F200DB2017 /* APIPost.swift */; };
-		503086042A32A93900DB2017 /* APIPostAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086032A32A93900DB2017 /* APIPostAggregates.swift */; };
-		503086082A32A9CA00DB2017 /* APICommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086072A32A9CA00DB2017 /* APICommunity.swift */; };
-		5030860B2A32AA1100DB2017 /* APIPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5030860A2A32AA1100DB2017 /* APIPerson.swift */; };
-		5030860D2A32AAAC00DB2017 /* APICommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5030860C2A32AAAC00DB2017 /* APICommunityView.swift */; };
-		5030860F2A32AAED00DB2017 /* APICommunityModeratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5030860E2A32AAED00DB2017 /* APICommunityModeratorView.swift */; };
-		503086112A32AB2200DB2017 /* APICommunityAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086102A32AB2200DB2017 /* APICommunityAggregates.swift */; };
-		503086132A32AB6400DB2017 /* APISubscribedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086122A32AB6400DB2017 /* APISubscribedStatus.swift */; };
-		503086152A32ABCC00DB2017 /* APIPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086142A32ABCC00DB2017 /* APIPersonView.swift */; };
-		503086172A32ABF900DB2017 /* APIPersonAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086162A32ABF900DB2017 /* APIPersonAggregates.swift */; };
-		5030861A2A32B96D00DB2017 /* APICommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503086192A32B96D00DB2017 /* APICommentView.swift */; };
-		5030861C2A32FF8F00DB2017 /* APIComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5030861B2A32FF8F00DB2017 /* APIComment.swift */; };
-		5030861E2A32FFB900DB2017 /* APICommentAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5030861D2A32FFB900DB2017 /* APICommentAggregates.swift */; };
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508845CE2A3641160088E483 /* JSONDecoder+Default.swift */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
@@ -40,18 +20,7 @@
 		6314C9F12A194FFA00B08405 /* Post Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9F02A194FFA00B08405 /* Post Comment.swift */; };
 		631711552A27C45900FE08C4 /* Selectable Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631711542A27C45900FE08C4 /* Selectable Text.swift */; };
 		631711572A27C70E00FE08C4 /* Comment Reply Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631711562A27C70E00FE08C4 /* Comment Reply Tracker.swift */; };
-		6317ABBE2A37227400603D76 /* GetCommentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABB12A37227400603D76 /* GetCommentsRequest.swift */; };
-		6317ABBF2A37227400603D76 /* CreateCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABB22A37227400603D76 /* CreateCommentRequest.swift */; };
-		6317ABC12A37227400603D76 /* DeleteCommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABB42A37227400603D76 /* DeleteCommentRequest.swift */; };
-		6317ABC22A37227400603D76 /* CreateCommentLikeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABB52A37227400603D76 /* CreateCommentLikeRequest.swift */; };
-		6317ABC32A37227400603D76 /* GetPersonDetailsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABB72A37227400603D76 /* GetPersonDetailsRequest.swift */; };
-		6317ABC42A37227400603D76 /* GetCommunityRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABB92A37227400603D76 /* GetCommunityRequest.swift */; };
-		6317ABC52A37227400603D76 /* GetPostsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABBB2A37227400603D76 /* GetPostsRequest.swift */; };
-		6317ABC62A37227400603D76 /* CreatePostLikeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABBC2A37227400603D76 /* CreatePostLikeRequest.swift */; };
-		6317ABC72A37227400603D76 /* CreatePostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABBD2A37227400603D76 /* CreatePostRequest.swift */; };
-		6317ABC92A37253B00603D76 /* FollowCommunityRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABC82A37253B00603D76 /* FollowCommunityRequest.swift */; };
 		6317ABCB2A37292700603D76 /* FeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABCA2A37292700603D76 /* FeedType.swift */; };
-		6317ABCD2A372D8500603D76 /* APISite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABCC2A372D8500603D76 /* APISite.swift */; };
 		6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */; };
 		6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */; };
 		6318EDC327EE4D7F00BFCAE8 /* Post Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318EDC227EE4D7F00BFCAE8 /* Post Item.swift */; };
@@ -98,6 +67,59 @@
 		6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5F927EE1BDA00E34822 /* Settings View.swift */; };
 		6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60127EE1EC400E34822 /* Comment Item.swift */; };
 		6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D60327EE20A200E34822 /* Post Expanded.swift */; };
+		637218432A3A2AAD008C4816 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218012A3A2AAD008C4816 /* APIClient.swift */; };
+		637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218032A3A2AAD008C4816 /* HierarchicalComment.swift */; };
+		637218452A3A2AAD008C4816 /* APICommentAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218062A3A2AAD008C4816 /* APICommentAggregates.swift */; };
+		637218462A3A2AAD008C4816 /* APIComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218072A3A2AAD008C4816 /* APIComment.swift */; };
+		637218472A3A2AAD008C4816 /* APICommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218082A3A2AAD008C4816 /* APICommentView.swift */; };
+		637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218092A3A2AAD008C4816 /* APICommentReply.swift */; };
+		637218492A3A2AAD008C4816 /* APICommentReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372180A2A3A2AAD008C4816 /* APICommentReplyView.swift */; };
+		6372184A2A3A2AAD008C4816 /* APIPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372180C2A3A2AAD008C4816 /* APIPost.swift */; };
+		6372184B2A3A2AAD008C4816 /* APIPostAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372180D2A3A2AAD008C4816 /* APIPostAggregates.swift */; };
+		6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372180E2A3A2AAD008C4816 /* APIPostView.swift */; };
+		6372184D2A3A2AAD008C4816 /* APIErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372180F2A3A2AAD008C4816 /* APIErrorResponse.swift */; };
+		6372184E2A3A2AAD008C4816 /* APIPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218112A3A2AAD008C4816 /* APIPersonView.swift */; };
+		6372184F2A3A2AAD008C4816 /* APIPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218122A3A2AAD008C4816 /* APIPerson.swift */; };
+		637218502A3A2AAD008C4816 /* APIPersonAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218132A3A2AAD008C4816 /* APIPersonAggregates.swift */; };
+		637218512A3A2AAD008C4816 /* APILocalSiteRateLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218152A3A2AAD008C4816 /* APILocalSiteRateLimit.swift */; };
+		637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218162A3A2AAD008C4816 /* APIFederatedInstances.swift */; };
+		637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218172A3A2AAD008C4816 /* APIMyUserInfo.swift */; };
+		637218542A3A2AAD008C4816 /* APILanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218182A3A2AAD008C4816 /* APILanguage.swift */; };
+		637218552A3A2AAD008C4816 /* APITagline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218192A3A2AAD008C4816 /* APITagline.swift */; };
+		637218562A3A2AAD008C4816 /* APILocalSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372181A2A3A2AAD008C4816 /* APILocalSite.swift */; };
+		637218572A3A2AAD008C4816 /* APISiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372181B2A3A2AAD008C4816 /* APISiteView.swift */; };
+		637218582A3A2AAD008C4816 /* APISite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372181C2A3A2AAD008C4816 /* APISite.swift */; };
+		637218592A3A2AAD008C4816 /* APISiteAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372181D2A3A2AAD008C4816 /* APISiteAggregates.swift */; };
+		6372185A2A3A2AAD008C4816 /* APISubscribedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372181F2A3A2AAD008C4816 /* APISubscribedStatus.swift */; };
+		6372185B2A3A2AAD008C4816 /* APICommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218202A3A2AAD008C4816 /* APICommunityView.swift */; };
+		6372185C2A3A2AAD008C4816 /* APICommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218212A3A2AAD008C4816 /* APICommunity.swift */; };
+		6372185D2A3A2AAD008C4816 /* APICommunityAggregates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218222A3A2AAD008C4816 /* APICommunityAggregates.swift */; };
+		6372185E2A3A2AAD008C4816 /* APICommunityModeratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218232A3A2AAD008C4816 /* APICommunityModeratorView.swift */; };
+		6372185F2A3A2AAD008C4816 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218252A3A2AAD008C4816 /* LoginRequest.swift */; };
+		637218602A3A2AAD008C4816 /* EditPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218272A3A2AAD008C4816 /* EditPost.swift */; };
+		637218612A3A2AAD008C4816 /* CreatePostLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218282A3A2AAD008C4816 /* CreatePostLike.swift */; };
+		637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218292A3A2AAD008C4816 /* DeletePost.swift */; };
+		637218632A3A2AAD008C4816 /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372182A2A3A2AAD008C4816 /* CreatePost.swift */; };
+		637218642A3A2AAD008C4816 /* GetPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372182B2A3A2AAD008C4816 /* GetPost.swift */; };
+		637218652A3A2AAD008C4816 /* GetPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372182C2A3A2AAD008C4816 /* GetPosts.swift */; };
+		637218662A3A2AAD008C4816 /* SavePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372182D2A3A2AAD008C4816 /* SavePost.swift */; };
+		637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372182F2A3A2AAD008C4816 /* GetPersonDetails.swift */; };
+		637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218312A3A2AAD008C4816 /* CreateComment.swift */; };
+		637218692A3A2AAD008C4816 /* CreateCommentLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218322A3A2AAD008C4816 /* CreateCommentLike.swift */; };
+		6372186A2A3A2AAD008C4816 /* GetComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218332A3A2AAD008C4816 /* GetComment.swift */; };
+		6372186B2A3A2AAD008C4816 /* GetComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218342A3A2AAD008C4816 /* GetComments.swift */; };
+		6372186C2A3A2AAD008C4816 /* SaveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218352A3A2AAD008C4816 /* SaveComment.swift */; };
+		6372186D2A3A2AAD008C4816 /* EditComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218362A3A2AAD008C4816 /* EditComment.swift */; };
+		6372186E2A3A2AAD008C4816 /* DeleteComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218372A3A2AAD008C4816 /* DeleteComment.swift */; };
+		6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218382A3A2AAD008C4816 /* SearchRequest.swift */; };
+		637218702A3A2AAD008C4816 /* ResolveObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218392A3A2AAD008C4816 /* ResolveObject.swift */; };
+		637218712A3A2AAD008C4816 /* GetSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372183B2A3A2AAD008C4816 /* GetSite.swift */; };
+		637218722A3A2AAD008C4816 /* HideCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372183D2A3A2AAD008C4816 /* HideCommunity.swift */; };
+		637218732A3A2AAD008C4816 /* FollowCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372183E2A3A2AAD008C4816 /* FollowCommunity.swift */; };
+		637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372183F2A3A2AAD008C4816 /* ListCommunities.swift */; };
+		637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218402A3A2AAD008C4816 /* GetCommunity.swift */; };
+		637218762A3A2AAD008C4816 /* BlockCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218412A3A2AAD008C4816 /* BlockCommunity.swift */; };
+		637218772A3A2AAD008C4816 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218422A3A2AAD008C4816 /* APIRequest.swift */; };
 		637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6374570F2A18CB6600B69C03 /* Custom Text Field.swift */; };
 		638535712A1779BC00815781 /* General.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535702A1779BC00815781 /* General.swift */; };
 		638535732A1779FC00815781 /* Comment Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535722A1779FC00815781 /* Comment Sorting Options.swift */; };
@@ -163,26 +185,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		503085D32A2FCCCE00DB2017 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
-		503085D52A2FCCEE00DB2017 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
-		503085D82A2FCD4800DB2017 /* APIErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorResponse.swift; sourceTree = "<group>"; };
-		503085DB2A2FCE3100DB2017 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
-		503085EB2A30DED100DB2017 /* SearchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequest.swift; sourceTree = "<group>"; };
-		503085FC2A3275A100DB2017 /* HierarchicalComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalComment.swift; sourceTree = "<group>"; };
-		503085FF2A32A06C00DB2017 /* APIPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPostView.swift; sourceTree = "<group>"; };
-		503086012A32A8F200DB2017 /* APIPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPost.swift; sourceTree = "<group>"; };
-		503086032A32A93900DB2017 /* APIPostAggregates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPostAggregates.swift; sourceTree = "<group>"; };
-		503086072A32A9CA00DB2017 /* APICommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommunity.swift; sourceTree = "<group>"; };
-		5030860A2A32AA1100DB2017 /* APIPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPerson.swift; sourceTree = "<group>"; };
-		5030860C2A32AAAC00DB2017 /* APICommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommunityView.swift; sourceTree = "<group>"; };
-		5030860E2A32AAED00DB2017 /* APICommunityModeratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommunityModeratorView.swift; sourceTree = "<group>"; };
-		503086102A32AB2200DB2017 /* APICommunityAggregates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommunityAggregates.swift; sourceTree = "<group>"; };
-		503086122A32AB6400DB2017 /* APISubscribedStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISubscribedStatus.swift; sourceTree = "<group>"; };
-		503086142A32ABCC00DB2017 /* APIPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonView.swift; sourceTree = "<group>"; };
-		503086162A32ABF900DB2017 /* APIPersonAggregates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonAggregates.swift; sourceTree = "<group>"; };
-		503086192A32B96D00DB2017 /* APICommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommentView.swift; sourceTree = "<group>"; };
-		5030861B2A32FF8F00DB2017 /* APIComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIComment.swift; sourceTree = "<group>"; };
-		5030861D2A32FFB900DB2017 /* APICommentAggregates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommentAggregates.swift; sourceTree = "<group>"; };
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		508845CE2A3641160088E483 /* JSONDecoder+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Default.swift"; sourceTree = "<group>"; };
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
@@ -197,18 +199,7 @@
 		6314C9F02A194FFA00B08405 /* Post Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Comment.swift"; sourceTree = "<group>"; };
 		631711542A27C45900FE08C4 /* Selectable Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Selectable Text.swift"; sourceTree = "<group>"; };
 		631711562A27C70E00FE08C4 /* Comment Reply Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Reply Tracker.swift"; sourceTree = "<group>"; };
-		6317ABB12A37227400603D76 /* GetCommentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCommentsRequest.swift; sourceTree = "<group>"; };
-		6317ABB22A37227400603D76 /* CreateCommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCommentRequest.swift; sourceTree = "<group>"; };
-		6317ABB42A37227400603D76 /* DeleteCommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteCommentRequest.swift; sourceTree = "<group>"; };
-		6317ABB52A37227400603D76 /* CreateCommentLikeRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCommentLikeRequest.swift; sourceTree = "<group>"; };
-		6317ABB72A37227400603D76 /* GetPersonDetailsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonDetailsRequest.swift; sourceTree = "<group>"; };
-		6317ABB92A37227400603D76 /* GetCommunityRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCommunityRequest.swift; sourceTree = "<group>"; };
-		6317ABBB2A37227400603D76 /* GetPostsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPostsRequest.swift; sourceTree = "<group>"; };
-		6317ABBC2A37227400603D76 /* CreatePostLikeRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostLikeRequest.swift; sourceTree = "<group>"; };
-		6317ABBD2A37227400603D76 /* CreatePostRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostRequest.swift; sourceTree = "<group>"; };
-		6317ABC82A37253B00603D76 /* FollowCommunityRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCommunityRequest.swift; sourceTree = "<group>"; };
 		6317ABCA2A37292700603D76 /* FeedType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedType.swift; sourceTree = "<group>"; };
-		6317ABCC2A372D8500603D76 /* APISite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISite.swift; sourceTree = "<group>"; };
 		6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stickied Tag.swift"; sourceTree = "<group>"; };
 		6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share Sheet.swift"; sourceTree = "<group>"; };
 		6318EDC227EE4D7F00BFCAE8 /* Post Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Item.swift"; sourceTree = "<group>"; };
@@ -257,6 +248,59 @@
 		6363D5F927EE1BDA00E34822 /* Settings View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings View.swift"; sourceTree = "<group>"; };
 		6363D60127EE1EC400E34822 /* Comment Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Item.swift"; sourceTree = "<group>"; };
 		6363D60327EE20A200E34822 /* Post Expanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Expanded.swift"; sourceTree = "<group>"; };
+		637218012A3A2AAD008C4816 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		637218032A3A2AAD008C4816 /* HierarchicalComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HierarchicalComment.swift; sourceTree = "<group>"; };
+		637218062A3A2AAD008C4816 /* APICommentAggregates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommentAggregates.swift; sourceTree = "<group>"; };
+		637218072A3A2AAD008C4816 /* APIComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIComment.swift; sourceTree = "<group>"; };
+		637218082A3A2AAD008C4816 /* APICommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommentView.swift; sourceTree = "<group>"; };
+		637218092A3A2AAD008C4816 /* APICommentReply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommentReply.swift; sourceTree = "<group>"; };
+		6372180A2A3A2AAD008C4816 /* APICommentReplyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommentReplyView.swift; sourceTree = "<group>"; };
+		6372180C2A3A2AAD008C4816 /* APIPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPost.swift; sourceTree = "<group>"; };
+		6372180D2A3A2AAD008C4816 /* APIPostAggregates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPostAggregates.swift; sourceTree = "<group>"; };
+		6372180E2A3A2AAD008C4816 /* APIPostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPostView.swift; sourceTree = "<group>"; };
+		6372180F2A3A2AAD008C4816 /* APIErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIErrorResponse.swift; sourceTree = "<group>"; };
+		637218112A3A2AAD008C4816 /* APIPersonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPersonView.swift; sourceTree = "<group>"; };
+		637218122A3A2AAD008C4816 /* APIPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPerson.swift; sourceTree = "<group>"; };
+		637218132A3A2AAD008C4816 /* APIPersonAggregates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPersonAggregates.swift; sourceTree = "<group>"; };
+		637218152A3A2AAD008C4816 /* APILocalSiteRateLimit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APILocalSiteRateLimit.swift; sourceTree = "<group>"; };
+		637218162A3A2AAD008C4816 /* APIFederatedInstances.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIFederatedInstances.swift; sourceTree = "<group>"; };
+		637218172A3A2AAD008C4816 /* APIMyUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIMyUserInfo.swift; sourceTree = "<group>"; };
+		637218182A3A2AAD008C4816 /* APILanguage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APILanguage.swift; sourceTree = "<group>"; };
+		637218192A3A2AAD008C4816 /* APITagline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APITagline.swift; sourceTree = "<group>"; };
+		6372181A2A3A2AAD008C4816 /* APILocalSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APILocalSite.swift; sourceTree = "<group>"; };
+		6372181B2A3A2AAD008C4816 /* APISiteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APISiteView.swift; sourceTree = "<group>"; };
+		6372181C2A3A2AAD008C4816 /* APISite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APISite.swift; sourceTree = "<group>"; };
+		6372181D2A3A2AAD008C4816 /* APISiteAggregates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APISiteAggregates.swift; sourceTree = "<group>"; };
+		6372181F2A3A2AAD008C4816 /* APISubscribedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APISubscribedStatus.swift; sourceTree = "<group>"; };
+		637218202A3A2AAD008C4816 /* APICommunityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommunityView.swift; sourceTree = "<group>"; };
+		637218212A3A2AAD008C4816 /* APICommunity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommunity.swift; sourceTree = "<group>"; };
+		637218222A3A2AAD008C4816 /* APICommunityAggregates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommunityAggregates.swift; sourceTree = "<group>"; };
+		637218232A3A2AAD008C4816 /* APICommunityModeratorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICommunityModeratorView.swift; sourceTree = "<group>"; };
+		637218252A3A2AAD008C4816 /* LoginRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
+		637218272A3A2AAD008C4816 /* EditPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPost.swift; sourceTree = "<group>"; };
+		637218282A3A2AAD008C4816 /* CreatePostLike.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostLike.swift; sourceTree = "<group>"; };
+		637218292A3A2AAD008C4816 /* DeletePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePost.swift; sourceTree = "<group>"; };
+		6372182A2A3A2AAD008C4816 /* CreatePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
+		6372182B2A3A2AAD008C4816 /* GetPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPost.swift; sourceTree = "<group>"; };
+		6372182C2A3A2AAD008C4816 /* GetPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPosts.swift; sourceTree = "<group>"; };
+		6372182D2A3A2AAD008C4816 /* SavePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavePost.swift; sourceTree = "<group>"; };
+		6372182F2A3A2AAD008C4816 /* GetPersonDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonDetails.swift; sourceTree = "<group>"; };
+		637218312A3A2AAD008C4816 /* CreateComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateComment.swift; sourceTree = "<group>"; };
+		637218322A3A2AAD008C4816 /* CreateCommentLike.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCommentLike.swift; sourceTree = "<group>"; };
+		637218332A3A2AAD008C4816 /* GetComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetComment.swift; sourceTree = "<group>"; };
+		637218342A3A2AAD008C4816 /* GetComments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetComments.swift; sourceTree = "<group>"; };
+		637218352A3A2AAD008C4816 /* SaveComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveComment.swift; sourceTree = "<group>"; };
+		637218362A3A2AAD008C4816 /* EditComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditComment.swift; sourceTree = "<group>"; };
+		637218372A3A2AAD008C4816 /* DeleteComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteComment.swift; sourceTree = "<group>"; };
+		637218382A3A2AAD008C4816 /* SearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchRequest.swift; sourceTree = "<group>"; };
+		637218392A3A2AAD008C4816 /* ResolveObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResolveObject.swift; sourceTree = "<group>"; };
+		6372183B2A3A2AAD008C4816 /* GetSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSite.swift; sourceTree = "<group>"; };
+		6372183D2A3A2AAD008C4816 /* HideCommunity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HideCommunity.swift; sourceTree = "<group>"; };
+		6372183E2A3A2AAD008C4816 /* FollowCommunity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCommunity.swift; sourceTree = "<group>"; };
+		6372183F2A3A2AAD008C4816 /* ListCommunities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCommunities.swift; sourceTree = "<group>"; };
+		637218402A3A2AAD008C4816 /* GetCommunity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCommunity.swift; sourceTree = "<group>"; };
+		637218412A3A2AAD008C4816 /* BlockCommunity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockCommunity.swift; sourceTree = "<group>"; };
+		637218422A3A2AAD008C4816 /* APIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		6374570F2A18CB6600B69C03 /* Custom Text Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Text Field.swift"; sourceTree = "<group>"; };
 		638535702A1779BC00815781 /* General.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = General.swift; sourceTree = "<group>"; };
 		638535722A1779FC00815781 /* Comment Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Sorting Options.swift"; sourceTree = "<group>"; };
@@ -330,94 +374,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		503085D22A2FCCBB00DB2017 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				503085D32A2FCCCE00DB2017 /* APIClient.swift */,
-				503085D52A2FCCEE00DB2017 /* APIRequest.swift */,
-				503085FB2A32754D00DB2017 /* Internal */,
-				503085DA2A2FCE1800DB2017 /* Requests */,
-				503085D72A2FCD2500DB2017 /* Models */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
-		503085D72A2FCD2500DB2017 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				503085D82A2FCD4800DB2017 /* APIErrorResponse.swift */,
-				503086182A32B93F00DB2017 /* Comments */,
-				503086062A32A9A500DB2017 /* Community */,
-				503085FE2A32A04800DB2017 /* Posts */,
-				503086092A32A9F400DB2017 /* Users */,
-				6317ABCC2A372D8500603D76 /* APISite.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		503085DA2A2FCE1800DB2017 /* Requests */ = {
-			isa = PBXGroup;
-			children = (
-				6317ABB02A37227400603D76 /* Comment */,
-				6317ABB82A37227400603D76 /* Community */,
-				6317ABB62A37227400603D76 /* Person */,
-				6317ABBA2A37227400603D76 /* Post */,
-				503085DB2A2FCE3100DB2017 /* LoginRequest.swift */,
-				503085EB2A30DED100DB2017 /* SearchRequest.swift */,
-			);
-			path = Requests;
-			sourceTree = "<group>";
-		};
-		503085FB2A32754D00DB2017 /* Internal */ = {
-			isa = PBXGroup;
-			children = (
-				503085FC2A3275A100DB2017 /* HierarchicalComment.swift */,
-			);
-			path = Internal;
-			sourceTree = "<group>";
-		};
-		503085FE2A32A04800DB2017 /* Posts */ = {
-			isa = PBXGroup;
-			children = (
-				503085FF2A32A06C00DB2017 /* APIPostView.swift */,
-				503086012A32A8F200DB2017 /* APIPost.swift */,
-				503086032A32A93900DB2017 /* APIPostAggregates.swift */,
-			);
-			path = Posts;
-			sourceTree = "<group>";
-		};
-		503086062A32A9A500DB2017 /* Community */ = {
-			isa = PBXGroup;
-			children = (
-				5030860C2A32AAAC00DB2017 /* APICommunityView.swift */,
-				503086072A32A9CA00DB2017 /* APICommunity.swift */,
-				5030860E2A32AAED00DB2017 /* APICommunityModeratorView.swift */,
-				503086102A32AB2200DB2017 /* APICommunityAggregates.swift */,
-				503086122A32AB6400DB2017 /* APISubscribedStatus.swift */,
-			);
-			path = Community;
-			sourceTree = "<group>";
-		};
-		503086092A32A9F400DB2017 /* Users */ = {
-			isa = PBXGroup;
-			children = (
-				503086142A32ABCC00DB2017 /* APIPersonView.swift */,
-				5030860A2A32AA1100DB2017 /* APIPerson.swift */,
-				503086162A32ABF900DB2017 /* APIPersonAggregates.swift */,
-			);
-			path = Users;
-			sourceTree = "<group>";
-		};
-		503086182A32B93F00DB2017 /* Comments */ = {
-			isa = PBXGroup;
-			children = (
-				503086192A32B96D00DB2017 /* APICommentView.swift */,
-				5030861B2A32FF8F00DB2017 /* APIComment.swift */,
-				5030861D2A32FFB900DB2017 /* APICommentAggregates.swift */,
-			);
-			path = Comments;
-			sourceTree = "<group>";
-		};
 		630049E927EF38EB00D5105B /* User-Interactable */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,44 +430,6 @@
 				6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */,
 			);
 			path = Participating;
-			sourceTree = "<group>";
-		};
-		6317ABB02A37227400603D76 /* Comment */ = {
-			isa = PBXGroup;
-			children = (
-				6317ABB12A37227400603D76 /* GetCommentsRequest.swift */,
-				6317ABB22A37227400603D76 /* CreateCommentRequest.swift */,
-				6317ABB42A37227400603D76 /* DeleteCommentRequest.swift */,
-				6317ABB52A37227400603D76 /* CreateCommentLikeRequest.swift */,
-			);
-			path = Comment;
-			sourceTree = "<group>";
-		};
-		6317ABB62A37227400603D76 /* Person */ = {
-			isa = PBXGroup;
-			children = (
-				6317ABB72A37227400603D76 /* GetPersonDetailsRequest.swift */,
-			);
-			path = Person;
-			sourceTree = "<group>";
-		};
-		6317ABB82A37227400603D76 /* Community */ = {
-			isa = PBXGroup;
-			children = (
-				6317ABC82A37253B00603D76 /* FollowCommunityRequest.swift */,
-				6317ABB92A37227400603D76 /* GetCommunityRequest.swift */,
-			);
-			path = Community;
-			sourceTree = "<group>";
-		};
-		6317ABBA2A37227400603D76 /* Post */ = {
-			isa = PBXGroup;
-			children = (
-				6317ABBB2A37227400603D76 /* GetPostsRequest.swift */,
-				6317ABBC2A37227400603D76 /* CreatePostLikeRequest.swift */,
-				6317ABBD2A37227400603D76 /* CreatePostRequest.swift */,
-			);
-			path = Post;
 			sourceTree = "<group>";
 		};
 		6318DE5227FB956D00CC2AD6 /* Components */ = {
@@ -722,7 +640,7 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
-				503085D22A2FCCBB00DB2017 /* API */,
+				637218002A3A2AAD008C4816 /* API */,
 				63344C5E2A080C5F001BC616 /* Styles */,
 				63F0C7A02A05198600A18C5D /* Enums */,
 				630D753C27F65E44006E60C9 /* Info.plist */,
@@ -834,6 +752,170 @@
 			children = (
 			);
 			path = "Server Response Parsing";
+			sourceTree = "<group>";
+		};
+		637218002A3A2AAD008C4816 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				637218012A3A2AAD008C4816 /* APIClient.swift */,
+				637218022A3A2AAD008C4816 /* Internal */,
+				637218042A3A2AAD008C4816 /* Models */,
+				637218242A3A2AAD008C4816 /* Requests */,
+				637218422A3A2AAD008C4816 /* APIRequest.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		637218022A3A2AAD008C4816 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				637218032A3A2AAD008C4816 /* HierarchicalComment.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		637218042A3A2AAD008C4816 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				637218052A3A2AAD008C4816 /* Comments */,
+				6372180B2A3A2AAD008C4816 /* Posts */,
+				6372180F2A3A2AAD008C4816 /* APIErrorResponse.swift */,
+				637218102A3A2AAD008C4816 /* Users */,
+				637218142A3A2AAD008C4816 /* Site */,
+				6372181E2A3A2AAD008C4816 /* Community */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		637218052A3A2AAD008C4816 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				637218062A3A2AAD008C4816 /* APICommentAggregates.swift */,
+				637218072A3A2AAD008C4816 /* APIComment.swift */,
+				637218082A3A2AAD008C4816 /* APICommentView.swift */,
+				637218092A3A2AAD008C4816 /* APICommentReply.swift */,
+				6372180A2A3A2AAD008C4816 /* APICommentReplyView.swift */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
+		6372180B2A3A2AAD008C4816 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				6372180C2A3A2AAD008C4816 /* APIPost.swift */,
+				6372180D2A3A2AAD008C4816 /* APIPostAggregates.swift */,
+				6372180E2A3A2AAD008C4816 /* APIPostView.swift */,
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
+		637218102A3A2AAD008C4816 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				637218112A3A2AAD008C4816 /* APIPersonView.swift */,
+				637218122A3A2AAD008C4816 /* APIPerson.swift */,
+				637218132A3A2AAD008C4816 /* APIPersonAggregates.swift */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		637218142A3A2AAD008C4816 /* Site */ = {
+			isa = PBXGroup;
+			children = (
+				637218152A3A2AAD008C4816 /* APILocalSiteRateLimit.swift */,
+				637218162A3A2AAD008C4816 /* APIFederatedInstances.swift */,
+				637218172A3A2AAD008C4816 /* APIMyUserInfo.swift */,
+				637218182A3A2AAD008C4816 /* APILanguage.swift */,
+				637218192A3A2AAD008C4816 /* APITagline.swift */,
+				6372181A2A3A2AAD008C4816 /* APILocalSite.swift */,
+				6372181B2A3A2AAD008C4816 /* APISiteView.swift */,
+				6372181C2A3A2AAD008C4816 /* APISite.swift */,
+				6372181D2A3A2AAD008C4816 /* APISiteAggregates.swift */,
+			);
+			path = Site;
+			sourceTree = "<group>";
+		};
+		6372181E2A3A2AAD008C4816 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				6372181F2A3A2AAD008C4816 /* APISubscribedStatus.swift */,
+				637218202A3A2AAD008C4816 /* APICommunityView.swift */,
+				637218212A3A2AAD008C4816 /* APICommunity.swift */,
+				637218222A3A2AAD008C4816 /* APICommunityAggregates.swift */,
+				637218232A3A2AAD008C4816 /* APICommunityModeratorView.swift */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
+		637218242A3A2AAD008C4816 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				637218252A3A2AAD008C4816 /* LoginRequest.swift */,
+				637218262A3A2AAD008C4816 /* Post */,
+				6372182E2A3A2AAD008C4816 /* Person */,
+				637218302A3A2AAD008C4816 /* Comment */,
+				637218382A3A2AAD008C4816 /* SearchRequest.swift */,
+				637218392A3A2AAD008C4816 /* ResolveObject.swift */,
+				6372183A2A3A2AAD008C4816 /* Site */,
+				6372183C2A3A2AAD008C4816 /* Community */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		637218262A3A2AAD008C4816 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				637218272A3A2AAD008C4816 /* EditPost.swift */,
+				637218282A3A2AAD008C4816 /* CreatePostLike.swift */,
+				637218292A3A2AAD008C4816 /* DeletePost.swift */,
+				6372182A2A3A2AAD008C4816 /* CreatePost.swift */,
+				6372182B2A3A2AAD008C4816 /* GetPost.swift */,
+				6372182C2A3A2AAD008C4816 /* GetPosts.swift */,
+				6372182D2A3A2AAD008C4816 /* SavePost.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		6372182E2A3A2AAD008C4816 /* Person */ = {
+			isa = PBXGroup;
+			children = (
+				6372182F2A3A2AAD008C4816 /* GetPersonDetails.swift */,
+			);
+			path = Person;
+			sourceTree = "<group>";
+		};
+		637218302A3A2AAD008C4816 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				637218312A3A2AAD008C4816 /* CreateComment.swift */,
+				637218322A3A2AAD008C4816 /* CreateCommentLike.swift */,
+				637218332A3A2AAD008C4816 /* GetComment.swift */,
+				637218342A3A2AAD008C4816 /* GetComments.swift */,
+				637218352A3A2AAD008C4816 /* SaveComment.swift */,
+				637218362A3A2AAD008C4816 /* EditComment.swift */,
+				637218372A3A2AAD008C4816 /* DeleteComment.swift */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		6372183A2A3A2AAD008C4816 /* Site */ = {
+			isa = PBXGroup;
+			children = (
+				6372183B2A3A2AAD008C4816 /* GetSite.swift */,
+			);
+			path = Site;
+			sourceTree = "<group>";
+		};
+		6372183C2A3A2AAD008C4816 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				6372183D2A3A2AAD008C4816 /* HideCommunity.swift */,
+				6372183E2A3A2AAD008C4816 /* FollowCommunity.swift */,
+				6372183F2A3A2AAD008C4816 /* ListCommunities.swift */,
+				637218402A3A2AAD008C4816 /* GetCommunity.swift */,
+				637218412A3A2AAD008C4816 /* BlockCommunity.swift */,
+			);
+			path = Community;
 			sourceTree = "<group>";
 		};
 		6386E0282A03D0B8006B3C1D /* Trackers */ = {
@@ -1088,126 +1170,148 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6317ABC12A37227400603D76 /* DeleteCommentRequest.swift in Sources */,
 				63D64E052A1BC20D00FD39C6 /* Post Post.swift in Sources */,
 				63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */,
-				6317ABC32A37227400603D76 /* GetPersonDetailsRequest.swift in Sources */,
+				6372186A2A3A2AAD008C4816 /* GetComment.swift in Sources */,
+				637218472A3A2AAD008C4816 /* APICommentView.swift in Sources */,
 				63344C542A07D193001BC616 /* Filters.swift in Sources */,
+				6372185C2A3A2AAD008C4816 /* APICommunity.swift in Sources */,
+				6372185D2A3A2AAD008C4816 /* APICommunityAggregates.swift in Sources */,
 				63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */,
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
+				6372185F2A3A2AAD008C4816 /* LoginRequest.swift in Sources */,
+				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
-				6317ABCD2A372D8500603D76 /* APISite.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */,
+				637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */,
+				637218722A3A2AAD008C4816 /* HideCommunity.swift in Sources */,
 				63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */,
 				6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */,
+				637218652A3A2AAD008C4816 /* GetPosts.swift in Sources */,
 				6332FDDA27F083590009A98A /* About Me.swift in Sources */,
+				6372185E2A3A2AAD008C4816 /* APICommunityModeratorView.swift in Sources */,
+				637218592A3A2AAD008C4816 /* APISiteAggregates.swift in Sources */,
+				637218772A3A2AAD008C4816 /* APIRequest.swift in Sources */,
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
-				6317ABC22A37227400603D76 /* CreateCommentLikeRequest.swift in Sources */,
 				63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */,
 				63344C622A08460D001BC616 /* View - Border on Specific Sides.swift in Sources */,
+				637218702A3A2AAD008C4816 /* ResolveObject.swift in Sources */,
 				6314C9EB2A18D9C500B08405 /* Reply Editor.swift in Sources */,
+				6372186B2A3A2AAD008C4816 /* GetComments.swift in Sources */,
 				6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */,
 				6354F30A2A2E20040074C08D /* Alert - Multiple Alerts.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
-				503086132A32AB6400DB2017 /* APISubscribedStatus.swift in Sources */,
-				503085D62A2FCCEE00DB2017 /* APIRequest.swift in Sources */,
+				6372186C2A3A2AAD008C4816 /* SaveComment.swift in Sources */,
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
-				5030861C2A32FF8F00DB2017 /* APIComment.swift in Sources */,
-				503085EC2A30DED100DB2017 /* SearchRequest.swift in Sources */,
 				630737892A1CD1E900039852 /* String - Escape Special Characters.swift in Sources */,
 				6332FDCC27EFD6F90009A98A /* Post Info.swift in Sources */,
 				63A01E542A2B980100C84E04 /* Subscribe Button.swift in Sources */,
 				6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */,
+				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
+				637218582A3A2AAD008C4816 /* APISite.swift in Sources */,
 				631711572A27C70E00FE08C4 /* Comment Reply Tracker.swift in Sources */,
 				6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */,
+				637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */,
 				6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */,
 				638535732A1779FC00815781 /* Comment Sorting Options.swift in Sources */,
 				63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
+				6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */,
 				632578182A29F83C00446A66 /* Sorting Menu.swift in Sources */,
 				508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */,
-				6317ABC92A37253B00603D76 /* FollowCommunityRequest.swift in Sources */,
-				503085FD2A3275A100DB2017 /* HierarchicalComment.swift in Sources */,
-				5030861E2A32FFB900DB2017 /* APICommentAggregates.swift in Sources */,
+				637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */,
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				63A200532A2DDD38005CDDE3 /* Dictionary - Append.swift in Sources */,
-				503086112A32AB2200DB2017 /* APICommunityAggregates.swift in Sources */,
-				6317ABC72A37227400603D76 /* CreatePostRequest.swift in Sources */,
 				630737932A1CEDD200039852 /* Post Downvote Button.swift in Sources */,
+				637218492A3A2AAD008C4816 /* APICommentReplyView.swift in Sources */,
 				6317ABCB2A37292700603D76 /* FeedType.swift in Sources */,
-				6317ABC62A37227400603D76 /* CreatePostLikeRequest.swift in Sources */,
-				5030860D2A32AAAC00DB2017 /* APICommunityView.swift in Sources */,
+				637218642A3A2AAD008C4816 /* GetPost.swift in Sources */,
 				63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Post Item.swift in Sources */,
 				63344C752A09B075001BC616 /* Get Community Details.swift in Sources */,
 				63344C4D2A07ABEE001BC616 /* Community.swift in Sources */,
 				63344C672A08D4E3001BC616 /* Appearance.swift in Sources */,
-				503085DC2A2FCE3100DB2017 /* LoginRequest.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication - First Key Window.swift in Sources */,
 				631711552A27C45900FE08C4 /* Selectable Text.swift in Sources */,
-				503086002A32A06C00DB2017 /* APIPostView.swift in Sources */,
+				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
+				637218502A3A2AAD008C4816 /* APIPersonAggregates.swift in Sources */,
 				6386E0312A0427B6006B3C1D /* View - Conditional Modifier.swift in Sources */,
 				630737912A1CED4600039852 /* Post Upvote Button.swift in Sources */,
-				503086152A32ABCC00DB2017 /* APIPersonView.swift in Sources */,
-				5030860F2A32AAED00DB2017 /* APICommunityModeratorView.swift in Sources */,
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63344C712A098060001BC616 /* Sidebar.swift in Sources */,
-				6317ABC52A37227400603D76 /* GetPostsRequest.swift in Sources */,
-				6317ABC42A37227400603D76 /* GetCommunityRequest.swift in Sources */,
 				63E5D3822A13831800EC1FBD /* Community Search View.swift in Sources */,
+				637218572A3A2AAD008C4816 /* APISiteView.swift in Sources */,
 				63AF452D2A2F37EB00E0266F /* Own Account Tracker.swift in Sources */,
 				63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */,
-				503085D42A2FCCCE00DB2017 /* APIClient.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
-				503086022A32A8F200DB2017 /* APIPost.swift in Sources */,
 				6363D60427EE20A200E34822 /* Post Expanded.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
-				503086042A32A93900DB2017 /* APIPostAggregates.swift in Sources */,
+				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
+				637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */,
 				6314C9F12A194FFA00B08405 /* Post Comment.swift in Sources */,
+				637218662A3A2AAD008C4816 /* SavePost.swift in Sources */,
+				637218452A3A2AAD008C4816 /* APICommentAggregates.swift in Sources */,
+				6372184F2A3A2AAD008C4816 /* APIPerson.swift in Sources */,
 				63E5D3962A13DAF200EC1FBD /* Mark Community as Favorite.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
+				6372184B2A3A2AAD008C4816 /* APIPostAggregates.swift in Sources */,
 				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
+				637218692A3A2AAD008C4816 /* CreateCommentLike.swift in Sources */,
+				6372185A2A3A2AAD008C4816 /* APISubscribedStatus.swift in Sources */,
+				637218762A3A2AAD008C4816 /* BlockCommunity.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
-				5030860B2A32AA1100DB2017 /* APIPerson.swift in Sources */,
-				5030861A2A32B96D00DB2017 /* APICommentView.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,
 				632E8EEA27EE63F4007E8D75 /* Share.swift in Sources */,
+				6372186D2A3A2AAD008C4816 /* EditComment.swift in Sources */,
+				637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */,
 				6332FDC327EFCB5F0009A98A /* Color.swift in Sources */,
-				503086082A32A9CA00DB2017 /* APICommunity.swift in Sources */,
+				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
 				638535712A1779BC00815781 /* General.swift in Sources */,
-				6317ABBF2A37227400603D76 /* CreateCommentRequest.swift in Sources */,
 				6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
-				503085D92A2FCD4800DB2017 /* APIErrorResponse.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
+				637218612A3A2AAD008C4816 /* CreatePostLike.swift in Sources */,
 				63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */,
-				6317ABBE2A37227400603D76 /* GetCommentsRequest.swift in Sources */,
+				637218732A3A2AAD008C4816 /* FollowCommunity.swift in Sources */,
+				637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */,
 				6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */,
-				503086172A32ABF900DB2017 /* APIPersonAggregates.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
+				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
 				63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */,
+				6372184E2A3A2AAD008C4816 /* APIPersonView.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
+				6372184D2A3A2AAD008C4816 /* APIErrorResponse.swift in Sources */,
+				637218602A3A2AAD008C4816 /* EditPost.swift in Sources */,
+				637218562A3A2AAD008C4816 /* APILocalSite.swift in Sources */,
+				6372185B2A3A2AAD008C4816 /* APICommunityView.swift in Sources */,
 				63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */,
+				637218552A3A2AAD008C4816 /* APITagline.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
 				63E5D3982A13DCFB00EC1FBD /* Remove Community from Favorites.swift in Sources */,
+				6372184A2A3A2AAD008C4816 /* APIPost.swift in Sources */,
+				637218632A3A2AAD008C4816 /* CreatePost.swift in Sources */,
 				503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */,
 				63ABCE0E27F894060047A7D0 /* User View.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,
 				63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */,
+				637218462A3A2AAD008C4816 /* APIComment.swift in Sources */,
 				637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */,
 				63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */,
 				6314C9EE2A18EF3A00B08405 /* Keyboard Accessories.swift in Sources */,
+				637218512A3A2AAD008C4816 /* APILocalSiteRateLimit.swift in Sources */,
 				6386E0362A042C59006B3C1D /* Contributor.swift in Sources */,
 				6386E0342A042C44006B3C1D /* Contributors View.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
+				637218542A3A2AAD008C4816 /* APILanguage.swift in Sources */,
+				6372186E2A3A2AAD008C4816 /* DeleteComment.swift in Sources */,
 				6332FDCF27EFDD2E0009A98A /* Accounts Page.swift in Sources */,
 				63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */,
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
