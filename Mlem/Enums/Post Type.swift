@@ -7,6 +7,9 @@
 
 import Foundation
 
-enum PostType {
-    case text, image, link, error
+enum PostType: Equatable {
+    case text(String)
+    case image(URL)
+    case link(URL)
+    case titleOnly
 }

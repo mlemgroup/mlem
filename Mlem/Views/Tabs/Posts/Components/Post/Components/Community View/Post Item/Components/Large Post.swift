@@ -33,12 +33,11 @@ struct LargePost: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
                     // no padding iff text post with no body
-                    .padding(.bottom, (post.postType == .text && post.post.body?.isEmpty ?? true) ? 0 : nil)
+                    .padding(.bottom, post.postType == .titleOnly ? 0 : nil)
                 
                 switch post.postType {
-                case .image:
-                    // force unwrapping safe because postType performs nil check
-                    CachedAsyncImage(url: post.post.url!) { image in
+                case .image(let url):
+                    CachedAsyncImage(url: url) { image in
                         image
                             .resizable()
                             .frame(maxWidth: .infinity)
@@ -54,9 +53,7 @@ struct LargePost: View {
                 case .link:
                     WebsiteIconComplex(post: post.post)
                         .padding(.horizontal)
-                case .text:
-                    // force unwrapping safe because postType performs nil check
-                    let postBody = post.post.body!
+                case .text(let postBody):
                     if !postBody.isEmpty {
                         if isExpanded {
                             MarkdownView(text: postBody)
@@ -69,8 +66,8 @@ struct LargePost: View {
                                 .padding(.horizontal)
                         }
                     }
-                case .error:
-                    Image(systemName: "exclamationmark.triangle")
+                case .titleOnly:
+                    EmptyView()
                 }
             }
             

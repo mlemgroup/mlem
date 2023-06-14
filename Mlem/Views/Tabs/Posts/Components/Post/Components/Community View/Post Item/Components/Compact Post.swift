@@ -23,9 +23,8 @@ struct CompactPost: View {
             
             HStack(alignment: .top) {
                 switch post.postType {
-                case .image:
-                    // force unwrapping safe because postType performs nil check
-                    CachedAsyncImage(url: post.post.url!) { image in
+                case .image(let url):
+                    CachedAsyncImage(url: url) { image in
                         image
                             .resizable()
                             .scaledToFill()
@@ -47,8 +46,8 @@ struct CompactPost: View {
                         .frame(width: thumbnailSize, height: thumbnailSize)
                         .overlay(RoundedRectangle(cornerRadius: 4)
                             .stroke(.secondary, lineWidth: 1))
-                case .error:
-                    Image(systemName: "exclamationmark.triangle")
+                case .titleOnly:
+                    Image(systemName: "character.bubble")
                         .frame(width: thumbnailSize, height: thumbnailSize)
                         .overlay(RoundedRectangle(cornerRadius: 4)
                             .stroke(.secondary, lineWidth: 1))
