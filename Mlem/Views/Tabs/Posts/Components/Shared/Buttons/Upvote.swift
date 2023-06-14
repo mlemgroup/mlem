@@ -16,7 +16,7 @@ struct UpvoteButton: View {
             .foregroundColor(vote == .upvote ? .white : .primary)
             .background(RoundedRectangle(cornerRadius: 4)
                 .aspectRatio(1, contentMode: .fit)
-                .foregroundColor(vote == .upvote ? .upvoteColor : .transparent))
+                .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
     }
 }
 

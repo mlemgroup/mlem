@@ -22,7 +22,7 @@ struct StandardVoteComplex: View {
             }
             .padding(4)
             .background(RoundedRectangle(cornerRadius: 4)
-                .foregroundColor(vote == .upvote ? .upvoteColor : .transparent))
+                .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
             .foregroundColor(vote == .upvote ? .white : .primary)
             .onTapGesture {
                 Task(priority: .userInitiated) {
