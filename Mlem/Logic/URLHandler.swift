@@ -29,6 +29,7 @@ class URLHandler {
     /// - Returns: A `Result` containing to the system level `OpenURLAction.Result` and any application level actions to perform
     static func handle(_ url: URL) -> Result {
         guard let scheme = url.scheme, scheme.hasPrefix("http") else {
+            // TODO: handle additional link types appropriately
             // as the current handling only supports http(s) via Safari bail early if the scheme is unsupported...
             // a future piece of work will add deep linking where possible with help of the `ResolveObject` API call
             return .init(result: .discarded, action: .error("This type of link is not currently supported 😞"))
