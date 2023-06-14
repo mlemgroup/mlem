@@ -11,7 +11,7 @@ import CachedAsyncImage
 
 struct PostHeader: View {
     // parameters
-    var post: APIPostView
+    var postView: APIPostView
     var account: SavedAccount
     
     // constants
@@ -22,29 +22,30 @@ struct PostHeader: View {
         HStack {
             HStack(spacing: 4) {
                 // community avatar and name
-                NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
+                NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all),
+                               isActive: $isShowingCommunity) {
                     communityAvatar
                         .frame(width: communityIconSize, height: communityIconSize)
                         .clipShape(Circle())
                         .overlay(Circle()
                             .stroke(.secondary, lineWidth: 1))
-                    Text(post.community.name)
+                    Text(postView.community.name)
                         .bold()
                 }
                 Text("by")
                 // poster
-                NavigationLink(destination: UserView(userID: post.creator.id, account: account)) {
-                    Text(post.creator.name)
+                NavigationLink(destination: UserView(userID: postView.creator.id, account: account)) {
+                    Text(postView.creator.name)
                         .italic()
-                        .if(post.creator.admin) { viewProxy in
+                        .if(postView.creator.admin) { viewProxy in
                             viewProxy
                                 .foregroundColor(.red)
                         }
-                        .if(post.creator.botAccount) { viewProxy in
+                        .if(postView.creator.botAccount) { viewProxy in
                             viewProxy
                                 .foregroundColor(.indigo)
                         }
-                        .if(post.creator.name == "lFenix") { viewProxy in
+                        .if(postView.creator.name == "lFenix") { viewProxy in
                             viewProxy
                                 .foregroundColor(.yellow)
                         }
@@ -53,8 +54,12 @@ struct PostHeader: View {
             
             Spacer()
             
-            if (post.post.featuredLocal) {
+            if (postView.post.featuredLocal) {
                 StickiedTag(compact: false)
+            }
+            
+            if (postView.post.nsfw) {
+                NSFWTag(compact: false)
             }
         }
         .accessibilityElement(children: .ignore)
@@ -67,7 +72,7 @@ struct PostHeader: View {
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
-            if let communityAvatarLink = post.community.icon {
+            if let communityAvatarLink = postView.community.icon {
                 CachedAsyncImage(url: communityAvatarLink) { image in
                     if let avatar = image.image {
                         avatar

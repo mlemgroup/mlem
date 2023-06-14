@@ -14,7 +14,7 @@ struct CompactPost: View {
     let thumbnailSize: CGFloat = 60
     
     // arguments
-    let post: APIPostView
+    let postView: APIPostView
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
     
@@ -54,18 +54,19 @@ struct CompactPost: View {
                 }
                 
                 VStack(spacing: 2) {
-                    Text(post.post.name)
+                    Text(postView.post.name)
                         .font(.subheadline)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         .padding(.trailing)
                     
                     HStack(spacing: 4) {
                         // stickied
-                        if post.post.featuredLocal { StickiedTag(compact: true) }
+                        if postView.post.featuredLocal { StickiedTag(compact: true) }
+                        if postView.post.nsfw { NSFWTag(compact: true) }
                         
                         // community name
-                        NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
-                            Text(post.community.name)
+                        NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all)) {
+                            Text(postView.community.name)
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .bold()
@@ -74,23 +75,23 @@ struct CompactPost: View {
                             .foregroundColor(.secondary)
                             .font(.caption)
                         // poster
-                        NavigationLink(destination: UserView(userID: post.creator.id, account: account)) {
-                            Text(post.creator.name)
+                        NavigationLink(destination: UserView(userID: postView.creator.id, account: account)) {
+                            Text(postView.creator.name)
                                 .font(.caption)
                                 .italic()
-                                .if (post.creator.admin) { viewProxy in
+                                .if (postView.creator.admin) { viewProxy in
                                     viewProxy
                                         .foregroundColor(.red)
                                 }
-                                .if (post.creator.botAccount) { viewProxy in
+                                .if (postView.creator.botAccount) { viewProxy in
                                     viewProxy
                                         .foregroundColor(.indigo)
                                 }
-                                .if (post.creator.name == "lFenix") { viewProxy in
+                                .if (postView.creator.name == "lFenix") { viewProxy in
                                     viewProxy
                                         .foregroundColor(.yellow)
                                 }
-                                .if (!(post.creator.admin || post.creator.botAccount || post.creator.name == "lFenix")) { viewProxy in
+                                .if (!(postView.creator.admin || postView.creator.botAccount || postView.creator.name == "lFenix")) { viewProxy in
                                     viewProxy
                                         .foregroundColor(.secondary)
                                 }
@@ -105,7 +106,30 @@ struct CompactPost: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
             
-            PostInteractionBar(post: post, account: account, compact: true, voteOnPost: voteOnPost)
+            PostInteractionBar(post: postView, account: account, compact: true, voteOnPost: voteOnPost)
+        }
+    }
+    
+    @ViewBuilder
+    private var thumbnailImage: some View {
+        switch postView.postType {
+        case .image:
+            // force unwrapping safe because postType performs nil check
+            CachedAsyncImage(url: postView.post.url!) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .blur(radius: postView.post.nsfw ? 8 : 0) // blur nsfw
+                    
+            } placeholder: {
+                ProgressView()
+            }
+        case .link:
+            Image(systemName: "safari")
+        case .text:
+            Image(systemName: "text.book.closed")
+        case .error:
+            Image(systemName: "exclamationmark.triangle")
         }
     }
 }

@@ -15,7 +15,7 @@ struct LargePost: View {
     @EnvironmentObject var appState: AppState
     
     // parameters
-    let post: APIPostView
+    let postView: APIPostView
     let account: SavedAccount
     let isExpanded: Bool
     let voteOnPost: (ScoringOperation) async -> Void
@@ -24,11 +24,11 @@ struct LargePost: View {
         VStack(spacing: 0) {
             VStack {
                 // header--community/poster/ellipsis menu
-                PostHeader(post: post, account: account)
+                PostHeader(postView: postView, account: account)
                     .padding(.horizontal)
                 
                 // post title
-                Text(post.post.name)
+                Text(postView.post.name)
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
@@ -42,6 +42,7 @@ struct LargePost: View {
                             .resizable()
                             .frame(maxWidth: .infinity)
                             .scaledToFill()
+                            .blur(radius: postView.post.nsfw && !isExpanded ? 30 : 0)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                             .overlay(RoundedRectangle(cornerRadius: 8)
                                 .stroke(.secondary, lineWidth: 1))
@@ -52,7 +53,7 @@ struct LargePost: View {
                     }
                     postBodyView
                 case .link:
-                    WebsiteIconComplex(post: post.post)
+                    WebsiteIconComplex(post: postView.post)
                         .padding(.horizontal)
                     postBodyView
                 case .text:
@@ -62,7 +63,7 @@ struct LargePost: View {
                 }
             }
             
-            PostInteractionBar(post: post, account: account, compact: false, voteOnPost: voteOnPost)
+            PostInteractionBar(post: postView, account: account, compact: false, voteOnPost: voteOnPost)
         }
         .accessibilityElement(children: .combine)
     }

@@ -22,7 +22,7 @@ struct FeedPost: View
     @EnvironmentObject var appState: AppState
     
     // arguments
-    let post: APIPostView
+    let postView: APIPostView
     let account: SavedAccount
     
     @Binding var feedType: FeedType
@@ -42,10 +42,10 @@ struct FeedPost: View
 //                        }
                     
                     // only display share if URL is valid
-                    if let postUrl: URL = URL(string: post.post.apId) {
+                    if let postUrl: URL = URL(string: postView.post.apId) {
                         ShareButton(urlToShare: postUrl, isShowingButtonText: true, customText: "Share Post...")
                     }
-                    if let postContentUrl = post.post.url {
+                    if let postContentUrl = postView.post.url {
                         let customText = postContentUrl.isImage ? "Share Image..." : postContentUrl.isFileURL ? "Share File..." : "Share Link..."
                         ShareButton(urlToShare: postContentUrl, isShowingButtonText: true, customText: customText)
                     }
@@ -61,10 +61,10 @@ struct FeedPost: View
     @ViewBuilder
     var postItem: some View {
         if (shouldShowCompactPosts){
-            CompactPost(post: post, account: account, voteOnPost: voteOnPost)
+            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost)
         }
         else {
-            LargePost(post: post, account: account, isExpanded: false, voteOnPost: voteOnPost)
+            LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost)
         }
     }
     
@@ -74,8 +74,8 @@ struct FeedPost: View
      */
     func voteOnPost(inputOp: ScoringOperation) async -> Void {
         do {
-            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
+            let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+            try await ratePost(postId: postView.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
         } catch {
             print("failed to vote!")
         }

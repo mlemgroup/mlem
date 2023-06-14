@@ -434,7 +434,7 @@ struct CommunityView: View
             )
             {
                 FeedPost(
-                    post: post,
+                    postView: post,
                     account: account,
                     feedType: $feedType
                 )

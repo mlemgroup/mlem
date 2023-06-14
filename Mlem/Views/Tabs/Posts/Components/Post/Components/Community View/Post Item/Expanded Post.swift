@@ -276,7 +276,7 @@ struct ExpandedPost: View
      */
     private var postView: some View {
         VStack(spacing: 0) {
-            LargePost(post: post, account: account, isExpanded:  true, voteOnPost: voteOnPost)
+            LargePost(postView: post, account: account, isExpanded:  true, voteOnPost: voteOnPost)
             Divider().background(.black)
         }
     }

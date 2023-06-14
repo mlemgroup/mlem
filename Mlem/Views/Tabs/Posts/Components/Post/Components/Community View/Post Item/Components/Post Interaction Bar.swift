@@ -30,17 +30,17 @@ struct PostInteractionBar: View {
     @State var dirty: Bool
     
     // computed properties--if dirty, show dirty value, otherwise show post value
-    var displayedVote: ScoringOperation { dirty ? dirtyVote : post.myVote ?? .resetVote }
-    var displayedScore: Int { dirty ? dirtyScore : post.counts.score }
+    var displayedVote: ScoringOperation { dirty ? dirtyVote : postView.myVote ?? .resetVote }
+    var displayedScore: Int { dirty ? dirtyScore : postView.counts.score }
     
     // parameters
-    let post: APIPostView
+    let postView: APIPostView
     let account: SavedAccount
     let compact: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     
     init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
-        self.post = post
+        self.postView = post
         self.account = account
         self.compact = compact
         self.voteOnPost = voteOnPost
@@ -88,14 +88,14 @@ struct PostInteractionBar: View {
         HStack(spacing: 8) {
             HStack(spacing: iconToTextSpacing) {
                 Image(systemName: "clock")
-                Text(getTimeIntervalFromNow(date: post.post.published))
+                Text(getTimeIntervalFromNow(date: postView.post.published))
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Posted \(getTimeIntervalFromNow(date: post.post.published))")
             
             HStack(spacing: iconToTextSpacing) {
                 Image(systemName: "bubble.left")
-                Text(String(post.counts.comments))
+                Text(String(postView.counts.comments))
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("\(post.counts.comments) comments")
