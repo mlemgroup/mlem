@@ -7,18 +7,16 @@
 
 import SwiftUI
 
-struct UpvoteButton: View
-{
-    @Binding var score: Int
+struct UpvoteButton: View {
+    let vote: ScoringOperation
 
-    var body: some View
-    {
-        HStack(alignment: .center, spacing: 2)
-        {
-            Image(systemName: "arrow.up")
-
-            Text(String(score))
-        }
-        .foregroundColor(.accentColor)
+    var body: some View {
+        Image(systemName: "arrow.up")
+            .padding(4)
+            .foregroundColor(vote == .upvote ? .white : .primary)
+            .background(RoundedRectangle(cornerRadius: 4)
+                .aspectRatio(1, contentMode: .fit)
+                .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
     }
 }
+

@@ -240,6 +240,7 @@ struct MarkdownView: View
     var body: some View
     {
         Markdown(text)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
             .markdownTheme(.mlem)
             .background(Color.systemBackground)
     }

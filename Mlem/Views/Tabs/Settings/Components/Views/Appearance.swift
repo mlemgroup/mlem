@@ -13,11 +13,14 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     
+    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    
+    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
     
     var body: some View {
         List
@@ -90,6 +93,11 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowWebsiteFavicons
                 )
                 .disabled(!shouldShowWebsiteFaviconAtAll)
+                
+                SettingsItem(settingPictureSystemName: "rectangle.compress.vertical",
+                             settingPictureColor: .pink,
+                             settingName: "Compact post view",
+                             isTicked: $shouldShowCompactPosts)
             }
             
             Section("Communities")
@@ -117,6 +125,15 @@ struct AppearanceSettingsView: View {
                     settingName: "Show community icons",
                     isTicked: $shouldShowCommunityIcons
                 )
+            }
+            
+            Section("Customization") {
+                Picker("Vote complex style", selection: $voteComplexStyle) {
+                    ForEach(VoteComplexStyle.allCases) { style in
+                        Text(style.rawValue.capitalized)
+                    }
+                }
+
             }
         }
         .navigationTitle("Appearance")

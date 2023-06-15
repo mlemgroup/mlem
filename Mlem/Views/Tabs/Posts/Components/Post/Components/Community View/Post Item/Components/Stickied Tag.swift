@@ -9,14 +9,13 @@ import SwiftUI
 
 struct StickiedTag: View
 {
-    var body: some View
-    {
-        HStack
-        { // TODO: Make it align properly with the text
-            Text("Stickied")
+    let compact: Bool
+    
+    var body: some View {
+        HStack {
+            if !compact { Text("Stickied") }
             Image(systemName: "bandage.fill")
         }
-        .dynamicTypeSize(.xSmall)
         .foregroundColor(.mint)
     }
 }

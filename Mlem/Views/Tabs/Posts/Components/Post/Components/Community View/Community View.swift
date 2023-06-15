@@ -10,6 +10,7 @@ import SwiftUI
 struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -60,14 +61,16 @@ struct CommunityView: View
         }
     }
 
-    var body: some View {
-        ZStack(alignment: .top) {
+    var body: some View
+    {
+        ZStack(alignment: .top)
+        {
             searchResultsView
             ScrollView {
                 if postTracker.posts.isEmpty {
                     noPostsView
                 } else {
-                    LazyVStack {
+                    LazyVStack(spacing: 0) {
                         bannerView
                         postListView
                     }
@@ -366,6 +369,7 @@ struct CommunityView: View
                 }
             }
         }
+        .environmentObject(postTracker)
     }
 
     private var searchResultsView: some View {
@@ -436,23 +440,20 @@ struct CommunityView: View
 
     private var postListView: some View {
         ForEach(filteredPosts) { post in
-            NavigationLink(destination: PostExpanded(
+            NavigationLink(destination: ExpandedPost(
                 account: account,
-                postTracker: postTracker,
                 post: post,
                 feedType: $feedType
-            ))
+            ).environmentObject(postTracker) // make postTracker available in expanded post
+            )
             {
-                PostItem(
-                    postTracker: postTracker,
+                FeedPost(
                     post: post,
-                    isExpanded: false,
-                    isInSpecificCommunity: isInSpecificCommunity,
                     account: account,
                     feedType: $feedType
                 )
             }
-            .buttonStyle(.plain) // Make it so that the link doesn't mess with the styling
+            .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
                 if post == postTracker.posts.last {
                     if postTracker.posts.isEmpty {

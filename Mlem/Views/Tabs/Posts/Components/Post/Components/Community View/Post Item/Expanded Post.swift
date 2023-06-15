@@ -12,7 +12,7 @@ internal enum PossibleStyling
     case bold, italics
 }
 
-struct PostExpanded: View
+struct ExpandedPost: View
 {
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
 
@@ -23,9 +23,9 @@ struct PostExpanded: View
 
     @State var account: SavedAccount
 
-    @State var postTracker: PostTracker
+    @EnvironmentObject var postTracker: PostTracker
 
-    var post: APIPostView
+    let post: APIPostView
 
     @State private var sortSelection = 0
 
@@ -47,57 +47,18 @@ struct PostExpanded: View
 
     var body: some View
     {
-        ScrollView
-        {
-            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account, feedType: $feedType)
-
-            if commentTracker.isLoading
-            {
-                ProgressView("Loading comments…")
-                    .task(priority: .userInitiated)
-                    {
-                        if post.counts.comments != 0
-                        {
-                            await loadComments()
-                        }
-                        else
-                        {
-                            commentTracker.isLoading = false
-                        }
-                    }
-                    .onAppear
-                    {
-                        commentSortingType = defaultCommentSorting
-                    }
+        ScrollView {
+            postView
+            
+            if commentTracker.isLoading {
+                commentsLoadingView
             }
-            else
-            {
-                if commentTracker.comments.count == 0
-                { // If there are no comments, just don't show anything
-                    VStack(spacing: 2)
-                    {
-                        VStack(spacing: 5)
-                        {
-                            Image(systemName: "binoculars")
-                                
-                            Text("No comments to be found")
-                        }
-                        Text("Why not post the first one?")
-                            .font(.caption)
-                    }
-                    .foregroundColor(.secondary)
-                    .padding()
+            else {
+                if commentTracker.comments.count == 0 {
+                    noCommentsView
                 }
-                else
-                { // Otherwise we'll have to do some actual work
-                    LazyVStack(alignment: .leading, spacing: 15)
-                    {
-                        ForEach(commentTracker.comments)
-                        { comment in
-                            CommentItem(account: account, hierarchicalComment: comment)
-                        }
-                    }
-                    .environmentObject(commentTracker)
+                else {
+                    commentsView
                 }
             }
         }
@@ -308,7 +269,66 @@ struct PostExpanded: View
             Alert(title: Text(content.title), message: Text(content.message))
         }
     }
-
+    // subviews
+    
+    /**
+     Displays the post itself, plus a little divider to keep it visually distinct from comments
+     */
+    private var postView: some View {
+        VStack(spacing: 0) {
+            LargePost(post: post, account: account, isExpanded:  true, voteOnPost: voteOnPost)
+            Divider().background(.black)
+        }
+    }
+    
+    /**
+     Displays a loading indicator for the comments
+     */
+    private var commentsLoadingView: some View {
+        ProgressView("Loading comments…")
+            .task(priority: .userInitiated) {
+                if post.counts.comments != 0 {
+                    await loadComments()
+                }
+                else {
+                    commentTracker.isLoading = false
+                }
+            }
+            .onAppear {
+                commentSortingType = defaultCommentSorting
+            }
+    }
+    
+    /**
+     Displays a "no comments" message
+     */
+    private var noCommentsView: some View {
+        VStack(spacing: 2) {
+            VStack(spacing: 5) {
+                Image(systemName: "binoculars")
+                Text("No comments to be found")
+            }
+            Text("Why not post the first one?")
+                .font(.caption)
+        }
+        .foregroundColor(.secondary)
+        .padding()
+    }
+    
+    /**
+     Displays the comments
+     */
+    private var commentsView: some View {
+        LazyVStack(alignment: .leading, spacing: 15) {
+            ForEach(commentTracker.comments) { comment in
+                CommentItem(account: account, hierarchicalComment: comment)
+            }
+        }
+        .environmentObject(commentTracker)
+    }
+    
+    // helper functions
+    
     func loadComments() async {
         defer { commentTracker.isLoading = false }
         
@@ -341,6 +361,21 @@ struct PostExpanded: View
             let newComment = comment
             newComment.children = sortComments(comment.children, by: sort)
             return newComment
+        }
+    }
+    
+    
+    
+    /**
+     Votes on a post
+     NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
+     */
+    func voteOnPost(inputOp: ScoringOperation) async -> Void {
+        do {
+            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+            try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
+        } catch {
+            print("failed to vote!")
         }
     }
 }
