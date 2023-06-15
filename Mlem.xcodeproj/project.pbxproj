@@ -435,18 +435,16 @@
 			path = Participating;
 			sourceTree = "<group>";
 		};
-		6318DE5227FB956D00CC2AD6 /* Components */ = {
+		6318DE5227FB956D00CC2AD6 /* Post Components */ = {
 			isa = PBXGroup;
 			children = (
 				6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */,
 				CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */,
-				CD04D5D82A3614BE008EF95B /* Large Post.swift */,
 				CD04D5E42A362AD3008EF95B /* Post Header.swift */,
-				CD04D5E62A3636FB008EF95B /* Compact Post.swift */,
 				CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */,
 				CD6483392A3A6E4800EE6CA3 /* Text Display.swift */,
 			);
-			path = Components;
+			path = "Post Components";
 			sourceTree = "<group>";
 		};
 		6318EDC427EE4E0500BFCAE8 /* Models */ = {
@@ -575,7 +573,8 @@
 		6332FDD527F081170009A98A /* Post Item */ = {
 			isa = PBXGroup;
 			children = (
-				6318DE5227FB956D00CC2AD6 /* Components */,
+				CD2E18272A3B695D00224F8A /* Post Types */,
+				6318DE5227FB956D00CC2AD6 /* Post Components */,
 				6318EDC227EE4D7F00BFCAE8 /* Feed Post.swift */,
 				6363D60327EE20A200E34822 /* Expanded Post.swift */,
 			);
@@ -1028,6 +1027,15 @@
 				63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */,
 			);
 			path = "File Management";
+			sourceTree = "<group>";
+		};
+		CD2E18272A3B695D00224F8A /* Post Types */ = {
+			isa = PBXGroup;
+			children = (
+				CD04D5D82A3614BE008EF95B /* Large Post.swift */,
+				CD04D5E62A3636FB008EF95B /* Compact Post.swift */,
+			);
+			path = "Post Types";
 			sourceTree = "<group>";
 		};
 		CD64832B2A38CE4200EE6CA3 /* Settings */ = {
