@@ -12,6 +12,8 @@ struct ContentView: View
     
     @EnvironmentObject var appState: AppState
     
+    @State private var errorAlert: ErrorAlert?
+    
     var body: some View
     {
         TabView
@@ -45,6 +47,29 @@ struct ContentView: View
         {
             AppConstants.keychain["test"] = "I-am-a-saved-thing"
         }
-        .environment(\.openURL, OpenURLAction(handler: URLHandler.handle))
+        .alert(using: $errorAlert) { content in
+            Alert(title: Text(content.title), message: Text(content.message))
+        }
+        .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+    }
+}
+
+// MARK: - URL Handling
+
+extension ContentView {
+    func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
+        let outcome = URLHandler.handle(url)
+        
+        switch outcome.action {
+        case let .error(message):
+            errorAlert = .init(
+                title: "Unsupported link",
+                message: message
+            )
+        default:
+            break
+        }
+        
+        return outcome.result
     }
 }

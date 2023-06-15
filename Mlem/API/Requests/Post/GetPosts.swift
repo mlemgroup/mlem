@@ -1,5 +1,5 @@
 //
-//  GetPostsRequest.swift
+//  GetPosts.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 07/06/2023.
@@ -7,6 +7,7 @@
 
 import Foundation
 
+// lemmy_api_common::post::GetPosts
 struct GetPostsRequest: APIGetRequest {
 
     typealias Response = GetPostsResponse
@@ -15,7 +16,6 @@ struct GetPostsRequest: APIGetRequest {
     let path = "post/list"
     let queryItems: [URLQueryItem]
 
-    // lemmy_api_common::post::GetPosts
     init(
         account: SavedAccount,
         communityId: Int?,

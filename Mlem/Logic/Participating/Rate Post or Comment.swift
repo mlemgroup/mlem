@@ -63,9 +63,9 @@ func rateComment(
             score: operation
         )
         
+        AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         let updatedComment = commentTracker.comments.update(with: response.commentView)
-        AppConstants.hapticManager.notificationOccurred(.success)
         return updatedComment
     } catch let ratingOperationError {
         AppConstants.hapticManager.notificationOccurred(.error)

@@ -21,12 +21,28 @@ struct CommentItem: View
     @State var isCollapsed = false
     
     @State private var isShowingTextSelectionSheet: Bool = false
+    @State private var localCommentScore: Int?
+    @State private var localVote: ScoringOperation?
+    
+    /// The color to use on the upvote button depending on our current state
+    private var upvoteColor: Color {
+        let vote = localVote ?? hierarchicalComment.commentView.myVote
+        // TODO: when the posts overhaul merge is in this should use the same value
+        return vote == .upvote ? .green : .accentColor
+    }
+    
+    /// The color to use on the downvote button depending on our current state
+    private var downvoteColor: Color {
+        let vote = localVote ?? hierarchicalComment.commentView.myVote
+        // TODO: when the posts overhaul merge is in this should use the same value
+        return vote == .downvote ? .red : .accentColor
+    }
 
     var body: some View
     {
         VStack(alignment: .leading, spacing: 10)
         {
-            if hierarchicalComment.commentView.comment.deleted == true
+            if hierarchicalComment.commentView.comment.deleted
             {
                 Text("Comment was deleted")
                     .italic()
@@ -59,18 +75,9 @@ struct CommentItem: View
                     HStack(alignment: .center, spacing: 2) {
                         Image(systemName: "arrow.up")
                         
-                        Text(String(hierarchicalComment.commentView.counts.score))
+                        Text(String(localCommentScore ?? hierarchicalComment.commentView.counts.score))
                     }
-                    .if(hierarchicalComment.commentView.myVote == .none || hierarchicalComment.commentView.myVote == .downvote)
-                    { viewProxy in
-                        viewProxy
-                            .foregroundColor(.accentColor)
-                    }
-                    .if(hierarchicalComment.commentView.myVote == .upvote)
-                    { viewProxy in
-                        viewProxy
-                            .foregroundColor(.green)
-                    }
+                    .foregroundColor(upvoteColor)
                     .onTapGesture {
                         Task(priority: .userInitiated) {
                             try await rate(hierarchicalComment, operation: .upvote)
@@ -78,16 +85,7 @@ struct CommentItem: View
                     }
                     
                     Image(systemName: "arrow.down")
-                        .if(hierarchicalComment.commentView.myVote == .downvote)
-                        { viewProxy in
-                            viewProxy
-                                .foregroundColor(.red)
-                        }
-                        .if(hierarchicalComment.commentView.myVote == .upvote || hierarchicalComment.commentView.myVote == .none)
-                        { viewProxy in
-                            viewProxy
-                                .foregroundColor(.accentColor)
-                        }
+                        .foregroundColor(downvoteColor)
                         .onTapGesture {
                             Task(priority: .userInitiated) {
                                 try await rate(hierarchicalComment, operation: .downvote)
@@ -195,18 +193,32 @@ struct CommentItem: View
     }
     
     private func rate(_ comment: HierarchicalComment, operation: ScoringOperation) async throws {
+        guard localVote == nil else {
+            // if we have a local vote then we're in the middle of rating
+            // so avoid the user being able to initiate additional requests
+            return
+        }
+        
+        defer {
+            // clear our 'faked' values after this function completes
+            localVote = nil
+            localCommentScore = nil
+        }
+        
         let operationToPerform: ScoringOperation?
         switch operation {
         case .upvote:
             operationToPerform = upvoteAction(for: comment.commentView.myVote)
         case .downvote:
-            operationToPerform = downvoteAction(for: operation)
+            operationToPerform = downvoteAction(for: comment.commentView.myVote)
         default:
             operationToPerform = nil
             assertionFailure("unexpected case passed into function")
         }
         
         guard let operationToPerform else { return }
+        
+        adjustLocalState(for: operationToPerform)
         
         let updatedComment = try await rateComment(
             comment: comment.commentView,
@@ -217,9 +229,8 @@ struct CommentItem: View
         )
         
         if let updatedComment {
-            await MainActor.run {
-                self.hierarchicalComment = updatedComment
-            }
+            // if the rating succeeded update our genuine comment and clear the local state
+            self.hierarchicalComment = updatedComment
         }
     }
     
@@ -235,5 +246,37 @@ struct CommentItem: View
         case .downvote: return .resetVote
         case .upvote, .resetVote, .none: return .downvote
         }
+    }
+}
+
+private extension CommentItem {
+    
+    /// A method which adjusts our local state to reflect the expected outcome from the users rating
+    /// - Parameter operation: The operation the user is performing, eg `.upvote`
+    func adjustLocalState(for operation: ScoringOperation) {
+        let currentVote = hierarchicalComment.commentView.myVote ?? .resetVote
+        
+        switch operation {
+        // jump by two if we're going from one extreme to another...
+        case .upvote where currentVote == .downvote:
+            localCommentScore = hierarchicalComment.commentView.counts.score + 2
+        case .downvote where currentVote == .upvote:
+            localCommentScore = hierarchicalComment.commentView.counts.score - 2
+        // jump by one for standard upvotes/downvotes
+        // jump by one if we're resetting (user taps upvote while upvoted etc)
+        case .upvote,
+                .resetVote where currentVote == .downvote:
+            localCommentScore = hierarchicalComment.commentView.counts.score + 1
+        case .downvote,
+                .resetVote where currentVote == .upvote:
+            localCommentScore = hierarchicalComment.commentView.counts.score - 1
+        // if we get a reset while we're already reset or have no vote recorded
+        // then clear our local state as the API value is correct
+        default:
+            localVote = nil
+            localCommentScore = nil
+        }
+        
+        localVote = operation
     }
 }

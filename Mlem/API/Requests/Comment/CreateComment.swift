@@ -1,5 +1,5 @@
 //
-//  CreateCommentRequest.swift
+//  CreateComment.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 08/06/2023.

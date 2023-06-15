@@ -1,5 +1,5 @@
 //
-//  CreatePostLikeRequest.swift
+//  CreatePostLike.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 07/06/2023.
@@ -30,8 +30,4 @@ struct CreatePostLikeRequest: APIPostRequest {
         self.instanceURL = account.instanceLink
         self.body = .init(auth: account.accessToken, post_id: postId, score: score.rawValue)
     }
-}
-
-struct PostResponse: Decodable {
-    let postView: APIPostView
 }

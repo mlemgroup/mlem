@@ -13,7 +13,13 @@ struct AccountsPage: View
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
-
+    
+    func accountNavigationBinding() -> Binding<Bool> {
+        .init {
+            accountsTracker.savedAccounts.count == 1
+        } set: { _ in }
+    }
+    
     var body: some View
     {
         NavigationStack
@@ -46,6 +52,15 @@ struct AccountsPage: View
                             }
                         }
                         .onDelete(perform: deleteAccount)
+                        .navigationDestination(isPresented: accountNavigationBinding(), destination: {
+                            if let account = accountsTracker.savedAccounts.first {
+                                CommunityView(account: account, community: nil)
+                                    .onAppear
+                                {
+                                    appState.currentActiveAccount = account
+                                }
+                            }
+                        })
                     }
                     .toolbar
                     {
