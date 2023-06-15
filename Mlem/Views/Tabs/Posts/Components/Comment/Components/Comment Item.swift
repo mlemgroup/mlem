@@ -27,27 +27,15 @@ struct CommentItem: View
     /// The color to use on the upvote button depending on our current state
     private var upvoteColor: Color {
         let vote = localVote ?? hierarchicalComment.commentView.myVote
-        
-        switch vote {
-        case .none, .downvote, .resetVote:
-            return .accentColor
-        case .upvote:
-            // TODO: when the posts overhaul merge is in this should use the same value
-            return .green
-        }
+        // TODO: when the posts overhaul merge is in this should use the same value
+        return vote == .upvote ? .green : .accentColor
     }
     
     /// The color to use on the downvote button depending on our current state
     private var downvoteColor: Color {
         let vote = localVote ?? hierarchicalComment.commentView.myVote
-        
-        switch vote {
-        case .none, .upvote, .resetVote:
-            return .accentColor
-        case .downvote:
-            // TODO: when the posts overhaul merge is in this should use the same value
-            return .red
-        }
+        // TODO: when the posts overhaul merge is in this should use the same value
+        return vote == .downvote ? .red : .accentColor
     }
 
     var body: some View
