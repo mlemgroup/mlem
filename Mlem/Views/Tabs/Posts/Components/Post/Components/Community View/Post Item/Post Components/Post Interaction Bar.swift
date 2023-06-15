@@ -40,6 +40,9 @@ struct PostInteractionBar: View {
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
+    
+    // computed
+    var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
     var height: CGFloat { compact ? 20 : 24 }
     
     init(postView: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
