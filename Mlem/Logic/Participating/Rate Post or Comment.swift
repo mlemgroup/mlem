@@ -32,6 +32,7 @@ func ratePost(
             score: operation
         )
         
+        AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         
         guard let indexToReplace = postTracker.posts.firstIndex(where: { $0.post.id == postId }) else {
@@ -40,8 +41,6 @@ func ratePost(
         }
         
         postTracker.posts[indexToReplace] = response.postView
-        
-        AppConstants.hapticManager.notificationOccurred(.success)
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
         throw RatingFailure.failedToPostScore
