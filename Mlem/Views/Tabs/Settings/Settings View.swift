@@ -157,10 +157,6 @@ struct SettingsView: View
 
                                 Section
                                 {
-                                    Link(destination: URL(string: "https://github.com/SwiftyJSON/SwiftyJSON")!)
-                                    {
-                                        Text("SwiftyJSON")
-                                    }
                                     Link(destination: URL(string: "https://github.com/lorenzofiamingo/swiftui-cached-async-image")!)
                                     {
                                         Text("Cached Async Image")
