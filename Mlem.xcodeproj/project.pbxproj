@@ -174,6 +174,7 @@
 		CD6483342A39F1C100EE6CA3 /* API Post View - Post Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */; };
 		CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483352A39F20800EE6CA3 /* Post Type.swift */; };
 		CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */; };
+		CD64833A2A3A6E4800EE6CA3 /* Text Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483392A3A6E4800EE6CA3 /* Text Display.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -361,6 +362,7 @@
 		CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API Post View - Post Type.swift"; sourceTree = "<group>"; };
 		CD6483352A39F20800EE6CA3 /* Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Type.swift"; sourceTree = "<group>"; };
 		CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFW Tag.swift"; sourceTree = "<group>"; };
+		CD6483392A3A6E4800EE6CA3 /* Text Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text Display.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -442,6 +444,7 @@
 				CD04D5E42A362AD3008EF95B /* Post Header.swift */,
 				CD04D5E62A3636FB008EF95B /* Compact Post.swift */,
 				CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */,
+				CD6483392A3A6E4800EE6CA3 /* Text Display.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1292,6 +1295,7 @@
 				6372186D2A3A2AAD008C4816 /* EditComment.swift in Sources */,
 				637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */,
 				6332FDC327EFCB5F0009A98A /* Color.swift in Sources */,
+				CD64833A2A3A6E4800EE6CA3 /* Text Display.swift in Sources */,
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
 				638535712A1779BC00815781 /* General.swift in Sources */,

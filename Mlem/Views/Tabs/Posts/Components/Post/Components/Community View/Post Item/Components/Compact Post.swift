@@ -22,7 +22,7 @@ struct CompactPost: View {
         VStack(spacing: 0) {
             
             HStack(alignment: .top) {
-                switch post.postType {
+                switch postView.postType {
                 case .image(let url):
                     CachedAsyncImage(url: url) { image in
                         image
@@ -103,8 +103,8 @@ struct CompactPost: View {
                 
             }
             
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
+//            .padding(.horizontal, 16)
+//            .padding(.top, 8)
             
             PostInteractionBar(post: postView, account: account, compact: true, voteOnPost: voteOnPost)
         }
@@ -128,8 +128,8 @@ struct CompactPost: View {
             Image(systemName: "safari")
         case .text:
             Image(systemName: "text.book.closed")
-        case .error:
-            Image(systemName: "exclamationmark.triangle")
+        case .titleOnly:
+            Image(systemName: "character.bubble")
         }
     }
 }
