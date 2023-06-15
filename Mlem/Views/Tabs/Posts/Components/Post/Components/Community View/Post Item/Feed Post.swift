@@ -65,9 +65,6 @@ struct FeedPost: View
                 }
             
             Divider()
-            //        }.if (!shouldShowCompactPosts) { viewProxy in
-            //            viewProxy.padding(.top)
-            //        }
         }
     
     @ViewBuilder
