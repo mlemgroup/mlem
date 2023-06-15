@@ -269,12 +269,21 @@ private extension CommentItem {
         let currentVote = hierarchicalComment.commentView.myVote ?? .resetVote
         
         switch operation {
+        // jump by two if we're going from one extreme to another...
+        case .upvote where currentVote == .downvote:
+            localCommentScore = hierarchicalComment.commentView.counts.score + 2
+        case .downvote where currentVote == .upvote:
+            localCommentScore = hierarchicalComment.commentView.counts.score - 2
+        // jump by one for standard upvotes/downvotes
+        // jump by one if we're resetting (user taps upvote while upvoted etc)
         case .upvote,
                 .resetVote where currentVote == .downvote:
             localCommentScore = hierarchicalComment.commentView.counts.score + 1
         case .downvote,
                 .resetVote where currentVote == .upvote:
             localCommentScore = hierarchicalComment.commentView.counts.score - 1
+        // if we get a reset while we're already reset or have no vote recorded
+        // then clear our local state as the API value is correct
         default:
             localVote = nil
             localCommentScore = nil
