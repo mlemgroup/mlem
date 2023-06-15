@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftyJSON
 
 struct ErrorAlert {
     let title: String
