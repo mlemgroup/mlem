@@ -169,7 +169,6 @@
 		CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DE2A361585008EF95B /* Empty Button Style.swift */; };
 		CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E42A362AD3008EF95B /* Post Header.swift */; };
 		CD04D5E72A3636FB008EF95B /* Compact Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E62A3636FB008EF95B /* Compact Post.swift */; };
-		CD6483282A38B23000EE6CA3 /* APISite.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483272A38B23000EE6CA3 /* APISite.swift */; };
 		CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483292A38C69600EE6CA3 /* Vote Complex.swift */; };
 		CD64832D2A38CE4E00EE6CA3 /* Vote Complex Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */; };
 		CD6483302A38D31C00EE6CA3 /* Standard Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* Standard Vote Complex.swift */; };
@@ -357,7 +356,6 @@
 		CD04D5DE2A361585008EF95B /* Empty Button Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Empty Button Style.swift"; sourceTree = "<group>"; };
 		CD04D5E42A362AD3008EF95B /* Post Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Header.swift"; sourceTree = "<group>"; };
 		CD04D5E62A3636FB008EF95B /* Compact Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Compact Post.swift"; sourceTree = "<group>"; };
-		CD6483272A38B23000EE6CA3 /* APISite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISite.swift; sourceTree = "<group>"; };
 		CD6483292A38C69600EE6CA3 /* Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex.swift"; sourceTree = "<group>"; };
 		CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex Style.swift"; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* Standard Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Standard Vote Complex.swift"; sourceTree = "<group>"; };
@@ -1270,11 +1268,9 @@
 				637218572A3A2AAD008C4816 /* APISiteView.swift in Sources */,
 				63AF452D2A2F37EB00E0266F /* Own Account Tracker.swift in Sources */,
 				63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */,
-				503085D42A2FCCCE00DB2017 /* APIClient.swift in Sources */,
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
 				CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
-				503086022A32A8F200DB2017 /* APIPost.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
 				CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
@@ -1303,7 +1299,6 @@
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
 				638535712A1779BC00815781 /* General.swift in Sources */,
-				6317ABBF2A37227400603D76 /* CreateCommentRequest.swift in Sources */,
 				CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */,
 				6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */,
 				CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */,
@@ -1510,7 +1505,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
 				DEVELOPMENT_TEAM = ZSVA6DVZHM;
 				ENABLE_PREVIEWS = YES;
@@ -1529,7 +1524,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.6;
+				MARKETING_VERSION = 0.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1544,7 +1539,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_ASSET_PATHS = "\"Mlem/Preview Content\"";
 				DEVELOPMENT_TEAM = ZSVA6DVZHM;
 				ENABLE_PREVIEWS = YES;
@@ -1563,7 +1558,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.6;
+				MARKETING_VERSION = 0.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
