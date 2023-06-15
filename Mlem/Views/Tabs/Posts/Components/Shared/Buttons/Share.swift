@@ -19,21 +19,18 @@ struct ShareButton: View
             showShareSheet(URLtoShare: urlToShare)
             print("Shared")
         } label: {
-            if !isShowingButtonText
-            {
+            if !isShowingButtonText {
                 Image(systemName: "square.and.arrow.up")
             }
-            else
-            {
-                if let customText
-                {
+            else {
+                if let customText {
                     Label(customText, systemImage: "square.and.arrow.up")
                 }
-                else
-                {
+                else {
                     Label("Share…", systemImage: "square.and.arrow.up")
                 }
             }
         }
+        .foregroundColor(.primary)
     }
 }

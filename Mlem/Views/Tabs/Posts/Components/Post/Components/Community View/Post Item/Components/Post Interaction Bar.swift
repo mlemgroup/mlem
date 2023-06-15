@@ -66,15 +66,19 @@ struct PostInteractionBar: View {
                     .alert("That feature isn't implemented yet!",
                            isPresented: $isPresentingAlert) {
                     }
+                
+                if let postURL = post.post.url {
+                    ShareButton(urlToShare: postURL, isShowingButtonText: false)
+                }
                 // ==== END TEMPORARY ==== //
-                ReplyButton()
-                    .onTapGesture {
-                        // ==== TEMPORARY ==== //
-                        isPresentingAlert = true
-                    }
-                    .alert("That feature isn't implemented yet!",
-                           isPresented: $isPresentingAlert) {
-                    }
+//                ReplyButton()
+//                    .onTapGesture {
+//                        // ==== TEMPORARY ==== //
+//                        isPresentingAlert = true
+//                    }
+//                    .alert("That feature isn't implemented yet!",
+//                           isPresented: $isPresentingAlert) {
+//                    }
                 // ==== END TEMPORARY ==== //
                 Spacer()
                 infoBlock
