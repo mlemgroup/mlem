@@ -105,47 +105,55 @@ struct PostInteractionBar: View {
     // helper functions
     
     func upvote() async -> Void {
-        // fake downvote
-        switch (displayedVote) {
-        case .upvote:
-            dirtyVote = .resetVote
-            dirtyScore = displayedScore - 1
-        case .resetVote:
-            dirtyVote = .upvote
-            dirtyScore = displayedScore + 1
-        case .downvote:
-            dirtyVote = .upvote
-            dirtyScore = displayedScore + 2
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            // fake downvote
+            switch (displayedVote) {
+            case .upvote:
+                dirtyVote = .resetVote
+                dirtyScore = displayedScore - 1
+            case .resetVote:
+                dirtyVote = .upvote
+                dirtyScore = displayedScore + 1
+            case .downvote:
+                dirtyVote = .upvote
+                dirtyScore = displayedScore + 2
+            }
+            dirty = true
+            
+            // wait for vote
+            await voteOnPost(.upvote)
+            
+            // unfake downvote
+            dirty = false
+            return
         }
-        dirty = true
-        
-        // wait for vote
-        await voteOnPost(.upvote)
-        
-        // unfake downvote
-        dirty = false
     }
     
     func downvote() async -> Void {
-        // fake upvote
-        switch (displayedVote) {
-        case .upvote:
-            dirtyVote = .downvote
-            dirtyScore = displayedScore - 2
-        case .resetVote:
-            dirtyVote = .downvote
-            dirtyScore = displayedScore - 1
-        case .downvote:
-            dirtyVote = .resetVote
-            dirtyScore = displayedScore + 1
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            // fake upvote
+            switch (displayedVote) {
+            case .upvote:
+                dirtyVote = .downvote
+                dirtyScore = displayedScore - 2
+            case .resetVote:
+                dirtyVote = .downvote
+                dirtyScore = displayedScore - 1
+            case .downvote:
+                dirtyVote = .resetVote
+                dirtyScore = displayedScore + 1
+            }
+            dirty = true
+            
+            // wait for vote
+            await voteOnPost(.downvote)
+            
+            // unfake upvote
+            dirty = false
+            return
         }
-        dirty = true
-        
-        // wait for vote
-        await voteOnPost(.downvote)
-        
-        // unfake upvote
-        dirty = false
     }
     
     /**
