@@ -73,5 +73,6 @@ struct LargePost: View {
             
             PostInteractionBar(post: post, account: account, compact: false, voteOnPost: voteOnPost)
         }
+        .accessibilityElement(children: .combine)
     }
 }
