@@ -66,6 +66,7 @@ struct CommunityView: View
         ZStack(alignment: .top)
         {
             searchResultsView
+                .accessibilityHidden(!isShowingCommunitySearch)
             ScrollView {
                 if postTracker.posts.isEmpty {
                     noPostsView
@@ -241,6 +242,10 @@ struct CommunityView: View
                         Image(systemName: "chevron.down")
                             .scaleEffect(0.7)
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(community?.name ?? feedType.rawValue)")
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityHint("Activate to search and select feeds")
                     .onTapGesture
                     {
                         isSearchFieldFocused = true
@@ -249,11 +254,15 @@ struct CommunityView: View
                         {
                             isShowingCommunitySearch.toggle()
                         }
+
                     }
                 }
                 else
                 {
                     CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, account: account)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Search for communities.")
+                        .accessibilityAddTraits(.isSearchField)
                 }
             }
         }
