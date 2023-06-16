@@ -50,22 +50,13 @@ struct LargePost: View {
                     } placeholder: {
                         ProgressView()
                     }
+                    postBodyView
                 case .link:
                     WebsiteIconComplex(post: post.post)
                         .padding(.horizontal)
-                case .text(let postBody):
-                    if !postBody.isEmpty {
-                        if isExpanded {
-                            MarkdownView(text: postBody)
-                                .font(.subheadline)
-                                .padding(.horizontal)
-                        } else {
-                            MarkdownView(text: postBody.components(separatedBy: .newlines).joined())
-                                .lineLimit(8)
-                                .font(.subheadline)
-                                .padding(.horizontal)
-                        }
-                    }
+                    postBodyView
+                case .text:
+                    postBodyView
                 case .titleOnly:
                     EmptyView()
                 }
@@ -74,5 +65,23 @@ struct LargePost: View {
             PostInteractionBar(post: post, account: account, compact: false, voteOnPost: voteOnPost)
         }
         .accessibilityElement(children: .combine)
+    }
+    
+    // MARK: - Subviews
+    
+    @ViewBuilder
+    var postBodyView: some View {
+        if let bodyText = post.post.body, !bodyText.isEmpty {
+            if isExpanded {
+                MarkdownView(text: bodyText)
+                    .font(.subheadline)
+                    .padding(.horizontal)
+            } else {
+                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined())
+                    .lineLimit(8)
+                    .font(.subheadline)
+                    .padding(.horizontal)
+            }
+        }
     }
 }
