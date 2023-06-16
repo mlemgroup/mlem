@@ -56,6 +56,11 @@ struct PostInteractionBar: View {
                 VoteComplex(vote: displayedVote, score: displayedScore, upvote: upvote, downvote: downvote)
                     .padding(.trailing, 8)
                 SaveButton(saved: false)
+                    .accessibilityAction(named: saveButtonText(saved: dirtySaved), {
+                        Task(priority: .userInitiated) {
+                            await savePost()
+                        }
+                    })
                     .onTapGesture {
                         Task(priority: .userInitiated) {
                             await savePost()
@@ -89,15 +94,28 @@ struct PostInteractionBar: View {
                 Image(systemName: "clock")
                 Text(getTimeIntervalFromNow(date: post.post.published))
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Posted \(getTimeIntervalFromNow(date: post.post.published))")
+            
             HStack(spacing: iconToTextSpacing) {
                 Image(systemName: "bubble.left")
                 Text(String(post.counts.comments))
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(post.counts.comments) comments")
         }
         .foregroundColor(.secondary)
     }
     
     // helper functions
+    
+    // Not sure if this is working yet, need to revisit after save post is implemented.
+    func saveButtonText(saved: Bool) -> String {
+        if saved {
+            return "Unsave"
+        }
+        return "Save"
+    }
     
     func upvote() async -> Void {
         // don't do anything if currently awaiting a vote response
@@ -156,5 +174,6 @@ struct PostInteractionBar: View {
      */
     func savePost() async {
         // TODO: implement
+        UIAccessibility.post(notification: .announcement, argument: "Not yet implemented")
     }
 }

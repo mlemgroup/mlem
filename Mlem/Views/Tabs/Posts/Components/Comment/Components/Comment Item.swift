@@ -92,6 +92,25 @@ struct CommentItem: View
                             }
                         }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityValue("\(localCommentScore ?? hierarchicalComment.commentView.counts.score) votes")
+                .accessibilityAdjustableAction { direction in
+                    switch direction {
+                    case .increment:
+                        Task(priority: .userInitiated) {
+                            try await rate(hierarchicalComment, operation: .upvote)
+                        }
+                    case .decrement:
+                        Task(priority: .userInitiated) {
+                            Task(priority: .userInitiated) {
+                                try await rate(hierarchicalComment, operation: .downvote)
+                            }
+                        }
+                    default:
+                        // Not sure what to do here.
+                        UIAccessibility.post(notification: .announcement, argument: "Unknown Action")
+                    }
+                }
 
                 HStack(spacing: 4)
                 {
@@ -106,9 +125,15 @@ struct CommentItem: View
                     Text("Reply")
                         .foregroundColor(.accentColor)
                 }
+                .accessibilityAddTraits(.isButton)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Reply")
 
                 Spacer()
-
+                
+                let relativeTime = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published)
+                let creator = hierarchicalComment.commentView.creator.displayName ?? ""
+                let commentorLabel = "Last updated \(relativeTime) ago by \(creator)"
                 HStack
                 {
                     #warning("TODO: Make the text selection work")
@@ -125,9 +150,11 @@ struct CommentItem: View
                             .labelStyle(.iconOnly)
                     }
                      */
-                    Text(getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published))
+                    Text(relativeTime)
                     UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(commentorLabel)
                 .foregroundColor(.secondary)
             }
             .disabled(isCollapsed)

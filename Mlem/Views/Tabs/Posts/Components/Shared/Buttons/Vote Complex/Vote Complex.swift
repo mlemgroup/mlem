@@ -18,11 +18,30 @@ struct VoteComplex: View {
     let downvote: () async -> Void
     
     var body: some View {
-        switch voteComplexStyle {
-        case .standard:
-            StandardVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
-        case .symmetric:
-            SymmetricVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
+        Group {
+            switch voteComplexStyle {
+            case .standard:
+                StandardVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
+            case .symmetric:
+                SymmetricVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityValue("\(score) votes")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                Task(priority: .userInitiated) {
+                    await upvote()
+                }
+            case .decrement:
+                Task(priority: .userInitiated) {
+                    await downvote()
+                }
+            default:
+                // Not sure what to do here.
+                UIAccessibility.post(notification: .announcement, argument: "Unknown Action")
+            }
         }
     }
 }

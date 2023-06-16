@@ -57,33 +57,39 @@ struct PostHeader: View {
                 StickiedTag(compact: false)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityLabel("in \(post.community.name) by \(post.creator.name)")
         .font(.subheadline)
         .foregroundColor(.secondary)
     }
     
     @ViewBuilder
     private var communityAvatar: some View {
-        if let communityAvatarLink = post.community.icon {
-            CachedAsyncImage(url: communityAvatarLink) { image in
-                if let avatar = image.image {
-                    avatar
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: communityIconSize, height: communityIconSize)
-                }
-                else {
-                    Image("Default Community")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
+        Group {
+            if let communityAvatarLink = post.community.icon {
+                CachedAsyncImage(url: communityAvatarLink) { image in
+                    if let avatar = image.image {
+                        avatar
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: communityIconSize, height: communityIconSize)
+                    }
+                    else {
+                        Image("Default Community")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
+                    }
                 }
             }
+            else {
+                Image("Default Community")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
+            }
         }
-        else {
-            Image("Default Community")
-                .resizable()
-                .scaledToFit()
-                .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
-        }
+        .accessibilityHidden(true)
     }
 }
