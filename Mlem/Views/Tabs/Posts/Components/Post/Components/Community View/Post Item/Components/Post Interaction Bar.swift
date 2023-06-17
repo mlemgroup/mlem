@@ -72,10 +72,6 @@ struct PostInteractionBar: View {
                            isPresented: $isPresentingAlert) {
                     }
                 // ==== END TEMPORARY ==== //
-                
-                if let postURL = post.post.url {
-                    ShareButton(urlToShare: postURL, isShowingButtonText: false)
-                }
                 Spacer()
                 infoBlock
             }
