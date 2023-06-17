@@ -13,6 +13,7 @@ struct PostHeader: View {
     // parameters
     var post: APIPostView
     var account: SavedAccount
+    @State private var isShowingCommunity = false
     
     // constants
     private let communityIconSize: CGFloat = 32
@@ -22,7 +23,8 @@ struct PostHeader: View {
         HStack {
             HStack(spacing: 4) {
                 // community avatar and name
-                NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
+                NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all),
+                               isActive: $isShowingCommunity) {
                     communityAvatar
                         .frame(width: communityIconSize, height: communityIconSize)
                         .clipShape(Circle())
@@ -60,6 +62,9 @@ struct PostHeader: View {
         .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityLabel("in \(post.community.name) by \(post.creator.name)")
+        .accessibilityAction(named: "Goto \(post.community.name)") {
+            isShowingCommunity = true
+        }
         .font(.subheadline)
         .foregroundColor(.secondary)
     }
