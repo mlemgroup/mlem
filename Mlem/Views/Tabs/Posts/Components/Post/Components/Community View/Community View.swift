@@ -487,6 +487,12 @@ struct CommunityView: View
                 account: account
             )
         } catch APIClientError.networking {
+            // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed
+            // while we investigate the reasons we will only show this error if the user would otherwise be left with an empty feed
+            guard postTracker.posts.isEmpty else {
+                return
+            }
+            
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"
@@ -497,7 +503,10 @@ struct CommunityView: View
                 message: message.error
             )
         } catch {
-            errorAlert = .unexpected
+            // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
+            // for now we will fail silently if the user has posts to view while we investigate further
+            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
+            // errorAlert = .unexpected
         }
 
     }
