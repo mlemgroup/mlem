@@ -78,7 +78,7 @@ struct LargePost: View {
     
     @ViewBuilder
     var postBodyView: some View {
-        if let bodyText = post.post.body, !bodyText.isEmpty {
+        if let bodyText = postView.post.body, !bodyText.isEmpty {
             if isExpanded {
                 MarkdownView(text: bodyText)
                     .font(.subheadline)
@@ -86,57 +86,6 @@ struct LargePost: View {
                 MarkdownView(text: bodyText.components(separatedBy: .newlines).joined())
                     .lineLimit(8)
                     .font(.subheadline)
-            }
-        }
-    }
-    
-    func imagePreview(url: URL) -> some View {
-        ZStack {
-            CachedAsyncImage(url: url) { image in
-                image
-                    .resizable()
-                    .frame(maxWidth: .infinity)
-                    .scaledToFill()
-                    .blur(radius: showNsfwFilter ? 30 : 0)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(.secondary, lineWidth: 1))
-            } placeholder: {
-                ProgressView()
-            }
-            
-            if showNsfwFilter {
-                VStack {
-                    Image(systemName: "eye.trianglebadge.exclamationmark")
-                        .font(.largeTitle)
-                    Text("NSFW")
-                        .fontWeight(.black)
-                }
-                .padding(8)
-                .background(RoundedRectangle(cornerRadius: 4)
-                    .foregroundColor(.systemBackground))
-                .onTapGesture {
-                    showNsfwFilterToggle.toggle()
-                }
-            }
-            else if postView.post.nsfw && shouldBlurNsfw {
-                // stacks are here to align image to top left of ZStack
-                // TODO: less janky way to do this?
-                HStack {
-                    VStack {
-                        Image(systemName: "eye.slash")
-                            .padding(4)
-                            .frame(alignment: .topLeading)
-                            .background(RoundedRectangle(cornerRadius: 4)
-                                .foregroundColor(.systemBackground))
-                            .onTapGesture {
-                                showNsfwFilterToggle.toggle()
-                            }
-                            .padding(4)
-                        Spacer()
-                    }
-                    Spacer()
-                }
             }
         }
     }

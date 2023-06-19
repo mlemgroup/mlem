@@ -27,7 +27,7 @@ func sendSavePostRequest(account: SavedAccount,
             return
         }
         
-        postTracker.posts[indexToReplace] = response.postView
+        postTracker.update(with: response.postView)
     }
     catch {
         AppConstants.hapticManager.notificationOccurred(.error)
