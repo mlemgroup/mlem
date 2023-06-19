@@ -342,6 +342,17 @@ struct CommunityView: View
                                 Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                             }
                         }
+                        
+                        Button {
+                            shouldShowCompactPosts.toggle()
+                        } label: {
+                            if (shouldShowCompactPosts) {
+                                Label("Large posts", systemImage: "rectangle.expand.vertical")
+                            }
+                            else {
+                                Label("Compact posts", systemImage: "rectangle.compress.vertical")
+                            }
+                        }
                         .foregroundColor(.primary)
                     } label: {
                         Label("More", systemImage: "ellipsis")

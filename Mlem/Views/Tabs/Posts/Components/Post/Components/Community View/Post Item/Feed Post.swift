@@ -158,36 +158,41 @@ struct FeedPost: View
     @ViewBuilder
     var replySheetBody: some View {
         VStack() {
-            HStack {
-                Button("Cancel") {
-                    replyIsPresented = false
-                    replyContents = ""
-                }
-                Spacer()
-                Button(action: {
-                    if (!replyContents.isEmpty) {
-                        Task(priority: .userInitiated) {
-                            do {
-                                replyIsSending = true
-                                try await postComment(
-                                    to: postView,
-                                    commentContents: replyContents,
-                                    account: account,
-                                    appState: appState
-                                )
-                                replyIsPresented = false
-                                replyContents = ""
-                            } catch {
-                                print("failed!")
-                            }
-                            replyIsSending = false
-                        }
+            ZStack {
+                Text("Reply")
+                    .bold()
+                
+                HStack {
+                    Button("Cancel") {
+                        replyIsPresented = false
+                        replyContents = ""
                     }
-                }) {
-                    Image(systemName: replyContents.isEmpty ? "paperplane" : "paperplane.fill")
+                    Spacer()
+                    Button(action: {
+                        if (!replyContents.isEmpty) {
+                            Task(priority: .userInitiated) {
+                                do {
+                                    replyIsSending = true
+                                    try await postComment(
+                                        to: postView,
+                                        commentContents: replyContents,
+                                        account: account,
+                                        appState: appState
+                                    )
+                                    replyIsPresented = false
+                                    replyContents = ""
+                                } catch {
+                                    print("failed!")
+                                }
+                                replyIsSending = false
+                            }
+                        }
+                    }) {
+                        Image(systemName: replyContents.isEmpty ? "paperplane" : "paperplane.fill")
+                    }
                 }
+                .foregroundColor(.accentColor)
             }
-            .foregroundColor(.accentColor)
             
             TextField("Reply to post", text: $replyContents, prompt: Text("\(account.username):"), axis: .vertical)
                 .presentationDetents([.medium])

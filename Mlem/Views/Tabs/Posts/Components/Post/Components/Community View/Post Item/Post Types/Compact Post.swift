@@ -78,6 +78,7 @@ struct CompactPost: View {
             PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost)
         }
         .padding(spacing)
+        .buttonStyle(EmptyButtonStyle())
     }
     
     @ViewBuilder
@@ -111,6 +112,7 @@ struct CompactPost: View {
         .foregroundColor(.secondary)
         .font(.title)
         .frame(width: thumbnailSize, height: thumbnailSize)
+        .background(Color(UIColor.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 4))
         .overlay(RoundedRectangle(cornerRadius: 4)
             .stroke(.secondary, lineWidth: 1))

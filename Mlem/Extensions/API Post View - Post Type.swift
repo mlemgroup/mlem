@@ -10,7 +10,8 @@ import Foundation
 extension APIPostView {
     var postType: PostType {
         // url types: either image or link
-        if let postURL = post.url {
+        #warning("TODO: is it safe to always use thumbnailURL here?")
+        if let postURL = post.thumbnailUrl {
             return postURL.isImage ? .image(postURL) : .link(postURL)
         }
         
