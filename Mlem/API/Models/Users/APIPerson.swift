@@ -29,3 +29,9 @@ struct APIPerson: Decodable {
     let banExpires: Date?
     let instanceId: Int
 }
+
+extension APIPerson: Equatable {
+    static func == (lhs: APIPerson, rhs: APIPerson) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
+}
