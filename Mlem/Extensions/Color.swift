@@ -21,6 +21,9 @@ extension Color
     static let upvoteColor = Color.blue
     static let downvoteColor = Color.red
     static let saveColor = Color.green
+    
+    static let lightGray = Color(red: 0.8, green: 0.8, blue: 0.8)
+    static let darkGray = Color(red: 0.2, green: 0.2, blue: 0.2)
 }
 
 public extension Color

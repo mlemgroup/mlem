@@ -327,10 +327,10 @@ struct CommunityView: View
                                 )
                             }
                         }
-                        else
-                        {
-                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
-                        }
+//                        else
+//                        {
+//                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
+//                        }
                         
                         Button {
                             shouldBlurNsfw.toggle()
