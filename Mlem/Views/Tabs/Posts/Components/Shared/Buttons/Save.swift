@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import Foundation
-
 struct SaveButton: View {
     let saved: Bool
     let size: CGFloat

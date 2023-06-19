@@ -71,9 +71,11 @@ struct PostInteractionBar: View {
                        isPresented: $isPresentingAlert) {}
             // ==== END TEMPORARY ==== //
             
-            if let postURL = postView.post.url {
+            if let postURL = URL(string: postView.post.apId) {
                 ShareButton(urlToShare: postURL, isShowingButtonText: false)
             }
+            
+            EllipsisMenu(size: height, shareUrl: postView.post.apId)
             
             Spacer()
             infoBlock

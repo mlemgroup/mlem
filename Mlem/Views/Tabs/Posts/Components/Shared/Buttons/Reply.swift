@@ -14,6 +14,5 @@ struct ReplyButton: View {
         Image(systemName: "arrowshape.turn.up.left.fill")
             .padding(4)
             .foregroundColor(.secondary)
-            // .foregroundColor(.primary)
     }
 }

@@ -17,7 +17,6 @@ struct CompactPost: View {
     let postView: APIPostView
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
-    let dragging: Bool
     
     // computed
     var usernameColor: Color {

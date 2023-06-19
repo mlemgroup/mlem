@@ -119,7 +119,6 @@
 		637218772A3A2AAD008C4816 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218422A3A2AAD008C4816 /* APIRequest.swift */; };
 		637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6374570F2A18CB6600B69C03 /* Custom Text Field.swift */; };
 		638535712A1779BC00815781 /* General.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535702A1779BC00815781 /* General.swift */; };
-		638535732A1779FC00815781 /* Comment Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535722A1779FC00815781 /* Comment Sorting Options.swift */; };
 		6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E0292A03D0C3006B3C1D /* Post Tracker.swift */; };
 		6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E02B2A03D1EC006B3C1D /* App State.swift */; };
 		6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */; };
@@ -168,7 +167,6 @@
 		CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E42A362AD3008EF95B /* Post Header.swift */; };
 		CD04D5E72A3636FB008EF95B /* Compact Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E62A3636FB008EF95B /* Compact Post.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
-		CD2E182D2A3B70AD00224F8A /* App Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182C2A3B70AD00224F8A /* App Theme.swift */; };
 		CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483292A38C69600EE6CA3 /* Vote Complex.swift */; };
 		CD64832D2A38CE4E00EE6CA3 /* Vote Complex Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */; };
 		CD6483302A38D31C00EE6CA3 /* Standard Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* Standard Vote Complex.swift */; };
@@ -177,6 +175,10 @@
 		CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483352A39F20800EE6CA3 /* Post Type.swift */; };
 		CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */; };
 		CD64833A2A3A6E4800EE6CA3 /* Text Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483392A3A6E4800EE6CA3 /* Text Display.swift */; };
+		CD69F5592A400D270028D4F7 /* Comment Sorting Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */; };
+		CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55A2A400D820028D4F7 /* App Theme.swift */; };
+		CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */; };
+		CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -312,7 +314,6 @@
 		637218422A3A2AAD008C4816 /* APIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		6374570F2A18CB6600B69C03 /* Custom Text Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Text Field.swift"; sourceTree = "<group>"; };
 		638535702A1779BC00815781 /* General.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = General.swift; sourceTree = "<group>"; };
-		638535722A1779FC00815781 /* Comment Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Sorting Options.swift"; sourceTree = "<group>"; };
 		6386E0292A03D0C3006B3C1D /* Post Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Tracker.swift"; sourceTree = "<group>"; };
 		6386E02B2A03D1EC006B3C1D /* App State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App State.swift"; sourceTree = "<group>"; };
 		6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Tracker.swift"; sourceTree = "<group>"; };
@@ -358,7 +359,6 @@
 		CD04D5E42A362AD3008EF95B /* Post Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Header.swift"; sourceTree = "<group>"; };
 		CD04D5E62A3636FB008EF95B /* Compact Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Compact Post.swift"; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
-		CD2E182C2A3B70AD00224F8A /* App Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Theme.swift"; sourceTree = "<group>"; };
 		CD6483292A38C69600EE6CA3 /* Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex.swift"; sourceTree = "<group>"; };
 		CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex Style.swift"; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* Standard Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Standard Vote Complex.swift"; sourceTree = "<group>"; };
@@ -367,6 +367,10 @@
 		CD6483352A39F20800EE6CA3 /* Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Type.swift"; sourceTree = "<group>"; };
 		CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFW Tag.swift"; sourceTree = "<group>"; };
 		CD6483392A3A6E4800EE6CA3 /* Text Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text Display.swift"; sourceTree = "<group>"; };
+		CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Sorting Options.swift"; sourceTree = "<group>"; };
+		CD69F55A2A400D820028D4F7 /* App Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Theme.swift"; sourceTree = "<group>"; };
+		CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUserInterfaceStyle - SettingsOption conformant.swift"; sourceTree = "<group>"; };
+		CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ellipsis Menu.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -510,6 +514,7 @@
 				632E8EE927EE63F4007E8D75 /* Share.swift */,
 				CD04D5DA2A36154F008EF95B /* Save.swift */,
 				CD04D5DC2A361564008EF95B /* Reply.swift */,
+				CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -542,6 +547,7 @@
 				503BA26E2A2C94540052516C /* URL+Identifiable.swift */,
 				508845CE2A3641160088E483 /* JSONDecoder+Default.swift */,
 				CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */,
+				CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1016,9 +1022,9 @@
 				63344C592A080688001BC616 /* Errors */,
 				63F0C7A12A0519BA00A18C5D /* Sorting Options.swift */,
 				6317ABCA2A37292700603D76 /* FeedType.swift */,
-				638535722A1779FC00815781 /* Comment Sorting Options.swift */,
 				6307378C2A1CEB7C00039852 /* My Vote.swift */,
 				CD6483352A39F20800EE6CA3 /* Post Type.swift */,
+				CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1047,7 +1053,7 @@
 			isa = PBXGroup;
 			children = (
 				CD2E182A2A3B708500224F8A /* Settings Options.swift */,
-				CD2E182C2A3B70AD00224F8A /* App Theme.swift */,
+				CD69F55A2A400D820028D4F7 /* App Theme.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1259,7 +1265,6 @@
 				6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */,
 				637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */,
 				6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */,
-				638535732A1779FC00815781 /* Comment Sorting Options.swift in Sources */,
 				63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
 				6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */,
@@ -1294,6 +1299,7 @@
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
 				CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */,
+				CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */,
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
 				637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */,
@@ -1320,10 +1326,12 @@
 				CD64833A2A3A6E4800EE6CA3 /* Text Display.swift in Sources */,
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
+				CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */,
 				638535712A1779BC00815781 /* General.swift in Sources */,
 				CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */,
 				CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */,
 				6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */,
+				CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */,
 				CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
@@ -1332,6 +1340,7 @@
 				637218732A3A2AAD008C4816 /* FollowCommunity.swift in Sources */,
 				637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */,
 				6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */,
+				CD69F5592A400D270028D4F7 /* Comment Sorting Options.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
@@ -1343,7 +1352,6 @@
 				637218602A3A2AAD008C4816 /* EditPost.swift in Sources */,
 				637218562A3A2AAD008C4816 /* APILocalSite.swift in Sources */,
 				6372185B2A3A2AAD008C4816 /* APICommunityView.swift in Sources */,
-				CD2E182D2A3B70AD00224F8A /* App Theme.swift in Sources */,
 				63E5D3872A138AA500EC1FBD /* Community Search Field.swift in Sources */,
 				637218552A3A2AAD008C4816 /* APITagline.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
