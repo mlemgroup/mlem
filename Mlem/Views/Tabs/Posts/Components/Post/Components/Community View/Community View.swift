@@ -74,6 +74,7 @@ struct CommunityView: View
                     LazyVStack(spacing: 0) {
                         bannerView
                         postListView
+                        loadingMorePostsView
                     }
                 }
             }
@@ -166,8 +167,7 @@ struct CommunityView: View
                 Task(priority: .userInitiated) {
                     isRefreshing = true
 
-                    postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
-                    postTracker.posts = .init()
+                    postTracker.reset()
 
                     await loadFeed()
 
@@ -179,15 +179,7 @@ struct CommunityView: View
                 if postTracker.posts.isEmpty
                 {
                     print("Post tracker is empty")
-
-                    if postTracker.posts.isEmpty
-                    {
-                        postTracker.isLoading = true
-                    }
-
                     await loadFeed()
-
-                    postTracker.isLoading = false
                 }
                 else
                 {
@@ -213,14 +205,8 @@ struct CommunityView: View
             }
             .onChange(of: feedType, perform: { newValue in
                 Task(priority: .userInitiated) {
-                    postTracker.page = 1
-
-                    postTracker.posts = .init()
-                    postTracker.isLoading = true
-
+                    postTracker.reset()
                     await loadFeed()
-
-                    postTracker.isLoading = false
                 }
             })
         }
@@ -278,17 +264,8 @@ struct CommunityView: View
                             Task {
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
 
-                                postTracker.posts = .init()
-                                postTracker.page = 1
-
-
-                                if postTracker.posts.isEmpty {
-                                    postTracker.isLoading = true
-                                }
-
+                                postTracker.reset()
                                 await loadFeed()
-                                postTracker.isLoading = false
-
                             }
                         }
                     ))
@@ -465,26 +442,35 @@ struct CommunityView: View
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
                 if post == postTracker.posts.last {
-                    if postTracker.posts.isEmpty {
-                        postTracker.isLoading = true
-                    }
-
                     await loadFeed()
-                    postTracker.isLoading = false
                 }
             }
+        }
+    }
+    
+    @ViewBuilder
+    private var loadingMorePostsView: some View {
+        if postTracker.isLoading {
+            VStack(alignment: .center) {
+                ProgressView()
+                    .frame(width: 16, height: 16)
+                Text("Loading more posts...")
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .foregroundColor(.secondary)
+            .background(Color.systemBackground)
+            .accessibilityElement(children: .combine)
         }
     }
 
     func loadFeed() async {
         do {
-            try await loadInfiniteFeed(
-                postTracker: postTracker,
-                appState: appState,
+            try await postTracker.loadNextPage(
+                account: account,
                 communityId: community?.id,
-                feedType: feedType,
-                sortingType: selectedSortingOption,
-                account: account
+                sort: selectedSortingOption,
+                type: feedType
             )
         } catch APIClientError.networking {
             // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed

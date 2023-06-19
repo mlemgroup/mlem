@@ -30,7 +30,7 @@ func postPost(
     let response = try await APIClient().perform(request: request)
     await MainActor.run {
         withAnimation {
-            postTracker.posts.prepend(response.postView)
+            postTracker.prepend(response.postView)
         }
     }
 }

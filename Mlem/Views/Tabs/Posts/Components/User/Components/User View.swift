@@ -130,7 +130,7 @@ struct UserView: View {
                 
                 userDetails = response.personView
                 privateCommentTracker.comments = response.comments.hierarchicalRepresentation
-                privatePostTracker.posts = response.posts
+                privatePostTracker.add(response.posts)
             } catch {
                 handle(error)
             }

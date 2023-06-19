@@ -129,7 +129,6 @@
 		6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E0392A0455BC006B3C1D /* String - Contains Elements From Array.swift */; };
 		6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E03F2A045723006B3C1D /* Website Icon Complex.swift */; };
 		63A01E542A2B980100C84E04 /* Subscribe Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A01E532A2B980100C84E04 /* Subscribe Button.swift */; };
-		63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A08924285E625D00EE9BC0 /* Infinite Loader.swift */; };
 		63A09B69285F53E9004F0032 /* Error View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A09B68285F53E9004F0032 /* Error View.swift */; };
 		63A200532A2DDD38005CDDE3 /* Dictionary - Append.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A200522A2DDD38005CDDE3 /* Dictionary - Append.swift */; };
 		63ABCE0E27F894060047A7D0 /* User View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ABCE0D27F894060047A7D0 /* User View.swift */; };
@@ -319,7 +318,6 @@
 		6386E0392A0455BC006B3C1D /* String - Contains Elements From Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String - Contains Elements From Array.swift"; sourceTree = "<group>"; };
 		6386E03F2A045723006B3C1D /* Website Icon Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Website Icon Complex.swift"; sourceTree = "<group>"; };
 		63A01E532A2B980100C84E04 /* Subscribe Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subscribe Button.swift"; sourceTree = "<group>"; };
-		63A08924285E625D00EE9BC0 /* Infinite Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Infinite Loader.swift"; sourceTree = "<group>"; };
 		63A09B68285F53E9004F0032 /* Error View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error View.swift"; sourceTree = "<group>"; };
 		63A200522A2DDD38005CDDE3 /* Dictionary - Append.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary - Append.swift"; sourceTree = "<group>"; };
 		63ABCE0D27F894060047A7D0 /* User View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User View.swift"; sourceTree = "<group>"; };
@@ -406,7 +404,6 @@
 		630049EB27EF390900D5105B /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				63A08924285E625D00EE9BC0 /* Infinite Loader.swift */,
 				63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */,
 				63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */,
 				63344C742A09B075001BC616 /* Get Community Details.swift */,
@@ -1213,7 +1210,6 @@
 				637218592A3A2AAD008C4816 /* APISiteAggregates.swift in Sources */,
 				637218772A3A2AAD008C4816 /* APIRequest.swift in Sources */,
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
-				63A08925285E625D00EE9BC0 /* Infinite Loader.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */,
 				63344C622A08460D001BC616 /* View - Border on Specific Sides.swift in Sources */,
 				637218702A3A2AAD008C4816 /* ResolveObject.swift in Sources */,
