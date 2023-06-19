@@ -12,10 +12,8 @@ import Foundation
 /**
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
-struct PostInteractionBar: View {
-    // ==== TEMPORARY ====
-    @State var isPresentingAlert: Bool = false
-    // ==== END TEMPORARY ==== //
+struct PostInteractionBar: View {    
+    @EnvironmentObject var postTracker: PostTracker
     
     // constants
     let iconToTextSpacing: CGFloat = 2
@@ -32,6 +30,7 @@ struct PostInteractionBar: View {
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : postView.myVote ?? .resetVote }
     var displayedScore: Int { dirty ? dirtyScore : postView.counts.score }
+    var displayedSaved: Bool { dirty ? dirtySaved : postView.saved }
     
     // parameters
     let postView: APIPostView
@@ -43,34 +42,28 @@ struct PostInteractionBar: View {
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
     var height: CGFloat { compact ? 20 : 24 }
     
-    init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
-        self.postView = post
+    init(postView: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
+        self.postView = postView
         self.account = account
         self.compact = compact
         self.voteOnPost = voteOnPost
-        _dirtyVote = State(initialValue: post.myVote ?? .resetVote)
-        _dirtyScore = State(initialValue: post.counts.score)
-        _dirtySaved = State(initialValue: false)
+        _dirtyVote = State(initialValue: postView.myVote ?? .resetVote)
+        _dirtyScore = State(initialValue: postView.counts.score)
+        _dirtySaved = State(initialValue: postView.saved)
         _dirty = State(initialValue: false)
     }
     
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: compact ? 18 : 12) {
             VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
             
-            SaveButton(saved: false, size: height)
+            SaveButton(saved: displayedSaved, size: height)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         await savePost()
                     }
-                    // ==== TEMPORARY ==== //
-                    isPresentingAlert = true
                 }
-                .alert("That feature isn't implemented yet!",
-                       isPresented: $isPresentingAlert) {}
-            // ==== END TEMPORARY ==== //
-            
             if let postURL = URL(string: postView.post.apId) {
                 ShareButton(urlToShare: postURL, isShowingButtonText: false)
             }
@@ -80,7 +73,7 @@ struct PostInteractionBar: View {
             Spacer()
             infoBlock
         }
-        .dynamicTypeSize(compact ? .small : .medium)
+        .font(compact ? .footnote : .callout)
     }
     
     // subviews
@@ -157,7 +150,18 @@ struct PostInteractionBar: View {
     /**
      Sends a save request for the current post
      */
-    func savePost() async {
-        // TODO: implement
+    func savePost() async -> Void {
+        guard dirty else {
+            do {
+                // fake save
+                dirtySaved.toggle()
+                dirty = true
+                try await sendSavePostRequest(account: account, postId: postView.id, save: dirtySaved, postTracker: postTracker)
+            } catch {
+                print("failed to save!")
+            }
+            dirty = false
+            return
+        }
     }
 }

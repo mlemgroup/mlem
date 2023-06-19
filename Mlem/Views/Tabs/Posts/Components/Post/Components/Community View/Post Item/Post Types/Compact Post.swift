@@ -10,8 +10,12 @@ import Foundation
 import SwiftUI
 
 struct CompactPost: View {
+    // app storage
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    
     // constants
     let thumbnailSize: CGFloat = 60
+    private let spacing: CGFloat = 8 // constant for readability, ease of modification
     
     // arguments
     let postView: APIPostView
@@ -30,9 +34,10 @@ struct CompactPost: View {
         return .secondary
     }
     
+    var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
+    
     var body: some View {
-        VStack(spacing: 0) {
-            
+        VStack(spacing: spacing) {
             HStack(alignment: .top) {
                 thumbnailImage
                 
@@ -70,8 +75,9 @@ struct CompactPost: View {
                 }
                 
             }
-            PostInteractionBar(post: postView, account: account, compact: true, voteOnPost: voteOnPost)
+            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost)
         }
+        .padding(spacing)
     }
     
     @ViewBuilder
@@ -83,7 +89,7 @@ struct CompactPost: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .blur(radius: postView.post.nsfw ? 8 : 0) // blur nsfw
+                        .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
                 } placeholder: {
                     ProgressView()
                 }
@@ -92,7 +98,7 @@ struct CompactPost: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .blur(radius: postView.post.nsfw ? 8 : 0) // blur nsfw
+                        .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
                 } placeholder: {
                     Image(systemName: "safari")
                 }
@@ -102,6 +108,8 @@ struct CompactPost: View {
                 Image(systemName: "character.bubble")
             }
         }
+        .foregroundColor(.secondary)
+        .font(.title)
         .frame(width: thumbnailSize, height: thumbnailSize)
         .clipShape(RoundedRectangle(cornerRadius: 4))
         .overlay(RoundedRectangle(cornerRadius: 4)

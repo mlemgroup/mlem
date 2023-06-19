@@ -11,6 +11,7 @@ struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -330,6 +331,18 @@ struct CommunityView: View
                         {
                             ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
                         }
+                        
+                        Button {
+                            shouldBlurNsfw.toggle()
+                        } label: {
+                            if (shouldBlurNsfw) {
+                                Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                            }
+                            else {
+                                Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                            }
+                        }
+                        .foregroundColor(.primary)
                     } label: {
                         Label("More", systemImage: "ellipsis")
                     }

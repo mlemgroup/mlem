@@ -59,3 +59,21 @@ func postComment(
         _ = commentTracker.comments.update(with: response.commentView)
     }
 }
+
+@MainActor
+func postComment(
+    to post: APIPostView,
+    commentContents: String,
+    account: SavedAccount,
+    appState: AppState
+) async throws {
+    let request = CreateCommentRequest(
+        account: account,
+        content: commentContents,
+        languageId: nil,
+        parentId: nil,
+        postId: post.id
+    )
+    
+    let response = try await APIClient().perform(request: request)
+}

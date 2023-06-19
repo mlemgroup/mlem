@@ -23,5 +23,5 @@ extension UIUserInterfaceStyle: SettingsOptions {
         }
     }
     
-    public var id: RawValue { rawValue }
+    public var id: Self { self }
 }

@@ -179,6 +179,7 @@
 		CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55A2A400D820028D4F7 /* App Theme.swift */; };
 		CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */; };
 		CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */; };
+		CD69F5612A40B6270028D4F7 /* Save Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5602A40B6270028D4F7 /* Save Post.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -371,6 +372,7 @@
 		CD69F55A2A400D820028D4F7 /* App Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Theme.swift"; sourceTree = "<group>"; };
 		CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUserInterfaceStyle - SettingsOption conformant.swift"; sourceTree = "<group>"; };
 		CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ellipsis Menu.swift"; sourceTree = "<group>"; };
+		CD69F5602A40B6270028D4F7 /* Save Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Save Post.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -439,6 +441,7 @@
 				6314C9F02A194FFA00B08405 /* Post Comment.swift */,
 				63D64E042A1BC20D00FD39C6 /* Post Post.swift */,
 				6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */,
+				CD69F5602A40B6270028D4F7 /* Save Post.swift */,
 			);
 			path = Participating;
 			sourceTree = "<group>";
@@ -1234,6 +1237,7 @@
 				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* Sorting Options.swift in Sources */,
+				CD69F5612A40B6270028D4F7 /* Save Post.swift in Sources */,
 				637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */,
 				637218722A3A2AAD008C4816 /* HideCommunity.swift in Sources */,
 				63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */,
