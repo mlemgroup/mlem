@@ -17,41 +17,25 @@ struct CompactPost: View {
     let postView: APIPostView
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
+    let dragging: Bool
+    
+    // computed
+    var usernameColor: Color {
+        if postView.creator.admin {
+            return .red
+        }
+        if postView.creator.botAccount {
+            return .indigo
+        }
+        
+        return .secondary
+    }
     
     var body: some View {
         VStack(spacing: 0) {
             
             HStack(alignment: .top) {
-                switch postView.postType {
-                case .image(let url):
-                    CachedAsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: thumbnailSize, height: thumbnailSize)
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
-                            .overlay(RoundedRectangle(cornerRadius: 4)
-                                .stroke(.secondary, lineWidth: 1))
-                    } placeholder: {
-                        ProgressView()
-                            .frame(width: thumbnailSize, height: thumbnailSize)
-                    }
-                case .link:
-                    Image(systemName: "safari")
-                        .frame(width: thumbnailSize, height: thumbnailSize)
-                        .overlay(RoundedRectangle(cornerRadius: 4)
-                            .stroke(.secondary, lineWidth: 1))
-                case .text:
-                    Image(systemName: "text.book.closed")
-                        .frame(width: thumbnailSize, height: thumbnailSize)
-                        .overlay(RoundedRectangle(cornerRadius: 4)
-                            .stroke(.secondary, lineWidth: 1))
-                case .titleOnly:
-                    Image(systemName: "character.bubble")
-                        .frame(width: thumbnailSize, height: thumbnailSize)
-                        .overlay(RoundedRectangle(cornerRadius: 4)
-                            .stroke(.secondary, lineWidth: 1))
-                }
+                thumbnailImage
                 
                 VStack(spacing: 2) {
                     Text(postView.post.name)
@@ -79,22 +63,7 @@ struct CompactPost: View {
                             Text(postView.creator.name)
                                 .font(.caption)
                                 .italic()
-                                .if (postView.creator.admin) { viewProxy in
-                                    viewProxy
-                                        .foregroundColor(.red)
-                                }
-                                .if (postView.creator.botAccount) { viewProxy in
-                                    viewProxy
-                                        .foregroundColor(.indigo)
-                                }
-                                .if (postView.creator.name == "lFenix") { viewProxy in
-                                    viewProxy
-                                        .foregroundColor(.yellow)
-                                }
-                                .if (!(postView.creator.admin || postView.creator.botAccount || postView.creator.name == "lFenix")) { viewProxy in
-                                    viewProxy
-                                        .foregroundColor(.secondary)
-                                }
+                                .foregroundColor(usernameColor)
                         }
                         
                         Spacer()
@@ -102,34 +71,41 @@ struct CompactPost: View {
                 }
                 
             }
-            
-//            .padding(.horizontal, 16)
-//            .padding(.top, 8)
-            
             PostInteractionBar(post: postView, account: account, compact: true, voteOnPost: voteOnPost)
         }
     }
     
     @ViewBuilder
     private var thumbnailImage: some View {
-        switch postView.postType {
-        case .image:
-            // force unwrapping safe because postType performs nil check
-            CachedAsyncImage(url: postView.post.url!) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .blur(radius: postView.post.nsfw ? 8 : 0) // blur nsfw
-                    
-            } placeholder: {
-                ProgressView()
+        Group {
+            switch postView.postType {
+            case .image(let url):
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .blur(radius: postView.post.nsfw ? 8 : 0) // blur nsfw
+                } placeholder: {
+                    ProgressView()
+                }
+            case .link(let url):
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .blur(radius: postView.post.nsfw ? 8 : 0) // blur nsfw
+                } placeholder: {
+                    Image(systemName: "safari")
+                }
+            case .text:
+                Image(systemName: "text.book.closed")
+            case .titleOnly:
+                Image(systemName: "character.bubble")
             }
-        case .link:
-            Image(systemName: "safari")
-        case .text:
-            Image(systemName: "text.book.closed")
-        case .titleOnly:
-            Image(systemName: "character.bubble")
         }
+        .frame(width: thumbnailSize, height: thumbnailSize)
+        .clipShape(RoundedRectangle(cornerRadius: 4))
+        .overlay(RoundedRectangle(cornerRadius: 4)
+            .stroke(.secondary, lineWidth: 1))
     }
 }

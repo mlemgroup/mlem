@@ -11,6 +11,7 @@ import SwiftUI
 struct SymmetricVoteComplex: View {
     let vote: ScoringOperation
     let score: Int
+    let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
     
@@ -27,7 +28,7 @@ struct SymmetricVoteComplex: View {
     
     var body: some View {
         HStack(spacing: 6) {
-            UpvoteButton(vote: vote)
+            UpvoteButton(vote: vote, size: height)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         await upvote()
@@ -35,12 +36,13 @@ struct SymmetricVoteComplex: View {
                 }
             Text(String(score))
                 .foregroundColor(scoreColor)
-            DownvoteButton(vote: vote)
+            DownvoteButton(vote: vote, size: height)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         await downvote()
                     }
                 }
         }
+        .frame(height: height)
     }
 }

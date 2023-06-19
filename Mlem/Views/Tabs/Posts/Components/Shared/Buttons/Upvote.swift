@@ -9,10 +9,12 @@ import SwiftUI
 
 struct UpvoteButton: View {
     let vote: ScoringOperation
+    let size: CGFloat
 
     var body: some View {
         Image(systemName: "arrow.up")
-            .padding(4)
+            // .padding(4)
+            .frame(width: size, height: size)
             .foregroundColor(vote == .upvote ? .white : .primary)
             .background(RoundedRectangle(cornerRadius: 4)
                 .aspectRatio(1, contentMode: .fit)

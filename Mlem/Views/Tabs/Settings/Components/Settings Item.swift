@@ -28,38 +28,32 @@ struct SwitchableSettingsItem: View
     }
 }
 
-struct SelectableSwitchableSettingsItem<T: SettingsOptions>: View
+struct SelectableSettingsItem<T: SettingsOptions>: View
 {
-    @State var settingPictureSystemName: String
-    @State var settingPictureColor: Color
+//    @State var settingIconSystemName: String
+//    @State var settingName: String
+//
+//    @Binding var currentValue: T
+//    @State var options: [T]
+    
+    let settingIconSystemName: String
+    let settingName: String
+    @Binding var currentValue: T
+    let options: [T]
 
-    @State var settingName: String
-
-    @Binding var currentValue: T?
-    @State var options: [T]
-
-    var body: some View
-    {
-        NavigationLink {
-            List(options, selection: $currentValue) { option in
+    var body: some View {
+        Picker(selection: $currentValue) {
+            ForEach(options) { settingsOption in
                 HStack {
-                    Text(option.label)
-                    if option == currentValue {
-                        Spacer()
-                        Image(systemName: "checkmark")
-                    }
+                    // settingsOption.icon
+                    Text(String(settingsOption.label))
                 }
             }
         } label: {
-            HStack
-            {
-                Image(systemName: settingPictureSystemName)
-                    .foregroundColor(settingPictureColor)
-
+            HStack(alignment: .center) {
+                Image(systemName: settingIconSystemName)
+                    .foregroundColor(.pink)
                 Text(settingName)
-                Spacer()
-                Text(currentValue?.label ?? "-")
-                    .foregroundColor(.secondary)
             }
         }
     }

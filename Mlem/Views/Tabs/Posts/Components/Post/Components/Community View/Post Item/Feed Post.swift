@@ -34,36 +34,73 @@ struct FeedPost: View
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     
+    // swipe-to-vote
+    @State var dragPosition: CGSize = .zero
+    @State var dragBackground: Color = .systemBackground
+    var isDragging: Bool { dragPosition != .zero }
+    
     var body: some View {
-        VStack(spacing: 0) {
-            postItem
-                .contextMenu {
-                    // general-purpose button template for adding more stuff--also nice for debugging :)
-                    //                        Button {
-                    //                            print(post)
-                    //                        } label: {
-                    //                            Label("Do things", systemImage: "heart")
-                    //                        }
-                    
-                    // only display share if URL is valid
-                    if let postUrl: URL = URL(string: postView.post.apId) {
-                        ShareButton(urlToShare: postUrl, isShowingButtonText: true, customText: "Share Post...")
+            ZStack {
+                dragBackground
+                postItem
+                    .background(Color.systemBackground)
+                    .offset(x: dragPosition.width)
+//                    .simultaneousGesture(
+//                        DragGesture(minimumDistance: 0)
+//                            .onChanged {
+//                                let w = $0.translation.width
+//                                if w > AppConstants.downvoteDragMin {
+//                                    dragBackground = .downvoteColor
+//                                    dragPosition = $0.translation
+//                                } else if w > AppConstants.upvoteDragMin {
+//                                    dragBackground = .upvoteColor
+//                                    dragPosition = $0.translation
+//                                }  else {
+//                                    dragBackground = .secondarySystemBackground
+//                                }
+//
+//                            }
+//                            .onEnded {
+//                                // TODO: instant upvote feedback (waiting on backend)
+//                                if $0.translation.width > AppConstants.downvoteDragMin {
+//                                    Task(priority: .userInitiated) {
+//                                        await voteOnPost(inputOp: .downvote)
+//                                    }
+//                                } else if $0.translation.width > AppConstants.upvoteDragMin {
+//                                    Task(priority: .userInitiated) {
+//                                        await voteOnPost(inputOp: .upvote)
+//                                    }
+//                                }
+//                                withAnimation(.interactiveSpring()) {
+//                                    dragPosition = .zero
+//                                    dragBackground = .secondarySystemBackground
+//                                }
+//                            }
+//                    )
+                    .contextMenu {
+                        // general-purpose button template for adding more stuff--also nice for debugging :)
+                        // Button {
+                        //     print(post)
+                        // } label: {
+                        //     Label("Do things", systemImage: "heart")
+                        // }
+                        
+                        // only display share if URL is valid
+                        if let postUrl: URL = URL(string: postView.post.apId) {
+                            ShareButton(urlToShare: postUrl, isShowingButtonText: true, customText: "Share Post...")
                     }
                     if let postContentUrl = postView.post.url {
                         let customText = postContentUrl.isImage ? "Share Image..." : postContentUrl.isFileURL ? "Share File..." : "Share Link..."
                         ShareButton(urlToShare: postContentUrl, isShowingButtonText: true, customText: customText)
+                        }
                     }
-                }
-            
-            Divider()
+            }
         }
-        .background(Color.systemBackground)
-    }
     
     @ViewBuilder
     var postItem: some View {
         if (shouldShowCompactPosts){
-            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost)
+            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost, dragging: isDragging)
         }
         else {
             LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost)

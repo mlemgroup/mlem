@@ -9,34 +9,39 @@ import SwiftUI
 
 struct AppearanceSettingsView: View {
     
+    // appearance
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
+    // website previews
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
-    
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
+    
+    // posts
+    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    
+    // communities
+    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    
+    // icons
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
-    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
-    
+    // other
     @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
     
     var body: some View {
         List
         {
             Section("Theme") {
-                Picker("Light or dark mode", selection: $lightOrDarkMode) {
-                    Image(systemName: "circle")
-                        .tag(UIUserInterfaceStyle.light)
-                    Image(systemName: "circle.righthalf.filled")
-                        .tag(UIUserInterfaceStyle.unspecified)
-                    Image(systemName: "circle.fill")
-                        .tag(UIUserInterfaceStyle.dark)
-                }
-                .pickerStyle(.segmented)
+                SelectableSettingsItem(
+                    settingIconSystemName: "paintbrush",
+                    settingName: "App theme",
+                    currentValue: $lightOrDarkMode,
+                    options: UIUserInterfaceStyle.allCases
+                )
             }
             Section("Website Previews")
             {
@@ -111,6 +116,11 @@ struct AppearanceSettingsView: View {
                              settingPictureColor: .pink,
                              settingName: "Compact post view",
                              isTicked: $shouldShowCompactPosts)
+                
+                SwitchableSettingsItem(settingPictureSystemName: "eye.trianglebadge.exclamationmark",
+                             settingPictureColor: .pink,
+                             settingName: "Blur NSFW",
+                             isTicked: $shouldBlurNsfw)
             }
             
             Section("Communities")
@@ -141,11 +151,12 @@ struct AppearanceSettingsView: View {
             }
             
             Section("Customization") {
-                Picker("Vote complex style", selection: $voteComplexStyle) {
-                    ForEach(VoteComplexStyle.allCases) { style in
-                        Text(style.rawValue.capitalized)
-                    }
-                }
+                SelectableSettingsItem(
+                    settingIconSystemName: "arrow.up.arrow.down.square.fill",
+                    settingName: "Vote complex style",
+                    currentValue: $voteComplexStyle,
+                    options: VoteComplexStyle.allCases
+                )
 
             }
         }

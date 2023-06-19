@@ -14,14 +14,14 @@ struct TextDisplay: View {
     
     var body: some View {
         if !postBody.isEmpty {
-            if isExpanded {
-                MarkdownView(text: postBody)
-                    .font(.subheadline)
-            } else {
-                MarkdownView(text: postBody.components(separatedBy: .newlines).joined())
-                    .lineLimit(8)
-                    .font(.subheadline)
-            }
+            Group {
+                if isExpanded {
+                    MarkdownView(text: postBody)
+                } else {
+                    MarkdownView(text: postBody.components(separatedBy: .newlines).joined())
+                        .lineLimit(8)
+                }
+            }.font(.subheadline)
         }
     }
 }

@@ -41,6 +41,7 @@ struct PostInteractionBar: View {
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
+    var height: CGFloat { compact ? 20 : 24 }
     
     init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
         self.postView = post
@@ -55,10 +56,10 @@ struct PostInteractionBar: View {
     
     var body: some View {
         HStack(spacing: 8) {
-            VoteComplex(vote: displayedVote, score: displayedScore, upvote: upvote, downvote: downvote)
+            VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
             
-            SaveButton(saved: false)
+            SaveButton(saved: false, size: height)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
                         await savePost()
@@ -69,15 +70,11 @@ struct PostInteractionBar: View {
                 .alert("That feature isn't implemented yet!",
                        isPresented: $isPresentingAlert) {}
             // ==== END TEMPORARY ==== //
-            ReplyButton()
-                .onTapGesture {
-                    // ==== TEMPORARY ==== //
-                    isPresentingAlert = true
-                }
-                .alert("That feature isn't implemented yet!",
-                       isPresented: $isPresentingAlert) {
-                }
-            // ==== END TEMPORARY ==== //
+            
+            if let postURL = postView.post.url {
+                ShareButton(urlToShare: postURL, isShowingButtonText: false)
+            }
+            
             Spacer()
             infoBlock
         }

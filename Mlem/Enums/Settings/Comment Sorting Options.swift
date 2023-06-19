@@ -9,8 +9,12 @@ import Foundation
 
 // lemmy_db_schema::CommentSortType
 // TODO this is not accurate to the Lemmy enum, active -> hot, and "old" is missing
-enum CommentSortTypes: String, Codable, CaseIterable, Identifiable
+enum CommentSortTypes: String, Codable, CaseIterable, Identifiable, SettingsOptions
 {
+    var label: String {
+        return self.rawValue.capitalized
+    }
+    
     case new, top, active
 
     var id: Self { self }

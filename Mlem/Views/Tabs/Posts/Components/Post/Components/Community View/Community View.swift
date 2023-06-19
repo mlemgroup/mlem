@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwipeActions
 
 struct CommunityView: View
 {
@@ -174,8 +175,7 @@ struct CommunityView: View
                     isRefreshing = false
                 }
             }
-            .task(priority: .userInitiated)
-            {
+            .task(priority: .userInitiated) {
                 if postTracker.posts.isEmpty
                 {
                     print("Post tracker is empty")
@@ -424,7 +424,7 @@ struct CommunityView: View
         }
     }
 
-    private var postListView: some View {
+    private var postListView: some View {        
         ForEach(filteredPosts) { post in
             NavigationLink(destination: ExpandedPost(
                 account: account,
