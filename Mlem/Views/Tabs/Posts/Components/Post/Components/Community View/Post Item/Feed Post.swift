@@ -37,61 +37,84 @@ struct FeedPost: View
     var body: some View {
             ZStack {
                 dragBackground
+                HStack(spacing: 0) {
+                    Image(systemName: leftSwipeSymbol)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(leftSwipeSymbolColor)
+                        .padding(.horizontal, 20)
+                    Spacer()
+                }
                 postItem
                     .background(Color.systemBackground)
                     .offset(x: dragPosition.width)
-//                    .simultaneousGesture(
-//                        DragGesture(minimumDistance: 0)
-//                            .onChanged {
-//                                let w = $0.translation.width
-//                                if w > AppConstants.downvoteDragMin {
-//                                    dragBackground = .downvoteColor
-//                                    dragPosition = $0.translation
-//                                } else if w > AppConstants.upvoteDragMin {
-//                                    dragBackground = .upvoteColor
-//                                    dragPosition = $0.translation
-//                                }  else {
-//                                    dragBackground = .secondarySystemBackground
-//                                }
+                    .highPriorityGesture(
+                        DragGesture(minimumDistance: 15) // distance prevents conflict with scrolling drag gesture
+                            .onChanged {
+                                let w = $0.translation.width
+                                
+                                if w < AppConstants.upvoteDragMin {
+                                    leftSwipeSymbol = "arrow.up"
+                                    leftSwipeSymbolColor = .secondary
+                                    dragBackground = .upvoteColor.opacity(w / AppConstants.upvoteDragMin)
+                                }
+                                else if w < AppConstants.downvoteDragMin {
+                                    leftSwipeSymbol = "arrow.up"
+                                    leftSwipeSymbolColor = .white
+                                    dragBackground = .upvoteColor
+                                    if prevDragPosition <= AppConstants.upvoteDragMin {
+                                        AppConstants.hapticManager.notificationOccurred(.success)
+                                    }
+                                }
+                                else {
+                                    leftSwipeSymbol = "arrow.down"
+                                    dragBackground = .downvoteColor
+                                    if prevDragPosition <= AppConstants.downvoteDragMin {
+                                        AppConstants.hapticManager.notificationOccurred(.success)
+                                    }
+                                }
+                                prevDragPosition = w
+                                dragPosition = $0.translation
+                            }
+                            .onEnded {
+                                // TODO: instant upvote feedback (waiting on backend)
+                                if $0.translation.width > AppConstants.downvoteDragMin {
+                                    Task(priority: .userInitiated) {
+                                        await voteOnPost(inputOp: .downvote)
+                                    }
+                                } else if $0.translation.width > AppConstants.upvoteDragMin {
+                                    Task(priority: .userInitiated) {
+                                        await voteOnPost(inputOp: .upvote)
+                                    }
+                                }
+                                withAnimation(.interactiveSpring()) {
+                                    dragPosition = .zero
+                                    leftSwipeSymbol = "arrow.up"
+                                    dragBackground = .systemBackground
+                                }
+                            }
+                    )
+//                    .contextMenu {
+//                        // general-purpose button template for adding more stuff--also nice for debugging :)
+//                        // Button {
+//                        //     print(post)
+//                        // } label: {
+//                        //     Label("Do things", systemImage: "heart")
+//                        // }
 //
-//                            }
-//                            .onEnded {
-//                                // TODO: instant upvote feedback (waiting on backend)
-//                                if $0.translation.width > AppConstants.downvoteDragMin {
-//                                    Task(priority: .userInitiated) {
-//                                        await voteOnPost(inputOp: .downvote)
-//                                    }
-//                                } else if $0.translation.width > AppConstants.upvoteDragMin {
-//                                    Task(priority: .userInitiated) {
-//                                        await voteOnPost(inputOp: .upvote)
-//                                    }
-//                                }
-//                                withAnimation(.interactiveSpring()) {
-//                                    dragPosition = .zero
-//                                    dragBackground = .secondarySystemBackground
-//                                }
-//                            }
-//                    )
-                    .contextMenu {
-                        // general-purpose button template for adding more stuff--also nice for debugging :)
-                        // Button {
-                        //     print(post)
-                        // } label: {
-                        //     Label("Do things", systemImage: "heart")
-                        // }
-                        
-                        // only display share if URL is valid
-                        if let postUrl: URL = URL(string: postView.post.apId) {
-                            ShareButton(urlToShare: postUrl, isShowingButtonText: true)
-                        }
-                    }
+//                        // only display share if URL is valid
+//                        if let postUrl: URL = URL(string: postView.post.apId) {
+//                            ShareButton(urlToShare: postUrl, isShowingButtonText: true)
+//                        }
+//                    }
             }
         }
     
     @ViewBuilder
     var postItem: some View {
         if (shouldShowCompactPosts){
-            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost, dragging: isDragging)
+            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost)
         }
         else {
             LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost)

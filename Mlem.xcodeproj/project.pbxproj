@@ -1043,6 +1043,7 @@
 				6317ABCA2A37292700603D76 /* FeedType.swift */,
 				6307378C2A1CEB7C00039852 /* My Vote.swift */,
 				CD6483352A39F20800EE6CA3 /* Post Type.swift */,
+				CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
