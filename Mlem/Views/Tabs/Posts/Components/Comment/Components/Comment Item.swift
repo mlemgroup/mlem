@@ -15,8 +15,11 @@ struct CommentItem: View
     @EnvironmentObject var appState: AppState
     
     @State var account: SavedAccount
-    
     @State var hierarchicalComment: HierarchicalComment
+    
+    // Optional post context used to determin things
+    // like if the person is OP or not
+    @State var post: APIPostView? = nil
     
     @State var isCollapsed = false
     
@@ -134,6 +137,8 @@ struct CommentItem: View
                 let relativeTime = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published)
                 let creator = hierarchicalComment.commentView.creator.displayName ?? ""
                 let commentorLabel = "Last updated \(relativeTime) ago by \(creator)"
+                let isOp = (post != nil) && (hierarchicalComment.commentView.creator == post!.creator)
+                
                 HStack
                 {
                     #warning("TODO: Make the text selection work")
@@ -151,7 +156,7 @@ struct CommentItem: View
                     }
                      */
                     Text(relativeTime)
-                    UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
+                    UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, isOp: isOp)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(commentorLabel)
@@ -176,7 +181,7 @@ struct CommentItem: View
                 {
                     ForEach(hierarchicalComment.children)
                     { comment in
-                        CommentItem(account: account, hierarchicalComment: comment)
+                        CommentItem(account: account, hierarchicalComment: comment, post: post)
                     }
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))

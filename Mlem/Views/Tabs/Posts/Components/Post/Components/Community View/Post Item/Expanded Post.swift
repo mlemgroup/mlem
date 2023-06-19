@@ -321,7 +321,7 @@ struct ExpandedPost: View
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 15) {
             ForEach(commentTracker.comments) { comment in
-                CommentItem(account: account, hierarchicalComment: comment)
+                CommentItem(account: account, hierarchicalComment: comment, post: post)
             }
         }
         .environmentObject(commentTracker)

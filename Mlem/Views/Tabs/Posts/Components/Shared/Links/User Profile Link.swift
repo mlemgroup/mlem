@@ -14,6 +14,7 @@ struct UserProfileLink: View
     
     @State var account: SavedAccount
     @State var user: APIPerson
+    @State var isOp: Bool = false
 
     var body: some View
     {
@@ -39,6 +40,11 @@ struct UserProfileLink: View
             { viewProxy in
                 viewProxy
                     .foregroundColor(.indigo)
+            }
+            .if(isOp)
+            { viewProxy in
+                viewProxy
+                    .foregroundColor(.orange)
             }
             .if(user.name == "lFenix")
             { viewProxy in
