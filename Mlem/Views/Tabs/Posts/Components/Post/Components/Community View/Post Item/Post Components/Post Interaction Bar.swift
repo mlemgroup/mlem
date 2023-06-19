@@ -40,6 +40,7 @@ struct PostInteractionBar: View {
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
+    var height: CGFloat { compact ? 20 : 24 }
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}

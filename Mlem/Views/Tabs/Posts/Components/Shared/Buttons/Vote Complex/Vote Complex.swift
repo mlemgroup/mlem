@@ -11,6 +11,7 @@ import SwiftUI
 struct VoteComplex: View {
     // whether to display default or symmetric score
     @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage("shouldShowCompactPosts") var compact: Bool = false
     
     let vote: ScoringOperation
     let score: Int

@@ -11,6 +11,10 @@ import Foundation
 // TODO this is not accurate to the Lemmy enum, active -> hot, and "old" is missing
 enum CommentSortTypes: String, Codable, CaseIterable, Identifiable, SettingsOptions
 {
+    var label: String {
+        return self.rawValue.capitalized
+    }
+    
     case new, top, active
     
     var label: String { self.rawValue.capitalized }

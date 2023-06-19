@@ -101,26 +101,27 @@ struct LargePost: View {
                     .blur(radius: showNsfwFilter ? 30 : 0)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+                        .stroke(.secondary, lineWidth: 1))
             } placeholder: {
                 ProgressView()
             }
             
             if showNsfwFilter {
                 VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.largeTitle).foregroundColor(.white)
+                    Image(systemName: "eye.trianglebadge.exclamationmark")
+                        .font(.largeTitle)
                     Text("NSFW")
-                        .fontWeight(.black).foregroundColor(.white)
-                    Text("Tap to view").font(.subheadline).foregroundColor(.white)
+                        .fontWeight(.black)
                 }
+                .padding(8)
+                .background(RoundedRectangle(cornerRadius: 4)
+                    .foregroundColor(.systemBackground))
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
             }
-            
             else if postView.post.nsfw && shouldBlurNsfw {
-              //   // stacks are here to align image to top left of ZStack
+                // stacks are here to align image to top left of ZStack
                 // TODO: less janky way to do this?
                 HStack {
                     VStack {
@@ -128,7 +129,58 @@ struct LargePost: View {
                             .padding(4)
                             .frame(alignment: .topLeading)
                             .background(RoundedRectangle(cornerRadius: 4)
-                                .foregroundColor(.secondarySystemBackground))
+                                .foregroundColor(.systemBackground))
+                            .onTapGesture {
+                                showNsfwFilterToggle.toggle()
+                            }
+                            .padding(4)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+            }
+        }
+    }
+    
+    func imagePreview(url: URL) -> some View {
+        ZStack {
+            CachedAsyncImage(url: url) { image in
+                image
+                    .resizable()
+                    .frame(maxWidth: .infinity)
+                    .scaledToFill()
+                    .blur(radius: showNsfwFilter ? 30 : 0)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(RoundedRectangle(cornerRadius: 8)
+                        .stroke(.secondary, lineWidth: 1))
+            } placeholder: {
+                ProgressView()
+            }
+            
+            if showNsfwFilter {
+                VStack {
+                    Image(systemName: "eye.trianglebadge.exclamationmark")
+                        .font(.largeTitle)
+                    Text("NSFW")
+                        .fontWeight(.black)
+                }
+                .padding(8)
+                .background(RoundedRectangle(cornerRadius: 4)
+                    .foregroundColor(.systemBackground))
+                .onTapGesture {
+                    showNsfwFilterToggle.toggle()
+                }
+            }
+            else if postView.post.nsfw && shouldBlurNsfw {
+                // stacks are here to align image to top left of ZStack
+                // TODO: less janky way to do this?
+                HStack {
+                    VStack {
+                        Image(systemName: "eye.slash")
+                            .padding(4)
+                            .frame(alignment: .topLeading)
+                            .background(RoundedRectangle(cornerRadius: 4)
+                                .foregroundColor(.systemBackground))
                             .onTapGesture {
                                 showNsfwFilterToggle.toggle()
                             }
