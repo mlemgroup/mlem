@@ -26,10 +26,17 @@ struct ContentView: View
             
             if let currentActiveAccount = appState.currentActiveAccount
             {
-                Text("\(currentActiveAccount.username): \(currentActiveAccount.id)")
-                    .tabItem {
-                        Label("Messages", systemImage: "mail.stack")
-                    }
+                VStack {
+                    Spacer()
+                    Text("Messages is not yet implemented.  Coming soon!")
+                        .font(.title)
+                        .multilineTextAlignment(.center)
+                    Spacer()
+                    Text(verbatim: "\(currentActiveAccount.username): \(currentActiveAccount.id)")
+                    Spacer()
+                }.tabItem {
+                    Label("Messages", systemImage: "mail.stack")
+                }
                 
                 UserView(userID: currentActiveAccount.id, account: currentActiveAccount)
                     .tabItem {
