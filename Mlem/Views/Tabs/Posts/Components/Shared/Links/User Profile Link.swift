@@ -32,6 +32,7 @@ struct UserProfileLink: View
     static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
     static let flairOP = UserProfileLinkFlair(color: Color.orange, systemIcon: "person.fill")
     static let flairAdmin = UserProfileLinkFlair(color: Color.red, systemIcon: "crown.fill")
+    static let flairRegular = UserProfileLinkFlair(color: Color.gray)
    
     var body: some View
     {
@@ -44,23 +45,15 @@ struct UserProfileLink: View
                     }
                 }
                 
-                /* Disabled icons for now */
-                if let flair = calculateFlairData() {
-                    if let flairSystemIcon = flair.systemIcon {
-                        Image(systemName: flairSystemIcon).foregroundColor(flair.color)
-                    }
+                let flair = calculateLinkFlair()
+                if let flairSystemIcon = flair.systemIcon {
+                    Image(systemName: flairSystemIcon).foregroundColor(flair.color)
                 }
-                
                 
                 // User display name if one exists
                 Text(user.displayName ?? user.name)
                     .minimumScaleFactor(0.01)
-                    .lineLimit(1)
-            }
-            .if(calculateFlairData() != nil)
-            { viewProxy in
-                viewProxy
-                    .foregroundColor(calculateFlairData()!.color).bold()
+                    .lineLimit(1).bold().foregroundColor(flair.color)
             }
         }
     }
@@ -70,7 +63,7 @@ struct UserProfileLink: View
         var systemIcon: String? = nil
     }
     
-    private func calculateFlairData() -> UserProfileLinkFlair? {
+    private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
             if UserProfileLink.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLink.flairDeveloper 
@@ -92,7 +85,7 @@ struct UserProfileLink: View
                 return UserProfileLink.flairOP
             }
         }
-        return nil
+        return UserProfileLink.flairRegular
     }
 }
 
