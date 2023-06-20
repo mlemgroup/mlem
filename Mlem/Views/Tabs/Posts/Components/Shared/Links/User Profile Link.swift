@@ -27,11 +27,11 @@ struct UserProfileLink: View
         "beehaw.org/u/jojo",
     ]
     
-    static let flairDeveloper = UserProfileLinkFlair(color: Color("UserFlairDeveloper"), systemIcon: "hammer.fill")
-    static let flairMod = UserProfileLinkFlair(color: Color("UserFlairModerator"), systemIcon: "shield.fill")
-    static let flairBot = UserProfileLinkFlair(color: Color("UserFlairBot"), systemIcon: "server.rack")
+    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
+    static let flairMod = UserProfileLinkFlair(color: Color.green, systemIcon: "shield.fill")
+    static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
     static let flairOP = UserProfileLinkFlair(color: Color("UserFlairOP"), systemIcon: "person.fill")
-    static let flairAdmin = UserProfileLinkFlair(color: Color("UserFlairAdmin"), systemIcon: "crown.fill")
+    static let flairAdmin = UserProfileLinkFlair(color: Color.red, systemIcon: "crown.fill")
    
     var body: some View
     {
