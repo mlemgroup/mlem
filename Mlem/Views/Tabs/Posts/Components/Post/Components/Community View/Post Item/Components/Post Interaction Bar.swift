@@ -119,54 +119,52 @@ struct PostInteractionBar: View {
     
     func upvote() async -> Void {
         // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake downvote
-            switch (displayedVote) {
-            case .upvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore - 1
-            case .resetVote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 1
-            case .downvote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 2
-            }
-            dirty = true
-            
-            // wait for vote
-            await voteOnPost(.upvote)
-            
-            // unfake downvote
-            dirty = false
+        guard !dirty else {
             return
         }
+        
+        defer { dirty = false }
+        
+        // fake downvote
+        switch (displayedVote) {
+        case .upvote:
+            dirtyVote = .resetVote
+            dirtyScore = displayedScore - 1
+        case .resetVote:
+            dirtyVote = .upvote
+            dirtyScore = displayedScore + 1
+        case .downvote:
+            dirtyVote = .upvote
+            dirtyScore = displayedScore + 2
+        }
+        
+        dirty = true
+        await voteOnPost(.upvote)
     }
     
     func downvote() async -> Void {
         // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake upvote
-            switch (displayedVote) {
-            case .upvote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 2
-            case .resetVote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 1
-            case .downvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore + 1
-            }
-            dirty = true
-            
-            // wait for vote
-            await voteOnPost(.downvote)
-            
-            // unfake upvote
-            dirty = false
+        guard !dirty else {
             return
         }
+        
+        defer { dirty = false }
+        
+        // fake upvote
+        switch (displayedVote) {
+        case .upvote:
+            dirtyVote = .downvote
+            dirtyScore = displayedScore - 2
+        case .resetVote:
+            dirtyVote = .downvote
+            dirtyScore = displayedScore - 1
+        case .downvote:
+            dirtyVote = .resetVote
+            dirtyScore = displayedScore + 1
+        }
+        
+        dirty = true
+        await voteOnPost(.downvote)
     }
     
     /**
