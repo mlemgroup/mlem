@@ -14,7 +14,7 @@ struct StickiedTag: View
     var body: some View {
         HStack {
             if !compact { Text("Stickied") }
-            Image(systemName: "bandage.fill")
+            Image(systemName: "pin.fill")
         }
         .foregroundColor(.mint)
     }
