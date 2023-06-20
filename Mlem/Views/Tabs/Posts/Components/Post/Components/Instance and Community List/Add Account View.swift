@@ -25,6 +25,11 @@ enum UserIDRetrievalError: Error {
     case couldNotFetchUserInformation
 }
 
+enum Field: Hashable {
+    case homepageField
+    case twoFactorField
+}
+
 struct AddSavedInstanceView: View
 {
     @EnvironmentObject var communityTracker: SavedAccountTracker
@@ -35,17 +40,18 @@ struct AddSavedInstanceView: View
     @State private var instanceLink: String = ""
     @State private var usernameOrEmail: String = ""
     @State private var password: String = ""
-    
+    @State private var twoFactorToken: String = ""
+
     @State private var token: String = ""
     
     @State private var isShowingEndpointDiscoverySpinner: Bool = false
     @State private var hasSuccessfulyConnectedToEndpoint: Bool = false
     @State private var errorOccuredWhileConnectingToEndpoint: Bool = false
     @State private var errorText: String = ""
+    @State private var isShowingTwoFactorText: Bool = false
     
     @State private var errorAlert: ErrorAlert?
-    
-    @FocusState var isFocused
+    @FocusState private var focusedField: Field?
     
     var body: some View
     {
@@ -108,12 +114,12 @@ struct AddSavedInstanceView: View
                 {
                     TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
                         .autocorrectionDisabled()
-                        .focused($isFocused)
+                        .focused($focusedField, equals: .homepageField)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
                         .onAppear
                     {
-                        isFocused = true
+                        focusedField = .homepageField
                     }
                 }
                 
@@ -135,6 +141,24 @@ struct AddSavedInstanceView: View
                         Spacer()
                         SecureField("Password", text: $password, prompt: Text("VeryStrongPassword"))
                             .submitLabel(.go)
+                    }
+
+                    if isShowingTwoFactorText {
+                        HStack
+                        {
+                            Text("2FA Token")
+                            Spacer()
+                            SecureField("TwoFactorToken", text: $twoFactorToken, prompt: Text("000000"))
+                                .focused($focusedField, equals: .twoFactorField)
+                                .submitLabel(.go)
+                                .keyboardType(.asciiCapableNumberPad)
+                                .onAppear
+                            {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                    focusedField = .twoFactorField
+                                }
+                            }
+                        }
                     }
                 }
                 
@@ -184,7 +208,8 @@ struct AddSavedInstanceView: View
             let loginRequest = LoginRequest(
                 instanceURL: instanceURL,
                 username: usernameOrEmail,
-                password: password
+                password: password,
+                totpToken: twoFactorToken == "" ? nil : twoFactorToken
             )
             
             let response = try await APIClient().perform(request: loginRequest)
@@ -243,6 +268,12 @@ struct AddSavedInstanceView: View
                 case APIClientError.networking:
                     message = "Please check your internet connection and try again"
                 case APIClientError.response(let errorResponse, _):
+                    if errorResponse.error == "missing_totp_token" {
+                        message = ""
+                        isShowingTwoFactorText = true
+                        break
+                    }
+
                     message = errorResponse.error
                 default:
                     // unhandled error encountered...
@@ -257,7 +288,9 @@ struct AddSavedInstanceView: View
         errorText = message
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            errorOccuredWhileConnectingToEndpoint = true
+            if !errorText.isEmpty {
+                errorOccuredWhileConnectingToEndpoint = true
+            }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 withAnimation {

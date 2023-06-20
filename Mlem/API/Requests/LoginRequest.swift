@@ -19,11 +19,12 @@ struct LoginRequest: APIPostRequest {
     struct Body: Encodable {
         let username_or_email: String
         let password: String
+        let totp_2fa_token: String?
     }
 
-    init(instanceURL: URL, username: String, password: String) {
+    init(instanceURL: URL, username: String, password: String, totpToken: String?) {
         self.instanceURL = instanceURL
-        self.body = .init(username_or_email: username, password: password)
+        self.body = .init(username_or_email: username, password: password, totp_2fa_token: totpToken)
     }
 }
 
