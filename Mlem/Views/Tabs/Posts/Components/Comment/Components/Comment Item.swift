@@ -73,47 +73,12 @@ struct CommentItem: View
             HStack(spacing: 12)
             {
                 #warning("TODO: Add post rating")
-                HStack
-                {
-                    HStack(alignment: .center, spacing: 2) {
-                        Image(systemName: "arrow.up")
-                        
-                        Text(String(localCommentScore ?? hierarchicalComment.commentView.counts.score))
-                    }
-                    .foregroundColor(upvoteColor)
-                    .onTapGesture {
-                        Task(priority: .userInitiated) {
-                            try await rate(hierarchicalComment, operation: .upvote)
-                        }
-                    }
-                    
-                    Image(systemName: "arrow.down")
-                        .foregroundColor(downvoteColor)
-                        .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                try await rate(hierarchicalComment, operation: .downvote)
-                            }
-                        }
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityValue("\(localCommentScore ?? hierarchicalComment.commentView.counts.score) votes")
-                .accessibilityAdjustableAction { direction in
-                    switch direction {
-                    case .increment:
-                        Task(priority: .userInitiated) {
-                            try await rate(hierarchicalComment, operation: .upvote)
-                        }
-                    case .decrement:
-                        Task(priority: .userInitiated) {
-                            Task(priority: .userInitiated) {
-                                try await rate(hierarchicalComment, operation: .downvote)
-                            }
-                        }
-                    default:
-                        // Not sure what to do here.
-                        UIAccessibility.post(notification: .announcement, argument: "Unknown Action")
-                    }
-                }
+                VoteComplex(
+                    vote: localVote ?? hierarchicalComment.commentView.myVote ?? .resetVote,
+                    score: localCommentScore ?? hierarchicalComment.commentView.counts.score,
+                    upvote: upvote,
+                    downvote: downvote
+                )
 
                 HStack(spacing: 4)
                 {
@@ -222,6 +187,14 @@ struct CommentItem: View
             }
             .presentationDetents([.medium])
         }
+    }
+    
+    private func upvote() async {
+        try? await rate(hierarchicalComment, operation: .upvote)
+    }
+    
+    private func downvote() async {
+        try? await rate(hierarchicalComment, operation: .downvote)
     }
     
     private func rate(_ comment: HierarchicalComment, operation: ScoringOperation) async throws {
