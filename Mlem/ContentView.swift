@@ -28,7 +28,7 @@ struct ContentView: View
             {
                 VStack {
                     Spacer()
-                    Text("Messages is not yet implmented.  Coming soon!")
+                    Text("Messages is not yet implemented.  Coming soon!")
                         .font(.title)
                         .multilineTextAlignment(.center)
                     Spacer()
