@@ -20,13 +20,17 @@ struct UserProfileLink: View
     @State var postContext: APIPostView? = nil
     @State var commentContext: APIComment? = nil
     
-    static let developerNames = ["lFenix"]
+    static let developerNames = [
+        "lemmy.ml/u/lFenix",
+        "vlemmy.net/u/darknavi",
+        "lemmy.ml/u/BrooklynMan"
+    ]
     
     static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
     static let flairMod = UserProfileLinkFlair(color: Color.green, systemIcon: "shield.fill")
-    static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "faxmachine.fill")
-    static let flairOP = UserProfileLinkFlair(color: Color.orange, systemIcon: "mic.fill")
-    static let flairAdmin = UserProfileLinkFlair(color: Color.red)
+    static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
+    static let flairOP = UserProfileLinkFlair(color: Color(red: 249 / 255, green: 105.0 / 255, blue: 14.0 / 255), systemIcon: "person.fill")
+    static let flairAdmin = UserProfileLinkFlair(color: Color(red: 1, green: 0, blue: 0), systemIcon: "crown.fill")
    
     var body: some View
     {
@@ -66,8 +70,10 @@ struct UserProfileLink: View
     }
     
     private func calculateFlair() -> UserProfileLinkFlair? {
-        if UserProfileLink.developerNames.contains(where: { $0 == user.name }) {
-            return UserProfileLink.flairDeveloper
+        if let userServer = user.actorId.host() {
+            if UserProfileLink.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
+                return UserProfileLink.flairDeveloper 
+            }
         }
         if user.admin {
             return UserProfileLink.flairAdmin
@@ -89,6 +95,7 @@ struct UserProfileLink: View
     }
 }
 
+// TODO: darknavi - Move these to a common area for reuse
 struct UserProfileLinkPreview: PreviewProvider {
     static let previewAccount = SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account")
     
@@ -104,11 +111,15 @@ struct UserProfileLinkPreview: PreviewProvider {
     }
     
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
-        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: "idk", updated: nil, actorId: URL(string: "google.com")!, bio: nil, local: false, banner: nil, deleted: false, inboxUrl: URL(string: "google.com")!, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
+        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: "idk", updated: nil, actorId: userType == .Dev ? URL(string: "http://\(UserProfileLink.developerNames[0])")! : URL(string: "google.com")!, bio: nil, local: false, banner: nil, deleted: false, inboxUrl: URL(string: "google.com")!, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
     }
     
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {
         return APIComment(id: 0, creatorId: creator.id, postId: 0, content: "", removed: false, deleted: false, published: Date.now, updated: nil, apId: "foo.bar", local: false, path: "foo", distinguished: isMod, languageId: 0)
+    }
+    
+    static func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
+        return APICommunity(id: id, name: "\(namePrefix) Fake Community \(id)", title: "\(namePrefix) Fake Community \(id) Title", description: "This is a fake community (#\(id))", published: Date.now, updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.google.com/c/\(id)")!, local: false, icon: nil, banner: nil, hidden: false, postingRestrictedToMods: false, instanceId: 0)
     }
     
     static func generatePreviewPost(creator: APIPerson) -> APIPostView {
@@ -121,12 +132,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     }
     
     static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
-        var previewUserName = name
-        if userType == .Dev {
-            previewUserName = UserProfileLink.developerNames[0]
-        }
-        
-        let previewUser = generatePreviewUser(name: previewUserName, displayName: name, userType: userType);
+        let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType);
         
         var postContext: APIPostView? = nil
         var commentContext: APIComment? = nil
