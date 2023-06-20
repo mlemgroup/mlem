@@ -496,6 +496,8 @@ struct CommunityView: View
                 title: "Error",
                 message: message.error
             )
+        } catch APIClientError.cancelled {
+            print("Failed while loading feed (request cancelled)")
         } catch {
             errorAlert = .unexpected
         }

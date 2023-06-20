@@ -16,6 +16,7 @@ enum APIClientError: Error {
     case encoding(Error)
     case networking(Error)
     case response(APIErrorResponse, Int?)
+    case cancelled
 }
 
 class APIClient {
@@ -48,7 +49,11 @@ class APIClient {
         do {
             return try await session.data(for: urlRequest)
         } catch {
-            throw APIClientError.networking(error)
+            if case URLError.cancelled = error as NSError {
+                throw APIClientError.cancelled
+            } else {
+                throw APIClientError.networking(error)
+            }
         }
     }
     
