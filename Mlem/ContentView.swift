@@ -32,7 +32,7 @@ struct ContentView: View
                         .font(.title)
                         .multilineTextAlignment(.center)
                     Spacer()
-                    Text("\(currentActiveAccount.username): \(currentActiveAccount.id)")
+                    Text(verbatim: "\(currentActiveAccount.username): \(currentActiveAccount.id)")
                     Spacer()
                 }.tabItem {
                     Label("Messages", systemImage: "mail.stack")
