@@ -30,7 +30,7 @@ struct UserProfileLink: View
     static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
     static let flairMod = UserProfileLinkFlair(color: Color.green, systemIcon: "shield.fill")
     static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
-    static let flairOP = UserProfileLinkFlair(color: Color("UserFlairOP"), systemIcon: "person.fill")
+    static let flairOP = UserProfileLinkFlair(color: Color.orange, systemIcon: "person.fill")
     static let flairAdmin = UserProfileLinkFlair(color: Color.red, systemIcon: "crown.fill")
    
     var body: some View
