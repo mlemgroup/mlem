@@ -137,7 +137,6 @@ struct CommentItem: View
                 let relativeTime = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published)
                 let creator = hierarchicalComment.commentView.creator.displayName ?? ""
                 let commentorLabel = "Last updated \(relativeTime) ago by \(creator)"
-                let isOp = (post != nil) && (hierarchicalComment.commentView.creator == post!.creator)
                 
                 HStack
                 {
@@ -156,7 +155,8 @@ struct CommentItem: View
                     }
                      */
                     Text(relativeTime)
-                    UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, isOp: isOp)
+                    UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, postContext: post, commentContext: hierarchicalComment.commentView.comment)
+                                    
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(commentorLabel)
