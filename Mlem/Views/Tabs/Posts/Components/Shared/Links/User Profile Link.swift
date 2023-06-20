@@ -23,14 +23,15 @@ struct UserProfileLink: View
     static let developerNames = [
         "lemmy.ml/u/lFenix",
         "vlemmy.net/u/darknavi",
-        "lemmy.ml/u/BrooklynMan"
+        "lemmy.ml/u/BrooklynMan",
+        "beehaw.org/u/jojo",
     ]
     
-    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
-    static let flairMod = UserProfileLinkFlair(color: Color.green, systemIcon: "shield.fill")
-    static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
-    static let flairOP = UserProfileLinkFlair(color: Color(red: 249 / 255, green: 105.0 / 255, blue: 14.0 / 255), systemIcon: "person.fill")
-    static let flairAdmin = UserProfileLinkFlair(color: Color(red: 1, green: 0, blue: 0), systemIcon: "crown.fill")
+    static let flairDeveloper = UserProfileLinkFlair(color: Color("UserFlairDeveloper"), systemIcon: "hammer.fill")
+    static let flairMod = UserProfileLinkFlair(color: Color("UserFlairModerator"), systemIcon: "shield.fill")
+    static let flairBot = UserProfileLinkFlair(color: Color("UserFlairBot"), systemIcon: "server.rack")
+    static let flairOP = UserProfileLinkFlair(color: Color("UserFlairOP"), systemIcon: "person.fill")
+    static let flairAdmin = UserProfileLinkFlair(color: Color("UserFlairAdmin"), systemIcon: "crown.fill")
    
     var body: some View
     {
@@ -81,13 +82,13 @@ struct UserProfileLink: View
         if user.botAccount {
             return UserProfileLink.flairBot
         }
-        if commentContext != nil {
-            if commentContext!.distinguished {
+        if let comment = commentContext {
+            if comment.distinguished {
                 return UserProfileLink.flairMod
             }
         }
-        if postContext != nil {
-            if user == postContext!.creator {
+        if let post = postContext {
+            if user == post.creator {
                 return UserProfileLink.flairOP
             }
         }
