@@ -488,6 +488,8 @@ struct CommunityView: View
                 title: "Error",
                 message: message.error
             )
+        } catch APIClientError.cancelled {
+            print("Failed while loading feed (request cancelled)")
         } catch {
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
