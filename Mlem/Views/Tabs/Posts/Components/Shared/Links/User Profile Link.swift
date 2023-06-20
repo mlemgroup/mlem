@@ -45,7 +45,7 @@ struct UserProfileLink: View
                 }
                 
                 /* Disabled icons for now */
-                if let flair = calculateFlair() {
+                if let flair = calculateFlairData() {
                     if let flairSystemIcon = flair.systemIcon {
                         Image(systemName: flairSystemIcon).foregroundColor(flair.color)
                     }
@@ -57,10 +57,10 @@ struct UserProfileLink: View
                     .minimumScaleFactor(0.01)
                     .lineLimit(1)
             }
-            .if(calculateFlair() != nil)
+            .if(calculateFlairData() != nil)
             { viewProxy in
                 viewProxy
-                    .foregroundColor(calculateFlair()!.color).bold()
+                    .foregroundColor(calculateFlairData()!.color).bold()
             }
         }
     }
@@ -70,7 +70,7 @@ struct UserProfileLink: View
         var systemIcon: String? = nil
     }
     
-    private func calculateFlair() -> UserProfileLinkFlair? {
+    private func calculateFlairData() -> UserProfileLinkFlair? {
         if let userServer = user.actorId.host() {
             if UserProfileLink.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLink.flairDeveloper 
