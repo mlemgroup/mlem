@@ -10,4 +10,8 @@ Software: Mlem
 
 License: GPL 3.0
 
-Licensor: David Bureš 
+Licensor: David Bureš
+
+The Mlem iOS developers are aware that the terms of service that apply to apps distributed via Apple's App Store services may conflict with rights granted under
+the Mlem iOS license, the "GNU GPLv3 amended by the Commons Clause v1". We have committed not to pursue any license violation that results solely from the conflict between
+the "GNU GPLv3 amended by the Commons Clause v1" or any later version and the Apple App Store terms of service.
