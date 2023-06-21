@@ -35,36 +35,29 @@ struct FeedPost: View
     @State private var isShowingEnlargedImage: Bool = false
     
     // swipe-to-vote
-    @State var dragPosition: CGSize = .zero
-    @State var prevDragPosition: CGFloat = .zero
-    @State var dragBackground: Color = .systemBackground
-    @State var leftSwipeSymbol: String = "arrow.up"
-    @State var rightSwipeSymbol: String = "arrowshape.turn.up.left"
+    @Binding var isDragging: Bool
+//    @State var dragPosition: CGSize = .zero
+//    @State var prevDragPosition: CGFloat = .zero
+//    @State var dragBackground: Color = .systemBackground
+//    @State var leftSwipeSymbol: String = "arrow.up"
+//    @State var rightSwipeSymbol: String = "arrowshape.turn.up.left"
     
     // in-feed reply
     @State var replyIsPresented: Bool = false
     @State var replyContents: String = ""
     @State var replyIsSending: Bool = false
-   
-    // TEMP
-    func voidPrintShortLeft() -> Void {
-        print("short left")
-    }
-    func voidPrintLongLeft() -> Void {
-        print("long left")
-    }
-    func voidPrintShortRight() -> Void {
-        print("short right")
-    }
-    func voidPrintLongRight() -> Void {
-        print("long right")
-    }
     
     var body: some View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
-                .addSwipeyActions(emptyLeftSymbolName: "arrow.up.square",
+                .contextMenu {
+                    Button("hit me!") {
+                        print("hit")
+                    }
+                }
+                .addSwipeyActions(isDragging: $isDragging,
+                                  emptyLeftSymbolName: "arrow.up.square",
                                   shortLeftSymbolName: "arrow.up.square.fill",
                                   shortLeftAction: upvotePost,
                                   shortLeftColor: .upvoteColor,
@@ -183,3 +176,4 @@ struct FeedPost: View
         }
     }
 }
+

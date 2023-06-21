@@ -45,6 +45,8 @@ struct ExpandedPost: View
     
     @State private var errorAlert: ErrorAlert?
     
+    @State var isDragging: Bool = false
+    
     var body: some View
     {
         ScrollView {
@@ -64,6 +66,7 @@ struct ExpandedPost: View
                 }
             }
         }
+        .scrollDisabled(isDragging)
         .environmentObject(commentReplyTracker)
         .navigationBarTitle(post.community.name, displayMode: .inline)
         .safeAreaInset(edge: .bottom)
@@ -170,7 +173,7 @@ struct ExpandedPost: View
                                             textFieldContents = ""
                                         }
                                         catch let replyPostingError
-                                        {                                            
+                                        {
                                             print("Failed while posting response: \(replyPostingError)")
                                         }
                                     }
@@ -314,7 +317,7 @@ struct ExpandedPost: View
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.comments) { comment in
-                CommentItem(account: account, hierarchicalComment: comment, depth: 0)
+                CommentItem(account: account, hierarchicalComment: comment, depth: 0, isDragging: $isDragging)
             }
         }
         .environmentObject(commentTracker)
@@ -372,3 +375,4 @@ struct ExpandedPost: View
         }
     }
 }
+

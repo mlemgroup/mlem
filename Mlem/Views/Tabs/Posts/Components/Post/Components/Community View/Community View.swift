@@ -46,6 +46,8 @@ struct CommunityView: View
     @State private var newPostIsNSFW: Bool = false
     @State private var isPostingPost: Bool = false
     @State private var errorAlert: ErrorAlert?
+    
+    @State var isDragging: Bool = false
 
     enum FocusedNewPostField
     {
@@ -442,7 +444,7 @@ struct CommunityView: View
         }
     }
 
-    private var postListView: some View {        
+    private var postListView: some View {
         ForEach(filteredPosts) { post in
             NavigationLink(destination: ExpandedPost(
                 account: account,
@@ -454,7 +456,8 @@ struct CommunityView: View
                 FeedPost(
                     postView: post,
                     account: account,
-                    feedType: $feedType
+                    feedType: $feedType,
+                    isDragging: $isDragging
                 )
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
@@ -517,3 +520,4 @@ struct CommunityView: View
 
     }
 }
+

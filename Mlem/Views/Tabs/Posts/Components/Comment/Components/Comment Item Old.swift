@@ -183,20 +183,20 @@ struct CommentItemOld: View
                     }
                 }
             }
-            .addSwipeyActions(emptyLeftSymbolName: "arrow.up.square",
-                              shortLeftSymbolName: "arrow.up.square.fill",
-                              shortLeftAction: voidPrintShortLeft,
-                              shortLeftColor: .upvoteColor,
-                              longLeftSymbolName: "arrow.down.square.fill",
-                              longLeftAction: voidPrintLongLeft,
-                              longLeftColor: .downvoteColor,
-                              emptyRightSymbolName: "bookmark",
-                              shortRightSymbolName: "bookmark.fill",
-                              shortRightAction: voidPrintShortRight,
-                              shortRightColor: .saveColor,
-                              longRightSymbolName: "arrowshape.turn.up.left.fill",
-                              longRightAction: voidPrintLongRight,
-                              longRightColor: .accentColor)
+//            .addSwipeyActions(emptyLeftSymbolName: "arrow.up.square",
+//                              shortLeftSymbolName: "arrow.up.square.fill",
+//                              shortLeftAction: voidPrintShortLeft,
+//                              shortLeftColor: .upvoteColor,
+//                              longLeftSymbolName: "arrow.down.square.fill",
+//                              longLeftAction: voidPrintLongLeft,
+//                              longLeftColor: .downvoteColor,
+//                              emptyRightSymbolName: "bookmark",
+//                              shortRightSymbolName: "bookmark.fill",
+//                              shortRightAction: voidPrintShortRight,
+//                              shortRightColor: .saveColor,
+//                              longRightSymbolName: "arrowshape.turn.up.left.fill",
+//                              longRightAction: voidPrintLongRight,
+//                              longRightColor: .accentColor)
             
             Divider()
             

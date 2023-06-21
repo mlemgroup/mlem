@@ -31,6 +31,8 @@ struct CommentItem: View {
     
     @State var hierarchicalComment: HierarchicalComment
     
+    @Binding var isDragging: Bool
+    
 //    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int) {
 //        self.account = account
 //        self.hierarchicalComment = hierarchicalComment
@@ -83,8 +85,14 @@ struct CommentItem: View {
                     isCollapsed.toggle()
                 }
             }
+            .contextMenu {
+                Button("hit me!") {
+                    print("hit")
+                }
+            }
             .background(Color.systemBackground)
-            .addSwipeyActions(emptyLeftSymbolName: "arrow.up.square",
+            .addSwipeyActions(isDragging: $isDragging,
+                              emptyLeftSymbolName: "arrow.up.square",
                               shortLeftSymbolName: "arrow.up.square.fill",
                               shortLeftAction: upvote,
                               shortLeftColor: .upvoteColor,
@@ -164,9 +172,10 @@ struct CommentItem: View {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
-                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1)
+                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1, isDragging: $isDragging)
                 }
             }
         }
     }
 }
+
