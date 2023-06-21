@@ -30,13 +30,18 @@ struct CommentItem: View {
     var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
     // ==== END TEMPORARY ====
     
+    // constants
+    let threadingColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
+    let spacing: CGFloat = 8
+    let indent: CGFloat = 10
+    
     // environment
     @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var appState: AppState
     
-    @State var account: SavedAccount
-    
-    @State var hierarchicalComment: HierarchicalComment
+    let account: SavedAccount
+    let hierarchicalComment: HierarchicalComment
+    let depth: Int
     
     @Binding var isDragging: Bool
     @FocusState var isReplyFieldFocused: Bool
@@ -144,13 +149,13 @@ struct CommentItem: View {
         .foregroundColor(.secondary)
     }
     
-    private func upvote() async {
-        try? await rate(hierarchicalComment, operation: .upvote)
-    }
-    
-    private func downvote() async {
-        try? await rate(hierarchicalComment, operation: .downvote)
-    }
+//    private func upvote() async {
+//        try? await rate(hierarchicalComment, operation: .upvote)
+//    }
+//
+//    private func downvote() async {
+//        try? await rate(hierarchicalComment, operation: .downvote)
+//    }
     
     @ViewBuilder
     var commentBody: some View {
