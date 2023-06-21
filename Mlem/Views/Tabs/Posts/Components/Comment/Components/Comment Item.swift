@@ -76,6 +76,7 @@ struct CommentItem: View
                 VoteComplex(
                     vote: localVote ?? hierarchicalComment.commentView.myVote ?? .resetVote,
                     score: localCommentScore ?? hierarchicalComment.commentView.counts.score,
+                    height: 20,
                     upvote: upvote,
                     downvote: downvote
                 )

@@ -35,8 +35,7 @@ struct PostHeader: View {
         HStack {
             HStack(spacing: 4) {
                 // community avatar and name
-                NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all),
-                               isActive: $isShowingCommunity) {
+                NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all)) {
                     communityAvatar
                         .frame(width: communityIconSize, height: communityIconSize)
                         .clipShape(Circle())
@@ -67,9 +66,6 @@ struct PostHeader: View {
         .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityLabel("in \(postView.community.name) by \(postView.creator.name)")
-        .accessibilityAction(named: "Goto \(postView.community.name)") {
-            isShowingCommunity = true
-        }
         .font(.subheadline)
         .foregroundColor(.secondary)
     }
