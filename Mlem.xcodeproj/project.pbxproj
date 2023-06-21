@@ -159,6 +159,7 @@
 		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
 		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
 		63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */; };
+		6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8601ED2A43C0B1002A56FC /* Image.swift */; };
 		CD04D5D72A3614A8008EF95B /* Post Interaction Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */; };
 		CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D82A3614BE008EF95B /* Large Post.swift */; };
 		CD04D5DB2A36154F008EF95B /* Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DA2A36154F008EF95B /* Save.swift */; };
@@ -351,6 +352,7 @@
 		63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionWebSocketTask - Send Ping.swift"; sourceTree = "<group>"; };
 		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
 		63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Correct URL to Endpoint.swift"; sourceTree = "<group>"; };
+		6D8601ED2A43C0B1002A56FC /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Interaction Bar.swift"; sourceTree = "<group>"; };
 		CD04D5D82A3614BE008EF95B /* Large Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Large Post.swift"; sourceTree = "<group>"; };
 		CD04D5DA2A36154F008EF95B /* Save.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Save.swift; sourceTree = "<group>"; };
@@ -548,6 +550,7 @@
 				508845CE2A3641160088E483 /* JSONDecoder+Default.swift */,
 				CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */,
 				CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */,
+				6D8601ED2A43C0B1002A56FC /* Image.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1334,6 +1337,7 @@
 				CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */,
 				CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
+				6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
 				637218612A3A2AAD008C4816 /* CreatePostLike.swift in Sources */,
 				63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */,
