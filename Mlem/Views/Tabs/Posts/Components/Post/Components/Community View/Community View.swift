@@ -321,16 +321,11 @@ struct CommunityView: View
                             Divider()
 
                             if let actorId = community?.actorId {
-                                ShareButton(
-                                    urlToShare: actorId,
-                                    isShowingButtonText: true
-                                )
+                                ShareButton(size: 20) {
+                                    showShareSheet(URLtoShare: actorId)
+                                }
                             }
                         }
-//                        else
-//                        {
-//                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
-//                        }
                         
                         Button {
                             shouldBlurNsfw.toggle()

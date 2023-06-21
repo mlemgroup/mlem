@@ -34,82 +34,57 @@ struct FeedPost: View
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     
+    // swipe-to-vote
+    @State var dragPosition: CGSize = .zero
+    @State var prevDragPosition: CGFloat = .zero
+    @State var dragBackground: Color = .systemBackground
+    @State var leftSwipeSymbol: String = "arrow.up"
+    @State var rightSwipeSymbol: String = "arrowshape.turn.up.left"
+    
+    // in-feed reply
+    @State var replyIsPresented: Bool = false
+    @State var replyContents: String = ""
+    @State var replyIsSending: Bool = false
+   
+    // TEMP
+    func voidPrintShortLeft() -> Void {
+        print("short left")
+    }
+    func voidPrintLongLeft() -> Void {
+        print("long left")
+    }
+    func voidPrintShortRight() -> Void {
+        print("short right")
+    }
+    func voidPrintLongRight() -> Void {
+        print("long right")
+    }
+    
     var body: some View {
-            ZStack {
-                dragBackground
-                HStack(spacing: 0) {
-                    Image(systemName: leftSwipeSymbol)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(leftSwipeSymbolColor)
-                        .padding(.horizontal, 20)
-                    Spacer()
+        VStack(spacing: 0) {
+            postItem
+                .background(Color.systemBackground)
+                .addSwipeyActions(emptyLeftSymbolName: "arrow.up.square",
+                                  shortLeftSymbolName: "arrow.up.square.fill",
+                                  shortLeftAction: upvotePost,
+                                  shortLeftColor: .upvoteColor,
+                                  longLeftSymbolName: "arrow.down.square.fill",
+                                  longLeftAction: downvotePost,
+                                  longLeftColor: .downvoteColor,
+                                  emptyRightSymbolName: "bookmark",
+                                  shortRightSymbolName: "bookmark.fill",
+                                  shortRightAction: savePost,
+                                  shortRightColor: .saveColor,
+                                  longRightSymbolName: "arrowshape.turn.up.left.fill",
+                                  longRightAction: replyToPost,
+                                  longRightColor: .accentColor)
+                .sheet(isPresented: $replyIsPresented) {
+                    replySheetBody
                 }
-                postItem
-                    .background(Color.systemBackground)
-                    .offset(x: dragPosition.width)
-                    .highPriorityGesture(
-                        DragGesture(minimumDistance: 15) // distance prevents conflict with scrolling drag gesture
-                            .onChanged {
-                                let w = $0.translation.width
-                                
-                                if w < AppConstants.upvoteDragMin {
-                                    leftSwipeSymbol = "arrow.up"
-                                    leftSwipeSymbolColor = .secondary
-                                    dragBackground = .upvoteColor.opacity(w / AppConstants.upvoteDragMin)
-                                }
-                                else if w < AppConstants.downvoteDragMin {
-                                    leftSwipeSymbol = "arrow.up"
-                                    leftSwipeSymbolColor = .white
-                                    dragBackground = .upvoteColor
-                                    if prevDragPosition <= AppConstants.upvoteDragMin {
-                                        AppConstants.hapticManager.notificationOccurred(.success)
-                                    }
-                                }
-                                else {
-                                    leftSwipeSymbol = "arrow.down"
-                                    dragBackground = .downvoteColor
-                                    if prevDragPosition <= AppConstants.downvoteDragMin {
-                                        AppConstants.hapticManager.notificationOccurred(.success)
-                                    }
-                                }
-                                prevDragPosition = w
-                                dragPosition = $0.translation
-                            }
-                            .onEnded {
-                                // TODO: instant upvote feedback (waiting on backend)
-                                if $0.translation.width > AppConstants.downvoteDragMin {
-                                    Task(priority: .userInitiated) {
-                                        await voteOnPost(inputOp: .downvote)
-                                    }
-                                } else if $0.translation.width > AppConstants.upvoteDragMin {
-                                    Task(priority: .userInitiated) {
-                                        await voteOnPost(inputOp: .upvote)
-                                    }
-                                }
-                                withAnimation(.interactiveSpring()) {
-                                    dragPosition = .zero
-                                    leftSwipeSymbol = "arrow.up"
-                                    dragBackground = .systemBackground
-                                }
-                            }
-                    )
-//                    .contextMenu {
-//                        // general-purpose button template for adding more stuff--also nice for debugging :)
-//                        // Button {
-//                        //     print(post)
-//                        // } label: {
-//                        //     Label("Do things", systemImage: "heart")
-//                        // }
-//
-//                        // only display share if URL is valid
-//                        if let postUrl: URL = URL(string: postView.post.apId) {
-//                            ShareButton(urlToShare: postUrl, isShowingButtonText: true)
-//                        }
-//                    }
-            }
+            
+            Divider()
         }
+    }
     
     @ViewBuilder
     var postItem: some View {
@@ -174,6 +149,19 @@ struct FeedPost: View
         .overlay(replyIsSending ? Color(white: 0, opacity: 0.1) : .clear)
     }
     
+    // MARK reply handlers
+    
+    func upvotePost() async {
+        await voteOnPost(inputOp: .upvote)
+    }
+    
+    func downvotePost() async {
+        await voteOnPost(inputOp: .downvote)
+    }
+    
+    func replyToPost() {
+        self.replyIsPresented = true
+    }
     /**
      Votes on a post
      NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
@@ -187,9 +175,9 @@ struct FeedPost: View
         }
     }
     
-    func savePost(save: Bool) async -> Void {
+    func savePost() async -> Void {
         do {
-            try await sendSavePostRequest(account: account, postId: postView.id, save: save, postTracker: postTracker)
+            try await sendSavePostRequest(account: account, postId: postView.id, save: !postView.saved, postTracker: postTracker)
         } catch {
             print("failed to save!")
         }

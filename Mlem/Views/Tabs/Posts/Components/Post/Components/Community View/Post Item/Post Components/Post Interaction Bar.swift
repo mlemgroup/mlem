@@ -69,7 +69,13 @@ struct PostInteractionBar: View {
                     }
                 }
             if let postURL = URL(string: postView.post.apId) {
-                ShareButton(urlToShare: postURL, isShowingButtonText: false)
+                // ShareButton(urlToShare: postURL, isShowingButtonText: false)
+                ShareButton(size: height) {
+                    showShareSheet(URLtoShare: postURL)
+                }
+//                    .onTapGesture {
+//                        showShareSheet(URLtoShare: postURL)
+//                    }
             }
             
             EllipsisMenu(size: height, shareUrl: postView.post.apId)

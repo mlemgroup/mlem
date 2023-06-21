@@ -1,193 +1,134 @@
 //
-//  Comment View.swift
+//  Comment Item.swift
 //  Mlem
 //
-//  Created by David Bureš on 25.03.2022.
+//  Created by Eric Andrews on 2023-06-20.
 //
 
 import SwiftUI
 
-struct CommentItem: View
-{
-    @EnvironmentObject var commentReplyTracker: CommentReplyTracker
-    @EnvironmentObject var commentTracker: CommentTracker
+struct CommentItem: View {
+    // ==== TEMPORARY PENDING BACKEND CHANGES ====
+    //state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
+    @State var dirtyVote: ScoringOperation = .resetVote
+    @State var dirtyScore: Int = 0
+    @State var dirtySaved: Bool = false
+    @State var dirty: Bool = false
     
+    @State var isActive: Bool = false
+    
+    // computed properties--if dirty, show dirty value, otherwise show post value
+    var displayedVote: ScoringOperation { dirty ? dirtyVote : hierarchicalComment.commentView.myVote ?? .resetVote }
+    var displayedScore: Int { dirty ? dirtyScore : hierarchicalComment.commentView.counts.score }
+    var displayedSaved: Bool { dirty ? dirtySaved : hierarchicalComment.commentView.saved }
+    // ==== END TEMPORARY ====
+    
+    // environment
+    @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var appState: AppState
     
     @State var account: SavedAccount
+    
     @State var hierarchicalComment: HierarchicalComment
     
-    // Optional post context used to determin things
-    // like if the person is OP or not
-    @State var post: APIPostView? = nil
+//    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int) {
+//        self.account = account
+//        self.hierarchicalComment = hierarchicalComment
+//        self.depth = depth
+//    }
     
-    @State var isCollapsed = false
+    // state
+    @State var isCollapsed: Bool = false
     
-    @State private var isShowingTextSelectionSheet: Bool = false
-    @State private var localCommentScore: Int?
-    @State private var localVote: ScoringOperation?
+    // computed
+    var publishedAgo: String { getTimeIntervalFromNow(date: hierarchicalComment.commentView.post.published )}
     
-    /// The color to use on the upvote button depending on our current state
-    private var upvoteColor: Color {
-        let vote = localVote ?? hierarchicalComment.commentView.myVote
-        // TODO: when the posts overhaul merge is in this should use the same value
-        return vote == .upvote ? .green : .accentColor
+    func voidPrintShortLeft() -> Void {
+        print("short left")
+    }
+    func voidPrintLongLeft() -> Void {
+        print("long left")
+    }
+    func voidPrintShortRight() -> Void {
+        print("short right")
+    }
+    func voidPrintLongRight() -> Void {
+        print("long right")
     }
     
-    /// The color to use on the downvote button depending on our current state
-    private var downvoteColor: Color {
-        let vote = localVote ?? hierarchicalComment.commentView.myVote
-        // TODO: when the posts overhaul merge is in this should use the same value
-        return vote == .downvote ? .red : .accentColor
-    }
-
-    var body: some View
-    {
-        VStack(alignment: .leading, spacing: 10)
-        {
-            if hierarchicalComment.commentView.comment.deleted
-            {
-                Text("Comment was deleted")
-                    .italic()
-                    .foregroundColor(.secondary)
+    var body: some View {
+        VStack(spacing: 0) {
+            Group {
+                VStack(spacing: spacing) {
+                    commentHeader
+                    
+                    commentBody
+                    
+                    CommentInteractionBar(commentView: hierarchicalComment.commentView,
+                                          account: account,
+                                          displayedScore: displayedScore,
+                                          displayedVote: displayedVote,
+                                          displayedSaved: displayedSaved,
+                                          upvote: upvote,
+                                          downvote: downvote,
+                                          saveComment: saveComment)
+                }
+                .padding(spacing)
+                // CLASSIC SWIPEY
+//                .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             }
-            else
-            {
-                if hierarchicalComment.commentView.comment.removed
-                {
-                    Text("Comment was removed")
-                        .italic()
-                        .foregroundColor(.secondary)
-                }
-                else
-                {
-                    if !isCollapsed
-                    {
-                        MarkdownView(text: hierarchicalComment.commentView.comment.content)
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
-                            .transition(.move(edge: .top).combined(with: .opacity))
-                    }
-                }
-            }
-
-            HStack(spacing: 12)
-            {
-                #warning("TODO: Add post rating")
-                VoteComplex(
-                    vote: localVote ?? hierarchicalComment.commentView.myVote ?? .resetVote,
-                    score: localCommentScore ?? hierarchicalComment.commentView.counts.score,
-                    height: 20,
-                    upvote: upvote,
-                    downvote: downvote
-                )
-
-                HStack(spacing: 4)
-                {
-                    Button(action: {
-                        print("Would reply to comment ID \(hierarchicalComment.id)")
-                        
-                        commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
-                    }, label: {
-                        Image(systemName: "arrowshape.turn.up.backward")
-                    })
-
-                    Text("Reply")
-                        .foregroundColor(.accentColor)
-                }
-                .accessibilityAddTraits(.isButton)
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Reply")
-
-                Spacer()
-                
-                let relativeTime = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published)
-                let creator = hierarchicalComment.commentView.creator.displayName ?? ""
-                let commentorLabel = "Last updated \(relativeTime) ago by \(creator)"
-                
-                HStack
-                {
-                    #warning("TODO: Make the text selection work")
-                    /*
-                    Menu {
-                        Button {
-                            isShowingTextSelectionSheet.toggle()
-                        } label: {
-                            Label("Select text", systemImage: "selection.pin.in.out")
-                        }
-
-                    } label: {
-                        Label("More Actions", systemImage: "ellipsis")
-                            .labelStyle(.iconOnly)
-                    }
-                     */
-                    Text(relativeTime)
-                    UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, postContext: post, commentContext: hierarchicalComment.commentView.comment)
-                                    
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(commentorLabel)
-                .foregroundColor(.secondary)
-            }
-            .disabled(isCollapsed)
+            .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {
-                if isCollapsed
-                {
-                    withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
-                    {
-                        isCollapsed.toggle()
-                    }
+                withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
+                    isCollapsed.toggle()
                 }
             }
-            
+            .background(Color.systemBackground)
+            .addSwipeyActions(emptyLeftSymbolName: "arrow.up.square",
+                              shortLeftSymbolName: "arrow.up.square.fill",
+                              shortLeftAction: upvote,
+                              shortLeftColor: .upvoteColor,
+                              longLeftSymbolName: "arrow.down.square.fill",
+                              longLeftAction: downvote,
+                              longLeftColor: .downvoteColor,
+                              emptyRightSymbolName: "bookmark",
+                              shortRightSymbolName: "bookmark.fill",
+                              shortRightAction: saveComment,
+                              shortRightColor: .saveColor,
+                              longRightSymbolName: "arrowshape.turn.up.left.fill",
+                              longRightAction: voidPrintLongRight,
+                              longRightColor: .accentColor)
+            // HIDEY SWIPEY
+            .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             Divider()
-
-            if !isCollapsed
-            {
-                VStack(alignment: .leading, spacing: 10)
-                {
-                    ForEach(hierarchicalComment.children)
-                    { comment in
-                        CommentItem(account: account, hierarchicalComment: comment, post: post)
-                    }
-                }
+            
+            childComments
                 .transition(.move(edge: .top).combined(with: .opacity))
-                .clipped()
-            }
         }
+        // CLASSIC SWIPEY
+//        .mask(Rectangle() // clips top to make animation nice but allows swiping to the left
+//            .frame(width: 10000)
+//            .edgesIgnoringSafeArea(.leading))
+        // HIDEY SWIPEY
         .clipped()
-        .contentShape(Rectangle())
-        .onTapGesture
-        {
-            withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
-            {
-                isCollapsed.toggle()
+        .padding(.leading, depth == 0 ? 0 : indent)
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+    
+    @ViewBuilder
+    var commentHeader: some View {
+        HStack() {
+            UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
+            
+            Spacer()
+            
+            HStack(spacing: 2) {
+                Image(systemName: "clock")
+                Text(publishedAgo)
             }
         }
-        .font(.body)
-        .background(Color.systemBackground)
-        .padding(hierarchicalComment.commentView.comment.parentId == nil ? .horizontal : .leading)
-        .sheet(isPresented: $isShowingTextSelectionSheet) {
-            NavigationView {
-                VStack(alignment: .center, spacing: 0) {
-                    Text(hierarchicalComment.commentView.comment.content)
-                        .textSelection(.enabled)
-                    Spacer()
-                }
-                .navigationTitle("Select text")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            isShowingTextSelectionSheet.toggle()
-                        } label: {
-                            Text("Close")
-                        }
-                        
-                    }
-                }
-            }
-            .presentationDetents([.medium])
-        }
+        .font(.footnote)
+        .foregroundColor(.secondary)
     }
     
     private func upvote() async {
@@ -198,91 +139,34 @@ struct CommentItem: View
         try? await rate(hierarchicalComment, operation: .downvote)
     }
     
-    private func rate(_ comment: HierarchicalComment, operation: ScoringOperation) async throws {
-        guard localVote == nil else {
-            // if we have a local vote then we're in the middle of rating
-            // so avoid the user being able to initiate additional requests
-            return
+    @ViewBuilder
+    var commentBody: some View {
+        if hierarchicalComment.commentView.comment.deleted {
+            Text("Comment was deleted")
+                .italic()
+                .foregroundColor(.secondary)
         }
-        
-        defer {
-            // clear our 'faked' values after this function completes
-            localVote = nil
-            localCommentScore = nil
+        else if hierarchicalComment.commentView.comment.removed {
+            Text("Comment was removed")
+                .italic()
+                .foregroundColor(.secondary)
         }
-        
-        let operationToPerform: ScoringOperation?
-        switch operation {
-        case .upvote:
-            operationToPerform = upvoteAction(for: comment.commentView.myVote)
-        case .downvote:
-            operationToPerform = downvoteAction(for: comment.commentView.myVote)
-        default:
-            operationToPerform = nil
-            assertionFailure("unexpected case passed into function")
-        }
-        
-        guard let operationToPerform else { return }
-        
-        adjustLocalState(for: operationToPerform)
-        
-        let updatedComment = try await rateComment(
-            comment: comment.commentView,
-            operation: operationToPerform,
-            account: account,
-            commentTracker: commentTracker,
-            appState: appState
-        )
-        
-        if let updatedComment {
-            // if the rating succeeded update our genuine comment and clear the local state
-            self.hierarchicalComment = updatedComment
+        else if !isCollapsed {
+            MarkdownView(text: hierarchicalComment.commentView.comment.content)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+                // .transition(.move(edge: .top).combined(with: .opacity))
         }
     }
     
-    private func upvoteAction(for state: ScoringOperation?) -> ScoringOperation {
-        switch state {
-        case .upvote: return .resetVote
-        case .resetVote, .downvote, .none: return .upvote
+    @ViewBuilder
+    var childComments: some View {
+        if !isCollapsed {
+            // lazy stack because there might be *lots* of these
+            LazyVStack(spacing: 0) {
+                ForEach(hierarchicalComment.children) { child in
+                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1)
+                }
+            }
         }
-    }
-    
-    private func downvoteAction(for state: ScoringOperation?) -> ScoringOperation {
-        switch state {
-        case .downvote: return .resetVote
-        case .upvote, .resetVote, .none: return .downvote
-        }
-    }
-}
-
-private extension CommentItem {
-    
-    /// A method which adjusts our local state to reflect the expected outcome from the users rating
-    /// - Parameter operation: The operation the user is performing, eg `.upvote`
-    func adjustLocalState(for operation: ScoringOperation) {
-        let currentVote = hierarchicalComment.commentView.myVote ?? .resetVote
-        
-        switch operation {
-        // jump by two if we're going from one extreme to another...
-        case .upvote where currentVote == .downvote:
-            localCommentScore = hierarchicalComment.commentView.counts.score + 2
-        case .downvote where currentVote == .upvote:
-            localCommentScore = hierarchicalComment.commentView.counts.score - 2
-        // jump by one for standard upvotes/downvotes
-        // jump by one if we're resetting (user taps upvote while upvoted etc)
-        case .upvote,
-                .resetVote where currentVote == .downvote:
-            localCommentScore = hierarchicalComment.commentView.counts.score + 1
-        case .downvote,
-                .resetVote where currentVote == .upvote:
-            localCommentScore = hierarchicalComment.commentView.counts.score - 1
-        // if we get a reset while we're already reset or have no vote recorded
-        // then clear our local state as the API value is correct
-        default:
-            localVote = nil
-            localCommentScore = nil
-        }
-        
-        localVote = operation
     }
 }

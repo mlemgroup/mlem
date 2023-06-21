@@ -44,21 +44,23 @@ struct ExpandedPost: View
     @State private var viewID: UUID = UUID()
     
     @State private var errorAlert: ErrorAlert?
-
+    
     var body: some View
     {
         ScrollView {
-            postView
-            
-            if commentTracker.isLoading {
-                commentsLoadingView
-            }
-            else {
-                if commentTracker.comments.count == 0 {
-                    noCommentsView
+            VStack(spacing: 0) {
+                postView
+                
+                if commentTracker.isLoading {
+                    commentsLoadingView
                 }
                 else {
-                    commentsView
+                    if commentTracker.comments.count == 0 {
+                        noCommentsView
+                    }
+                    else {
+                        commentsView
+                    }
                 }
             }
         }
@@ -197,28 +199,22 @@ struct ExpandedPost: View
                 }
             }
         }
-        .toolbar
-        {
-            ToolbarItemGroup(placement: .navigationBarTrailing)
-            {
-                Menu
-                {
-                    Button
-                    {
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Menu {
+                    Button {
                         commentSortingType = .active
                     } label: {
                         Label("Active", systemImage: "bubble.left.and.bubble.right")
                     }
 
-                    Button
-                    {
+                    Button {
                         commentSortingType = .new
                     } label: {
                         Label("New", systemImage: "sun.max")
                     }
 
-                    Button
-                    {
+                    Button {
                         commentSortingType = .top
                     } label: {
                         Label("Top", systemImage: "calendar.day.timeline.left")
@@ -237,16 +233,13 @@ struct ExpandedPost: View
                 }
             }
 
-            ToolbarItemGroup(placement: .keyboard)
-            {
+            ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
 
-                Button
-                {
+                Button {
                     isReplyFieldFocused = false
                     
-                    if commentReplyTracker.commentToReplyTo != nil
-                    {
+                    if commentReplyTracker.commentToReplyTo != nil {
                         commentReplyTracker.commentToReplyTo = nil
                     }
                 } label: {
@@ -319,9 +312,9 @@ struct ExpandedPost: View
      Displays the comments
      */
     private var commentsView: some View {
-        LazyVStack(alignment: .leading, spacing: 15) {
+        LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.comments) { comment in
-                CommentItem(account: account, hierarchicalComment: comment, post: post)
+                CommentItem(account: account, hierarchicalComment: comment, depth: 0)
             }
         }
         .environmentObject(commentTracker)

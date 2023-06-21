@@ -7,30 +7,19 @@
 
 import SwiftUI
 
-struct ShareButton: View
-{
-    @State var urlToShare: URL
-    @State var isShowingButtonText: Bool
-    @State var customText: String?
-
-    var body: some View
-    {
-        Button {
-            showShareSheet(URLtoShare: urlToShare)
-            print("Shared")
-        } label: {
-            if !isShowingButtonText {
-                Image(systemName: "square.and.arrow.up")
+struct ShareButton: View {
+    let size: CGFloat
+    let shareFunc: () -> Void
+    
+    var body: some View {
+        Image(systemName: "square.and.arrow.up")
+            .frame(width: size, height: size)
+            .foregroundColor(.primary)
+            .background(RoundedRectangle(cornerRadius: 4)
+                .aspectRatio(1, contentMode: .fit)
+                .foregroundColor(.clear))
+            .onTapGesture {
+                shareFunc()
             }
-            else {
-                if let customText {
-                    Label(customText, systemImage: "square.and.arrow.up")
-                }
-                else {
-                    Label("Share…", systemImage: "square.and.arrow.up")
-                }
-            }
-        }
-        .foregroundColor(.primary)
     }
 }
