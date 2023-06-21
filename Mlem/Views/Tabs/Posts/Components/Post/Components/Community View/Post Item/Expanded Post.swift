@@ -317,7 +317,7 @@ struct ExpandedPost: View
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.comments) { comment in
-                CommentItem(account: account, hierarchicalComment: comment, depth: 0, isDragging: $isDragging)
+                CommentItem(account: account, hierarchicalComment: comment, depth: 0, isDragging: $isDragging, isReplyFieldFocused: _isReplyFieldFocused)
             }
         }
         .environmentObject(commentTracker)

@@ -12,25 +12,14 @@ extension CommentItem {
         do {
             let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await rateComment(comment: hierarchicalComment.commentView, operation: operation, account: account, commentTracker: commentTracker, appState: appState)
-            // try await rateCo(postId: postView.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
         } catch {
             print("failed to vote!")
         }
     }
-//
-//    func voteOnPost(inputOp: ScoringOperation) async -> Void {
-//        do {
-//            let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-//            try await ratePost(postId: postView.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
-//        } catch {
-//            print("failed to vote!")
-//        }
-//    }
     
     // helper functions
     
     func upvote() async -> Void {
-        print("upvoting")
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake downvote
@@ -50,7 +39,7 @@ extension CommentItem {
             // wait for vote
             await voteOnComment(inputOp: .upvote)
             
-            // unfake downvote
+            // unfake downvote and restore state
             dirty = false
             return
         }
@@ -87,16 +76,29 @@ extension CommentItem {
      */
     func saveComment() async -> Void {
         guard dirty else {
+            // fake save
+            dirtySaved.toggle()
+            dirty = true
+            
             do {
-                // fake save
-                dirtySaved.toggle()
-                dirty = true
-                // try await sendSavePostRequest(account: account, postId: commentView.id, save: dirtySaved, postTracker: postTracker)
+                try await sendSaveCommentRequest(account: account,
+                                                 commentId: hierarchicalComment.id,
+                                                 save: dirtySaved,
+                                                 commentTracker: commentTracker)
             } catch {
-                print("failed to save!")
+                print("failed to save comment!")
             }
+            
+            // unfake save
             dirty = false
             return
         }
+    }
+    
+    func replyToComment() async -> Void {
+        // TEMP
+        isShowingAlert = true
+        // END TEMP
+        // isReplyFieldFocused = true
     }
 }

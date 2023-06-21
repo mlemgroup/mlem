@@ -10,17 +10,24 @@ import SwiftUI
 struct CommentItem: View {
     // ==== TEMPORARY PENDING BACKEND CHANGES ====
     //state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
-    @State var dirtyVote: ScoringOperation = .resetVote
-    @State var dirtyScore: Int = 0
-    @State var dirtySaved: Bool = false
+    @State var dirtyVote: ScoringOperation // = .resetVote
+    @State var dirtyScore: Int // = 0
+    @State var dirtySaved: Bool // = false
     @State var dirty: Bool = false
     
-    @State var isActive: Bool = false
+    @State var isShowingAlert: Bool = false
     
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : hierarchicalComment.commentView.myVote ?? .resetVote }
     var displayedScore: Int { dirty ? dirtyScore : hierarchicalComment.commentView.counts.score }
     var displayedSaved: Bool { dirty ? dirtySaved : hierarchicalComment.commentView.saved }
+    
+    // TODO: init instead of computed when backend changes come through--this nested computed business is expensive
+    var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
+    var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
+    var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
+    var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
+    var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
     // ==== END TEMPORARY ====
     
     // environment
@@ -32,12 +39,7 @@ struct CommentItem: View {
     @State var hierarchicalComment: HierarchicalComment
     
     @Binding var isDragging: Bool
-    
-//    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int) {
-//        self.account = account
-//        self.hierarchicalComment = hierarchicalComment
-//        self.depth = depth
-//    }
+    @FocusState var isReplyFieldFocused: Bool
     
     // state
     @State var isCollapsed: Bool = false
@@ -45,17 +47,17 @@ struct CommentItem: View {
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: hierarchicalComment.commentView.post.published )}
     
-    func voidPrintShortLeft() -> Void {
-        print("short left")
-    }
-    func voidPrintLongLeft() -> Void {
-        print("long left")
-    }
-    func voidPrintShortRight() -> Void {
-        print("short right")
-    }
-    func voidPrintLongRight() -> Void {
-        print("long right")
+    // init needed to get dirty and clean aligned
+    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int, isDragging: Binding<Bool>, isReplyFieldFocused: FocusState<Bool>) {
+        self.account = account
+        self.hierarchicalComment = hierarchicalComment
+        self.depth = depth
+        _isDragging = isDragging
+        _isReplyFieldFocused = isReplyFieldFocused
+        
+        _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
+        _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
+        _dirtySaved = State(initialValue: hierarchicalComment.commentView.saved)
     }
     
     var body: some View {
@@ -92,19 +94,19 @@ struct CommentItem: View {
             }
             .background(Color.systemBackground)
             .addSwipeyActions(isDragging: $isDragging,
-                              emptyLeftSymbolName: "arrow.up.square",
-                              shortLeftSymbolName: "arrow.up.square.fill",
+                              emptyLeftSymbolName: emptyVoteSymbolName,
+                              shortLeftSymbolName: upvoteSymbolName,
                               shortLeftAction: upvote,
                               shortLeftColor: .upvoteColor,
-                              longLeftSymbolName: "arrow.down.square.fill",
+                              longLeftSymbolName: downvoteSymbolName,
                               longLeftAction: downvote,
                               longLeftColor: .downvoteColor,
-                              emptyRightSymbolName: "bookmark",
-                              shortRightSymbolName: "bookmark.fill",
+                              emptyRightSymbolName: emptySaveSymbolName,
+                              shortRightSymbolName: saveSymbolName,
                               shortRightAction: saveComment,
                               shortRightColor: .saveColor,
                               longRightSymbolName: "arrowshape.turn.up.left.fill",
-                              longRightAction: voidPrintLongRight,
+                              longRightAction: replyToComment,
                               longRightColor: .accentColor)
             // HIDEY SWIPEY
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
@@ -121,6 +123,9 @@ struct CommentItem: View {
         .clipped()
         .padding(.leading, depth == 0 ? 0 : indent)
         .transition(.move(edge: .top).combined(with: .opacity))
+        .alert("Not yet implemented!", isPresented: $isShowingAlert) {
+            Button("I love beta apps", role: .cancel) { }
+        }
     }
     
     @ViewBuilder
@@ -172,7 +177,7 @@ struct CommentItem: View {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
-                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1, isDragging: $isDragging)
+                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1, isDragging: $isDragging, isReplyFieldFocused: _isReplyFieldFocused)
                 }
             }
         }

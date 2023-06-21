@@ -150,7 +150,7 @@ struct AppearanceSettingsView: View {
                 )
             }
             
-            Section("Customization") {
+            Section("Further customization") {
                 SelectableSettingsItem(
                     settingIconSystemName: "arrow.up.arrow.down.square.fill",
                     settingName: "Vote complex style",

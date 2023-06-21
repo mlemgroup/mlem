@@ -36,11 +36,6 @@ struct FeedPost: View
     
     // swipe-to-vote
     @Binding var isDragging: Bool
-//    @State var dragPosition: CGSize = .zero
-//    @State var prevDragPosition: CGFloat = .zero
-//    @State var dragBackground: Color = .systemBackground
-//    @State var leftSwipeSymbol: String = "arrow.up"
-//    @State var rightSwipeSymbol: String = "arrowshape.turn.up.left"
     
     // in-feed reply
     @State var replyIsPresented: Bool = false
@@ -71,8 +66,8 @@ struct FeedPost: View
                                   longRightSymbolName: "arrowshape.turn.up.left.fill",
                                   longRightAction: replyToPost,
                                   longRightColor: .accentColor)
-                .sheet(isPresented: $replyIsPresented) {
-                    replySheetBody
+                .alert("Not yet implemented!", isPresented: $replyIsPresented) {
+                    Button("I love beta apps", role: .cancel) { }
                 }
             
             Divider()
@@ -88,61 +83,9 @@ struct FeedPost: View
             LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost)
         }
     }
+
     
-    @ViewBuilder
-    var replySheetBody: some View {
-        Text("I'm not ready yet! Come back in a later build :)")
-    }
-    
-    @ViewBuilder
-    var replySheetBodyWip: some View {
-        VStack() {
-            ZStack {
-                Text("Reply")
-                    .bold()
-                
-                HStack {
-                    Button("Cancel") {
-                        replyIsPresented = false
-                        replyContents = ""
-                    }
-                    Spacer()
-                    Button(action: {
-                        if (!replyContents.isEmpty) {
-                            Task(priority: .userInitiated) {
-                                do {
-                                    replyIsSending = true
-                                    try await postComment(
-                                        to: postView,
-                                        commentContents: replyContents,
-                                        account: account,
-                                        appState: appState
-                                    )
-                                    replyIsPresented = false
-                                    replyContents = ""
-                                } catch {
-                                    print("failed!")
-                                }
-                                replyIsSending = false
-                            }
-                        }
-                    }) {
-                        Image(systemName: replyContents.isEmpty ? "paperplane" : "paperplane.fill")
-                    }
-                }
-                .foregroundColor(.accentColor)
-            }
-            
-            TextField("Reply to post", text: $replyContents, prompt: Text("\(account.username):"), axis: .vertical)
-                .presentationDetents([.medium])
-            
-            Spacer()
-        }
-        .padding()
-        .overlay(replyIsSending ? Color(white: 0, opacity: 0.1) : .clear)
-    }
-    
-    // MARK reply handlers
+    // Reply handlers
     
     func upvotePost() async {
         await voteOnPost(inputOp: .upvote)

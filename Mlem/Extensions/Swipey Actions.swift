@@ -16,6 +16,9 @@ struct SwipeyView: ViewModifier {
     @State var leftSwipeSymbol: String
     @State var rightSwipeSymbol: String
     
+    // haptics
+    let tapper: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+    
     // isDragging callback
     @Binding var isDragging: Bool
     
@@ -109,7 +112,7 @@ struct SwipeyView: ViewModifier {
             content
                 .offset(x: dragPosition)
                 .highPriorityGesture(
-                    DragGesture(minimumDistance: 5, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
+                    DragGesture(minimumDistance: 10, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
                         .updating($dragState) { value, state, transaction in
                             // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
                             if dragState != .zero || value.location.x > 50 {
@@ -156,14 +159,15 @@ struct SwipeyView: ViewModifier {
                             rightSwipeSymbol = longRightSymbolName
                             dragBackground = longRightColor
                             if prevDragPosition >= -1 * AppConstants.longSwipeDragMin {
-                                AppConstants.hapticManager.notificationOccurred(.success)
+                                // AppConstants.hapticManager.notificationOccurred(.success)
+                                tapper.impactOccurred()
                             }
                         }
                         else if w < -1 * AppConstants.shortSwipeDragMin {
                             rightSwipeSymbol = shortRightSymbolName
                             dragBackground = shortRightColor
                             if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
-                                AppConstants.hapticManager.notificationOccurred(.success)
+                                tapper.impactOccurred()
                             }
                         }
                         else if w < 0 {
@@ -178,14 +182,14 @@ struct SwipeyView: ViewModifier {
                             leftSwipeSymbol = shortLeftSymbolName
                             dragBackground = shortLeftColor
                             if prevDragPosition <= AppConstants.shortSwipeDragMin {
-                                AppConstants.hapticManager.notificationOccurred(.success)
+                                tapper.impactOccurred()
                             }
                         }
                         else {
                             leftSwipeSymbol = longLeftSymbolName
                             dragBackground = longLeftColor
                             if prevDragPosition <= AppConstants.longSwipeDragMin {
-                                AppConstants.hapticManager.notificationOccurred(.success)
+                                tapper.impactOccurred()
                             }
                         }
                         prevDragPosition = w
