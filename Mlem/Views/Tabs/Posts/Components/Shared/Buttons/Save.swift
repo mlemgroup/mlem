@@ -7,26 +7,16 @@
 
 import SwiftUI
 
-import Foundation
-
 struct SaveButton: View {
     let saved: Bool
+    let size: CGFloat
     
     var body: some View {
         Image(systemName: "bookmark.fill")
-            .if (saved) { viewProxy in
-                viewProxy
-                    .padding(4)
-                    .foregroundColor(.white)
-                    .background(RoundedRectangle(cornerRadius: 4)
-                        .aspectRatio(1, contentMode: .fit)
-                        .foregroundColor(.saveColor))
-            }
-            .if (!saved) { viewProxy in
-                viewProxy
-                    .padding(4)
-                    .foregroundColor(.secondary)
-                    // .foregroundColor(.primary)
-            }
+            .frame(width: size, height: size)
+            .foregroundColor(saved ? .white : .primary)
+            .background(RoundedRectangle(cornerRadius: 4)
+                .aspectRatio(1, contentMode: .fit)
+                .foregroundColor(saved ? .saveColor : .clear))
     }
 }

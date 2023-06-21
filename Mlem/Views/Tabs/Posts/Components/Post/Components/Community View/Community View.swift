@@ -11,6 +11,7 @@ struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -174,8 +175,7 @@ struct CommunityView: View
                     isRefreshing = false
                 }
             }
-            .task(priority: .userInitiated)
-            {
+            .task(priority: .userInitiated) {
                 if postTracker.posts.isEmpty
                 {
                     print("Post tracker is empty")
@@ -327,10 +327,33 @@ struct CommunityView: View
                                 )
                             }
                         }
-                        else
-                        {
-                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
+//                        else
+//                        {
+//                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
+//                        }
+                        
+                        Button {
+                            shouldBlurNsfw.toggle()
+                        } label: {
+                            if (shouldBlurNsfw) {
+                                Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                            }
+                            else {
+                                Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                            }
                         }
+                        
+                        Button {
+                            shouldShowCompactPosts.toggle()
+                        } label: {
+                            if (shouldShowCompactPosts) {
+                                Label("Large posts", systemImage: "rectangle.expand.vertical")
+                            }
+                            else {
+                                Label("Compact posts", systemImage: "rectangle.compress.vertical")
+                            }
+                        }
+                        .foregroundColor(.primary)
                     } label: {
                         Label("More", systemImage: "ellipsis")
                     }
@@ -424,7 +447,7 @@ struct CommunityView: View
         }
     }
 
-    private var postListView: some View {
+    private var postListView: some View {        
         ForEach(filteredPosts) { post in
             NavigationLink(destination: ExpandedPost(
                 account: account,
@@ -434,7 +457,7 @@ struct CommunityView: View
             )
             {
                 FeedPost(
-                    post: post,
+                    postView: post,
                     account: account,
                     feedType: $feedType
                 )

@@ -11,6 +11,7 @@ import SwiftUI
 struct MlemApp: App
 {
     @AppStorage("hasUndergoneLegacyAccountDeletion_debug_3") var hasUndergoneLegaryAccountDeletion_debug: Bool = false
+    @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
 
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()
@@ -93,6 +94,10 @@ struct MlemApp: App
                         print("Failed while encoding favorited communities to data: \(encodingError)")
                     }
                 }
+                .onChange(of: lightOrDarkMode, perform: { value in
+                    let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
+                    windowScene?.windows.first?.overrideUserInterfaceStyle = value
+                })
                 .onAppear
                 {
                     if FileManager.default.fileExists(atPath: AppConstants.savedAccountsFilePath.path)
@@ -187,6 +192,10 @@ struct MlemApp: App
                             print("Failed while creating empty file: \(emptyFileCreationError)")
                         }
                     }
+                    
+                    // set app theme to user preference
+                    let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
+                    windowScene?.windows.first?.overrideUserInterfaceStyle = lightOrDarkMode
                 }
         }
     }

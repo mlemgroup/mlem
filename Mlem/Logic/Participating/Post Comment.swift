@@ -59,3 +59,24 @@ func postComment(
         _ = commentTracker.comments.update(with: response.commentView)
     }
 }
+
+/**
+ Used to post a comment directly from feed, where no comment tracker is present.
+ */
+@MainActor
+func postComment(
+    to post: APIPostView,
+    commentContents: String,
+    account: SavedAccount,
+    appState: AppState
+) async throws {
+    let request = CreateCommentRequest(
+        account: account,
+        content: commentContents,
+        languageId: nil,
+        parentId: nil,
+        postId: post.id
+    )
+    
+    try await APIClient().perform(request: request)
+}

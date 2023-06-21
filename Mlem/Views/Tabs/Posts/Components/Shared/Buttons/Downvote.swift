@@ -9,14 +9,16 @@ import SwiftUI
 
 struct DownvoteButton: View {
     let vote: ScoringOperation
+    let size: CGFloat
 
     var body: some View {
         Image(systemName: "arrow.down")
-            .padding(4)
+            .frame(width: size, height: size)
             .foregroundColor(vote == .downvote ? .white : .primary)
             .background(RoundedRectangle(cornerRadius: 4)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(vote == .downvote ? .downvoteColor : .clear))
+        
     }
 }
 

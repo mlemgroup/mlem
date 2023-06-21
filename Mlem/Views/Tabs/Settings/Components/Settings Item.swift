@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsItem: View
+struct SwitchableSettingsItem: View
 {
     @State var settingPictureSystemName: String
     @State var settingPictureColor: Color
@@ -24,6 +24,37 @@ struct SettingsItem: View
                 .foregroundColor(settingPictureColor)
 
             Toggle(settingName, isOn: $isTicked)
+        }
+    }
+}
+
+struct SelectableSettingsItem<T: SettingsOptions>: View
+{
+//    @State var settingIconSystemName: String
+//    @State var settingName: String
+//
+//    @Binding var currentValue: T
+//    @State var options: [T]
+    
+    let settingIconSystemName: String
+    let settingName: String
+    @Binding var currentValue: T
+    let options: [T]
+
+    var body: some View {
+        Picker(selection: $currentValue) {
+            ForEach(options) { settingsOption in
+                HStack {
+                    // settingsOption.icon
+                    Text(String(settingsOption.label))
+                }
+            }
+        } label: {
+            HStack(alignment: .center) {
+                Image(systemName: settingIconSystemName)
+                    .foregroundColor(.pink)
+                Text(settingName)
+            }
         }
     }
 }

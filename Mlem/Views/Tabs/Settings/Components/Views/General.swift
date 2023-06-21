@@ -27,19 +27,12 @@ struct GeneralSettingsView: View
         {
             Section("Default Sorting")
             {
-                Picker(selection: $defaultCommentSorting)
-                {
-                    ForEach(CommentSortTypes.allCases)
-                    { sortingOption in
-                        Text(String(describing: sortingOption))
-                    }
-                } label: {
-                    HStack(alignment: .center) {
-                        Image(systemName: "arrow.up.arrow.down.square.fill")
-                            .foregroundColor(.gray)
-                        Text("Comment sorting")
-                    }
-                }
+                SelectableSettingsItem(
+                    settingIconSystemName: "text.line.first.and.arrowtriangle.forward",
+                    settingName: "Comment sorting",
+                    currentValue: $defaultCommentSorting,
+                    options: CommentSortTypes.allCases
+                )
             }
             
             Section
