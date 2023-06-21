@@ -43,7 +43,11 @@ struct FeedPost: View
                     
                     // only display share if URL is valid
                     if let postUrl: URL = URL(string: post.post.apId) {
-                        ShareButton(urlToShare: postUrl, isShowingButtonText: true)
+                        ShareButton(urlToShare: postUrl, isShowingButtonText: true, customText: "Share Post...")
+                    }
+                    if let postContentUrl = post.post.url {
+                        let customText = postContentUrl.isImage ? "Share Image..." : postContentUrl.isFileURL ? "Share File..." : "Share Link..."
+                        ShareButton(urlToShare: postContentUrl, isShowingButtonText: true, customText: customText)
                     }
                 }
 
