@@ -157,6 +157,11 @@ struct FeedPost: View
     
     @ViewBuilder
     var replySheetBody: some View {
+        Text("I'm not ready yet! Come back in a later build :)")
+    }
+    
+    @ViewBuilder
+    var replySheetBodyWip: some View {
         VStack() {
             ZStack {
                 Text("Reply")
