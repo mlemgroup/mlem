@@ -24,7 +24,7 @@ struct AvatarView: View {
                     .clipShape(Circle())
                     .overlay(
                         Circle()
-                            .stroke(Color .secondary, style: StrokeStyle(lineWidth: 2))
+                            .stroke(Color .secondarySystemBackground, style: StrokeStyle(lineWidth: 2))
                     )
             }
             else if phase.error != nil

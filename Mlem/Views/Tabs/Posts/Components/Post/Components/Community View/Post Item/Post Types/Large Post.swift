@@ -59,6 +59,7 @@ struct LargePost: View {
                 postBodyView
             case .link:
                 WebsiteIconComplex(post: postView.post)
+                postBodyView
             case .text(let postBody):
                 // text posts need a little less space between title and body to look right, go figure
                 postBodyView
@@ -100,27 +101,26 @@ struct LargePost: View {
                     .blur(radius: showNsfwFilter ? 30 : 0)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(.secondary, lineWidth: 1))
+                        .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
             } placeholder: {
                 ProgressView()
             }
             
             if showNsfwFilter {
                 VStack {
-                    Image(systemName: "eye.trianglebadge.exclamationmark")
-                        .font(.largeTitle)
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.largeTitle).foregroundColor(.white)
                     Text("NSFW")
-                        .fontWeight(.black)
+                        .fontWeight(.black).foregroundColor(.white)
+                    Text("Tap to view").font(.subheadline).foregroundColor(.white)
                 }
-                .padding(8)
-                .background(RoundedRectangle(cornerRadius: 4)
-                    .foregroundColor(.systemBackground))
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
             }
+            
             else if postView.post.nsfw && shouldBlurNsfw {
-                // stacks are here to align image to top left of ZStack
+              //   // stacks are here to align image to top left of ZStack
                 // TODO: less janky way to do this?
                 HStack {
                     VStack {
@@ -128,7 +128,7 @@ struct LargePost: View {
                             .padding(4)
                             .frame(alignment: .topLeading)
                             .background(RoundedRectangle(cornerRadius: 4)
-                                .foregroundColor(.systemBackground))
+                                .foregroundColor(.secondarySystemBackground))
                             .onTapGesture {
                                 showNsfwFilterToggle.toggle()
                             }

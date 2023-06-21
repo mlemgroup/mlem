@@ -9,10 +9,14 @@ import Foundation
 
 extension APIPostView {
     var postType: PostType {
-        // url types: either image or link
-        #warning("TODO: is it safe to always use thumbnailURL here?")
-        if let postURL = post.thumbnailUrl {
-            return postURL.isImage ? .image(postURL) : .link(postURL)
+        // image post--return image link
+        if let postUrl = post.url, postUrl.isImage {
+            return .image(postUrl)
+        }
+        
+        // web post--return thumbnail link
+        else if let thumbnailUrl = post.thumbnailUrl {
+            return .link(thumbnailUrl)
         }
         
         // otherwise text, but post.body needs to be present, even if it's an empty string

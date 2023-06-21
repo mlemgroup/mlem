@@ -112,9 +112,9 @@ struct CompactPost: View {
         .foregroundColor(.secondary)
         .font(.title)
         .frame(width: thumbnailSize, height: thumbnailSize)
-        .adaptiveBackgroundColor(light: .lightGray, dark: .darkGray)
+        .background(Color(UIColor.systemGray4))
         .clipShape(RoundedRectangle(cornerRadius: 4))
         .overlay(RoundedRectangle(cornerRadius: 4)
-            .stroke(.secondary, lineWidth: 1))
+            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
     }
 }

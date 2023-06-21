@@ -60,6 +60,9 @@ func postComment(
     }
 }
 
+/**
+ Used to post a comment directly from feed, where no comment tracker is present.
+ */
 @MainActor
 func postComment(
     to post: APIPostView,
@@ -75,5 +78,5 @@ func postComment(
         postId: post.id
     )
     
-    let response = try await APIClient().perform(request: request)
+    try await APIClient().perform(request: request)
 }
