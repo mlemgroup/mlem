@@ -8,8 +8,7 @@
 import SwiftUI
 import CachedAsyncImage
 
-// TODO Before merging - Move views out to individual files
-struct HeaderLabel : View {
+struct CommunitySidebarHeaderLabel : View {
     @State var text: String
     
     init(_ text: String) {
@@ -21,7 +20,7 @@ struct HeaderLabel : View {
     }
 }
 
-struct HeaderAvatarView : View {
+struct CommunitySidebarHeaderAvatarView : View {
     @State var imageUrl: URL?
     
     var body: some View {
@@ -76,7 +75,7 @@ struct CommunitySidebarHeader : View {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         Spacer().frame(height: 110)
-                        HeaderAvatarView(imageUrl: communityDetails.communityView.community.icon)
+                        CommunitySidebarHeaderAvatarView(imageUrl: communityDetails.communityView.community.icon)
                         
                         HStack {
                             Text("Created \(getRelativeTime(date: communityDetails.communityView.community.published))")
@@ -89,8 +88,8 @@ struct CommunitySidebarHeader : View {
                     VStack(alignment: .trailing) {
                         Spacer().frame(height: 170)
                         HStack {
-                            HeaderLabel("\(communityDetails.communityView.counts.subscribers) Subscribers")
-                            HeaderLabel("\(communityDetails.online) Online")
+                            CommunitySidebarHeaderLabel("\(communityDetails.communityView.counts.subscribers) Subscribers")
+                            CommunitySidebarHeaderLabel("\(communityDetails.online) Online")
                         }
                         Spacer().frame(height: 20)
                         
@@ -149,9 +148,19 @@ struct CommunitySidebarView: View {
                 }
             }
             else if selectionSection == 1 {
-                VStack(alignment: .leading) {
+                VStack {
+                    Divider()
                     ForEach(communityDetails.moderators) { moderatorView in
-                        UserProfileLink(account: account, user: moderatorView.moderator)
+                        
+                        NavigationLink {
+                            UserView(userID: moderatorView.moderator.id, account: account)
+                        } label: {
+                            HStack {
+                                UserProfileLabel(account: account, user: moderatorView.moderator)
+                                Spacer()
+                            }.padding()
+                        }
+                        Divider()
                     }
                 }.padding(.vertical)
             }
@@ -166,7 +175,14 @@ struct SidebarPreview: PreviewProvider {
     - Ok maybe just a little bit.
     - I SAID **NO**!
     """
+    
+    static let previewCommunity = APICommunity(id: 0, name: "testcommunity", title: "Test Community", description: previewCommunityDescription, published: Date.now.advanced(by: -2000), updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!, local: false, icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), banner: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp") , hidden: false, postingRestrictedToMods: false, instanceId: 0)
+    
+    static let previewUser = APIPerson(id: 0, name: "ExamplePerson", displayName: "Example Person", avatar: nil, banned: false, published: "no", updated: nil, actorId: URL(string: "lem.foo.bar/u/exampleperson")!, bio: nil, local: false, banner: nil, deleted: false, inboxUrl: URL(string: "lem.foo.bar/u/exampleperson")!, sharedInboxUrl: nil, matrixUserId: nil, admin: false, botAccount: false, banExpires: nil, instanceId: 0)
+    
+    static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
+    
     static var previews: some View {
-        CommunitySidebarView(account: SavedAccount(id: 0, instanceLink: URL(string: "https://lemmy.foo.com/")!, accessToken: "abcd", username: "foobar"), communityDetails: .constant( GetCommunityResponse(communityView: APICommunityView(community: APICommunity(id: 0, name: "testcommunity", title: "Test Community", description: previewCommunityDescription, published: Date.now.advanced(by: -2000), updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!, local: false, icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), banner: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp") , hidden: false, postingRestrictedToMods: false, instanceId: 0), subscribed: .subscribed, blocked: false, counts: APICommunityAggregates(id: 0, communityId: 0, subscribers: 1234, posts: 0, comments: 0, published: Date.now, usersActiveDay: 0, usersActiveWeek: 0, usersActiveMonth: 0, usersActiveHalfYear: 0)), site: nil, moderators: [], online: 23, discussionLanguages: [], defaultPostLanguage: nil)), isActive: .constant(true))
+        CommunitySidebarView(account: SavedAccount(id: 0, instanceLink: URL(string: "https://lemmy.foo.com/")!, accessToken: "abcd", username: "foobar"), communityDetails: .constant( GetCommunityResponse(communityView: APICommunityView(community: previewCommunity, subscribed: .subscribed, blocked: false, counts: APICommunityAggregates(id: 0, communityId: 0, subscribers: 1234, posts: 0, comments: 0, published: Date.now, usersActiveDay: 0, usersActiveWeek: 0, usersActiveMonth: 0, usersActiveHalfYear: 0)), site: nil, moderators: [previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator], online: 23, discussionLanguages: [], defaultPostLanguage: nil)), isActive: .constant(true))
     }
 }
