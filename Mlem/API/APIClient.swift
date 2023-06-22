@@ -30,7 +30,6 @@ class APIClient {
     }
 
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
-        // print(request)
         
         let urlRequest = try urlRequest(from: request)
         let (data, response) = try await execute(urlRequest)

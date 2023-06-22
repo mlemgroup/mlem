@@ -385,7 +385,7 @@
 		CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API Post View - Post Type.swift"; sourceTree = "<group>"; };
 		CD6483352A39F20800EE6CA3 /* Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Type.swift"; sourceTree = "<group>"; };
 		CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFW Tag.swift"; sourceTree = "<group>"; };
-		CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Sorting Options.swift"; sourceTree = "<group>"; };
+		CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Comment Sorting Options.swift"; path = "../Comment Sorting Options.swift"; sourceTree = "<group>"; };
 		CD69F55A2A400D820028D4F7 /* App Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Theme.swift"; sourceTree = "<group>"; };
 		CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUserInterfaceStyle - SettingsOption conformant.swift"; sourceTree = "<group>"; };
 		CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ellipsis Menu.swift"; sourceTree = "<group>"; };
@@ -1064,7 +1064,6 @@
 				6317ABCA2A37292700603D76 /* FeedType.swift */,
 				6307378C2A1CEB7C00039852 /* My Vote.swift */,
 				CD6483352A39F20800EE6CA3 /* Post Type.swift */,
-				CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1102,6 +1101,7 @@
 			isa = PBXGroup;
 			children = (
 				CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */,
+				CD69F5582A400D270028D4F7 /* Comment Sorting Options.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
