@@ -101,21 +101,26 @@ struct LargePost: View {
                     .blur(radius: showNsfwFilter ? 30 : 0)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(.secondary, lineWidth: 1))
+                        .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
             } placeholder: {
                 ProgressView()
             }
             
             if showNsfwFilter {
                 VStack {
-                    Image(systemName: "eye.trianglebadge.exclamationmark")
+                    Image(systemName: "exclamationmark.triangle")
                         .font(.largeTitle)
+                        .foregroundColor(.white)
                     Text("NSFW")
                         .fontWeight(.black)
+                        .foregroundColor(.white)
+                    Text("Tap to view")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
                 }
                 .padding(8)
                 .background(RoundedRectangle(cornerRadius: 4)
-                    .foregroundColor(.systemBackground))
+                    .foregroundColor(.secondarySystemBackground))
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
