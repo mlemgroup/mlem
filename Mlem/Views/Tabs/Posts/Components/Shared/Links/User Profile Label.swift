@@ -20,7 +20,6 @@ struct UserProfileLabel : View {
     @State var commentContext: APIComment? = nil
     
     static let developerNames = [
-        "lemmy.ml/u/lFenix",
         "vlemmy.net/u/darknavi",
         "lemmy.ml/u/BrooklynMan",
         "beehaw.org/u/jojo",

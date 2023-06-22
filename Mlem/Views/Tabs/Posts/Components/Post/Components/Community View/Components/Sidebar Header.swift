@@ -11,13 +11,6 @@ import CachedAsyncImage
 struct CommunitySidebarHeader : View {
     @State var communityDetails: GetCommunityResponse
     
-    private func getRelativeTime(date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        
-        return formatter.localizedString(for: date, relativeTo: Date.now)
-    }
-    
     var body: some View {
         ZStack(alignment: .top) {
             // Banner
@@ -37,7 +30,7 @@ struct CommunitySidebarHeader : View {
                         CommunitySidebarHeaderAvatar(imageUrl: communityDetails.communityView.community.icon)
                         
                         HStack {
-                            Text("Created \(getRelativeTime(date: communityDetails.communityView.community.published))")
+                            Text("Created \(communityDetails.communityView.community.published.getRelativeTime(date: Date.now))")
                         }.foregroundColor(.gray)
                         
                     }.padding([.leading])
@@ -53,6 +46,16 @@ struct CommunitySidebarHeader : View {
                         Spacer().frame(height: 20)
                         
                         Text(communityDetails.communityView.community.name).font(.title).bold().lineLimit(1)
+                        if let communityHost = communityDetails.communityView.community.actorId.host() {
+                            Text("@\(communityDetails.communityView.community.name)@\(communityHost)")
+                                .font(.footnote)
+                                .lineLimit(1)
+                        }
+                        else {
+                            Text("@\(communityDetails.communityView.community.name)")
+                                .font(.footnote)
+                                .lineLimit(1)
+                        }
                         Text("@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)").font(.footnote).lineLimit(1)
                         
                     }.padding([.trailing])

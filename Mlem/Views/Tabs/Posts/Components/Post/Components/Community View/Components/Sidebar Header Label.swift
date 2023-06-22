@@ -15,6 +15,10 @@ struct CommunitySidebarHeaderLabel : View {
     }
     
     var body: some View {
-        Text(text).padding(3).foregroundColor(.white).background(RoundedRectangle(cornerRadius: 5).foregroundColor(.gray)).font(.footnote)
+        Text(text)
+            .padding(3)
+            .foregroundColor(.white)
+            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.gray))
+            .font(.footnote)
     }
 }
