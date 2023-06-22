@@ -58,7 +58,7 @@ struct LargePost: View {
     }
 
     // MARK: - Subviews
-    
+
     @ViewBuilder
     var postContentView: some View {
         switch postView.postType {
