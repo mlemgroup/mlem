@@ -43,16 +43,15 @@ struct CommentInteractionBar: View {
             VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
             
-            SaveButton(saved: displayedSaved, size: height)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        await saveComment()
-                    }
+            SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "comment") {
+                Task(priority: .userInitiated) {
+                    await saveComment()
                 }
+            }
             
             
              if let postURL = URL(string: commentView.post.apId) {
-                 ShareButton(size: height) {
+                 ShareButton(size: height, accessibilityContext: "comment") {
                      showShareSheet(URLtoShare: postURL)
                  }
              }

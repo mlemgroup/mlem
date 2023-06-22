@@ -323,7 +323,7 @@ struct CommunityView: View
                             Divider()
 
                             if let actorId = community?.actorId {
-                                ShareButton(size: 20) {
+                                ShareButton(size: 20, accessibilityContext: "community") {
                                     showShareSheet(URLtoShare: actorId)
                                 }
                             }
@@ -456,7 +456,7 @@ struct CommunityView: View
                 FeedPost(
                     postView: post,
                     account: account,
-                    feedType: $feedType,
+                    // feedType: $feedType,
                     isDragging: $isDragging
                 )
             }

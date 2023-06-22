@@ -188,7 +188,6 @@
 		CD69F5712A422EDD0028D4F7 /* Comment Interaction Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5702A422EDD0028D4F7 /* Comment Interaction Bar.swift */; };
 		CD69F5732A4239D70028D4F7 /* Comment Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5722A4239D70028D4F7 /* Comment Item.swift */; };
 		CD69F5752A42479A0028D4F7 /* Comment Item Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5742A42479A0028D4F7 /* Comment Item Logic.swift */; };
-		CD69F5772A4293490028D4F7 /* Comment Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5762A4293490028D4F7 /* Comment Header.swift */; };
 		CD69F5792A43942F0028D4F7 /* Save Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5782A43942F0028D4F7 /* Save Comment.swift */; };
 		CD69F57B2A4394F30028D4F7 /* Saving Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F57A2A4394F30028D4F7 /* Saving Failure.swift */; };
 		CDE6A80B2A43E9F00062D161 /* Comment Sort Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80A2A43E9F00062D161 /* Comment Sort Types.swift */; };
@@ -393,7 +392,6 @@
 		CD69F5702A422EDD0028D4F7 /* Comment Interaction Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Interaction Bar.swift"; sourceTree = "<group>"; };
 		CD69F5722A4239D70028D4F7 /* Comment Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Item.swift"; sourceTree = "<group>"; };
 		CD69F5742A42479A0028D4F7 /* Comment Item Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Item Logic.swift"; sourceTree = "<group>"; };
-		CD69F5762A4293490028D4F7 /* Comment Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Header.swift"; sourceTree = "<group>"; };
 		CD69F5782A43942F0028D4F7 /* Save Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Save Comment.swift"; sourceTree = "<group>"; };
 		CD69F57A2A4394F30028D4F7 /* Saving Failure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saving Failure.swift"; sourceTree = "<group>"; };
 		CDE6A80A2A43E9F00062D161 /* Comment Sort Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Sort Types.swift"; sourceTree = "<group>"; };
@@ -1017,7 +1015,6 @@
 				CD69F5702A422EDD0028D4F7 /* Comment Interaction Bar.swift */,
 				CD69F5722A4239D70028D4F7 /* Comment Item.swift */,
 				CD69F5742A42479A0028D4F7 /* Comment Item Logic.swift */,
-				CD69F5762A4293490028D4F7 /* Comment Header.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1363,7 +1360,6 @@
 				637218762A3A2AAD008C4816 /* BlockCommunity.swift in Sources */,
 				CD69F5752A42479A0028D4F7 /* Comment Item Logic.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
-				CD69F5772A4293490028D4F7 /* Comment Header.swift in Sources */,
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,

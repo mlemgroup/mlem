@@ -8,8 +8,24 @@
 import SwiftUI
 
 struct ShareButton: View {
+    
+    // ==== PARAMETERS ==== //
+    
     let size: CGFloat
-    let shareFunc: () -> Void
+    let share: () -> Void
+    
+    init(size: CGFloat, accessibilityContext: String, share: @escaping () -> Void) {
+        self.size = size
+        self.share = share
+        
+        self.shareButtonText = "Share \(accessibilityContext)"
+    }
+    
+    // ==== COMPUTED ==== //
+    
+    let shareButtonText: String
+    
+    // ==== BODY ==== //
     
     var body: some View {
         Image(systemName: "square.and.arrow.up")
@@ -19,7 +35,9 @@ struct ShareButton: View {
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(.clear))
             .onTapGesture {
-                shareFunc()
+                share()
             }
+            .accessibilityLabel(shareButtonText)
+            .accessibilityAction(named: shareButtonText) { share() }
     }
 }

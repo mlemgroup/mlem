@@ -18,6 +18,7 @@ import SwiftUI
  */
 struct FeedPost: View
 {
+    // MARK: Environment
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
@@ -25,11 +26,12 @@ struct FeedPost: View
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     
-    // arguments
+    // MARK: Parameters
+    
     let postView: APIPostView
     let account: SavedAccount
     
-    @Binding var feedType: FeedType
+    // MARK: State
     
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
@@ -42,13 +44,36 @@ struct FeedPost: View
     @State var replyContents: String = ""
     @State var replyIsSending: Bool = false
     
+    // MARK: Computed
+    // TODO: real-time swipe-to-vote feedback
+    //    var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
+    //    var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
+    //    var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
+    //    var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
+    //    var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
+    
     var body: some View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
                 .contextMenu {
-                    Button("hit me!") {
-                        print("hit")
+                    Button("Upvote") {
+                        Task(priority: .userInitiated) {
+                            await upvotePost()
+                        }
+                    }
+                    Button("Downvote") {
+                        Task(priority: .userInitiated) {
+                            await downvotePost()
+                        }
+                    }
+                    Button("Save") {
+                        Task(priority: .userInitiated) {
+                            await savePost()
+                        }
+                    }
+                    Button("Reply") {
+                        replyToPost()
                     }
                 }
                 .addSwipeyActions(isDragging: $isDragging,
@@ -83,7 +108,7 @@ struct FeedPost: View
             LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost)
         }
     }
-
+    
     
     // Reply handlers
     

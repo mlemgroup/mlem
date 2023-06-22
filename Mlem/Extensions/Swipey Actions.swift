@@ -107,6 +107,7 @@ struct SwipeyView: ViewModifier {
                     .foregroundColor(.white)
                     .padding(.horizontal, 20)
             }
+            .accessibilityHidden(true) // prevent these from popping up in VO
             
             // content
             content

@@ -11,13 +11,11 @@ extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async -> Void {
         do {
             let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await rateComment(comment: hierarchicalComment.commentView, operation: operation, account: account, commentTracker: commentTracker, appState: appState)
+            try await _ = rateComment(comment: hierarchicalComment.commentView, operation: operation, account: account, commentTracker: commentTracker, appState: appState)
         } catch {
             print("failed to vote!")
         }
     }
-    
-    // helper functions
     
     func upvote() async -> Void {
         // don't do anything if currently awaiting a vote response
@@ -95,7 +93,7 @@ extension CommentItem {
         }
     }
     
-    func replyToComment() async -> Void {
+    func replyToComment() -> Void {
         // TEMP
         isShowingAlert = true
         // END TEMP

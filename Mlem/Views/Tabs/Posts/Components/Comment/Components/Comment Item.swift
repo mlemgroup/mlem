@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct CommentItem: View {
-    #warning("ERIC TODO: accessibility")
-#warning("ERIC TODO: check for OP user")
-#warning("ERIC TODO: context menus")
-    // ==== TEMPORARY PENDING BACKEND CHANGES ====
+    // MARK: Temporary
     //state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation // = .resetVote
     @State var dirtyScore: Int // = 0
@@ -31,16 +28,20 @@ struct CommentItem: View {
     var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
     var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
     var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-    // ==== END TEMPORARY ====
     
-    // constants
+    // MARK: Environment
+
+    @EnvironmentObject var commentTracker: CommentTracker
+    @EnvironmentObject var commentReplyTracker: CommentReplyTracker
+    @EnvironmentObject var appState: AppState
+    
+    // MARK: Constants
+    
     let threadingColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
     let spacing: CGFloat = 8
     let indent: CGFloat = 10
     
-    // environment
-    @EnvironmentObject var commentTracker: CommentTracker
-    @EnvironmentObject var appState: AppState
+    // MARK: Parameters
     
     let account: SavedAccount
     let hierarchicalComment: HierarchicalComment
@@ -48,12 +49,6 @@ struct CommentItem: View {
     
     @Binding var isDragging: Bool
     @FocusState var isReplyFieldFocused: Bool
-    
-    // state
-    @State var isCollapsed: Bool = false
-    
-    // computed
-    var publishedAgo: String { getTimeIntervalFromNow(date: hierarchicalComment.commentView.post.published )}
     
     // init needed to get dirty and clean aligned
     init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int, isDragging: Binding<Bool>, isReplyFieldFocused: FocusState<Bool>) {
@@ -66,13 +61,31 @@ struct CommentItem: View {
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
         _dirtySaved = State(initialValue: hierarchicalComment.commentView.saved)
+        
+        publishedAgo = getTimeIntervalFromNow(date: hierarchicalComment.commentView.post.published )
+        let commentor = hierarchicalComment.commentView.creator
+        commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
     }
+    
+    // MARK: State
+    
+    @State var isCollapsed: Bool = false
+    
+    // MARK: Computed
+    
+    var publishedAgo: String
+    let commentorLabel: String
+    
+    // MARK: Body
     
     var body: some View {
         VStack(spacing: 0) {
             Group {
                 VStack(spacing: spacing) {
                     commentHeader
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(commentorLabel)
+                        .foregroundColor(.secondary)
                     
                     commentBody
                     
@@ -94,8 +107,23 @@ struct CommentItem: View {
                 }
             }
             .contextMenu {
-                Button("hit me!") {
-                    print("hit")
+                Button("Upvote") {
+                    Task(priority: .userInitiated) {
+                        await upvote()
+                    }
+                }
+                Button("Downvote") {
+                    Task(priority: .userInitiated) {
+                        await downvote()
+                    }
+                }
+                Button("Save") {
+                    Task(priority: .userInitiated) {
+                        await saveComment()
+                    }
+                }
+                Button("Reply") {
+                    replyToComment()
                 }
             }
             .background(Color.systemBackground)
@@ -128,6 +156,8 @@ struct CommentItem: View {
         }
     }
     
+    // MARK: Subviews
+    
     @ViewBuilder
     var commentHeader: some View {
         HStack() {
@@ -143,14 +173,6 @@ struct CommentItem: View {
         .font(.footnote)
         .foregroundColor(.secondary)
     }
-    
-//    private func upvote() async {
-//        try? await rate(hierarchicalComment, operation: .upvote)
-//    }
-//
-//    private func downvote() async {
-//        try? await rate(hierarchicalComment, operation: .downvote)
-//    }
     
     @ViewBuilder
     var commentBody: some View {
