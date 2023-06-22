@@ -16,21 +16,6 @@ struct UserProfileLink: View
     // to pick the correct flair
     @State var postContext: APIPostView? = nil
     @State var commentContext: APIComment? = nil
-    
-    static let developerNames = [
-        "lemmy.ml/u/lFenix",
-        "vlemmy.net/u/darknavi",
-        "lemmy.ml/u/BrooklynMan",
-        "beehaw.org/u/jojo",
-        "sh.itjust.works/u/ericbandrews"
-    ]
-    
-    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
-    static let flairMod = UserProfileLinkFlair(color: Color.green, systemIcon: "shield.fill")
-    static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
-    static let flairOP = UserProfileLinkFlair(color: Color.orange, systemIcon: "person.fill")
-    static let flairAdmin = UserProfileLinkFlair(color: Color.red, systemIcon: "crown.fill")
-    static let flairRegular = UserProfileLinkFlair(color: Color.gray)
    
     var body: some View
     {

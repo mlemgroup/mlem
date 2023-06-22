@@ -23,6 +23,7 @@ struct UserProfileLabel : View {
         "vlemmy.net/u/darknavi",
         "lemmy.ml/u/BrooklynMan",
         "beehaw.org/u/jojo",
+        "sh.itjust.works/u/ericbandrews",
     ]
     
     static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
