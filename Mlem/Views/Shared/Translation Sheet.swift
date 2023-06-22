@@ -14,7 +14,7 @@ struct TranslationSheet: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            InAppWebView(url: URL(string: "https://translate.google.com/?tl=\(Locale.current.language.languageCode?.identifier ?? "")&q=\(textToTranslate ?? "bobo")")!)
+            InAppWebView(url: URL(string: "https://translate.google.com/?tl=\(Locale.current.language.languageCode?.identifier ?? "")&q=\(textToTranslate ?? "Missing Text")")!)
             Button() {
                 withAnimation {
                     shouldShow = false
