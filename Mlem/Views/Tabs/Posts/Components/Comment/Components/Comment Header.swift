@@ -16,14 +16,7 @@ struct CommentHeader: View {
     
     var body: some View {
                 HStack() {
-                    // UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
-                    // poster
-                    NavigationLink(destination: UserView(userID: commentView.creator.id, account: account)) {
-                        Text(commentView.creator.name)
-        //                    .font(.caption)
-        //                    .italic()
-                            // .foregroundColor(usernameColor)
-                    }
+                    UserProfileLink(account: account, user: commentView.creator)
         
                     Spacer()
         
