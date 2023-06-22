@@ -12,9 +12,11 @@ struct CommunitySidebarView: View {
     @State var account: SavedAccount
     @Binding var communityDetails: GetCommunityResponse?
     @Binding var isActive: Bool
+    
+    @State private var selectionSection = 0
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        Section {
             if let communityDetails {
                 view(for: communityDetails)
             } else {
@@ -32,67 +34,59 @@ struct CommunitySidebarView: View {
     
     @ViewBuilder
     private func view(for communityDetails: GetCommunityResponse) -> some View {
-        HStack(alignment: .center, spacing: 10) {
-            HStack(alignment: .firstTextBaseline, spacing: 5) {
-                Text(communityDetails.communityView.counts.subscribers.formatted())
-                Text("subs")
-                    .font(.caption)
+        ScrollView {
+            CommunitySidebarHeader(communityDetails: communityDetails)
+            Picker(selection: $selectionSection, label: Text("Profile Section")) {
+                Text("Description").tag(0)
+                Text("Moderators").tag(1)
             }
-            .padding(.vertical, 5)
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
             
-            Divider()
-            
-            HStack(alignment: .firstTextBaseline, spacing: 5) {
-                Text(communityDetails.communityView.counts.posts.formatted())
-                Text("posts")
-                    .font(.caption)
-            }
-            .padding(.vertical, 5)
-            
-            Divider()
-            
-            HStack(alignment: .firstTextBaseline, spacing: 5) {
-                Text(communityDetails.online.formatted())
-                Text("online")
-                    .font(.caption)
-            }
-            .padding(.vertical, 5)
-        }
-        .fixedSize(horizontal: false, vertical: true)
-        .frame(maxWidth: .infinity)
-        .background(.thinMaterial)
-        
-        Divider()
-        
-        List
-        {
-            Section("Description")
-            {
-                if let communityDescription = communityDetails
+            if selectionSection == 0 {
+                if let description = communityDetails
                     .communityView
                     .community
-                    .description
-                {
-                    MarkdownView(text: communityDescription)
-                }
-                else
-                {
-                    Text("Community has no description")
-                        .foregroundColor(.secondary)
+                    .description {
+                    MarkdownView(text: description).padding()
                 }
             }
-
-            NavigationLink {
-                List {
+            else if selectionSection == 1 {
+                VStack {
+                    Divider()
                     ForEach(communityDetails.moderators) { moderatorView in
-                        UserProfileLink(account: account, user: moderatorView.moderator)
+                        
+                        NavigationLink {
+                            UserView(userID: moderatorView.moderator.id, account: account)
+                        } label: {
+                            HStack {
+                                UserProfileLabel(account: account, user: moderatorView.moderator)
+                                Spacer()
+                            }.padding()
+                        }
+                        Divider()
                     }
-                }
-                .navigationTitle("Moderators")
-                .navigationBarTitleDisplayMode(.inline)
-            } label: {
-                Text("Moderators")
+                }.padding(.vertical)
             }
         }
+    }
+}
+
+struct SidebarPreview: PreviewProvider {
+    static let previewCommunityDescription: String = """
+    This is an example community with some markdown:
+    - Do not ~wear silly hats~ spam!
+    - Ok maybe just a little bit.
+    - I SAID **NO**!
+    """
+    
+    static let previewCommunity = APICommunity(id: 0, name: "testcommunity", title: "Test Community", description: previewCommunityDescription, published: Date.now.advanced(by: -2000), updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!, local: false, icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), banner: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp") , hidden: false, postingRestrictedToMods: false, instanceId: 0)
+    
+    static let previewUser = APIPerson(id: 0, name: "ExamplePerson", displayName: "Example Person", avatar: nil, banned: false, published: "no", updated: nil, actorId: URL(string: "lem.foo.bar/u/exampleperson")!, bio: nil, local: false, banner: nil, deleted: false, inboxUrl: URL(string: "lem.foo.bar/u/exampleperson")!, sharedInboxUrl: nil, matrixUserId: nil, admin: false, botAccount: false, banExpires: nil, instanceId: 0)
+    
+    static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
+    
+    static var previews: some View {
+        CommunitySidebarView(account: SavedAccount(id: 0, instanceLink: URL(string: "https://lemmy.foo.com/")!, accessToken: "abcd", username: "foobar"), communityDetails: .constant( GetCommunityResponse(communityView: APICommunityView(community: previewCommunity, subscribed: .subscribed, blocked: false, counts: APICommunityAggregates(id: 0, communityId: 0, subscribers: 1234, posts: 0, comments: 0, published: Date.now, usersActiveDay: 0, usersActiveWeek: 0, usersActiveMonth: 0, usersActiveHalfYear: 0)), site: nil, moderators: [previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator], online: 23, discussionLanguages: [], defaultPostLanguage: nil)), isActive: .constant(true))
     }
 }

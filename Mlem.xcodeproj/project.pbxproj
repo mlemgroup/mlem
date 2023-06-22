@@ -159,6 +159,12 @@
 		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
 		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
 		63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */; };
+		6D15D74C2A44DC240061B5CB /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D15D74B2A44DC240061B5CB /* Date.swift */; };
+		6D405AFF2A43E66600C65F9C /* User Profile Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D405AFE2A43E66600C65F9C /* User Profile Label.swift */; };
+		6D405B012A43E79400C65F9C /* Sidebar Header Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D405B002A43E79400C65F9C /* Sidebar Header Avatar.swift */; };
+		6D405B032A43E7DB00C65F9C /* Sidebar Header Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D405B022A43E7DB00C65F9C /* Sidebar Header Label.swift */; };
+		6D405B052A43E82300C65F9C /* Sidebar Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D405B042A43E82300C65F9C /* Sidebar Header.swift */; };
+		6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8601ED2A43C0B1002A56FC /* Image.swift */; };
 		CD04D5D72A3614A8008EF95B /* Post Interaction Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */; };
 		CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D82A3614BE008EF95B /* Large Post.swift */; };
 		CD04D5DB2A36154F008EF95B /* Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DA2A36154F008EF95B /* Save.swift */; };
@@ -351,6 +357,12 @@
 		63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionWebSocketTask - Send Ping.swift"; sourceTree = "<group>"; };
 		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
 		63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Correct URL to Endpoint.swift"; sourceTree = "<group>"; };
+		6D15D74B2A44DC240061B5CB /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		6D405AFE2A43E66600C65F9C /* User Profile Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Profile Label.swift"; sourceTree = "<group>"; };
+		6D405B002A43E79400C65F9C /* Sidebar Header Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar Header Avatar.swift"; sourceTree = "<group>"; };
+		6D405B022A43E7DB00C65F9C /* Sidebar Header Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar Header Label.swift"; sourceTree = "<group>"; };
+		6D405B042A43E82300C65F9C /* Sidebar Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar Header.swift"; sourceTree = "<group>"; };
+		6D8601ED2A43C0B1002A56FC /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Interaction Bar.swift"; sourceTree = "<group>"; };
 		CD04D5D82A3614BE008EF95B /* Large Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Large Post.swift"; sourceTree = "<group>"; };
 		CD04D5DA2A36154F008EF95B /* Save.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Save.swift; sourceTree = "<group>"; };
@@ -489,6 +501,7 @@
 			isa = PBXGroup;
 			children = (
 				6322A5CF27F8629700135D4F /* User Profile Link.swift */,
+				6D405AFE2A43E66600C65F9C /* User Profile Label.swift */,
 			);
 			path = Links;
 			sourceTree = "<group>";
@@ -548,6 +561,8 @@
 				508845CE2A3641160088E483 /* JSONDecoder+Default.swift */,
 				CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */,
 				CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */,
+				6D8601ED2A43C0B1002A56FC /* Image.swift */,
+				6D15D74B2A44DC240061B5CB /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -630,9 +645,12 @@
 		63344C6F2A098054001BC616 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				63344C702A098060001BC616 /* Sidebar.swift */,
 				632578172A29F83C00446A66 /* Sorting Menu.swift */,
 				63A01E532A2B980100C84E04 /* Subscribe Button.swift */,
+				63344C702A098060001BC616 /* Sidebar.swift */,
+				6D405B002A43E79400C65F9C /* Sidebar Header Avatar.swift */,
+				6D405B022A43E7DB00C65F9C /* Sidebar Header Label.swift */,
+				6D405B042A43E82300C65F9C /* Sidebar Header.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1269,6 +1287,7 @@
 				63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
 				6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */,
+				6D405B032A43E7DB00C65F9C /* Sidebar Header Label.swift in Sources */,
 				632578182A29F83C00446A66 /* Sorting Menu.swift in Sources */,
 				508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */,
 				637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */,
@@ -1294,6 +1313,7 @@
 				63E5D3822A13831800EC1FBD /* Community Search View.swift in Sources */,
 				637218572A3A2AAD008C4816 /* APISiteView.swift in Sources */,
 				63AF452D2A2F37EB00E0266F /* Own Account Tracker.swift in Sources */,
+				6D405AFF2A43E66600C65F9C /* User Profile Label.swift in Sources */,
 				63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */,
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
 				CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */,
@@ -1304,6 +1324,7 @@
 				6363D60227EE1EC400E34822 /* Comment Item.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
 				637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */,
+				6D405B012A43E79400C65F9C /* Sidebar Header Avatar.swift in Sources */,
 				6314C9F12A194FFA00B08405 /* Post Comment.swift in Sources */,
 				637218662A3A2AAD008C4816 /* SavePost.swift in Sources */,
 				637218452A3A2AAD008C4816 /* APICommentAggregates.swift in Sources */,
@@ -1334,6 +1355,7 @@
 				CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */,
 				CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
+				6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
 				637218612A3A2AAD008C4816 /* CreatePostLike.swift in Sources */,
 				63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */,
@@ -1345,6 +1367,7 @@
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
+				6D405B052A43E82300C65F9C /* Sidebar Header.swift in Sources */,
 				63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */,
 				6372184E2A3A2AAD008C4816 /* APIPersonView.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
@@ -1377,6 +1400,7 @@
 				637218542A3A2AAD008C4816 /* APILanguage.swift in Sources */,
 				6372186E2A3A2AAD008C4816 /* DeleteComment.swift in Sources */,
 				6332FDCF27EFDD2E0009A98A /* Accounts Page.swift in Sources */,
+				6D15D74C2A44DC240061B5CB /* Date.swift in Sources */,
 				63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */,
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
