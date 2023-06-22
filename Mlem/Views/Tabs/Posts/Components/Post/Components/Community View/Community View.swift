@@ -128,7 +128,7 @@ struct CommunityView: View {
         .sheet(isPresented: $isPostingComment) { [isPostingComment] in // capture here to force state re-eval
             if let post = replyingToPost {
                 let replyTo: ReplyToFeedPost = ReplyToFeedPost(post: post, account: account, appState: appState)
-                
+
                 GeneralCommentComposerView(replyTo: replyTo)
             }
         }
@@ -186,7 +186,7 @@ struct CommunityView: View {
                                             )) {
                                 Label("Sidebar", systemImage: "sidebar.right")
                             }
-                            
+
                             Button {
                                 isComposingPost.toggle()
                             } label: {
@@ -219,7 +219,7 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
-                            
+
                             SubscribeButton(
                                 communityDetails: Binding(
                                     get: {
@@ -231,7 +231,7 @@ struct CommunityView: View {
                                     }),
                                 account: account
                             )
-                            
+
                             BlockCommunityButton(account: account, communityDetails: Binding(
                                 get: {
                                     communityDetails.communityView
@@ -391,7 +391,7 @@ struct CommunityView: View {
             .accessibilityElement(children: .combine)
         }
     }
-    
+
     func replyToPost(replyTo: APIPostView) {
         replyingToPost = replyTo
         isPostingComment = true
@@ -409,7 +409,7 @@ struct CommunityView: View {
             handle(error)
         }
     }
-    
+
     func refreshFeed() async {
         do {
             try await postTracker.refresh(
@@ -422,7 +422,7 @@ struct CommunityView: View {
             handle(error)
         }
     }
-    
+
     private func handle(_ error: Error) {
         switch error {
         case APIClientError.networking:
@@ -431,7 +431,7 @@ struct CommunityView: View {
             guard postTracker.items.isEmpty else {
                 return
             }
-            
+
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"

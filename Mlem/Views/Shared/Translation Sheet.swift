@@ -11,7 +11,7 @@ import SwiftUI
 struct TranslationSheet: View {
     @Binding var textToTranslate: String?
     @Binding var shouldShow: Bool
-    
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             InAppWebView(url: getTranslateUrl(textToTranslate))
@@ -40,7 +40,7 @@ struct TranslationSheet: View {
             }
         }
     }
-    
+
     func getTranslateUrl(_ text: String?) -> URL {
         let baseURL = "https://translate.google.com/?tl="
         let lang = Locale.current.language.languageCode?.identifier ?? ""

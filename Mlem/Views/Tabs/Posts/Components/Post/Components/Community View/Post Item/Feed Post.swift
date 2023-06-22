@@ -96,6 +96,9 @@ struct FeedPost: View {
                 Divider()
             }
         }
+        .contextMenu {
+            EasyTranslateButton(text: .constant(postView.post.body))
+        }
         .sheet(isPresented: $isComposingReport) {
             ReportComposerView(account: account, reportedPost: postView)
         }
@@ -289,6 +292,7 @@ struct FeedPost: View {
             enabled: !(postView.post.body?.isEmpty ?? true)) {
                 translateText(postView.post.body ?? postView.post.name)
         })
+
 
         return ret
     }

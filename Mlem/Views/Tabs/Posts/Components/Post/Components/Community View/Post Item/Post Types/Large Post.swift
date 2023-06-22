@@ -59,28 +59,22 @@ struct LargePost: View {
     }
 
     // MARK: - Subviews
-    
+
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
-            let view = Group {
-                if isExpanded {
-                    MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
-                        .font(.subheadline)
-                } else {
-                    MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "), isNsfw: postView.post.nsfw)
-                        .lineLimit(8)
-                        .font(.subheadline)
-                }
-            }
             if isExpanded {
-                view
-                .contextMenu {
-                    EasyTranslateButton(text: .constant(bodyText))
-                }
+                MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
+                    .font(.subheadline)
+                    .contextMenu {
+                        EasyTranslateButton(text: .constant(bodyText))
+                    }
             } else {
-                view
+                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "), isNsfw: postView.post.nsfw)
+                    .lineLimit(8)
+                    .font(.subheadline)
             }
+
         }
     }
 }

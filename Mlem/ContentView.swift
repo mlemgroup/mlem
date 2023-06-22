@@ -59,18 +59,19 @@ struct ContentView: View {
             TranslationSheet(textToTranslate: $textToTranslate, shouldShow: $showTranslate)
         })
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+
+    }
+
+    func translateText(_ text: String) {
+        self.textToTranslate = text//text
+        withAnimation {
+            showTranslate = true
+        }
     }
 
     // MARK: helpers
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"
-    }
-
-    func translateText(_ text: String) {
-        self.textToTranslate = text
-        withAnimation {
-            showTranslate = true
-        }
     }
 }
 
