@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct CommentItem: View {
+    #warning("ERIC TODO: accessibility")
+#warning("ERIC TODO: check for OP user")
+#warning("ERIC TODO: context menus")
     // ==== TEMPORARY PENDING BACKEND CHANGES ====
     //state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation // = .resetVote
@@ -83,8 +86,6 @@ struct CommentItem: View {
                                           saveComment: saveComment)
                 }
                 .padding(spacing)
-                // CLASSIC SWIPEY
-//                .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             }
             .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {
@@ -113,18 +114,12 @@ struct CommentItem: View {
                               longRightSymbolName: "arrowshape.turn.up.left.fill",
                               longRightAction: replyToComment,
                               longRightColor: .accentColor)
-            // HIDEY SWIPEY
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             Divider()
             
             childComments
                 .transition(.move(edge: .top).combined(with: .opacity))
         }
-        // CLASSIC SWIPEY
-//        .mask(Rectangle() // clips top to make animation nice but allows swiping to the left
-//            .frame(width: 10000)
-//            .edgesIgnoringSafeArea(.leading))
-        // HIDEY SWIPEY
         .clipped()
         .padding(.leading, depth == 0 ? 0 : indent)
         .transition(.move(edge: .top).combined(with: .opacity))

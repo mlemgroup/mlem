@@ -57,22 +57,12 @@ struct CommentInteractionBar: View {
                  }
              }
             
+            #warning("ERIC TODO: flesh out")
             EllipsisMenu(size: height, shareUrl: commentView.post.apId)
             
             Spacer()
         }
         .font(.footnote)
-    }
-    
-    // subviews
-    
-    var infoBlock: some View {
-        // post info component
-        HStack(spacing: 8) {
-            Text(publishedAgo)
-            UserProfileLink(account: account, user: commentView.creator)
-        }
-        .foregroundColor(.secondary)
     }
 }
 
