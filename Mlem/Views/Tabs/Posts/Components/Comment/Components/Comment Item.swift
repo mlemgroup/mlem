@@ -180,6 +180,9 @@ struct CommentItem: View {
             } else if !isCollapsed {
                 MarkdownView(text: hierarchicalComment.commentView.comment.content, isNsfw: hierarchicalComment.commentView.post.nsfw)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .contextMenu {
+                        EasyTranslateButton(text: .constant(hierarchicalComment.commentView.comment.content))
+                    }
             }
 
             // embedded post

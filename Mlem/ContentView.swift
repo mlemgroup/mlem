@@ -87,7 +87,7 @@ struct ContentView: View {
     }
 
     func translateText(_ text: String) {
-        self.textToTranslate = text
+        self.textToTranslate = text//text
         withAnimation {
             showTranslate = true
         }
