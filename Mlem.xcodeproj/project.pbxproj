@@ -226,6 +226,9 @@
 		B1BBAC542A5DE80B00E10030 /* Translation Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BBAC532A5DE80B00E10030 /* Translation Text.swift */; };
 		B1CB6E732A4C5B1100DA9675 /* Alternative Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */; };
 		B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */; };
+		B197D83E2A445E22003FE61A /* In App WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83D2A445E22003FE61A /* In App WebView.swift */; };
+		B197D8402A446039003FE61A /* Translation Shower.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83F2A446039003FE61A /* Translation Shower.swift */; };
+		B197D8422A446D09003FE61A /* Translation Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D8412A446D09003FE61A /* Translation Sheet.swift */; };
 		CD04D5D72A3614A8008EF95B /* Post Interaction Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */; };
 		CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D82A3614BE008EF95B /* Large Post.swift */; };
 		CD04D5DB2A36154F008EF95B /* Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DA2A36154F008EF95B /* Save.swift */; };
@@ -529,6 +532,9 @@
 		B1BBAC532A5DE80B00E10030 /* Translation Text.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Translation Text.swift"; sourceTree = "<group>"; };
 		B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alternative Icons.swift"; sourceTree = "<group>"; };
 		B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle - Current App Icon.swift"; sourceTree = "<group>"; };
+		B197D83D2A445E22003FE61A /* In App WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "In App WebView.swift"; sourceTree = "<group>"; };
+		B197D83F2A446039003FE61A /* Translation Shower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Translation Shower.swift"; sourceTree = "<group>"; };
+		B197D8412A446D09003FE61A /* Translation Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Translation Sheet.swift"; sourceTree = "<group>"; };
 		CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Interaction Bar.swift"; sourceTree = "<group>"; };
 		CD04D5D82A3614BE008EF95B /* Large Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Large Post.swift"; sourceTree = "<group>"; };
 		CD04D5DA2A36154F008EF95B /* Save.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Save.swift; sourceTree = "<group>"; };
@@ -815,6 +821,7 @@
 				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
 				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
 				507573902A5AD53C00AA7ABD /* Error+Equatable.swift */,
+				B197D83F2A446039003FE61A /* Translation Shower.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1961,6 +1968,7 @@
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
+				B197D8402A446039003FE61A /* Translation Shower.swift in Sources */,
 				63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
 				6DA61F812A55B83F001EA633 /* Search View.swift in Sources */,

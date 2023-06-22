@@ -41,24 +41,24 @@ struct LargePost: View {
                 } else if postView.post.featuredCommunity {
                     StickiedTag(tagType: .community)
                 }
-                
+
                 Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic(postView.post.deleted)
-                
+
                 Spacer()
                 if postView.post.nsfw {
                     NSFWTag(compact: false)
                 }
             }
-            
+
             postContentView
         }
     }
 
     // MARK: - Subviews
-    
+
     @ViewBuilder
     var postContentView: some View {
         switch postView.postType {
@@ -83,7 +83,7 @@ struct LargePost: View {
             EmptyView()
         }
     }
-    
+
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {

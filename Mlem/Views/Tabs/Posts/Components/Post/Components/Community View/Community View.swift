@@ -10,7 +10,7 @@ import SwiftUI
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 struct CommunityView: View {
-    
+
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -23,12 +23,12 @@ struct CommunityView: View {
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
 
     @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
-    
+
     // parameters
     @State var account: SavedAccount
     var community: APICommunity?
     @State var feedType: FeedType
-    
+
     // variables
     @State var communityDetails: GetCommunityResponse?
 
@@ -44,7 +44,7 @@ struct CommunityView: View {
     @State var replyingToPost: APIPostView?
 
     var isInSpecificCommunity: Bool { community != nil }
-    
+
     init(account: SavedAccount, community: APICommunity?, feedType: FeedType) {
         self._account = State(initialValue: account)
         self.community = community
@@ -101,7 +101,7 @@ struct CommunityView: View {
                             )
                         } catch {
                             print("Failed while fetching community details: \(error)")
-                            
+
                             appState.contextualError = .init(
                                 title: "Could not load community information",
                                 message: "The server might be overloaded.\nTry again later.",
@@ -142,11 +142,11 @@ struct CommunityView: View {
                  .accessibilityHint("Activate to search and select feeds")
                  .onTapGesture {
                  isSearchFieldFocused = true
-                 
+
                  withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
                  isShowingCommunitySearch.toggle()
                  }
-                 
+
                  }
                  }
                  */
@@ -180,7 +180,7 @@ struct CommunityView: View {
                         }
                     }
                 ))
-                
+
                 Menu {
                     if let specificCommunity = community {
                         NavigationLink(value:
@@ -190,7 +190,7 @@ struct CommunityView: View {
                                         )) {
                                             Label("Sidebar", systemImage: "sidebar.right")
                                         }
-                        
+
                         Button {
                             isComposingPost.toggle()
                         } label: {
@@ -199,7 +199,7 @@ struct CommunityView: View {
                     }
                     Divider()
                     if let communityDetails {
-                        
+
                         if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
                             // This is when a community is already favorited
                             Button(role: .destructive) {
@@ -223,7 +223,7 @@ struct CommunityView: View {
                             }
                             .tint(.yellow)
                         }
-                        
+
                         SubscribeButton(
                             communityDetails: Binding(
                                 get: {
@@ -235,7 +235,7 @@ struct CommunityView: View {
                                 }),
                             account: account
                         )
-                        
+
                         BlockCommunityButton(account: account, communityDetails: Binding(
                             get: {
                                 communityDetails.communityView
@@ -244,9 +244,9 @@ struct CommunityView: View {
                                 guard let newValue else { return }
                                 self.communityDetails?.communityView = newValue
                             }))
-                        
+
                         Divider()
-                        
+
                         if let actorId = community?.actorId {
                             Button {
                                 showShareSheet(URLtoShare: actorId)
@@ -255,7 +255,7 @@ struct CommunityView: View {
                             }
                         }
                     }
-                    
+
                     Button {
                         shouldBlurNsfw.toggle()
                     } label: {
@@ -265,7 +265,7 @@ struct CommunityView: View {
                             Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                         }
                     }
-                    
+
                     Menu {
                         if postSize != .compact {
                             Button {
@@ -274,7 +274,7 @@ struct CommunityView: View {
                                 Label("Compact", systemImage: "rectangle.compress.vertical")
                             }
                         }
-                        
+
                         if postSize != .headline {
                             Button {
                                 postSize = .headline
@@ -282,7 +282,7 @@ struct CommunityView: View {
                                 Label("Headline", systemImage: "rectangle")
                             }
                         }
-                        
+
                         if postSize != .large {
                             Button {
                                 postSize = .large
@@ -313,7 +313,7 @@ struct CommunityView: View {
         .environmentObject(postTracker)
         .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     @ViewBuilder
     private func feedTypeMenuItem(for setFeedType: FeedType) -> some View {
         Button {
@@ -432,20 +432,20 @@ struct CommunityView: View {
     private func handle(_ error: Error) {
         let title: String?
         let errorMessage: String?
-        
+
         switch error {
         case APIClientError.networking:
             guard postTracker.items.isEmpty else {
                 return
             }
-            
+
         title = "Unable to connect to Lemmy"
         errorMessage = "Please check your internet connection and try again"
         default:
             title = nil
             errorMessage = nil
         }
-        
+
         appState.contextualError = .init(
             title: title,
             message: errorMessage,

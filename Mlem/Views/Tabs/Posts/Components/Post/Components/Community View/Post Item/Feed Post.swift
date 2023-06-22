@@ -27,13 +27,13 @@ struct FeedPost: View {
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
-    
+
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     // MARK: Parameters
-    
+
     init(postView: APIPostView,
          account: SavedAccount,
          showPostCreator: Bool = true,
@@ -51,7 +51,7 @@ struct FeedPost: View {
         self.replyToPost = replyToPost
         self._isDragging = isDragging
     }
-    
+
     let postView: APIPostView
     let account: SavedAccount
     let showPostCreator: Bool
@@ -68,7 +68,7 @@ struct FeedPost: View {
 
     // swipe-to-vote
     @Binding var isDragging: Bool
-    
+
     var body: some View {
         VStack(spacing: 0) {
             postItem
@@ -100,7 +100,7 @@ struct FeedPost: View {
             ReportComposerView(account: account, reportedPost: postView)
         }
     }
-    
+
     private func calculateServerInstanceLocation() -> ServerInstanceLocation {
         guard shouldShowUserServerInPost else {
             return .disabled
@@ -114,7 +114,7 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-        
+
         if postSize == .compact {
             UltraCompactPost(
                 postView: postView,
@@ -131,12 +131,12 @@ struct FeedPost: View {
                 // }
                 HStack {
                     CommunityLinkView(community: postView.community)
-                    
+
                     Spacer()
-                    
+
                     EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                 }
-                
+
                 if postSize == .headline {
                     CompactPost(
                         postView: postView,
@@ -148,12 +148,12 @@ struct FeedPost: View {
                         isExpanded: false
                     )
                 }
-                
+
                 // posting user
                 if showPostCreator {
                     UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom)
                 }
-                
+
                 if showInteractionBar {
                     PostInteractionBar(postView: postView,
                                        account: account,
@@ -178,7 +178,7 @@ struct FeedPost: View {
     func downvotePost() async {
         await voteOnPost(inputOp: .downvote)
     }
-    
+
     func deletePost() async {
         do {
             _ = try await Mlem.deletePost(postId: postView.post.id, account: account, postTracker: postTracker, appState: appState)
@@ -186,13 +186,13 @@ struct FeedPost: View {
             appState.contextualError = .init(underlyingError: error)
         }
     }
-    
+
     func blockUser() async {
         do {
             let blocked = try await blockPerson(account: account, person: postView.creator, blocked: true)
             if blocked {
                 postTracker.removePosts(from: postView.creator.id)
-                
+
                 let toast = AlertToast(
                     displayMode: .alert,
                     type: .complete(.blue),
@@ -211,7 +211,7 @@ struct FeedPost: View {
             appState.isShowingToast = true
         }
     }
-    
+
     func replyToThisPost() {
         if let replyCallback = replyToPost {
             replyCallback(postView)
@@ -242,17 +242,17 @@ struct FeedPost: View {
             appState.contextualError = .init(underlyingError: error)
         }
     }
-    
+
     func replyToPostWrapper() async {
         if let replyToPostCallback = replyToPost {
             replyToPostCallback(postView)
         }
     }
-    
+
     // swiftlint:disable function_body_length
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
-        
+
         // upvote
         let (upvoteText, upvoteImg) = postView.myVote == .upvote ?
         ("Undo upvote", "arrow.up.square.fill") :
@@ -266,7 +266,7 @@ struct FeedPost: View {
                 await upvotePost()
             }
         })
-        
+
         // downvote
         let (downvoteText, downvoteImg) = postView.myVote == .downvote ?
         ("Undo downvote", "arrow.down.square.fill") :
@@ -280,7 +280,7 @@ struct FeedPost: View {
                 await downvotePost()
             }
         })
-        
+
         // save
         let (saveText, saveImg) = postView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
         ret.append(MenuFunction(
@@ -292,7 +292,7 @@ struct FeedPost: View {
                 await savePost()
             }
         })
-        
+
         // reply
         if let replyCallback = replyToPost {
             ret.append(MenuFunction(
@@ -303,7 +303,7 @@ struct FeedPost: View {
                     replyCallback(postView)
                 })
         }
-        
+
         // delete
         if postView.creator.id == account.id {
             ret.append(MenuFunction(
@@ -316,7 +316,7 @@ struct FeedPost: View {
                 }
             })
         }
-        
+
         // share
         ret.append(MenuFunction(
             text: "Share",
@@ -327,7 +327,7 @@ struct FeedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
-        
+
         // report
         ret.append(MenuFunction(
             text: "Report",
@@ -336,7 +336,7 @@ struct FeedPost: View {
             enabled: true) {
                 isComposingReport = true
             })
-        
+
         // block user
         ret.append(MenuFunction(
             text: "Block User",
@@ -347,7 +347,7 @@ struct FeedPost: View {
                     await blockUser()
                 }
             })
-        
+
         return ret
     }
     // swiftlint:enable function_body_length
@@ -360,13 +360,13 @@ extension FeedPost {
     // TODO: if we want to mirror the behaviour in comments here we need the `dirty` operation to be visible from this
     // context, which at present would require some work as it occurs down inside the post interaction bar
     // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
-    
+
 //    private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
 //    private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
 //    private var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
 //    private var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
 //    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-    
+
     var upvoteSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = postView.myVote == .upvote ?
         (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
@@ -377,10 +377,10 @@ extension FeedPost {
             action: upvotePost
         )
     }
-    
+
     var downvoteSwipeAction: SwipeAction? {
         guard appState.enableDownvote else { return nil }
-        
+
         let (emptySymbolName, fullSymbolName) = postView.myVote == .downvote ?
         (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
         (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
@@ -390,7 +390,7 @@ extension FeedPost {
             action: downvotePost
         )
     }
-    
+
     var saveSwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
@@ -398,7 +398,7 @@ extension FeedPost {
             action: savePost
         )
     }
-    
+
     var replySwipeAction: SwipeAction? {
         if replyToPost != nil {
             return SwipeAction(

@@ -15,6 +15,9 @@ struct ContentView: View {
     @State private var errorAlert: ErrorAlert?
     @State private var tabSelection = 1
 
+    @State var textToTranslate: String?
+    @State private var showTranslate: Bool = false
+
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
 
     var body: some View {
@@ -38,7 +41,7 @@ struct ContentView: View {
                     Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }.tag(3)
-                
+
                 NavigationView {
                     SearchView(account: currentActiveAccount)
                 } .tabItem {
@@ -69,6 +72,10 @@ struct ContentView: View {
                 )
             )
         }
+        .environment(\.translateText, translateText)
+        .sheet(isPresented: $showTranslate, content: {
+            TranslationSheet(textToTranslate: $textToTranslate, shouldShow: $showTranslate)
+        })
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
     }
@@ -76,6 +83,14 @@ struct ContentView: View {
     // MARK: helpers
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"
+
+    }
+
+    func translateText(_ text: String) {
+        self.textToTranslate = text//text
+        withAnimation {
+            showTranslate = true
+        }
     }
 }
 
@@ -106,18 +121,18 @@ extension ContentView {
         guard let contextualError else {
             return
         }
-        
+
         #if DEBUG
         print("☠️ ERROR ☠️")
         print("🕵️ -> \(contextualError.underlyingError.description)")
         print("📝 -> \(contextualError.underlyingError.localizedDescription)")
         #endif
-        
+
         defer {
             // ensure we clear our the error once we've handled it...
             appState.contextualError = nil
         }
-        
+
         if let clientError = contextualError.underlyingError.base as? APIClientError {
             switch clientError {
             case .invalidSession:
@@ -130,15 +145,15 @@ extension ContentView {
                 break
             }
         }
-        
+
         let title = contextualError.title ?? ""
         let message = contextualError.message ?? ""
-        
+
         guard !title.isEmpty || !message.isEmpty else {
             // no title or message was supplied so don't notify the user of this...
             return
         }
-        
+
         errorAlert = .init(title: title, message: message)
     }
 }
