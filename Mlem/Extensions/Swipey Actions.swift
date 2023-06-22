@@ -110,7 +110,7 @@ struct SwipeyView: ViewModifier {
             
             // content
             content
-                .offset(x: dragPosition)
+                .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
                 .highPriorityGesture(
                     DragGesture(minimumDistance: 10, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
                         .updating($dragState) { value, state, transaction in
@@ -121,29 +121,30 @@ struct SwipeyView: ViewModifier {
                         }
                 )
                 .onChange(of: dragState) { newDragState in
+                    // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
                     if newDragState == .zero {
-                        let w = prevDragPosition
                         // TODO: instant upvote feedback (waiting on backend)
-                        if w < -1 * AppConstants.longSwipeDragMin {
+                        if prevDragPosition < -1 * AppConstants.longSwipeDragMin {
                             Task(priority: .userInitiated) {
                                 await longRightAction()
                             }
                         }
-                        else if w < -1 * AppConstants.shortSwipeDragMin {
+                        else if prevDragPosition < -1 * AppConstants.shortSwipeDragMin {
                             Task(priority: .userInitiated) {
                                 await shortRightAction()
                             }
                         }
-                        else if w > AppConstants.longSwipeDragMin {
+                        else if prevDragPosition > AppConstants.longSwipeDragMin {
                             Task(priority: .userInitiated) {
                                 await longLeftAction()
                             }
                         }
-                        else if w > AppConstants.shortSwipeDragMin {
+                        else if prevDragPosition > AppConstants.shortSwipeDragMin {
                             Task(priority: .userInitiated) {
                                 await shortLeftAction()
                             }
                         }
+                        // bounce back to neutral
                         withAnimation(.interactiveSpring()) {
                             dragPosition = .zero
                             leftSwipeSymbol = emptyLeftSymbolName
@@ -152,33 +153,33 @@ struct SwipeyView: ViewModifier {
                         }
                     }
                     else {
+                        // update position
                         dragPosition = newDragState
-                        let w = newDragState
-                        
-                        if w < -1 * AppConstants.longSwipeDragMin {
+
+                        // update color and symbol. If crossed an edge, play a gentle haptic
+                        if dragPosition < -1 * AppConstants.longSwipeDragMin {
                             rightSwipeSymbol = longRightSymbolName
                             dragBackground = longRightColor
                             if prevDragPosition >= -1 * AppConstants.longSwipeDragMin {
-                                // AppConstants.hapticManager.notificationOccurred(.success)
                                 tapper.impactOccurred()
                             }
                         }
-                        else if w < -1 * AppConstants.shortSwipeDragMin {
+                        else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
                             rightSwipeSymbol = shortRightSymbolName
                             dragBackground = shortRightColor
                             if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
                         }
-                        else if w < 0 {
+                        else if dragPosition < 0 {
                             rightSwipeSymbol = emptyRightSymbolName
-                            dragBackground = shortRightColor.opacity(-1 * w / AppConstants.shortSwipeDragMin)
+                            dragBackground = shortRightColor.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
                         }
-                        else if w < AppConstants.shortSwipeDragMin {
+                        else if dragPosition < AppConstants.shortSwipeDragMin {
                             leftSwipeSymbol = emptyLeftSymbolName
-                            dragBackground = shortLeftColor.opacity(w / AppConstants.shortSwipeDragMin)
+                            dragBackground = shortLeftColor.opacity(dragPosition / AppConstants.shortSwipeDragMin)
                         }
-                        else if w < AppConstants.longSwipeDragMin {
+                        else if dragPosition < AppConstants.longSwipeDragMin {
                             leftSwipeSymbol = shortLeftSymbolName
                             dragBackground = shortLeftColor
                             if prevDragPosition <= AppConstants.shortSwipeDragMin {
@@ -192,18 +193,17 @@ struct SwipeyView: ViewModifier {
                                 tapper.impactOccurred()
                             }
                         }
-                        prevDragPosition = w
+                        prevDragPosition = dragPosition
                     }
                 }
         }
+        // prevents various animation glitches
         .transaction { transaction in
             transaction.disablesAnimations = true
         }
-        .buttonStyle(EmptyButtonStyle()) // disables links from highlighting when tapped
+        // disables links from highlighting when tapped
+        .buttonStyle(EmptyButtonStyle())
     }
-    
-    // helpers
-    // func reset
 }
 
 public extension View {
