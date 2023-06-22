@@ -110,17 +110,13 @@ struct LargePost: View {
                 VStack {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.largeTitle)
-                        .foregroundColor(.white)
                     Text("NSFW")
                         .fontWeight(.black)
-                        .foregroundColor(.white)
                     Text("Tap to view")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
+                        .font(.callout)
                 }
+                .foregroundColor(.white)
                 .padding(8)
-                .background(RoundedRectangle(cornerRadius: 4)
-                    .foregroundColor(.secondarySystemBackground))
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
