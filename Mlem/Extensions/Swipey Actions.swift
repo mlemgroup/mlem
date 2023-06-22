@@ -260,4 +260,4 @@ public extension View {
 //    let longLeft: SwipeyActionConfig
 //    let shortRight: SwipeyActionConfig
 //    let longRight: SwipeyActionConfig
-}
+// }
