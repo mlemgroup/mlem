@@ -246,3 +246,18 @@ public extension View {
     }
 }
 
+#warning("ERIC TODO: finish this implementation")
+//struct SwipeyActionConfig {
+//    let symbolName: String
+//    let emptySymbolName: String
+//    let color: Color
+//    let action: () async -> Void
+//}
+//
+//struct SwipeyActionsConfig {
+//    let isDragging: Binding<Bool>
+//    let shortLeft: SwipeyActionConfig
+//    let longLeft: SwipeyActionConfig
+//    let shortRight: SwipeyActionConfig
+//    let longRight: SwipeyActionConfig
+}
