@@ -66,6 +66,9 @@ struct CommentItem: View
                         MarkdownView(text: hierarchicalComment.commentView.comment.content)
                             .frame(maxWidth: .infinity, alignment: .topLeading)
                             .transition(.move(edge: .top).combined(with: .opacity))
+                            .contextMenu {
+                                EasyTranslateButton(text: .constant(hierarchicalComment.commentView.comment.content))
+                            }
                     }
                 }
             }

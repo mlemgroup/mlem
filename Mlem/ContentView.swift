@@ -13,7 +13,10 @@ struct ContentView: View
     @EnvironmentObject var appState: AppState
     
     @State private var errorAlert: ErrorAlert?
-    
+
+    @State var textToTranslate: String?
+    @State private var showTranslate: Bool = false
+
     var body: some View
     {
         TabView
@@ -57,7 +60,19 @@ struct ContentView: View
         .alert(using: $errorAlert) { content in
             Alert(title: Text(content.title), message: Text(content.message))
         }
+        .environment(\.translateText, translateText)
+        .sheet(isPresented: $showTranslate, content: {
+            TranslationSheet(textToTranslate: $textToTranslate, shouldShow: $showTranslate)
+        })
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+
+    }
+
+    func translateText(_ text: String) {
+        self.textToTranslate = text//text
+        withAnimation {
+            showTranslate = true
+        }
     }
 }
 

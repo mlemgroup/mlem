@@ -74,6 +74,9 @@ struct CommunitySidebarView: View {
                     .description
                 {
                     MarkdownView(text: communityDescription)
+                    .contextMenu {
+                        EasyTranslateButton(text: .constant(communityDescription))
+                    }
                 }
                 else
                 {

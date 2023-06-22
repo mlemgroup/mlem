@@ -462,6 +462,13 @@ struct CommunityView: View
                     feedType: $feedType
                 )
             }
+            .contextMenu {
+                Button() {
+                    print(post.post.body ?? "loo" )
+                } label: {
+                    Label("sdfasdfasd", systemImage: "globe")
+                }.disabled(post.post.body == nil)
+            }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
                 if post == postTracker.posts.last {
@@ -516,7 +523,8 @@ struct CommunityView: View
         } catch {
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
-            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
+            print(String(describing: error))
+//            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
             // errorAlert = .unexpected
         }
 

@@ -80,14 +80,20 @@ struct LargePost: View {
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
-            if isExpanded {
-                MarkdownView(text: bodyText)
-                    .font(.subheadline)
-            } else {
-                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined())
-                    .lineLimit(8)
-                    .font(.subheadline)
+            Group {
+                if isExpanded {
+                    MarkdownView(text: bodyText)
+                        .font(.subheadline)
+                } else {
+                    MarkdownView(text: bodyText.components(separatedBy: .newlines).joined())
+                        .lineLimit(8)
+                        .font(.subheadline)
+                }
             }
+            .contextMenu {
+                EasyTranslateButton(text: .constant(bodyText))
+            }
+
         }
     }
     

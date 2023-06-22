@@ -140,6 +140,10 @@ struct FeedPost: View
                             }
                     )
             }
+            .contextMenu {
+                EasyTranslateButton(text: .constant(postView.post.body))
+            }
+
             .sheet(isPresented: $replyIsPresented) {
                 replySheetBody
             }
