@@ -1,0 +1,102 @@
+The Commons Clause.
+
+“Commons Clause” License Condition v1.0
+
+The Software is provided to you by the Licensor under the License, as defined below, subject to the following condition.
+
+Without limiting other conditions in the License, the grant of rights under the License will not include, and the License does not grant to you, the right to Sell the Software.
+
+For purposes of the foregoing, “Sell” means practicing any or all of the rights granted to you under the License to provide to third parties, for a fee or other consideration (including without limitation fees for hosting or consulting/ support services related to the Software), a product or service whose value derives, entirely or substantially, from the functionality of the Software. Any license notice or attribution required by the License must also include this Commons Clause License Condition notice.
+
+Software: [Mlem for Lemmy]
+
+License: [GPL 3.0]
+
+Licensor: [The Mlem Group]
+
+
+
+
+FAQ
+
+What is Commons Clause?
+
+The Commons Clause is a license condition drafted by Heather Meeker that applies a narrow, minimal-form commercial restriction on top of an existing open source license to transition the project to a source-availability licensing scheme. The combined text replaces the existing license, allowing all permissions of the original license to remain except the ability to "Sell" the software as defined in the text.
+
+This Clause is not intended to replace licenses of existing open source projects in general, but to be used by specific projects to satisfy urgent business or legal requirements without resorting to fully "closing source".
+
+Is this “Open Source”?
+
+No.
+
+“Open source”, has a specific definition that was written years ago and is stewarded by the Open Source Initiative, which approves Open Source licenses. Applying the Commons Clause to an open source project will mean the source code is available, and meets many of the elements of the Open Source Definition, such as free access to source code, freedom to modify, and freedom to re-distribute, but not all of them. So to avoid confusion, it is best not to call Commons Clause software “open source.”
+
+If I change from an open source license to Commons Clause, how does this affect my project?
+
+When the Commons Clause is applied to an existing open source project, it only affects code moving forward -- meaning no existing users are immediately affected. Licenses applied to previous versions are not revoked, so the Clause will only apply to future releases.
+
+If you choose to adopt the Commons Clause, you should understand the implications any license change will have on your community and weigh that against the threat of allowing others to trade on your work developing your open source project.
+
+The Commons Clause was intended, in practice, to have virtually no effect other than force a negotiation with those who take predatory commercial advantage of open source development. In practice, those are some of the biggest technology businesses in the world, some of whom use open source software but don’t give back to the community. Freedom for others to commercialize your software comes with starting an open source project, and while that freedom is important to uphold, growth and commercial pressures will inevitably force some projects to close. The Commons Clause provides an alternative.
+
+The Commons Clause was not designed to restrict code sharing or development, but preserves the rights of developers to benefit from commercial use of their work. However, those that adopt the Clause should understand the broader implications of making a license change and commitments to source availability.
+
+May I create, distribute, offer as SaaS, and/or “sell” my products using Commons Clause licensed components?
+
+Yes!
+
+Commons Clause only forbids you from “selling” the Commons Clause software itself. You may develop on top of Commons Clause licensed software (adding applications, tools, utilities or plug-ins) and you may embed and redistribute Commons Clause software in a larger product, and you may distribute and even “sell” (which includes offering as a commercial SaaS service) your product. You may even provide consulting services (see clarifying discussion here). You just can’t sell a product that consists in substance of the Commons Clause software and does not add value.
+
+This is not a new concept. It’s similar to “value-add” requirements in many licenses. For example let’s say you use a library containing numerical algorithms from Rogue Wave Software. Can you create an application with the library and sell the application? Yes. Can you offer that application as SaaS and charge for it? Yes. Can you change the name of the library and change some function names and sell the library or offer it as SaaS? No.
+
+Let’s apply the example to Commons Clause licensed software. Commons Clause-licensed Redis Graph is a graph database module for BSD-licensed Redis. Can you create applications with Redis Graph and distribute and/or sell them? Yes. Can you redistribute Redis Graph along with your application? Yes. Can you offer that application as SaaS and charge for it? Yes. Can you take Redis Graph itself, call it ElastiGraph and offer it as SaaS and charge for it. No.
+
+Isn’t this the same as a proprietary license?
+
+Commons Clause is a source-available license that is less liberal than permissive open source licenses (such as Apache, BSD, MIT). It allows you more commercial freedom in some ways than copyleft or reciprocal open source licenses (such as GPL and AGPL), and it is much more liberal than proprietary source-unavailable licenses, such as for the numerical algorithms library mentioned in the previous answer.
+
+The Commons Clause source-available license provides many of the benefits of open source software to anyone not intending to “sell” the Commons Clause licensed software itself.
+
+Anyone not intending to “sell” the Commons Clause licensed software itself may view the source code, make modifications, submit pull requests to get their modifications into the software, freely use, embed and redistribute the software, make and distribute and sell derivative works.
+
+To anyone wishing to sell the Commons Clause licensed software itself, an action that the license prohibits, it appears proprietary, in the sense that it would be necessary to negotiate a license to do that with the owner of the Commons Clause software.
+
+Why not just use AGPL?
+
+AGPL simply doesn't work to solve this problem. It is not a widely adopted license, and its “network” clause is not clearly written, so companies are not willing to stake their entire development resources on using AGPL to prevent free riding.
+
+AGPL doesn't go far enough to preserve the rights of developers. If cloud-based software is licensed under AGPL, often, much of the value for improvements to the cloud-based software arguably falls outside of the “Program” thereby nullifying many of the benefits of mandating enforcing source code offers. Hosting, management, and other elements are often just as important as the core code.
+
+In addition, the ambiguity of what is covered by AGPL’s network clause (“interacting ..remotely through a computer network”) means that many potential users are more confused and cautious about using AGPL code than a source-available license. Like the group behind Commons Clause, the drafters of AGPL were concerned about the “cloud loophole” in licenses like GPL. Unfortunately, AGPL’s network clause was a compromise; one camp in the GPL3 drafting process wanted to introduce a network clause into GPL3, and many more than wanted to preserve the “distribution trigger”. So the network clause was never popular, and even after 10 years, AGPL has not been broadly accepted, particularly in business. Most companies still won’t use AGPL code at all. So it is not a useful open source solution for emerging companies.
+
+The open source community says this is a bad idea. I love open source software. Should I refuse to use Commons Clause software?
+
+Some people believe that all software must be open source, and they will never condone anything else. But in reality, there are lots of models for licensing software. Commons Clause is just one alternative.
+
+But the important thing is that the developers who have chosen Commons Clause have been faced with the choice of doing something new or allowing their businesses to fail. And the other possibility -- the completely proprietary, closed source model of companies like Oracle and Adobe -- is always a possibility. So if anyone tries to convince you that Commons Clause is wrong because it doesn't meet all the requirements of the Open Source Definition, you should ask them if proprietary is better -- or no software at all.
+
+You probably use plenty of software that is “freeware” -- under free of charge proprietary licenses (JRE, Acrobat). If you refuse to use Commons Clause software, you should refuse to use those, too. Those licenses give you less rights.
+
+Why did you use open source licenses as the basis for Commons Clause?
+
+We didn’t have to, we could have just written a new, proprietary license. But people understand the popular open source licenses, and we wanted to be clear that we were allowing everything those licenses allow, except for one kind of use.
+
+For maintainers, this portability was a specific design constraint to support the legacy schemes they were transitioning from.
+
+Why not just use Creative Commons non-commercial (sharealike)?
+
+CC-NC is a similar idea, but CC licenses are not software licenses. Also, there is a lot of confusion about what is a “commercial” use, and we only wanted to restrict one narrow kind of commercial use.
+
+CC-NC is actually much more restrictive than Commons Clause.
+
+Commons Clause prohibits me from selling “substantially” the Commons Clause licensed software. What does “substantially” mean?
+
+“Substiantially” is not a new concept. Qualifications like "substantially" are common in legal documents to indicate that minor differences are not important. In this sense, "substantially" means “for the most part,” or “essentially” (as the word is defined in the Oxford English Dictionary.) The Commons Clause restricts the sale of a product “whose value derives, entirely or substantially, from the functionality of the Software." Selling a product which adds only an insubstantial value to the software -- such as changing the product name, changing some API or function names, or just making the Commons Clause licensed product available via SaaS -- would be restricted.
+
+What will this do to Open Source?
+
+Open source is here to stay. But open source works better for some kinds of software than others. The Open Source Definition and the development model it represents is an immensely important set of ideals that have carried many projects to success. But most of those projects were basic infrastructure projects, as opposed to advanced applications. And very few pure open source businesses have flourished.
+
+Open Source projects are not free of cost, they often support billions of dollars of revenue and can require tens of millions of dollars in financing to stay afloat. That can work -- with a lot of effort -- for software that everyone uses, like operating systems. Also, lots of companies are successful using open source -- when they are selling something else, like hardware or services or dual-license upsell modules. But many software companies can’t keep the doors open with an open source licensing model.
+
+The Commons Clause was drafted by a group of developers behind many of the world’s most popular open source projects who feel a lot of pain and pressure from a rapidly-developing business ecosystem and the realities of the cost of developing projects. It wasn’t created to end open source, but start a conversation on what we can do to meet the financial needs of commercial software projects and the communities behind them.
