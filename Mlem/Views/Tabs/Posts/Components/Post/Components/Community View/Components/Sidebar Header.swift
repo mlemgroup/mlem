@@ -45,6 +45,7 @@ struct CommunitySidebarHeader : View {
                         }
                         Spacer().frame(height: 20)
                         
+                        Text(communityDetails.communityView.community.name).font(.title).bold().lineLimit(1)
                         if let communityHost = communityDetails.communityView.community.actorId.host() {
                             Text("@\(communityDetails.communityView.community.name)@\(communityHost)")
                                 .font(.footnote)
@@ -55,7 +56,6 @@ struct CommunitySidebarHeader : View {
                                 .font(.footnote)
                                 .lineLimit(1)
                         }
-                        Text("@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)").font(.footnote).lineLimit(1)
                         
                     }.padding([.trailing])
                 }
