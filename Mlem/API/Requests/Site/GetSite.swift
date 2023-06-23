@@ -39,7 +39,6 @@ struct GetSiteRequest: APIGetRequest {
 struct SiteResponse: Decodable {
     let site_view: APISiteView
     let admins: [APIPersonView]
-    let online: Int
     let version: String
     let myUser: APIMyUserInfo?
     let federatedInstances: APIFederatedInstances?

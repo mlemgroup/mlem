@@ -62,13 +62,8 @@ struct CompactPost: View {
                         Text("by")
                             .foregroundColor(.secondary)
                             .font(.caption)
-                        // poster
-                        NavigationLink(destination: UserView(userID: postView.creator.id, account: account)) {
-                            Text(postView.creator.name)
-                                .font(.caption)
-                                .italic()
-                                .foregroundColor(usernameColor)
-                        }
+                        UserProfileLink(account: account, user: postView.creator)
+                            .font(.caption)
                         
                         Spacer()
                     }
@@ -78,7 +73,6 @@ struct CompactPost: View {
             PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost)
         }
         .padding(spacing)
-        .buttonStyle(EmptyButtonStyle())
     }
     
     @ViewBuilder

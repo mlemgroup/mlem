@@ -27,8 +27,12 @@ struct APICommunity: Codable, Identifiable {
     let instanceId: Int
 }
 
-extension APICommunity: Equatable {
+extension APICommunity: Equatable, Hashable {
     static func == (lhs: APICommunity, rhs: APICommunity) -> Bool {
         lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(actorId)
     }
 }

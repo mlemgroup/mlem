@@ -12,7 +12,7 @@ We apologize, as we would love to dedicate the time it deserves to every PR, but
 
 **Choose one of the following two options:**
 - - [ ] This PR does not introduce major changes
-- - [ ] This PR introduces major changes, and I have consulted @buresdv, @jboi or @mormaer in the *Mlem Development Matrix room*
+- - [ ] This PR introduces major changes, and I have consulted the *Mlem Development Matrix room*
 
 **Choose one of the following two options:**
 - - [ ] This PR does not change the UI in any way

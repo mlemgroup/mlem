@@ -5,12 +5,6 @@
 //  Created by Eric Andrews on 2023-06-19.
 //
 
-import Foundation
-
-enum SavingFailure {
-    case failedToSavePost
-}
-
 @MainActor
 func sendSavePostRequest(account: SavedAccount,
               postId: Int,
@@ -21,11 +15,6 @@ func sendSavePostRequest(account: SavedAccount,
         
         AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
-        
-        guard let indexToReplace = postTracker.posts.firstIndex(where: { $0.post.id == postId }) else {
-            // shouldn't happen, but safer than force unwrapping
-            return
-        }
         
         postTracker.update(with: response.postView)
     }

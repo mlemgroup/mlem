@@ -38,7 +38,5 @@ struct CommunityDetails: Codable, Equatable, Hashable
     let numberOfPosts: Int
     let numberOfActiveUsersOverall: Int?
     
-    let numberOfUsersOnline: Int
-    
     let moderators: [User]
 }
