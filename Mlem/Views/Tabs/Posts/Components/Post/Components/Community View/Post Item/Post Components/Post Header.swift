@@ -47,12 +47,7 @@ struct PostHeader: View {
                     }
                 }
                 Text("by")
-                // poster
-                NavigationLink(destination: UserView(userID: postView.creator.id, account: account)) {
-                    Text(postView.creator.name)
-                        .italic()
-                        .foregroundColor(usernameColor)
-                }
+                UserProfileLink(account: account, user: postView.creator)
             }
             
             Spacer()
