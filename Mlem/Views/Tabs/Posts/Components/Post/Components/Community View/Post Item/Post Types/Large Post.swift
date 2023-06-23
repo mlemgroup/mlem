@@ -109,18 +109,20 @@ struct LargePost: View {
             if showNsfwFilter {
                 VStack {
                     Image(systemName: "exclamationmark.triangle")
-                        .font(.largeTitle).foregroundColor(.white)
+                        .font(.largeTitle)
                     Text("NSFW")
-                        .fontWeight(.black).foregroundColor(.white)
-                    Text("Tap to view").font(.subheadline).foregroundColor(.white)
+                        .fontWeight(.black)
+                    Text("Tap to view")
+                        .font(.callout)
                 }
+                .foregroundColor(.white)
+                .padding(8)
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
             }
-            
             else if postView.post.nsfw && shouldBlurNsfw {
-              //   // stacks are here to align image to top left of ZStack
+                // stacks are here to align image to top left of ZStack
                 // TODO: less janky way to do this?
                 HStack {
                     VStack {
@@ -128,7 +130,7 @@ struct LargePost: View {
                             .padding(4)
                             .frame(alignment: .topLeading)
                             .background(RoundedRectangle(cornerRadius: 4)
-                                .foregroundColor(.secondarySystemBackground))
+                                .foregroundColor(.systemBackground))
                             .onTapGesture {
                                 showNsfwFilterToggle.toggle()
                             }

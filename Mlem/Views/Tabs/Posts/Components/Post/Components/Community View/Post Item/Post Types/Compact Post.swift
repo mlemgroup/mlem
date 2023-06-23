@@ -78,7 +78,6 @@ struct CompactPost: View {
             PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost)
         }
         .padding(spacing)
-        .buttonStyle(EmptyButtonStyle())
     }
     
     @ViewBuilder

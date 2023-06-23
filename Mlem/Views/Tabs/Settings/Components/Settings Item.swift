@@ -28,14 +28,7 @@ struct SwitchableSettingsItem: View
     }
 }
 
-struct SelectableSettingsItem<T: SettingsOptions>: View
-{
-//    @State var settingIconSystemName: String
-//    @State var settingName: String
-//
-//    @Binding var currentValue: T
-//    @State var options: [T]
-    
+struct SelectableSettingsItem<T: SettingsOptions>: View {
     let settingIconSystemName: String
     let settingName: String
     @Binding var currentValue: T

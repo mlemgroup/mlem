@@ -36,13 +36,15 @@ struct PostHeader: View {
             HStack(spacing: 4) {
                 // community avatar and name
                 NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all)) {
-                    communityAvatar
-                        .frame(width: communityIconSize, height: communityIconSize)
-                        .clipShape(Circle())
-                        .overlay(Circle()
-                            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-                    Text(postView.community.name)
-                        .bold()
+                    HStack {
+                        communityAvatar
+                            .frame(width: communityIconSize, height: communityIconSize)
+                            .clipShape(Circle())
+                            .overlay(Circle()
+                                .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+                        Text(postView.community.name)
+                            .bold()
+                    }
                 }
                 Text("by")
                 // poster

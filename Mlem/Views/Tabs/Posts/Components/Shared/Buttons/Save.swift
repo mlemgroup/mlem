@@ -8,15 +8,31 @@
 import SwiftUI
 
 struct SaveButton: View {
-    let saved: Bool
+    
+    // ==== PARAMETERS ==== //
+
+    let isSaved: Bool
     let size: CGFloat
+    let accessibilityContext: String
+    
+    let save: () -> Void
+    
+    // ==== COMPUTED ==== //
+    
+    // this needs to be computed because it changes depending on button state
+    var saveButtonText: String { isSaved ? "Unsave \(accessibilityContext)" : "Save \(accessibilityContext)" }
+    
+    // ==== BODY ==== //
     
     var body: some View {
         Image(systemName: "bookmark.fill")
             .frame(width: size, height: size)
-            .foregroundColor(saved ? .white : .primary)
+            .foregroundColor(isSaved ? .white : .primary)
             .background(RoundedRectangle(cornerRadius: 4)
                 .aspectRatio(1, contentMode: .fit)
-                .foregroundColor(saved ? .saveColor : .clear))
+                .foregroundColor(isSaved ? .saveColor : .clear))
+            .onTapGesture { save() }
+            .accessibilityLabel(saveButtonText)
+            .accessibilityAction(named: saveButtonText) { save() }
     }
 }
