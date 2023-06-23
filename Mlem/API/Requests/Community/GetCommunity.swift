@@ -45,7 +45,6 @@ struct GetCommunityResponse: Decodable {
     // only appears if it is remote
     let site: APISite?
     let moderators: [APICommunityModeratorView]
-    let online: Int
     let discussionLanguages: [Int]
     let defaultPostLanguage: Int?
 }
