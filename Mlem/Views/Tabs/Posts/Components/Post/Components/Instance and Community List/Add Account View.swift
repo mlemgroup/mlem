@@ -250,6 +250,7 @@ struct AddSavedInstanceView: View
                 .person
                 .id
         } catch {
+            print("getUserId Error info: \(error)")
             throw UserIDRetrievalError.couldNotFetchUserInformation
         }
     }

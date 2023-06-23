@@ -58,14 +58,16 @@ struct PostInteractionBar: View {
             VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
             
-            SaveButton(saved: displayedSaved, size: height)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        await savePost()
-                    }
+            SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "post") {
+                Task(priority: .userInitiated) {
+                    await savePost()
                 }
+            }
+            
             if let postURL = URL(string: postView.post.apId) {
-                ShareButton(urlToShare: postURL, isShowingButtonText: false)
+                ShareButton(size: height, accessibilityContext: "post") {
+                    showShareSheet(URLtoShare: postURL)
+                }
             }
             
             EllipsisMenu(size: height, shareUrl: postView.post.apId)

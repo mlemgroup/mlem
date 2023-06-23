@@ -17,7 +17,7 @@ struct SaveCommentRequest: APIPutRequest {
 
     // lemmy_api_common::comment::SaveComment
     struct Body: Encodable {
-        let community_id: Int
+        let comment_id: Int
         let save: Bool
 
         let auth: String
@@ -32,9 +32,9 @@ struct SaveCommentRequest: APIPutRequest {
         self.instanceURL = account.instanceLink
 
         self.body = .init(
-            community_id: commentId,
+            comment_id: commentId,
             save: save,
-
+            
             auth: account.accessToken
         )
     }

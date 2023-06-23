@@ -7,30 +7,37 @@
 
 import SwiftUI
 
-struct ShareButton: View
-{
-    @State var urlToShare: URL
-    @State var isShowingButtonText: Bool
-    @State var customText: String?
-
-    var body: some View
-    {
-        Button {
-            showShareSheet(URLtoShare: urlToShare)
-            print("Shared")
-        } label: {
-            if !isShowingButtonText {
-                Image(systemName: "square.and.arrow.up")
+struct ShareButton: View {
+    
+    // ==== PARAMETERS ==== //
+    
+    let size: CGFloat
+    let share: () -> Void
+    
+    init(size: CGFloat, accessibilityContext: String, share: @escaping () -> Void) {
+        self.size = size
+        self.share = share
+        
+        self.shareButtonText = "Share \(accessibilityContext)"
+    }
+    
+    // ==== COMPUTED ==== //
+    
+    let shareButtonText: String
+    
+    // ==== BODY ==== //
+    
+    var body: some View {
+        Image(systemName: "square.and.arrow.up")
+            .frame(width: size, height: size)
+            .foregroundColor(.primary)
+            .background(RoundedRectangle(cornerRadius: 4)
+                .aspectRatio(1, contentMode: .fit)
+                .foregroundColor(.clear))
+            .onTapGesture {
+                share()
             }
-            else {
-                if let customText {
-                    Label(customText, systemImage: "square.and.arrow.up")
-                }
-                else {
-                    Label("Share…", systemImage: "square.and.arrow.up")
-                }
-            }
-        }
-        .foregroundColor(.primary)
+            .accessibilityLabel(shareButtonText)
+            .accessibilityAction(named: shareButtonText) { share() }
     }
 }
