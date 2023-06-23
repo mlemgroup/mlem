@@ -94,7 +94,7 @@ struct CommunityListView: View
                 do {
                     let response = try await APIClient().perform(request: request);
                     
-                    var newSubscribedCommunities = response.communities.map({
+                    let newSubscribedCommunities = response.communities.map({
                         return $0.community;
                     }).sorted(by: {
                         $0.name < $1.name
