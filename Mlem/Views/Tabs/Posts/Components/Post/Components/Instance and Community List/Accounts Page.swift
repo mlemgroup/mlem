@@ -54,7 +54,7 @@ struct AccountsPage: View
                         .onDelete(perform: deleteAccount)
                         .navigationDestination(isPresented: accountNavigationBinding(), destination: {
                             if let account = accountsTracker.savedAccounts.first {
-                                CommunityView(account: account, community: nil)
+                                CommunityListView(account: account)
                                     .onAppear
                                 {
                                     appState.currentActiveAccount = account
