@@ -18,24 +18,42 @@ And that's not all; Mlem is also extensively optimized and performant, which mea
 
 ## See Mlem
 
+**Subscribed and Favorites Community List**
+
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/665c4f14-7997-49ef-aed8-efa09fa19646)" width="40%">
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/4cda8166-4898-4bc6-8e56-8caeaf9fe53f)" width="40%">
+
 **Beautiful Post Previews**
-![Community View](https://files.catbox.moe/5ize2z.png)
-![Beautiful Post Previews](https://files.catbox.moe/gk7nlq.png)
+
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/8fc48e43-2838-4465-a4e7-059746cdb26f" width="40%">
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/123ec33c-c223-468a-aecb-dcc9ac2b6231" width="40%">
+
+**Compact Post Previews**
+
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/8120cc31-39b2-47e6-b3c5-2f4020a98b7a" width="40%">
 
 **Follow the Discussion**
-![Easily Follow the Discussion](https://files.catbox.moe/cfcxkq.png)
+
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/195d618d-0cbf-4169-b583-e32175f51561" width="40%">
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/64e553f4-979a-43ed-9f26-17849e8ce106" width="40%">
 
 **Take Part in the Conversation**
-![Take Part in the Conversation](https://files.catbox.moe/wpzfri.png)
+
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/e939126e-eb94-456c-98b4-11f71d19e544" width="40%">
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/e9c134db-9682-4f7e-a57e-b07de4789731" width="40%">
 
 **Post Your Experiences**
-![Post Your Experiences](https://files.catbox.moe/9xg13j.png)
+
+<img src="https://files.catbox.moe/9xg13j.png" width="40%">
 
 **Find Your Hobbies**
-![Find Your Hobbies](https://files.catbox.moe/kmtqxm.png)
+
+<img src="https://files.catbox.moe/kmtqxm.png" width="40%">
 
 **Infinitely Customizable, Dark Mode Included!**
-![Customizability](https://files.catbox.moe/sxlwgv.png)
+
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/c34d6036-1eb7-4397-84a7-dcfd971dc692" width="40%">
+<img src="https://github.com/WestonHanners/Mlem/assets/1000311/a862dbfb-fd70-493b-8a07-f3bd6cf28f70" width="40%">
 
 ## Requirements
 
