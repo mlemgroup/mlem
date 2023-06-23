@@ -63,6 +63,7 @@ struct CompactPost: View {
                             .foregroundColor(.secondary)
                             .font(.caption)
                         UserProfileLink(account: account, user: postView.creator)
+                            .font(.caption)
                         
                         Spacer()
                     }
