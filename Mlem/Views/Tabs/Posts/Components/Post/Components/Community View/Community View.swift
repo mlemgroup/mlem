@@ -462,13 +462,17 @@ struct CommunityView: View
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
-                if post == postTracker.posts.last {
-                    await loadFeed()
+                if !postTracker.isLoading {
+                    if let position = postTracker.posts.lastIndex(of: post) {
+                        if  position >= (postTracker.posts.count - 40) {
+                            await loadFeed()
+                        }
+                    }
                 }
             }
         }
     }
-    
+
     @ViewBuilder
     private var loadingMorePostsView: some View {
         if postTracker.isLoading {
@@ -499,7 +503,7 @@ struct CommunityView: View
             guard postTracker.posts.isEmpty else {
                 return
             }
-            
+
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"

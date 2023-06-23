@@ -93,10 +93,8 @@ extension CommentItem {
         }
     }
     
+    @MainActor
     func replyToComment() -> Void {
-        // TEMP
-        isShowingAlert = true
-        // END TEMP
-        // isReplyFieldFocused = true
+        commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
     }
 }

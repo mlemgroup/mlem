@@ -13,11 +13,11 @@ struct PostHeader: View {
     // parameters
     var postView: APIPostView
     var account: SavedAccount
-    
+
     // constants
     private let communityIconSize: CGFloat = 32
     private let defaultCommunityIconSize: CGFloat = 24 // a little smaller so it looks nice
-    
+
     // computed
     // computed
     var usernameColor: Color {
@@ -27,10 +27,10 @@ struct PostHeader: View {
         if postView.creator.botAccount {
             return .indigo
         }
-        
+
         return .secondary
     }
-    
+
     var body: some View {
         HStack {
             HStack(spacing: 4) {
@@ -49,13 +49,13 @@ struct PostHeader: View {
                 Text("by")
                 UserProfileLink(account: account, user: postView.creator)
             }
-            
+
             Spacer()
-            
+
             if (postView.post.featuredLocal) {
                 StickiedTag(compact: false)
             }
-            
+
             if (postView.post.nsfw) {
                 NSFWTag(compact: false)
             }
@@ -66,12 +66,12 @@ struct PostHeader: View {
         .font(.subheadline)
         .foregroundColor(.secondary)
     }
-    
+
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
             if let communityAvatarLink = postView.community.icon {
-                CachedAsyncImage(url: communityAvatarLink) { image in
+                CachedAsyncImage(url: communityAvatarLink, urlCache: AppConstants.urlCache) { image in
                     if let avatar = image.image {
                         avatar
                             .resizable()

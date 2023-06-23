@@ -27,6 +27,20 @@ struct SettingsView: View
             websiteLink: URL(string: "https://elk.zone/mstdn.social/@samalone@twit.social")!
         ),
     ]
+    
+    func getVersionString() -> String {
+        var result = "n/a"
+        
+        if let releaseVersion = Bundle.main.releaseVersionNumber {
+            result = releaseVersion;
+        }
+        
+        if let buildVersion = Bundle.main.buildVersionNumber {
+            result.append(" (\(buildVersion))")
+        }
+        
+        return result
+    }
 
     var body: some View
     {
@@ -126,6 +140,8 @@ struct SettingsView: View
                                 } header: {
                                     Text("Packages Used")
                                 }
+                                
+                                Text("Version \(getVersionString())")
                             }
                         }
                     } label: {

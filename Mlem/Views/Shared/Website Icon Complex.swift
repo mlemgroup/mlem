@@ -46,7 +46,7 @@ struct WebsiteIconComplex: View
                     {
                         VStack(alignment: .center, spacing: 0)
                         {
-                            CachedAsyncImage(url: thumbnailURL)
+                            CachedAsyncImage(url: thumbnailURL, urlCache: AppConstants.urlCache)
                             { image in
                                 image
                                     .resizable()
@@ -73,7 +73,7 @@ struct WebsiteIconComplex: View
                     {
                         if shouldShowWebsiteFavicons
                         {
-                            CachedAsyncImage(url: faviconURL)
+                            CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache)
                             { image in
                                 image
                                     .resizable()
