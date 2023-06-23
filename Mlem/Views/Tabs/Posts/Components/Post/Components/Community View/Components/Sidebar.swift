@@ -55,10 +55,8 @@ struct CommunitySidebarView: View {
                 VStack {
                     Divider()
                     ForEach(communityDetails.moderators) { moderatorView in
-                        
-                        NavigationLink {
-                            UserView(userID: moderatorView.moderator.id, account: account)
-                        } label: {
+
+                        NavigationLink(value: moderatorView.moderator) {
                             HStack {
                                 UserProfileLabel(account: account, user: moderatorView.moderator, postContext: nil, commentContext: nil, communityContext: communityDetails)
                                 Spacer()

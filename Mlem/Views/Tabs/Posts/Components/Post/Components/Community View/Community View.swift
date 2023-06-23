@@ -446,11 +446,7 @@ struct CommunityView: View
 
     private var postListView: some View {
         ForEach(filteredPosts) { post in
-            NavigationLink(destination: ExpandedPost(
-                account: account,
-                post: post,
-                feedType: $feedType
-            ).environmentObject(postTracker) // make postTracker available in expanded post
+            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)
             )
             {
                 FeedPost(

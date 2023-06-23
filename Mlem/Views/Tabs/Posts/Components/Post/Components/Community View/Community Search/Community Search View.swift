@@ -72,7 +72,7 @@ struct CommunitySearchResultsView: View
                         {
                             ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker))
                             { favoritedCommunity in
-                                NavigationLink(destination: CommunityView(account: account, community: favoritedCommunity.community, feedType: .all))
+                                NavigationLink(value: favoritedCommunity.community)
                                 {
                                     Text("\(favoritedCommunity.community.name)\(Text("@\(favoritedCommunity.community.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true)
@@ -105,7 +105,7 @@ struct CommunitySearchResultsView: View
                     {
                         
                         
-                        NavigationLink(destination: CommunityListView(account: account))
+                        NavigationLink(value: account)
                         {
                             Text("Go To Community List")
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true)

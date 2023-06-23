@@ -84,7 +84,7 @@ struct LargePost: View {
                 MarkdownView(text: bodyText)
                     .font(.subheadline)
             } else {
-                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined())
+                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "))
                     .lineLimit(8)
                     .font(.subheadline)
             }

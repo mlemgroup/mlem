@@ -35,7 +35,7 @@ struct PostHeader: View {
         HStack {
             HStack(spacing: 4) {
                 // community avatar and name
-                NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all)) {
+                NavigationLink(value: postView.community) {
                     HStack {
                         communityAvatar
                             .frame(width: communityIconSize, height: communityIconSize)

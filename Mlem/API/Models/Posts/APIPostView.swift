@@ -32,3 +32,9 @@ extension APIPostView: Equatable {
         lhs.post == rhs.post
     }
 }
+
+extension APIPostView: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
+}

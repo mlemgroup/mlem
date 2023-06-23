@@ -53,7 +53,7 @@ struct CompactPost: View {
                         if postView.post.nsfw { NSFWTag(compact: true) }
                         
                         // community name
-                        NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all)) {
+                        NavigationLink(value: postView.community) {
                             Text(postView.community.name)
                                 .font(.caption)
                                 .foregroundColor(.secondary)

@@ -115,7 +115,7 @@ struct HomepageFeedRowView: View {
                 Text(description).font(.caption).foregroundColor(.gray)
             }
         }.background(
-            NavigationLink(destination: CommunityView(account: account, community: nil, feedType: feedType)) {}.opacity(0)
+            NavigationLink(value: CommunityLinkWithContext(community: nil, feedType: feedType)) {}.opacity(0)
         ).padding(.bottom, 1)
     }
 }

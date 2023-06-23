@@ -19,7 +19,7 @@ struct UserProfileLink: View
    
     var body: some View
     {
-        NavigationLink(destination: UserView(userID: user.id, account: account))
+        NavigationLink(value: user)
         {
             UserProfileLabel(account: account, user: user, postContext: postContext, commentContext: commentContext)
         }
