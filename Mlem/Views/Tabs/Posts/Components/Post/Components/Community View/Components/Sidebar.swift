@@ -82,7 +82,7 @@ struct SidebarPreview: PreviewProvider {
     
     static let previewCommunity = APICommunity(id: 0, name: "testcommunity", title: "Test Community", description: previewCommunityDescription, published: Date.now.advanced(by: -2000), updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!, local: false, icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), banner: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp") , hidden: false, postingRestrictedToMods: false, instanceId: 0)
     
-    static let previewUser = APIPerson(id: 0, name: "ExamplePerson", displayName: "Example Person", avatar: nil, banned: false, published: "no", updated: nil, actorId: URL(string: "lem.foo.bar/u/exampleperson")!, bio: nil, local: false, banner: nil, deleted: false, inboxUrl: URL(string: "lem.foo.bar/u/exampleperson")!, sharedInboxUrl: nil, matrixUserId: nil, admin: false, botAccount: false, banExpires: nil, instanceId: 0)
+    static let previewUser = APIPerson(id: 0, name: "ExamplePerson", displayName: "Example Person", avatar: nil, banned: false, published: "no", updated: nil, actorId: URL(string: "lem.foo.bar/u/exampleperson")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: false, botAccount: false, banExpires: nil, instanceId: 0)
     
     static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
     
