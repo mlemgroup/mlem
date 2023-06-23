@@ -62,13 +62,7 @@ struct CompactPost: View {
                         Text("by")
                             .foregroundColor(.secondary)
                             .font(.caption)
-                        // poster
-                        NavigationLink(destination: UserView(userID: postView.creator.id, account: account)) {
-                            Text(postView.creator.name)
-                                .font(.caption)
-                                .italic()
-                                .foregroundColor(usernameColor)
-                        }
+                        UserProfileLink(account: account, user: postView.creator)
                         
                         Spacer()
                     }
