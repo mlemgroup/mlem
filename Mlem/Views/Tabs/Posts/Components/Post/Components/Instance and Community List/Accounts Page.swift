@@ -34,7 +34,7 @@ struct AccountsPage: View
                         { savedAccount in
                             NavigationLink
                             {
-                                CommunityView(account: savedAccount, community: nil)
+                                CommunityListView(account: savedAccount)
                                     .onAppear
                                     {
                                         appState.currentActiveAccount = savedAccount
