@@ -23,7 +23,7 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     
     // communities
-    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
     
     // icons
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
