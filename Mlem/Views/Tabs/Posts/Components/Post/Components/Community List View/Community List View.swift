@@ -55,12 +55,7 @@ struct CommunityListView: View
                                 Text(communitySection.inlineHeaderLabel!)
                                 Spacer()
                             }.id(communitySection.viewId)) {
-                                ForEach(
-                                    getSubscriptionsAndFavorites()
-                                        .filter({ (listedCommunity) -> Bool in
-                                            // Filter down to sidebar entry which wants us
-                                            communitySection.sidebarEntry.contains(community: listedCommunity, isSubscribed: subscribedCommunities.contains(listedCommunity))
-                                        })
+                                ForEach(calculateCommunityListSections(for: communitySection)
                                 ) { listedCommunity in
                                     CommuntiyFeedRowView(account: account, community: listedCommunity, subscribed: subscribedCommunities.contains(listedCommunity), communitySubscriptionChanged: self.hydrateCommunityData)
                                 }
@@ -116,6 +111,14 @@ struct CommunityListView: View
                                                                                                          sidebarIcon: nil),
                                inlineHeaderLabel: "#") ]
         }
+    }
+    
+    private func calculateCommunityListSections(for section: CommunitySection) -> [APICommunity] {
+        // Filter down to sidebar entry which wants us
+        return getSubscriptionsAndFavorites()
+            .filter({ (listedCommunity) -> Bool in
+                section.sidebarEntry.contains(community: listedCommunity, isSubscribed: subscribedCommunities.contains(listedCommunity))
+            })
     }
     
     private func calculateVisibleCommunitySections() -> [CommunitySection] {
