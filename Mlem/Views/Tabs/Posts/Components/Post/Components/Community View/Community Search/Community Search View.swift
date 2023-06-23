@@ -118,7 +118,7 @@ struct CommunitySearchResultsView: View
                             {
                                 ForEach(subscribedCommunities!)
                                 { subscribedCommunity in
-                                    NavigationLink(destination: CommunityView(account: account, community: subscribedCommunity, feedType: .all))
+                                    NavigationLink(value: subscribedCommunity)
                                     {
                                         Text("\(subscribedCommunity.name)\(Text("@\(subscribedCommunity.actorId.host!)").foregroundColor(.secondary).font(.caption))")
                                             .swipeActions(edge: .trailing, allowsFullSwipe: true)
@@ -148,7 +148,7 @@ struct CommunitySearchResultsView: View
                     {
                         ForEach(communitySearchResultsTracker.foundCommunities)
                         { foundCommunity in
-                            NavigationLink(destination: CommunityView(account: account, community: foundCommunity, feedType: .all))
+                            NavigationLink(value: foundCommunity)
                             {
                                 Text("\(foundCommunity.name)\(Text("@\(foundCommunity.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true)

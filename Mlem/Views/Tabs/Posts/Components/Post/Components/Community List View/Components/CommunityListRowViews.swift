@@ -35,7 +35,7 @@ struct CommuntiyFeedRowView: View {
                     Text("@\(website)").font(.footnote).foregroundColor(.gray).opacity(0.5)
                 }
             }.background(
-                NavigationLink(destination: CommunityView(account: account, community: community, feedType: .subscribed)) {}.opacity(0).buttonStyle(.plain)
+                NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {}.opacity(0).buttonStyle(.plain)
             )
             Spacer()
             
