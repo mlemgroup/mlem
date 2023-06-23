@@ -14,7 +14,7 @@ struct AvatarView: View {
     var overridenSize: CGFloat = 15
     
     var body: some View {
-        CachedAsyncImage(url: avatarLink)
+        CachedAsyncImage(url: avatarLink, urlCache: AppConstants.urlCache)
         { phase in
             if let avatar = phase.image
             { /// Success

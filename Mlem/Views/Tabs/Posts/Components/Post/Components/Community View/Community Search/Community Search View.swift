@@ -103,16 +103,6 @@ struct CommunitySearchResultsView: View
                     
                     Section
                     {
-                        
-                        
-                        NavigationLink(destination: CommunityListView(account: account))
-                        {
-                            Text("Go To Community List")
-                                .swipeActions(edge: .trailing, allowsFullSwipe: true)
-                            {
-                            }
-                        }
-                        
                         if subscribedCommunities != nil {
                             if !subscribedCommunities!.isEmpty
                             {
