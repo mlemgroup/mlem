@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SwipeyView: ViewModifier {
+struct SwipeyView: ViewModifier {    
     // state
     @GestureState var dragState: CGFloat = .zero
     @State var dragPosition = CGFloat.zero
