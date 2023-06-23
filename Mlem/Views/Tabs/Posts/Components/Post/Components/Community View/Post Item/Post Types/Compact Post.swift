@@ -22,10 +22,6 @@ struct CompactPost: View {
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
     
-    @State private var isShowingEnlargedImage: Bool = false
-    @State private var dragOffset = CGSize.zero
-    @State private var zoomScale: CGFloat = 1.0
-    
     // computed
     var usernameColor: Color {
         if postView.creator.admin {
