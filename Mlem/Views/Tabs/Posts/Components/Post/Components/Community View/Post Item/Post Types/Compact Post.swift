@@ -94,53 +94,6 @@ struct CompactPost: View {
                         .resizable()
                         .scaledToFill()
                         .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
-                        .onTapGesture { isShowingEnlargedImage.toggle() }
-                        .onChange(of: isShowingEnlargedImage) { newValue in
-                            if newValue == false
-                            {
-                                withAnimation {
-                                    dragOffset = .zero
-                                    zoomScale = 1.0
-                                }
-                            }
-                        }
-                        .fullScreenCover(isPresented: $isShowingEnlargedImage, content: {
-                            ZStack {
-                                let dragDistance = sqrt(pow(dragOffset.width, 2) + pow(dragOffset.height, 2))
-                                Color.black.opacity(max(0, 1 - Double(dragDistance / 500))).ignoresSafeArea() // Adjust opacity here
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .scaleEffect(zoomScale)
-                                    .offset(dragOffset)
-                                    .gesture(
-                                        DragGesture()
-                                            .onChanged{gesture in
-                                                dragOffset = gesture.translation}
-                                            .onEnded{ value in
-                                                withAnimation{
-                                                    if abs(value.predictedEndTranslation.width) > 100 || abs(value.predictedEndTranslation.height) > 100
-                                                    {
-                                                        isShowingEnlargedImage = false
-                                                        dragOffset = .zero
-                                                    } else
-                                                    {
-                                                        dragOffset = .zero
-                                                    }
-                                                }
-                                            }
-                                            .simultaneously(with: MagnificationGesture().onChanged { scale in
-                                                zoomScale = scale
-                                            }.onEnded{ _ in
-                                                withAnimation {
-                                                    zoomScale = 1.0
-                                                }
-                                            })
-                                    )
-                                
-                                
-                            }
-                        })
                 } placeholder: {
                     ProgressView()
                 }
