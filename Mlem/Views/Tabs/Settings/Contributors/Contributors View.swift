@@ -17,7 +17,7 @@ struct ContributorsView: View
     {
         VStack(alignment: .center, spacing: 10)
         {
-            CachedAsyncImage(url: contributor.avatarLink)
+            CachedAsyncImage(url: contributor.avatarLink, urlCache: AppConstants.urlCache)
             { image in
                 image
                     .resizable()

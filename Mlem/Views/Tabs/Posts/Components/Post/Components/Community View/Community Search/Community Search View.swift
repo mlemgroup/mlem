@@ -46,7 +46,7 @@ struct CommunitySearchResultsView: View
                                 Label("Subscribed", systemImage: "house")
                             }
                             .disabled(feedType == .subscribed)
-                            
+
                             Button
                             {
                                 feedType = .all
@@ -58,7 +58,7 @@ struct CommunitySearchResultsView: View
                                 Label("All Posts", systemImage: "rectangle.stack.fill")
                             }
                             .disabled(feedType == .all)
-                            
+
                         } header: {
                             Text("Feeds")
                         }
@@ -100,19 +100,9 @@ struct CommunitySearchResultsView: View
                     } header: {
                         Text("Favorites")
                     }
-                    
+
                     Section
                     {
-                        
-                        
-                        NavigationLink(value: account)
-                        {
-                            Text("Go To Community List")
-                                .swipeActions(edge: .trailing, allowsFullSwipe: true)
-                            {
-                            }
-                        }
-                        
                         if subscribedCommunities != nil {
                             if !subscribedCommunities!.isEmpty
                             {
@@ -192,7 +182,7 @@ struct CommunitySearchResultsView: View
                     $0.name < $1.name
                 });
             } catch {
-                
+
             }
         }
     }

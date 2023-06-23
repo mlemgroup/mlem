@@ -100,6 +100,7 @@ struct MlemApp: App
                 })
                 .onAppear
                 {
+                    URLCache.shared = AppConstants.urlCache
                     if FileManager.default.fileExists(atPath: AppConstants.savedAccountsFilePath.path)
                     {
                         print("Saved Accounts file exists, will attempt to load saved accounts")
