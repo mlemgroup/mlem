@@ -50,7 +50,7 @@ struct CommunitySidebarView: View {
                     .description {
                     MarkdownView(text: description).padding()
                     .contextMenu {
-                        EasyTranslateButton(text: .constant(communityDescription))
+                        EasyTranslateButton(text: .constant(description))
                     }
                 }
             }

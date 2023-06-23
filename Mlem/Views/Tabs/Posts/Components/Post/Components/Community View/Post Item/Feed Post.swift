@@ -75,7 +75,7 @@ struct FeedPost: View
                     Button("Reply") {
                         replyToPost()
                     }
-                    EasyTranslateButton(text: .constant(postItem.commentView.comment.content))
+                    EasyTranslateButton(text: .constant(postView.post.body))
                 }
                 .addSwipeyActions(isDragging: $isDragging,
                                   emptyLeftSymbolName: "arrow.up.square",
