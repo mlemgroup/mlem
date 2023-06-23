@@ -50,7 +50,7 @@ struct UserView: View {
             Section {
                 VStack(alignment: .center, spacing: 15) {
                     if let avatarURL = userDetails.person.avatar {
-                        CachedAsyncImage(url: avatarURL) { image in
+                        CachedAsyncImage(url: avatarURL, urlCache: AppConstants.urlCache) { image in
                             image
                                 .resizable()
                                 .frame(width: 100, height: 100)

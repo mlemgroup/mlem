@@ -93,7 +93,7 @@ struct LargePost: View {
     
     func imagePreview(url: URL) -> some View {
         ZStack {
-            CachedAsyncImage(url: url) { image in
+            CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
                 image
                     .resizable()
                     .frame(maxWidth: .infinity)
