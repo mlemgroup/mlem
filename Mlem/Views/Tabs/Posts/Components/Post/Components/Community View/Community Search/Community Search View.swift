@@ -13,6 +13,7 @@ struct CommunitySearchResultsView: View
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
 
     @State var searchResults: [Community]?
+    @State var subscribedCommunities: [APICommunity]?
 
     var account: SavedAccount
     var community: APICommunity?
@@ -99,6 +100,47 @@ struct CommunitySearchResultsView: View
                     } header: {
                         Text("Favorites")
                     }
+                    
+                    Section
+                    {
+                        
+                        
+                        NavigationLink(destination: CommunityListView(account: account))
+                        {
+                            Text("Go To Community List")
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true)
+                            {
+                            }
+                        }
+                        
+                        if subscribedCommunities != nil {
+                            if !subscribedCommunities!.isEmpty
+                            {
+                                ForEach(subscribedCommunities!)
+                                { subscribedCommunity in
+                                    NavigationLink(destination: CommunityView(account: account, community: subscribedCommunity, feedType: .all))
+                                    {
+                                        Text("\(subscribedCommunity.name)\(Text("@\(subscribedCommunity.actorId.host!)").foregroundColor(.secondary).font(.caption))")
+                                            .swipeActions(edge: .trailing, allowsFullSwipe: true)
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            VStack(alignment: .center, spacing: 10)
+                            {
+                                Image(systemName: "star.slash")
+                                Text("You have no community subscriptions")
+                            }
+                            .listRowBackground(Color.clear)
+                            .frame(maxWidth: .infinity)
+                        }
+                    } header: {
+                        Text("Subscriptions")
+                    }
                 }
                 else
                 {
@@ -140,6 +182,19 @@ struct CommunitySearchResultsView: View
             }
         }
         .frame(height: 300)
+        .task {
+            let request = ListCommunitiesRequest(account: account, sort: nil, page: nil, limit: nil, type: FeedType.subscribed);
+            do {
+                let response = try await APIClient().perform(request: request);
+                subscribedCommunities = response.communities.map({
+                    return $0.community;
+                }).sorted(by: {
+                    $0.name < $1.name
+                });
+            } catch {
+                
+            }
+        }
     }
 
     internal func getFavoritedCommunitiesForAccount(account: SavedAccount, tracker: FavoriteCommunitiesTracker) -> [FavoriteCommunity]
