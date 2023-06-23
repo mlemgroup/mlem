@@ -60,7 +60,7 @@ struct CommunitySidebarView: View {
                             UserView(userID: moderatorView.moderator.id, account: account)
                         } label: {
                             HStack {
-                                UserProfileLabel(account: account, user: moderatorView.moderator)
+                                UserProfileLabel(account: account, user: moderatorView.moderator, postContext: nil, commentContext: nil, communityContext: communityDetails)
                                 Spacer()
                             }.padding()
                         }

@@ -18,6 +18,7 @@ struct UserProfileLabel : View {
     // to pick the correct flair
     @State var postContext: APIPostView? = nil
     @State var commentContext: APIComment? = nil
+    @State var communityContext: GetCommunityResponse? = nil
     
     static let developerNames = [
         "vlemmy.net/u/darknavi",
@@ -72,6 +73,11 @@ struct UserProfileLabel : View {
         }
         if let comment = commentContext {
             if comment.distinguished {
+                return UserProfileLabel.flairMod
+            }
+        }
+        if let community = communityContext {
+            if community.moderators.contains(where: { $0.moderator == user }) {
                 return UserProfileLabel.flairMod
             }
         }

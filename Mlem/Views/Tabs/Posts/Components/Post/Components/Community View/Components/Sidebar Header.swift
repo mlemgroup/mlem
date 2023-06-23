@@ -55,7 +55,6 @@ struct CommunitySidebarHeader : View {
                                 .font(.footnote)
                                 .lineLimit(1)
                         }
-                        Text("@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)").font(.footnote).lineLimit(1)
                         
                     }.padding([.trailing])
                 }
