@@ -49,33 +49,23 @@ struct CommunityListView: View
                         HomepageFeedRowView(account: account, feedType: .local, iconName: "building.2.crop.circle.fill", iconColor: Color.green, description: "Local communities from your server")
                         HomepageFeedRowView(account: account, feedType: .all, iconName: "cloud.circle.fill", iconColor: Color.blue, description: "All communities that federate with your server")
                         
-                        ForEach(communitySections
-                                
-                                // Only show letter headers for letters we have in our community list
-                            .filter({ (communitySection) -> Bool in
-                                getSubscriptionsAndFavorites().contains(where: { communitySection.sidebarEntry.contains(community: $0, isSubscribed: subscribedCommunities.contains($0)) })
-                            })
-                                // Only show sections which have labels to show
-                            .filter({ (communitySection) -> Bool in
-                                communitySection.inlineHeaderLabel != nil
-                            })) { communitySection in
-                                
-                                Section(header:
-                                            HStack {
-                                    Text(communitySection.inlineHeaderLabel!)
-                                    Spacer()
-                                }.id(communitySection.viewId)) {
-                                    ForEach(
-                                        getSubscriptionsAndFavorites()
-                                            .filter({ (listedCommunity) -> Bool in
-                                                // Filter down to sidebar entry which wants us
-                                                communitySection.sidebarEntry.contains(community: listedCommunity, isSubscribed: subscribedCommunities.contains(listedCommunity))
-                                            })
-                                    ) { listedCommunity in
-                                        CommuntiyFeedRowView(account: account, community: listedCommunity, subscribed: subscribedCommunities.contains(listedCommunity), communitySubscriptionChanged: self.hydrateCommunityData)
-                                    }
+                        ForEach(calculateVisibleCommunitySections()) { communitySection in
+                            Section(header:
+                                        HStack {
+                                Text(communitySection.inlineHeaderLabel!)
+                                Spacer()
+                            }.id(communitySection.viewId)) {
+                                ForEach(
+                                    getSubscriptionsAndFavorites()
+                                        .filter({ (listedCommunity) -> Bool in
+                                            // Filter down to sidebar entry which wants us
+                                            communitySection.sidebarEntry.contains(community: listedCommunity, isSubscribed: subscribedCommunities.contains(listedCommunity))
+                                        })
+                                ) { listedCommunity in
+                                    CommuntiyFeedRowView(account: account, community: listedCommunity, subscribed: subscribedCommunities.contains(listedCommunity), communitySubscriptionChanged: self.hydrateCommunityData)
                                 }
                             }
+                        }
                         
                     }
                     .navigationTitle("Communities")
@@ -128,7 +118,18 @@ struct CommunityListView: View
         }
     }
     
-    
+    private func calculateVisibleCommunitySections() -> [CommunitySection] {
+        return communitySections
+        
+        // Only show letter headers for letters we have in our community list
+            .filter({ (communitySection) -> Bool in
+                getSubscriptionsAndFavorites().contains(where: { communitySection.sidebarEntry.contains(community: $0, isSubscribed: subscribedCommunities.contains($0)) })
+            })
+        // Only show sections which have labels to show
+            .filter({ (communitySection) -> Bool in
+                communitySection.inlineHeaderLabel != nil
+            })
+    }
     
     private func hydrateCommunityData(community: APICommunity, isSubscribed: Bool) {
         // Add or remove subscribed sub locally
