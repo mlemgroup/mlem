@@ -41,7 +41,6 @@ struct CommunitySidebarHeader : View {
                         Spacer().frame(height: 170)
                         HStack {
                             CommunitySidebarHeaderLabel("\(communityDetails.communityView.counts.subscribers) Subscribers")
-                            CommunitySidebarHeaderLabel("\(communityDetails.online) Online")
                         }
                         Spacer().frame(height: 20)
                         

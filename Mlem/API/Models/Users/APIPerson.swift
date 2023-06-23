@@ -21,7 +21,6 @@ struct APIPerson: Decodable {
     let local: Bool
     let banner: URL?
     let deleted: Bool
-    let inboxUrl: URL
     let sharedInboxUrl: URL?
     let matrixUserId: String?
     let admin: Bool
