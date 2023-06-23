@@ -130,7 +130,7 @@ struct FeedPost: View
     func voteOnPost(inputOp: ScoringOperation) async -> Void {
         do {
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await ratePost(postId: postView.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
+            try await ratePost(postId: postView.post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
         } catch {
             print("failed to vote!")
         }
@@ -138,7 +138,7 @@ struct FeedPost: View
     
     func savePost() async -> Void {
         do {
-            try await sendSavePostRequest(account: account, postId: postView.id, save: !postView.saved, postTracker: postTracker)
+            try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
         } catch {
             print("failed to save!")
         }

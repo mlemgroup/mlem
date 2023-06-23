@@ -21,7 +21,7 @@ func postComment(
         content: commentContents,
         languageId: nil,
         parentId: nil,
-        postId: post.id
+        postId: post.post.id
     )
     
     let response = try await APIClient().perform(request: request)
@@ -47,7 +47,7 @@ func postComment(
         // TODO: we should map out all the language options...
         languageId: dominantLanguage == "en" ? 37 : nil,
         parentId: comment.id,
-        postId: post.id
+        postId: post.post.id
     )
     
     let response = try await APIClient().perform(request: request)
@@ -75,7 +75,7 @@ func postComment(
         content: commentContents,
         languageId: nil,
         parentId: nil,
-        postId: post.id
+        postId: post.post.id
     )
     
     try await APIClient().perform(request: request)

@@ -158,7 +158,7 @@ struct PostInteractionBar: View {
                 // fake save
                 dirtySaved.toggle()
                 dirty = true
-                try await sendSavePostRequest(account: account, postId: postView.id, save: dirtySaved, postTracker: postTracker)
+                try await sendSavePostRequest(account: account, postId: postView.post.id, save: dirtySaved, postTracker: postTracker)
             } catch {
                 print("failed to save!")
             }
