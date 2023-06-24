@@ -1,5 +1,5 @@
 # Mlem
-[![Download on TestFlight](https://img.shields.io/badge/Download-TestFlight-blue)](https://testflight.apple.com/join/xQfmkJhc)
+[![Download on TestFlight](https://img.shields.io/badge/Download-TestFlight-blue)](https://testflight.apple.com/join/MelFP11Y)
 
 The Lemmy client for iOS.
 
