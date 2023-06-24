@@ -102,10 +102,10 @@ struct FeedPost: View
     @ViewBuilder
     var postItem: some View {
         if (shouldShowCompactPosts){
-            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost)
+            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost) { _ in await savePost() }
         }
         else {
-            LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost)
+            LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost) { _ in await savePost() }
         }
     }
     
@@ -138,7 +138,7 @@ struct FeedPost: View
     
     func savePost() async -> Void {
         do {
-            try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
+            _ = try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
         } catch {
             print("failed to save!")
         }

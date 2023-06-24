@@ -21,6 +21,7 @@ struct CompactPost: View {
     let postView: APIPostView
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
+    let savePost: (_ save: Bool) async throws -> Void
     
     // computed
     var usernameColor: Color {
@@ -70,7 +71,7 @@ struct CompactPost: View {
                 }
                 
             }
-            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost)
+            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost, updatedSavePost: savePost)
         }
         .padding(spacing)
     }
