@@ -38,5 +38,6 @@ extension APIPostView: Hashable {
         hasher.combine(self.post.id)
         hasher.combine(self.myVote)
         hasher.combine(self.saved)
+        hasher.combine(self.read)
     }
 }

@@ -272,7 +272,7 @@ struct ExpandedPost: View
      */
     private var postView: some View {
         VStack(spacing: 0) {
-            LargePost(postView: post, account: account, isExpanded:  true, voteOnPost: voteOnPost)
+            LargePost(postView: post, account: account, isExpanded:  true, voteOnPost: voteOnPost, savePost: savePost)
             Divider().background(.black)
         }
     }
@@ -369,11 +369,17 @@ struct ExpandedPost: View
     func voteOnPost(inputOp: ScoringOperation) async -> Void {
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            let results = try await ratePost(postId: post.post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
-            self.post = results
+            self.post = try await ratePost(postId: post.post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
         } catch {
             print("failed to vote!")
         }
+    }
+    
+    /**
+     Sends a save request for the current post
+     */
+    func savePost(_ save: Bool) async throws -> Void {
+        self.post = try await sendSavePostRequest(account: account, postId: post.post.id, save: save, postTracker: postTracker)
     }
 }
 
