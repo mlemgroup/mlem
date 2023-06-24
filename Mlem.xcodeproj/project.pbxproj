@@ -172,6 +172,8 @@
 		6D8F08FF2A4029AE003EB4FD /* Community List View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F08FE2A4029AE003EB4FD /* Community List View.swift */; };
 		6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */; };
 		6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */; };
+		B131BB9B2A4721D400951C92 /* View - BioLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B131BB9A2A4721D400951C92 /* View - BioLock.swift */; };
+		B131BB9D2A472CA800951C92 /* Account Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B131BB9C2A472CA800951C92 /* Account Preference.swift */; };
 		B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93BF2A45CA3400D6DA93 /* Post Link.swift */; };
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
 		B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B14E93C42A470D5100D6DA93 /* AlertToast */; };
@@ -387,6 +389,8 @@
 		6D8F08FE2A4029AE003EB4FD /* Community List View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Community List View.swift"; sourceTree = "<group>"; };
 		6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListSidebarEntry.swift; sourceTree = "<group>"; };
 		6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowViews.swift; sourceTree = "<group>"; };
+		B131BB9A2A4721D400951C92 /* View - BioLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - BioLock.swift"; sourceTree = "<group>"; };
+		B131BB9C2A472CA800951C92 /* Account Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account Preference.swift"; sourceTree = "<group>"; };
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
 		B14E93C12A45D3B300D6DA93 /* Community Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link.swift"; sourceTree = "<group>"; };
 		B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation getter.swift"; sourceTree = "<group>"; };
@@ -515,6 +519,7 @@
 				63F0C7A52A05225100A18C5D /* Saved Account.swift */,
 				63CE4E722A06F5A100405271 /* Access Token.swift */,
 				63E5D3932A13CF3600EC1FBD /* Favorite Community.swift */,
+				B131BB9C2A472CA800951C92 /* Account Preference.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -606,6 +611,7 @@
 				CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */,
 				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
 				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
+				B131BB9A2A4721D400951C92 /* View - BioLock.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1394,6 +1400,7 @@
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63344C712A098060001BC616 /* Sidebar.swift in Sources */,
 				63E5D3822A13831800EC1FBD /* Community Search View.swift in Sources */,
+				B131BB9D2A472CA800951C92 /* Account Preference.swift in Sources */,
 				637218572A3A2AAD008C4816 /* APISiteView.swift in Sources */,
 				B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */,
 				63AF452D2A2F37EB00E0266F /* Own Account Tracker.swift in Sources */,
@@ -1459,6 +1466,7 @@
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
 				B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */,
 				6D405B052A43E82300C65F9C /* Sidebar Header.swift in Sources */,
+				B131BB9B2A4721D400951C92 /* View - BioLock.swift in Sources */,
 				63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */,
 				6372184E2A3A2AAD008C4816 /* APIPersonView.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
@@ -1668,6 +1676,7 @@
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use FaceID to lock your account";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1703,6 +1712,7 @@
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use FaceID to lock your account";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

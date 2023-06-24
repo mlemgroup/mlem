@@ -50,6 +50,26 @@ struct MlemApp: App
                         print("Failed while encoding accounts to data: \(encodingError)")
                     }
                 }
+                .onChange(of: accountsTracker.accountPreferences) { newValue in
+                    print("now saving account Preferences")
+                    do
+                    {
+                        let encodedSavedAccounts: Data = try encodeForSaving(object: newValue)
+
+                        do
+                        {
+                            try writeDataToFile(data: encodedSavedAccounts, fileURL: AppConstants.savedAccountsPreferenceFilePath)
+                        }
+                        catch let writingError
+                        {
+                            print("Failed while saving data to file: \(writingError)")
+                        }
+                    }
+                    catch let encodingError
+                    {
+                        print("Failed while encoding accounts to data: \(encodingError)")
+                    }
+                }
                 .onChange(of: filtersTracker.filteredKeywords)
                 { newValue in
                     print("Change detected in filtered keywords: \(newValue)")
@@ -193,10 +213,39 @@ struct MlemApp: App
                             print("Failed while creating empty file: \(emptyFileCreationError)")
                         }
                     }
-                    
+
+                    if FileManager.default.fileExists(atPath: AppConstants.savedAccountsPreferenceFilePath.path)
+                    {
+                        print("Favorite communities file exists, will attempt to load favorite communities")
+                        do
+                        {
+                            accountsTracker.accountPreferences = try decodeFromFile(fromURL: AppConstants.savedAccountsPreferenceFilePath, whatToDecode: .accountPreferences) as! [Int: AccountPreference]
+                        }
+                        catch let accountPreferencesDecodingError
+                        {
+                            print("Failed while decoding account Preferences: \(accountPreferencesDecodingError)")
+                        }
+                    }
+                    else
+                    {
+                        print("Account Preferences file does not exist, will try to create it")
+
+                        do
+                        {
+                            try createEmptyFile(at: AppConstants.savedAccountsPreferenceFilePath)
+                        }
+                        catch let emptyFileCreationError
+                        {
+                            print("Failed while creating empty file: \(emptyFileCreationError)")
+                        }
+                    }
+
                     // set app theme to user preference
                     let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = lightOrDarkMode
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                    appState.locked = true
                 }
         }
     }

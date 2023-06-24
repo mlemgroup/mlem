@@ -19,6 +19,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APICommunityView.self) { context in
                 if let account = account {
                     CommunityView(account: account, community: context.community)
+                        .handleAccountSecurity(account: account)
                 } else {
                     Text("You must be signed in to view this community")
                 }
@@ -26,6 +27,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APICommunity.self) { community in
                 if let account = account {
                     CommunityView(account: account, community: community)
+                        .handleAccountSecurity(account: account)
                 } else {
                     Text("You must be signed in to view this community")
                 }
@@ -33,6 +35,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: CommunityLinkWithContext.self) { context in
                 if let account = account {
                     CommunityView(account: account, community: context.community, feedType: context.feedType)
+                        .handleAccountSecurity(account: account)
                 } else {
                     Text("You must be signed in to view this community")
                 }
@@ -44,6 +47,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         post: post,
                         feedType: .constant(.all)
                     )
+                    .handleAccountSecurity(account: account)
                 } else {
                     Text("You must be signed in to view this post")
                 }
@@ -55,6 +59,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         post: post.post,
                         feedType: post.feedType
                     ).environmentObject(post.postTracker)
+                        .handleAccountSecurity(account: account)
                 } else {
                     Text("You must be signed in to view this post")
                 }
@@ -62,6 +67,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APIPerson.self) { user in
                 if let account = account {
                     UserView(userID: user.id, account: account)
+                        .handleAccountSecurity(account: account)
                 } else {
                     Text("You must be signed in to view this user")
                 }

@@ -28,4 +28,6 @@ class AppState: ObservableObject
     @Published var toast: AlertToast?
     
     @Published var criticalErrorType: CriticalError = .shittyInternet
+    
+    @Published var locked: Bool = false
 }

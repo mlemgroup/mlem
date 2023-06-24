@@ -18,6 +18,7 @@ struct CommunityListView: View
 {
     let account: SavedAccount
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
+    @EnvironmentObject var accountsTracker: SavedAccountTracker
     
     @State var subscribedCommunities = [APICommunity]()
     
