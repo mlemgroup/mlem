@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import AlertToast
 
 struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var appState: AppState
@@ -80,14 +81,18 @@ struct HandleLemmyLinkResolution: ViewModifier {
             .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
     }
 
+    @MainActor
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         let account = appState.currentActiveAccount ?? savedAccounts.savedAccounts.first
         // let's try keep peps in the app!
         if let account = account {
             if url.absoluteString.contains(["lem", "/c/", "/u/", "/post/", "@"]) {
-            // this link is sus! let's go
-            // first let's check if this is a lemmy server we're talking to
-                Task {
+                // this link is sus! let's go
+                // but first let's let the user know what's happning!
+                appState.toast = AlertToast(displayMode: .hud, type: .loading, title: "Redirecting... please wait")
+                appState.isShowingToast = true
+                Task(priority: .userInitiated) {
+                    defer { appState.isShowingToast = false }
                     let newBaseURL = "https://\(url.host() ?? "example.com")/api/v3"
                     var lookup = url.absoluteString
                     if !lookup.contains("http") {

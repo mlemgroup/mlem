@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct AccountsPage: View
 {
@@ -105,6 +106,9 @@ struct AccountsPage: View
             {
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
             }
+        }
+        .toast(isPresenting: $appState.isShowingToast) {
+            appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
         .alert(appState.alertTitle, isPresented: $appState.isShowingAlert)
         {
