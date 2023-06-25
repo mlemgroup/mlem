@@ -78,9 +78,8 @@ struct ExpandedPost: View
                     {
                         VStack(alignment: .leading, spacing: 5) {
                             HStack(alignment: .center, spacing: 2) {
-                                Text("Replying to \(commentToReplyTo.creator.name):")
-                                    .font(.caption)
-                                // UserProfileLink(shouldShowUserAvatars: true, user: commentToReplyTo.creator)
+                                Text("Replying to ")
+                                UserProfileLabel(shouldShowUserAvatars: false, account: account, user: commentToReplyTo.creator, postContext: post, commentContext: commentToReplyTo.comment, communityContext: nil)
                             }
                             .foregroundColor(.secondary)
                             
@@ -98,7 +97,7 @@ struct ExpandedPost: View
                 
                 HStack(alignment: .center, spacing: 10)
                 {
-                    TextField("Reply to post", text: $textFieldContents, prompt: Text("\(account.username):"), axis: .vertical)
+                    TextField("Reply to post", text: $textFieldContents, prompt: Text("Commenting as \(account.username):"), axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .focused($isReplyFieldFocused)
 
