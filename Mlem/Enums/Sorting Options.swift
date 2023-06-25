@@ -17,4 +17,10 @@ enum SortingOptions: String, Encodable
     case topMonth = "TopMonth"
     case topYear = "TopYear"
     case topAll = "TopAll"
+    case topHour = "TopHour"
+    case topSixHour = "TopSixHour"
+    case topTwelveHour = "TopTwelveHour"
+    case mostComments = "MostComments"
+    case old = "Old"
+    case newComments = "NewComments"
 }
