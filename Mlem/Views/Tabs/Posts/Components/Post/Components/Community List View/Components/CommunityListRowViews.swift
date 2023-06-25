@@ -18,6 +18,17 @@ struct HeaderView: View {
     }
 }
 
+struct FavoriteStarButtonStyle: ButtonStyle {
+    let isFavorited: Bool
+    
+    func makeBody(configuration: Configuration) -> some View {
+        Image(systemName: isFavorited ? "star.fill" : "star")
+            .foregroundColor(.blue)
+            .opacity(isFavorited ? 1.0 : 0.2)
+            .accessibilityRepresentation{ configuration.label }
+    }
+}
+
 struct CommuntiyFeedRowView: View {
     let account: SavedAccount
     let community: APICommunity
@@ -37,25 +48,24 @@ struct CommuntiyFeedRowView: View {
             }.background(
                 NavigationLink(destination: CommunityView(account: account, community: community, feedType: .subscribed)) {}.opacity(0).buttonStyle(.plain)
             )
+            .accessibilityLabel("Community \(community.name)")
+            .accessibilityAddTraits(.isLink)
+            
             Spacer()
             
-            Button()
-            {
+            Button("Favorite Community", action: {
+                // Nice little haptics
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.success)
+                
                 if isFavorited() {
                     unfavoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
                 }
                 else {
                     favoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
                 }
-            } label: {
-                if isFavorited() {
-                    Image(systemName: "star.fill").foregroundColor(.blue)
-                }
-                else {
-                    Image(systemName: "star").foregroundColor(.gray).opacity(0.2)
-                }
-                
-            }.buttonStyle(.plain)
+            }).buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
+            
         }.swipeActions {
             if subscribed {
                 Button("Unsubscribe") {

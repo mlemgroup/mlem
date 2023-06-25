@@ -12,6 +12,7 @@ struct CommunitySection: Identifiable {
     let viewId: String
     let sidebarEntry: any SidebarEntry
     let inlineHeaderLabel: String?
+    let accessibilityLabel: String
 }
 
 struct CommunityListView: View
@@ -52,7 +53,7 @@ struct CommunityListView: View
                         ForEach(calculateVisibleCommunitySections()) { communitySection in
                             Section(header:
                                         HStack {
-                                Text(communitySection.inlineHeaderLabel!)
+                                Text(communitySection.inlineHeaderLabel!).accessibilityLabel(communitySection.accessibilityLabel)
                                 Spacer()
                             }.id(communitySection.viewId)) {
                                 ForEach(calculateCommunityListSections(for: communitySection)
@@ -95,21 +96,21 @@ struct CommunityListView: View
             // Set up sections after we body is called
             // so we can use the favorite tracker environment
             communitySections = [
-                CommunitySection(viewId: "top", sidebarEntry: EmptySidebarEntry(sidebarLabel: nil, sidebarIcon: "line.3.horizontal"), inlineHeaderLabel: nil),
+                CommunitySection(viewId: "top", sidebarEntry: EmptySidebarEntry(sidebarLabel: nil, sidebarIcon: "line.3.horizontal"), inlineHeaderLabel: nil, accessibilityLabel: "Top of communities"),
                 
-                CommunitySection(viewId: "favorites", sidebarEntry: FavoritesSidebarEntry(account: account, favoritesTracker: favoritedCommunitiesTracker, sidebarLabel: nil, sidebarIcon: "star.fill"), inlineHeaderLabel: "Favorites")
+                CommunitySection(viewId: "favorites", sidebarEntry: FavoritesSidebarEntry(account: account, favoritesTracker: favoritedCommunitiesTracker, sidebarLabel: nil, sidebarIcon: "star.fill"), inlineHeaderLabel: "Favorites", accessibilityLabel: "Favorited Communities")
             ] +
             CommunityListView.alphabet.map{
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
                 CommunitySection(viewId: $0, sidebarEntry: RegexCommunityNameSidebarEntry(communityNameRegex: (try? Regex("^[\($0.uppercased())\($0.lowercased())]"))!,
                                                                                           sidebarLabel: $0,
                                                                                           sidebarIcon: nil),
-                                 inlineHeaderLabel: $0)} +
+                                 inlineHeaderLabel: $0, accessibilityLabel: "Communities starting with the letter '\($0)'")} +
             
             [ CommunitySection(viewId: "non_letter_titles", sidebarEntry: RegexCommunityNameSidebarEntry(communityNameRegex: /^[^a-zA-Z]/,
                                                                                                          sidebarLabel: "#",
                                                                                                          sidebarIcon: nil),
-                               inlineHeaderLabel: "#") ]
+                               inlineHeaderLabel: "#", accessibilityLabel: "Communities starting with a symbol or number") ]
         }
     }
     
