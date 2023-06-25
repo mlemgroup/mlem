@@ -28,9 +28,8 @@ struct ListCommunitiesRequest: APIGetRequest {
         self.instanceURL = account.instanceLink
         self.queryItems = [
             .init(name: "sort", value: sort?.rawValue),
-
-            .init(name: "limit", value: limit.map(String.init)),
-            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit?.description),
+            .init(name: "page", value: page?.description),
             .init(name: "type_", value: type.rawValue),
 
             .init(name: "auth", value: account.accessToken),

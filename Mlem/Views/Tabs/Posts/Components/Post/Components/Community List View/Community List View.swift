@@ -72,24 +72,14 @@ struct CommunityListView: View
                 }
             }
         }
+        .refreshable {
+            await refreshCommunitiesList()
+        }
         .task(priority: .userInitiated) {
             // NOTE: This will not auto request if data is provided
             // This is normally only during preview
             if hasTestCommunities == false {
-                let request = ListCommunitiesRequest(account: account, sort: nil, page: nil, limit: nil, type: FeedType.subscribed);
-                do {
-                    let response = try await APIClient().perform(request: request);
-                    
-                    let newSubscribedCommunities = response.communities.map({
-                        return $0.community;
-                    }).sorted(by: {
-                        $0.name < $1.name
-                    });
-                    
-                    subscribedCommunities = newSubscribedCommunities.sorted(by: { $0.name < $1.name })
-                } catch {
-                    // TODO: Some sort of common alert banner?
-                }
+                await refreshCommunitiesList()
             }
             
         }.onAppear {
@@ -111,6 +101,37 @@ struct CommunityListView: View
                                                                                                          sidebarLabel: "#",
                                                                                                          sidebarIcon: nil),
                                inlineHeaderLabel: "#", accessibilityLabel: "Communities starting with a symbol or number") ]
+        }
+    }
+    
+    private func refreshCommunitiesList() async {
+        let communitiesRequestCount = 50
+        do {
+            var moreCommunities = true
+            var refreshedCommunities: [APICommunity] = []
+            var communitiesPage = 1
+            repeat {
+                let request = ListCommunitiesRequest(account: account, sort: nil, page: communitiesPage, limit: communitiesRequestCount, type: FeedType.subscribed);
+                
+                let response = try await APIClient().perform(request: request);
+                
+                let newSubscribedCommunities = response.communities.map({
+                    return $0.community;
+                }).sorted(by: {
+                    $0.name < $1.name
+                });
+                
+                refreshedCommunities.append(contentsOf: newSubscribedCommunities)
+                
+                communitiesPage = communitiesPage + 1
+                
+                // Go until we get less than the count we ask for
+                moreCommunities = response.communities.count == communitiesRequestCount
+            } while (moreCommunities)
+            
+            subscribedCommunities = refreshedCommunities.sorted(by: { $0.name < $1.name })
+        } catch {
+            print("Failed to refresh communities: \(error)")
         }
     }
     
