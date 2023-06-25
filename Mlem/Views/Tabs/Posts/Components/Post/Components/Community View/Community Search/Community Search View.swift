@@ -46,7 +46,7 @@ struct CommunitySearchResultsView: View
                                 Label("Subscribed", systemImage: "house")
                             }
                             .disabled(feedType == .subscribed)
-                            
+
                             Button
                             {
                                 feedType = .all
@@ -58,7 +58,7 @@ struct CommunitySearchResultsView: View
                                 Label("All Posts", systemImage: "rectangle.stack.fill")
                             }
                             .disabled(feedType == .all)
-                            
+
                         } header: {
                             Text("Feeds")
                         }
@@ -72,7 +72,7 @@ struct CommunitySearchResultsView: View
                         {
                             ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker))
                             { favoritedCommunity in
-                                NavigationLink(destination: CommunityView(account: account, community: favoritedCommunity.community, feedType: .all))
+                                NavigationLink(value: favoritedCommunity.community)
                                 {
                                     Text("\(favoritedCommunity.community.name)\(Text("@\(favoritedCommunity.community.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true)
@@ -100,7 +100,7 @@ struct CommunitySearchResultsView: View
                     } header: {
                         Text("Favorites")
                     }
-                    
+
                     Section
                     {
                         if subscribedCommunities != nil {
@@ -108,7 +108,7 @@ struct CommunitySearchResultsView: View
                             {
                                 ForEach(subscribedCommunities!)
                                 { subscribedCommunity in
-                                    NavigationLink(destination: CommunityView(account: account, community: subscribedCommunity, feedType: .all))
+                                    NavigationLink(value: subscribedCommunity)
                                     {
                                         Text("\(subscribedCommunity.name)\(Text("@\(subscribedCommunity.actorId.host!)").foregroundColor(.secondary).font(.caption))")
                                             .swipeActions(edge: .trailing, allowsFullSwipe: true)
@@ -138,7 +138,7 @@ struct CommunitySearchResultsView: View
                     {
                         ForEach(communitySearchResultsTracker.foundCommunities)
                         { foundCommunity in
-                            NavigationLink(destination: CommunityView(account: account, community: foundCommunity, feedType: .all))
+                            NavigationLink(value: foundCommunity)
                             {
                                 Text("\(foundCommunity.name)\(Text("@\(foundCommunity.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true)
@@ -182,7 +182,7 @@ struct CommunitySearchResultsView: View
                     $0.name < $1.name
                 });
             } catch {
-                
+
             }
         }
     }

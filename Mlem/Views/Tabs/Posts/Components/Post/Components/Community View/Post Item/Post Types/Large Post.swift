@@ -27,13 +27,15 @@ struct LargePost: View {
     let account: SavedAccount
     let isExpanded: Bool
     let voteOnPost: (ScoringOperation) async -> Void
+    let savePost: (_ save: Bool) async throws -> Void
     
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
-    init(postView: APIPostView, account: SavedAccount, isExpanded: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
+    init(postView: APIPostView, account: SavedAccount, isExpanded: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, savePost: @escaping (_ save: Bool) async throws -> Void) {
         self.postView = postView
         self.account = account
         self.isExpanded = isExpanded
         self.voteOnPost = voteOnPost
+        self.savePost = savePost
         _showNsfwFilterToggle = .init(initialValue: !isExpanded)
     }
     
@@ -68,7 +70,7 @@ struct LargePost: View {
                 EmptyView()
             }
             
-            PostInteractionBar(postView: postView, account: account, compact: false, voteOnPost: voteOnPost)
+            PostInteractionBar(postView: postView, account: account, compact: false, voteOnPost: voteOnPost, updatedSavePost: savePost)
         }
         .padding(.vertical, spacing)
         .padding(.horizontal, spacing)
@@ -84,7 +86,7 @@ struct LargePost: View {
                 MarkdownView(text: bodyText)
                     .font(.subheadline)
             } else {
-                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined())
+                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "))
                     .lineLimit(8)
                     .font(.subheadline)
             }

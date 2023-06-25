@@ -9,7 +9,7 @@
 func sendSavePostRequest(account: SavedAccount,
               postId: Int,
               save: Bool,
-              postTracker: PostTracker) async throws {
+              postTracker: PostTracker) async throws -> APIPostView {
     do {
         let request = SavePostRequest(account: account, postId: postId, save: save)
         
@@ -17,6 +17,8 @@ func sendSavePostRequest(account: SavedAccount,
         let response = try await APIClient().perform(request: request)
         
         postTracker.update(with: response.postView)
+        
+        return response.postView
     }
     catch {
         AppConstants.hapticManager.notificationOccurred(.error)

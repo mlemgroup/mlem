@@ -24,7 +24,7 @@ func ratePost(
     account: SavedAccount,
     postTracker: PostTracker,
     appState: AppState
-) async throws {
+) async throws -> APIPostView {
     do {
         let request = CreatePostLikeRequest(
             account: account,
@@ -35,6 +35,7 @@ func ratePost(
         AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         postTracker.update(with: response.postView)
+        return response.postView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
         throw RatingFailure.failedToPostScore
