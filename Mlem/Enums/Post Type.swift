@@ -10,6 +10,6 @@ import Foundation
 enum PostType: Equatable {
     case text(String)
     case image(URL)
-    case link(URL)
+    case link(URL?)
     case titleOnly
 }
