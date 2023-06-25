@@ -14,7 +14,7 @@ internal enum PossibleStyling
 
 struct ExpandedPost: View
 {
-    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
+    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
 
     @EnvironmentObject var appState: AppState
 
@@ -29,7 +29,7 @@ struct ExpandedPost: View
 
     @State private var sortSelection = 0
 
-    @State private var commentSortingType: CommentSortTypes = .top
+    @State private var commentSortingType: CommentSortType = .top
 
     @FocusState var isReplyFieldFocused
     
@@ -204,34 +204,17 @@ struct ExpandedPost: View
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Menu {
-                    Button {
-                        commentSortingType = .active
-                    } label: {
-                        Label("Active", systemImage: "bubble.left.and.bubble.right")
-                    }
-
-                    Button {
-                        commentSortingType = .new
-                    } label: {
-                        Label("New", systemImage: "sun.max")
-                    }
-
-                    Button {
-                        commentSortingType = .top
-                    } label: {
-                        Label("Top", systemImage: "calendar.day.timeline.left")
+                    ForEach(CommentSortType.allCases, id: \.self) { type in
+                        Button {
+                            commentSortingType = type
+                        } label: {
+                            Label(type.description, systemImage: type.imageName)
+                        }
+                        .disabled(type == commentSortingType)
                     }
 
                 } label: {
-                    switch commentSortingType
-                    {
-                    case .new:
-                        Label("New", systemImage: "sun.max")
-                    case .top:
-                        Label("Top", systemImage: "calendar.day.timeline.left")
-                    case .active:
-                        Label("Active", systemImage: "bubble.left.and.bubble.right")
-                    }
+                    Label(commentSortingType.description, systemImage: commentSortingType.imageName)
                 }
             }
 
@@ -339,16 +322,18 @@ struct ExpandedPost: View
         }
     }
 
-    private func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortTypes) -> [HierarchicalComment]
+    private func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortType) -> [HierarchicalComment]
     {
         let sortedComments: [HierarchicalComment]
         switch sort
         {
         case .new:
             sortedComments = comments.sorted(by: { $0.commentView.comment.published > $1.commentView.comment.published })
+        case .old:
+            sortedComments = comments.sorted(by: { $0.commentView.comment.published < $1.commentView.comment.published })
         case .top:
             sortedComments = comments.sorted(by: { $0.commentView.counts.score > $1.commentView.counts.score })
-        case .active:
+        case .hot:
             sortedComments = comments.sorted(by: { $0.commentView.counts.childCount > $1.commentView.counts.childCount })
         }
 

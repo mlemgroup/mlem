@@ -14,7 +14,8 @@ internal enum FavoritesPurgingError
 
 struct GeneralSettingsView: View
 {
-    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
+    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
 
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
@@ -28,12 +29,40 @@ struct GeneralSettingsView: View
         {
             Section("Default Sorting")
             {
-                SelectableSettingsItem(
-                    settingIconSystemName: "text.line.first.and.arrowtriangle.forward",
-                    settingName: "Comment sorting",
-                    currentValue: $defaultCommentSorting,
-                    options: CommentSortTypes.allCases
-                )
+                HStack {
+                    Image(systemName: "text.line.first.and.arrowtriangle.forward")
+                        .foregroundColor(.pink)
+                    Text("Posts")
+                    Spacer()
+                    PostSortMenu(selectedSortingOption: $defaultPostSorting, shortLabel: true)
+                }
+                
+                HStack {
+                    Image(systemName: "text.line.first.and.arrowtriangle.forward")
+                        .foregroundColor(.pink)
+                    Text("Comments")
+                    Spacer()
+                    Menu {
+                        ForEach(CommentSortType.allCases, id: \.self) { type in
+                            Button {
+                                defaultCommentSorting = type
+                            } label: {
+                                Label(type.description, systemImage: type.imageName)
+                            }
+                            .disabled(type == defaultCommentSorting)
+                        }
+
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Image(systemName: defaultCommentSorting.imageName)
+                                .tint(.pink)
+                            Text(defaultCommentSorting.description)
+                                .tint(.pink)
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
             }
 
             Section
@@ -108,7 +137,7 @@ struct GeneralSettingsView: View
                 Text("Disk Usage")
             }
             footer: {
-                Text("All images are cached for fast reuse")
+                Text("All images are cached for fast reuse.")
             }
             
         }

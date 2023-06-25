@@ -22,7 +22,7 @@ class PostTracker: ObservableObject {
     ///   - communityId: An optional `Int` if you are retrieving posts for a specific community
     ///   - sort: The sorting type for the feed
     ///   - type: The type of feed the tracker should load
-    func loadNextPage(account: SavedAccount, communityId: Int?, sort: SortingOptions?, type: FeedType) async throws {
+    func loadNextPage(account: SavedAccount, communityId: Int?, sort: PostSortType?, type: FeedType) async throws {
         defer { isLoading = false }
         isLoading = true
 

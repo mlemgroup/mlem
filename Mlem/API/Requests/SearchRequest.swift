@@ -29,7 +29,7 @@ struct SearchRequest: APIGetRequest {
         account: SavedAccount,
         query: String,
         searchType: SearchType,
-        sortOption: SortingOptions = .topAll,
+        sortOption: PostSortType = .topAll,
         listingType: FeedType = .all,
         page: Int? = nil,
         communityId: Int? = nil,
@@ -38,7 +38,7 @@ struct SearchRequest: APIGetRequest {
         limit: Int? = nil
     ) {
         self.instanceURL = account.instanceLink
-        var queryItems: [URLQueryItem] = [
+        let queryItems: [URLQueryItem] = [
             .init(name: "auth", value: account.accessToken),
             .init(name: "type_", value: searchType.rawValue),
             .init(name: "sort", value: sortOption.rawValue),
