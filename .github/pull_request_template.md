@@ -8,15 +8,11 @@ We apologize, as we would love to dedicate the time it deserves to every PR, but
 -->
 
 # Checklist
+- [ ] I have read CONTRIBUTING.txt
 - [ ] I have described what this PR contains
-
-**Choose one of the following two options:**
-- - [ ] This PR does not introduce major changes
-- - [ ] This PR introduces major changes, and I have consulted the *Mlem Development Matrix room*
-
-**Choose one of the following two options:**
-- - [ ] This PR does not change the UI in any way
-- - [ ] This PR adds new UI elements / changes the UI, and I have attached pictures or videos of the new / changed UI elements
+- [ ] This PR addresses one or more open issues that were assigned to me:
+      - *list issue(s) here*
+- [ ] If this PR alters the UI, I have attached pictures/videos
 
 # Pull Request Information
 
