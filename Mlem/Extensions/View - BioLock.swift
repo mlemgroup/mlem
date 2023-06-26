@@ -24,7 +24,7 @@ struct HandleAccountSecurity: ViewModifier {
                     content
                     if appState.locked {
                         // security lock
-                        Color.clear.blur(radius: 3.0).background(.ultraThinMaterial)
+                        Color.clear.background(.thickMaterial)
                         VStack {
                             Image(systemName: "lock")
                             Text("Locked- tap here to unlock")
