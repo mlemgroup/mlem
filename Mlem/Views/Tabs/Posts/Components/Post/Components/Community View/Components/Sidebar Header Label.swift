@@ -20,5 +20,6 @@ struct CommunitySidebarHeaderLabel : View {
             .foregroundColor(.white)
             .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.gray))
             .font(.footnote)
+            .lineLimit(1)
     }
 }

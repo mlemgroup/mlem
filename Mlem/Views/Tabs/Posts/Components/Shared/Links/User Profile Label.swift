@@ -117,7 +117,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     }
     
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
-        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: "idk", updated: nil, actorId: userType == .Dev ? URL(string: "https://\(UserProfileLabel.developerNames[0])")! : URL(string: "https://vlemmy.net/c/\(name)")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
+        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: Date.now.advanced(by: -120000), updated: nil, actorId: userType == .Dev ? URL(string: "https://\(UserProfileLabel.developerNames[0])")! : URL(string: "https://vlemmy.net/c/\(name)")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
     }
     
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {

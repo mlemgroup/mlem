@@ -13,16 +13,19 @@ struct ContentView: View
     @EnvironmentObject var appState: AppState
     
     @State private var errorAlert: ErrorAlert?
+    @State private var tabSelection = 1
+    
+    @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
     var body: some View
     {
-        TabView
+        TabView(selection: $tabSelection)
         {
             AccountsPage()
                 .tabItem
                 {
                     Label("Feeds", systemImage: "text.bubble")
-                }
+                }.tag(1)
             
             if let currentActiveAccount = appState.currentActiveAccount
             {
@@ -36,19 +39,25 @@ struct ContentView: View
                     Spacer()
                 }.tabItem {
                     Label("Messages", systemImage: "mail.stack")
-                }
+                }.tag(2)
                 
-                UserView(userID: currentActiveAccount.id, account: currentActiveAccount)
-                    .tabItem {
+                NavigationView {
+                    ProfileView(account: currentActiveAccount)  
+                } .tabItem {
+                    if showUsernameInNavigationBar {
                         Label(currentActiveAccount.username, systemImage: "person")
                     }
+                    else {
+                        Label("Profile", systemImage: "person")
+                    }
+                }.tag(3)
             }
             
             SettingsView()
                 .tabItem
                 {
                     Label("Settings", systemImage: "gear")
-                }
+                }.tag(4)
         }
         .onAppear
         {

@@ -108,7 +108,10 @@ struct CommentItem: View {
             .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {
                 withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
-                    isCollapsed.toggle()
+                    // Perhaps we want an explict flag for this in the future?
+                    if !showPostContext {
+                        isCollapsed.toggle()
+                    }
                 }
             }
             .contextMenu {
@@ -200,7 +203,7 @@ struct CommentItem: View {
             
             // embedded post
             if showPostContext {
-                EmbeddedPost(post: hierarchicalComment.commentView.post)
+                EmbeddedPost(account: account, community: hierarchicalComment.commentView.community, post: hierarchicalComment.commentView.post)
             }
         }
     }

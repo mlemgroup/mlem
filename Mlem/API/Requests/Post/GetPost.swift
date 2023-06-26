@@ -48,5 +48,5 @@ struct GetPostRequest: APIGetRequest {
 
 // lemmy_api_common::post::GetPostResponse
 struct GetPostResponse: Decodable {
-    let posts: [APIPostView]
+    let postView: APIPostView
 }
