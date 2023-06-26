@@ -199,7 +199,7 @@ struct AddSavedInstanceView: View
             let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: sanitizedLink)
             print("Found correct endpoint: \(instanceURL)")
             
-            guard !instanceURL.absoluteString.contains("v1") else {
+            guard !instanceURL.path().contains("v1") else {
                 // If the link is to a v1 instance, stop and show an error
                 displayIncompatibleVersionAlert()
                 return
