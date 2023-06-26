@@ -10,6 +10,9 @@ import SwiftUI
 import CachedAsyncImage
 
 struct PostHeader: View {
+    // appstorage
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    
     // parameters
     var postView: APIPostView
     var account: SavedAccount
@@ -47,7 +50,7 @@ struct PostHeader: View {
                     }
                 }
                 Text("by")
-                UserProfileLink(account: account, user: postView.creator)
+                UserProfileLink(account: account, user: postView.creator, showServerInstance: shouldShowUserServerInPost)
             }
 
             Spacer()

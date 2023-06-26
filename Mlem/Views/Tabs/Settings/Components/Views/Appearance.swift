@@ -21,6 +21,10 @@ struct AppearanceSettingsView: View {
     
     // posts
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    
+    // comments
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     // communities
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
@@ -121,6 +125,19 @@ struct AppearanceSettingsView: View {
                              settingPictureColor: .pink,
                              settingName: "Blur NSFW",
                              isTicked: $shouldBlurNsfw)
+                
+                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
+                             settingPictureColor: .pink,
+                             settingName: "Show user server instance",
+                             isTicked: $shouldShowUserServerInPost)
+            }
+            
+            Section("Comments")
+            {
+                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
+                             settingPictureColor: .pink,
+                             settingName: "Show user server instance",
+                             isTicked: $shouldShowUserServerInComment)
             }
             
             Section("Communities")

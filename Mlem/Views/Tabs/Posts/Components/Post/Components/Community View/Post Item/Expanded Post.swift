@@ -14,7 +14,9 @@ internal enum PossibleStyling
 
 struct ExpandedPost: View
 {
+    // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
 
     @EnvironmentObject var appState: AppState
 
@@ -79,7 +81,7 @@ struct ExpandedPost: View
                         VStack(alignment: .leading, spacing: 5) {
                             HStack(alignment: .center, spacing: 2) {
                                 Text("Replying to ")
-                                UserProfileLabel(shouldShowUserAvatars: false, account: account, user: commentToReplyTo.creator, postContext: post, commentContext: commentToReplyTo.comment, communityContext: nil)
+                                UserProfileLabel(shouldShowUserAvatars: false, account: account, user: commentToReplyTo.creator, showServerInstance: shouldShowUserServerInComment, postContext: post, commentContext: commentToReplyTo.comment, communityContext: nil)
                             }
                             .foregroundColor(.secondary)
 

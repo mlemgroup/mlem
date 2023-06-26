@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct CommentItem: View {
+    //appstorage
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    
     // MARK: Temporary
     //state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation // = .resetVote
@@ -163,7 +166,7 @@ struct CommentItem: View {
     @ViewBuilder
     var commentHeader: some View {
         HStack() {
-            UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, postContext: postContext, commentContext: hierarchicalComment.commentView.comment)
+            UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, showServerInstance: shouldShowUserServerInComment, postContext: postContext, commentContext: hierarchicalComment.commentView.comment)
             
             Spacer()
             

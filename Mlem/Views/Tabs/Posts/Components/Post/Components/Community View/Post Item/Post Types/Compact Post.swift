@@ -12,6 +12,7 @@ import SwiftUI
 struct CompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     
     // constants
     let thumbnailSize: CGFloat = 60
@@ -63,7 +64,7 @@ struct CompactPost: View {
                         Text("by")
                             .foregroundColor(.secondary)
                             .font(.caption)
-                        UserProfileLink(account: account, user: postView.creator)
+                        UserProfileLink(account: account, user: postView.creator, showServerInstance: shouldShowUserServerInPost)
                             .font(.caption)
                         
                         Spacer()
