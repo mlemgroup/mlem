@@ -24,7 +24,7 @@ struct GetPersonDetailsRequest: APIGetRequest {
     init(
         accessToken: String,
         instanceURL: URL,
-        sort: SortingOptions? = nil,
+        sort: PostSortType? = nil,
         page: Int? = nil,
         limit: Int? = nil,
         communityId: Int? = nil,

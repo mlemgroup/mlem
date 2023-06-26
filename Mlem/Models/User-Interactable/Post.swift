@@ -13,7 +13,7 @@ struct Post: Codable, Identifiable, Equatable, Hashable
     // This is here to make Post equatable
     static func == (lhs: Post, rhs: Post) -> Bool
     {
-        return lhs.id == rhs.id
+        return lhs.hashValue == rhs.hashValue
     }
 
     let id: Int
@@ -51,4 +51,16 @@ struct Post: Codable, Identifiable, Equatable, Hashable
     let author: User
     
     let community: Community
+    
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(updated)
+        hasher.combine(deleted)
+        hasher.combine(postedAt)
+        hasher.combine(myVote)
+        hasher.combine(saved)
+        hasher.combine(read)
+        hasher.combine(unreadComments)
+    }
 }

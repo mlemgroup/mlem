@@ -12,13 +12,12 @@ struct CommunityView: View
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
-
-    @Environment(\.isPresented) var isPresente
 
     @StateObject var postTracker: PostTracker = .init()
 
@@ -26,7 +25,8 @@ struct CommunityView: View
     @State var community: APICommunity?
     @State var communityDetails: GetCommunityResponse?
 
-    @State private var selectedSortingOption: SortingOptions = .hot
+    @State private var postSortType: PostSortType = .hot
+    @State private var didLoad: Bool = false
 
     @State private var isSidebarShown: Bool = false
     @State private var isShowingCommunitySearch: Bool = false
@@ -257,12 +257,12 @@ struct CommunityView: View
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 if !isShowingCommunitySearch {
-                    SortingMenu(selectedSortingOption: Binding(
+                    PostSortMenu(selectedSortingOption: Binding(
                         get: {
-                            selectedSortingOption
+                            postSortType
                         },
                         set: { newValue in
-                            self.selectedSortingOption = newValue
+                            self.postSortType = newValue
                             Task {
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
 
@@ -375,7 +375,14 @@ struct CommunityView: View
                 }
             }
         }
+        .onAppear {
+            if !didLoad {
+                didLoad = true
+                postSortType = defaultPostSorting
+            }
+        }
         .environmentObject(postTracker)
+        
     }
 
     private var searchResultsView: some View {
@@ -446,11 +453,7 @@ struct CommunityView: View
 
     private var postListView: some View {
         ForEach(filteredPosts) { post in
-            NavigationLink(destination: ExpandedPost(
-                account: account,
-                post: post,
-                feedType: $feedType
-            ).environmentObject(postTracker) // make postTracker available in expanded post
+            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)
             )
             {
                 FeedPost(
@@ -494,7 +497,7 @@ struct CommunityView: View
             try await postTracker.loadNextPage(
                 account: account,
                 communityId: community?.id,
-                sort: selectedSortingOption,
+                sort: postSortType,
                 type: feedType
             )
         } catch APIClientError.networking {

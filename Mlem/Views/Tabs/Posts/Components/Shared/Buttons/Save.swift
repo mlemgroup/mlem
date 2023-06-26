@@ -25,7 +25,7 @@ struct SaveButton: View {
     // ==== BODY ==== //
     
     var body: some View {
-        Image(systemName: "bookmark.fill")
+        Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
             .frame(width: size, height: size)
             .foregroundColor(isSaved ? .white : .primary)
             .background(RoundedRectangle(cornerRadius: 4)

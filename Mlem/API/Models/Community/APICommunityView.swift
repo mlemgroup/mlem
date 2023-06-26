@@ -14,3 +14,15 @@ struct APICommunityView: Decodable {
     let blocked: Bool
     let counts: APICommunityAggregates
 }
+
+extension APICommunityView: Hashable, Equatable {
+    static func == (lhs: APICommunityView, rhs: APICommunityView) -> Bool {
+        return lhs.community.id == rhs.community.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.community.id)
+    }
+
+
+}

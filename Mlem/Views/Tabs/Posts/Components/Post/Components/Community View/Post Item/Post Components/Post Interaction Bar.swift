@@ -37,16 +37,18 @@ struct PostInteractionBar: View {
     let account: SavedAccount
     let compact: Bool
     let voteOnPost: (ScoringOperation) async -> Void
+    let updatedSavePost: (_ save: Bool) async throws -> Void
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
     var height: CGFloat { compact ? 20 : 24 }
     
-    init(postView: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
+    init(postView: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, updatedSavePost: @escaping (_ save: Bool) async throws -> Void) {
         self.postView = postView
         self.account = account
         self.compact = compact
         self.voteOnPost = voteOnPost
+        self.updatedSavePost = updatedSavePost
         _dirtyVote = State(initialValue: postView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: postView.counts.score)
         _dirtySaved = State(initialValue: postView.saved)
@@ -158,7 +160,7 @@ struct PostInteractionBar: View {
                 // fake save
                 dirtySaved.toggle()
                 dirty = true
-                try await sendSavePostRequest(account: account, postId: postView.id, save: dirtySaved, postTracker: postTracker)
+                try await self.updatedSavePost(dirtySaved)
             } catch {
                 print("failed to save!")
             }

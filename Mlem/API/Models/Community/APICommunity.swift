@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::community::CommunitySafe
-struct APICommunity: Codable, Identifiable {
+struct APICommunity: Codable, Identifiable, Hashable {
     let id: Int
     let name: String
     let title: String
@@ -27,12 +27,8 @@ struct APICommunity: Codable, Identifiable {
     let instanceId: Int
 }
 
-extension APICommunity: Equatable, Hashable {
+extension APICommunity: Equatable {
     static func == (lhs: APICommunity, rhs: APICommunity) -> Bool {
         lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(actorId)
     }
 }

@@ -32,7 +32,7 @@ class URLHandler {
             // TODO: handle additional link types appropriately
             // as the current handling only supports http(s) via Safari bail early if the scheme is unsupported...
             // a future piece of work will add deep linking where possible with help of the `ResolveObject` API call
-            return .init(result: .discarded, action: .error("This type of link is not currently supported 😞"))
+            return .init(result: .systemAction, action: .error("This type of link is not currently supported 😞"))
         }
         
         // TODO: as part of the deep linking work we'd ideally move this to remain in a `SwiftUI` context...

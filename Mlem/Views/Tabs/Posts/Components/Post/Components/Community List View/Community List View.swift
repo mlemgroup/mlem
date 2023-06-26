@@ -12,6 +12,7 @@ struct CommunitySection: Identifiable {
     let viewId: String
     let sidebarEntry: any SidebarEntry
     let inlineHeaderLabel: String?
+    let accessibilityLabel: String
 }
 
 struct CommunityListView: View
@@ -52,7 +53,7 @@ struct CommunityListView: View
                         ForEach(calculateVisibleCommunitySections()) { communitySection in
                             Section(header:
                                         HStack {
-                                Text(communitySection.inlineHeaderLabel!)
+                                Text(communitySection.inlineHeaderLabel!).accessibilityLabel(communitySection.accessibilityLabel)
                                 Spacer()
                             }.id(communitySection.viewId)) {
                                 ForEach(calculateCommunityListSections(for: communitySection)
@@ -71,45 +72,66 @@ struct CommunityListView: View
                 }
             }
         }
+        .refreshable {
+            await refreshCommunitiesList()
+        }
         .task(priority: .userInitiated) {
             // NOTE: This will not auto request if data is provided
             // This is normally only during preview
             if hasTestCommunities == false {
-                let request = ListCommunitiesRequest(account: account, sort: nil, page: nil, limit: nil, type: FeedType.subscribed);
-                do {
-                    let response = try await APIClient().perform(request: request);
-                    
-                    let newSubscribedCommunities = response.communities.map({
-                        return $0.community;
-                    }).sorted(by: {
-                        $0.name < $1.name
-                    });
-                    
-                    subscribedCommunities = newSubscribedCommunities.sorted(by: { $0.name < $1.name })
-                } catch {
-                    // TODO: Some sort of common alert banner?
-                }
+                await refreshCommunitiesList()
             }
             
         }.onAppear {
             // Set up sections after we body is called
             // so we can use the favorite tracker environment
             communitySections = [
-                CommunitySection(viewId: "top", sidebarEntry: EmptySidebarEntry(sidebarLabel: nil, sidebarIcon: "line.3.horizontal"), inlineHeaderLabel: nil),
+                CommunitySection(viewId: "top", sidebarEntry: EmptySidebarEntry(sidebarLabel: nil, sidebarIcon: "line.3.horizontal"), inlineHeaderLabel: nil, accessibilityLabel: "Top of communities"),
                 
-                CommunitySection(viewId: "favorites", sidebarEntry: FavoritesSidebarEntry(account: account, favoritesTracker: favoritedCommunitiesTracker, sidebarLabel: nil, sidebarIcon: "star.fill"), inlineHeaderLabel: "Favorites")
+                CommunitySection(viewId: "favorites", sidebarEntry: FavoritesSidebarEntry(account: account, favoritesTracker: favoritedCommunitiesTracker, sidebarLabel: nil, sidebarIcon: "star.fill"), inlineHeaderLabel: "Favorites", accessibilityLabel: "Favorited Communities")
             ] +
             CommunityListView.alphabet.map{
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
                 CommunitySection(viewId: $0, sidebarEntry: RegexCommunityNameSidebarEntry(communityNameRegex: (try? Regex("^[\($0.uppercased())\($0.lowercased())]"))!,
                                                                                           sidebarLabel: $0,
                                                                                           sidebarIcon: nil),
-                                 inlineHeaderLabel: $0)} +
+                                 inlineHeaderLabel: $0, accessibilityLabel: "Communities starting with the letter '\($0)'")} +
             
             [ CommunitySection(viewId: "non_letter_titles", sidebarEntry: RegexCommunityNameSidebarEntry(communityNameRegex: /^[^a-zA-Z]/,
                                                                                                          sidebarLabel: "#",
                                                                                                          sidebarIcon: nil),
-                               inlineHeaderLabel: "#") ]
+                               inlineHeaderLabel: "#", accessibilityLabel: "Communities starting with a symbol or number") ]
+        }
+    }
+    
+    private func refreshCommunitiesList() async {
+        let communitiesRequestCount = 50
+        do {
+            var moreCommunities = true
+            var refreshedCommunities: [APICommunity] = []
+            var communitiesPage = 1
+            repeat {
+                let request = ListCommunitiesRequest(account: account, sort: nil, page: communitiesPage, limit: communitiesRequestCount, type: FeedType.subscribed);
+                
+                let response = try await APIClient().perform(request: request);
+                
+                let newSubscribedCommunities = response.communities.map({
+                    return $0.community;
+                }).sorted(by: {
+                    $0.name < $1.name
+                });
+                
+                refreshedCommunities.append(contentsOf: newSubscribedCommunities)
+                
+                communitiesPage = communitiesPage + 1
+                
+                // Go until we get less than the count we ask for
+                moreCommunities = response.communities.count == communitiesRequestCount
+            } while (moreCommunities)
+            
+            subscribedCommunities = refreshedCommunities.sorted(by: { $0.name < $1.name })
+        } catch {
+            print("Failed to refresh communities: \(error)")
         }
     }
     

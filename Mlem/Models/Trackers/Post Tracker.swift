@@ -22,7 +22,7 @@ class PostTracker: ObservableObject {
     ///   - communityId: An optional `Int` if you are retrieving posts for a specific community
     ///   - sort: The sorting type for the feed
     ///   - type: The type of feed the tracker should load
-    func loadNextPage(account: SavedAccount, communityId: Int?, sort: SortingOptions?, type: FeedType) async throws {
+    func loadNextPage(account: SavedAccount, communityId: Int?, sort: PostSortType?, type: FeedType) async throws {
         defer { isLoading = false }
         isLoading = true
 
@@ -80,14 +80,14 @@ class PostTracker: ObservableObject {
     /// A method to add new posts into the tracker, duplicate posts will be rejected
     /// - Parameter newPosts: The array of `APIPostView` you wish to add
     func add(_ newPosts: [APIPostView]) {
-        let accepted = newPosts.filter { ids.insert($0.id).inserted }
+        let accepted = newPosts.filter { ids.insert($0.post.id).inserted }
         posts.append(contentsOf: accepted)
     }
 
     /// A method to add a post to the start of the current list of posts
     /// - Parameter newPost: The `APIPostView` you wish to add
     func prepend(_ newPost: APIPostView) {
-        guard ids.insert(newPost.id).inserted else {
+        guard ids.insert(newPost.post.id).inserted else {
             return
         }
 
@@ -98,7 +98,7 @@ class PostTracker: ObservableObject {
     ///  - Note: If the `id` of the post is not already in the tracker the `updatedPost` will be discarded
     /// - Parameter updatedPost: An updated `APIPostView`
     func update(with updatedPost: APIPostView) {
-        guard let index = posts.firstIndex(where: { $0.post.id == updatedPost.id }) else {
+        guard let index = posts.firstIndex(where: { $0.post.id == updatedPost.post.id }) else {
             return
         }
 

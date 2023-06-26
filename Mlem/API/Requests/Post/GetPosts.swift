@@ -20,7 +20,7 @@ struct GetPostsRequest: APIGetRequest {
         account: SavedAccount,
         communityId: Int?,
         page: Int,
-        sort: SortingOptions?,
+        sort: PostSortType?,
         type: FeedType,
         limit: Int? = nil,
         savedOnly: Bool? = nil,

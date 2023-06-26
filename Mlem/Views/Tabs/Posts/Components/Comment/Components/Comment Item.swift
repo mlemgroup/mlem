@@ -45,15 +45,17 @@ struct CommentItem: View {
     
     let account: SavedAccount
     let hierarchicalComment: HierarchicalComment
+    let postContext: APIPostView?
     let depth: Int
     let showPostContext: Bool
     
     @Binding var isDragging: Bool
     
     // init needed to get dirty and clean aligned
-    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int, showPostContext: Bool, isDragging: Binding<Bool>) {
+    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, postContext: APIPostView?, depth: Int, showPostContext: Bool, isDragging: Binding<Bool>) {
         self.account = account
         self.hierarchicalComment = hierarchicalComment
+        self.postContext = postContext
         self.depth = depth
         self.showPostContext = showPostContext
         _isDragging = isDragging
@@ -161,7 +163,7 @@ struct CommentItem: View {
     @ViewBuilder
     var commentHeader: some View {
         HStack() {
-            UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
+            UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, postContext: postContext, commentContext: hierarchicalComment.commentView.comment)
             
             Spacer()
             
@@ -206,7 +208,7 @@ struct CommentItem: View {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
-                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1, showPostContext: false, isDragging: $isDragging)
+                    CommentItem(account: account, hierarchicalComment: child, postContext: postContext, depth: depth + 1, showPostContext: false, isDragging: $isDragging)
                 }
             }
         }

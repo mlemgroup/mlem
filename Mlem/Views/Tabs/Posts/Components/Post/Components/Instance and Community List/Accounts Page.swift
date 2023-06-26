@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct AccountsPage: View
 {
@@ -13,16 +14,14 @@ struct AccountsPage: View
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
-    
-    func accountNavigationBinding() -> Binding<Bool> {
-        .init {
-            accountsTracker.savedAccounts.count == 1
-        } set: { _ in }
-    }
-    
+
+    @State var navigationPath = NavigationPath()
+
+
+
     var body: some View
     {
-        NavigationStack
+        NavigationStack(path: $navigationPath)
         {
             VStack
             {
@@ -32,14 +31,8 @@ struct AccountsPage: View
                     {
                         ForEach(accountsTracker.savedAccounts)
                         { savedAccount in
-                            NavigationLink
+                            NavigationLink(value: savedAccount)
                             {
-                                CommunityListView(account: savedAccount)
-                                    .onAppear
-                                    {
-                                        appState.currentActiveAccount = savedAccount
-                                    }
-                            } label: {
                                 HStack(alignment: .center)
                                 {
                                     Text(savedAccount.username)
@@ -52,15 +45,6 @@ struct AccountsPage: View
                             }
                         }
                         .onDelete(perform: deleteAccount)
-                        .navigationDestination(isPresented: accountNavigationBinding(), destination: {
-                            if let account = accountsTracker.savedAccounts.first {
-                                CommunityListView(account: account)
-                                    .onAppear
-                                {
-                                    appState.currentActiveAccount = account
-                                }
-                            }
-                        })
                     }
                     .toolbar
                     {
@@ -79,9 +63,30 @@ struct AccountsPage: View
                     .foregroundColor(.secondary)
                 }
             }
+            .handleLemmyViews(navigationPath: $navigationPath)
             .onAppear
             {
+                // this means that we got to this page not by going back from any account
+                // (since if we had gone into any account it will only get rest on the next line so currentActiveAccount should still be set to something)
+                let shouldDisplayFirstUser = appState.currentActiveAccount == nil
+
+                // now we reset the account
                 appState.currentActiveAccount = nil
+                
+                if shouldDisplayFirstUser, let firstAccount = accountsTracker.savedAccounts.first {
+                    // I know this looks super odd but it give SwiftUI just a bit of time to get ahold of itself
+                    Task {
+                        await MainActor.run {
+                            navigationPath.append(firstAccount)
+                        }
+                    }
+                }
+            }
+            .navigationDestination(for: SavedAccount.self) { account in
+                CommunityListView(account: account)
+                    .onAppear {
+                        appState.currentActiveAccount = account
+                    }
             }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
@@ -102,6 +107,9 @@ struct AccountsPage: View
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
             }
         }
+        .toast(isPresenting: $appState.isShowingToast) {
+            appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
+        }
         .alert(appState.alertTitle, isPresented: $appState.isShowingAlert)
         {
             Button(role: .cancel)
@@ -118,6 +126,8 @@ struct AccountsPage: View
         {
             print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
         }
+        .environment(\.navigationPath, $navigationPath)
+        .handleLemmyLinkResolution(navigationPath: $navigationPath)
     }
 
     internal func deleteAccount(at offsets: IndexSet)
