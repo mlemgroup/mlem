@@ -197,7 +197,9 @@ struct CommentItem: View {
                     .foregroundColor(.secondary)
             }
             else if !isCollapsed {
-                MarkdownView(text: hierarchicalComment.commentView.comment.content)
+                MarkdownView(text: hierarchicalComment.commentView.comment.content, imageProvider: CachedImageProvider(
+                    isNsfw: hierarchicalComment.commentView.post.nsfw
+                ))
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
             

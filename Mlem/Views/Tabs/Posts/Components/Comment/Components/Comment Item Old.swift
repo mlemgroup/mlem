@@ -78,7 +78,9 @@ struct CommentItemOld: View
                     {
                         if !isCollapsed
                         {
-                            MarkdownView(text: hierarchicalComment.commentView.comment.content)
+                            MarkdownView(text: hierarchicalComment.commentView.comment.content, imageProvider: CachedImageProvider(
+                                isNsfw: false
+                            ))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .transition(.move(edge: .top).combined(with: .opacity))
                         }

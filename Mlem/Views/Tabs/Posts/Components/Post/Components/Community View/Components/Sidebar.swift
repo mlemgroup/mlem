@@ -64,7 +64,9 @@ struct CommunitySidebarView: View {
                     .communityView
                     .community
                     .description {
-                    MarkdownView(text: description).padding()
+                    MarkdownView(text: description, imageProvider: CachedImageProvider(
+                        isNsfw: false
+                    )).padding()
                 }
             }
             else if selectionSection == 1 {
