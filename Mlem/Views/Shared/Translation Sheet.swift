@@ -11,11 +11,11 @@ import SwiftUI
 struct TranslationSheet: View {
     @Binding var textToTranslate: String?
     @Binding var shouldShow: Bool
-
+    
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            InAppWebView(url: URL(string: "https://translate.google.com/?tl=\(Locale.current.language.languageCode?.identifier ?? "")&q=\(textToTranslate ?? "Missing Text")")!)
-            Button() {
+            InAppWebView(url: getTranslateUrl(textToTranslate))
+            Button {
                 withAnimation {
                     shouldShow = false
                 }
@@ -32,7 +32,7 @@ struct TranslationSheet: View {
             .background(.ultraThinMaterial)
 //            .buttonBorderShape(.)
             .accessibilityLabel(Text("Close Translation Sheet Button"))
-            .clipShape(.rect(cornerRadii: .init(topLeading: 0, bottomLeading: 16, bottomTrailing:  0, topTrailing: 0)))
+            .clipShape(.rect(cornerRadii: .init(topLeading: 0, bottomLeading: 16, bottomTrailing: 0, topTrailing: 0)))
 
         }
         .onAppear {
@@ -43,14 +43,20 @@ struct TranslationSheet: View {
             }
         }
     }
+    
+    func getTranslateUrl(_ text: String?) -> URL {
+        let baseURL = "https://translate.google.com/?tl="
+        let lang = Locale.current.language.languageCode?.identifier ?? ""
+        return URL(string: "\(baseURL)\(lang)&q=\(textToTranslate ?? "Missing Text")")!
+    }
 }
 
 struct EasyTranslateButton: View {
-    @Environment(\.translateText) var translateText;
+    @Environment(\.translateText) var translateText
     @Binding var text: String?
 
     var body: some View {
-        Button() {
+        Button {
             translateText(text!)
         } label: {
             Label("Translate", systemImage: "globe")
