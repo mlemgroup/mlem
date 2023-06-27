@@ -9,6 +9,9 @@ import SwiftUI
 
 struct CommentItemOld: View
 {
+    // appstorage
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
     @EnvironmentObject var commentTracker: CommentTracker
     
@@ -166,7 +169,7 @@ struct CommentItemOld: View
                          }
                          */
                         Text(relativeTime)
-                        UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
+                        UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, showServerInstance: shouldShowUserServerInComment)
                     }
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(commentorLabel)

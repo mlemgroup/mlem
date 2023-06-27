@@ -13,6 +13,7 @@ struct UserProfileLabel : View {
     
     @State var account: SavedAccount
     @State var user: APIPerson
+    @State var showServerInstance: Bool
     
     // Extra context about where the link is being displayed
     // to pick the correct flair
@@ -47,10 +48,20 @@ struct UserProfileLabel : View {
                 Image(systemName: flairSystemIcon).foregroundColor(flair.color)
             }
             
-            // User display name if one exists
-            Text(user.displayName ?? user.name)
-                .minimumScaleFactor(0.01)
-                .lineLimit(1).bold().foregroundColor(flair.color)
+            HStack(spacing: 0) {
+                // User display name if one exists
+                Text(user.displayName ?? user.name)
+                    .minimumScaleFactor(0.01)
+                    .lineLimit(1).bold().foregroundColor(flair.color)
+                
+                if showServerInstance {
+                    if let host = user.actorId.host() {
+                        Text("@\(host)")
+                            .minimumScaleFactor(0.01)
+                            .lineLimit(1).foregroundColor(flair.color).opacity(0.6)
+                    }
+                }
+            }
         }
     }
     
@@ -106,7 +117,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     }
     
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
-        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: "idk", updated: nil, actorId: userType == .Dev ? URL(string: "http://\(UserProfileLabel.developerNames[0])")! : URL(string: "google.com")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
+        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: Date.now.advanced(by: -120000), updated: nil, actorId: userType == .Dev ? URL(string: "https://\(UserProfileLabel.developerNames[0])")! : URL(string: "https://vlemmy.net/c/\(name)")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
     }
     
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {
@@ -126,7 +137,7 @@ struct UserProfileLinkPreview: PreviewProvider {
         return APIPostView(post: post, creator: creator, community: community, creatorBannedFromCommunity: false, counts: postVotes, subscribed: .notSubscribed, saved: false, read: false, creatorBlocked: false, unreadComments: 0)
     }
     
-    static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
+    static func generateUserProfileLink(name: String, userType: PreviewUserType, showCommunity: Bool) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType);
         
         var postContext: APIPostView? = nil
@@ -141,15 +152,22 @@ struct UserProfileLinkPreview: PreviewProvider {
             postContext = generatePreviewPost(creator: previewUser)
         }
         
-        return UserProfileLink(account: UserProfileLinkPreview.previewAccount, user: previewUser, postContext: postContext, commentContext: commentContext)
+        return UserProfileLink(account: UserProfileLinkPreview.previewAccount, user: previewUser, showServerInstance: showCommunity, postContext: postContext, commentContext: commentContext)
     }
     
     static var previews: some View {
         VStack {
+            Spacer()
             ForEach(PreviewUserType.allCases, id: \.rawValue) {
                 userType in
-                generateUserProfileLink(name: "\(userType)User", userType: userType)
+                generateUserProfileLink(name: "\(userType)User", userType: userType, showCommunity: false)
             }
+            Spacer()
+            ForEach(PreviewUserType.allCases, id: \.rawValue) {
+                userType in
+                generateUserProfileLink(name: "\(userType)User", userType: userType, showCommunity: true)
+            }
+            Spacer()
         }
     }
 }

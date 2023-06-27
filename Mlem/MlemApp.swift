@@ -74,7 +74,7 @@ struct MlemApp: App
                 }
                 .onChange(of: favoriteCommunitiesTracker.favoriteCommunities)
                 { newValue in
-                    print("Change detected in favorited communities: \(newValue)")
+                    print("Change detected in favorited communities")
 
                     do
                     {

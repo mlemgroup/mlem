@@ -12,6 +12,7 @@ import SwiftUI
 struct CompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     
     // constants
     let thumbnailSize: CGFloat = 60
@@ -22,6 +23,8 @@ struct CompactPost: View {
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
     let savePost: (_ save: Bool) async throws -> Void
+    let deletePost: () async -> Void
+    
     
     // computed
     var usernameColor: Color {
@@ -63,7 +66,7 @@ struct CompactPost: View {
                         Text("by")
                             .foregroundColor(.secondary)
                             .font(.caption)
-                        UserProfileLink(account: account, user: postView.creator)
+                        UserProfileLink(account: account, user: postView.creator, showServerInstance: shouldShowUserServerInPost)
                             .font(.caption)
                         
                         Spacer()
@@ -71,7 +74,7 @@ struct CompactPost: View {
                 }
                 
             }
-            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost, updatedSavePost: savePost)
+            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost, updatedSavePost: savePost, deletePost: deletePost)
         }
         .padding(spacing)
     }
