@@ -8,13 +8,11 @@
 import SwiftUI
 import LocalAuthentication
 
-internal enum FavoritesPurgingError
-{
+internal enum FavoritesPurgingError {
     case failedToDeleteOldFavoritesFile, failedToCreateNewEmptyFile
 }
 
-struct GeneralSettingsView: View
-{
+struct GeneralSettingsView: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
 
@@ -26,7 +24,7 @@ struct GeneralSettingsView: View
     @State private var diskUsage: Int64 = 0
     @State private var context = LAContext()
     @State private var dirtyEditingUserAccount = false
-    
+
     var authenticationName: String {
         get {
             switch context.biometryType {
@@ -39,15 +37,12 @@ struct GeneralSettingsView: View
             }
         }
     }
-    
+
     @State var accountRequiresLock: Bool = false
 
-    var body: some View
-    {
-        List
-        {
-            Section("Default Sorting")
-            {
+    var body: some View {
+        List {
+            Section("Default Sorting") {
                 HStack {
                     Image(systemName: "text.line.first.and.arrowtriangle.forward")
                         .foregroundColor(.pink)
@@ -55,7 +50,7 @@ struct GeneralSettingsView: View
                     Spacer()
                     PostSortMenu(selectedSortingOption: $defaultPostSorting, shortLabel: true)
                 }
-                
+
                 HStack {
                     Image(systemName: "text.line.first.and.arrowtriangle.forward")
                         .foregroundColor(.pink)
@@ -84,8 +79,7 @@ struct GeneralSettingsView: View
                 }
             }
 
-            Section
-            {
+            Section {
                 Button(role: .destructive) {
                     isShowingFavoritesDeletionConfirmation.toggle()
                 } label: {
@@ -98,18 +92,14 @@ struct GeneralSettingsView: View
                     isPresented: $isShowingFavoritesDeletionConfirmation,
                     titleVisibility: .visible) {
                         Button(role: .destructive) {
-                            do
-                            {
+                            do {
                                 try FileManager.default.removeItem(at: AppConstants.favoriteCommunitiesFilePath)
 
-                                do
-                                {
+                                do {
                                     try createEmptyFile(at: AppConstants.favoriteCommunitiesFilePath)
 
                                     favoritesTracker.favoriteCommunities = .init()
-                                }
-                                catch let emptyFileCreationError
-                                {
+                                } catch let emptyFileCreationError {
 
                                     appState.alertTitle = "Couldn't recreate favorites file"
                                     appState.alertMessage = "Try restarting Mlem."
@@ -117,9 +107,7 @@ struct GeneralSettingsView: View
 
                                     print("Failed while creting empty file: \(emptyFileCreationError)")
                                 }
-                            }
-                            catch let fileDeletionError
-                            {
+                            } catch let fileDeletionError {
                                 appState.alertTitle = "Couldn't delete favorites"
                                 appState.alertMessage = "Try restarting Mlem."
                                 appState.isShowingAlert.toggle()
@@ -141,7 +129,7 @@ struct GeneralSettingsView: View
                 }
 
             }
-             
+
             if var account = appState.currentActiveAccount {
                 Section() {
                     SwitchableSettingsItem(
@@ -189,7 +177,7 @@ struct GeneralSettingsView: View
                     Label("Account settings", systemImage: "person")
                 }
             }
-            
+
             Section()
             {
                 Button(role: .destructive) {
@@ -206,7 +194,7 @@ struct GeneralSettingsView: View
             footer: {
                 Text("All images are cached for fast reuse.")
             }
-            
+
         }
         .onAppear {
             diskUsage = Int64(URLCache.shared.currentDiskUsage)

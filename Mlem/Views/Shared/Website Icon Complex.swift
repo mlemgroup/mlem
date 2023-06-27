@@ -9,8 +9,7 @@ import CachedAsyncImage
 import Foundation
 import SwiftUI
 
-struct WebsiteIconComplex: View
-{
+struct WebsiteIconComplex: View {
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
@@ -20,7 +19,7 @@ struct WebsiteIconComplex: View
     @State var post: APIPost
 
     @State private var overridenWebsiteFaviconName: String = "globe"
-    
+
     @Environment(\.openURL) private var openURL
 
     var faviconURL: URL? {
@@ -30,22 +29,16 @@ struct WebsiteIconComplex: View
         else {
             return nil
         }
-        
+
         return imageURL
     }
 
-    var body: some View
-    {
-        GroupBox
-        {
-            VStack(alignment: .leading, spacing: 0)
-            {
-                if shouldShowWebsitePreviews
-                {
-                    if let thumbnailURL = post.thumbnailUrl
-                    {
-                        VStack(alignment: .center, spacing: 0)
-                        {
+    var body: some View {
+        GroupBox {
+            VStack(alignment: .leading, spacing: 0) {
+                if shouldShowWebsitePreviews {
+                    if let thumbnailURL = post.thumbnailUrl {
+                        VStack(alignment: .center, spacing: 0) {
                             CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
                                 .aspectRatio(contentMode: .fill)
                                 .frame(maxWidth: .infinity, maxHeight: 400)
@@ -55,14 +48,10 @@ struct WebsiteIconComplex: View
                     }
                 }
 
-                HStack(alignment: .center, spacing: 0)
-                {
-                    if shouldShowWebsiteFaviconAtAll
-                    {
-                        if shouldShowWebsiteFavicons
-                        {
-                            CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache)
-                            { image in
+                HStack(alignment: .center, spacing: 0) {
+                    if shouldShowWebsiteFaviconAtAll {
+                        if shouldShowWebsiteFavicons {
+                            CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache) { image in
                                 image
                                     .resizable()
                                     .frame(width: 30, height: 30, alignment: .center)
@@ -74,33 +63,22 @@ struct WebsiteIconComplex: View
                                     .frame(width: 30, height: 30, alignment: .center)
                                     .padding()
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Image(systemName: overridenWebsiteFaviconName)
                                 .resizable()
                                 .frame(width: 25, height: 25, alignment: .center)
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundColor(.secondary)
                                 .padding()
-                                .onAppear
-                                {
-                                    if let url = post.url
-                                    {
-                                        if url.host!.contains("theonion")
-                                        {
+                                .onAppear {
+                                    if let url = post.url {
+                                        if url.host!.contains("theonion") {
                                             overridenWebsiteFaviconName = "carrot"
-                                        }
-                                        else if url.host!.contains("twitter")
-                                        {
+                                        } else if url.host!.contains("twitter") {
                                             overridenWebsiteFaviconName = "bird.fill"
-                                        }
-                                        else if url.host!.contains(["youtube", "youtu.be"])
-                                        {
+                                        } else if url.host!.contains(["youtube", "youtu.be"]) {
                                             overridenWebsiteFaviconName = "play.rectangle.fill"
-                                        }
-                                        else if url.host!.contains("wiki")
-                                        {
+                                        } else if url.host!.contains("wiki") {
                                             overridenWebsiteFaviconName = "book.closed.fill"
                                         }
                                     }
@@ -110,21 +88,15 @@ struct WebsiteIconComplex: View
                         Divider()
                     }
 
-                    VStack(alignment: .leading, spacing: 2)
-                    {
-                        if let embedTitle = post.embedTitle
-                        {
+                    VStack(alignment: .leading, spacing: 2) {
+                        if let embedTitle = post.embedTitle {
                             Text(embedTitle)
-                        }
-                        else
-                        {
+                        } else {
                             Text(post.name)
                         }
 
-                        if shouldShowWebsiteHost
-                        {
-                            if let url = post.url
-                            {
+                        if shouldShowWebsiteHost {
+                            if let url = post.url {
                                 Text(url.host!)
                                     .lineLimit(1)
                                     .font(.caption)

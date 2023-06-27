@@ -9,15 +9,13 @@ import SwiftUI
 import CachedAsyncImage
 
 struct AvatarView: View {
-    
+
     let avatarLink: URL
     var overridenSize: CGFloat = 15
-    
+
     var body: some View {
-        CachedAsyncImage(url: avatarLink, urlCache: AppConstants.urlCache)
-        { phase in
-            if let avatar = phase.image
-            { /// Success
+        CachedAsyncImage(url: avatarLink, urlCache: AppConstants.urlCache) { phase in
+            if let avatar = phase.image { /// Success
                 avatar
                     .resizable()
                     .frame(width: overridenSize, height: overridenSize, alignment: .center)
@@ -26,16 +24,12 @@ struct AvatarView: View {
                         Circle()
                             .stroke(Color .secondarySystemBackground, style: StrokeStyle(lineWidth: 2))
                     )
-            }
-            else if phase.error != nil
-            { /// Failure
+            } else if phase.error != nil { /// Failure
                 Image(systemName: "person.circle.fill")
                     .resizable()
                     .frame(width: overridenSize, height: overridenSize, alignment: .center)
                     .clipShape(Circle())
-            }
-            else
-            { /// Placeholder
+            } else { /// Placeholder
                 ProgressView()
                     .frame(width: overridenSize, height: overridenSize, alignment: .center)
             }

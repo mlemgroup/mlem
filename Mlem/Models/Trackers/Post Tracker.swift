@@ -67,7 +67,7 @@ class PostTracker: ObservableObject {
 
         }
     }
-    
+
     private func preloadSingleImage(url: URL) async {
         do {
             let request = URLRequest(url: url)

@@ -9,117 +9,94 @@ import MarkdownUI
 import SwiftUI
 import RegexBuilder
 
-
-extension Theme
-{
+extension Theme {
     static let mlem = Theme()
-        .text
-        {
+        .text {
             ForegroundColor(.text)
             BackgroundColor(.systemBackground)
             FontSize(16)
         }
-        .code
-        {
+        .code {
             FontFamilyVariant(.monospaced)
             FontSize(.em(0.85))
             BackgroundColor(.secondaryBackground)
         }
-        .strong
-        {
+        .strong {
             FontWeight(.semibold)
         }
-        .link
-        {
+        .link {
             ForegroundColor(.link)
         }
-        .heading1
-        { configuration in
-            VStack(alignment: .leading, spacing: 0)
-            {
+        .heading1 { configuration in
+            VStack(alignment: .leading, spacing: 0) {
                 configuration.label
                     .relativePadding(.bottom, length: .em(0.3))
                     .relativeLineSpacing(.em(0.125))
                     .markdownMargin(top: 24, bottom: 16)
-                    .markdownTextStyle
-                    {
+                    .markdownTextStyle {
                         FontWeight(.semibold)
                         FontSize(.em(2))
                     }
                 Divider().overlay(Color.divider)
             }
         }
-        .heading2
-        { configuration in
-            VStack(alignment: .leading, spacing: 0)
-            {
+        .heading2 { configuration in
+            VStack(alignment: .leading, spacing: 0) {
                 configuration.label
                     .relativePadding(.bottom, length: .em(0.3))
                     .relativeLineSpacing(.em(0.125))
                     .markdownMargin(top: 24, bottom: 16)
-                    .markdownTextStyle
-                    {
+                    .markdownTextStyle {
                         FontWeight(.semibold)
                         FontSize(.em(1.5))
                     }
                 Divider().overlay(Color.divider)
             }
         }
-        .heading3
-        { configuration in
+        .heading3 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
                 .markdownMargin(top: 24, bottom: 16)
-                .markdownTextStyle
-                {
+                .markdownTextStyle {
                     FontWeight(.semibold)
                     FontSize(.em(1.25))
                 }
         }
-        .heading4
-        { configuration in
+        .heading4 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
                 .markdownMargin(top: 24, bottom: 16)
-                .markdownTextStyle
-                {
+                .markdownTextStyle {
                     FontWeight(.semibold)
                 }
         }
-        .heading5
-        { configuration in
+        .heading5 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
                 .markdownMargin(top: 24, bottom: 16)
-                .markdownTextStyle
-                {
+                .markdownTextStyle {
                     FontWeight(.semibold)
                     FontSize(.em(0.875))
                 }
         }
-        .heading6
-        { configuration in
+        .heading6 { configuration in
             configuration.label
                 .relativeLineSpacing(.em(0.125))
                 .markdownMargin(top: 24, bottom: 16)
-                .markdownTextStyle
-                {
+                .markdownTextStyle {
                     FontWeight(.semibold)
                     FontSize(.em(0.85))
                     ForegroundColor(.tertiaryText)
                 }
         }
-        .paragraph
-        { configuration in
+        .paragraph { configuration in
             configuration.label
                 .fixedSize(horizontal: false, vertical: true)
                 .relativeLineSpacing(.em(0.25))
                 .markdownMargin(top: 0, bottom: 16)
         }
-        .blockquote
-        { configuration in
-            HStack(spacing: 0)
-            {
+        .blockquote { configuration in
+            HStack(spacing: 0) {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(Color.border)
                     .relativeFrame(width: .em(0.2))
@@ -129,14 +106,11 @@ extension Theme
             }
             .fixedSize(horizontal: false, vertical: true)
         }
-        .codeBlock
-        { configuration in
-            ScrollView(.horizontal)
-            {
+        .codeBlock { configuration in
+            ScrollView(.horizontal) {
                 configuration.label
                     .relativeLineSpacing(.em(0.225))
-                    .markdownTextStyle
-                    {
+                    .markdownTextStyle {
                         FontFamilyVariant(.monospaced)
                         FontSize(.em(0.85))
                     }
@@ -146,21 +120,18 @@ extension Theme
             .clipShape(RoundedRectangle(cornerRadius: 6))
             .markdownMargin(top: 0, bottom: 16)
         }
-        .listItem
-        { configuration in
+        .listItem { configuration in
             configuration.label
                 .markdownMargin(top: .em(0.25))
         }
-        .taskListMarker
-        { configuration in
+        .taskListMarker { configuration in
             Image(systemName: configuration.isCompleted ? "checkmark.square.fill" : "square")
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color.checkbox, Color.checkboxBackground)
                 .imageScale(.small)
                 .relativeFrame(minWidth: .em(1.5), alignment: .trailing)
         }
-        .table
-        { configuration in
+        .table { configuration in
             configuration.label
                 .fixedSize(horizontal: false, vertical: true)
                 .markdownTableBorderStyle(.init(color: .border))
@@ -169,13 +140,10 @@ extension Theme
                 )
                 .markdownMargin(top: 0, bottom: 16)
         }
-        .tableCell
-        { configuration in
+        .tableCell { configuration in
             configuration.label
-                .markdownTextStyle
-                {
-                    if configuration.row == 0
-                    {
+                .markdownTextStyle {
+                    if configuration.row == 0 {
                         FontWeight(.semibold)
                     }
                     BackgroundColor(nil)
@@ -185,15 +153,13 @@ extension Theme
                 .padding(.horizontal, 13)
                 .relativeLineSpacing(.em(0.25))
         }
-        .thematicBreak
-        {
+        .thematicBreak {
             Divider()
                 .relativeFrame(height: .em(0.25))
                 .overlay(Color.border)
                 .markdownMargin(top: 24, bottom: 24)
         }
-        .image
-        { image in
+        .image { image in
             image.label
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10), style: .continuous))
@@ -204,8 +170,7 @@ extension Theme
         }
 }
 
-private extension Color
-{
+private extension Color {
     static let text = Color(
         light: Color(rgba: 0x0606_06FF), dark: Color(rgba: 0xFBFB_FCFF)
     )
@@ -234,21 +199,18 @@ private extension Color
     static let checkboxBackground = Color(rgba: 0xEEEE_EFFF)
 }
 
-struct MarkdownView: View
-{
+struct MarkdownView: View {
 
     @State var text: String
     let imageProvider: CachedImageProvider
 
-    var body: some View
-    {
+    var body: some View {
         generateView()
     }
 
-
     @MainActor func generateView() -> some View {
 
-        var imageLooker = Regex {
+        let imageLooker = Regex {
             "!["
             Capture {
                 ZeroOrMore(.any, .reluctant)
@@ -262,26 +224,17 @@ struct MarkdownView: View
         .ignoresCase()
 
         let blocks = text.split(separator: imageLooker)
-        let images = text.matches(of: imageLooker).map{ ($0.output.1, $0.output.2) }
-//        var output: [any View] = []
+        let images = text.matches(of: imageLooker).map { ($0.output.1, $0.output.2) }
         return VStack {
-            ForEach(0...max(blocks.count, images.count), id: \.hashValue) { i in
-                if blocks.count > i {
-                    getMarkdown(text: String(blocks[i]))
+            ForEach(0...max(blocks.count, images.count), id: \.hashValue) { index in
+                if blocks.count > index {
+                    getMarkdown(text: String(blocks[index]))
                 }
-                if images.count > i {
-                    imageProvider.makeImage(url: URL(string: String(images[i].1)))
+                if images.count > index {
+                    imageProvider.makeImage(url: URL(string: String(images[index].1)))
                 }
             }
         }
-//        for i in 0...max(blocks.count, images.count) {
-//            if blocks.count > i {
-//                output.append(Text(blocks[i]))
-//            }
-//            if images.count > i {
-//                output.append(imageProvider.makeImage(url: URL(string: String(images[i].1))))
-//            }
-//        }
     }
 
     func getMarkdown(text: String) -> some View {

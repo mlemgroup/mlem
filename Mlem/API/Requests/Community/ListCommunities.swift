@@ -32,7 +32,7 @@ struct ListCommunitiesRequest: APIGetRequest {
             .init(name: "page", value: page?.description),
             .init(name: "type_", value: type.rawValue),
 
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: account.accessToken)
         ]
     }
 
@@ -52,7 +52,7 @@ struct ListCommunitiesRequest: APIGetRequest {
 
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "page", value: page.map(String.init)),
-            .init(name: "type_", value: type.rawValue),
+            .init(name: "type_", value: type.rawValue)
         ]
     }
 }

@@ -25,7 +25,7 @@ struct ResolveObjectRequest: APIGetRequest {
         self.queryItems = [
             .init(name: "q", value: query),
 
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: account.accessToken)
         ]
     }
 }

@@ -27,8 +27,7 @@ struct GetPostsRequest: APIGetRequest {
         communityName: String? = nil
     ) {
         self.instanceURL = account.instanceLink
-
-        var queryItems: [URLQueryItem] = [
+        self.queryItems = [
             .init(name: "auth", value: account.accessToken),
             .init(name: "page", value: "\(page)"),
             .init(name: "type_", value: type.rawValue),
@@ -38,8 +37,6 @@ struct GetPostsRequest: APIGetRequest {
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
-
-        self.queryItems = queryItems
     }
 }
 

@@ -7,7 +7,6 @@
 
 import Foundation
 
-class AccessTokenTracker: ObservableObject
-{
+class AccessTokenTracker: ObservableObject {
     @Published var token: String = ""
 }

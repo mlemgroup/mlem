@@ -7,7 +7,6 @@
 
 import Foundation
 
-class CommentReplyTracker: ObservableObject
-{
+class CommentReplyTracker: ObservableObject {
     @Published var commentToReplyTo: APICommentView?
 }

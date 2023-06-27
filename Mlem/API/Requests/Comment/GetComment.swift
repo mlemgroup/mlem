@@ -25,7 +25,7 @@ struct GetCommentRequest: APIGetRequest {
         self.queryItems = [
             .init(name: "id", value: id.description),
 
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: account.accessToken)
         ]
     }
 

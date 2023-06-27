@@ -7,10 +7,8 @@
 
 import Foundation
 
-extension Dictionary
-{
-    mutating func append(_ key: Key, _ value: Value) -> Void
-    {
+extension Dictionary {
+    mutating func append(_ key: Key, _ value: Value) {
         self.updateValue(value, forKey: key)
     }
 }

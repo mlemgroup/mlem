@@ -1,0 +1,15 @@
+disabled_rules:
+  - trailing_whitespace # disabling this check until swiftformat is in place, which will catch the majority.
+line_length: 
+  warning: 140
+  error: 160
+  ignores_comments: true
+identifier_name:
+  excluded: # excluded via string array
+    - id
+    - op
+    - w
+    - h
+    - x
+    - y
+  allowed_symbols: ["_"] # these are allowed in type names as we use them in API body arguments

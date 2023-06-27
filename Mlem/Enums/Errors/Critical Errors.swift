@@ -7,7 +7,6 @@
 
 import Foundation
 
-enum CriticalError
-{
+enum CriticalError {
     case shittyInternet
 }

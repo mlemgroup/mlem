@@ -18,7 +18,7 @@ struct LargePost: View {
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    
+
     // parameters
     let postView: APIPostView
     let account: SavedAccount
@@ -31,7 +31,14 @@ struct LargePost: View {
 
 
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
-    init(postView: APIPostView, account: SavedAccount, isExpanded: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, savePost: @escaping (_ save: Bool) async throws -> Void, deletePost: @escaping () async -> Void) {
+    init(
+        postView: APIPostView,
+        account: SavedAccount,
+        isExpanded: Bool,
+        voteOnPost: @escaping (ScoringOperation) async -> Void,
+        savePost: @escaping (_ save: Bool) async throws -> Void,
+        deletePost: @escaping () async -> Void
+    ) {
         self.postView = postView
         self.account = account
         self.isExpanded = isExpanded
@@ -40,23 +47,19 @@ struct LargePost: View {
         self.deletePost = deletePost
         self.cachedImageProvider = CachedImageProvider(isNsfw: postView.post.nsfw)
     }
-    
-    // computed properties
-    // if NSFW, blur iff shouldBlurNsfw and enableBlur and in feed
-    var showNsfwFilter: Bool { postView.post.nsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
-    
+
     var body: some View {
         VStack(spacing: spacing) {
             // header--community/poster/ellipsis menu
             PostHeader(postView: postView, account: account)
                 .padding(.bottom, -2) // negative padding to crunch header and title together just a wee bit
-            
+
             // post title
             Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .italic(postView.post.deleted)
-            
+
             // post body
             switch postView.postType {
             case .image(let url):
@@ -72,16 +75,23 @@ struct LargePost: View {
             case .titleOnly:
                 EmptyView()
             }
-            
-            PostInteractionBar(postView: postView, account: account, compact: false, voteOnPost: voteOnPost, updatedSavePost: savePost, deletePost: deletePost)
+
+            PostInteractionBar(
+                postView: postView,
+                account: account,
+                compact: false,
+                voteOnPost: voteOnPost,
+                updatedSavePost: savePost,
+                deletePost: deletePost
+            )
         }
         .padding(.vertical, spacing)
         .padding(.horizontal, spacing)
         .accessibilityElement(children: .combine)
     }
-    
+
     // MARK: - Subviews
-    
+
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {

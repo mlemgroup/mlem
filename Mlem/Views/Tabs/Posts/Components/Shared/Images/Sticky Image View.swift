@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct StickyImageView: View {
-    
+
     @State var url: URL?
-    
+
     var body: some View {
         GeometryReader { proxy in
             AsyncImage(url: url) { banner in
@@ -26,34 +26,28 @@ struct StickyImageView: View {
         }
         .frame(height: 300)
     }
-    
-    private func getScrollOffset(_ geometry: GeometryProxy) -> CGFloat
-    {
+
+    private func getScrollOffset(_ geometry: GeometryProxy) -> CGFloat {
         geometry.frame(in: .global).minY
     }
-    private func getOffsetForHeaderImage(_ geometry: GeometryProxy) -> CGFloat
-    {
+    private func getOffsetForHeaderImage(_ geometry: GeometryProxy) -> CGFloat {
         let offset = getScrollOffset(geometry)
-        
-        if offset > 0
-        {
+
+        if offset > 0 {
             return -offset
         }
-        
+
         return 0
     }
-    private func getHeightForHeaderImage(_ geometry: GeometryProxy) -> CGFloat
-    {
+    private func getHeightForHeaderImage(_ geometry: GeometryProxy) -> CGFloat {
         let offset = getScrollOffset(geometry)
-        
+
         let imageHeight = geometry.size.height
-        
-        if offset > 0
-        {
+
+        if offset > 0 {
             return imageHeight + offset
         }
-        
+
         return imageHeight
     }
 }
-

@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct CommunitySearchResultsView: View
-{
+struct CommunitySearchResultsView: View {
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
 
@@ -23,23 +22,15 @@ struct CommunitySearchResultsView: View
 
     @State private var isShowingDarkBackground: Bool = false
 
-    var body: some View
-    {
-        VStack(alignment: .leading, spacing: 10)
-        {
-            List
-            {
-                if community == nil
-                {
-                    if communitySearchResultsTracker.foundCommunities.isEmpty
-                    {
-                        Section
-                        {
-                            Button
-                            {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            List {
+                if community == nil {
+                    if communitySearchResultsTracker.foundCommunities.isEmpty {
+                        Section {
+                            Button {
                                 feedType = .subscribed
-                                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
-                                {
+                                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
                                     isShowingSearch.toggle()
                                 }
                             } label: {
@@ -47,11 +38,9 @@ struct CommunitySearchResultsView: View
                             }
                             .disabled(feedType == .subscribed)
 
-                            Button
-                            {
+                            Button {
                                 feedType = .all
-                                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
-                                {
+                                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
                                     isShowingSearch.toggle()
                                 }
                             } label: {
@@ -64,33 +53,31 @@ struct CommunitySearchResultsView: View
                         }
                     }
                 }
-                if communitySearchResultsTracker.foundCommunities.isEmpty
-                {
-                    Section
-                    {
-                        if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty
-                        {
-                            ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker))
-                            { favoritedCommunity in
-                                NavigationLink(value: favoritedCommunity.community)
-                                {
-                                    Text("\(favoritedCommunity.community.name)\(Text("@\(favoritedCommunity.community.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: true)
-                                    {
-                                        Button(role: .destructive)
-                                        {
-                                            unfavoriteCommunity(account: account, community: favoritedCommunity.community, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
+
+                if communitySearchResultsTracker.foundCommunities.isEmpty {
+                    Section {
+                        if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty {
+                            ForEach(getFavoritedCommunitiesForAccount(
+                                account: account,
+                                tracker: favoritedCommunitiesTracker
+                            )) { favoritedCommunity in
+                                NavigationLink(value: favoritedCommunity.community) {
+                                    communityNameView(for: favoritedCommunity.community)
+                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button(role: .destructive) {
+                                            unfavoriteCommunity(
+                                                account: account,
+                                                community: favoritedCommunity.community,
+                                                favoritedCommunitiesTracker: favoritedCommunitiesTracker
+                                            )
                                         } label: {
                                             Label("Unfavorite", systemImage: "star.slash")
                                         }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            VStack(alignment: .center, spacing: 10)
-                            {
+                        } else {
+                            VStack(alignment: .center, spacing: 10) {
                                 Image(systemName: "star.slash")
                                 Text("You have no communities favorited")
                             }
@@ -101,27 +88,19 @@ struct CommunitySearchResultsView: View
                         Text("Favorites")
                     }
 
-                    Section
-                    {
+                    Section {
                         if subscribedCommunities != nil {
-                            if !subscribedCommunities!.isEmpty
-                            {
-                                ForEach(subscribedCommunities!)
-                                { subscribedCommunity in
-                                    NavigationLink(value: subscribedCommunity)
-                                    {
-                                        Text("\(subscribedCommunity.name)\(Text("@\(subscribedCommunity.actorId.host!)").foregroundColor(.secondary).font(.caption))")
-                                            .swipeActions(edge: .trailing, allowsFullSwipe: true)
-                                        {
+                            if !subscribedCommunities!.isEmpty {
+                                ForEach(subscribedCommunities!) { subscribedCommunity in
+                                    NavigationLink(value: subscribedCommunity) {
+                                        communityNameView(for: subscribedCommunity)
+                                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                         }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            VStack(alignment: .center, spacing: 10)
-                            {
+                        } else {
+                            VStack(alignment: .center, spacing: 10) {
                                 Image(systemName: "star.slash")
                                 Text("You have no community subscriptions")
                             }
@@ -131,38 +110,37 @@ struct CommunitySearchResultsView: View
                     } header: {
                         Text("Subscriptions")
                     }
-                }
-                else
-                {
-                    Section
-                    {
-                        ForEach(communitySearchResultsTracker.foundCommunities)
-                        { foundCommunity in
-                            NavigationLink(value: foundCommunity)
-                            {
-                                Text("\(foundCommunity.name)\(Text("@\(foundCommunity.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: true)
-                                {
-                                    if favoritedCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == foundCommunity.id })
-                                    { /// This is when a community is already favorited
-                                        Button(role: .destructive)
-                                        {
-                                            unfavoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
-                                        } label: {
-                                            Label("Unfavorite", systemImage: "star.slash")
+                } else {
+                    Section {
+                        ForEach(communitySearchResultsTracker.foundCommunities) { foundCommunity in
+                            NavigationLink(value: foundCommunity) {
+                                communityNameView(for: foundCommunity)
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        // This is when a community is already favorited
+                                        if favoritedCommunitiesTracker.favoriteCommunities
+                                            .contains(where: { $0.community.id == foundCommunity.id }) {
+                                            Button(role: .destructive) {
+                                                unfavoriteCommunity(
+                                                    account: account,
+                                                    community: foundCommunity,
+                                                    favoritedCommunitiesTracker: favoritedCommunitiesTracker
+                                                )
+                                            } label: {
+                                                Label("Unfavorite", systemImage: "star.slash")
+                                            }
+                                        } else {
+                                            Button {
+                                                favoriteCommunity(
+                                                    account: account,
+                                                    community: foundCommunity,
+                                                    favoritedCommunitiesTracker: favoritedCommunitiesTracker
+                                                )
+                                            } label: {
+                                                Label("Favorite", systemImage: "star")
+                                            }
+                                            .tint(.yellow)
                                         }
                                     }
-                                    else
-                                    {
-                                        Button
-                                        {
-                                            favoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
-                                        } label: {
-                                            Label("Favorite", systemImage: "star")
-                                        }
-                                        .tint(.yellow)
-                                    }
-                                }
                             }
                         }
                     } header: {
@@ -173,22 +151,30 @@ struct CommunitySearchResultsView: View
         }
         .frame(height: 300)
         .task {
-            let request = ListCommunitiesRequest(account: account, sort: nil, page: nil, limit: nil, type: FeedType.subscribed);
+            let request = ListCommunitiesRequest(account: account, sort: nil, page: nil, limit: nil, type: FeedType.subscribed)
             do {
-                let response = try await APIClient().perform(request: request);
+                let response = try await APIClient().perform(request: request)
                 subscribedCommunities = response.communities.map({
-                    return $0.community;
+                    return $0.community
                 }).sorted(by: {
                     $0.name < $1.name
-                });
+                })
             } catch {
 
             }
         }
     }
 
-    internal func getFavoritedCommunitiesForAccount(account: SavedAccount, tracker: FavoriteCommunitiesTracker) -> [FavoriteCommunity]
-    {
+    internal func getFavoritedCommunitiesForAccount(account: SavedAccount, tracker: FavoriteCommunitiesTracker) -> [FavoriteCommunity] {
         return tracker.favoriteCommunities.filter { $0.forAccountID == account.id }
+    }
+    
+    private func communityNameView(for community: APICommunity) -> some View {
+        let name = community.name
+        let host = community.actorId.host ?? "ERROR"
+        let hostText = Text("@\(host)")
+            .foregroundColor(.secondary)
+            .font(.caption)
+        return Text("\(name)\(hostText)")
     }
 }

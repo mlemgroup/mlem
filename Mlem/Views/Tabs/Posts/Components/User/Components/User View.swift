@@ -8,6 +8,9 @@
 import CachedAsyncImage
 import SwiftUI
 
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
+
 /// View for showing user profiles
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
@@ -24,7 +27,6 @@ struct UserView: View {
     @State var account: SavedAccount
     @State var userDetails: APIPersonView?
 
-    // members
     @State private var errorAlert: ErrorAlert?
     @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init()
@@ -34,16 +36,16 @@ struct UserView: View {
     @State var isDragging: Bool = false
     @FocusState var isReplyFieldFocused
     
-    enum FeedType : String, CaseIterable, Identifiable {
-        case Overview = "Overview"
-        case Comments = "Comments"
-        case Posts = "Posts"
-        case Saved = "Saved"
+    enum FeedType: String, CaseIterable, Identifiable {
+        case overview = "Overview"
+        case comments = "Comments"
+        case posts = "Posts"
+        case saved = "Saved"
         
         var id: String { return self.rawValue }
     }
     
-    struct FeedItem : Identifiable {
+    struct FeedItem: Identifiable {
         let id = UUID()
         let published: Date
         let comment: HierarchicalComment?
@@ -56,7 +58,7 @@ struct UserView: View {
                 Alert(title: Text(content.title), message: Text(content.message))
             }
     }
-    
+
     @ViewBuilder
     private var contentView: some View {
         if let userDetails {
@@ -65,7 +67,7 @@ struct UserView: View {
             progressView
         }
     }
-    
+
     private func view(for userDetails: APIPersonView) -> some View {
         ScrollView {
             CommunitySidebarHeader(
@@ -84,14 +86,14 @@ struct UserView: View {
             }
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                Text(FeedType.Overview.rawValue).tag(0)
-                Text(FeedType.Comments.rawValue).tag(1)
-                Text(FeedType.Posts.rawValue).tag(2)
+                Text(FeedType.overview.rawValue).tag(0)
+                Text(FeedType.comments.rawValue).tag(1)
+                Text(FeedType.posts.rawValue).tag(2)
                 
                 // Only show saved posts if we are
                 // browsing our own profile
                 if isShowingOwnProfile() {
-                    Text(FeedType.Saved.rawValue).tag(3)
+                    Text(FeedType.saved.rawValue).tag(3)
                 }
                 
             }
@@ -144,10 +146,8 @@ struct UserView: View {
         LazyVStack {
             if generateCommentFeed(savedItems: false).isEmpty {
                 emptyFeed
-            }
-            else {
-                ForEach(generateCommentFeed(savedItems: false))
-                { feedItem in
+            } else {
+                ForEach(generateCommentFeed(savedItems: false)) { feedItem in
                     commentEntry(for: feedItem.comment!)
                     Spacer().frame(height: 8)
                 }
@@ -160,10 +160,8 @@ struct UserView: View {
         LazyVStack {
             if generatePostFeed(savedItems: false).isEmpty {
                 emptyFeed
-            }
-            else {
-                ForEach(generatePostFeed(savedItems: false))
-                { feedItem in
+            } else {
+                ForEach(generatePostFeed(savedItems: false)) { feedItem in
                     postEntry(for: feedItem.post!)
                     Spacer().frame(height: 8)
                 }
@@ -177,14 +175,11 @@ struct UserView: View {
         LazyVStack {
             if generateMixedFeed(savedItems: false).isEmpty {
                 emptyFeed
-            }
-            else {
-                ForEach(generateMixedFeed(savedItems: false))
-                { feedItem in
+            } else {
+                ForEach(generateMixedFeed(savedItems: false)) { feedItem in
                     if let comment = feedItem.comment {
                         commentEntry(for: comment)
-                    }
-                    else if let post = feedItem.post {
+                    } else if let post = feedItem.post {
                         postEntry(for: post)
                     }
                     Spacer().frame(height: 8)
@@ -198,14 +193,11 @@ struct UserView: View {
         LazyVStack {
             if generateMixedFeed(savedItems: true).isEmpty {
                 emptyFeed
-            }
-            else {
-                ForEach(generateMixedFeed(savedItems: true))
-                { feedItem in
+            } else {
+                ForEach(generateMixedFeed(savedItems: true)) { feedItem in
                     if let comment = feedItem.comment {
                         commentEntry(for: comment)
-                    }
-                    else if let post = feedItem.post {
+                    } else if let post = feedItem.post {
                         postEntry(for: post)
                     }
                     Spacer().frame(height: 8)
@@ -273,7 +265,7 @@ struct UserView: View {
             $0.published > $1.published
         })
         
-        return result;
+        return result
     }
     
     @MainActor
@@ -281,8 +273,7 @@ struct UserView: View {
         ProgressView {
             if isShowingOwnProfile() {
                 Text("Loading your profile…")
-            }
-            else {
+            } else {
                 Text("Loading user profile…")
             }
         }
@@ -294,7 +285,7 @@ struct UserView: View {
     private func tryLoadUser() async {
         do {
             let authoredContent = try await loadUser(savedItems: false)
-            var savedContentData: GetPersonDetailsResponse? = nil
+            var savedContentData: GetPersonDetailsResponse?
             if isShowingOwnProfile() {
                 savedContentData = try await loadUser(savedItems: true)
             }
@@ -327,10 +318,10 @@ struct UserView: View {
             savedOnly: savedItems,
             personId: userID
         )
-        
+
         return try await APIClient().perform(request: request)
     }
-    
+
     private func handle(_ error: Error) {
         switch error {
         case APIClientError.response(let message, _):
@@ -353,7 +344,7 @@ struct UserView: View {
      */
     private func postEntry(for post: APIPostView) -> some View {
         NavigationLink {
-            ExpandedPost(account: account , post: post, feedType: .constant(.subscribed))
+            ExpandedPost(account: account, post: post, feedType: .constant(.subscribed))
         } label: {
             FeedPost(postView: post, account: account, isDragging: $isDragging)
         }
@@ -366,7 +357,14 @@ struct UserView: View {
     private func commentEntry(for comment: HierarchicalComment) -> some View {
         VStack {
             HStack {
-                CommentItem(account: account, hierarchicalComment: comment, postContext: nil, depth: 0, showPostContext: true, isDragging: $isDragging)
+                CommentItem(
+                    account: account,
+                    hierarchicalComment: comment,
+                    postContext: nil,
+                    depth: 0,
+                    showPostContext: true,
+                    isDragging: $isDragging
+                )
                     .padding(.vertical)
                 Spacer()
             }
@@ -374,62 +372,182 @@ struct UserView: View {
     }
 }
 
+// swiftlint:enable type_body_length
 
 // TODO: darknavi - Move these to a common area for reuse
-struct UserViewPreview : PreviewProvider {
-    static let previewAccount = SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account")
+struct UserViewPreview: PreviewProvider {
+    static let previewAccount = SavedAccount(
+        id: 0,
+        instanceLink: URL(string: "lemmy.com")!,
+        accessToken: "abcdefg",
+        username: "Test Account"
+    )
     
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
-    enum PreviewUserType:  String, CaseIterable {
-        case Normal = "normal"
-        case Mod = "mod"
-        case OP = "op"
-        case Bot = "bot"
-        case Admin = "admin"
-        case Dev = "developer"
+    enum PreviewUserType: String, CaseIterable {
+        case normal = "normal"
+        case mod = "mod"
+        case op = "op"
+        case bot = "bot"
+        case admin = "admin"
+        case dev = "developer"
     }
     
-    static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
-        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: URL(string: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp"), banned: false, published: Date.now.advanced(by: -10000), updated: nil, actorId: URL(string: "https://google.com")!, bio: "Just here for the good vibes!", local: false, banner: URL(string: "https://i.imgur.com/wcayaCB.jpeg"), deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
+    static func generatePreviewUser(
+        name: String,
+        displayName: String,
+        userType: PreviewUserType
+    ) -> APIPerson {
+        APIPerson(
+            id: name.hashValue,
+            name: name,
+            displayName: displayName,
+            avatar: URL(string: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp"),
+            banned: false,
+            published: Date.now.advanced(by: -10000),
+            updated: nil,
+            actorId: URL(string: "https://google.com")!,
+            bio: "Just here for the good vibes!",
+            local: false,
+            banner: URL(string: "https://i.imgur.com/wcayaCB.jpeg"),
+            deleted: false,
+            sharedInboxUrl: nil,
+            matrixUserId: nil,
+            admin: userType == .admin,
+            botAccount: userType == .bot,
+            banExpires: nil,
+            instanceId: 123
+        )
     }
     
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {
-        return APIComment(id: 0, creatorId: creator.id, postId: 0, content: "", removed: false, deleted: false, published: Date.now, updated: nil, apId: "foo.bar", local: false, path: "foo", distinguished: isMod, languageId: 0)
+        APIComment(
+            id: 0,
+            creatorId: creator.id,
+            postId: 0,
+            content: "",
+            removed: false,
+            deleted: false,
+            published: Date.now,
+            updated: nil,
+            apId: "foo.bar",
+            local: false,
+            path: "foo",
+            distinguished: isMod,
+            languageId: 0
+        )
     }
     
     static func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
-        return APICommunity(id: id, name: "\(namePrefix) Fake Community \(id)", title: "\(namePrefix) Fake Community \(id) Title", description: "This is a fake community (#\(id))", published: Date.now, updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.google.com/c/\(id)")!, local: false, icon: nil, banner: nil, hidden: false, postingRestrictedToMods: false, instanceId: 0)
+        APICommunity(
+            id: id,
+            name: "\(namePrefix) Fake Community \(id)",
+            title: "\(namePrefix) Fake Community \(id) Title",
+            description: "This is a fake community (#\(id))",
+            published: Date.now,
+            updated: nil,
+            removed: false,
+            deleted: false,
+            nsfw: false,
+            actorId: URL(string: "https://lemmy.google.com/c/\(id)")!,
+            local: false,
+            icon: nil,
+            banner: nil,
+            hidden: false,
+            postingRestrictedToMods: false,
+            instanceId: 0
+        )
     }
     
     static func generatePreviewPost(creator: APIPerson) -> APIPostView {
         let community = generateFakeCommunity(id: 123, namePrefix: "Test")
-        let post = APIPost(id: 123, name: "Test Post Title", url: nil, body: "This is a test post body", creatorId: creator.id, communityId: 123, deleted: false, embedDescription: "Embeedded Description", embedTitle: "Embedded Title", embedVideoUrl: nil, featuredCommunity: false, featuredLocal: false, languageId: 0, apId: "my.app.id", local: false, locked: false, nsfw: false, published: Date.now, removed: false, thumbnailUrl: nil, updated: nil)
+        let post = APIPost(
+            id: 123,
+            name: "Test Post Title",
+            url: nil,
+            body: "This is a test post body",
+            creatorId: creator.id,
+            communityId: 123,
+            deleted: false,
+            embedDescription: "Embeedded Description",
+            embedTitle: "Embedded Title",
+            embedVideoUrl: nil,
+            featuredCommunity: false,
+            featuredLocal: false,
+            languageId: 0,
+            apId: "my.app.id",
+            local: false,
+            locked: false,
+            nsfw: false,
+            published: Date.now,
+            removed: false,
+            thumbnailUrl: nil,
+            updated: nil
+        )
         
-        let postVotes = APIPostAggregates(id: 123, postId: post.id, comments: 0, score: 10, upvotes: 15, downvotes: 5, published: Date.now, newestCommentTime: Date.now, newestCommentTimeNecro: Date.now, featuredCommunity: false, featuredLocal: false)
+        let postVotes = APIPostAggregates(
+            id: 123,
+            postId: post.id,
+            comments: 0,
+            score: 10,
+            upvotes: 15,
+            downvotes: 5,
+            published: Date.now,
+            newestCommentTime: Date.now,
+            newestCommentTimeNecro: Date.now,
+            featuredCommunity: false,
+            featuredLocal: false
+        )
         
-        return APIPostView(post: post, creator: creator, community: community, creatorBannedFromCommunity: false, counts: postVotes, subscribed: .notSubscribed, saved: false, read: false, creatorBlocked: false, unreadComments: 0)
+        return APIPostView(
+            post: post,
+            creator: creator,
+            community: community,
+            creatorBannedFromCommunity: false,
+            counts: postVotes,
+            subscribed: .notSubscribed,
+            saved: false,
+            read: false,
+            creatorBlocked: false,
+            unreadComments: 0
+        )
     }
     
     static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
-        let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType);
+        let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
-        var postContext: APIPostView? = nil
-        var commentContext: APIComment? = nil
+        var postContext: APIPostView?
+        var commentContext: APIComment?
         
-        if userType == .Mod {
-            commentContext = generatePreviewComment(creator: previewUser, isMod:  true)
+        if userType == .mod {
+            commentContext = generatePreviewComment(creator: previewUser, isMod: true)
         }
         
-        if userType == .OP {
-            commentContext = generatePreviewComment(creator: previewUser, isMod:  false)
+        if userType == .op {
+            commentContext = generatePreviewComment(creator: previewUser, isMod: false)
             postContext = generatePreviewPost(creator: previewUser)
         }
         
-        return UserProfileLink(account: UserViewPreview.previewAccount, user: previewUser, showServerInstance: true)
+        return UserProfileLink(
+            account: UserViewPreview.previewAccount,
+            user: previewUser,
+            showServerInstance: true,
+            postContext: postContext,
+            commentContext: commentContext
+        )
     }
     
     static var previews: some View {
-        UserView(userID: 123, account: previewAccount, userDetails: APIPersonView(person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .Normal), counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)))
+        UserView(
+            userID: 123,
+            account: previewAccount,
+            userDetails: APIPersonView(
+                person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .normal),
+                counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)
+            )
+        )
     }
 }
+
+// swiftlint:enable file_length

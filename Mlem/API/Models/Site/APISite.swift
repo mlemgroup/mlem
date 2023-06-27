@@ -22,4 +22,3 @@ struct APISite: Decodable {
     let publicKey: String
     let instanceId: Int
 }
-

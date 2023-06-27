@@ -18,7 +18,6 @@ struct DownvoteButton: View {
             .background(RoundedRectangle(cornerRadius: 4)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(vote == .downvote ? .downvoteColor : .clear))
-        
+
     }
 }
-

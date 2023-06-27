@@ -21,7 +21,7 @@ func deletePost(
     do {
         let request = DeletePostRequest(
             account: account,
-            postId: 5, //postId,
+            postId: postId,
             deleted: true
         )
         

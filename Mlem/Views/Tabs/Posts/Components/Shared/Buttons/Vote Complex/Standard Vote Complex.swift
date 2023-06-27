@@ -15,7 +15,7 @@ struct StandardVoteComplex: View {
     let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
-    
+
     var body: some View {
         HStack(spacing: 4) {
             HStack(spacing: 2) {
@@ -33,7 +33,7 @@ struct StandardVoteComplex: View {
                     await upvote()
                 }
             }
-            
+
             DownvoteButton(vote: vote, size: height)
                 .onTapGesture {
                     Task(priority: .userInitiated) {
