@@ -1,9 +1,12 @@
 # Mlem
-[![Download on TestFlight](https://img.shields.io/badge/Download-TestFlight-blue)](https://testflight.apple.com/join/xQfmkJhc)
+[![Download on TestFlight](https://img.shields.io/badge/Download-TestFlight-blue)](https://testflight.apple.com/join/MelFP11Y)
 
 The Lemmy client for iOS.
 
 [![Mastodon Link](https://img.shields.io/mastodon/follow/108939255808776594?domain=https%3A%2F%2Fmstdn.social&label=Follow%20me%20for%20updates&style=flat)](https://elk.zone/mstdn.social/@davidbures)
+
+## Want to contribute?
+Read our [contribution guide](./CONTRIBUTING.md) to get started!
 
 ## What is Mlem?
 Mlem is a client for [Lemmy](https://join-lemmy.org), a Reddit-esque, open-source link aggregator. With Mlem, you can effortlessly participate in the conversation across all Lemmy servers. 
@@ -62,6 +65,14 @@ Mlem supports any iPhone running iOS 16 and later.
 ## Roadmap
 
 As of now, Mlem is still in beta. While it already has many core features, there is still a lot to do. Follow me on my socials to always be up-to-date on Mlem's development!
+
+## Development
+
+This project makes use of [SwiftLint](https://github.com/realm/SwiftLint#swiftlint). This runs as part of the Xcode build phases.
+
+In order to benefit please ensure you have [Homebrew](https://brew.sh) installed on your system and then run the following command to install swiftlint:
+
+`brew install swiftlint`
 
 ## License
 

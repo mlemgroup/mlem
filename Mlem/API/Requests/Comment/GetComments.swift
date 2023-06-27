@@ -45,7 +45,6 @@ struct GetCommentsRequest: APIGetRequest {
             .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
 
-
     }
 }
 

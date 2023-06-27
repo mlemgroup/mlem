@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct CommentItem: View {
+    // appstorage
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+
     // MARK: Temporary
-    //state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
+    // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation // = .resetVote
     @State var dirtyScore: Int // = 0
     @State var dirtySaved: Bool // = false
@@ -45,15 +48,23 @@ struct CommentItem: View {
 
     let account: SavedAccount
     let hierarchicalComment: HierarchicalComment
+    let postContext: APIPostView?
     let depth: Int
     let showPostContext: Bool
 
     @Binding var isDragging: Bool
 
     // init needed to get dirty and clean aligned
-    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int, showPostContext: Bool, isDragging: Binding<Bool>) {
+    init(account: SavedAccount,
+         hierarchicalComment: HierarchicalComment,
+         postContext: APIPostView?,
+         depth: Int,
+         showPostContext: Bool,
+         isDragging: Binding<Bool>
+    ) {
         self.account = account
         self.hierarchicalComment = hierarchicalComment
+        self.postContext = postContext
         self.depth = depth
         self.showPostContext = showPostContext
         _isDragging = isDragging
@@ -96,14 +107,18 @@ struct CommentItem: View {
                                           displayedSaved: displayedSaved,
                                           upvote: upvote,
                                           downvote: downvote,
-                                          saveComment: saveComment)
+                                          saveComment: saveComment,
+                                          deleteComment: deleteComment)
                 }
                 .padding(spacing)
             }
             .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {
                 withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
-                    isCollapsed.toggle()
+                    // Perhaps we want an explict flag for this in the future?
+                    if !showPostContext {
+                        isCollapsed.toggle()
+                    }
                 }
             }
             .contextMenu {
@@ -161,8 +176,14 @@ struct CommentItem: View {
 
     @ViewBuilder
     var commentHeader: some View {
-        HStack() {
-            UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
+        HStack {
+            UserProfileLink(
+                account: account,
+                user: hierarchicalComment.commentView.creator,
+                showServerInstance: shouldShowUserServerInComment,
+                postContext: postContext,
+                commentContext: hierarchicalComment.commentView.comment
+            )
 
             Spacer()
 
@@ -183,20 +204,22 @@ struct CommentItem: View {
                 Text("Comment was deleted")
                     .italic()
                     .foregroundColor(.secondary)
-            }
-            else if hierarchicalComment.commentView.comment.removed {
+            } else if hierarchicalComment.commentView.comment.removed {
                 Text("Comment was removed")
                     .italic()
                     .foregroundColor(.secondary)
-            }
-            else if !isCollapsed {
+            } else if !isCollapsed {
                 MarkdownView(text: hierarchicalComment.commentView.comment.content)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
 
             // embedded post
             if showPostContext {
-                EmbeddedPost(post: hierarchicalComment.commentView.post)
+                EmbeddedPost(
+                    account: account,
+                    community: hierarchicalComment.commentView.community,
+                    post: hierarchicalComment.commentView.post
+                )
             }
         }
     }
@@ -207,10 +230,16 @@ struct CommentItem: View {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
-                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1, showPostContext: false, isDragging: $isDragging)
+                    CommentItem(
+                        account: account,
+                        hierarchicalComment: child,
+                        postContext: postContext,
+                        depth: depth + 1,
+                        showPostContext: false,
+                        isDragging: $isDragging
+                    )
                 }
             }
         }
     }
 }
-

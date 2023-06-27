@@ -7,14 +7,11 @@
 
 import SwiftUI
 
-struct ErrorView: View
-{
+struct ErrorView: View {
     let errorMessage: String
 
-    var body: some View
-    {
-        VStack(spacing: 10)
-        {
+    var body: some View {
+        VStack(spacing: 10) {
             Image(systemName: "xmark.circle")
             Text(errorMessage)
         }

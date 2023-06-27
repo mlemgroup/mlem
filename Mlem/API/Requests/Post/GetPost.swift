@@ -36,17 +36,14 @@ struct GetPostRequest: APIGetRequest {
         commentId: Int?
     ) {
         self.instanceURL = instanceURL
-
-        var queryItems: [URLQueryItem] = [
+        self.queryItems = [
             .init(name: "id", value: id?.description),
             .init(name: "comment_id", value: commentId?.description)
         ]
-
-        self.queryItems = queryItems
     }
 }
 
 // lemmy_api_common::post::GetPostResponse
 struct GetPostResponse: Decodable {
-    let posts: [APIPostView]
+    let postView: APIPostView
 }

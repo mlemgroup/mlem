@@ -12,13 +12,7 @@ enum PostFormat: String, SettingsOptions {
     case system = "System"
     case dark = "Dark"
 
-    var label: String {
-        get {
-            self.rawValue
-        }
-    }
-    
-    var id: Self {
-        return self
-    }
+    var label: String { self.rawValue }
+
+    var id: Self { self }
 }

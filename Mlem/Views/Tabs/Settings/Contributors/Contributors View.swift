@@ -8,17 +8,13 @@
 import SwiftUI
 import CachedAsyncImage
 
-struct ContributorsView: View
-{
-    
+struct ContributorsView: View {
+
     @State var contributor: Contributor
-    
-    var body: some View
-    {
-        VStack(alignment: .center, spacing: 10)
-        {
-            CachedAsyncImage(url: contributor.avatarLink, urlCache: AppConstants.urlCache)
-            { image in
+
+    var body: some View {
+        VStack(alignment: .center, spacing: 10) {
+            CachedAsyncImage(url: contributor.avatarLink, urlCache: AppConstants.urlCache) { image in
                 image
                     .resizable()
                     .frame(width: 100, height: 100)
@@ -28,15 +24,14 @@ struct ContributorsView: View
                     .frame(width: 100, height: 100)
             }
 
-            VStack(alignment: .center, spacing: 5)
-            {
+            VStack(alignment: .center, spacing: 5) {
                 Text(contributor.name)
                     .bold()
                 Text(contributor.reasonForAcknowledgement)
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
             }
-            
+
             Spacer()
         }
         .padding()

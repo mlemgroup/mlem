@@ -12,13 +12,13 @@ struct VoteComplex: View {
     // whether to display default or symmetric score
     @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
     @AppStorage("shouldShowCompactPosts") var compact: Bool = false
-    
+
     let vote: ScoringOperation
     let score: Int
     let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
-    
+
     var body: some View {
         Group {
             switch voteComplexStyle {

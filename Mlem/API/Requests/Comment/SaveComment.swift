@@ -34,7 +34,7 @@ struct SaveCommentRequest: APIPutRequest {
         self.body = .init(
             comment_id: commentId,
             save: save,
-            
+
             auth: account.accessToken
         )
     }

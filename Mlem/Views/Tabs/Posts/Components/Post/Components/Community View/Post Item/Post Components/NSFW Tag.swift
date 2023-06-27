@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct NSFWTag: View
-{
+struct NSFWTag: View {
     let compact: Bool
-    
+
     var body: some View {
         Text("NSFW")
             .foregroundColor(.white)

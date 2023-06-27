@@ -8,18 +8,14 @@
 import Foundation
 import UIKit
 
-func downloadUIImageFromURL(_ url: URL) async -> UIImage?
-{
+func downloadUIImageFromURL(_ url: URL) async -> UIImage? {
     let session: URLSession = URLSession(configuration: .default)
-    
-    do
-    {
+
+    do {
         let (data, _) = try await session.data(from: url)
-        
+
         return UIImage(data: data)
-    }
-    catch
-    {
+    } catch {
         return nil
     }
 }

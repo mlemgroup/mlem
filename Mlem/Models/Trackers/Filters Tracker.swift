@@ -7,8 +7,7 @@
 
 import Foundation
 
-class FiltersTracker: ObservableObject
-{
+class FiltersTracker: ObservableObject {
     @Published var filteredKeywords: [String] = .init()
     @Published var filteredUsers: [String] = .init()
 }

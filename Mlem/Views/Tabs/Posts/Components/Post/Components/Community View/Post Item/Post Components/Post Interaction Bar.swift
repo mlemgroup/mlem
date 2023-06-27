@@ -12,74 +12,89 @@ import Foundation
 /**
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
-struct PostInteractionBar: View {    
+struct PostInteractionBar: View {
     @EnvironmentObject var postTracker: PostTracker
-    
+
     // constants
     let iconToTextSpacing: CGFloat = 2
     let iconPadding: CGFloat = 4
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
-    
+
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation
     @State var dirtyScore: Int
     @State var dirtySaved: Bool
     @State var dirty: Bool
-    
+
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : postView.myVote ?? .resetVote }
     var displayedScore: Int { dirty ? dirtyScore : postView.counts.score }
     var displayedSaved: Bool { dirty ? dirtySaved : postView.saved }
-    
+
     // parameters
     let postView: APIPostView
     let account: SavedAccount
     let compact: Bool
     let voteOnPost: (ScoringOperation) async -> Void
+    let updatedSavePost: (_ save: Bool) async throws -> Void
+    let deletePost: () async -> Void
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
     var height: CGFloat { compact ? 20 : 24 }
     
-    init(postView: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
+    init(
+        postView: APIPostView,
+        account: SavedAccount,
+        compact: Bool,
+        voteOnPost: @escaping (ScoringOperation) async -> Void,
+        updatedSavePost: @escaping (_ save: Bool) async throws -> Void,
+        deletePost: @escaping () async -> Void
+    ) {
         self.postView = postView
         self.account = account
         self.compact = compact
         self.voteOnPost = voteOnPost
+        self.updatedSavePost = updatedSavePost
+        self.deletePost = deletePost
         _dirtyVote = State(initialValue: postView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: postView.counts.score)
         _dirtySaved = State(initialValue: postView.saved)
         _dirty = State(initialValue: false)
     }
-    
+
     var body: some View {
         HStack(spacing: compact ? 18 : 12) {
             VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
-            
+
             SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "post") {
                 Task(priority: .userInitiated) {
                     await savePost()
                 }
             }
-            
+
             if let postURL = URL(string: postView.post.apId) {
                 ShareButton(size: height, accessibilityContext: "post") {
                     showShareSheet(URLtoShare: postURL)
                 }
             }
-            
-            EllipsisMenu(size: height, shareUrl: postView.post.apId)
-            
+
+            EllipsisMenu(
+                size: height,
+                shareUrl: postView.post.apId,
+                deleteButtonCallback: canDeletePost() ? self.deletePost : nil
+            )
+
             Spacer()
             infoBlock
         }
         .font(compact ? .footnote : .callout)
     }
-    
+
     // subviews
-    
+
     var infoBlock: some View {
         // post info component
         HStack(spacing: 8) {
@@ -94,14 +109,26 @@ struct PostInteractionBar: View {
         }
         .foregroundColor(.secondary)
     }
-    
+
     // helper functions
     
-    func upvote() async -> Void {
+    func canDeletePost() -> Bool {
+        if postView.creator.id != account.id {
+            return false
+        }
+        
+        if postView.post.deleted {
+            return false
+        }
+        
+        return true
+    }
+    
+    func upvote() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake downvote
-            switch (displayedVote) {
+            switch displayedVote {
             case .upvote:
                 dirtyVote = .resetVote
                 dirtyScore = displayedScore - 1
@@ -113,21 +140,21 @@ struct PostInteractionBar: View {
                 dirtyScore = displayedScore + 2
             }
             dirty = true
-            
+
             // wait for vote
             await voteOnPost(.upvote)
-            
+
             // unfake downvote
             dirty = false
             return
         }
     }
-    
-    func downvote() async -> Void {
+
+    func downvote() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake upvote
-            switch (displayedVote) {
+            switch displayedVote {
             case .upvote:
                 dirtyVote = .downvote
                 dirtyScore = displayedScore - 2
@@ -139,26 +166,39 @@ struct PostInteractionBar: View {
                 dirtyScore = displayedScore + 1
             }
             dirty = true
-            
+
             // wait for vote
             await voteOnPost(.downvote)
-            
+
             // unfake upvote
             dirty = false
             return
         }
     }
-    
+
+    func deletePost() async {
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            dirty = true
+            
+            // wait for deletion
+            await deletePost()
+            
+            dirty = false
+            return
+        }
+    }
+
     /**
      Sends a save request for the current post
      */
-    func savePost() async -> Void {
+    func savePost() async {
         guard dirty else {
             do {
                 // fake save
                 dirtySaved.toggle()
                 dirty = true
-                try await sendSavePostRequest(account: account, postId: postView.id, save: dirtySaved, postTracker: postTracker)
+                try await self.updatedSavePost(dirtySaved)
             } catch {
                 print("failed to save!")
             }

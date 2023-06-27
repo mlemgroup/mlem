@@ -16,8 +16,7 @@ import SwiftUI
 /**
  Displays a single post in the feed
  */
-struct FeedPost: View
-{
+struct FeedPost: View {
     // MARK: Environment
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
@@ -102,14 +101,25 @@ struct FeedPost: View
 
     @ViewBuilder
     var postItem: some View {
-        if (shouldShowCompactPosts){
-            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost)
-        }
-        else {
-            LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost)
+        if shouldShowCompactPosts {
+            CompactPost(
+                postView: postView,
+                account: account,
+                voteOnPost: voteOnPost,
+                savePost: { _ in await savePost() },
+                deletePost: deletePost
+            )
+        } else {
+            LargePost(
+                postView: postView,
+                account: account,
+                isExpanded: false,
+                voteOnPost: voteOnPost,
+                savePost: { _ in await savePost() },
+                deletePost: deletePost
+            )
         }
     }
-
 
     // Reply handlers
 
@@ -121,17 +131,30 @@ struct FeedPost: View
         await voteOnPost(inputOp: .downvote)
     }
 
+    func deletePost() async {
+        do {
+            _ = try await Mlem.deletePost(postId: postView.post.id, account: account, postTracker: postTracker, appState: appState)
+        } catch {
+            print("failed to delete post!")
+        }
+    }
+
     func replyToPost() {
         self.replyIsPresented = true
     }
-    /**
-     Votes on a post
-     NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
-     */
-    func voteOnPost(inputOp: ScoringOperation) async -> Void {
+
+    /// Votes on a post
+    /// - Parameter inputOp: The vote operation to perform
+    func voteOnPost(inputOp: ScoringOperation) async {
         do {
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await ratePost(postId: postView.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
+            _ = try await ratePost(
+                postId: postView.post.id,
+                operation: operation,
+                account: account,
+                postTracker: postTracker,
+                appState: appState
+            )
         } catch {
             print("failed to vote!")
         }
@@ -139,10 +162,9 @@ struct FeedPost: View
 
     func savePost() async -> Void {
         do {
-            try await sendSavePostRequest(account: account, postId: postView.id, save: !postView.saved, postTracker: postTracker)
+            _ = try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
         } catch {
             print("failed to save!")
         }
     }
 }
-

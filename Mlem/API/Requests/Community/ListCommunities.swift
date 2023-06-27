@@ -19,7 +19,7 @@ struct ListCommunitiesRequest: APIGetRequest {
     init(
         account: SavedAccount,
 
-        sort: SortingOptions?,
+        sort: PostSortType?,
         page: Int?,
         limit: Int?,
 
@@ -28,19 +28,18 @@ struct ListCommunitiesRequest: APIGetRequest {
         self.instanceURL = account.instanceLink
         self.queryItems = [
             .init(name: "sort", value: sort?.rawValue),
-
-            .init(name: "limit", value: limit.map(String.init)),
-            .init(name: "page", value: page.map(String.init)),
+            .init(name: "limit", value: limit?.description),
+            .init(name: "page", value: page?.description),
             .init(name: "type_", value: type.rawValue),
 
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: account.accessToken)
         ]
     }
 
     init(
         instanceURL: URL,
 
-        sort: SortingOptions?,
+        sort: PostSortType?,
         page: Int?,
         limit: Int?,
 
@@ -53,7 +52,7 @@ struct ListCommunitiesRequest: APIGetRequest {
 
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "page", value: page.map(String.init)),
-            .init(name: "type_", value: type.rawValue),
+            .init(name: "type_", value: type.rawValue)
         ]
     }
 }

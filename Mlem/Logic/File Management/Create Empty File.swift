@@ -7,19 +7,14 @@
 
 import Foundation
 
-internal enum FileCreationError: Error
-{
+internal enum FileCreationError: Error {
     case failedToCreateFile
 }
 
-func createEmptyFile(at url: URL) throws -> Void
-{
-    do
-    {
+func createEmptyFile(at url: URL) throws {
+    do {
         try "".write(to: url, atomically: true, encoding: .utf8)
-    }
-    catch let fileCreationError
-    {
+    } catch let fileCreationError {
         print("Failed to create empty file: \(fileCreationError)")
     }
 }

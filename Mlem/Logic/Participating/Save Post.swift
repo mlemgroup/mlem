@@ -7,18 +7,20 @@
 
 @MainActor
 func sendSavePostRequest(account: SavedAccount,
-              postId: Int,
-              save: Bool,
-              postTracker: PostTracker) async throws {
+                         postId: Int,
+                         save: Bool,
+                         postTracker: PostTracker
+) async throws -> APIPostView {
     do {
         let request = SavePostRequest(account: account, postId: postId, save: save)
-        
+
         AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
-        
+
         postTracker.update(with: response.postView)
-    }
-    catch {
+
+        return response.postView
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
         throw RatingFailure.failedToPostScore
     }

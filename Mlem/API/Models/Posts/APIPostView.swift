@@ -23,12 +23,21 @@ struct APIPostView: Decodable {
 }
 
 extension APIPostView: Identifiable {
-    var id: Int { post.id }
+    var id: Int { self.hashValue }
 }
 
 extension APIPostView: Equatable {
     static func == (lhs: APIPostView, rhs: APIPostView) -> Bool {
         // defer to our child `post` value conformance
-        lhs.post == rhs.post
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension APIPostView: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.post.id)
+        hasher.combine(self.myVote)
+        hasher.combine(self.saved)
+        hasher.combine(self.read)
     }
 }

@@ -8,13 +8,13 @@
 import Foundation
 
 // lemmy_db_schema::source::person::PersonSafe
-struct APIPerson: Decodable {
+struct APIPerson: Decodable, Identifiable, Hashable {
     let id: Int
     let name: String
     let displayName: String?
     let avatar: URL?
     let banned: Bool
-    let published: String
+    let published: Date
     let updated: Date?
     let actorId: URL
     let bio: String?

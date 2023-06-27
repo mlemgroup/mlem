@@ -7,7 +7,6 @@
 
 import Foundation
 
-enum MyVote: Codable, Hashable
-{
+enum MyVote: Codable, Hashable {
     case upvoted, downvoted, none
 }

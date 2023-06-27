@@ -31,8 +31,8 @@ extension APICommunity: Equatable, Hashable {
     static func == (lhs: APICommunity, rhs: APICommunity) -> Bool {
         lhs.id == rhs.id
     }
-    
+
     func hash(into hasher: inout Hasher) {
-        hasher.combine(actorId)
+        hasher.combine(self.id)
     }
 }
