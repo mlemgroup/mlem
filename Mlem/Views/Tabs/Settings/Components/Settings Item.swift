@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct SwitchableSettingsItem: View
-{
+struct SwitchableSettingsItem: View {
     @State var settingPictureSystemName: String
     @State var settingPictureColor: Color
 
@@ -16,10 +15,8 @@ struct SwitchableSettingsItem: View
 
     @Binding var isTicked: Bool
 
-    var body: some View
-    {
-        HStack
-        {
+    var body: some View {
+        HStack {
             Image(systemName: settingPictureSystemName)
                 .foregroundColor(settingPictureColor)
 

@@ -13,10 +13,10 @@ extension JSONDecoder {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
 
         let formatter = DateFormatter()
-        
+
         formatter.timeZone = .gmt
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        
+
         let formats = [
             "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
             "yyyy-MM-dd'T'HH:mm:ss.SSSSZ",

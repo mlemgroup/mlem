@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CommunitySidebarHeaderLabel : View {
+struct CommunitySidebarHeaderLabel: View {
     @State var text: String
-    
+
     init(_ text: String) {
         self._text = State(initialValue: text)
     }
-    
+
     var body: some View {
         Text(text)
             .padding(3)

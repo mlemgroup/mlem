@@ -7,7 +7,6 @@
 
 import Foundation
 
-func unfavoriteCommunity(account: SavedAccount, community: APICommunity, favoritedCommunitiesTracker: FavoriteCommunitiesTracker) -> Void
-{
+func unfavoriteCommunity(account: SavedAccount, community: APICommunity, favoritedCommunitiesTracker: FavoriteCommunitiesTracker) {
     favoritedCommunitiesTracker.favoriteCommunities.removeAll(where: { $0.community.id == community.id })
 }

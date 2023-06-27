@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-
 struct CommunityLinkWithContext: Equatable, Identifiable, Hashable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.id == rhs.id
@@ -18,9 +17,7 @@ struct CommunityLinkWithContext: Equatable, Identifiable, Hashable {
         hasher.combine(self.id)
     }
     
-    var id: String {
-        get { community?.id.description ?? UUID().uuidString }
-    }
+    var id: String { community?.id.description ?? UUID().uuidString }
     
     let community: APICommunity?
     let feedType: FeedType

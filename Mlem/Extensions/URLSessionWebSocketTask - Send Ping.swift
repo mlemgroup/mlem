@@ -7,19 +7,13 @@
 
 import Foundation
 
-extension URLSessionWebSocketTask
-{
-    func sendPing() async throws
-    {
-        try await withCheckedThrowingContinuation
-        { (continuation: CheckedContinuation<Void, Error>) in
+extension URLSessionWebSocketTask {
+    func sendPing() async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             self.sendPing { error in
-                if let error = error
-                {
+                if let error = error {
                     continuation.resume(throwing: error)
-                }
-                else
-                {
+                } else {
                     continuation.resume()
                 }
             }

@@ -8,33 +8,21 @@
 import SwiftUI
 import AlertToast
 
-struct AccountsPage: View
-{
+struct AccountsPage: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
-
     @State var navigationPath = NavigationPath()
 
-
-
-    var body: some View
-    {
-        NavigationStack(path: $navigationPath)
-        {
-            VStack
-            {
-                if !accountsTracker.savedAccounts.isEmpty
-                {
-                    List
-                    {
-                        ForEach(accountsTracker.savedAccounts)
-                        { savedAccount in
-                            NavigationLink(value: savedAccount)
-                            {
-                                HStack(alignment: .center)
-                                {
+    var body: some View {
+        NavigationStack(path: $navigationPath) {
+            VStack {
+                if !accountsTracker.savedAccounts.isEmpty {
+                    List {
+                        ForEach(accountsTracker.savedAccounts) { savedAccount in
+                            NavigationLink(value: savedAccount) {
+                                HStack(alignment: .center) {
                                     Text(savedAccount.username)
                                     Spacer()
                                     Text(savedAccount.instanceLink.host!)
@@ -46,26 +34,20 @@ struct AccountsPage: View
                         }
                         .onDelete(perform: deleteAccount)
                     }
-                    .toolbar
-                    {
-                        ToolbarItem(placement: .navigationBarLeading)
-                        {
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
                             EditButton()
                         }
                     }
-                }
-                else
-                {
-                    VStack(alignment: .center, spacing: 15)
-                    {
+                } else {
+                    VStack(alignment: .center, spacing: 15) {
                         Text("You have no accounts added")
                     }
                     .foregroundColor(.secondary)
                 }
             }
             .handleLemmyViews(navigationPath: $navigationPath)
-            .onAppear
-            {
+            .onAppear {
                 // this means that we got to this page not by going back from any account
                 // (since if we had gone into any account it will only get rest on the next line so currentActiveAccount should still be set to something)
                 let shouldDisplayFirstUser = appState.currentActiveAccount == nil
@@ -90,30 +72,24 @@ struct AccountsPage: View
             }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar
-            {
-                ToolbarItem(placement: .navigationBarTrailing)
-                {
-                    Button
-                    {
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
                         isShowingInstanceAdditionSheet.toggle()
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
             }
-            .sheet(isPresented: $isShowingInstanceAdditionSheet)
-            {
+            .sheet(isPresented: $isShowingInstanceAdditionSheet) {
                 AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
             }
         }
         .toast(isPresenting: $appState.isShowingToast) {
             appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
-        .alert(appState.alertTitle, isPresented: $appState.isShowingAlert)
-        {
-            Button(role: .cancel)
-            {
+        .alert(appState.alertTitle, isPresented: $appState.isShowingAlert) {
+            Button(role: .cancel) {
                 appState.isShowingAlert.toggle()
             } label: {
                 Text("Close")
@@ -122,18 +98,15 @@ struct AccountsPage: View
         } message: {
             Text(appState.alertMessage)
         }
-        .onAppear
-        {
+        .onAppear {
             print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
         }
         .environment(\.navigationPath, $navigationPath)
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
     }
 
-    internal func deleteAccount(at offsets: IndexSet)
-    {
-        for index in offsets
-        {
+    internal func deleteAccount(at offsets: IndexSet) {
+        for index in offsets {
             let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts[index]
 
             accountsTracker.savedAccounts.remove(at: index)

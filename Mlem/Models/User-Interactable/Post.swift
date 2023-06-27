@@ -8,11 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct Post: Codable, Identifiable, Equatable, Hashable
-{
+struct Post: Codable, Identifiable, Equatable, Hashable {
     // This is here to make Post equatable
-    static func == (lhs: Post, rhs: Post) -> Bool
-    {
+    static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 
@@ -38,20 +36,18 @@ struct Post: Codable, Identifiable, Equatable, Hashable
     var myVote: MyVote
     let hotRank, hotRankActive: Int?
     let newestActivityTime: String?
-    //let userID: Int?
-    //let subscribed: Bool?
-    //let read: Bool?
-    
+    // let userID: Int?
+    // let subscribed: Bool?
+    // let read: Bool?
+
     var saved: Bool
     var read: Bool
-    
+
     var unreadComments: Int
-    
-    
+
     let author: User
-    
+
     let community: Community
-    
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

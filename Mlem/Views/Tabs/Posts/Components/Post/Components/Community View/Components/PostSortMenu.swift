@@ -14,8 +14,7 @@ struct PostSortMenu: View {
     
     var body: some View {
         
-        Menu
-        {
+        Menu {
             ForEach(PostSortType.outerTypes, id: \.self) { type in
                 OptionButton(
                     title: type.shortDescription,
