@@ -66,6 +66,14 @@ Mlem supports any iPhone running iOS 16 and later.
 
 As of now, Mlem is still in beta. While it already has many core features, there is still a lot to do. Follow me on my socials to always be up-to-date on Mlem's development!
 
+## Development
+
+This project makes use of [SwiftLint](https://github.com/realm/SwiftLint#swiftlint). This runs as part of the Xcode build phases.
+
+In order to benefit please ensure you have [Homebrew](https://brew.sh) installed on your system and then run the following command to install swiftlint:
+
+`brew install swiftlint`
+
 ## License
 
 Mlem is licensed under [Commons Clause](https://commonsclause.com).

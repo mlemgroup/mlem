@@ -8,13 +8,11 @@
 import Foundation
 import SwiftUI
 
-class OwnAccountTracker: ObservableObject
-{
-    
+class OwnAccountTracker: ObservableObject {
+
     @EnvironmentObject var appState: AppState
-    
-    func loadUpDetailsAboutYourself() async
-    {
-        
+
+    func loadUpDetailsAboutYourself() async {
+
     }
 }

@@ -7,28 +7,23 @@
 
 import SwiftUI
 
-struct ContentView: View
-{
-    
+struct ContentView: View {
+
     @EnvironmentObject var appState: AppState
-    
+
     @State private var errorAlert: ErrorAlert?
     @State private var tabSelection = 1
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
-    var body: some View
-    {
-        TabView(selection: $tabSelection)
-        {
+    var body: some View {
+        TabView(selection: $tabSelection) {
             AccountsPage()
-                .tabItem
-                {
+                .tabItem {
                     Label("Feeds", systemImage: "text.bubble")
                 }.tag(1)
             
-            if let currentActiveAccount = appState.currentActiveAccount
-            {
+            if let currentActiveAccount = appState.currentActiveAccount {
                 VStack {
                     Spacer()
                     Text("Messages is not yet implemented.  Coming soon!")
@@ -46,21 +41,18 @@ struct ContentView: View
                 } .tabItem {
                     if showUsernameInNavigationBar {
                         Label(currentActiveAccount.username, systemImage: "person")
-                    }
-                    else {
+                    } else {
                         Label("Profile", systemImage: "person")
                     }
                 }.tag(3)
             }
-            
+
             SettingsView()
-                .tabItem
-                {
+                .tabItem {
                     Label("Settings", systemImage: "gear")
                 }.tag(4)
         }
-        .onAppear
-        {
+        .onAppear {
             AppConstants.keychain["test"] = "I-am-a-saved-thing"
         }
         .alert(using: $errorAlert) { content in
@@ -75,7 +67,7 @@ struct ContentView: View
 extension ContentView {
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         let outcome = URLHandler.handle(url)
-        
+
         switch outcome.action {
         case let .error(message):
             errorAlert = .init(
@@ -85,7 +77,7 @@ extension ContentView {
         default:
             break
         }
-        
+
         return outcome.result
     }
 }

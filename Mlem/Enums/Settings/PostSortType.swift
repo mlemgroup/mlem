@@ -7,8 +7,7 @@
 
 import Foundation
 
-enum PostSortType: String, Codable, CaseIterable, Identifiable
-{
+enum PostSortType: String, Codable, CaseIterable, Identifiable {
     case active = "Active"
     case hot = "Hot"
     case new = "New"

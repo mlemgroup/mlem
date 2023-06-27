@@ -31,7 +31,7 @@ func ratePost(
             postId: postId,
             score: operation
         )
-        
+
         AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         postTracker.update(with: response.postView)
@@ -56,7 +56,7 @@ func rateComment(
             commentId: comment.id,
             score: operation
         )
-        
+
         AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         let updatedComment = commentTracker.comments.update(with: response.commentView)

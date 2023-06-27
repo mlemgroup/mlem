@@ -21,4 +21,3 @@ struct UpvoteButton: View {
                 .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
     }
 }
-

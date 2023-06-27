@@ -8,8 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Comment: Codable, Identifiable, Hashable
-{
+struct Comment: Codable, Identifiable, Hashable {
     let id: Int
     let postID: Int
     let creatorID: Int
@@ -47,62 +46,44 @@ struct Comment: Codable, Identifiable, Hashable
     let childCount: Int?
     var children: [Comment]
 
-    func insertReply(_ reply: Comment) -> Comment
-    {
-        if id == reply.parentID
-        {
+    func insertReply(_ reply: Comment) -> Comment {
+        if id == reply.parentID {
             var result = self
             result.children.append(reply)
             return result
-        }
-        else if children.isEmpty
-        {
+        } else if children.isEmpty {
             return self
-        }
-        else
-        {
+        } else {
             var result = self
             result.children = children.map { $0.insertReply(reply) }
             return result
         }
     }
-    
+
     /// Locate the reply with the matching ID in the Comment tree
     /// and replace it with the specified reply. Note that this
     /// cannot change the parent of the reply!
-    func replaceReply(_ reply: Comment) -> Comment
-    {
-        if id == reply.id
-        {
+    func replaceReply(_ reply: Comment) -> Comment {
+        if id == reply.id {
             assert(parentID == reply.parentID)
             return reply
-        }
-        else if children.isEmpty
-        {
+        } else if children.isEmpty {
             return self
-        }
-        else
-        {
+        } else {
             var result = self
             result.children = children.map { $0.replaceReply(reply) }
             return result
         }
     }
-    
+
     /// Remove the reply with the specified ID from the Comment tree,
     /// along with all of its descendents.
-    func removeReply(id: Int) -> Comment?
-    {
-        if self.id == id
-        {
+    func removeReply(id: Int) -> Comment? {
+        if self.id == id {
             return nil
-        }
-        else if children.isEmpty
-        {
+        } else if children.isEmpty {
             return self
-        }
-        else
-        {
+        } else {
             var result = self
             result.children = children.compactMap { $0.removeReply(id: id) }
             return result

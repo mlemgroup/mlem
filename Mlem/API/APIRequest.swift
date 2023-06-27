@@ -36,9 +36,7 @@ extension APIGetRequest {
     var endpoint: URL {
         instanceURL
         .appending(path: path)
-        .appending(queryItems: queryItems.filter {
-            item in item.value != nil
-        })
+        .appending(queryItems: queryItems.filter { $0.value != nil })
     }
 }
 

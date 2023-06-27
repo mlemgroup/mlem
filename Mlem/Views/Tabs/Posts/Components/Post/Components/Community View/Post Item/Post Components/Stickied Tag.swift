@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct StickiedTag: View
-{
+struct StickiedTag: View {
     let compact: Bool
-    
+
     var body: some View {
         HStack {
             if !compact { Text("Stickied") }

@@ -8,30 +8,28 @@
 import SwiftUI
 
 struct FiltersSettingsView: View {
-    
+
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var appState: AppState
-    
+
     @State private var newFilteredKeyword: String = ""
     @State private var isShowingKeywordImporter: Bool = false
-    
+
     @State private var isShowingFilterDeletionConfirmation: Bool = false
-    
+
     var body: some View {
-        List
-        {
+        List {
             Section {
-                ForEach(filtersTracker.filteredKeywords, id: \.self)
-                { filteredKeyword in
+                ForEach(filtersTracker.filteredKeywords, id: \.self) { filteredKeyword in
                     Text(filteredKeyword)
                 }
                 .onDelete(perform: deleteKeyword)
-                
+
                 HStack(alignment: .center) {
                     TextField("Add Keyword…", text: $newFilteredKeyword, prompt: Text("Add Keyword…"))
-                    
+
                     Spacer()
-                    
+
                     Button {
                         addKeyword(newFilteredKeyword)
                     } label: {
@@ -46,8 +44,7 @@ struct FiltersSettingsView: View {
                 Text("Posts containing these keywords in their title will not be shown")
             }
 
-            Section
-            {
+            Section {
                 Button {
                     showShareSheet(URLtoShare: AppConstants.filteredKeywordsFilePath)
                 } label: {
@@ -61,52 +58,52 @@ struct FiltersSettingsView: View {
                     Label("Import filters", systemImage: "square.and.arrow.down")
                 }
                 .fileImporter(isPresented: $isShowingKeywordImporter, allowedContentTypes: [.json]) { result in
-                    do
-                    {
+                    do {
                         let urlOfImportedFile: URL = try result.get()
-                        
-                        urlOfImportedFile.startAccessingSecurityScopedResource()
-                        
+
+                        defer { urlOfImportedFile.stopAccessingSecurityScopedResource() }
+                        guard urlOfImportedFile.startAccessingSecurityScopedResource() else {
+                            return
+                        }
+
                         print("URL of imported file: \(urlOfImportedFile)")
-                        do
-                        {
-                            let decodedKeywords: [String] = try decodeFromFile(fromURL: urlOfImportedFile, whatToDecode: .filteredKeywords) as! [String]
-                            
+                        do {
+                            let decodedKeywords = try decodeFromFile(
+                                fromURL: urlOfImportedFile,
+                                whatToDecode: .filteredKeywords
+                            ) as? [String] ?? []
+
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
-                            
+
                             print("Decoded these: \(decodedKeywords)")
-                            
+
                             withAnimation {
                                 filtersTracker.filteredKeywords = decodedKeywords
                             }
-                        }
-                        catch let decodingError
-                        {
-                            urlOfImportedFile.stopAccessingSecurityScopedResource()
-                            
+                        } catch let decodingError {
                             appState.alertTitle = "Couldn't decode blocklist"
                             appState.alertMessage = "Try again. If the problem keeps happening, try reinstalling Mlem."
                             appState.isShowingAlert.toggle()
-                            
+
                             print("Failed while decoding blocklist: \(decodingError)")
                         }
 
-                    }
-                    catch let blocklistImportingError
-                    {
-                        
+                    } catch let blocklistImportingError {
+
                         appState.alertTitle = "Couldn't find blocklist"
-                        appState.alertMessage = "If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location."
+                        appState.alertMessage = """
+                                                If you are trying to read it from iCloud, make sure your internet is working.
+                                                Otherwise, try moving the blocklist file to another location.
+                                                """
                         appState.isShowingAlert.toggle()
-                        
+
                         print("Failed while reading file: \(blocklistImportingError)")
                     }
                 }
 
             }
-            
-            Section
-            {
+
+            Section {
                 Button(role: .destructive) {
                     isShowingFilterDeletionConfirmation = true
                 } label: {
@@ -126,54 +123,50 @@ struct FiltersSettingsView: View {
                         } label: {
                             Text("Delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters")
                         }
-                        
+
                         Button(role: .cancel) {
                             isShowingFilterDeletionConfirmation = false
                         } label: {
                             Text("Cancel")
                         }
                     } message: {
-                        Text("You are about to delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters.\nYou cannot undo this action.")
+                        Text(
+                             """
+                             You are about to delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters.
+                             You cannot undo this action.
+                             """
+                        )
                     }
-
 
             }
         }
         .navigationTitle("Filters")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar
-        {
+        .toolbar {
             ToolbarItem(placement: .automatic) {
                 EditButton()
                     .disabled(filtersTracker.filteredKeywords.isEmpty && filtersTracker.filteredUsers.isEmpty)
             }
         }
     }
-    
-    func addKeyword(_ newKeyword: String)
-    {
-        if !newKeyword.isEmpty
-        {
-            if filtersTracker.filteredKeywords.contains(newKeyword)
-            { /// If the word is already in there, just move it to the top
+
+    func addKeyword(_ newKeyword: String) {
+        if !newKeyword.isEmpty {
+            if filtersTracker.filteredKeywords.contains(newKeyword) { /// If the word is already in there, just move it to the top
                 let indexOfPreviousOccurence: Int = filtersTracker.filteredKeywords.firstIndex(where: { $0 == newKeyword })!
                 withAnimation {
                     filtersTracker.filteredKeywords.move(from: indexOfPreviousOccurence, to: 0)
                 }
-            }
-            else
-            {
+            } else {
                 withAnimation {
                     filtersTracker.filteredKeywords.prepend(newKeyword)
                 }
             }
-            
+
             newFilteredKeyword = ""
         }
     }
-    func deleteKeyword(at offsets: IndexSet)
-    {
+    func deleteKeyword(at offsets: IndexSet) {
         filtersTracker.filteredKeywords.remove(atOffsets: offsets)
     }
 }
-

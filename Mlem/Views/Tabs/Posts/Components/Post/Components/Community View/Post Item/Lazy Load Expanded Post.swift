@@ -11,19 +11,17 @@ import SwiftUI
  A simple wrapper around ExpandedPost which loads the
  APIPostView on demand for when we don't already have one
  */
-struct LazyLoadExpandedPost: View
-{
+struct LazyLoadExpandedPost: View {
     @State var account: SavedAccount
     @State var post: APIPost
     
-    @State private var loadedPostView: APIPostView? = nil
+    @State private var loadedPostView: APIPostView?
     
     var body: some View {
         ZStack {
             if let loadedPost = loadedPostView {
                 ExpandedPost(account: account, post: loadedPost, feedType: .constant(.subscribed))
-            }
-            else {
+            } else {
                 progressView
             }
         }

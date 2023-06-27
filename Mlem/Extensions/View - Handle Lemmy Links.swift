@@ -13,6 +13,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccounts: SavedAccountTracker
 
+    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         let account = appState.currentActiveAccount ?? savedAccounts.savedAccounts.first
         return content
@@ -87,9 +88,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 }
             }
     }
-
+    // swiftlint:enable function_body_length
 }
-
 
 struct HandleLemmyLinkResolution: ViewModifier {
     @EnvironmentObject var appState: AppState
@@ -113,7 +113,6 @@ struct HandleLemmyLinkResolution: ViewModifier {
                 appState.isShowingToast = true
                 Task(priority: .userInitiated) {
                     defer { appState.isShowingToast = false }
-                    let newBaseURL = "https://\(url.host() ?? "example.com")/api/v3"
                     var lookup = url.absoluteString
                     if !lookup.contains("http") {
                         // something fishy is going on. I think the markdown view is playing with us!
@@ -136,10 +135,10 @@ struct HandleLemmyLinkResolution: ViewModifier {
                         } else if let user = resolution.person?.person {
                             return navigationPath.wrappedValue.append(user)
                         }
-                        //else if let d = resolution.comment {
+                        // else if let d = resolution.comment {
                             // hmm I don't think we can do that right now!
                             // so I'll skip and let the system open it instead
-                        //}
+                        // }
                     } catch {
                         print(String(describing: error))
                     }
@@ -161,8 +160,6 @@ struct HandleLemmyLinkResolution: ViewModifier {
         return outcome.result
     }
 }
-
-
 
 extension View {
     func handleLemmyViews(navigationPath: Binding<NavigationPath>) -> some View {
