@@ -16,12 +16,8 @@ struct LazyLoadPostLinkWithContext: Equatable, Identifiable, Hashable {
         hasher.combine(self.id)
     }
 
-    var id: Int {
-        get { post.id }
-    }
+    var id: Int { post.id }
 
     let post: APIPost
     let postTracker: PostTracker
-    
-
 }

@@ -17,9 +17,7 @@ struct PostLinkWithContext: Equatable, Identifiable, Hashable {
         hasher.combine(self.id)
     }
 
-    var id: Int {
-        get { post.id }
-    }
+    var id: Int { post.id }
 
     let post: APIPostView
     let postTracker: PostTracker

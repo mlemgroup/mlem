@@ -23,6 +23,4 @@ extension APICommunityView: Hashable, Equatable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.community.id)
     }
-
-
 }

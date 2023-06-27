@@ -8,7 +8,7 @@
 import SwiftUI
 import CachedAsyncImage
 
-struct CommunitySidebarHeader : View {
+struct CommunitySidebarHeader: View {
     @State var title: String
     @State var subtitle: String
     @State var avatarSubtext: String
@@ -18,7 +18,7 @@ struct CommunitySidebarHeader : View {
     
     @State var label1: String?
     @State var label2: String?
-    
+
     var body: some View {
         ZStack(alignment: .top) {
             // Banner
@@ -38,15 +38,14 @@ struct CommunitySidebarHeader : View {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         CommunitySidebarHeaderAvatar(imageUrl: avatarUrl)
-                        
                         HStack {
                             Text(avatarSubtext).minimumScaleFactor(0.01)
                         }.foregroundColor(.gray)
-                        
+
                     }.padding([.leading])
-                    
+
                     Spacer()
-                    
+
                     VStack(alignment: .trailing) {
                         Spacer().frame(height: 60)
                         HStack {
@@ -58,7 +57,7 @@ struct CommunitySidebarHeader : View {
                             }
                         }.frame(width: .infinity, height: 16)
                         Spacer().frame(height: 20)
-                        
+
                         Text(title)
                             .font(.title)
                             .bold()
@@ -68,7 +67,6 @@ struct CommunitySidebarHeader : View {
                             .font(.footnote)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-                        
                     }.padding([.trailing])
                 }
             }
@@ -79,14 +77,23 @@ struct CommunitySidebarHeader : View {
 struct SidebarHeaderPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            CommunitySidebarHeader(title: "TestCommunityWithLongName", subtitle: "@testcommunity@longnamedomain.website",
-                                   avatarSubtext: "Created 3 days ago",
-                                   bannerURL: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), label1: "Label 1", label2: "Label 2")
-            CommunitySidebarHeader(title: "Test", subtitle: "@test@test.come",
-                                   avatarSubtext: "Created 3 days ago",
-                                   bannerURL: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), label1: "Label 1", label2: "Label 2")
+            CommunitySidebarHeader(
+                title: "TestCommunityWithLongName",
+                subtitle: "@testcommunity@longnamedomain.website",
+                avatarSubtext: "Created 3 days ago",
+                bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
+                avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
+                label1: "Label 1",
+                label2: "Label 2")
+            CommunitySidebarHeader(
+                title: "Test",
+                subtitle: "@test@test.come",
+                avatarSubtext: "Created 3 days ago",
+                bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
+                avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
+                label1: "Label 1",
+                label2: "Label 2"
+            )
             Spacer()
         }
     }

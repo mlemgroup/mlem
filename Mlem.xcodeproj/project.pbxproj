@@ -1198,6 +1198,7 @@
 			buildConfigurationList = 6363D5EA27EE196A00E34822 /* Build configuration list for PBXNativeTarget "Mlem" */;
 			buildPhases = (
 				6363D5BD27EE196700E34822 /* Sources */,
+				50F830EB2A47CC4F00D67099 /* Swiftlint */,
 				6363D5BE27EE196700E34822 /* Frameworks */,
 				6363D5BF27EE196700E34822 /* Resources */,
 			);
@@ -1329,6 +1330,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		50F830EB2A47CC4F00D67099 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6363D5BD27EE196700E34822 /* Sources */ = {

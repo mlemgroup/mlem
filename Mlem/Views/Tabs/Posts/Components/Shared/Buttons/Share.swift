@@ -8,25 +8,25 @@
 import SwiftUI
 
 struct ShareButton: View {
-    
+
     // ==== PARAMETERS ==== //
-    
+
     let size: CGFloat
     let share: () -> Void
-    
+
     init(size: CGFloat, accessibilityContext: String, share: @escaping () -> Void) {
         self.size = size
         self.share = share
-        
+
         self.shareButtonText = "Share \(accessibilityContext)"
     }
-    
+
     // ==== COMPUTED ==== //
-    
+
     let shareButtonText: String
-    
+
     // ==== BODY ==== //
-    
+
     var body: some View {
         Image(systemName: "square.and.arrow.up")
             .frame(width: size, height: size)

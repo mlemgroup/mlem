@@ -7,31 +7,20 @@
 
 import Foundation
 
-func checkIfEndpointExists(at url: URL) async -> Bool
-{
+func checkIfEndpointExists(at url: URL) async -> Bool {
     var request: URLRequest = URLRequest(url: url)
-    
+
     request.httpMethod = "GET"
-    
-    do
-    {
+
+    do {
         let (_, response) = try await AppConstants.urlSession.data(for: request)
-        
-        let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
-        
-        print("Response for endpoint \(url) is \(httpResponse.statusCode)")
-        
-        if httpResponse.statusCode == 400
-        {
-            return true
-        }
-        else
-        {
+
+        guard let httpResponse = response as? HTTPURLResponse else {
             return false
         }
-    }
-    catch
-    {
+
+        return httpResponse.statusCode == 400
+    } catch {
         return false
     }
 }

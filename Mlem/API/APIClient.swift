@@ -30,7 +30,7 @@ class APIClient {
     }
 
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
-        
+
         let urlRequest = try urlRequest(from: request)
         let (data, response) = try await execute(urlRequest)
 
@@ -42,7 +42,7 @@ class APIClient {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             throw APIClientError.response(apiError, statusCode)
         }
-        
+
         return try decoder.decode(Request.Response.self, from: data)
     }
 
@@ -64,7 +64,7 @@ class APIClient {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
 
-        if let _ = defintion as? any APIGetRequest {
+        if defintion as? any APIGetRequest != nil {
             urlRequest.httpMethod = "GET"
         } else if let postDefinition = defintion as? any APIPostRequest {
             urlRequest.httpMethod = "POST"

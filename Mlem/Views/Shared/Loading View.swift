@@ -7,10 +7,8 @@
 
 import SwiftUI
 
-struct LoadingView: View
-{
-    enum PossibleThingsToLoad
-    {
+struct LoadingView: View {
+    enum PossibleThingsToLoad {
         case posts
         case image
         case comments
@@ -18,15 +16,12 @@ struct LoadingView: View
 
     let whatIsLoading: PossibleThingsToLoad
 
-    var body: some View
-    {
-        VStack
-        {
+    var body: some View {
+        VStack {
             Spacer()
 
             ProgressView()
-            switch whatIsLoading
-            {
+            switch whatIsLoading {
             case .posts:
                 Text("Loading posts")
             case .image:

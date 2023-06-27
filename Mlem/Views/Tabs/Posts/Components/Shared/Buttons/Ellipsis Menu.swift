@@ -14,7 +14,7 @@ struct EllipsisMenu: View {
     
     // bindings
     @State private var isPresentingConfirmDelete: Bool = false
-    
+
     var body: some View {
         Menu {
             if let url = URL(string: shareUrl) {

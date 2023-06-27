@@ -9,27 +9,26 @@ import SwiftUI
 import Combine
 
 struct CommunitySearchField: View {
-    
+
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
-    
+
     @EnvironmentObject var appState: AppState
-    
+
     @FocusState.Binding var isSearchFieldFocused: Bool
-    
+
     @Binding var searchText: String
-    
+
     @State var account: SavedAccount
-    
+
     @State private var debouncedTextReadyForSearching: String = ""
-    
+
     @State private var errorAlert: ErrorAlert?
-    
+
     let searchTextPublisher: PassthroughSubject = PassthroughSubject<String, Never>()
-    
+
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            HStack
-            {
+            HStack {
                 TextField("Community…", text: $searchText)
                     .focused($isSearchFieldFocused)
                     .frame(width: 100)
@@ -55,7 +54,7 @@ struct CommunitySearchField: View {
                                     sortOption: .topAll,
                                     listingType: .all
                                 )
-                                
+
                                 let response = try await APIClient().perform(request: request)
                                 let communities = response.communities.map { $0.community }
                                 communitySearchResultsTracker.foundCommunities = communities
@@ -63,13 +62,16 @@ struct CommunitySearchField: View {
                                 print("Search command error: \(error)")
                                 errorAlert = .init(
                                     title: "Couldn't connect to Lemmy",
-                                    message: "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+                                    message: """
+                                             Your network conneciton is either not stable enough, or the Lemmy server you're connected \
+                                             to is overloaded. \n
+                                             Try again later.
+                                             """
                                 )
                             }
                         }
                     }
-                    .onAppear
-                {
+                    .onAppear {
                     isSearchFieldFocused.toggle()
                 }
             }
@@ -82,4 +84,3 @@ struct CommunitySearchField: View {
         }
     }
 }
-

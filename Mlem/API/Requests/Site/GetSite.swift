@@ -37,7 +37,7 @@ struct GetSiteRequest: APIGetRequest {
 
 // lemmy_api_common::site::SiteResponse
 struct SiteResponse: Decodable {
-    let site_view: APISiteView
+    let siteView: APISiteView
     let admins: [APIPersonView]
     let version: String
     let myUser: APIMyUserInfo?

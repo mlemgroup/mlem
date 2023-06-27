@@ -7,8 +7,7 @@
 
 import Foundation
 
-enum FeedType: String, Encodable
-{
+enum FeedType: String, Encodable {
     case all = "All"
     case local = "Local"
     case subscribed = "Subscribed"

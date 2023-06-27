@@ -7,10 +7,8 @@
 
 import Foundation
 
-extension String
-{
-    func contains(_ strings: [String]) -> Bool
-    {
+extension String {
+    func contains(_ strings: [String]) -> Bool {
         strings.contains { contains($0) }
     }
 }

@@ -7,13 +7,12 @@
 
 import Foundation
 
-
 import SwiftUI
 import CachedAsyncImage
 
-struct CommunitySidebarHeaderAvatar : View {
+struct CommunitySidebarHeaderAvatar: View {
     @State var imageUrl: URL?
-    
+
     var body: some View {
         ZStack {
             if let avatarURL = imageUrl {

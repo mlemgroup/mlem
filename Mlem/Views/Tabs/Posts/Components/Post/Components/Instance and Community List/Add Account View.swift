@@ -30,43 +30,35 @@ enum Field: Hashable {
     case twoFactorField
 }
 
-struct AddSavedInstanceView: View
-{
+struct AddSavedInstanceView: View {
     @EnvironmentObject var communityTracker: SavedAccountTracker
     @EnvironmentObject var appState: AppState
-    
+
     @Binding var isShowingSheet: Bool
-    
+
     @State private var instanceLink: String = ""
     @State private var usernameOrEmail: String = ""
     @State private var password: String = ""
     @State private var twoFactorToken: String = ""
 
     @State private var token: String = ""
-    
+
     @State private var isShowingEndpointDiscoverySpinner: Bool = false
     @State private var hasSuccessfulyConnectedToEndpoint: Bool = false
     @State private var errorOccuredWhileConnectingToEndpoint: Bool = false
     @State private var errorText: String = ""
     @State private var isShowingTwoFactorText: Bool = false
-    
+
     @State private var errorAlert: ErrorAlert?
     @FocusState private var focusedField: Field?
-    
-    var body: some View
-    {
-        VStack(alignment: .leading, spacing: 0)
-        {
-            if isShowingEndpointDiscoverySpinner
-            {
-                if !errorOccuredWhileConnectingToEndpoint
-                {
-                    if !hasSuccessfulyConnectedToEndpoint
-                    {
-                        VStack(alignment: .center)
-                        {
-                            HStack(alignment: .center, spacing: 10)
-                            {
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if isShowingEndpointDiscoverySpinner {
+                if !errorOccuredWhileConnectingToEndpoint {
+                    if !hasSuccessfulyConnectedToEndpoint {
+                        VStack(alignment: .center) {
+                            HStack(alignment: .center, spacing: 10) {
                                 ProgressView()
                                 Text("Connecting to \(instanceLink)")
                             }
@@ -74,13 +66,9 @@ struct AddSavedInstanceView: View
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color(uiColor: .secondarySystemBackground))
-                    }
-                    else
-                    {
-                        VStack(alignment: .center)
-                        {
-                            HStack(alignment: .center, spacing: 10)
-                            {
+                    } else {
+                        VStack(alignment: .center) {
+                            HStack(alignment: .center, spacing: 10) {
                                 Image(systemName: "checkmark.shield.fill")
                                 Text("Logged in to \(instanceLink) as \(usernameOrEmail)")
                             }
@@ -90,13 +78,9 @@ struct AddSavedInstanceView: View
                         .background(.cyan)
                         .foregroundColor(.black)
                     }
-                }
-                else
-                {
-                    VStack(alignment: .center)
-                    {
-                        HStack(alignment: .center, spacing: 10)
-                        {
+                } else {
+                    VStack(alignment: .center) {
+                        HStack(alignment: .center, spacing: 10) {
                             Image(systemName: "xmark.circle.fill")
                             Text(errorText)
                         }
@@ -107,26 +91,21 @@ struct AddSavedInstanceView: View
                     .foregroundColor(.black)
                 }
             }
-            
-            Form
-            {
-                Section("Homepage")
-                {
+
+            Form {
+                Section("Homepage") {
                     TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
                         .autocorrectionDisabled()
                         .focused($focusedField, equals: .homepageField)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
-                        .onAppear
-                    {
+                        .onAppear {
                         focusedField = .homepageField
                     }
                 }
-                
-                Section("Credentials")
-                {
-                    HStack
-                    {
+
+                Section("Credentials") {
+                    HStack {
                         Text("Username")
                         Spacer()
                         TextField("Username", text: $usernameOrEmail, prompt: Text("Salmoon"))
@@ -134,9 +113,8 @@ struct AddSavedInstanceView: View
                             .keyboardType(.default)
                             .textInputAutocapitalization(.never)
                     }
-                    
-                    HStack
-                    {
+
+                    HStack {
                         Text("Password")
                         Spacer()
                         SecureField("Password", text: $password, prompt: Text("VeryStrongPassword"))
@@ -144,16 +122,14 @@ struct AddSavedInstanceView: View
                     }
 
                     if isShowingTwoFactorText {
-                        HStack
-                        {
+                        HStack {
                             Text("2FA Token")
                             Spacer()
                             SecureField("TwoFactorToken", text: $twoFactorToken, prompt: Text("000000"))
                                 .focused($focusedField, equals: .twoFactorField)
                                 .submitLabel(.go)
                                 .keyboardType(.asciiCapableNumberPad)
-                                .onAppear
-                            {
+                                .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                                     focusedField = .twoFactorField
                                 }
@@ -161,11 +137,9 @@ struct AddSavedInstanceView: View
                         }
                     }
                 }
-                
-                Button
-                {
-                    Task
-                    {
+
+                Button {
+                    Task {
                         await tryToAddAccount()
                     }
                 } label: {
@@ -179,41 +153,40 @@ struct AddSavedInstanceView: View
             Alert(title: Text(content.title), message: Text(content.message))
         }
     }
-    
+
     func tryToAddAccount() async {
         print("Will start the account addition process")
-        
+
         withAnimation {
             isShowingEndpointDiscoverySpinner = true
         }
-        
+
         let sanitizedLink = instanceLink
             .replacingOccurrences(of: "https://", with: "")
             .replacingOccurrences(of: "http://", with: "")
             .replacingOccurrences(of: "www.", with: "")
             .lowercased()
-        
+
         print("Sanitized link: \(sanitizedLink)")
-        
+
         do {
             let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: sanitizedLink)
             print("Found correct endpoint: \(instanceURL)")
-            
             guard !instanceURL.path().contains("v1") else {
                 // If the link is to a v1 instance, stop and show an error
                 displayIncompatibleVersionAlert()
                 return
             }
-            
+
             let loginRequest = LoginRequest(
                 instanceURL: instanceURL,
                 username: usernameOrEmail,
                 password: password,
                 totpToken: twoFactorToken == "" ? nil : twoFactorToken
             )
-            
+
             let response = try await APIClient().perform(request: loginRequest)
-            
+
             hasSuccessfulyConnectedToEndpoint = true
             print("Successfully got the token")
             print("Obtained token: \(response.jwt)")
@@ -223,12 +196,12 @@ struct AddSavedInstanceView: View
                 accessToken: response.jwt,
                 username: usernameOrEmail
             )
-            
+
             // MARK: - Save the account's credentials into the keychain
-            
+
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
             communityTracker.savedAccounts.append(newAccount)
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 isShowingSheet = false
             }
@@ -236,7 +209,7 @@ struct AddSavedInstanceView: View
             handle(error)
         }
     }
-    
+
     private func getUserID(authToken: String, instanceURL: URL) async throws -> Int {
         do {
             let request = try GetPersonDetailsRequest(
@@ -254,7 +227,7 @@ struct AddSavedInstanceView: View
             throw UserIDRetrievalError.couldNotFetchUserInformation
         }
     }
-            
+
     private func handle(_ error: Error) {
                 let message: String
                 switch error {
@@ -281,18 +254,18 @@ struct AddSavedInstanceView: View
                     message = "Something went wrong"
                     assertionFailure("add error handling for this case...")
                 }
-                
+
                 displayError(message)
     }
-            
+
     private func displayError(_ message: String) {
         errorText = message
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if !errorText.isEmpty {
                 errorOccuredWhileConnectingToEndpoint = true
             }
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 withAnimation {
                     isShowingEndpointDiscoverySpinner = false
@@ -301,13 +274,16 @@ struct AddSavedInstanceView: View
             }
         }
     }
-    
+
     private func displayIncompatibleVersionAlert() {
         withAnimation {
             isShowingEndpointDiscoverySpinner = false
             errorAlert = .init(
                 title: "Unsupported Lemmy Version",
-                message: "\(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support.\nContact \(instanceLink) developers for more information."
+                message: """
+                         \(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support. \
+                         Contact \(instanceLink) developers for more information.
+                         """
             )
         }
     }
