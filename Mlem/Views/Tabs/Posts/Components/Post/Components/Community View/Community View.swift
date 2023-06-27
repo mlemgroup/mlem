@@ -366,6 +366,9 @@ struct CommunityView: View {
                     replyToPost: replyToPost
                 )
             }
+            .contextMenu {
+                EasyTranslateButton(text: .constant(post.post.body))
+            }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .onAppear {
                 Task(priority: .medium) {
