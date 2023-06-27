@@ -263,7 +263,6 @@ struct MarkdownView: View
 
         let blocks = text.split(separator: imageLooker)
         let images = text.matches(of: imageLooker).map{ ($0.output.1, $0.output.2) }
-//        var output: [any View] = []
         return VStack {
             ForEach(0...max(blocks.count, images.count), id: \.hashValue) { i in
                 if blocks.count > i {
@@ -274,14 +273,6 @@ struct MarkdownView: View
                 }
             }
         }
-//        for i in 0...max(blocks.count, images.count) {
-//            if blocks.count > i {
-//                output.append(Text(blocks[i]))
-//            }
-//            if images.count > i {
-//                output.append(imageProvider.makeImage(url: URL(string: String(images[i].1))))
-//            }
-//        }
     }
 
     func getMarkdown(text: String) -> some View {
