@@ -67,8 +67,7 @@ struct CachedImageWithNsfwFilter: View {
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
-            }
-            else if isNsfw && shouldBlurNsfw {
+            } else if isNsfw && shouldBlurNsfw {
                 // stacks are here to align image to top left of ZStack
                 // TODO: less janky way to do this?
                 HStack {

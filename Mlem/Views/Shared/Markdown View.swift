@@ -9,7 +9,6 @@ import MarkdownUI
 import SwiftUI
 import RegexBuilder
 
-
 extension Theme {
     static let mlem = Theme()
         .text {
@@ -205,15 +204,13 @@ struct MarkdownView: View {
     @State var text: String
     let imageProvider: CachedImageProvider
 
-    var body: some View
-    {
+    var body: some View {
         generateView()
     }
 
-
     @MainActor func generateView() -> some View {
 
-        var imageLooker = Regex {
+        let imageLooker = Regex {
             "!["
             Capture {
                 ZeroOrMore(.any, .reluctant)
@@ -227,14 +224,14 @@ struct MarkdownView: View {
         .ignoresCase()
 
         let blocks = text.split(separator: imageLooker)
-        let images = text.matches(of: imageLooker).map{ ($0.output.1, $0.output.2) }
+        let images = text.matches(of: imageLooker).map { ($0.output.1, $0.output.2) }
         return VStack {
-            ForEach(0...max(blocks.count, images.count), id: \.hashValue) { i in
-                if blocks.count > i {
-                    getMarkdown(text: String(blocks[i]))
+            ForEach(0...max(blocks.count, images.count), id: \.hashValue) { index in
+                if blocks.count > index {
+                    getMarkdown(text: String(blocks[index]))
                 }
-                if images.count > i {
-                    imageProvider.makeImage(url: URL(string: String(images[i].1)))
+                if images.count > index {
+                    imageProvider.makeImage(url: URL(string: String(images[index].1)))
                 }
             }
         }

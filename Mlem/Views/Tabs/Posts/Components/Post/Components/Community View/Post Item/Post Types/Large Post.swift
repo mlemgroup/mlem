@@ -48,10 +48,6 @@ struct LargePost: View {
         self.cachedImageProvider = CachedImageProvider(isNsfw: postView.post.nsfw)
     }
 
-    // computed properties
-    // if NSFW, blur iff shouldBlurNsfw and enableBlur and in feed
-    var showNsfwFilter: Bool { postView.post.nsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
-
     var body: some View {
         VStack(spacing: spacing) {
             // header--community/poster/ellipsis menu
