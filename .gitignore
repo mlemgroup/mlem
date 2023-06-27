@@ -1,5 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/xcode,swift,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=xcode,swift,macos
+*.orig
 
 ### macOS ###
 # General

@@ -8,7 +8,7 @@ We apologize, as we would love to dedicate the time it deserves to every PR, but
 -->
 
 # Checklist
-- [ ] I have read CONTRIBUTING.txt
+- [ ] I have read [CONTRIBUTING.md](./CONTRIBUTING.md)
 - [ ] I have described what this PR contains
 - [ ] This PR addresses one or more open issues that were assigned to me:
       - *list issue(s) here*
