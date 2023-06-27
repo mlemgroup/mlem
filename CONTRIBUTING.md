@@ -2,13 +2,11 @@ Hello!
 
 If you're reading this, you probably want to contribute to Mlem. Welcome! We're happy to have you on board.
 
-First and foremost, you should join our Matrix room: https://matrix.to/#/#mlemapp-recruitment:matrix.org. The people there can give you a good idea of what work needs doing.
-
 To avoid having multiple in-flight tasks working on the same part of the codebase, we have a set procedure for claiming and performing work. If you don't follow it, your PR will *probably* be rejected (unless it's really *that* good).
 
 1. Go to our project board and find something in the "todo" section
 2. Comment that you want to handle that task
-3. !!! WAIT !!! for the task to be assigned to you! This step is *very* important!
+3. Wait for the task to be assigned to you! This is very important for avoiding merge conflicts.
 4. Fork the repository and develop the change on your fork
 5. Open a PR for the task. The description should clearly reference the issue that you are addressing, and your PR should be able to merge with no conflicts--if the master branch changes before your PR is merged, you should either rebase or merge so that your fork can be merged cleanly.
 
