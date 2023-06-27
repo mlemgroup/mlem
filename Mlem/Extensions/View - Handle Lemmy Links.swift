@@ -52,6 +52,16 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     Text("You must be signed in to view this post")
                 }
             }
+            .navigationDestination(for: APIPost.self) { post in
+                if let account = account {
+                    LazyLoadExpandedPost(
+                        account: account,
+                        post: post
+                    )
+                } else {
+                    Text("You must be signed in to view this post")
+                }
+            }
             .navigationDestination(for: PostLinkWithContext.self) { post in
                 if let account = account {
                     ExpandedPost(
@@ -60,6 +70,16 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         feedType: post.feedType
                     ).environmentObject(post.postTracker)
                         .handleAccountSecurity(account: account)
+                } else {
+                    Text("You must be signed in to view this post")
+                }
+            }
+            .navigationDestination(for: LazyLoadPostLinkWithContext.self) { post in
+                if let account = account {
+                    LazyLoadExpandedPost(
+                        account: account,
+                        post: post.post
+                    ).environmentObject(post.postTracker)
                 } else {
                     Text("You must be signed in to view this post")
                 }

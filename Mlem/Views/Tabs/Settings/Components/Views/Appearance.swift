@@ -12,6 +12,7 @@ struct AppearanceSettingsView: View {
     // appearance
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
     // website previews
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
@@ -21,9 +22,14 @@ struct AppearanceSettingsView: View {
     
     // posts
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    
+    // comments
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     // communities
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
+    @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
     // icons
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -121,19 +127,39 @@ struct AppearanceSettingsView: View {
                              settingPictureColor: .pink,
                              settingName: "Blur NSFW",
                              isTicked: $shouldBlurNsfw)
+                
+                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
+                             settingPictureColor: .pink,
+                             settingName: "Show user server instance",
+                             isTicked: $shouldShowUserServerInPost)
+            }
+            
+            Section("Comments")
+            {
+                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
+                             settingPictureColor: .pink,
+                             settingName: "Show user server instance",
+                             isTicked: $shouldShowUserServerInComment)
             }
             
             Section("Communities")
             {
                 SwitchableSettingsItem(
+                    settingPictureSystemName: "person.2.circle.fill",
+                    settingPictureColor: .pink,
+                    settingName: "Show community icons",
+                    isTicked: $shouldShowCommunityIcons
+                )
+                
+                SwitchableSettingsItem(
                     settingPictureSystemName: "rectangle.grid.1x2",
                     settingPictureColor: .pink,
-                    settingName: "Show community headers",
+                    settingName: "Show community banners",
                     isTicked: $shouldShowCommunityHeaders
                 )
             }
             
-            Section("Icons")
+            Section("Users")
             {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "person.circle.fill",
@@ -143,10 +169,10 @@ struct AppearanceSettingsView: View {
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "person.2.circle.fill",
+                    settingPictureSystemName: "rectangle.grid.1x2",
                     settingPictureColor: .pink,
-                    settingName: "Show community icons",
-                    isTicked: $shouldShowCommunityIcons
+                    settingName: "Show user banners",
+                    isTicked: $shouldShowUserHeaders
                 )
             }
             
@@ -158,6 +184,14 @@ struct AppearanceSettingsView: View {
                     options: VoteComplexStyle.allCases
                 )
 
+            }
+            
+            Section("Privacy") {
+                SwitchableSettingsItem(settingPictureSystemName: "person.fill",
+                                       settingPictureColor: .pink,
+                                       settingName: "Show Username In Navigation Bar",
+                                       isTicked: $showUsernameInNavigationBar)
+                
             }
         }
         .navigationTitle("Appearance")

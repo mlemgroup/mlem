@@ -7,6 +7,8 @@
 
 import MarkdownUI
 import SwiftUI
+import RegexBuilder
+
 
 extension Theme
 {
@@ -236,9 +238,53 @@ struct MarkdownView: View
 {
 
     @State var text: String
+    let imageProvider: CachedImageProvider
 
     var body: some View
     {
+        generateView()
+    }
+
+
+    @MainActor func generateView() -> some View {
+
+        var imageLooker = Regex {
+            "!["
+            Capture {
+                ZeroOrMore(.any, .reluctant)
+            }
+            "]("
+            Capture {
+                ZeroOrMore(.any, .reluctant)
+            }
+            ")"
+        }
+        .ignoresCase()
+
+        let blocks = text.split(separator: imageLooker)
+        let images = text.matches(of: imageLooker).map{ ($0.output.1, $0.output.2) }
+//        var output: [any View] = []
+        return VStack {
+            ForEach(0...max(blocks.count, images.count), id: \.hashValue) { i in
+                if blocks.count > i {
+                    getMarkdown(text: String(blocks[i]))
+                }
+                if images.count > i {
+                    imageProvider.makeImage(url: URL(string: String(images[i].1)))
+                }
+            }
+        }
+//        for i in 0...max(blocks.count, images.count) {
+//            if blocks.count > i {
+//                output.append(Text(blocks[i]))
+//            }
+//            if images.count > i {
+//                output.append(imageProvider.makeImage(url: URL(string: String(images[i].1))))
+//            }
+//        }
+    }
+
+    func getMarkdown(text: String) -> some View {
         Markdown(text)
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .markdownTheme(.mlem)

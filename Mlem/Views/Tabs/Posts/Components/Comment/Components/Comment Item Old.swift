@@ -9,6 +9,9 @@ import SwiftUI
 
 struct CommentItemOld: View
 {
+    // appstorage
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
     @EnvironmentObject var commentTracker: CommentTracker
     
@@ -75,7 +78,9 @@ struct CommentItemOld: View
                     {
                         if !isCollapsed
                         {
-                            MarkdownView(text: hierarchicalComment.commentView.comment.content)
+                            MarkdownView(text: hierarchicalComment.commentView.comment.content, imageProvider: CachedImageProvider(
+                                isNsfw: false
+                            ))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .transition(.move(edge: .top).combined(with: .opacity))
                         }
@@ -166,7 +171,7 @@ struct CommentItemOld: View
                          }
                          */
                         Text(relativeTime)
-                        UserProfileLink(account: account, user: hierarchicalComment.commentView.creator)
+                        UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, showServerInstance: shouldShowUserServerInComment)
                     }
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(commentorLabel)

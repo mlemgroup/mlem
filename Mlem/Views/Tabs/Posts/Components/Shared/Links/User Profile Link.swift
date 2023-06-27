@@ -11,6 +11,7 @@ struct UserProfileLink: View
 {
     @State var account: SavedAccount
     @State var user: APIPerson
+    @State var showServerInstance: Bool
     
     // Extra context about where the link is being displayed
     // to pick the correct flair
@@ -21,7 +22,7 @@ struct UserProfileLink: View
     {
         NavigationLink(value: user)
         {
-            UserProfileLabel(account: account, user: user, postContext: postContext, commentContext: commentContext)
+            UserProfileLabel(account: account, user: user, showServerInstance: showServerInstance, postContext: postContext, commentContext: commentContext)
         }
     }
 }
