@@ -106,5 +106,4 @@ struct LargePost: View {
 
         }
     }
-
 }

@@ -26,15 +26,13 @@ struct GeneralSettingsView: View {
     @State private var dirtyEditingUserAccount = false
 
     var authenticationName: String {
-        get {
-            switch context.biometryType {
-            case .touchID:
-                "TouchID"
-            case .faceID:
-                "FaceID"
-            default:
-                "Passcode"
-            }
+        switch context.biometryType {
+        case .touchID:
+            "TouchID"
+        case .faceID:
+            "FaceID"
+        default:
+            "Passcode"
         }
     }
 
@@ -130,8 +128,8 @@ struct GeneralSettingsView: View {
 
             }
 
-            if var account = appState.currentActiveAccount {
-                Section() {
+            if let account = appState.currentActiveAccount {
+                Section {
                     SwitchableSettingsItem(
                         settingPictureSystemName: "lock",
                         settingPictureColor: .pink,
@@ -144,19 +142,23 @@ struct GeneralSettingsView: View {
                         Task(priority: .userInitiated) {
                             do {
                                 var allowChangeLockState = false
-                                var accountLocked = newValue
+                                let accountLocked = newValue
                                 if newValue == true {
                                     var error: NSError?
-                                    let reason = "Unlock your account"
                                     allowChangeLockState = context.canEvaluatePolicy(
                                         .deviceOwnerAuthentication,
                                         error: &error
                                     )
                                 } else {
-                                    allowChangeLockState = try await context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Remove the account lock")
+                                    allowChangeLockState =
+                                        try await context.evaluatePolicy(
+                                            .deviceOwnerAuthentication,
+                                            localizedReason: "Remove the account lock"
+                                        )
                                 }
                                 if allowChangeLockState {
-                                    var oldSettings = accountsTracker.accountPreferences[account.id] ?? AccountPreference(requiresSecurity: false)
+                                    var oldSettings = accountsTracker.accountPreferences[account.id]
+                                            ?? AccountPreference(requiresSecurity: false)
                                     oldSettings.requiresSecurity = accountLocked
                                     accountsTracker.accountPreferences.updateValue(oldSettings, forKey: account.id)
                                     dirtyEditingUserAccount = false
@@ -170,7 +172,7 @@ struct GeneralSettingsView: View {
                             //                               }
                         }
                     }
-                    .onAppear() {
+                    .onAppear {
                         accountRequiresLock = accountsTracker.accountPreferences[account.id]?.requiresSecurity ?? false
                     }
                 } header: {
@@ -178,8 +180,7 @@ struct GeneralSettingsView: View {
                 }
             }
 
-            Section()
-            {
+            Section {
                 Button(role: .destructive) {
                     URLCache.shared.removeAllCachedResponses()
                     diskUsage = Int64(URLCache.shared.currentDiskUsage)

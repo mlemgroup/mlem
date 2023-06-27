@@ -66,8 +66,7 @@ struct CommentItemOld: View {
                         Text("Comment was removed")
                             .italic()
                             .foregroundColor(.secondary)
-                    }
-                    else {
+                    } else {
                         if !isCollapsed {
                             MarkdownView(text: hierarchicalComment.commentView.comment.content, imageProvider: CachedImageProvider(
                                 isNsfw: false
@@ -79,7 +78,7 @@ struct CommentItemOld: View {
                 }
 
                 HStack(spacing: 12) {
-// TODO: Add post rating
+                    // TODO: Add post rating
                     HStack {
                         HStack(alignment: .center, spacing: 2) {
                             Image(systemName: "arrow.up")

@@ -9,9 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AccountPreference: Decodable, Identifiable, Hashable, Equatable, Encodable {
-    var id: Int {
-        get { self.hashValue }
-    }
+    var id: Int { self.hashValue }
 
     var requiresSecurity: Bool?
 

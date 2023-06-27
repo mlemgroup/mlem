@@ -173,7 +173,10 @@ struct MlemApp: App {
                     if FileManager.default.fileExists(atPath: AppConstants.savedAccountsPreferenceFilePath.path) {
                         print("Favorite communities file exists, will attempt to load favorite communities")
                         do {
-                            accountsTracker.accountPreferences = try decodeFromFile(fromURL: AppConstants.savedAccountsPreferenceFilePath, whatToDecode: .accountPreferences) as! [Int: AccountPreference]
+                            accountsTracker.accountPreferences = try decodeFromFile(
+                                fromURL: AppConstants.savedAccountsPreferenceFilePath,
+                                whatToDecode: .accountPreferences
+                            ) as? [Int: AccountPreference] ?? .init()
                         } catch let accountPreferencesDecodingError {
                             print("Failed while decoding account Preferences: \(accountPreferencesDecodingError)")
                         }

@@ -9,14 +9,13 @@ import Foundation
 import SwiftUI
 import LocalAuthentication
 
-
 struct HandleAccountSecurity: ViewModifier {
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     @EnvironmentObject var appState: AppState
     let account: SavedAccount?
-    
+
     @State var context = LAContext()
-    
+
     func body(content: Content) -> some View {
         if let account = account {
             if accountsTracker.accountPreferences[account.id]?.requiresSecurity == true {
@@ -34,6 +33,14 @@ struct HandleAccountSecurity: ViewModifier {
                                 await unlock()
                             }
                         }
+                        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                            print("Will become active")
+                            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                                Task {
+                                    await unlock()
+                                }
+                            }
+                        }
                     }
                 }
             } else {
@@ -43,21 +50,20 @@ struct HandleAccountSecurity: ViewModifier {
             content
         }
     }
-    
-    
+
     func unlock() async {
         var error: NSError?
         let reason = "Unlock your account"
         // Check for biometric authentication
         // permissions
-        var permissions = context.canEvaluatePolicy(
+        let permissions = LAContext().canEvaluatePolicy(
             .deviceOwnerAuthentication,
             error: &error
         )
 
         if permissions {
             do {
-                if try await context.evaluatePolicy(
+                if try await LAContext().evaluatePolicy(
                     // .deviceOwnerAuthentication allows
                     // biometric or passcode authentication
                     .deviceOwnerAuthentication,
@@ -72,8 +78,7 @@ struct HandleAccountSecurity: ViewModifier {
             } catch {
                 print(String(describing: error))
             }
-        }
-        else {
+        } else {
             print(String(describing: error))
             // Handle permission denied or error
         }

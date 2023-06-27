@@ -14,7 +14,7 @@ struct CommunitySidebarView: View {
     @Binding var isActive: Bool
 
     @State private var selectionSection = 0
-    
+
      var shouldShowCommunityHeaders: Bool = true
 
     var body: some View {
@@ -33,14 +33,14 @@ struct CommunitySidebarView: View {
             isActive = false
         }
     }
-    
+
     private func getRelativeTime(date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
-        
+
         return formatter.localizedString(for: date, relativeTo: Date.now)
     }
-    
+
     @ViewBuilder
     private func view(for communityDetails: GetCommunityResponse) -> some View {
         ScrollView {
@@ -51,7 +51,7 @@ struct CommunitySidebarView: View {
                 bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.banner : nil,
                 avatarUrl: communityDetails.communityView.community.icon,
             label1: "\(communityDetails.communityView.counts.subscribers) Subscribers")
-            
+
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
                 Text("Description").tag(0)
                 Text("Moderators").tag(1)
@@ -101,7 +101,7 @@ struct SidebarPreview: PreviewProvider {
     - Ok maybe just a little bit.
     - I SAID **NO**!
     """
-    
+
     static let previewCommunity = APICommunity(
         id: 0,
         name: "testcommunity",
@@ -120,7 +120,7 @@ struct SidebarPreview: PreviewProvider {
         postingRestrictedToMods: false,
         instanceId: 0
     )
-    
+
     static let previewUser = APIPerson(
         id: 0,
         name: "ExamplePerson",
