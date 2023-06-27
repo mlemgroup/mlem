@@ -47,7 +47,7 @@ struct CommunitySidebarView: View {
             CommunitySidebarHeader(
                 title: communityDetails.communityView.community.name,
                 subtitle: "@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)",
-                avatarSubtext: "Created \(getRelativeTime(date: communityDetails.communityView.community.published))",
+                avatarSubtext: .constant("Created \(getRelativeTime(date: communityDetails.communityView.community.published))"),
                 bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.banner : nil,
                 avatarUrl: communityDetails.communityView.community.icon,
             label1: "\(communityDetails.communityView.counts.subscribers) Subscribers")
