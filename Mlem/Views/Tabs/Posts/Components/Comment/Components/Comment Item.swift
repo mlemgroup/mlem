@@ -82,7 +82,6 @@ struct CommentItem: View {
     let commentorLabel: String
     
     // MARK: Body
-    
     var body: some View {
         VStack(spacing: 0) {
             Group {
@@ -101,7 +100,8 @@ struct CommentItem: View {
                                           displayedSaved: displayedSaved,
                                           upvote: upvote,
                                           downvote: downvote,
-                                          saveComment: saveComment)
+                                          saveComment: saveComment,
+                                          deleteComment: deleteComment)
                 }
                 .padding(spacing)
             }

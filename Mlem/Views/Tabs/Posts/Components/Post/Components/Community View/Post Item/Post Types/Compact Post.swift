@@ -23,6 +23,8 @@ struct CompactPost: View {
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
     let savePost: (_ save: Bool) async throws -> Void
+    let deletePost: () async -> Void
+    
     
     // computed
     var usernameColor: Color {
@@ -72,7 +74,7 @@ struct CompactPost: View {
                 }
                 
             }
-            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost, updatedSavePost: savePost)
+            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost, updatedSavePost: savePost, deletePost: deletePost)
         }
         .padding(spacing)
     }

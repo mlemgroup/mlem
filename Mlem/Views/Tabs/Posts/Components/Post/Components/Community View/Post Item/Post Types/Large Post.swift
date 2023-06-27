@@ -28,14 +28,16 @@ struct LargePost: View {
     let isExpanded: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     let savePost: (_ save: Bool) async throws -> Void
+    let deletePost: () async -> Void
     
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
-    init(postView: APIPostView, account: SavedAccount, isExpanded: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, savePost: @escaping (_ save: Bool) async throws -> Void) {
+    init(postView: APIPostView, account: SavedAccount, isExpanded: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, savePost: @escaping (_ save: Bool) async throws -> Void, deletePost: @escaping () async -> Void) {
         self.postView = postView
         self.account = account
         self.isExpanded = isExpanded
         self.voteOnPost = voteOnPost
         self.savePost = savePost
+        self.deletePost = deletePost
         _showNsfwFilterToggle = .init(initialValue: !isExpanded)
     }
     
@@ -50,9 +52,10 @@ struct LargePost: View {
                 .padding(.bottom, -2) // negative padding to crunch header and title together just a wee bit
             
             // post title
-            Text(postView.post.name)
+            Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .italic(postView.post.deleted)
             
             // post body
             switch postView.postType {
@@ -70,7 +73,7 @@ struct LargePost: View {
                 EmptyView()
             }
             
-            PostInteractionBar(postView: postView, account: account, compact: false, voteOnPost: voteOnPost, updatedSavePost: savePost)
+            PostInteractionBar(postView: postView, account: account, compact: false, voteOnPost: voteOnPost, updatedSavePost: savePost, deletePost: deletePost)
         }
         .padding(.vertical, spacing)
         .padding(.horizontal, spacing)

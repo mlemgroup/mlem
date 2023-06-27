@@ -38,17 +38,19 @@ struct PostInteractionBar: View {
     let compact: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     let updatedSavePost: (_ save: Bool) async throws -> Void
+    let deletePost: () async -> Void
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
     var height: CGFloat { compact ? 20 : 24 }
     
-    init(postView: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, updatedSavePost: @escaping (_ save: Bool) async throws -> Void) {
+    init(postView: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, updatedSavePost: @escaping (_ save: Bool) async throws -> Void, deletePost: @escaping () async -> Void) {
         self.postView = postView
         self.account = account
         self.compact = compact
         self.voteOnPost = voteOnPost
         self.updatedSavePost = updatedSavePost
+        self.deletePost = deletePost
         _dirtyVote = State(initialValue: postView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: postView.counts.score)
         _dirtySaved = State(initialValue: postView.saved)
@@ -72,7 +74,7 @@ struct PostInteractionBar: View {
                 }
             }
             
-            EllipsisMenu(size: height, shareUrl: postView.post.apId)
+            EllipsisMenu(size: height, shareUrl: postView.post.apId, deleteButtonCallback: canDeletePost() ? self.deletePost : nil)
             
             Spacer()
             infoBlock
@@ -98,6 +100,18 @@ struct PostInteractionBar: View {
     }
     
     // helper functions
+    
+    func canDeletePost() -> Bool {
+        if postView.creator.id != account.id {
+            return false
+        }
+        
+        if postView.post.deleted {
+            return false
+        }
+        
+        return true
+    }
     
     func upvote() async -> Void {
         // don't do anything if currently awaiting a vote response
@@ -146,6 +160,19 @@ struct PostInteractionBar: View {
             await voteOnPost(.downvote)
             
             // unfake upvote
+            dirty = false
+            return
+        }
+    }
+    
+    func deletePost() async {
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            dirty = true
+            
+            // wait for deletion
+            await deletePost()
+            
             dirty = false
             return
         }

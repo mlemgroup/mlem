@@ -256,7 +256,7 @@ struct ExpandedPost: View
      */
     private var postView: some View {
         VStack(spacing: 0) {
-            LargePost(postView: post, account: account, isExpanded:  true, voteOnPost: voteOnPost, savePost: savePost)
+            LargePost(postView: post, account: account, isExpanded:  true, voteOnPost: voteOnPost, savePost: savePost, deletePost: deletePost)
             Divider().background(.black)
         }
     }
@@ -366,6 +366,14 @@ struct ExpandedPost: View
      */
     func savePost(_ save: Bool) async throws -> Void {
         self.post = try await sendSavePostRequest(account: account, postId: post.post.id, save: save, postTracker: postTracker)
+    }
+    
+    func deletePost() async {
+        do {
+            let _ = try await Mlem.deletePost(postId: post.id, account: account, postTracker: postTracker, appState: appState)
+        } catch {
+            print("failed to delete post!")
+        }
     }
 }
 

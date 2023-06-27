@@ -175,6 +175,7 @@
 		6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */; };
 		6DE118392A4A20D600810C7E /* Lazy Load Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
+		6DE1183E2A4A4FF500810C7E /* Delete Post or Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */; };
 		B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93BF2A45CA3400D6DA93 /* Post Link.swift */; };
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
 		B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B14E93C42A470D5100D6DA93 /* AlertToast */; };
@@ -393,6 +394,7 @@
 		6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowViews.swift; sourceTree = "<group>"; };
 		6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lazy Load Post Link.swift"; sourceTree = "<group>"; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
+		6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Delete Post or Comment.swift"; sourceTree = "<group>"; };
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
 		B14E93C12A45D3B300D6DA93 /* Community Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link.swift"; sourceTree = "<group>"; };
 		B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation getter.swift"; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				6314C9F02A194FFA00B08405 /* Post Comment.swift */,
 				63D64E042A1BC20D00FD39C6 /* Post Post.swift */,
 				6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */,
+				6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */,
 				CD69F5602A40B6270028D4F7 /* Save Post.swift */,
 				CD69F5782A43942F0028D4F7 /* Save Comment.swift */,
 			);
@@ -1376,6 +1379,7 @@
 				6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */,
 				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
 				637218582A3A2AAD008C4816 /* APISite.swift in Sources */,
+				6DE1183E2A4A4FF500810C7E /* Delete Post or Comment.swift in Sources */,
 				631711572A27C70E00FE08C4 /* Comment Reply Tracker.swift in Sources */,
 				6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */,
 				637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */,

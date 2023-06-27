@@ -17,6 +17,14 @@ extension CommentItem {
         }
     }
     
+    func deleteComment() async -> Void {
+        do {
+            try await _ = Mlem.deleteComment(comment: hierarchicalComment.commentView, account: account, commentTracker: commentTracker, appState: appState)
+        } catch {
+            print("failed to delete comment!")
+        }
+    }
+    
     func upvote() async -> Void {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
