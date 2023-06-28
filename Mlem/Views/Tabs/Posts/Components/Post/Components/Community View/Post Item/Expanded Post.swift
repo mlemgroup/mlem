@@ -48,7 +48,7 @@ struct ExpandedPost: View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
-                
+
                 Divider()
                     .background(.black)
 
@@ -130,7 +130,7 @@ struct ExpandedPost: View {
                 postView: post,
                 isExpanded: true
             )
-            
+
             UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
 
             PostInteractionBar(postView: post,
