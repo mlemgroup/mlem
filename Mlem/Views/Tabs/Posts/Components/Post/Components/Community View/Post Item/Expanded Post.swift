@@ -41,14 +41,14 @@ struct ExpandedPost: View {
     @State internal var commentReplyingTo: APICommentView?
 
     @State private var viewID: UUID = UUID()
-    
+
     @State var isDragging: Bool = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
-                
+
                 Divider()
                     .background(.black)
 
@@ -120,19 +120,19 @@ struct ExpandedPost: View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack {
                 CommunityLinkView(community: post.community)
-                
+
                 Spacer()
-                
+
                 EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
             }
-            
+
             LargePost(
                 postView: post,
                 isExpanded: true
             )
-            
+
             UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
-            
+
             PostInteractionBar(postView: post,
                                account: account,
                                menuFunctions: genMenuFunctions(),
