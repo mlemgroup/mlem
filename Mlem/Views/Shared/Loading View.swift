@@ -21,6 +21,7 @@ struct LoadingView: View {
             Spacer()
 
             ProgressView()
+                .accessibilityHidden(true)
             switch whatIsLoading {
             case .posts:
                 Text("Loading posts")
@@ -32,6 +33,7 @@ struct LoadingView: View {
 
             Spacer()
         }
+        .accessibilityElement(children: .combine)
         .foregroundColor(.secondary)
         .frame(maxWidth: .infinity)
     }
