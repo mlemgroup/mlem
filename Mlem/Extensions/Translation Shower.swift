@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 private struct TranslationShower: EnvironmentKey {
-    static let defaultValue = { (text: String) -> Void in  }
+    static let defaultValue = { (_: String) -> Void in  }
 }
 
 extension EnvironmentValues {

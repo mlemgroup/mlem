@@ -160,7 +160,7 @@ struct FeedPost: View {
         }
     }
 
-    func savePost() async -> Void {
+    func savePost() async {
         do {
             _ = try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
         } catch {

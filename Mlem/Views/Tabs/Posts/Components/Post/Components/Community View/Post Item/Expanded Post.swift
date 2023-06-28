@@ -107,7 +107,7 @@ struct ExpandedPost: View {
                     )
                     .textFieldStyle(.roundedBorder)
                     .focused($isReplyFieldFocused)
-                    
+
                     if !textFieldContents.isEmpty {
                         if !isPostingComment {
                             Button {
@@ -358,14 +358,14 @@ struct ExpandedPost: View {
             print("failed to vote!")
         }
     }
-    
+
     /**
      Sends a save request for the current post
      */
     func savePost(_ save: Bool) async throws {
         self.post = try await sendSavePostRequest(account: account, postId: post.post.id, save: save, postTracker: postTracker)
     }
-    
+
     func deletePost() async {
         do {
             // TODO: renamed this function and/or move `deleteComment` out of the global scope to avoid
