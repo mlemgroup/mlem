@@ -7,6 +7,7 @@
 
 import MarkdownUI
 import SwiftUI
+import RegexBuilder
 
 extension Theme {
     static let mlem = Theme()
@@ -201,8 +202,45 @@ private extension Color {
 struct MarkdownView: View {
 
     @State var text: String
+    let isNsfw: Bool
 
     var body: some View {
+        generateView()
+    }
+
+    @MainActor func generateView() -> some View {
+        // this will capture the "![label](url)" pattern so we can hanble it separately
+        let imageLooker = Regex {
+            "!["
+            Capture {
+                ZeroOrMore(.any, .reluctant) // captures the label of the image
+            }
+            "]("
+            Capture {
+                ZeroOrMore(.any, .reluctant) // captures the url of the image
+            }
+            ")"
+        }
+        .ignoresCase()
+
+        let blocks = text.split(separator: imageLooker)
+        let images = text.matches(of: imageLooker).map {
+            ($0.output.1, URL(string: String($0.output.2)))
+        }
+        return VStack {
+            ForEach(0...max(blocks.count, images.count), id: \.hashValue) { index in
+                if blocks.count > index {
+                    getMarkdown(text: String(blocks[index]))
+                }
+                
+                if images.count > index {
+                    CachedImageWithNsfwFilter(isNsfw: isNsfw, url: images[index].1)
+                }
+            }
+        }
+    }
+
+    func getMarkdown(text: String) -> some View {
         Markdown(text)
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .markdownTheme(.mlem)

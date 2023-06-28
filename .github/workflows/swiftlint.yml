@@ -1,0 +1,23 @@
+name: SwiftLint
+
+on:
+    # Run in master as CI
+    push:
+        branches:
+        - master
+    # Run when we tweak Swift or supporting files
+    pull_request:
+        paths:
+        - '.github/workflows/swiftlint.yml'
+        - '.swiftlint.yml'
+        - '**/*.swift'
+
+jobs:
+  SwiftLint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: GitHub Action for SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+            args: --strict

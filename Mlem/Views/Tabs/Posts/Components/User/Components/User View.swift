@@ -31,6 +31,8 @@ struct UserView: View {
     @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init()
     @StateObject private var privateCommentTracker: CommentTracker = .init()
+    @State private var avatarSubtext: String = ""
+    @State var showingCakeDay = false
     
     @State private var selectionSection = 0
     @State var isDragging: Bool = false
@@ -73,14 +75,15 @@ struct UserView: View {
             CommunitySidebarHeader(
                 title: userDetails.person.displayName ?? userDetails.person.name,
                 subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
-                avatarSubtext: "Joined \(userDetails.person.published.getRelativeTime(date: Date.now))",
+                avatarSubtext: $avatarSubtext,
+                avatarSubtextClicked: self.toggleCakeDayVisible,
                 bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
                 avatarUrl: userDetails.person.avatar,
                 label1: "\(userDetails.counts.commentCount) Comments",
                 label2: "\(userDetails.counts.postCount) Posts")
             
             if let bio = userDetails.person.bio {
-                MarkdownView(text: bio).padding()
+                MarkdownView(text: bio, isNsfw: false).padding()
             }
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
@@ -120,6 +123,26 @@ struct UserView: View {
         .refreshable {
             await tryLoadUser()
         }
+    }
+    
+    private func updateAvatarSubtext() {
+        if let user = userDetails {
+            if showingCakeDay {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
+                
+                avatarSubtext = "Joined \(dateFormatter.string(from: user.person.published))"
+            } else {
+                avatarSubtext = "Joined \(user.person.published.getRelativeTime(date: Date.now))"
+            }
+        } else {
+            avatarSubtext = ""
+        }
+    }
+    
+    private func toggleCakeDayVisible() {
+        showingCakeDay = !showingCakeDay
+        updateAvatarSubtext()
     }
     
     private func isShowingOwnProfile() -> Bool {
@@ -303,6 +326,7 @@ struct UserView: View {
             }
             
             userDetails = authoredContent.personView
+            updateAvatarSubtext()
         } catch {
             handle(error)
         }

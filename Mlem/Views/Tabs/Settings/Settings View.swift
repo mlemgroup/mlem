@@ -25,9 +25,7 @@ struct SettingsView: View {
     @State private var contributors: [Contributor] = [
         Contributor(
             name: "Stuart A. Malone",
-            // swiftlint:disable line_length
             avatarLink: URL(string: "https://media.mstdn.social/cache/accounts/avatars/109/299/685/376/110/779/original/9ef1f88eff2118a4.png")!,
-            // swiftlint:enable line_length
             reasonForAcknowledgement: "Came up with a performant and resilient way of getting data from the Lemmy API",
             websiteLink: URL(string: "https://elk.zone/mstdn.social/@samalone@twit.social")!
         )
