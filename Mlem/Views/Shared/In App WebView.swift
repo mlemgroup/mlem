@@ -13,10 +13,8 @@ struct InAppWebView: UIViewRepresentable {
     // 1
     let url: URL
 
-
     // 2
     func makeUIView(context: Context) -> WKWebView {
-
         return WKWebView()
     }
 
