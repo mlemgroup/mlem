@@ -39,19 +39,9 @@ struct WebsiteIconComplex: View {
                 if shouldShowWebsitePreviews {
                     if let thumbnailURL = post.thumbnailUrl {
                         VStack(alignment: .center, spacing: 0) {
-                            CachedAsyncImage(url: thumbnailURL, urlCache: AppConstants.urlCache) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(maxWidth: .infinity, maxHeight: 400)
-                            } placeholder: {
-                                ZStack(alignment: .center) {
-                                    Text("Loading image…")
-                                    Rectangle()
-                                        .frame(maxWidth: .infinity, maxHeight: 400)
-                                        .background(Color.secondarySystemBackground)
-                                }
-                            }
+                            CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: .infinity, maxHeight: 400)
 
                             Divider()
                         }

@@ -10,7 +10,7 @@ import SwiftUI
 struct CommentItem: View {
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
-    
+
     // MARK: Temporary
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation // = .resetVote
@@ -183,7 +183,7 @@ struct CommentItem: View {
                 postContext: postContext,
                 commentContext: hierarchicalComment.commentView.comment
             )
-            
+
             Spacer()
 
             HStack(spacing: 2) {
@@ -208,7 +208,7 @@ struct CommentItem: View {
                     .italic()
                     .foregroundColor(.secondary)
             } else if !isCollapsed {
-                MarkdownView(text: hierarchicalComment.commentView.comment.content)
+                MarkdownView(text: hierarchicalComment.commentView.comment.content, isNsfw: hierarchicalComment.commentView.post.nsfw)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
 
