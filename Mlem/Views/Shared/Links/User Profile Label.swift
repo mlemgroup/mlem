@@ -27,55 +27,101 @@ struct UserProfileLabel: View {
         "beehaw.org/u/jojo",
         "sh.itjust.works/u/ericbandrews"
     ]
-
-    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
-    static let flairMod = UserProfileLinkFlair(color: Color.green, systemIcon: "shield.fill")
-    static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
-    static let flairOP = UserProfileLinkFlair(color: Color.orange, systemIcon: "person.fill")
-    static let flairAdmin = UserProfileLinkFlair(color: Color.red, systemIcon: "crown.fill")
+    
+    static let mlemOfficial = "lemmy.ml/u/MlemOfficial"
+    
+    static let flairMlemOfficial = UserProfileLinkFlair(color: Color.purple, image: Image("mlem"))
+    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
+    static let flairMod = UserProfileLinkFlair(color: Color.green, image: Image(systemName: "shield.fill"))
+    static let flairBot = UserProfileLinkFlair(color: Color.indigo, image: Image(systemName: "server.rack"))
+    static let flairOP = UserProfileLinkFlair(color: Color.orange, image: Image(systemName: "person.fill"))
+    static let flairAdmin = UserProfileLinkFlair(color: Color.red, image: Image(systemName: "crown.fill"))
     static let flairRegular = UserProfileLinkFlair(color: Color.gray)
 
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if shouldShowUserAvatars {
-                if let avatarLink = user.avatar {
-                    AvatarView(avatarLink: avatarLink)
-                }
+                userAvatar
             }
-
-            let flair = calculateLinkFlair()
-            if let flairSystemIcon = flair.systemIcon {
-                Image(systemName: flairSystemIcon).foregroundColor(flair.color)
-            }
-
-            HStack(spacing: 0) {
-                // User display name if one exists
-                Text(user.displayName ?? user.name)
-                    .minimumScaleFactor(0.01)
-                    .lineLimit(1)
-                    .bold()
-                    .foregroundColor(flair.color)
-                
-                if showServerInstance {
-                    if let host = user.actorId.host() {
-                        Text("@\(host)")
-                            .minimumScaleFactor(0.01)
-                            .lineLimit(1)
-                            .foregroundColor(flair.color)
-                            .opacity(0.6)
-                    }
-                }
-            }
+            
+            userName
         }
     }
+    
+    @ViewBuilder
+    private var userAvatar: some View {
+        Group {
+            if let userAvatarLink = user.avatar {
+                CachedAsyncImage(url: userAvatarLink, urlCache: AppConstants.urlCache) { image in
+                    if let avatar = image.image {
+                        avatar
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+                    } else {
+                        Image(systemName: "person.circle")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.defaultAvatarSize)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            } else {
+                Image(systemName: "person.circle")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.defaultAvatarSize)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+        .clipShape(Circle())
+        .overlay(Circle()
+            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+        .accessibilityHidden(true)
+    }
 
+    @ViewBuilder
+    private var userName: some View {
+        let flair = calculateLinkFlair()
+        
+        VStack(alignment: .leading) {
+            HStack(spacing: 4) {
+                if let flairImage = flair.image {
+                    flairImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 12, height: 12) // TODO: scale with font
+                        .clipShape(RoundedRectangle(cornerRadius: 2))
+                }
+                
+                Text(user.displayName ?? user.name)
+                    .font(.footnote)
+                    .bold()
+            }
+            .foregroundColor(flair.color)
+            if showServerInstance, let host = user.actorId.host() {
+                Text("@\(host)")
+                    .minimumScaleFactor(0.01)
+                    .lineLimit(1)
+                    .opacity(0.6)
+                    .font(.caption)
+            }
+        }
+        .foregroundColor(.secondary)
+    }
+    
     struct UserProfileLinkFlair {
         var color: Color
-        var systemIcon: String?
+        var image: Image?
     }
 
     private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
+            if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
+                return UserProfileLabel.flairMlemOfficial
+            }
+            
             if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLabel.flairDeveloper
             }
@@ -86,20 +132,14 @@ struct UserProfileLabel: View {
         if user.botAccount {
             return UserProfileLabel.flairBot
         }
-        if let comment = commentContext {
-            if comment.distinguished {
-                return UserProfileLabel.flairMod
-            }
+        if let comment = commentContext, comment.distinguished {
+            return UserProfileLabel.flairMod
         }
-        if let community = communityContext {
-            if community.moderators.contains(where: { $0.moderator == user }) {
-                return UserProfileLabel.flairMod
-            }
+        if let community = communityContext, community.moderators.contains(where: { $0.moderator == user }) {
+            return UserProfileLabel.flairMod
         }
-        if let post = postContext {
-            if user == post.creator {
-                return UserProfileLabel.flairOP
-            }
+        if let post = postContext, post.creator == user {
+            return UserProfileLabel.flairOP
         }
         return UserProfileLabel.flairRegular
     }

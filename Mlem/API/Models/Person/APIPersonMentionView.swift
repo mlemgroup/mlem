@@ -1,15 +1,16 @@
 //
-//  APICommentReplyView.swift
+//  APIPersonMention.swift
 //  Mlem
 //
-//  Created by Jonathan de Jong on 14.06.2023.
+//  Created by Eric Andrews on 2023-06-26.
 //
 
 import Foundation
+import SwiftUI
 
-// lemmy_db_views::structs::CommentReplyView
-struct APICommentReplyView: Decodable {
-    let commentReply: APICommentReply
+// lemmy_db_views_actor::structs::PersonMentionView
+struct APIPersonMentionView: Decodable {
+    let personMention: APIPersonMention
     let comment: APIComment
     let creator: APIPerson
     let post: APIPost
@@ -20,9 +21,9 @@ struct APICommentReplyView: Decodable {
     let subscribed: APISubscribedStatus
     let saved: Bool
     let creatorBlocked: Bool
-    let myVote: Int?
+    let myVote: ScoringOperation?
 }
 
-extension APICommentReplyView: Identifiable {
-    var id: Int { commentReply.id }
+extension APIPersonMentionView: Identifiable {
+    var id: Int { personMention.id }
 }
