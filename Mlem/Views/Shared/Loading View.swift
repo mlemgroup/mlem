@@ -9,9 +9,7 @@ import SwiftUI
 
 struct LoadingView: View {
     enum PossibleThingsToLoad {
-        case posts
-        case image
-        case comments
+        case posts, image, comments, inbox, replies, mentions, messages
     }
 
     let whatIsLoading: PossibleThingsToLoad
@@ -21,6 +19,7 @@ struct LoadingView: View {
             Spacer()
 
             ProgressView()
+                .accessibilityHidden(true)
             switch whatIsLoading {
             case .posts:
                 Text("Loading posts")
@@ -28,10 +27,19 @@ struct LoadingView: View {
                 Text("Loading image")
             case .comments:
                 Text("Loading comments")
+            case .inbox:
+                Text("Loading inbox")
+            case .replies:
+                Text("Loading replies")
+            case .mentions:
+                Text("Loading mentions")
+            case .messages:
+                Text("Loading messages")
             }
 
             Spacer()
         }
+        .accessibilityElement(children: .combine)
         .foregroundColor(.secondary)
         .frame(maxWidth: .infinity)
     }

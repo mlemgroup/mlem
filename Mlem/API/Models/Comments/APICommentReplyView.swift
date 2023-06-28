@@ -22,3 +22,7 @@ struct APICommentReplyView: Decodable {
     let creatorBlocked: Bool
     let myVote: Int?
 }
+
+extension APICommentReplyView: Identifiable {
+    var id: Int { commentReply.id }
+}

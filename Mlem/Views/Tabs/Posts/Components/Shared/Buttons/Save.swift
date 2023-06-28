@@ -32,6 +32,8 @@ struct SaveButton: View {
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(isSaved ? .saveColor : .clear))
             .onTapGesture { save() }
+            .accessibilityRemoveTraits(.isImage)
+            .accessibilityAddTraits(.isButton)
             .accessibilityLabel(saveButtonText)
             .accessibilityAction(named: saveButtonText) { save() }
     }
