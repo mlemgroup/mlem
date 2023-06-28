@@ -4,6 +4,7 @@ line_length:
   warning: 140
   error: 160
   ignores_comments: true
+  ignores_urls: true
 identifier_name:
   excluded: # excluded via string array
     - id
