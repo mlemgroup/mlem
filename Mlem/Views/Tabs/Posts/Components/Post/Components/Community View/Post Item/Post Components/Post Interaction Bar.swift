@@ -102,10 +102,17 @@ struct PostInteractionBar: View {
                 Image(systemName: "clock")
                 Text(publishedAgo)
             }
+            .accessibilityAddTraits(.isStaticText)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Published \(publishedAgo) ago")
+            
             HStack(spacing: iconToTextSpacing) {
                 Image(systemName: "bubble.left")
                 Text(String(postView.counts.comments))
             }
+            .accessibilityAddTraits(.isStaticText)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(postView.counts.comments) comments")
         }
         .foregroundColor(.secondary)
     }
@@ -200,6 +207,7 @@ struct PostInteractionBar: View {
                 dirty = true
                 try await self.updatedSavePost(dirtySaved)
             } catch {
+                UIAccessibility.post(notification: .announcement, argument: "Failed to Save")
                 print("failed to save!")
             }
             dirty = false

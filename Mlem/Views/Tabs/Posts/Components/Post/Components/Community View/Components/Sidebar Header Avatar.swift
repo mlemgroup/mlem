@@ -19,6 +19,7 @@ struct CommunitySidebarHeaderAvatar: View {
                 CachedAsyncImage(url: avatarURL) { image in
                     image
                         .resizable()
+                        .scaledToFill()
                         .clipShape(Circle())
                         .overlay(Circle()
                         .stroke(.secondary, lineWidth: 2))

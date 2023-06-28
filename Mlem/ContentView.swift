@@ -27,17 +27,10 @@ struct ContentView: View {
                 }.tag(1)
 
             if let currentActiveAccount = appState.currentActiveAccount {
-                VStack {
-                    Spacer()
-                    Text("Messages is not yet implemented.  Coming soon!")
-                        .font(.title)
-                        .multilineTextAlignment(.center)
-                    Spacer()
-                    Text(verbatim: "\(currentActiveAccount.username): \(currentActiveAccount.id)")
-                    Spacer()
-                }.tabItem {
-                    Label("Messages", systemImage: "mail.stack")
-                }.tag(2)
+                InboxView(account: currentActiveAccount)
+                    .tabItem {
+                        Label("Inbox", systemImage: "mail.stack")
+                    }.tag(2)
 
                 NavigationView {
                     ProfileView(account: currentActiveAccount)

@@ -443,7 +443,6 @@ struct CommunityView: View {
                 FeedPost(
                     postView: post,
                     account: account,
-                    // feedType: $feedType,
                     isDragging: $isDragging
                 )
             }
