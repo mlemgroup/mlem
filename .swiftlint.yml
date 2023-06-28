@@ -1,6 +1,7 @@
 disabled_rules:
   - trailing_whitespace # disabling this check until swiftformat is in place, which will catch the majority.
-line_length: 
+  - todo
+line_length:
   warning: 140
   error: 160
   ignores_comments: true
