@@ -59,11 +59,10 @@ struct ContentView: View {
             TranslationSheet(textToTranslate: $textToTranslate, shouldShow: $showTranslate)
         })
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
-
     }
 
     func translateText(_ text: String) {
-        self.textToTranslate = text//text
+        self.textToTranslate = text
         withAnimation {
             showTranslate = true
         }
