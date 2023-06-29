@@ -37,6 +37,8 @@ struct ShareButton: View {
             .onTapGesture {
                 share()
             }
+            .accessibilityRemoveTraits(.isImage)
+            .accessibilityAddTraits(.isButton)
             .accessibilityLabel(shareButtonText)
             .accessibilityAction(named: shareButtonText) { share() }
     }

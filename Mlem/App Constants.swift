@@ -58,4 +58,9 @@ struct AppConstants {
     // MARK: - DragGesture thresholds
     static let longSwipeDragMin: CGFloat = 150
     static let shortSwipeDragMin: CGFloat = 60
+    
+    // MARK: - Sizes
+    static let largeAvatarSize: CGFloat = 32
+    static let defaultAvatarSize: CGFloat = 24
+    static let largeAvatarSpacing: CGFloat = 10
 }

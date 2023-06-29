@@ -27,9 +27,6 @@ struct LargePost: View {
     let savePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
 
-    let cachedImageProvider: CachedImageProvider
-
-
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
@@ -45,7 +42,6 @@ struct LargePost: View {
         self.voteOnPost = voteOnPost
         self.savePost = savePost
         self.deletePost = deletePost
-        self.cachedImageProvider = CachedImageProvider(isNsfw: postView.post.nsfw)
     }
 
     var body: some View {
@@ -87,7 +83,6 @@ struct LargePost: View {
         }
         .padding(.vertical, spacing)
         .padding(.horizontal, spacing)
-        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Subviews
@@ -96,14 +91,15 @@ struct LargePost: View {
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
             if isExpanded {
-                MarkdownView(text: bodyText, imageProvider: self.cachedImageProvider)
+                MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
                     .font(.subheadline)
             } else {
-                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "), imageProvider: self.cachedImageProvider)
+                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "), isNsfw: postView.post.nsfw)
                     .lineLimit(8)
                     .font(.subheadline)
             }
 
         }
     }
+
 }

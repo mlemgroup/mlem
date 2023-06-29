@@ -18,10 +18,10 @@ import SwiftUI
 struct UserView: View {
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
-    
+
     // environment
     @EnvironmentObject var appState: AppState
-    
+
     // parameters
     @State var userID: Int
     @State var account: SavedAccount
@@ -31,27 +31,29 @@ struct UserView: View {
     @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init()
     @StateObject private var privateCommentTracker: CommentTracker = .init()
-    
+    @State private var avatarSubtext: String = ""
+    @State var showingCakeDay = false
+
     @State private var selectionSection = 0
     @State var isDragging: Bool = false
     @FocusState var isReplyFieldFocused
-    
+
     enum FeedType: String, CaseIterable, Identifiable {
         case overview = "Overview"
         case comments = "Comments"
         case posts = "Posts"
         case saved = "Saved"
-        
+
         var id: String { return self.rawValue }
     }
-    
+
     struct FeedItem: Identifiable {
         let id = UUID()
         let published: Date
         let comment: HierarchicalComment?
         let post: APIPostView?
     }
-    
+
     var body: some View {
         contentView
             .alert(using: $errorAlert) { content in
@@ -73,33 +75,32 @@ struct UserView: View {
             CommunitySidebarHeader(
                 title: userDetails.person.displayName ?? userDetails.person.name,
                 subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
-                avatarSubtext: "Joined \(userDetails.person.published.getRelativeTime(date: Date.now))",
+                avatarSubtext: $avatarSubtext,
+                avatarSubtextClicked: self.toggleCakeDayVisible,
                 bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
                 avatarUrl: userDetails.person.avatar,
                 label1: "\(userDetails.counts.commentCount) Comments",
                 label2: "\(userDetails.counts.postCount) Posts")
-            
+
             if let bio = userDetails.person.bio {
-                MarkdownView(text: bio, imageProvider: CachedImageProvider(
-                                                                  isNsfw: false
-                                                              )).padding()
+                MarkdownView(text: bio, isNsfw: false).padding()
             }
-            
+
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
                 Text(FeedType.overview.rawValue).tag(0)
                 Text(FeedType.comments.rawValue).tag(1)
                 Text(FeedType.posts.rawValue).tag(2)
-                
+
                 // Only show saved posts if we are
                 // browsing our own profile
                 if isShowingOwnProfile() {
                     Text(FeedType.saved.rawValue).tag(3)
                 }
-                
+
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
-            
+
             switch selectionSection {
             case 0:
                 mixedFeed
@@ -123,11 +124,31 @@ struct UserView: View {
             await tryLoadUser()
         }
     }
-    
+
+    private func updateAvatarSubtext() {
+        if let user = userDetails {
+            if showingCakeDay {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
+
+                avatarSubtext = "Joined \(dateFormatter.string(from: user.person.published))"
+            } else {
+                avatarSubtext = "Joined \(user.person.published.getRelativeTime(date: Date.now))"
+            }
+        } else {
+            avatarSubtext = ""
+        }
+    }
+
+    private func toggleCakeDayVisible() {
+        showingCakeDay = !showingCakeDay
+        updateAvatarSubtext()
+    }
+
     private func isShowingOwnProfile() -> Bool {
         return userID == account.id
     }
-    
+
     @ViewBuilder
     private var emptyFeed: some View {
         HStack {
@@ -140,7 +161,7 @@ struct UserView: View {
         }
         .background()
     }
-    
+
     @ViewBuilder
     private var commentsFeed: some View {
         LazyVStack {
@@ -154,7 +175,7 @@ struct UserView: View {
             }
         }.background(Color.secondarySystemBackground)
     }
-    
+
     @ViewBuilder
     private var postsFeed: some View {
         LazyVStack {
@@ -169,7 +190,7 @@ struct UserView: View {
         }
         .background(Color.secondarySystemBackground)
     }
-    
+
     @ViewBuilder
     private var mixedFeed: some View {
         LazyVStack {
@@ -187,7 +208,7 @@ struct UserView: View {
             }
         }.background(Color.secondarySystemBackground)
     }
-    
+
     @ViewBuilder
     private var savedFeed: some View {
         LazyVStack {
@@ -205,7 +226,7 @@ struct UserView: View {
             }
         }.background(Color.secondarySystemBackground)
     }
-    
+
     private func generateCommentFeed(savedItems: Bool) -> [FeedItem] {
         return privateCommentTracker.comments
             // Matched saved state
@@ -218,18 +239,18 @@ struct UserView: View {
                     return $0.commentView.creator.id == userID
                 }
             })
-        
+
             // Create Feed Items
             .map({
                 return FeedItem(published: $0.commentView.comment.published, comment: $0, post: nil)
             })
-        
+
             // Newest first
             .sorted(by: {
             $0.published > $1.published
         })
     }
-    
+
     private func generatePostFeed(savedItems: Bool) -> [FeedItem] {
         return privatePostTracker.posts
             // Matched saved state
@@ -242,32 +263,32 @@ struct UserView: View {
                     return $0.creator.id == userID
                 }
             })
-        
+
             // Create Feed Items
             .map({
                 return FeedItem(published: $0.post.published, comment: nil, post: $0)
             })
-        
+
             // Newest first
             .sorted(by: {
             $0.published > $1.published
         })
     }
-    
+
     private func generateMixedFeed(savedItems: Bool) -> [FeedItem] {
         var result: [FeedItem] = []
-        
+
         result.append(contentsOf: generatePostFeed(savedItems: savedItems))
         result.append(contentsOf: generateCommentFeed(savedItems: savedItems))
-        
+
         // Sort by authored date, newest first
         result = result.sorted(by: {
             $0.published > $1.published
         })
-        
+
         return result
     }
-    
+
     @MainActor
     private var progressView: some View {
         ProgressView {
@@ -281,7 +302,7 @@ struct UserView: View {
             await tryLoadUser()
         }
     }
-    
+
     private func tryLoadUser() async {
         do {
             let authoredContent = try await loadUser(savedItems: false)
@@ -289,27 +310,28 @@ struct UserView: View {
             if isShowingOwnProfile() {
                 savedContentData = try await loadUser(savedItems: true)
             }
-            
+
             privateCommentTracker.add(authoredContent.comments
                 .sorted(by: { $0.comment.published > $1.comment.published})
                 .map({HierarchicalComment(comment: $0, children: [])}))
-            
+
             privatePostTracker.add(authoredContent.posts)
-            
+
             if let savedContent = savedContentData {
                 privateCommentTracker.add(savedContent.comments
                     .sorted(by: { $0.comment.published > $1.comment.published})
                     .map({HierarchicalComment(comment: $0, children: [])}))
-                
+
                 privatePostTracker.add(savedContent.posts)
             }
-            
+
             userDetails = authoredContent.personView
+            updateAvatarSubtext()
         } catch {
             handle(error)
         }
     }
-    
+
     private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
         let request = try GetPersonDetailsRequest(
             accessToken: account.accessToken,
@@ -338,7 +360,7 @@ struct UserView: View {
             errorAlert = .unexpected
         }
     }
-    
+
     /*
      User post
      */
@@ -350,7 +372,7 @@ struct UserView: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     /*
      User comment
      */
@@ -382,7 +404,7 @@ struct UserViewPreview: PreviewProvider {
         accessToken: "abcdefg",
         username: "Test Account"
     )
-    
+
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
     enum PreviewUserType: String, CaseIterable {
@@ -393,7 +415,7 @@ struct UserViewPreview: PreviewProvider {
         case admin = "admin"
         case dev = "developer"
     }
-    
+
     static func generatePreviewUser(
         name: String,
         displayName: String,
@@ -420,7 +442,7 @@ struct UserViewPreview: PreviewProvider {
             instanceId: 123
         )
     }
-    
+
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {
         APIComment(
             id: 0,
@@ -438,7 +460,7 @@ struct UserViewPreview: PreviewProvider {
             languageId: 0
         )
     }
-    
+
     static func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
         APICommunity(
             id: id,
@@ -459,7 +481,7 @@ struct UserViewPreview: PreviewProvider {
             instanceId: 0
         )
     }
-    
+
     static func generatePreviewPost(creator: APIPerson) -> APIPostView {
         let community = generateFakeCommunity(id: 123, namePrefix: "Test")
         let post = APIPost(
@@ -485,7 +507,7 @@ struct UserViewPreview: PreviewProvider {
             thumbnailUrl: nil,
             updated: nil
         )
-        
+
         let postVotes = APIPostAggregates(
             id: 123,
             postId: post.id,
@@ -499,7 +521,7 @@ struct UserViewPreview: PreviewProvider {
             featuredCommunity: false,
             featuredLocal: false
         )
-        
+
         return APIPostView(
             post: post,
             creator: creator,
@@ -513,22 +535,22 @@ struct UserViewPreview: PreviewProvider {
             unreadComments: 0
         )
     }
-    
+
     static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
-        
+
         var postContext: APIPostView?
         var commentContext: APIComment?
-        
+
         if userType == .mod {
             commentContext = generatePreviewComment(creator: previewUser, isMod: true)
         }
-        
+
         if userType == .op {
             commentContext = generatePreviewComment(creator: previewUser, isMod: false)
             postContext = generatePreviewPost(creator: previewUser)
         }
-        
+
         return UserProfileLink(
             account: UserViewPreview.previewAccount,
             user: previewUser,
@@ -537,7 +559,7 @@ struct UserViewPreview: PreviewProvider {
             commentContext: commentContext
         )
     }
-    
+
     static var previews: some View {
         UserView(
             userID: 123,

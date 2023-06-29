@@ -32,6 +32,21 @@ struct WebsiteIconComplex: View {
 
         return imageURL
     }
+    
+    var linkLabel: String {
+        if let embedTitle = post.embedTitle {
+            return embedTitle
+        } else {
+            return post.name
+        }
+    }
+    
+    var linkHost: String {
+        if let url = post.url {
+            return url.host ?? "some website"
+        }
+        return "some website"
+    }
 
     var body: some View {
         GroupBox {
@@ -89,19 +104,12 @@ struct WebsiteIconComplex: View {
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        if let embedTitle = post.embedTitle {
-                            Text(embedTitle)
-                        } else {
-                            Text(post.name)
-                        }
-
+                        Text(linkLabel)
                         if shouldShowWebsiteHost {
-                            if let url = post.url {
-                                Text(url.host!)
-                                    .lineLimit(1)
-                                    .font(.caption)
-                                    .foregroundColor(.blue)
-                            }
+                            Text(linkHost)
+                                .lineLimit(1)
+                                .font(.caption)
+                                .foregroundColor(.blue)
                         }
                     }
                     .padding()
@@ -111,6 +119,9 @@ struct WebsiteIconComplex: View {
             }
         }
         .groupBoxStyle(OutlinedWebComplexStyle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityAddTraits(.isLink)
+        .accessibilityLabel("\(linkLabel) from \(linkHost)")
         .onTapGesture {
             if let url = post.url {
                 openURL(url)

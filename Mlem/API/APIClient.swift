@@ -51,6 +51,7 @@ class APIClient {
             return try await session.data(for: urlRequest)
         } catch {
             if case URLError.cancelled = error as NSError {
+                print(error)
                 throw APIClientError.cancelled
             } else {
                 throw APIClientError.networking(error)
