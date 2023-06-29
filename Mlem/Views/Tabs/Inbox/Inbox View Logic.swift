@@ -7,13 +7,10 @@
 
 import Foundation
 
-enum MyError: Error {
-    case runtimeError(String)
-}
-
 extension InboxView {
     func refreshFeed() async {
         do {
+            isLoading = true
             try await mentionsTracker.refresh(account: account)
             try await messagesTracker.refresh(account: account)
             try await repliesTracker.refresh(account: account)
@@ -85,6 +82,7 @@ extension InboxView {
         
         allItems = merge(arr1: mentions, arr2: messages, compare: wasPostedAfter)
         allItems = merge(arr1: allItems, arr2: replies, compare: wasPostedAfter)
+        isLoading = false
     }
     
     /**

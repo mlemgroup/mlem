@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HeaderView: View {
     let title: String
-
+    
     var body: some View {
         HStack {
             Text(title)
@@ -34,9 +34,9 @@ struct CommuntiyFeedRowView: View {
     let community: APICommunity
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
-
+    
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
-
+    
     var body: some View {
         HStack {
             // NavigationLink with invisible array
@@ -52,14 +52,16 @@ struct CommuntiyFeedRowView: View {
             )
             
             Spacer()
-            Button("Favorite Community", action: {
+            Button("Favorite Community") {
                 // Nice little haptics
                 let generator = UINotificationFeedbackGenerator()
                 generator.notificationOccurred(.success)
                 
                 toggleFavorite()
                 
-            }).buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
+            }.buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
+                .accessibilityHidden(true)
+            
         }.swipeActions {
             if subscribed {
                 Button("Unsubscribe") {
@@ -88,7 +90,7 @@ struct CommuntiyFeedRowView: View {
         if let website = community.actorId.host(percentEncoded: false) {
             label += "@\(website)"
         }
-            
+        
         if isFavorited() {
             label += ", is a favorite"
         }
@@ -105,22 +107,22 @@ struct CommuntiyFeedRowView: View {
             UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
         }
     }
-
+    
     internal func isFavorited() -> Bool {
         return getFavoritedCommunities(account: account, favoritedCommunitiesTracker: favoritesTracker).contains(community)
     }
-
+    
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         // Refresh the list locally immedietly and undo it if we error
         communitySubscriptionChanged(community, shouldSubscribe)
-
+        
         do {
             let request = FollowCommunityRequest(
                 account: account,
                 communityId: communityId,
                 follow: shouldSubscribe
             )
-
+            
             _ = try await APIClient().perform(request: request)
         } catch {
             // TODO: If we fail here and want to notify the user we'd ideally
@@ -136,7 +138,7 @@ struct HomepageFeedRowView: View {
     let iconName: String
     let iconColor: Color
     let description: String
-
+    
     var body: some View {
         // NavigationLink with invisible array
         HStack {

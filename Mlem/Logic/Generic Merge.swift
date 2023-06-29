@@ -51,6 +51,7 @@ func merge<T>(arr1: [T], arr2: [T], compare: (T, T) -> Bool) -> [T] {
  Helper function for assert above
  */
 func arrayIsSorted<T>(arr: [T], compare: (T, T) -> Bool) -> Bool {
+    if arr.count < 2 { return true } // empty or single-item array always sorted
     for idx in 1..<(arr.count) where !compare(arr[idx-1], arr[idx]) {
         return false
     }
