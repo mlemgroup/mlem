@@ -12,7 +12,9 @@ extension InboxView {
     @ViewBuilder
     func messagesFeedView() -> some View {
         Group {
-            if messagesTracker.messages.isEmpty {
+            if messagesTracker.isLoading {
+                LoadingView(whatIsLoading: .messages)
+            } else if messagesTracker.messages.isEmpty {
                 noMessagesView()
             } else {
                 LazyVStack(spacing: spacing) {
@@ -24,17 +26,13 @@ extension InboxView {
     
     @ViewBuilder
     func noMessagesView() -> some View {
-        if messagesTracker.isLoading {
-            LoadingView(whatIsLoading: .messages)
-        } else {
-            VStack(alignment: .center, spacing: 5) {
-                Image(systemName: "text.bubble")
-                
-                Text("No messages to be found")
-            }
-            .padding()
-            .foregroundColor(.secondary)
+        VStack(alignment: .center, spacing: 5) {
+            Image(systemName: "text.bubble")
+            
+            Text("No messages to be found")
         }
+        .padding()
+        .foregroundColor(.secondary)
     }
     
     @ViewBuilder

@@ -15,7 +15,8 @@ import CachedAsyncImage
 struct InboxView: View {
     let spacing: CGFloat = 10
     
-    @State var account: SavedAccount
+    let account: SavedAccount
+    @State var lastKnownAccountId: Int = 0 // id of the last account loaded with
     
     @State var errorOccurred: Bool = false
     @State var errorMessage: String = ""
@@ -71,6 +72,20 @@ struct InboxView: View {
                 }
                 
                 Spacer()
+            }
+            // load view if empty or account has changed
+            .task(priority: .userInitiated) {
+                // if a tracker is empty or the account has changed, refresh
+                if mentionsTracker.mentions.isEmpty ||
+                    messagesTracker.messages.isEmpty ||
+                    repliesTracker.replies.isEmpty  ||
+                    lastKnownAccountId != account.id {
+                    print("Inbox tracker is empty")
+                    await refreshFeed()
+                } else {
+                    print("Inbox tracker is not empty")
+                }
+                lastKnownAccountId = account.id
             }
             .navigationTitle("Inbox")
             .navigationBarTitleDisplayMode(.inline)
