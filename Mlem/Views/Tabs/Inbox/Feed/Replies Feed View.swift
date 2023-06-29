@@ -14,7 +14,7 @@ extension InboxView {
         Group {
             if repliesTracker.isLoading {
                 LoadingView(whatIsLoading: .replies)
-            } else if repliesTracker.replies.isEmpty {
+            } else if repliesTracker.items.isEmpty {
                 noRepliesView()
             } else {
                 LazyVStack(spacing: spacing) {
@@ -37,11 +37,11 @@ extension InboxView {
     
     @ViewBuilder
     func repliesListView() -> some View {
-        ForEach(repliesTracker.replies) { reply in
+        ForEach(repliesTracker.items) { reply in
             VStack(spacing: spacing) {
                 InboxReplyView(account: account, reply: reply)
                     .task {
-                        if !repliesTracker.isLoading && reply.commentReply.id == repliesTracker.loadMarkId {
+                        if repliesTracker.shouldLoadContent(after: reply) {
                             await loadReplies()
                         }
                     }
