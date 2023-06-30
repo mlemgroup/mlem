@@ -305,6 +305,15 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
+                            
+                            BlockCommunityButton(account: account, communityDetails: Binding(
+                                get: {
+                                    communityDetails.communityView
+                                },
+                                set: { newValue in
+                                    guard let newValue else { return }
+                                    self.communityDetails?.communityView = newValue
+                                }))
 
                             Divider()
 
