@@ -56,8 +56,6 @@ struct CommentInteractionBar: View {
             EllipsisMenu(
                 size: height,
                 menuFunctions: menuFunctions
-//                shareUrl: commentView.post.apId,
-//                deleteButtonCallback: canDeleteComment() ? self.deleteComment : nil
             )
 
             Spacer()
