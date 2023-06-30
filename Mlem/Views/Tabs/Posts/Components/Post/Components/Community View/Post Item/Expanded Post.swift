@@ -52,6 +52,9 @@ struct ExpandedPost: View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
+                
+                Divider()
+                    .background(.black)
 
                 if commentTracker.isLoading {
                     commentsLoadingView
@@ -239,20 +242,25 @@ struct ExpandedPost: View {
      Displays the post itself, plus a little divider to keep it visually distinct from comments
      */
     private var postView: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+            
+            CommunityLinkView(community: post.community)
+            
             LargePost(
                 postView: post,
                 account: account,
-                isExpanded: true,
-                showPostCreator: true,
-                showCommunity: true,
-                voteOnPost: voteOnPost,
-                savePost: savePost,
-                deletePost: deletePost
+                isExpanded: true
             )
-            Divider()
-                .background(.black)
+            
+            UserProfileLink(account: account, user: post.creator, showServerInstance: true)
+            
+            PostInteractionBar(postView: post,
+                               account: account,
+                               voteOnPost: voteOnPost,
+                               updatedSavePost: savePost,
+                               deletePost: deletePost)
         }
+        .padding(AppConstants.postAndCommentSpacing)
     }
 
     /**

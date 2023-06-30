@@ -200,6 +200,7 @@
 		CD04D5E72A3636FB008EF95B /* Compact Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E62A3636FB008EF95B /* Compact Post.swift */; };
 		CD05E7772A4E37DE0081D102 /* PostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7762A4E37DE0081D102 /* PostSettings.swift */; };
 		CD05E7792A4E381A0081D102 /* Post Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7782A4E381A0081D102 /* Post Sizes.swift */; };
+		CD05E77B2A4E960B0081D102 /* Menu Button View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77A2A4E960B0081D102 /* Menu Button View.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
 		CD3FBCD32A4A4B8B00B2063F /* Messages Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */; };
 		CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */; };
@@ -450,6 +451,7 @@
 		CD04D5E62A3636FB008EF95B /* Compact Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Compact Post.swift"; sourceTree = "<group>"; };
 		CD05E7762A4E37DE0081D102 /* PostSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettings.swift; sourceTree = "<group>"; };
 		CD05E7782A4E381A0081D102 /* Post Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Sizes.swift"; sourceTree = "<group>"; };
+		CD05E77A2A4E960B0081D102 /* Menu Button View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Button View.swift"; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
 		CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Messages Tracker.swift"; sourceTree = "<group>"; };
 		CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Replies Tracker.swift"; sourceTree = "<group>"; };
@@ -1121,6 +1123,7 @@
 				63D24EDD2A169F2A005CCA81 /* Markdown View.swift */,
 				6374570F2A18CB6600B69C03 /* Custom Text Field.swift */,
 				B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */,
+				CD05E77A2A4E960B0081D102 /* Menu Button View.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1570,6 +1573,7 @@
 				CD05E7772A4E37DE0081D102 /* PostSettings.swift in Sources */,
 				63A200532A2DDD38005CDDE3 /* Dictionary - Append.swift in Sources */,
 				CD64832D2A38CE4E00EE6CA3 /* Vote Complex Style.swift in Sources */,
+				CD05E77B2A4E960B0081D102 /* Menu Button View.swift in Sources */,
 				637218492A3A2AAD008C4816 /* APICommentReplyView.swift in Sources */,
 				6317ABCB2A37292700603D76 /* FeedType.swift in Sources */,
 				CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */,

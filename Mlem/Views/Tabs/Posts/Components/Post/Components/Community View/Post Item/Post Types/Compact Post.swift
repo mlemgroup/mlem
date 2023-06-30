@@ -21,11 +21,6 @@ struct CompactPost: View {
     // arguments
     let postView: APIPostView
     let account: SavedAccount
-    let showPostCreator: Bool
-    let showCommunity: Bool
-    let voteOnPost: (ScoringOperation) async -> Void
-    let savePost: (_ save: Bool) async throws -> Void
-    let deletePost: () async -> Void
 
     // computed
     var usernameColor: Color {
@@ -42,12 +37,7 @@ struct CompactPost: View {
     var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: spacing) {
-            
-            if showCommunity {
-                CommunityLinkView(community: postView.community)
-            }
-            
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack(alignment: .top, spacing: spacing) {
                 thumbnailImage
 
@@ -67,20 +57,7 @@ struct CompactPost: View {
                 }
 
             }
-            
-            if showPostCreator {
-                UserProfileLink(account: account, user: postView.creator, showServerInstance: shouldShowUserServerInPost)
-            }
-            
-            PostInteractionBar(
-                postView: postView,
-                account: account,
-                voteOnPost: voteOnPost,
-                updatedSavePost: savePost,
-                deletePost: deletePost
-            )
         }
-        .padding(spacing)
     }
 
     @ViewBuilder

@@ -57,26 +57,7 @@ struct FeedPost: View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
-                .contextMenu {
-                    Button("Upvote") {
-                        Task(priority: .userInitiated) {
-                            await upvotePost()
-                        }
-                    }
-                    Button("Downvote") {
-                        Task(priority: .userInitiated) {
-                            await downvotePost()
-                        }
-                    }
-                    Button("Save") {
-                        Task(priority: .userInitiated) {
-                            await savePost()
-                        }
-                    }
-                    Button("Reply") {
-                        replyToPost()
-                    }
-                }
+                .contextMenu { menuGroup }
                 .addSwipeyActions(isDragging: $isDragging,
                                   emptyLeftSymbolName: "arrow.up.square",
                                   shortLeftSymbolName: "arrow.up.square.fill",
@@ -102,28 +83,64 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-        Group {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+            // community name
+            if showCommunity {
+                CommunityLinkView(community: postView.community)
+            }
+            
             if shouldShowCompactPosts {
                 CompactPost(
                     postView: postView,
-                    account: account,
-                    showPostCreator: showPostCreator,
-                    showCommunity: showCommunity,
-                    voteOnPost: voteOnPost,
-                    savePost: { _ in await savePost() },
-                    deletePost: deletePost
+                    account: account
                 )
             } else {
                 LargePost(
                     postView: postView,
                     account: account,
-                    isExpanded: false,
-                    showPostCreator: showPostCreator,
-                    showCommunity: showCommunity,
-                    voteOnPost: voteOnPost,
-                    savePost: { _ in await savePost() },
-                    deletePost: deletePost
+                    isExpanded: false
                 )
+            }
+            
+            // posting user
+            if showPostCreator {
+                UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
+            }
+  
+            PostInteractionBar(postView: postView,
+                               account: account,
+                               voteOnPost: voteOnPost,
+                               updatedSavePost: { _ in await savePost() },
+                               deletePost: deletePost)
+        }
+        .padding(AppConstants.postAndCommentSpacing)
+    }
+    
+    // context menu
+    var menuGroup: some View {
+        Group {
+            MenuButton(label: "Upvote", imageName: "arrow.up.square") {
+                Task(priority: .userInitiated) {
+                    await upvotePost()
+                }
+            }
+            MenuButton(label: "Downvote", imageName: "arrow.down.square") {
+                Task(priority: .userInitiated) {
+                    await downvotePost()
+                }
+            }
+            MenuButton(label: "Save", imageName: "bookmark") {
+                Task(priority: .userInitiated) {
+                    await savePost()
+                }
+            }
+            MenuButton(label: "Reply", imageName: "arrowshape.turn.up.left") {
+                replyToPost()
+            }
+            MenuButton(label: "Share", imageName: "square.and.arrow.up") {
+                if let url = URL(string: postView.post.apId) {
+                    showShareSheet(URLtoShare: url)
+                }
             }
         }
     }

@@ -17,17 +17,29 @@ struct EllipsisMenu: View {
 
     var body: some View {
         Menu {
+            // share
             if let url = URL(string: shareUrl) {
-                Button("Share") { showShareSheet(URLtoShare: url) }
-            }
-            Button(role: .destructive) {
-                isPresentingConfirmDelete = true
-            } label: {
-                HStack {
-                    Image(systemName: "trash.fill")
-                    Text("Delete")
+                Button {
+                    showShareSheet(URLtoShare: url)
+                } label: {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Share")
+                    }
                 }
-            }.disabled(deleteButtonCallback == nil)
+            }
+
+            // delete
+            if deleteButtonCallback != nil {
+                Button(role: .destructive) {
+                    isPresentingConfirmDelete = true
+                } label: {
+                    HStack {
+                        Image(systemName: "trash.fill")
+                        Text("Delete")
+                    }
+                }
+            }
             
         } label: {
             Image(systemName: "ellipsis")
@@ -38,17 +50,17 @@ struct EllipsisMenu: View {
                     .foregroundColor(.clear))
         }
         .onTapGesture { } // allows menu to pop up on first tap
-        .confirmationDialog("Confirm delete", isPresented: $isPresentingConfirmDelete) {
-            Button("Yes", role: .destructive) {
-                Task {
-                    if let deleteCallback = deleteButtonCallback {
-                        await deleteCallback()
-                    }
-                }
-            }
-        } message: {
-            Text("Are you sure you want to delete?  You cannot undo this action.")
-        }
+//        .confirmationDialog("Confirm delete", isPresented: $isPresentingConfirmDelete) {
+//            Button("Yes", role: .destructive) {
+//                Task {
+//                    if let deleteCallback = deleteButtonCallback {
+//                        await deleteCallback()
+//                    }
+//                }
+//            }
+//        } message: {
+//            Text("Are you sure you want to delete?  You cannot undo this action.")
+//        }
         
     }
 }

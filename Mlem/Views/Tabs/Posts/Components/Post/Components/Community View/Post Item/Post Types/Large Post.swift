@@ -23,40 +23,20 @@ struct LargePost: View {
     let postView: APIPostView
     let account: SavedAccount
     let isExpanded: Bool
-    let showPostCreator: Bool
-    let showCommunity: Bool
-    let voteOnPost: (ScoringOperation) async -> Void
-    let savePost: (_ save: Bool) async throws -> Void
-    let deletePost: () async -> Void
 
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
         account: SavedAccount,
-        isExpanded: Bool,
-        showPostCreator: Bool,
-        showCommunity: Bool,
-        voteOnPost: @escaping (ScoringOperation) async -> Void,
-        savePost: @escaping (_ save: Bool) async throws -> Void,
-        deletePost: @escaping () async -> Void
+        isExpanded: Bool
     ) {
         self.postView = postView
         self.account = account
         self.isExpanded = isExpanded
-        self.showPostCreator = showPostCreator
-        self.showCommunity = showCommunity
-        self.voteOnPost = voteOnPost
-        self.savePost = savePost
-        self.deletePost = deletePost
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
-            // community name
-            if showCommunity {
-                CommunityLinkView(community: postView.community)
-            }
-
             // post title
             Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
                 .font(.headline)
@@ -78,22 +58,7 @@ struct LargePost: View {
             case .titleOnly:
                 EmptyView()
             }
-            
-            // post user
-            if showPostCreator {
-                UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
-            }
-
-            PostInteractionBar(
-                postView: postView,
-                account: account,
-                voteOnPost: voteOnPost,
-                updatedSavePost: savePost,
-                deletePost: deletePost
-            )
         }
-        .padding(.vertical, spacing)
-        .padding(.horizontal, spacing)
     }
 
     // MARK: - Subviews
