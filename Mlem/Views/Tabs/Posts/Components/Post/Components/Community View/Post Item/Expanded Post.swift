@@ -311,6 +311,7 @@ struct ExpandedPost: View {
                     postContext: post,
                     depth: 0,
                     showPostContext: false,
+                    showCommentCreator: true,
                     isDragging: $isDragging
                 )
             }

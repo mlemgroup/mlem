@@ -50,6 +50,7 @@ struct CommentItem: View {
     let postContext: APIPostView?
     let depth: Int
     let showPostContext: Bool
+    let showCommentCreator: Bool
 
     @Binding var isDragging: Bool
     
@@ -61,6 +62,7 @@ struct CommentItem: View {
          postContext: APIPostView?,
          depth: Int,
          showPostContext: Bool,
+         showCommentCreator: Bool,
          isDragging: Binding<Bool>
     ) {
         self.account = account
@@ -68,6 +70,7 @@ struct CommentItem: View {
         self.postContext = postContext
         self.depth = depth
         self.showPostContext = showPostContext
+        self.showCommentCreator = showCommentCreator
         _isDragging = isDragging
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
@@ -93,11 +96,19 @@ struct CommentItem: View {
     var body: some View {
         VStack(spacing: 0) {
             Group {
-                VStack(spacing: AppConstants.postAndCommentSpacing) {
-                    commentHeader
+                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+                    if showCommentCreator {
+                        UserProfileLink(
+                            account: account,
+                            user: hierarchicalComment.commentView.creator,
+                            showServerInstance: shouldShowUserServerInComment,
+                            postContext: postContext,
+                            commentContext: hierarchicalComment.commentView.comment
+                        )
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(commentorLabel)
                         .foregroundColor(.secondary)
+                    }
 
                     commentBody
 
@@ -165,23 +176,6 @@ struct CommentItem: View {
     // MARK: Subviews
 
     @ViewBuilder
-    var commentHeader: some View {
-        HStack {
-            UserProfileLink(
-                account: account,
-                user: hierarchicalComment.commentView.creator,
-                showServerInstance: shouldShowUserServerInComment,
-                postContext: postContext,
-                commentContext: hierarchicalComment.commentView.comment
-            )
-
-            Spacer()
-        }
-        .font(.footnote)
-        .foregroundColor(.secondary)
-    }
-
-    @ViewBuilder
     var commentBody: some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {
             // comment text or placeholder
@@ -221,6 +215,7 @@ struct CommentItem: View {
                         postContext: postContext,
                         depth: depth + 1,
                         showPostContext: false,
+                        showCommentCreator: true,
                         isDragging: $isDragging
                     )
                 }

@@ -386,6 +386,7 @@ struct UserView: View {
             postContext: nil,
             depth: 0,
             showPostContext: true,
+            showCommentCreator: false,
             isDragging: $isDragging
         )
     }
