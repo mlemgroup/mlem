@@ -45,6 +45,6 @@ extension APIPostView: Hashable {
 // MARK: - FeedTrackerItem
 
 extension APIPostView: FeedTrackerItem {
-    var uniqueIdentifier: some Hashable { id }
+    var uniqueIdentifier: some Hashable { post.id }
     var published: Date { post.published }
 }
