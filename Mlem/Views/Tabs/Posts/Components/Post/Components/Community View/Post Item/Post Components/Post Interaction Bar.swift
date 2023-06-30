@@ -36,6 +36,7 @@ struct PostInteractionBar: View {
     // parameters
     let postView: APIPostView
     let account: SavedAccount
+    let menuFunctions: [MenuFunction]
     let voteOnPost: (ScoringOperation) async -> Void
     let updatedSavePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
@@ -46,6 +47,7 @@ struct PostInteractionBar: View {
     init(
         postView: APIPostView,
         account: SavedAccount,
+        menuFunctions: [MenuFunction],
         voteOnPost: @escaping (ScoringOperation) async -> Void,
         updatedSavePost: @escaping (_ save: Bool) async throws -> Void,
         deletePost: @escaping () async -> Void
@@ -53,6 +55,7 @@ struct PostInteractionBar: View {
         self.postView = postView
         self.account = account
         self.voteOnPost = voteOnPost
+        self.menuFunctions = menuFunctions
         self.updatedSavePost = updatedSavePost
         self.deletePost = deletePost
         _dirtyVote = State(initialValue: postView.myVote ?? .resetVote)
@@ -74,8 +77,7 @@ struct PostInteractionBar: View {
 
             EllipsisMenu(
                 size: height,
-                shareUrl: postView.post.apId,
-                deleteButtonCallback: canDeletePost() ? self.deletePost : nil
+                menuFunctions: menuFunctions
             )
 
             Spacer()

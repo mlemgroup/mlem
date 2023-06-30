@@ -57,7 +57,15 @@ struct FeedPost: View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
-                .contextMenu { menuGroup }
+                .contextMenu {
+                    ForEach(genMenuFunctions()) { item in
+                        Button {
+                            item.callback()
+                        } label: {
+                            Label(item.text, systemImage: item.imageName)
+                        }
+                    }
+                }
                 .addSwipeyActions(isDragging: $isDragging,
                                   emptyLeftSymbolName: "arrow.up.square",
                                   shortLeftSymbolName: "arrow.up.square.fill",
@@ -109,40 +117,12 @@ struct FeedPost: View {
   
             PostInteractionBar(postView: postView,
                                account: account,
+                               menuFunctions: genMenuFunctions(),
                                voteOnPost: voteOnPost,
                                updatedSavePost: { _ in await savePost() },
                                deletePost: deletePost)
         }
         .padding(AppConstants.postAndCommentSpacing)
-    }
-    
-    // context menu
-    var menuGroup: some View {
-        Group {
-            MenuButton(label: "Upvote", imageName: "arrow.up.square") {
-                Task(priority: .userInitiated) {
-                    await upvotePost()
-                }
-            }
-            MenuButton(label: "Downvote", imageName: "arrow.down.square") {
-                Task(priority: .userInitiated) {
-                    await downvotePost()
-                }
-            }
-            MenuButton(label: "Save", imageName: "bookmark") {
-                Task(priority: .userInitiated) {
-                    await savePost()
-                }
-            }
-            MenuButton(label: "Reply", imageName: "arrowshape.turn.up.left") {
-                replyToPost()
-            }
-            MenuButton(label: "Share", imageName: "square.and.arrow.up") {
-                if let url = URL(string: postView.post.apId) {
-                    showShareSheet(URLtoShare: url)
-                }
-            }
-        }
     }
 
     // Reply handlers
@@ -190,5 +170,51 @@ struct FeedPost: View {
         } catch {
             print("failed to save!")
         }
+    }
+    
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        // upvote
+        let (upvoteText, upvoteImg) = postView.myVote == .upvote ?
+        ("Undo upvote", "arrow.up.square.fill") :
+        ("Upvote", "arrow.up.square")
+        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg) {
+            Task(priority: .userInitiated) {
+                await upvotePost()
+            }
+        })
+        
+        // downvote
+        let (downvoteText, downvoteImg) = postView.myVote == .downvote ?
+        ("Undo downvote", "arrow.down.square.fill") :
+        ("Downvote", "arrow.down.square")
+        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg) {
+            Task(priority: .userInitiated) {
+                await downvotePost()
+            }
+        })
+        
+        // save
+        let (saveText, saveImg) = postView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        ret.append(MenuFunction(text: saveText, imageName: saveImg) {
+            Task(priority: .userInitiated) {
+                await savePost()
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left") {
+            replyToPost()
+        })
+        
+        // share
+        ret.append(MenuFunction(text: "Share", imageName: "square.and.arrow.up") {
+            if let url = URL(string: postView.post.apId) {
+                showShareSheet(URLtoShare: url)
+            }
+        })
+        
+        return ret
     }
 }

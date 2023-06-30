@@ -95,6 +95,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     ///  - Note: If the `id` of the item is not already in the tracker the `updatedItem` will be discarded
     /// - Parameter updatedItem: An updated `Item`
     func update(with updatedItem: Item) {
+        print(updatedItem.uniqueIdentifier)
         guard let index = items.firstIndex(where: { $0.uniqueIdentifier == updatedItem.uniqueIdentifier }) else {
             return
         }

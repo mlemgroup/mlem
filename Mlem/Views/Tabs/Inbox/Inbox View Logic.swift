@@ -21,7 +21,7 @@ extension InboxView {
         } catch APIClientError.networking {
             // We're seeing a number of SSL related errors on some instances while loading pages from the feed
             errorOccurred = true
-            errorMessage = "Network error occurred, please file a bug report including the instance you are using"
+            errorMessage = "Network error occurred, check your internet and retry"
         } catch APIClientError.response(let message, _) {
             print(message)
             errorOccurred = true

@@ -52,6 +52,8 @@ struct CommentItem: View {
     let showPostContext: Bool
 
     @Binding var isDragging: Bool
+    
+    // MARK: Computed
 
     // init needed to get dirty and clean aligned
     init(account: SavedAccount,
@@ -107,7 +109,8 @@ struct CommentItem: View {
                                           upvote: upvote,
                                           downvote: downvote,
                                           saveComment: saveComment,
-                                          deleteComment: deleteComment)
+                                          deleteComment: deleteComment,
+                                          menuFunctions: genMenuFunctions())
                 }
                 .padding(AppConstants.postAndCommentSpacing)
             }
@@ -121,23 +124,12 @@ struct CommentItem: View {
                 }
             }
             .contextMenu {
-                Button("Upvote") {
-                    Task(priority: .userInitiated) {
-                        await upvote()
+                ForEach(genMenuFunctions()) { item in
+                    Button {
+                        item.callback()
+                    } label: {
+                        Label(item.text, systemImage: item.imageName)
                     }
-                }
-                Button("Downvote") {
-                    Task(priority: .userInitiated) {
-                        await downvote()
-                    }
-                }
-                Button("Save") {
-                    Task(priority: .userInitiated) {
-                        await saveComment()
-                    }
-                }
-                Button("Reply") {
-                    replyToComment()
                 }
             }
             .background(Color.systemBackground)

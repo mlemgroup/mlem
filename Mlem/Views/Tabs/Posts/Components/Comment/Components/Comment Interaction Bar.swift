@@ -34,6 +34,8 @@ struct CommentInteractionBar: View {
     let downvote: () async -> Void
     let saveComment: () async -> Void
     let deleteComment: () async -> Void
+    
+    let menuFunctions: [MenuFunction]
 
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: commentView.post.published )}
@@ -53,8 +55,9 @@ struct CommentInteractionBar: View {
             // TODO: Eric - flesh out
             EllipsisMenu(
                 size: height,
-                shareUrl: commentView.post.apId,
-                deleteButtonCallback: canDeleteComment() ? self.deleteComment : nil
+                menuFunctions: menuFunctions
+//                shareUrl: commentView.post.apId,
+//                deleteButtonCallback: canDeleteComment() ? self.deleteComment : nil
             )
 
             Spacer()
