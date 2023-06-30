@@ -305,12 +305,23 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
+                            
+                            BlockCommunityButton(account: account, communityDetails: Binding(
+                                get: {
+                                    communityDetails.communityView
+                                },
+                                set: { newValue in
+                                    guard let newValue else { return }
+                                    self.communityDetails?.communityView = newValue
+                                }))
 
                             Divider()
 
                             if let actorId = community?.actorId {
-                                ShareButton(size: 20, accessibilityContext: "community") {
+                                Button {
                                     showShareSheet(URLtoShare: actorId)
+                                } label: {
+                                    Label("Share", systemImage: "square.and.arrow.up")
                                 }
                             }
                         }
