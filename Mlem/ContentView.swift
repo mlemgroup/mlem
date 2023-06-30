@@ -34,8 +34,7 @@ struct ContentView: View {
                 NavigationView {
                     ProfileView(account: currentActiveAccount)  
                 } .tabItem {
-                    let username = showUsernameInNavigationBar ? currentActiveAccount.username : "Profile"
-                    Label(username, systemImage: "person.circle")
+                    Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }.tag(3)
             }
@@ -53,6 +52,11 @@ struct ContentView: View {
             Alert(title: Text(content.title), message: Text(content.message))
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+    }
+    
+    // MARK: helpers
+    func computeUsername(account: SavedAccount) -> String {
+        return showUsernameInNavigationBar ? account.username : "Profile"
     }
 }
 

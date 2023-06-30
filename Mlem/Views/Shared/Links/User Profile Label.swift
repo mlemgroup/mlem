@@ -59,19 +59,11 @@ struct UserProfileLabel: View {
                             .scaledToFill()
                             .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                     } else {
-                        Image(systemName: "person.circle")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-                            .foregroundColor(.secondary)
+                        defaultUserAvatar()
                     }
                 }
             } else {
-                Image(systemName: "person.circle")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-                    .foregroundColor(.secondary)
+                defaultUserAvatar()
             }
         }
         .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
@@ -79,6 +71,14 @@ struct UserProfileLabel: View {
         .overlay(Circle()
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
         .accessibilityHidden(true)
+    }
+    
+    private func defaultUserAvatar() -> some View {
+        Image(systemName: "person.circle")
+            .resizable()
+            .scaledToFill()
+            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+            .foregroundColor(.secondary)
     }
     
     @ViewBuilder

@@ -53,19 +53,11 @@ struct CommunityLinkView: View {
                             .scaledToFit()
                             .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                     } else {
-                        Image(systemName: "building.2.crop.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-                            .foregroundColor(.secondary)
+                        defaultCommunityAvatar()
                     }
                 }
             } else {
-                Image(systemName: "building.2.crop.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-                    .foregroundColor(.secondary)
+                defaultCommunityAvatar()
             }
         }
         .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
@@ -73,5 +65,13 @@ struct CommunityLinkView: View {
         .overlay(Circle()
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
         .accessibilityHidden(true)
+    }
+    
+    private func defaultCommunityAvatar() -> some View {
+        Image(systemName: "building.2.crop.circle.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+            .foregroundColor(.secondary)
     }
 }
