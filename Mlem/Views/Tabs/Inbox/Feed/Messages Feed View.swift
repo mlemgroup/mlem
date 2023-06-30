@@ -14,7 +14,7 @@ extension InboxView {
         Group {
             if messagesTracker.isLoading {
                 LoadingView(whatIsLoading: .messages)
-            } else if messagesTracker.messages.isEmpty {
+            } else if messagesTracker.items.isEmpty {
                 noMessagesView()
             } else {
                 LazyVStack(spacing: spacing) {
@@ -37,11 +37,11 @@ extension InboxView {
     
     @ViewBuilder
     func messagesListView() -> some View {
-        ForEach(messagesTracker.messages) { message in
+        ForEach(messagesTracker.items) { message in
             VStack(spacing: spacing) {
                 InboxMessageView(account: account, message: message)
                     .task {
-                        if !messagesTracker.isLoading && message.id == messagesTracker.loadMarkId {
+                        if messagesTracker.shouldLoadContent(after: message) {
                             await loadMessages()
                         }
                     }

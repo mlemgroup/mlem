@@ -20,7 +20,7 @@ struct CommunityView: View {
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
 
-    @StateObject var postTracker: PostTracker = .init()
+    @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
 
     @State var account: SavedAccount
     @State var community: APICommunity?
@@ -59,7 +59,7 @@ struct CommunityView: View {
     var isInSpecificCommunity: Bool { community != nil }
 
     private var filteredPosts: [APIPostView] {
-        postTracker.posts.filter { postView in
+        postTracker.items.filter { postView in
             !postView.post.name.contains(filtersTracker.filteredKeywords)
         }
     }
@@ -69,7 +69,7 @@ struct CommunityView: View {
             searchResultsView
                 .accessibilityHidden(!isShowingCommunitySearch)
             ScrollView {
-                if postTracker.posts.isEmpty {
+                if postTracker.items.isEmpty {
                     noPostsView
                 } else {
                     LazyVStack(spacing: 0) {
@@ -163,15 +163,18 @@ struct CommunityView: View {
                 Task(priority: .userInitiated) {
                     isRefreshing = true
 
-                    postTracker.reset()
-
-                    await loadFeed()
+                    try await postTracker.refresh(
+                        account: account,
+                        communityId: community?.id,
+                        sort: postSortType,
+                        type: feedType
+                    )
 
                     isRefreshing = false
                 }
             }
             .task(priority: .userInitiated) {
-                if postTracker.posts.isEmpty {
+                if postTracker.items.isEmpty {
                     print("Post tracker is empty")
                     await loadFeed()
                 } else {
@@ -197,8 +200,7 @@ struct CommunityView: View {
             }
             .onChange(of: feedType, perform: { _ in
                 Task(priority: .userInitiated) {
-                    postTracker.reset()
-                    await loadFeed()
+                    await refreshFeed()
                 }
             })
         }
@@ -248,9 +250,7 @@ struct CommunityView: View {
                             self.postSortType = newValue
                             Task {
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-
-                                postTracker.reset()
-                                await loadFeed()
+                                await refreshFeed()
                             }
                         }
                     ))
@@ -448,12 +448,8 @@ struct CommunityView: View {
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
-                if !postTracker.isLoading {
-                    if let position = postTracker.posts.lastIndex(of: post) {
-                        if  position >= (postTracker.posts.count - 40) {
-                            await loadFeed()
-                        }
-                    }
+                if postTracker.shouldLoadContent(after: post) {
+                    await loadFeed()
                 }
             }
         }
@@ -483,25 +479,45 @@ struct CommunityView: View {
                 sort: postSortType,
                 type: feedType
             )
-        } catch APIClientError.networking {
+        } catch {
+            handle(error)
+        }
+    }
+    
+    func refreshFeed() async {
+        do {
+            try await postTracker.refresh(
+                account: account,
+                communityId: community?.id,
+                sort: postSortType,
+                type: feedType
+            )
+        } catch {
+            handle(error)
+        }
+    }
+    
+    private func handle(_ error: Error) {
+        switch error {
+        case APIClientError.networking:
             // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed
             // while we investigate the reasons we will only show this error if the user would otherwise be left with an empty feed
-            guard postTracker.posts.isEmpty else {
+            guard postTracker.items.isEmpty else {
                 return
             }
-
+            
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"
             )
-        } catch APIClientError.response(let message, _) {
+        case APIClientError.response(let message, _):
             errorAlert = .init(
                 title: "Error",
                 message: message.error
             )
-        } catch APIClientError.cancelled {
+        case APIClientError.cancelled:
             print("Failed while loading feed (request cancelled)")
-        } catch {
+        default:
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
             assertionFailure(
@@ -509,7 +525,6 @@ struct CommunityView: View {
             )
             // errorAlert = .unexpected
         }
-
     }
 }
 // swiftlint:enable type_body_length

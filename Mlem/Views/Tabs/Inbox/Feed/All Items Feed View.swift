@@ -46,21 +46,21 @@ extension InboxView {
                     case .mention(let mention):
                         InboxMentionView(account: account, mention: mention)
                             .task {
-                                if !mentionsTracker.isLoading && item.id == mentionsTracker.loadMarkId {
+                                if mentionsTracker.shouldLoadContent(after: mention) {
                                     await loadMentions()
                                 }
                             }
                     case .message(let message):
                         InboxMessageView(account: account, message: message)
                             .task {
-                                if !messagesTracker.isLoading && item.id == messagesTracker.loadMarkId {
+                                if messagesTracker.shouldLoadContent(after: message) {
                                     await loadMessages()
                                 }
                             }
                     case .reply(let reply):
                         InboxReplyView(account: account, reply: reply)
                             .task {
-                                if !repliesTracker.isLoading && item.id == repliesTracker.loadMarkId {
+                                if repliesTracker.shouldLoadContent(after: reply) {
                                     await loadReplies()
                                 }
                             }

@@ -57,6 +57,7 @@ struct WebsiteIconComplex: View {
                             CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
                                 .aspectRatio(contentMode: .fill)
                                 .frame(maxWidth: .infinity, maxHeight: 400)
+                                .clipped()
 
                             Divider()
                         }
