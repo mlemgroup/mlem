@@ -10,15 +10,19 @@ import SwiftUI
 import CachedAsyncImage
 
 struct CommunityLinkView: View {
-    // TODO: setting
+    // SETTINGS
+    // TODO: setting for showing community server instance
     let showServerInstance: Bool = true
+    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
     let community: APICommunity
     
     var body: some View {
         NavigationLink(value: community) {
             HStack(alignment: .bottom, spacing: AppConstants.largeAvatarSpacing) {
-                communityAvatar
+                if shouldShowCommunityIcons {
+                    communityAvatar
+                }
                 
                 VStack(alignment: .leading) {
                     Text(community.name)
@@ -34,6 +38,7 @@ struct CommunityLinkView: View {
                 }
                 .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
         }
     }
     
@@ -48,17 +53,11 @@ struct CommunityLinkView: View {
                             .scaledToFit()
                             .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                     } else {
-                        Image("Default Community")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: AppConstants.defaultAvatarSize, height: AppConstants.defaultAvatarSize)
+                        defaultCommunityAvatar()
                     }
                 }
             } else {
-                Image("Default Community")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: AppConstants.defaultAvatarSize, height: AppConstants.defaultAvatarSize)
+                defaultCommunityAvatar()
             }
         }
         .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
@@ -66,5 +65,13 @@ struct CommunityLinkView: View {
         .overlay(Circle()
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
         .accessibilityHidden(true)
+    }
+    
+    private func defaultCommunityAvatar() -> some View {
+        Image(systemName: "building.2.crop.circle.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+            .foregroundColor(.secondary)
     }
 }

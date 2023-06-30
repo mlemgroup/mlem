@@ -29,6 +29,8 @@ struct FeedPost: View {
 
     let postView: APIPostView
     let account: SavedAccount
+    let showPostCreator: Bool
+    let showCommunity: Bool
 
     // MARK: State
 
@@ -56,23 +58,12 @@ struct FeedPost: View {
             postItem
                 .background(Color.systemBackground)
                 .contextMenu {
-                    Button("Upvote") {
-                        Task(priority: .userInitiated) {
-                            await upvotePost()
+                    ForEach(genMenuFunctions()) { item in
+                        Button {
+                            item.callback()
+                        } label: {
+                            Label(item.text, systemImage: item.imageName)
                         }
-                    }
-                    Button("Downvote") {
-                        Task(priority: .userInitiated) {
-                            await downvotePost()
-                        }
-                    }
-                    Button("Save") {
-                        Task(priority: .userInitiated) {
-                            await savePost()
-                        }
-                    }
-                    Button("Reply") {
-                        replyToPost()
                     }
                 }
                 .addSwipeyActions(isDragging: $isDragging,
@@ -100,26 +91,38 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-        Group {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+            // community name
+            if showCommunity {
+                CommunityLinkView(community: postView.community)
+            }
+            
             if shouldShowCompactPosts {
                 CompactPost(
                     postView: postView,
-                    account: account,
-                    voteOnPost: voteOnPost,
-                    savePost: { _ in await savePost() },
-                    deletePost: deletePost
+                    account: account
                 )
             } else {
                 LargePost(
                     postView: postView,
                     account: account,
-                    isExpanded: false,
-                    voteOnPost: voteOnPost,
-                    savePost: { _ in await savePost() },
-                    deletePost: deletePost
+                    isExpanded: false
                 )
             }
+            
+            // posting user
+            if showPostCreator {
+                UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
+            }
+  
+            PostInteractionBar(postView: postView,
+                               account: account,
+                               menuFunctions: genMenuFunctions(),
+                               voteOnPost: voteOnPost,
+                               updatedSavePost: { _ in await savePost() },
+                               deletePost: deletePost)
         }
+        .padding(AppConstants.postAndCommentSpacing)
     }
 
     // Reply handlers
@@ -167,5 +170,51 @@ struct FeedPost: View {
         } catch {
             print("failed to save!")
         }
+    }
+    
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        // upvote
+        let (upvoteText, upvoteImg) = postView.myVote == .upvote ?
+        ("Undo upvote", "arrow.up.square.fill") :
+        ("Upvote", "arrow.up.square")
+        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg) {
+            Task(priority: .userInitiated) {
+                await upvotePost()
+            }
+        })
+        
+        // downvote
+        let (downvoteText, downvoteImg) = postView.myVote == .downvote ?
+        ("Undo downvote", "arrow.down.square.fill") :
+        ("Downvote", "arrow.down.square")
+        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg) {
+            Task(priority: .userInitiated) {
+                await downvotePost()
+            }
+        })
+        
+        // save
+        let (saveText, saveImg) = postView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        ret.append(MenuFunction(text: saveText, imageName: saveImg) {
+            Task(priority: .userInitiated) {
+                await savePost()
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left") {
+            replyToPost()
+        })
+        
+        // share
+        ret.append(MenuFunction(text: "Share", imageName: "square.and.arrow.up") {
+            if let url = URL(string: postView.post.apId) {
+                showShareSheet(URLtoShare: url)
+            }
+        })
+        
+        return ret
     }
 }

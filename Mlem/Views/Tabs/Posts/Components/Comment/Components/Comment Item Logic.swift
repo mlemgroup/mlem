@@ -118,4 +118,52 @@ extension CommentItem {
     func replyToComment() {
         commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
     }
+    
+    // MARK: helpers
+    
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        // upvote
+        let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
+        ("Undo upvote", "arrow.up.square.fill") :
+        ("Upvote", "arrow.up.square")
+        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg) {
+            Task(priority: .userInitiated) {
+                await upvote()
+            }
+        })
+        
+        // downvote
+        let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
+        ("Undo downvote", "arrow.down.square.fill") :
+        ("Downvote", "arrow.down.square")
+        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg) {
+            Task(priority: .userInitiated) {
+                await downvote()
+            }
+        })
+        
+        // save
+        let (saveText, saveImg) = hierarchicalComment.commentView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        ret.append(MenuFunction(text: saveText, imageName: saveImg) {
+            Task(priority: .userInitiated) {
+                await saveComment()
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left") {
+            replyToComment()
+        })
+        
+        // share
+        if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
+            ret.append(MenuFunction(text: "Share", imageName: "square.and.arrow.up") {
+                showShareSheet(URLtoShare: url)
+            })
+        }
+                   
+        return ret
+    }
 }

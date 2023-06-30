@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct UserProfileLink: View {
-    @State var account: SavedAccount
-    @State var user: APIPerson
-    @State var showServerInstance: Bool
+    var account: SavedAccount
+    var user: APIPerson
+    var showServerInstance: Bool
 
     // Extra context about where the link is being displayed
     // to pick the correct flair
-    @State var postContext: APIPostView?
-    @State var commentContext: APIComment?
+    var postContext: APIPostView?
+    var commentContext: APIComment?
 
     var body: some View {
         NavigationLink(value: user) {

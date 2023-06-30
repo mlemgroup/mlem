@@ -12,6 +12,7 @@ internal enum PossibleStyling {
 }
 
 // swiftlint:disable type_body_length
+// swiftlint:disable file_length
 struct ExpandedPost: View {
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
@@ -52,6 +53,9 @@ struct ExpandedPost: View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
+                
+                Divider()
+                    .background(.black)
 
                 if commentTracker.isLoading {
                     commentsLoadingView
@@ -239,18 +243,26 @@ struct ExpandedPost: View {
      Displays the post itself, plus a little divider to keep it visually distinct from comments
      */
     private var postView: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+            
+            CommunityLinkView(community: post.community)
+            
             LargePost(
                 postView: post,
                 account: account,
-                isExpanded: true,
-                voteOnPost: voteOnPost,
-                savePost: savePost,
-                deletePost: deletePost
+                isExpanded: true
             )
-            Divider()
-                .background(.black)
+            
+            UserProfileLink(account: account, user: post.creator, showServerInstance: true)
+            
+            PostInteractionBar(postView: post,
+                               account: account,
+                               menuFunctions: genMenuFunctions(),
+                               voteOnPost: voteOnPost,
+                               updatedSavePost: savePost,
+                               deletePost: deletePost)
         }
+        .padding(AppConstants.postAndCommentSpacing)
     }
 
     /**
@@ -258,6 +270,7 @@ struct ExpandedPost: View {
      */
     private var commentsLoadingView: some View {
         ProgressView("Loading comments…")
+            .padding(.top, AppConstants.postAndCommentSpacing)
             .task(priority: .userInitiated) {
                 if post.counts.comments != 0 {
                     await loadComments()
@@ -298,6 +311,7 @@ struct ExpandedPost: View {
                     postContext: post,
                     depth: 0,
                     showPostContext: false,
+                    showCommentCreator: true,
                     isDragging: $isDragging
                 )
             }
@@ -375,6 +389,53 @@ struct ExpandedPost: View {
             print("failed to delete post!")
         }
     }
+    
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        // upvote
+        let (upvoteText, upvoteImg) = post.myVote == .upvote ?
+        ("Undo upvote", "arrow.up.square.fill") :
+        ("Upvote", "arrow.up.square")
+        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg) {
+            Task(priority: .userInitiated) {
+                await voteOnPost(inputOp: .upvote)
+            }
+        })
+        
+        // downvote
+        let (downvoteText, downvoteImg) = post.myVote == .downvote ?
+        ("Undo downvote", "arrow.down.square.fill") :
+        ("Downvote", "arrow.down.square")
+        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg) {
+            Task(priority: .userInitiated) {
+                await voteOnPost(inputOp: .downvote)
+            }
+        })
+        
+        // save
+        let (saveText, saveImg) = post.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        ret.append(MenuFunction(text: saveText, imageName: saveImg) {
+            Task(priority: .userInitiated) {
+                try await savePost(_: !post.saved)
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left") {
+            isReplyFieldFocused = true
+        })
+        
+        // share
+        ret.append(MenuFunction(text: "Share", imageName: "square.and.arrow.up") {
+            if let url = URL(string: post.post.apId) {
+                showShareSheet(URLtoShare: url)
+            }
+        })
+        
+        return ret
+    }
 }
 
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length
