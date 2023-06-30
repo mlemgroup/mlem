@@ -318,8 +318,10 @@ struct CommunityView: View {
                             Divider()
 
                             if let actorId = community?.actorId {
-                                ShareButton(size: 20, accessibilityContext: "community") {
+                                Button {
                                     showShareSheet(URLtoShare: actorId)
+                                } label: {
+                                    Label("Share", systemImage: "square.and.arrow.up")
                                 }
                             }
                         }
