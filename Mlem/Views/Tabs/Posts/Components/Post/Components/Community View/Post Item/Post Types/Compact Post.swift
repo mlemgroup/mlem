@@ -22,6 +22,7 @@ struct CompactPost: View {
     let postView: APIPostView
     let account: SavedAccount
     let showPostCreator: Bool
+    let showCommunity: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     let savePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
@@ -43,7 +44,9 @@ struct CompactPost: View {
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
             
-            CommunityLinkView(community: postView.community)
+            if showCommunity {
+                CommunityLinkView(community: postView.community)
+            }
             
             HStack(alignment: .top, spacing: spacing) {
                 thumbnailImage

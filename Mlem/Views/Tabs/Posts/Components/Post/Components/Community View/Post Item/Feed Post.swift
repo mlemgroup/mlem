@@ -30,6 +30,7 @@ struct FeedPost: View {
     let postView: APIPostView
     let account: SavedAccount
     let showPostCreator: Bool
+    let showCommunity: Bool
 
     // MARK: State
 
@@ -107,6 +108,7 @@ struct FeedPost: View {
                     postView: postView,
                     account: account,
                     showPostCreator: showPostCreator,
+                    showCommunity: showCommunity,
                     voteOnPost: voteOnPost,
                     savePost: { _ in await savePost() },
                     deletePost: deletePost
@@ -117,6 +119,7 @@ struct FeedPost: View {
                     account: account,
                     isExpanded: false,
                     showPostCreator: showPostCreator,
+                    showCommunity: showCommunity,
                     voteOnPost: voteOnPost,
                     savePost: { _ in await savePost() },
                     deletePost: deletePost

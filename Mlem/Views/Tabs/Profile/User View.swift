@@ -370,6 +370,7 @@ struct UserView: View {
             FeedPost(postView: post,
                      account: account,
                      showPostCreator: false,
+                     showCommunity: true,
                      isDragging: $isDragging)
         }
         .buttonStyle(.plain)

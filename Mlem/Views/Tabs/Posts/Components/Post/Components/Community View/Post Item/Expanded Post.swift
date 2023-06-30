@@ -245,6 +245,7 @@ struct ExpandedPost: View {
                 account: account,
                 isExpanded: true,
                 showPostCreator: true,
+                showCommunity: true,
                 voteOnPost: voteOnPost,
                 savePost: savePost,
                 deletePost: deletePost

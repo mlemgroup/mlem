@@ -445,6 +445,7 @@ struct CommunityView: View {
                     postView: post,
                     account: account,
                     showPostCreator: shouldShowPostCreator,
+                    showCommunity: !isInSpecificCommunity,
                     isDragging: $isDragging
                 )
             }

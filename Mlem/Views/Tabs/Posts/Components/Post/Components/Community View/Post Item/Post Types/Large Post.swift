@@ -24,6 +24,7 @@ struct LargePost: View {
     let account: SavedAccount
     let isExpanded: Bool
     let showPostCreator: Bool
+    let showCommunity: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     let savePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
@@ -34,6 +35,7 @@ struct LargePost: View {
         account: SavedAccount,
         isExpanded: Bool,
         showPostCreator: Bool,
+        showCommunity: Bool,
         voteOnPost: @escaping (ScoringOperation) async -> Void,
         savePost: @escaping (_ save: Bool) async throws -> Void,
         deletePost: @escaping () async -> Void
@@ -42,6 +44,7 @@ struct LargePost: View {
         self.account = account
         self.isExpanded = isExpanded
         self.showPostCreator = showPostCreator
+        self.showCommunity = showCommunity
         self.voteOnPost = voteOnPost
         self.savePost = savePost
         self.deletePost = deletePost
@@ -50,7 +53,9 @@ struct LargePost: View {
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
             // community name
-            CommunityLinkView(community: postView.community)
+            if showCommunity {
+                CommunityLinkView(community: postView.community)
+            }
 
             // post title
             Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
