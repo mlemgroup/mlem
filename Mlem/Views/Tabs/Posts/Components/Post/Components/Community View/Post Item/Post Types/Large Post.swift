@@ -23,6 +23,7 @@ struct LargePost: View {
     let postView: APIPostView
     let account: SavedAccount
     let isExpanded: Bool
+    let showPostCreator: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     let savePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
@@ -32,6 +33,7 @@ struct LargePost: View {
         postView: APIPostView,
         account: SavedAccount,
         isExpanded: Bool,
+        showPostCreator: Bool,
         voteOnPost: @escaping (ScoringOperation) async -> Void,
         savePost: @escaping (_ save: Bool) async throws -> Void,
         deletePost: @escaping () async -> Void
@@ -39,16 +41,16 @@ struct LargePost: View {
         self.postView = postView
         self.account = account
         self.isExpanded = isExpanded
+        self.showPostCreator = showPostCreator
         self.voteOnPost = voteOnPost
         self.savePost = savePost
         self.deletePost = deletePost
     }
 
     var body: some View {
-        VStack(spacing: spacing) {
-            // header--community/poster/ellipsis menu
-            PostHeader(postView: postView, account: account)
-                .padding(.bottom, -2) // negative padding to crunch header and title together just a wee bit
+        VStack(alignment: .leading, spacing: spacing) {
+            // community name
+            CommunityLinkView(community: postView.community)
 
             // post title
             Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
@@ -71,11 +73,15 @@ struct LargePost: View {
             case .titleOnly:
                 EmptyView()
             }
+            
+            // post user
+            if showPostCreator {
+                UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
+            }
 
             PostInteractionBar(
                 postView: postView,
                 account: account,
-                compact: false,
                 voteOnPost: voteOnPost,
                 updatedSavePost: savePost,
                 deletePost: deletePost
@@ -86,7 +92,7 @@ struct LargePost: View {
     }
 
     // MARK: - Subviews
-
+    
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {

@@ -164,67 +164,66 @@ struct UserView: View {
     
     @ViewBuilder
     private var commentsFeed: some View {
-        LazyVStack {
-            if generateCommentFeed(savedItems: false).isEmpty {
-                emptyFeed
-            } else {
+        if generateCommentFeed(savedItems: false).isEmpty {
+            emptyFeed
+        } else {
+            LazyVStack(spacing: 0) {
                 ForEach(generateCommentFeed(savedItems: false)) { feedItem in
-                    commentEntry(for: feedItem.comment!)
-                    Spacer().frame(height: 8)
+                    if let comment = feedItem.comment {
+                        commentEntry(for: comment)
+                    }
                 }
             }
-        }.background(Color.secondarySystemBackground)
+        }
     }
     
     @ViewBuilder
     private var postsFeed: some View {
-        LazyVStack {
-            if generatePostFeed(savedItems: false).isEmpty {
-                emptyFeed
-            } else {
+        if generatePostFeed(savedItems: false).isEmpty {
+            emptyFeed
+        } else {
+            VStack(spacing: 0) {
                 ForEach(generatePostFeed(savedItems: false)) { feedItem in
-                    postEntry(for: feedItem.post!)
-                    Spacer().frame(height: 8)
+                    if let post = feedItem.post {
+                        postEntry(for: post)
+                    }
                 }
             }
         }
-        .background(Color.secondarySystemBackground)
     }
     
     @ViewBuilder
     private var mixedFeed: some View {
-        LazyVStack {
-            if generateMixedFeed(savedItems: false).isEmpty {
-                emptyFeed
-            } else {
+        if generateMixedFeed(savedItems: false).isEmpty {
+            emptyFeed
+        } else {
+            LazyVStack(spacing: 0) {
                 ForEach(generateMixedFeed(savedItems: false)) { feedItem in
                     if let comment = feedItem.comment {
                         commentEntry(for: comment)
                     } else if let post = feedItem.post {
                         postEntry(for: post)
                     }
-                    Spacer().frame(height: 8)
                 }
             }
-        }.background(Color.secondarySystemBackground)
+        }
     }
     
     @ViewBuilder
     private var savedFeed: some View {
-        LazyVStack {
-            if generateMixedFeed(savedItems: true).isEmpty {
-                emptyFeed
-            } else {
+        if generateMixedFeed(savedItems: true).isEmpty {
+            emptyFeed
+        } else {
+            LazyVStack(spacing: 0) {
                 ForEach(generateMixedFeed(savedItems: true)) { feedItem in
                     if let comment = feedItem.comment {
                         commentEntry(for: comment)
                     } else if let post = feedItem.post {
                         postEntry(for: post)
                     }
-                    Spacer().frame(height: 8)
                 }
             }
-        }.background(Color.secondarySystemBackground)
+        }
     }
     
     private func generateCommentFeed(savedItems: Bool) -> [FeedItem] {
@@ -368,7 +367,10 @@ struct UserView: View {
         NavigationLink {
             ExpandedPost(account: account, post: post, feedType: .constant(.subscribed))
         } label: {
-            FeedPost(postView: post, account: account, isDragging: $isDragging)
+            FeedPost(postView: post,
+                     account: account,
+                     showPostCreator: false,
+                     isDragging: $isDragging)
         }
         .buttonStyle(.plain)
     }
@@ -377,20 +379,14 @@ struct UserView: View {
      User comment
      */
     private func commentEntry(for comment: HierarchicalComment) -> some View {
-        VStack {
-            HStack {
-                CommentItem(
-                    account: account,
-                    hierarchicalComment: comment,
-                    postContext: nil,
-                    depth: 0,
-                    showPostContext: true,
-                    isDragging: $isDragging
-                )
-                    .padding(.vertical)
-                Spacer()
-            }
-        }.background(Color.systemBackground)
+        CommentItem(
+            account: account,
+            hierarchicalComment: comment,
+            postContext: nil,
+            depth: 0,
+            showPostContext: true,
+            isDragging: $isDragging
+        )
     }
 }
 

@@ -10,15 +10,19 @@ import SwiftUI
 import CachedAsyncImage
 
 struct CommunityLinkView: View {
+    // SETTINGS
     // TODO: setting
     let showServerInstance: Bool = true
+    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
     let community: APICommunity
     
     var body: some View {
         NavigationLink(value: community) {
             HStack(alignment: .bottom, spacing: AppConstants.largeAvatarSpacing) {
-                communityAvatar
+                if shouldShowCommunityIcons {
+                    communityAvatar
+                }
                 
                 VStack(alignment: .leading) {
                     Text(community.name)
@@ -34,6 +38,7 @@ struct CommunityLinkView: View {
                 }
                 .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
         }
     }
     

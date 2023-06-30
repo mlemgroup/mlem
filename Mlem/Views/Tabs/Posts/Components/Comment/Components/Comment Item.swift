@@ -41,7 +41,6 @@ struct CommentItem: View {
     // MARK: Constants
 
     let threadingColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
-    let spacing: CGFloat = 8
     let indent: CGFloat = 10
 
     // MARK: Parameters
@@ -92,7 +91,7 @@ struct CommentItem: View {
     var body: some View {
         VStack(spacing: 0) {
             Group {
-                VStack(spacing: spacing) {
+                VStack(spacing: AppConstants.postAndCommentSpacing) {
                     commentHeader
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(commentorLabel)
@@ -110,7 +109,7 @@ struct CommentItem: View {
                                           saveComment: saveComment,
                                           deleteComment: deleteComment)
                 }
-                .padding(spacing)
+                .padding(AppConstants.postAndCommentSpacing)
             }
             .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {
@@ -185,11 +184,6 @@ struct CommentItem: View {
             )
 
             Spacer()
-
-            HStack(spacing: 2) {
-                Image(systemName: "clock")
-                Text(publishedAgo)
-            }
         }
         .font(.footnote)
         .foregroundColor(.secondary)
@@ -197,7 +191,7 @@ struct CommentItem: View {
 
     @ViewBuilder
     var commentBody: some View {
-        VStack {
+        VStack(spacing: AppConstants.postAndCommentSpacing) {
             // comment text or placeholder
             if hierarchicalComment.commentView.comment.deleted {
                 Text("Comment was deleted")

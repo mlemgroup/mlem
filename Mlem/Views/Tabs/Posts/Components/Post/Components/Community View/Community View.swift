@@ -14,6 +14,7 @@ struct CommunityView: View {
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -443,6 +444,7 @@ struct CommunityView: View {
                 FeedPost(
                     postView: post,
                     account: account,
+                    showPostCreator: shouldShowPostCreator,
                     isDragging: $isDragging
                 )
             }

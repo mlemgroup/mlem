@@ -29,8 +29,7 @@ struct CommentInteractionBar: View {
     let displayedScore: Int
     let displayedVote: ScoringOperation
     let displayedSaved: Bool
-
-    // let voteOnPost: (ScoringOperation) -> Void
+    
     let upvote: () async -> Void
     let downvote: () async -> Void
     let saveComment: () async -> Void
@@ -38,10 +37,10 @@ struct CommentInteractionBar: View {
 
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: commentView.post.published )}
-    let height: CGFloat = 20
+    let height: CGFloat = 24
 
     var body: some View {
-        HStack(spacing: 18) {
+        HStack(spacing: 12) {
             VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
 
@@ -51,12 +50,6 @@ struct CommentInteractionBar: View {
                 }
             }
 
-             if let postURL = URL(string: commentView.post.apId) {
-                 ShareButton(size: height, accessibilityContext: "comment") {
-                     showShareSheet(URLtoShare: postURL)
-                 }
-             }
-
             // TODO: Eric - flesh out
             EllipsisMenu(
                 size: height,
@@ -65,8 +58,15 @@ struct CommentInteractionBar: View {
             )
 
             Spacer()
+            
+            HStack(spacing: iconToTextSpacing) {
+                Image(systemName: "clock")
+                Text(publishedAgo)
+            }
+            .foregroundColor(.secondary)
+            // Hi Weston--this will be a TimeDisplay within the next day or so, so probably not worth doing a11y stuff to it
         }
-        .font(.footnote)
+        .font(.callout)
     }
     
     func canDeleteComment() -> Bool {

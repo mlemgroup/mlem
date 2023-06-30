@@ -16,11 +16,12 @@ struct CompactPost: View {
 
     // constants
     let thumbnailSize: CGFloat = 60
-    private let spacing: CGFloat = 8 // constant for readability, ease of modification
+    private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
     // arguments
     let postView: APIPostView
     let account: SavedAccount
+    let showPostCreator: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     let savePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
@@ -40,13 +41,16 @@ struct CompactPost: View {
     var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
 
     var body: some View {
-        VStack(spacing: spacing) {
-            HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: spacing) {
+            
+            CommunityLinkView(community: postView.community)
+            
+            HStack(alignment: .top, spacing: spacing) {
                 thumbnailImage
 
                 VStack(spacing: 2) {
                     Text(postView.post.name)
-                        .font(.subheadline)
+                        .font(.headline)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         .padding(.trailing)
 
@@ -54,29 +58,20 @@ struct CompactPost: View {
                         // stickied
                         if postView.post.featuredLocal { StickiedTag(compact: true) }
                         if postView.post.nsfw { NSFWTag(compact: true) }
-
-                        // community name
-                        NavigationLink(value: postView.community) {
-                            Text(postView.community.name)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .bold()
-                        }
-                        Text("by")
-                            .foregroundColor(.secondary)
-                            .font(.caption)
-                        UserProfileLink(account: account, user: postView.creator, showServerInstance: shouldShowUserServerInPost)
-                            .font(.caption)
-
+                        
                         Spacer()
                     }
                 }
 
             }
+            
+            if showPostCreator {
+                UserProfileLink(account: account, user: postView.creator, showServerInstance: shouldShowUserServerInPost)
+            }
+            
             PostInteractionBar(
                 postView: postView,
                 account: account,
-                compact: true,
                 voteOnPost: voteOnPost,
                 updatedSavePost: savePost,
                 deletePost: deletePost
