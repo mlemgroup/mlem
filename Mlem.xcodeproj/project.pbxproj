@@ -198,7 +198,6 @@
 		CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DE2A361585008EF95B /* Empty Button Style.swift */; };
 		CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E42A362AD3008EF95B /* Post Header.swift */; };
 		CD04D5E72A3636FB008EF95B /* Compact Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E62A3636FB008EF95B /* Compact Post.swift */; };
-		CD05E7772A4E37DE0081D102 /* PostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7762A4E37DE0081D102 /* PostSettings.swift */; };
 		CD05E7792A4E381A0081D102 /* Post Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7782A4E381A0081D102 /* Post Sizes.swift */; };
 		CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77E2A4F263B0081D102 /* Menu Function.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
@@ -449,7 +448,6 @@
 		CD04D5DE2A361585008EF95B /* Empty Button Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Empty Button Style.swift"; sourceTree = "<group>"; };
 		CD04D5E42A362AD3008EF95B /* Post Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Header.swift"; sourceTree = "<group>"; };
 		CD04D5E62A3636FB008EF95B /* Compact Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Compact Post.swift"; sourceTree = "<group>"; };
-		CD05E7762A4E37DE0081D102 /* PostSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettings.swift; sourceTree = "<group>"; };
 		CD05E7782A4E381A0081D102 /* Post Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Sizes.swift"; sourceTree = "<group>"; };
 		CD05E77E2A4F263B0081D102 /* Menu Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Function.swift"; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
@@ -1243,7 +1241,6 @@
 				CD2E182A2A3B708500224F8A /* Settings Options.swift */,
 				CD69F55A2A400D820028D4F7 /* App Theme.swift */,
 				B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */,
-				CD05E7762A4E37DE0081D102 /* PostSettings.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1571,7 +1568,6 @@
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				B1A5A8172A4C889200F203DB /* AlternativeIconCell.swift in Sources */,
 				50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */,
-				CD05E7772A4E37DE0081D102 /* PostSettings.swift in Sources */,
 				63A200532A2DDD38005CDDE3 /* Dictionary - Append.swift in Sources */,
 				CD64832D2A38CE4E00EE6CA3 /* Vote Complex Style.swift in Sources */,
 				637218492A3A2AAD008C4816 /* APICommentReplyView.swift in Sources */,
