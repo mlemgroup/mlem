@@ -11,7 +11,7 @@ import CachedAsyncImage
 
 struct CommunityLinkView: View {
     // SETTINGS
-    // TODO: setting
+    // TODO: setting for showing community server instance
     let showServerInstance: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
