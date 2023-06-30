@@ -53,17 +53,19 @@ struct CommunityLinkView: View {
                             .scaledToFit()
                             .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                     } else {
-                        Image("Default Community")
+                        Image(systemName: "building.2.crop.circle.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: AppConstants.defaultAvatarSize, height: AppConstants.defaultAvatarSize)
+                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+                            .foregroundColor(.secondary)
                     }
                 }
             } else {
-                Image("Default Community")
+                Image(systemName: "building.2.crop.circle.fill")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: AppConstants.defaultAvatarSize, height: AppConstants.defaultAvatarSize)
+                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+                    .foregroundColor(.secondary)
             }
         }
         .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)

@@ -62,7 +62,7 @@ struct UserProfileLabel: View {
                         Image(systemName: "person.circle")
                             .resizable()
                             .scaledToFill()
-                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.defaultAvatarSize)
+                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                             .foregroundColor(.secondary)
                     }
                 }
@@ -70,7 +70,7 @@ struct UserProfileLabel: View {
                 Image(systemName: "person.circle")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.defaultAvatarSize)
+                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                     .foregroundColor(.secondary)
             }
         }

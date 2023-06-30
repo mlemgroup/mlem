@@ -20,29 +20,30 @@ struct ContentView: View {
         TabView(selection: $tabSelection) {
             AccountsPage()
                 .tabItem {
-                    Label("Feeds", systemImage: "text.bubble")
+                    Label("Feeds", systemImage: "scroll")
+                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
                 }.tag(1)
             
             if let currentActiveAccount = appState.currentActiveAccount {
                 InboxView(account: currentActiveAccount)
                     .tabItem {
                         Label("Inbox", systemImage: "mail.stack")
+                            .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                     }.tag(2)
                 
                 NavigationView {
                     ProfileView(account: currentActiveAccount)  
                 } .tabItem {
-                    if showUsernameInNavigationBar {
-                        Label(currentActiveAccount.username, systemImage: "person")
-                    } else {
-                        Label("Profile", systemImage: "person")
-                    }
+                    let username = showUsernameInNavigationBar ? currentActiveAccount.username : "Profile"
+                    Label(username, systemImage: "person.circle")
+                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }.tag(3)
             }
 
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
+                        .environment(\.symbolVariants, tabSelection == 4 ? .fill : .none)
                 }.tag(4)
         }
         .onAppear {
