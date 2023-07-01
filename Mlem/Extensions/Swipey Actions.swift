@@ -24,21 +24,21 @@ struct SwipeyView: ViewModifier {
 
     // callbacks
     let shortLeftAction: () async -> Void
-    let longLeftAction: () async -> Void
+    let longLeftAction: (() async -> Void)?
     let shortRightAction: () async -> Void
     let longRightAction: () async -> Void
 
     // symbols
     let emptyLeftSymbolName: String
     let shortLeftSymbolName: String
-    let longLeftSymbolName: String
+    let longLeftSymbolName: String?
     let emptyRightSymbolName: String
     let shortRightSymbolName: String
     let longRightSymbolName: String
 
     // colors
     let shortLeftColor: Color
-    let longLeftColor: Color
+    let longLeftColor: Color?
     let shortRightColor: Color
     let longRightColor: Color
 
@@ -50,9 +50,9 @@ struct SwipeyView: ViewModifier {
          shortLeftAction: @escaping () async -> Void,
          shortLeftColor: Color,
 
-         longLeftSymbolName: String,
-         longLeftAction: @escaping () async -> Void,
-         longLeftColor: Color,
+         longLeftSymbolName: String? = nil,
+         longLeftAction: (() async -> Void)? = nil,
+         longLeftColor: Color? = nil,
 
          emptyRightSymbolName: String,
          shortRightSymbolName: String,
@@ -137,7 +137,11 @@ struct SwipeyView: ViewModifier {
                             }
                         } else if prevDragPosition > AppConstants.longSwipeDragMin {
                             Task(priority: .userInitiated) {
-                                await longLeftAction()
+                                if let longLeftAction {
+                                    await longLeftAction()
+                                } else {
+                                    await shortLeftAction()
+                                }
                             }
                         } else if prevDragPosition > AppConstants.shortSwipeDragMin {
                             Task(priority: .userInitiated) {
@@ -181,9 +185,9 @@ struct SwipeyView: ViewModifier {
                                 tapper.impactOccurred()
                             }
                         } else {
-                            leftSwipeSymbol = longLeftSymbolName
-                            dragBackground = longLeftColor
-                            if prevDragPosition <= AppConstants.longSwipeDragMin {
+                            leftSwipeSymbol = longLeftSymbolName ?? shortLeftSymbolName
+                            dragBackground = longLeftColor ?? shortLeftColor
+                            if prevDragPosition <= AppConstants.longSwipeDragMin, longLeftAction != nil {
                                 tapper.impactOccurred()
                             }
                         }
@@ -212,9 +216,9 @@ public extension View {
                           shortLeftAction: @escaping () async -> Void,
                           shortLeftColor: Color,
 
-                          longLeftSymbolName: String,
-                          longLeftAction: @escaping () async -> Void,
-                          longLeftColor: Color,
+                          longLeftSymbolName: String?,
+                          longLeftAction: (() async -> Void)?,
+                          longLeftColor: Color?,
 
                           emptyRightSymbolName: String,
                           shortRightSymbolName: String,
