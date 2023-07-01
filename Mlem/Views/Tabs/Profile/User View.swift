@@ -32,20 +32,12 @@ struct UserView: View {
     @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
-    @State var showingCakeDay = false
+    @State private var showingCakeDay = false
+    @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
-    @State private var selectionSection = 0
+    @State private var selectionSection = UserViewTab.overview
     @State var isDragging: Bool = false
     @FocusState var isReplyFieldFocused
-    
-    enum FeedType: String, CaseIterable, Identifiable {
-        case overview = "Overview"
-        case comments = "Comments"
-        case posts = "Posts"
-        case saved = "Saved"
-        
-        var id: String { return self.rawValue }
-    }
     
     struct FeedItem: Identifiable {
         let id = UUID()
@@ -69,49 +61,60 @@ struct UserView: View {
             progressView
         }
     }
+    
+    @ViewBuilder
+    private var moderatorButton: some View {
+        if let user = userDetails, !moderatedCommunities.isEmpty {
+            NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
+                Image(systemName: "shield")
+            }
+        }
+    }
 
+    private func header(for userDetails: APIPersonView) -> some View {
+        CommunitySidebarHeader(
+            title: userDetails.person.displayName ?? userDetails.person.name,
+            subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
+            avatarSubtext: $avatarSubtext,
+            avatarSubtextClicked: self.toggleCakeDayVisible,
+            bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
+            avatarUrl: userDetails.person.avatar,
+            label1: "\(userDetails.counts.commentCount) Comments",
+            label2: "\(userDetails.counts.postCount) Posts")
+    }
+    
     private func view(for userDetails: APIPersonView) -> some View {
         ScrollView {
-            CommunitySidebarHeader(
-                title: userDetails.person.displayName ?? userDetails.person.name,
-                subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
-                avatarSubtext: $avatarSubtext,
-                avatarSubtextClicked: self.toggleCakeDayVisible,
-                bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
-                avatarUrl: userDetails.person.avatar,
-                label1: "\(userDetails.counts.commentCount) Comments",
-                label2: "\(userDetails.counts.postCount) Posts")
+            header(for: userDetails)
             
             if let bio = userDetails.person.bio {
                 MarkdownView(text: bio, isNsfw: false).padding()
             }
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                Text(FeedType.overview.rawValue).tag(0)
-                Text(FeedType.comments.rawValue).tag(1)
-                Text(FeedType.posts.rawValue).tag(2)
-                
-                // Only show saved posts if we are
-                // browsing our own profile
-                if isShowingOwnProfile() {
-                    Text(FeedType.saved.rawValue).tag(3)
+                ForEach(UserViewTab.allCases, id: \.id) { tab in
+                    // Skip tabs that are meant for only our profile
+                    if tab.onlyShowInOwnProfile {
+                        if isShowingOwnProfile() {
+                            Text(tab.label).tag(tab.rawValue)
+                        }
+                    } else {
+                        Text(tab.label).tag(tab.rawValue)
+                    }
                 }
-                
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
             
             switch selectionSection {
-            case 0:
+            case UserViewTab.overview:
                 mixedFeed
-            case 1:
+            case UserViewTab.comments:
                 commentsFeed
-            case 2:
+            case UserViewTab.posts:
                 postsFeed
-            case 3:
+            case UserViewTab.saved:
                 savedFeed
-            default:
-                Text("Coming soon!")
             }
         }
         .environmentObject(privateCommentReplyTracker)
@@ -122,6 +125,10 @@ struct UserView: View {
         .headerProminence(.standard)
         .refreshable {
             await tryLoadUser()
+        }.toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                moderatorButton
+            }
         }
     }
     
@@ -325,6 +332,7 @@ struct UserView: View {
             }
             
             userDetails = authoredContent.personView
+            moderatedCommunities = authoredContent.moderates
             updateAvatarSubtext()
         } catch {
             handle(error)
