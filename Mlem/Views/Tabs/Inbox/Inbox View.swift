@@ -11,7 +11,6 @@ import CachedAsyncImage
 
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
-
 struct InboxView: View {
     let spacing: CGFloat = 10
     
@@ -28,7 +27,13 @@ struct InboxView: View {
     @StateObject var messagesTracker: MessagesTracker = .init()
     @StateObject var repliesTracker: RepliesTracker = .init()
     
-    @State private var selectionSection = 0
+    // TODO: this jank needs to go, but that's a heavy lift. Currently using the trackers directly in the sub-views breaks scrolling in those views because parent state updates rerender them while loadNextPage calls are in-flight. 
+    @State var allMentions: [APIPersonMentionView] = .init()
+    @State var allMessages: [APIPrivateMessageView] = .init()
+    @State var allReplies: [APICommentReplyView] = .init()
+    
+    // TODO: make private again
+    @State var selectionSection = 0
     
     @State private var navigationPath = NavigationPath()
     
@@ -45,24 +50,26 @@ struct InboxView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     if errorOccurred {
                         errorView()
                     } else {
-                        Group {
-                            switch selectionSection {
-                            case 0:
-                                inboxFeedView()
-                            case 1:
-                                repliesFeedView()
-                            case 2:
-                                mentionsFeedView()
-                            case 3:
-                                messagesFeedView()
-                            default:
-                                Text("how did we get here?")
-                            }
-                        }
+                        inboxFeedView()
+                        // TODO: re-enable this
+//                        Group {
+//                            switch selectionSection {
+//                            case 0:
+//                                inboxFeedView()
+//                            case 1:
+//                                repliesFeedView()
+//                            case 2:
+//                                mentionsFeedView()
+//                            case 3:
+//                                messagesFeedView()
+//                            default:
+//                                Text("how did we get here?")
+//                            }
+//                        }
                     }
                 }
                 .refreshable {

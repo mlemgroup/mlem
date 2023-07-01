@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-class MessagesTracker: FeedTracker<APIPrivateMessageView> {
+class MessagesTracker: FeedTracker<APIPrivateMessageView>, InboxTracker {
     func loadNextPage(account: SavedAccount) async throws {
         try await perform(
             GetPrivateMessagesRequest(
