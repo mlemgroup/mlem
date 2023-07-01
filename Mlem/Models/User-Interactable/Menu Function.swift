@@ -15,5 +15,7 @@ struct MenuFunction: Identifiable {
     
     let text: String
     let imageName: String
+    let destructiveActionPrompt: String?
+    let enabled: Bool
     let callback: () -> Void
 }

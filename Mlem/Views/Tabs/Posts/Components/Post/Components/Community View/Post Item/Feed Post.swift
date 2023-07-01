@@ -139,7 +139,7 @@ struct FeedPost: View {
         do {
             _ = try await Mlem.deletePost(postId: postView.post.id, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            print("failed to delete post!")
+            print("failed to delete post: \(error)")
         }
     }
     
@@ -172,6 +172,7 @@ struct FeedPost: View {
         }
     }
     
+    // swiftlint:disable function_body_length
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
@@ -179,7 +180,11 @@ struct FeedPost: View {
         let (upvoteText, upvoteImg) = postView.myVote == .upvote ?
         ("Undo upvote", "arrow.up.square.fill") :
         ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg) {
+        ret.append(MenuFunction(
+            text: upvoteText,
+            imageName: upvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
             Task(priority: .userInitiated) {
                 await upvotePost()
             }
@@ -189,7 +194,11 @@ struct FeedPost: View {
         let (downvoteText, downvoteImg) = postView.myVote == .downvote ?
         ("Undo downvote", "arrow.down.square.fill") :
         ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg) {
+        ret.append(MenuFunction(
+            text: downvoteText,
+            imageName: downvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
             Task(priority: .userInitiated) {
                 await downvotePost()
             }
@@ -197,19 +206,44 @@ struct FeedPost: View {
         
         // save
         let (saveText, saveImg) = postView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
-        ret.append(MenuFunction(text: saveText, imageName: saveImg) {
+        ret.append(MenuFunction(
+            text: saveText,
+            imageName: saveImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
             Task(priority: .userInitiated) {
                 await savePost()
             }
         })
         
         // reply
-        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left") {
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
             replyToPost()
         })
         
+        // delete
+        if postView.creator.id == account.id {
+            ret.append(MenuFunction(
+                text: "Delete",
+                imageName: "trash",
+                destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
+                enabled: !postView.post.deleted) {
+                Task(priority: .userInitiated) {
+                    await deletePost()
+                }
+            })
+        }
+        
         // share
-        ret.append(MenuFunction(text: "Share", imageName: "square.and.arrow.up") {
+        ret.append(MenuFunction(
+            text: "Share",
+            imageName: "square.and.arrow.up",
+            destructiveActionPrompt: nil,
+            enabled: true) {
             if let url = URL(string: postView.post.apId) {
                 showShareSheet(URLtoShare: url)
             }
@@ -217,4 +251,5 @@ struct FeedPost: View {
         
         return ret
     }
+    // swiftlint:enable function_body_length
 }
