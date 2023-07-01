@@ -69,7 +69,7 @@ struct CommunityView: View {
         ZStack(alignment: .top) {
             searchResultsView
                 .accessibilityHidden(!isShowingCommunitySearch)
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 if postTracker.items.isEmpty {
                     noPostsView
                 } else {

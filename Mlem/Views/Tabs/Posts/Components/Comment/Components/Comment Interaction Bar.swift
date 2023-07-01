@@ -52,7 +52,6 @@ struct CommentInteractionBar: View {
                 }
             }
 
-            // TODO: Eric - flesh out
             EllipsisMenu(
                 size: height,
                 menuFunctions: menuFunctions
