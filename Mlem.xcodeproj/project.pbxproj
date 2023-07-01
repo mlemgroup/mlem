@@ -51,7 +51,7 @@
 		63344C672A08D4E3001BC616 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C662A08D4E3001BC616 /* Appearance.swift */; };
 		63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C692A08F448001BC616 /* Sticky Image View.swift */; };
 		63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C6D2A097FA1001BC616 /* View - Hide View.swift */; };
-		63344C712A098060001BC616 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C702A098060001BC616 /* Sidebar.swift */; };
+		63344C712A098060001BC616 /* Sidebar View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C702A098060001BC616 /* Sidebar View.swift */; };
 		63344C752A09B075001BC616 /* Get Community Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C742A09B075001BC616 /* Get Community Details.swift */; };
 		6354F30A2A2E20040074C08D /* Alert - Multiple Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */; };
 		636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 636250DB2A18111400FC59B4 /* KeychainAccess */; };
@@ -177,6 +177,7 @@
 		6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */; };
 		6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */; };
 		6DA7E9A22A50764E0095AB68 /* UserViewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA7E9A12A50764E0095AB68 /* UserViewTab.swift */; };
+		6DD8677A2A5083A200BEB00F /* Community Sidebar Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD867792A5083A200BEB00F /* Community Sidebar Link.swift */; };
 		6DE118392A4A20D600810C7E /* Lazy Load Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
 		6DE1183E2A4A4FF500810C7E /* Delete Post or Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */; };
@@ -309,7 +310,7 @@
 		63344C662A08D4E3001BC616 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		63344C692A08F448001BC616 /* Sticky Image View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sticky Image View.swift"; sourceTree = "<group>"; };
 		63344C6D2A097FA1001BC616 /* View - Hide View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - Hide View.swift"; sourceTree = "<group>"; };
-		63344C702A098060001BC616 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		63344C702A098060001BC616 /* Sidebar View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar View.swift"; sourceTree = "<group>"; };
 		63344C742A09B075001BC616 /* Get Community Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Community Details.swift"; sourceTree = "<group>"; };
 		6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert - Multiple Alerts.swift"; sourceTree = "<group>"; };
 		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -432,6 +433,7 @@
 		6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListSidebarEntry.swift; sourceTree = "<group>"; };
 		6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowViews.swift; sourceTree = "<group>"; };
 		6DA7E9A12A50764E0095AB68 /* UserViewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewTab.swift; sourceTree = "<group>"; };
+		6DD867792A5083A200BEB00F /* Community Sidebar Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Sidebar Link.swift"; sourceTree = "<group>"; };
 		6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lazy Load Post Link.swift"; sourceTree = "<group>"; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
 		6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Delete Post or Comment.swift"; sourceTree = "<group>"; };
@@ -777,7 +779,7 @@
 			children = (
 				632578172A29F83C00446A66 /* PostSortMenu.swift */,
 				63A01E532A2B980100C84E04 /* Subscribe Button.swift */,
-				63344C702A098060001BC616 /* Sidebar.swift */,
+				63344C702A098060001BC616 /* Sidebar View.swift */,
 				6D405B002A43E79400C65F9C /* Sidebar Header Avatar.swift */,
 				6D405B022A43E7DB00C65F9C /* Sidebar Header Label.swift */,
 				6D405B042A43E82300C65F9C /* Sidebar Header.swift */,
@@ -1241,6 +1243,7 @@
 				B14E93C12A45D3B300D6DA93 /* Community Link.swift */,
 				6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */,
 				6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */,
+				6DD867792A5083A200BEB00F /* Community Sidebar Link.swift */,
 			);
 			path = "Navigation Contexts";
 			sourceTree = "<group>";
@@ -1562,6 +1565,7 @@
 				6354F30A2A2E20040074C08D /* Alert - Multiple Alerts.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				6372186C2A3A2AAD008C4816 /* SaveComment.swift in Sources */,
+				6DD8677A2A5083A200BEB00F /* Community Sidebar Link.swift in Sources */,
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
 				630737892A1CD1E900039852 /* String - Escape Special Characters.swift in Sources */,
@@ -1614,7 +1618,7 @@
 				6D8003792A45FD1300363206 /* Bundle.swift in Sources */,
 				6386E0312A0427B6006B3C1D /* View - Conditional Modifier.swift in Sources */,
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
-				63344C712A098060001BC616 /* Sidebar.swift in Sources */,
+				63344C712A098060001BC616 /* Sidebar View.swift in Sources */,
 				63E5D3822A13831800EC1FBD /* Community Search View.swift in Sources */,
 				6DE118392A4A20D600810C7E /* Lazy Load Post Link.swift in Sources */,
 				CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */,

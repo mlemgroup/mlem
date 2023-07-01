@@ -83,18 +83,6 @@ struct CommunityView: View {
             .safeAreaInset(edge: .bottom) {
                 if isInSpecificCommunity {
                     ZStack(alignment: .bottom) {
-                        NavigationLink(
-                            destination: CommunitySidebarView(
-                                account: account,
-                                communityDetails: $communityDetails,
-                                isActive: $isSidebarShown
-                            ),
-                            isActive: $isSidebarShown
-                        ) { /// This is here to show the sidebar when needed
-                            Text("")
-                        }
-                        .hidden()
-
                         VStack(alignment: .leading, spacing: 15) {
                             VStack(alignment: .leading, spacing: 15) {
                                 HStack(alignment: .center, spacing: 10) {
@@ -257,17 +245,16 @@ struct CommunityView: View {
                     ))
 
                     Menu {
-                        if isInSpecificCommunity {
-                            Button {
-                                print("Will toggle sidebar")
-                                isSidebarShown.toggle()
-                                print("Sidebar value: \(isSidebarShown)")
-                            } label: {
+                        if let specificCommunity = community {
+                            NavigationLink(value:
+                                            CommunitySidebarLinkWithContext(
+                                                community: specificCommunity,
+                                                communityDetails: communityDetails
+                                            )) {
                                 Label("Sidebar", systemImage: "sidebar.right")
                             }
+                            Divider()
                         }
-
-                        Divider()
 
                         if let communityDetails {
                             SubscribeButton(
