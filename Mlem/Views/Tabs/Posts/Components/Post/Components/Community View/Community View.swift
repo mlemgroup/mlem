@@ -42,20 +42,10 @@ struct CommunityView: View {
     @State var feedType: FeedType = .subscribed
 
     @State private var isComposingPost: Bool = false
-    @State private var newPostTitle: String = ""
-    @State private var newPostBody: String = ""
-    @State private var newPostURL: String = ""
-    @State private var newPostIsNSFW: Bool = false
     @State private var isPostingPost: Bool = false
     @State private var errorAlert: ErrorAlert?
 
     @State var isDragging: Bool = false
-
-    enum FocusedNewPostField {
-        case newPostTitle, newPostBody, newPostURL
-    }
-
-    @FocusState var focusedNewPostField: FocusedNewPostField?
 
     var isInSpecificCommunity: Bool { community != nil }
 
@@ -77,72 +67,6 @@ struct CommunityView: View {
                         bannerView
                         postListView
                         loadingMorePostsView
-                    }
-                }
-            }
-            .safeAreaInset(edge: .bottom) {
-                if isInSpecificCommunity {
-                    ZStack(alignment: .bottom) {
-                        VStack(alignment: .leading, spacing: 15) {
-                            VStack(alignment: .leading, spacing: 15) {
-                                HStack(alignment: .center, spacing: 10) {
-                                    TextField("New post title…", text: $newPostTitle, axis: .vertical)
-                                        .textFieldStyle(.roundedBorder)
-                                        .focused($focusedNewPostField, equals: .newPostTitle)
-
-                                    if !newPostTitle.isEmpty {
-                                        if !isPostingPost {
-                                            Button {
-                                                Task(priority: .userInitiated) {
-                                                    isPostingPost = true
-
-                                                    print("Will try to post comment")
-
-                                                    defer {
-                                                        newPostTitle = ""
-                                                        newPostURL = ""
-                                                        newPostBody = ""
-                                                        newPostIsNSFW = false
-
-                                                        isPostingPost = false
-                                                        focusedNewPostField = nil
-                                                    }
-
-                                                    do {
-                                                        try await postPost(
-                                                            to: community!,
-                                                            postTitle: newPostTitle,
-                                                            postBody: newPostBody,
-                                                            postURL: newPostURL,
-                                                            postIsNSFW: newPostIsNSFW,
-                                                            postTracker: postTracker,
-                                                            account: account
-                                                        )
-                                                    } catch let postPostingError {
-                                                        print("Failed while posting post: \(postPostingError)")
-                                                    }
-                                                }
-                                            } label: {
-                                                Image(systemName: "paperplane")
-                                            }
-                                        } else {
-                                            ProgressView()
-                                        }
-                                    }
-                                }
-
-                                if !newPostTitle.isEmpty {
-                                    postInputView
-                                }
-                            }
-                            .padding()
-
-                            Divider()
-                        }
-                        .background(.regularMaterial)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostTitle)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostBody)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostURL)
                     }
                 }
             }
@@ -253,21 +177,15 @@ struct CommunityView: View {
                                             )) {
                                 Label("Sidebar", systemImage: "sidebar.right")
                             }
-                            Divider()
+                            
+                            Button {
+                                isComposingPost.toggle()
+                            } label: {
+                                Label("New Post", systemImage: "paperplane.fill")
+                            }
                         }
-
+                        Divider()
                         if let communityDetails {
-                            SubscribeButton(
-                                communityDetails: Binding(
-                                    get: {
-                                        communityDetails.communityView
-                                    },
-                                    set: { newValue in
-                                        guard let newValue else { return }
-                                        self.communityDetails?.communityView = newValue
-                                    }),
-                                account: account
-                            )
 
                             if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
                                 // This is when a community is already favorited
@@ -292,6 +210,18 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
+                            
+                            SubscribeButton(
+                                communityDetails: Binding(
+                                    get: {
+                                        communityDetails.communityView
+                                    },
+                                    set: { newValue in
+                                        guard let newValue else { return }
+                                        self.communityDetails?.communityView = newValue
+                                    }),
+                                account: account
+                            )
                             
                             BlockCommunityButton(account: account, communityDetails: Binding(
                                 get: {
@@ -362,6 +292,11 @@ struct CommunityView: View {
                 }
             }
         }
+        .sheet(isPresented: $isComposingPost) {
+            if let community = community {
+                PostComposerView(community: community)
+            }
+        }
         .onAppear {
             if !didLoad {
                 didLoad = true
@@ -395,34 +330,6 @@ struct CommunityView: View {
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity)
         }
-    }
-
-    private var postInputView: some View {
-        VStack(alignment: .leading) {
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Post body (Optional)")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-
-                TextField("Unleash your inner author", text: $newPostBody, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                    .focused($focusedNewPostField, equals: .newPostBody)
-            }
-
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Post URL (Optional)")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-
-                TextField("https://corkmac.app", text: $newPostURL, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.URL)
-                    .autocorrectionDisabled()
-                    .focused($focusedNewPostField, equals: .newPostURL)
-            }
-
-        }
-        .transition(.move(edge: .bottom).combined(with: .opacity))
     }
 
     @ViewBuilder

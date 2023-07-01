@@ -12,7 +12,7 @@
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
 		50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */; };
 		50F830FA2A4C935C00D67099 /* FeedTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F92A4C935C00D67099 /* FeedTracker.swift */; };
-		630737892A1CD1E900039852 /* String - Escape Special Characters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630737882A1CD1E900039852 /* String - Escape Special Characters.swift */; };
+		630737892A1CD1E900039852 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630737882A1CD1E900039852 /* String.swift */; };
 		6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */; };
 		6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6307378C2A1CEB7C00039852 /* My Vote.swift */; };
 		6314C9EB2A18D9C500B08405 /* Reply Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9EA2A18D9C500B08405 /* Reply Editor.swift */; };
@@ -185,6 +185,7 @@
 		6DEB0FFD2A4F891B007CAB99 /* User Moderator Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */; };
 		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
+		ADF266952A4E8A1E00EBA648 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */; };
 		B11D72832A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */; };
 		B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93BF2A45CA3400D6DA93 /* Post Link.swift */; };
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
@@ -270,7 +271,7 @@
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
 		50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTrackerItemProviding.swift; sourceTree = "<group>"; };
 		50F830F92A4C935C00D67099 /* FeedTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTracker.swift; sourceTree = "<group>"; };
-		630737882A1CD1E900039852 /* String - Escape Special Characters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String - Escape Special Characters.swift"; sourceTree = "<group>"; };
+		630737882A1CD1E900039852 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rate Post or Comment.swift"; sourceTree = "<group>"; };
 		6307378C2A1CEB7C00039852 /* My Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "My Vote.swift"; sourceTree = "<group>"; };
 		630D753C27F65E44006E60C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -441,6 +442,7 @@
 		6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Moderator Link.swift"; sourceTree = "<group>"; };
 		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
+		ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cached Image With Nsfw Filter.swift"; sourceTree = "<group>"; };
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
 		B14E93C12A45D3B300D6DA93 /* Community Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link.swift"; sourceTree = "<group>"; };
@@ -677,7 +679,7 @@
 				63344C612A08460D001BC616 /* View - Border on Specific Sides.swift */,
 				63344C6D2A097FA1001BC616 /* View - Hide View.swift */,
 				63D24ED82A169A5F005CCA81 /* UIApplication - First Key Window.swift */,
-				630737882A1CD1E900039852 /* String - Escape Special Characters.swift */,
+				630737882A1CD1E900039852 /* String.swift */,
 				63A200522A2DDD38005CDDE3 /* Dictionary - Append.swift */,
 				6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */,
 				503BA26E2A2C94540052516C /* URL+Identifiable.swift */,
@@ -1124,6 +1126,7 @@
 		6386E03E2A04570F006B3C1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				ADF266932A4E89F800EBA648 /* Composer */,
 				CD525F662A4B892900BCA794 /* Links */,
 				6314C9EC2A18EF2D00B08405 /* Reply Editor */,
 				63A09B68285F53E9004F0032 /* Error View.swift */,
@@ -1234,6 +1237,14 @@
 				CDF842672A49FB9000723DA0 /* Inbox View Logic.swift */,
 			);
 			path = Inbox;
+			sourceTree = "<group>";
+		};
+		ADF266932A4E89F800EBA648 /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */,
+			);
+			path = Composer;
 			sourceTree = "<group>";
 		};
 		B14E93BE2A45CA1A00D6DA93 /* Navigation Contexts */ = {
@@ -1542,6 +1553,7 @@
 				CD3FBCE32A4A844800B2063F /* Replies Feed View.swift in Sources */,
 				637218652A3A2AAD008C4816 /* GetPosts.swift in Sources */,
 				6332FDDA27F083590009A98A /* About Me.swift in Sources */,
+				ADF266952A4E8A1E00EBA648 /* PostComposerView.swift in Sources */,
 				6372185E2A3A2AAD008C4816 /* APICommunityModeratorView.swift in Sources */,
 				CDF842662A49F61100723DA0 /* InboxTabs.swift in Sources */,
 				CD525F652A4B6D8F00BCA794 /* Community Link View.swift in Sources */,
@@ -1568,7 +1580,7 @@
 				6DD8677A2A5083A200BEB00F /* Community Sidebar Link.swift in Sources */,
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
-				630737892A1CD1E900039852 /* String - Escape Special Characters.swift in Sources */,
+				630737892A1CD1E900039852 /* String.swift in Sources */,
 				63A01E542A2B980100C84E04 /* Subscribe Button.swift in Sources */,
 				6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */,
 				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
