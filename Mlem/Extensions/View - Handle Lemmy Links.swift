@@ -87,6 +87,13 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     Text("You must be signed in to view this user")
                 }
             }
+            .navigationDestination(for: UserModeratorLink.self) { user in
+                if let account = account {
+                    UserModeratorView(account: account, userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
+                } else {
+                    Text("You must be signed in to view this user")
+                }
+            }
     }
     // swiftlint:enable function_body_length
 }
