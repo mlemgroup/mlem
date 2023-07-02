@@ -379,7 +379,8 @@ struct UserView: View {
                      account: account,
                      showPostCreator: false,
                      showCommunity: true,
-                     isDragging: $isDragging)
+                     isDragging: $isDragging
+            )
         }
         .buttonStyle(.plain)
     }
