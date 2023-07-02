@@ -31,6 +31,7 @@ struct CommentItem: View {
     @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
     @EnvironmentObject var appState: AppState
+    @Environment(\.translateText) var translateText
 
     // MARK: Constants
 
