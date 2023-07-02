@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct SwipeAction {
-    let symbolName: String
+    
+    struct Symbol {
+        let emptyName: String
+        let fillName: String
+    }
+    
+    let symbol: Symbol
     let colour: Color
     let action: () async -> Void
 }
@@ -33,29 +39,21 @@ struct SwipeyView: ViewModifier {
     let secondaryLeadingAction: SwipeAction?
     let primaryTrailingAction: SwipeAction?
     let secondaryTrailingAction: SwipeAction?
-
-    // symbols
-    let emptyLeadingSymbolName: String
-    let emptyTrailingSymbolName: String
-
+    
     init(isDragging: Binding<Bool>,
-         emptyLeadingSymbolName: String,
          primaryLeadingAction: SwipeAction?,
          secondaryLeadingAction: SwipeAction?,
-         emptyTrailingSymbolName: String,
          primaryTrailingAction: SwipeAction?,
          secondaryTrailingAction: SwipeAction?
     ) {
-        self.emptyLeadingSymbolName = emptyLeadingSymbolName
         self.primaryLeadingAction = primaryLeadingAction
         self.secondaryLeadingAction = secondaryLeadingAction
-        self.emptyTrailingSymbolName = emptyTrailingSymbolName
         self.primaryTrailingAction = primaryTrailingAction
         self.secondaryTrailingAction = secondaryTrailingAction
 
         // other init
-        _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbolName)
-        _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbolName)
+        _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
+        _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
         _isDragging = isDragging
     }
 
@@ -104,31 +102,31 @@ struct SwipeyView: ViewModifier {
 
                         // update color and symbol. If crossed an edge, play a gentle haptic
                         if dragPosition < -1 * AppConstants.longSwipeDragMin {
-                            trailingSwipeSymbol = secondaryTrailingAction?.symbolName ?? primaryTrailingAction?.symbolName
+                            trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
                             dragBackground = secondaryTrailingAction?.colour ?? primaryTrailingAction?.colour
                             if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                                 tapper.impactOccurred()
                             }
                         } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
-                            trailingSwipeSymbol = primaryTrailingAction?.symbolName
+                            trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
                             dragBackground = primaryTrailingAction?.colour
                             if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
                         } else if dragPosition < 0 {
-                            trailingSwipeSymbol = emptyTrailingSymbolName
+                            trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
                             dragBackground = primaryTrailingAction?.colour.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
                         } else if dragPosition < AppConstants.shortSwipeDragMin {
-                            leadingSwipeSymbol = emptyLeadingSymbolName
+                            leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
                             dragBackground = primaryLeadingAction?.colour.opacity(dragPosition / AppConstants.shortSwipeDragMin)
                         } else if dragPosition < AppConstants.longSwipeDragMin {
-                            leadingSwipeSymbol = primaryLeadingAction?.symbolName
+                            leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
                             dragBackground = primaryLeadingAction?.colour
                             if prevDragPosition <= AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
                         } else {
-                            leadingSwipeSymbol = secondaryLeadingAction?.symbolName ?? primaryLeadingAction?.symbolName
+                            leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
                             dragBackground = secondaryLeadingAction?.colour ?? primaryLeadingAction?.colour
                             if prevDragPosition <= AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                                 tapper.impactOccurred()
@@ -174,8 +172,8 @@ struct SwipeyView: ViewModifier {
     private func reset() {
         withAnimation(.interactiveSpring()) {
             dragPosition = .zero
-            leadingSwipeSymbol = emptyLeadingSymbolName
-            trailingSwipeSymbol = emptyTrailingSymbolName
+            leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
+            trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
             dragBackground = .systemBackground
         }
     }
@@ -185,26 +183,20 @@ struct SwipeyView: ViewModifier {
 
 extension View {
     @ViewBuilder
-    // swiftlint:disable function_parameter_count
     func addSwipeyActions(isDragging: Binding<Bool>,
-                          emptyLeadingSymbolName: String,
                           primaryLeadingAction: SwipeAction?,
                           secondaryLeadingAction: SwipeAction?,
-                          emptyTrailingSymbolName: String,
                           primaryTrailingAction: SwipeAction?,
                           secondaryTrailingAction: SwipeAction?
     ) -> some View {
         modifier(
             SwipeyView(
                 isDragging: isDragging,
-                emptyLeadingSymbolName: emptyLeadingSymbolName,
                 primaryLeadingAction: primaryLeadingAction,
                 secondaryLeadingAction: secondaryLeadingAction,
-                emptyTrailingSymbolName: emptyTrailingSymbolName,
                 primaryTrailingAction: primaryTrailingAction,
                 secondaryTrailingAction: secondaryTrailingAction
             )
         )
     }
-    // swiftlint:enable function_parameter_count
 }

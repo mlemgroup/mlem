@@ -146,28 +146,26 @@ struct CommentItem: View {
             .background(Color.systemBackground)
             .addSwipeyActions(
                 isDragging: $isDragging,
-                emptyLeadingSymbolName: emptyVoteSymbolName,
                 primaryLeadingAction: SwipeAction(
-                    symbolName: upvoteSymbolName,
+                    symbol: .init(emptyName: emptyVoteSymbolName, fillName: upvoteSymbolName),
                     colour: .upvoteColor,
                     action: upvote
                 ),
                 secondaryLeadingAction: {
                     guard appState.enableDownvote else { return nil }
                     return SwipeAction(
-                        symbolName: downvoteSymbolName,
+                        symbol: .init(emptyName: "arrow.down.square", fillName: downvoteSymbolName),
                         colour: .downvoteColor,
                         action: downvote
                     )
                 }(),
-                emptyTrailingSymbolName: emptySaveSymbolName,
                 primaryTrailingAction: SwipeAction(
-                    symbolName: saveSymbolName,
+                    symbol: .init(emptyName: emptySaveSymbolName, fillName: saveSymbolName),
                     colour: .saveColor,
                     action: saveComment
                 ),
                 secondaryTrailingAction: SwipeAction(
-                    symbolName: "arrowshape.turn.up.left.fill",
+                    symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
                     colour: .accentColor,
                     action: replyToComment
                 )

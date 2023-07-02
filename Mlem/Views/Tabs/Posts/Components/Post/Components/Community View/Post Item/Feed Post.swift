@@ -68,28 +68,26 @@ struct FeedPost: View {
                 }
                 .addSwipeyActions(
                     isDragging: $isDragging,
-                    emptyLeadingSymbolName: "arrow.up.square",
                     primaryLeadingAction: SwipeAction(
-                        symbolName: "arrow.up.square.fill",
+                        symbol: .init(emptyName: "arrow.up.square", fillName: "arrow.up.square.fill"),
                         colour: .upvoteColor,
                         action: upvotePost
                     ),
                     secondaryLeadingAction: {
                         guard appState.enableDownvote else { return nil }
                         return SwipeAction(
-                            symbolName: "arrow.down.square.fill",
+                            symbol: .init(emptyName: "arrow.down.square", fillName: "arrow.down.square.fill"),
                             colour: .downvoteColor,
                             action: downvotePost
                         )
                     }(),
-                    emptyTrailingSymbolName: "bookmark",
                     primaryTrailingAction: SwipeAction(
-                        symbolName: "bookmark.fill",
+                        symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
                         colour: .saveColor,
                         action: savePost
                     ),
                     secondaryTrailingAction: SwipeAction(
-                        symbolName: "arrowshape.turn.up.left.fill",
+                        symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
                         colour: .accentColor,
                         action: replyToPost
                     )
