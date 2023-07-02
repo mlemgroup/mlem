@@ -33,6 +33,8 @@ struct FeedPost: View {
     let account: SavedAccount
     let showPostCreator: Bool
     let showCommunity: Bool
+    let showInteractionBar: Bool = true
+    let enableSwipeActions: Bool = true
 
     // MARK: State
 
@@ -47,32 +49,18 @@ struct FeedPost: View {
     @State var replyContents: String = ""
     @State var replyIsSending: Bool = false
 
-    // MARK: Computed
-    // TODO: real-time swipe-to-vote feedback
-    //    var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
-    //    var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
-    //    var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
-    //    var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
-    //    var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-
-    var naturalBackgroundColor: Color {
-        horizontalSizeClass == .regular ?
-        Color.secondarySystemBackground :
-        Color.systemBackground
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
-                .clipShape(
-                    .rect(cornerRadius:
-                            horizontalSizeClass == .regular ? 16 : 0
-                          )
-                )
+                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
+//                    .rect(cornerRadius:
+//                            horizontalSizeClass == .regular ? 16 : 0
+//                          )
+//                )
                 .padding(.all, horizontalSizeClass == .regular ? nil : 0)
-                .background(naturalBackgroundColor)
-                
+                .background(Color.systemBackground)
+
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
                         Button {
@@ -82,22 +70,12 @@ struct FeedPost: View {
                         }
                     }
                 }
-                .addSwipeyActions(isDragging: $isDragging,
-                                  emptyLeftSymbolName: "arrow.up.square",
-                                  shortLeftSymbolName: "arrow.up.square.fill",
-                                  shortLeftAction: upvotePost,
-                                  shortLeftColor: .upvoteColor,
-                                  longLeftSymbolName: appState.enableDownvote ? "arrow.down.square.fill" : nil,
-                                  longLeftAction: appState.enableDownvote ? downvotePost : nil,
-                                  longLeftColor: appState.enableDownvote ? .downvoteColor : nil,
-                                  emptyRightSymbolName: "bookmark",
-                                  shortRightSymbolName: "bookmark.fill",
-                                  shortRightAction: savePost,
-                                  shortRightColor: .saveColor,
-                                  longRightSymbolName: "arrowshape.turn.up.left.fill",
-                                  longRightAction: replyToPost,
-                                  longRightColor: .accentColor,
-                                  naturalBackgroundColor: naturalBackgroundColor
+                .addSwipeyActions(
+                    isDragging: $isDragging,
+                    primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
+                    secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
+                    primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
+                    secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
                 )
                 .alert("Not yet implemented!", isPresented: $replyIsPresented) {
                     Button("I love beta apps", role: .cancel) { }
@@ -135,12 +113,14 @@ struct FeedPost: View {
                 UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
             }
 
-            PostInteractionBar(postView: postView,
-                               account: account,
-                               menuFunctions: genMenuFunctions(),
-                               voteOnPost: voteOnPost,
-                               updatedSavePost: { _ in await savePost() },
-                               deletePost: deletePost)
+            if showInteractionBar {
+                PostInteractionBar(postView: postView,
+                                   account: account,
+                                   menuFunctions: genMenuFunctions(),
+                                   voteOnPost: voteOnPost,
+                                   updatedSavePost: { _ in await savePost() },
+                                   deletePost: deletePost)
+            }
         }
         .padding(AppConstants.postAndCommentSpacing)
     }
@@ -268,7 +248,7 @@ struct FeedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
-        
+
         // translate
         ret.append(MenuFunction(
             text: "Translate",
@@ -281,4 +261,53 @@ struct FeedPost: View {
         return ret
     }
     // swiftlint:enable function_body_length
+}
+
+// MARK: - Swipe Actions
+
+extension FeedPost {
+
+    // TODO: if we want to mirror the behaviour in comments here we need the `dirty` operation to be visible from this
+    // context, which at present would require some work as it occurs down inside the post interaction bar
+    // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
+
+//    private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
+//    private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
+//    private var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
+//    private var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
+//    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
+
+    var upvoteSwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: "arrow.up.square", fillName: "arrow.up.square.fill"),
+            color: .upvoteColor,
+            action: upvotePost
+        )
+    }
+
+    var downvoteSwipeAction: SwipeAction? {
+        guard appState.enableDownvote else { return nil }
+
+        return SwipeAction(
+            symbol: .init(emptyName: "arrow.down.square", fillName: "arrow.down.square.fill"),
+            color: .downvoteColor,
+            action: downvotePost
+        )
+    }
+
+    var saveSwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
+            color: .saveColor,
+            action: savePost
+        )
+    }
+
+    var replySwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
+            color: .accentColor,
+            action: replyToPost
+        )
+    }
 }
