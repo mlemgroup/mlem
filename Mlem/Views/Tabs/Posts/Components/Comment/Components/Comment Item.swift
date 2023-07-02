@@ -24,14 +24,7 @@ struct CommentItem: View {
     var displayedVote: ScoringOperation { dirty ? dirtyVote : hierarchicalComment.commentView.myVote ?? .resetVote }
     var displayedScore: Int { dirty ? dirtyScore : hierarchicalComment.commentView.counts.score }
     var displayedSaved: Bool { dirty ? dirtySaved : hierarchicalComment.commentView.saved }
-
-    // TODO: init instead of computed when backend changes come through--this nested computed business is expensive
-    var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
-    var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
-    var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
-    var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
-    var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-
+    
     // MARK: Environment
 
     @EnvironmentObject var commentTracker: CommentTracker
@@ -144,21 +137,13 @@ struct CommentItem: View {
                 }
             }
             .background(Color.systemBackground)
-            .addSwipeyActions(isDragging: $isDragging,
-                              emptyLeftSymbolName: emptyVoteSymbolName,
-                              shortLeftSymbolName: upvoteSymbolName,
-                              shortLeftAction: upvote,
-                              shortLeftColor: .upvoteColor,
-                              longLeftSymbolName: appState.enableDownvote ? downvoteSymbolName : nil,
-                              longLeftAction: appState.enableDownvote ? downvote : nil,
-                              longLeftColor: appState.enableDownvote ? .downvoteColor : nil,
-                              emptyRightSymbolName: emptySaveSymbolName,
-                              shortRightSymbolName: saveSymbolName,
-                              shortRightAction: saveComment,
-                              shortRightColor: .saveColor,
-                              longRightSymbolName: "arrowshape.turn.up.left.fill",
-                              longRightAction: replyToComment,
-                              longRightColor: .accentColor)
+            .addSwipeyActions(
+                isDragging: $isDragging,
+                primaryLeadingAction: upvoteSwipeAction,
+                secondaryLeadingAction: downvoteSwipeAction,
+                primaryTrailingAction: saveSwipeAction,
+                secondaryTrailingAction: replySwipeAction
+            )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             Divider()
 
@@ -221,5 +206,52 @@ struct CommentItem: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - Swipe Actions
+
+extension CommentItem {
+    
+    private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
+    private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
+    private var emptyDownvoteSymbolName: String { displayedVote == .downvote ? "minus.square" : "arrow.down.square" }
+    private var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
+    private var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
+    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
+    private var emptyReplySymbolName: String { "arrowshape.turn.up.left" }
+    private var replySymbolName: String { "arrowshape.turn.up.left.fill" }
+    
+    var upvoteSwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: emptyVoteSymbolName, fillName: upvoteSymbolName),
+            color: .upvoteColor,
+            action: upvote
+        )
+    }
+    
+    var downvoteSwipeAction: SwipeAction? {
+        guard appState.enableDownvote else { return nil }
+        return SwipeAction(
+            symbol: .init(emptyName: emptyDownvoteSymbolName, fillName: downvoteSymbolName),
+            color: .downvoteColor,
+            action: downvote
+        )
+    }
+    
+    var saveSwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: emptySaveSymbolName, fillName: saveSymbolName),
+            color: .saveColor,
+            action: saveComment
+        )
+    }
+    
+    var replySwipeAction: SwipeAction {
+        SwipeAction(
+           symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
+           color: .accentColor,
+           action: replyToComment
+       )
     }
 }

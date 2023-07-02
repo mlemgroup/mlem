@@ -7,84 +7,63 @@
 
 import SwiftUI
 
+struct SwipeAction {
+    
+    struct Symbol {
+        let emptyName: String
+        let fillName: String
+    }
+    
+    let symbol: Symbol
+    let color: Color
+    let action: () async -> Void
+}
+
 struct SwipeyView: ViewModifier {
+    
     // state
     @GestureState var dragState: CGFloat = .zero
-    @State var dragPosition = CGFloat.zero
+    @State var dragPosition: CGFloat = .zero
     @State var prevDragPosition: CGFloat = .zero
-    @State var dragBackground: Color = .systemBackground
-    @State var leftSwipeSymbol: String
-    @State var rightSwipeSymbol: String
+    @State var dragBackground: Color? = .systemBackground
+    @State var leadingSwipeSymbol: String?
+    @State var trailingSwipeSymbol: String?
 
     // haptics
     let tapper: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 
     // isDragging callback
     @Binding var isDragging: Bool
-
-    // callbacks
-    let shortLeftAction: () async -> Void
-    let longLeftAction: (() async -> Void)?
-    let shortRightAction: () async -> Void
-    let longRightAction: () async -> Void
-
-    // symbols
-    let emptyLeftSymbolName: String
-    let shortLeftSymbolName: String
-    let longLeftSymbolName: String?
-    let emptyRightSymbolName: String
-    let shortRightSymbolName: String
-    let longRightSymbolName: String
-
-    // colors
-    let shortLeftColor: Color
-    let longLeftColor: Color?
-    let shortRightColor: Color
-    let longRightColor: Color
-
-    // TODO: compress this somehow? This is *awful* to read
+    
+    let primaryLeadingAction: SwipeAction?
+    let secondaryLeadingAction: SwipeAction?
+    let primaryTrailingAction: SwipeAction?
+    let secondaryTrailingAction: SwipeAction?
+    
     init(isDragging: Binding<Bool>,
-
-         emptyLeftSymbolName: String,
-         shortLeftSymbolName: String,
-         shortLeftAction: @escaping () async -> Void,
-         shortLeftColor: Color,
-
-         longLeftSymbolName: String? = nil,
-         longLeftAction: (() async -> Void)? = nil,
-         longLeftColor: Color? = nil,
-
-         emptyRightSymbolName: String,
-         shortRightSymbolName: String,
-         shortRightAction: @escaping () async -> Void,
-         shortRightColor: Color,
-
-         longRightSymbolName: String,
-         longRightAction: @escaping () async -> Void,
-         longRightColor: Color) {
-        // callbacks
-        self.shortLeftAction = shortLeftAction
-        self.longLeftAction = longLeftAction
-        self.shortRightAction = shortRightAction
-        self.longRightAction = longRightAction
-
-        // symbols
-        self.emptyLeftSymbolName = emptyLeftSymbolName
-        self.shortLeftSymbolName = shortLeftSymbolName
-        self.longLeftSymbolName = longLeftSymbolName
-        self.emptyRightSymbolName = emptyRightSymbolName
-        self.shortRightSymbolName = shortRightSymbolName
-        self.longRightSymbolName = longRightSymbolName
-
-        // colors
-        self.shortLeftColor = shortLeftColor
-        self.longLeftColor = longLeftColor
-        self.shortRightColor = shortRightColor
-        self.longRightColor = longRightColor
+         primaryLeadingAction: SwipeAction?,
+         secondaryLeadingAction: SwipeAction?,
+         primaryTrailingAction: SwipeAction?,
+         secondaryTrailingAction: SwipeAction?
+    ) {
+        assert(
+            primaryLeadingAction != nil || secondaryLeadingAction == nil,
+            "No secondary action \(secondaryLeadingAction != nil) should be present without a primary \(primaryLeadingAction == nil)"
+        )
+        
+        assert(
+            primaryTrailingAction != nil || secondaryTrailingAction == nil,
+            "No secondary action should be present without a primary"
+        )
+        
+        self.primaryLeadingAction = primaryLeadingAction
+        self.secondaryLeadingAction = secondaryLeadingAction
+        self.primaryTrailingAction = primaryTrailingAction
+        self.secondaryTrailingAction = secondaryTrailingAction
 
         // other init
-        _leftSwipeSymbol = State(initialValue: shortLeftSymbolName)
-        _rightSwipeSymbol = State(initialValue: shortRightSymbolName)
+        _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
+        _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
         _isDragging = isDragging
     }
 
@@ -97,13 +76,13 @@ struct SwipeyView: ViewModifier {
 
             // symbols
             HStack(spacing: 0) {
-                Image(systemName: leftSwipeSymbol)
+                Image(systemName: leadingSwipeSymbol ?? "exclamationmark.triangle")
                     .font(.title)
                     .frame(width: 20, height: 20)
                     .foregroundColor(.white)
                     .padding(.horizontal, 20)
                 Spacer()
-                Image(systemName: rightSwipeSymbol)
+                Image(systemName: trailingSwipeSymbol ?? "exclamationmark.triangle")
                     .font(.title)
                     .frame(width: 20, height: 20)
                     .foregroundColor(.white)
@@ -126,68 +105,45 @@ struct SwipeyView: ViewModifier {
                 .onChange(of: dragState) { newDragState in
                     // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
                     if newDragState == .zero {
-                        // TODO: instant upvote feedback (waiting on backend)
-                        if prevDragPosition < -1 * AppConstants.longSwipeDragMin {
-                            Task(priority: .userInitiated) {
-                                await longRightAction()
-                            }
-                        } else if prevDragPosition < -1 * AppConstants.shortSwipeDragMin {
-                            Task(priority: .userInitiated) {
-                                await shortRightAction()
-                            }
-                        } else if prevDragPosition > AppConstants.longSwipeDragMin {
-                            Task(priority: .userInitiated) {
-                                if let longLeftAction {
-                                    await longLeftAction()
-                                } else {
-                                    await shortLeftAction()
-                                }
-                            }
-                        } else if prevDragPosition > AppConstants.shortSwipeDragMin {
-                            Task(priority: .userInitiated) {
-                                await shortLeftAction()
-                            }
-                        }
-                        // bounce back to neutral
-                        withAnimation(.interactiveSpring()) {
-                            dragPosition = .zero
-                            leftSwipeSymbol = emptyLeftSymbolName
-                            rightSwipeSymbol = emptyRightSymbolName
-                            dragBackground = .systemBackground
-                        }
+                        draggingDidEnd()
                     } else {
+                        guard shouldRespondToDragPosition(newDragState) else {
+                            // as swipe actions are optional we don't allow dragging without a primary action
+                            return
+                        }
+                        
                         // update position
                         dragPosition = newDragState
 
                         // update color and symbol. If crossed an edge, play a gentle haptic
                         if dragPosition < -1 * AppConstants.longSwipeDragMin {
-                            rightSwipeSymbol = longRightSymbolName
-                            dragBackground = longRightColor
-                            if prevDragPosition >= -1 * AppConstants.longSwipeDragMin {
+                            trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
+                            dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
+                            if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                                 tapper.impactOccurred()
                             }
                         } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
-                            rightSwipeSymbol = shortRightSymbolName
-                            dragBackground = shortRightColor
+                            trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
+                            dragBackground = primaryTrailingAction?.color
                             if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
                         } else if dragPosition < 0 {
-                            rightSwipeSymbol = emptyRightSymbolName
-                            dragBackground = shortRightColor.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
+                            trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
+                            dragBackground = primaryTrailingAction?.color.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
                         } else if dragPosition < AppConstants.shortSwipeDragMin {
-                            leftSwipeSymbol = emptyLeftSymbolName
-                            dragBackground = shortLeftColor.opacity(dragPosition / AppConstants.shortSwipeDragMin)
+                            leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
+                            dragBackground = primaryLeadingAction?.color.opacity(dragPosition / AppConstants.shortSwipeDragMin)
                         } else if dragPosition < AppConstants.longSwipeDragMin {
-                            leftSwipeSymbol = shortLeftSymbolName
-                            dragBackground = shortLeftColor
+                            leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
+                            dragBackground = primaryLeadingAction?.color
                             if prevDragPosition <= AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
                         } else {
-                            leftSwipeSymbol = longLeftSymbolName ?? shortLeftSymbolName
-                            dragBackground = longLeftColor ?? shortLeftColor
-                            if prevDragPosition <= AppConstants.longSwipeDragMin, longLeftAction != nil {
+                            leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
+                            dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
+                            if prevDragPosition <= AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                                 tapper.impactOccurred()
                             }
                         }
@@ -202,63 +158,72 @@ struct SwipeyView: ViewModifier {
         // disables links from highlighting when tapped
         .buttonStyle(EmptyButtonStyle())
     }
+    
+    private func draggingDidEnd() {
+        // TODO: instant upvote feedback (waiting on backend)
+        if prevDragPosition < -1 * AppConstants.longSwipeDragMin {
+            Task(priority: .userInitiated) {
+                let action = secondaryTrailingAction ?? primaryTrailingAction
+                await action?.action()
+            }
+        } else if prevDragPosition < -1 * AppConstants.shortSwipeDragMin {
+            Task(priority: .userInitiated) {
+                await primaryTrailingAction?.action()
+            }
+        } else if prevDragPosition > AppConstants.longSwipeDragMin {
+            Task(priority: .userInitiated) {
+                let action = secondaryLeadingAction ?? primaryLeadingAction
+                await action?.action()
+            }
+        } else if prevDragPosition > AppConstants.shortSwipeDragMin {
+            Task(priority: .userInitiated) {
+                await primaryLeadingAction?.action()
+            }
+        }
+        
+        reset()
+    }
+    
+    private func reset() {
+        withAnimation(.interactiveSpring()) {
+            dragPosition = .zero
+            leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
+            trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
+            dragBackground = .systemBackground
+        }
+    }
+    
+    private func shouldRespondToDragPosition(_ position: CGFloat) -> Bool {
+        if position > 0, primaryLeadingAction == nil {
+            return false
+        }
+        
+        if position < 0, primaryTrailingAction == nil {
+            return false
+        }
+        
+        return true
+    }
 }
 // swiftlint:enable cyclomatic_complexity
 // swiftlint:enable function_body_length
 
-public extension View {
+extension View {
     @ViewBuilder
-    // swiftlint:disable function_parameter_count
     func addSwipeyActions(isDragging: Binding<Bool>,
-
-                          emptyLeftSymbolName: String,
-                          shortLeftSymbolName: String,
-                          shortLeftAction: @escaping () async -> Void,
-                          shortLeftColor: Color,
-
-                          longLeftSymbolName: String?,
-                          longLeftAction: (() async -> Void)?,
-                          longLeftColor: Color?,
-
-                          emptyRightSymbolName: String,
-                          shortRightSymbolName: String,
-                          shortRightAction: @escaping () async -> Void,
-                          shortRightColor: Color,
-
-                          longRightSymbolName: String,
-                          longRightAction: @escaping () async -> Void,
-                          longRightColor: Color) -> some View {
-        modifier(SwipeyView(isDragging: isDragging,
-                            emptyLeftSymbolName: emptyLeftSymbolName,
-                            shortLeftSymbolName: shortLeftSymbolName,
-                            shortLeftAction: shortLeftAction,
-                            shortLeftColor: shortLeftColor,
-                            longLeftSymbolName: longLeftSymbolName,
-                            longLeftAction: longLeftAction,
-                            longLeftColor: longLeftColor,
-                            emptyRightSymbolName: emptyRightSymbolName,
-                            shortRightSymbolName: shortRightSymbolName,
-                            shortRightAction: shortRightAction,
-                            shortRightColor: shortRightColor,
-                            longRightSymbolName: longRightSymbolName,
-                            longRightAction: longRightAction,
-                            longRightColor: longRightColor))
+                          primaryLeadingAction: SwipeAction?,
+                          secondaryLeadingAction: SwipeAction?,
+                          primaryTrailingAction: SwipeAction?,
+                          secondaryTrailingAction: SwipeAction?
+    ) -> some View {
+        modifier(
+            SwipeyView(
+                isDragging: isDragging,
+                primaryLeadingAction: primaryLeadingAction,
+                secondaryLeadingAction: secondaryLeadingAction,
+                primaryTrailingAction: primaryTrailingAction,
+                secondaryTrailingAction: secondaryTrailingAction
+            )
+        )
     }
-    // swiftlint:enable function_parameter_count
 }
-
-// TODO: ERIC - finish this implementation
-// struct SwipeyActionConfig {
-//    let symbolName: String
-//    let emptySymbolName: String
-//    let color: Color
-//    let action: () async -> Void
-// }
-//
-// struct SwipeyActionsConfig {
-//    let isDragging: Binding<Bool>
-//    let shortLeft: SwipeyActionConfig
-//    let longLeft: SwipeyActionConfig
-//    let shortRight: SwipeyActionConfig
-//    let longRight: SwipeyActionConfig
-// }

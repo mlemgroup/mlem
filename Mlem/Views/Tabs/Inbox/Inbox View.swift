@@ -113,7 +113,7 @@ struct InboxView: View {
             .navigationTitle("Inbox")
             .navigationBarTitleDisplayMode(.inline)
             .listStyle(PlainListStyle())
-            .handleLemmyViews(navigationPath: $navigationPath)
+            .handleLemmyViews()
         }
     }
     
