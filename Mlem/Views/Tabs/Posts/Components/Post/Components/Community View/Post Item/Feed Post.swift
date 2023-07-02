@@ -338,7 +338,7 @@ struct FeedPost: View {
             imageName: "globe",
             destructiveActionPrompt: nil,
             enabled: !(postView.post.body?.isEmpty ?? true)) {
-                translateText(postView.post.body ?? "Missing Body")
+                translateText(postView.post.body ?? postView.post.name)
         })
 
         // translate
