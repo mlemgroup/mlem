@@ -95,27 +95,27 @@ struct MlemApp: App {
         guard accountsTracker.savedAccounts.first != nil else { return }
 
         // Subscribed Feed
-        let loveIcon = UIApplicationShortcutIcon(type: .love)
+        let homeIcon = UIApplicationShortcutIcon(systemImageName: "house")
         let subscribedFeedItem = UIApplicationShortcutItem(
             type: FeedType.subscribed.rawValue,
             localizedTitle: "Subscribed",
-            localizedSubtitle: nil,
-            icon: loveIcon,
-            userInfo: nil
-        )
-
-        // Local Feed
-        let homeIcon = UIApplicationShortcutIcon(type: .home)
-        let localFeedItem = UIApplicationShortcutItem(
-            type: FeedType.local.rawValue,
-            localizedTitle: "Local",
             localizedSubtitle: nil,
             icon: homeIcon,
             userInfo: nil
         )
 
+        // Local Feed
+        let officeIcon = UIApplicationShortcutIcon(systemImageName: "building.2")
+        let localFeedItem = UIApplicationShortcutItem(
+            type: FeedType.local.rawValue,
+            localizedTitle: "Local",
+            localizedSubtitle: nil,
+            icon: officeIcon,
+            userInfo: nil
+        )
+
         // All Feed
-        let cloudIcon = UIApplicationShortcutIcon(type: .cloud)
+        let cloudIcon = UIApplicationShortcutIcon(systemImageName: "cloud")
         let allFeedItem = UIApplicationShortcutItem(
             type: FeedType.all.rawValue,
             localizedTitle: "All",
