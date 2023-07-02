@@ -144,21 +144,34 @@ struct CommentItem: View {
                 }
             }
             .background(Color.systemBackground)
-            .addSwipeyActions(isDragging: $isDragging,
-                              emptyLeftSymbolName: emptyVoteSymbolName,
-                              shortLeftSymbolName: upvoteSymbolName,
-                              shortLeftAction: upvote,
-                              shortLeftColor: .upvoteColor,
-                              longLeftSymbolName: appState.enableDownvote ? downvoteSymbolName : nil,
-                              longLeftAction: appState.enableDownvote ? downvote : nil,
-                              longLeftColor: appState.enableDownvote ? .downvoteColor : nil,
-                              emptyRightSymbolName: emptySaveSymbolName,
-                              shortRightSymbolName: saveSymbolName,
-                              shortRightAction: saveComment,
-                              shortRightColor: .saveColor,
-                              longRightSymbolName: "arrowshape.turn.up.left.fill",
-                              longRightAction: replyToComment,
-                              longRightColor: .accentColor)
+            .addSwipeyActions(
+                isDragging: $isDragging,
+                emptyLeadingSymbolName: emptyVoteSymbolName,
+                primaryLeadingAction: SwipeAction(
+                    symbolName: upvoteSymbolName,
+                    colour: .upvoteColor,
+                    action: upvote
+                ),
+                secondaryLeadingAction: {
+                    guard appState.enableDownvote else { return nil }
+                    return SwipeAction(
+                        symbolName: downvoteSymbolName,
+                        colour: .downvoteColor,
+                        action: downvote
+                    )
+                }(),
+                emptyTrailingSymbolName: emptySaveSymbolName,
+                primaryTrailingAction: SwipeAction(
+                    symbolName: saveSymbolName,
+                    colour: .saveColor,
+                    action: saveComment
+                ),
+                secondaryTrailingAction: SwipeAction(
+                    symbolName: "arrowshape.turn.up.left.fill",
+                    colour: .accentColor,
+                    action: replyToComment
+                )
+            )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             Divider()
 

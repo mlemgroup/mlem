@@ -66,21 +66,34 @@ struct FeedPost: View {
                         }
                     }
                 }
-                .addSwipeyActions(isDragging: $isDragging,
-                                  emptyLeftSymbolName: "arrow.up.square",
-                                  shortLeftSymbolName: "arrow.up.square.fill",
-                                  shortLeftAction: upvotePost,
-                                  shortLeftColor: .upvoteColor,
-                                  longLeftSymbolName: appState.enableDownvote ? "arrow.down.square.fill" : nil,
-                                  longLeftAction: appState.enableDownvote ? downvotePost : nil,
-                                  longLeftColor: appState.enableDownvote ? .downvoteColor : nil,
-                                  emptyRightSymbolName: "bookmark",
-                                  shortRightSymbolName: "bookmark.fill",
-                                  shortRightAction: savePost,
-                                  shortRightColor: .saveColor,
-                                  longRightSymbolName: "arrowshape.turn.up.left.fill",
-                                  longRightAction: replyToPost,
-                                  longRightColor: .accentColor)
+                .addSwipeyActions(
+                    isDragging: $isDragging,
+                    emptyLeadingSymbolName: "arrow.up.square",
+                    primaryLeadingAction: SwipeAction(
+                        symbolName: "arrow.up.square.fill",
+                        colour: .upvoteColor,
+                        action: upvotePost
+                    ),
+                    secondaryLeadingAction: {
+                        guard appState.enableDownvote else { return nil }
+                        return SwipeAction(
+                            symbolName: "arrow.down.square.fill",
+                            colour: .downvoteColor,
+                            action: downvotePost
+                        )
+                    }(),
+                    emptyTrailingSymbolName: "bookmark",
+                    primaryTrailingAction: SwipeAction(
+                        symbolName: "bookmark.fill",
+                        colour: .saveColor,
+                        action: savePost
+                    ),
+                    secondaryTrailingAction: SwipeAction(
+                        symbolName: "arrowshape.turn.up.left.fill",
+                        colour: .accentColor,
+                        action: replyToPost
+                    )
+                )
                 .alert("Not yet implemented!", isPresented: $replyIsPresented) {
                     Button("I love beta apps", role: .cancel) { }
                 }
