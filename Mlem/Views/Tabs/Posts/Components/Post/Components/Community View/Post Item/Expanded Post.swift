@@ -19,6 +19,7 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
 
     @EnvironmentObject var appState: AppState
+    @Environment(\.translateText) var translateText
 
     @StateObject var commentTracker: CommentTracker = .init()
     @StateObject var commentReplyTracker: CommentReplyTracker = .init()
@@ -465,6 +466,15 @@ struct ExpandedPost: View {
             if let url = URL(string: post.post.apId) {
                 showShareSheet(URLtoShare: url)
             }
+        })
+        
+        // translate
+        ret.append(MenuFunction(
+            text: "Translate",
+            imageName: "globe",
+            destructiveActionPrompt: nil,
+            enabled: !(post.post.body?.isEmpty ?? true)) {
+                translateText(post.post.body ?? "Missing Body")
         })
         
         return ret

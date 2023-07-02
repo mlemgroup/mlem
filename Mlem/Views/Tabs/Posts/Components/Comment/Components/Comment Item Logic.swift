@@ -22,7 +22,7 @@ extension CommentItem {
             print("failed to vote!")
         }
     }
-    
+
     func deleteComment() async {
         do {
             // TODO: rename this function and/or move `deleteComment` out of the global scope
@@ -37,7 +37,7 @@ extension CommentItem {
             print("failed to delete comment!")
         }
     }
-    
+
     func upvote() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
@@ -118,13 +118,13 @@ extension CommentItem {
     func replyToComment() {
         commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
     }
-    
+
     // MARK: helpers
-    
+
     // swiftlint:disable function_body_length
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
-        
+
         // upvote
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
         ("Undo upvote", "arrow.up.square.fill") :
@@ -138,7 +138,7 @@ extension CommentItem {
                 await upvote()
             }
         })
-        
+
         // downvote
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
         ("Undo downvote", "arrow.down.square.fill") :
@@ -152,7 +152,7 @@ extension CommentItem {
                 await downvote()
             }
         })
-        
+
         // save
         let (saveText, saveImg) = hierarchicalComment.commentView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
         ret.append(MenuFunction(
@@ -164,7 +164,7 @@ extension CommentItem {
                 await saveComment()
             }
         })
-        
+
         // reply
         ret.append(MenuFunction(
             text: "Reply",
@@ -173,7 +173,7 @@ extension CommentItem {
             enabled: true) {
             replyToComment()
         })
-        
+
         // delete
         if hierarchicalComment.commentView.creator.id == account.id {
             ret.append(MenuFunction(
@@ -186,7 +186,7 @@ extension CommentItem {
                 }
             })
         }
-        
+
         // share
         if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
             ret.append(MenuFunction(
@@ -197,7 +197,16 @@ extension CommentItem {
                 showShareSheet(URLtoShare: url)
             })
         }
-                   
+
+        // translate
+        ret.append(MenuFunction(
+            text: "Translate",
+            imageName: "globe",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                translateText(hierarchicalComment.commentView.comment.content)
+        })
+
         return ret
     }
     // swiftlint:enable function_body_length

@@ -24,6 +24,7 @@ struct FeedPost: View {
 
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
+    @Environment(\.translateText) var translateText
 
     // MARK: Parameters
 
@@ -247,6 +248,15 @@ struct FeedPost: View {
             if let url = URL(string: postView.post.apId) {
                 showShareSheet(URLtoShare: url)
             }
+        })
+        
+        // translate
+        ret.append(MenuFunction(
+            text: "Translate",
+            imageName: "globe",
+            destructiveActionPrompt: nil,
+            enabled: !(postView.post.body?.isEmpty ?? true)) {
+                translateText(postView.post.body ?? "Missing Body")
         })
 
         return ret

@@ -66,7 +66,7 @@ struct LargePost: View {
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
-            Group {
+            let view = Group {
                 if isExpanded {
                     MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
                         .font(.subheadline)
@@ -76,10 +76,14 @@ struct LargePost: View {
                         .font(.subheadline)
                 }
             }
-            .contextMenu {
-                EasyTranslateButton(text: .constant(bodyText))
+            if isExpanded {
+                view
+                .contextMenu {
+                    EasyTranslateButton(text: .constant(bodyText))
+                }
+            } else {
+                view
             }
-
         }
     }
 }
