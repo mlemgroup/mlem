@@ -15,7 +15,7 @@ extension InboxView {
             if messagesTracker.items.isEmpty && !messagesTracker.isLoading {
                 noMessagesView()
             } else {
-                LazyVStack(spacing: spacing) {
+                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
                     messagesListView()
                     
                     if messagesTracker.isLoading {
@@ -43,16 +43,22 @@ extension InboxView {
     @ViewBuilder
     func messagesListView() -> some View {
         ForEach(messagesTracker.items) { message in
-            VStack(spacing: spacing) {
-                InboxMessageView(account: account, message: message)
-                    .task {
-                        if messagesTracker.shouldLoadContent(after: message) {
-                            await loadTrackerPage(tracker: messagesTracker)
-                        }
-                    }
-                    .padding(.horizontal)
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
+                inboxMessageViewWithInteraction(message: message)
+                
                 Divider()
             }
         }
+    }
+    
+    @ViewBuilder
+    func inboxMessageViewWithInteraction(message: APIPrivateMessageView) -> some View {
+        InboxMessageView(account: account, message: message)
+            .task {
+                if messagesTracker.shouldLoadContent(after: message) {
+                    await loadTrackerPage(tracker: messagesTracker)
+                }
+            }
+            .padding(.horizontal)
     }
 }

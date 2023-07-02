@@ -22,24 +22,36 @@ enum InboxTab: String, CaseIterable, Identifiable {
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
+    // MARK: Global
     @EnvironmentObject var appState: AppState
     
-    let spacing: CGFloat = 10
-    
+    // MARK: Parameters
     let account: SavedAccount
-    @State var lastKnownAccountId: Int = 0 // id of the last account loaded with
     
+    // MARK: Internal
+    // id of the last account loaded with
+    @State var lastKnownAccountId: Int = 0
+    
+    // error  handling
     @State var errorOccurred: Bool = false
     @State var errorMessage: String = ""
     
+    // loading handling
     @State var isLoading: Bool = true
-    @State var allItems: [InboxItem] = .init()
     
+    // item feeds
+    @State var allItems: [InboxItem] = .init()
     @StateObject var mentionsTracker: MentionsTracker = .init()
     @StateObject var messagesTracker: MessagesTracker = .init()
     @StateObject var repliesTracker: RepliesTracker = .init()
     
+    // input state handling
+    // - current view
     @State var curTab: InboxTab = .all
+    
+    // - replies and messages
+    @State var isComposingMessage: Bool = false
+    @State var messageRecipient: APIPerson?
     
     @State private var navigationPath = NavigationPath()
     
@@ -92,6 +104,11 @@ struct InboxView: View {
                     print("Inbox tracker is not empty")
                 }
                 lastKnownAccountId = account.id
+            }
+            .sheet(isPresented: $isComposingMessage) {
+                if let recipient = messageRecipient {
+                    MessageComposerView(recipient: recipient)
+                }
             }
             .navigationTitle("Inbox")
             .navigationBarTitleDisplayMode(.inline)

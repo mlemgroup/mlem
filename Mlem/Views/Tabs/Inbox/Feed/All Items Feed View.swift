@@ -17,7 +17,7 @@ extension InboxView {
             } else if allItems.isEmpty {
                 noItemsView()
             } else {
-                LazyVStack(spacing: spacing) {
+                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
                     inboxListView()
                 }
             }
@@ -40,7 +40,7 @@ extension InboxView {
     @ViewBuilder
     func inboxListView() -> some View {
         ForEach(allItems) { item in
-            VStack(spacing: spacing) {
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
                 Group {
                     switch item.type {
                     case .mention(let mention):

@@ -15,7 +15,7 @@ extension InboxView {
             if mentionsTracker.items.isEmpty && !mentionsTracker.isLoading {
                 noMentionsView()
             } else {
-                LazyVStack(spacing: spacing) {
+                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
                     mentionsListView()
                     
                     if mentionsTracker.isLoading {
@@ -43,7 +43,7 @@ extension InboxView {
     @ViewBuilder
     func mentionsListView() -> some View {
         ForEach(mentionsTracker.items) { mention in
-            VStack(spacing: spacing) {
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
                 InboxMentionView(account: account, mention: mention)
                     .task {
                         if mentionsTracker.shouldLoadContent(after: mention) {

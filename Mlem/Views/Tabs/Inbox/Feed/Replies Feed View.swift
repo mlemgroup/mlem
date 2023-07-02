@@ -19,7 +19,7 @@ extension InboxView {
                     noRepliesView()
                 }
             } else {
-                LazyVStack(spacing: spacing) {
+                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
                     repliesListView()
                     
                     if repliesTracker.isLoading {
@@ -47,7 +47,7 @@ extension InboxView {
     @ViewBuilder
     func repliesListView() -> some View {
         ForEach(repliesTracker.items) { reply in
-            VStack(spacing: spacing) {
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
                 inboxReplyViewWithInteraction(account: account, reply: reply)
                 
                 Divider()

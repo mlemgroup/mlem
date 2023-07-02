@@ -216,6 +216,7 @@
 		CD3FBCE72A4A8CE300B2063F /* Messages Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE62A4A8CE300B2063F /* Messages Feed View.swift */; };
 		CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE82A4B482700B2063F /* Generic Merge.swift */; };
 		CD525F652A4B6D8F00BCA794 /* Community Link View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* Community Link View.swift */; };
+		CD5351F52A51D2A5006AD253 /* MessageComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5351F42A51D2A5006AD253 /* MessageComposerView.swift */; };
 		CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483292A38C69600EE6CA3 /* Vote Complex.swift */; };
 		CD64832D2A38CE4E00EE6CA3 /* Vote Complex Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */; };
 		CD6483302A38D31C00EE6CA3 /* Standard Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* Standard Vote Complex.swift */; };
@@ -473,6 +474,7 @@
 		CD3FBCE62A4A8CE300B2063F /* Messages Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Messages Feed View.swift"; sourceTree = "<group>"; };
 		CD3FBCE82A4B482700B2063F /* Generic Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Generic Merge.swift"; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* Community Link View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link View.swift"; sourceTree = "<group>"; };
+		CD5351F42A51D2A5006AD253 /* MessageComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageComposerView.swift; sourceTree = "<group>"; };
 		CD6483292A38C69600EE6CA3 /* Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex.swift"; sourceTree = "<group>"; };
 		CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex Style.swift"; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* Standard Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Standard Vote Complex.swift"; sourceTree = "<group>"; };
@@ -1246,6 +1248,7 @@
 			isa = PBXGroup;
 			children = (
 				ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */,
+				CD5351F42A51D2A5006AD253 /* MessageComposerView.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -1603,6 +1606,7 @@
 				6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */,
 				CD05E7812A4F7A4B0081D102 /* Inbox Tracker.swift in Sources */,
 				6D405B032A43E7DB00C65F9C /* Sidebar Header Label.swift in Sources */,
+				CD5351F52A51D2A5006AD253 /* MessageComposerView.swift in Sources */,
 				632578182A29F83C00446A66 /* PostSortMenu.swift in Sources */,
 				508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */,
 				637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */,
