@@ -196,6 +196,7 @@
 		B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */; };
 		B1A5A8152A4C882F00F203DB /* AlternativeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */; };
 		B1A5A8172A4C889200F203DB /* AlternativeIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5A8162A4C889200F203DB /* AlternativeIconCell.swift */; };
+		B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B78D632A51D53900F72485 /* AppDelegate.swift */; };
 		B1CB6E732A4C5B1100DA9675 /* Alternative Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */; };
 		B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */; };
 		CD04D5D72A3614A8008EF95B /* Post Interaction Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */; };
@@ -454,6 +455,7 @@
 		B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - Handle Lemmy Links.swift"; sourceTree = "<group>"; };
 		B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIcon.swift; sourceTree = "<group>"; };
 		B1A5A8162A4C889200F203DB /* AlternativeIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIconCell.swift; sourceTree = "<group>"; };
+		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alternative Icons.swift"; sourceTree = "<group>"; };
 		B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle - Current App Icon.swift"; sourceTree = "<group>"; };
 		CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Interaction Bar.swift"; sourceTree = "<group>"; };
@@ -831,6 +833,7 @@
 				6363D5C627EE196700E34822 /* ContentView.swift */,
 				6386E02B2A03D1EC006B3C1D /* App State.swift */,
 				63DF71F02A02999C002AC14E /* App Constants.swift */,
+				B1B78D632A51D53900F72485 /* AppDelegate.swift */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				6363D5CA27EE196A00E34822 /* Preview Content */,
 				6332FDBC27EFAF7B0009A98A /* Settings.bundle */,
@@ -1762,6 +1765,7 @@
 				6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
 				63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */,
+				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
