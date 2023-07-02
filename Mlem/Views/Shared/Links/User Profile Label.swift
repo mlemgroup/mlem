@@ -10,17 +10,17 @@ import CachedAsyncImage
 
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    
+
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
     let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system settings
-    
+
     // Extra context about where the link is being displayed
     // to pick the correct flair
     @State var postContext: APIPost?
     @State var commentContext: APIComment?
     @State var communityContext: GetCommunityResponse?
-    
+
     init(user: APIPerson,
          serverInstanceLocation: ServerInstanceLocation,
          overrideShowAvatar: Bool? = nil,
@@ -30,12 +30,12 @@ struct UserProfileLabel: View {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
-        
+
         _postContext = State(initialValue: postContext)
         _commentContext = State(initialValue: commentContext)
         _communityContext = State(initialValue: communityContext)
     }
-    
+
     var showAvatar: Bool {
         if let overrideShowAvatar = overrideShowAvatar {
             return overrideShowAvatar
@@ -43,7 +43,7 @@ struct UserProfileLabel: View {
             return shouldShowUserAvatars
         }
     }
-    
+
     static let developerNames = [
         "vlemmy.net/u/darknavi",
         "beehaw.org/u/jojo",
@@ -51,9 +51,9 @@ struct UserProfileLabel: View {
         "vlemmy.net/u/ericbandrews",
         "programming.dev/u/tht7"
     ]
-    
+
     static let mlemOfficial = "vlemmy.net/u/MlemOfficial"
-    
+
     static let flairMlemOfficial = UserProfileLinkFlair(color: Color.purple, image: Image("mlem"))
     static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
     static let flairMod = UserProfileLinkFlair(color: Color.green, image: Image(systemName: "shield.fill"))
@@ -61,7 +61,7 @@ struct UserProfileLabel: View {
     static let flairOP = UserProfileLinkFlair(color: Color.orange, image: Image(systemName: "person.fill"))
     static let flairAdmin = UserProfileLinkFlair(color: Color.red, image: Image(systemName: "crown.fill"))
     static let flairRegular = UserProfileLinkFlair(color: Color.gray)
-    
+
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if showAvatar {
@@ -70,7 +70,7 @@ struct UserProfileLabel: View {
             userName
         }
     }
-    
+
     @ViewBuilder
     private var userAvatar: some View {
         Group {
@@ -95,15 +95,15 @@ struct UserProfileLabel: View {
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
         .accessibilityHidden(true)
     }
-    
+
     private func avatarSize() -> CGFloat {
         serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
     }
-    
+
     private func avatarUrl(from: URL) -> URL {
         serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
     }
-    
+
     private func defaultUserAvatar() -> some View {
         Image(systemName: "person.circle")
             .resizable()
@@ -111,17 +111,17 @@ struct UserProfileLabel: View {
             .frame(width: avatarSize(), height: avatarSize())
             .foregroundColor(.secondary)
     }
-    
+
     @ViewBuilder
     private var userName: some View {
         let flair = calculateLinkFlair()
-        
+
         HStack(spacing: 4) {
             if let flairImage = flair.image, serverInstanceLocation != .trailing {
                 flairImage
                     .foregroundColor(flair.color)
             }
-            
+
             switch serverInstanceLocation {
             case .disabled:
                 userName(with: flair)
@@ -139,7 +139,7 @@ struct UserProfileLabel: View {
         }
         .foregroundColor(.secondary)
     }
-    
+
     @ViewBuilder
     private func userName(with flair: UserProfileLinkFlair) -> some View {
         Text(user.displayName ?? user.name)
@@ -147,7 +147,7 @@ struct UserProfileLabel: View {
             .font(.footnote)
             .foregroundColor(flair.color)
     }
-    
+
     @ViewBuilder
     private var userInstance: some View {
         if let host = user.actorId.host() {
@@ -160,12 +160,12 @@ struct UserProfileLabel: View {
             EmptyView()
         }
     }
-    
+
     struct UserProfileLinkFlair {
         var color: Color
         var image: Image?
     }
-    
+
     private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
             /*
@@ -173,7 +173,7 @@ struct UserProfileLabel: View {
                 return UserProfileLabel.flairMlemOfficial
             }
             */
-            
+
             if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLabel.flairDeveloper
             }
@@ -205,7 +205,7 @@ struct UserProfileLinkPreview: PreviewProvider {
         accessToken: "abcdefg",
         username: "Test Account"
     )
-    
+
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
     enum PreviewUserType: String, CaseIterable {
@@ -216,7 +216,7 @@ struct UserProfileLinkPreview: PreviewProvider {
         case admin = "admin"
         case dev = "developer"
     }
-    
+
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
         let actorId: URL
         if userType == .dev {
@@ -224,7 +224,7 @@ struct UserProfileLinkPreview: PreviewProvider {
         } else {
             actorId = URL(string: "http://lemmy.ml/u/ericbandrews")!
         }
-        
+
         return APIPerson(
             id: name.hashValue,
             name: name,
@@ -246,7 +246,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             instanceId: 123
         )
     }
-    
+
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {
         APIComment(
             id: 0,
@@ -264,7 +264,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             languageId: 0
         )
     }
-    
+
     static func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
         APICommunity(
             id: id,
@@ -285,7 +285,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             instanceId: 0
         )
     }
-    
+
     static func generatePreviewPost(creator: APIPerson) -> APIPostView {
         let community = generateFakeCommunity(id: 123, namePrefix: "Test")
         let post = APIPost(
@@ -311,7 +311,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             thumbnailUrl: nil,
             updated: nil
         )
-        
+
         let postVotes = APIPostAggregates(
             id: 123,
             postId: post.id,
@@ -325,7 +325,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             featuredCommunity: false,
             featuredLocal: false
         )
-        
+
         return APIPostView(
             post: post,
             creator: creator,
@@ -339,26 +339,26 @@ struct UserProfileLinkPreview: PreviewProvider {
             unreadComments: 0
         )
     }
-    
+
     static func generateUserProfileLink(
         name: String,
         userType: PreviewUserType,
         serverInstanceLocation: ServerInstanceLocation
     ) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
-        
+
         var postContext: APIPost?
         var commentContext: APIComment?
-        
+
         if userType == .mod {
             commentContext = generatePreviewComment(creator: previewUser, isMod: true)
         }
-        
+
         if userType == .op {
             commentContext = generatePreviewComment(creator: previewUser, isMod: false)
             postContext = generatePreviewPost(creator: previewUser).post
         }
-        
+
         return UserProfileLink(
             user: previewUser,
             serverInstanceLocation: serverInstanceLocation,
@@ -366,7 +366,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             commentContext: commentContext
         )
     }
-    
+
     static var previews: some View {
         VStack {
             ForEach(ServerInstanceLocation.allCases, id: \.rawValue) { serverInstanceLocation in
