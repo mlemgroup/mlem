@@ -33,6 +33,9 @@ class APIClient {
 
         let urlRequest = try urlRequest(from: request)
         let (data, response) = try await execute(urlRequest)
+        
+        let str = String(decoding: data, as: UTF8.self)
+        print(str)
 
         if let apiError = try? decoder.decode(APIErrorResponse.self, from: data) {
             // at present we have a single error model which appears to be used throughout

@@ -248,6 +248,15 @@ struct FeedPost: View {
             }
         })
         
+        // report
+        ret.append(MenuFunction(
+            text: "Report",
+            imageName: "exclamationmark.shield",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                isComposingReport = true
+            })
+        
         return ret
     }
     // swiftlint:enable function_body_length
