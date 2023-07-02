@@ -42,6 +42,7 @@ struct ExpandedPost: View {
 
     @State private var isInTheMiddleOfStyling: Bool = false
     @State private var isPostingComment: Bool = false
+    @State private var isComposingReport: Bool = false
 
     @State private var viewID: UUID = UUID()
 
@@ -235,6 +236,9 @@ struct ExpandedPost: View {
         }
         .alert(using: $errorAlert) { content in
             Alert(title: Text(content.title), message: Text(content.message))
+        }
+        .sheet(isPresented: $isComposingReport) {
+            ReportComposerView(account: account, reportedPost: post)
         }
     }
     // subviews
@@ -466,6 +470,15 @@ struct ExpandedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
+        
+        // report
+        ret.append(MenuFunction(
+            text: "Report",
+            imageName: "exclamationmark.shield",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                isComposingReport = true
+            })
         
         return ret
     }

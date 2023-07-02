@@ -73,8 +73,8 @@ struct ReportComposerView: View {
                             account: account,
                             showPostCreator: true,
                             showCommunity: true,
-                            showInteractionBar: false,
                             isDragging: .constant(false),
+                            showInteractionBar: false,
                             enableSwipeActions: false
                         )
                     } else if let comment = reportedComment {
@@ -85,8 +85,8 @@ struct ReportComposerView: View {
                             depth: 0,
                             showPostContext: false,
                             showCommentCreator: true,
-                            showInteractionBar: false,
                             isDragging: .constant(false),
+                            showInteractionBar: false,
                             enableSwipeActions: false
                         )
                     }
@@ -96,7 +96,7 @@ struct ReportComposerView: View {
                               axis: .vertical)
                     .accessibilityLabel("Report Reason")
                     
-                    Spacer()
+                    Spacer().layoutPriority(1)
                 }
                 .padding()
                 

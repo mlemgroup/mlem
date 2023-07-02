@@ -32,13 +32,14 @@ struct FeedPost: View {
     let account: SavedAccount
     let showPostCreator: Bool
     let showCommunity: Bool
-    let showInteractionBar: Bool = true
-    let enableSwipeActions: Bool = true
+    let showInteractionBar: Bool
+    let enableSwipeActions: Bool
 
     // MARK: State
 
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
+    @State private var isComposingReport: Bool = false
 
     // swipe-to-vote
     @Binding var isDragging: Bool
@@ -47,6 +48,26 @@ struct FeedPost: View {
     @State var replyIsPresented: Bool = false
     @State var replyContents: String = ""
     @State var replyIsSending: Bool = false
+    
+    init(
+        postView: APIPostView,
+        account: SavedAccount,
+        showPostCreator: Bool,
+        showCommunity: Bool,
+        isDragging: Binding<Bool>,
+        showInteractionBar: Bool = true,
+        enableSwipeActions: Bool = true
+        ) {
+            
+        self.postView = postView
+        self.account = account
+        self.showPostCreator = showPostCreator
+        self.showCommunity = showCommunity
+        self.showInteractionBar = showInteractionBar
+        self.enableSwipeActions = enableSwipeActions
+            
+        _isDragging = isDragging
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -83,6 +104,9 @@ struct FeedPost: View {
             if horizontalSizeClass == .compact {
                 Divider()
             }
+        }
+        .sheet(isPresented: $isComposingReport) {
+            ReportComposerView(account: account, reportedPost: postView)
         }
     }
 
