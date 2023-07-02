@@ -474,7 +474,7 @@ struct ExpandedPost: View {
             imageName: "globe",
             destructiveActionPrompt: nil,
             enabled: !(post.post.body?.isEmpty ?? true)) {
-                translateText(post.post.body ?? "Missing Body")
+                translateText(post.post.body ?? post.post.name)
         })
         
         return ret
