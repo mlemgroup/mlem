@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 
 struct SymmetricVoteComplex: View {
+    
+    @EnvironmentObject var appState: AppState
+    
     let vote: ScoringOperation
     let score: Int
     let height: CGFloat
@@ -36,12 +39,14 @@ struct SymmetricVoteComplex: View {
                 }
             Text(String(score))
                 .foregroundColor(scoreColor)
-            DownvoteButton(vote: vote, size: height)
-                .onTapGesture {
-                    Task(priority: .userInitiated) {
-                        await downvote()
+            if appState.enableDownvote {
+                DownvoteButton(vote: vote, size: height)
+                    .onTapGesture {
+                        Task(priority: .userInitiated) {
+                            await downvote()
+                        }
                     }
-                }
+            }
         }
         .frame(height: height)
     }

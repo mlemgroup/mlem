@@ -42,7 +42,7 @@ extension InboxView {
                 InboxMentionView(account: account, mention: mention)
                     .task {
                         if mentionsTracker.shouldLoadContent(after: mention) {
-                            await loadMentions()
+                            await loadTrackerPage(tracker: mentionsTracker)
                         }
                     }
                     .padding(.horizontal)

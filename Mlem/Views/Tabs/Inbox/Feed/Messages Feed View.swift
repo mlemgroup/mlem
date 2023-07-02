@@ -42,7 +42,7 @@ extension InboxView {
                 InboxMessageView(account: account, message: message)
                     .task {
                         if messagesTracker.shouldLoadContent(after: message) {
-                            await loadMessages()
+                            await loadTrackerPage(tracker: messagesTracker)
                         }
                     }
                     .padding(.horizontal)

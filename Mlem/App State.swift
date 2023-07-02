@@ -11,8 +11,7 @@ import AlertToast
 
 class AppState: ObservableObject {
 
-    @Published var currentActiveInstance: String = ""
-    @Published var currentActiveAccount: SavedAccount?
+    @Published private(set) var currentActiveAccount: SavedAccount?
 
     @Published var isShowingCommunitySearch: Bool = false
 
@@ -27,4 +26,21 @@ class AppState: ObservableObject {
     @Published var toast: AlertToast?
 
     @Published var criticalErrorType: CriticalError = .shittyInternet
+
+    @Published var enableDownvote: Bool = true
+    
+    func setActiveAccount(_ account: SavedAccount?) {
+        currentActiveAccount = account
+        
+        if let newAccount = account {
+            Task {
+                let request = GetSiteRequest(account: newAccount)
+                if let response = try? await APIClient().perform(request: request) {
+                    await MainActor.run {
+                        enableDownvote = response.siteView.localSite.enableDownvotes
+                    }
+                }
+            }
+        }
+    }
 }

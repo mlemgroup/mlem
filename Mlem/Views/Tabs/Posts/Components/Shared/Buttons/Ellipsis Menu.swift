@@ -9,26 +9,29 @@ import SwiftUI
 
 struct EllipsisMenu: View {
     let size: CGFloat
-    let shareUrl: String
-    let deleteButtonCallback: (() async -> Void)?
+    let menuFunctions: [MenuFunction]
     
     // bindings
     @State private var isPresentingConfirmDelete: Bool = false
-
+    @State private var confirmationMenuFunction: MenuFunction?
+    
     var body: some View {
         Menu {
-            if let url = URL(string: shareUrl) {
-                Button("Share") { showShareSheet(URLtoShare: url) }
+            ForEach(menuFunctions) { item in
+                Button(role: item.destructiveActionPrompt != nil ? .destructive : nil) {
+                    
+                    // If we have destructive prompt, set this state to let the prompt
+                    // show and let the user action
+                    if item.destructiveActionPrompt != nil {
+                        confirmationMenuFunction = item
+                        isPresentingConfirmDelete = true
+                    } else {
+                        item.callback()
+                    }
+                } label: {
+                    Label(item.text, systemImage: item.imageName)
+                }.disabled(!item.enabled)
             }
-            Button(role: .destructive) {
-                isPresentingConfirmDelete = true
-            } label: {
-                HStack {
-                    Image(systemName: "trash.fill")
-                    Text("Delete")
-                }
-            }.disabled(deleteButtonCallback == nil)
-            
         } label: {
             Image(systemName: "ellipsis")
                 .frame(width: size, height: size)
@@ -38,17 +41,18 @@ struct EllipsisMenu: View {
                     .foregroundColor(.clear))
         }
         .onTapGesture { } // allows menu to pop up on first tap
-        .confirmationDialog("Confirm delete", isPresented: $isPresentingConfirmDelete) {
-            Button("Yes", role: .destructive) {
-                Task {
-                    if let deleteCallback = deleteButtonCallback {
-                        await deleteCallback()
+        .confirmationDialog("Destructive Action Confirmation", isPresented: $isPresentingConfirmDelete) {
+            if let destructiveCallback = confirmationMenuFunction?.callback {
+                Button("Yes", role: .destructive) {
+                    Task {
+                        destructiveCallback()
                     }
                 }
             }
         } message: {
-            Text("Are you sure you want to delete?  You cannot undo this action.")
+            if let destructivePrompt = confirmationMenuFunction?.destructiveActionPrompt {
+                Text(destructivePrompt)
+            }
         }
-        
     }
 }

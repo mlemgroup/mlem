@@ -8,29 +8,50 @@
 import SwiftUI
 
 struct CommunitySidebarView: View {
-
-    @State var account: SavedAccount
-    @Binding var communityDetails: GetCommunityResponse?
-    @Binding var isActive: Bool
+    // parameters
+    let account: SavedAccount
+    let community: APICommunity
+    @State var communityDetails: GetCommunityResponse?
 
     @State private var selectionSection = 0
-    
-     var shouldShowCommunityHeaders: Bool = true
+    var shouldShowCommunityHeaders: Bool = true
+    @State private var errorMessage: String?
 
     var body: some View {
         Section {
-            if let communityDetails {
-                view(for: communityDetails)
+            if let shownError = errorMessage {
+                errorView(errorDetials: shownError)
+            } else if let loadedDetails = communityDetails {
+                view(for: loadedDetails)
             } else {
-                ProgressView {
-                    Text("Loading details…")
-                }
+                LoadingView(whatIsLoading: .communityDetails)
             }
         }
         .navigationTitle("Sidebar")
         .navigationBarTitleDisplayMode(.inline)
-        .onDisappear {
-            isActive = false
+        .task(priority: .userInitiated) {
+            // Load community details if they weren't provided
+            // when we loaded
+            if communityDetails == nil {
+                await loadCommunity()
+            }
+        }.refreshable {
+            await loadCommunity()
+        }
+    }
+    
+    private func loadCommunity() async {
+        do {
+            let request = GetCommunityRequest(account: account, communityId: community.id)
+            communityDetails = try await APIClient().perform(request: request)
+        } catch APIClientError.networking {
+            errorMessage = "Network error occurred, check your internet and retry"
+        } catch APIClientError.response {
+            errorMessage = "API error occurred, try refreshing"
+        } catch APIClientError.cancelled {
+            errorMessage = "Request was cancelled, try refreshing"
+        } catch {
+            errorMessage = "A decoding error occurred, try refreshing."
         }
     }
     
@@ -90,6 +111,21 @@ struct CommunitySidebarView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    func errorView(errorDetials: String) -> some View {
+        VStack(spacing: 10) {
+            Image(systemName: "exclamationmark.bubble")
+                .font(.title)
+            
+            Text("Community details loading failed!")
+            Text(errorDetials)
+        }
+        .multilineTextAlignment(.center)
+        .foregroundColor(.secondary)
+        .accessibilityElement(children: .combine)
+        .padding()
+    }
 }
 
 struct SidebarPreview: PreviewProvider {
@@ -141,7 +177,7 @@ struct SidebarPreview: PreviewProvider {
     )
 
     static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
-
+    
     static var previews: some View {
         CommunitySidebarView(
             account: SavedAccount(
@@ -150,7 +186,8 @@ struct SidebarPreview: PreviewProvider {
                 accessToken: "abcd",
                 username: "foobar"
             ),
-            communityDetails: .constant(
+            community: previewCommunity,
+            communityDetails:
                 GetCommunityResponse(
                     communityView: APICommunityView(
                         community: previewCommunity,
@@ -174,8 +211,6 @@ struct SidebarPreview: PreviewProvider {
                     discussionLanguages: [],
                     defaultPostLanguage: nil
                 )
-            ),
-            isActive: .constant(true)
         )
     }
 }
