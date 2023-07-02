@@ -14,9 +14,7 @@ struct PostComposerView: View {
     }
     
     var community: APICommunity
-    
-    let iconWidth: CGFloat = 24
-    
+        
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
@@ -27,7 +25,8 @@ struct PostComposerView: View {
     @State var isNSFW: Bool = false
     
     @State var isSubmitting: Bool = false
-    
+    @State var isBadURL: Bool = false
+
     private var isReadyToPost: Bool {
         // We need postTitle to be not empty
         // and at least an attached postBody or postURL.
@@ -35,10 +34,28 @@ struct PostComposerView: View {
         && (postBody.trimmed.isNotEmpty || postURL.trimmed.isNotEmpty)
     }
     
+    private var isValidURL: Bool {
+        guard postURL.lowercased().hasPrefix("http://") ||
+                postURL.lowercased().hasPrefix("https://") else {
+            return false // URL protocol is missing
+        }
+
+        guard URL(string: postURL) != nil else {
+            return false // Not Parsable
+        }
+        
+        return true
+    }
+    
     func submitPost() async {
         do {
             guard let account = appState.currentActiveAccount else {
                 print("Cannot Submit, No Active Account")
+                return
+            }
+            
+            guard isValidURL else {
+                isBadURL = true
                 return
             }
             
@@ -94,17 +111,20 @@ struct PostComposerView: View {
                         Text("URL")
                             .foregroundColor(.secondary)
                             .accessibilityHidden(true)
-                        TextField("your post link", text: $postURL)
-                        .autocorrectionDisabled()
-                        .accessibilityLabel("URL")
+                        
+                        TextField("Your post link", text: $postURL)
+                            .keyboardType(.URL)
+                            .autocorrectionDisabled()
+                            .autocapitalization(.none)
+                            .accessibilityLabel("URL")
                         
                         // Upload button, temporarily hidden
-//                        Button(action: uploadImage) {
-//                            Image(systemName: "paperclip")
-//                                .font(.title3)
-//                                .dynamicTypeSize(.medium)
-//                        }
-//                        .accessibilityLabel("Upload Image")
+                        //                        Button(action: uploadImage) {
+                        //                            Image(systemName: "paperclip")
+                        //                                .font(.title3)
+                        //                                .dynamicTypeSize(.medium)
+                        //                        }
+                        //                        .accessibilityLabel("Upload Image")
                     }
                     
                     // Post Text
@@ -148,6 +168,11 @@ struct PostComposerView: View {
                         Image(systemName: "paperplane")
                     }.disabled(isSubmitting || !isReadyToPost)
                 }
+            }
+            .alert("Submit Failed", isPresented: $isBadURL) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("You seem to have entered an invalid URL, please check it again.")
             }
             .navigationBarTitleDisplayMode(.inline)
         }
