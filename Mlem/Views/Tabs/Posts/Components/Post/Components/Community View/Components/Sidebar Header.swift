@@ -38,7 +38,8 @@ struct CommunitySidebarHeader: View {
                 }
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
-                        CommunitySidebarHeaderAvatar(imageUrl: avatarUrl)
+                        CommunitySidebarHeaderAvatar(shouldClipAvatar: shouldClipAvatar(url: avatarUrl),
+                                                     imageUrl: avatarUrl)
                         
                         Button {
                             if let callback = avatarSubtextClicked {
