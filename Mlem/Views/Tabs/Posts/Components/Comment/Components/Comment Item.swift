@@ -156,7 +156,8 @@ struct CommentItem: View {
                               shortRightColor: .saveColor,
                               longRightSymbolName: "arrowshape.turn.up.left.fill",
                               longRightAction: replyToComment,
-                              longRightColor: .accentColor)
+                              longRightColor: .accentColor,
+                              naturalBackgroundColor: .systemBackground)
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             Divider()
 

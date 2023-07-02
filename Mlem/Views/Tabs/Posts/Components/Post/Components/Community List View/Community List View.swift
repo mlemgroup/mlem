@@ -14,10 +14,15 @@ struct CommunitySection: Identifiable {
     let inlineHeaderLabel: String?
     let accessibilityLabel: String
 }
-
+// swiftlint:disable file_length
 struct CommunityListView: View {
     let account: SavedAccount
+
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
+    @EnvironmentObject var appState: AppState
+    @Environment(\.openURL) var openURL
+    @Environment(\.navigationPath) var navigationPath
+    @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @State var subscribedCommunities = [APICommunity]()
 
@@ -30,21 +35,26 @@ struct CommunityListView: View {
     // Note: These are in order that they appear in the sidebar
     @State var communitySections: [CommunitySection] = []
 
-    init(account: SavedAccount, testCommunities: [APICommunity]? = nil) {
+    @Binding var selectedCommunity: CommunityLinkWithContext?
+
+    init(account: SavedAccount,
+         testCommunities: [APICommunity]? = nil,
+         selectedCommunity: Binding<CommunityLinkWithContext?>
+    ) {
         self.account = account
 
         if testCommunities != nil {
             self._subscribedCommunities = State(initialValue: testCommunities!)
             self.hasTestCommunities = true
         }
+        self._selectedCommunity = selectedCommunity
     }
 
     var body: some View {
         VStack {
             ScrollViewReader { scrollProxy in
                 HStack {
-                    List {
-
+                    List(selection: $selectedCommunity) {
                         HomepageFeedRowView(
                             account: account,
                             feedType: .subscribed,
@@ -74,7 +84,9 @@ struct CommunityListView: View {
                                 Text(communitySection.inlineHeaderLabel!).accessibilityLabel(communitySection.accessibilityLabel)
                                 Spacer()
                             }.id(communitySection.viewId)) {
-                                ForEach(calculateCommunityListSections(for: communitySection)
+                                ForEach(
+                                    calculateCommunityListSections(for: communitySection),
+                                    id: \.id
                                 ) { listedCommunity in
                                     CommuntiyFeedRowView(
                                         account: account,
@@ -98,14 +110,14 @@ struct CommunityListView: View {
         .refreshable {
             await refreshCommunitiesList()
         }
-        .task(priority: .userInitiated) {
-            // NOTE: This will not auto request if data is provided
-            // This is normally only during preview
-            if hasTestCommunities == false {
-                await refreshCommunitiesList()
+        .onAppear {
+            Task(priority: .high) {
+                // NOTE: This will not auto request if data is provided
+                // This is normally only during preview
+                if hasTestCommunities == false {
+                    await refreshCommunitiesList()
+                }
             }
-
-        }.onAppear {
             // Set up sections after we body is called
             // so we can use the favorite tracker environment
             communitySections = [
@@ -168,23 +180,23 @@ struct CommunityListView: View {
                     limit: communitiesRequestCount,
                     type: FeedType.subscribed
                 )
-                
+
                 let response = try await APIClient().perform(request: request)
-                
+
                 let newSubscribedCommunities = response.communities.map({
                     return $0.community
                 }).sorted(by: {
                     $0.name < $1.name
                 })
-                
+
                 refreshedCommunities.append(contentsOf: newSubscribedCommunities)
-                
+
                 communitiesPage += 1
-                
+
                 // Go until we get less than the count we ask for
                 moreCommunities = response.communities.count == communitiesRequestCount
             } while (moreCommunities)
-            
+
             subscribedCommunities = refreshedCommunities.sorted(by: { $0.name < $1.name })
         } catch {
             print("Failed to refresh communities: \(error)")
@@ -367,13 +379,15 @@ struct CommunityListViewPreview: PreviewProvider {
         generateFakeFavoritedCommunity(id: 20, namePrefix: fakeCommunityPrefixes[20]),
         generateFakeFavoritedCommunity(id: 10, namePrefix: fakeCommunityPrefixes[10])
     ])
-
+    static let savedAccount = SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account")
     static var previews: some View {
         CommunityListView(
-            account: SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account"),
+            account: savedAccount,
             testCommunities: fakeCommunityPrefixes.enumerated().map({ index, element in
                 generateFakeCommunity(id: index, namePrefix: element)
-            })
+            }),
+            selectedCommunity: .constant(nil)
         ).environmentObject(favoritesTracker)
     }
 }
+// swiftlint:enable file_length
