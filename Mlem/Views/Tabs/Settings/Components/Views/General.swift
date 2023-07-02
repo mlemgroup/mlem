@@ -14,6 +14,7 @@ internal enum FavoritesPurgingError {
 struct GeneralSettingsView: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
+    @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
@@ -23,6 +24,14 @@ struct GeneralSettingsView: View {
 
     var body: some View {
         List {
+
+            SelectableSettingsItem(
+                settingIconSystemName: "arrow.right.circle",
+                settingName: "Default Feed",
+                currentValue: $defaultFeed,
+                options: FeedType.allCases
+            )
+            
             Section("Default Sorting") {
                 HStack {
                     Image(systemName: "text.line.first.and.arrowtriangle.forward")

@@ -23,7 +23,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             UserView(userID: account.id, account: account)
-                .handleLemmyViews(navigationPath: $navigationPath)
+                .handleLemmyViews()
         }
     }
 }

@@ -13,26 +13,26 @@ struct ContentView: View {
 
     @State private var errorAlert: ErrorAlert?
     @State private var tabSelection = 1
-    
+
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
-    
+
     var body: some View {
         TabView(selection: $tabSelection) {
-            AccountsPage()
+            FeedRoot()
                 .tabItem {
                     Label("Feeds", systemImage: "scroll")
                         .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
                 }.tag(1)
-            
+
             if let currentActiveAccount = appState.currentActiveAccount {
                 InboxView(account: currentActiveAccount)
                     .tabItem {
                         Label("Inbox", systemImage: "mail.stack")
                             .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                     }.tag(2)
-                
+
                 NavigationView {
-                    ProfileView(account: currentActiveAccount)  
+                    ProfileView(account: currentActiveAccount)
                 } .tabItem {
                     Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
