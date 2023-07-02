@@ -12,13 +12,18 @@ extension InboxView {
     @ViewBuilder
     func mentionsFeedView() -> some View {
         Group {
-            if mentionsTracker.isLoading {
-                LoadingView(whatIsLoading: .mentions)
-            } else if mentionsTracker.items.isEmpty {
+            if mentionsTracker.items.isEmpty && !mentionsTracker.isLoading {
                 noMentionsView()
             } else {
                 LazyVStack(spacing: spacing) {
                     mentionsListView()
+                    
+                    if mentionsTracker.isLoading {
+                        LoadingView(whatIsLoading: .mentions)
+                    } else {
+                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
+                        Text("That's all!").foregroundColor(.secondary)
+                    }
                 }
             }
         }

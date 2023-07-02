@@ -31,12 +31,18 @@ struct ContentView: View {
                             .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                     }.tag(2)
                 
-                NavigationView {
-                    ProfileView(account: currentActiveAccount)  
-                } .tabItem {
-                    Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
-                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-                }.tag(3)
+                ProfileView(account: currentActiveAccount)
+                    .tabItem {
+                        Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
+                            .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                    }.tag(3)
+                
+//                NavigationView {
+//                    ProfileView(account: currentActiveAccount)
+//                } .tabItem {
+//                    Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
+//                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+//                }.tag(3)
             }
 
             SettingsView()
