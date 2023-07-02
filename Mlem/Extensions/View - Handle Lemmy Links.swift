@@ -13,7 +13,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccounts: SavedAccountTracker
 
-    // swiftlint:disable function_body_length cyclomatic_complexity
+    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         let account = appState.currentActiveAccount ?? savedAccounts.savedAccounts.first
         return content
@@ -107,7 +107,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 }
             }
     }
-    // swiftlint:enable function_body_length cyclomatic_complexity
+    // swiftlint:enable function_body_length
 }
 
 struct HandleLemmyLinkResolution: ViewModifier {

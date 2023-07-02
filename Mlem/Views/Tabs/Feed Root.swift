@@ -32,9 +32,11 @@ struct FeedRoot: View {
                     ).id(appState.currentActiveAccount!.id)
                 } else {
                     Text("You need to be signed in to brewos Lemmy")
-                    Button
-                    { isShowingInstanceAdditionSheet.toggle() }
-                    label: { Label("Sign in", systemImage: "person.badge.plus") }
+                    Button {
+                        isShowingInstanceAdditionSheet.toggle()
+                    } label: {
+                        Label("Sign in", systemImage: "person.badge.plus")
+                    }
                 }
         } detail: {
             if rootDetails != nil {

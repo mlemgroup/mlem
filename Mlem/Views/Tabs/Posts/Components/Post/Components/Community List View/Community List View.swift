@@ -14,7 +14,7 @@ struct CommunitySection: Identifiable {
     let inlineHeaderLabel: String?
     let accessibilityLabel: String
 }
-// swiftlint:disable file_length
+
 struct CommunityListView: View {
     let account: SavedAccount
 
@@ -390,4 +390,3 @@ struct CommunityListViewPreview: PreviewProvider {
         ).environmentObject(favoritesTracker)
     }
 }
-// swiftlint:enable file_length
