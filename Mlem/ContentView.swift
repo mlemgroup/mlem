@@ -21,7 +21,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $tabSelection) {
-            AccountsPage()
+            FeedRoot()
                 .tabItem {
                     Label("Feeds", systemImage: "scroll")
                         .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)

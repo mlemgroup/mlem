@@ -37,6 +37,7 @@ struct SwipeyView: ViewModifier {
     let longRightSymbolName: String
 
     // colors
+    let naturalBackgroundColor: Color
     let shortLeftColor: Color
     let longLeftColor: Color?
     let shortRightColor: Color
@@ -61,7 +62,11 @@ struct SwipeyView: ViewModifier {
 
          longRightSymbolName: String,
          longRightAction: @escaping () async -> Void,
-         longRightColor: Color) {
+         longRightColor: Color,
+
+         naturalBackgroundColor: Color = .systemBackground
+
+    ) {
         // callbacks
         self.shortLeftAction = shortLeftAction
         self.longLeftAction = longLeftAction
@@ -81,10 +86,12 @@ struct SwipeyView: ViewModifier {
         self.longLeftColor = longLeftColor
         self.shortRightColor = shortRightColor
         self.longRightColor = longRightColor
+        self.naturalBackgroundColor = naturalBackgroundColor
 
         // other init
         _leftSwipeSymbol = State(initialValue: shortLeftSymbolName)
         _rightSwipeSymbol = State(initialValue: shortRightSymbolName)
+        _dragBackground = State(initialValue: self.naturalBackgroundColor)
         _isDragging = isDragging
     }
 
@@ -153,7 +160,7 @@ struct SwipeyView: ViewModifier {
                             dragPosition = .zero
                             leftSwipeSymbol = emptyLeftSymbolName
                             rightSwipeSymbol = emptyRightSymbolName
-                            dragBackground = .systemBackground
+                            dragBackground = naturalBackgroundColor
                         }
                     } else {
                         // update position
@@ -227,7 +234,9 @@ public extension View {
 
                           longRightSymbolName: String,
                           longRightAction: @escaping () async -> Void,
-                          longRightColor: Color) -> some View {
+                          longRightColor: Color,
+                          naturalBackgroundColor: Color
+    ) -> some View {
         modifier(SwipeyView(isDragging: isDragging,
                             emptyLeftSymbolName: emptyLeftSymbolName,
                             shortLeftSymbolName: shortLeftSymbolName,
@@ -242,7 +251,8 @@ public extension View {
                             shortRightColor: shortRightColor,
                             longRightSymbolName: longRightSymbolName,
                             longRightAction: longRightAction,
-                            longRightColor: longRightColor))
+                            longRightColor: longRightColor,
+                            naturalBackgroundColor: naturalBackgroundColor))
     }
     // swiftlint:enable function_parameter_count
 }
