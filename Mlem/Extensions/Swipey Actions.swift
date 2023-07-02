@@ -97,6 +97,11 @@ struct SwipeyView: ViewModifier {
                     if newDragState == .zero {
                         draggingDidEnd()
                     } else {
+                        guard shouldRespondToDragPosition(newDragState) else {
+                            // as swipe actions are optional we don't allow dragging without a primary action
+                            return
+                        }
+                        
                         // update position
                         dragPosition = newDragState
 
@@ -176,6 +181,18 @@ struct SwipeyView: ViewModifier {
             trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
             dragBackground = .systemBackground
         }
+    }
+    
+    private func shouldRespondToDragPosition(_ position: CGFloat) -> Bool {
+        if position > 0, primaryLeadingAction == nil {
+            return false
+        }
+        
+        if position < 0, primaryTrailingAction == nil {
+            return false
+        }
+        
+        return true
     }
 }
 // swiftlint:enable cyclomatic_complexity
