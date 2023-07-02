@@ -31,6 +31,7 @@ func deletePost(
         return response.postView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
+        print("Failed to delete comment: \(error)")
         throw DeletionFailiure.failedToDelete
     }
 }

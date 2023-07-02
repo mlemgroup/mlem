@@ -12,7 +12,9 @@ extension InboxView {
     @ViewBuilder
     func mentionsFeedView() -> some View {
         Group {
-            if mentionsTracker.mentions.isEmpty {
+            if mentionsTracker.isLoading {
+                LoadingView(whatIsLoading: .mentions)
+            } else if mentionsTracker.items.isEmpty {
                 noMentionsView()
             } else {
                 LazyVStack(spacing: spacing) {
@@ -24,27 +26,23 @@ extension InboxView {
     
     @ViewBuilder
     func noMentionsView() -> some View {
-        if mentionsTracker.isLoading {
-            LoadingView(whatIsLoading: .mentions)
-        } else {
-            VStack(alignment: .center, spacing: 5) {
-                Image(systemName: "text.bubble")
-
-                Text("No mentions to be found")
-            }
-            .padding()
-            .foregroundColor(.secondary)
+        VStack(alignment: .center, spacing: 5) {
+            Image(systemName: "text.bubble")
+            
+            Text("No mentions to be found")
         }
+        .padding()
+        .foregroundColor(.secondary)
     }
     
     @ViewBuilder
     func mentionsListView() -> some View {
-        ForEach(mentionsTracker.mentions) { mention in
+        ForEach(mentionsTracker.items) { mention in
             VStack(spacing: spacing) {
                 InboxMentionView(account: account, mention: mention)
                     .task {
-                        if !mentionsTracker.isLoading && mention.personMention.id == mentionsTracker.loadMarkId {
-                            await loadMentions()
+                        if mentionsTracker.shouldLoadContent(after: mention) {
+                            await loadTrackerPage(tracker: mentionsTracker)
                         }
                     }
                     .padding(.horizontal)

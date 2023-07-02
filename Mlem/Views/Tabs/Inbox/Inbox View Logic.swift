@@ -7,13 +7,10 @@
 
 import Foundation
 
-enum MyError: Error {
-    case runtimeError(String)
-}
-
 extension InboxView {
     func refreshFeed() async {
         do {
+            isLoading = true
             try await mentionsTracker.refresh(account: account)
             try await messagesTracker.refresh(account: account)
             try await repliesTracker.refresh(account: account)
@@ -22,9 +19,8 @@ extension InboxView {
             
             aggregateAllTrackers()
         } catch APIClientError.networking {
-            // We're seeing a number of SSL related errors on some instances while loading pages from the feed
             errorOccurred = true
-            errorMessage = "Network error occurred, please file a bug report including the instance you are using"
+            errorMessage = "Network error occurred, check your internet and retry"
         } catch APIClientError.response(let message, _) {
             print(message)
             errorOccurred = true
@@ -41,10 +37,9 @@ extension InboxView {
 
     }
     
-    // TODO: unify these
-    func loadMentions() async {
+    func loadTrackerPage(tracker: InboxTracker) async {
         do {
-            try await mentionsTracker.loadNextPage(account: account, sort: .new)
+            try await tracker.loadNextPage(account: account)
             aggregateAllTrackers()
             // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-sort the whole damn array
         } catch let message {
@@ -52,39 +47,27 @@ extension InboxView {
         }
     }
     
-    func loadMessages() async {
-        do {
-            try await messagesTracker.loadNextPage(account: account)
-            aggregateAllTrackers()
-        } catch let message {
-            print(message)
-        }
-    }
-    
-    func loadReplies() async {
-        do {
-            try await repliesTracker.loadNextPage(account: account)
-            aggregateAllTrackers()
-        } catch let message {
-            print(message)
-        }
-    }
-    
     func aggregateAllTrackers() {
-        let mentions = mentionsTracker.mentions.map { item in
-            InboxItem(published: item.personMention.published, id: item.personMention.id, type: .mention(item))
+        let mentions = mentionsTracker.items.map { item in
+            InboxItem(published: item.personMention.published, id: item.id, type: .mention(item))
         }
         
-        let messages = messagesTracker.messages.map { item in
+        let messages = messagesTracker.items.map { item in
             InboxItem(published: item.privateMessage.published, id: item.id, type: .message(item))
         }
         
-        let replies = repliesTracker.replies.map { item in
-            InboxItem(published: item.commentReply.published, id: item.commentReply.id, type: .reply(item))
+        let replies = repliesTracker.items.map { item in
+            InboxItem(published: item.commentReply.published, id: item.id, type: .reply(item))
         }
+        
+        // TODO: cleaner way than this jank
+        allMentions = mentionsTracker.items
+        allMessages = messagesTracker.items
+        allReplies = repliesTracker.items
         
         allItems = merge(arr1: mentions, arr2: messages, compare: wasPostedAfter)
         allItems = merge(arr1: allItems, arr2: replies, compare: wasPostedAfter)
+        isLoading = false
     }
     
     /**

@@ -41,3 +41,9 @@ struct GetRepliesRequest: APIGetRequest {
 struct GetRepliesResponse: Decodable {
     let replies: [APICommentReplyView]
 }
+
+// MARK: - FeedTrackerItemProviding
+
+extension GetRepliesResponse: FeedTrackerItemProviding {
+    var items: [APICommentReplyView] { replies }
+}

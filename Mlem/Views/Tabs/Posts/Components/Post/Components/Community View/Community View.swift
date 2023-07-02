@@ -14,13 +14,14 @@ struct CommunityView: View {
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
 
-    @StateObject var postTracker: PostTracker = .init()
+    @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
 
     @State var account: SavedAccount
     @State var community: APICommunity?
@@ -41,25 +42,15 @@ struct CommunityView: View {
     @State var feedType: FeedType = .subscribed
 
     @State private var isComposingPost: Bool = false
-    @State private var newPostTitle: String = ""
-    @State private var newPostBody: String = ""
-    @State private var newPostURL: String = ""
-    @State private var newPostIsNSFW: Bool = false
     @State private var isPostingPost: Bool = false
     @State private var errorAlert: ErrorAlert?
 
     @State var isDragging: Bool = false
 
-    enum FocusedNewPostField {
-        case newPostTitle, newPostBody, newPostURL
-    }
-
-    @FocusState var focusedNewPostField: FocusedNewPostField?
-
     var isInSpecificCommunity: Bool { community != nil }
 
     private var filteredPosts: [APIPostView] {
-        postTracker.posts.filter { postView in
+        postTracker.items.filter { postView in
             !postView.post.name.contains(filtersTracker.filteredKeywords)
         }
     }
@@ -68,8 +59,8 @@ struct CommunityView: View {
         ZStack(alignment: .top) {
             searchResultsView
                 .accessibilityHidden(!isShowingCommunitySearch)
-            ScrollView {
-                if postTracker.posts.isEmpty {
+            ScrollView(showsIndicators: false) {
+                if postTracker.items.isEmpty {
                     noPostsView
                 } else {
                     LazyVStack(spacing: 0) {
@@ -79,99 +70,24 @@ struct CommunityView: View {
                     }
                 }
             }
-            .safeAreaInset(edge: .bottom) {
-                if isInSpecificCommunity {
-                    ZStack(alignment: .bottom) {
-                        NavigationLink(
-                            destination: CommunitySidebarView(
-                                account: account,
-                                communityDetails: $communityDetails,
-                                isActive: $isSidebarShown
-                            ),
-                            isActive: $isSidebarShown
-                        ) { /// This is here to show the sidebar when needed
-                            Text("")
-                        }
-                        .hidden()
-
-                        VStack(alignment: .leading, spacing: 15) {
-                            VStack(alignment: .leading, spacing: 15) {
-                                HStack(alignment: .center, spacing: 10) {
-                                    TextField("New post title…", text: $newPostTitle, axis: .vertical)
-                                        .textFieldStyle(.roundedBorder)
-                                        .focused($focusedNewPostField, equals: .newPostTitle)
-
-                                    if !newPostTitle.isEmpty {
-                                        if !isPostingPost {
-                                            Button {
-                                                Task(priority: .userInitiated) {
-                                                    isPostingPost = true
-
-                                                    print("Will try to post comment")
-
-                                                    defer {
-                                                        newPostTitle = ""
-                                                        newPostURL = ""
-                                                        newPostBody = ""
-                                                        newPostIsNSFW = false
-
-                                                        isPostingPost = false
-                                                        focusedNewPostField = nil
-                                                    }
-
-                                                    do {
-                                                        try await postPost(
-                                                            to: community!,
-                                                            postTitle: newPostTitle,
-                                                            postBody: newPostBody,
-                                                            postURL: newPostURL,
-                                                            postIsNSFW: newPostIsNSFW,
-                                                            postTracker: postTracker,
-                                                            account: account
-                                                        )
-                                                    } catch let postPostingError {
-                                                        print("Failed while posting post: \(postPostingError)")
-                                                    }
-                                                }
-                                            } label: {
-                                                Image(systemName: "paperplane")
-                                            }
-                                        } else {
-                                            ProgressView()
-                                        }
-                                    }
-                                }
-
-                                if !newPostTitle.isEmpty {
-                                    postInputView
-                                }
-                            }
-                            .padding()
-
-                            Divider()
-                        }
-                        .background(.regularMaterial)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostTitle)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostBody)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostURL)
-                    }
-                }
-            }
             .background(Color.secondarySystemBackground)
             .offset(y: isShowingCommunitySearch ? 300 : 0)
             .refreshable {
                 Task(priority: .userInitiated) {
                     isRefreshing = true
 
-                    postTracker.reset()
-
-                    await loadFeed()
+                    try await postTracker.refresh(
+                        account: account,
+                        communityId: community?.id,
+                        sort: postSortType,
+                        type: feedType
+                    )
 
                     isRefreshing = false
                 }
             }
             .task(priority: .userInitiated) {
-                if postTracker.posts.isEmpty {
+                if postTracker.items.isEmpty {
                     print("Post tracker is empty")
                     await loadFeed()
                 } else {
@@ -197,8 +113,7 @@ struct CommunityView: View {
             }
             .onChange(of: feedType, perform: { _ in
                 Task(priority: .userInitiated) {
-                    postTracker.reset()
-                    await loadFeed()
+                    await refreshFeed()
                 }
             })
         }
@@ -248,38 +163,29 @@ struct CommunityView: View {
                             self.postSortType = newValue
                             Task {
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-
-                                postTracker.reset()
-                                await loadFeed()
+                                await refreshFeed()
                             }
                         }
                     ))
 
                     Menu {
-                        if isInSpecificCommunity {
-                            Button {
-                                print("Will toggle sidebar")
-                                isSidebarShown.toggle()
-                                print("Sidebar value: \(isSidebarShown)")
-                            } label: {
+                        if let specificCommunity = community {
+                            NavigationLink(value:
+                                            CommunitySidebarLinkWithContext(
+                                                community: specificCommunity,
+                                                communityDetails: communityDetails
+                                            )) {
                                 Label("Sidebar", systemImage: "sidebar.right")
                             }
+                            
+                            Button {
+                                isComposingPost.toggle()
+                            } label: {
+                                Label("New Post", systemImage: "paperplane.fill")
+                            }
                         }
-
                         Divider()
-
                         if let communityDetails {
-                            SubscribeButton(
-                                communityDetails: Binding(
-                                    get: {
-                                        communityDetails.communityView
-                                    },
-                                    set: { newValue in
-                                        guard let newValue else { return }
-                                        self.communityDetails?.communityView = newValue
-                                    }),
-                                account: account
-                            )
 
                             if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
                                 // This is when a community is already favorited
@@ -304,12 +210,35 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
+                            
+                            SubscribeButton(
+                                communityDetails: Binding(
+                                    get: {
+                                        communityDetails.communityView
+                                    },
+                                    set: { newValue in
+                                        guard let newValue else { return }
+                                        self.communityDetails?.communityView = newValue
+                                    }),
+                                account: account
+                            )
+                            
+                            BlockCommunityButton(account: account, communityDetails: Binding(
+                                get: {
+                                    communityDetails.communityView
+                                },
+                                set: { newValue in
+                                    guard let newValue else { return }
+                                    self.communityDetails?.communityView = newValue
+                                }))
 
                             Divider()
 
                             if let actorId = community?.actorId {
-                                ShareButton(size: 20, accessibilityContext: "community") {
+                                Button {
                                     showShareSheet(URLtoShare: actorId)
+                                } label: {
+                                    Label("Share", systemImage: "square.and.arrow.up")
                                 }
                             }
                         }
@@ -363,6 +292,11 @@ struct CommunityView: View {
                 }
             }
         }
+        .sheet(isPresented: $isComposingPost) {
+            if let community = community {
+                PostComposerView(community: community)
+            }
+        }
         .onAppear {
             if !didLoad {
                 didLoad = true
@@ -398,34 +332,6 @@ struct CommunityView: View {
         }
     }
 
-    private var postInputView: some View {
-        VStack(alignment: .leading) {
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Post body (Optional)")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-
-                TextField("Unleash your inner author", text: $newPostBody, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                    .focused($focusedNewPostField, equals: .newPostBody)
-            }
-
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Post URL (Optional)")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-
-                TextField("https://corkmac.app", text: $newPostURL, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.URL)
-                    .autocorrectionDisabled()
-                    .focused($focusedNewPostField, equals: .newPostURL)
-            }
-
-        }
-        .transition(.move(edge: .bottom).combined(with: .opacity))
-    }
-
     @ViewBuilder
     private var bannerView: some View {
         if isInSpecificCommunity {
@@ -443,6 +349,8 @@ struct CommunityView: View {
                 FeedPost(
                     postView: post,
                     account: account,
+                    showPostCreator: shouldShowPostCreator,
+                    showCommunity: !isInSpecificCommunity,
                     isDragging: $isDragging
                 )
             }
@@ -451,12 +359,8 @@ struct CommunityView: View {
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
-                if !postTracker.isLoading {
-                    if let position = postTracker.posts.lastIndex(of: post) {
-                        if  position >= (postTracker.posts.count - 40) {
-                            await loadFeed()
-                        }
-                    }
+                if postTracker.shouldLoadContent(after: post) {
+                    await loadFeed()
                 }
             }
         }
@@ -486,25 +390,45 @@ struct CommunityView: View {
                 sort: postSortType,
                 type: feedType
             )
-        } catch APIClientError.networking {
+        } catch {
+            handle(error)
+        }
+    }
+    
+    func refreshFeed() async {
+        do {
+            try await postTracker.refresh(
+                account: account,
+                communityId: community?.id,
+                sort: postSortType,
+                type: feedType
+            )
+        } catch {
+            handle(error)
+        }
+    }
+    
+    private func handle(_ error: Error) {
+        switch error {
+        case APIClientError.networking:
             // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed
             // while we investigate the reasons we will only show this error if the user would otherwise be left with an empty feed
-            guard postTracker.posts.isEmpty else {
+            guard postTracker.items.isEmpty else {
                 return
             }
-
+            
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"
             )
-        } catch APIClientError.response(let message, _) {
+        case APIClientError.response(let message, _):
             errorAlert = .init(
                 title: "Error",
                 message: message.error
             )
-        } catch APIClientError.cancelled {
+        case APIClientError.cancelled:
             print("Failed while loading feed (request cancelled)")
-        } catch {
+        default:
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
             assertionFailure(
@@ -512,7 +436,6 @@ struct CommunityView: View {
             )
             // errorAlert = .unexpected
         }
-
     }
 }
 // swiftlint:enable type_body_length

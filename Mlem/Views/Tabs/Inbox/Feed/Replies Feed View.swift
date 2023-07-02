@@ -12,7 +12,9 @@ extension InboxView {
     @ViewBuilder
     func repliesFeedView() -> some View {
         Group {
-            if repliesTracker.replies.isEmpty {
+            if repliesTracker.isLoading {
+                LoadingView(whatIsLoading: .replies)
+            } else if repliesTracker.items.isEmpty {
                 noRepliesView()
             } else {
                 LazyVStack(spacing: spacing) {
@@ -24,27 +26,23 @@ extension InboxView {
     
     @ViewBuilder
     func noRepliesView() -> some View {
-        if repliesTracker.isLoading {
-            LoadingView(whatIsLoading: .replies)
-        } else {
-            VStack(alignment: .center, spacing: 5) {
-                Image(systemName: "text.bubble")
-                
-                Text("No replies to be found")
-            }
-            .padding()
-            .foregroundColor(.secondary)
+        VStack(alignment: .center, spacing: 5) {
+            Image(systemName: "text.bubble")
+            
+            Text("No replies to be found")
         }
+        .padding()
+        .foregroundColor(.secondary)
     }
     
     @ViewBuilder
     func repliesListView() -> some View {
-        ForEach(repliesTracker.replies) { reply in
+        ForEach(repliesTracker.items) { reply in
             VStack(spacing: spacing) {
                 InboxReplyView(account: account, reply: reply)
                     .task {
-                        if !repliesTracker.isLoading && reply.commentReply.id == repliesTracker.loadMarkId {
-                            await loadReplies()
+                        if repliesTracker.shouldLoadContent(after: reply) {
+                            await loadTrackerPage(tracker: repliesTracker)
                         }
                     }
                     .padding(.horizontal)
