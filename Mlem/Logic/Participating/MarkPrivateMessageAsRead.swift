@@ -1,31 +1,29 @@
 //
-//  MarkCommentReplyAsRead.swift
+//  MarkPrivateMessageAsRead.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2023-07-01.
+//  Created by Eric Andrews on 2023-07-02.
 //
 
 import Foundation
 
 @MainActor
-func sendMarkCommentReplyAsReadRequest(
-    commentReply: APICommentReplyView,
+func sendMarkPrivateMessageAsReadRequest(
+    messageView: APIPrivateMessageView,
     read: Bool,
     account: SavedAccount,
-    commentReplyTracker: FeedTracker<APICommentReplyView>,
+    messagesTracker: FeedTracker<APIPrivateMessageView>,
     appState: AppState
 ) async throws {
     do {
-        let request = MarkCommentReplyAsRead(
-            account: account,
-            commentId: commentReply.id,
-            read: read
-        )
+        let request = MarkPrivateMessageAsRead(account: account,
+                                               privateMessageId: messageView.id,
+                                               read: read)
 
         AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         
-        commentReplyTracker.update(with: response.commentReplyView)
+        messagesTracker.update(with: response.privateMessageView)
     } catch let ratingOperationError {
         AppConstants.hapticManager.notificationOccurred(.error)
         print("Failed while trying to mark read: \(ratingOperationError)")

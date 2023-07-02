@@ -15,14 +15,14 @@ extension InboxView {
             if messagesTracker.items.isEmpty && !messagesTracker.isLoading {
                 noMessagesView()
             } else {
-                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
+                LazyVStack(spacing: 0) {
                     messagesListView()
                     
                     if messagesTracker.isLoading {
                         LoadingView(whatIsLoading: .messages)
                     } else {
                         // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary)
+                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
                     }
                 }
             }
@@ -43,7 +43,7 @@ extension InboxView {
     @ViewBuilder
     func messagesListView() -> some View {
         ForEach(messagesTracker.items) { message in
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
+            VStack(spacing: 0) {
                 inboxMessageViewWithInteraction(message: message)
                 
                 Divider()
@@ -54,11 +54,27 @@ extension InboxView {
     @ViewBuilder
     func inboxMessageViewWithInteraction(message: APIPrivateMessageView) -> some View {
         InboxMessageView(account: account, message: message)
+            .padding(.vertical, AppConstants.postAndCommentSpacing)
+            .padding(.horizontal)
+            .background(Color.systemBackground)
             .task {
                 if messagesTracker.shouldLoadContent(after: message) {
                     await loadTrackerPage(tracker: messagesTracker)
                 }
             }
-            .padding(.horizontal)
+            .contextMenu {
+                ForEach(genMessageMenuGroup(message: message)) { item in
+                    Button {
+                        item.callback()
+                    } label: {
+                        Label(item.text, systemImage: item.imageName)
+                    }
+                }
+            }
+            .addSwipeyActions(isDragging: $isDragging,
+                              primaryLeadingAction: nil,
+                              secondaryLeadingAction: nil,
+                              primaryTrailingAction: toggleMessageReadSwipeAction(message: message),
+                              secondaryTrailingAction: replyToMessageSwipeAction(message: message))
     }
 }

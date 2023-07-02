@@ -90,63 +90,101 @@ extension InboxView {
         print("voting on \(comment.content)")
     }
     
-    func genCommentReplyMenuGroup(commentReply: APICommentReplyView) -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-        
-        // upvote
-        let (upvoteText, upvoteImg) = commentReply.myVote == .upvote ?
-        ("Undo upvote", "arrow.up.square.fill") :
-        ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg, destructiveActionPrompt: nil, enabled: true) {
-            Task(priority: .userInitiated) {
-                await voteOnCommentReply(commentReply: commentReply, inputOp: .upvote)
-            }
-        })
-        
-        // downvote
-        let (downvoteText, downvoteImg) = commentReply.myVote == .downvote ?
-        ("Undo downvote", "arrow.down.square.fill") :
-        ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg, destructiveActionPrompt: nil, enabled: true) {
-            Task(priority: .userInitiated) {
-                await voteOnCommentReply(commentReply: commentReply, inputOp: .downvote)
-            }
-        })
-        
-        // mark read
-        let (readText, readImg) = commentReply.commentReply.read ?
-        ("Mark unread", "envelope.fill") :
-        ("Mark read", "envelope.open")
-        ret.append(MenuFunction(text: readText, imageName: readImg, destructiveActionPrompt: nil, enabled: true) {
-            Task(priority: .userInitiated) {
-                await markCommentReplyRead(commentReply: commentReply, read: !commentReply.commentReply.read)
-            }
-        })
-        
-        return ret
-    }
+    // MARK: Callbacks
     
-    func voteOnCommentReply(commentReply: APICommentReplyView, inputOp: ScoringOperation) async {
-        do {
-            let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await _ = rateCommentReply(commentReply: commentReply,
-                                           operation: operation,
-                                           account: account,
-                                           commentReplyTracker: repliesTracker,
-                                           appState: appState)
-        } catch {
-            print("failed to vote!")
+    // REPLIES
+    func voteOnCommentReply(commentReply: APICommentReplyView, inputOp: ScoringOperation) {
+        Task(priority: .userInitiated) {
+            do {
+                let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+                try await _ = rateCommentReply(commentReply: commentReply,
+                                               operation: operation,
+                                               account: account,
+                                               commentReplyTracker: repliesTracker,
+                                               appState: appState)
+                // TODO: more granular/less expensive merge options
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to vote!")
+            }
         }
     }
     
-    func markCommentReplyRead(commentReply: APICommentReplyView, read: Bool) async {
-        do {
-            try await sendMarkCommentReplyAsReadRequest(commentReply: commentReply,
-                                                        read: read, account: account,
-                                                        commentReplyTracker: repliesTracker,
-                                                        appState: appState)
-        } catch {
-            print("failed to mark read!")
+    func toggleCommentReplyRead(commentReplyView: APICommentReplyView) {
+        Task(priority: .userInitiated) {
+            do {
+                try await sendMarkCommentReplyAsReadRequest(commentReply: commentReplyView,
+                                                            read: !commentReplyView.commentReply.read,
+                                                            account: account,
+                                                            commentReplyTracker: repliesTracker,
+                                                            appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to mark read!")
+            }
+        }
+    }
+    
+    func replyToCommentReply(commentReply: APICommentReplyView) {
+        print("implement replyToCommentReply")
+    }
+    
+    // MENTIONS
+    func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
+        Task(priority: .userInitiated) {
+            do {
+                let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+                try await ratePersonMention(personMention: mention,
+                                            operation: operation,
+                                            account: account,
+                                            mentionsTracker: mentionsTracker,
+                                            appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            }
+        }
+    }
+    
+    func toggleMentionRead(mention: APIPersonMentionView) {
+        Task(priority: .userInitiated) {
+            do {
+                try await sendMarkPersonMentionAsReadRequest(personMention: mention,
+                                                             read: !mention.personMention.read,
+                                                             account: account,
+                                                             mentionTracker: mentionsTracker,
+                                                             appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to mark mention as read!")
+            }
+        }
+    }
+    
+    func replyToMention(mention: APIPersonMentionView) {
+        print("TODO: implement replyToMention")
+    }
+    
+    // MESSAGES
+    func replyToMessage(message: APIPrivateMessageView) {
+        messageRecipient = message.creator
+        isComposingMessage = true
+    }
+    
+    func toggleMessageRead(message: APIPrivateMessageView) {
+        Task(priority: .userInitiated) {
+            do {
+                try await sendMarkPrivateMessageAsReadRequest(messageView: message,
+                                                              read: !message.privateMessage.read,
+                                                              account: account,
+                                                              messagesTracker: messagesTracker,
+                                                              appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to mark message as read!")
+            }
         }
     }
 }

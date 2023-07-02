@@ -17,7 +17,7 @@ extension InboxView {
             } else if allItems.isEmpty {
                 noItemsView()
             } else {
-                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
+                LazyVStack(spacing: 0) {
                     inboxListView()
                 }
             }
@@ -40,33 +40,17 @@ extension InboxView {
     @ViewBuilder
     func inboxListView() -> some View {
         ForEach(allItems) { item in
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
+            VStack(spacing: 0) {
                 Group {
                     switch item.type {
                     case .mention(let mention):
-                        InboxMentionView(account: account, mention: mention)
-                            .task {
-                                if mentionsTracker.shouldLoadContent(after: mention) {
-                                    await loadTrackerPage(tracker: mentionsTracker)
-                                }
-                            }
+                        inboxMentionViewWithInteraction(account: account, mention: mention)
                     case .message(let message):
-                        InboxMessageView(account: account, message: message)
-                            .task {
-                                if messagesTracker.shouldLoadContent(after: message) {
-                                    await loadTrackerPage(tracker: messagesTracker)
-                                }
-                            }
+                        inboxMessageViewWithInteraction(message: message)
                     case .reply(let reply):
-                        InboxReplyView(account: account, reply: reply)
-                            .task {
-                                if repliesTracker.shouldLoadContent(after: reply) {
-                                    await loadTrackerPage(tracker: repliesTracker)
-                                }
-                            }
+                        inboxReplyViewWithInteraction(account: account, reply: reply)
                     }
                 }
-                .padding(.horizontal)
                 
                 Divider()
             }

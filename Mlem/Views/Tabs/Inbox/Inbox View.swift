@@ -53,6 +53,8 @@ struct InboxView: View {
     @State var isComposingMessage: Bool = false
     @State var messageRecipient: APIPerson?
     
+    // utility
+    @State var isDragging: Bool = false
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
@@ -91,8 +93,15 @@ struct InboxView: View {
                 
                 Spacer()
             }
+            .sheet(isPresented: $isComposingMessage) { [isComposingMessage] in
+                if let recipient = messageRecipient {
+                    MessageComposerView(account: account, recipient: recipient)
+                        .presentationDetents([.medium, .large])
+                }
+            }
             // load view if empty or account has changed
             .task(priority: .userInitiated) {
+                print("new render")
                 // if a tracker is empty or the account has changed, refresh
                 if mentionsTracker.items.isEmpty ||
                     messagesTracker.items.isEmpty ||
@@ -104,11 +113,6 @@ struct InboxView: View {
                     print("Inbox tracker is not empty")
                 }
                 lastKnownAccountId = account.id
-            }
-            .sheet(isPresented: $isComposingMessage) {
-                if let recipient = messageRecipient {
-                    MessageComposerView(recipient: recipient)
-                }
             }
             .navigationTitle("Inbox")
             .navigationBarTitleDisplayMode(.inline)

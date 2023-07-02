@@ -99,7 +99,46 @@ func rateCommentReply(
                                                       creatorBlocked: response.commentView.creatorBlocked,
                                                       myVote: response.commentView.myVote)
         
-        let updatedComment = commentReplyTracker.update(with: newCommentReplyView)
+        commentReplyTracker.update(with: newCommentReplyView)
+    } catch let ratingOperationError {
+        AppConstants.hapticManager.notificationOccurred(.error)
+        print("Failed while trying to score: \(ratingOperationError)")
+        throw RatingFailure.failedToPostScore
+    }
+}
+
+@MainActor
+func ratePersonMention(
+    personMention: APIPersonMentionView,
+    operation: ScoringOperation,
+    account: SavedAccount,
+    mentionsTracker: FeedTracker<APIPersonMentionView>,
+    appState: AppState
+) async throws {
+    do {
+        let request = CreateCommentLikeRequest(
+            account: account,
+            commentId: personMention.comment.id,
+            score: operation
+        )
+
+        AppConstants.hapticManager.notificationOccurred(.success)
+        let response = try await APIClient().perform(request: request)
+  
+        let newPersonMentionView = APIPersonMentionView(personMention: personMention.personMention,
+                                                        comment: response.commentView.comment,
+                                                        creator: personMention.creator,
+                                                        post: response.commentView.post,
+                                                        community: response.commentView.community,
+                                                        recipient: personMention.recipient,
+                                                        counts: response.commentView.counts,
+                                                        creatorBannedFromCommunity: response.commentView.creatorBannedFromCommunity,
+                                                        subscribed: response.commentView.subscribed,
+                                                        saved: response.commentView.saved,
+                                                        creatorBlocked: response.commentView.creatorBlocked,
+                                                        myVote: response.commentView.myVote)
+
+        mentionsTracker.update(with: newPersonMentionView)
     } catch let ratingOperationError {
         AppConstants.hapticManager.notificationOccurred(.error)
         print("Failed while trying to score: \(ratingOperationError)")

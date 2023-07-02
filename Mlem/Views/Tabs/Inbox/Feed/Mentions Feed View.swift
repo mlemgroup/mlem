@@ -15,14 +15,14 @@ extension InboxView {
             if mentionsTracker.items.isEmpty && !mentionsTracker.isLoading {
                 noMentionsView()
             } else {
-                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
+                LazyVStack(spacing: 0) {
                     mentionsListView()
                     
                     if mentionsTracker.isLoading {
                         LoadingView(whatIsLoading: .mentions)
                     } else {
                         // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary)
+                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
                     }
                 }
             }
@@ -43,16 +43,36 @@ extension InboxView {
     @ViewBuilder
     func mentionsListView() -> some View {
         ForEach(mentionsTracker.items) { mention in
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
-                InboxMentionView(account: account, mention: mention)
-                    .task {
-                        if mentionsTracker.shouldLoadContent(after: mention) {
-                            await loadTrackerPage(tracker: mentionsTracker)
-                        }
-                    }
-                    .padding(.horizontal)
+            VStack(spacing: 0) {
+                inboxMentionViewWithInteraction(account: account, mention: mention)
                 Divider()
             }
         }
+    }
+    
+    func inboxMentionViewWithInteraction(account: SavedAccount, mention: APIPersonMentionView) -> some View {
+        InboxMentionView(account: account, mention: mention)
+            .padding(.vertical, AppConstants.postAndCommentSpacing)
+            .padding(.horizontal)
+            .background(Color.systemBackground)
+            .task {
+                if mentionsTracker.shouldLoadContent(after: mention) {
+                    await loadTrackerPage(tracker: mentionsTracker)
+                }
+            }
+            .contextMenu {
+                ForEach(genMentionMenuGroup(mention: mention)) { item in
+                    Button {
+                        item.callback()
+                    } label: {
+                        Label(item.text, systemImage: item.imageName)
+                    }
+                }
+            }
+            .addSwipeyActions(isDragging: $isDragging,
+                              primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
+                              secondaryLeadingAction: downvoteMentionSwipeAction(mentionView: mention),
+                              primaryTrailingAction: toggleMentionReadSwipeAction(mentionView: mention),
+                              secondaryTrailingAction: replyToMentionSwipeAction(mentionView: mention))
     }
 }

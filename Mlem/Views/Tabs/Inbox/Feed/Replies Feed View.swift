@@ -19,14 +19,14 @@ extension InboxView {
                     noRepliesView()
                 }
             } else {
-                LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
+                LazyVStack(spacing: 0) {
                     repliesListView()
                     
                     if repliesTracker.isLoading {
                         LoadingView(whatIsLoading: .replies)
                     } else {
                         // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary)
+                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
                     }
                 }
             }
@@ -47,7 +47,7 @@ extension InboxView {
     @ViewBuilder
     func repliesListView() -> some View {
         ForEach(repliesTracker.items) { reply in
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
+            VStack(spacing: 0) {
                 inboxReplyViewWithInteraction(account: account, reply: reply)
                 
                 Divider()
@@ -57,6 +57,9 @@ extension InboxView {
     
     func inboxReplyViewWithInteraction(account: SavedAccount, reply: APICommentReplyView) -> some View {
         InboxReplyView(account: account, reply: reply)
+            .padding(.vertical, AppConstants.postAndCommentSpacing)
+            .padding(.horizontal)
+            .background(Color.systemBackground)
             .task {
                 if repliesTracker.shouldLoadContent(after: reply) {
                     await loadTrackerPage(tracker: repliesTracker)
@@ -71,6 +74,10 @@ extension InboxView {
                     }
                 }
             }
-            .padding(.horizontal)
+            .addSwipeyActions(isDragging: $isDragging,
+                              primaryLeadingAction: upvoteCommentReplySwipeAction(commentReply: reply),
+                              secondaryLeadingAction: downvoteCommentReplySwipeAction(commentReply: reply),
+                              primaryTrailingAction: toggleCommentReplyReadSwipeAction(commentReply: reply),
+                              secondaryTrailingAction: replyToCommentReplySwipeAction(commentReply: reply))
     }
 }
