@@ -50,13 +50,13 @@ struct FeedPost: View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
-                .clipShape(
-                    .rect(cornerRadius:
-                            horizontalSizeClass == .regular ? 16 : 0
-                          )
-                )
+                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
+//                    .rect(cornerRadius:
+//                            horizontalSizeClass == .regular ? 16 : 0
+//                          )
+//                )
                 .padding(.all, horizontalSizeClass == .regular ? nil : 0)
-                .background(naturalBackgroundColor)
+                .background(Color.systemBackground)
                 
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in

@@ -47,12 +47,12 @@ struct SwipeyView: ViewModifier {
          secondaryTrailingAction: SwipeAction?
     ) {
         assert(
-            secondaryLeadingAction != nil && primaryLeadingAction == nil,
-            "No secondary action should be present without a primary"
+            primaryLeadingAction != nil || secondaryLeadingAction == nil,
+            "No secondary action \(secondaryLeadingAction != nil) should be present without a primary \(primaryLeadingAction == nil)"
         )
         
         assert(
-            secondaryTrailingAction != nil && primaryTrailingAction == nil,
+            primaryTrailingAction != nil || secondaryTrailingAction == nil,
             "No secondary action should be present without a primary"
         )
         
