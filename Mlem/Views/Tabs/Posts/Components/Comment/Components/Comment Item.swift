@@ -44,6 +44,8 @@ struct CommentItem: View {
     let depth: Int
     let showPostContext: Bool
     let showCommentCreator: Bool
+    let showInteractionBar: Bool
+    let enableSwipeActions: Bool
 
     @Binding var isDragging: Bool
     
@@ -56,7 +58,9 @@ struct CommentItem: View {
          depth: Int,
          showPostContext: Bool,
          showCommentCreator: Bool,
-         isDragging: Binding<Bool>
+         isDragging: Binding<Bool>,
+         showInteractionBar: Bool = true,
+         enableSwipeActions: Bool = true
     ) {
         self.account = account
         self.hierarchicalComment = hierarchicalComment
@@ -64,6 +68,8 @@ struct CommentItem: View {
         self.depth = depth
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
+        self.showInteractionBar = showInteractionBar
+        self.enableSwipeActions = enableSwipeActions
         _isDragging = isDragging
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
@@ -105,16 +111,18 @@ struct CommentItem: View {
 
                     commentBody
 
-                    CommentInteractionBar(commentView: hierarchicalComment.commentView,
-                                          account: account,
-                                          displayedScore: displayedScore,
-                                          displayedVote: displayedVote,
-                                          displayedSaved: displayedSaved,
-                                          upvote: upvote,
-                                          downvote: downvote,
-                                          saveComment: saveComment,
-                                          deleteComment: deleteComment,
-                                          menuFunctions: genMenuFunctions())
+                    if showInteractionBar {
+                        CommentInteractionBar(commentView: hierarchicalComment.commentView,
+                                              account: account,
+                                              displayedScore: displayedScore,
+                                              displayedVote: displayedVote,
+                                              displayedSaved: displayedSaved,
+                                              upvote: upvote,
+                                              downvote: downvote,
+                                              saveComment: saveComment,
+                                              deleteComment: deleteComment,
+                                              menuFunctions: genMenuFunctions())
+                    }
                 }
                 .padding(AppConstants.postAndCommentSpacing)
             }
@@ -139,10 +147,10 @@ struct CommentItem: View {
             .background(Color.systemBackground)
             .addSwipeyActions(
                 isDragging: $isDragging,
-                primaryLeadingAction: upvoteSwipeAction,
-                secondaryLeadingAction: downvoteSwipeAction,
-                primaryTrailingAction: saveSwipeAction,
-                secondaryTrailingAction: replySwipeAction
+                primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
+                secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
+                primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
+                secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             Divider()

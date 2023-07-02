@@ -32,6 +32,8 @@ struct FeedPost: View {
     let account: SavedAccount
     let showPostCreator: Bool
     let showCommunity: Bool
+    let showInteractionBar: Bool = true
+    let enableSwipeActions: Bool = true
 
     // MARK: State
 
@@ -69,10 +71,10 @@ struct FeedPost: View {
                 }
                 .addSwipeyActions(
                     isDragging: $isDragging,
-                    primaryLeadingAction: upvoteSwipeAction,
-                    secondaryLeadingAction: downvoteSwipeAction,
-                    primaryTrailingAction: saveSwipeAction,
-                    secondaryTrailingAction: replySwipeAction
+                    primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
+                    secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
+                    primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
+                    secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
                 )
                 .alert("Not yet implemented!", isPresented: $replyIsPresented) {
                     Button("I love beta apps", role: .cancel) { }
@@ -110,12 +112,14 @@ struct FeedPost: View {
                 UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
             }
   
-            PostInteractionBar(postView: postView,
-                               account: account,
-                               menuFunctions: genMenuFunctions(),
-                               voteOnPost: voteOnPost,
-                               updatedSavePost: { _ in await savePost() },
-                               deletePost: deletePost)
+            if showInteractionBar {
+                PostInteractionBar(postView: postView,
+                                   account: account,
+                                   menuFunctions: genMenuFunctions(),
+                                   voteOnPost: voteOnPost,
+                                   updatedSavePost: { _ in await savePost() },
+                                   deletePost: deletePost)
+            }
         }
         .padding(AppConstants.postAndCommentSpacing)
     }
