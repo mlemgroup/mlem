@@ -331,6 +331,15 @@ struct FeedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
+        
+        // translate
+        ret.append(MenuFunction(
+            text: "Translate",
+            imageName: "globe",
+            destructiveActionPrompt: nil,
+            enabled: !(postView.post.body?.isEmpty ?? true)) {
+                translateText(postView.post.body ?? "Missing Body")
+        })
 
         // translate
         ret.append(MenuFunction(
