@@ -331,7 +331,7 @@ struct FeedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
-        
+
         // translate
         ret.append(MenuFunction(
             text: "Translate",
