@@ -11,7 +11,20 @@ import AlertToast
 
 class AppState: ObservableObject {
 
-    @Published private(set) var currentActiveAccount: SavedAccount?
+    @Published var currentActiveAccount: SavedAccount? {
+        didSet {
+            if let newAccount = currentActiveAccount {
+                Task {
+                    let request = GetSiteRequest(account: newAccount)
+                    if let response = try? await APIClient().perform(request: request) {
+                        await MainActor.run {
+                            enableDownvote = response.siteView.localSite.enableDownvotes
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @Published var isShowingCommunitySearch: Bool = false
 
@@ -29,18 +42,4 @@ class AppState: ObservableObject {
 
     @Published var enableDownvote: Bool = true
     
-    func setActiveAccount(_ account: SavedAccount?) {
-        currentActiveAccount = account
-        
-        if let newAccount = account {
-            Task {
-                let request = GetSiteRequest(account: newAccount)
-                if let response = try? await APIClient().perform(request: request) {
-                    await MainActor.run {
-                        enableDownvote = response.siteView.localSite.enableDownvotes
-                    }
-                }
-            }
-        }
-    }
 }

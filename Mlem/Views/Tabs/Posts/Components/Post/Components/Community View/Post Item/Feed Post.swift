@@ -25,6 +25,7 @@ struct FeedPost: View {
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
 
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     // MARK: Parameters
 
     let postView: APIPostView
@@ -53,10 +54,24 @@ struct FeedPost: View {
     //    var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
     //    var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
 
+    var naturalBackgroundColor: Color {
+        horizontalSizeClass == .regular ?
+        Color.secondarySystemBackground :
+        Color.systemBackground
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
+                .clipShape(
+                    .rect(cornerRadius:
+                            horizontalSizeClass == .regular ? 16 : 0
+                          )
+                )
+                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
+                .background(naturalBackgroundColor)
+                
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
                         Button {
@@ -80,12 +95,16 @@ struct FeedPost: View {
                                   shortRightColor: .saveColor,
                                   longRightSymbolName: "arrowshape.turn.up.left.fill",
                                   longRightAction: replyToPost,
-                                  longRightColor: .accentColor)
+                                  longRightColor: .accentColor,
+                                  naturalBackgroundColor: naturalBackgroundColor
+                )
                 .alert("Not yet implemented!", isPresented: $replyIsPresented) {
                     Button("I love beta apps", role: .cancel) { }
                 }
 
-            Divider()
+            if horizontalSizeClass == .compact {
+                Divider()
+            }
         }
     }
 

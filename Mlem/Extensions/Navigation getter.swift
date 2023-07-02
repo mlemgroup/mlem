@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 private struct NavigationPathGetter: EnvironmentKey {
-    static let defaultValue: Binding<NavigationPath>? = nil
+    static let defaultValue: Binding<NavigationPath> = .constant(NavigationPath())
 }
 
 extension EnvironmentValues {
-    var navigationPath: Binding<NavigationPath>? {
+    var navigationPath: Binding<NavigationPath> {
         get { self[NavigationPathGetter.self] }
         set { self[NavigationPathGetter.self] = newValue }
       }

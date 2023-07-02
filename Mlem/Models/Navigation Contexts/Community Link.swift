@@ -14,10 +14,11 @@ struct CommunityLinkWithContext: Equatable, Identifiable, Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
+        hasher.combine(self.community?.id)
+        hasher.combine(self.feedType)
     }
     
-    var id: String { community?.id.description ?? UUID().uuidString }
+    var id: Int { self.hashValue }
     
     let community: APICommunity?
     let feedType: FeedType

@@ -54,7 +54,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         account: account,
                         post: post,
                         feedType: .constant(.all)
-                    )
+                    ).environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
                 }
@@ -64,7 +64,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     LazyLoadExpandedPost(
                         account: account,
                         post: post
-                    )
+                    ).environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
                 }
@@ -76,6 +76,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         post: post.post,
                         feedType: post.feedType
                     ).environmentObject(post.postTracker)
+                        .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
                 }
@@ -86,13 +87,14 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         account: account,
                         post: post.post
                     ).environmentObject(post.postTracker)
+                        .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
                 }
             }
             .navigationDestination(for: APIPerson.self) { user in
                 if let account = account {
-                    UserView(userID: user.id, account: account)
+                    UserView(userID: user.id, account: account).environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this user")
                 }
@@ -112,6 +114,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccounts: SavedAccountTracker
     let navigationPath: Binding<NavigationPath>
+    let local: String
 
     func body(content: Content) -> some View {
         content
@@ -131,6 +134,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                 Task(priority: .userInitiated) {
                     defer { appState.isShowingToast = false }
                     var lookup = url.absoluteString
+                    lookup = lookup.replacingOccurrences(of: "mlem://", with: "https://")
                     if !lookup.contains("http") {
                         // something fishy is going on. I think the markdown view is playing with us!
                         if lookup.contains("@") && !lookup.contains("!") {
@@ -138,7 +142,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                         }
                     }
 
-                    print("lookup: \(lookup) (original: \(url.absoluteString)")
+                    print("lookup: \(lookup) (original: \(url.absoluteString)) (\(local))")
                     // Wooo this is a lemmy server we're talking to! time to pasre this url and push it to the stack
                     do {
                         let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account, query: lookup))
@@ -163,8 +167,16 @@ struct HandleLemmyLinkResolution: ViewModifier {
                     // if all else fails fallback!
                     let outcome = URLHandler.handle(url)
                     if outcome.action != nil {
-                        // if we failed to open it let the system try!
-                        OpenURLAction(handler: { _ in .systemAction }).callAsFunction(url)
+                        if url.scheme == "mlem" {
+                            // if we got here then someone intentionally wanted to open this in mlem but now we need to tell him we have no idea how to open it
+                            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                                appState.toast = AlertToast(displayMode: .hud, type: .error(.red), title: "Couldn't resolve link")
+                                appState.isShowingToast = true
+                            }
+                        } else {
+                            // if we failed to open it let the system try!
+                            OpenURLAction(handler: { _ in .systemAction }).callAsFunction(url)
+                        }
                     }
                 }
                 // since this is a sus link we need to ask the lemmy servers about it, so for now we ask the system to forget-'bout-itt
@@ -179,12 +191,14 @@ struct HandleLemmyLinkResolution: ViewModifier {
 }
 
 extension View {
-    func handleLemmyViews(navigationPath: Binding<NavigationPath>) -> some View {
+    func handleLemmyViews() -> some View {
         modifier(HandleLemmyLinksDisplay())
     }
 
-    func handleLemmyLinkResolution(navigationPath: Binding<NavigationPath>) -> some View {
-        modifier(HandleLemmyLinkResolution(navigationPath: navigationPath))
+    func handleLemmyLinkResolution(navigationPath: Binding<NavigationPath>, local: String) -> some View {
+        modifier(HandleLemmyLinkResolution(navigationPath: navigationPath, local: local))
     }
+
+}
 
 }
