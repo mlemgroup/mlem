@@ -24,7 +24,7 @@ struct APILocalSite: Decodable {
     let hideModlogModNames: Bool
     let applicationEmailAdmins: Bool
     let slurFilterRegex: String?
-    let actorMaxNameLength: Int
+    let actorNameMaxLength: Int
     let federationEnabled: Bool
     let federationDebug: Bool
     let federationWorkerCount: Int
@@ -38,7 +38,7 @@ struct APILocalSite: Decodable {
 
 // lemmy_db_schema::source::local_site::RegistrationMode
 enum APIRegistrationMode: String, Codable {
-    case closed = "Closed"
-    case requireApplication = "RequireApplication"
-    case open = "Open"
+    case closed = "closed"
+    case requireApplication = "requireapplication"
+    case open = "open"
 }

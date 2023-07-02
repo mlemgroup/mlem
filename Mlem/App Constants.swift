@@ -59,4 +59,5 @@ struct AppConstants {
     static let largeAvatarSize: CGFloat = 32
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
+    static let postAndCommentSpacing: CGFloat = 10
 }

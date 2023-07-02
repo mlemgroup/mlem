@@ -12,6 +12,7 @@ internal enum PossibleStyling {
 }
 
 // swiftlint:disable type_body_length
+// swiftlint:disable file_length
 struct ExpandedPost: View {
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
@@ -52,6 +53,9 @@ struct ExpandedPost: View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
+                
+                Divider()
+                    .background(.black)
 
                 if commentTracker.isLoading {
                     commentsLoadingView
@@ -239,18 +243,26 @@ struct ExpandedPost: View {
      Displays the post itself, plus a little divider to keep it visually distinct from comments
      */
     private var postView: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+            
+            CommunityLinkView(community: post.community)
+            
             LargePost(
                 postView: post,
                 account: account,
-                isExpanded: true,
-                voteOnPost: voteOnPost,
-                savePost: savePost,
-                deletePost: deletePost
+                isExpanded: true
             )
-            Divider()
-                .background(.black)
+            
+            UserProfileLink(account: account, user: post.creator, showServerInstance: true)
+            
+            PostInteractionBar(postView: post,
+                               account: account,
+                               menuFunctions: genMenuFunctions(),
+                               voteOnPost: voteOnPost,
+                               updatedSavePost: savePost,
+                               deletePost: deletePost)
         }
+        .padding(AppConstants.postAndCommentSpacing)
     }
 
     /**
@@ -258,6 +270,7 @@ struct ExpandedPost: View {
      */
     private var commentsLoadingView: some View {
         ProgressView("Loading comments…")
+            .padding(.top, AppConstants.postAndCommentSpacing)
             .task(priority: .userInitiated) {
                 if post.counts.comments != 0 {
                     await loadComments()
@@ -298,6 +311,7 @@ struct ExpandedPost: View {
                     postContext: post,
                     depth: 0,
                     showPostContext: false,
+                    showCommentCreator: true,
                     isDragging: $isDragging
                 )
             }
@@ -370,11 +384,93 @@ struct ExpandedPost: View {
         do {
             // TODO: renamed this function and/or move `deleteComment` out of the global scope to avoid
             // having to refer to our own module
-            _ = try await Mlem.deletePost(postId: post.id, account: account, postTracker: postTracker, appState: appState)
+            _ = try await Mlem.deletePost(postId: post.post.id, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            print("failed to delete post!")
+            print("failed to delete post: \(error)")
         }
     }
+    
+    // swiftlint:disable function_body_length
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        // upvote
+        let (upvoteText, upvoteImg) = post.myVote == .upvote ?
+        ("Undo upvote", "arrow.up.square.fill") :
+        ("Upvote", "arrow.up.square")
+        ret.append(MenuFunction(
+            text: upvoteText,
+            imageName: upvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await voteOnPost(inputOp: .upvote)
+            }
+        })
+        
+        // downvote
+        let (downvoteText, downvoteImg) = post.myVote == .downvote ?
+        ("Undo downvote", "arrow.down.square.fill") :
+        ("Downvote", "arrow.down.square")
+        ret.append(MenuFunction(
+            text: downvoteText,
+            imageName: downvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await voteOnPost(inputOp: .downvote)
+            }
+        })
+        
+        // save
+        let (saveText, saveImg) = post.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        ret.append(MenuFunction(
+            text: saveText,
+            imageName: saveImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                try await savePost(_: !post.saved)
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            isReplyFieldFocused = true
+        })
+        
+        // delete
+        if post.creator.id == account.id {
+            ret.append(MenuFunction(
+                text: "Delete",
+                imageName: "trash",
+                destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
+                enabled: !post.post.deleted) {
+                Task(priority: .userInitiated) {
+                    await deletePost()
+                }
+            })
+        }
+        
+        // share
+        ret.append(MenuFunction(
+            text: "Share",
+            imageName: "square.and.arrow.up",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            if let url = URL(string: post.post.apId) {
+                showShareSheet(URLtoShare: url)
+            }
+        })
+        
+        return ret
+    }
+    // swiftlint:enable function_body_length
 }
 
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length

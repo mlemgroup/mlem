@@ -38,6 +38,16 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     Text("You must be signed in to view this community")
                 }
             }
+            .navigationDestination(for: CommunitySidebarLinkWithContext.self) { context in
+                if let account = account {
+                    CommunitySidebarView(
+                        account: account,
+                        community: context.community,
+                        communityDetails: context.communityDetails)
+                } else {
+                    Text("You must be signed in to view this community")
+                }
+            }
             .navigationDestination(for: APIPostView.self) { post in
                 if let account = account {
                     ExpandedPost(
@@ -83,6 +93,13 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APIPerson.self) { user in
                 if let account = account {
                     UserView(userID: user.id, account: account)
+                } else {
+                    Text("You must be signed in to view this user")
+                }
+            }
+            .navigationDestination(for: UserModeratorLink.self) { user in
+                if let account = account {
+                    UserModeratorView(account: account, userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
                 } else {
                     Text("You must be signed in to view this user")
                 }

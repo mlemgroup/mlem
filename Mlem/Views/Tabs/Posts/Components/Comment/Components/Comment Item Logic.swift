@@ -118,4 +118,87 @@ extension CommentItem {
     func replyToComment() {
         commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
     }
+    
+    // MARK: helpers
+    
+    // swiftlint:disable function_body_length
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        // upvote
+        let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
+        ("Undo upvote", "arrow.up.square.fill") :
+        ("Upvote", "arrow.up.square")
+        ret.append(MenuFunction(
+            text: upvoteText,
+            imageName: upvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await upvote()
+            }
+        })
+        
+        // downvote
+        let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
+        ("Undo downvote", "arrow.down.square.fill") :
+        ("Downvote", "arrow.down.square")
+        ret.append(MenuFunction(
+            text: downvoteText,
+            imageName: downvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await downvote()
+            }
+        })
+        
+        // save
+        let (saveText, saveImg) = hierarchicalComment.commentView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        ret.append(MenuFunction(
+            text: saveText,
+            imageName: saveImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await saveComment()
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            replyToComment()
+        })
+        
+        // delete
+        if hierarchicalComment.commentView.creator.id == account.id {
+            ret.append(MenuFunction(
+                text: "Delete",
+                imageName: "trash",
+                destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
+                enabled: !hierarchicalComment.commentView.comment.deleted) {
+                Task(priority: .userInitiated) {
+                    await deleteComment()
+                }
+            })
+        }
+        
+        // share
+        if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
+            ret.append(MenuFunction(
+                text: "Share",
+                imageName: "square.and.arrow.up",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                showShareSheet(URLtoShare: url)
+            })
+        }
+                   
+        return ret
+    }
+    // swiftlint:enable function_body_length
 }

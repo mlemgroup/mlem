@@ -20,6 +20,7 @@ struct PostInteractionBar: View {
     let iconPadding: CGFloat = 4
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
+    let height: CGFloat = 24
 
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation
@@ -35,27 +36,26 @@ struct PostInteractionBar: View {
     // parameters
     let postView: APIPostView
     let account: SavedAccount
-    let compact: Bool
+    let menuFunctions: [MenuFunction]
     let voteOnPost: (ScoringOperation) async -> Void
     let updatedSavePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
-    var height: CGFloat { compact ? 20 : 24 }
     
     init(
         postView: APIPostView,
         account: SavedAccount,
-        compact: Bool,
+        menuFunctions: [MenuFunction],
         voteOnPost: @escaping (ScoringOperation) async -> Void,
         updatedSavePost: @escaping (_ save: Bool) async throws -> Void,
         deletePost: @escaping () async -> Void
     ) {
         self.postView = postView
         self.account = account
-        self.compact = compact
         self.voteOnPost = voteOnPost
+        self.menuFunctions = menuFunctions
         self.updatedSavePost = updatedSavePost
         self.deletePost = deletePost
         _dirtyVote = State(initialValue: postView.myVote ?? .resetVote)
@@ -65,7 +65,7 @@ struct PostInteractionBar: View {
     }
 
     var body: some View {
-        HStack(spacing: compact ? 18 : 12) {
+        HStack(spacing: 12) {
             VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
 
@@ -75,22 +75,15 @@ struct PostInteractionBar: View {
                 }
             }
 
-            if let postURL = URL(string: postView.post.apId) {
-                ShareButton(size: height, accessibilityContext: "post") {
-                    showShareSheet(URLtoShare: postURL)
-                }
-            }
-
             EllipsisMenu(
                 size: height,
-                shareUrl: postView.post.apId,
-                deleteButtonCallback: canDeletePost() ? self.deletePost : nil
+                menuFunctions: menuFunctions
             )
 
             Spacer()
             infoBlock
         }
-        .font(compact ? .footnote : .callout)
+        .font(.callout)
     }
 
     // subviews

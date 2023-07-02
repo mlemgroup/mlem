@@ -41,7 +41,6 @@ struct CommentItem: View {
     // MARK: Constants
 
     let threadingColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
-    let spacing: CGFloat = 8
     let indent: CGFloat = 10
 
     // MARK: Parameters
@@ -51,8 +50,11 @@ struct CommentItem: View {
     let postContext: APIPostView?
     let depth: Int
     let showPostContext: Bool
+    let showCommentCreator: Bool
 
     @Binding var isDragging: Bool
+    
+    // MARK: Computed
 
     // init needed to get dirty and clean aligned
     init(account: SavedAccount,
@@ -60,6 +62,7 @@ struct CommentItem: View {
          postContext: APIPostView?,
          depth: Int,
          showPostContext: Bool,
+         showCommentCreator: Bool,
          isDragging: Binding<Bool>
     ) {
         self.account = account
@@ -67,6 +70,7 @@ struct CommentItem: View {
         self.postContext = postContext
         self.depth = depth
         self.showPostContext = showPostContext
+        self.showCommentCreator = showCommentCreator
         _isDragging = isDragging
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
@@ -92,11 +96,19 @@ struct CommentItem: View {
     var body: some View {
         VStack(spacing: 0) {
             Group {
-                VStack(spacing: spacing) {
-                    commentHeader
+                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+                    if showCommentCreator {
+                        UserProfileLink(
+                            account: account,
+                            user: hierarchicalComment.commentView.creator,
+                            showServerInstance: shouldShowUserServerInComment,
+                            postContext: postContext,
+                            commentContext: hierarchicalComment.commentView.comment
+                        )
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(commentorLabel)
                         .foregroundColor(.secondary)
+                    }
 
                     commentBody
 
@@ -108,9 +120,10 @@ struct CommentItem: View {
                                           upvote: upvote,
                                           downvote: downvote,
                                           saveComment: saveComment,
-                                          deleteComment: deleteComment)
+                                          deleteComment: deleteComment,
+                                          menuFunctions: genMenuFunctions())
                 }
-                .padding(spacing)
+                .padding(AppConstants.postAndCommentSpacing)
             }
             .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {
@@ -122,23 +135,12 @@ struct CommentItem: View {
                 }
             }
             .contextMenu {
-                Button("Upvote") {
-                    Task(priority: .userInitiated) {
-                        await upvote()
+                ForEach(genMenuFunctions()) { item in
+                    Button {
+                        item.callback()
+                    } label: {
+                        Label(item.text, systemImage: item.imageName)
                     }
-                }
-                Button("Downvote") {
-                    Task(priority: .userInitiated) {
-                        await downvote()
-                    }
-                }
-                Button("Save") {
-                    Task(priority: .userInitiated) {
-                        await saveComment()
-                    }
-                }
-                Button("Reply") {
-                    replyToComment()
                 }
             }
             .background(Color.systemBackground)
@@ -147,9 +149,9 @@ struct CommentItem: View {
                               shortLeftSymbolName: upvoteSymbolName,
                               shortLeftAction: upvote,
                               shortLeftColor: .upvoteColor,
-                              longLeftSymbolName: downvoteSymbolName,
-                              longLeftAction: downvote,
-                              longLeftColor: .downvoteColor,
+                              longLeftSymbolName: appState.enableDownvote ? downvoteSymbolName : nil,
+                              longLeftAction: appState.enableDownvote ? downvote : nil,
+                              longLeftColor: appState.enableDownvote ? .downvoteColor : nil,
                               emptyRightSymbolName: emptySaveSymbolName,
                               shortRightSymbolName: saveSymbolName,
                               shortRightAction: saveComment,
@@ -174,30 +176,8 @@ struct CommentItem: View {
     // MARK: Subviews
 
     @ViewBuilder
-    var commentHeader: some View {
-        HStack {
-            UserProfileLink(
-                account: account,
-                user: hierarchicalComment.commentView.creator,
-                showServerInstance: shouldShowUserServerInComment,
-                postContext: postContext,
-                commentContext: hierarchicalComment.commentView.comment
-            )
-
-            Spacer()
-
-            HStack(spacing: 2) {
-                Image(systemName: "clock")
-                Text(publishedAgo)
-            }
-        }
-        .font(.footnote)
-        .foregroundColor(.secondary)
-    }
-
-    @ViewBuilder
     var commentBody: some View {
-        VStack {
+        VStack(spacing: AppConstants.postAndCommentSpacing) {
             // comment text or placeholder
             if hierarchicalComment.commentView.comment.deleted {
                 Text("Comment was deleted")
@@ -235,6 +215,7 @@ struct CommentItem: View {
                         postContext: postContext,
                         depth: depth + 1,
                         showPostContext: false,
+                        showCommentCreator: true,
                         isDragging: $isDragging
                     )
                 }

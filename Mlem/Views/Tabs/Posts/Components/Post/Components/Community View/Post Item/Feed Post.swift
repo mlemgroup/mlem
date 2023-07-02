@@ -29,6 +29,8 @@ struct FeedPost: View {
 
     let postView: APIPostView
     let account: SavedAccount
+    let showPostCreator: Bool
+    let showCommunity: Bool
 
     // MARK: State
 
@@ -56,23 +58,12 @@ struct FeedPost: View {
             postItem
                 .background(Color.systemBackground)
                 .contextMenu {
-                    Button("Upvote") {
-                        Task(priority: .userInitiated) {
-                            await upvotePost()
+                    ForEach(genMenuFunctions()) { item in
+                        Button {
+                            item.callback()
+                        } label: {
+                            Label(item.text, systemImage: item.imageName)
                         }
-                    }
-                    Button("Downvote") {
-                        Task(priority: .userInitiated) {
-                            await downvotePost()
-                        }
-                    }
-                    Button("Save") {
-                        Task(priority: .userInitiated) {
-                            await savePost()
-                        }
-                    }
-                    Button("Reply") {
-                        replyToPost()
                     }
                 }
                 .addSwipeyActions(isDragging: $isDragging,
@@ -80,9 +71,9 @@ struct FeedPost: View {
                                   shortLeftSymbolName: "arrow.up.square.fill",
                                   shortLeftAction: upvotePost,
                                   shortLeftColor: .upvoteColor,
-                                  longLeftSymbolName: "arrow.down.square.fill",
-                                  longLeftAction: downvotePost,
-                                  longLeftColor: .downvoteColor,
+                                  longLeftSymbolName: appState.enableDownvote ? "arrow.down.square.fill" : nil,
+                                  longLeftAction: appState.enableDownvote ? downvotePost : nil,
+                                  longLeftColor: appState.enableDownvote ? .downvoteColor : nil,
                                   emptyRightSymbolName: "bookmark",
                                   shortRightSymbolName: "bookmark.fill",
                                   shortRightAction: savePost,
@@ -100,26 +91,38 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-        Group {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+            // community name
+            if showCommunity {
+                CommunityLinkView(community: postView.community)
+            }
+            
             if shouldShowCompactPosts {
                 CompactPost(
                     postView: postView,
-                    account: account,
-                    voteOnPost: voteOnPost,
-                    savePost: { _ in await savePost() },
-                    deletePost: deletePost
+                    account: account
                 )
             } else {
                 LargePost(
                     postView: postView,
                     account: account,
-                    isExpanded: false,
-                    voteOnPost: voteOnPost,
-                    savePost: { _ in await savePost() },
-                    deletePost: deletePost
+                    isExpanded: false
                 )
             }
+            
+            // posting user
+            if showPostCreator {
+                UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
+            }
+  
+            PostInteractionBar(postView: postView,
+                               account: account,
+                               menuFunctions: genMenuFunctions(),
+                               voteOnPost: voteOnPost,
+                               updatedSavePost: { _ in await savePost() },
+                               deletePost: deletePost)
         }
+        .padding(AppConstants.postAndCommentSpacing)
     }
 
     // Reply handlers
@@ -136,7 +139,7 @@ struct FeedPost: View {
         do {
             _ = try await Mlem.deletePost(postId: postView.post.id, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            print("failed to delete post!")
+            print("failed to delete post: \(error)")
         }
     }
     
@@ -168,4 +171,85 @@ struct FeedPost: View {
             print("failed to save!")
         }
     }
+    
+    // swiftlint:disable function_body_length
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        // upvote
+        let (upvoteText, upvoteImg) = postView.myVote == .upvote ?
+        ("Undo upvote", "arrow.up.square.fill") :
+        ("Upvote", "arrow.up.square")
+        ret.append(MenuFunction(
+            text: upvoteText,
+            imageName: upvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await upvotePost()
+            }
+        })
+        
+        // downvote
+        let (downvoteText, downvoteImg) = postView.myVote == .downvote ?
+        ("Undo downvote", "arrow.down.square.fill") :
+        ("Downvote", "arrow.down.square")
+        ret.append(MenuFunction(
+            text: downvoteText,
+            imageName: downvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await downvotePost()
+            }
+        })
+        
+        // save
+        let (saveText, saveImg) = postView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        ret.append(MenuFunction(
+            text: saveText,
+            imageName: saveImg,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            Task(priority: .userInitiated) {
+                await savePost()
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            replyToPost()
+        })
+        
+        // delete
+        if postView.creator.id == account.id {
+            ret.append(MenuFunction(
+                text: "Delete",
+                imageName: "trash",
+                destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
+                enabled: !postView.post.deleted) {
+                Task(priority: .userInitiated) {
+                    await deletePost()
+                }
+            })
+        }
+        
+        // share
+        ret.append(MenuFunction(
+            text: "Share",
+            imageName: "square.and.arrow.up",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+            if let url = URL(string: postView.post.apId) {
+                showShareSheet(URLtoShare: url)
+            }
+        })
+        
+        return ret
+    }
+    // swiftlint:enable function_body_length
 }

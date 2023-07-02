@@ -23,6 +23,7 @@ struct AppearanceSettingsView: View {
     // posts
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     
     // comments
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
@@ -126,6 +127,11 @@ struct AppearanceSettingsView: View {
                              settingPictureColor: .pink,
                              settingName: "Show user server instance",
                              isTicked: $shouldShowUserServerInPost)
+                
+                SwitchableSettingsItem(settingPictureSystemName: "signature",
+                                       settingPictureColor: .pink,
+                                       settingName: "Show post creator",
+                                       isTicked: $shouldShowPostCreator)
             }
             
             Section("Comments") {
@@ -139,7 +145,7 @@ struct AppearanceSettingsView: View {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "person.2.circle.fill",
                     settingPictureColor: .pink,
-                    settingName: "Show community icons",
+                    settingName: "Show community avatars",
                     isTicked: $shouldShowCommunityIcons
                 )
                 
