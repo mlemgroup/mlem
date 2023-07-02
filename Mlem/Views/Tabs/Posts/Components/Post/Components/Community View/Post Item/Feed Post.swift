@@ -44,15 +44,7 @@ struct FeedPost: View {
     @State var replyIsPresented: Bool = false
     @State var replyContents: String = ""
     @State var replyIsSending: Bool = false
-
-    // MARK: Computed
-    // TODO: real-time swipe-to-vote feedback
-    //    var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
-    //    var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
-    //    var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
-    //    var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
-    //    var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-
+    
     var body: some View {
         VStack(spacing: 0) {
             postItem
@@ -68,29 +60,10 @@ struct FeedPost: View {
                 }
                 .addSwipeyActions(
                     isDragging: $isDragging,
-                    primaryLeadingAction: SwipeAction(
-                        symbol: .init(emptyName: "arrow.up.square", fillName: "arrow.up.square.fill"),
-                        colour: .upvoteColor,
-                        action: upvotePost
-                    ),
-                    secondaryLeadingAction: {
-                        guard appState.enableDownvote else { return nil }
-                        return SwipeAction(
-                            symbol: .init(emptyName: "arrow.down.square", fillName: "arrow.down.square.fill"),
-                            colour: .downvoteColor,
-                            action: downvotePost
-                        )
-                    }(),
-                    primaryTrailingAction: SwipeAction(
-                        symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
-                        colour: .saveColor,
-                        action: savePost
-                    ),
-                    secondaryTrailingAction: SwipeAction(
-                        symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
-                        colour: .accentColor,
-                        action: replyToPost
-                    )
+                    primaryLeadingAction: upvoteSwipeAction,
+                    secondaryLeadingAction: downvoteSwipeAction,
+                    primaryTrailingAction: saveSwipeAction,
+                    secondaryTrailingAction: replySwipeAction
                 )
                 .alert("Not yet implemented!", isPresented: $replyIsPresented) {
                     Button("I love beta apps", role: .cancel) { }
@@ -263,4 +236,53 @@ struct FeedPost: View {
         return ret
     }
     // swiftlint:enable function_body_length
+}
+
+// MARK: - Swipe Actions
+
+extension FeedPost {
+
+    // TODO: if we want to mirror the behaviour in comments here we need the `dirty` operation to be visible from this
+    // context, which at present would require some work as it occurs down inside the post interaction bar
+    // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
+    
+//    private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
+//    private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
+//    private var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
+//    private var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
+//    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
+    
+    var upvoteSwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: "arrow.up.square", fillName: "arrow.up.square.fill"),
+            colour: .upvoteColor,
+            action: upvotePost
+        )
+    }
+    
+    var downvoteSwipeAction: SwipeAction? {
+        guard appState.enableDownvote else { return nil }
+        
+        return SwipeAction(
+            symbol: .init(emptyName: "arrow.down.square", fillName: "arrow.down.square.fill"),
+            colour: .downvoteColor,
+            action: downvotePost
+        )
+    }
+    
+    var saveSwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
+            colour: .saveColor,
+            action: savePost
+        )
+    }
+    
+    var replySwipeAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
+            colour: .accentColor,
+            action: replyToPost
+        )
+    }
 }
