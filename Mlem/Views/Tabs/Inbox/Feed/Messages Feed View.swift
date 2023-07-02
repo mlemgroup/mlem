@@ -12,13 +12,18 @@ extension InboxView {
     @ViewBuilder
     func messagesFeedView() -> some View {
         Group {
-            if messagesTracker.isLoading {
-                LoadingView(whatIsLoading: .messages)
-            } else if messagesTracker.items.isEmpty {
+            if messagesTracker.items.isEmpty && !messagesTracker.isLoading {
                 noMessagesView()
             } else {
                 LazyVStack(spacing: spacing) {
                     messagesListView()
+                    
+                    if messagesTracker.isLoading {
+                        LoadingView(whatIsLoading: .messages)
+                    } else {
+                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
+                        Text("That's all!").foregroundColor(.secondary)
+                    }
                 }
             }
         }

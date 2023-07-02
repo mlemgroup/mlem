@@ -12,7 +12,7 @@ extension CommentItem {
         do {
             let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await _ = rateComment(
-                comment: hierarchicalComment.commentView,
+                commentId: hierarchicalComment.commentView.id,
                 operation: operation,
                 account: account,
                 commentTracker: commentTracker,

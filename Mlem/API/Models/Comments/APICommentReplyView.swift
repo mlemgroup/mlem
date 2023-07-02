@@ -20,7 +20,7 @@ struct APICommentReplyView: Decodable {
     let subscribed: APISubscribedStatus
     let saved: Bool
     let creatorBlocked: Bool
-    let myVote: Int?
+    let myVote: ScoringOperation?
 }
 
 extension APICommentReplyView: Identifiable {

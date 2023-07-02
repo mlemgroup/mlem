@@ -12,7 +12,7 @@ extension InboxView {
     @ViewBuilder
     func inboxFeedView() -> some View {
         Group {
-            if isLoading {
+            if allItems.isEmpty && isLoading {
                 LoadingView(whatIsLoading: .inbox)
             } else if allItems.isEmpty {
                 noItemsView()
@@ -39,7 +39,7 @@ extension InboxView {
     // delete it, recompile, paste it, and it should work. Go figure.
     @ViewBuilder
     func inboxListView() -> some View {
-        ForEach(genItemsToRender()) { item in
+        ForEach(allItems) { item in
             VStack(spacing: spacing) {
                 Group {
                     switch item.type {
@@ -70,30 +70,6 @@ extension InboxView {
                 
                 Divider()
             }
-        }
-    }
-    
-    // TODO: no. just... no.
-    func genItemsToRender() -> [InboxItem] {
-        switch selectionSection {
-        case 0:
-            return allItems
-        case 1:
-            return allItems.filter { item in
-                if case InboxItemType.reply = item.type { return true }
-                return false
-            }
-        case 2:
-            return allItems.filter { item in
-                if case InboxItemType.mention = item.type { return true }
-                return false
-            }
-        case 3:
-            return allItems.filter { item in
-                if case InboxItemType.message = item.type { return true }
-                return false
-            }
-        default: return []
         }
     }
 }

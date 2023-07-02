@@ -9,9 +9,21 @@ import Foundation
 import SwiftUI
 import CachedAsyncImage
 
+enum InboxTab: String, CaseIterable, Identifiable {
+    case all, replies, mentions, messages
+    
+    var id: Self { self }
+
+    var label: String {
+        return self.rawValue.capitalized
+    }
+}
+
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
+    @EnvironmentObject var appState: AppState
+    
     let spacing: CGFloat = 10
     
     let account: SavedAccount
@@ -27,25 +39,18 @@ struct InboxView: View {
     @StateObject var messagesTracker: MessagesTracker = .init()
     @StateObject var repliesTracker: RepliesTracker = .init()
     
-    // TODO: this jank needs to go, but that's a heavy lift. Currently using the trackers directly in the sub-views breaks scrolling in those views because parent state updates rerender them while loadNextPage calls are in-flight. 
-    @State var allMentions: [APIPersonMentionView] = .init()
-    @State var allMessages: [APIPrivateMessageView] = .init()
-    @State var allReplies: [APICommentReplyView] = .init()
-    
-    // TODO: make private again
-    @State var selectionSection = 0
+    @State var curTab: InboxTab = .all
     
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
             
-            VStack(spacing: 10) {
-                Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                    Text("All").tag(0)
-                    Text("Replies").tag(1)
-                    Text("Mentions").tag(2)
-                    Text("Messages").tag(3)
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
+                Picker(selection: $curTab, label: Text("Inbox tab")) {
+                    ForEach(InboxTab.allCases) { tab in
+                        Text(tab.label).tag(tab.rawValue)
+                    }
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
@@ -54,22 +59,16 @@ struct InboxView: View {
                     if errorOccurred {
                         errorView()
                     } else {
-                        inboxFeedView()
-                        // TODO: re-enable this
-//                        Group {
-//                            switch selectionSection {
-//                            case 0:
-//                                inboxFeedView()
-//                            case 1:
-//                                repliesFeedView()
-//                            case 2:
-//                                mentionsFeedView()
-//                            case 3:
-//                                messagesFeedView()
-//                            default:
-//                                Text("how did we get here?")
-//                            }
-//                        }
+                        switch curTab {
+                        case .all:
+                            inboxFeedView()
+                        case .replies:
+                            repliesFeedView()
+                        case .mentions:
+                            mentionsFeedView()
+                        case .messages:
+                            messagesFeedView()
+                        }
                     }
                 }
                 .refreshable {
