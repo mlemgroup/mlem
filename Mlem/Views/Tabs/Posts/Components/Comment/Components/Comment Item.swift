@@ -225,7 +225,7 @@ extension CommentItem {
     var upvoteSwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: emptyVoteSymbolName, fillName: upvoteSymbolName),
-            colour: .upvoteColor,
+            color: .upvoteColor,
             action: upvote
         )
     }
@@ -234,7 +234,7 @@ extension CommentItem {
         guard appState.enableDownvote else { return nil }
         return SwipeAction(
             symbol: .init(emptyName: emptyDownvoteSymbolName, fillName: downvoteSymbolName),
-            colour: .downvoteColor,
+            color: .downvoteColor,
             action: downvote
         )
     }
@@ -242,7 +242,7 @@ extension CommentItem {
     var saveSwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: emptySaveSymbolName, fillName: saveSymbolName),
-            colour: .saveColor,
+            color: .saveColor,
             action: saveComment
         )
     }
@@ -250,7 +250,7 @@ extension CommentItem {
     var replySwipeAction: SwipeAction {
         SwipeAction(
            symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
-           colour: .accentColor,
+           color: .accentColor,
            action: replyToComment
        )
     }

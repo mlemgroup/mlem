@@ -255,7 +255,7 @@ extension FeedPost {
     var upvoteSwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: "arrow.up.square", fillName: "arrow.up.square.fill"),
-            colour: .upvoteColor,
+            color: .upvoteColor,
             action: upvotePost
         )
     }
@@ -265,7 +265,7 @@ extension FeedPost {
         
         return SwipeAction(
             symbol: .init(emptyName: "arrow.down.square", fillName: "arrow.down.square.fill"),
-            colour: .downvoteColor,
+            color: .downvoteColor,
             action: downvotePost
         )
     }
@@ -273,7 +273,7 @@ extension FeedPost {
     var saveSwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
-            colour: .saveColor,
+            color: .saveColor,
             action: savePost
         )
     }
@@ -281,7 +281,7 @@ extension FeedPost {
     var replySwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
-            colour: .accentColor,
+            color: .accentColor,
             action: replyToPost
         )
     }

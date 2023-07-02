@@ -15,7 +15,7 @@ struct SwipeAction {
     }
     
     let symbol: Symbol
-    let colour: Color
+    let color: Color
     let action: () async -> Void
 }
 
@@ -118,31 +118,31 @@ struct SwipeyView: ViewModifier {
                         // update color and symbol. If crossed an edge, play a gentle haptic
                         if dragPosition < -1 * AppConstants.longSwipeDragMin {
                             trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
-                            dragBackground = secondaryTrailingAction?.colour ?? primaryTrailingAction?.colour
+                            dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
                             if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                                 tapper.impactOccurred()
                             }
                         } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
                             trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
-                            dragBackground = primaryTrailingAction?.colour
+                            dragBackground = primaryTrailingAction?.color
                             if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
                         } else if dragPosition < 0 {
                             trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
-                            dragBackground = primaryTrailingAction?.colour.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
+                            dragBackground = primaryTrailingAction?.color.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
                         } else if dragPosition < AppConstants.shortSwipeDragMin {
                             leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
-                            dragBackground = primaryLeadingAction?.colour.opacity(dragPosition / AppConstants.shortSwipeDragMin)
+                            dragBackground = primaryLeadingAction?.color.opacity(dragPosition / AppConstants.shortSwipeDragMin)
                         } else if dragPosition < AppConstants.longSwipeDragMin {
                             leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
-                            dragBackground = primaryLeadingAction?.colour
+                            dragBackground = primaryLeadingAction?.color
                             if prevDragPosition <= AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
                         } else {
                             leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
-                            dragBackground = secondaryLeadingAction?.colour ?? primaryLeadingAction?.colour
+                            dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
                             if prevDragPosition <= AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                                 tapper.impactOccurred()
                             }
