@@ -49,16 +49,12 @@ struct CommunityView: View {
 
     var isInSpecificCommunity: Bool { community != nil }
 
-    private var filteredPosts: [APIPostView] {
-        postTracker.items.filter { postView in
-            !postView.post.name.contains(filtersTracker.filteredKeywords)
-        }
-    }
-
     var body: some View {
-        ZStack(alignment: .top) {
+        VStack(alignment: .center) {
             searchResultsView
+                .opacity(isShowingCommunitySearch ? 1 : 0)
                 .accessibilityHidden(!isShowingCommunitySearch)
+                .frame(maxHeight: isShowingCommunitySearch ? 300 : 0)
             ScrollView(showsIndicators: false) {
                 if postTracker.items.isEmpty {
                     noPostsView
@@ -71,7 +67,6 @@ struct CommunityView: View {
                 }
             }
             .background(Color.secondarySystemBackground)
-            .offset(y: isShowingCommunitySearch ? 300 : 0)
             .refreshable {
                 Task(priority: .userInitiated) {
                     isRefreshing = true
@@ -80,34 +75,39 @@ struct CommunityView: View {
                         account: account,
                         communityId: community?.id,
                         sort: postSortType,
-                        type: feedType
+                        type: feedType,
+                        filtering: { postView in
+                            !postView.post.name.contains(filtersTracker.filteredKeywords)
+                        }
                     )
 
                     isRefreshing = false
                 }
             }
-            .task(priority: .userInitiated) {
-                if postTracker.items.isEmpty {
-                    print("Post tracker is empty")
-                    await loadFeed()
-                } else {
-                    print("Post tracker is not empty")
+            .onAppear {
+                Task(priority: .userInitiated) {
+                    if postTracker.items.isEmpty {
+                        print("Post tracker is empty")
+                        await loadFeed()
+                    } else {
+                        print("Post tracker is not empty")
+                    }
                 }
-            }
-            .task(priority: .background) {
-                if isInSpecificCommunity, let community {
-                    do {
-                        communityDetails = try await loadCommunityDetails(
-                            community: community,
-                            account: account,
-                            appState: appState
-                        )
-                    } catch let communityDetailsFetchingError {
-                        print("Failed while fetching community details: \(communityDetailsFetchingError)")
+                Task(priority: .background) {
+                    if isInSpecificCommunity, let community {
+                        do {
+                            communityDetails = try await loadCommunityDetails(
+                                community: community,
+                                account: account,
+                                appState: appState
+                            )
+                        } catch let communityDetailsFetchingError {
+                            print("Failed while fetching community details: \(communityDetailsFetchingError)")
 
-                        appState.alertTitle = "Could not load community information"
-                        appState.alertMessage = "The server might be overloaded.\nTry again later."
-                        appState.isShowingAlert.toggle()
+                            appState.alertTitle = "Could not load community information"
+                            appState.alertMessage = "The server might be overloaded.\nTry again later."
+                            appState.isShowingAlert.toggle()
+                        }
                     }
                 }
             }
@@ -177,7 +177,7 @@ struct CommunityView: View {
                                             )) {
                                 Label("Sidebar", systemImage: "sidebar.right")
                             }
-                            
+
                             Button {
                                 isComposingPost.toggle()
                             } label: {
@@ -210,7 +210,7 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
-                            
+
                             SubscribeButton(
                                 communityDetails: Binding(
                                     get: {
@@ -222,7 +222,7 @@ struct CommunityView: View {
                                     }),
                                 account: account
                             )
-                            
+
                             BlockCommunityButton(account: account, communityDetails: Binding(
                                 get: {
                                     communityDetails.communityView
@@ -344,7 +344,7 @@ struct CommunityView: View {
     }
 
     private var postListView: some View {
-        ForEach(filteredPosts) { post in
+        ForEach(postTracker.items, id: \.id) { post in
             NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)) {
                 FeedPost(
                     postView: post,
@@ -355,9 +355,11 @@ struct CommunityView: View {
                 )
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
-            .task {
-                if postTracker.shouldLoadContent(after: post) {
-                    await loadFeed()
+            .onAppear {
+                Task(priority: .medium) {
+                    if postTracker.shouldLoadContent(after: post) {
+                        await loadFeed()
+                    }
                 }
             }
         }
@@ -385,7 +387,10 @@ struct CommunityView: View {
                 account: account,
                 communityId: community?.id,
                 sort: postSortType,
-                type: feedType
+                type: feedType,
+                filtering: { postView in
+                    !postView.post.name.contains(filtersTracker.filteredKeywords)
+                }
             )
         } catch {
             handle(error)
@@ -398,7 +403,10 @@ struct CommunityView: View {
                 account: account,
                 communityId: community?.id,
                 sort: postSortType,
-                type: feedType
+                type: feedType,
+                filtering: { postView in
+                    !postView.post.name.contains(filtersTracker.filteredKeywords)
+                }
             )
         } catch {
             handle(error)

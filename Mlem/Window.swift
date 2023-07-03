@@ -12,7 +12,7 @@ struct Window: View {
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
-    
+
     var body: some View {
         ContentView()
             .environmentObject(filtersTracker)
@@ -32,7 +32,7 @@ struct Window: View {
                     }
                 } else {
                     print("Filtered keywords file does not exist, will try to create it")
-                    
+
                     do {
                         try createEmptyFile(at: AppConstants.filteredKeywordsFilePath)
                     } catch let emptyFileCreationError {
@@ -40,25 +40,6 @@ struct Window: View {
                     }
                 }
                 print("now filtering: \(filtersTracker.filteredKeywords.count)")
-                if FileManager.default.fileExists(atPath: AppConstants.favoriteCommunitiesFilePath.path) {
-                    print("Favorite communities file exists, will attempt to load favorite communities")
-                    do {
-                        favoriteCommunitiesTracker.favoriteCommunities = try decodeFromFile(
-                            fromURL: AppConstants.favoriteCommunitiesFilePath,
-                            whatToDecode: .favoriteCommunities
-                        ) as? [FavoriteCommunity] ?? []
-                    } catch let favoriteCommunitiesDecodingError {
-                        print("Failed while decoding favorite communities: \(favoriteCommunitiesDecodingError)")
-                    }
-                } else {
-                    print("Favorite communities file does not exist, will try to create it")
-
-                    do {
-                        try createEmptyFile(at: AppConstants.favoriteCommunitiesFilePath)
-                    } catch let emptyFileCreationError {
-                        print("Failed while creating empty file: \(emptyFileCreationError)")
-                    }
-                }
             }
             .onChange(of: filtersTracker.filteredKeywords) { newValue in
                 print("Change detected in filtered keywords: \(newValue)")

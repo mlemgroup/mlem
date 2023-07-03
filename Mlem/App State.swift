@@ -36,7 +36,7 @@ class AppState: ObservableObject {
 
     // for those  messages that are less of a .alert ;)
     @Published var isShowingToast: Bool = false
-    @Published var toast: AlertToast?
+    var toast: AlertToast?
 
     @Published var criticalErrorType: CriticalError = .shittyInternet
 

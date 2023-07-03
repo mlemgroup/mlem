@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
 
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var errorAlert: ErrorAlert?
     @State private var tabSelection = 1
@@ -46,14 +47,18 @@ struct ContentView: View {
                 }.tag(4)
         }
         .onAppear {
-            AppConstants.keychain["test"] = "I-am-a-saved-thing"
+            if appState.currentActiveAccount == nil,
+               let account = accountsTracker.savedAccounts.first {
+                appState.currentActiveAccount = account
+            }
         }
         .alert(using: $errorAlert) { content in
             Alert(title: Text(content.title), message: Text(content.message))
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+        .environmentObject(appState)
     }
-    
+
     // MARK: helpers
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"

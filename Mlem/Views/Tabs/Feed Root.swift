@@ -11,15 +11,15 @@ import AlertToast
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
-    
+
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @State var navigationPath = NavigationPath()
-    
+
     @State var isShowingInstanceAdditionSheet: Bool = false
-    
+
     @State var rootDetails: CommunityLinkWithContext?
-    
+
     var body: some View {
 
         NavigationSplitView {
@@ -46,7 +46,12 @@ struct FeedRoot: View {
                                   feedType: rootDetails!.feedType
                     )
                     .environmentObject(appState)
-                    .handleLemmyLinkResolution(navigationPath: $navigationPath, local: "Inside root details")
+                    .handleLemmyLinkResolution(
+                        appState: _appState,
+                        navigationPath: $navigationPath,
+                        account: appState.currentActiveAccount!,
+                        local: "Inside root details"
+                    )
                     .handleLemmyViews()
                 }.id(rootDetails!.id + appState.currentActiveAccount!.id)
             } else {
@@ -54,16 +59,9 @@ struct FeedRoot: View {
                     .id(appState.currentActiveAccount?.id ?? 0)
             }
         }
-        .onChange(of: appState.currentActiveAccount) { newAccount in
-            if newAccount != nil {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    withAnimation {
-                        rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
-                    }
-                }
-            }
-        }
         .environment(\.navigationPath, $navigationPath)
+        .environmentObject(appState) 
+        .environmentObject(accountsTracker)
         .toast(isPresenting: $appState.isShowingToast) {
             appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
@@ -78,9 +76,12 @@ struct FeedRoot: View {
             Text(appState.alertMessage)
         }
         .onAppear {
-            print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
-            if appState.currentActiveAccount == nil, let account = accountsTracker.savedAccounts.first {
-                appState.currentActiveAccount = account
+            if rootDetails == nil {
+                var dits: CommunityLinkWithContext?
+                if appState.currentActiveAccount != nil {
+                    dits = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
+                }
+                rootDetails = dits
             }
         }
         .onOpenURL { url in
@@ -89,21 +90,21 @@ struct FeedRoot: View {
                     appState.currentActiveAccount = account
                 }
             }
-            
+
             guard let account = appState.currentActiveAccount else {
                 appState.toast = AlertToast(displayMode: .hud, type: .loading, title: "You need to sign in to open links in app")
                 appState.isShowingToast = true
                 return
             }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
                 if rootDetails == nil {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
 //                didReceiveURL(url)
                 HandleLemmyLinkResolution(appState: _appState,
-                                          savedAccounts: _accountsTracker,
                                           navigationPath: $navigationPath,
+                                          account: account,
                                           local: "Deep-Link onOpenURL"
                 )
                 .didReceiveURL(url)

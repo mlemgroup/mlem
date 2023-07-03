@@ -26,50 +26,56 @@ struct CachedImageWithNsfwFilter: View {
     }
 
     var body: some View {
-        ZStack {
-            CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
+        let image = AsyncImage(url: url) { image in
+            image
+                .resizable()
+                .scaledToFit()
+                .blur(radius: showNsfwFilter ? 30 : 0)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .overlay(RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+                .frame(maxWidth: .infinity, idealHeight: 400, maxHeight: 400)
+        } placeholder: {
+            ProgressView()
+                .frame(maxWidth: .infinity, idealHeight: 400, maxHeight: 400)
+        }
+        if !isNsfw {
+            image
+        } else {
+            ZStack {
                 image
-                    .resizable()
-                    .scaledToFill()
-                    .blur(radius: showNsfwFilter ? 30 : 0)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-            } placeholder: {
-                ProgressView()
-            }
-
-            if showNsfwFilter {
-                VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.largeTitle)
-                    Text("NSFW")
-                        .fontWeight(.black)
-                    Text("Tap to view")
-                        .font(.callout)
-                }
-                .foregroundColor(.white)
-                .padding(8)
-                .onTapGesture {
-                    showNsfwFilterToggle.toggle()
-                }
-            } else if isNsfw && shouldBlurNsfw {
-                // stacks are here to align image to top left of ZStack
-                // TODO: less janky way to do this?
-                HStack {
+                if shouldBlurNsfw && showNsfwFilterToggle {
                     VStack {
-                        Image(systemName: "eye.slash")
-                            .padding(4)
-                            .frame(alignment: .topLeading)
-                            .background(RoundedRectangle(cornerRadius: 4)
-                                .foregroundColor(.systemBackground))
-                            .onTapGesture {
-                                showNsfwFilterToggle.toggle()
-                            }
-                            .padding(4)
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.largeTitle)
+                        Text("NSFW")
+                            .fontWeight(.black)
+                        Text("Tap to view")
+                            .font(.callout)
+                    }
+                    .foregroundColor(.white)
+                    .padding(8)
+                    .onTapGesture {
+                        showNsfwFilterToggle.toggle()
+                    }
+                } else if shouldBlurNsfw {
+                    // stacks are here to align image to top left of ZStack
+                    // TODO: less janky way to do this?
+                    HStack {
+                        VStack {
+                            Image(systemName: "eye.slash")
+                                .padding(4)
+                                .frame(alignment: .topLeading)
+                                .background(RoundedRectangle(cornerRadius: 4)
+                                    .foregroundColor(.systemBackground))
+                                .onTapGesture {
+                                    showNsfwFilterToggle.toggle()
+                                }
+                                .padding(4)
+                            Spacer()
+                        }
                         Spacer()
                     }
-                    Spacer()
                 }
             }
         }
