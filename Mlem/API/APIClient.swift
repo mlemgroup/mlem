@@ -33,8 +33,6 @@ class APIClient {
 
         let urlRequest = try urlRequest(from: request)
         
-        // print(urlRequest.)
-        
         let (data, response) = try await execute(urlRequest)
 
         if let apiError = try? decoder.decode(APIErrorResponse.self, from: data) {
