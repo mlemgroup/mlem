@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 @main
 struct MlemApp: App {
@@ -23,14 +24,10 @@ struct MlemApp: App {
                     let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = lightOrDarkMode
                     
-                    // correct the transparency bug for Tab bars
-                    let tabBarAppearance = UITabBarAppearance()
-                    tabBarAppearance.configureWithOpaqueBackground()
-                    UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-                    // correct the transparency bug for Navigation bars
-                    let navigationBarAppearance = UINavigationBarAppearance()
-                    navigationBarAppearance.configureWithOpaqueBackground()
-                    UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+                    let appearance = UITabBarAppearance()
+                    appearance.backgroundEffect = UIBlurEffect.init(style: .systemThinMaterial)
+                    UITabBar.appearance().standardAppearance = appearance
+                    UITabBar.appearance().scrollEdgeAppearance = appearance
                 }
         }
         .onChange(of: accountsTracker.savedAccounts) { _ in
