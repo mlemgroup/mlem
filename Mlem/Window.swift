@@ -19,28 +19,6 @@ struct Window: View {
             .environmentObject(appState)
             .environmentObject(favoriteCommunitiesTracker)
             .environmentObject(communitySearchResultsTracker)
-            .onAppear {
-                if FileManager.default.fileExists(atPath: AppConstants.filteredKeywordsFilePath.path) {
-                    print("Filtered keywords file exists, will attempt to load blocked keywords")
-                    do {
-                        filtersTracker.filteredKeywords = try decodeFromFile(
-                            fromURL: AppConstants.filteredKeywordsFilePath,
-                            whatToDecode: .filteredKeywords
-                        ) as? [String] ?? []
-                    } catch let savedKeywordsDecodingError {
-                        print("Failed while decoding saved filtered keywords: \(savedKeywordsDecodingError)")
-                    }
-                } else {
-                    print("Filtered keywords file does not exist, will try to create it")
-
-                    do {
-                        try createEmptyFile(at: AppConstants.filteredKeywordsFilePath)
-                    } catch let emptyFileCreationError {
-                        print("Failed while creating an empty file: \(emptyFileCreationError)")
-                    }
-                }
-                print("now filtering: \(filtersTracker.filteredKeywords.count)")
-            }
             .onChange(of: filtersTracker.filteredKeywords) { newValue in
                 print("Change detected in filtered keywords: \(newValue)")
                 do {

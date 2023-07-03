@@ -14,7 +14,6 @@ class FiltersTracker: ObservableObject {
     init() {
         _filteredUsers = .init(initialValue: [])
         _filteredKeywords = .init(initialValue: FiltersTracker.loadFilters())
-        print("now filtering: \(_filteredKeywords.projectedValue.count)")
     }
 
     static func loadFilters() -> [String] {
