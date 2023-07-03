@@ -35,13 +35,12 @@ struct PostComposerView: View {
     @State var isNSFW: Bool = false
     
     @State var isSubmitting: Bool = false
-    @State var isBadURL: Bool = false
+    @State var isShowingErrorDialog: Bool = false
+    @State var errorDialogMessage: String = ""
 
     private var isReadyToPost: Bool {
-        // We need postTitle to be not empty
-        // and at least an attached postBody or postURL.
+        // This only requirement to post is a title
         return postTitle.trimmed.isNotEmpty
-        && (postBody.trimmed.isNotEmpty || postURL.trimmed.isNotEmpty)
     }
     
     private var isValidURL: Bool {
@@ -64,8 +63,15 @@ struct PostComposerView: View {
                 return
             }
             
-            guard isValidURL else {
-                isBadURL = true
+            guard postTitle.trimmed.isNotEmpty else {
+                errorDialogMessage = "You need to enter a title for your post."
+                isShowingErrorDialog = true
+                return
+            }
+            
+            guard postURL.lowercased().isEmpty || isValidURL else {
+                errorDialogMessage = "You seem to have entered an invalid URL, please check it again."
+                isShowingErrorDialog = true
                 return
             }
             
@@ -125,7 +131,7 @@ struct PostComposerView: View {
                                 .foregroundColor(.secondary)
                                 .accessibilityHidden(true)
                             
-                            TextField("Your post link", text: $postURL)
+                            TextField("Your post link (Optional)", text: $postURL)
                                 .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
                                 .keyboardType(.URL)
                                 .autocorrectionDisabled()
@@ -143,7 +149,7 @@ struct PostComposerView: View {
                     }
 
                     // Post Text
-                    TextField("What do you want to say?",
+                    TextField("What do you want to say? (Optional)",
                               text: $postBody,
                               axis: .vertical)
                     .accessibilityLabel("Post Body")
@@ -184,10 +190,10 @@ struct PostComposerView: View {
                     }.disabled(isSubmitting || !isReadyToPost)
                 }
             }
-            .alert("Submit Failed", isPresented: $isBadURL) {
+            .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text("You seem to have entered an invalid URL, please check it again.")
+                Text(errorDialogMessage)
             }
             .navigationBarTitleDisplayMode(.inline)
         }
