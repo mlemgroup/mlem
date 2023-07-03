@@ -167,12 +167,12 @@ struct HandleLemmyLinkResolution: ViewModifier {
                             lookup = "!\(lookup)".replacingOccurrences(of: "/c/", with: "").replacingOccurrences(of: "mailto:", with: "")
                         }
                     }
-                    
+
                     print("lookup: \(lookup) (original: \(url.absoluteString)) (\(local))")
                     // Wooo this is a lemmy server we're talking to! time to pasre this url and push it to the stack
                     do {
                         let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account, query: lookup))
-                        
+
                         // this is gonna be a bit of an ugly if switch but oh well for now
                         if let post = resolution.post {
                             // wop wop that was a post link!
@@ -189,7 +189,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                     } catch {
                         print(String(describing: error))
                     }
-                    
+
                     // if all else fails fallback!
                     let outcome = URLHandler.handle(url)
                     if outcome.action != nil {
