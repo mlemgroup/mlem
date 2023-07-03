@@ -19,6 +19,7 @@ struct CommentItem: View {
     @State var dirty: Bool = false
 
     @State var isShowingAlert: Bool = false
+    @State var isComposingReport: Bool = false
 
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : hierarchicalComment.commentView.myVote ?? .resetVote }
@@ -153,6 +154,10 @@ struct CommentItem: View {
                 secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
+            .sheet(isPresented: $isComposingReport) {
+                ReportComposerView(account: account, reportedPost: nil, reportedComment: hierarchicalComment.commentView)
+            }
+            
             Divider()
 
             childComments
