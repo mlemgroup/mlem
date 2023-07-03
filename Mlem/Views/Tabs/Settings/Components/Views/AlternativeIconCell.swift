@@ -42,7 +42,7 @@ struct AlternativeIconCell: View {
                     .flatMap { UIImage(named: $0) }
                     .map {
                         Image(uiImage: $0)
-                    }!
+                    } ?? Image(systemName: "questionmark.folder.fill")
 
             }
             return Image(uiImage: UIImage(named: id) ?? UIImage(imageLiteralResourceName: id))
