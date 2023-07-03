@@ -13,18 +13,18 @@ extension HorizontalAlignment {
             context[HorizontalAlignment.leading]
         }
     }
-    
+
     static let labelStart = HorizontalAlignment(LabelStart.self)
 }
 
 struct PostComposerView: View {
-    
+
     init(community: APICommunity) {
         self.community = community
     }
-    
+
     var community: APICommunity
-        
+
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
@@ -33,7 +33,7 @@ struct PostComposerView: View {
     @State var postURL: String = ""
     @State var postBody: String = ""
     @State var isNSFW: Bool = false
-    
+
     @State var isSubmitting: Bool = false
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
@@ -42,7 +42,7 @@ struct PostComposerView: View {
         // This only requirement to post is a title
         return postTitle.trimmed.isNotEmpty
     }
-    
+
     private var isValidURL: Bool {
         guard postURL.lowercased().hasPrefix("http://") ||
                 postURL.lowercased().hasPrefix("https://") else {
@@ -52,31 +52,31 @@ struct PostComposerView: View {
         guard URL(string: postURL) != nil else {
             return false // Not Parsable
         }
-        
+
         return true
     }
-    
+
     func submitPost() async {
         do {
             guard let account = appState.currentActiveAccount else {
                 print("Cannot Submit, No Active Account")
                 return
             }
-            
+
             guard postTitle.trimmed.isNotEmpty else {
                 errorDialogMessage = "You need to enter a title for your post."
                 isShowingErrorDialog = true
                 return
             }
-            
+
             guard postURL.lowercased().isEmpty || isValidURL else {
                 errorDialogMessage = "You seem to have entered an invalid URL, please check it again."
                 isShowingErrorDialog = true
                 return
             }
-            
+
             isSubmitting = true
-            
+
             try await postPost(to: community,
                                postTitle: postTitle.trimmed,
                                postBody: postBody.trimmed,
@@ -84,26 +84,26 @@ struct PostComposerView: View {
                                postIsNSFW: isNSFW,
                                postTracker: postTracker,
                                account: account)
-            
+
             print("Post Successful")
-            
+
             dismiss()
-            
+
         } catch {
             print("Something went wrong)")
             isSubmitting = false
         }
     }
-    
+
     func uploadImage() {
         print("Uploading")
     }
-    
+
     var body: some View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 15) {
-                    
+
                     // Community Row
                     HStack {
                         CommunityLabel(shouldShowCommunityIcons: true,
@@ -114,7 +114,7 @@ struct PostComposerView: View {
                         // NSFW Toggle
                         NSFWToggle(compact: false, isEnabled: $isNSFW)
                     }
-                    
+
                     VStack(alignment: .labelStart) {
                         // Title Row
                         HStack {
@@ -123,23 +123,23 @@ struct PostComposerView: View {
                                 .accessibilityHidden(true)
                             TextField("Your post title", text: $postTitle)
                                 .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                            
+
                                 .accessibilityLabel("Title")
                         }
-                        
+
                         // URL Row
                         HStack {
                             Text("URL")
                                 .foregroundColor(.secondary)
                                 .accessibilityHidden(true)
-                            
+
                             TextField("Your post link (Optional)", text: $postURL)
                                 .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
                                 .keyboardType(.URL)
                                 .autocorrectionDisabled()
                                 .autocapitalization(.none)
                                 .accessibilityLabel("URL")
-                            
+
                             // Upload button, temporarily hidden
                             //                        Button(action: uploadImage) {
                             //                            Image(systemName: "paperclip")
@@ -158,7 +158,7 @@ struct PostComposerView: View {
                     Spacer()
                 }
                 .padding()
-                
+
                 // Loading Indicator
                 if isSubmitting {
                     ZStack {
@@ -180,7 +180,7 @@ struct PostComposerView: View {
                     }
                     .tint(.red)
                 }
-                
+
                 ToolbarItem(placement: .navigationBarTrailing) {
                     // Submit Button
                     Button {
@@ -205,7 +205,7 @@ struct PostComposerView: View {
 struct PostComposerView_Previews: PreviewProvider {
     static let community = generateFakeCommunity(id: 1,
                                                  namePrefix: "mlem")
-        
+
     static var previews: some View {
         NavigationStack {
             PostComposerView(community: community)
