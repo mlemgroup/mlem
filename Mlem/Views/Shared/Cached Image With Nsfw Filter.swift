@@ -34,7 +34,6 @@ struct CachedImageWithNsfwFilter: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(RoundedRectangle(cornerRadius: 8)
                     .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-                .frame(maxWidth: .infinity, idealHeight: 400, maxHeight: 400)
         } placeholder: {
             ProgressView()
                 .frame(maxWidth: .infinity, idealHeight: 400, maxHeight: 400)
