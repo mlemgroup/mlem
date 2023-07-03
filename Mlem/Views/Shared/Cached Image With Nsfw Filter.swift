@@ -26,7 +26,7 @@ struct CachedImageWithNsfwFilter: View {
     }
 
     var body: some View {
-        let image = AsyncImage(url: url) { image in
+        let image = CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
             image
                 .resizable()
                 .scaledToFit()
