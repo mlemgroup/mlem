@@ -15,11 +15,14 @@ struct InboxReplyView: View {
     
     let account: SavedAccount
     let reply: APICommentReplyView
+    let menuFunctions: [MenuFunction]
+    
     let publishedAgo: String
     
-    init(account: SavedAccount, reply: APICommentReplyView) {
+    init(account: SavedAccount, reply: APICommentReplyView, menuFunctions: [MenuFunction]) {
         self.account = account
         self.reply = reply
+        self.menuFunctions = menuFunctions
         
         self.publishedAgo = getTimeIntervalFromNow(date: reply.commentReply.published)
     }
@@ -45,8 +48,9 @@ struct InboxReplyView: View {
             CommunityLinkView(community: reply.community)
             
             HStack {
-                Image(systemName: "ellipsis")
-                    .frame(width: userAvatarWidth)
+//                Image(systemName: "ellipsis")
+//                    .frame(width: userAvatarWidth)
+                EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
                 
                 Spacer()
                 
