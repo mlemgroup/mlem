@@ -56,7 +56,7 @@ extension InboxView {
     }
     
     func inboxReplyViewWithInteraction(account: SavedAccount, reply: APICommentReplyView) -> some View {
-        InboxReplyView(account: account, reply: reply)
+        InboxReplyView(account: account, reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
             .padding(.vertical, AppConstants.postAndCommentSpacing)
             .padding(.horizontal)
             .background(Color.systemBackground)

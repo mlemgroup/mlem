@@ -13,12 +13,14 @@ struct InboxMentionView: View {
     
     let account: SavedAccount
     let mention: APIPersonMentionView
+    let menuFunctions: [MenuFunction]
     
     let publishedAgo: String
     
-    init(account: SavedAccount, mention: APIPersonMentionView) {
+    init(account: SavedAccount, mention: APIPersonMentionView, menuFunctions: [MenuFunction]) {
         self.account = account
         self.mention = mention
+        self.menuFunctions = menuFunctions
         
         self.publishedAgo = getTimeIntervalFromNow(date: mention.comment.published)
     }
@@ -44,8 +46,9 @@ struct InboxMentionView: View {
             CommunityLinkView(community: mention.community)
             
             HStack {
-                Image(systemName: "ellipsis")
-                    .frame(width: userAvatarWidth)
+                EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
+//                Image(systemName: "ellipsis")
+//                    .frame(width: userAvatarWidth)
                 
                 Spacer()
                 

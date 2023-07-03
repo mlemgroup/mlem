@@ -51,7 +51,7 @@ extension InboxView {
     }
     
     func inboxMentionViewWithInteraction(account: SavedAccount, mention: APIPersonMentionView) -> some View {
-        InboxMentionView(account: account, mention: mention)
+        InboxMentionView(account: account, mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
             .padding(.vertical, AppConstants.postAndCommentSpacing)
             .padding(.horizontal)
             .background(Color.systemBackground)
