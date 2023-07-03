@@ -52,7 +52,7 @@ struct ExpandedPost: View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
-                
+
                 Divider()
                     .background(.black)
 
@@ -125,16 +125,16 @@ struct ExpandedPost: View {
      */
     private var postView: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            
+
             CommunityLinkView(community: post.community)
-            
+
             LargePost(
                 postView: post,
                 isExpanded: true
             )
-            
+
             UserProfileLink(user: post.creator, serverInstanceLocation: .bottom, showAvatar: shouldShowUserAvatars)
-            
+
             PostInteractionBar(postView: post,
                                account: account,
                                menuFunctions: genMenuFunctions(),
