@@ -11,6 +11,7 @@ import AlertToast
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
+    @Environment(\.scenePhase) var phase
 
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
@@ -60,7 +61,7 @@ struct FeedRoot: View {
             local: "Inside root feed"
         )
         .environment(\.navigationPath, $navigationPath)
-        .environmentObject(appState) 
+        .environmentObject(appState)
         .environmentObject(accountsTracker)
         .toast(isPresenting: $appState.isShowingToast) {
             appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
@@ -76,12 +77,17 @@ struct FeedRoot: View {
             Text(appState.alertMessage)
         }
         .onAppear {
-            if rootDetails == nil {
+            if rootDetails == nil || shortcutItemToProcess != nil {
+                let feedType = FeedType(rawValue:
+                    shortcutItemToProcess?.type ??
+                    "nothing to see here"
+                ) ?? defaultFeed
                 var dits: CommunityLinkWithContext?
                 if appState.currentActiveAccount != nil {
-                    dits = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
+                    dits = CommunityLinkWithContext(community: nil, feedType: feedType)
                 }
                 rootDetails = dits
+                shortcutItemToProcess = nil
             }
         }
         .onOpenURL { url in
@@ -111,6 +117,19 @@ struct FeedRoot: View {
         }
         .sheet(isPresented: $isShowingInstanceAdditionSheet) {
             AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
+        }
+        .onChange(of: phase) { newPhase in
+            if newPhase == .active {
+                if appState.currentActiveAccount != nil,
+                   let shortcutItem = FeedType(rawValue:
+                                                shortcutItemToProcess?.type ??
+                                                "nothing to see here"
+                ) {
+                    rootDetails = CommunityLinkWithContext(community: nil, feedType: shortcutItem)
+
+                    shortcutItemToProcess = nil
+                }
+            }
         }
     }
 }

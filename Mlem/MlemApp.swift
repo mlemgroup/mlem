@@ -14,6 +14,8 @@ struct MlemApp: App {
 
     @StateObject var accountsTracker: SavedAccountTracker = .init()
 
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             Window()
@@ -23,11 +25,13 @@ struct MlemApp: App {
                     // set app theme to user preference
                     let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = lightOrDarkMode
-                    
+
                     let appearance = UITabBarAppearance()
                     appearance.backgroundEffect = UIBlurEffect.init(style: .systemThinMaterial)
                     UITabBar.appearance().standardAppearance = appearance
                     UITabBar.appearance().scrollEdgeAppearance = appearance
+
+                    setupAppShortcuts()
                 }
         }
         .onChange(of: accountsTracker.savedAccounts) { _ in
@@ -37,6 +41,46 @@ struct MlemApp: App {
             let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
             windowScene?.windows.first?.overrideUserInterfaceStyle = value
         })
-        
+
     }
+
+    func setupAppShortcuts() {
+            guard accountsTracker.savedAccounts.first != nil else { return }
+
+            // Subscribed Feed
+            let homeIcon = UIApplicationShortcutIcon(systemImageName: "house")
+            let subscribedFeedItem = UIApplicationShortcutItem(
+                type: FeedType.subscribed.rawValue,
+                localizedTitle: "Subscribed",
+                localizedSubtitle: nil,
+                icon: homeIcon,
+                userInfo: nil
+            )
+
+            // Local Feed
+            let officeIcon = UIApplicationShortcutIcon(systemImageName: "building.2")
+            let localFeedItem = UIApplicationShortcutItem(
+                type: FeedType.local.rawValue,
+                localizedTitle: "Local",
+                localizedSubtitle: nil,
+                icon: officeIcon,
+                userInfo: nil
+            )
+
+            // All Feed
+            let cloudIcon = UIApplicationShortcutIcon(systemImageName: "cloud")
+            let allFeedItem = UIApplicationShortcutItem(
+                type: FeedType.all.rawValue,
+                localizedTitle: "All",
+                localizedSubtitle: nil,
+                icon: cloudIcon,
+                userInfo: nil
+            )
+
+            UIApplication.shared.shortcutItems = [
+                subscribedFeedItem,
+                localFeedItem,
+                allFeedItem
+            ]
+        }
 }
