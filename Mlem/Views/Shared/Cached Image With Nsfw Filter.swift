@@ -126,7 +126,6 @@ struct CachedImageWithNsfwFilter: View {
     @State private var isDragging: Bool = false
     @GestureState private var offset = CGSize(width: 0, height: 0)
     @State private var offset_stale = CGSize(width: 0, height: 0)
-    //    @GestureState private var
     
     var magnification: some Gesture {
         MagnificationGesture()
@@ -151,7 +150,6 @@ struct CachedImageWithNsfwFilter: View {
                     width: offset_stale.width + difX,
                     height: offset_stale.height + difY
                 )
-//                offset_stale = gestureState
             }
             .onEnded { value in
                 isDragging = false
@@ -161,7 +159,6 @@ struct CachedImageWithNsfwFilter: View {
                     width: offset_stale.width + difX,
                     height: offset_stale.height + difY
                 )
-                print(value.velocity.width)
                 if difX > 4 && value.velocity.width > 500 {
                     isFullscreen = false
                 }
