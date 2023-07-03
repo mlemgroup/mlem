@@ -103,7 +103,7 @@ struct FeedRoot: View {
                     type: .loading,
                     title: "You need to sign in to open links in app"
                 )
-                
+
                 appState.isShowingToast = true
                 return
             }
