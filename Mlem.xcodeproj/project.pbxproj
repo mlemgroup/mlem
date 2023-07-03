@@ -185,6 +185,7 @@
 		6DEB0FFD2A4F891B007CAB99 /* User Moderator Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */; };
 		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
+		ADAEFE542A52921C0047F0A9 /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */; };
 		ADF266952A4E8A1E00EBA648 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */; };
 		B11A1A782A4EFF2B00520DB4 /* Feed Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */; };
 		B11D72832A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */; };
@@ -453,6 +454,7 @@
 		6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Moderator Link.swift"; sourceTree = "<group>"; };
 		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
+		ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
 		ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed Root.swift"; sourceTree = "<group>"; };
 		B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cached Image With Nsfw Filter.swift"; sourceTree = "<group>"; };
@@ -1273,6 +1275,7 @@
 			children = (
 				ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */,
 				CD5351F42A51D2A5006AD253 /* MessageComposerView.swift */,
+				ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -1793,6 +1796,7 @@
 				CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */,
 				6D15D74C2A44DC240061B5CB /* Date.swift in Sources */,
 				63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */,
+				ADAEFE542A52921C0047F0A9 /* CommentComposerView.swift in Sources */,
 				CD3FBCE12A4A836000B2063F /* All Items Feed View.swift in Sources */,
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */,

@@ -11,8 +11,6 @@ internal enum PossibleStyling {
     case bold, italics
 }
 
-// swiftlint:disable type_body_length
-// swiftlint:disable file_length
 struct ExpandedPost: View {
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
@@ -33,11 +31,8 @@ struct ExpandedPost: View {
 
     @State private var commentSortingType: CommentSortType = .top
 
-    @FocusState var isReplyFieldFocused
-
     @Binding var feedType: FeedType
 
-    @State private var textFieldContents: String = ""
     @State private var replyingToCommentID: Int?
 
     @State private var isInTheMiddleOfStyling: Bool = false
@@ -69,128 +64,12 @@ struct ExpandedPost: View {
             }
         }
         .scrollDisabled(isDragging)
+        .sheet(isPresented: $isPostingComment) {
+            CommentComposerView(replyTo: post)
+        }
+        .environmentObject(commentTracker)
         .environmentObject(commentReplyTracker)
         .navigationBarTitle(post.community.name, displayMode: .inline)
-        .safeAreaInset(edge: .bottom) {
-            VStack {
-                if let commentToReplyTo = commentReplyTracker.commentToReplyTo {
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: 5) {
-                            HStack(alignment: .center, spacing: 2) {
-                                Text("Replying to ")
-                                UserProfileLabel(
-                                    shouldShowUserAvatars: false,
-                                    account: account,
-                                    user: commentToReplyTo.creator,
-                                    showServerInstance: shouldShowUserServerInComment,
-                                    postContext: post,
-                                    commentContext: commentToReplyTo.comment,
-                                    communityContext: nil
-                                )
-                            }
-                            .foregroundColor(.secondary)
-
-                            Text(commentToReplyTo.comment.content)
-                                .font(.system(size: 16))
-                        }
-
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-
-                    Divider()
-                }
-
-                HStack(alignment: .center, spacing: 10) {
-                    TextField(
-                        "Reply to post",
-                        text: $textFieldContents,
-                        prompt: Text("Commenting as \(account.username):"),
-                        axis: .vertical
-                    )
-                    .textFieldStyle(.roundedBorder)
-                    .focused($isReplyFieldFocused)
-                    
-                    if !textFieldContents.isEmpty {
-                        if !isPostingComment {
-                            Button {
-                                if commentReplyTracker.commentToReplyTo == nil {
-                                    Task(priority: .userInitiated) {
-                                        isPostingComment = true
-
-                                        print("Will post comment")
-                                        defer {
-                                            isPostingComment = false
-                                        }
-
-                                        do {
-                                            try await postComment(
-                                                to: post,
-                                                commentContents: textFieldContents,
-                                                commentTracker: commentTracker,
-                                                account: account,
-                                                appState: appState
-                                            )
-
-                                            isReplyFieldFocused = false
-                                            textFieldContents = ""
-                                        } catch let commentPostingError {
-                                            appState.alertTitle = "Couldn't post comment"
-                                            appState.alertMessage = "An error occured when posting the comment.\nTry again later."
-                                            appState.isShowingAlert.toggle()
-
-                                            print("Failed while posting error: \(commentPostingError)")
-                                        }
-                                    }
-                                } else {
-                                    Task(priority: .userInitiated) {
-                                        isPostingComment = true
-
-                                        print("Will post reply")
-
-                                        defer {
-                                            isPostingComment = false
-                                        }
-
-                                        do {
-                                            try await postComment(
-                                                to: commentReplyTracker.commentToReplyTo!.id,
-                                                post: post,
-                                                commentContents: textFieldContents,
-                                                commentTracker: commentTracker,
-                                                account: account
-                                            )
-
-                                            commentReplyTracker.commentToReplyTo = nil
-                                            isReplyFieldFocused = false
-                                            textFieldContents = ""
-                                        } catch let replyPostingError {
-                                            print("Failed while posting response: \(replyPostingError)")
-                                        }
-                                    }
-                                }
-
-                            } label: {
-                                Image(systemName: "paperplane")
-                            }
-                        } else {
-                            ProgressView()
-                        }
-                    }
-                }
-                .padding()
-
-                Divider()
-            }
-            .background(.regularMaterial)
-            .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: textFieldContents)
-            .onChange(of: commentReplyTracker.commentToReplyTo) { newValue in
-                if newValue != nil {
-                    isReplyFieldFocused.toggle()
-                }
-            }
-        }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Menu {
@@ -205,20 +84,6 @@ struct ExpandedPost: View {
 
                 } label: {
                     Label(commentSortingType.description, systemImage: commentSortingType.imageName)
-                }
-            }
-
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-
-                Button {
-                    isReplyFieldFocused = false
-
-                    if commentReplyTracker.commentToReplyTo != nil {
-                        commentReplyTracker.commentToReplyTo = nil
-                    }
-                } label: {
-                    Text("Cancel")
                 }
             }
         }
@@ -440,8 +305,8 @@ struct ExpandedPost: View {
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
             enabled: true) {
-            isReplyFieldFocused = true
-        })
+                isPostingComment = true
+            })
         
         // delete
         if post.creator.id == account.id {
@@ -471,6 +336,3 @@ struct ExpandedPost: View {
     }
     // swiftlint:enable function_body_length
 }
-
-// swiftlint:enable type_body_length
-// swiftlint:enable file_length

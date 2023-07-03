@@ -27,13 +27,29 @@ struct FeedPost: View {
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     // MARK: Parameters
-
+    
+    init(postView: APIPostView,
+         account: SavedAccount,
+         showPostCreator: Bool = true,
+         showCommunity: Bool = true,
+         showInteractionBar: Bool = true,
+         enableSwipeActions: Bool = true,
+         isDragging: Binding<Bool>) {
+        self.postView = postView
+        self.account = account
+        self.showPostCreator = showPostCreator
+        self.showCommunity = showCommunity
+        self.showInteractionBar = showInteractionBar
+        self.enableSwipeActions = enableSwipeActions
+        self._isDragging = isDragging
+    }
+    
     let postView: APIPostView
     let account: SavedAccount
     let showPostCreator: Bool
     let showCommunity: Bool
-    let showInteractionBar: Bool = true
-    let enableSwipeActions: Bool = true
+    let showInteractionBar: Bool
+    let enableSwipeActions: Bool
 
     // MARK: State
 
