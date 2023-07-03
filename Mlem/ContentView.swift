@@ -14,7 +14,7 @@ struct ContentView: View {
 
     @State private var errorAlert: ErrorAlert?
     @State private var expiredSessionAccount: SavedAccount?
-    
+
     @State private var tabSelection = 1
 
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
@@ -26,20 +26,20 @@ struct ContentView: View {
                     Label("Feeds", systemImage: "scroll")
                         .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
                 }.tag(1)
-            
+
             InboxView()
                 .tabItem {
                     Label("Inbox", systemImage: "mail.stack")
                         .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                 }.tag(2)
-            
+
             NavigationView {
                 ProfileView(userID: appState.currentActiveAccount.id)
             } .tabItem {
                 Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
                     .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
             }.tag(3)
-            
+
             NavigationView {
                 SearchView()
             } .tabItem {
@@ -105,18 +105,18 @@ extension ContentView {
         guard let contextualError else {
             return
         }
-        
+
         #if DEBUG
         print("☠️ ERROR ☠️")
         print("🕵️ -> \(contextualError.underlyingError.description)")
         print("📝 -> \(contextualError.underlyingError.localizedDescription)")
         #endif
-        
+
         defer {
             // ensure we clear our the error once we've handled it...
             appState.contextualError = nil
         }
-        
+
         if let clientError = contextualError.underlyingError.base as? APIClientError {
             switch clientError {
             case .invalidSession:
@@ -128,15 +128,15 @@ extension ContentView {
                 break
             }
         }
-        
+
         let title = contextualError.title ?? ""
         let message = contextualError.message ?? ""
-        
+
         guard !title.isEmpty || !message.isEmpty else {
             // no title or message was supplied so don't notify the user of this...
             return
         }
-        
+
         errorAlert = .init(title: title, message: message)
     }
 }
