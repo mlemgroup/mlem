@@ -11,13 +11,26 @@ extension InboxView {
     func refreshFeed() async {
         do {
             isLoading = true
-            try await mentionsTracker.refresh(account: account)
-            try await messagesTracker.refresh(account: account)
-            try await repliesTracker.refresh(account: account)
+            
+            // only refresh the trackers we need
+            if curTab == .all || curTab == .mentions {
+                print("refreshing mentions")
+                try await mentionsTracker.refresh(account: account)
+            }
+            if curTab == .all || curTab == .messages {
+                print("refreshing messages")
+                try await messagesTracker.refresh(account: account)
+            }
+            if curTab == .all || curTab == .replies {
+                print("refreshing replies")
+                try await repliesTracker.refresh(account: account)
+            }
             
             errorOccurred = false
             
-            aggregateAllTrackers()
+            if curTab == .all {
+                aggregateAllTrackers()
+            }
         } catch APIClientError.networking {
             errorOccurred = true
             errorMessage = "Network error occurred, check your internet and retry"
@@ -41,7 +54,7 @@ extension InboxView {
         do {
             try await tracker.loadNextPage(account: account)
             aggregateAllTrackers()
-            // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-sort the whole damn array
+            // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-merge the whole damn array
         } catch let message {
             print(message)
         }
@@ -60,11 +73,6 @@ extension InboxView {
             InboxItem(published: item.commentReply.published, id: item.id, type: .reply(item))
         }
         
-        // TODO: cleaner way than this jank
-        allMentions = mentionsTracker.items
-        allMessages = messagesTracker.items
-        allReplies = repliesTracker.items
-        
         allItems = merge(arr1: mentions, arr2: messages, compare: wasPostedAfter)
         allItems = merge(arr1: allItems, arr2: replies, compare: wasPostedAfter)
         isLoading = false
@@ -75,5 +83,108 @@ extension InboxView {
      */
     func wasPostedAfter(lhs: InboxItem, rhs: InboxItem) -> Bool {
         return lhs.published > rhs.published
+    }
+    
+    // INTERACTION
+    func voteOnComment(comment: APIComment) {
+        print("voting on \(comment.content)")
+    }
+    
+    // MARK: Callbacks
+    
+    // REPLIES
+    func voteOnCommentReply(commentReply: APICommentReplyView, inputOp: ScoringOperation) {
+        Task(priority: .userInitiated) {
+            do {
+                let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+                try await _ = rateCommentReply(commentReply: commentReply,
+                                               operation: operation,
+                                               account: account,
+                                               commentReplyTracker: repliesTracker,
+                                               appState: appState)
+                // TODO: more granular/less expensive merge options
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to vote!")
+            }
+        }
+    }
+    
+    func toggleCommentReplyRead(commentReplyView: APICommentReplyView) {
+        Task(priority: .userInitiated) {
+            do {
+                try await sendMarkCommentReplyAsReadRequest(commentReply: commentReplyView,
+                                                            read: !commentReplyView.commentReply.read,
+                                                            account: account,
+                                                            commentReplyTracker: repliesTracker,
+                                                            appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to mark read!")
+            }
+        }
+    }
+    
+    func replyToCommentReply(commentReply: APICommentReplyView) {
+        print("implement replyToCommentReply")
+    }
+    
+    // MENTIONS
+    func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
+        Task(priority: .userInitiated) {
+            do {
+                let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+                try await ratePersonMention(personMention: mention,
+                                            operation: operation,
+                                            account: account,
+                                            mentionsTracker: mentionsTracker,
+                                            appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            }
+        }
+    }
+    
+    func toggleMentionRead(mention: APIPersonMentionView) {
+        Task(priority: .userInitiated) {
+            do {
+                try await sendMarkPersonMentionAsReadRequest(personMention: mention,
+                                                             read: !mention.personMention.read,
+                                                             account: account,
+                                                             mentionTracker: mentionsTracker,
+                                                             appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to mark mention as read!")
+            }
+        }
+    }
+    
+    func replyToMention(mention: APIPersonMentionView) {
+        print("TODO: implement replyToMention")
+    }
+    
+    // MESSAGES
+    func replyToMessage(message: APIPrivateMessageView) {
+        messageRecipient = message.creator
+        isComposingMessage = true
+    }
+    
+    func toggleMessageRead(message: APIPrivateMessageView) {
+        Task(priority: .userInitiated) {
+            do {
+                try await sendMarkPrivateMessageAsReadRequest(messageView: message,
+                                                              read: !message.privateMessage.read,
+                                                              account: account,
+                                                              messagesTracker: messagesTracker,
+                                                              appState: appState)
+                
+                if curTab == .all { aggregateAllTrackers() }
+            } catch {
+                print("failed to mark message as read!")
+            }
+        }
     }
 }

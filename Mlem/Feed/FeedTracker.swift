@@ -50,9 +50,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     @discardableResult func perform<Request: APIRequest>(
         _ request: Request
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
-        print("performing...")
         let response = try await retrieveItems(with: request)
-        print("got response")
         
         add(response.items)
         page += 1

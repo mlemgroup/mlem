@@ -9,43 +9,62 @@ import Foundation
 import SwiftUI
 import CachedAsyncImage
 
+enum InboxTab: String, CaseIterable, Identifiable {
+    case all, replies, mentions, messages
+    
+    var id: Self { self }
+
+    var label: String {
+        return self.rawValue.capitalized
+    }
+}
+
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
-    let spacing: CGFloat = 10
+    // MARK: Global
+    @EnvironmentObject var appState: AppState
     
+    // MARK: Parameters
     let account: SavedAccount
-    @State var lastKnownAccountId: Int = 0 // id of the last account loaded with
     
+    // MARK: Internal
+    // id of the last account loaded with
+    @State var lastKnownAccountId: Int = 0
+    
+    // error  handling
     @State var errorOccurred: Bool = false
     @State var errorMessage: String = ""
     
+    // loading handling
     @State var isLoading: Bool = true
-    @State var allItems: [InboxItem] = .init()
     
+    // item feeds
+    @State var allItems: [InboxItem] = .init()
     @StateObject var mentionsTracker: MentionsTracker = .init()
     @StateObject var messagesTracker: MessagesTracker = .init()
     @StateObject var repliesTracker: RepliesTracker = .init()
     
-    // TODO: this jank needs to go, but that's a heavy lift. Currently using the trackers directly in the sub-views breaks scrolling in those views because parent state updates rerender them while loadNextPage calls are in-flight. 
-    @State var allMentions: [APIPersonMentionView] = .init()
-    @State var allMessages: [APIPrivateMessageView] = .init()
-    @State var allReplies: [APICommentReplyView] = .init()
+    // input state handling
+    // - current view
+    @State var curTab: InboxTab = .all
     
-    // TODO: make private again
-    @State var selectionSection = 0
+    // - replies and messages
+    @State var isComposingMessage: Bool = false
+    @State var messageRecipient: APIPerson?
     
+    // utility
+    @State var isDragging: Bool = false
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
             
-            VStack(spacing: 10) {
-                Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                    Text("All").tag(0)
-                    Text("Replies").tag(1)
-                    Text("Mentions").tag(2)
-                    Text("Messages").tag(3)
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
+                Picker(selection: $curTab, label: Text("Inbox tab")) {
+                    ForEach(InboxTab.allCases) { tab in
+                        Text(tab.label).tag(tab.rawValue)
+                    }
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
@@ -54,22 +73,16 @@ struct InboxView: View {
                     if errorOccurred {
                         errorView()
                     } else {
-                        inboxFeedView()
-                        // TODO: re-enable this
-//                        Group {
-//                            switch selectionSection {
-//                            case 0:
-//                                inboxFeedView()
-//                            case 1:
-//                                repliesFeedView()
-//                            case 2:
-//                                mentionsFeedView()
-//                            case 3:
-//                                messagesFeedView()
-//                            default:
-//                                Text("how did we get here?")
-//                            }
-//                        }
+                        switch curTab {
+                        case .all:
+                            inboxFeedView()
+                        case .replies:
+                            repliesFeedView()
+                        case .mentions:
+                            mentionsFeedView()
+                        case .messages:
+                            messagesFeedView()
+                        }
                     }
                 }
                 .refreshable {
@@ -80,8 +93,15 @@ struct InboxView: View {
                 
                 Spacer()
             }
+            .sheet(isPresented: $isComposingMessage) { [isComposingMessage] in
+                if let recipient = messageRecipient {
+                    MessageComposerView(account: account, recipient: recipient)
+                        .presentationDetents([.medium, .large])
+                }
+            }
             // load view if empty or account has changed
             .task(priority: .userInitiated) {
+                print("new render")
                 // if a tracker is empty or the account has changed, refresh
                 if mentionsTracker.items.isEmpty ||
                     messagesTracker.items.isEmpty ||
