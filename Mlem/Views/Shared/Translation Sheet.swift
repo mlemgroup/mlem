@@ -21,18 +21,15 @@ struct TranslationSheet: View {
                 }
             } label: {
                 Image(systemName: "xmark")
-//                    .scaledToFill()
                     .resizable()
                     .symbolRenderingMode(.monochrome)
 
             }
             .padding()
             .frame(width: 60, height: 60)
-//            .padding()
             .background(.ultraThinMaterial)
-//            .buttonBorderShape(.)
             .accessibilityLabel(Text("Close Translation Sheet Button"))
-            .clipShape(.rect(cornerRadii: .init(topLeading: 0, bottomLeading: 16, bottomTrailing: 0, topTrailing: 0)))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
 
         }
         .onAppear {
