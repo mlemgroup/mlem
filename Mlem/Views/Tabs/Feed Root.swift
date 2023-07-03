@@ -46,19 +46,19 @@ struct FeedRoot: View {
                                   feedType: rootDetails!.feedType
                     )
                     .environmentObject(appState)
-                    .handleLemmyLinkResolution(
-                        appState: _appState,
-                        navigationPath: $navigationPath,
-                        account: appState.currentActiveAccount!,
-                        local: "Inside root details"
-                    )
                     .handleLemmyViews()
-                }.id(rootDetails!.id + appState.currentActiveAccount!.id)
+                }
+                .id(rootDetails!.id + appState.currentActiveAccount!.id)
             } else {
                 Text("Please selecte a community")
                     .id(appState.currentActiveAccount?.id ?? 0)
             }
         }
+        .handleLemmyLinkResolution(
+            appState: _appState,
+            navigationPath: $navigationPath,
+            local: "Inside root feed"
+        )
         .environment(\.navigationPath, $navigationPath)
         .environmentObject(appState) 
         .environmentObject(accountsTracker)
@@ -104,7 +104,6 @@ struct FeedRoot: View {
 //                didReceiveURL(url)
                 HandleLemmyLinkResolution(appState: _appState,
                                           navigationPath: $navigationPath,
-                                          account: account,
                                           local: "Deep-Link onOpenURL"
                 )
                 .didReceiveURL(url)
