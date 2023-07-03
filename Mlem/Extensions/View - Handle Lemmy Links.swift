@@ -11,6 +11,8 @@ import AlertToast
 
 struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var filtersTracker: FiltersTracker
+    @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var savedAccounts: SavedAccountTracker
 
     // swiftlint:disable function_body_length
@@ -20,6 +22,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APICommunityView.self) { context in
                 if let account = account {
                     CommunityView(account: account, community: context.community)
+                        .environmentObject(appState)
+                        .environmentObject(filtersTracker)
+                        .environmentObject(CommunitySearchResultsTracker())
+                        .environmentObject(favoriteCommunitiesTracker)
                 } else {
                     Text("You must be signed in to view this community")
                 }
@@ -27,6 +33,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APICommunity.self) { community in
                 if let account = account {
                     CommunityView(account: account, community: community)
+                        .environmentObject(appState)
+                        .environmentObject(filtersTracker)
+                        .environmentObject(CommunitySearchResultsTracker())
+                        .environmentObject(favoriteCommunitiesTracker)
                 } else {
                     Text("You must be signed in to view this community")
                 }
@@ -34,6 +44,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: CommunityLinkWithContext.self) { context in
                 if let account = account {
                     CommunityView(account: account, community: context.community, feedType: context.feedType)
+                        .environmentObject(appState)
+                        .environmentObject(filtersTracker)
+                        .environmentObject(CommunitySearchResultsTracker())
+                        .environmentObject(favoriteCommunitiesTracker)
                 } else {
                     Text("You must be signed in to view this community")
                 }
@@ -44,6 +58,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         account: account,
                         community: context.community,
                         communityDetails: context.communityDetails)
+                    .environmentObject(appState)
+                    .environmentObject(filtersTracker)
+                    .environmentObject(CommunitySearchResultsTracker())
+                    .environmentObject(favoriteCommunitiesTracker)
                 } else {
                     Text("You must be signed in to view this community")
                 }
@@ -54,7 +72,11 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         account: account,
                         post: post,
                         feedType: .constant(.all)
-                    ).environmentObject(appState)
+                    )
+                    .environmentObject(
+                        PostTracker(shouldPerformMergeSorting: false, initialItems: [post])
+                    )
+                    .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
                 }
@@ -64,7 +86,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     LazyLoadExpandedPost(
                         account: account,
                         post: post
-                    ).environmentObject(appState)
+                    )
+                    .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
                 }
@@ -75,7 +98,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         account: account,
                         post: post.post,
                         feedType: post.feedType
-                    ).environmentObject(post.postTracker)
+                    )
+                        .environmentObject(post.postTracker)
                         .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
@@ -86,15 +110,17 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     LazyLoadExpandedPost(
                         account: account,
                         post: post.post
-                    ).environmentObject(post.postTracker)
-                        .environmentObject(appState)
+                    )
+                    .environmentObject(post.postTracker)
+                    .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this post")
                 }
             }
             .navigationDestination(for: APIPerson.self) { user in
                 if let account = account {
-                    UserView(userID: user.id, account: account).environmentObject(appState)
+                    UserView(userID: user.id, account: account)
+                        .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this user")
                 }
@@ -102,6 +128,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: UserModeratorLink.self) { user in
                 if let account = account {
                     UserModeratorView(account: account, userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
+                        .environmentObject(appState)
                 } else {
                     Text("You must be signed in to view this user")
                 }

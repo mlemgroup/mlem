@@ -38,7 +38,7 @@ struct CommentInteractionBar: View {
     let menuFunctions: [MenuFunction]
 
     // computed
-    var publishedAgo: String { getTimeIntervalFromNow(date: commentView.post.published )}
+    var publishedAgo: String { getTimeIntervalFromNow(date: commentView.comment.published )}
     let height: CGFloat = 24
 
     var body: some View {
