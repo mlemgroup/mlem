@@ -37,6 +37,8 @@ struct ExpandedPost: View {
 
     @State private var isInTheMiddleOfStyling: Bool = false
     @State internal var isPostingComment: Bool = false
+    @State internal var isReplyingToComment: Bool = false
+    @State internal var commentReplyingTo: APICommentView?
 
     @State private var viewID: UUID = UUID()
 
@@ -66,6 +68,15 @@ struct ExpandedPost: View {
         .scrollDisabled(isDragging)
         .sheet(isPresented: $isPostingComment) {
             CommentComposerView(replyTo: post)
+        }
+        .sheet(isPresented: $isReplyingToComment) { // [isReplyingToComment] in
+            if let comment = commentReplyingTo {
+                let replyTo: ReplyToComment = ReplyToComment(comment: comment,
+                                                             account: account,
+                                                             appState: appState,
+                                                             commentTracker: commentTracker)
+                GeneralCommentComposerView(replyTo: replyTo)
+            }
         }
         .environmentObject(commentTracker)
         .environmentObject(commentReplyTracker)
@@ -176,7 +187,8 @@ struct ExpandedPost: View {
                     depth: 0,
                     showPostContext: false,
                     showCommentCreator: true,
-                    isDragging: $isDragging
+                    isDragging: $isDragging,
+                    replyToComment: replyToComment
                 )
             }
         }

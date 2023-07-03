@@ -45,6 +45,11 @@ extension ExpandedPost {
         }
     }
     
+    func replyToComment(replyTo: APICommentView) {
+        commentReplyingTo = replyTo
+        isReplyingToComment = true
+    }
+    
     // MARK: Helper functions
     
     // swiftlint:disable function_body_length

@@ -13,7 +13,7 @@ struct UserProfileLink: View {
 
     // Extra context about where the link is being displayed
     // to pick the correct flair
-    var postContext: APIPostView?
+    var postContext: APIPost?
     var commentContext: APIComment?
 
     var body: some View {

@@ -34,7 +34,7 @@ func postComment(
 @MainActor
 func postComment(
     to commentId: Int,
-    post: APIPostView,
+    postId: Int,
     commentContents: String,
     commentTracker: CommentTracker,
     account: SavedAccount
@@ -46,7 +46,7 @@ func postComment(
         // TODO: we should map out all the language options...
         languageId: dominantLanguage == "en" ? 37 : nil,
         parentId: commentId,
-        postId: post.post.id
+        postId: postId
     )
 
     let response = try await APIClient().perform(request: request)

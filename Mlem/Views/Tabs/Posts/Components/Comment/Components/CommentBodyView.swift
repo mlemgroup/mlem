@@ -9,12 +9,41 @@ import Foundation
 import SwiftUI
 
 struct CommentBodyView: View {
+    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    
     let commentView: APICommentView
     let isCollapsed: Bool
     let showPostContext: Bool
+    let showCommentCreator: Bool
+    let commentorLabel: String
+
+    init(commentView: APICommentView,
+         isCollapsed: Bool,
+         showPostContext: Bool,
+         showCommentCreator: Bool) {
+        self.commentView = commentView
+        self.isCollapsed = isCollapsed
+        self.showPostContext = showPostContext
+        self.showCommentCreator = showCommentCreator
+        let commentor = commentView.creator
+        let publishedAgo: String = getTimeIntervalFromNow(date: commentView.comment.published)
+        commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
+    }
     
     var body: some View {
-        VStack(spacing: AppConstants.postAndCommentSpacing) {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+            if showCommentCreator {
+                UserProfileLink(
+                    user: commentView.creator,
+                    showServerInstance: shouldShowUserServerInComment,
+                    postContext: commentView.post,
+                    commentContext: commentView.comment
+                )
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(commentorLabel)
+                .foregroundColor(.secondary)
+            }
+            
             // comment text or placeholder
             if commentView.comment.deleted {
                 Text("Comment was deleted")

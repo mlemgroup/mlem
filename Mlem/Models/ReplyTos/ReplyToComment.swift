@@ -12,9 +12,13 @@ struct ReplyToComment: ReplyTo {
     let comment: APICommentView
     let account: SavedAccount
     let appState: AppState
+    let commentTracker: CommentTracker
     
     func embeddedView() -> AnyView {
-        return AnyView(CommentBodyView(commentView: comment, isCollapsed: false, showPostContext: true)
+        return AnyView(CommentBodyView(commentView: comment,
+                                       isCollapsed: false,
+                                       showPostContext: true,
+                                       showCommentCreator: true)
             .padding(.horizontal))
     }
     
@@ -24,10 +28,10 @@ struct ReplyToComment: ReplyTo {
             return
         }
         
-//        try await postCommentFromFeed(
-//            to: post,
-//            commentContents: commentContents,
-//            account: account,
-//            appState: appState)
+        try await postComment(to: comment.id,
+                              postId: comment.post.id,
+                              commentContents: commentContents,
+                              commentTracker: commentTracker,
+                              account: account)
     }
 }

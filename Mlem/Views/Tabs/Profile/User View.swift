@@ -395,7 +395,8 @@ struct UserView: View {
             depth: 0,
             showPostContext: true,
             showCommentCreator: false,
-            isDragging: $isDragging
+            isDragging: $isDragging,
+            replyToComment: nil
         )
     }
 }
@@ -560,7 +561,7 @@ struct UserViewPreview: PreviewProvider {
         return UserProfileLink(
             user: previewUser,
             showServerInstance: true,
-            postContext: postContext,
+            postContext: postContext?.post,
             commentContext: commentContext
         )
     }
