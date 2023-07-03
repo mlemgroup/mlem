@@ -11,8 +11,6 @@ internal enum PossibleStyling {
     case bold, italics
 }
 
-// swiftlint:disable type_body_length
-// swiftlint:disable file_length
 struct ExpandedPost: View {
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
@@ -33,19 +31,18 @@ struct ExpandedPost: View {
 
     @State private var commentSortingType: CommentSortType = .top
 
-    @FocusState var isReplyFieldFocused
-
     @Binding var feedType: FeedType
 
-    @State private var textFieldContents: String = ""
     @State private var replyingToCommentID: Int?
 
     @State private var isInTheMiddleOfStyling: Bool = false
-    @State private var isPostingComment: Bool = false
+    @State internal var isPostingComment: Bool = false
+    @State internal var isReplyingToComment: Bool = false
+    @State internal var commentReplyingTo: APICommentView?
 
     @State private var viewID: UUID = UUID()
 
-    @State private var errorAlert: ErrorAlert?
+    @State internal var errorAlert: ErrorAlert?
 
     @State var isDragging: Bool = false
 
@@ -69,128 +66,21 @@ struct ExpandedPost: View {
             }
         }
         .scrollDisabled(isDragging)
-        .environmentObject(commentReplyTracker)
-        .navigationBarTitle(post.community.name, displayMode: .inline)
-        .safeAreaInset(edge: .bottom) {
-            VStack {
-                if let commentToReplyTo = commentReplyTracker.commentToReplyTo {
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: 5) {
-                            HStack(alignment: .center, spacing: 2) {
-                                Text("Replying to ")
-                                UserProfileLabel(
-                                    shouldShowUserAvatars: false,
-                                    account: account,
-                                    user: commentToReplyTo.creator,
-                                    showServerInstance: shouldShowUserServerInComment,
-                                    postContext: post,
-                                    commentContext: commentToReplyTo.comment,
-                                    communityContext: nil
-                                )
-                            }
-                            .foregroundColor(.secondary)
-
-                            Text(commentToReplyTo.comment.content)
-                                .font(.system(size: 16))
-                        }
-
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-
-                    Divider()
-                }
-
-                HStack(alignment: .center, spacing: 10) {
-                    TextField(
-                        "Reply to post",
-                        text: $textFieldContents,
-                        prompt: Text("Commenting as \(account.username):"),
-                        axis: .vertical
-                    )
-                    .textFieldStyle(.roundedBorder)
-                    .focused($isReplyFieldFocused)
-                    
-                    if !textFieldContents.isEmpty {
-                        if !isPostingComment {
-                            Button {
-                                if commentReplyTracker.commentToReplyTo == nil {
-                                    Task(priority: .userInitiated) {
-                                        isPostingComment = true
-
-                                        print("Will post comment")
-                                        defer {
-                                            isPostingComment = false
-                                        }
-
-                                        do {
-                                            try await postComment(
-                                                to: post,
-                                                commentContents: textFieldContents,
-                                                commentTracker: commentTracker,
-                                                account: account,
-                                                appState: appState
-                                            )
-
-                                            isReplyFieldFocused = false
-                                            textFieldContents = ""
-                                        } catch let commentPostingError {
-                                            appState.alertTitle = "Couldn't post comment"
-                                            appState.alertMessage = "An error occured when posting the comment.\nTry again later."
-                                            appState.isShowingAlert.toggle()
-
-                                            print("Failed while posting error: \(commentPostingError)")
-                                        }
-                                    }
-                                } else {
-                                    Task(priority: .userInitiated) {
-                                        isPostingComment = true
-
-                                        print("Will post reply")
-
-                                        defer {
-                                            isPostingComment = false
-                                        }
-
-                                        do {
-                                            try await postComment(
-                                                to: commentReplyTracker.commentToReplyTo!.id,
-                                                post: post,
-                                                commentContents: textFieldContents,
-                                                commentTracker: commentTracker,
-                                                account: account
-                                            )
-
-                                            commentReplyTracker.commentToReplyTo = nil
-                                            isReplyFieldFocused = false
-                                            textFieldContents = ""
-                                        } catch let replyPostingError {
-                                            print("Failed while posting response: \(replyPostingError)")
-                                        }
-                                    }
-                                }
-
-                            } label: {
-                                Image(systemName: "paperplane")
-                            }
-                        } else {
-                            ProgressView()
-                        }
-                    }
-                }
-                .padding()
-
-                Divider()
-            }
-            .background(.regularMaterial)
-            .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: textFieldContents)
-            .onChange(of: commentReplyTracker.commentToReplyTo) { newValue in
-                if newValue != nil {
-                    isReplyFieldFocused.toggle()
-                }
+        .sheet(isPresented: $isPostingComment) {
+            CommentComposerView(replyTo: post)
+        }
+        .sheet(isPresented: $isReplyingToComment) { // [isReplyingToComment] in
+            if let comment = commentReplyingTo {
+                let replyTo: ReplyToComment = ReplyToComment(comment: comment,
+                                                             account: account,
+                                                             appState: appState,
+                                                             commentTracker: commentTracker)
+                GeneralCommentComposerView(replyTo: replyTo)
             }
         }
+        .environmentObject(commentTracker)
+        .environmentObject(commentReplyTracker)
+        .navigationBarTitle(post.community.name, displayMode: .inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Menu {
@@ -205,20 +95,6 @@ struct ExpandedPost: View {
 
                 } label: {
                     Label(commentSortingType.description, systemImage: commentSortingType.imageName)
-                }
-            }
-
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-
-                Button {
-                    isReplyFieldFocused = false
-
-                    if commentReplyTracker.commentToReplyTo != nil {
-                        commentReplyTracker.commentToReplyTo = nil
-                    }
-                } label: {
-                    Text("Cancel")
                 }
             }
         }
@@ -249,11 +125,10 @@ struct ExpandedPost: View {
             
             LargePost(
                 postView: post,
-                account: account,
                 isExpanded: true
             )
             
-            UserProfileLink(account: account, user: post.creator, showServerInstance: true)
+            UserProfileLink(user: post.creator, showServerInstance: true)
             
             PostInteractionBar(postView: post,
                                account: account,
@@ -312,165 +187,11 @@ struct ExpandedPost: View {
                     depth: 0,
                     showPostContext: false,
                     showCommentCreator: true,
-                    isDragging: $isDragging
+                    isDragging: $isDragging,
+                    replyToComment: replyToComment
                 )
             }
         }
         .environmentObject(commentTracker)
     }
-
-    // helper functions
-
-    func loadComments() async {
-        defer { commentTracker.isLoading = false }
-
-        commentTracker.isLoading = true
-        do {
-            let request = GetCommentsRequest(account: account, postId: post.post.id)
-            let response = try await APIClient().perform(request: request)
-            commentTracker.comments = sortComments(response.comments.hierarchicalRepresentation, by: defaultCommentSorting)
-        } catch APIClientError.response(let message, _) {
-            errorAlert = .init(title: "API error", message: message.error)
-        } catch {
-            errorAlert = .init(title: "Failed to load comments", message: "Please refresh to try again")
-        }
-    }
-
-    private func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortType) -> [HierarchicalComment] {
-        let sortedComments: [HierarchicalComment]
-        switch sort {
-        case .new:
-            sortedComments = comments.sorted(by: { $0.commentView.comment.published > $1.commentView.comment.published })
-        case .old:
-            sortedComments = comments.sorted(by: { $0.commentView.comment.published < $1.commentView.comment.published })
-        case .top:
-            sortedComments = comments.sorted(by: { $0.commentView.counts.score > $1.commentView.counts.score })
-        case .hot:
-            sortedComments = comments.sorted(by: { $0.commentView.counts.childCount > $1.commentView.counts.childCount })
-        }
-
-        return sortedComments.map { comment in
-            let newComment = comment
-            newComment.children = sortComments(comment.children, by: sort)
-            return newComment
-        }
-    }
-
-    /// Votes on a post
-    /// - Parameter inputOp: The voting operation to perform
-    func voteOnPost(inputOp: ScoringOperation) async {
-        do {
-            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            self.post = try await ratePost(
-                postId: post.post.id,
-                operation: operation,
-                account: account,
-                postTracker: postTracker,
-                appState: appState
-            )
-        } catch {
-            print("failed to vote!")
-        }
-    }
-    
-    /**
-     Sends a save request for the current post
-     */
-    func savePost(_ save: Bool) async throws {
-        self.post = try await sendSavePostRequest(account: account, postId: post.post.id, save: save, postTracker: postTracker)
-    }
-    
-    func deletePost() async {
-        do {
-            // TODO: renamed this function and/or move `deleteComment` out of the global scope to avoid
-            // having to refer to our own module
-            _ = try await Mlem.deletePost(postId: post.post.id, account: account, postTracker: postTracker, appState: appState)
-        } catch {
-            print("failed to delete post: \(error)")
-        }
-    }
-    
-    // swiftlint:disable function_body_length
-    func genMenuFunctions() -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-        
-        // upvote
-        let (upvoteText, upvoteImg) = post.myVote == .upvote ?
-        ("Undo upvote", "arrow.up.square.fill") :
-        ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(
-            text: upvoteText,
-            imageName: upvoteImg,
-            destructiveActionPrompt: nil,
-            enabled: true) {
-            Task(priority: .userInitiated) {
-                await voteOnPost(inputOp: .upvote)
-            }
-        })
-        
-        // downvote
-        let (downvoteText, downvoteImg) = post.myVote == .downvote ?
-        ("Undo downvote", "arrow.down.square.fill") :
-        ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(
-            text: downvoteText,
-            imageName: downvoteImg,
-            destructiveActionPrompt: nil,
-            enabled: true) {
-            Task(priority: .userInitiated) {
-                await voteOnPost(inputOp: .downvote)
-            }
-        })
-        
-        // save
-        let (saveText, saveImg) = post.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
-        ret.append(MenuFunction(
-            text: saveText,
-            imageName: saveImg,
-            destructiveActionPrompt: nil,
-            enabled: true) {
-            Task(priority: .userInitiated) {
-                try await savePost(_: !post.saved)
-            }
-        })
-        
-        // reply
-        ret.append(MenuFunction(
-            text: "Reply",
-            imageName: "arrowshape.turn.up.left",
-            destructiveActionPrompt: nil,
-            enabled: true) {
-            isReplyFieldFocused = true
-        })
-        
-        // delete
-        if post.creator.id == account.id {
-            ret.append(MenuFunction(
-                text: "Delete",
-                imageName: "trash",
-                destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
-                enabled: !post.post.deleted) {
-                Task(priority: .userInitiated) {
-                    await deletePost()
-                }
-            })
-        }
-        
-        // share
-        ret.append(MenuFunction(
-            text: "Share",
-            imageName: "square.and.arrow.up",
-            destructiveActionPrompt: nil,
-            enabled: true) {
-            if let url = URL(string: post.post.apId) {
-                showShareSheet(URLtoShare: url)
-            }
-        })
-        
-        return ret
-    }
-    // swiftlint:enable function_body_length
 }
-
-// swiftlint:enable type_body_length
-// swiftlint:enable file_length

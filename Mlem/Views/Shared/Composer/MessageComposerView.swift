@@ -32,7 +32,7 @@ struct MessageComposerView: View {
                 VStack(spacing: 15) {
                     
                     // Recipient
-                    UserProfileLabel(account: account, user: recipient, showServerInstance: true)
+                    UserProfileLabel(user: recipient, showServerInstance: true)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     // Post Text

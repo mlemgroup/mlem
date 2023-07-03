@@ -31,7 +31,7 @@ struct InboxMentionView: View {
                 .font(.headline)
                 .padding(.bottom, spacing)
             
-            UserProfileLink(account: account, user: mention.creator, showServerInstance: true)
+            UserProfileLink(user: mention.creator, showServerInstance: true)
                 .font(.subheadline)
             
             HStack(alignment: .top, spacing: spacing) {
