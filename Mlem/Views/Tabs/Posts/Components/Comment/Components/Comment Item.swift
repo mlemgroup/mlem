@@ -76,7 +76,7 @@ struct CommentItem: View {
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
         _dirtySaved = State(initialValue: hierarchicalComment.commentView.saved)
 
-        publishedAgo = getTimeIntervalFromNow(date: hierarchicalComment.commentView.post.published )
+        publishedAgo = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published )
         let commentor = hierarchicalComment.commentView.creator
         commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
     }

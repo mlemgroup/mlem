@@ -11,15 +11,16 @@ import AlertToast
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
-    
+    @Environment(\.scenePhase) var phase
+
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @State var navigationPath = NavigationPath()
-    
+
     @State var isShowingInstanceAdditionSheet: Bool = false
-    
+
     @State var rootDetails: CommunityLinkWithContext?
-    
+
     var body: some View {
 
         NavigationSplitView {
@@ -58,7 +59,13 @@ struct FeedRoot: View {
             if newAccount != nil {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     withAnimation {
-                        rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
+                        let feedType = FeedType(rawValue:
+                                                shortcutItemToProcess?.type ??
+                                                "nothing to see here"
+                        ) ?? defaultFeed
+                        rootDetails = CommunityLinkWithContext(community: nil, feedType: feedType)
+
+                        shortcutItemToProcess = nil
                     }
                 }
             }
@@ -89,13 +96,13 @@ struct FeedRoot: View {
                     appState.currentActiveAccount = account
                 }
             }
-            
+
             guard let account = appState.currentActiveAccount else {
                 appState.toast = AlertToast(displayMode: .hud, type: .loading, title: "You need to sign in to open links in app")
                 appState.isShowingToast = true
                 return
             }
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if rootDetails == nil {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
@@ -111,6 +118,19 @@ struct FeedRoot: View {
         }
         .sheet(isPresented: $isShowingInstanceAdditionSheet) {
             AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
+        }
+        .onChange(of: phase) { newPhase in
+            if newPhase == .active {
+                if appState.currentActiveAccount != nil,
+                   let shortcutItem = FeedType(rawValue:
+                                                shortcutItemToProcess?.type ??
+                                                "nothing to see here"
+                ) {
+                    rootDetails = CommunityLinkWithContext(community: nil, feedType: shortcutItem)
+
+                    shortcutItemToProcess = nil
+                }
+            }
         }
     }
 }

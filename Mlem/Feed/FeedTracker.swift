@@ -12,16 +12,17 @@ import Foundation
 class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     
     @Published private(set) var isLoading: Bool = true
-    @Published private(set) var items: [Item] = .init()
-    
+    @Published private(set) var items: [Item]
+
     private(set) var page: Int = 1
     
     private var ids: Set<Item.UniqueIdentifier> = .init()
     private var thresholdOffset: Int = -10
     private let shouldPerformMergeSorting: Bool
-    
-    init(shouldPerformMergeSorting: Bool = true) {
+
+    init(shouldPerformMergeSorting: Bool = true, initialItems: [Item] = .init()) {
         self.shouldPerformMergeSorting = shouldPerformMergeSorting
+        items = initialItems
     }
     
     // MARK: - Public methods
