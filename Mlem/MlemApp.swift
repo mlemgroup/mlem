@@ -22,6 +22,15 @@ struct MlemApp: App {
                     // set app theme to user preference
                     let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = lightOrDarkMode
+                    
+                    // correct the transparency bug for Tab bars
+                    let tabBarAppearance = UITabBarAppearance()
+                    tabBarAppearance.configureWithOpaqueBackground()
+                    UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+                    // correct the transparency bug for Navigation bars
+                    let navigationBarAppearance = UINavigationBarAppearance()
+                    navigationBarAppearance.configureWithOpaqueBackground()
+                    UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
                 }
         }
         .onChange(of: accountsTracker.savedAccounts) { _ in
@@ -31,5 +40,6 @@ struct MlemApp: App {
             let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
             windowScene?.windows.first?.overrideUserInterfaceStyle = value
         })
+        
     }
 }
