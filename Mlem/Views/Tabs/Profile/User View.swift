@@ -372,9 +372,7 @@ struct UserView: View {
      User post
      */
     private func postEntry(for post: APIPostView) -> some View {
-        NavigationLink {
-            ExpandedPost(account: account, post: post, feedType: .constant(.subscribed))
-        } label: {
+        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker, feedType: .constant(.subscribed))) {
             FeedPost(postView: post,
                      account: account,
                      showPostCreator: false,
