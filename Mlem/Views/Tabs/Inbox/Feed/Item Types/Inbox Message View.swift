@@ -13,11 +13,13 @@ struct InboxMessageView: View {
     
     let account: SavedAccount
     let message: APIPrivateMessageView
+    let menuFunctions: [MenuFunction]
     let publishedAgo: String
     
-    init(account: SavedAccount, message: APIPrivateMessageView) {
+    init(account: SavedAccount, message: APIPrivateMessageView, menuFunctions: [MenuFunction]) {
         self.account = account
         self.message = message
+        self.menuFunctions = menuFunctions
         
         self.publishedAgo = getTimeIntervalFromNow(date: message.privateMessage.published)
     }
@@ -41,8 +43,9 @@ struct InboxMessageView: View {
                 .font(.subheadline)
             
             HStack {
-                Image(systemName: "ellipsis")
-                    .frame(width: userAvatarWidth)
+//                Image(systemName: "ellipsis")
+//                    .frame(width: userAvatarWidth)
+                EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
                 
                 Spacer()
                 
@@ -54,5 +57,6 @@ struct InboxMessageView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
     }
 }

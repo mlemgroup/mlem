@@ -304,7 +304,7 @@ struct CommunityView: View {
             }
         }
         .environmentObject(postTracker)
-
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var searchResultsView: some View {

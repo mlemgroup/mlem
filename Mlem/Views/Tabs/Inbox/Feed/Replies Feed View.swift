@@ -12,13 +12,22 @@ extension InboxView {
     @ViewBuilder
     func repliesFeedView() -> some View {
         Group {
-            if repliesTracker.isLoading {
-                LoadingView(whatIsLoading: .replies)
-            } else if repliesTracker.items.isEmpty {
-                noRepliesView()
+            if repliesTracker.items.isEmpty {
+                if repliesTracker.isLoading {
+                    LoadingView(whatIsLoading: .replies)
+                } else {
+                    noRepliesView()
+                }
             } else {
-                LazyVStack(spacing: spacing) {
+                LazyVStack(spacing: 0) {
                     repliesListView()
+                    
+                    if repliesTracker.isLoading {
+                        LoadingView(whatIsLoading: .replies)
+                    } else {
+                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
+                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
+                    }
                 }
             }
         }
@@ -38,16 +47,37 @@ extension InboxView {
     @ViewBuilder
     func repliesListView() -> some View {
         ForEach(repliesTracker.items) { reply in
-            VStack(spacing: spacing) {
-                InboxReplyView(account: account, reply: reply)
-                    .task {
-                        if repliesTracker.shouldLoadContent(after: reply) {
-                            await loadTrackerPage(tracker: repliesTracker)
-                        }
-                    }
-                    .padding(.horizontal)
+            VStack(spacing: 0) {
+                inboxReplyViewWithInteraction(account: account, reply: reply)
+                
                 Divider()
             }
         }
+    }
+    
+    func inboxReplyViewWithInteraction(account: SavedAccount, reply: APICommentReplyView) -> some View {
+        InboxReplyView(account: account, reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
+            .padding(.vertical, AppConstants.postAndCommentSpacing)
+            .padding(.horizontal)
+            .background(Color.systemBackground)
+            .task {
+                if repliesTracker.shouldLoadContent(after: reply) {
+                    await loadTrackerPage(tracker: repliesTracker)
+                }
+            }
+            .contextMenu {
+                ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
+                    Button {
+                        item.callback()
+                    } label: {
+                        Label(item.text, systemImage: item.imageName)
+                    }
+                }
+            }
+            .addSwipeyActions(isDragging: $isDragging,
+                              primaryLeadingAction: upvoteCommentReplySwipeAction(commentReply: reply),
+                              secondaryLeadingAction: downvoteCommentReplySwipeAction(commentReply: reply),
+                              primaryTrailingAction: toggleCommentReplyReadSwipeAction(commentReply: reply),
+                              secondaryTrailingAction: replyToCommentReplySwipeAction(commentReply: reply))
     }
 }

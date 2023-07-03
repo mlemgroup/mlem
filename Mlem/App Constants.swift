@@ -60,4 +60,29 @@ struct AppConstants {
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
     static let postAndCommentSpacing: CGFloat = 10
+    
+    // MARK: - SFSymbols
+    // votes
+    static let emptyUpvoteSymbolName: String = "arrow.up.square"
+    static let fullUpvoteSymbolName: String = "arrow.up.square.fill"
+    static let emptyDownvoteSymbolName: String = "arrow.down.square"
+    static let fullDownvoteSymbolName: String = "arrow.down.square.fill"
+    static let emptyResetVoteSymbolName: String = "minus.square"
+    static let fullResetVoteSymbolName: String = "minus.square.fill"
+    
+    // reply
+    static let emptyReplySymbolName: String = "arrowshape.turn.up.left"
+    static let fullReplySymbolName: String = "arrowshape.turn.up.left.fill"
+    
+    // save
+    static let emptySaveSymbolName: String = "bookmark"
+    static let fullSaveSymbolName: String = "bookmark.fill"
+    static let emptyUndoSaveSymbolName: String = "bookmark.slash"
+    static let fullUndoSaveSymbolName: String = "bookmark.slash.fill"
+    
+    // mark read
+    static let emptyMarkReadSymbolName: String = "envelope.open"
+    static let fullMarkReadSymbolName: String = "envelope.open.fill"
+    static let emptyMarkUnreadSymbolName: String = "envelope"
+    static let fullMarkUnreadSymbolName: String = "envelope.fill"
 }

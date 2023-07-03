@@ -33,7 +33,7 @@ func postComment(
 
 @MainActor
 func postComment(
-    to comment: APICommentView,
+    to commentId: Int,
     post: APIPostView,
     commentContents: String,
     commentTracker: CommentTracker,
@@ -45,7 +45,7 @@ func postComment(
         content: commentContents,
         // TODO: we should map out all the language options...
         languageId: dominantLanguage == "en" ? 37 : nil,
-        parentId: comment.id,
+        parentId: commentId,
         postId: post.post.id
     )
 

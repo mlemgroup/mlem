@@ -156,7 +156,7 @@ struct ExpandedPost: View {
 
                                         do {
                                             try await postComment(
-                                                to: commentReplyTracker.commentToReplyTo!,
+                                                to: commentReplyTracker.commentToReplyTo!.id,
                                                 post: post,
                                                 commentContents: textFieldContents,
                                                 commentTracker: commentTracker,
