@@ -13,7 +13,7 @@ struct APIPostReport: Decodable {
     let creatorId: Int
     let postId: Int
     let originalPostName: String
-    let originalPostUrl: String?
+    let originalPostUrl: URL?
     let originalPostBody: String?
     let reason: String
     let resolved: Bool
