@@ -12,19 +12,12 @@ extension InboxView {
         do {
             isLoading = true
             
-            // only refresh the trackers we need
-            if curTab == .all || curTab == .mentions {
-                print("refreshing mentions")
-                try await mentionsTracker.refresh(account: account)
-            }
-            if curTab == .all || curTab == .messages {
-                print("refreshing messages")
-                try await messagesTracker.refresh(account: account)
-            }
-            if curTab == .all || curTab == .replies {
-                print("refreshing replies")
-                try await repliesTracker.refresh(account: account)
-            }
+            // load feeds in parallel
+            async let repliesRefresh: () = refreshRepliesTracker()
+            async let mentionsRefresh: () = refreshMentionsTracker()
+            async let messagesRefresh: () = refreshMessagesTracker()
+            
+            _ = try await [ repliesRefresh, mentionsRefresh, messagesRefresh ]
             
             errorOccurred = false
             
@@ -47,7 +40,24 @@ extension InboxView {
             errorOccurred = true
             errorMessage = "A decoding error occurred, try refreshing."
         }
-
+    }
+    
+    func refreshRepliesTracker() async throws {
+        if curTab == .all || curTab == .replies {
+            try await repliesTracker.refresh(account: account)
+        }
+    }
+    
+    func refreshMentionsTracker() async throws {
+        if curTab == .all || curTab == .mentions {
+            try await mentionsTracker.refresh(account: account)
+        }
+    }
+    
+    func refreshMessagesTracker() async throws {
+        if curTab == .all || curTab == .messages {
+            try await messagesTracker.refresh(account: account)
+        }
     }
     
     func loadTrackerPage(tracker: InboxTracker) async {

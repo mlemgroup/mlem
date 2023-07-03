@@ -13,7 +13,7 @@ enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
     
     var id: Self { self }
-
+    
     var label: String {
         return self.rawValue.capitalized
     }
@@ -58,66 +58,67 @@ struct InboxView: View {
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
+        // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of Views which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack
         NavigationStack(path: $navigationPath) {
+            contentView
+                .navigationTitle("Inbox")
+                .navigationBarTitleDisplayMode(.inline)
+                .listStyle(PlainListStyle())
+                .handleLemmyViews()
+        }
+    }
+    
+    @ViewBuilder var contentView: some View {
+        VStack(spacing: AppConstants.postAndCommentSpacing) {
+            Picker(selection: $curTab, label: Text("Inbox tab")) {
+                ForEach(InboxTab.allCases) { tab in
+                    Text(tab.label).tag(tab.rawValue)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
             
-            VStack(spacing: AppConstants.postAndCommentSpacing) {
-                Picker(selection: $curTab, label: Text("Inbox tab")) {
-                    ForEach(InboxTab.allCases) { tab in
-                        Text(tab.label).tag(tab.rawValue)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                
-                ScrollView(showsIndicators: false) {
-                    if errorOccurred {
-                        errorView()
-                    } else {
-                        switch curTab {
-                        case .all:
-                            inboxFeedView()
-                        case .replies:
-                            repliesFeedView()
-                        case .mentions:
-                            mentionsFeedView()
-                        case .messages:
-                            messagesFeedView()
-                        }
-                    }
-                }
-                .refreshable {
-                    Task(priority: .userInitiated) {
-                        await refreshFeed()
-                    }
-                }
-                
-                Spacer()
-            }
-            .sheet(isPresented: $isComposingMessage) { [isComposingMessage] in
-                if let recipient = messageRecipient {
-                    MessageComposerView(account: account, recipient: recipient)
-                        .presentationDetents([.medium, .large])
-                }
-            }
-            // load view if empty or account has changed
-            .task(priority: .userInitiated) {
-                print("new render")
-                // if a tracker is empty or the account has changed, refresh
-                if mentionsTracker.items.isEmpty ||
-                    messagesTracker.items.isEmpty ||
-                    repliesTracker.items.isEmpty  ||
-                    lastKnownAccountId != account.id {
-                    print("Inbox tracker is empty")
-                    await refreshFeed()
+            ScrollView(showsIndicators: false) {
+                if errorOccurred {
+                    errorView()
                 } else {
-                    print("Inbox tracker is not empty")
+                    switch curTab {
+                    case .all:
+                        inboxFeedView()
+                    case .replies:
+                        repliesFeedView()
+                    case .mentions:
+                        mentionsFeedView()
+                    case .messages:
+                        messagesFeedView()
+                    }
                 }
-                lastKnownAccountId = account.id
             }
-            .navigationTitle("Inbox")
-            .navigationBarTitleDisplayMode(.inline)
-            .listStyle(PlainListStyle())
-            .handleLemmyViews()
+            .refreshable {
+                Task(priority: .userInitiated) {
+                    await refreshFeed()
+                }
+            }
+        }
+        .sheet(isPresented: $isComposingMessage) { [isComposingMessage] in
+            if let recipient = messageRecipient {
+                MessageComposerView(account: account, recipient: recipient)
+                    .presentationDetents([.medium, .large])
+            }
+        }
+        // load view if empty or account has changed
+        .task(priority: .userInitiated) {
+            // if a tracker is empty or the account has changed, refresh
+            if mentionsTracker.items.isEmpty ||
+                messagesTracker.items.isEmpty ||
+                repliesTracker.items.isEmpty  ||
+                lastKnownAccountId != account.id {
+                print("Inbox tracker is empty")
+                await refreshFeed()
+            } else {
+                print("Inbox tracker is not empty")
+            }
+            lastKnownAccountId = account.id
         }
     }
     
