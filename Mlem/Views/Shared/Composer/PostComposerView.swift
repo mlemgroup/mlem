@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+extension HorizontalAlignment {
+    enum LabelStart: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            context[HorizontalAlignment.leading]
+        }
+    }
+    
+    static let labelStart = HorizontalAlignment(LabelStart.self)
+}
+
 struct PostComposerView: View {
     
     init(community: APICommunity) {
@@ -97,36 +107,41 @@ struct PostComposerView: View {
                         NSFWToggle(compact: false, isEnabled: isNSFW)
                     }
                     
-                    // Title Row
-                    HStack {
-                        Text("Title")
-                            .foregroundColor(.secondary)
-                            .accessibilityHidden(true)
-                        TextField("Your post title", text: $postTitle)
-                        .accessibilityLabel("Title")
-                    }
-                    
-                    // URL Row
-                    HStack {
-                        Text("URL")
-                            .foregroundColor(.secondary)
-                            .accessibilityHidden(true)
+                    VStack(alignment: .labelStart) {
+                        // Title Row
+                        HStack {
+                            Text("Title")
+                                .foregroundColor(.secondary)
+                                .accessibilityHidden(true)
+                            TextField("Your post title", text: $postTitle)
+                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                            
+                                .accessibilityLabel("Title")
+                        }
                         
-                        TextField("Your post link", text: $postURL)
-                            .keyboardType(.URL)
-                            .autocorrectionDisabled()
-                            .autocapitalization(.none)
-                            .accessibilityLabel("URL")
-                        
-                        // Upload button, temporarily hidden
-                        //                        Button(action: uploadImage) {
-                        //                            Image(systemName: "paperclip")
-                        //                                .font(.title3)
-                        //                                .dynamicTypeSize(.medium)
-                        //                        }
-                        //                        .accessibilityLabel("Upload Image")
+                        // URL Row
+                        HStack {
+                            Text("URL")
+                                .foregroundColor(.secondary)
+                                .accessibilityHidden(true)
+                            
+                            TextField("Your post link", text: $postURL)
+                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                                .keyboardType(.URL)
+                                .autocorrectionDisabled()
+                                .autocapitalization(.none)
+                                .accessibilityLabel("URL")
+                            
+                            // Upload button, temporarily hidden
+                            //                        Button(action: uploadImage) {
+                            //                            Image(systemName: "paperclip")
+                            //                                .font(.title3)
+                            //                                .dynamicTypeSize(.medium)
+                            //                        }
+                            //                        .accessibilityLabel("Upload Image")
+                        }
                     }
-                    
+
                     // Post Text
                     TextField("What do you want to say?",
                               text: $postBody,
