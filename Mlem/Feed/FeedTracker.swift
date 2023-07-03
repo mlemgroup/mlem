@@ -15,7 +15,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     private(set) var page: Int = 1
 
-    private var ids: Set<Item.UniqueIdentifier> = .init(minimumCapacity: 10_000)
+    private var ids: Set<Item.UniqueIdentifier> = .init(minimumCapacity: 1_000)
     private var thresholdOffset: Int = -10
     private let shouldPerformMergeSorting: Bool
 
@@ -116,7 +116,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
         filteredWith filter: @escaping (_: Item) -> Bool = { _ in true }
     ) {
         page = newItems.isEmpty ? 1 : 2
-        ids = .init(minimumCapacity: 10_000)
+        ids = .init(minimumCapacity: 1_000)
         items = dedupedItems(from: newItems.filter(filter))
     }
 
