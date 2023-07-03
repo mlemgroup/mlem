@@ -9,11 +9,13 @@ import Foundation
 import SwiftUI
 import MarkdownUI
 import CachedAsyncImage
+import SwiftyGif
 
 struct CachedImageWithNsfwFilter: View {
 
     let isNsfw: Bool
     let url: URL?
+    let isGif: Bool
 
     @State var showNsfwFilterToggle: Bool
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -22,21 +24,31 @@ struct CachedImageWithNsfwFilter: View {
     init(isNsfw: Bool, url: URL?) {
         self.isNsfw = isNsfw
         self.url = url
+        self.isGif = url?.absoluteString.contains([".gif"]) ?? false
         self._showNsfwFilterToggle = .init(initialValue: true)
     }
 
     var body: some View {
         ZStack {
-            CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-                image
-                    .resizable()
+            if let url = url, isGif {
+                AnimatedGifView(url: url)
                     .scaledToFill()
                     .blur(radius: showNsfwFilter ? 30 : 0)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .overlay(RoundedRectangle(cornerRadius: 8)
                         .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-            } placeholder: {
-                ProgressView()
+            } else {
+                CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .blur(radius: showNsfwFilter ? 30 : 0)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .overlay(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+                } placeholder: {
+                    ProgressView()
+                }
             }
 
             if showNsfwFilter {
@@ -73,5 +85,19 @@ struct CachedImageWithNsfwFilter: View {
                 }
             }
         }
+    }
+}
+
+struct AnimatedGifView: UIViewRepresentable {
+    let url: URL
+
+    func makeUIView(context: Context) -> UIImageView {
+        let imageView = UIImageView(gifURL: self.url)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }
+
+    func updateUIView(_ uiView: UIImageView, context: Context) {
+        uiView.setGifFromURL(self.url)
     }
 }
