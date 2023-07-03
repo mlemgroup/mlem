@@ -11,8 +11,8 @@ import SwiftUI
 /**
  Protocol for things that can be replied to with comments, used to make CommentComposerView generic
  */
-protocol ReplyToWithComment {
-    func embeddedView() -> any View
+protocol ReplyTo {
+    func embeddedView() -> AnyView
     
-    func sendReply(account: SavedAccount, tracker: FeedTracker<APICommentView>) async
+    func sendReply(commentContents: String) async throws
 }

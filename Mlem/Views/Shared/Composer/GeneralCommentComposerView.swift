@@ -1,60 +1,25 @@
 //
-//  CommentComposerView.swift
+//  InboxCommentComposerView.swift
 //  Mlem
 //
-//  Created by Weston Hanners on 7/2/23.
+//  Created by Eric Andrews on 2023-07-03.
 //
 
+import Foundation
 import SwiftUI
 
-struct CommentComposerView: View {
-    
-    init(replyTo post: APIPostView) {
-        self.post = post
-    }
-    
-    var post: APIPostView
-            
-    @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var commentTracker: CommentTracker
-    @EnvironmentObject var appState: AppState
+struct GeneralCommentComposerView: View {
+  
+    let replyTo: any ReplyTo
 
-    @State var postTitle: String = ""
-    @State var postURL: String = ""
+    @Environment(\.dismiss) var dismiss
+
     @State var replybody: String = ""
-    @State var isNSFW: Bool = false
-    
     @State var isSubmitting: Bool = false
-    @State var isBadURL: Bool = false
+    @State var errorOccurred: Bool = false
 
     private var isReadyToReply: Bool {
         return replybody.trimmed.isNotEmpty
-    }
-
-    func submitPost() async {
-        do {
-            guard let account = appState.currentActiveAccount else {
-                print("Cannot Submit, No Active Account")
-                return
-            }
-            
-            isSubmitting = true
-            
-            try await postComment(
-                to: post,
-                commentContents: replybody,
-                commentTracker: commentTracker,
-                account: account,
-                appState: appState)
-                
-                print("Reply Successful")
-            
-            dismiss()
-            
-        } catch {
-            print("Something went wrong)")
-            isSubmitting = false
-        }
     }
     
     func uploadImage() {
@@ -76,17 +41,7 @@ struct CommentComposerView: View {
                         
                         Spacer()
 
-                        // Comment Context
-                        if let account = appState.currentActiveAccount {
-                            FeedPost(postView: post,
-                                     account: account,
-                                     showPostCreator: true,
-                                     showCommunity: true,
-                                     showInteractionBar: false,
-                                     enableSwipeActions: false,
-                                     isDragging: Binding.constant(false),
-                                     replyToPost: nil)
-                        }
+                        replyTo.embeddedView()
                     }
                     
                     // Loading Indicator
@@ -102,7 +57,7 @@ struct CommentComposerView: View {
                     }
                 }
                 
-                .navigationTitle("New Post")
+                .navigationTitle("New Comment")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button("Cancel", role: .destructive) {
@@ -115,17 +70,24 @@ struct CommentComposerView: View {
                         // Submit Button
                         Button {
                             Task(priority: .userInitiated) {
-                                await submitPost()
+                                defer { isSubmitting = false }
+                                do {
+                                    isSubmitting = true
+                                    try await replyTo.sendReply(commentContents: replybody)
+                                    dismiss()
+                                } catch {
+                                    errorOccurred = true
+                                }
                             }
                         } label: {
                             Image(systemName: "paperplane")
                         }.disabled(isSubmitting || !isReadyToReply)
                     }
                 }
-                .alert("Submit Failed", isPresented: $isBadURL) {
+                .alert("Failed to Send", isPresented: $errorOccurred) {
                     Button("OK", role: .cancel) { }
                 } message: {
-                    Text("You seem to have entered an invalid URL, please check it again.")
+                    Text("Something went wrong!")
                 }
             }
             .navigationBarTitleDisplayMode(.inline)

@@ -50,7 +50,7 @@ struct PostHeader: View {
                     }
                 }
                 Text("by")
-                UserProfileLink(account: account, user: postView.creator, showServerInstance: shouldShowUserServerInPost)
+                UserProfileLink(user: postView.creator, showServerInstance: shouldShowUserServerInPost)
             }
 
             Spacer()

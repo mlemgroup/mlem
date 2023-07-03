@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct UserProfileLink: View {
-    var account: SavedAccount
     var user: APIPerson
     var showServerInstance: Bool
 
@@ -20,7 +19,6 @@ struct UserProfileLink: View {
     var body: some View {
         NavigationLink(value: user) {
             UserProfileLabel(
-                account: account,
                 user: user,
                 showServerInstance: showServerInstance,
                 postContext: postContext,

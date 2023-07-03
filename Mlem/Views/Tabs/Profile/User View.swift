@@ -377,7 +377,8 @@ struct UserView: View {
                      account: account,
                      showPostCreator: false,
                      showCommunity: true,
-                     isDragging: $isDragging
+                     isDragging: $isDragging,
+                     replyToPost: nil
             )
         }
         .buttonStyle(.plain)
@@ -557,7 +558,6 @@ struct UserViewPreview: PreviewProvider {
         }
         
         return UserProfileLink(
-            account: UserViewPreview.previewAccount,
             user: previewUser,
             showServerInstance: true,
             postContext: postContext,

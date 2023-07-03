@@ -98,7 +98,6 @@ struct CommentItem: View {
                 VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
                     if showCommentCreator {
                         UserProfileLink(
-                            account: account,
                             user: hierarchicalComment.commentView.creator,
                             showServerInstance: shouldShowUserServerInComment,
                             postContext: postContext,
@@ -109,7 +108,10 @@ struct CommentItem: View {
                         .foregroundColor(.secondary)
                     }
 
-                    commentBody
+                    // commentBody
+                    CommentBodyView(commentView: hierarchicalComment.commentView,
+                                    isCollapsed: isCollapsed,
+                                    showPostContext: showPostContext)
 
                     if showInteractionBar {
                         CommentInteractionBar(commentView: hierarchicalComment.commentView,
@@ -188,7 +190,6 @@ struct CommentItem: View {
             // embedded post
             if showPostContext {
                 EmbeddedPost(
-                    account: account,
                     community: hierarchicalComment.commentView.community,
                     post: hierarchicalComment.commentView.post
                 )

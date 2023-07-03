@@ -114,11 +114,10 @@ struct ExpandedPost: View {
             
             LargePost(
                 postView: post,
-                account: account,
                 isExpanded: true
             )
             
-            UserProfileLink(account: account, user: post.creator, showServerInstance: true)
+            UserProfileLink(user: post.creator, showServerInstance: true)
             
             PostInteractionBar(postView: post,
                                account: account,

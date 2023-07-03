@@ -63,7 +63,7 @@ func postComment(
  Used to post a comment directly from feed, where no comment tracker is present.
  */
 @MainActor
-func postComment(
+func postCommentFromFeed(
     to post: APIPostView,
     commentContents: String,
     account: SavedAccount,

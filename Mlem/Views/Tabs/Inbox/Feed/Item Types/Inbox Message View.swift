@@ -39,7 +39,7 @@ struct InboxMessageView: View {
                     .font(.subheadline)
             }
             
-            UserProfileLink(account: account, user: message.creator, showServerInstance: true)
+            UserProfileLink(user: message.creator, showServerInstance: true)
                 .font(.subheadline)
             
             HStack {

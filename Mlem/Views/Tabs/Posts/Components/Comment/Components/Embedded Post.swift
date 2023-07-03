@@ -11,7 +11,7 @@ struct EmbeddedPost: View {
     // environmnet
     @EnvironmentObject var postTracker: PostTracker
     
-    let account: SavedAccount
+    // let account: SavedAccount
     let community: APICommunity
     let post: APIPost
 
@@ -85,7 +85,6 @@ struct EmbeddedPostPreview: PreviewProvider {
     
     static var previews: some View {
         EmbeddedPost(
-            account: previewAccount,
             community: EmbeddedPostPreview.generateFakeCommunity(id: 1, namePrefix: ""),
             post: APIPost(
                 id: 1,

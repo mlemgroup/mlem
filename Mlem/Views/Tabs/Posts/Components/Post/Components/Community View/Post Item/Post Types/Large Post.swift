@@ -21,17 +21,14 @@ struct LargePost: View {
 
     // parameters
     let postView: APIPostView
-    let account: SavedAccount
     let isExpanded: Bool
 
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
-        account: SavedAccount,
         isExpanded: Bool
     ) {
         self.postView = postView
-        self.account = account
         self.isExpanded = isExpanded
     }
 
