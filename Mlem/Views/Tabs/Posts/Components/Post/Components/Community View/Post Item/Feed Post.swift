@@ -29,38 +29,52 @@ struct FeedPost: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     // MARK: Parameters
 
+    init(postView: APIPostView,
+         account: SavedAccount,
+         showPostCreator: Bool = true,
+         showCommunity: Bool = true,
+         showInteractionBar: Bool = true,
+         enableSwipeActions: Bool = true,
+         isDragging: Binding<Bool>,
+         replyToPost: ((APIPostView) -> Void)?) {
+        self.postView = postView
+        self.account = account
+        self.showPostCreator = showPostCreator
+        self.showCommunity = showCommunity
+        self.showInteractionBar = showInteractionBar
+        self.enableSwipeActions = enableSwipeActions
+        self.replyToPost = replyToPost
+        self._isDragging = isDragging
+    }
+
     let postView: APIPostView
     let account: SavedAccount
     let showPostCreator: Bool
     let showCommunity: Bool
-    let showInteractionBar: Bool = true
-    let enableSwipeActions: Bool = true
+    let showInteractionBar: Bool
+    let enableSwipeActions: Bool
+    let replyToPost: ((APIPostView) -> Void)?
 
     // MARK: State
 
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
+    @State private var isComposingReport: Bool = false
 
     // swipe-to-vote
     @Binding var isDragging: Bool
 
     // in-feed reply
-    @State var replyIsPresented: Bool = false
-    @State var replyContents: String = ""
-    @State var replyIsSending: Bool = false
+//    @State var replyIsPresented: Bool = false
+//    @State var replyContents: String = ""
+//    @State var replyIsSending: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
                 .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
-//                    .rect(cornerRadius:
-//                            horizontalSizeClass == .regular ? 16 : 0
-//                          )
-//                )
                 .padding(.all, horizontalSizeClass == .regular ? nil : 0)
-                .background(Color.systemBackground)
-
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
                         Button {
@@ -77,13 +91,13 @@ struct FeedPost: View {
                     primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
                     secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
                 )
-                .alert("Not yet implemented!", isPresented: $replyIsPresented) {
-                    Button("I love beta apps", role: .cancel) { }
-                }
 
             if horizontalSizeClass == .compact {
                 Divider()
             }
+        }
+        .sheet(isPresented: $isComposingReport) {
+            ReportComposerView(account: account, reportedPost: postView)
         }
     }
 
@@ -103,14 +117,13 @@ struct FeedPost: View {
             } else {
                 LargePost(
                     postView: postView,
-                    account: account,
                     isExpanded: false
                 )
             }
 
             // posting user
             if showPostCreator {
-                UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
+                UserProfileLink(user: postView.creator, showServerInstance: true)
             }
 
             if showInteractionBar {
@@ -122,6 +135,7 @@ struct FeedPost: View {
                                    deletePost: deletePost)
             }
         }
+        .background(Color.systemBackground)
         .padding(AppConstants.postAndCommentSpacing)
     }
 
@@ -143,9 +157,9 @@ struct FeedPost: View {
         }
     }
 
-    func replyToPost() {
-        self.replyIsPresented = true
-    }
+//    func replyToPost() {
+//        self.replyIsPresented = true
+//    }
 
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
@@ -169,6 +183,12 @@ struct FeedPost: View {
             _ = try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
         } catch {
             print("failed to save!")
+        }
+    }
+
+    func replyToPostWrapper() async {
+        if let replyToPostCallback = replyToPost {
+            replyToPostCallback(postView)
         }
     }
 
@@ -217,13 +237,15 @@ struct FeedPost: View {
         })
 
         // reply
-        ret.append(MenuFunction(
-            text: "Reply",
-            imageName: "arrowshape.turn.up.left",
-            destructiveActionPrompt: nil,
-            enabled: true) {
-            replyToPost()
-        })
+        if let replyCallback = replyToPost {
+            ret.append(MenuFunction(
+                text: "Reply",
+                imageName: "arrowshape.turn.up.left",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                    replyCallback(postView)
+                })
+        }
 
         // delete
         if postView.creator.id == account.id {
@@ -248,6 +270,16 @@ struct FeedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
+
+        // report
+        ret.append(MenuFunction(
+            text: "Report",
+            imageName: "exclamationmark.shield",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                isComposingReport = true
+            })
+
 
         // translate
         ret.append(MenuFunction(
@@ -303,11 +335,15 @@ extension FeedPost {
         )
     }
 
-    var replySwipeAction: SwipeAction {
-        SwipeAction(
-            symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
-            color: .accentColor,
-            action: replyToPost
-        )
+    var replySwipeAction: SwipeAction? {
+        if replyToPost != nil {
+            return SwipeAction(
+                symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
+                color: .accentColor,
+                action: replyToPostWrapper
+            )
+        } else {
+            return nil
+        }
     }
 }

@@ -19,6 +19,7 @@ struct CommentItem: View {
     @State var dirty: Bool = false
 
     @State var isShowingAlert: Bool = false
+    @State var isComposingReport: Bool = false
 
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : hierarchicalComment.commentView.myVote ?? .resetVote }
@@ -41,12 +42,13 @@ struct CommentItem: View {
 
     let account: SavedAccount
     let hierarchicalComment: HierarchicalComment
-    let postContext: APIPostView?
+    let postContext: APIPostView? // TODO: redundant with comment.post?
     let depth: Int
     let showPostContext: Bool
     let showCommentCreator: Bool
     let showInteractionBar: Bool
     let enableSwipeActions: Bool
+    let replyToComment: ((APICommentView) -> Void)?
 
     @Binding var isDragging: Bool
 
@@ -61,7 +63,8 @@ struct CommentItem: View {
          showCommentCreator: Bool,
          isDragging: Binding<Bool>,
          showInteractionBar: Bool = true,
-         enableSwipeActions: Bool = true
+         enableSwipeActions: Bool = true,
+         replyToComment: ((APICommentView) -> Void)?
     ) {
         self.account = account
         self.hierarchicalComment = hierarchicalComment
@@ -71,15 +74,16 @@ struct CommentItem: View {
         self.showCommentCreator = showCommentCreator
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
+        self.replyToComment = replyToComment
         _isDragging = isDragging
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
         _dirtySaved = State(initialValue: hierarchicalComment.commentView.saved)
 
-        publishedAgo = getTimeIntervalFromNow(date: hierarchicalComment.commentView.post.published )
-        let commentor = hierarchicalComment.commentView.creator
-        commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
+        publishedAgo = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published )
+//        let commentor = hierarchicalComment.commentView.creator
+//        commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
     }
 
     // MARK: State
@@ -89,7 +93,7 @@ struct CommentItem: View {
     // MARK: Computed
 
     var publishedAgo: String
-    let commentorLabel: String
+    // let commentorLabel: String
 
     // MARK: Body
 
@@ -97,20 +101,11 @@ struct CommentItem: View {
         VStack(spacing: 0) {
             Group {
                 VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                    if showCommentCreator {
-                        UserProfileLink(
-                            account: account,
-                            user: hierarchicalComment.commentView.creator,
-                            showServerInstance: shouldShowUserServerInComment,
-                            postContext: postContext,
-                            commentContext: hierarchicalComment.commentView.comment
-                        )
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel(commentorLabel)
-                        .foregroundColor(.secondary)
-                    }
-
-                    commentBody
+                    // commentBody
+                    CommentBodyView(commentView: hierarchicalComment.commentView,
+                                    isCollapsed: isCollapsed,
+                                    showPostContext: showPostContext,
+                                    showCommentCreator: showCommentCreator)
 
                     if showInteractionBar {
                         CommentInteractionBar(commentView: hierarchicalComment.commentView,
@@ -154,6 +149,10 @@ struct CommentItem: View {
                 secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
+            .sheet(isPresented: $isComposingReport) {
+                ReportComposerView(account: account, reportedPost: nil, reportedComment: hierarchicalComment.commentView)
+            }
+            
             Divider()
 
             childComments
@@ -189,7 +188,6 @@ struct CommentItem: View {
             // embedded post
             if showPostContext {
                 EmbeddedPost(
-                    account: account,
                     community: hierarchicalComment.commentView.community,
                     post: hierarchicalComment.commentView.post
                 )
@@ -210,7 +208,8 @@ struct CommentItem: View {
                         depth: depth + 1,
                         showPostContext: false,
                         showCommentCreator: true,
-                        isDragging: $isDragging
+                        isDragging: $isDragging,
+                        replyToComment: replyToComment
                     )
                 }
             }
@@ -255,12 +254,16 @@ extension CommentItem {
             action: saveComment
         )
     }
-    
-    var replySwipeAction: SwipeAction {
-        SwipeAction(
-           symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
-           color: .accentColor,
-           action: replyToComment
-       )
+
+    var replySwipeAction: SwipeAction? {
+        if replyToComment != nil {
+            return SwipeAction(
+                symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
+                color: .accentColor,
+                action: replyToCommentAsyncWrapper
+            )
+        } else {
+            return nil
+        }
     }
 }

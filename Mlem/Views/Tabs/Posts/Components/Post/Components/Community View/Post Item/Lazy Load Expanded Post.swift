@@ -16,11 +16,14 @@ struct LazyLoadExpandedPost: View {
     @State var post: APIPost
     
     @State private var loadedPostView: APIPostView?
-    
+
+    @StateObject private var postTracker =  PostTracker()
+
     var body: some View {
-        ZStack {
+        Group {
             if let loadedPost = loadedPostView {
                 ExpandedPost(account: account, post: loadedPost, feedType: .constant(.subscribed))
+                    .environmentObject(postTracker)
             } else {
                 progressView
             }
@@ -35,6 +38,7 @@ struct LazyLoadExpandedPost: View {
             let request = GetPostRequest(account: account, id: post.id, commentId: nil)
             do {
                 let response = try await APIClient().perform(request: request)
+                postTracker.add([response.postView])
                 loadedPostView = response.postView
             } catch {
                 print("Get post error: \(error)")

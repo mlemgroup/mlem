@@ -372,14 +372,13 @@ struct UserView: View {
      User post
      */
     private func postEntry(for post: APIPostView) -> some View {
-        NavigationLink {
-            ExpandedPost(account: account, post: post, feedType: .constant(.subscribed))
-        } label: {
+        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker, feedType: .constant(.subscribed))) {
             FeedPost(postView: post,
                      account: account,
                      showPostCreator: false,
                      showCommunity: true,
-                     isDragging: $isDragging
+                     isDragging: $isDragging,
+                     replyToPost: nil
             )
         }
         .buttonStyle(.plain)
@@ -396,7 +395,8 @@ struct UserView: View {
             depth: 0,
             showPostContext: true,
             showCommentCreator: false,
-            isDragging: $isDragging
+            isDragging: $isDragging,
+            replyToComment: nil
         )
     }
 }
@@ -559,10 +559,9 @@ struct UserViewPreview: PreviewProvider {
         }
         
         return UserProfileLink(
-            account: UserViewPreview.previewAccount,
             user: previewUser,
             showServerInstance: true,
-            postContext: postContext,
+            postContext: postContext?.post,
             commentContext: commentContext
         )
     }

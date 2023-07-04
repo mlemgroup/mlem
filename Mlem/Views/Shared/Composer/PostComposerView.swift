@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+extension HorizontalAlignment {
+    enum LabelStart: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            context[HorizontalAlignment.leading]
+        }
+    }
+    
+    static let labelStart = HorizontalAlignment(LabelStart.self)
+}
+
 struct PostComposerView: View {
     
     init(community: APICommunity) {
@@ -25,13 +35,12 @@ struct PostComposerView: View {
     @State var isNSFW: Bool = false
     
     @State var isSubmitting: Bool = false
-    @State var isBadURL: Bool = false
+    @State var isShowingErrorDialog: Bool = false
+    @State var errorDialogMessage: String = ""
 
     private var isReadyToPost: Bool {
-        // We need postTitle to be not empty
-        // and at least an attached postBody or postURL.
+        // This only requirement to post is a title
         return postTitle.trimmed.isNotEmpty
-        && (postBody.trimmed.isNotEmpty || postURL.trimmed.isNotEmpty)
     }
     
     private var isValidURL: Bool {
@@ -54,8 +63,15 @@ struct PostComposerView: View {
                 return
             }
             
-            guard isValidURL else {
-                isBadURL = true
+            guard postTitle.trimmed.isNotEmpty else {
+                errorDialogMessage = "You need to enter a title for your post."
+                isShowingErrorDialog = true
+                return
+            }
+            
+            guard postURL.lowercased().isEmpty || isValidURL else {
+                errorDialogMessage = "You seem to have entered an invalid URL, please check it again."
+                isShowingErrorDialog = true
                 return
             }
             
@@ -97,38 +113,43 @@ struct PostComposerView: View {
                         NSFWToggle(compact: false, isEnabled: isNSFW)
                     }
                     
-                    // Title Row
-                    HStack {
-                        Text("Title")
-                            .foregroundColor(.secondary)
-                            .accessibilityHidden(true)
-                        TextField("Your post title", text: $postTitle)
-                        .accessibilityLabel("Title")
-                    }
-                    
-                    // URL Row
-                    HStack {
-                        Text("URL")
-                            .foregroundColor(.secondary)
-                            .accessibilityHidden(true)
+                    VStack(alignment: .labelStart) {
+                        // Title Row
+                        HStack {
+                            Text("Title")
+                                .foregroundColor(.secondary)
+                                .accessibilityHidden(true)
+                            TextField("Your post title", text: $postTitle)
+                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                            
+                                .accessibilityLabel("Title")
+                        }
                         
-                        TextField("Your post link", text: $postURL)
-                            .keyboardType(.URL)
-                            .autocorrectionDisabled()
-                            .autocapitalization(.none)
-                            .accessibilityLabel("URL")
-                        
-                        // Upload button, temporarily hidden
-                        //                        Button(action: uploadImage) {
-                        //                            Image(systemName: "paperclip")
-                        //                                .font(.title3)
-                        //                                .dynamicTypeSize(.medium)
-                        //                        }
-                        //                        .accessibilityLabel("Upload Image")
+                        // URL Row
+                        HStack {
+                            Text("URL")
+                                .foregroundColor(.secondary)
+                                .accessibilityHidden(true)
+                            
+                            TextField("Your post link (Optional)", text: $postURL)
+                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                                .keyboardType(.URL)
+                                .autocorrectionDisabled()
+                                .autocapitalization(.none)
+                                .accessibilityLabel("URL")
+                            
+                            // Upload button, temporarily hidden
+                            //                        Button(action: uploadImage) {
+                            //                            Image(systemName: "paperclip")
+                            //                                .font(.title3)
+                            //                                .dynamicTypeSize(.medium)
+                            //                        }
+                            //                        .accessibilityLabel("Upload Image")
+                        }
                     }
-                    
+
                     // Post Text
-                    TextField("What do you want to say?",
+                    TextField("What do you want to say? (Optional)",
                               text: $postBody,
                               axis: .vertical)
                     .accessibilityLabel("Post Body")
@@ -169,10 +190,10 @@ struct PostComposerView: View {
                     }.disabled(isSubmitting || !isReadyToPost)
                 }
             }
-            .alert("Submit Failed", isPresented: $isBadURL) {
+            .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text("You seem to have entered an invalid URL, please check it again.")
+                Text(errorDialogMessage)
             }
             .navigationBarTitleDisplayMode(.inline)
         }

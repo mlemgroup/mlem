@@ -42,11 +42,10 @@ extension InboxView {
     }
     
     func replyToCommentReplySwipeAction(commentReply: APICommentReplyView) -> SwipeAction? {
-        return nil
-//        return SwipeAction(symbol: .init(emptyName: AppConstants.emptyReplySymbolName, fillName: AppConstants.fullReplySymbolName),
-//                           color: .accentColor) {
-//            replyToCommentReply(commentReply: commentReply)
-//        }
+        return SwipeAction(symbol: .init(emptyName: AppConstants.emptyReplySymbolName, fillName: AppConstants.fullReplySymbolName),
+                           color: .accentColor) {
+            replyToCommentReply(commentReply: commentReply)
+        }
     }
     
     func genCommentReplyMenuGroup(commentReply: APICommentReplyView) -> [MenuFunction] {
@@ -77,10 +76,10 @@ extension InboxView {
         })
         
         // reply
-//        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
-//            replyToCommentReply(commentReply: commentReply)
-//        })
-//        
+        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
+            replyToCommentReply(commentReply: commentReply)
+        })
+        
         return ret
     }
     
@@ -117,11 +116,10 @@ extension InboxView {
     }
     
     func replyToMentionSwipeAction(mentionView: APIPersonMentionView) -> SwipeAction? {
-        return nil
-//        return SwipeAction(symbol: .init(emptyName: AppConstants.emptyReplySymbolName, fillName: AppConstants.fullReplySymbolName),
-//                           color: .accentColor) {
-//            replyToMention(mention: mentionView)
-//        }
+        return SwipeAction(symbol: .init(emptyName: AppConstants.emptyReplySymbolName, fillName: AppConstants.fullReplySymbolName),
+                           color: .accentColor) {
+            replyToMention(mention: mentionView)
+        }
     }
     
     func genMentionMenuGroup(mention: APIPersonMentionView) -> [MenuFunction] {
@@ -152,9 +150,9 @@ extension InboxView {
         })
         
         // reply
-//        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
-//            replyToMention(mention: mention)
-//        })
+        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
+            replyToMention(mention: mention)
+        })
         
         return ret
     }

@@ -91,6 +91,15 @@ extension CommentItem {
     }
 
     /**
+     Asynchronous wrapper around replyToComment so that it can be used in swipey actions
+     */
+    func replyToCommentAsyncWrapper() async {
+        if let replyCallback = replyToComment {
+            replyCallback(hierarchicalComment.commentView)
+        }
+    }
+
+    /**
      Sends a save request for the current post
      */
     func saveComment() async {
@@ -114,10 +123,10 @@ extension CommentItem {
         }
     }
 
-    @MainActor
-    func replyToComment() {
-        commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
-    }
+//    @MainActor
+//    func replyToComment() {
+//        commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
+//    }
 
     // MARK: helpers
 
@@ -166,13 +175,15 @@ extension CommentItem {
         })
 
         // reply
-        ret.append(MenuFunction(
-            text: "Reply",
-            imageName: "arrowshape.turn.up.left",
-            destructiveActionPrompt: nil,
-            enabled: true) {
-            replyToComment()
-        })
+        if let replyCallback = replyToComment {
+            ret.append(MenuFunction(
+                text: "Reply",
+                imageName: "arrowshape.turn.up.left",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                    replyCallback(hierarchicalComment.commentView)
+                })
+        }
 
         // delete
         if hierarchicalComment.commentView.creator.id == account.id {
@@ -197,6 +208,16 @@ extension CommentItem {
                 showShareSheet(URLtoShare: url)
             })
         }
+
+        // report
+        ret.append(MenuFunction(
+            text: "Report",
+            imageName: "exclamationmark.shield",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                isComposingReport = true
+            })
+
 
         // translate
         ret.append(MenuFunction(
