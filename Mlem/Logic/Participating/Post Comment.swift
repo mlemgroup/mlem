@@ -60,7 +60,7 @@ func postComment(
 }
 
 /**
- Used
+ Used to post a comment in contexts where a tracker is not necessary (e.g., in feed or inbox)
  */
 @MainActor
 func postCommentWithoutTracker(
