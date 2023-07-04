@@ -20,7 +20,7 @@ func sendPrivateMessage(
         print(request)
         
         AppConstants.hapticManager.notificationOccurred(.success)
-        let response = try await APIClient().perform(request: request)
+        try await APIClient().perform(request: request)
     } catch let ratingOperationError {
         AppConstants.hapticManager.notificationOccurred(.error)
         print("Failed while trying to mark read: \(ratingOperationError)")

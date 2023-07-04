@@ -47,7 +47,6 @@ struct CommunityView: View {
     @State private var errorAlert: ErrorAlert?
 
     @State var isDragging: Bool = false
-    @State var isPostingComment: Bool = false
     @State var replyingToPost: APIPostView?
 
     var isInSpecificCommunity: Bool { community != nil }
@@ -126,12 +125,14 @@ struct CommunityView: View {
                 message: Text(content.message)
             )
         }
-        .sheet(isPresented: $isPostingComment) { [isPostingComment] in // capture here to force state re-eval
-            if let post = replyingToPost {
-                let replyTo: ReplyToFeedPost = ReplyToFeedPost(post: post, account: account, appState: appState)
-                
-                GeneralCommentComposerView(replyTo: replyTo)
-            }
+        .sheet(item: $replyingToPost) { post in
+            GeneralCommentComposerView(
+                replyTo: ReplyToFeedPost(
+                    post: post,
+                    account: account,
+                    appState: appState
+                )
+            )
         }
         .toolbar {
             ToolbarItem(placement: .principal) { /// This is here to replace the default navigationTitle and make it possible to tap it
@@ -412,7 +413,6 @@ struct CommunityView: View {
     
     func replyToPost(replyTo: APIPostView) {
         replyingToPost = replyTo
-        isPostingComment = true
     }
 
     func loadFeed() async {
