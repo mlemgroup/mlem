@@ -10,11 +10,12 @@ import SwiftUI
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 struct CommunityView: View {
+    
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
+    @AppStorage("postSize") var postSize: PostSize = .headline
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -261,15 +262,33 @@ struct CommunityView: View {
                                 Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                             }
                         }
-
-                        Button {
-                            shouldShowCompactPosts.toggle()
-                        } label: {
-                            if shouldShowCompactPosts {
-                                Label("Large posts", systemImage: "rectangle.expand.vertical")
-                            } else {
-                                Label("Compact posts", systemImage: "rectangle.compress.vertical")
+                        
+                        Menu {
+                            if postSize != .compact {
+                                Button {
+                                    postSize = .compact
+                                } label: {
+                                    Label("Compact", systemImage: "rectangle.compress.vertical")
+                                }
                             }
+                            
+                            if postSize != .headline {
+                                Button {
+                                    postSize = .headline
+                                } label: {
+                                    Label("Headline", systemImage: "rectangle")
+                                }
+                            }
+                            
+                            if postSize != .large {
+                                Button {
+                                    postSize = .large
+                                } label: {
+                                    Label("Large", systemImage: "rectangle.expand.vertical")
+                                }
+                            }
+                        } label: {
+                            Label("Post size", systemImage: "rectangle.compress.vertical")
                         }
                         .foregroundColor(.primary)
                     } label: {

@@ -560,9 +560,10 @@ struct UserViewPreview: PreviewProvider {
         
         return UserProfileLink(
             user: previewUser,
-            showServerInstance: true,
+            serverInstanceLocation: .bottom,
             postContext: postContext?.post,
-            commentContext: commentContext
+            commentContext: commentContext,
+            showAvatar: true
         )
     }
     
