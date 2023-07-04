@@ -32,7 +32,7 @@ struct FeedRoot: View {
                         selectedCommunity: $rootDetails
                     ).id(appState.currentActiveAccount!.id)
                 } else {
-                    Text("You need to be signed in to brewos Lemmy")
+                    Text("You need to be signed in to browse Lemmy")
                     Button {
                         isShowingInstanceAdditionSheet.toggle()
                     } label: {
