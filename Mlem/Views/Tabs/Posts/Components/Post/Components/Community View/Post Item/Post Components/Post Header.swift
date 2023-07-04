@@ -56,7 +56,9 @@ struct PostHeader: View {
             Spacer()
 
             if postView.post.featuredLocal {
-                StickiedTag(compact: false)
+                StickiedTag(tagType: .local)
+            } else if postView.post.featuredCommunity {
+                StickiedTag(tagType: .community)
             }
 
             if postView.post.nsfw {

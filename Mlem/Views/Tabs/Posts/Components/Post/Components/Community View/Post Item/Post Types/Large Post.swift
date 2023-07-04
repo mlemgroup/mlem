@@ -36,6 +36,12 @@ struct LargePost: View {
         VStack(alignment: .leading, spacing: spacing) {
             // post title
             HStack {
+                if postView.post.featuredLocal {
+                    StickiedTag(tagType: .local)
+                } else if postView.post.featuredCommunity {
+                    StickiedTag(tagType: .community)
+                }
+                
                 Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
