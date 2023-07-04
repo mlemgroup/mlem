@@ -76,6 +76,4 @@ In order to benefit please ensure you have [Homebrew](https://brew.sh) installed
 
 ## License
 
-Mlem is licensed under [Commons Clause](https://commonsclause.com).
-
-This means that Mlem is open-source and you can do whatever you want with its source, like modifying it, contributing to it etc., but you can't sell Mlem or modified versions of it.
+Mlem is fully open-source, licensed under GPL 3.0 with an addendum for compliance with the Apple App Store. See LICENSE for details.
