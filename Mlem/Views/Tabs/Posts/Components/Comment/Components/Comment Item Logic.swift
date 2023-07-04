@@ -218,7 +218,6 @@ extension CommentItem {
                 isComposingReport = true
             })
 
-
         // translate
         ret.append(MenuFunction(
             text: "Translate",

@@ -289,7 +289,6 @@ struct FeedPost: View {
                 isComposingReport = true
             })
 
-
         // translate
         ret.append(MenuFunction(
             text: "Translate",
@@ -298,7 +297,6 @@ struct FeedPost: View {
             enabled: !(postView.post.body?.isEmpty ?? true)) {
                 translateText(postView.post.body ?? postView.post.name)
         })
-
 
         return ret
     }
