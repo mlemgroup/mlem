@@ -51,28 +51,31 @@ extension InboxView {
     }
     
     func inboxMentionViewWithInteraction(account: SavedAccount, mention: APIPersonMentionView) -> some View {
-        InboxMentionView(account: account, mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
-            .padding(.vertical, AppConstants.postAndCommentSpacing)
-            .padding(.horizontal)
-            .background(Color.systemBackground)
-            .task {
-                if mentionsTracker.shouldLoadContent(after: mention) {
-                    await loadTrackerPage(tracker: mentionsTracker)
-                }
-            }
-            .contextMenu {
-                ForEach(genMentionMenuGroup(mention: mention)) { item in
-                    Button {
-                        item.callback()
-                    } label: {
-                        Label(item.text, systemImage: item.imageName)
+        NavigationLink(value: LazyLoadPostLinkWithContext(post: mention.post, postTracker: dummyPostTracker)) {
+            InboxMentionView(account: account, mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
+                .padding(.vertical, AppConstants.postAndCommentSpacing)
+                .padding(.horizontal)
+                .background(Color.systemBackground)
+                .task {
+                    if mentionsTracker.shouldLoadContent(after: mention) {
+                        await loadTrackerPage(tracker: mentionsTracker)
                     }
                 }
-            }
-            .addSwipeyActions(isDragging: $isDragging,
-                              primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
-                              secondaryLeadingAction: downvoteMentionSwipeAction(mentionView: mention),
-                              primaryTrailingAction: toggleMentionReadSwipeAction(mentionView: mention),
-                              secondaryTrailingAction: replyToMentionSwipeAction(mentionView: mention))
+                .contextMenu {
+                    ForEach(genMentionMenuGroup(mention: mention)) { item in
+                        Button {
+                            item.callback()
+                        } label: {
+                            Label(item.text, systemImage: item.imageName)
+                        }
+                    }
+                }
+                .addSwipeyActions(isDragging: $isDragging,
+                                  primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
+                                  secondaryLeadingAction: downvoteMentionSwipeAction(mentionView: mention),
+                                  primaryTrailingAction: toggleMentionReadSwipeAction(mentionView: mention),
+                                  secondaryTrailingAction: replyToMentionSwipeAction(mentionView: mention))
+        }
+        .buttonStyle(EmptyButtonStyle())
     }
 }

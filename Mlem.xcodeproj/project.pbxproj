@@ -193,6 +193,7 @@
 		6DEB0FFD2A4F891B007CAB99 /* User Moderator Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */; };
 		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
+		ADAEFE542A52921C0047F0A9 /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */; };
 		ADF266952A4E8A1E00EBA648 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */; };
 		B11A1A782A4EFF2B00520DB4 /* Feed Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */; };
 		B11D72832A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */; };
@@ -225,6 +226,14 @@
 		CD18DC732A522A7C002C56BC /* CreatePrivateMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */; };
 		CD18DC752A522B38002C56BC /* SendPrivateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC742A522B38002C56BC /* SendPrivateMessage.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
+		CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F8A2A53371300E213B5 /* ExpandedPostLogic.swift */; };
+		CD391F902A533AFF00E213B5 /* ReplyToFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F8F2A533AFF00E213B5 /* ReplyToFeedPost.swift */; };
+		CD391F942A533B7700E213B5 /* ReplyToProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F932A533B7700E213B5 /* ReplyToProtocol.swift */; };
+		CD391F962A535F5400E213B5 /* GeneralCommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F952A535F5400E213B5 /* GeneralCommentComposerView.swift */; };
+		CD391F982A537E8E00E213B5 /* ReplyToComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F972A537E8E00E213B5 /* ReplyToComment.swift */; };
+		CD391F9A2A537EF900E213B5 /* CommentBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F992A537EF900E213B5 /* CommentBodyView.swift */; };
+		CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9B2A53980900E213B5 /* ReplyToCommentReply.swift */; };
+		CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9D2A539F1800E213B5 /* ReplyToMention.swift */; };
 		CD3FBCD32A4A4B8B00B2063F /* Messages Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */; };
 		CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */; };
 		CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */; };
@@ -470,6 +479,7 @@
 		6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Moderator Link.swift"; sourceTree = "<group>"; };
 		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
+		ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
 		ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed Root.swift"; sourceTree = "<group>"; };
 		B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cached Image With Nsfw Filter.swift"; sourceTree = "<group>"; };
@@ -501,6 +511,14 @@
 		CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePrivateMessageRequest.swift; sourceTree = "<group>"; };
 		CD18DC742A522B38002C56BC /* SendPrivateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPrivateMessage.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
+		CD391F8A2A53371300E213B5 /* ExpandedPostLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostLogic.swift; sourceTree = "<group>"; };
+		CD391F8F2A533AFF00E213B5 /* ReplyToFeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToFeedPost.swift; sourceTree = "<group>"; };
+		CD391F932A533B7700E213B5 /* ReplyToProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToProtocol.swift; sourceTree = "<group>"; };
+		CD391F952A535F5400E213B5 /* GeneralCommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralCommentComposerView.swift; sourceTree = "<group>"; };
+		CD391F972A537E8E00E213B5 /* ReplyToComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToComment.swift; sourceTree = "<group>"; };
+		CD391F992A537EF900E213B5 /* CommentBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBodyView.swift; sourceTree = "<group>"; };
+		CD391F9B2A53980900E213B5 /* ReplyToCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToCommentReply.swift; sourceTree = "<group>"; };
+		CD391F9D2A539F1800E213B5 /* ReplyToMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMention.swift; sourceTree = "<group>"; };
 		CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Messages Tracker.swift"; sourceTree = "<group>"; };
 		CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Replies Tracker.swift"; sourceTree = "<group>"; };
 		CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReplies.swift; sourceTree = "<group>"; };
@@ -647,6 +665,7 @@
 		6318EDC427EE4E0500BFCAE8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CD391F922A533B6C00E213B5 /* ReplyTos */,
 				B14E93BE2A45CA1A00D6DA93 /* Navigation Contexts */,
 				CD2E18282A3B706300224F8A /* Settings */,
 				6386E0282A03D0B8006B3C1D /* Trackers */,
@@ -779,6 +798,7 @@
 				6318EDC227EE4D7F00BFCAE8 /* Feed Post.swift */,
 				6363D60327EE20A200E34822 /* Expanded Post.swift */,
 				6D80037A2A46458800363206 /* Lazy Load Expanded Post.swift */,
+				CD391F8A2A53371300E213B5 /* ExpandedPostLogic.swift */,
 			);
 			path = "Post Item";
 			sourceTree = "<group>";
@@ -1202,6 +1222,7 @@
 				CD69F5722A4239D70028D4F7 /* Comment Item.swift */,
 				CD69F5742A42479A0028D4F7 /* Comment Item Logic.swift */,
 				CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */,
+				CD391F992A537EF900E213B5 /* CommentBodyView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1300,6 +1321,8 @@
 				ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */,
 				6D693A432A5116D3009E2D76 /* ReportComposerView.swift */,
 				CD5351F42A51D2A5006AD253 /* MessageComposerView.swift */,
+				ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */,
+				CD391F952A535F5400E213B5 /* GeneralCommentComposerView.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -1333,6 +1356,18 @@
 				B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		CD391F922A533B6C00E213B5 /* ReplyTos */ = {
+			isa = PBXGroup;
+			children = (
+				CD391F932A533B7700E213B5 /* ReplyToProtocol.swift */,
+				CD391F8F2A533AFF00E213B5 /* ReplyToFeedPost.swift */,
+				CD391F972A537E8E00E213B5 /* ReplyToComment.swift */,
+				CD391F9B2A53980900E213B5 /* ReplyToCommentReply.swift */,
+				CD391F9D2A539F1800E213B5 /* ReplyToMention.swift */,
+			);
+			path = ReplyTos;
 			sourceTree = "<group>";
 		};
 		CD525F662A4B892900BCA794 /* Links */ = {
@@ -1633,6 +1668,7 @@
 				6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */,
 				CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */,
 				CDE6A81A2A490B970062D161 /* Inbox Reply View.swift in Sources */,
+				CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */,
 				CD6483342A39F1C100EE6CA3 /* API Post View - Post Type.swift in Sources */,
 				6354F30A2A2E20040074C08D /* Alert - Multiple Alerts.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
@@ -1641,6 +1677,8 @@
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
 				CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */,
+				CD391F982A537E8E00E213B5 /* ReplyToComment.swift in Sources */,
+				CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */,
 				630737892A1CD1E900039852 /* String.swift in Sources */,
 				63A01E542A2B980100C84E04 /* Subscribe Button.swift in Sources */,
 				6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */,
@@ -1705,6 +1743,7 @@
 				6DEB0FFD2A4F891B007CAB99 /* User Moderator Link.swift in Sources */,
 				63AF452D2A2F37EB00E0266F /* Own Account Tracker.swift in Sources */,
 				6D405AFF2A43E66600C65F9C /* User Profile Label.swift in Sources */,
+				CD391F9A2A537EF900E213B5 /* CommentBodyView.swift in Sources */,
 				63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */,
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
 				CDF8425E2A49E61A00723DA0 /* APIPersonMention.swift in Sources */,
@@ -1712,6 +1751,8 @@
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */,
 				CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */,
+				CD391F962A535F5400E213B5 /* GeneralCommentComposerView.swift in Sources */,
+				CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */,
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
 				6D8F08FB2A4029A1003EB4FD /* Get Favorited Communities.swift in Sources */,
 				B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */,
@@ -1797,7 +1838,9 @@
 				6372184A2A3A2AAD008C4816 /* APIPost.swift in Sources */,
 				6D693A3E2A5113DF009E2D76 /* CreatePostReport.swift in Sources */,
 				CD18DC712A520A60002C56BC /* MarkPrivateMessageAsRead.swift in Sources */,
+				CD391F942A533B7700E213B5 /* ReplyToProtocol.swift in Sources */,
 				CD69F56F2A41EDF50028D4F7 /* Swipey Actions.swift in Sources */,
+				CD391F902A533AFF00E213B5 /* ReplyToFeedPost.swift in Sources */,
 				637218632A3A2AAD008C4816 /* CreatePost.swift in Sources */,
 				CDE6A80B2A43E9F00062D161 /* CommentSortType.swift in Sources */,
 				503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */,
@@ -1828,6 +1871,7 @@
 				CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */,
 				6D15D74C2A44DC240061B5CB /* Date.swift in Sources */,
 				63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */,
+				ADAEFE542A52921C0047F0A9 /* CommentComposerView.swift in Sources */,
 				CD3FBCE12A4A836000B2063F /* All Items Feed View.swift in Sources */,
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */,

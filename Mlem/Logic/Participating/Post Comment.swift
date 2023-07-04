@@ -34,7 +34,7 @@ func postComment(
 @MainActor
 func postComment(
     to commentId: Int,
-    post: APIPostView,
+    postId: Int,
     commentContents: String,
     commentTracker: CommentTracker,
     account: SavedAccount
@@ -46,7 +46,7 @@ func postComment(
         // TODO: we should map out all the language options...
         languageId: dominantLanguage == "en" ? 37 : nil,
         parentId: commentId,
-        postId: post.post.id
+        postId: postId
     )
 
     let response = try await APIClient().perform(request: request)
@@ -60,11 +60,12 @@ func postComment(
 }
 
 /**
- Used to post a comment directly from feed, where no comment tracker is present.
+ Used to post a comment in contexts where a tracker is not necessary (e.g., in feed or inbox)
  */
 @MainActor
-func postComment(
-    to post: APIPostView,
+func postCommentWithoutTracker(
+    postId: Int,
+    commentId: Int?,
     commentContents: String,
     account: SavedAccount,
     appState: AppState
@@ -73,9 +74,9 @@ func postComment(
         account: account,
         content: commentContents,
         languageId: nil,
-        parentId: nil,
-        postId: post.post.id
+        parentId: commentId,
+        postId: postId
     )
-
+    
     _ = try await APIClient().perform(request: request)
 }
