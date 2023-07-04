@@ -29,6 +29,7 @@ class APIClient {
         self.decoder = decoder
     }
 
+    @discardableResult
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
 
         let urlRequest = try urlRequest(from: request)
