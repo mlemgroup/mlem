@@ -141,10 +141,28 @@ struct SettingsView: View {
                         Text("About Mlem")
                     }
 
+                    /* Disabled
                     Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
                         Image(systemName: "person.2.circle.fill")
                             .foregroundColor(.purple)
                         Text("c/mlemapp")
+                    }
+                    .buttonStyle(.plain)
+                     */
+                    
+                    /* Disabled - Can't seem to get the Matrix link to work with "#" in it
+                    Link(destination: URL(string: "https://matrix.to/#/#mlemapp:matrix.org")!) {
+                        Image(systemName: "chart.bar.doc.horizontal")
+                            .foregroundColor(.black)
+                        Text("Mlem Matrix Space")
+                    }
+                    .buttonStyle(.plain)
+                     */
+                    
+                    Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
+                        Image(systemName: "curlybraces.square")
+                            .foregroundColor(.green)
+                        Text("Mlem GitHub Repository")
                     }
                     .buttonStyle(.plain)
                 }
