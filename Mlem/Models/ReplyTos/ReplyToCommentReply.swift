@@ -26,10 +26,10 @@ struct ReplyToCommentReply: ReplyTo {
             return
         }
         
-        try await postCommentToCommentWithoutTracker(to: commentReply.comment.id,
-                                                     postId: commentReply.post.id,
-                                                     commentContents: commentContents,
-                                                     account: account,
-                                                     appState: appState)
+        try await postCommentWithoutTracker(postId: commentReply.post.id,
+                                            commentId: commentReply.comment.id,
+                                            commentContents: commentContents,
+                                            account: account,
+                                            appState: appState)
     }
 }

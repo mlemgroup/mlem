@@ -11,7 +11,6 @@ import CachedAsyncImage
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
-    // var account: SavedAccount
     var user: APIPerson
     var showServerInstance: Bool
     

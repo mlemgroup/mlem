@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 // lemmy_db_views::structs::PostView
 struct APIPostView: Decodable {

@@ -25,7 +25,8 @@ struct ReplyToFeedPost: ReplyTo {
         }
         
         try await postCommentWithoutTracker(
-            to: post,
+            postId: post.id,
+            commentId: nil,
             commentContents: commentContents,
             account: account,
             appState: appState)

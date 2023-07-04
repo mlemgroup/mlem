@@ -26,10 +26,10 @@ struct ReplyToMention: ReplyTo {
             return
         }
         
-        try await postCommentToCommentWithoutTracker(to: mention.comment.id,
-                                                     postId: mention.post.id,
-                                                     commentContents: commentContents,
-                                                     account: account,
-                                                     appState: appState)
+        try await postCommentWithoutTracker(postId: mention.post.id,
+                                            commentId: mention.comment.id,
+                                            commentContents: commentContents,
+                                            account: account,
+                                            appState: appState)
     }
 }

@@ -69,7 +69,7 @@ struct FeedPost: View {
 //    @State var replyIsSending: Bool = false
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
                 .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))

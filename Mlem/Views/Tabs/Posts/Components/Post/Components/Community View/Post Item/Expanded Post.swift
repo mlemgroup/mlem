@@ -38,6 +38,7 @@ struct ExpandedPost: View {
     @State private var isInTheMiddleOfStyling: Bool = false
     @State internal var isPostingComment: Bool = false
     @State internal var isReplyingToComment: Bool = false
+    @State private var isComposingReport: Bool = false
     @State internal var commentReplyingTo: APICommentView?
 
     @State private var viewID: UUID = UUID()
