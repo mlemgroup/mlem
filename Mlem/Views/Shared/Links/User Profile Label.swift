@@ -139,9 +139,11 @@ struct UserProfileLabel: View {
     
     private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
+            /*
             if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
                 return UserProfileLabel.flairMlemOfficial
             }
+            */
             
             if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLabel.flairDeveloper
