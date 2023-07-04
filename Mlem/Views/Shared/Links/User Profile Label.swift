@@ -11,13 +11,12 @@ import CachedAsyncImage
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
-    var account: SavedAccount
     var user: APIPerson
     var showServerInstance: Bool
     
     // Extra context about where the link is being displayed
     // to pick the correct flair
-    @State var postContext: APIPostView?
+    @State var postContext: APIPost?
     @State var commentContext: APIComment?
     @State var communityContext: GetCommunityResponse?
     
@@ -136,7 +135,7 @@ struct UserProfileLabel: View {
         if let community = communityContext, community.moderators.contains(where: { $0.moderator == user }) {
             return UserProfileLabel.flairMod
         }
-        if let post = postContext, post.creator == user {
+        if let post = postContext, post.creatorId == user.id {
             return UserProfileLabel.flairOP
         }
         return UserProfileLabel.flairRegular
@@ -293,7 +292,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     ) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
-        var postContext: APIPostView?
+        var postContext: APIPost?
         var commentContext: APIComment?
         
         if userType == .mod {
@@ -302,11 +301,10 @@ struct UserProfileLinkPreview: PreviewProvider {
         
         if userType == .op {
             commentContext = generatePreviewComment(creator: previewUser, isMod: false)
-            postContext = generatePreviewPost(creator: previewUser)
+            postContext = generatePreviewPost(creator: previewUser).post
         }
         
         return UserProfileLink(
-            account: UserProfileLinkPreview.previewAccount,
             user: previewUser,
             showServerInstance: showCommunity,
             postContext: postContext,

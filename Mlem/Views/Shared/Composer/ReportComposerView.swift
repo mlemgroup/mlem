@@ -74,9 +74,10 @@ struct ReportComposerView: View {
                                 account: account,
                                 showPostCreator: true,
                                 showCommunity: true,
-                                isDragging: .constant(false),
                                 showInteractionBar: false,
-                                enableSwipeActions: false
+                                enableSwipeActions: false,
+                                isDragging: .constant(false),
+                                replyToPost: nil
                             )
                         } else if let comment = reportedComment {
                             CommentItem(
@@ -88,7 +89,8 @@ struct ReportComposerView: View {
                                 showCommentCreator: true,
                                 isDragging: .constant(false),
                                 showInteractionBar: false,
-                                enableSwipeActions: false
+                                enableSwipeActions: false,
+                                replyToComment: nil
                             )
                         }
                         

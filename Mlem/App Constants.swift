@@ -81,8 +81,8 @@ struct AppConstants {
     static let fullUndoSaveSymbolName: String = "bookmark.slash.fill"
     
     // mark read
-    static let emptyMarkReadSymbolName: String = "envelope.open"
+    static let emptyMarkReadSymbolName: String = "envelope"
     static let fullMarkReadSymbolName: String = "envelope.open.fill"
-    static let emptyMarkUnreadSymbolName: String = "envelope"
+    static let emptyMarkUnreadSymbolName: String = "envelope.open"
     static let fullMarkUnreadSymbolName: String = "envelope.fill"
 }
