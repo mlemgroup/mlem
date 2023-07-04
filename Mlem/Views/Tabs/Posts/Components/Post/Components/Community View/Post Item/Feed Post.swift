@@ -18,9 +18,9 @@ import SwiftUI
  */
 struct FeedPost: View {
     // MARK: Environment
+    @AppStorage("postSize") var postSize: PostSize = .headline
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     
@@ -106,7 +106,7 @@ struct FeedPost: View {
         guard shouldShowUserServerInPost else {
             return .disabled
         }
-        if shouldShowCompactPosts {
+        if postSize == .compact {
             return .trailing
         } else {
             return .bottom
@@ -116,10 +116,11 @@ struct FeedPost: View {
     @ViewBuilder
     var postItem: some View {
         
-        if shouldShowCompactPosts {
+        if postSize == .compact {
             UltraCompactPost(
                 postView: postView,
-                account: account
+                account: account,
+                menuFunctions: genMenuFunctions()
             )
         } else {
             
@@ -129,12 +130,8 @@ struct FeedPost: View {
                     CommunityLinkView(community: postView.community)
                 }
                 
-                if shouldShowCompactPosts {
+                if postSize == .headline {
                     CompactPost(
-                        postView: postView,
-                        account: account
-                    )
-                    UltraCompactPost(
                         postView: postView,
                         account: account
                     )
@@ -147,7 +144,7 @@ struct FeedPost: View {
                 
                 // posting user
                 if showPostCreator {
-                    UserProfileLink(user: postView.creator, showServerInstance: true)
+                    UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom, showAvatar: shouldShowUserAvatars)
                 }
                 
                 if showInteractionBar {

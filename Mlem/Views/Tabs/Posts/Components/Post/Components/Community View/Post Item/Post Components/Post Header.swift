@@ -12,6 +12,7 @@ import CachedAsyncImage
 struct PostHeader: View {
     // appstorage
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
     
     // parameters
     var postView: APIPostView
@@ -50,9 +51,9 @@ struct PostHeader: View {
                     }
                 }
                 Text("by")
-                UserProfileLink(account: account,
-                                user: postView.creator,
-                                serverInstanceLocation: shouldShowUserServerInPost ? .bottom : .disabled)
+                UserProfileLink(user: postView.creator,
+                                serverInstanceLocation: shouldShowUserServerInPost ? .bottom : .disabled,
+                showAvatar: shouldShowUserAvatars)
             }
 
             Spacer()

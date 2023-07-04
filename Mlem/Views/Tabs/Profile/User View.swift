@@ -562,7 +562,8 @@ struct UserViewPreview: PreviewProvider {
             user: previewUser,
             serverInstanceLocation: .bottom,
             postContext: postContext?.post,
-            commentContext: commentContext
+            commentContext: commentContext,
+            showAvatar: true
         )
     }
     

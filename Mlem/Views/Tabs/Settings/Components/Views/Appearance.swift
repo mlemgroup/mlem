@@ -21,11 +21,11 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
 
     // posts
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage("postSize") var postSize: PostSize = PostSize.headline
+    @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
-    @AppStorage("shouldShowCompactPostThumbnails") var shouldShowCompactPostThumbnails: Bool = true
     
     // comments
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
@@ -115,10 +115,12 @@ struct AppearanceSettingsView: View {
                 )
                 .disabled(!shouldShowWebsiteFaviconAtAll)
 
-                SwitchableSettingsItem(settingPictureSystemName: "rectangle.compress.vertical",
-                             settingPictureColor: .pink,
-                             settingName: "Compact post view",
-                             isTicked: $shouldShowCompactPosts)
+                SelectableSettingsItem(
+                    settingIconSystemName: "rectangle.compress.vertical",
+                    settingName: "Post size",
+                    currentValue: $postSize,
+                    options: PostSize.allCases
+                )
 
                 SwitchableSettingsItem(settingPictureSystemName: "eye.trianglebadge.exclamationmark",
                              settingPictureColor: .pink,
@@ -143,7 +145,7 @@ struct AppearanceSettingsView: View {
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
                                        settingPictureColor: .pink,
                                        settingName: "Show post thumbnails",
-                                       isTicked: $shouldShowCompactPostThumbnails)
+                                       isTicked: $shouldShowPostThumbnails)
             }
             
             Section("Comments") {

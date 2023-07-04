@@ -15,15 +15,16 @@ struct UserProfileLink: View {
     // to pick the correct flair
     var postContext: APIPost?
     var commentContext: APIComment?
+    var showAvatar: Bool
 
     var body: some View {
         NavigationLink(value: user) {
             UserProfileLabel(
                 user: user,
                 serverInstanceLocation: serverInstanceLocation,
+                showAvatar: showAvatar,
                 postContext: postContext,
-                commentContext: commentContext
-            )
+                commentContext: commentContext)
         }
     }
 }

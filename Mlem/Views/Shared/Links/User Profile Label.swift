@@ -9,10 +9,9 @@ import SwiftUI
 import CachedAsyncImage
 
 struct UserProfileLabel: View {
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
+    let showAvatar: Bool // disables the avatar no matter what
     
     // Extra context about where the link is being displayed
     // to pick the correct flair
@@ -40,7 +39,7 @@ struct UserProfileLabel: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
-            if shouldShowUserAvatars {
+            if showAvatar {
                 userAvatar
             }
             
@@ -90,7 +89,7 @@ struct UserProfileLabel: View {
         let flair = calculateLinkFlair()
         
         HStack(spacing: 4) {
-            if let flairImage = flair.image {
+            if let flairImage = flair.image, serverInstanceLocation != .trailing {
                 flairImage
                     .foregroundColor(flair.color)
             }
@@ -334,7 +333,8 @@ struct UserProfileLinkPreview: PreviewProvider {
             user: previewUser,
             serverInstanceLocation: serverInstanceLocation,
             postContext: postContext,
-            commentContext: commentContext
+            commentContext: commentContext,
+            showAvatar: true
         )
     }
     
