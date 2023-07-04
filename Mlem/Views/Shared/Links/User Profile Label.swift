@@ -21,7 +21,6 @@ struct UserProfileLabel: View {
     
     static let developerNames = [
         "vlemmy.net/u/darknavi",
-        "lemmy.ml/u/BrooklynMan",
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
         "sh.itjust.works/u/ericbandrews"
