@@ -42,17 +42,24 @@ struct CompactPost: View {
                 thumbnailImage
 
                 VStack(spacing: 2) {
-                    Text(postView.post.name)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        .padding(.trailing)
-
-                    HStack(spacing: 4) {
-                        // stickied
-                        if postView.post.featuredLocal { StickiedTag(compact: true) }
-                        if postView.post.nsfw { NSFWTag(compact: true) }
+                    
+                    HStack(alignment: .top, spacing: 4) {
+                        if postView.post.featuredLocal {
+                            StickiedTag(tagType: .local)
+                        } else if postView.post.featuredCommunity {
+                            StickiedTag(tagType: .community)
+                        }
+                        
+                        Text(postView.post.name)
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                            .padding(.trailing)
                         
                         Spacer()
+                        if postView.post.nsfw {
+                            NSFWTag(compact: true)
+                            
+                        }
                     }
                 }
 
