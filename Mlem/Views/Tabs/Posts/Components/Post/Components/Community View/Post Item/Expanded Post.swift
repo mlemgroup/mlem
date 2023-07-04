@@ -70,7 +70,7 @@ struct ExpandedPost: View {
         .sheet(isPresented: $isPostingComment) {
             CommentComposerView(replyTo: post)
         }
-        .sheet(isPresented: $isReplyingToComment) { // [isReplyingToComment] in
+        .sheet(isPresented: $isReplyingToComment) {
             if let comment = commentReplyingTo {
                 let replyTo: ReplyToComment = ReplyToComment(comment: comment,
                                                              account: account,

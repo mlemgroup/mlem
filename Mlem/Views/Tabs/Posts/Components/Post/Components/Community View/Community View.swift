@@ -125,7 +125,7 @@ struct CommunityView: View {
                 message: Text(content.message)
             )
         }
-        .sheet(isPresented: $isPostingComment) { [isPostingComment] in
+        .sheet(isPresented: $isPostingComment) { [isPostingComment] in // capture here to force state re-eval
             if let post = replyingToPost {
                 let replyTo: ReplyToFeedPost = ReplyToFeedPost(post: post, account: account, appState: appState)
                 
