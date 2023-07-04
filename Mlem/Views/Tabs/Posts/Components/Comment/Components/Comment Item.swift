@@ -101,7 +101,7 @@ struct CommentItem: View {
                         UserProfileLink(
                             account: account,
                             user: hierarchicalComment.commentView.creator,
-                            showServerInstance: shouldShowUserServerInComment,
+                            serverInstanceLocation: shouldShowUserServerInComment ? .bottom : .disabled,
                             postContext: postContext,
                             commentContext: hierarchicalComment.commentView.comment
                         )

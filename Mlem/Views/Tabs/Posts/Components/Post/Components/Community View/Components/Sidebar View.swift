@@ -97,7 +97,7 @@ struct CommunitySidebarView: View {
                                 UserProfileLabel(
                                     account: account,
                                     user: moderatorView.moderator,
-                                    showServerInstance: true,
+                                    serverInstanceLocation: .bottom,
                                     postContext: nil,
                                     commentContext: nil,
                                     communityContext: communityDetails

@@ -21,7 +21,9 @@ struct FeedPost: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
-
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
 
@@ -103,13 +105,27 @@ struct FeedPost: View {
             ReportComposerView(account: account, reportedPost: postView)
         }
     }
+    
+    private func calculateServerInstanceLocation() -> ServerInstanceLocation {
+        guard shouldShowUserServerInPost else {
+            return .disabled
+        }
+        if shouldShowCompactPosts {
+            return .trailing
+        } else {
+            return .bottom
+        }
+    }
 
     @ViewBuilder
     var postItem: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             // community name
             if showCommunity {
-                CommunityLinkView(community: postView.community)
+                CommunityLinkView(
+                    community: postView.community,
+                    serverInstanceLocation: calculateServerInstanceLocation()
+                )
             }
             
             if shouldShowCompactPosts {
@@ -127,7 +143,10 @@ struct FeedPost: View {
             
             // posting user
             if showPostCreator {
-                UserProfileLink(account: account, user: postView.creator, showServerInstance: true)
+                UserProfileLink(account: account,
+                                user: postView.creator,
+                                serverInstanceLocation: calculateServerInstanceLocation()
+                )
             }
   
             if showInteractionBar {

@@ -559,7 +559,7 @@ struct UserViewPreview: PreviewProvider {
         return UserProfileLink(
             account: UserViewPreview.previewAccount,
             user: previewUser,
-            showServerInstance: true,
+            serverInstanceLocation: .bottom,
             postContext: postContext,
             commentContext: commentContext
         )

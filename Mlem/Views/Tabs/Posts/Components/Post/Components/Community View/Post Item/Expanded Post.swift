@@ -83,7 +83,7 @@ struct ExpandedPost: View {
                                     shouldShowUserAvatars: false,
                                     account: account,
                                     user: commentToReplyTo.creator,
-                                    showServerInstance: shouldShowUserServerInComment,
+                                    serverInstanceLocation: shouldShowUserServerInComment ? .bottom : .disabled,
                                     postContext: post,
                                     commentContext: commentToReplyTo.comment,
                                     communityContext: nil
@@ -257,7 +257,7 @@ struct ExpandedPost: View {
                 isExpanded: true
             )
             
-            UserProfileLink(account: account, user: post.creator, showServerInstance: true)
+            UserProfileLink(account: account, user: post.creator, serverInstanceLocation: .bottom)
             
             PostInteractionBar(postView: post,
                                account: account,

@@ -33,7 +33,7 @@ struct InboxReplyView: View {
                 .font(.headline)
                 .padding(.bottom, spacing)
             
-            UserProfileLink(account: account, user: reply.creator, showServerInstance: true)
+            UserProfileLink(account: account, user: reply.creator, serverInstanceLocation: .bottom)
                 .font(.subheadline)
             
             HStack(alignment: .top, spacing: spacing) {
