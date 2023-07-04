@@ -58,6 +58,7 @@ struct FeedPost: View {
 
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
+    @State private var isComposingReport: Bool = false
 
     // swipe-to-vote
     @Binding var isDragging: Bool
@@ -68,17 +69,11 @@ struct FeedPost: View {
 //    @State var replyIsSending: Bool = false
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack {
             postItem
                 .background(Color.systemBackground)
                 .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
-//                    .rect(cornerRadius:
-//                            horizontalSizeClass == .regular ? 16 : 0
-//                          )
-//                )
                 .padding(.all, horizontalSizeClass == .regular ? nil : 0)
-                .background(Color.systemBackground)
-                
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
                         Button {
@@ -99,6 +94,9 @@ struct FeedPost: View {
             if horizontalSizeClass == .compact {
                 Divider()
             }
+        }
+        .sheet(isPresented: $isComposingReport) {
+            ReportComposerView(account: account, reportedPost: postView)
         }
     }
 
@@ -136,6 +134,7 @@ struct FeedPost: View {
                                    deletePost: deletePost)
             }
         }
+        .background(Color.systemBackground)
         .padding(AppConstants.postAndCommentSpacing)
     }
 
@@ -270,6 +269,15 @@ struct FeedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
+        
+        // report
+        ret.append(MenuFunction(
+            text: "Report",
+            imageName: "exclamationmark.shield",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                isComposingReport = true
+            })
         
         return ret
     }

@@ -112,6 +112,9 @@ struct ExpandedPost: View {
         .alert(using: $errorAlert) { content in
             Alert(title: Text(content.title), message: Text(content.message))
         }
+        .sheet(isPresented: $isComposingReport) {
+            ReportComposerView(account: account, reportedPost: post)
+        }
     }
     // subviews
 

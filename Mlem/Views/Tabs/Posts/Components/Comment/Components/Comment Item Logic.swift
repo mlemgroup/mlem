@@ -208,6 +208,15 @@ extension CommentItem {
                 showShareSheet(URLtoShare: url)
             })
         }
+        
+        // report
+        ret.append(MenuFunction(
+            text: "Report",
+            imageName: "exclamationmark.shield",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                isComposingReport = true
+            })
                    
         return ret
     }
