@@ -21,7 +21,6 @@ struct UserProfileLabel: View {
     
     static let developerNames = [
         "vlemmy.net/u/darknavi",
-        "lemmy.ml/u/BrooklynMan",
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
         "sh.itjust.works/u/ericbandrews"
@@ -140,9 +139,11 @@ struct UserProfileLabel: View {
     
     private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
+            /*
             if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
                 return UserProfileLabel.flairMlemOfficial
             }
+            */
             
             if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLabel.flairDeveloper
