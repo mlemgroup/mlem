@@ -110,7 +110,7 @@ struct PostComposerView: View {
                                        community: community)
                         Spacer()
                         // NSFW Toggle
-                        NSFWToggle(compact: false, isEnabled: isNSFW)
+                        NSFWToggle(compact: false, isEnabled: $isNSFW)
                     }
                     
                     VStack(alignment: .labelStart) {

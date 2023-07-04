@@ -22,7 +22,7 @@ struct NSFWTag: View {
 
 struct NSFWToggle: View {
     let compact: Bool
-    @State var isEnabled: Bool = false
+    @Binding var isEnabled: Bool
     
     var body: some View {
         Text("NSFW")
