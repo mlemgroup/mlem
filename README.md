@@ -3,10 +3,11 @@
 
 The Lemmy client for iOS.
 
-[![Mastodon Link](https://img.shields.io/mastodon/follow/108939255808776594?domain=https%3A%2F%2Fmstdn.social&label=Follow%20me%20for%20updates&style=flat)](https://elk.zone/mstdn.social/@davidbures)
-
 ## Want to contribute?
 Read our [contribution guide](./CONTRIBUTING.md) to get started!
+
+## Want to chat about Mlem?
+Join our [Matrix room](https://matrix.to/#/#mlemapp:matrix.org).
 
 ## What is Mlem?
 Mlem is a client for [Lemmy](https://join-lemmy.org), a Reddit-esque, open-source link aggregator. With Mlem, you can effortlessly participate in the conversation across all Lemmy servers. 
