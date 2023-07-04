@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserProfileLink: View {
     var user: APIPerson
-    var showServerInstance: Bool
+    let serverInstanceLocation: ServerInstanceLocation
 
     // Extra context about where the link is being displayed
     // to pick the correct flair
@@ -20,7 +20,7 @@ struct UserProfileLink: View {
         NavigationLink(value: user) {
             UserProfileLabel(
                 user: user,
-                showServerInstance: showServerInstance,
+                serverInstanceLocation: serverInstanceLocation,
                 postContext: postContext,
                 commentContext: commentContext
             )

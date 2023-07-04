@@ -22,8 +22,10 @@ struct AppearanceSettingsView: View {
 
     // posts
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
+    @AppStorage("shouldShowCompactPostThumbnails") var shouldShowCompactPostThumbnails: Bool = true
     
     // comments
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
@@ -128,10 +130,20 @@ struct AppearanceSettingsView: View {
                              settingName: "Show user server instance",
                              isTicked: $shouldShowUserServerInPost)
                 
+                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
+                             settingPictureColor: .pink,
+                             settingName: "Show community server instance",
+                             isTicked: $shouldShowCommunityServerInPost)
+                
                 SwitchableSettingsItem(settingPictureSystemName: "signature",
                                        settingPictureColor: .pink,
                                        settingName: "Show post creator",
                                        isTicked: $shouldShowPostCreator)
+                
+                SwitchableSettingsItem(settingPictureSystemName: "photo",
+                                       settingPictureColor: .pink,
+                                       settingName: "Show post thumbnails",
+                                       isTicked: $shouldShowCompactPostThumbnails)
             }
             
             Section("Comments") {

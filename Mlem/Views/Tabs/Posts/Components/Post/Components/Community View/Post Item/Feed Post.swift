@@ -21,7 +21,9 @@ struct FeedPost: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
-
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
 
@@ -97,6 +99,17 @@ struct FeedPost: View {
         }
         .sheet(isPresented: $isComposingReport) {
             ReportComposerView(account: account, reportedPost: postView)
+        }
+    }
+    
+    private func calculateServerInstanceLocation() -> ServerInstanceLocation {
+        guard shouldShowUserServerInPost else {
+            return .disabled
+        }
+        if shouldShowCompactPosts {
+            return .trailing
+        } else {
+            return .bottom
         }
     }
 

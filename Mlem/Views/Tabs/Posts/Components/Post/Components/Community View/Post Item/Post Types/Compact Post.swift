@@ -13,6 +13,7 @@ struct CompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowCompactPostThumbnails") var shouldShowCompactPostThumbnails: Bool = true
 
     // constants
     let thumbnailSize: CGFloat = 60
@@ -39,7 +40,9 @@ struct CompactPost: View {
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack(alignment: .top, spacing: spacing) {
-                thumbnailImage
+                if shouldShowCompactPostThumbnails {
+                    thumbnailImage
+                }
 
                 VStack(spacing: 2) {
                     Text(postView.post.name)

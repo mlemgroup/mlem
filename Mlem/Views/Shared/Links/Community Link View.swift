@@ -28,27 +28,34 @@ func shouldClipAvatar(url: URL?) -> Bool {
 }
 
 struct CommunityLinkView: View {
-    // SETTINGS
-    // TODO: setting for showing community server instance
-    let showServerInstance: Bool = true
+    // settings
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
     let community: APICommunity
+    let serverInstanceLocation: ServerInstanceLocation
+    
+    init(community: APICommunity, serverInstanceLocation: ServerInstanceLocation = .bottom) {
+        self.community = community
+        self.serverInstanceLocation = serverInstanceLocation
+    }
     
     var body: some View {
         NavigationLink(value: community) {
             CommunityLabel(shouldShowCommunityIcons: shouldShowCommunityIcons,
-                           community: community)
+                           community: community,
+                           serverInstanceLocation: serverInstanceLocation
+            )
         }
     }
 }
 
 struct CommunityLabel: View {
-    // SETTINGS
-    let showServerInstance: Bool = true
+    // settings
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
+    // parameters
     let community: APICommunity
+    let serverInstanceLocation: ServerInstanceLocation
     
     var body: some View {
         Group {
@@ -64,22 +71,50 @@ struct CommunityLabel: View {
                     }
                 }
                 
-                VStack(alignment: .leading) {
-                    Text(community.name)
-                        .font(.footnote)
-                        .bold()
-                    if showServerInstance, let host = community.actorId.host() {
-                        Text("@\(host)")
-                            .minimumScaleFactor(0.01)
-                            .lineLimit(1)
-                            .opacity(0.6)
-                            .font(.caption)
+                switch serverInstanceLocation {
+                case .disabled:
+                    communityName
+                case .trailing:
+                    HStack(spacing: 0) {
+                        communityName
+                        communityInstance
                     }
+                    .foregroundColor(.secondary)
+                case .bottom:
+                    VStack(alignment: .leading) {
+                        communityName
+                        communityInstance
+                    }
+                    .foregroundColor(.secondary)
                 }
-                .foregroundColor(.secondary)
+                
             }
             .accessibilityElement(children: .combine)
         }
+    }
+    
+    @ViewBuilder
+    private var communityName: some View {
+        Text(community.name)
+            .font(.footnote)
+            .bold()
+    }
+    
+    @ViewBuilder
+    private var communityInstance: some View {
+        if let host = community.actorId.host() {
+            Text("@\(host)")
+                .minimumScaleFactor(0.01)
+                .lineLimit(1)
+                .opacity(0.6)
+                .font(.caption)
+        } else {
+            EmptyView()
+        }
+    }
+    
+    private func avatarSize() -> CGFloat {
+        serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
     }
     
     @ViewBuilder
@@ -91,7 +126,7 @@ struct CommunityLabel: View {
                         avatar
                             .resizable()
                             .scaledToFit()
-                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+                            .frame(width: avatarSize(), height: avatarSize())
                     } else {
                         defaultCommunityAvatar()
                     }
@@ -100,7 +135,7 @@ struct CommunityLabel: View {
                 defaultCommunityAvatar()
             }
         }
-        .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+        .frame(width: avatarSize(), height: avatarSize())
         .accessibilityHidden(true)
     }
     
@@ -108,7 +143,7 @@ struct CommunityLabel: View {
         Image(systemName: "building.2.crop.circle.fill")
             .resizable()
             .scaledToFit()
-            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+            .frame(width: avatarSize(), height: avatarSize())
             .foregroundColor(.secondary)
     }
 }
