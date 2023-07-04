@@ -102,40 +102,53 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            // community name
-            if showCommunity {
-                CommunityLinkView(community: postView.community)
-            }
+        
+        if shouldShowCompactPosts {
+            UltraCompactPost(
+                postView: postView,
+                account: account
+            )
+        } else {
             
-            if shouldShowCompactPosts {
-                CompactPost(
-                    postView: postView,
-                    account: account
-                )
-            } else {
-                LargePost(
-                    postView: postView,
-                    isExpanded: false
-                )
+            VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+                // community name
+                if showCommunity {
+                    CommunityLinkView(community: postView.community)
+                }
+                
+                if shouldShowCompactPosts {
+                    CompactPost(
+                        postView: postView,
+                        account: account
+                    )
+                    UltraCompactPost(
+                        postView: postView,
+                        account: account
+                    )
+                } else {
+                    LargePost(
+                        postView: postView,
+                        isExpanded: false
+                    )
+                }
+                
+                // posting user
+                if showPostCreator {
+                    UserProfileLink(user: postView.creator, showServerInstance: true)
+                }
+                
+                if showInteractionBar {
+                    PostInteractionBar(postView: postView,
+                                       account: account,
+                                       menuFunctions: genMenuFunctions(),
+                                       voteOnPost: voteOnPost,
+                                       updatedSavePost: { _ in await savePost() },
+                                       deletePost: deletePost)
+                }
             }
-            
-            // posting user
-            if showPostCreator {
-                UserProfileLink(user: postView.creator, showServerInstance: true)
-            }
-  
-            if showInteractionBar {
-                PostInteractionBar(postView: postView,
-                                   account: account,
-                                   menuFunctions: genMenuFunctions(),
-                                   voteOnPost: voteOnPost,
-                                   updatedSavePost: { _ in await savePost() },
-                                   deletePost: deletePost)
-            }
+            .background(Color.systemBackground)
+            .padding(AppConstants.postAndCommentSpacing)
         }
-        .background(Color.systemBackground)
-        .padding(AppConstants.postAndCommentSpacing)
     }
 
     // Reply handlers
