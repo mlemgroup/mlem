@@ -97,8 +97,13 @@ struct FeedRoot: View {
                 }
             }
 
-            guard let account = appState.currentActiveAccount else {
-                appState.toast = AlertToast(displayMode: .hud, type: .loading, title: "You need to sign in to open links in app")
+            guard appState.currentActiveAccount != nil else {
+                appState.toast = AlertToast(
+                    displayMode: .hud,
+                    type: .loading,
+                    title: "You need to sign in to open links in app"
+                )
+                
                 appState.isShowingToast = true
                 return
             }
@@ -107,7 +112,7 @@ struct FeedRoot: View {
                 if rootDetails == nil {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
-//                didReceiveURL(url)
+
                 HandleLemmyLinkResolution(appState: _appState,
                                           savedAccounts: _accountsTracker,
                                           navigationPath: $navigationPath,
