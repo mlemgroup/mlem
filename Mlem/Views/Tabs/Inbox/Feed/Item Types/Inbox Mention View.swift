@@ -17,10 +17,27 @@ struct InboxMentionView: View {
     
     let publishedAgo: String
     
+    let voteIconName: String
+    let voteColor: Color
+    
+    var iconName: String { mention.personMention.read ? "quote.bubble" : "quote.bubble.fill" }
+    
     init(account: SavedAccount, mention: APIPersonMentionView, menuFunctions: [MenuFunction]) {
         self.account = account
         self.mention = mention
         self.menuFunctions = menuFunctions
+        
+        switch mention.myVote {
+        case .upvote:
+            voteIconName = "arrow.up"
+            voteColor = .upvoteColor
+        case .downvote:
+            voteIconName = "arrow.down"
+            voteColor = .downvoteColor
+        default:
+            voteIconName = "arrow.up"
+            voteColor = .secondary
+        }
         
         self.publishedAgo = getTimeIntervalFromNow(date: mention.comment.published)
     }
@@ -35,7 +52,7 @@ struct InboxMentionView: View {
                 .font(.subheadline)
             
             HStack(alignment: .top, spacing: spacing) {
-                Image(systemName: "quote.bubble.fill")
+                Image(systemName: iconName)
                     .foregroundColor(.accentColor)
                     .frame(width: userAvatarWidth)
                 
@@ -46,9 +63,13 @@ struct InboxMentionView: View {
             CommunityLinkView(community: mention.community)
             
             HStack {
+                HStack(spacing: 4) {
+                    Image(systemName: voteIconName)
+                    Text(mention.counts.score.description)
+                }
+                .foregroundColor(voteColor)
+                
                 EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
-//                Image(systemName: "ellipsis")
-//                    .frame(width: userAvatarWidth)
                 
                 Spacer()
                 

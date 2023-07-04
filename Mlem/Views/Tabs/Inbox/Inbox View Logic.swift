@@ -137,7 +137,10 @@ extension InboxView {
     }
     
     func replyToCommentReply(commentReply: APICommentReplyView) {
-        print("implement replyToCommentReply")
+//        commentReplyingTo = commentReply
+//        isComposingReplyReply = true
+        composingTo = .commentReply(commentReply)
+        isComposing = true
     }
     
     // MENTIONS
@@ -173,13 +176,18 @@ extension InboxView {
     }
     
     func replyToMention(mention: APIPersonMentionView) {
-        print("TODO: implement replyToMention")
+        // mentionReplyingTo = mention
+        // isComposingMentionReply = true
+        composingTo = .mention(mention)
+        isComposing = true
     }
     
     // MESSAGES
     func replyToMessage(message: APIPrivateMessageView) {
-        messageRecipient = message.creator
-        isComposingMessage = true
+//        messageRecipient = message.creator
+//        isComposingMessage = true
+        composingTo = .message(message.creator)
+        isComposing = true
     }
     
     func toggleMessageRead(message: APIPrivateMessageView) {

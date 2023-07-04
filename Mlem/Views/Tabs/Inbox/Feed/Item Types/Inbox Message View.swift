@@ -14,7 +14,10 @@ struct InboxMessageView: View {
     let account: SavedAccount
     let message: APIPrivateMessageView
     let menuFunctions: [MenuFunction]
+    
     let publishedAgo: String
+    
+    var iconName: String { message.privateMessage.read ? "envelope.open" : "envelope.fill" }
     
     init(account: SavedAccount, message: APIPrivateMessageView, menuFunctions: [MenuFunction]) {
         self.account = account
@@ -31,9 +34,9 @@ struct InboxMessageView: View {
                 .padding(.bottom, spacing)
             
             HStack(alignment: .top, spacing: spacing) {
-                Image(systemName: "envelope.fill")
+                Image(systemName: iconName)
                     .foregroundColor(.accentColor)
-                    .frame(width: userAvatarWidth)
+                    .frame(height: userAvatarWidth)
                 
                 MarkdownView(text: message.privateMessage.content, isNsfw: false)
                     .font(.subheadline)
@@ -43,8 +46,6 @@ struct InboxMessageView: View {
                 .font(.subheadline)
             
             HStack {
-//                Image(systemName: "ellipsis")
-//                    .frame(width: userAvatarWidth)
                 EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
                 
                 Spacer()

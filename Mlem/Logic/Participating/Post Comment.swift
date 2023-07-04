@@ -59,11 +59,12 @@ func postComment(
     }
 }
 
+// TODO: unify these because parentId can be optionsl
 /**
- Used to post a comment directly from feed, where no comment tracker is present.
+ Used to post a comment where no tracker needs to be updated (e.g., from feed or inbox)
  */
 @MainActor
-func postCommentFromFeed(
+func postCommentWithoutTracker(
     to post: APIPostView,
     commentContents: String,
     account: SavedAccount,
@@ -77,5 +78,27 @@ func postCommentFromFeed(
         postId: post.post.id
     )
 
+    _ = try await APIClient().perform(request: request)
+}
+
+/**
+ Used
+ */
+@MainActor
+func postCommentToCommentWithoutTracker(
+    to commentId: Int,
+    postId: Int,
+    commentContents: String,
+    account: SavedAccount,
+    appState: AppState
+) async throws {
+    let request = CreateCommentRequest(
+        account: account,
+        content: commentContents,
+        languageId: nil,
+        parentId: commentId,
+        postId: postId
+    )
+    
     _ = try await APIClient().perform(request: request)
 }

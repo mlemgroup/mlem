@@ -99,18 +99,6 @@ struct CommentItem: View {
         VStack(spacing: 0) {
             Group {
                 VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-//                    if showCommentCreator {
-//                        UserProfileLink(
-//                            user: hierarchicalComment.commentView.creator,
-//                            showServerInstance: shouldShowUserServerInComment,
-//                            postContext: postContext,
-//                            commentContext: hierarchicalComment.commentView.comment
-//                        )
-//                        .accessibilityElement(children: .ignore)
-//                        .accessibilityLabel(commentorLabel)
-//                        .foregroundColor(.secondary)
-//                    }
-
                     // commentBody
                     CommentBodyView(commentView: hierarchicalComment.commentView,
                                     isCollapsed: isCollapsed,

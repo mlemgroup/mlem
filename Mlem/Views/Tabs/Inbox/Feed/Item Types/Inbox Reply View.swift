@@ -18,11 +18,27 @@ struct InboxReplyView: View {
     let menuFunctions: [MenuFunction]
     
     let publishedAgo: String
+    let voteIconName: String
+    let voteColor: Color
+    
+    var iconName: String { reply.commentReply.read ? "arrowshape.turn.up.right" : "arrowshape.turn.up.right.fill" }
     
     init(account: SavedAccount, reply: APICommentReplyView, menuFunctions: [MenuFunction]) {
         self.account = account
         self.reply = reply
         self.menuFunctions = menuFunctions
+        
+        switch reply.myVote {
+        case .upvote:
+            voteIconName = "arrow.up"
+            voteColor = .upvoteColor
+        case .downvote:
+            voteIconName = "arrow.down"
+            voteColor = .downvoteColor
+        default:
+            voteIconName = "arrow.up"
+            voteColor = .secondary
+        }
         
         self.publishedAgo = getTimeIntervalFromNow(date: reply.commentReply.published)
     }
@@ -37,7 +53,7 @@ struct InboxReplyView: View {
                 .font(.subheadline)
             
             HStack(alignment: .top, spacing: spacing) {
-                Image(systemName: "arrowshape.turn.up.right.fill")
+                Image(systemName: iconName)
                     .foregroundColor(.accentColor)
                     .frame(width: userAvatarWidth)
                 
@@ -48,8 +64,12 @@ struct InboxReplyView: View {
             CommunityLinkView(community: reply.community)
             
             HStack {
-//                Image(systemName: "ellipsis")
-//                    .frame(width: userAvatarWidth)
+                HStack(spacing: 4) {
+                    Image(systemName: voteIconName)
+                    Text(reply.counts.score.description)
+                }
+                .foregroundColor(voteColor)
+                
                 EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
                 
                 Spacer()

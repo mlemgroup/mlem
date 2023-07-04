@@ -19,6 +19,12 @@ enum InboxTab: String, CaseIterable, Identifiable {
     }
 }
 
+enum ComposingTypes {
+    case commentReply(APICommentReplyView?)
+    case mention(APIPersonMentionView?)
+    case message(APIPerson?)
+}
+
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
@@ -44,21 +50,22 @@ struct InboxView: View {
     @StateObject var mentionsTracker: MentionsTracker = .init()
     @StateObject var messagesTracker: MessagesTracker = .init()
     @StateObject var repliesTracker: RepliesTracker = .init()
+    @StateObject var dummyPostTracker: PostTracker = .init() // used for nav
     
     // input state handling
     // - current view
     @State var curTab: InboxTab = .all
     
     // - replies and messages
-    @State var isComposingMessage: Bool = false
-    @State var messageRecipient: APIPerson?
+    @State var isComposing: Bool = false
+    @State var composingTo: ComposingTypes = .commentReply(nil)
     
     // utility
     @State var isDragging: Bool = false
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
-        // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of Views which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack
+        // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of Views which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
         NavigationStack(path: $navigationPath) {
             contentView
                 .navigationTitle("Inbox")
@@ -100,10 +107,25 @@ struct InboxView: View {
                 }
             }
         }
-        .sheet(isPresented: $isComposingMessage) { [isComposingMessage] in
-            if let recipient = messageRecipient {
-                MessageComposerView(account: account, recipient: recipient)
-                    .presentationDetents([.medium, .large])
+        .sheet(isPresented: $isComposing) { [isComposing] in // capture here to force state re-eval
+            switch composingTo {
+            case .commentReply(let commentReplyingTo):
+                if let commentReply = commentReplyingTo {
+                    let replyTo = ReplyToCommentReply(commentReply: commentReply,
+                                                      account: account,
+                                                      appState: appState)
+                    GeneralCommentComposerView(replyTo: replyTo)
+                }
+            case .mention(let mentionReplyingTo):
+                if let mentionReply = mentionReplyingTo {
+                    let replyTo = ReplyToMention(mention: mentionReply, account: account, appState: appState)
+                    GeneralCommentComposerView(replyTo: replyTo)
+                }
+            case .message(let personReplyingTo):
+                if let recipient = personReplyingTo {
+                    MessageComposerView(account: account, recipient: recipient)
+                        .presentationDetents([.medium, .large])
+                }
             }
         }
         // load view if empty or account has changed

@@ -24,7 +24,7 @@ struct ReplyToFeedPost: ReplyTo {
             return
         }
         
-        try await postCommentFromFeed(
+        try await postCommentWithoutTracker(
             to: post,
             commentContents: commentContents,
             account: account,
