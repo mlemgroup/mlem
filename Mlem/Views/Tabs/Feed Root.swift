@@ -20,12 +20,20 @@ struct FeedRoot: View {
     @State var isShowingInstanceAdditionSheet: Bool = false
 
     @State var rootDetails: CommunityLinkWithContext?
+    
+    // TEMP: tracks whether somebody has seen this alert or not
+    @State var showCCAlert: Bool = true
+    @State var navPath: NavigationPath = NavigationPath()
+    @State var subscribeSwapping: Bool = false
+    @State var subscriptionSwapText: String? = "Update my subscriptions"
+    @AppStorage("showCommunityChangeAlert") var showCommunityChangeAlert: Bool = true
 
     var body: some View {
 
-        NavigationSplitView {
-            AccountsPage(isShowingInstanceAdditionSheet: $isShowingInstanceAdditionSheet)
-        } content: {
+        ZStack {
+            NavigationSplitView {
+                AccountsPage(isShowingInstanceAdditionSheet: $isShowingInstanceAdditionSheet)
+            } content: {
                 if appState.currentActiveAccount != nil {
                     CommunityListView(
                         account: appState.currentActiveAccount!,
@@ -39,20 +47,80 @@ struct FeedRoot: View {
                         Label("Sign in", systemImage: "person.badge.plus")
                     }
                 }
-        } detail: {
-            if rootDetails != nil {
-                NavigationStack(path: $navigationPath) {
-                    CommunityView(account: appState.currentActiveAccount!,
-                                  community: rootDetails!.community,
-                                  feedType: rootDetails!.feedType
-                    )
-                    .environmentObject(appState)
-                    .handleLemmyLinkResolution(navigationPath: $navigationPath, local: "Inside root details")
-                    .handleLemmyViews()
-                }.id(rootDetails!.id + appState.currentActiveAccount!.id)
-            } else {
-                Text("Please selecte a community")
-                    .id(appState.currentActiveAccount?.id ?? 0)
+            } detail: {
+                if rootDetails != nil {
+                    NavigationStack(path: $navigationPath) {
+                        CommunityView(account: appState.currentActiveAccount!,
+                                      community: rootDetails!.community,
+                                      feedType: rootDetails!.feedType
+                        )
+                        .environmentObject(appState)
+                        .handleLemmyLinkResolution(navigationPath: $navigationPath, local: "Inside root details")
+                        .handleLemmyViews()
+                    }.id(rootDetails!.id + appState.currentActiveAccount!.id)
+                } else {
+                    Text("Please selecte a community")
+                        .id(appState.currentActiveAccount?.id ?? 0)
+                }
+            }
+            
+            if showCommunityChangeAlert {
+                VStack(spacing: 24) {
+                    Text("We've moved!")
+                        .font(.title)
+                        .bold()
+                        .padding(.bottom, 16)
+                    
+                    Text("Our official community has moved from lemmy.ml to vlemmy.net.")
+                        .padding(.bottom, 16)
+                    
+                    if let account = appState.currentActiveAccount {
+                        Button("Take me there") {
+                            Task(priority: .userInitiated) {
+                                let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account,
+                                                                                                             query: "https://vlemmy.net/c/mlemapp"))
+                                if let community = resolution.community {
+                                    navigationPath.append(community)
+                                    showCommunityChangeAlert = false
+                                }
+                            }
+                        }
+                    }
+
+                    if let subText = subscriptionSwapText {
+                        Button(subText) {
+                            Task(priority: .userInitiated) {
+                                subscribeSwapping = true
+                                let result = await swapSubscriptions()
+                                subscribeSwapping = false
+                                if result {
+                                    subscriptionSwapText = nil
+                                } else {
+                                    subscriptionSwapText = "Retry"
+                                }
+                            }
+                        }
+                    }
+                    
+                    Button("Dismiss") {
+                        showCCAlert = false
+                        showCommunityChangeAlert = false
+                    }
+                    
+                    Group {
+                        if subscribeSwapping {
+                            ProgressView()
+                        } else {
+                            EmptyView()
+                        }
+                    }
+                    .frame(width: 50, height: 50)
+                }
+                .multilineTextAlignment(.center)
+                .padding()
+                .frame(width: UIScreen.main.bounds.size.width * 0.8, height: UIScreen.main.bounds.size.height * 0.5)
+                .background(.regularMaterial)
+                .cornerRadius(16)
             }
         }
         .onChange(of: appState.currentActiveAccount) { newAccount in
@@ -138,10 +206,62 @@ struct FeedRoot: View {
             }
         }
     }
+    
+    // TEMP
+    func swapSubscriptions() async -> Bool {
+        do {
+            for account in accountsTracker.savedAccounts {
+                
+                // get community link for vlemmy
+                let vlemmyResolution = try await APIClient().perform(request: ResolveObjectRequest(account: account,
+                                                                                                   query: "https://vlemmy.net/c/mlemapp"))
+                if let community = vlemmyResolution.community {
+                    if !(await subscribe(account: account, communityId: community.community.id, shouldSubscribe: true)) {
+                        return false
+                    }
+                }
+                
+                // get community link for lemmy.ml
+                let mlResolution = try await APIClient().perform(request: ResolveObjectRequest(account: account,
+                                                                                               query: "https://lemmy.ml/c/mlemapp"))
+                if let community = mlResolution.community {
+                    if !(await subscribe(account: account, communityId: community.community.id, shouldSubscribe: false)) {
+                        return false
+                    }
+                }
+            }
+        } catch {
+            return false
+        }
+        
+        return true
+    }
+
 }
 
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
         FeedRoot()
+    }
+}
+
+private func subscribe(account: SavedAccount, communityId: Int, shouldSubscribe: Bool) async -> Bool {
+    do {
+        let request = FollowCommunityRequest(
+            account: account,
+            communityId: communityId,
+            follow: shouldSubscribe
+        )
+        
+        _ = try await APIClient().perform(request: request)
+        return true
+    } catch {
+        // TODO: If we fail here and want to notify the user we'd ideally
+        // want to do so from the parent view, I think it would be worth refactoring
+        // this view so that the responsibility for performing the call is removed
+        // and handled by the parent, for now we will fail silently the UI state
+        // will not update so will continue to be accurate
+        print(error)
+        return false
     }
 }
