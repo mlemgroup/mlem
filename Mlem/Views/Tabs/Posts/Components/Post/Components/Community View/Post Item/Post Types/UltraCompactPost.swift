@@ -115,6 +115,18 @@ struct UltraCompactPost: View {
     @ViewBuilder
     private var compactInfo: some View {
         HStack(spacing: AppConstants.postAndCommentSpacing) {
+            if postView.post.featuredCommunity {
+                if postView.post.featuredLocal {
+                    StickiedTag(tagType: .local, compact: true)
+                } else if postView.post.featuredCommunity {
+                    StickiedTag(tagType: .community, compact: true)
+                }
+            }
+            
+            if postView.post.nsfw || postView.community.nsfw {
+                NSFWTag(compact: true)
+            }
+            
             HStack(spacing: 2) {
                 Image(systemName: voteIconName)
                 Text(postView.counts.score.description)
