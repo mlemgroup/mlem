@@ -18,10 +18,12 @@ import SwiftUI
  */
 struct FeedPost: View {
     // MARK: Environment
+    @AppStorage("postSize") var postSize: PostSize = .headline
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
-
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @Environment(\.translateText) var translateText
@@ -100,43 +102,63 @@ struct FeedPost: View {
             ReportComposerView(account: account, reportedPost: postView)
         }
     }
+    
+    private func calculateServerInstanceLocation() -> ServerInstanceLocation {
+        guard shouldShowUserServerInPost else {
+            return .disabled
+        }
+        if postSize == .compact {
+            return .trailing
+        } else {
+            return .bottom
+        }
+    }
 
     @ViewBuilder
     var postItem: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            // community name
-            if showCommunity {
-                CommunityLinkView(community: postView.community)
+        if postSize == .compact {
+            UltraCompactPost(
+                postView: postView,
+                account: account,
+                menuFunctions: genMenuFunctions()
+            )
+        } else {
+            
+            VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+                // community name
+                if showCommunity {
+                    CommunityLinkView(community: postView.community)
+                }
+                
+                if postSize == .headline {
+                    CompactPost(
+                        postView: postView,
+                        account: account
+                    )
+                } else {
+                    LargePost(
+                        postView: postView,
+                        isExpanded: false
+                    )
+                }
+                
+                // posting user
+                if showPostCreator {
+                    UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom, showAvatar: shouldShowUserAvatars)
+                }
+                
+                if showInteractionBar {
+                    PostInteractionBar(postView: postView,
+                                       account: account,
+                                       menuFunctions: genMenuFunctions(),
+                                       voteOnPost: voteOnPost,
+                                       updatedSavePost: { _ in await savePost() },
+                                       deletePost: deletePost)
+                }
             }
-
-            if shouldShowCompactPosts {
-                CompactPost(
-                    postView: postView,
-                    account: account
-                )
-            } else {
-                LargePost(
-                    postView: postView,
-                    isExpanded: false
-                )
-            }
-
-            // posting user
-            if showPostCreator {
-                UserProfileLink(user: postView.creator, showServerInstance: true)
-            }
-
-            if showInteractionBar {
-                PostInteractionBar(postView: postView,
-                                   account: account,
-                                   menuFunctions: genMenuFunctions(),
-                                   voteOnPost: voteOnPost,
-                                   updatedSavePost: { _ in await savePost() },
-                                   deletePost: deletePost)
-            }
+            .background(Color.systemBackground)
+            .padding(AppConstants.postAndCommentSpacing)
         }
-        .background(Color.systemBackground)
-        .padding(AppConstants.postAndCommentSpacing)
     }
 
     // Reply handlers

@@ -10,11 +10,12 @@ import SwiftUI
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 struct CommunityView: View {
+    
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
+    @AppStorage("postSize") var postSize: PostSize = .headline
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -46,7 +47,6 @@ struct CommunityView: View {
     @State private var errorAlert: ErrorAlert?
 
     @State var isDragging: Bool = false
-    @State var isPostingComment: Bool = false
     @State var replyingToPost: APIPostView?
 
     var isInSpecificCommunity: Bool { community != nil }
@@ -125,12 +125,14 @@ struct CommunityView: View {
                 message: Text(content.message)
             )
         }
-        .sheet(isPresented: $isPostingComment) { [isPostingComment] in // capture here to force state re-eval
-            if let post = replyingToPost {
-                let replyTo: ReplyToFeedPost = ReplyToFeedPost(post: post, account: account, appState: appState)
-
-                GeneralCommentComposerView(replyTo: replyTo)
-            }
+        .sheet(item: $replyingToPost) { post in
+            GeneralCommentComposerView(
+                replyTo: ReplyToFeedPost(
+                    post: post,
+                    account: account,
+                    appState: appState
+                )
+            )
         }
         .toolbar {
             ToolbarItem(placement: .principal) { /// This is here to replace the default navigationTitle and make it possible to tap it
@@ -261,15 +263,33 @@ struct CommunityView: View {
                                 Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                             }
                         }
-
-                        Button {
-                            shouldShowCompactPosts.toggle()
-                        } label: {
-                            if shouldShowCompactPosts {
-                                Label("Large posts", systemImage: "rectangle.expand.vertical")
-                            } else {
-                                Label("Compact posts", systemImage: "rectangle.compress.vertical")
+                        
+                        Menu {
+                            if postSize != .compact {
+                                Button {
+                                    postSize = .compact
+                                } label: {
+                                    Label("Compact", systemImage: "rectangle.compress.vertical")
+                                }
                             }
+                            
+                            if postSize != .headline {
+                                Button {
+                                    postSize = .headline
+                                } label: {
+                                    Label("Headline", systemImage: "rectangle")
+                                }
+                            }
+                            
+                            if postSize != .large {
+                                Button {
+                                    postSize = .large
+                                } label: {
+                                    Label("Large", systemImage: "rectangle.expand.vertical")
+                                }
+                            }
+                        } label: {
+                            Label("Post size", systemImage: "rectangle.compress.vertical")
                         }
                         .foregroundColor(.primary)
                     } label: {
@@ -394,7 +414,6 @@ struct CommunityView: View {
 
     func replyToPost(replyTo: APIPostView) {
         replyingToPost = replyTo
-        isPostingComment = true
     }
 
     func loadFeed() async {

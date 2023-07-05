@@ -15,6 +15,7 @@ struct ExpandedPost: View {
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
 
     @EnvironmentObject var appState: AppState
     @Environment(\.translateText) var translateText
@@ -132,9 +133,7 @@ struct ExpandedPost: View {
                 postView: post,
                 isExpanded: true
             )
-
-            UserProfileLink(user: post.creator, showServerInstance: true)
-
+            UserProfileLink(user: post.creator, serverInstanceLocation: .bottom, showAvatar: shouldShowUserAvatars)
             PostInteractionBar(postView: post,
                                account: account,
                                menuFunctions: genMenuFunctions(),

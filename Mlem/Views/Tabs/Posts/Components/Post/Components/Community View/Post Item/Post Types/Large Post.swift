@@ -35,10 +35,23 @@ struct LargePost: View {
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
             // post title
-            Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .italic(postView.post.deleted)
+            HStack {
+                if postView.post.featuredLocal {
+                    StickiedTag(tagType: .local)
+                } else if postView.post.featuredCommunity {
+                    StickiedTag(tagType: .community)
+                }
+                
+                Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .italic(postView.post.deleted)
+                
+                Spacer()
+                if postView.post.nsfw {
+                    NSFWTag(compact: false)
+                }
+            }
 
             // post body
             switch postView.postType {

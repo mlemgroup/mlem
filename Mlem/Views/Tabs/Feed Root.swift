@@ -32,7 +32,7 @@ struct FeedRoot: View {
                         selectedCommunity: $rootDetails
                     ).id(appState.currentActiveAccount!.id)
                 } else {
-                    Text("You need to be signed in to brewos Lemmy")
+                    Text("You need to be signed in to browse Lemmy")
                     Button {
                         isShowingInstanceAdditionSheet.toggle()
                     } label: {
@@ -97,8 +97,13 @@ struct FeedRoot: View {
                 }
             }
 
-            guard let account = appState.currentActiveAccount else {
-                appState.toast = AlertToast(displayMode: .hud, type: .loading, title: "You need to sign in to open links in app")
+            guard appState.currentActiveAccount != nil else {
+                appState.toast = AlertToast(
+                    displayMode: .hud,
+                    type: .loading,
+                    title: "You need to sign in to open links in app"
+                )
+                
                 appState.isShowingToast = true
                 return
             }
@@ -107,8 +112,7 @@ struct FeedRoot: View {
                 if rootDetails == nil {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
-//                didReceiveURL(url)
-                HandleLemmyLinkResolution(appState: _appState,
+                _ = HandleLemmyLinkResolution(appState: _appState,
                                           savedAccounts: _accountsTracker,
                                           navigationPath: $navigationPath,
                                           local: "Deep-Link onOpenURL"
