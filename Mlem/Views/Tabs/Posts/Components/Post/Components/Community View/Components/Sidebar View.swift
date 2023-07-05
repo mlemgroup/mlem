@@ -97,9 +97,7 @@ struct CommunitySidebarView: View {
                                 UserProfileLabel(
                                     user: moderatorView.moderator,
                                     serverInstanceLocation: .bottom,
-                                    showAvatar: true,
-                                    postContext: nil,
-                                    commentContext: nil,
+                                    overrideShowAvatar: true,
                                     communityContext: communityDetails
                                 )
                                 Spacer()

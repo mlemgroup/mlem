@@ -145,7 +145,7 @@ struct FeedPost: View {
                 
                 // posting user
                 if showPostCreator {
-                    UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom, showAvatar: shouldShowUserAvatars)
+                    UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom)
                 }
                 
                 if showInteractionBar {
