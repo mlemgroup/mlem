@@ -58,9 +58,9 @@ struct UltraCompactPost: View {
             VStack(alignment: .leading, spacing: 6) {
                 Group {
                     if showCommunity {
-                        CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, showAvatar: false)
+                        CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                     } else {
-                        UserProfileLink(user: postView.creator, serverInstanceLocation: .trailing, showAvatar: false)
+                        UserProfileLink(user: postView.creator, serverInstanceLocation: .trailing)
                     }
                 }
                 .padding(.bottom, -2)

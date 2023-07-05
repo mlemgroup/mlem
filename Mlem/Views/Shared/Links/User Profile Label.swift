@@ -9,9 +9,11 @@ import SwiftUI
 import CachedAsyncImage
 
 struct UserProfileLabel: View {
+    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
-    let showAvatar: Bool // disables the avatar no matter what
+    let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system settings
     
     // Extra context about where the link is being displayed
     // to pick the correct flair
@@ -19,14 +21,37 @@ struct UserProfileLabel: View {
     @State var commentContext: APIComment?
     @State var communityContext: GetCommunityResponse?
     
+    init(user: APIPerson,
+         serverInstanceLocation: ServerInstanceLocation,
+         overrideShowAvatar: Bool? = nil,
+         postContext: APIPost? = nil,
+         commentContext: APIComment? = nil,
+         communityContext: GetCommunityResponse? = nil) {
+        self.user = user
+        self.serverInstanceLocation = serverInstanceLocation
+        self.overrideShowAvatar = overrideShowAvatar
+        
+        _postContext = State(initialValue: postContext)
+        _commentContext = State(initialValue: commentContext)
+        _communityContext = State(initialValue: communityContext)
+    }
+    
+    var showAvatar: Bool {
+        if let overrideShowAvatar = overrideShowAvatar {
+            return overrideShowAvatar
+        } else {
+            return shouldShowUserAvatars
+        }
+    }
+    
     static let developerNames = [
         "vlemmy.net/u/darknavi",
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
-        "sh.itjust.works/u/ericbandrews"
+        "vlemmy.net/u/ericbandrews"
     ]
     
-    static let mlemOfficial = "lemmy.ml/u/MlemOfficial"
+    // static let mlemOfficial = "lemmy.ml/u/MlemOfficial"
     
     static let flairMlemOfficial = UserProfileLinkFlair(color: Color.purple, image: Image("mlem"))
     static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
@@ -41,7 +66,6 @@ struct UserProfileLabel: View {
             if showAvatar {
                 userAvatar
             }
-            
             userName
         }
     }
@@ -334,8 +358,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             user: previewUser,
             serverInstanceLocation: serverInstanceLocation,
             postContext: postContext,
-            commentContext: commentContext,
-            showAvatar: true
+            commentContext: commentContext
         )
     }
     

@@ -133,7 +133,7 @@ struct ExpandedPost: View {
                 isExpanded: true
             )
             
-            UserProfileLink(user: post.creator, serverInstanceLocation: .bottom, showAvatar: shouldShowUserAvatars)
+            UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
             
             PostInteractionBar(postView: post,
                                account: account,
