@@ -27,6 +27,8 @@ struct AccountsPage: View {
                             Text(savedAccount.instanceLink.host!)
                                 .foregroundColor(.secondary)
                         }
+                        .accessibilityAddTraits(.isButton)
+                        .accessibilityElement(children: .combine)
                         .id(savedAccount)
                         .minimumScaleFactor(0.01)
                         .lineLimit(1)
@@ -48,6 +50,7 @@ struct AccountsPage: View {
                 } label: {
                     Image(systemName: "plus")
                 }
+                .accessibilityLabel("Add a new account.")
             }
         }
     }

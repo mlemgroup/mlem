@@ -96,7 +96,8 @@ struct CommunitySidebarView: View {
                             HStack {
                                 UserProfileLabel(
                                     user: moderatorView.moderator,
-                                    showServerInstance: true,
+                                    serverInstanceLocation: .bottom,
+                                    showAvatar: true,
                                     postContext: nil,
                                     commentContext: nil,
                                     communityContext: communityDetails

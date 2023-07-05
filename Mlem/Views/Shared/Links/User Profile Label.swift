@@ -9,10 +9,9 @@ import SwiftUI
 import CachedAsyncImage
 
 struct UserProfileLabel: View {
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    
     var user: APIPerson
-    var showServerInstance: Bool
+    let serverInstanceLocation: ServerInstanceLocation
+    let showAvatar: Bool // disables the avatar no matter what
     
     // Extra context about where the link is being displayed
     // to pick the correct flair
@@ -22,7 +21,6 @@ struct UserProfileLabel: View {
     
     static let developerNames = [
         "vlemmy.net/u/darknavi",
-        "lemmy.ml/u/BrooklynMan",
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
         "sh.itjust.works/u/ericbandrews"
@@ -40,7 +38,7 @@ struct UserProfileLabel: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
-            if shouldShowUserAvatars {
+            if showAvatar {
                 userAvatar
             }
             
@@ -57,7 +55,7 @@ struct UserProfileLabel: View {
                         avatar
                             .resizable()
                             .scaledToFill()
-                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+                            .frame(width: avatarSize(), height: avatarSize())
                     } else {
                         defaultUserAvatar()
                     }
@@ -66,18 +64,22 @@ struct UserProfileLabel: View {
                 defaultUserAvatar()
             }
         }
-        .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+        .frame(width: avatarSize(), height: avatarSize())
         .clipShape(Circle())
         .overlay(Circle()
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
         .accessibilityHidden(true)
     }
     
+    private func avatarSize() -> CGFloat {
+        serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
+    }
+    
     private func defaultUserAvatar() -> some View {
         Image(systemName: "person.circle")
             .resizable()
             .scaledToFill()
-            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+            .frame(width: avatarSize(), height: avatarSize())
             .foregroundColor(.secondary)
     }
     
@@ -86,26 +88,48 @@ struct UserProfileLabel: View {
         let flair = calculateLinkFlair()
         
         HStack(spacing: 4) {
-            if let flairImage = flair.image {
+            if let flairImage = flair.image, serverInstanceLocation != .trailing {
                 flairImage
                     .foregroundColor(flair.color)
             }
-            VStack(alignment: .leading) {
-                
-                Text(user.displayName ?? user.name)
-                    .bold()
-                    .font(.footnote)
-                    .foregroundColor(flair.color)
-                if showServerInstance, let host = user.actorId.host() {
-                    Text("@\(host)")
-                        .minimumScaleFactor(0.01)
-                        .lineLimit(1)
-                        .opacity(0.6)
-                        .font(.caption)
+            
+            switch serverInstanceLocation {
+            case .disabled:
+                userName(with: flair)
+            case .bottom:
+                VStack(alignment: .leading) {
+                    userName(with: flair)
+                    userInstance
+                }
+            case .trailing:
+                HStack(spacing: 0) {
+                    userName(with: flair)
+                    userInstance
                 }
             }
         }
         .foregroundColor(.secondary)
+    }
+    
+    @ViewBuilder
+    private func userName(with flair: UserProfileLinkFlair) -> some View {
+        Text(user.displayName ?? user.name)
+            .bold()
+            .font(.footnote)
+            .foregroundColor(flair.color)
+    }
+    
+    @ViewBuilder
+    private var userInstance: some View {
+        if let host = user.actorId.host() {
+            Text("@\(host)")
+                .minimumScaleFactor(0.01)
+                .lineLimit(1)
+                .opacity(0.6)
+                .font(.caption)
+        } else {
+            EmptyView()
+        }
     }
     
     struct UserProfileLinkFlair {
@@ -115,9 +139,11 @@ struct UserProfileLabel: View {
     
     private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
+            /*
             if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
                 return UserProfileLabel.flairMlemOfficial
             }
+            */
             
             if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLabel.flairDeveloper
@@ -288,7 +314,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     static func generateUserProfileLink(
         name: String,
         userType: PreviewUserType,
-        showCommunity: Bool
+        serverInstanceLocation: ServerInstanceLocation
     ) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
@@ -306,23 +332,21 @@ struct UserProfileLinkPreview: PreviewProvider {
         
         return UserProfileLink(
             user: previewUser,
-            showServerInstance: showCommunity,
+            serverInstanceLocation: serverInstanceLocation,
             postContext: postContext,
-            commentContext: commentContext
+            commentContext: commentContext,
+            showAvatar: true
         )
     }
     
     static var previews: some View {
         VStack {
-            Spacer()
-            ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
-                generateUserProfileLink(name: "\(userType)User", userType: userType, showCommunity: false)
+            ForEach(ServerInstanceLocation.allCases, id: \.rawValue) { serverInstanceLocation in
+                Spacer()
+                ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
+                    generateUserProfileLink(name: "\(userType)User", userType: userType, serverInstanceLocation: serverInstanceLocation)
+                }
             }
-            Spacer()
-            ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
-                generateUserProfileLink(name: "\(userType)User", userType: userType, showCommunity: true)
-            }
-            Spacer()
         }
     }
 }
