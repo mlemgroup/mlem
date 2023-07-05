@@ -51,7 +51,7 @@ struct UserProfileLabel: View {
         "vlemmy.net/u/ericbandrews"
     ]
     
-    // static let mlemOfficial = "lemmy.ml/u/MlemOfficial"
+    static let mlemOfficial = "vlemmy.net/u/MlemOfficial"
     
     static let flairMlemOfficial = UserProfileLinkFlair(color: Color.purple, image: Image("mlem"))
     static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
