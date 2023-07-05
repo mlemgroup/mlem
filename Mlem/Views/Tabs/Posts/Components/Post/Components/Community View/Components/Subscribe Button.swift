@@ -24,7 +24,6 @@ struct SubscribeButton: View {
                 Button {
                     Task(priority: .userInitiated) {
                         print("Will subscribe")
-                        print(communityDetails.community.id)
                         await subscribe(communityId: communityDetails.community.id, shouldSubscribe: true)
                     }
                 } label: {
@@ -35,7 +34,6 @@ struct SubscribeButton: View {
                 Button(role: .destructive) {
                     Task(priority: .userInitiated) {
                         print("Will unsubscribe")
-                        print(communityDetails.community.id)
                         await subscribe(communityId: communityDetails.community.id, shouldSubscribe: false)
                     }
                 } label: {

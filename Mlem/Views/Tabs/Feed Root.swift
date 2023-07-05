@@ -26,7 +26,8 @@ struct FeedRoot: View {
     @State var navPath: NavigationPath = NavigationPath()
     @State var subscribeSwapping: Bool = false
     @State var subscriptionSwapText: String? = "Update my subscriptions"
-    @AppStorage("showCommunityChangeAlert") var showCommunityChangeAlert: Bool = true
+    // @AppStorage("showCommunityChangeAlert") var showCommunityChangeAlert: Bool = true
+    @State var showCommunityChangeAlert: Bool = true
 
     var body: some View {
         NavigationSplitView {
