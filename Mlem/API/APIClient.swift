@@ -23,19 +23,28 @@ class APIClient {
 
     let session: URLSession
     let decoder: JSONDecoder
-
+    
     init(session: URLSession = .init(configuration: .default), decoder: JSONDecoder = .defaultDecoder) {
         self.session = session
         self.decoder = decoder
     }
-
+    
     @discardableResult
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
-
+        
         let urlRequest = try urlRequest(from: request)
         
         let (data, response) = try await execute(urlRequest)
-
+        
+        if let response = response as? HTTPURLResponse {
+            if response.statusCode >= 500 { // Error code for server being offline.
+                throw APIClientError.response(
+                    APIErrorResponse.init(error: "Instance appears to be offline.\nTry again later."),
+                    response.statusCode
+                )
+            }
+        }
+        
         if let apiError = try? decoder.decode(APIErrorResponse.self, from: data) {
             // at present we have a single error model which appears to be used throughout
             // the API, however we may way to consider adding the error model type as an
@@ -44,7 +53,7 @@ class APIClient {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             throw APIClientError.response(apiError, statusCode)
         }
-
+        
         return try decoder.decode(Request.Response.self, from: data)
     }
 
