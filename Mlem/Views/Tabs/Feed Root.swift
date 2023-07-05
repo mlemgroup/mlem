@@ -26,8 +26,8 @@ struct FeedRoot: View {
     @State var navPath: NavigationPath = NavigationPath()
     @State var subscribeSwapping: Bool = false
     @State var subscriptionSwapText: String? = "Update my subscriptions"
-    @AppStorage("showCommunityChangeAlert") var showCommunityChangeAlert: Bool = true
-    // @State var showCommunityChangeAlert: Bool = true // dev - makes it show up every launch
+    // @AppStorage("showCommunityChangeAlert") var showCommunityChangeAlert: Bool = true
+    @State var showCommunityChangeAlert: Bool = true // dev - makes it show up every launch
 
     var body: some View {
         NavigationSplitView {
@@ -141,6 +141,11 @@ struct FeedRoot: View {
                     
                     shortcutItemToProcess = nil
                 }
+            }
+        }
+        .overlay {
+            if showCommunityChangeAlert {
+                communityChangeAlert()
             }
         }
     }
