@@ -120,6 +120,7 @@ struct FeedPost: View {
             UltraCompactPost(
                 postView: postView,
                 account: account,
+                showCommunity: showCommunity,
                 menuFunctions: genMenuFunctions()
             )
         } else {
@@ -178,10 +179,6 @@ struct FeedPost: View {
             print("failed to delete post: \(error)")
         }
     }
-    
-//    func replyToPost() {
-//        self.replyIsPresented = true
-//    }
 
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
@@ -322,8 +319,11 @@ extension FeedPost {
 //    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
     
     var upvoteSwipeAction: SwipeAction {
-        SwipeAction(
-            symbol: .init(emptyName: "arrow.up.square", fillName: "arrow.up.square.fill"),
+        let (emptySymbolName, fullSymbolName) = postView.myVote == .upvote ?
+        (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
+        (AppConstants.emptyUpvoteSymbolName, AppConstants.fullUpvoteSymbolName)
+        return SwipeAction(
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .upvoteColor,
             action: upvotePost
         )
@@ -332,8 +332,11 @@ extension FeedPost {
     var downvoteSwipeAction: SwipeAction? {
         guard appState.enableDownvote else { return nil }
         
+        let (emptySymbolName, fullSymbolName) = postView.myVote == .downvote ?
+        (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
+        (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
         return SwipeAction(
-            symbol: .init(emptyName: "arrow.down.square", fillName: "arrow.down.square.fill"),
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .downvoteColor,
             action: downvotePost
         )

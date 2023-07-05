@@ -33,17 +33,22 @@ struct CommunityLinkView: View {
     
     let community: APICommunity
     let serverInstanceLocation: ServerInstanceLocation
+    let showAvatar: Bool
     
-    init(community: APICommunity, serverInstanceLocation: ServerInstanceLocation = .bottom) {
+    init(community: APICommunity,
+         serverInstanceLocation: ServerInstanceLocation = .bottom,
+         showAvatar: Bool = true) {
         self.community = community
         self.serverInstanceLocation = serverInstanceLocation
+        self.showAvatar = showAvatar
     }
     
     var body: some View {
         NavigationLink(value: community) {
             CommunityLabel(shouldShowCommunityIcons: shouldShowCommunityIcons,
                            community: community,
-                           serverInstanceLocation: serverInstanceLocation
+                           serverInstanceLocation: serverInstanceLocation,
+                           shouldShowAvatar: showAvatar
             )
         }
     }
@@ -56,11 +61,23 @@ struct CommunityLabel: View {
     // parameters
     let community: APICommunity
     let serverInstanceLocation: ServerInstanceLocation
+    let shouldShowAvatar: Bool // if false, disables the avatar indiscriminately
+    
+    var displayAvatar: Bool { shouldShowAvatar && shouldShowCommunityIcons }
+    
+    init(shouldShowCommunityIcons: Bool,
+         community: APICommunity,
+         serverInstanceLocation: ServerInstanceLocation,
+         shouldShowAvatar: Bool = true) {
+        self.community = community
+        self.serverInstanceLocation = serverInstanceLocation
+        self.shouldShowAvatar = shouldShowAvatar
+    }
     
     var body: some View {
         Group {
             HStack(alignment: .bottom, spacing: AppConstants.largeAvatarSpacing) {
-                if shouldShowCommunityIcons {
+                if displayAvatar {
                     if shouldClipAvatar(community: community) {
                         communityAvatar
                             .clipShape(Circle())
