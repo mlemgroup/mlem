@@ -198,6 +198,9 @@ struct FeedRoot: View {
                 .frame(width: 50, height: 50)
                 .overlay { if subscribeSwapping { ProgressView() }}
         }
+        .accessibilityAction(.escape) {
+            showCommunityChangeAlert = false
+        }
         .multilineTextAlignment(.center)
         .padding()
         .frame(width: UIScreen.main.bounds.size.width * 0.8, height: UIScreen.main.bounds.size.height * 0.5)
