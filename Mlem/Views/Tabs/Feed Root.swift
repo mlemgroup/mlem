@@ -12,13 +12,13 @@ struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     @Environment(\.scenePhase) var phase
-
+    
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-
+    
     @State var navigationPath = NavigationPath()
-
+    
     @State var isShowingInstanceAdditionSheet: Bool = false
-
+    
     @State var rootDetails: CommunityLinkWithContext?
     
     // TEMP: tracks whether somebody has seen this alert or not
@@ -28,45 +28,38 @@ struct FeedRoot: View {
     @State var subscriptionSwapText: String? = "Update my subscriptions"
     @AppStorage("showCommunityChangeAlert") var showCommunityChangeAlert: Bool = true
     // @State var showCommunityChangeAlert: Bool = true // dev - makes it show up every launch
-
+    
     var body: some View {
-
-        ZStack {
-            NavigationSplitView {
-                AccountsPage(isShowingInstanceAdditionSheet: $isShowingInstanceAdditionSheet)
-            } content: {
-                if appState.currentActiveAccount != nil {
-                    CommunityListView(
-                        account: appState.currentActiveAccount!,
-                        selectedCommunity: $rootDetails
-                    ).id(appState.currentActiveAccount!.id)
-                } else {
-                    Text("You need to be signed in to browse Lemmy")
-                    Button {
-                        isShowingInstanceAdditionSheet.toggle()
-                    } label: {
-                        Label("Sign in", systemImage: "person.badge.plus")
-                    }
-                }
-            } detail: {
-                if rootDetails != nil {
-                    NavigationStack(path: $navigationPath) {
-                        CommunityView(account: appState.currentActiveAccount!,
-                                      community: rootDetails!.community,
-                                      feedType: rootDetails!.feedType
-                        )
-                        .environmentObject(appState)
-                        .handleLemmyLinkResolution(navigationPath: $navigationPath, local: "Inside root details")
-                        .handleLemmyViews()
-                    }.id(rootDetails!.id + appState.currentActiveAccount!.id)
-                } else {
-                    Text("Please selecte a community")
-                        .id(appState.currentActiveAccount?.id ?? 0)
+        NavigationSplitView {
+            AccountsPage(isShowingInstanceAdditionSheet: $isShowingInstanceAdditionSheet)
+        } content: {
+            if appState.currentActiveAccount != nil {
+                CommunityListView(
+                    account: appState.currentActiveAccount!,
+                    selectedCommunity: $rootDetails
+                ).id(appState.currentActiveAccount!.id)
+            } else {
+                Text("You need to be signed in to browse Lemmy")
+                Button {
+                    isShowingInstanceAdditionSheet.toggle()
+                } label: {
+                    Label("Sign in", systemImage: "person.badge.plus")
                 }
             }
-            
-            if showCommunityChangeAlert {
-               communityChangeAlert()
+        } detail: {
+            if rootDetails != nil {
+                NavigationStack(path: $navigationPath) {
+                    CommunityView(account: appState.currentActiveAccount!,
+                                  community: rootDetails!.community,
+                                  feedType: rootDetails!.feedType
+                    )
+                    .environmentObject(appState)
+                    .handleLemmyLinkResolution(navigationPath: $navigationPath, local: "Inside root details")
+                    .handleLemmyViews()
+                }.id(rootDetails!.id + appState.currentActiveAccount!.id)
+            } else {
+                Text("Please selecte a community")
+                    .id(appState.currentActiveAccount?.id ?? 0)
             }
         }
         .onChange(of: appState.currentActiveAccount) { newAccount in
@@ -74,11 +67,11 @@ struct FeedRoot: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     withAnimation {
                         let feedType = FeedType(rawValue:
-                                                shortcutItemToProcess?.type ??
+                                                    shortcutItemToProcess?.type ??
                                                 "nothing to see here"
                         ) ?? defaultFeed
                         rootDetails = CommunityLinkWithContext(community: nil, feedType: feedType)
-
+                        
                         shortcutItemToProcess = nil
                     }
                 }
@@ -94,7 +87,7 @@ struct FeedRoot: View {
             } label: {
                 Text("Close")
             }
-
+            
         } message: {
             Text(appState.alertMessage)
         }
@@ -110,7 +103,7 @@ struct FeedRoot: View {
                     appState.currentActiveAccount = account
                 }
             }
-
+            
             guard appState.currentActiveAccount != nil else {
                 appState.toast = AlertToast(
                     displayMode: .hud,
@@ -121,12 +114,12 @@ struct FeedRoot: View {
                 appState.isShowingToast = true
                 return
             }
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if rootDetails == nil {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
-
+                
                 HandleLemmyLinkResolution(appState: _appState,
                                           savedAccounts: _accountsTracker,
                                           navigationPath: $navigationPath,
@@ -143,12 +136,17 @@ struct FeedRoot: View {
                 if appState.currentActiveAccount != nil,
                    let shortcutItem = FeedType(rawValue:
                                                 shortcutItemToProcess?.type ??
-                                                "nothing to see here"
-                ) {
+                                               "nothing to see here"
+                   ) {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: shortcutItem)
-
+                    
                     shortcutItemToProcess = nil
                 }
+            }
+        }
+        .overlay {
+            if showCommunityChangeAlert {
+                communityChangeAlert()
             }
         }
     }
@@ -175,7 +173,7 @@ struct FeedRoot: View {
                     }
                 }
             }
-
+            
             if let subText = subscriptionSwapText {
                 Button(subText) {
                     Task(priority: .userInitiated) {
@@ -237,7 +235,7 @@ struct FeedRoot: View {
         
         return true
     }
-
+    
 }
 
 struct FeedRootPreview: PreviewProvider {
