@@ -37,7 +37,7 @@ class APIClient {
         let (data, response) = try await execute(urlRequest)
         
         if let response = response as? HTTPURLResponse {
-            if response.statusCode == 502 { // Error code for server being offline.
+            if response.statusCode >= 500 { // Error code for server being offline.
                 throw APIClientError.response(
                     APIErrorResponse.init(error: "Instance appears to be offline.\nTry again later."),
                     response.statusCode
