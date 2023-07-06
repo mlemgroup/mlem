@@ -56,11 +56,14 @@ struct AppConstants {
     static let shortSwipeDragMin: CGFloat = 60
     
     // MARK: - Sizes
+    static let maxFeedPostHeight: CGFloat = 400
     static let largeAvatarSize: CGFloat = 32
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
     static let postAndCommentSpacing: CGFloat = 10
+    static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
+    static let smallItemCornerRadius: CGFloat = 4 // buttons, tags, compact thumbnails
     
     // MARK: - SFSymbols
     // votes

@@ -236,6 +236,7 @@
 		CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9B2A53980900E213B5 /* ReplyToCommentReply.swift */; };
 		CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9D2A539F1800E213B5 /* ReplyToMention.swift */; };
 		CD391FA02A545F8600E213B5 /* UltraCompactPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F9F2A545F8600E213B5 /* UltraCompactPost.swift */; };
+		CD391FA22A571D2400E213B5 /* FeedPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391FA12A571D2400E213B5 /* FeedPreview.swift */; };
 		CD3FBCD32A4A4B8B00B2063F /* Messages Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */; };
 		CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */; };
 		CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */; };
@@ -523,6 +524,7 @@
 		CD391F9B2A53980900E213B5 /* ReplyToCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToCommentReply.swift; sourceTree = "<group>"; };
 		CD391F9D2A539F1800E213B5 /* ReplyToMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMention.swift; sourceTree = "<group>"; };
 		CD391F9F2A545F8600E213B5 /* UltraCompactPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UltraCompactPost.swift; sourceTree = "<group>"; };
+		CD391FA12A571D2400E213B5 /* FeedPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPreview.swift; sourceTree = "<group>"; };
 		CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Messages Tracker.swift"; sourceTree = "<group>"; };
 		CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Replies Tracker.swift"; sourceTree = "<group>"; };
 		CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReplies.swift; sourceTree = "<group>"; };
@@ -760,6 +762,7 @@
 				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
 				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
+				CD391FA12A571D2400E213B5 /* FeedPreview.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1883,6 +1886,7 @@
 				CD3FBCE12A4A836000B2063F /* All Items Feed View.swift in Sources */,
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */,
+				CD391FA22A571D2400E213B5 /* FeedPreview.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
 				63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,

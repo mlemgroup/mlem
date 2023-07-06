@@ -13,7 +13,7 @@ extension Theme {
     static let mlem = Theme()
         .text {
             ForegroundColor(.text)
-            BackgroundColor(.systemBackground)
+            BackgroundColor(.clear)
             FontSize(16)
         }
         .code {
@@ -246,6 +246,5 @@ struct MarkdownView: View {
         Markdown(text)
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .markdownTheme(.mlem)
-            .background(Color.systemBackground)
     }
 }

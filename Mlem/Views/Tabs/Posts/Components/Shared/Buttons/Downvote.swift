@@ -15,7 +15,7 @@ struct DownvoteButton: View {
         Image(systemName: "arrow.down")
             .frame(width: size, height: size)
             .foregroundColor(vote == .downvote ? .white : .primary)
-            .background(RoundedRectangle(cornerRadius: 4)
+            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(vote == .downvote ? .downvoteColor : .clear))
 

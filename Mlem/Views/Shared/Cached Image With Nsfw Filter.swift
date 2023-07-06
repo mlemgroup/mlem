@@ -24,55 +24,49 @@ struct CachedImageWithNsfwFilter: View {
         self.url = url
         self._showNsfwFilterToggle = .init(initialValue: true)
     }
-
+    
     var body: some View {
-        ZStack {
-            CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .blur(radius: showNsfwFilter ? 30 : 0)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-                    .allowsHitTesting(false)
-            } placeholder: {
-                ProgressView()
+        CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
+            image
+                .resizable()
+                .scaledToFill()
+                .blur(radius: showNsfwFilter ? 30 : 0)
+                .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
+                .overlay(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                    .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+                .allowsHitTesting(false)
+                .overlay(nsfwOverlay)
+        } placeholder: {
+            ProgressView()
+        }
+    }
+    
+    @ViewBuilder
+    var nsfwOverlay: some View {
+        if showNsfwFilter {
+            VStack {
+                Image(systemName: "exclamationmark.triangle")
+                    .font(.largeTitle)
+                Text("NSFW")
+                    .fontWeight(.black)
+                Text("Tap to view")
+                    .font(.callout)
             }
-
-            if showNsfwFilter {
-                VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.largeTitle)
-                    Text("NSFW")
-                        .fontWeight(.black)
-                    Text("Tap to view")
-                        .font(.callout)
-                }
-                .foregroundColor(.white)
-                .padding(8)
+            .foregroundColor(.white)
+            .padding(8)
+            .onTapGesture {
+                showNsfwFilterToggle.toggle()
+            }
+        } else if isNsfw && shouldBlurNsfw {
+            Image(systemName: "eye.slash")
+                .padding(4)
+                .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                    .foregroundColor(.systemBackground))
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
-            } else if isNsfw && shouldBlurNsfw {
-                // stacks are here to align image to top left of ZStack
-                // TODO: less janky way to do this?
-                HStack {
-                    VStack {
-                        Image(systemName: "eye.slash")
-                            .padding(4)
-                            .frame(alignment: .topLeading)
-                            .background(RoundedRectangle(cornerRadius: 4)
-                                .foregroundColor(.systemBackground))
-                            .onTapGesture {
-                                showNsfwFilterToggle.toggle()
-                            }
-                            .padding(4)
-                        Spacer()
-                    }
-                    Spacer()
-                }
-            }
+                .padding(4)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
     }
 }

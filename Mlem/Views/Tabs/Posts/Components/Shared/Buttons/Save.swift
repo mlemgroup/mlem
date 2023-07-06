@@ -28,7 +28,7 @@ struct SaveButton: View {
         Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
             .frame(width: size, height: size)
             .foregroundColor(isSaved ? .white : .primary)
-            .background(RoundedRectangle(cornerRadius: 4)
+            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(isSaved ? .saveColor : .clear))
             .onTapGesture { save() }

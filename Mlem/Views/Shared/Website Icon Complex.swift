@@ -55,8 +55,7 @@ struct WebsiteIconComplex: View {
                     if let thumbnailURL = post.thumbnailUrl {
                         VStack(alignment: .center, spacing: 0) {
                             CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxWidth: .infinity, maxHeight: 400)
+                                .frame(maxHeight: 400)
                                 .clipped()
 
                             Divider()

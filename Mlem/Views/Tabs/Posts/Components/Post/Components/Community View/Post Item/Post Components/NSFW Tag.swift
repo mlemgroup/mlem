@@ -18,7 +18,7 @@ struct NSFWTag: View {
         Text("NSFW")
             .foregroundColor(.white)
             .padding(2)
-            .background(RoundedRectangle(cornerRadius: 4)
+            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                 .foregroundColor(.red))
             .font((compact ? Font.caption2 : Font.subheadline).weight(compact ? Font.Weight.heavy : Font.Weight.black))
     }
@@ -32,7 +32,7 @@ struct NSFWToggle: View {
         Text("NSFW")
             .foregroundColor(isEnabled ? .white : .gray.opacity(0.6))
             .padding(2)
-            .background(RoundedRectangle(cornerRadius: 4)
+            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                 .foregroundColor(isEnabled ? .red : .white))
             .font((compact ? Font.caption : Font.subheadline).weight(Font.Weight.black))
             .accessibilityAddTraits(.isButton)
