@@ -16,7 +16,6 @@ import SwiftUI
 /**
  Displays a single post in the feed
  */
-// swiftlint:disable function_body_length
 struct FeedPost: View {
     // MARK: Environment
     @AppStorage("postSize") var postSize: PostSize = .headline
