@@ -135,11 +135,15 @@ struct CommunityLabel: View {
         serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
     }
     
+    private func avatarUrl(from: URL) -> URL {
+        serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
+    }
+    
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
             if let communityAvatarLink = community.icon {
-                CachedAsyncImage(url: communityAvatarLink, urlCache: AppConstants.urlCache) { image in
+                CachedAsyncImage(url: avatarUrl(from: communityAvatarLink), urlCache: AppConstants.urlCache) { image in
                     if let avatar = image.image {
                         avatar
                             .resizable()

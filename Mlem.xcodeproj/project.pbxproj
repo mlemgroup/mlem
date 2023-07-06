@@ -184,6 +184,7 @@
 		6D8F08FF2A4029AE003EB4FD /* Community List View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F08FE2A4029AE003EB4FD /* Community List View.swift */; };
 		6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */; };
 		6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */; };
+		6DA61F892A575DF1001EA633 /* URL - Lemmy Image Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */; };
 		6DA7E9A22A50764E0095AB68 /* UserViewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA7E9A12A50764E0095AB68 /* UserViewTab.swift */; };
 		6DCE71292A53C26600CFEB5E /* ServerInstanceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */; };
 		6DD8677A2A5083A200BEB00F /* Community Sidebar Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD867792A5083A200BEB00F /* Community Sidebar Link.swift */; };
@@ -472,6 +473,7 @@
 		6D8F08FE2A4029AE003EB4FD /* Community List View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Community List View.swift"; sourceTree = "<group>"; };
 		6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListSidebarEntry.swift; sourceTree = "<group>"; };
 		6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowViews.swift; sourceTree = "<group>"; };
+		6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL - Lemmy Image Parameters.swift"; sourceTree = "<group>"; };
 		6DA7E9A12A50764E0095AB68 /* UserViewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewTab.swift; sourceTree = "<group>"; };
 		6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerInstanceLocation.swift; sourceTree = "<group>"; };
 		6DD867792A5083A200BEB00F /* Community Sidebar Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Sidebar Link.swift"; sourceTree = "<group>"; };
@@ -760,6 +762,7 @@
 				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
 				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
+				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1672,6 +1675,7 @@
 				6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */,
 				6372186B2A3A2AAD008C4816 /* GetComments.swift in Sources */,
 				6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */,
+				6DA61F892A575DF1001EA633 /* URL - Lemmy Image Parameters.swift in Sources */,
 				CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */,
 				CDE6A81A2A490B970062D161 /* Inbox Reply View.swift in Sources */,
 				CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */,
