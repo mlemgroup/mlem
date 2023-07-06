@@ -14,12 +14,10 @@ class FiltersTracker: ObservableObject {
     init() {
         _filteredUsers = .init(initialValue: [])
         _filteredKeywords = .init(initialValue: FiltersTracker.loadFilters())
-        print("now filtering: \(_filteredKeywords.projectedValue.count)")
     }
 
     static func loadFilters() -> [String] {
         if FileManager.default.fileExists(atPath: AppConstants.filteredKeywordsFilePath.path) {
-//            print("Filtered keywords file exists, will attempt to load blocked keywords")
             do {
                 return try decodeFromFile(
                     fromURL: AppConstants.filteredKeywordsFilePath,
