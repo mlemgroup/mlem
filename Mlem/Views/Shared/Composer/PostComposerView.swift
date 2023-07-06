@@ -106,9 +106,9 @@ struct PostComposerView: View {
 
                     // Community Row
                     HStack {
-                        CommunityLabel(shouldShowCommunityIcons: true,
-                                       community: community,
-                                       serverInstanceLocation: .bottom
+                        CommunityLabel(community: community,
+                                       serverInstanceLocation: .bottom,
+                                       overrideShowAvatar: true
                         )
                         Spacer()
                         // NSFW Toggle

@@ -12,33 +12,32 @@ struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     @Environment(\.scenePhase) var phase
-
+    
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-
+    
     @State var navigationPath = NavigationPath()
-
+    
     @State var isShowingInstanceAdditionSheet: Bool = false
-
+    
     @State var rootDetails: CommunityLinkWithContext?
-
+    
     var body: some View {
-
         NavigationSplitView {
             AccountsPage(isShowingInstanceAdditionSheet: $isShowingInstanceAdditionSheet)
         } content: {
-                if appState.currentActiveAccount != nil {
-                    CommunityListView(
-                        account: appState.currentActiveAccount!,
-                        selectedCommunity: $rootDetails
-                    ).id(appState.currentActiveAccount!.id)
-                } else {
-                    Text("You need to be signed in to browse Lemmy")
-                    Button {
-                        isShowingInstanceAdditionSheet.toggle()
-                    } label: {
-                        Label("Sign in", systemImage: "person.badge.plus")
-                    }
+            if appState.currentActiveAccount != nil {
+                CommunityListView(
+                    account: appState.currentActiveAccount!,
+                    selectedCommunity: $rootDetails
+                ).id(appState.currentActiveAccount!.id)
+            } else {
+                Text("You need to be signed in to browse Lemmy")
+                Button {
+                    isShowingInstanceAdditionSheet.toggle()
+                } label: {
+                    Label("Sign in", systemImage: "person.badge.plus")
                 }
+            }
         } detail: {
             if rootDetails != nil {
                 NavigationStack(path: $navigationPath) {
@@ -72,7 +71,7 @@ struct FeedRoot: View {
             } label: {
                 Text("Close")
             }
-
+            
         } message: {
             Text(appState.alertMessage)
         }
@@ -96,7 +95,7 @@ struct FeedRoot: View {
                     appState.currentActiveAccount = account
                 }
             }
-
+            
             guard appState.currentActiveAccount != nil else {
                 appState.toast = AlertToast(
                     displayMode: .hud,
@@ -113,7 +112,7 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
 
-                HandleLemmyLinkResolution(appState: _appState,
+                _ = HandleLemmyLinkResolution(appState: _appState,
                                           navigationPath: $navigationPath,
                                           local: "Deep-Link onOpenURL"
                 )
@@ -128,10 +127,10 @@ struct FeedRoot: View {
                 if appState.currentActiveAccount != nil,
                    let shortcutItem = FeedType(rawValue:
                                                 shortcutItemToProcess?.type ??
-                                                "nothing to see here"
-                ) {
+                                               "nothing to see here"
+                   ) {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: shortcutItem)
-
+                    
                     shortcutItemToProcess = nil
                 }
             }
@@ -142,5 +141,26 @@ struct FeedRoot: View {
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
         FeedRoot()
+    }
+}
+
+private func subscribe(account: SavedAccount, communityId: Int, shouldSubscribe: Bool) async -> Bool {
+    do {
+        let request = FollowCommunityRequest(
+            account: account,
+            communityId: communityId,
+            follow: shouldSubscribe
+        )
+        
+        _ = try await APIClient().perform(request: request)
+        return true
+    } catch {
+        // TODO: If we fail here and want to notify the user we'd ideally
+        // want to do so from the parent view, I think it would be worth refactoring
+        // this view so that the responsibility for performing the call is removed
+        // and handled by the parent, for now we will fail silently the UI state
+        // will not update so will continue to be accurate
+        print(error)
+        return false
     }
 }
