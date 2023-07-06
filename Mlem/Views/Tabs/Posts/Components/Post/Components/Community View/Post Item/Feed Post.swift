@@ -24,7 +24,7 @@ struct FeedPost: View {
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
-    
+
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @Environment(\.translateText) var translateText
@@ -103,7 +103,7 @@ struct FeedPost: View {
             ReportComposerView(account: account, reportedPost: postView)
         }
     }
-    
+
     private func calculateServerInstanceLocation() -> ServerInstanceLocation {
         guard shouldShowUserServerInPost else {
             return .disabled
@@ -133,12 +133,12 @@ struct FeedPost: View {
                 // }
                 HStack {
                     CommunityLinkView(community: postView.community)
-                    
+
                     Spacer()
-                    
+
                     EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                 }
-                
+
                 if postSize == .headline {
                     CompactPost(
                         postView: postView,
@@ -150,12 +150,12 @@ struct FeedPost: View {
                         isExpanded: false
                     )
                 }
-                
+
                 // posting user
                 if showPostCreator {
                     UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom)
                 }
-                
+
                 if showInteractionBar {
                     PostInteractionBar(postView: postView,
                                        account: account,
@@ -188,7 +188,7 @@ struct FeedPost: View {
             print("failed to delete post: \(error)")
         }
     }
-    
+
     func replyToThisPost() {
         if let replyCallback = replyToPost {
             replyCallback(postView)
@@ -304,7 +304,7 @@ struct FeedPost: View {
                 showShareSheet(URLtoShare: url)
             }
         })
-        
+
         // translate
         ret.append(MenuFunction(
             text: "Translate",
@@ -365,7 +365,7 @@ extension FeedPost {
 
     var downvoteSwipeAction: SwipeAction? {
         guard appState.enableDownvote else { return nil }
-        
+
         let (emptySymbolName, fullSymbolName) = postView.myVote == .downvote ?
         (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
         (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
