@@ -36,6 +36,7 @@ struct ReplyButton: View {
             Image(systemName: replyIcon)
             Text(String(replyCount))
         }
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(replyButtonText)
         .accessibilityAction(named: replyButtonText) { replyCallback() }
         .onTapGesture { replyCallback() }

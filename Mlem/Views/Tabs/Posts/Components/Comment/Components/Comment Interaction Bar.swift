@@ -69,8 +69,9 @@ struct CommentInteractionBar: View {
                 Image(systemName: "clock")
                 Text(publishedAgo)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Published \(publishedAgo)")
             .foregroundColor(.secondary)
-            // Hi Weston--this will be a TimeDisplay within the next day or so, so probably not worth doing a11y stuff to it
         }
         .font(.callout)
     }
