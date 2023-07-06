@@ -26,14 +26,14 @@ struct ContentView: View {
                     Label("Feeds", systemImage: "scroll")
                         .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
                 }.tag(1)
-
+            
             if let currentActiveAccount = appState.currentActiveAccount {
                 InboxView(account: currentActiveAccount)
                     .tabItem {
                         Label("Inbox", systemImage: "mail.stack")
                             .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                     }.tag(2)
-
+                
                 NavigationView {
                     ProfileView(account: currentActiveAccount)
                 } .tabItem {
@@ -41,7 +41,7 @@ struct ContentView: View {
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }.tag(3)
             }
-
+            
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")

@@ -105,7 +105,8 @@ struct CommentItem: View {
                     CommentBodyView(commentView: hierarchicalComment.commentView,
                                     isCollapsed: isCollapsed,
                                     showPostContext: showPostContext,
-                                    showCommentCreator: showCommentCreator)
+                                    showCommentCreator: showCommentCreator,
+                                    menuFunctions: genMenuFunctions())
 
                     if showInteractionBar {
                         CommentInteractionBar(commentView: hierarchicalComment.commentView,
@@ -117,7 +118,7 @@ struct CommentItem: View {
                                               downvote: downvote,
                                               saveComment: saveComment,
                                               deleteComment: deleteComment,
-                                              menuFunctions: genMenuFunctions())
+                                              replyToComment: replyToCommentUnwrapped)
                     }
                 }
                 .padding(AppConstants.postAndCommentSpacing)

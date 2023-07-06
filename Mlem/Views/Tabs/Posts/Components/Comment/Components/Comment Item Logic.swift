@@ -98,6 +98,12 @@ extension CommentItem {
             replyCallback(hierarchicalComment.commentView)
         }
     }
+    
+    func replyToCommentUnwrapped() {
+        if let replyCallback = replyToComment {
+            replyCallback(hierarchicalComment.commentView)
+        }
+    }
 
     /**
      Sends a save request for the current post

@@ -21,17 +21,19 @@ struct UltraCompactPost: View {
     // arguments
     let postView: APIPostView
     let account: SavedAccount
+    let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
     // computed
     let voteColor: Color
     let voteIconName: String
     var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
-    var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
+    let publishedAgo: String
 
-    init(postView: APIPostView, account: SavedAccount, menuFunctions: [MenuFunction]) {
+    init(postView: APIPostView, account: SavedAccount, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
         self.account = account
+        self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
         
         switch postView.myVote {
@@ -45,6 +47,8 @@ struct UltraCompactPost: View {
             voteIconName = "arrow.up"
             voteColor = .secondary
         }
+        
+        self.publishedAgo = getTimeIntervalFromNow(date: postView.post.published )
     }
     
     var body: some View {
@@ -52,17 +56,29 @@ struct UltraCompactPost: View {
             thumbnailImage
             
             VStack(alignment: .leading, spacing: 6) {
-                UserProfileLink(user: postView.creator, serverInstanceLocation: .trailing, showAvatar: false)
-                    .padding(.bottom, -2)
+                HStack {
+                    Group {
+                        if showCommunity {
+                            CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                        } else {
+                            UserProfileLink(user: postView.creator, serverInstanceLocation: .trailing)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+                        .padding(.trailing, 6)
+                }
+                .padding(.bottom, -2)
                 
                 Text(postView.post.name)
                     .font(.subheadline)
                 
                 compactInfo
             }
-            
-            Spacer()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(AppConstants.postAndCommentSpacing)
     }
     
@@ -105,7 +121,19 @@ struct UltraCompactPost: View {
     
     @ViewBuilder
     private var compactInfo: some View {
-        HStack(spacing: AppConstants.postAndCommentSpacing) {
+        HStack(spacing: 8) {
+            if postView.post.featuredCommunity {
+                if postView.post.featuredLocal {
+                    StickiedTag(tagType: .local, compact: true)
+                } else if postView.post.featuredCommunity {
+                    StickiedTag(tagType: .community, compact: true)
+                }
+            }
+            
+            if postView.post.nsfw || postView.community.nsfw {
+                NSFWTag(compact: true)
+            }
+            
             HStack(spacing: 2) {
                 Image(systemName: voteIconName)
                 Text(postView.counts.score.description)
@@ -114,19 +142,21 @@ struct UltraCompactPost: View {
             .accessibilityElement(children: .combine)
             
             HStack(spacing: 2) {
-                Image(systemName: "bubble.right")
-                Text(postView.counts.comments.description)
-            }
-            .accessibilityElement(children: .combine)
-            
-            HStack(spacing: 2) {
                 Image(systemName: "clock")
                 Text(publishedAgo.description)
             }
             .accessibilityElement(children: .combine)
             
-            EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+            Image(systemName: "bookmark")
+                .foregroundColor(postView.saved ? .saveColor : .secondary)
+            
+            HStack(spacing: 2) {
+                Image(systemName: "bubble.right")
+                Text(postView.counts.comments.description)
+            }
+            .accessibilityElement(children: .combine)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .font(.footnote)
         .foregroundColor(.secondary)
     }

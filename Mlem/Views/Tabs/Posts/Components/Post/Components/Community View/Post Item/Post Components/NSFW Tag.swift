@@ -9,6 +9,10 @@ import SwiftUI
 
 struct NSFWTag: View {
     let compact: Bool
+    
+    init(compact: Bool = false) {
+        self.compact = compact
+    }
 
     var body: some View {
         Text("NSFW")
@@ -16,7 +20,7 @@ struct NSFWTag: View {
             .padding(2)
             .background(RoundedRectangle(cornerRadius: 4)
                 .foregroundColor(.red))
-            .font((compact ? Font.caption : Font.subheadline).weight(Font.Weight.black))
+            .font((compact ? Font.caption2 : Font.subheadline).weight(compact ? Font.Weight.heavy : Font.Weight.black))
     }
 }
 
