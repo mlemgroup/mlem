@@ -116,6 +116,7 @@ struct CommentItem: View {
                                               downvote: downvote,
                                               saveComment: saveComment,
                                               deleteComment: deleteComment,
+                                              replyToComment: replyToCommentUnwrapped,
                                               menuFunctions: genMenuFunctions())
                     }
                 }

@@ -40,6 +40,7 @@ struct PostInteractionBar: View {
     let voteOnPost: (ScoringOperation) async -> Void
     let updatedSavePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
+    let replyToPost: (() -> Void)?
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
@@ -50,7 +51,8 @@ struct PostInteractionBar: View {
         menuFunctions: [MenuFunction],
         voteOnPost: @escaping (ScoringOperation) async -> Void,
         updatedSavePost: @escaping (_ save: Bool) async throws -> Void,
-        deletePost: @escaping () async -> Void
+        deletePost: @escaping () async -> Void,
+        replyToPost: (() -> Void)?
     ) {
         self.postView = postView
         self.account = account
@@ -58,6 +60,7 @@ struct PostInteractionBar: View {
         self.menuFunctions = menuFunctions
         self.updatedSavePost = updatedSavePost
         self.deletePost = deletePost
+        self.replyToPost = replyToPost
         _dirtyVote = State(initialValue: postView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: postView.counts.score)
         _dirtySaved = State(initialValue: postView.saved)
@@ -65,32 +68,27 @@ struct PostInteractionBar: View {
     }
 
     var body: some View {
-        HStack(spacing: 12) {
-            VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
-                .padding(.trailing, 8)
-
-            SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "post") {
-                Task(priority: .userInitiated) {
-                    await savePost()
+        ZStack {
+            HStack(spacing: 12) {
+                VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
+                    .padding(.trailing, 8)
+                
+                EllipsisMenu(
+                    size: height,
+                    menuFunctions: menuFunctions
+                )
+                
+                Spacer()
+                
+                SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "post") {
+                    Task(priority: .userInitiated) {
+                        await savePost()
+                    }
                 }
+                
+                ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
             }
-
-            EllipsisMenu(
-                size: height,
-                menuFunctions: menuFunctions
-            )
-
-            Spacer()
-            infoBlock
-        }
-        .font(.callout)
-    }
-
-    // subviews
-
-    var infoBlock: some View {
-        // post info component
-        HStack(spacing: 8) {
+            
             HStack(spacing: iconToTextSpacing) {
                 Image(systemName: "clock")
                 Text(publishedAgo)
@@ -98,18 +96,11 @@ struct PostInteractionBar: View {
             .accessibilityAddTraits(.isStaticText)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Published \(publishedAgo) ago")
-            
-            HStack(spacing: iconToTextSpacing) {
-                Image(systemName: "bubble.left")
-                Text(String(postView.counts.comments))
-            }
-            .accessibilityAddTraits(.isStaticText)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel("\(postView.counts.comments) comments")
+            .foregroundColor(.secondary)
         }
-        .foregroundColor(.secondary)
+        .font(.callout)
     }
-
+    
     // helper functions
     
     func canDeletePost() -> Bool {

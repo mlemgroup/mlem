@@ -140,7 +140,8 @@ struct ExpandedPost: View {
                                menuFunctions: genMenuFunctions(),
                                voteOnPost: voteOnPost,
                                updatedSavePost: savePost,
-                               deletePost: deletePost)
+                               deletePost: deletePost,
+                               replyToPost: replyToPost)
         }
         .padding(AppConstants.postAndCommentSpacing)
     }
