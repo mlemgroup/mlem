@@ -56,12 +56,19 @@ struct UltraCompactPost: View {
             thumbnailImage
             
             VStack(alignment: .leading, spacing: 6) {
-                Group {
-                    if showCommunity {
-                        CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
-                    } else {
-                        UserProfileLink(user: postView.creator, serverInstanceLocation: .trailing)
+                HStack {
+                    Group {
+                        if showCommunity {
+                            CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                        } else {
+                            UserProfileLink(user: postView.creator, serverInstanceLocation: .trailing)
+                        }
                     }
+                    
+                    Spacer()
+                    
+                    EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+                        .padding(.trailing, 6)
                 }
                 .padding(.bottom, -2)
                 
@@ -114,49 +121,42 @@ struct UltraCompactPost: View {
     
     @ViewBuilder
     private var compactInfo: some View {
-        ZStack {
-            HStack(spacing: AppConstants.postAndCommentSpacing) {
-                if postView.post.featuredCommunity {
-                    if postView.post.featuredLocal {
-                        StickiedTag(tagType: .local, compact: true)
-                    } else if postView.post.featuredCommunity {
-                        StickiedTag(tagType: .community, compact: true)
-                    }
+        HStack(spacing: 8) {
+            if postView.post.featuredCommunity {
+                if postView.post.featuredLocal {
+                    StickiedTag(tagType: .local, compact: true)
+                } else if postView.post.featuredCommunity {
+                    StickiedTag(tagType: .community, compact: true)
                 }
-                
-                if postView.post.nsfw || postView.community.nsfw {
-                    NSFWTag(compact: true)
-                }
-                
-                HStack(spacing: 2) {
-                    Image(systemName: voteIconName)
-                    Text(postView.counts.score.description)
-                }
-                .foregroundColor(voteColor)
-                .accessibilityElement(children: .combine)
-                
-                EllipsisMenu(size: 12, menuFunctions: menuFunctions)
-   
-                Spacer()
-                
-                Image(systemName: "bookmark")
-                    .foregroundColor(postView.saved ? .saveColor : .secondary)
-                    .padding(.horizontal, 2) // keeps it from looking too crowded
-                
-                HStack(spacing: 2) {
-                    Image(systemName: "bubble.right")
-                    Text(postView.counts.comments.description)
-                }
-                .accessibilityElement(children: .combine)
             }
+            
+            if postView.post.nsfw || postView.community.nsfw {
+                NSFWTag(compact: true)
+            }
+            
+            HStack(spacing: 2) {
+                Image(systemName: voteIconName)
+                Text(postView.counts.score.description)
+            }
+            .foregroundColor(voteColor)
+            .accessibilityElement(children: .combine)
             
             HStack(spacing: 2) {
                 Image(systemName: "clock")
                 Text(publishedAgo.description)
             }
             .accessibilityElement(children: .combine)
+            
+            Image(systemName: "bookmark")
+                .foregroundColor(postView.saved ? .saveColor : .secondary)
+            
+            HStack(spacing: 2) {
+                Image(systemName: "bubble.right")
+                Text(postView.counts.comments.description)
+            }
+            .accessibilityElement(children: .combine)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .font(.footnote)
         .foregroundColor(.secondary)
     }
