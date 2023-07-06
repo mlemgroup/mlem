@@ -56,8 +56,7 @@ struct FeedRoot: View {
             }
         }
         .handleLemmyLinkResolution(
-            navigationPath: $navigationPath,
-            local: "Inside root feed"
+            navigationPath: $navigationPath
         )
         .environment(\.navigationPath, $navigationPath)
         .environmentObject(appState)
@@ -81,11 +80,11 @@ struct FeedRoot: View {
                     shortcutItemToProcess?.type ??
                     "nothing to see here"
                 ) ?? defaultFeed
-                var dits: CommunityLinkWithContext?
+                var detailsViewToDisplay: CommunityLinkWithContext?
                 if appState.currentActiveAccount != nil {
-                    dits = CommunityLinkWithContext(community: nil, feedType: feedType)
+                    detailsViewToDisplay = CommunityLinkWithContext(community: nil, feedType: feedType)
                 }
-                rootDetails = dits
+                rootDetails = detailsViewToDisplay
                 shortcutItemToProcess = nil
             }
         }
@@ -111,7 +110,7 @@ struct FeedRoot: View {
                 if rootDetails == nil {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
-//                didReceiveURL(url)
+                
                 _ = HandleLemmyLinkResolution(appState: _appState,
                                           navigationPath: $navigationPath
                 )
