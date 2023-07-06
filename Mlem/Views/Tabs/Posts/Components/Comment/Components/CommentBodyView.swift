@@ -10,7 +10,6 @@ import SwiftUI
 
 struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
     
     let commentView: APICommentView
     let isCollapsed: Bool
@@ -44,8 +43,7 @@ struct CommentBodyView: View {
                     user: commentView.creator,
                     serverInstanceLocation: shouldShowUserServerInComment ? .bottom : .disabled,
                     postContext: commentView.post,
-                    commentContext: commentView.comment,
-                    showAvatar: shouldShowUserAvatars
+                    commentContext: commentView.comment
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(commentorLabel)

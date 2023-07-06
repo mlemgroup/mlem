@@ -28,22 +28,23 @@ func shouldClipAvatar(url: URL?) -> Bool {
 }
 
 struct CommunityLinkView: View {
-    // settings
-    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    
     let community: APICommunity
     let serverInstanceLocation: ServerInstanceLocation
+    let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system setting
     
-    init(community: APICommunity, serverInstanceLocation: ServerInstanceLocation = .bottom) {
+    init(community: APICommunity,
+         serverInstanceLocation: ServerInstanceLocation = .bottom,
+         overrideShowAvatar: Bool? = nil) {
         self.community = community
         self.serverInstanceLocation = serverInstanceLocation
+        self.overrideShowAvatar = overrideShowAvatar
     }
     
     var body: some View {
         NavigationLink(value: community) {
-            CommunityLabel(shouldShowCommunityIcons: shouldShowCommunityIcons,
-                           community: community,
-                           serverInstanceLocation: serverInstanceLocation
+            CommunityLabel(community: community,
+                           serverInstanceLocation: serverInstanceLocation,
+                           overrideShowAvatar: overrideShowAvatar
             )
         }
     }
@@ -56,11 +57,28 @@ struct CommunityLabel: View {
     // parameters
     let community: APICommunity
     let serverInstanceLocation: ServerInstanceLocation
+    let overrideShowAvatar: Bool? // if present, shows or hides the avatar according to value; otherwise uses system setting
+
+    var showAvatar: Bool {
+        if let overrideShowAvatar = overrideShowAvatar {
+            return overrideShowAvatar
+        } else {
+            return shouldShowCommunityIcons
+        }
+    }
+    
+    init(community: APICommunity,
+         serverInstanceLocation: ServerInstanceLocation,
+         overrideShowAvatar: Bool? = nil) {
+        self.community = community
+        self.serverInstanceLocation = serverInstanceLocation
+        self.overrideShowAvatar = overrideShowAvatar
+    }
     
     var body: some View {
         Group {
             HStack(alignment: .bottom, spacing: AppConstants.largeAvatarSpacing) {
-                if shouldShowCommunityIcons {
+                if showAvatar {
                     if shouldClipAvatar(community: community) {
                         communityAvatar
                             .clipShape(Circle())

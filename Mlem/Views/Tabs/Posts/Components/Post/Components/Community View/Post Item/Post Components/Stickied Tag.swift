@@ -14,9 +14,11 @@ enum StickiedTagType {
 
 struct StickiedTag: View {
     let tagType: StickiedTagType
+    let compact: Bool
     
-    init(tagType: StickiedTagType = StickiedTagType.community) {
+    init(tagType: StickiedTagType = StickiedTagType.community, compact: Bool = false) {
         self.tagType = tagType
+        self.compact = compact
     }
 
     var body: some View {
@@ -25,6 +27,7 @@ struct StickiedTag: View {
                 .foregroundColor(calculateColor())
                 .accessibilityLabel(tagType == .local ? "Post stickied to your local instance" : "Post stickied to your current community")
         }
+        .font(compact ? .footnote : .subheadline)
         .foregroundColor(.mint)
     }
     
