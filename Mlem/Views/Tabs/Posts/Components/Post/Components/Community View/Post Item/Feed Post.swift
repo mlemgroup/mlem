@@ -12,10 +12,11 @@
 import CachedAsyncImage
 import QuickLook
 import SwiftUI
-
+// swiftlint:disable type_body_length
 /**
  Displays a single post in the feed
  */
+// swiftlint:disable function_body_length
 struct FeedPost: View {
     // MARK: Environment
     @AppStorage("postSize") var postSize: PostSize = .headline
@@ -335,6 +336,7 @@ struct FeedPost: View {
     }
     // swiftlint:enable function_body_length
 }
+// swiftlint:enable type_body_length
 
 // MARK: - Swipe Actions
 
