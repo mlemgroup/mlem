@@ -114,43 +114,45 @@ struct UltraCompactPost: View {
     
     @ViewBuilder
     private var compactInfo: some View {
-        HStack(spacing: AppConstants.postAndCommentSpacing) {
-            if postView.post.featuredCommunity {
-                if postView.post.featuredLocal {
-                    StickiedTag(tagType: .local, compact: true)
-                } else if postView.post.featuredCommunity {
-                    StickiedTag(tagType: .community, compact: true)
+        ZStack {
+            HStack(spacing: AppConstants.postAndCommentSpacing) {
+                if postView.post.featuredCommunity {
+                    if postView.post.featuredLocal {
+                        StickiedTag(tagType: .local, compact: true)
+                    } else if postView.post.featuredCommunity {
+                        StickiedTag(tagType: .community, compact: true)
+                    }
                 }
+                
+                if postView.post.nsfw || postView.community.nsfw {
+                    NSFWTag(compact: true)
+                }
+                
+                HStack(spacing: 2) {
+                    Image(systemName: voteIconName)
+                    Text(postView.counts.score.description)
+                }
+                .foregroundColor(voteColor)
+                .accessibilityElement(children: .combine)
+                
+                EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+   
+                Spacer()
+                
+                Image(systemName: "bookmark")
+                    .foregroundColor(postView.saved ? .saveColor : .secondary)
+                    .padding(.horizontal, 2) // keeps it from looking too crowded
+                
+                HStack(spacing: 2) {
+                    Image(systemName: "bubble.right")
+                    Text(postView.counts.comments.description)
+                }
+                .accessibilityElement(children: .combine)
             }
-            
-            if postView.post.nsfw || postView.community.nsfw {
-                NSFWTag(compact: true)
-            }
-            
-            HStack(spacing: 2) {
-                Image(systemName: voteIconName)
-                Text(postView.counts.score.description)
-            }
-            .foregroundColor(voteColor)
-            .accessibilityElement(children: .combine)
-            
-            Image(systemName: "bookmark")
-                .foregroundColor(postView.saved ? .saveColor : .secondary)
-                .padding(.horizontal, 2) // keeps it from looking too crowded
-            
-            EllipsisMenu(size: 12, menuFunctions: menuFunctions)
-            
-            Spacer()
             
             HStack(spacing: 2) {
                 Image(systemName: "clock")
                 Text(publishedAgo.description)
-            }
-            .accessibilityElement(children: .combine)
-            
-            HStack(spacing: 2) {
-                Image(systemName: "bubble.right")
-                Text(postView.counts.comments.description)
             }
             .accessibilityElement(children: .combine)
         }
