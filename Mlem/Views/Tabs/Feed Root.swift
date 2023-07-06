@@ -112,9 +112,8 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
 //                didReceiveURL(url)
-                HandleLemmyLinkResolution(appState: _appState,
-                                          navigationPath: $navigationPath,
-                                          local: "Deep-Link onOpenURL"
+                _ = HandleLemmyLinkResolution(appState: _appState,
+                                          navigationPath: $navigationPath
                 )
                 .didReceiveURL(url)
             }

@@ -21,14 +21,14 @@ class FavoriteCommunitiesTracker: ObservableObject {
                     fromURL: AppConstants.favoriteCommunitiesFilePath,
                     whatToDecode: .favoriteCommunities
                 ) as? [FavoriteCommunity] ?? []
-            } catch let favoriteCommunitiesDecodingError {
+            } catch {
             }
             // TODO: Hande
         } else {
             // TODO: - AppConstants proper emptyFileCreationError handling
             do {
                 try createEmptyFile(at: AppConstants.favoriteCommunitiesFilePath)
-            } catch let emptyFileCreationError {
+            } catch {
                 // TODO: Hande
             }
         }
