@@ -10,7 +10,7 @@ import SwiftUI
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 struct CommunityView: View {
-    
+
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -51,12 +51,6 @@ struct CommunityView: View {
 
     var isInSpecificCommunity: Bool { community != nil }
 
-    private var filteredPosts: [APIPostView] {
-        postTracker.items.filter { postView in
-            !postView.post.name.contains(filtersTracker.filteredKeywords)
-        }
-    }
-
     var body: some View {
         ZStack(alignment: .top) {
             searchResultsView
@@ -82,34 +76,39 @@ struct CommunityView: View {
                         account: account,
                         communityId: community?.id,
                         sort: postSortType,
-                        type: feedType
+                        type: feedType,
+                        filtering: { postView in
+                            !postView.post.name.contains(filtersTracker.filteredKeywords)
+                        }
                     )
 
                     isRefreshing = false
                 }
             }
-            .task(priority: .userInitiated) {
-                if postTracker.items.isEmpty {
-                    print("Post tracker is empty")
-                    await loadFeed()
-                } else {
-                    print("Post tracker is not empty")
+            .onAppear {
+                Task(priority: .userInitiated) {
+                    if postTracker.items.isEmpty {
+                        print("Post tracker is empty")
+                        await loadFeed()
+                    } else {
+                        print("Post tracker is not empty")
+                    }
                 }
-            }
-            .task(priority: .background) {
-                if isInSpecificCommunity, let community {
-                    do {
-                        communityDetails = try await loadCommunityDetails(
-                            community: community,
-                            account: account,
-                            appState: appState
-                        )
-                    } catch let communityDetailsFetchingError {
-                        print("Failed while fetching community details: \(communityDetailsFetchingError)")
+                Task(priority: .background) {
+                    if isInSpecificCommunity, let community {
+                        do {
+                            communityDetails = try await loadCommunityDetails(
+                                community: community,
+                                account: account,
+                                appState: appState
+                            )
+                        } catch let communityDetailsFetchingError {
+                            print("Failed while fetching community details: \(communityDetailsFetchingError)")
 
-                        appState.alertTitle = "Could not load community information"
-                        appState.alertMessage = "The server might be overloaded.\nTry again later."
-                        appState.isShowingAlert.toggle()
+                            appState.alertTitle = "Could not load community information"
+                            appState.alertMessage = "The server might be overloaded.\nTry again later."
+                            appState.isShowingAlert.toggle()
+                        }
                     }
                 }
             }
@@ -188,7 +187,7 @@ struct CommunityView: View {
                                             )) {
                                 Label("Sidebar", systemImage: "sidebar.right")
                             }
-                            
+
                             Button {
                                 isComposingPost.toggle()
                             } label: {
@@ -221,7 +220,7 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
-                            
+
                             SubscribeButton(
                                 communityDetails: Binding(
                                     get: {
@@ -233,7 +232,7 @@ struct CommunityView: View {
                                     }),
                                 account: account
                             )
-                            
+
                             BlockCommunityButton(account: account, communityDetails: Binding(
                                 get: {
                                     communityDetails.communityView
@@ -263,7 +262,7 @@ struct CommunityView: View {
                                 Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                             }
                         }
-                        
+
                         Menu {
                             if postSize != .compact {
                                 Button {
@@ -272,7 +271,7 @@ struct CommunityView: View {
                                     Label("Compact", systemImage: "rectangle.compress.vertical")
                                 }
                             }
-                            
+
                             if postSize != .headline {
                                 Button {
                                     postSize = .headline
@@ -280,7 +279,7 @@ struct CommunityView: View {
                                     Label("Headline", systemImage: "rectangle")
                                 }
                             }
-                            
+
                             if postSize != .large {
                                 Button {
                                     postSize = .large
@@ -373,7 +372,7 @@ struct CommunityView: View {
     }
 
     private var postListView: some View {
-        ForEach(filteredPosts) { post in
+        ForEach(postTracker.items, id: \.id) { post in
             NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)) {
                 FeedPost(
                     postView: post,
@@ -385,9 +384,11 @@ struct CommunityView: View {
                 )
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
-            .task {
-                if postTracker.shouldLoadContent(after: post) {
-                    await loadFeed()
+            .onAppear {
+                Task(priority: .medium) {
+                    if postTracker.shouldLoadContent(after: post) {
+                        await loadFeed()
+                    }
                 }
             }
         }
@@ -408,7 +409,7 @@ struct CommunityView: View {
             .accessibilityElement(children: .combine)
         }
     }
-    
+
     func replyToPost(replyTo: APIPostView) {
         replyingToPost = replyTo
     }
@@ -419,26 +420,32 @@ struct CommunityView: View {
                 account: account,
                 communityId: community?.id,
                 sort: postSortType,
-                type: feedType
+                type: feedType,
+                filtering: { postView in
+                    !postView.post.name.contains(filtersTracker.filteredKeywords)
+                }
             )
         } catch {
             handle(error)
         }
     }
-    
+
     func refreshFeed() async {
         do {
             try await postTracker.refresh(
                 account: account,
                 communityId: community?.id,
                 sort: postSortType,
-                type: feedType
+                type: feedType,
+                filtering: { postView in
+                    !postView.post.name.contains(filtersTracker.filteredKeywords)
+                }
             )
         } catch {
             handle(error)
         }
     }
-    
+
     private func handle(_ error: Error) {
         switch error {
         case APIClientError.networking:
@@ -447,7 +454,7 @@ struct CommunityView: View {
             guard postTracker.items.isEmpty else {
                 return
             }
-            
+
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"
