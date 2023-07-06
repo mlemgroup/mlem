@@ -45,7 +45,6 @@ struct CompactPost: View {
                 }
 
                 VStack(spacing: 2) {
-                    
                     HStack(alignment: .top, spacing: 4) {
                         if postView.post.featuredLocal {
                             StickiedTag(tagType: .local)

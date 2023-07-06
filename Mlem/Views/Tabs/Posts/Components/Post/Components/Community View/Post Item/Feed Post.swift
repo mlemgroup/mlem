@@ -123,11 +123,18 @@ struct FeedPost: View {
                 menuFunctions: genMenuFunctions()
             )
         } else {
-            
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
                 // community name
-                if showCommunity {
+                // TEMPORARILY DISABLED: conditionally showing based on community
+                // if showCommunity {
+                //    CommunityLinkView(community: postView.community)
+                // }
+                HStack {
                     CommunityLinkView(community: postView.community)
+                    
+                    Spacer()
+                    
+                    EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                 }
                 
                 if postSize == .headline {
@@ -153,7 +160,8 @@ struct FeedPost: View {
                                        menuFunctions: genMenuFunctions(),
                                        voteOnPost: voteOnPost,
                                        updatedSavePost: { _ in await savePost() },
-                                       deletePost: deletePost)
+                                       deletePost: deletePost,
+                                       replyToPost: replyToThisPost)
                 }
             }
             .background(Color.systemBackground)
@@ -179,9 +187,11 @@ struct FeedPost: View {
         }
     }
     
-//    func replyToPost() {
-//        self.replyIsPresented = true
-//    }
+    func replyToThisPost() {
+        if let replyCallback = replyToPost {
+            replyCallback(postView)
+        }
+    }
 
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
