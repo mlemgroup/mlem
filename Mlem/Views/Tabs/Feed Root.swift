@@ -21,14 +21,6 @@ struct FeedRoot: View {
     
     @State var rootDetails: CommunityLinkWithContext?
     
-    // TEMP: tracks whether somebody has seen this alert or not
-    @State var showCCAlert: Bool = true
-    @State var navPath: NavigationPath = NavigationPath()
-    @State var subscribeSwapping: Bool = false
-    @State var subscriptionSwapText: String? = "Update my subscriptions"
-    @AppStorage("showCommunityChangeAlert") var showCommunityChangeAlert: Bool = true
-    // @State var showCommunityChangeAlert: Bool = true // dev - makes it show up every launch
-    
     var body: some View {
         NavigationSplitView {
             AccountsPage(isShowingInstanceAdditionSheet: $isShowingInstanceAdditionSheet)
@@ -143,101 +135,7 @@ struct FeedRoot: View {
                 }
             }
         }
-        .overlay {
-            if showCommunityChangeAlert {
-                communityChangeAlert()
-            }
-        }
     }
-    
-    func communityChangeAlert() -> some View {
-        VStack(spacing: 24) {
-            Text("We've moved!")
-                .font(.title)
-                .bold()
-                .padding(.bottom, 16)
-            
-            Text("Our official community has moved from lemmy.ml to vlemmy.net.")
-                .padding(.bottom, 16)
-            
-            if let account = appState.currentActiveAccount {
-                Button("Take me there") {
-                    Task(priority: .userInitiated) {
-                        let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account,
-                                                                                                     query: "https://vlemmy.net/c/mlemapp"))
-                        if let community = resolution.community {
-                            navigationPath.append(community)
-                            showCommunityChangeAlert = false
-                        }
-                    }
-                }
-            }
-            
-            if let subText = subscriptionSwapText {
-                Button(subText) {
-                    Task(priority: .userInitiated) {
-                        subscribeSwapping = true
-                        let result = await swapSubscriptions()
-                        subscribeSwapping = false
-                        if result {
-                            subscriptionSwapText = nil
-                        } else {
-                            subscriptionSwapText = "Retry"
-                        }
-                    }
-                }
-            }
-            
-            Button("Dismiss") {
-                showCCAlert = false
-                showCommunityChangeAlert = false
-            }
-            
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 50, height: 50)
-                .overlay { if subscribeSwapping { ProgressView() }}
-        }
-        .accessibilityAction(.escape) {
-            showCommunityChangeAlert = false
-        }
-        .multilineTextAlignment(.center)
-        .padding()
-        .frame(width: UIScreen.main.bounds.size.width * 0.8, height: UIScreen.main.bounds.size.height * 0.5)
-        .background(.regularMaterial)
-        .cornerRadius(16)
-    }
-    
-    // TEMP
-    func swapSubscriptions() async -> Bool {
-        do {
-            for account in accountsTracker.savedAccounts {
-                
-                // get community link for vlemmy
-                let vlemmyResolution = try await APIClient().perform(request: ResolveObjectRequest(account: account,
-                                                                                                   query: "https://vlemmy.net/c/mlemapp"))
-                if let community = vlemmyResolution.community {
-                    if !(await subscribe(account: account, communityId: community.community.id, shouldSubscribe: true)) {
-                        return false
-                    }
-                }
-                
-                // get community link for lemmy.ml
-                let mlResolution = try await APIClient().perform(request: ResolveObjectRequest(account: account,
-                                                                                               query: "https://lemmy.ml/c/mlemapp"))
-                if let community = mlResolution.community {
-                    if !(await subscribe(account: account, communityId: community.community.id, shouldSubscribe: false)) {
-                        return false
-                    }
-                }
-            }
-        } catch {
-            return false
-        }
-        
-        return true
-    }
-    
 }
 
 struct FeedRootPreview: PreviewProvider {
