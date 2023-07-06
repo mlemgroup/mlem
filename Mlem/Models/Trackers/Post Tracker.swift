@@ -8,14 +8,20 @@
 import Foundation
 
 class PostTracker: FeedTracker<APIPostView> {
-    
+
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
     ///   - account: The `SavedAccount` for the logged in user
     ///   - communityId: An optional `Int` if you are retrieving posts for a specific community
     ///   - sort: The sorting type for the feed
     ///   - type: The type of feed the tracker should load
-    func loadNextPage(account: SavedAccount, communityId: Int?, sort: PostSortType?, type: FeedType) async throws {
+    func loadNextPage(
+        account: SavedAccount,
+        communityId: Int?,
+        sort: PostSortType?,
+        type: FeedType,
+        filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
+    ) async throws {
         let response = try await perform(
             GetPostsRequest(
                 account: account,
@@ -24,15 +30,22 @@ class PostTracker: FeedTracker<APIPostView> {
                 sort: sort,
                 type: type,
                 limit: page == 1 ? 25 : 50
-            )
+            ),
+            filtering: filtering
         )
-        
+
         Task(priority: .background) {
             preloadImages(response.posts)
         }
     }
-    
-    func refresh(account: SavedAccount, communityId: Int?, sort: PostSortType?, type: FeedType) async throws {
+
+    func refresh(
+        account: SavedAccount,
+        communityId: Int?,
+        sort: PostSortType?,
+        type: FeedType,
+        filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
+    ) async throws {
         let response = try await refresh(
             GetPostsRequest(
                 account: account,
@@ -41,16 +54,17 @@ class PostTracker: FeedTracker<APIPostView> {
                 sort: sort,
                 type: type,
                 limit: 25
-            )
+            ),
+            filtering: filtering
         )
-        
+
         Task(priority: .background) {
             preloadImages(response.posts)
         }
     }
-    
+
     // MARK: - Private methods
-    
+
     private func preloadImages(_ newPosts: [APIPostView]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         for post in newPosts {
