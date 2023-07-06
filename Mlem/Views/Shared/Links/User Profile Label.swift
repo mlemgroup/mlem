@@ -74,7 +74,7 @@ struct UserProfileLabel: View {
     private var userAvatar: some View {
         Group {
             if let userAvatarLink = user.avatar {
-                CachedAsyncImage(url: userAvatarLink, urlCache: AppConstants.urlCache) { image in
+                CachedAsyncImage(url: avatarUrl(from: userAvatarLink), urlCache: AppConstants.urlCache) { image in
                     if let avatar = image.image {
                         avatar
                             .resizable()
@@ -97,6 +97,10 @@ struct UserProfileLabel: View {
     
     private func avatarSize() -> CGFloat {
         serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
+    }
+    
+    private func avatarUrl(from: URL) -> URL {
+        serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
     }
     
     private func defaultUserAvatar() -> some View {
