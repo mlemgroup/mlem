@@ -16,24 +16,32 @@ struct FeedPreview: ViewModifier {
         let gradientSize: CGFloat = 20
         
         content
-            .overlay {
-                GeometryReader { geo in
-                    if geo.size.height > AppConstants.maxFeedPostHeight {
-                        Rectangle()
-                            .fill(
-                                LinearGradient(colors: [.clear, .secondarySystemBackground], startPoint: .top, endPoint: .bottom)
-                            )
-                            .frame(maxWidth: .infinity)
-                            .frame(height: gradientSize)
-                            .offset(y: AppConstants.maxFeedPostHeight - gradientSize)
-                    }
-                }
-            }
+//            .overlay {
+//                GeometryReader { geo in
+//                    if geo.size.height > AppConstants.maxFeedPostHeight {
+//                        Rectangle()
+//                            .fill(
+//                                LinearGradient(colors: [.clear, .systemBackground], startPoint: .top, endPoint: .bottom)
+//                            )
+//                            .frame(maxWidth: .infinity)
+//                            .frame(height: gradientSize)
+//                            .offset(y: AppConstants.maxFeedPostHeight - gradientSize)
+//
+//                        Image(systemName: "chevron.down")
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//                            .offset(y: AppConstants.maxFeedPostHeight - (gradientSize * 2))
+//                            .frame(maxWidth: .infinity, alignment: .center)
+//                    }
+//                }
+//            }
             .frame(maxHeight: AppConstants.maxFeedPostHeight, alignment: .top)
+            .scaledToFill()
             .clipped()
             .cornerRadius(AppConstants.largeItemCornerRadius)
-            .padding(imageOnly ? 0 : 8)
-            .background(Color(UIColor.secondarySystemBackground))
+            // .padding(imageOnly ? 0 : 8)
+//            .padding(8)
+//            .background(Color(UIColor.secondarySystemBackground))
             .cornerRadius(AppConstants.largeItemCornerRadius)
     }
 }

@@ -53,13 +53,15 @@ struct LargePost: View {
                 }
             }
             
+            postContentView
+            
             // post body
-            if isExpanded {
-                postContentView
-            } else {
-                postContentView
-                    .feedPreview(imageOnly: postView.post.body == nil)
-            }
+//            if isExpanded {
+//                postContentView
+//            } else {
+//                postContentView
+//                    .feedPreview(imageOnly: postView.post.body == nil)
+//            }
         }
     }
 
@@ -70,7 +72,8 @@ struct LargePost: View {
         switch postView.postType {
         case .image(let url):
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                CachedImageWithNsfwFilter(isNsfw: postView.post.nsfw, url: url)
+                CachedImageWithNsfwFilter(isNsfw: postView.post.nsfw, url: url, cornerRadius: AppConstants.largeItemCornerRadius)
+                    .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : AppConstants.maxFeedPostHeight, alignment: .center)
                 postBodyView
             }
         case .link:
