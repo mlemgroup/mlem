@@ -125,8 +125,13 @@ struct ExpandedPost: View {
      */
     private var postView: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            
-            CommunityLinkView(community: post.community)
+            HStack {
+                CommunityLinkView(community: post.community)
+                
+                Spacer()
+                
+                EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+            }
             
             LargePost(
                 postView: post,

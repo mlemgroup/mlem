@@ -18,7 +18,8 @@ struct ReplyToComment: ReplyTo {
         return AnyView(CommentBodyView(commentView: comment,
                                        isCollapsed: false,
                                        showPostContext: true,
-                                       showCommentCreator: true)
+                                       showCommentCreator: true,
+                                       menuFunctions: [])
             .padding(.horizontal))
     }
     

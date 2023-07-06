@@ -73,11 +73,6 @@ struct PostInteractionBar: View {
                 VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                     .padding(.trailing, 8)
                 
-                EllipsisMenu(
-                    size: height,
-                    menuFunctions: menuFunctions
-                )
-                
                 Spacer()
                 
                 SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "post") {

@@ -35,8 +35,6 @@ struct CommentInteractionBar: View {
     let saveComment: () async -> Void
     let deleteComment: () async -> Void
     let replyToComment: () -> Void
-    
-    let menuFunctions: [MenuFunction]
 
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: commentView.comment.published )}
@@ -47,11 +45,6 @@ struct CommentInteractionBar: View {
             HStack(spacing: 12) {
                 VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                     .padding(.trailing, 8)
-                
-                EllipsisMenu(
-                    size: height,
-                    menuFunctions: menuFunctions
-                )
                 
                 Spacer()
                 

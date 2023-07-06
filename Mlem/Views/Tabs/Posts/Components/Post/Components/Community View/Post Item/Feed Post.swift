@@ -123,11 +123,18 @@ struct FeedPost: View {
                 menuFunctions: genMenuFunctions()
             )
         } else {
-            
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
                 // community name
-                if showCommunity {
+                // TEMPORARILY DISABLED: conditionally showing based on community
+                // if showCommunity {
+                //    CommunityLinkView(community: postView.community)
+                // }
+                HStack {
                     CommunityLinkView(community: postView.community)
+                    
+                    Spacer()
+                    
+                    EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                 }
                 
                 if postSize == .headline {
