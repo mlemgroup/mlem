@@ -16,21 +16,20 @@ class FavoriteCommunitiesTracker: ObservableObject {
 
     static func loadFavorites() -> [FavoriteCommunity] {
         if FileManager.default.fileExists(atPath: AppConstants.favoriteCommunitiesFilePath.path) {
-//            print("Favorite communities file exists, will attempt to load favorite communities")
             do {
                 return try decodeFromFile(
                     fromURL: AppConstants.favoriteCommunitiesFilePath,
                     whatToDecode: .favoriteCommunities
                 ) as? [FavoriteCommunity] ?? []
             } catch let favoriteCommunitiesDecodingError {
-//                print("Failed while decoding favorite communities: \(favoriteCommunitiesDecodingError)")
             }
+            // TODO: Hande
         } else {
-//            print("Favorite communities file does not exist, will try to create it")
+            // TODO: - AppConstants proper emptyFileCreationError handling
             do {
                 try createEmptyFile(at: AppConstants.favoriteCommunitiesFilePath)
             } catch let emptyFileCreationError {
-//                print("Failed while creating empty file: \(emptyFileCreationError)")
+                // TODO: Hande
             }
         }
         return []
