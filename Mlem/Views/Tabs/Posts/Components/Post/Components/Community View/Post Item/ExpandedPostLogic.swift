@@ -45,6 +45,10 @@ extension ExpandedPost {
         }
     }
     
+    func replyToPost() {
+        isPostingComment = true
+    }
+    
     func replyToComment(replyTo: APICommentView) {
         commentReplyingTo = replyTo
         isReplyingToComment = true

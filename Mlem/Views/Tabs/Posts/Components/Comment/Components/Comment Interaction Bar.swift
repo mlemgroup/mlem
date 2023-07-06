@@ -34,37 +34,37 @@ struct CommentInteractionBar: View {
     let downvote: () async -> Void
     let saveComment: () async -> Void
     let deleteComment: () async -> Void
-    
-    let menuFunctions: [MenuFunction]
+    let replyToComment: () -> Void
 
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: commentView.comment.published )}
     let height: CGFloat = 24
 
     var body: some View {
-        HStack(spacing: 12) {
-            VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
-                .padding(.trailing, 8)
-
-            SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "comment") {
-                Task(priority: .userInitiated) {
-                    await saveComment()
+        ZStack {
+            HStack(spacing: 12) {
+                VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
+                    .padding(.trailing, 8)
+                
+                Spacer()
+                
+                SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "comment") {
+                    Task(priority: .userInitiated) {
+                        await saveComment()
+                    }
                 }
+
+                ReplyButton(replyCount: commentView.counts.childCount, accessibilityContext: "comment", reply: replyToComment)
+                    .foregroundColor(.primary)
             }
-
-            EllipsisMenu(
-                size: height,
-                menuFunctions: menuFunctions
-            )
-
-            Spacer()
             
             HStack(spacing: iconToTextSpacing) {
                 Image(systemName: "clock")
                 Text(publishedAgo)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Published \(publishedAgo)")
             .foregroundColor(.secondary)
-            // Hi Weston--this will be a TimeDisplay within the next day or so, so probably not worth doing a11y stuff to it
         }
         .font(.callout)
     }

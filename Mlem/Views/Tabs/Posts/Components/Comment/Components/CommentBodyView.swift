@@ -16,15 +16,19 @@ struct CommentBodyView: View {
     let showPostContext: Bool
     let showCommentCreator: Bool
     let commentorLabel: String
+    let menuFunctions: [MenuFunction]
 
     init(commentView: APICommentView,
          isCollapsed: Bool,
          showPostContext: Bool,
-         showCommentCreator: Bool) {
+         showCommentCreator: Bool,
+         menuFunctions: [MenuFunction]) {
         self.commentView = commentView
         self.isCollapsed = isCollapsed
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
+        self.menuFunctions = menuFunctions
+        
         let commentor = commentView.creator
         let publishedAgo: String = getTimeIntervalFromNow(date: commentView.comment.published)
         commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
@@ -32,7 +36,9 @@ struct CommentBodyView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            if showCommentCreator {
+            // TEMPORARILY DISABLED: hiding comment creator--doesn't appear to be used anywhere in the code?
+            // if showCommentCreator {
+            HStack {
                 UserProfileLink(
                     user: commentView.creator,
                     serverInstanceLocation: shouldShowUserServerInComment ? .bottom : .disabled,
@@ -42,7 +48,12 @@ struct CommentBodyView: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(commentorLabel)
                 .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                EllipsisMenu(size: 24, menuFunctions: menuFunctions)
             }
+            // }
             
             // comment text or placeholder
             if commentView.comment.deleted {
