@@ -12,16 +12,17 @@ struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     @Environment(\.scenePhase) var phase
-    
+
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-    
+
     @State var navigationPath = NavigationPath()
-    
+
     @State var isShowingInstanceAdditionSheet: Bool = false
-    
+
     @State var rootDetails: CommunityLinkWithContext?
-    
+
     var body: some View {
+
         NavigationSplitView {
             AccountsPage(isShowingInstanceAdditionSheet: $isShowingInstanceAdditionSheet)
         } content: {
@@ -46,30 +47,21 @@ struct FeedRoot: View {
                                   feedType: rootDetails!.feedType
                     )
                     .environmentObject(appState)
-                    .handleLemmyLinkResolution(navigationPath: $navigationPath, local: "Inside root details")
                     .handleLemmyViews()
-                }.id(rootDetails!.id + appState.currentActiveAccount!.id)
+                }
+                .id(rootDetails!.id + appState.currentActiveAccount!.id)
             } else {
                 Text("Please selecte a community")
                     .id(appState.currentActiveAccount?.id ?? 0)
             }
         }
-        .onChange(of: appState.currentActiveAccount) { newAccount in
-            if newAccount != nil {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    withAnimation {
-                        let feedType = FeedType(rawValue:
-                                                    shortcutItemToProcess?.type ??
-                                                "nothing to see here"
-                        ) ?? defaultFeed
-                        rootDetails = CommunityLinkWithContext(community: nil, feedType: feedType)
-                        
-                        shortcutItemToProcess = nil
-                    }
-                }
-            }
-        }
+        .handleLemmyLinkResolution(
+            navigationPath: $navigationPath,
+            local: "Inside root feed"
+        )
         .environment(\.navigationPath, $navigationPath)
+        .environmentObject(appState)
+        .environmentObject(accountsTracker)
         .toast(isPresenting: $appState.isShowingToast) {
             appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
@@ -79,14 +71,22 @@ struct FeedRoot: View {
             } label: {
                 Text("Close")
             }
-            
+
         } message: {
             Text(appState.alertMessage)
         }
         .onAppear {
-            print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
-            if appState.currentActiveAccount == nil, let account = accountsTracker.savedAccounts.first {
-                appState.currentActiveAccount = account
+            if rootDetails == nil || shortcutItemToProcess != nil {
+                let feedType = FeedType(rawValue:
+                    shortcutItemToProcess?.type ??
+                    "nothing to see here"
+                ) ?? defaultFeed
+                var dits: CommunityLinkWithContext?
+                if appState.currentActiveAccount != nil {
+                    dits = CommunityLinkWithContext(community: nil, feedType: feedType)
+                }
+                rootDetails = dits
+                shortcutItemToProcess = nil
             }
         }
         .onOpenURL { url in
@@ -95,24 +95,24 @@ struct FeedRoot: View {
                     appState.currentActiveAccount = account
                 }
             }
-            
+
             guard appState.currentActiveAccount != nil else {
                 appState.toast = AlertToast(
                     displayMode: .hud,
                     type: .loading,
                     title: "You need to sign in to open links in app"
                 )
-                
+
                 appState.isShowingToast = true
                 return
             }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
                 if rootDetails == nil {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
-                _ = HandleLemmyLinkResolution(appState: _appState,
-                                          savedAccounts: _accountsTracker,
+//                didReceiveURL(url)
+                HandleLemmyLinkResolution(appState: _appState,
                                           navigationPath: $navigationPath,
                                           local: "Deep-Link onOpenURL"
                 )
@@ -130,7 +130,7 @@ struct FeedRoot: View {
                                                "nothing to see here"
                    ) {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: shortcutItem)
-                    
+
                     shortcutItemToProcess = nil
                 }
             }
@@ -151,7 +151,7 @@ private func subscribe(account: SavedAccount, communityId: Int, shouldSubscribe:
             communityId: communityId,
             follow: shouldSubscribe
         )
-        
+
         _ = try await APIClient().perform(request: request)
         return true
     } catch {
