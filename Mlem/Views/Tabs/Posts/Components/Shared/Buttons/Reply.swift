@@ -40,7 +40,6 @@ struct ReplyButton: View {
         .accessibilityLabel(replyButtonText)
         .accessibilityAction(named: replyButtonText) { replyCallback() }
         .onTapGesture { replyCallback() }
-
     }
     
     // MARK: Helpers
