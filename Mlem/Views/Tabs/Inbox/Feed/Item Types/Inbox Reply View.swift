@@ -17,7 +17,6 @@ struct InboxReplyView: View {
     let reply: APICommentReplyView
     let menuFunctions: [MenuFunction]
     
-    let publishedAgo: String
     let voteIconName: String
     let voteColor: Color
     
@@ -39,8 +38,6 @@ struct InboxReplyView: View {
             voteIconName = "arrow.up"
             voteColor = .secondary
         }
-        
-        self.publishedAgo = getTimeIntervalFromNow(date: reply.commentReply.published)
     }
     
     var body: some View {
@@ -74,11 +71,7 @@ struct InboxReplyView: View {
                 
                 Spacer()
                 
-                HStack(spacing: 4) {
-                    Image(systemName: "clock")
-                    Text(publishedAgo)
-                }
-                .foregroundColor(.secondary)
+                TimestampView(date: reply.commentReply.published)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

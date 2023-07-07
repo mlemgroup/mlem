@@ -16,8 +16,7 @@ struct AppConstants {
     static let urlSession: URLSession = URLSession(configuration: .default)
 
     // MARK: - Date parsing
-    static let dateFormatter: DateFormatter = DateFormatter()
-    static let relativeDateFormatter: RelativeDateTimeFormatter = RelativeDateTimeFormatter()
+    static let dateComponentsFormatter: DateComponentsFormatter = DateComponentsFormatter()
 
     // MARK: - Keychain
     static let keychain: Keychain = Keychain(service: "com.davidbures.Mlem-keychain")

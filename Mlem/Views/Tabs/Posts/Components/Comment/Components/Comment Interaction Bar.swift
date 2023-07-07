@@ -35,8 +35,6 @@ struct CommentInteractionBar: View {
     let deleteComment: () async -> Void
     let replyToComment: () -> Void
 
-    // computed
-    var publishedAgo: String { getTimeIntervalFromNow(date: commentView.comment.published )}
     let height: CGFloat = 24
 
     var body: some View {
@@ -56,14 +54,7 @@ struct CommentInteractionBar: View {
                 ReplyButton(replyCount: commentView.counts.childCount, accessibilityContext: "comment", reply: replyToComment)
                     .foregroundColor(.primary)
             }
-            
-            HStack(spacing: AppConstants.iconToTextSpacing) {
-                Image(systemName: "clock")
-                Text(publishedAgo)
-            }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Published \(publishedAgo)")
-            .foregroundColor(.secondary)
+            TimestampView(date: commentView.comment.published, spacing: AppConstants.iconToTextSpacing)
         }
         .font(.callout)
     }

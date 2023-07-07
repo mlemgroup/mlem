@@ -41,9 +41,6 @@ struct PostInteractionBar: View {
     let deletePost: () async -> Void
     let replyToPost: (() -> Void)?
     
-    // computed
-    var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
-    
     init(
         postView: APIPostView,
         account: SavedAccount,
@@ -82,15 +79,7 @@ struct PostInteractionBar: View {
                 
                 ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
             }
-            
-            HStack(spacing: AppConstants.iconToTextSpacing) {
-                Image(systemName: "clock")
-                Text(publishedAgo)
-            }
-            .accessibilityAddTraits(.isStaticText)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Published \(publishedAgo) ago")
-            .foregroundColor(.secondary)
+            TimestampView(date: postView.post.published, spacing: AppConstants.iconToTextSpacing)
         }
         .font(.callout)
     }

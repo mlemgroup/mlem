@@ -15,8 +15,6 @@ struct InboxMentionView: View {
     let mention: APIPersonMentionView
     let menuFunctions: [MenuFunction]
     
-    let publishedAgo: String
-    
     let voteIconName: String
     let voteColor: Color
     
@@ -38,8 +36,6 @@ struct InboxMentionView: View {
             voteIconName = "arrow.up"
             voteColor = .secondary
         }
-        
-        self.publishedAgo = getTimeIntervalFromNow(date: mention.comment.published)
     }
     
     var body: some View {
@@ -75,11 +71,7 @@ struct InboxMentionView: View {
                 
                 Spacer()
                 
-                HStack(spacing: 4) {
-                    Image(systemName: "clock")
-                    Text(publishedAgo)
-                }
-                .foregroundColor(.secondary)
+                TimestampView(date: mention.comment.published)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

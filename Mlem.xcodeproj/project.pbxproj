@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* TimestampView.swift */; };
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508845CE2A3641160088E483 /* JSONDecoder+Default.swift */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
@@ -301,6 +302,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03BAA2392A57DC1400D48252 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		508845CE2A3641160088E483 /* JSONDecoder+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Default.swift"; sourceTree = "<group>"; };
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
@@ -1225,6 +1227,7 @@
 				6322A5CA27F77A4D00135D4F /* Loading View.swift */,
 				6386E03F2A045723006B3C1D /* Website Icon Complex.swift */,
 				63D24EDD2A169F2A005CCA81 /* Markdown View.swift */,
+				03BAA2392A57DC1400D48252 /* TimestampView.swift */,
 				6374570F2A18CB6600B69C03 /* Custom Text Field.swift */,
 				B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */,
 			);
@@ -1805,6 +1808,7 @@
 				CD04D5D72A3614A8008EF95B /* Post Interaction Bar.swift in Sources */,
 				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
 				637218692A3A2AAD008C4816 /* CreateCommentLike.swift in Sources */,
+				03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* Window.swift in Sources */,
 				6372185A2A3A2AAD008C4816 /* APISubscribedStatus.swift in Sources */,
 				6DA61F872A5720EA001EA633 /* RecentSearchesTracker.swift in Sources */,
