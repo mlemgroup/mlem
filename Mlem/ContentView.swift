@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
 
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var errorAlert: ErrorAlert?
     @State private var tabSelection = 1
@@ -23,14 +24,14 @@ struct ContentView: View {
                     Label("Feeds", systemImage: "scroll")
                         .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
                 }.tag(1)
-            
+
             if let currentActiveAccount = appState.currentActiveAccount {
                 InboxView(account: currentActiveAccount)
                     .tabItem {
                         Label("Inbox", systemImage: "mail.stack")
                             .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                     }.tag(2)
-                
+
                 NavigationView {
                     ProfileView(account: currentActiveAccount)
                 } .tabItem {
@@ -38,7 +39,7 @@ struct ContentView: View {
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }.tag(3)
             }
-            
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
@@ -46,14 +47,18 @@ struct ContentView: View {
                 }.tag(4)
         }
         .onAppear {
-            AppConstants.keychain["test"] = "I-am-a-saved-thing"
+            if appState.currentActiveAccount == nil,
+               let account = accountsTracker.savedAccounts.first {
+                appState.currentActiveAccount = account
+            }
         }
         .alert(using: $errorAlert) { content in
             Alert(title: Text(content.title), message: Text(content.message))
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
+        .environmentObject(appState)
     }
-    
+
     // MARK: helpers
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"

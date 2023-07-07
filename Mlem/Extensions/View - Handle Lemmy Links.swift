@@ -141,7 +141,6 @@ struct HandleLemmyLinkResolution: ViewModifier {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccounts: SavedAccountTracker
     let navigationPath: Binding<NavigationPath>
-    let local: String
 
     func body(content: Content) -> some View {
         content
@@ -169,7 +168,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                         }
                     }
 
-                    print("lookup: \(lookup) (original: \(url.absoluteString)) (\(local))")
+                    print("lookup: \(lookup) (original: \(url.absoluteString))")
                     // Wooo this is a lemmy server we're talking to! time to pasre this url and push it to the stack
                     do {
                         let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account, query: lookup))
@@ -222,8 +221,8 @@ extension View {
         modifier(HandleLemmyLinksDisplay())
     }
 
-    func handleLemmyLinkResolution(navigationPath: Binding<NavigationPath>, local: String) -> some View {
-        modifier(HandleLemmyLinkResolution(navigationPath: navigationPath, local: local))
+    func handleLemmyLinkResolution(navigationPath: Binding<NavigationPath>) -> some View {
+        modifier(HandleLemmyLinkResolution(navigationPath: navigationPath))
     }
 
 }

@@ -48,7 +48,8 @@ struct UserProfileLabel: View {
         "vlemmy.net/u/darknavi",
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
-        "vlemmy.net/u/ericbandrews"
+        "vlemmy.net/u/ericbandrews",
+        "programming.dev/u/tht7"
     ]
     
     static let mlemOfficial = "vlemmy.net/u/MlemOfficial"
