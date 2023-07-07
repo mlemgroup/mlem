@@ -56,8 +56,7 @@ struct CommunitySearchField: View {
                                 )
 
                                 let response = try await APIClient().perform(request: request)
-                                let communities = response.communities.map { $0.community }
-                                communitySearchResultsTracker.foundCommunities = communities
+                                communitySearchResultsTracker.foundCommunities = response.communities
                             } catch {
                                 print("Search command error: \(error)")
                                 errorAlert = .init(

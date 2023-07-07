@@ -12,6 +12,7 @@ struct Window: View {
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
+    @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
 
     var body: some View {
         ContentView()
@@ -19,6 +20,7 @@ struct Window: View {
             .environmentObject(appState)
             .environmentObject(favoriteCommunitiesTracker)
             .environmentObject(communitySearchResultsTracker)
+            .environmentObject(recentSearchesTracker)
             .onChange(of: filtersTracker.filteredKeywords) { newValue in
                 print("Change detected in filtered keywords: \(newValue)")
                 do {

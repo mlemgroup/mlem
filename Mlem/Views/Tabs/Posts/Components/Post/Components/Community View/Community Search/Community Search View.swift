@@ -113,8 +113,8 @@ struct CommunitySearchResultsView: View {
                 } else {
                     Section {
                         ForEach(communitySearchResultsTracker.foundCommunities) { foundCommunity in
-                            NavigationLink(value: foundCommunity) {
-                                communityNameView(for: foundCommunity)
+                            NavigationLink(value: foundCommunity.community) {
+                                communityNameView(for: foundCommunity.community)
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                         // This is when a community is already favorited
                                         if favoritedCommunitiesTracker.favoriteCommunities
@@ -122,7 +122,7 @@ struct CommunitySearchResultsView: View {
                                             Button(role: .destructive) {
                                                 unfavoriteCommunity(
                                                     account: account,
-                                                    community: foundCommunity,
+                                                    community: foundCommunity.community,
                                                     favoritedCommunitiesTracker: favoritedCommunitiesTracker
                                                 )
                                             } label: {
@@ -132,7 +132,7 @@ struct CommunitySearchResultsView: View {
                                             Button {
                                                 favoriteCommunity(
                                                     account: account,
-                                                    community: foundCommunity,
+                                                    community: foundCommunity.community,
                                                     favoritedCommunitiesTracker: favoritedCommunitiesTracker
                                                 )
                                             } label: {
