@@ -97,7 +97,7 @@ class PostTracker: FeedTracker<APIPostView> {
                 }
             case .link(let url):
                 // websites: load image and favicon
-                Task(priority: .userInitiated) {
+                Task(priority: .background) {
                     if let baseURL = postView.post.url?.host,
                        let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
                         await preloadSingleImage(url: favIconURL)
