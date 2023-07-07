@@ -64,11 +64,6 @@ struct FeedPost: View {
 
     // swipe-to-vote
     @Binding var isDragging: Bool
-
-    // in-feed reply
-//    @State var replyIsPresented: Bool = false
-//    @State var replyContents: String = ""
-//    @State var replyIsSending: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {

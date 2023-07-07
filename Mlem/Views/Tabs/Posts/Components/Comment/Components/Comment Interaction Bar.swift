@@ -17,7 +17,6 @@ struct CommentInteractionBar: View {
     @EnvironmentObject var commentTracker: CommentTracker
 
     // constants
-    let iconToTextSpacing: CGFloat = 2
     let iconPadding: CGFloat = 4
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
@@ -58,7 +57,7 @@ struct CommentInteractionBar: View {
                     .foregroundColor(.primary)
             }
             
-            HStack(spacing: iconToTextSpacing) {
+            HStack(spacing: AppConstants.iconToTextSpacing) {
                 Image(systemName: "clock")
                 Text(publishedAgo)
             }

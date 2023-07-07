@@ -52,26 +52,35 @@ struct LargePost: View {
                     NSFWTag(compact: false)
                 }
             }
-
-            // post body
-            switch postView.postType {
-            case .image(let url):
-                CachedImageWithNsfwFilter(isNsfw: postView.post.nsfw, url: url)
-                postBodyView
-            case .link:
-                WebsiteIconComplex(post: postView.post)
-                postBodyView
-            case .text(let postBody):
-                // text posts need a little less space between title and body to look right, go figure
-                postBodyView
-                    .padding(.top, postBody.isEmpty ? nil : -2)
-            case .titleOnly:
-                EmptyView()
-            }
+            
+            postContentView
         }
     }
 
     // MARK: - Subviews
+    
+    @ViewBuilder
+    var postContentView: some View {
+        switch postView.postType {
+        case .image(let url):
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
+                CachedImageWithNsfwFilter(isNsfw: postView.post.nsfw, url: url, cornerRadius: AppConstants.largeItemCornerRadius)
+                    .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : AppConstants.maxFeedPostHeight, alignment: .center)
+                postBodyView
+            }
+        case .link:
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
+                WebsiteIconComplex(post: postView.post)
+                postBodyView
+            }
+        case .text(let postBody):
+            // text posts need a little less space between title and body to look right, go figure
+            postBodyView
+                .padding(.top, postBody.isEmpty ? nil : -2)
+        case .titleOnly:
+            EmptyView()
+        }
+    }
     
     @ViewBuilder
     var postBodyView: some View {
@@ -80,12 +89,12 @@ struct LargePost: View {
                 MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
                     .font(.subheadline)
             } else {
-                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "), isNsfw: postView.post.nsfw)
+                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "),
+                             isNsfw: postView.post.nsfw,
+                             replaceImagesWithEmoji: true)
                     .lineLimit(8)
                     .font(.subheadline)
             }
-
         }
     }
-
 }
