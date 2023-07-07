@@ -38,6 +38,7 @@ struct SearchView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle("Search")
         }
+        .handleLemmyLinkResolution(navigationPath: $navigationPath)
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
         .onSubmit(of: .search) {
             performSearch()
