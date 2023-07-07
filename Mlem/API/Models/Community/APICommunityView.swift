@@ -15,7 +15,11 @@ struct APICommunityView: Decodable {
     let counts: APICommunityAggregates
 }
 
-extension APICommunityView: Hashable, Equatable {
+extension APICommunityView: Hashable, Equatable, Identifiable {
+    var id: Int {
+        return self.community.id
+    }
+    
     static func == (lhs: APICommunityView, rhs: APICommunityView) -> Bool {
         return lhs.community.id == rhs.community.id
     }

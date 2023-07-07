@@ -17,7 +17,6 @@ struct CommentInteractionBar: View {
     @EnvironmentObject var commentTracker: CommentTracker
 
     // constants
-    let iconToTextSpacing: CGFloat = 2
     let iconPadding: CGFloat = 4
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
@@ -55,8 +54,7 @@ struct CommentInteractionBar: View {
                 ReplyButton(replyCount: commentView.counts.childCount, accessibilityContext: "comment", reply: replyToComment)
                     .foregroundColor(.primary)
             }
-            
-            TimestampView(date: commentView.comment.published, spacing: iconToTextSpacing)
+            TimestampView(date: commentView.comment.published, spacing: AppConstants.iconToTextSpacing)
         }
         .font(.callout)
     }

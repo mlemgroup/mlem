@@ -46,6 +46,10 @@ struct AppConstants {
     static let favoriteCommunitiesFilePath = { applicationSupportDirectoryPath
         .appendingPathComponent("Favorite Communities", conformingTo: .json)
     }()
+    
+    static let recentSearchesFilePath = { applicationSupportDirectoryPath
+        .appendingPathComponent("Recent Searches", conformingTo: .json)
+    }()
 
     // MARK: - Haptics
     static let hapticManager: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
@@ -55,11 +59,15 @@ struct AppConstants {
     static let shortSwipeDragMin: CGFloat = 60
     
     // MARK: - Sizes
+    static let maxFeedPostHeight: CGFloat = 400
     static let largeAvatarSize: CGFloat = 32
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
     static let postAndCommentSpacing: CGFloat = 10
+    static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
+    static let smallItemCornerRadius: CGFloat = 4 // buttons, tags, compact thumbnails
+    static let iconToTextSpacing: CGFloat = 2 // spacing between icons and text in info components
     
     // MARK: - SFSymbols
     // votes
@@ -85,4 +93,7 @@ struct AppConstants {
     static let fullMarkReadSymbolName: String = "envelope.open.fill"
     static let emptyMarkUnreadSymbolName: String = "envelope.open"
     static let fullMarkUnreadSymbolName: String = "envelope.fill"
+    
+    // MARK: - Other
+    static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
 }
