@@ -71,7 +71,7 @@ class PostTracker: FeedTracker<APIPostView> {
         for postView in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
-            Task(priority: .userInitiated) {
+            Task(priority: .background) {
                 if let communityAvatarLink = postView.community.icon {
                     await preloadSingleImage(url: communityAvatarLink.withIcon32Parameters)
                     await preloadSingleImage(url: communityAvatarLink.withIcon64Parameters)
@@ -91,7 +91,7 @@ class PostTracker: FeedTracker<APIPostView> {
                 }
             case .link(let url):
                 // websites: load image and favicon
-                Task(priority: .userInitiated) {
+                Task(priority: .background) {
                     if let baseURL = postView.post.url?.host,
                        let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
                         await preloadSingleImage(url: favIconURL)
