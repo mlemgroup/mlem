@@ -47,6 +47,10 @@ struct AppConstants {
     static let favoriteCommunitiesFilePath = { applicationSupportDirectoryPath
         .appendingPathComponent("Favorite Communities", conformingTo: .json)
     }()
+    
+    static let recentSearchesFilePath = { applicationSupportDirectoryPath
+        .appendingPathComponent("Recent Searches", conformingTo: .json)
+    }()
 
     // MARK: - Haptics
     static let hapticManager: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
