@@ -281,6 +281,7 @@
 		CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF842672A49FB9000723DA0 /* Inbox View Logic.swift */; };
 		CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */; };
 		CDF8426F2A4A385A00723DA0 /* Inbox Item Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */; };
+		CDF8C1752A58941C00A5A494 /* EnrichedAPIPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8C1742A58941C00A5A494 /* EnrichedAPIPostView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -572,6 +573,7 @@
 		CDF842672A49FB9000723DA0 /* Inbox View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View Logic.swift"; sourceTree = "<group>"; };
 		CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item.swift"; sourceTree = "<group>"; };
 		CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item Type.swift"; sourceTree = "<group>"; };
+		CDF8C1742A58941C00A5A494 /* EnrichedAPIPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrichedAPIPostView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -892,6 +894,7 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
+				CDF8C1732A58940300A5A494 /* EnrichedAPITypes */,
 				637218002A3A2AAD008C4816 /* API */,
 				50F830EC2A4C8F8D00D67099 /* Feed */,
 				63344C5E2A080C5F001BC616 /* Styles */,
@@ -1481,6 +1484,14 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
+		CDF8C1732A58940300A5A494 /* EnrichedAPITypes */ = {
+			isa = PBXGroup;
+			children = (
+				CDF8C1742A58941C00A5A494 /* EnrichedAPIPostView.swift */,
+			);
+			path = EnrichedAPITypes;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1844,6 +1855,7 @@
 				637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */,
 				6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
+				CDF8C1752A58941C00A5A494 /* EnrichedAPIPostView.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				6D8F08FF2A4029AE003EB4FD /* Community List View.swift in Sources */,
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,

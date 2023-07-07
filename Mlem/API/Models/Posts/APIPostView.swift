@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CachedAsyncImage
 
 // lemmy_db_views::structs::PostView
 struct APIPostView: Decodable {
