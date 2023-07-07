@@ -38,13 +38,19 @@ struct ContentView: View {
                     Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }.tag(3)
+                
+                NavigationView {
+                    SearchView(account: currentActiveAccount)
+                } .tabItem {
+                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                }.tag(4)
             }
 
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                         .environment(\.symbolVariants, tabSelection == 4 ? .fill : .none)
-                }.tag(4)
+                }.tag(5)
         }
         .onAppear {
             if appState.currentActiveAccount == nil,
