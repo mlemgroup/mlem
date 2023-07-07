@@ -28,7 +28,7 @@ struct StandardVoteComplex: View {
             // custom set because grouping image and text makes height do bad things
             .frame(height: height)
             .padding(.horizontal, 4)
-            .background(RoundedRectangle(cornerRadius: 4)
+            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                 .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
             .foregroundColor(vote == .upvote ? .white : .primary)
             .onTapGesture {

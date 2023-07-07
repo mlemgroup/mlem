@@ -16,7 +16,6 @@ struct PostInteractionBar: View {
     @EnvironmentObject var postTracker: PostTracker
 
     // constants
-    let iconToTextSpacing: CGFloat = 2
     let iconPadding: CGFloat = 4
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
@@ -84,7 +83,7 @@ struct PostInteractionBar: View {
                 ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
             }
             
-            HStack(spacing: iconToTextSpacing) {
+            HStack(spacing: AppConstants.iconToTextSpacing) {
                 Image(systemName: "clock")
                 Text(publishedAgo)
             }

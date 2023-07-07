@@ -12,7 +12,7 @@ Join our [Matrix room](https://matrix.to/#/#mlemapp:matrix.org).
 ## What is Mlem?
 Mlem is a client for [Lemmy](https://join-lemmy.org), a Reddit-esque, open-source link aggregator. With Mlem, you can effortlessly participate in the conversation across all Lemmy servers. 
 
-You can discuss and ask questions about Mlem at the [community on vlemmy.net](https://vlemmy.net/c/mlemapp).
+You can discuss and ask questions about Mlem at the [community on lemmy.ml](https://lemmy.ml/c/mlemapp).
 
 ## Why Use Mlem?
 

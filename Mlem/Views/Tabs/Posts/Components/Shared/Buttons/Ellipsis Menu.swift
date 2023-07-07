@@ -36,7 +36,7 @@ struct EllipsisMenu: View {
             Image(systemName: "ellipsis")
                 .frame(width: size, height: size)
                 .foregroundColor(.primary)
-                .background(RoundedRectangle(cornerRadius: 4)
+                .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundColor(.clear))
         }
