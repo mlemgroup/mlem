@@ -52,7 +52,7 @@ struct WebsiteIconComplex: View {
         GroupBox {
             VStack(alignment: .leading, spacing: 0) {
                 if shouldShowWebsitePreviews {
-                    if let thumbnailURL =  post.thumbnailUrl {
+                    if let thumbnailURL = post.thumbnailUrl {
                         VStack(alignment: .center, spacing: 0) {
                             CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
                                 .frame(maxHeight: 400)
