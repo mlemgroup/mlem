@@ -11,6 +11,11 @@ func getTimeIntervalFromNow(date: Date, unitsStyle: DateComponentsFormatter.Unit
     AppConstants.dateComponentsFormatter.unitsStyle = unitsStyle
     AppConstants.dateComponentsFormatter.maximumUnitCount = 1
     
-    let value = AppConstants.dateComponentsFormatter.string(from: abs(date.timeIntervalSinceNow))
+    let interval = date.timeIntervalSinceNow
+    if interval > -1 {
+        return "Now"
+    }
+    
+    let value = AppConstants.dateComponentsFormatter.string(from: abs(interval))
     return value ?? "Unknown"
 }
