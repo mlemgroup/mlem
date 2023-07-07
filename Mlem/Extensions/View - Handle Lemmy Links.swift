@@ -161,11 +161,12 @@ struct HandleLemmyLinkResolution: ViewModifier {
                     defer { appState.isShowingToast = false }
                     var lookup = url.absoluteString
                     lookup = lookup.replacingOccurrences(of: "mlem://", with: "https://")
-                    if !lookup.contains("http") {
-                        // something fishy is going on. I think the markdown view is playing with us!
-                        if lookup.contains("@") && !lookup.contains("!") {
-                            lookup = "!\(lookup)".replacingOccurrences(of: "/c/", with: "").replacingOccurrences(of: "mailto:", with: "")
-                        }
+                    if lookup.contains("@") && !lookup.contains("!") {
+                        // SUS I think this might be a community link
+                        let processedLookup = lookup
+                            .replacing(/.*\/c\//, with: "")
+                            .replacingOccurrences(of: "mailto:", with: "")
+                        lookup = "!\(processedLookup)"
                     }
 
                     print("lookup: \(lookup) (original: \(url.absoluteString))")
