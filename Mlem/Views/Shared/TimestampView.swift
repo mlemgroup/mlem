@@ -1,19 +1,19 @@
 //
-//  Timestamp View.swift
+//  TimestampView.swift
 //  Mlem
 //
-//  Created by Sjmarf on 06/07/2023.
+//  Created by Sjmarf on 07/07/2023.
 //
 
 import SwiftUI
 
 struct TimestampView: View {
     
-    var spacing: Int
-    @State var date: Date
+    let date: Date
+    var spacing: CGFloat = 4
     
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: spacing) {
             Image(systemName: "clock")
             Text(getTimeIntervalFromNow(date: date))
         }

@@ -28,7 +28,6 @@ struct UltraCompactPost: View {
     let voteColor: Color
     let voteIconName: String
     var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
-    let publishedAgo: String
 
     init(postView: APIPostView, account: SavedAccount, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
@@ -47,8 +46,6 @@ struct UltraCompactPost: View {
             voteIconName = "arrow.up"
             voteColor = .secondary
         }
-        
-        self.publishedAgo = getTimeIntervalFromNow(date: postView.post.published )
     }
     
     var body: some View {
@@ -141,11 +138,7 @@ struct UltraCompactPost: View {
             .foregroundColor(voteColor)
             .accessibilityElement(children: .combine)
             
-            HStack(spacing: 2) {
-                Image(systemName: "clock")
-                Text(publishedAgo.description)
-            }
-            .accessibilityElement(children: .combine)
+            TimestampView(date: postView.post.published, spacing: 2)
             
             Image(systemName: "bookmark")
                 .foregroundColor(postView.saved ? .saveColor : .secondary)
