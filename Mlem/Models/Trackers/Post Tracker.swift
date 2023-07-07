@@ -69,7 +69,8 @@ class PostTracker: FeedTracker<APIPostView> {
     private func preloadImages(_ newPosts: [APIPostView]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         for postView in newPosts {
-            // preload user and community avatars--fetching both because we don't know which we'll need
+            // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
+            // so it's probably not an API crime, right?
             Task(priority: .userInitiated) {
                 if let communityAvatarLink = postView.community.icon {
                     await preloadSingleImage(url: communityAvatarLink.withIcon32Parameters)
