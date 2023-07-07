@@ -95,10 +95,21 @@ class PostTracker: FeedTracker<APIPostView> {
                 if let url = url {
                     imageRequests.append(ImageRequest(url: url, priority: .high))
                 }
+            case .link(let url):
+                // websites: load image and favicon
+                Task(priority: .userInitiated) {
+                    if let baseURL = postView.post.url?.host,
+                       let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
+                        await preloadSingleImage(url: favIconURL)
+                    }
+                    if let url = url {
+                        await preloadSingleImage(url: url)
+                    }
+                }
             default:
                 break
             }
-
+            
         }
 
         prefetcher.startPrefetching(with: imageRequests)
