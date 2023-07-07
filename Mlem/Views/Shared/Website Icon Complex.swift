@@ -49,79 +49,50 @@ struct WebsiteIconComplex: View {
     }
 
     var body: some View {
-        GroupBox {
-            VStack(alignment: .leading, spacing: 0) {
-                if shouldShowWebsitePreviews {
-                    if let thumbnailURL = post.thumbnailUrl {
-                        VStack(alignment: .center, spacing: 0) {
-                            CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
-                                .frame(maxHeight: 400)
-                                .clipped()
-
-                            Divider()
-                        }
-                    }
-                }
-
-                HStack(alignment: .center, spacing: 0) {
-                    if shouldShowWebsiteFaviconAtAll {
+        VStack(spacing: 0) {
+            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
+                CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
+                    .frame(maxHeight: 400)
+                    // .cornerRadius(AppConstants.largeItemCornerRadius)
+                    .clipped()
+            }
+            
+            VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+                if shouldShowWebsiteHost {
+                    HStack {
                         if shouldShowWebsiteFavicons {
                             CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache) { image in
                                 image
                                     .resizable()
-                                    .frame(width: 30, height: 30, alignment: .center)
-                                    .saturation(0)
-                                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5), style: .continuous))
-                                    .padding()
+                                    .scaledToFit()
                             } placeholder: {
                                 Image(systemName: "globe")
-                                    .frame(width: 30, height: 30, alignment: .center)
-                                    .padding()
                             }
-                        } else {
-                            Image(systemName: overridenWebsiteFaviconName)
-                                .resizable()
-                                .frame(width: 25, height: 25, alignment: .center)
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.secondary)
-                                .padding()
-                                .onAppear {
-                                    if let url = post.url {
-                                        if url.host!.contains("theonion") {
-                                            overridenWebsiteFaviconName = "carrot"
-                                        } else if url.host!.contains("twitter") {
-                                            overridenWebsiteFaviconName = "bird.fill"
-                                        } else if url.host!.contains(["youtube", "youtu.be"]) {
-                                            overridenWebsiteFaviconName = "play.rectangle.fill"
-                                        } else if url.host!.contains("wiki") {
-                                            overridenWebsiteFaviconName = "book.closed.fill"
-                                        }
-                                    }
-                                }
+                            .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
                         }
-
-                        Divider()
+                        
+                        Text(linkHost)
+                            .lineLimit(1)
+                            .font(.caption)
+                            .foregroundColor(.blue)
                     }
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(linkLabel)
-                        if shouldShowWebsiteHost {
-                            Text(linkHost)
-                                .lineLimit(1)
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                        }
-                    }
-                    .padding()
-
-                    Spacer()
                 }
+                
+                Text(linkLabel)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(AppConstants.postAndCommentSpacing)
         }
-        .groupBoxStyle(OutlinedWebComplexStyle())
         .accessibilityElement(children: .ignore)
         .accessibilityAddTraits(.isLink)
         .accessibilityLabel("\(linkLabel) from \(linkHost)")
+        .cornerRadius(AppConstants.largeItemCornerRadius)
+        .overlay(
+            RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
+                .stroke(Color(.secondarySystemBackground), lineWidth: 1)
+        )
         .onTapGesture {
             if let url = post.url {
                 openURL(url)

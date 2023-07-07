@@ -14,16 +14,14 @@ struct CachedImageWithNsfwFilter: View {
 
     let isNsfw: Bool
     let url: URL?
-    let cornerRadius: CGFloat
 
     @State var showNsfwFilterToggle: Bool
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     var showNsfwFilter: Bool { self.isNsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
 
-    init(isNsfw: Bool, url: URL?, cornerRadius: CGFloat = 0) {
+    init(isNsfw: Bool, url: URL?) {
         self.isNsfw = isNsfw
         self.url = url
-        self.cornerRadius = cornerRadius
         
         self._showNsfwFilterToggle = .init(initialValue: true)
     }
@@ -32,8 +30,7 @@ struct CachedImageWithNsfwFilter: View {
         CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
             image
                 .resizable()
-                .scaledToFit()
-                .cornerRadius(cornerRadius)
+                .scaledToFill()
                 .blur(radius: showNsfwFilter ? 30 : 0)
                 .allowsHitTesting(false)
                 .overlay(nsfwOverlay)

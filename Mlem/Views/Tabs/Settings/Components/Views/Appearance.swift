@@ -62,7 +62,7 @@ struct AppearanceSettingsView: View {
                                         communityId: 0,
                                         deleted: false,
                                         embedDescription: nil,
-                                        embedTitle: "I am an example of a website preview.\nCustomize me!",
+                                        embedTitle: "I'm an example of a web site preview. Customize me!",
                                         embedVideoUrl: nil,
                                         featuredCommunity: false,
                                         featuredLocal: false,
