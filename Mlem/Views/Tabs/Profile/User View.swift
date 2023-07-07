@@ -358,6 +358,9 @@ struct UserView: View {
                 title: "Error",
                 message: message.error
             )
+        case APIClientError.cancelled:
+            // Cancelled, ignore
+            return
         case is APIClientError:
             errorAlert = .init(
                 title: "Couldn't load user info",
