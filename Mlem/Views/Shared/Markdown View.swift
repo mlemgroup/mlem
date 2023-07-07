@@ -5,6 +5,7 @@
 //  Created by David Bureš on 18.05.2023.
 //
 
+import Foundation
 import MarkdownUI
 import SwiftUI
 import RegexBuilder
@@ -201,16 +202,50 @@ private extension Color {
     static let checkboxBackground = Color(rgba: 0xEEEE_EFFF)
 }
 
+/**
+ Little helper struct to help with the fact that we need to handle images specially
+ */
+struct MarkdownBlock: Identifiable {
+    let text: Substring
+    let isImage: Bool
+    let id: Int
+}
+
 struct MarkdownView: View {
 
     @State var text: String
     let isNsfw: Bool
+    let replaceImagesWithEmoji: Bool
+    
+    init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false) {
+        self.text = text
+        self.isNsfw = isNsfw
+        self.replaceImagesWithEmoji = replaceImagesWithEmoji
+    }
 
     var body: some View {
         generateView()
     }
 
     @MainActor func generateView() -> some View {
+        let blocks = parseMarkdownForImages(text: text)
+        
+        return VStack {
+            ForEach(blocks) { block in
+                if block.isImage {
+                    if replaceImagesWithEmoji {
+                        getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️")
+                    } else {
+                        CachedImageWithNsfwFilter(isNsfw: isNsfw, url: URL(string: String(block.text)))
+                    }
+                } else {
+                    getMarkdown(text: String(block.text))
+                }
+            }
+        }
+    }
+    
+    func parseMarkdownForImages(text: String) -> [MarkdownBlock] {
         // this will capture the "![label](url)" pattern so we can hanble it separately
         let imageLooker = Regex {
             "!["
@@ -223,23 +258,40 @@ struct MarkdownView: View {
             }
             ")"
         }
-        .ignoresCase()
-
-        let blocks = text.split(separator: imageLooker)
-        let images = text.matches(of: imageLooker).map {
-            ($0.output.1, URL(string: String($0.output.2)))
-        }
-        return VStack {
-            ForEach(0...max(blocks.count, images.count), id: \.hashValue) { index in
-                if blocks.count > index {
-                    getMarkdown(text: String(blocks[index]))
+            .ignoresCase()
+        
+        var blocks: [MarkdownBlock] = .init()
+        var idx: String.Index = .init(utf16Offset: 0, in: text)
+        var blockId: Int = 0
+        while idx < text.endIndex {
+            do {
+                if let firstImage = try imageLooker.firstMatch(in: text[idx...]) {
+                    // if there is some image found, add it to blocks
+                    if firstImage.range.lowerBound == idx {
+                        // if the regex starts *right here*, add to images
+                        blocks.append(MarkdownBlock(text: firstImage.output.2, isImage: true, id: blockId))
+                        blockId += 1
+                    } else {
+                        // otherwise, add text in between, then first match
+                        blocks.append(MarkdownBlock(text: text[idx..<firstImage.range.lowerBound], isImage: false, id: blockId))
+                        blockId += 1
+                        blocks.append(MarkdownBlock(text: firstImage.output.2, isImage: true, id: blockId))
+                        blockId += 1
+                    }
+                    idx = firstImage.range.upperBound
+                } else {
+                    // if no image found, add the rest of the text to blocks, if it exists
+                    let remainder = text[idx...]
+                    if !remainder.isEmpty { blocks.append(MarkdownBlock(text: remainder, isImage: false, id: blockId)) }
+                    blockId += 1
+                    idx = text.endIndex // softly end loop
                 }
-                
-                if images.count > index {
-                    CachedImageWithNsfwFilter(isNsfw: isNsfw, url: images[index].1)
-                }
+            } catch {
+                print("regex error occurred!")
             }
         }
+        
+        return blocks
     }
 
     func getMarkdown(text: String) -> some View {

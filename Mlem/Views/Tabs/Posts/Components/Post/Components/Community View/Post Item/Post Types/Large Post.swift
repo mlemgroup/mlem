@@ -54,14 +54,6 @@ struct LargePost: View {
             }
             
             postContentView
-            
-            // post body
-//            if isExpanded {
-//                postContentView
-//            } else {
-//                postContentView
-//                    .feedPreview(imageOnly: postView.post.body == nil)
-//            }
         }
     }
 
@@ -93,17 +85,16 @@ struct LargePost: View {
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
-            MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
-                .font(.subheadline)
-//            if isExpanded {
-//                MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
-//                    .font(.subheadline)
-//            } else {
-//                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "), isNsfw: postView.post.nsfw)
-//                    .lineLimit(8)
-//                    .font(.subheadline)
-//            }
-//
+            if isExpanded {
+                MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
+                    .font(.subheadline)
+            } else {
+                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "),
+                             isNsfw: postView.post.nsfw,
+                             replaceImagesWithEmoji: true)
+                    .lineLimit(8)
+                    .font(.subheadline)
+            }
         }
     }
 }

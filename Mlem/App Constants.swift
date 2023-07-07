@@ -64,6 +64,7 @@ struct AppConstants {
     static let postAndCommentSpacing: CGFloat = 10
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
     static let smallItemCornerRadius: CGFloat = 4 // buttons, tags, compact thumbnails
+    static let iconToTextSpacing: CGFloat = 2 // spacing between icons and text in info components
     
     // MARK: - SFSymbols
     // votes
@@ -89,4 +90,7 @@ struct AppConstants {
     static let fullMarkReadSymbolName: String = "envelope.open.fill"
     static let emptyMarkUnreadSymbolName: String = "envelope.open"
     static let fullMarkUnreadSymbolName: String = "envelope.fill"
+    
+    // MARK: - Other
+    static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
 }
