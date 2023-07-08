@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "nuke",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/Nuke",
+      "state" : {
+        "revision" : "f67266f176af4add9f7a7020486826d82d562473",
+        "version" : "12.1.2"
+      }
+    },
+    {
       "identity" : "swift-markdown-ui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/gonzalezreal/swift-markdown-ui.git",
