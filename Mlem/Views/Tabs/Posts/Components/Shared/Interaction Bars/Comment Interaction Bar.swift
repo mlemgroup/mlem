@@ -54,7 +54,11 @@ struct CommentInteractionBar: View {
                 ReplyButton(replyCount: commentView.counts.childCount, accessibilityContext: "comment", reply: replyToComment)
                     .foregroundColor(.primary)
             }
-            TimestampView(date: commentView.comment.published, spacing: AppConstants.iconToTextSpacing)
+            
+            InfoStack(score: displayedScore,
+                      published: commentView.comment.published,
+                      commentCount: commentView.counts.childCount,
+                      myVote: displayedVote)
         }
         .font(.callout)
     }
