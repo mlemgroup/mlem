@@ -77,7 +77,11 @@ struct PostInteractionBar: View {
                 
                 ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
             }
-            TimestampView(date: postView.post.published, spacing: AppConstants.iconToTextSpacing)
+            
+            InfoStack(score: postView.counts.score,
+                      published: postView.published,
+                      commentCount: postView.counts.comments,
+                      myVote: postView.myVote ?? .resetVote)
         }
         .font(.callout)
     }

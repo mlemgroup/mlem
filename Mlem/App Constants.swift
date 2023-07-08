@@ -77,6 +77,10 @@ struct AppConstants {
     static let fullDownvoteSymbolName: String = "arrow.down.square.fill"
     static let emptyResetVoteSymbolName: String = "minus.square"
     static let fullResetVoteSymbolName: String = "minus.square.fill"
+    static let scoringOpToVoteImage: [ScoringOperation?: String] = [.upvote: "arrow.up.square.fill",
+                                                                   .resetVote: "arrow.up.square",
+                                                                   .downvote: "arrow.down.square.fill"
+    ]
     
     // reply
     static let emptyReplySymbolName: String = "arrowshape.turn.up.left"
