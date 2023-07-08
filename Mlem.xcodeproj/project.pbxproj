@@ -814,6 +814,7 @@
 				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
 				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
 				507573902A5AD53C00AA7ABD /* Error+Equatable.swift */,
+				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
