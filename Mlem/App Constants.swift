@@ -19,7 +19,7 @@ struct AppConstants {
     static let dateComponentsFormatter: DateComponentsFormatter = DateComponentsFormatter()
 
     // MARK: - Keychain
-    static let keychain: Keychain = Keychain(service: "com.davidbures.Mlem-keychain")
+    static let keychain: Keychain = Keychain(service: "com.hanners.Mlem-keychain")
 
     // MARK: - Files
     private static let applicationSupportDirectoryPath = {
