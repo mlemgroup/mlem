@@ -7,8 +7,13 @@
 
 import Foundation
 import SwiftUI
+import Nuke
 
 class PostTracker: FeedTracker<APIPostView> {
+
+    private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
+                                             destination: .memoryCache,
+                                             maxConcurrentRequestCount: 40)
 
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
@@ -79,7 +84,7 @@ class PostTracker: FeedTracker<APIPostView> {
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon32Parameters))
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
             }
-            
+
             switch postView.postType {
             case .image(let url):
                 // images: only load the image
@@ -96,7 +101,7 @@ class PostTracker: FeedTracker<APIPostView> {
             default:
                 break
             }
-            
+
         }
 
         prefetcher.startPrefetching(with: imageRequests)
