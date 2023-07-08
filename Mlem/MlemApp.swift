@@ -22,10 +22,10 @@ struct MlemApp: App {
             Window()
                 .environmentObject(accountsTracker)
                 .onAppear {
-                    var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: 500_000)
-                    imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 6)
-                    imageConfig.imageDecodingQueue = OperationQueue(maxConcurrentCount: 6) // Let's use those CORES
-                    imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 6)
+                    var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)
+                    imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)
+                    imageConfig.imageDecodingQueue = OperationQueue(maxConcurrentCount: 8) // Let's use those CORES
+                    imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 8)
                     
                     // I'm leaving that here for mormaer, once I get a handle on rate limites that's where we put em!
                     // imageConfig.isRateLimiterEnabled
