@@ -7,8 +7,13 @@
 
 import Foundation
 import SwiftUI
+import Nuke
 
 class PostTracker: FeedTracker<APIPostView> {
+
+    private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
+                                             destination: .memoryCache,
+                                             maxConcurrentRequestCount: 40)
 
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
@@ -35,9 +40,7 @@ class PostTracker: FeedTracker<APIPostView> {
             filtering: filtering
         )
 
-        Task(priority: .background) {
-            preloadImages(response.posts)
-        }
+        preloadImages(response.posts)
     }
 
     func refresh(
@@ -68,54 +71,39 @@ class PostTracker: FeedTracker<APIPostView> {
 
     private func preloadImages(_ newPosts: [APIPostView]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
+        var imageRequests: [ImageRequest] = []
         for postView in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
-            Task(priority: .background) {
-                if let communityAvatarLink = postView.community.icon {
-                    await preloadSingleImage(url: communityAvatarLink.withIcon32Parameters)
-                    await preloadSingleImage(url: communityAvatarLink.withIcon64Parameters)
-                }
-                
-                if let userAvatarLink = postView.creator.avatar {
-                    await preloadSingleImage(url: userAvatarLink.withIcon32Parameters)
-                    await preloadSingleImage(url: userAvatarLink.withIcon64Parameters)
-                }
+            if let communityAvatarLink = postView.community.icon {
+                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon32Parameters))
+                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
-            
+
+            if let userAvatarLink = postView.creator.avatar {
+                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon32Parameters))
+                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
+            }
+
             switch postView.postType {
             case .image(let url):
                 // images: only load the image
-                Task(priority: .background) {
-                    await preloadSingleImage(url: url)
-                }
+                imageRequests.append(ImageRequest(url: url, priority: .high))
             case .link(let url):
                 // websites: load image and favicon
-                Task(priority: .background) {
-                    if let baseURL = postView.post.url?.host,
-                       let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
-                        await preloadSingleImage(url: favIconURL)
-                    }
-                    if let url = url {
-                        await preloadSingleImage(url: url)
-                    }
+                if let baseURL = postView.post.url?.host,
+                   let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
+                    imageRequests.append(ImageRequest(url: favIconURL))
+                }
+                if let url = url {
+                    imageRequests.append(ImageRequest(url: url, priority: .high))
                 }
             default:
                 break
             }
-            
-        }
-    }
 
-    private func preloadSingleImage(url: URL) async {
-        do {
-            let request = URLRequest(url: url)
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            let cachedResponse = CachedURLResponse(response: response, data: data)
-            AppConstants.urlCache.storeCachedResponse(cachedResponse, for: request)
-        } catch {
-            /* no action is necessary on failure here */
         }
+
+        prefetcher.startPrefetching(with: imageRequests)
     }
 }

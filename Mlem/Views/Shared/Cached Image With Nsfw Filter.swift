@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import MarkdownUI
-import CachedAsyncImage
+import NukeUI
 
 struct CachedImageWithNsfwFilter: View {
 
@@ -27,15 +27,30 @@ struct CachedImageWithNsfwFilter: View {
     }
     
     var body: some View {
-        CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-            image
-                .resizable()
-                .scaledToFill()
-                .blur(radius: showNsfwFilter ? 30 : 0)
-                .allowsHitTesting(false)
-                .overlay(nsfwOverlay)
-        } placeholder: {
-            ProgressView()
+        LazyImage(url: url) { state in
+            if let image = state.image {
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .blur(radius: showNsfwFilter ? 30 : 0)
+                    .allowsHitTesting(false)
+                    .overlay(nsfwOverlay)
+            } else if state.error != nil {
+                // Indicates an error
+                Color.red
+                    .blur(radius: 30)
+                    .allowsHitTesting(false)
+                    .overlay(VStack {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.largeTitle)
+                        Text("Error")
+                            .fontWeight(.black)
+                    }
+                    .foregroundColor(.white)
+                    .padding(8))
+            } else {
+                ProgressView() // Acts as a placeholder
+            }
         }
     }
     
