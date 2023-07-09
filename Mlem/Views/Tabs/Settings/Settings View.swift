@@ -169,9 +169,11 @@ struct SettingsView: View {
                     NavigationLink {
                         DocumentsView()
                     } label: {
-                        Image(systemName: "books.vertical.fill")
-                            .foregroundColor(.purple)
-                        Text("Documents")
+                        HStack(alignment: .center) {
+                            Image(systemName: "books.vertical.fill")
+                                .foregroundColor(.purple)
+                            Text("Documents")
+                        }
                     }
                     .buttonStyle(.plain)
                 }

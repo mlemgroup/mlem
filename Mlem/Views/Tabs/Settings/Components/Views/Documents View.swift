@@ -12,26 +12,30 @@ struct DocumentsView: View {
     @State var presentedDocument: Document?
     
     var body: some View {
-        List {
-            Button {
-                presentedDocument = privacyPolicy
-            } label: {
-                HStack {
-                    Image(systemName: "binoculars.fill")
-                        .foregroundColor(.purple)
-                    Text("Privacy Policy")
-                        .foregroundColor(.primary)
+        VStack(alignment: .labelStart) {
+            List {
+                Button {
+                    presentedDocument = privacyPolicy
+                } label: {
+                    Label {
+                        Text("Privacy Policy")
+                            .foregroundColor(.primary)
+                    } icon: {
+                        Image(systemName: "binoculars.fill")
+                            .foregroundColor(.purple)
+                    }
                 }
-            }
-            
-            Button {
-                presentedDocument = eula
-            } label: {
-                HStack {
-                    Image(systemName: "doc.plaintext.fill")
-                        .foregroundColor(.purple)
-                    Text("EULA")
-                        .foregroundColor(.primary)
+                
+                Button {
+                    presentedDocument = eula
+                } label: {
+                    Label {
+                        Text("EULA")
+                            .foregroundColor(.primary)
+                    } icon: {
+                        Image(systemName: "doc.plaintext.fill")
+                            .foregroundColor(.purple)
+                    }
                 }
             }
         }
