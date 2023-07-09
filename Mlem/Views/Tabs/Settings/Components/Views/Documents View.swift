@@ -20,9 +20,9 @@ struct DocumentsView: View {
                     Image(systemName: "binoculars.fill")
                         .foregroundColor(.purple)
                     Text("Privacy Policy")
+                        .foregroundColor(.primary)
                 }
             }
-            .buttonStyle(.plain)
             
             Button {
                 presentedDocument = eula
@@ -31,13 +31,15 @@ struct DocumentsView: View {
                     Image(systemName: "doc.plaintext.fill")
                         .foregroundColor(.purple)
                     Text("EULA")
+                        .foregroundColor(.primary)
                 }
             }
-            .buttonStyle(.plain)
         }
         .sheet(item: $presentedDocument) { presentedDocument in
             documentView(doc: presentedDocument)
         }
+        .navigationTitle("Documents")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     func documentView(doc: Document) -> some View {
