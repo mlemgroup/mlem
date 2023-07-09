@@ -53,7 +53,6 @@ struct CompactPost: View {
                         
                         Text(postView.post.name)
                             .font(.headline)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                             .padding(.trailing)
                         
                         Spacer()
@@ -63,7 +62,6 @@ struct CompactPost: View {
                         }
                     }
                 }
-
             }
         }
     }
