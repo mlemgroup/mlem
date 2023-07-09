@@ -7,10 +7,6 @@
 
 import Foundation
 
-enum ReportFailiure: Error {
-    case failedToReport
-}
-
 @MainActor
 func reportPost(
     postId: Int,
@@ -30,8 +26,7 @@ func reportPost(
         return response.postReportView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed to report post: \(error)")
-        throw ReportFailiure.failedToReport
+        throw error
     }
 }
 
@@ -54,7 +49,6 @@ func reportComment(
         return response.commentReportView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed to report comment: \(error)")
-        throw ReportFailiure.failedToReport
+        throw error
     }
 }

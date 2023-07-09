@@ -13,10 +13,6 @@ enum ScoringOperation: Int, Decodable {
     case resetVote = 0
 }
 
-enum RatingFailure: Error {
-    case failedToPostScore
-}
-
 @MainActor
 func ratePost(
     postId: Int,
@@ -38,7 +34,7 @@ func ratePost(
         return response.postView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }
 
@@ -61,10 +57,9 @@ func rateComment(
         let response = try await APIClient().perform(request: request)
         let updatedComment = commentTracker.comments.update(with: response.commentView)
         return updatedComment
-    } catch let ratingOperationError {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed while trying to score: \(ratingOperationError)")
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }
 
@@ -100,10 +95,9 @@ func rateCommentReply(
                                                       myVote: response.commentView.myVote)
         
         commentReplyTracker.update(with: newCommentReplyView)
-    } catch let ratingOperationError {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed while trying to score: \(ratingOperationError)")
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }
 
@@ -139,9 +133,8 @@ func ratePersonMention(
                                                         myVote: response.commentView.myVote)
 
         mentionsTracker.update(with: newPersonMentionView)
-    } catch let ratingOperationError {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed while trying to score: \(ratingOperationError)")
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }

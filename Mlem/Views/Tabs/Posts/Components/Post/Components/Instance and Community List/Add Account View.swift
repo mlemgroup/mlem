@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-struct ErrorAlert {
-    let title: String
-    let message: String
-}
-
-extension ErrorAlert {
-    static var unexpected: Self {
-        .init(
-            title: "Something went wrong",
-            message: "Sorry, something unexpected happened. Please try again"
-        )
-    }
-}
-
 enum UserIDRetrievalError: Error {
     case couldNotFetchUserInformation
 }
@@ -229,34 +215,29 @@ struct AddSavedInstanceView: View {
     }
 
     private func handle(_ error: Error) {
-                let message: String
-                switch error {
-                case EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints:
-                    message = "Could not connect to \(instanceLink)"
-                case UserIDRetrievalError.couldNotFetchUserInformation:
-                    message = "Mlem couldn't fetch you account's information.\nFile a bug report."
-                case APIClientError.encoding:
-                    // TODO: we should add better validation
-                    //  at the UI layer as encoding failures can be caught
-                    //  at an earlier stage
-                    message = "Please check your username and password"
-                case APIClientError.networking:
-                    message = "Please check your internet connection and try again"
-                case APIClientError.response(let errorResponse, _):
-                    if errorResponse.error == "missing_totp_token" {
-                        message = ""
-                        isShowingTwoFactorText = true
-                        break
-                    }
-
-                    message = errorResponse.error
-                default:
-                    // unhandled error encountered...
-                    message = "Something went wrong"
-                    assertionFailure("add error handling for this case...")
-                }
-
-                displayError(message)
+        let message: String
+        switch error {
+        case EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints:
+            message = "Could not connect to \(instanceLink)"
+        case UserIDRetrievalError.couldNotFetchUserInformation:
+            message = "Mlem couldn't fetch you account's information.\nFile a bug report."
+        case APIClientError.encoding:
+            // TODO: we should add better validation
+            //  at the UI layer as encoding failures can be caught
+            //  at an earlier stage
+            message = "Please check your username and password"
+        case APIClientError.networking:
+            message = "Please check your internet connection and try again"
+        case APIClientError.response(let errorResponse, _) where errorResponse.error == "missing_totp_token":
+            message = ""
+            isShowingTwoFactorText = true
+        default:
+            // unhandled error encountered...
+            message = "Something went wrong"
+            assertionFailure("add error handling for this case...")
+        }
+        
+        displayError(message)
     }
 
     private func displayError(_ message: String) {

@@ -16,14 +16,10 @@ func sendPrivateMessage(
 ) async throws {
     do {
         let request = CreatePrivateMessageRequest(account: account, content: content, recipient: recipient)
-
-        print(request)
-        
         AppConstants.hapticManager.notificationOccurred(.success)
         try await APIClient().perform(request: request)
-    } catch let ratingOperationError {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed while trying to mark read: \(ratingOperationError)")
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }

@@ -179,7 +179,7 @@ struct FeedPost: View {
         do {
             _ = try await Mlem.deletePost(postId: postView.post.id, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            print("failed to delete post: \(error)")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
     
@@ -202,7 +202,7 @@ struct FeedPost: View {
                 appState: appState
             )
         } catch {
-            print("failed to vote!")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
 
@@ -210,7 +210,7 @@ struct FeedPost: View {
         do {
             _ = try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
         } catch {
-            print("failed to save!")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
     

@@ -27,7 +27,6 @@ struct UserView: View {
     @State var account: SavedAccount
     @State var userDetails: APIPersonView?
 
-    @State private var errorAlert: ErrorAlert?
     @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     @StateObject private var privateCommentTracker: CommentTracker = .init()
@@ -48,9 +47,6 @@ struct UserView: View {
     
     var body: some View {
         contentView
-            .alert(using: $errorAlert) { content in
-                Alert(title: Text(content.title), message: Text(content.message))
-            }
     }
 
     @ViewBuilder
@@ -352,20 +348,11 @@ struct UserView: View {
     }
 
     private func handle(_ error: Error) {
-        switch error {
-        case APIClientError.response(let message, _):
-            errorAlert = .init(
-                title: "Error",
-                message: message.error
-            )
-        case is APIClientError:
-            errorAlert = .init(
-                title: "Couldn't load user info",
-                message: "There was an error while loading user information.\nTry again later."
-            )
-        default:
-            errorAlert = .unexpected
-        }
+        appState.contextualError = .init(
+            title: "Couldn't load user info",
+            message: "There was an error while loading user information.\nTry again later.",
+            underlyingError: error
+        )
     }
     
     /*
