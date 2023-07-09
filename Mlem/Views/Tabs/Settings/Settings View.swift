@@ -136,9 +136,13 @@ struct SettingsView: View {
                             }
                         }
                     } label: {
-                        Image(systemName: "info.circle.fill")
-                            .foregroundColor(.blue)
-                        Text("About Mlem")
+                        Label {
+                            Text("About Mlem")
+                                .foregroundColor(.primary)
+                        } icon: {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.blue)
+                        }
                     }
 
                     /* Disabled
@@ -160,19 +164,25 @@ struct SettingsView: View {
                      */
                     
                     Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
-                        Image(systemName: "curlybraces.square")
-                            .foregroundColor(.green)
-                        Text("Mlem GitHub Repository")
+                        Label {
+                            Text("Mlem GitHub Repository")
+                                .foregroundColor(.primary)
+                        } icon: {
+                            Image(systemName: "curlybraces.square.fill")
+                                .foregroundColor(.green)
+                        }
                     }
                     .buttonStyle(.plain)
                     
                     NavigationLink {
                         DocumentsView()
                     } label: {
-                        HStack(alignment: .center) {
+                        Label {
+                            Text("Documents")
+                                .foregroundColor(.primary)
+                        } icon: {
                             Image(systemName: "books.vertical.fill")
                                 .foregroundColor(.purple)
-                            Text("Documents")
                         }
                     }
                     .buttonStyle(.plain)
