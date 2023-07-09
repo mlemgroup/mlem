@@ -165,6 +165,15 @@ struct SettingsView: View {
                         Text("Mlem GitHub Repository")
                     }
                     .buttonStyle(.plain)
+                    
+                    NavigationLink {
+                        DocumentsView()
+                    } label: {
+                        Image(systemName: "books.vertical.fill")
+                            .foregroundColor(.purple)
+                        Text("Documents")
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .navigationTitle("Settings")
