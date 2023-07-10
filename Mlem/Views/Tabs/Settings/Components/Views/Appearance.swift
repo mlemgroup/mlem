@@ -14,12 +14,6 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
-    // website previews
-    @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
-    @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
-    @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
-    @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
-    
     // posts
     @AppStorage("postSize") var postSize: PostSize = PostSize.headline
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
@@ -52,111 +46,29 @@ struct AppearanceSettingsView: View {
                         options: UIUserInterfaceStyle.allCases
                     )
                 }
-                Section("Website Previews") {
-                    WebsiteIconComplex(post:
-                                        APIPost(
-                                            id: 0,
-                                            name: "",
-                                            url: URL(string: "https://lemmy.ml/post/1011734")!,
-                                            body: "",
-                                            creatorId: 0,
-                                            communityId: 0,
-                                            deleted: false,
-                                            embedDescription: nil,
-                                            embedTitle: "I am an example of a website preview.\nCustomize me!",
-                                            embedVideoUrl: nil,
-                                            featuredCommunity: false,
-                                            featuredLocal: false,
-                                            languageId: 0,
-                                            apId: "https://lemmy.ml/post/1011068",
-                                            local: true,
-                                            locked: false,
-                                            nsfw: false,
-                                            published: .now,
-                                            removed: false,
-                                            thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
-                                            updated: nil
-                                        )
-                    )
-                    
-                    .padding(.horizontal)
-                    
-                    SwitchableSettingsItem(
-                        settingPictureSystemName: "photo.circle.fill",
-                        settingPictureColor: .pink,
-                        settingName: "Show website image",
-                        isTicked: $shouldShowWebsitePreviews
-                    )
-                    SwitchableSettingsItem(
-                        settingPictureSystemName: "globe",
-                        settingPictureColor: .pink,
-                        settingName: "Show website icons",
-                        isTicked: $shouldShowWebsiteFaviconAtAll
-                    )
-                    .onChange(of: shouldShowWebsiteFaviconAtAll) { _ in
-                        if shouldShowWebsiteFaviconAtAll == false {
-                            shouldShowWebsiteFavicons = false
-                        } else {
-                            shouldShowWebsiteFavicons = true
+                
+                Section("Posts") {
+                    NavigationLink {
+                        CustomizePostView()
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "sparkles.rectangle.stack")
+                                .foregroundColor(.pink)
+                            Text("Customize Post Display")
                         }
                     }
-                    SwitchableSettingsItem(
-                        settingPictureSystemName: "network",
-                        settingPictureColor: .pink,
-                        settingName: "Show website address",
-                        isTicked: $shouldShowWebsiteHost
-                    )
-                }
-                
-                NavigationLink {
-                    CustomizePostView()
-                } label: {
-                    HStack(alignment: .center) {
-                        Image(systemName: "sparkles.rectangle.stack")
-                            .foregroundColor(.pink)
-                        Text("Customize Post Display")
-                    }
-                }
-                Section("Posts") {
-                    SwitchableSettingsItem(
-                        settingPictureSystemName: "wifi.circle.fill",
-                        settingPictureColor: .pink,
-                        settingName: "Show dynamic website icons",
-                        isTicked: $shouldShowWebsiteFavicons
-                    )
-                    .disabled(!shouldShowWebsiteFaviconAtAll)
                     
-//                    SelectableSettingsItem(
-//                        settingIconSystemName: "rectangle.compress.vertical",
-//                        settingName: "Post size",
-//                        currentValue: $postSize,
-//                        options: PostSize.allCases
-//                    )
+                    SelectableSettingsItem(
+                        settingIconSystemName: "rectangle.compress.vertical",
+                        settingName: "Post size",
+                        currentValue: $postSize,
+                        options: PostSize.allCases
+                    )
                     
                     SwitchableSettingsItem(settingPictureSystemName: "eye.trianglebadge.exclamationmark",
                                            settingPictureColor: .pink,
                                            settingName: "Blur NSFW",
                                            isTicked: $shouldBlurNsfw)
-                    
-//                    SwitchableSettingsItem(settingPictureSystemName: "server.rack",
-//                                           settingPictureColor: .pink,
-//                                           settingName: "Show user server instance",
-//                                           isTicked: $shouldShowUserServerInPost)
-                    
-//                    SwitchableSettingsItem(settingPictureSystemName: "server.rack",
-//                                           settingPictureColor: .pink,
-//                                           settingName: "Show community server instance",
-//                                           isTicked: $shouldShowCommunityServerInPost)
-                    
-//                    SwitchableSettingsItem(settingPictureSystemName: "signature",
-//                                           settingPictureColor: .pink,
-//                                           settingName: "Show post creator",
-//                                           isTicked: $shouldShowPostCreator)
-                    
-//                    SwitchableSettingsItem(settingPictureSystemName: "photo",
-//                                           settingPictureColor: .pink,
-//                                           settingName: "Show post thumbnails",
-//                                           isTicked: $shouldShowPostThumbnails)
                 }
                 
                 Section("Comments") {
