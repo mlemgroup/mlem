@@ -13,6 +13,8 @@ struct ContentView: View {
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var errorAlert: ErrorAlert?
+    @State private var expiredSessionAccount: SavedAccount?
+    
     @State private var tabSelection = 1
 
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
@@ -69,6 +71,11 @@ struct ContentView: View {
                 )
             )
         }
+        .sheet(item: $expiredSessionAccount) { account in
+            TokenRefreshView(account: account) { updatedAccount in
+                appState.currentActiveAccount = updatedAccount
+            }
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
     }
@@ -121,8 +128,7 @@ extension ContentView {
         if let clientError = contextualError.underlyingError.base as? APIClientError {
             switch clientError {
             case .invalidSession:
-                // TODO: display login modal and handle session refresh here instead of the alert...
-                errorAlert = .init(title: "SESSION EXPIRED", message: "Your session has expired.")
+                expiredSessionAccount = appState.currentActiveAccount
                 return
             case let .response(apiError, _):
                 errorAlert = .init(title: "Error", message: apiError.error)
