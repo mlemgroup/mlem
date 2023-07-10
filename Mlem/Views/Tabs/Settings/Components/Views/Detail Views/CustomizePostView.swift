@@ -27,13 +27,6 @@ struct CustomizePostView: View {
         VStack(spacing: 0) {
             List {
                 Section("Layout") {
-                    SelectableSettingsItem(
-                        settingIconSystemName: "rectangle.compress.vertical",
-                        settingName: "Post size",
-                        currentValue: $postSize,
-                        options: PostSize.allCases
-                    )
-                    
                     SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                            settingPictureColor: .pink,
                                            settingName: "Show user server instance",
