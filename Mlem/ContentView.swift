@@ -16,46 +16,86 @@ struct ContentView: View {
     @State private var tabSelection = 1
 
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
+    
+    @GestureState var dragState: CGFloat = .zero
+    @State var dragPosition: CGFloat = .zero
+    @State var prevDragPosition: CGFloat = .zero
 
     var body: some View {
-        TabView(selection: $tabSelection) {
-            FeedRoot()
-                .tabItem {
-                    Label("Feeds", systemImage: "scroll")
-                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-                }.tag(1)
-
-            if let currentActiveAccount = appState.currentActiveAccount {
-                InboxView(account: currentActiveAccount)
-                    .tabItem {
-                        Label("Inbox", systemImage: "mail.stack")
-                            .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                    }.tag(2)
-
-                NavigationView {
-                    ProfileView(account: currentActiveAccount)
-                } .tabItem {
-                    Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
-                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-                }.tag(3)
-                
-                NavigationView {
-                    SearchView(account: currentActiveAccount)
-                } .tabItem {
-                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-                }.tag(4)
+        ZStack {
+            List {
+                Button("beehaw.org") {
+                    withAnimation {
+                        dragPosition = .zero
+                    }
+                }
+                Button("lemmy.ml") {
+                    withAnimation {
+                        dragPosition = .zero
+                    }
+                }
             }
-
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                        .environment(\.symbolVariants, tabSelection == 4 ? .fill : .none)
-                }.tag(5)
-        }
-        .onAppear {
-            if appState.currentActiveAccount == nil,
-               let account = accountsTracker.savedAccounts.first {
-                appState.currentActiveAccount = account
+            
+            TabView(selection: $tabSelection) {
+                FeedRoot()
+                    .tabItem {
+                        Label("Feeds", systemImage: "scroll")
+                            .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
+                    }.tag(1)
+                
+                if let currentActiveAccount = appState.currentActiveAccount {
+                    InboxView(account: currentActiveAccount)
+                        .tabItem {
+                            Label("Inbox", systemImage: "mail.stack")
+                                .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                        }.tag(2)
+                    
+                    NavigationView {
+                        ProfileView(account: currentActiveAccount)
+                    } .tabItem {
+                        Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
+                            .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                    }.tag(3)
+                    
+                    NavigationView {
+                        SearchView(account: currentActiveAccount)
+                    } .tabItem {
+                        Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                    }.tag(4)
+                }
+                
+                SettingsView()
+                    .tabItem {
+                        Label("Settings", systemImage: "gear")
+                            .environment(\.symbolVariants, tabSelection == 4 ? .fill : .none)
+                    }.tag(5)
+            }
+            .offset(y: dragPosition)
+            .gesture(
+                DragGesture()
+                    .updating($dragState) { value, state, _ in
+                        state = value.translation.height
+                    }
+            )
+            .onChange(of: dragState) { newDragState in
+                if newDragState == .zero {
+                    if prevDragPosition < -100 {
+                        withAnimation {
+                            dragPosition = -1 * UIScreen.main.bounds.size.height
+                        }
+                    } else {
+                        dragPosition = .zero
+                    }
+                } else {
+                    dragPosition = newDragState
+                    prevDragPosition = dragPosition
+                }
+            }
+            .onAppear {
+                if appState.currentActiveAccount == nil,
+                   let account = accountsTracker.savedAccounts.first {
+                    appState.currentActiveAccount = account
+                }
             }
         }
         .alert(using: $errorAlert) { content in
