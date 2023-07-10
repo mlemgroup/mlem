@@ -29,7 +29,8 @@ struct StandardVoteComplex: View {
             .frame(height: height)
             .padding(.horizontal, 4)
             .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-                .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
+                // .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
+                .foregroundColor(.upvoteColor))
             .foregroundColor(vote == .upvote ? .white : .primary)
             .onTapGesture {
                 Task(priority: .userInitiated) {

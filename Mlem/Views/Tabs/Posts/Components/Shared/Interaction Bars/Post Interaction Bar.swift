@@ -20,7 +20,7 @@ struct PostInteractionBar: View {
     let iconPadding: CGFloat = 4
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
-    let height: CGFloat = 24
+    let height: CGFloat = 44
 
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation
