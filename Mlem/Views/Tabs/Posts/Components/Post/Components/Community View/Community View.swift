@@ -68,18 +68,8 @@ struct CommunityView: View {
             .refreshable {
                 Task(priority: .userInitiated) {
                     isRefreshing = true
-
-                    try await postTracker.refresh(
-                        account: account,
-                        communityId: community?.id,
-                        sort: postSortType,
-                        type: feedType,
-                        filtering: { postView in
-                            !postView.post.name.contains(filtersTracker.filteredKeywords)
-                        }
-                    )
-
-                    isRefreshing = false
+                    defer { isRefreshing = false }
+                    await refreshFeed()
                 }
             }
             .onAppear {
