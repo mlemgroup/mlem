@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 import Nuke
 
 class PostTracker: FeedTracker<APIPostView> {
@@ -76,12 +75,10 @@ class PostTracker: FeedTracker<APIPostView> {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
             if let communityAvatarLink = postView.community.icon {
-                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon32Parameters))
                 imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
 
             if let userAvatarLink = postView.creator.avatar {
-                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon32Parameters))
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
             }
 
