@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import Nuke
 
 class PostTracker: FeedTracker<APIPostView> {
+
+    private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
+                                             destination: .memoryCache,
+                                             maxConcurrentRequestCount: 40)
 
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
@@ -34,9 +39,7 @@ class PostTracker: FeedTracker<APIPostView> {
             filtering: filtering
         )
 
-        Task(priority: .background) {
-            preloadImages(response.posts)
-        }
+        preloadImages(response.posts)
     }
 
     func refresh(
@@ -67,32 +70,37 @@ class PostTracker: FeedTracker<APIPostView> {
 
     private func preloadImages(_ newPosts: [APIPostView]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
-        for post in newPosts {
-            if let thumbnailUrl = post.post.thumbnailUrl {
-                Task(priority: .background) {
-                    await preloadSingleImage(url: thumbnailUrl)
-                }
+        var imageRequests: [ImageRequest] = []
+        for postView in newPosts {
+            // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
+            // so it's probably not an API crime, right?
+            if let communityAvatarLink = postView.community.icon {
+                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
-            switch post.postType {
+
+            if let userAvatarLink = postView.creator.avatar {
+                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
+            }
+
+            switch postView.postType {
             case .image(let url):
-                Task(priority: .background) {
-                    await preloadSingleImage(url: url)
+                // images: only load the image
+                imageRequests.append(ImageRequest(url: url, priority: .high))
+            case .link(let url):
+                // websites: load image and favicon
+                if let baseURL = postView.post.url?.host,
+                   let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
+                    imageRequests.append(ImageRequest(url: favIconURL))
+                }
+                if let url = url {
+                    imageRequests.append(ImageRequest(url: url, priority: .high))
                 }
             default:
                 break
             }
 
         }
-    }
 
-    private func preloadSingleImage(url: URL) async {
-        do {
-            let request = URLRequest(url: url)
-            let (data, response) = try await URLSession.shared.data(for: request)
-            let cachedResponse = CachedURLResponse(response: response, data: data)
-            AppConstants.urlCache.storeCachedResponse(cachedResponse, for: request)
-        } catch {
-            /* no action is necessary on failure here */
-        }
+        prefetcher.startPrefetching(with: imageRequests)
     }
 }

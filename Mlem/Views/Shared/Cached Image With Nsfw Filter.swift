@@ -8,37 +8,49 @@
 import Foundation
 import SwiftUI
 import MarkdownUI
-import CachedAsyncImage
+import NukeUI
 
 struct CachedImageWithNsfwFilter: View {
 
     let isNsfw: Bool
     let url: URL?
-    let cornerRadius: CGFloat
 
     @State var showNsfwFilterToggle: Bool
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     var showNsfwFilter: Bool { self.isNsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
 
-    init(isNsfw: Bool, url: URL?, cornerRadius: CGFloat = 0) {
+    init(isNsfw: Bool, url: URL?) {
         self.isNsfw = isNsfw
         self.url = url
-        self.cornerRadius = cornerRadius
         
         self._showNsfwFilterToggle = .init(initialValue: true)
     }
     
     var body: some View {
-        CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-            image
-                .resizable()
-                .scaledToFit()
-                .cornerRadius(cornerRadius)
-                .blur(radius: showNsfwFilter ? 30 : 0)
-                .allowsHitTesting(false)
-                .overlay(nsfwOverlay)
-        } placeholder: {
-            ProgressView()
+        LazyImage(url: url) { state in
+            if let image = state.image {
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .blur(radius: showNsfwFilter ? 30 : 0)
+                    .allowsHitTesting(false)
+                    .overlay(nsfwOverlay)
+            } else if state.error != nil {
+                // Indicates an error
+                Color.red
+                    .blur(radius: 30)
+                    .allowsHitTesting(false)
+                    .overlay(VStack {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.largeTitle)
+                        Text("Error")
+                            .fontWeight(.black)
+                    }
+                    .foregroundColor(.white)
+                    .padding(8))
+            } else {
+                ProgressView() // Acts as a placeholder
+            }
         }
     }
     

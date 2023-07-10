@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Nuke
 
 internal enum FavoritesPurgingError {
     case failedToDeleteOldFavoritesFile, failedToCreateNewEmptyFile
@@ -123,6 +124,7 @@ struct GeneralSettingsView: View {
             Section {
                 Button(role: .destructive) {
                     URLCache.shared.removeAllCachedResponses()
+                    ImagePipeline.shared.cache.removeAll()
                     diskUsage = Int64(URLCache.shared.currentDiskUsage)
                 } label: {
                     Label("Cache: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")

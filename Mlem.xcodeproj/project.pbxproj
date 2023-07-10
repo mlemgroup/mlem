@@ -201,6 +201,11 @@
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
 		ADAEFE542A52921C0047F0A9 /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */; };
 		ADF266952A4E8A1E00EBA648 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */; };
+		B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D72A59BF3C00B3E725 /* Nuke */; };
+		B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D92A59BF3C00B3E725 /* NukeExtensions */; };
+		B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DB2A59BF3C00B3E725 /* NukeUI */; };
+		B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DD2A59BF3C00B3E725 /* NukeVideo */; };
+		B104A6E02A59C19400B3E725 /* OperationQueue - Easy init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */; };
 		B11A1A782A4EFF2B00520DB4 /* Feed Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */; };
 		B11D72832A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */; };
 		B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93BF2A45CA3400D6DA93 /* Post Link.swift */; };
@@ -498,6 +503,7 @@
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
 		ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
 		ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
+		B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperationQueue - Easy init.swift"; sourceTree = "<group>"; };
 		B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed Root.swift"; sourceTree = "<group>"; };
 		B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cached Image With Nsfw Filter.swift"; sourceTree = "<group>"; };
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
@@ -591,9 +597,13 @@
 			files = (
 				63E5D3902A13CE4100EC1FBD /* DebouncedOnChange in Frameworks */,
 				63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */,
+				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
+				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
+				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
+				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,6 +790,7 @@
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
 				6DA61F842A568F99001EA633 /* Int.swift */,
 				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
+				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1527,6 +1538,10 @@
 				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
 				636250DB2A18111400FC59B4 /* KeychainAccess */,
 				B14E93C42A470D5100D6DA93 /* AlertToast */,
+				B104A6D72A59BF3C00B3E725 /* Nuke */,
+				B104A6D92A59BF3C00B3E725 /* NukeExtensions */,
+				B104A6DB2A59BF3C00B3E725 /* NukeUI */,
+				B104A6DD2A59BF3C00B3E725 /* NukeVideo */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -1606,6 +1621,7 @@
 				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1688,6 +1704,7 @@
 				6372185F2A3A2AAD008C4816 /* LoginRequest.swift in Sources */,
 				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
+				B104A6E02A59C19400B3E725 /* OperationQueue - Easy init.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */,
 				CD69F5612A40B6270028D4F7 /* Save Post.swift in Sources */,
 				637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */,
@@ -2318,6 +2335,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.1.2;
+			};
+		};
 		B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -2348,6 +2373,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
 			productName = CachedAsyncImage;
+		};
+		B104A6D72A59BF3C00B3E725 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		B104A6D92A59BF3C00B3E725 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+		B104A6DB2A59BF3C00B3E725 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
+		};
+		B104A6DD2A59BF3C00B3E725 /* NukeVideo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeVideo;
 		};
 		B14E93C42A470D5100D6DA93 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
