@@ -135,6 +135,7 @@ struct CommunityView: View {
                                 .scaleEffect(0.7)
                         }
                         .foregroundColor(.primary)
+                        .accessibilityElement(children: .combine)
                         .accessibilityHint("Activate to change feeds.")
                     }
                 }
