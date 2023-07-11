@@ -20,6 +20,7 @@ struct FeedRoot: View {
     @State var isShowingInstanceAdditionSheet: Bool = false
 
     @State var rootDetails: CommunityLinkWithContext?
+    @State var isShowingToast: Bool = false
 
     var body: some View {
 
@@ -61,7 +62,7 @@ struct FeedRoot: View {
         .environment(\.navigationPath, $navigationPath)
         .environmentObject(appState)
         .environmentObject(accountsTracker)
-        .toast(isPresenting: $appState.isShowingToast) {
+        .toast(isPresenting: $appState.isShowingToast, duration: 2) {
             appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
         .alert(appState.alertTitle, isPresented: $appState.isShowingAlert) {

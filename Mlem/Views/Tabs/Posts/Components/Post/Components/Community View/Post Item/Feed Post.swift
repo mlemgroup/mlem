@@ -9,9 +9,13 @@
 // Since padding varies depending on compact/large view, it is handled *entirely* in those components. No padding should
 // appear anywhere in this file.
 
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
+
 import CachedAsyncImage
 import QuickLook
 import SwiftUI
+import AlertToast
 
 /**
  Displays a single post in the feed
@@ -183,6 +187,31 @@ struct FeedPost: View {
         }
     }
     
+    func blockUser() async {
+        do {
+            let blocked = try await blockPerson(account: account, person: postView.creator, blocked: true)
+            if blocked {
+                postTracker.removePosts(from: postView.creator.id)
+                
+                let toast = AlertToast(
+                    displayMode: .alert,
+                    type: .complete(.blue),
+                    title: "Blocked \(postView.creator.name)"
+                )
+                appState.toast = toast
+                appState.isShowingToast = true
+            } // Show Toast
+        } catch {
+            let toast = AlertToast(
+                displayMode: .alert,
+                type: .error(.red),
+                title: "Unable to block \(postView.creator.name)"
+            )
+            appState.toast = toast
+            appState.isShowingToast = true
+        }
+    }
+    
     func replyToThisPost() {
         if let replyCallback = replyToPost {
             replyCallback(postView)
@@ -315,8 +344,7 @@ struct FeedPost: View {
             destructiveActionPrompt: nil,
             enabled: true) {
                 Task(priority: .userInitiated) {
-                    let response = try await blockPerson(account: account, person: postView.creator, blocked: true)
-                    print("Response")
+                    await blockUser()
                 }
             })
         
@@ -383,3 +411,5 @@ extension FeedPost {
         }
     }
 }
+// swiftlint:enable type_body_length
+// swiftlint:enable file_length

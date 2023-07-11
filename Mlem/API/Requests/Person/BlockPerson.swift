@@ -19,13 +19,11 @@ struct BlockPersonRequest: APIPostRequest {
     struct Body: Encodable {
         let person_id: Int
         let block: Bool
-
         let auth: String
     }
 
     init(
         account: SavedAccount,
-
         personId: Int,
         block: Bool
     ) {
@@ -33,7 +31,6 @@ struct BlockPersonRequest: APIPostRequest {
         self.body = .init(
             person_id: personId,
             block: block,
-
             auth: account.accessToken
         )
     }
@@ -41,6 +38,6 @@ struct BlockPersonRequest: APIPostRequest {
 
 // lemmy_api_common::user::BlockPersonResponse
 struct BlockPersonResponse: Decodable {
-    let person: APIPerson
+    let personView: APIPersonView
     let blocked: Bool
 }
