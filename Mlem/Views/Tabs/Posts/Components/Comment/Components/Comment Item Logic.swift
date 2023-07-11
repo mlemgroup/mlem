@@ -224,7 +224,6 @@ extension CommentItem {
                 translateText(hierarchicalComment.commentView.comment.content)
         })
 
-
         // report
         ret.append(MenuFunction(
             text: "Report",

@@ -361,12 +361,11 @@ struct FeedPost: View {
                 }
             })
 
-
         return ret
     }
     // swiftlint:enable function_body_length
 }
-
+// swiftlint:enable type_body_length
 // MARK: - Swipe Actions
 
 extension FeedPost {
