@@ -338,7 +338,7 @@ struct CommunityView: View {
     private var postListView: some View {
         ForEach(postTracker.items, id: \.id) { post in
             VStack(spacing: 0) {
-                NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)) {
+                NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
                     FeedPost(
                         postView: post,
                         account: account,
