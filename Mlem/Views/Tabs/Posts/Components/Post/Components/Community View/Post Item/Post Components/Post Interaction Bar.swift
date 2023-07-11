@@ -35,7 +35,6 @@ struct PostInteractionBar: View {
 
     // parameters
     let postView: APIPostView
-    let account: SavedAccount
     let menuFunctions: [MenuFunction]
     let voteOnPost: (ScoringOperation) async -> Void
     let updatedSavePost: (_ save: Bool) async throws -> Void
@@ -44,7 +43,6 @@ struct PostInteractionBar: View {
     
     init(
         postView: APIPostView,
-        account: SavedAccount,
         menuFunctions: [MenuFunction],
         voteOnPost: @escaping (ScoringOperation) async -> Void,
         updatedSavePost: @escaping (_ save: Bool) async throws -> Void,
@@ -52,7 +50,6 @@ struct PostInteractionBar: View {
         replyToPost: (() -> Void)?
     ) {
         self.postView = postView
-        self.account = account
         self.voteOnPost = voteOnPost
         self.menuFunctions = menuFunctions
         self.updatedSavePost = updatedSavePost
@@ -88,7 +85,7 @@ struct PostInteractionBar: View {
     // helper functions
     
     func canDeletePost() -> Bool {
-        if postView.creator.id != account.id {
+        if postView.creator.id != appState.currentActiveAccount.id {
             return false
         }
         

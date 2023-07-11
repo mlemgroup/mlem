@@ -14,6 +14,7 @@ import Foundation
  */
 struct CommentInteractionBar: View {
     // environment
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var commentTracker: CommentTracker
 
     // constants
@@ -23,7 +24,6 @@ struct CommentInteractionBar: View {
 
     // parameters
     let commentView: APICommentView
-    let account: SavedAccount
 
     let displayedScore: Int
     let displayedVote: ScoringOperation
@@ -60,7 +60,7 @@ struct CommentInteractionBar: View {
     }
     
     func canDeleteComment() -> Bool {
-        if commentView.creator.id != account.id {
+        if commentView.creator.id != appState.currentActiveAccount.id {
             return false
         }
         

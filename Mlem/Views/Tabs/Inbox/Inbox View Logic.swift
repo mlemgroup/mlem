@@ -35,6 +35,8 @@ extension InboxView {
             print("Failed while loading feed (request cancelled)")
             errorOccurred = true
             errorMessage = "Request was cancelled, try refreshing"
+        } catch APIClientError.invalidSession {
+            appState.contextualError = .init(underlyingError: APIClientError.invalidSession)
         } catch let message {
             print(message)
             errorOccurred = true
@@ -44,25 +46,25 @@ extension InboxView {
     
     func refreshRepliesTracker() async throws {
         if curTab == .all || curTab == .replies {
-            try await repliesTracker.refresh(account: account)
+            try await repliesTracker.refresh(account: appState.currentActiveAccount)
         }
     }
     
     func refreshMentionsTracker() async throws {
         if curTab == .all || curTab == .mentions {
-            try await mentionsTracker.refresh(account: account)
+            try await mentionsTracker.refresh(account: appState.currentActiveAccount)
         }
     }
     
     func refreshMessagesTracker() async throws {
         if curTab == .all || curTab == .messages {
-            try await messagesTracker.refresh(account: account)
+            try await messagesTracker.refresh(account: appState.currentActiveAccount)
         }
     }
     
     func loadTrackerPage(tracker: InboxTracker) async {
         do {
-            try await tracker.loadNextPage(account: account)
+            try await tracker.loadNextPage(account: appState.currentActiveAccount)
             aggregateAllTrackers()
             // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-merge the whole damn array
         } catch let message {
@@ -109,7 +111,7 @@ extension InboxView {
                 let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
                 try await _ = rateCommentReply(commentReply: commentReply,
                                                operation: operation,
-                                               account: account,
+                                               account: appState.currentActiveAccount,
                                                commentReplyTracker: repliesTracker,
                                                appState: appState)
                 // TODO: more granular/less expensive merge options
@@ -125,7 +127,7 @@ extension InboxView {
             do {
                 try await sendMarkCommentReplyAsReadRequest(commentReply: commentReplyView,
                                                             read: !commentReplyView.commentReply.read,
-                                                            account: account,
+                                                            account: appState.currentActiveAccount,
                                                             commentReplyTracker: repliesTracker,
                                                             appState: appState)
                 
@@ -148,7 +150,7 @@ extension InboxView {
                 let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
                 try await ratePersonMention(personMention: mention,
                                             operation: operation,
-                                            account: account,
+                                            account: appState.currentActiveAccount,
                                             mentionsTracker: mentionsTracker,
                                             appState: appState)
                 
@@ -162,7 +164,7 @@ extension InboxView {
             do {
                 try await sendMarkPersonMentionAsReadRequest(personMention: mention,
                                                              read: !mention.personMention.read,
-                                                             account: account,
+                                                             account: appState.currentActiveAccount,
                                                              mentionTracker: mentionsTracker,
                                                              appState: appState)
                 
@@ -189,7 +191,7 @@ extension InboxView {
             do {
                 try await sendMarkPrivateMessageAsReadRequest(messageView: message,
                                                               read: !message.privateMessage.read,
-                                                              account: account,
+                                                              account: appState.currentActiveAccount,
                                                               messagesTracker: messagesTracker,
                                                               appState: appState)
                 

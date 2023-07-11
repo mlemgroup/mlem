@@ -25,7 +25,6 @@ struct CommunityView: View {
     @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     
     // parameters
-    @State var account: SavedAccount
     var community: APICommunity?
     @State var feedType: FeedType
     
@@ -45,8 +44,7 @@ struct CommunityView: View {
 
     var isInSpecificCommunity: Bool { community != nil }
     
-    init(account: SavedAccount, community: APICommunity?, feedType: FeedType) {
-        self._account = State(initialValue: account)
+    init(community: APICommunity?, feedType: FeedType) {
         self.community = community
         self._feedType = State(initialValue: feedType)
     }
@@ -68,18 +66,8 @@ struct CommunityView: View {
             .refreshable {
                 Task(priority: .userInitiated) {
                     isRefreshing = true
-
-                    try await postTracker.refresh(
-                        account: account,
-                        communityId: community?.id,
-                        sort: postSortType,
-                        type: feedType,
-                        filtering: { postView in
-                            !postView.post.name.contains(filtersTracker.filteredKeywords)
-                        }
-                    )
-
-                    isRefreshing = false
+                    defer { isRefreshing = false }
+                    await refreshFeed()
                 }
             }
             .onAppear {
@@ -96,8 +84,7 @@ struct CommunityView: View {
                         do {
                             communityDetails = try await loadCommunityDetails(
                                 community: community,
-                                account: account,
-                                appState: appState
+                                account: appState.currentActiveAccount
                             )
                         } catch {
                             print("Failed while fetching community details: \(error)")
@@ -119,11 +106,7 @@ struct CommunityView: View {
         }
         .sheet(item: $replyingToPost) { post in
             GeneralCommentComposerView(
-                replyTo: ReplyToFeedPost(
-                    post: post,
-                    account: account,
-                    appState: appState
-                )
+                replyTo: ReplyToFeedPost(post: post)
             )
         }
         .toolbar {
@@ -204,7 +187,6 @@ struct CommunityView: View {
                             // This is when a community is already favorited
                             Button(role: .destructive) {
                                 unfavoriteCommunity(
-                                    account: account,
                                     community: community!,
                                     favoritedCommunitiesTracker: favoriteCommunitiesTracker
                                 )
@@ -214,7 +196,7 @@ struct CommunityView: View {
                         } else {
                             Button {
                                 favoriteCommunity(
-                                    account: account,
+                                    account: appState.currentActiveAccount,
                                     community: community!,
                                     favoritedCommunitiesTracker: favoriteCommunitiesTracker
                                 )
@@ -232,11 +214,10 @@ struct CommunityView: View {
                                 set: { newValue in
                                     guard let newValue else { return }
                                     self.communityDetails?.communityView = newValue
-                                }),
-                            account: account
+                                })
                         )
                         
-                        BlockCommunityButton(account: account, communityDetails: Binding(
+                        BlockCommunityButton(communityDetails: Binding(
                             get: {
                                 communityDetails.communityView
                             },
@@ -359,7 +340,6 @@ struct CommunityView: View {
             NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
                 FeedPost(
                     postView: post,
-                    account: account,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: !isInSpecificCommunity,
                     isDragging: $isDragging,
@@ -400,7 +380,7 @@ struct CommunityView: View {
     func loadFeed() async {
         do {
             try await postTracker.loadNextPage(
-                account: account,
+                account: appState.currentActiveAccount,
                 communityId: community?.id,
                 sort: postSortType,
                 type: feedType,
@@ -416,7 +396,7 @@ struct CommunityView: View {
     func refreshFeed() async {
         do {
             try await postTracker.refresh(
-                account: account,
+                account: appState.currentActiveAccount,
                 communityId: community?.id,
                 sort: postSortType,
                 type: feedType,

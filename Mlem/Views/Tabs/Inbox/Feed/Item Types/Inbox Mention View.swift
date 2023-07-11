@@ -11,7 +11,6 @@ struct InboxMentionView: View {
     let spacing: CGFloat = 10
     let userAvatarWidth: CGFloat = 30
     
-    let account: SavedAccount
     let mention: APIPersonMentionView
     let menuFunctions: [MenuFunction]
     
@@ -20,8 +19,7 @@ struct InboxMentionView: View {
     
     var iconName: String { mention.personMention.read ? "quote.bubble" : "quote.bubble.fill" }
     
-    init(account: SavedAccount, mention: APIPersonMentionView, menuFunctions: [MenuFunction]) {
-        self.account = account
+    init(mention: APIPersonMentionView, menuFunctions: [MenuFunction]) {
         self.mention = mention
         self.menuFunctions = menuFunctions
         

@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct CommunitySidebarView: View {
+    
+    @EnvironmentObject var appState: AppState
+    
     // parameters
-    let account: SavedAccount
     let community: APICommunity
     @State var communityDetails: GetCommunityResponse?
 
@@ -42,7 +44,7 @@ struct CommunitySidebarView: View {
     
     private func loadCommunity() async {
         do {
-            let request = GetCommunityRequest(account: account, communityId: community.id)
+            let request = GetCommunityRequest(account: appState.currentActiveAccount, communityId: community.id)
             communityDetails = try await APIClient().perform(request: request)
         } catch APIClientError.networking {
             errorMessage = "Network error occurred, check your internet and retry"
@@ -178,12 +180,6 @@ struct SidebarPreview: PreviewProvider {
     
     static var previews: some View {
         CommunitySidebarView(
-            account: SavedAccount(
-                id: 0,
-                instanceLink: URL(string: "https://lemmy.foo.com/")!,
-                accessToken: "abcd",
-                username: "foobar"
-            ),
             community: previewCommunity,
             communityDetails:
                 GetCommunityResponse(

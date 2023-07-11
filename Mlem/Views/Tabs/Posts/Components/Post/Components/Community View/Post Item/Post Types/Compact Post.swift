@@ -21,7 +21,6 @@ struct CompactPost: View {
 
     // arguments
     let postView: APIPostView
-    let account: SavedAccount
 
     // computed
     var usernameColor: Color {

@@ -13,6 +13,8 @@ struct ContentView: View {
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var errorAlert: ErrorAlert?
+    @State private var expiredSessionAccount: SavedAccount?
+    
     @State private var tabSelection = 1
 
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
@@ -24,39 +26,31 @@ struct ContentView: View {
                     Label("Feeds", systemImage: "scroll")
                         .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
                 }.tag(1)
-
-            if let currentActiveAccount = appState.currentActiveAccount {
-                InboxView(account: currentActiveAccount)
-                    .tabItem {
-                        Label("Inbox", systemImage: "mail.stack")
-                            .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                    }.tag(2)
-
-                NavigationView {
-                    ProfileView(account: currentActiveAccount)
-                } .tabItem {
-                    Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
-                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-                }.tag(3)
-                
-                NavigationView {
-                    SearchView(account: currentActiveAccount)
-                } .tabItem {
-                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-                }.tag(4)
-            }
+            
+            InboxView()
+                .tabItem {
+                    Label("Inbox", systemImage: "mail.stack")
+                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                }.tag(2)
+            
+            NavigationView {
+                ProfileView(userID: appState.currentActiveAccount.id)
+            } .tabItem {
+                Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
+                    .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+            }.tag(3)
+            
+            NavigationView {
+                SearchView()
+            } .tabItem {
+                Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+            }.tag(4)
 
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
-                        .environment(\.symbolVariants, tabSelection == 4 ? .fill : .none)
+                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
                 }.tag(5)
-        }
-        .onAppear {
-            if appState.currentActiveAccount == nil,
-               let account = accountsTracker.savedAccounts.first {
-                appState.currentActiveAccount = account
-            }
         }
         .onChange(of: appState.contextualError) { handle($0) }
         .alert(using: $errorAlert) { content in
@@ -68,6 +62,11 @@ struct ContentView: View {
                     action: { errorAlert = nil }
                 )
             )
+        }
+        .sheet(item: $expiredSessionAccount) { account in
+            TokenRefreshView(account: account) { updatedAccount in
+                appState.setActiveAccount(updatedAccount)
+            }
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
@@ -121,8 +120,7 @@ extension ContentView {
         if let clientError = contextualError.underlyingError.base as? APIClientError {
             switch clientError {
             case .invalidSession:
-                // TODO: display login modal and handle session refresh here instead of the alert...
-                errorAlert = .init(title: "SESSION EXPIRED", message: "Your session has expired.")
+                expiredSessionAccount = appState.currentActiveAccount
                 return
             case let .response(apiError, _):
                 errorAlert = .init(title: "Error", message: apiError.error)

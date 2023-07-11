@@ -20,7 +20,6 @@ struct UltraCompactPost: View {
     
     // arguments
     let postView: APIPostView
-    let account: SavedAccount
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
@@ -29,9 +28,8 @@ struct UltraCompactPost: View {
     let voteIconName: String
     var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
 
-    init(postView: APIPostView, account: SavedAccount, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
-        self.account = account
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
         

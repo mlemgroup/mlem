@@ -12,7 +12,6 @@ struct BlockCommunityButton: View {
     @EnvironmentObject var appState: AppState
 
     // parameters
-    @State var account: SavedAccount
     @Binding var communityDetails: APICommunityView?
 
     var body: some View {
@@ -44,7 +43,7 @@ struct BlockCommunityButton: View {
     private func block(communityId: Int, shouldBlock: Bool) async {
         do {
             let request = BlockCommunityRequest(
-                account: account,
+                account: appState.currentActiveAccount,
                 communityId: communityId,
                 block: shouldBlock
             )

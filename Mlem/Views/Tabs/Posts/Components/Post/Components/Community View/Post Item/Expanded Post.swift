@@ -22,8 +22,6 @@ struct ExpandedPost: View {
     @StateObject var commentTracker: CommentTracker = .init()
     @StateObject var commentReplyTracker: CommentReplyTracker = .init()
 
-    @State var account: SavedAccount
-
     @EnvironmentObject var postTracker: PostTracker
 
     @State var post: APIPostView
@@ -70,7 +68,7 @@ struct ExpandedPost: View {
         .sheet(isPresented: $isReplyingToComment) {
             if let comment = commentReplyingTo {
                 let replyTo: ReplyToComment = ReplyToComment(comment: comment,
-                                                             account: account,
+                                                             account: appState.currentActiveAccount,
                                                              appState: appState,
                                                              commentTracker: commentTracker)
                 GeneralCommentComposerView(replyTo: replyTo)
@@ -108,7 +106,7 @@ struct ExpandedPost: View {
             }
         }
         .sheet(isPresented: $isComposingReport) {
-            ReportComposerView(account: account, reportedPost: post)
+            ReportComposerView(reportedPost: post)
         }
     }
     // subviews
@@ -134,7 +132,6 @@ struct ExpandedPost: View {
             UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
             
             PostInteractionBar(postView: post,
-                               account: account,
                                menuFunctions: genMenuFunctions(),
                                voteOnPost: voteOnPost,
                                updatedSavePost: savePost,
@@ -185,7 +182,6 @@ struct ExpandedPost: View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.comments) { comment in
                 CommentItem(
-                    account: account,
                     hierarchicalComment: comment,
                     postContext: post,
                     depth: 0,
