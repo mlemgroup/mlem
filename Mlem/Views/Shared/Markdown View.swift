@@ -294,9 +294,15 @@ struct MarkdownView: View {
         return blocks
     }
 
+    @ViewBuilder
     func getMarkdown(text: String) -> some View {
-        Markdown(text)
-            .frame(maxWidth: .infinity, alignment: .topLeading)
-            .markdownTheme(.mlem)
+        if replaceImagesWithEmoji {
+            Text(text)
+        } else {
+            Markdown(text)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+                .markdownTheme(.mlem)
+        }
+            
     }
 }

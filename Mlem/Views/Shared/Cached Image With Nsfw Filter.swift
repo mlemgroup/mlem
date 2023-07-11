@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 import MarkdownUI
-import NukeUI
+import SDWebImageSwiftUI
 
 struct CachedImageWithNsfwFilter: View {
-
     let isNsfw: Bool
     let url: URL?
+    @State var error: Bool = false
 
     @State var showNsfwFilterToggle: Bool
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -22,36 +22,39 @@ struct CachedImageWithNsfwFilter: View {
     init(isNsfw: Bool, url: URL?) {
         self.isNsfw = isNsfw
         self.url = url
-        
         self._showNsfwFilterToggle = .init(initialValue: true)
     }
     
     var body: some View {
-        LazyImage(url: url) { state in
-            if let image = state.image {
-                image
+        Group {
+            if !error {
+                AnimatedImage(url: url)
+                    .placeholder { ProgressView() }
+                    .onFailure { _ in error.toggle() }
                     .resizable()
                     .scaledToFill()
                     .blur(radius: showNsfwFilter ? 30 : 0)
                     .allowsHitTesting(false)
                     .overlay(nsfwOverlay)
-            } else if state.error != nil {
-                // Indicates an error
-                Color.red
-                    .blur(radius: 30)
-                    .allowsHitTesting(false)
-                    .overlay(VStack {
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.largeTitle)
-                        Text("Error")
-                            .fontWeight(.black)
-                    }
-                    .foregroundColor(.white)
-                    .padding(8))
             } else {
-                ProgressView() // Acts as a placeholder
+                self.defaultError
             }
         }
+    }
+    
+    @ViewBuilder
+    var defaultError: some View {
+        Color.red
+            .blur(radius: 30)
+            .allowsHitTesting(false)
+            .overlay(VStack {
+                Image(systemName: "exclamationmark.triangle")
+                    .font(.largeTitle)
+                Text("Error")
+                    .fontWeight(.black)
+            }
+            .foregroundColor(.white)
+            .padding(8))
     }
     
     @ViewBuilder

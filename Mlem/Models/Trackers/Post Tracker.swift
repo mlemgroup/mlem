@@ -7,14 +7,11 @@
 
 import Foundation
 import SwiftUI
-import Nuke
+import SDWebImageSwiftUI
+import SDWebImage
 
 class PostTracker: FeedTracker<APIPostView> {
-
-    private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
-                                             destination: .memoryCache,
-                                             maxConcurrentRequestCount: 40)
-
+    
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
     ///   - account: The `SavedAccount` for the logged in user
@@ -71,39 +68,39 @@ class PostTracker: FeedTracker<APIPostView> {
 
     private func preloadImages(_ newPosts: [APIPostView]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
-        var imageRequests: [ImageRequest] = []
+        var imageRequests: [URL] = []
         for postView in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
             if let communityAvatarLink = postView.community.icon {
-                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon32Parameters))
-                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
+                imageRequests.append(communityAvatarLink.withIcon32Parameters)
+                imageRequests.append(communityAvatarLink.withIcon64Parameters)
             }
 
             if let userAvatarLink = postView.creator.avatar {
-                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon32Parameters))
-                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
+                imageRequests.append(userAvatarLink.withIcon32Parameters)
+                imageRequests.append(userAvatarLink.withIcon64Parameters)
             }
 
             switch postView.postType {
             case .image(let url):
                 // images: only load the image
-                imageRequests.append(ImageRequest(url: url, priority: .high))
+                imageRequests.append(url)
             case .link(let url):
                 // websites: load image and favicon
                 if let baseURL = postView.post.url?.host,
                    let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
-                    imageRequests.append(ImageRequest(url: favIconURL))
+                    imageRequests.append(favIconURL)
                 }
                 if let url = url {
-                    imageRequests.append(ImageRequest(url: url, priority: .high))
+                    imageRequests.append(url)
                 }
             default:
                 break
             }
 
         }
-
-        prefetcher.startPrefetching(with: imageRequests)
+        
+        SDWebImagePrefetcher.shared.prefetchURLs(imageRequests)
     }
 }

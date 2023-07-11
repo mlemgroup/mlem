@@ -74,9 +74,10 @@
    <ProfileAction
       buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = ""
+      savedToolIdentifier = "Time Profiler"
       useCustomWorkingDirectory = "NO"
-      debugDocumentVersioning = "YES">
+      debugDocumentVersioning = "YES"
+      enableTestabilityWhenProfilingTests = "No">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference

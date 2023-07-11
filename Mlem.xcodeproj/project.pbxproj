@@ -200,13 +200,13 @@
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
 		ADAEFE542A52921C0047F0A9 /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */; };
 		ADF266952A4E8A1E00EBA648 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */; };
-		B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D72A59BF3C00B3E725 /* Nuke */; };
-		B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D92A59BF3C00B3E725 /* NukeExtensions */; };
-		B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DB2A59BF3C00B3E725 /* NukeUI */; };
-		B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6DD2A59BF3C00B3E725 /* NukeVideo */; };
 		B104A6E02A59C19400B3E725 /* OperationQueue - Easy init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */; };
 		B11A1A782A4EFF2B00520DB4 /* Feed Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */; };
 		B11D72832A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */; };
+		B12EFF6F2A5D35FD00074EB9 /* CoreMediaDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12EFF6E2A5D35FD00074EB9 /* CoreMediaDisplay.swift */; };
+		B12EFF712A5D4CFD00074EB9 /* Gif display.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12EFF702A5D4CFD00074EB9 /* Gif display.swift */; };
+		B12EFF742A5D565200074EB9 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B12EFF732A5D565200074EB9 /* SDWebImage */; };
+		B12EFF772A5D568C00074EB9 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = B12EFF762A5D568C00074EB9 /* SDWebImageSwiftUI */; };
 		B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93BF2A45CA3400D6DA93 /* Post Link.swift */; };
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
 		B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B14E93C42A470D5100D6DA93 /* AlertToast */; };
@@ -500,6 +500,8 @@
 		B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperationQueue - Easy init.swift"; sourceTree = "<group>"; };
 		B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed Root.swift"; sourceTree = "<group>"; };
 		B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cached Image With Nsfw Filter.swift"; sourceTree = "<group>"; };
+		B12EFF6E2A5D35FD00074EB9 /* CoreMediaDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMediaDisplay.swift; sourceTree = "<group>"; };
+		B12EFF702A5D4CFD00074EB9 /* Gif display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Gif display.swift"; sourceTree = "<group>"; };
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
 		B14E93C12A45D3B300D6DA93 /* Community Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link.swift"; sourceTree = "<group>"; };
 		B157E0C32A507B8000B02C8B /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
@@ -585,15 +587,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B12EFF772A5D568C00074EB9 /* SDWebImageSwiftUI in Frameworks */,
+				B12EFF742A5D565200074EB9 /* SDWebImage in Frameworks */,
 				63E5D3902A13CE4100EC1FBD /* DebouncedOnChange in Frameworks */,
 				63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */,
-				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
-				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
-				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
-				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1229,6 +1229,7 @@
 		6386E03E2A04570F006B3C1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B12EFF6D2A5D35E400074EB9 /* Media Viewer */,
 				ADF266932A4E89F800EBA648 /* Composer */,
 				CD525F662A4B892900BCA794 /* Links */,
 				6314C9EC2A18EF2D00B08405 /* Reply Editor */,
@@ -1361,6 +1362,15 @@
 				CD391F952A535F5400E213B5 /* GeneralCommentComposerView.swift */,
 			);
 			path = Composer;
+			sourceTree = "<group>";
+		};
+		B12EFF6D2A5D35E400074EB9 /* Media Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				B12EFF6E2A5D35FD00074EB9 /* CoreMediaDisplay.swift */,
+				B12EFF702A5D4CFD00074EB9 /* Gif display.swift */,
+			);
+			path = "Media Viewer";
 			sourceTree = "<group>";
 		};
 		B14E93BE2A45CA1A00D6DA93 /* Navigation Contexts */ = {
@@ -1515,10 +1525,8 @@
 				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
 				636250DB2A18111400FC59B4 /* KeychainAccess */,
 				B14E93C42A470D5100D6DA93 /* AlertToast */,
-				B104A6D72A59BF3C00B3E725 /* Nuke */,
-				B104A6D92A59BF3C00B3E725 /* NukeExtensions */,
-				B104A6DB2A59BF3C00B3E725 /* NukeUI */,
-				B104A6DD2A59BF3C00B3E725 /* NukeVideo */,
+				B12EFF732A5D565200074EB9 /* SDWebImage */,
+				B12EFF762A5D568C00074EB9 /* SDWebImageSwiftUI */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -1598,7 +1606,8 @@
 				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */,
-				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
+				B12EFF722A5D565200074EB9 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				B12EFF752A5D568C00074EB9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -1865,6 +1874,7 @@
 				6D8F08FF2A4029AE003EB4FD /* Community List View.swift in Sources */,
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
+				B12EFF712A5D4CFD00074EB9 /* Gif display.swift in Sources */,
 				B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */,
 				CDF842642A49EAFA00723DA0 /* GetPersonMentions.swift in Sources */,
 				6D405B052A43E82300C65F9C /* Sidebar Header.swift in Sources */,
@@ -1895,6 +1905,7 @@
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				6D693A462A51175E009E2D76 /* Report Post or Comment.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,
+				B12EFF6F2A5D35FD00074EB9 /* CoreMediaDisplay.swift in Sources */,
 				63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */,
 				637218462A3A2AAD008C4816 /* APIComment.swift in Sources */,
 				637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */,
@@ -2307,12 +2318,20 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+		B12EFF722A5D565200074EB9 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/Nuke";
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 12.1.2;
+				minimumVersion = 5.16.0;
+			};
+		};
+		B12EFF752A5D568C00074EB9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.3;
 			};
 		};
 		B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
@@ -2346,25 +2365,15 @@
 			package = 63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
 			productName = CachedAsyncImage;
 		};
-		B104A6D72A59BF3C00B3E725 /* Nuke */ = {
+		B12EFF732A5D565200074EB9 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = Nuke;
+			package = B12EFF722A5D565200074EB9 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
 		};
-		B104A6D92A59BF3C00B3E725 /* NukeExtensions */ = {
+		B12EFF762A5D568C00074EB9 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeExtensions;
-		};
-		B104A6DB2A59BF3C00B3E725 /* NukeUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeUI;
-		};
-		B104A6DD2A59BF3C00B3E725 /* NukeVideo */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeVideo;
+			package = B12EFF752A5D568C00074EB9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 		B14E93C42A470D5100D6DA93 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -34,6 +34,7 @@ struct CommunityListView: View {
 
     // Note: These are in order that they appear in the sidebar
     @State var communitySections: [CommunitySection] = []
+    @State var visibleCommunitySections: [CommunitySection] = []
 
     @Binding var selectedCommunity: CommunityLinkWithContext?
 
@@ -78,7 +79,7 @@ struct CommunityListView: View {
                             description: "All communities that federate with your server"
                         )
 
-                        ForEach(calculateVisibleCommunitySections()) { communitySection in
+                        ForEach(visibleCommunitySections) { communitySection in
                             Section(header:
                                         HStack {
                                 Text(communitySection.inlineHeaderLabel!).accessibilityLabel(communitySection.accessibilityLabel)
@@ -198,6 +199,7 @@ struct CommunityListView: View {
             } while (moreCommunities)
 
             subscribedCommunities = refreshedCommunities.sorted(by: { $0.name < $1.name })
+            calculateVisibleCommunitySections()
         } catch {
             print("Failed to refresh communities: \(error)")
         }
@@ -211,8 +213,8 @@ struct CommunityListView: View {
             })
     }
 
-    private func calculateVisibleCommunitySections() -> [CommunitySection] {
-        return communitySections
+    private func calculateVisibleCommunitySections() {
+        let visibleCommunitySections_local = communitySections
 
         // Only show letter headers for letters we have in our community list
             .filter({ communitySection -> Bool in
@@ -224,6 +226,9 @@ struct CommunityListView: View {
             .filter({ (communitySection) -> Bool in
                 communitySection.inlineHeaderLabel != nil
             })
+        DispatchQueue.main.async {
+            self.visibleCommunitySections = visibleCommunitySections_local
+        }
     }
 
     private func hydrateCommunityData(community: APICommunity, isSubscribed: Bool) {

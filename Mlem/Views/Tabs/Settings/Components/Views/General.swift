@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Nuke
+import SDWebImage
 
 internal enum FavoritesPurgingError {
     case failedToDeleteOldFavoritesFile, failedToCreateNewEmptyFile
@@ -22,6 +22,7 @@ struct GeneralSettingsView: View {
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
     @State private var diskUsage: Int64 = 0
+    @State private var mediaDiskUsage: Int64 = 0
 
     var body: some View {
         List {
@@ -123,13 +124,24 @@ struct GeneralSettingsView: View {
 
             Section {
                 Button(role: .destructive) {
+                    SDImageCache.shared.diskCache.removeAllData()
+                    mediaDiskUsage = Int64(SDImageCache.shared.diskCache.totalSize())
+                } label: {
+                    let text = ByteCountFormatter.string(fromByteCount: mediaDiskUsage, countStyle: .file)
+                    Label(
+                        "Media Cache: \(text)",
+                        systemImage: "trash"
+                    )
+                        .foregroundColor(.red)
+                }
+                Button(role: .destructive) {
                     URLCache.shared.removeAllCachedResponses()
-                    ImagePipeline.shared.cache.removeAll()
                     diskUsage = Int64(URLCache.shared.currentDiskUsage)
                 } label: {
                     Label("Cache: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")
                         .foregroundColor(.red)
                 }
+                
             }
             header: {
                 Text("Disk Usage")
@@ -140,9 +152,11 @@ struct GeneralSettingsView: View {
 
         }
         .onAppear {
+            mediaDiskUsage = Int64(SDImageCache.shared.diskCache.totalSize())
             diskUsage = Int64(URLCache.shared.currentDiskUsage)
         }
         .refreshable {
+            mediaDiskUsage = Int64(SDImageCache.shared.diskCache.totalSize())
             diskUsage = Int64(URLCache.shared.currentDiskUsage)
         }
     }
