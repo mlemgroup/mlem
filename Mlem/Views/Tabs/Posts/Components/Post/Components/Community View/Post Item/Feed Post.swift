@@ -330,7 +330,7 @@ struct FeedPost: View {
         // translate
         ret.append(MenuFunction(
             text: "Translate",
-            imageName: "globe",
+            imageName: "globe.asia.australia",
             destructiveActionPrompt: nil,
             enabled: !(postView.post.body?.isEmpty ?? true)) {
                 translateText(postView.post.body ?? postView.post.name)
@@ -344,15 +344,6 @@ struct FeedPost: View {
             enabled: true) {
                 isComposingReport = true
             })
-
-        // translate
-        ret.append(MenuFunction(
-            text: "Translate",
-            imageName: "globe",
-            destructiveActionPrompt: nil,
-            enabled: !(postView.post.body?.isEmpty ?? true)) {
-                translateText(postView.post.body ?? postView.post.name)
-        })
 
         // block user
         ret.append(MenuFunction(

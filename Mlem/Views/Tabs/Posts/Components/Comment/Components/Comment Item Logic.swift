@@ -227,7 +227,7 @@ extension CommentItem {
         // translate
         ret.append(MenuFunction(
             text: "Translate",
-            imageName: "globe",
+            imageName: "globe.asia.australia",
             destructiveActionPrompt: nil,
             enabled: true) {
                 translateText(hierarchicalComment.commentView.comment.content)

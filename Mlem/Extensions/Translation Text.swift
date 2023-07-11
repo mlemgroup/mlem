@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-private struct TranslationShower: EnvironmentKey {
+private struct TranslateText: EnvironmentKey {
     static let defaultValue = { (_: String) -> Void in  }
 }
 
 extension EnvironmentValues {
     var translateText: (String) -> Void {
-        get { self[TranslationShower.self] }
-        set { self[TranslationShower.self] = newValue }
+        get { self[TranslateText.self] }
+        set { self[TranslateText.self] = newValue }
       }
 }

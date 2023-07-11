@@ -56,7 +56,7 @@ struct EasyTranslateButton: View {
         Button {
             translateText(text!)
         } label: {
-            Label("Translate", systemImage: "globe")
+            Label("Translate", systemImage: "globe.asia.australia")
         }.disabled(text == nil)
     }
 }

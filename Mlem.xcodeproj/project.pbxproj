@@ -221,6 +221,9 @@
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
 		B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B14E93C42A470D5100D6DA93 /* AlertToast */; };
 		B157E0C42A507B8000B02C8B /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* Window.swift */; };
+		B197D83E2A445E22003FE61A /* In App WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83D2A445E22003FE61A /* In App WebView.swift */; };
+		B197D8402A446039003FE61A /* Translation Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83F2A446039003FE61A /* Translation Text.swift */; };
+		B197D8422A446D09003FE61A /* Translation Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D8412A446D09003FE61A /* Translation Sheet.swift */; };
 		B1A26FE12A44AAB200B91A32 /* Navigation getter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */; };
 		B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */; };
 		B1A5A8152A4C882F00F203DB /* AlternativeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */; };
@@ -814,7 +817,7 @@
 				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
 				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
-				B197D83F2A446039003FE61A /* Translation Shower.swift */,
+				B197D83F2A446039003FE61A /* Translation Text.swift */,
 				6DA61F842A568F99001EA633 /* Int.swift */,
 				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
 				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
@@ -1986,7 +1989,7 @@
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
-				B197D8402A446039003FE61A /* Translation Shower.swift in Sources */,
+				B197D8402A446039003FE61A /* Translation Text.swift in Sources */,
 				63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
 				6DA61F812A55B83F001EA633 /* Search View.swift in Sources */,
