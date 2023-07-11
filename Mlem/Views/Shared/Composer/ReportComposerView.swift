@@ -23,11 +23,6 @@ struct ReportComposerView: View {
     
     func submitPostReport(for post: APIPostView) async {
         do {
-            guard let account = appState.currentActiveAccount else {
-                print("Cannot Submit, No Active Account")
-                return
-            }
-            
             isSubmitting = true
             
             _ = try await reportPost(postId: post.post.id, account: account, reason: reportReason, appState: appState)
@@ -35,18 +30,13 @@ struct ReportComposerView: View {
             dismiss()
             
         } catch {
-            print("Failed to submit post report: \(error)")
+            appState.contextualError = .init(underlyingError: error)
             isSubmitting = false
         }
     }
     
     func submitCommentReport(for comment: APICommentView) async {
         do {
-            guard let account = appState.currentActiveAccount else {
-                print("Cannot Submit, No Active Account")
-                return
-            }
-            
             isSubmitting = true
             
             _ = try await reportComment(commentId: comment.comment.id, account: account, reason: reportReason, appState: appState)
@@ -54,7 +44,7 @@ struct ReportComposerView: View {
             dismiss()
             
         } catch {
-            print("Failed to submit comment report: \(error)")
+            appState.contextualError = .init(underlyingError: error)
             isSubmitting = false
         }
     }

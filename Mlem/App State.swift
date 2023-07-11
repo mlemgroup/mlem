@@ -25,21 +25,12 @@ class AppState: ObservableObject {
             }
         }
     }
-
-    @Published var isShowingCommunitySearch: Bool = false
-
-    @Published var isShowingOutdatedInstanceVersionAlert: Bool = false
-
-    @Published var isShowingAlert: Bool = false
-    @Published var alertTitle: LocalizedStringKey = ""
-    @Published var alertMessage: LocalizedStringKey = ""
-
+    
+    @Published var contextualError: ContextualError?
+    
     // for those  messages that are less of a .alert ;)
     @Published var isShowingToast: Bool = false
     @Published var toast: AlertToast?
 
-    @Published var criticalErrorType: CriticalError = .shittyInternet
-
     @Published var enableDownvote: Bool = true
-    
 }

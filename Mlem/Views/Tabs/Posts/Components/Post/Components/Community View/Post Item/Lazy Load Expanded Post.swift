@@ -12,6 +12,9 @@ import SwiftUI
  APIPostView on demand for when we don't already have one
  */
 struct LazyLoadExpandedPost: View {
+    
+    @EnvironmentObject var appState: AppState
+    
     @State var account: SavedAccount
     @State var post: APIPost
     
@@ -43,6 +46,7 @@ struct LazyLoadExpandedPost: View {
             } catch {
                 print("Get post error: \(error)")
                 // TODO: Some sort of common alert banner?
+                appState.contextualError = .init(underlyingError: error)
             }
         }
     }

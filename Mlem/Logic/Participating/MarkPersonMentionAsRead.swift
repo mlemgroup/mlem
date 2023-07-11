@@ -26,9 +26,8 @@ func sendMarkPersonMentionAsReadRequest(
         let response = try await APIClient().perform(request: request)
         
         mentionTracker.update(with: response.personMentionView)
-    } catch let ratingOperationError {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed while trying to mark read: \(ratingOperationError)")
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }

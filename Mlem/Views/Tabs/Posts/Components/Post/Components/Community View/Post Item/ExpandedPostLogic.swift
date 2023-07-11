@@ -24,7 +24,7 @@ extension ExpandedPost {
                 appState: appState
             )
         } catch {
-            print("failed to vote!")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
     
@@ -41,7 +41,7 @@ extension ExpandedPost {
             // having to refer to our own module
             _ = try await Mlem.deletePost(postId: post.post.id, account: account, postTracker: postTracker, appState: appState)
         } catch {
-            print("failed to delete post: \(error)")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
     
@@ -145,10 +145,12 @@ extension ExpandedPost {
             let request = GetCommentsRequest(account: account, postId: post.post.id)
             let response = try await APIClient().perform(request: request)
             commentTracker.comments = sortComments(response.comments.hierarchicalRepresentation, by: defaultCommentSorting)
-        } catch APIClientError.response(let message, _) {
-            errorAlert = .init(title: "API error", message: message.error)
         } catch {
-            errorAlert = .init(title: "Failed to load comments", message: "Please refresh to try again")
+            appState.contextualError = .init(
+                title: "Failed to load comments",
+                message: "Please refresh to try again",
+                underlyingError: error
+            )
         }
     }
 

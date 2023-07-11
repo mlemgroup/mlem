@@ -24,11 +24,6 @@ struct ReplyToComment: ReplyTo {
     }
     
     func sendReply(commentContents: String) async throws {
-        guard let account = appState.currentActiveAccount else {
-            print("Cannot Submit, No Active Account")
-            return
-        }
-        
         try await postComment(to: comment.id,
                               postId: comment.post.id,
                               commentContents: commentContents,

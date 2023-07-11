@@ -13,6 +13,7 @@ struct SearchView: View {
     let account: SavedAccount
     
     // environment
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
 
@@ -178,7 +179,7 @@ struct SearchView: View {
             } catch is CancellationError {
                 print("Search cancelled")
             } catch {
-                print("Unknown error: \(error)")
+                appState.contextualError = .init(underlyingError: error)
             }
         }
     }

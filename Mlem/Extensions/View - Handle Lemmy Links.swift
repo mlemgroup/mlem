@@ -188,7 +188,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                             // so I'll skip and let the system open it instead
                         // }
                     } catch {
-                        print(String(describing: error))
+                        appState.contextualError = .init(underlyingError: error)
                     }
 
                     // if all else fails fallback!

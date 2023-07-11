@@ -26,9 +26,8 @@ func sendMarkCommentReplyAsReadRequest(
         let response = try await APIClient().perform(request: request)
         
         commentReplyTracker.update(with: response.commentReplyView)
-    } catch let ratingOperationError {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed while trying to mark read: \(ratingOperationError)")
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }

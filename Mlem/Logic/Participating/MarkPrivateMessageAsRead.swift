@@ -24,9 +24,8 @@ func sendMarkPrivateMessageAsReadRequest(
         let response = try await APIClient().perform(request: request)
         
         messagesTracker.update(with: response.privateMessageView)
-    } catch let ratingOperationError {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed while trying to mark read: \(ratingOperationError)")
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }

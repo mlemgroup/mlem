@@ -21,9 +21,7 @@ struct CommunitySearchField: View {
     @State var account: SavedAccount
 
     @State private var debouncedTextReadyForSearching: String = ""
-
-    @State private var errorAlert: ErrorAlert?
-
+    
     let searchTextPublisher: PassthroughSubject = PassthroughSubject<String, Never>()
 
     var body: some View {
@@ -58,15 +56,7 @@ struct CommunitySearchField: View {
                                 let response = try await APIClient().perform(request: request)
                                 communitySearchResultsTracker.foundCommunities = response.communities
                             } catch {
-                                print("Search command error: \(error)")
-                                errorAlert = .init(
-                                    title: "Couldn't connect to Lemmy",
-                                    message: """
-                                             Your network conneciton is either not stable enough, or the Lemmy server you're connected \
-                                             to is overloaded. \n
-                                             Try again later.
-                                             """
-                                )
+                                appState.contextualError = .init(underlyingError: error)
                             }
                         }
                     }
@@ -74,12 +64,6 @@ struct CommunitySearchField: View {
                     isSearchFieldFocused.toggle()
                 }
             }
-        }
-        .alert(using: $errorAlert) { content in
-            Alert(
-                title: Text(content.title),
-                message: Text(content.message)
-            )
         }
     }
 }

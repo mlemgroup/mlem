@@ -22,6 +22,6 @@ func sendSavePostRequest(account: SavedAccount,
         return response.postView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        throw RatingFailure.failedToPostScore
+        throw error
     }
 }

@@ -13,6 +13,7 @@ import Foundation
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
 struct PostInteractionBar: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var postTracker: PostTracker
 
     // constants
@@ -175,7 +176,7 @@ struct PostInteractionBar: View {
                 try await self.updatedSavePost(dirtySaved)
             } catch {
                 UIAccessibility.post(notification: .announcement, argument: "Failed to Save")
-                print("failed to save!")
+                appState.contextualError = .init(underlyingError: error)
             }
             dirty = false
             return
