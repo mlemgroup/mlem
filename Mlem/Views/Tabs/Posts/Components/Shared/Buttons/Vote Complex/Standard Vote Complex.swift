@@ -39,7 +39,7 @@ struct StandardVoteComplex: View {
             }
             
             if appState.enableDownvote {
-                DownvoteButton(vote: vote, size: height)
+                DownvoteButtonLabel(vote: vote, size: height)
                     .onTapGesture {
                         Task(priority: .userInitiated) {
                             await downvote()

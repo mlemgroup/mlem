@@ -119,33 +119,40 @@ struct FeedPost: View {
                 menuFunctions: genMenuFunctions()
             )
         } else {
-            VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                // community name
-                // TEMPORARILY DISABLED: conditionally showing based on community
-                // if showCommunity {
-                //    CommunityLinkView(community: postView.community)
-                // }
-                HStack {
-                    CommunityLinkView(community: postView.community)
+            VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+                    // community name
+                    // TEMPORARILY DISABLED: conditionally showing based on community
+                    // if showCommunity {
+                    //    CommunityLinkView(community: postView.community)
+                    // }
+                    HStack {
+                        CommunityLinkView(community: postView.community)
+                        
+                        Spacer()
+                        
+                        EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                    }
                     
-                    Spacer()
+                    if postSize == .headline {
+                        CompactPost(
+                            postView: postView,
+                            account: account
+                        )
+                    } else {
+                        LargePost(
+                            postView: postView,
+                            isExpanded: false
+                        )
+                    }
                     
-                    EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                    // posting user
+                    if showPostCreator {
+                        UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom)
+                    }
                 }
-                
-                if postSize == .headline {
-                    CompactPost(postView: postView)
-                } else {
-                    LargePost(
-                        postView: postView,
-                        isExpanded: false
-                    )
-                }
-                
-                // posting user
-                if showPostCreator {
-                    UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom)
-                }
+                .padding(.top, AppConstants.postAndCommentSpacing)
+                .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
                 if showInteractionBar {
                     PostInteractionBar(postView: postView,
@@ -157,7 +164,6 @@ struct FeedPost: View {
                 }
             }
             .background(Color.systemBackground)
-            .padding(AppConstants.postAndCommentSpacing)
         }
     }
 

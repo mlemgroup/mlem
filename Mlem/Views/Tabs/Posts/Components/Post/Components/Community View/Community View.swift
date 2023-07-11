@@ -337,14 +337,18 @@ struct CommunityView: View {
 
     private var postListView: some View {
         ForEach(postTracker.items, id: \.id) { post in
-            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
-                FeedPost(
-                    postView: post,
-                    showPostCreator: shouldShowPostCreator,
-                    showCommunity: !isInSpecificCommunity,
-                    isDragging: $isDragging,
-                    replyToPost: replyToPost
-                )
+            VStack(spacing: 0) {
+                NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)) {
+                    FeedPost(
+                        postView: post,
+                        account: account,
+                        showPostCreator: shouldShowPostCreator,
+                        showCommunity: !isInSpecificCommunity,
+                        isDragging: $isDragging,
+                        replyToPost: replyToPost
+                    )
+                }
+                Divider()
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .onAppear {

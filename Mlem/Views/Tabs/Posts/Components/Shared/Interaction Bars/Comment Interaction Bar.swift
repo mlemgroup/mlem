@@ -45,7 +45,7 @@ struct CommentInteractionBar: View {
                 
                 Spacer()
                 
-                SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "comment") {
+                SaveButton(isSaved: displayedSaved, accessibilityContext: "comment") {
                     Task(priority: .userInitiated) {
                         await saveComment()
                     }
@@ -58,7 +58,8 @@ struct CommentInteractionBar: View {
             InfoStack(score: displayedScore,
                       published: commentView.comment.published,
                       commentCount: commentView.counts.childCount,
-                      myVote: displayedVote)
+                      myVote: displayedVote,
+                      saved: commentView.saved)
         }
         .font(.callout)
     }

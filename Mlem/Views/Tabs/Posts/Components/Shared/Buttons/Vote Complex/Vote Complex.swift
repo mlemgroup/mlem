@@ -25,6 +25,8 @@ struct VoteComplex: View {
                 StandardVoteComplex(vote: vote, score: score, height: height, upvote: upvote, downvote: downvote)
             case .symmetric:
                 SymmetricVoteComplex(vote: vote, score: score, height: height, upvote: upvote, downvote: downvote)
+            case .plain:
+                PlainVoteComplex(vote: vote, score: score, height: height, upvote: upvote, downvote: downvote)
             }
         }
         .accessibilityElement(children: .ignore)

@@ -11,22 +11,30 @@ import SwiftUI
 struct CustomizePostView: View {
     @EnvironmentObject var appState: AppState
     
-    @AppStorage("postSize") var postSize: PostSize = PostSize.headline
+    // body
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     
+    // interactions and info
+    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
+    @AppStorage("shouldShowUpvotesInBar") var shouldShowUpvotesInBar: Bool = false
+    @AppStorage("shouldShowTimeInBar") var shouldShowTimeInBar: Bool = true
+    @AppStorage("shouldShowSavedInBar") var shouldShowSavedInBar: Bool = false
+    @AppStorage("shouldShowRepliesInBar") var shouldShowRepliesInBar: Bool = true
+    
     // website previews
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
-    @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
+    @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
     
     var body: some View {
         VStack(spacing: 0) {
             List {
-                Section("Layout") {
+                Section("Body") {
                     SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                            settingPictureColor: .pink,
                                            settingName: "Show user server instance",
@@ -46,6 +54,35 @@ struct CustomizePostView: View {
                                            settingPictureColor: .pink,
                                            settingName: "Show post thumbnails",
                                            isTicked: $shouldShowPostThumbnails)
+                }
+                
+                Section("Interactions and Info") {
+                    SelectableSettingsItem(
+                        settingIconSystemName: "arrow.up.arrow.down.square",
+                        settingName: "Vote complex style",
+                        currentValue: $voteComplexStyle,
+                        options: VoteComplexStyle.allCases
+                    )
+                    SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
+                                           settingPictureColor: .pink,
+                                           settingName: "Show vote buttons on right",
+                                           isTicked: $shouldShowVoteComplexOnRight)
+                    SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
+                                           settingPictureColor: .pink,
+                                           settingName: "Show upvotes in info",
+                                           isTicked: $shouldShowUpvotesInBar)
+                    SwitchableSettingsItem(settingPictureSystemName: "clock",
+                                           settingPictureColor: .pink,
+                                           settingName: "Show time posted in info",
+                                           isTicked: $shouldShowTimeInBar)
+                    SwitchableSettingsItem(settingPictureSystemName: "bookmark",
+                                           settingPictureColor: .pink,
+                                           settingName: "Show saved status in info",
+                                           isTicked: $shouldShowSavedInBar)
+                    SwitchableSettingsItem(settingPictureSystemName: "bubble.right",
+                                           settingPictureColor: .pink,
+                                           settingName: "Show replies in info",
+                                           isTicked: $shouldShowRepliesInBar)
                 }
                 
                 Section("Website Previews") {
@@ -78,38 +115,24 @@ struct CustomizePostView: View {
                     .padding(.horizontal)
                     
                     SwitchableSettingsItem(
-                        settingPictureSystemName: "photo.circle.fill",
-                        settingPictureColor: .pink,
-                        settingName: "Show website image",
-                        isTicked: $shouldShowWebsitePreviews
-                    )
-                    SwitchableSettingsItem(
-                        settingPictureSystemName: "globe",
-                        settingPictureColor: .pink,
-                        settingName: "Show website icons",
-                        isTicked: $shouldShowWebsiteFaviconAtAll
-                    )
-                    .onChange(of: shouldShowWebsiteFaviconAtAll) { _ in
-                        if shouldShowWebsiteFaviconAtAll == false {
-                            shouldShowWebsiteFavicons = false
-                        } else {
-                            shouldShowWebsiteFavicons = true
-                        }
-                    }
-                    SwitchableSettingsItem(
                         settingPictureSystemName: "network",
                         settingPictureColor: .pink,
                         settingName: "Show website address",
                         isTicked: $shouldShowWebsiteHost
                     )
-                    
                     SwitchableSettingsItem(
-                        settingPictureSystemName: "wifi.circle.fill",
+                        settingPictureSystemName: "globe",
                         settingPictureColor: .pink,
-                        settingName: "Show dynamic website icons",
-                        isTicked: $shouldShowWebsiteFavicons
+                        settingName: "Show website icon",
+                        isTicked: $shouldShowWebsiteIcon
                     )
-                    .disabled(!shouldShowWebsiteFaviconAtAll)
+                    .disabled(!shouldShowWebsiteHost)
+                    SwitchableSettingsItem(
+                        settingPictureSystemName: "photo.circle.fill",
+                        settingPictureColor: .pink,
+                        settingName: "Show website preview",
+                        isTicked: $shouldShowWebsitePreviews
+                    )
                 }
             }
             .background(Color(UIColor.secondarySystemBackground))

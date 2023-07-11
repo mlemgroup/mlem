@@ -32,9 +32,6 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
-    // other
-    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
-    
     var body: some View {
         VStack {
             List {
@@ -108,16 +105,6 @@ struct AppearanceSettingsView: View {
                         settingName: "Show user banners",
                         isTicked: $shouldShowUserHeaders
                     )
-                }
-                
-                Section("Further customization") {
-                    SelectableSettingsItem(
-                        settingIconSystemName: "arrow.up.arrow.down.square.fill",
-                        settingName: "Vote complex style",
-                        currentValue: $voteComplexStyle,
-                        options: VoteComplexStyle.allCases
-                    )
-                    
                 }
                 
                 Section("Privacy") {

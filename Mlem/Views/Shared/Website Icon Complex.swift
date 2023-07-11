@@ -14,7 +14,7 @@ struct WebsiteIconComplex: View {
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
 
-    @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
+    @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
     @State var post: APIPost
 
@@ -59,7 +59,7 @@ struct WebsiteIconComplex: View {
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
                 if shouldShowWebsiteHost {
                     HStack {
-                        if shouldShowWebsiteFavicons {
+                        if shouldShowWebsiteIcon {
                             CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache) { image in
                                 image
                                     .resizable()
