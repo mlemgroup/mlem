@@ -22,5 +22,4 @@ struct CommunityLinkWithContext: Equatable, Identifiable, Hashable {
     
     let community: APICommunity?
     let feedType: FeedType
-    
 }

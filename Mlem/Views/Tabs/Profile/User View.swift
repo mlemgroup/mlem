@@ -359,7 +359,7 @@ struct UserView: View {
      User post
      */
     private func postEntry(for post: APIPostView) -> some View {
-        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker, feedType: .constant(.subscribed))) {
+        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
             FeedPost(postView: post,
                      account: account,
                      showPostCreator: false,
