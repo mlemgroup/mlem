@@ -48,16 +48,16 @@ extension InboxView {
     func repliesListView() -> some View {
         ForEach(repliesTracker.items) { reply in
             VStack(spacing: 0) {
-                inboxReplyViewWithInteraction(account: account, reply: reply)
+                inboxReplyViewWithInteraction(reply: reply)
 
                 Divider()
             }
         }
     }
     
-    func inboxReplyViewWithInteraction(account: SavedAccount, reply: APICommentReplyView) -> some View {
+    func inboxReplyViewWithInteraction(reply: APICommentReplyView) -> some View {
         NavigationLink(value: LazyLoadPostLinkWithContext(post: reply.post, postTracker: dummyPostTracker)) {
-            InboxReplyView(account: account, reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
+            InboxReplyView(reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
                 .padding(.vertical, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal)
                 .background(Color.systemBackground)

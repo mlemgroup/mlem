@@ -9,8 +9,6 @@ import Foundation
 import SwiftUI
 
 struct SearchView: View {
-    // paremters
-    let account: SavedAccount
     
     // environment
     @EnvironmentObject var appState: AppState
@@ -159,7 +157,7 @@ struct SearchView: View {
                 print("Searching for '\(searchText)' on page \(searchPage)")
                 
                 let request = SearchRequest(
-                    account: account,
+                    account: appState.currentActiveAccount,
                     query: searchText,
                     searchType: .communities,
                     sortOption: .topAll,

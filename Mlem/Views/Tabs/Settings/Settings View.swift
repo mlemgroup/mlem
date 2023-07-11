@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct SettingsView: View {
+    
+    @EnvironmentObject var appState: AppState
+    
     @Environment(\.openURL) private var openURL
 
+    @State private var accountToSwitchTo: SavedAccount?
+    
     @State private var specialContributors: [Contributor] = [
         Contributor(
             name: "Seb Jachec",
@@ -87,6 +92,18 @@ struct SettingsView: View {
                             AlternativeIcons.getCurrentIcon()
                                 .foregroundColor(.pink)
                             Text("Alternative Icons")
+                        }
+                    }
+                }
+                
+                Section {
+                    NavigationLink {
+                        AccountsPage(selectedAccount: $accountToSwitchTo)
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "person.fill.questionmark")
+                                .foregroundColor(.mint)
+                            Text("Switch Account")
                         }
                     }
                 }
@@ -190,6 +207,10 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
+            .onChange(of: accountToSwitchTo) { account in
+                guard let account else { return }
+                appState.setActiveAccount(account)
+            }
         }
     }
 }

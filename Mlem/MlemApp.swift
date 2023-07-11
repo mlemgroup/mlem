@@ -19,7 +19,7 @@ struct MlemApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Window()
+            Window(selectedAccount: accountsTracker.defaultAccount)
                 .environmentObject(accountsTracker)
                 .onAppear {
                     var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)

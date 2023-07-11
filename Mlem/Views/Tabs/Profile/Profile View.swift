@@ -12,17 +12,16 @@ struct ProfileView: View {
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
+    let userID: Int
+    
     // environment
     @EnvironmentObject var appState: AppState
-    
-    // parameters
-    @State var account: SavedAccount
 
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            UserView(userID: account.id, account: account)
+            UserView(userID: userID)
                 .handleLemmyViews()
                 .edgesIgnoringSafeArea(.top)
                 .toolbar(.hidden)

@@ -53,7 +53,7 @@ extension InboxView {
     
     @ViewBuilder
     func inboxMessageViewWithInteraction(message: APIPrivateMessageView) -> some View {
-        InboxMessageView(account: account, message: message, menuFunctions: genMessageMenuGroup(message: message))
+        InboxMessageView(message: message, menuFunctions: genMessageMenuGroup(message: message))
             .padding(.vertical, AppConstants.postAndCommentSpacing)
             .padding(.horizontal)
             .background(Color.systemBackground)

@@ -10,12 +10,10 @@ import SwiftUI
 
 struct ReplyToCommentReply: ReplyTo {
     let commentReply: APICommentReplyView
-    let account: SavedAccount
     let appState: AppState
     
     func embeddedView() -> AnyView {
-        return AnyView(InboxReplyView(account: account,
-                                      reply: commentReply,
+        return AnyView(InboxReplyView(reply: commentReply,
                                       menuFunctions: [])
             .padding(.horizontal))
     }
@@ -24,7 +22,7 @@ struct ReplyToCommentReply: ReplyTo {
         try await postCommentWithoutTracker(postId: commentReply.post.id,
                                             commentId: commentReply.comment.id,
                                             commentContents: commentContents,
-                                            account: account,
+                                            account: appState.currentActiveAccount,
                                             appState: appState)
     }
 }
