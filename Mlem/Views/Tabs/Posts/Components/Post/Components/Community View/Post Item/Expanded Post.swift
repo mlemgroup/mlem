@@ -18,7 +18,6 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
 
     @EnvironmentObject var appState: AppState
-    @Environment(\.translateText) var translateText
 
     @StateObject var commentTracker: CommentTracker = .init()
     @StateObject var commentReplyTracker: CommentReplyTracker = .init()
@@ -51,7 +50,7 @@ struct ExpandedPost: View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
-
+                
                 Divider()
                     .background(.black)
 
@@ -133,7 +132,7 @@ struct ExpandedPost: View {
                 postView: post,
                 isExpanded: true
             )
-
+            
             UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
             
             PostInteractionBar(postView: post,

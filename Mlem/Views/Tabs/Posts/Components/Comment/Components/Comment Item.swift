@@ -25,13 +25,12 @@ struct CommentItem: View {
     var displayedVote: ScoringOperation { dirty ? dirtyVote : hierarchicalComment.commentView.myVote ?? .resetVote }
     var displayedScore: Int { dirty ? dirtyScore : hierarchicalComment.commentView.counts.score }
     var displayedSaved: Bool { dirty ? dirtySaved : hierarchicalComment.commentView.saved }
-
+    
     // MARK: Environment
 
     @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
     @EnvironmentObject var appState: AppState
-    @Environment(\.translateText) var translateText
 
     // MARK: Constants
 
@@ -51,7 +50,7 @@ struct CommentItem: View {
     let replyToComment: ((APICommentView) -> Void)?
 
     @Binding var isDragging: Bool
-
+    
     // MARK: Computed
 
     // init needed to get dirty and clean aligned
@@ -149,7 +148,7 @@ struct CommentItem: View {
             .sheet(isPresented: $isComposingReport) {
                 ReportComposerView(account: account, reportedPost: nil, reportedComment: hierarchicalComment.commentView)
             }
-
+            
             Divider()
 
             childComments
@@ -217,7 +216,7 @@ struct CommentItem: View {
 // MARK: - Swipe Actions
 
 extension CommentItem {
-
+    
     private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
     private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
     private var emptyDownvoteSymbolName: String { displayedVote == .downvote ? "minus.square" : "arrow.down.square" }
@@ -226,7 +225,7 @@ extension CommentItem {
     private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
     private var emptyReplySymbolName: String { "arrowshape.turn.up.left" }
     private var replySymbolName: String { "arrowshape.turn.up.left.fill" }
-
+    
     var upvoteSwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: emptyVoteSymbolName, fillName: upvoteSymbolName),
@@ -234,7 +233,7 @@ extension CommentItem {
             action: upvote
         )
     }
-
+    
     var downvoteSwipeAction: SwipeAction? {
         guard appState.enableDownvote else { return nil }
         return SwipeAction(
@@ -243,7 +242,7 @@ extension CommentItem {
             action: downvote
         )
     }
-
+    
     var saveSwipeAction: SwipeAction {
         SwipeAction(
             symbol: .init(emptyName: emptySaveSymbolName, fillName: saveSymbolName),

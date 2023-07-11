@@ -15,9 +15,6 @@ struct ContentView: View {
     @State private var errorAlert: ErrorAlert?
     @State private var tabSelection = 1
 
-    @State var textToTranslate: String?
-    @State private var showTranslate: Bool = false
-
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
 
     var body: some View {
@@ -72,19 +69,8 @@ struct ContentView: View {
                 )
             )
         }
-        .environment(\.translateText, translateText)
-        .sheet(isPresented: $showTranslate, content: {
-            TranslationSheet(textToTranslate: $textToTranslate, shouldShow: $showTranslate)
-        })
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
-    }
-
-    func translateText(_ text: String) {
-        self.textToTranslate = text
-        withAnimation {
-            showTranslate = true
-        }
     }
 
     // MARK: helpers
