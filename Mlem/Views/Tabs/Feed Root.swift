@@ -26,15 +26,19 @@ struct FeedRoot: View {
             CommunityListView(selectedCommunity: $rootDetails)
                 .id(appState.currentActiveAccount.id)
         } detail: {
-            NavigationStack(path: $navigationPath) {
-                CommunityView(
-                    community: rootDetails!.community,
-                    feedType: rootDetails?.feedType ?? .all
-                )
-                .environmentObject(appState)
-                .handleLemmyViews()
+            if let rootDetails {
+                NavigationStack(path: $navigationPath) {
+                    CommunityView(
+                        community: rootDetails.community,
+                        feedType: rootDetails.feedType
+                    )
+                    .environmentObject(appState)
+                    .handleLemmyViews()
+                }
+                .id(rootDetails.id + appState.currentActiveAccount.id)
+            } else {
+                Text("Please select a community") 
             }
-            .id(rootDetails!.id + appState.currentActiveAccount.id)
         }
         .handleLemmyLinkResolution(
             navigationPath: $navigationPath

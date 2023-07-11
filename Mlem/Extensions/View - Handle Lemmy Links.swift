@@ -49,10 +49,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APIPostView.self) { post in
-                ExpandedPost(
-                    post: post,
-                    feedType: .constant(.all)
-                )
+                ExpandedPost(post: post)
                 .environmentObject(
                     PostTracker(shouldPerformMergeSorting: false, initialItems: [post])
                 )
@@ -63,7 +60,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     .environmentObject(appState)
             }
             .navigationDestination(for: PostLinkWithContext.self) { post in
-                ExpandedPost(post: post.post, feedType: post.feedType)
+                ExpandedPost(post: post.post)
                     .environmentObject(post.postTracker)
                     .environmentObject(appState)
             }
