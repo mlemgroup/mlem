@@ -64,16 +64,6 @@ struct FeedRoot: View {
         .toast(isPresenting: $appState.isShowingToast) {
             appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
-        .alert(appState.alertTitle, isPresented: $appState.isShowingAlert) {
-            Button(role: .cancel) {
-                appState.isShowingAlert.toggle()
-            } label: {
-                Text("Close")
-            }
-
-        } message: {
-            Text(appState.alertMessage)
-        }
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:
@@ -139,26 +129,5 @@ struct FeedRoot: View {
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
         FeedRoot()
-    }
-}
-
-private func subscribe(account: SavedAccount, communityId: Int, shouldSubscribe: Bool) async -> Bool {
-    do {
-        let request = FollowCommunityRequest(
-            account: account,
-            communityId: communityId,
-            follow: shouldSubscribe
-        )
-
-        _ = try await APIClient().perform(request: request)
-        return true
-    } catch {
-        // TODO: If we fail here and want to notify the user we'd ideally
-        // want to do so from the parent view, I think it would be worth refactoring
-        // this view so that the responsibility for performing the call is removed
-        // and handled by the parent, for now we will fail silently the UI state
-        // will not update so will continue to be accurate
-        print(error)
-        return false
     }
 }

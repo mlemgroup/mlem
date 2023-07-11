@@ -41,13 +41,19 @@ struct ContentView: View {
                     Label(computeUsername(account: currentActiveAccount), systemImage: "person.circle")
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }.tag(3)
+                
+                NavigationView {
+                    SearchView(account: currentActiveAccount)
+                } .tabItem {
+                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                }.tag(4)
             }
 
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                         .environment(\.symbolVariants, tabSelection == 4 ? .fill : .none)
-                }.tag(4)
+                }.tag(5)
         }
         .onAppear {
             if appState.currentActiveAccount == nil,
@@ -55,8 +61,16 @@ struct ContentView: View {
                 appState.currentActiveAccount = account
             }
         }
+        .onChange(of: appState.contextualError) { handle($0) }
         .alert(using: $errorAlert) { content in
-            Alert(title: Text(content.title), message: Text(content.message))
+            Alert(
+                title: Text(content.title),
+                message: Text(content.message),
+                dismissButton: .default(
+                    Text("OK"),
+                    action: { errorAlert = nil }
+                )
+            )
         }
         .environment(\.translateText, translateText)
         .sheet(isPresented: $showTranslate, content: {
@@ -96,5 +110,49 @@ extension ContentView {
         }
 
         return outcome.result
+    }
+}
+
+// MARK: - Error handling
+
+extension ContentView {
+    func handle(_ contextualError: ContextualError?) {
+        guard let contextualError else {
+            return
+        }
+        
+        #if DEBUG
+        print("☠️ ERROR ☠️")
+        print("🕵️ -> \(contextualError.underlyingError.description)")
+        print("📝 -> \(contextualError.underlyingError.localizedDescription)")
+        #endif
+        
+        defer {
+            // ensure we clear our the error once we've handled it...
+            appState.contextualError = nil
+        }
+        
+        if let clientError = contextualError.underlyingError.base as? APIClientError {
+            switch clientError {
+            case .invalidSession:
+                // TODO: display login modal and handle session refresh here instead of the alert...
+                errorAlert = .init(title: "SESSION EXPIRED", message: "Your session has expired.")
+                return
+            case let .response(apiError, _):
+                errorAlert = .init(title: "Error", message: apiError.error)
+            default:
+                break
+            }
+        }
+        
+        let title = contextualError.title ?? ""
+        let message = contextualError.message ?? ""
+        
+        guard !title.isEmpty || !message.isEmpty else {
+            // no title or message was supplied so don't notify the user of this...
+            return
+        }
+        
+        errorAlert = .init(title: title, message: message)
     }
 }

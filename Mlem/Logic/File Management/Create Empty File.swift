@@ -12,9 +12,5 @@ internal enum FileCreationError: Error {
 }
 
 func createEmptyFile(at url: URL) throws {
-    do {
-        try "".write(to: url, atomically: true, encoding: .utf8)
-    } catch let fileCreationError {
-        print("Failed to create empty file: \(fileCreationError)")
-    }
+    try "".write(to: url, atomically: true, encoding: .utf8)
 }

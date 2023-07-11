@@ -19,7 +19,7 @@ extension CommentItem {
                 appState: appState
             )
         } catch {
-            print("failed to vote!")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
 
@@ -34,7 +34,7 @@ extension CommentItem {
                 appState: appState
             )
         } catch {
-            print("failed to delete comment!")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
 
@@ -120,7 +120,7 @@ extension CommentItem {
                                                  save: dirtySaved,
                                                  commentTracker: commentTracker)
             } catch {
-                print("failed to save comment!")
+                appState.contextualError = .init(underlyingError: error)
             }
 
             // unfake save

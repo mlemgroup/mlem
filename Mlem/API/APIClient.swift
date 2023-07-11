@@ -17,6 +17,7 @@ enum APIClientError: Error {
     case networking(Error)
     case response(APIErrorResponse, Int?)
     case cancelled
+    case invalidSession
 }
 
 class APIClient {
@@ -50,6 +51,11 @@ class APIClient {
             // the API, however we may way to consider adding the error model type as an
             // associated value in the same was as the response to allow requests to define
             // their own error models when necessary, or drop back to this as the default...
+            
+            if apiError.error == "not_logged_in" {
+                throw APIClientError.invalidSession
+            }
+            
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             throw APIClientError.response(apiError, statusCode)
         }
@@ -62,7 +68,6 @@ class APIClient {
             return try await session.data(for: urlRequest)
         } catch {
             if case URLError.cancelled = error as NSError {
-                print(error)
                 throw APIClientError.cancelled
             } else {
                 throw APIClientError.networking(error)

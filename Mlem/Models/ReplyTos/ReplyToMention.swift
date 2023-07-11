@@ -21,11 +21,6 @@ struct ReplyToMention: ReplyTo {
     }
     
     func sendReply(commentContents: String) async throws {
-        guard let account = appState.currentActiveAccount else {
-            print("Cannot Submit, No Active Account")
-            return
-        }
-        
         try await postCommentWithoutTracker(postId: mention.post.id,
                                             commentId: mention.comment.id,
                                             commentContents: commentContents,

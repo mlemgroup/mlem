@@ -44,9 +44,7 @@ struct ExpandedPost: View {
     @State internal var commentReplyingTo: APICommentView?
 
     @State private var viewID: UUID = UUID()
-
-    @State internal var errorAlert: ErrorAlert?
-
+    
     @State var isDragging: Bool = false
 
     var body: some View {
@@ -111,9 +109,6 @@ struct ExpandedPost: View {
             withAnimation(.easeIn(duration: 0.4)) {
                 commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
             }
-        }
-        .alert(using: $errorAlert) { content in
-            Alert(title: Text(content.title), message: Text(content.message))
         }
         .sheet(isPresented: $isComposingReport) {
             ReportComposerView(account: account, reportedPost: post)

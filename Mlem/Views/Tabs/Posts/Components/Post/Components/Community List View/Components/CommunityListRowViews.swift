@@ -35,6 +35,7 @@ struct CommuntiyFeedRowView: View {
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
 
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
 
     var body: some View {
@@ -121,8 +122,9 @@ struct CommuntiyFeedRowView: View {
 
             _ = try await APIClient().perform(request: request)
         } catch {
-            // TODO: If we fail here and want to notify the user we'd ideally
-            print(error)
+            // TODO: If we fail here and want to notify the user we should pass a message
+            // into the contextual error below
+            appState.contextualError = .init(underlyingError: error)
             communitySubscriptionChanged(community, !shouldSubscribe)
         }
     }

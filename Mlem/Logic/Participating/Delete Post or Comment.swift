@@ -7,10 +7,6 @@
 
 import Foundation
 
-enum DeletionFailiure: Error {
-    case failedToDelete
-}
-
 @MainActor
 func deletePost(
     postId: Int,
@@ -31,8 +27,7 @@ func deletePost(
         return response.postView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed to delete comment: \(error)")
-        throw DeletionFailiure.failedToDelete
+        throw error
     }
 }
 
@@ -55,7 +50,6 @@ func deleteComment(
         return updatedComment
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
-        print("Failed to delete comment: \(error)")
-        throw DeletionFailiure.failedToDelete
+        throw error
     }
 }

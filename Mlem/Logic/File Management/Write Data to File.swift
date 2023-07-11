@@ -7,15 +7,6 @@
 
 import Foundation
 
-internal enum FileWritingError: Error {
-    case failedToSaveToFile
-}
-
 func writeDataToFile(data: Data, fileURL: URL) throws {
-    do {
-        try data.write(to: fileURL, options: .atomic)
-    } catch let fileWritingError {
-        print("Failed while saving data to file: \(fileWritingError.localizedDescription)")
-        throw FileWritingError.failedToSaveToFile
-    }
+    try data.write(to: fileURL, options: .atomic)
 }

@@ -13,6 +13,7 @@ import Foundation
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
 struct PostInteractionBar: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var postTracker: PostTracker
 
     // constants
@@ -40,9 +41,6 @@ struct PostInteractionBar: View {
     let updatedSavePost: (_ save: Bool) async throws -> Void
     let deletePost: () async -> Void
     let replyToPost: (() -> Void)?
-    
-    // computed
-    var publishedAgo: String { getTimeIntervalFromNow(date: postView.post.published )}
     
     init(
         postView: APIPostView,
@@ -82,15 +80,7 @@ struct PostInteractionBar: View {
                 
                 ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
             }
-            
-            HStack(spacing: AppConstants.iconToTextSpacing) {
-                Image(systemName: "clock")
-                Text(publishedAgo)
-            }
-            .accessibilityAddTraits(.isStaticText)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Published \(publishedAgo) ago")
-            .foregroundColor(.secondary)
+            TimestampView(date: postView.post.published, spacing: AppConstants.iconToTextSpacing)
         }
         .font(.callout)
     }
@@ -186,7 +176,7 @@ struct PostInteractionBar: View {
                 try await self.updatedSavePost(dirtySaved)
             } catch {
                 UIAccessibility.post(notification: .announcement, argument: "Failed to Save")
-                print("failed to save!")
+                appState.contextualError = .init(underlyingError: error)
             }
             dirty = false
             return

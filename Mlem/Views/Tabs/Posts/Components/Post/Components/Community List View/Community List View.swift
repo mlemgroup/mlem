@@ -199,7 +199,7 @@ struct CommunityListView: View {
 
             subscribedCommunities = refreshedCommunities.sorted(by: { $0.name < $1.name })
         } catch {
-            print("Failed to refresh communities: \(error)")
+            appState.contextualError = .init(underlyingError: error)
         }
     }
 

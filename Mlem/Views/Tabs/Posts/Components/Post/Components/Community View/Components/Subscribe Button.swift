@@ -62,7 +62,7 @@ struct SubscribeButton: View {
             // this view so that the responsibility for performing the call is removed
             // and handled by the parent, for now we will fail silently the UI state
             // will not update so will continue to be accurate
-            print(error)
+            appState.contextualError = .init(underlyingError: error)
         }
     }
 }

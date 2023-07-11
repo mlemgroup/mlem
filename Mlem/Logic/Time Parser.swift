@@ -7,14 +7,15 @@
 
 import Foundation
 
-func getTimeIntervalFromNow(date: Date) -> String {
-    AppConstants.relativeDateFormatter.dateTimeStyle = .numeric
-    AppConstants.relativeDateFormatter.unitsStyle = .short
-    AppConstants.relativeDateFormatter.formattingContext = .standalone
-    AppConstants.relativeDateFormatter.calendar = .autoupdatingCurrent
-
-    // Drop the last 4 characters, because all of these strings have "ago" (for example "3 hr ago")
-    // and we don't want that "ago" to be there
-    let value = String(AppConstants.relativeDateFormatter.localizedString(for: date, relativeTo: .now).dropLast(4))
-    return value.hasPrefix("in") ? "now" : value
+func getTimeIntervalFromNow(date: Date, unitsStyle: DateComponentsFormatter.UnitsStyle = .abbreviated) -> String {
+    AppConstants.dateComponentsFormatter.unitsStyle = unitsStyle
+    AppConstants.dateComponentsFormatter.maximumUnitCount = 1
+    
+    let interval = date.timeIntervalSinceNow
+    if interval > -1 {
+        return "Now"
+    }
+    
+    let value = AppConstants.dateComponentsFormatter.string(from: abs(interval))
+    return value ?? "Unknown"
 }

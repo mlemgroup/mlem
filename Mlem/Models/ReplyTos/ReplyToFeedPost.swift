@@ -19,11 +19,6 @@ struct ReplyToFeedPost: ReplyTo {
     }
     
     func sendReply(commentContents: String) async throws {
-        guard let account = appState.currentActiveAccount else {
-            print("Cannot Submit, No Active Account")
-            return
-        }
-        
         try await postCommentWithoutTracker(
             postId: post.post.id,
             commentId: nil,

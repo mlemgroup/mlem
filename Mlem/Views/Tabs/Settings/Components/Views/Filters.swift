@@ -81,22 +81,24 @@ struct FiltersSettingsView: View {
                                 filtersTracker.filteredKeywords = decodedKeywords
                             }
                         } catch let decodingError {
-                            appState.alertTitle = "Couldn't decode blocklist"
-                            appState.alertMessage = "Try again. If the problem keeps happening, try reinstalling Mlem."
-                            appState.isShowingAlert.toggle()
-
+                            appState.contextualError = .init(
+                                title: "Couldn't decode blocklist",
+                                message: "Try again. If the problem keeps happening, try reinstalling Mlem.",
+                                underlyingError: decodingError
+                            )
+                            
                             print("Failed while decoding blocklist: \(decodingError)")
                         }
 
                     } catch let blocklistImportingError {
-
-                        appState.alertTitle = "Couldn't find blocklist"
-                        appState.alertMessage = """
-                                                If you are trying to read it from iCloud, make sure your internet is working.
-                                                Otherwise, try moving the blocklist file to another location.
-                                                """
-                        appState.isShowingAlert.toggle()
-
+                        appState.contextualError = .init(
+                            title: "Couldn't find blocklist",
+                            message: """
+                                     If you are trying to read it from iCloud, make sure your internet is working. \
+                                     Otherwise, try moving the blocklist file to another location.
+                                     """,
+                            underlyingError: blocklistImportingError
+                        )
                         print("Failed while reading file: \(blocklistImportingError)")
                     }
                 }

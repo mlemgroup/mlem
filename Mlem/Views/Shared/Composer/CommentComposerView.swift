@@ -52,7 +52,7 @@ struct CommentComposerView: View {
             dismiss()
             
         } catch {
-            print("Something went wrong)")
+            appState.contextualError = .init(underlyingError: error)
             isSubmitting = false
         }
     }

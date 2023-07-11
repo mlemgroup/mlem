@@ -52,8 +52,9 @@ struct BlockCommunityButton: View {
             let response = try await APIClient().perform(request: request)
             self.communityDetails = response.communityView
         } catch {
-            // TODO: If we fail here and want to notify the user we'd ideally
-            print(error)
+            // TODO: If we fail here and want to notify the user we should
+            // pass a message into the contextual error below
+            appState.contextualError = .init(underlyingError: error)
         }
     }
 }

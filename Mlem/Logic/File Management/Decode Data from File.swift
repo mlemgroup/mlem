@@ -7,12 +7,8 @@
 
 import Foundation
 
-internal enum DecodingError: Error {
-    case failedtoReadFile, failedToDecode
-}
-
 internal enum WhatToDecode {
-    case accounts, filteredKeywords, favoriteCommunities
+    case accounts, filteredKeywords, favoriteCommunities, recentSearches
 }
 
 func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Codable {
@@ -27,13 +23,13 @@ func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Coda
                 return try JSONDecoder().decode([String].self, from: rawData)
             case .favoriteCommunities:
                 return try JSONDecoder().decode([FavoriteCommunity].self, from: rawData)
+            case .recentSearches:
+                return try JSONDecoder().decode([String].self, from: rawData)
             }
         } catch let decodingError {
-            print("Failed to decode loaded data: \(decodingError.localizedDescription)")
-            throw DecodingError.failedToDecode
+            throw decodingError
         }
     } catch let fileReadingError {
-        print("Failed to load data from file: \(fileReadingError.localizedDescription)")
-        throw DecodingError.failedtoReadFile
+        throw fileReadingError
     }
 }

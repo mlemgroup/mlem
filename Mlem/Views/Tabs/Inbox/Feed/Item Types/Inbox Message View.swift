@@ -15,16 +15,12 @@ struct InboxMessageView: View {
     let message: APIPrivateMessageView
     let menuFunctions: [MenuFunction]
     
-    let publishedAgo: String
-    
     var iconName: String { message.privateMessage.read ? "envelope.open" : "envelope.fill" }
     
     init(account: SavedAccount, message: APIPrivateMessageView, menuFunctions: [MenuFunction]) {
         self.account = account
         self.message = message
         self.menuFunctions = menuFunctions
-        
-        self.publishedAgo = getTimeIntervalFromNow(date: message.privateMessage.published)
     }
     
     var body: some View {
@@ -52,11 +48,7 @@ struct InboxMessageView: View {
                 
                 Spacer()
                 
-                HStack(spacing: 4) {
-                    Image(systemName: "clock")
-                    Text(publishedAgo)
-                }
-                .foregroundColor(.secondary)
+                TimestampView(date: message.privateMessage.published)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

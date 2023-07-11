@@ -10,7 +10,7 @@ import SwiftUI
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 struct CommunityView: View {
-
+    
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -44,7 +44,6 @@ struct CommunityView: View {
 
     @State private var isComposingPost: Bool = false
     @State private var isPostingPost: Bool = false
-    @State private var errorAlert: ErrorAlert?
 
     @State var isDragging: Bool = false
     @State var replyingToPost: APIPostView?
@@ -102,12 +101,14 @@ struct CommunityView: View {
                                 account: account,
                                 appState: appState
                             )
-                        } catch let communityDetailsFetchingError {
-                            print("Failed while fetching community details: \(communityDetailsFetchingError)")
-
-                            appState.alertTitle = "Could not load community information"
-                            appState.alertMessage = "The server might be overloaded.\nTry again later."
-                            appState.isShowingAlert.toggle()
+                        } catch {
+                            print("Failed while fetching community details: \(error)")
+                            
+                            appState.contextualError = .init(
+                                title: "Could not load community information",
+                                message: "The server might be overloaded.\nTry again later.",
+                                underlyingError: error
+                            )
                         }
                     }
                 }
@@ -117,12 +118,6 @@ struct CommunityView: View {
                     await refreshFeed()
                 }
             })
-        }
-        .alert(using: $errorAlert) { content in
-            Alert(
-                title: Text(content.title),
-                message: Text(content.message)
-            )
         }
         .sheet(item: $replyingToPost) { post in
             GeneralCommentComposerView(
@@ -450,33 +445,27 @@ struct CommunityView: View {
     }
 
     private func handle(_ error: Error) {
+        let title: String?
+        let errorMessage: String?
+        
         switch error {
         case APIClientError.networking:
-            // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed
-            // while we investigate the reasons we will only show this error if the user would otherwise be left with an empty feed
             guard postTracker.items.isEmpty else {
                 return
             }
-
-            errorAlert = .init(
-                title: "Unable to connect to Lemmy",
-                message: "Please check your internet connection and try again"
-            )
-        case APIClientError.response(let message, _):
-            errorAlert = .init(
-                title: "Error",
-                message: message.error
-            )
-        case APIClientError.cancelled:
-            print("Failed while loading feed (request cancelled)")
+            
+        title = "Unable to connect to Lemmy"
+        errorMessage = "Please check your internet connection and try again"
         default:
-            // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
-            // for now we will fail silently if the user has posts to view while we investigate further
-            assertionFailure(
-                "Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat"
-            )
-            // errorAlert = .unexpected
+            title = nil
+            errorMessage = nil
         }
+        
+        appState.contextualError = .init(
+            title: title,
+            message: errorMessage,
+            underlyingError: error
+        )
     }
 }
 // swiftlint:enable type_body_length

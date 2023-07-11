@@ -88,11 +88,6 @@ struct MessageComposerView: View {
     
     func sendMessage() async {
         do {
-            guard let account = appState.currentActiveAccount else {
-                print("Cannot Submit, No Active Account")
-                return
-            }
-            
             isSubmitting = true
             
             try await sendPrivateMessage(content: messageBody, recipient: recipient, account: account, appState: appState)
@@ -102,7 +97,7 @@ struct MessageComposerView: View {
             dismiss()
             
         } catch {
-            print("Something went wrong)")
+            appState.contextualError = .init(underlyingError: error)
             isSubmitting = false
         }
     }
