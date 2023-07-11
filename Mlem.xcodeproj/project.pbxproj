@@ -721,7 +721,6 @@
 				6D8F08FA2A4029A1003EB4FD /* Get Favorited Communities.swift */,
 				6314C9EF2A194FEE00B08405 /* Participating */,
 				63F0C7A92A05232D00A18C5D /* File Management */,
-				6367F23B27F10E2D0074C36F /* Server Response Parsing */,
 				630049EB27EF390900D5105B /* Networking */,
 				6322A5D127F88CFD00135D4F /* Time Parser.swift */,
 				6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */,
@@ -1031,13 +1030,6 @@
 				6399719427F463150057F611 /* Components */,
 			);
 			path = Comment;
-			sourceTree = "<group>";
-		};
-		6367F23B27F10E2D0074C36F /* Server Response Parsing */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Server Response Parsing";
 			sourceTree = "<group>";
 		};
 		637218002A3A2AAD008C4816 /* API */ = {
