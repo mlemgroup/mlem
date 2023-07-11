@@ -102,7 +102,7 @@ struct CommentComposerView: View {
                     }
                 }
                 
-                .navigationTitle("New Post")
+                .navigationTitle("New Comment")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button("Cancel", role: .destructive) {

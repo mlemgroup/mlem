@@ -9,17 +9,26 @@ import SwiftUI
 
 struct CommunitySidebarHeaderLabel: View {
     @State var text: String
-
+    
     init(_ text: String) {
         self._text = State(initialValue: text)
     }
-
+    
     var body: some View {
         Text(text)
-            .padding(3)
+            .padding(.horizontal, 6)
             .foregroundColor(.white)
-            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(.gray))
-            .font(.footnote)
+            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 6))
+            .font(.callout)
             .lineLimit(1)
+    }
+}
+
+struct CommunitySidebarHeaderLabel_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        NavigationStack {
+            CommunitySidebarHeaderLabel("This is a label")
+        }
     }
 }
