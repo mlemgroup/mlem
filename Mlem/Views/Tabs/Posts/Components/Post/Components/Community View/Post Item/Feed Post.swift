@@ -186,7 +186,11 @@ struct FeedPost: View {
     
     func blockUser() async {
         do {
-            let blocked = try await blockPerson(account: account, person: postView.creator, blocked: true)
+            let blocked = try await blockPerson(
+                account: appState.currentActiveAccount,
+                person: postView.creator,
+                blocked: true
+            )
             if blocked {
                 postTracker.removePosts(from: postView.creator.id)
                 
