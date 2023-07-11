@@ -51,12 +51,6 @@ struct CommunityView: View {
         self._feedType = State(initialValue: feedType)
     }
 
-    init(account: SavedAccount, community: APICommunity?, feedType: FeedType) {
-        self._account = State(initialValue: account)
-        self.community = community
-        self._feedType = State(initialValue: feedType)
-    }
-
     var body: some View {
         ZStack(alignment: .top) {
             ScrollView(showsIndicators: false) {
