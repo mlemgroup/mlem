@@ -370,7 +370,6 @@ struct FeedPost: View {
                 }
             })
 
-
         return ret
     }
     // swiftlint:enable function_body_length
