@@ -39,7 +39,7 @@ struct CommunitySidebarView: View {
             await loadCommunity()
         }
     }
-
+    
     private func loadCommunity() async {
         do {
             let request = GetCommunityRequest(account: account, communityId: community.id)
@@ -54,14 +54,14 @@ struct CommunitySidebarView: View {
             errorMessage = "A decoding error occurred, try refreshing."
         }
     }
-
+    
     private func getRelativeTime(date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
-
+        
         return formatter.localizedString(for: date, relativeTo: Date.now)
     }
-
+    
     @ViewBuilder
     private func view(for communityDetails: GetCommunityResponse) -> some View {
         ScrollView {
@@ -72,7 +72,7 @@ struct CommunitySidebarView: View {
                 bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.banner : nil,
                 avatarUrl: communityDetails.communityView.community.icon,
             label1: "\(communityDetails.communityView.counts.subscribers) Subscribers")
-
+            
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
                 Text("Description").tag(0)
                 Text("Moderators").tag(1)
@@ -86,9 +86,6 @@ struct CommunitySidebarView: View {
                     .community
                     .description {
                     MarkdownView(text: description, isNsfw: false).padding()
-                    .contextMenu {
-                        EasyTranslateButton(text: .constant(description))
-                    }
                 }
             } else if selectionSection == 1 {
                 VStack {
@@ -112,13 +109,13 @@ struct CommunitySidebarView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     func errorView(errorDetials: String) -> some View {
         VStack(spacing: 10) {
             Image(systemName: "exclamationmark.bubble")
                 .font(.title)
-
+            
             Text("Community details loading failed!")
             Text(errorDetials)
         }
@@ -136,7 +133,7 @@ struct SidebarPreview: PreviewProvider {
     - Ok maybe just a little bit.
     - I SAID **NO**!
     """
-
+    
     static let previewCommunity = APICommunity(
         id: 0,
         name: "testcommunity",
@@ -155,7 +152,7 @@ struct SidebarPreview: PreviewProvider {
         postingRestrictedToMods: false,
         instanceId: 0
     )
-
+    
     static let previewUser = APIPerson(
         id: 0,
         name: "ExamplePerson",
@@ -178,7 +175,7 @@ struct SidebarPreview: PreviewProvider {
     )
 
     static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
-
+    
     static var previews: some View {
         CommunitySidebarView(
             account: SavedAccount(
