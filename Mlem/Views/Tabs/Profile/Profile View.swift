@@ -24,6 +24,8 @@ struct ProfileView: View {
         NavigationStack(path: $navigationPath) {
             UserView(userID: account.id, account: account)
                 .handleLemmyViews()
+                .edgesIgnoringSafeArea(.top)
+                .toolbar(.hidden)
         }
     }
 }

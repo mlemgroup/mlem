@@ -134,4 +134,24 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
         let accepted = newItems.filter { ids.insert($0.uniqueIdentifier).inserted }
         return accepted
     }
+    
+    // Takes a callback and fillters out any entry that returns false
+    //
+    // Returns the number of entries removed
+    @discardableResult func filter(_ callback: (Item) -> Bool) -> Int {
+        var removedElements = 0
+        
+        items = items.filter({
+            let filterResult = callback($0)
+            
+            // Remove the ID from the IDs set as well
+            if !filterResult {
+                ids.remove($0.uniqueIdentifier)
+                removedElements += 1
+            }
+            return filterResult
+        })
+        
+        return removedElements
+    }
 }
