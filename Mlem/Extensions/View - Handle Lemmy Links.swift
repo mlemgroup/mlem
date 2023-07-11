@@ -21,7 +21,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
         return content
             .navigationDestination(for: APICommunityView.self) { context in
                 if let account = account {
-                    CommunityView(account: account, community: context.community)
+                    CommunityView(account: account, community: context.community, feedType: .all)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(CommunitySearchResultsTracker())
@@ -32,7 +32,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             }
             .navigationDestination(for: APICommunity.self) { community in
                 if let account = account {
-                    CommunityView(account: account, community: community)
+                    CommunityView(account: account, community: community, feedType: .all)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(CommunitySearchResultsTracker())
@@ -70,8 +70,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 if let account = account {
                     ExpandedPost(
                         account: account,
-                        post: post,
-                        feedType: .constant(.all)
+                        post: post
                     )
                     .environmentObject(
                         PostTracker(shouldPerformMergeSorting: false, initialItems: [post])
@@ -96,8 +95,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 if let account = account {
                     ExpandedPost(
                         account: account,
-                        post: post.post,
-                        feedType: post.feedType
+                        post: post.post
                     )
                         .environmentObject(post.postTracker)
                         .environmentObject(appState)

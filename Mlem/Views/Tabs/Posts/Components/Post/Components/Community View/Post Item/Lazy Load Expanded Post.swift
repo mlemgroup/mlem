@@ -25,7 +25,7 @@ struct LazyLoadExpandedPost: View {
     var body: some View {
         Group {
             if let loadedPost = loadedPostView {
-                ExpandedPost(account: account, post: loadedPost, feedType: .constant(.subscribed))
+                ExpandedPost(account: account, post: loadedPost)
                     .environmentObject(postTracker)
             } else {
                 progressView

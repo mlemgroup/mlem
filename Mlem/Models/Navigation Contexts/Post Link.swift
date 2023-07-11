@@ -21,6 +21,4 @@ struct PostLinkWithContext: Equatable, Identifiable, Hashable {
 
     let post: APIPostView
     let postTracker: PostTracker
-    let feedType: Binding<FeedType>
-
 }

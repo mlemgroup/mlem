@@ -32,8 +32,6 @@ struct ExpandedPost: View {
 
     @State private var commentSortingType: CommentSortType = .top
 
-    @Binding var feedType: FeedType
-
     @State private var replyingToCommentID: Int?
 
     @State private var isInTheMiddleOfStyling: Bool = false

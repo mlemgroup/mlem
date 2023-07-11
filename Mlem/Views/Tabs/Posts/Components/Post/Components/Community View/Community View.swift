@@ -23,24 +23,19 @@ struct CommunityView: View {
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
 
     @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
-
+    
+    // parameters
     @State var account: SavedAccount
-    @State var community: APICommunity?
+    var community: APICommunity?
+    @State var feedType: FeedType
+    
+    // variables
     @State var communityDetails: GetCommunityResponse?
 
     @State private var postSortType: PostSortType = .hot
     @State private var didLoad: Bool = false
 
-    @State private var isSidebarShown: Bool = false
-    @State private var isShowingCommunitySearch: Bool = false
-
     @State private var isRefreshing: Bool = false
-
-    @State private var searchText: String = ""
-
-    @FocusState var isSearchFieldFocused: Bool
-
-    @State var feedType: FeedType = .subscribed
 
     @State private var isComposingPost: Bool = false
     @State private var isPostingPost: Bool = false
@@ -49,11 +44,15 @@ struct CommunityView: View {
     @State var replyingToPost: APIPostView?
 
     var isInSpecificCommunity: Bool { community != nil }
+    
+    init(account: SavedAccount, community: APICommunity?, feedType: FeedType) {
+        self._account = State(initialValue: account)
+        self.community = community
+        self._feedType = State(initialValue: feedType)
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
-            searchResultsView
-                .accessibilityHidden(!isShowingCommunitySearch)
             ScrollView(showsIndicators: false) {
                 if postTracker.items.isEmpty {
                     noPostsView
@@ -66,7 +65,6 @@ struct CommunityView: View {
                 }
             }
             .background(Color.secondarySystemBackground)
-            .offset(y: isShowingCommunitySearch ? 300 : 0)
             .refreshable {
                 Task(priority: .userInitiated) {
                     isRefreshing = true
@@ -129,189 +127,175 @@ struct CommunityView: View {
             )
         }
         .toolbar {
-            ToolbarItem(placement: .principal) { /// This is here to replace the default navigationTitle and make it possible to tap it
-                if !isShowingCommunitySearch {
+            ToolbarItem(placement: .principal) {
+                /*
+                 if !isShowingCommunitySearch {
+                 HStack(alignment: .center, spacing: 0) {
+                 Text(community?.name ?? feedType.rawValue)
+                 .font(.headline)
+                 Image(systemName: "chevron.down")
+                 .scaleEffect(0.7)
+                 }
+                 .accessibilityElement(children: .ignore)
+                 .accessibilityLabel("\(community?.name ?? feedType.rawValue)")
+                 .accessibilityAddTraits(.isButton)
+                 .accessibilityHint("Activate to search and select feeds")
+                 .onTapGesture {
+                 isSearchFieldFocused = true
+                 
+                 withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
+                 isShowingCommunitySearch.toggle()
+                 }
+                 
+                 }
+                 }
+                 */
+                Menu {
+                    feedTypeMenuItem(for: .subscribed)
+                    feedTypeMenuItem(for: .local)
+                    feedTypeMenuItem(for: .all)
+                } label: {
                     HStack(alignment: .center, spacing: 0) {
                         Text(community?.name ?? feedType.rawValue)
                             .font(.headline)
-                        Image(systemName: "chevron.down")
-                            .scaleEffect(0.7)
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("\(community?.name ?? feedType.rawValue)")
-                    .accessibilityAddTraits(.isButton)
-                    .accessibilityHint("Activate to search and select feeds")
-                    .onTapGesture {
-                        isSearchFieldFocused = true
-
-                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
-                            isShowingCommunitySearch.toggle()
+                        if !isInSpecificCommunity {
+                            Image(systemName: "chevron.down")
+                                .scaleEffect(0.7)
                         }
-
-                    }
-                } else {
-                    CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, account: account)
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel("Search for communities.")
-                        .accessibilityAddTraits(.isSearchField)
+                    }.foregroundColor(.primary)
                 }
             }
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if !isShowingCommunitySearch {
-                    PostSortMenu(selectedSortingOption: Binding(
-                        get: {
-                            postSortType
-                        },
-                        set: { newValue in
-                            self.postSortType = newValue
-                            Task {
-                                print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-                                await refreshFeed()
-                            }
+                PostSortMenu(selectedSortingOption: Binding(
+                    get: {
+                        postSortType
+                    },
+                    set: { newValue in
+                        self.postSortType = newValue
+                        Task {
+                            print("Selected sorting option: \(newValue), \(newValue.rawValue)")
+                            await refreshFeed()
                         }
-                    ))
-
-                    Menu {
-                        if let specificCommunity = community {
-                            NavigationLink(value:
-                                            CommunitySidebarLinkWithContext(
-                                                community: specificCommunity,
-                                                communityDetails: communityDetails
-                                            )) {
-                                Label("Sidebar", systemImage: "sidebar.right")
-                            }
-
-                            Button {
-                                isComposingPost.toggle()
+                    }
+                ))
+                
+                Menu {
+                    if let specificCommunity = community {
+                        NavigationLink(value:
+                                        CommunitySidebarLinkWithContext(
+                                            community: specificCommunity,
+                                            communityDetails: communityDetails
+                                        )) {
+                                            Label("Sidebar", systemImage: "sidebar.right")
+                                        }
+                        
+                        Button {
+                            isComposingPost.toggle()
+                        } label: {
+                            Label("New Post", systemImage: "paperplane.fill")
+                        }
+                    }
+                    Divider()
+                    if let communityDetails {
+                        
+                        if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
+                            // This is when a community is already favorited
+                            Button(role: .destructive) {
+                                unfavoriteCommunity(
+                                    account: account,
+                                    community: community!,
+                                    favoritedCommunitiesTracker: favoriteCommunitiesTracker
+                                )
                             } label: {
-                                Label("New Post", systemImage: "paperplane.fill")
+                                Label("Unfavorite", systemImage: "star.slash")
                             }
+                        } else {
+                            Button {
+                                favoriteCommunity(
+                                    account: account,
+                                    community: community!,
+                                    favoritedCommunitiesTracker: favoriteCommunitiesTracker
+                                )
+                            } label: {
+                                Label("Favorite", systemImage: "star")
+                            }
+                            .tint(.yellow)
                         }
-                        Divider()
-                        if let communityDetails {
-
-                            if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
-                                // This is when a community is already favorited
-                                Button(role: .destructive) {
-                                    unfavoriteCommunity(
-                                        account: account,
-                                        community: community!,
-                                        favoritedCommunitiesTracker: favoriteCommunitiesTracker
-                                    )
-                                } label: {
-                                    Label("Unfavorite", systemImage: "star.slash")
-                                }
-                            } else {
-                                Button {
-                                    favoriteCommunity(
-                                        account: account,
-                                        community: community!,
-                                        favoritedCommunitiesTracker: favoriteCommunitiesTracker
-                                    )
-                                } label: {
-                                    Label("Favorite", systemImage: "star")
-                                }
-                                .tint(.yellow)
-                            }
-
-                            SubscribeButton(
-                                communityDetails: Binding(
-                                    get: {
-                                        communityDetails.communityView
-                                    },
-                                    set: { newValue in
-                                        guard let newValue else { return }
-                                        self.communityDetails?.communityView = newValue
-                                    }),
-                                account: account
-                            )
-
-                            BlockCommunityButton(account: account, communityDetails: Binding(
+                        
+                        SubscribeButton(
+                            communityDetails: Binding(
                                 get: {
                                     communityDetails.communityView
                                 },
                                 set: { newValue in
                                     guard let newValue else { return }
                                     self.communityDetails?.communityView = newValue
-                                }))
-
-                            Divider()
-
-                            if let actorId = community?.actorId {
-                                Button {
-                                    showShareSheet(URLtoShare: actorId)
-                                } label: {
-                                    Label("Share", systemImage: "square.and.arrow.up")
-                                }
+                                }),
+                            account: account
+                        )
+                        
+                        BlockCommunityButton(account: account, communityDetails: Binding(
+                            get: {
+                                communityDetails.communityView
+                            },
+                            set: { newValue in
+                                guard let newValue else { return }
+                                self.communityDetails?.communityView = newValue
+                            }))
+                        
+                        Divider()
+                        
+                        if let actorId = community?.actorId {
+                            Button {
+                                showShareSheet(URLtoShare: actorId)
+                            } label: {
+                                Label("Share", systemImage: "square.and.arrow.up")
                             }
                         }
-
-                        Button {
-                            shouldBlurNsfw.toggle()
-                        } label: {
-                            if shouldBlurNsfw {
-                                Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
-                            } else {
-                                Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
-                            }
-                        }
-
-                        Menu {
-                            if postSize != .compact {
-                                Button {
-                                    postSize = .compact
-                                } label: {
-                                    Label("Compact", systemImage: "rectangle.compress.vertical")
-                                }
-                            }
-
-                            if postSize != .headline {
-                                Button {
-                                    postSize = .headline
-                                } label: {
-                                    Label("Headline", systemImage: "rectangle")
-                                }
-                            }
-
-                            if postSize != .large {
-                                Button {
-                                    postSize = .large
-                                } label: {
-                                    Label("Large", systemImage: "rectangle.expand.vertical")
-                                }
-                            }
-                        } label: {
-                            Label("Post size", systemImage: "rectangle.compress.vertical")
-                        }
-                        .foregroundColor(.primary)
-                    } label: {
-                        Label("More", systemImage: "ellipsis")
                     }
-                } else {
+                    
                     Button {
-                        isSearchFieldFocused = false
-
-                        withAnimation(
-                            .interactiveSpring(
-                                response: 0.5,
-                                dampingFraction: 1,
-                                blendDuration: 0.5
-                            )
-                        ) {
-                            isShowingCommunitySearch.toggle()
+                        shouldBlurNsfw.toggle()
+                    } label: {
+                        if shouldBlurNsfw {
+                            Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                        } else {
+                            Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                         }
-
-                        // clear the search text and results one second after it disappears
-                        // so it doesn't just disappear in the middle of the animation
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            searchText = ""
-                            communitySearchResultsTracker.foundCommunities = .init()
+                    }
+                    
+                    Menu {
+                        if postSize != .compact {
+                            Button {
+                                postSize = .compact
+                            } label: {
+                                Label("Compact", systemImage: "rectangle.compress.vertical")
+                            }
+                        }
+                        
+                        if postSize != .headline {
+                            Button {
+                                postSize = .headline
+                            } label: {
+                                Label("Headline", systemImage: "rectangle")
+                            }
+                        }
+                        
+                        if postSize != .large {
+                            Button {
+                                postSize = .large
+                            } label: {
+                                Label("Large", systemImage: "rectangle.expand.vertical")
+                            }
                         }
                     } label: {
-                        Text("Cancel")
+                        Label("Post size", systemImage: "rectangle.compress.vertical")
                     }
+                    .foregroundColor(.primary)
+                } label: {
+                    Label("More", systemImage: "ellipsis")
                 }
             }
         }
@@ -329,14 +313,18 @@ struct CommunityView: View {
         .environmentObject(postTracker)
         .navigationBarTitleDisplayMode(.inline)
     }
-
-    private var searchResultsView: some View {
-        CommunitySearchResultsView(
-            account: account,
-            community: community,
-            feedType: $feedType,
-            isShowingSearch: $isShowingCommunitySearch
-        )
+    
+    @ViewBuilder
+    private func feedTypeMenuItem(for setFeedType: FeedType) -> some View {
+        Button {
+            feedType = setFeedType
+        } label: {
+            if feedType == setFeedType {
+                Label(setFeedType.label, systemImage: "checkmark")
+            } else {
+                Text(setFeedType.label)
+            }
+        }
     }
 
     @ViewBuilder
@@ -368,7 +356,7 @@ struct CommunityView: View {
 
     private var postListView: some View {
         ForEach(postTracker.items, id: \.id) { post in
-            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)) {
+            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
                 FeedPost(
                     postView: post,
                     account: account,

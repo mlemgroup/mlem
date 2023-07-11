@@ -45,7 +45,7 @@ struct FeedRoot: View {
                 NavigationStack(path: $navigationPath) {
                     CommunityView(account: appState.currentActiveAccount!,
                                   community: rootDetails!.community,
-                                  feedType: rootDetails!.feedType
+                                  feedType: rootDetails?.feedType ?? .all
                     )
                     .environmentObject(appState)
                     .handleLemmyViews()
