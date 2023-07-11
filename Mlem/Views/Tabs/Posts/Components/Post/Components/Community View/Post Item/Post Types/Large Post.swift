@@ -58,7 +58,7 @@ struct LargePost: View {
     }
 
     // MARK: - Subviews
-    
+
     @ViewBuilder
     var postContentView: some View {
         switch postView.postType {
@@ -90,6 +90,9 @@ struct LargePost: View {
             if isExpanded {
                 MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
                     .font(.subheadline)
+                    .contextMenu {
+                        EasyTranslateButton(text: .constant(bodyText))
+                    }
             } else {
                 MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "),
                              isNsfw: postView.post.nsfw,

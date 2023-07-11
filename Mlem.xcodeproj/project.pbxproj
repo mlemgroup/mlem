@@ -164,6 +164,9 @@
 		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
 		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
 		63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */; };
+		B197D83E2A445E22003FE61A /* In App WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83D2A445E22003FE61A /* In App WebView.swift */; };
+		B197D8402A446039003FE61A /* Translation Shower.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83F2A446039003FE61A /* Translation Shower.swift */; };
+		B197D8422A446D09003FE61A /* Translation Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D8412A446D09003FE61A /* Translation Sheet.swift */; };
 		6D15D74C2A44DC240061B5CB /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D15D74B2A44DC240061B5CB /* Date.swift */; };
 		6D405AFF2A43E66600C65F9C /* User Profile Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D405AFE2A43E66600C65F9C /* User Profile Label.swift */; };
 		6D405B012A43E79400C65F9C /* Sidebar Header Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D405B002A43E79400C65F9C /* Sidebar Header Avatar.swift */; };
@@ -218,6 +221,9 @@
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
 		B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B14E93C42A470D5100D6DA93 /* AlertToast */; };
 		B157E0C42A507B8000B02C8B /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* Window.swift */; };
+		B197D83E2A445E22003FE61A /* In App WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83D2A445E22003FE61A /* In App WebView.swift */; };
+		B197D8402A446039003FE61A /* Translation Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D83F2A446039003FE61A /* Translation Text.swift */; };
+		B197D8422A446D09003FE61A /* Translation Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197D8412A446D09003FE61A /* Translation Sheet.swift */; };
 		B1A26FE12A44AAB200B91A32 /* Navigation getter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */; };
 		B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */; };
 		B1A5A8152A4C882F00F203DB /* AlternativeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */; };
@@ -473,6 +479,9 @@
 		63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionWebSocketTask - Send Ping.swift"; sourceTree = "<group>"; };
 		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
 		63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Correct URL to Endpoint.swift"; sourceTree = "<group>"; };
+		B197D83D2A445E22003FE61A /* In App WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "In App WebView.swift"; sourceTree = "<group>"; };
+		B197D83F2A446039003FE61A /* Translation Shower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Translation Shower.swift"; sourceTree = "<group>"; };
+		B197D8412A446D09003FE61A /* Translation Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Translation Sheet.swift"; sourceTree = "<group>"; };
 		6D15D74B2A44DC240061B5CB /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		6D405AFE2A43E66600C65F9C /* User Profile Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Profile Label.swift"; sourceTree = "<group>"; };
 		6D405B002A43E79400C65F9C /* Sidebar Header Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar Header Avatar.swift"; sourceTree = "<group>"; };
@@ -808,6 +817,7 @@
 				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
 				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
+				B197D83F2A446039003FE61A /* Translation Text.swift */,
 				6DA61F842A568F99001EA633 /* Int.swift */,
 				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
 				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
@@ -1265,7 +1275,11 @@
 				63D24EDD2A169F2A005CCA81 /* Markdown View.swift */,
 				03BAA2392A57DC1400D48252 /* TimestampView.swift */,
 				6374570F2A18CB6600B69C03 /* Custom Text Field.swift */,
+				B197D83D2A445E22003FE61A /* In App WebView.swift */,
+				B197D8412A446D09003FE61A /* Translation Sheet.swift */,
 				B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */,
+				B197D83D2A445E22003FE61A /* In App WebView.swift */,
+				B197D8412A446D09003FE61A /* Translation Sheet.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1901,6 +1915,7 @@
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
 				6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
+				B197D8422A446D09003FE61A /* Translation Sheet.swift in Sources */,
 				637218612A3A2AAD008C4816 /* CreatePostLike.swift in Sources */,
 				63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */,
 				CD69F5712A422EDD0028D4F7 /* Comment Interaction Bar.swift in Sources */,
@@ -1960,9 +1975,11 @@
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
 				637218542A3A2AAD008C4816 /* APILanguage.swift in Sources */,
 				6372186E2A3A2AAD008C4816 /* DeleteComment.swift in Sources */,
+				B197D83E2A445E22003FE61A /* In App WebView.swift in Sources */,
 				507573982A5AD60100AA7ABD /* ErrorAlert.swift in Sources */,
 				CDE6A8182A490AF20062D161 /* Inbox Mention View.swift in Sources */,
 				CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */,
+				B197D83E2A445E22003FE61A /* In App WebView.swift in Sources */,
 				6332FDCF27EFDD2E0009A98A /* Accounts Page.swift in Sources */,
 				CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */,
 				6D15D74C2A44DC240061B5CB /* Date.swift in Sources */,
@@ -1972,6 +1989,7 @@
 				63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */,
 				6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */,
 				63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */,
+				B197D8402A446039003FE61A /* Translation Text.swift in Sources */,
 				63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
 				6DA61F812A55B83F001EA633 /* Search View.swift in Sources */,
