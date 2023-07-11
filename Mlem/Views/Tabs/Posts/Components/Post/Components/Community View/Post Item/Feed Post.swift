@@ -341,15 +341,6 @@ struct FeedPost: View {
                 translateText(postView.post.body ?? postView.post.name)
         })
 
-        // translate
-        ret.append(MenuFunction(
-            text: "Translate",
-            imageName: "globe.asia.australia",
-            destructiveActionPrompt: nil,
-            enabled: !(postView.post.body?.isEmpty ?? true)) {
-                translateText(postView.post.body ?? "Missing Body")
-        })
-
         // report
         ret.append(MenuFunction(
             text: "Report",
