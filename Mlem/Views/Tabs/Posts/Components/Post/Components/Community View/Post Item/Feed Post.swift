@@ -308,6 +308,20 @@ struct FeedPost: View {
                 isComposingReport = true
             })
         
+        // block user
+        ret.append(MenuFunction(
+            text: "Block User",
+            imageName: "person.fill.xmark",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                Task(priority: .userInitiated) {
+                    let response = try await blockPerson(account: account, person: postView.creator, blocked: true)
+                    if response {
+                        postTracker.
+                    }
+                }
+            })
+        
         return ret
     }
     // swiftlint:enable function_body_length
