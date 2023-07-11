@@ -316,9 +316,7 @@ struct FeedPost: View {
             enabled: true) {
                 Task(priority: .userInitiated) {
                     let response = try await blockPerson(account: account, person: postView.creator, blocked: true)
-                    if response {
-                        postTracker.
-                    }
+                    print("Response")
                 }
             })
         
