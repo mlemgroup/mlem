@@ -38,9 +38,10 @@ struct SaveButton: View {
                     .foregroundColor(isSaved ? .saveColor : .clear))
                 .padding(AppConstants.postAndCommentSpacing)
                 .contentShape(Rectangle())
+                .fontWeight(.medium) // makes it look a little nicer
         }
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(saveButtonText)
-        .accessibilityAction(named: saveButtonText) { save() }
+        .accessibilityAction(.default) { save() }
     }
 }

@@ -20,31 +20,36 @@ struct StandardVoteComplex: View {
     let downvote: () async -> Void
 
     var body: some View {
-        HStack(spacing: 4) {
-            HStack(spacing: 2) {
-                Image(systemName: "arrow.up")
-                Text(String(score))
-            }
-            // custom set because grouping image and text makes height do bad things
-            .frame(height: height)
-            .padding(.horizontal, 4)
-            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-                // .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
-                .foregroundColor(.upvoteColor))
-            .foregroundColor(vote == .upvote ? .white : .primary)
-            .onTapGesture {
+        HStack(spacing: 0) {
+            Button {
                 Task(priority: .userInitiated) {
                     await upvote()
                 }
+            } label: {
+                HStack(spacing: 2) {
+                    Image(systemName: "arrow.up")
+                    Text(String(score))
+                }
+                // custom set because grouping image and text makes height do bad things
+                .frame(height: height)
+                .padding(.horizontal, 4) // for the background to look right
+                .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                    .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
+                .foregroundColor(vote == .upvote ? .white : .primary)
+                .padding(.leading, AppConstants.postAndCommentSpacing - 4) // offset, undo background padding
             }
+            .frame(height: height)
             
             if appState.enableDownvote {
-                DownvoteButtonLabel(vote: vote, size: height)
-                    .onTapGesture {
-                        Task(priority: .userInitiated) {
-                            await downvote()
-                        }
+                Button {
+                    Task(priority: .userInitiated) {
+                        await downvote()
                     }
+                } label: {
+                    DownvoteButtonLabel(vote: vote)
+                }
+                .frame(height: height)
+                .padding(.leading, -6) // clusters a little tighter
             }
         }
     }

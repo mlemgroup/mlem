@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DownvoteButtonLabel: View {
     let vote: ScoringOperation
-    let size: CGFloat
 
     var body: some View {
         Image(systemName: "arrow.down")

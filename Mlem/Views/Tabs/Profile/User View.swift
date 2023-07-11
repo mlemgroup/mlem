@@ -357,13 +357,18 @@ struct UserView: View {
      User post
      */
     private func postEntry(for post: APIPostView) -> some View {
-        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
-            FeedPost(postView: post,
-                     showPostCreator: false,
-                     showCommunity: true,
-                     isDragging: $isDragging,
-                     replyToPost: nil
-            )
+        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker, feedType: .constant(.subscribed))) {
+            VStack(spacing: 0) {
+                FeedPost(postView: post,
+                         account: account,
+                         showPostCreator: false,
+                         showCommunity: true,
+                         isDragging: $isDragging,
+                         replyToPost: nil
+                )
+                
+                Divider()
+            }
         }
         .buttonStyle(.plain)
     }
@@ -372,15 +377,20 @@ struct UserView: View {
      User comment
      */
     private func commentEntry(for comment: HierarchicalComment) -> some View {
-        CommentItem(
-            hierarchicalComment: comment,
-            postContext: nil,
-            depth: 0,
-            showPostContext: true,
-            showCommentCreator: false,
-            isDragging: $isDragging,
-            replyToComment: nil
-        )
+        VStack(spacing: 0) {
+            CommentItem(
+                account: account,
+                hierarchicalComment: comment,
+                postContext: nil,
+                depth: 0,
+                showPostContext: true,
+                showCommentCreator: false,
+                isDragging: $isDragging,
+                replyToComment: nil
+            )
+            
+            Divider()
+        }
     }
 }
 

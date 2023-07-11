@@ -15,6 +15,11 @@ import Foundation
 struct PostInteractionBar: View {
     @EnvironmentObject var appState: AppState
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
+    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
+    @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
+    @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
+    @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
     
     @EnvironmentObject var postTracker: PostTracker
 
@@ -68,7 +73,12 @@ struct PostInteractionBar: View {
             // HStack(spacing: 12) {
             HStack(spacing: 0) {
                 if !shouldShowVoteComplexOnRight {
-                    VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
+                    VoteComplex(style: postVoteComplexStyle,
+                                vote: displayedVote,
+                                score: displayedScore,
+                                height: height,
+                                upvote: upvote,
+                                downvote: downvote)
                         .padding(.trailing, 8)
                 } else {
                     SaveButton(isSaved: displayedSaved, accessibilityContext: "post") {
@@ -83,7 +93,12 @@ struct PostInteractionBar: View {
                 Spacer()
                 
                 if shouldShowVoteComplexOnRight {
-                    VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
+                    VoteComplex(style: postVoteComplexStyle,
+                                vote: displayedVote,
+                                score: displayedScore,
+                                height: height,
+                                upvote: upvote,
+                                downvote: downvote)
                         .padding(.trailing, 8)
                 } else {
                     SaveButton(isSaved: displayedSaved, accessibilityContext: "post") {
@@ -96,11 +111,11 @@ struct PostInteractionBar: View {
                 }
             }
             
-            InfoStack(score: postView.counts.score,
-                      published: postView.published,
-                      commentCount: postView.counts.comments,
-                      myVote: postView.myVote ?? .resetVote,
-                      saved: postView.saved)
+            InfoStack(score: shouldShowScoreInPostBar ? postView.counts.score : nil,
+                      myVote: shouldShowScoreInPostBar ? postView.myVote ?? .resetVote : nil,
+                      published: shouldShowTimeInPostBar ? postView.published : nil,
+                      commentCount: shouldShowRepliesInPostBar ? postView.counts.comments : nil,
+                      saved: shouldShowSavedInPostBar ? postView.saved : nil)
         }
         .font(.callout)
     }

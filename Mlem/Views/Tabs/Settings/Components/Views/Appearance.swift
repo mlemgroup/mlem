@@ -14,6 +14,10 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
+    // display sides
+    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
+    @AppStorage("thumbnailsOnRight") var shouldShowThumbnailsOnRight: Bool = false
+    
     // posts
     @AppStorage("postSize") var postSize: PostSize = PostSize.headline
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
@@ -44,12 +48,24 @@ struct AppearanceSettingsView: View {
                     )
                 }
                 
+                Section("Display Sides") {
+                    SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
+                                           settingPictureColor: .pink,
+                                           settingName: "Show vote buttons on right",
+                                           isTicked: $shouldShowVoteComplexOnRight)
+                    
+                    SwitchableSettingsItem(settingPictureSystemName: "photo",
+                                           settingPictureColor: .pink,
+                                           settingName: "Show thumbnails on right",
+                                           isTicked: $shouldShowThumbnailsOnRight)
+                }
+                
                 Section("Posts") {
                     NavigationLink {
                         CustomizePostView()
                     } label: {
                         HStack(alignment: .center) {
-                            Image(systemName: "sparkles.rectangle.stack")
+                            Image(systemName: "rectangle.and.text.magnifyingglass")
                                 .foregroundColor(.pink)
                             Text("Customize Post Display")
                         }
@@ -69,6 +85,16 @@ struct AppearanceSettingsView: View {
                 }
                 
                 Section("Comments") {
+                    NavigationLink {
+                        CustomizeCommentView()
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "rectangle.and.text.magnifyingglass")
+                                .foregroundColor(.pink)
+                            Text("Customize Comment Display")
+                        }
+                    }
+                    
                     SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                            settingPictureColor: .pink,
                                            settingName: "Show user server instance",

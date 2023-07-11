@@ -92,13 +92,14 @@ struct CommentItem: View {
     var body: some View {
         VStack(spacing: 0) {
             Group {
-                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                    // commentBody
+                VStack(alignment: .leading, spacing: 0) {
                     CommentBodyView(commentView: hierarchicalComment.commentView,
                                     isCollapsed: isCollapsed,
                                     showPostContext: showPostContext,
                                     showCommentCreator: showCommentCreator,
                                     menuFunctions: genMenuFunctions())
+                    .padding(.top, AppConstants.postAndCommentSpacing)
+                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
 
                     if showInteractionBar {
                         CommentInteractionBar(commentView: hierarchicalComment.commentView,
@@ -110,9 +111,11 @@ struct CommentItem: View {
                                               saveComment: saveComment,
                                               deleteComment: deleteComment,
                                               replyToComment: replyToCommentUnwrapped)
+                    } else {
+                        Spacer()
+                            .frame(height: AppConstants.postAndCommentSpacing)
                     }
                 }
-                .padding(AppConstants.postAndCommentSpacing)
             }
             .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {

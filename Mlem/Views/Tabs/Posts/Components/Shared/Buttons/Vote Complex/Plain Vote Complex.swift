@@ -45,7 +45,7 @@ struct PlainVoteComplex: View {
                         await upvote()
                     }
                 } label: {
-                    DownvoteButtonLabel(vote: vote, size: 16)
+                    DownvoteButtonLabel(vote: vote)
                         .onTapGesture {
                             Task(priority: .userInitiated) {
                                 await downvote()

@@ -10,8 +10,9 @@ import SwiftUI
 
 struct VoteComplex: View {
     // whether to display default or symmetric score
-    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
+    // @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
 
+    let style: VoteComplexStyle
     let vote: ScoringOperation
     let score: Int
     let height: CGFloat
@@ -20,7 +21,7 @@ struct VoteComplex: View {
 
     var body: some View {
         Group {
-            switch voteComplexStyle {
+            switch style {
             case .standard:
                 StandardVoteComplex(vote: vote, score: score, height: height, upvote: upvote, downvote: downvote)
             case .symmetric:

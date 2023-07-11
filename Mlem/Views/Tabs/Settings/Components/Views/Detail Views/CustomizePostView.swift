@@ -18,12 +18,11 @@ struct CustomizePostView: View {
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     
     // interactions and info
-    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
-    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
-    @AppStorage("shouldShowUpvotesInBar") var shouldShowUpvotesInBar: Bool = false
-    @AppStorage("shouldShowTimeInBar") var shouldShowTimeInBar: Bool = true
-    @AppStorage("shouldShowSavedInBar") var shouldShowSavedInBar: Bool = false
-    @AppStorage("shouldShowRepliesInBar") var shouldShowRepliesInBar: Bool = true
+    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
+    @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
+    @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
+    @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
     
     // website previews
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
@@ -60,29 +59,25 @@ struct CustomizePostView: View {
                     SelectableSettingsItem(
                         settingIconSystemName: "arrow.up.arrow.down.square",
                         settingName: "Vote complex style",
-                        currentValue: $voteComplexStyle,
+                        currentValue: $postVoteComplexStyle,
                         options: VoteComplexStyle.allCases
                     )
-                    SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
-                                           settingPictureColor: .pink,
-                                           settingName: "Show vote buttons on right",
-                                           isTicked: $shouldShowVoteComplexOnRight)
                     SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                            settingPictureColor: .pink,
                                            settingName: "Show upvotes in info",
-                                           isTicked: $shouldShowUpvotesInBar)
+                                           isTicked: $shouldShowScoreInPostBar)
                     SwitchableSettingsItem(settingPictureSystemName: "clock",
                                            settingPictureColor: .pink,
                                            settingName: "Show time posted in info",
-                                           isTicked: $shouldShowTimeInBar)
+                                           isTicked: $shouldShowTimeInPostBar)
                     SwitchableSettingsItem(settingPictureSystemName: "bookmark",
                                            settingPictureColor: .pink,
                                            settingName: "Show saved status in info",
-                                           isTicked: $shouldShowSavedInBar)
+                                           isTicked: $shouldShowSavedInPostBar)
                     SwitchableSettingsItem(settingPictureSystemName: "bubble.right",
                                            settingPictureColor: .pink,
                                            settingName: "Show replies in info",
-                                           isTicked: $shouldShowRepliesInBar)
+                                           isTicked: $shouldShowRepliesInPostBar)
                 }
                 
                 Section("Website Previews") {

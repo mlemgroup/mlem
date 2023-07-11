@@ -135,7 +135,7 @@ struct FeedPost: View {
                     }
                     
                     if postSize == .headline {
-                        CompactPost(
+                        HeadlinePost(
                             postView: postView,
                             account: account
                         )

@@ -115,21 +115,25 @@ struct ExpandedPost: View {
      Displays the post itself, plus a little divider to keep it visually distinct from comments
      */
     private var postView: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            HStack {
-                CommunityLinkView(community: post.community)
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
+                HStack {
+                    CommunityLinkView(community: post.community)
+                    
+                    Spacer()
+                    
+                    EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                }
                 
-                Spacer()
+                LargePost(
+                    postView: post,
+                    isExpanded: true
+                )
                 
-                EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
+                UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
             }
-            
-            LargePost(
-                postView: post,
-                isExpanded: true
-            )
-            
-            UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
+            .padding(.top, AppConstants.postAndCommentSpacing)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
             
             PostInteractionBar(postView: post,
                                menuFunctions: genMenuFunctions(),
@@ -138,7 +142,6 @@ struct ExpandedPost: View {
                                deletePost: deletePost,
                                replyToPost: replyToPost)
         }
-        .padding(AppConstants.postAndCommentSpacing)
     }
 
     /**
