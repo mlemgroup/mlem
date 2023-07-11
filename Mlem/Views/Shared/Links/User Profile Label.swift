@@ -45,7 +45,7 @@ struct UserProfileLabel: View {
     }
     
     static let developerNames = [
-        "vlemmy.net/u/darknavi",
+        "lemmy.tespia.org/u/navi",
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
         "vlemmy.net/u/ericbandrews",
