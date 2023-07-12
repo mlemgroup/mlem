@@ -143,7 +143,7 @@ struct HomepageFeedRowView: View {
                 Image(systemName: iconName).resizable()
                     .frame(width: 36, height: 36).foregroundColor(iconColor)
                 VStack(alignment: .leading) {
-                    Text("\(feedType.rawValue) Communities")
+                    Text("\(feedType.label) Communities")
                     Text(description).font(.caption).foregroundColor(.gray)
                 }
             }

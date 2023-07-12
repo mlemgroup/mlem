@@ -156,7 +156,7 @@ struct CommunityView: View {
                     feedTypeMenuItem(for: .all)
                 } label: {
                     HStack(alignment: .center, spacing: 0) {
-                        Text(community?.name ?? feedType.rawValue)
+                        Text(community?.name ?? feedType.label)
                             .font(.headline)
                         if !isInSpecificCommunity {
                             Image(systemName: "chevron.down")
@@ -320,7 +320,7 @@ struct CommunityView: View {
             feedType = setFeedType
         } label: {
             if feedType == setFeedType {
-                Label(setFeedType.label, systemImage: "checkmark")
+                Label(setFeedType.rawValue, systemImage: "checkmark")
             } else {
                 Text(setFeedType.label)
             }
