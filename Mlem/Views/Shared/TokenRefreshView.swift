@@ -14,7 +14,7 @@ struct TokenRefreshView: View {
         case initial
         case refreshing
         case success
-        case incorrectPassword
+        case incorrectLogin
     }
     
     @EnvironmentObject var appState: AppState
@@ -25,7 +25,9 @@ struct TokenRefreshView: View {
     let refreshedAccount: (SavedAccount) -> Void
     
     @State private var password = ""
+    @State private var twoFactorCode = ""
     @State private var viewState: ViewState = .initial
+    @State private var showing2FAAlert = false
     
     var body: some View {
         VStack {
@@ -38,6 +40,10 @@ struct TokenRefreshView: View {
             Spacer()
             cancelButton
         }
+        .alert("2FA Required", isPresented: $showing2FAAlert) {
+            SecureField("Enter 2FA Token", text: $twoFactorCode)
+            Button("OK", action: refreshTokenUsing2FA)
+        }
         .multilineTextAlignment(.center)
         .padding()
         .interactiveDismissDisabled()
@@ -48,7 +54,7 @@ struct TokenRefreshView: View {
     @ViewBuilder
     private var header: some View {
         switch viewState {
-        case .initial, .incorrectPassword:
+        case .initial, .incorrectLogin:
             Image(systemName: "exclamationmark.triangle")
                 .resizable()
                 .foregroundColor(.red)
@@ -72,7 +78,7 @@ struct TokenRefreshView: View {
         let text: String
         
         switch viewState {
-        case .initial, .incorrectPassword:
+        case .initial, .incorrectLogin:
             text = """
         Your current session has expired, you will need to log in to continue.\n
         Please enter the password for\n\(account.username)@\(account.instanceLink.host() ?? "")
@@ -111,8 +117,14 @@ struct TokenRefreshView: View {
                             AppConstants.hapticManager.notificationOccurred(.error)
                             
                             if case let APIClientError.response(apiError, _) = error,
-                               apiError.error == "password_incorrect" {
-                                updateViewState(.incorrectPassword)
+                               apiError.isIncorrectLogin {
+                                updateViewState(.incorrectLogin)
+                                return
+                            }
+                            
+                            if case let APIClientError.response(apiError, _) = error,
+                               apiError.requires2FA {
+                                showing2FAAlert = true
                                 return
                             }
                             
@@ -122,7 +134,7 @@ struct TokenRefreshView: View {
                 }
         }
         
-        if viewState == .incorrectPassword {
+        if viewState == .incorrectLogin {
             Text("The password you entered was incorrect")
                 .font(.footnote)
                 .foregroundColor(.red)
@@ -138,15 +150,28 @@ struct TokenRefreshView: View {
     
     // MARK: - Private methods
     
-    private func refreshToken(with newPassword: String) async throws -> String {
+    private func refreshToken(with newPassword: String, twoFactorToken: String? = nil) async throws -> String {
         let request = LoginRequest(
             instanceURL: account.instanceLink,
             username: account.username,
             password: password,
-            totpToken: nil
+            totpToken: twoFactorToken
         )
         
         return try await APIClient().perform(request: request).jwt
+    }
+    
+    private func refreshTokenUsing2FA() {
+        updateViewState(.refreshing)
+        Task {
+            do {
+                let token = try await refreshToken(with: password, twoFactorToken: twoFactorCode)
+                updateViewState(.success)
+                await didReceive(token)
+            } catch {
+                updateViewState(.initial)
+            }
+        }
     }
     
     private func didReceive(_ newToken: String) async {
@@ -178,7 +203,7 @@ struct TokenRefreshView: View {
         case .refreshing, .success:
             // disable the password field and cancel buttons while calls are in-flight
             return true
-        case .initial, .incorrectPassword:
+        case .initial, .incorrectLogin:
             return false
         }
     }
