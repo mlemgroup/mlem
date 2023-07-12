@@ -41,6 +41,8 @@ struct CommunityView: View {
 
     @State var isDragging: Bool = false
     @State var replyingToPost: APIPostView?
+    
+    private let scrollToTopId = "top"
 
     var isInSpecificCommunity: Bool { community != nil }
     
@@ -51,61 +53,72 @@ struct CommunityView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            ScrollView(showsIndicators: false) {
-                if postTracker.items.isEmpty {
-                    noPostsView
-                } else {
-                    LazyVStack(spacing: 0) {
-                        bannerView
-                        postListView
-                        loadingMorePostsView
-                    }
-                }
-            }
-            .background(Color.secondarySystemBackground)
-            .refreshable {
-                Task(priority: .userInitiated) {
-                    isRefreshing = true
-                    defer { isRefreshing = false }
-                    await refreshFeed()
-                }
-            }
-            .onAppear {
-                Task(priority: .userInitiated) {
+            ScrollViewReader { scrollProxy in
+                ScrollView(showsIndicators: false) {
+                    EmptyView().id(scrollToTopId) // 🙄
                     if postTracker.items.isEmpty {
-                        print("Post tracker is empty")
-                        await loadFeed()
+                        noPostsView
                     } else {
-                        print("Post tracker is not empty")
-                    }
-                }
-                Task(priority: .background) {
-                    if isInSpecificCommunity, let community {
-                        do {
-                            communityDetails = try await loadCommunityDetails(
-                                community: community,
-                                account: appState.currentActiveAccount
-                            )
-                        } catch {
-                            print("Failed while fetching community details: \(error)")
-                            
-                            appState.contextualError = .init(
-                                title: "Could not load community information",
-                                message: "The server might be overloaded.\nTry again later.",
-                                underlyingError: error
-                            )
+                        LazyVStack(spacing: 0) {
+                            bannerView
+                            postListView
+                            loadingMorePostsView
                         }
                     }
                 }
-            }
-            .onChange(of: feedType, perform: { _ in
-                Task(priority: .userInitiated) {
-                    await refreshFeed()
+                .background(Color.secondarySystemBackground)
+                .refreshable {
+                    Task(priority: .userInitiated) {
+                        isRefreshing = true
+                        defer { isRefreshing = false }
+                        await refreshFeed()
+                    }
                 }
-            })
-            .onChange(of: appState.currentActiveAccount) { _ in
-                Task {
-                    await refreshFeed()
+                .onAppear {
+                    Task(priority: .userInitiated) {
+                        if postTracker.items.isEmpty {
+                            print("Post tracker is empty")
+                            await loadFeed()
+                        } else {
+                            print("Post tracker is not empty")
+                        }
+                    }
+                    Task(priority: .background) {
+                        if isInSpecificCommunity, let community {
+                            do {
+                                communityDetails = try await loadCommunityDetails(
+                                    community: community,
+                                    account: appState.currentActiveAccount
+                                )
+                            } catch {
+                                print("Failed while fetching community details: \(error)")
+                                
+                                appState.contextualError = .init(
+                                    title: "Could not load community information",
+                                    message: "The server might be overloaded.\nTry again later.",
+                                    underlyingError: error
+                                )
+                            }
+                        }
+                    }
+                }
+                .onChange(of: feedType) { _ in
+                    Task(priority: .userInitiated) {
+                        await refreshFeed()
+                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
+                    }
+                }
+                .onChange(of: postSortType) { _ in
+                    Task(priority: .userInitiated) {
+                        await refreshFeed()
+                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
+                    }
+                }
+                .onChange(of: appState.currentActiveAccount) { _ in
+                    Task {
+                        await refreshFeed()
+                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
+                    }
                 }
             }
         }
@@ -142,6 +155,8 @@ struct CommunityView: View {
                         .foregroundColor(.primary)
                         .accessibilityElement(children: .combine)
                         .accessibilityHint("Activate to change feeds.")
+                        // this disables the implicit animation on the header view...
+                        .transaction { $0.animation = nil }
                     }
                 }
             }
@@ -154,10 +169,6 @@ struct CommunityView: View {
                     },
                     set: { newValue in
                         self.postSortType = newValue
-                        Task {
-                            print("Selected sorting option: \(newValue), \(newValue.rawValue)")
-                            await refreshFeed()
-                        }
                     }
                 ))
                 
