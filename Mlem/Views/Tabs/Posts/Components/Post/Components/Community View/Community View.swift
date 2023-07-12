@@ -142,6 +142,8 @@ struct CommunityView: View {
                         .foregroundColor(.primary)
                         .accessibilityElement(children: .combine)
                         .accessibilityHint("Activate to change feeds.")
+                        // this disables the implicit animation on the header view...
+                        .transaction { $0.animation = nil }
                     }
                 }
             }
