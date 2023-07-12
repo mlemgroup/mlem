@@ -103,6 +103,11 @@ struct CommunityView: View {
                     await refreshFeed()
                 }
             })
+            .onChange(of: appState.currentActiveAccount) { _ in
+                Task {
+                    await refreshFeed()
+                }
+            }
         }
         .sheet(item: $replyingToPost) { post in
             GeneralCommentComposerView(
