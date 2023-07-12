@@ -44,15 +44,15 @@ extension InboxView {
     func mentionsListView() -> some View {
         ForEach(mentionsTracker.items) { mention in
             VStack(spacing: 0) {
-                inboxMentionViewWithInteraction(account: account, mention: mention)
+                inboxMentionViewWithInteraction(mention: mention)
                 Divider()
             }
         }
     }
     
-    func inboxMentionViewWithInteraction(account: SavedAccount, mention: APIPersonMentionView) -> some View {
+    func inboxMentionViewWithInteraction(mention: APIPersonMentionView) -> some View {
         NavigationLink(value: LazyLoadPostLinkWithContext(post: mention.post, postTracker: dummyPostTracker)) {
-            InboxMentionView(account: account, mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
+            InboxMentionView(mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
                 .padding(.vertical, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal)
                 .background(Color.systemBackground)

@@ -6,10 +6,18 @@
 //
 
 import Foundation
+import SwiftUI
 
 class SavedAccountTracker: ObservableObject {
+    
+    @AppStorage("defaultAccountId") var defaultAccountId: Int?
+    
     @Published var savedAccounts: [SavedAccount]
 
+    var defaultAccount: SavedAccount? {
+        savedAccounts.first(where: { $0.id == defaultAccountId })
+    }
+    
     init() {
         _savedAccounts = .init(wrappedValue: SavedAccountTracker.loadAccounts())
     }

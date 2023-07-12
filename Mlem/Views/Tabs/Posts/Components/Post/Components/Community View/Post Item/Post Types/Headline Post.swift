@@ -9,11 +9,12 @@ import CachedAsyncImage
 import Foundation
 import SwiftUI
 
-struct CompactPost: View {
+struct HeadlinePost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
-    @AppStorage("shouldShowCompactPostThumbnails") var shouldShowCompactPostThumbnails: Bool = true
+    @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
+    @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
 
     // constants
     let thumbnailSize: CGFloat = 60
@@ -21,7 +22,6 @@ struct CompactPost: View {
 
     // arguments
     let postView: APIPostView
-    let account: SavedAccount
 
     // computed
     var usernameColor: Color {
@@ -40,7 +40,7 @@ struct CompactPost: View {
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack(alignment: .top, spacing: spacing) {
-                if shouldShowCompactPostThumbnails {
+                if shouldShowPostThumbnails && !thumbnailsOnRight {
                     thumbnailImage
                 }
 
@@ -54,7 +54,6 @@ struct CompactPost: View {
                         
                         Text(postView.post.name)
                             .font(.headline)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                             .padding(.trailing)
                         
                         Spacer()
@@ -64,7 +63,10 @@ struct CompactPost: View {
                         }
                     }
                 }
-
+                
+                if shouldShowPostThumbnails && thumbnailsOnRight {
+                    thumbnailImage
+                }
             }
         }
     }

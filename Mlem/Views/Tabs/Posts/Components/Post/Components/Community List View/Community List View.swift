@@ -16,8 +16,6 @@ struct CommunitySection: Identifiable {
 }
 
 struct CommunityListView: View {
-    let account: SavedAccount
-
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
     @Environment(\.openURL) var openURL
@@ -37,12 +35,9 @@ struct CommunityListView: View {
 
     @Binding var selectedCommunity: CommunityLinkWithContext?
 
-    init(account: SavedAccount,
-         testCommunities: [APICommunity]? = nil,
+    init(testCommunities: [APICommunity]? = nil,
          selectedCommunity: Binding<CommunityLinkWithContext?>
     ) {
-        self.account = account
-
         if testCommunities != nil {
             self._subscribedCommunities = State(initialValue: testCommunities!)
             self.hasTestCommunities = true
@@ -56,7 +51,6 @@ struct CommunityListView: View {
                 HStack {
                     List(selection: $selectedCommunity) {
                         HomepageFeedRowView(
-                            account: account,
                             feedType: .subscribed,
                             iconName: "house.circle.fill",
                             iconColor: .red,
@@ -64,14 +58,12 @@ struct CommunityListView: View {
                         )
                             .id("top") // For "scroll to top" sidebar item
                         HomepageFeedRowView(
-                            account: account,
                             feedType: .local,
                             iconName: "building.2.crop.circle.fill",
                             iconColor: .green,
                             description: "Local communities from your server"
                         )
                         HomepageFeedRowView(
-                            account: account,
                             feedType: .all,
                             iconName: "cloud.circle.fill",
                             iconColor: .blue,
@@ -89,7 +81,6 @@ struct CommunityListView: View {
                                     id: \.id
                                 ) { listedCommunity in
                                     CommuntiyFeedRowView(
-                                        account: account,
                                         community: listedCommunity,
                                         subscribed: subscribedCommunities.contains(listedCommunity),
                                         communitySubscriptionChanged: self.hydrateCommunityData
@@ -133,7 +124,7 @@ struct CommunityListView: View {
                 CommunitySection(
                     viewId: "favorites",
                     sidebarEntry: FavoritesSidebarEntry(
-                        account: account,
+                        account: appState.currentActiveAccount,
                         favoritesTracker: favoritedCommunitiesTracker,
                         sidebarLabel: nil,
                         sidebarIcon: "star.fill"
@@ -174,7 +165,7 @@ struct CommunityListView: View {
             var communitiesPage = 1
             repeat {
                 let request = ListCommunitiesRequest(
-                    account: account,
+                    account: appState.currentActiveAccount,
                     sort: nil,
                     page: communitiesPage,
                     limit: communitiesRequestCount,
@@ -379,10 +370,8 @@ struct CommunityListViewPreview: PreviewProvider {
         generateFakeFavoritedCommunity(id: 20, namePrefix: fakeCommunityPrefixes[20]),
         generateFakeFavoritedCommunity(id: 10, namePrefix: fakeCommunityPrefixes[10])
     ])
-    static let savedAccount = SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account")
     static var previews: some View {
         CommunityListView(
-            account: savedAccount,
             testCommunities: fakeCommunityPrefixes.enumerated().map({ index, element in
                 generateFakeCommunity(id: index, namePrefix: element)
             }),

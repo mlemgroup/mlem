@@ -19,7 +19,7 @@ struct AppConstants {
     static let dateComponentsFormatter: DateComponentsFormatter = DateComponentsFormatter()
 
     // MARK: - Keychain
-    static let keychain: Keychain = Keychain(service: "com.davidbures.Mlem-keychain")
+    static let keychain: Keychain = Keychain(service: "com.hanners.Mlem-keychain")
 
     // MARK: - Files
     private static let applicationSupportDirectoryPath = {
@@ -68,6 +68,10 @@ struct AppConstants {
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
     static let smallItemCornerRadius: CGFloat = 4 // buttons, tags, compact thumbnails
     static let iconToTextSpacing: CGFloat = 2 // spacing between icons and text in info components
+    // NOTE: barIconHitbox = (barIconSize + 2 * barIconPadding) + (2 * postAndCommentSpacing)
+    static let barIconSize: CGFloat = 15.5 // square size of a bar button
+    static let barIconPadding: CGFloat = 4.25 // padding for bar button
+    static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
     
     // MARK: - SFSymbols
     // votes
@@ -77,6 +81,10 @@ struct AppConstants {
     static let fullDownvoteSymbolName: String = "arrow.down.square.fill"
     static let emptyResetVoteSymbolName: String = "minus.square"
     static let fullResetVoteSymbolName: String = "minus.square.fill"
+    static let scoringOpToVoteImage: [ScoringOperation?: String] = [.upvote: "arrow.up.square.fill",
+                                                                   .resetVote: "arrow.up.square",
+                                                                   .downvote: "arrow.down.square.fill"
+    ]
     
     // reply
     static let emptyReplySymbolName: String = "arrowshape.turn.up.left"

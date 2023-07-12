@@ -5,7 +5,6 @@
 //  Created by Jake Shirley on 6/30/23.
 //
 
-import CachedAsyncImage
 import SwiftUI
 
 /*
@@ -13,7 +12,6 @@ import SwiftUI
  */
 struct UserModeratorView: View {
     // parameters
-    let account: SavedAccount
     var userDetails: APIPersonView
     var moderatedCommunities: [APICommunityModeratorView]
     

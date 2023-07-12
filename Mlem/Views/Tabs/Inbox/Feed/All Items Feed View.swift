@@ -44,11 +44,11 @@ extension InboxView {
                 Group {
                     switch item.type {
                     case .mention(let mention):
-                        inboxMentionViewWithInteraction(account: account, mention: mention)
+                        inboxMentionViewWithInteraction(mention: mention)
                     case .message(let message):
                         inboxMessageViewWithInteraction(message: message)
                     case .reply(let reply):
-                        inboxReplyViewWithInteraction(account: account, reply: reply)
+                        inboxReplyViewWithInteraction(reply: reply)
                     }
                 }
                 

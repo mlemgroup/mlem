@@ -7,17 +7,20 @@
 
 import SwiftUI
 
-struct UpvoteButton: View {
+struct UpvoteButtonLabel: View {
     let vote: ScoringOperation
-    let size: CGFloat
 
     var body: some View {
         Image(systemName: "arrow.up")
-            // .padding(4)
-            .frame(width: size, height: size)
+            .resizable()
+            .scaledToFit()
+            .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+            .padding(AppConstants.barIconPadding)
             .foregroundColor(vote == .upvote ? .white : .primary)
             .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
+            .padding(AppConstants.postAndCommentSpacing)
+            .contentShape(Rectangle())
     }
 }

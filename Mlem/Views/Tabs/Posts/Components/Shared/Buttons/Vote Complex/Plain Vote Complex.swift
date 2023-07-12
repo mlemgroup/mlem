@@ -1,15 +1,14 @@
 //
-//  Symmetric Vote Complex.swift
+//  Plain Vote Compoex.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2023-06-13.
+//  Created by Eric Andrews on 2023-07-10.
 //
 
 import Foundation
 import SwiftUI
 
-struct SymmetricVoteComplex: View {
-    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
+struct PlainVoteComplex: View {
     
     @EnvironmentObject var appState: AppState
     
@@ -30,7 +29,7 @@ struct SymmetricVoteComplex: View {
     }
 
     var body: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 0) {
             Button {
                 Task(priority: .userInitiated) {
                     await upvote()
@@ -38,11 +37,6 @@ struct SymmetricVoteComplex: View {
             } label: {
                 UpvoteButtonLabel(vote: vote)
             }
-            // squish it towards the score
-            .offset(x: AppConstants.postAndCommentSpacing)
-            
-            Text(String(score))
-                .foregroundColor(scoreColor)
             
             if appState.enableDownvote {
                 Button {
@@ -57,11 +51,7 @@ struct SymmetricVoteComplex: View {
                             }
                         }
                 }
-                // squish it towards the score
-                .offset(x: -AppConstants.postAndCommentSpacing)
             }
         }
-        // undo score squishing weirdness
-        .offset(x: (shouldShowVoteComplexOnRight ? 1 : -1) * (AppConstants.postAndCommentSpacing + 6))
     }
 }

@@ -31,9 +31,6 @@ struct InboxView: View {
     // MARK: Global
     @EnvironmentObject var appState: AppState
     
-    // MARK: Parameters
-    let account: SavedAccount
-    
     // MARK: Internal
     // id of the last account loaded with
     @State var lastKnownAccountId: Int = 0
@@ -112,18 +109,17 @@ struct InboxView: View {
             case .commentReply(let commentReplyingTo):
                 if let commentReply = commentReplyingTo {
                     let replyTo = ReplyToCommentReply(commentReply: commentReply,
-                                                      account: account,
                                                       appState: appState)
                     GeneralCommentComposerView(replyTo: replyTo)
                 }
             case .mention(let mentionReplyingTo):
                 if let mentionReply = mentionReplyingTo {
-                    let replyTo = ReplyToMention(mention: mentionReply, account: account, appState: appState)
+                    let replyTo = ReplyToMention(mention: mentionReply, appState: appState)
                     GeneralCommentComposerView(replyTo: replyTo)
                 }
             case .message(let personReplyingTo):
                 if let recipient = personReplyingTo {
-                    MessageComposerView(account: account, recipient: recipient)
+                    MessageComposerView(recipient: recipient)
                         .presentationDetents([.medium, .large])
                 }
             }
@@ -134,13 +130,13 @@ struct InboxView: View {
             if mentionsTracker.items.isEmpty ||
                 messagesTracker.items.isEmpty ||
                 repliesTracker.items.isEmpty  ||
-                lastKnownAccountId != account.id {
+                lastKnownAccountId != appState.currentActiveAccount.id {
                 print("Inbox tracker is empty")
                 await refreshFeed()
             } else {
                 print("Inbox tracker is not empty")
             }
-            lastKnownAccountId = account.id
+            lastKnownAccountId = appState.currentActiveAccount.id
         }
     }
     

@@ -39,7 +39,6 @@ struct CommentItem: View {
 
     // MARK: Parameters
 
-    let account: SavedAccount
     let hierarchicalComment: HierarchicalComment
     let postContext: APIPostView? // TODO: redundant with comment.post?
     let depth: Int
@@ -54,8 +53,7 @@ struct CommentItem: View {
     // MARK: Computed
 
     // init needed to get dirty and clean aligned
-    init(account: SavedAccount,
-         hierarchicalComment: HierarchicalComment,
+    init(hierarchicalComment: HierarchicalComment,
          postContext: APIPostView?,
          depth: Int,
          showPostContext: Bool,
@@ -65,7 +63,6 @@ struct CommentItem: View {
          enableSwipeActions: Bool = true,
          replyToComment: ((APICommentView) -> Void)?
     ) {
-        self.account = account
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
         self.depth = depth
@@ -95,17 +92,17 @@ struct CommentItem: View {
     var body: some View {
         VStack(spacing: 0) {
             Group {
-                VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-                    // commentBody
+                VStack(alignment: .leading, spacing: 0) {
                     CommentBodyView(commentView: hierarchicalComment.commentView,
                                     isCollapsed: isCollapsed,
                                     showPostContext: showPostContext,
                                     showCommentCreator: showCommentCreator,
                                     menuFunctions: genMenuFunctions())
+                    .padding(.top, AppConstants.postAndCommentSpacing)
+                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
 
                     if showInteractionBar {
                         CommentInteractionBar(commentView: hierarchicalComment.commentView,
-                                              account: account,
                                               displayedScore: displayedScore,
                                               displayedVote: displayedVote,
                                               displayedSaved: displayedSaved,
@@ -114,9 +111,11 @@ struct CommentItem: View {
                                               saveComment: saveComment,
                                               deleteComment: deleteComment,
                                               replyToComment: replyToCommentUnwrapped)
+                    } else {
+                        Spacer()
+                            .frame(height: AppConstants.postAndCommentSpacing)
                     }
                 }
-                .padding(AppConstants.postAndCommentSpacing)
             }
             .contentShape(Rectangle()) // allow taps in blank space to register
             .onTapGesture {
@@ -146,7 +145,7 @@ struct CommentItem: View {
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             .sheet(isPresented: $isComposingReport) {
-                ReportComposerView(account: account, reportedPost: nil, reportedComment: hierarchicalComment.commentView)
+                ReportComposerView(reportedPost: nil, reportedComment: hierarchicalComment.commentView)
             }
             
             Divider()
@@ -198,7 +197,6 @@ struct CommentItem: View {
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
                     CommentItem(
-                        account: account,
                         hierarchicalComment: child,
                         postContext: postContext,
                         depth: depth + 1,

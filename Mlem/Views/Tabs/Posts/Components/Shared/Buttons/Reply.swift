@@ -32,14 +32,22 @@ struct ReplyButton: View {
     // MARK: Body
 
     var body: some View {
-        HStack(spacing: 2) { // TODO: app constants
+        Button {
+            replyCallback()
+        } label: {
             Image(systemName: replyIcon)
-            Text(String(replyCount))
+                .resizable()
+                .scaledToFit()
+                .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+                .padding(AppConstants.barIconPadding) // this double padding looks funky but it's for consistency w/ other buttons
+                .padding(AppConstants.postAndCommentSpacing)
+                .contentShape(Rectangle())
+                .fontWeight(.medium) // makes it look a little nicer
         }
-        .accessibilityElement(children: .ignore)
         .accessibilityLabel(replyButtonText)
-        .accessibilityAction(named: replyButtonText) { replyCallback() }
-        .onTapGesture { replyCallback() }
+        .accessibilityAction(.default) { replyCallback() }
+        .frame(width: AppConstants.barIconHitbox, height: AppConstants.barIconHitbox)
+        .buttonStyle(.plain)
     }
     
     // MARK: Helpers

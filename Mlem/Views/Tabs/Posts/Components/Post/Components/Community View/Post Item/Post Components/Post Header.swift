@@ -15,7 +15,6 @@ struct PostHeader: View {
     
     // parameters
     var postView: APIPostView
-    var account: SavedAccount
 
     // constants
     private let communityIconSize: CGFloat = 32

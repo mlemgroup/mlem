@@ -13,7 +13,6 @@ struct InboxReplyView: View {
     let spacing: CGFloat = 10
     let userAvatarWidth: CGFloat = 30
     
-    let account: SavedAccount
     let reply: APICommentReplyView
     let menuFunctions: [MenuFunction]
     
@@ -22,8 +21,7 @@ struct InboxReplyView: View {
     
     var iconName: String { reply.commentReply.read ? "arrowshape.turn.up.right" : "arrowshape.turn.up.right.fill" }
     
-    init(account: SavedAccount, reply: APICommentReplyView, menuFunctions: [MenuFunction]) {
-        self.account = account
+    init(reply: APICommentReplyView, menuFunctions: [MenuFunction]) {
         self.reply = reply
         self.menuFunctions = menuFunctions
         

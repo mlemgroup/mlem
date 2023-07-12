@@ -228,9 +228,11 @@ struct AddSavedInstanceView: View {
             message = "Please check your username and password"
         case APIClientError.networking:
             message = "Please check your internet connection and try again"
-        case APIClientError.response(let errorResponse, _) where errorResponse.error == "missing_totp_token":
+        case APIClientError.response(let errorResponse, _) where errorResponse.requires2FA:
             message = ""
             isShowingTwoFactorText = true
+        case APIClientError.response(let errorResponse, _) where errorResponse.isIncorrectLogin:
+            message = "Please check your username and password"
         default:
             // unhandled error encountered...
             message = "Something went wrong"

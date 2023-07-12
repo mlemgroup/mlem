@@ -13,6 +13,8 @@ struct UltraCompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
+    @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
 
     // constants
     let thumbnailSize: CGFloat = 60
@@ -20,7 +22,6 @@ struct UltraCompactPost: View {
     
     // arguments
     let postView: APIPostView
-    let account: SavedAccount
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
@@ -29,9 +30,8 @@ struct UltraCompactPost: View {
     let voteIconName: String
     var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
 
-    init(postView: APIPostView, account: SavedAccount, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
-        self.account = account
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
         
@@ -50,7 +50,9 @@ struct UltraCompactPost: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
-            thumbnailImage
+            if shouldShowPostThumbnails && !thumbnailsOnRight {
+                thumbnailImage
+            }
             
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
@@ -71,8 +73,12 @@ struct UltraCompactPost: View {
                 
                 Text(postView.post.name)
                     .font(.subheadline)
-                
+    
                 compactInfo
+            }
+            
+            if shouldShowPostThumbnails && thumbnailsOnRight {
+                thumbnailImage
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -131,23 +137,11 @@ struct UltraCompactPost: View {
                 NSFWTag(compact: true)
             }
             
-            HStack(spacing: 2) {
-                Image(systemName: voteIconName)
-                Text(postView.counts.score.description)
-            }
-            .foregroundColor(voteColor)
-            .accessibilityElement(children: .combine)
-            
-            TimestampView(date: postView.post.published, spacing: 2)
-            
-            Image(systemName: "bookmark")
-                .foregroundColor(postView.saved ? .saveColor : .secondary)
-            
-            HStack(spacing: 2) {
-                Image(systemName: "bubble.right")
-                Text(postView.counts.comments.description)
-            }
-            .accessibilityElement(children: .combine)
+            InfoStack(score: postView.counts.score,
+                      myVote: postView.myVote ?? .resetVote,
+                      published: postView.published,
+                      commentCount: postView.counts.comments,
+                      saved: postView.saved)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .font(.footnote)

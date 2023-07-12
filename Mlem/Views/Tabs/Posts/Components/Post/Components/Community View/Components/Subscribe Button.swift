@@ -7,17 +7,11 @@
 
 import SwiftUI
 
-internal enum CommandError: Error {
-    case receivedUnexpectedResponseFromServer
-}
-
 struct SubscribeButton: View {
     @EnvironmentObject var appState: AppState
 
     @Binding var communityDetails: APICommunityView?
-
-    @State var account: SavedAccount
-
+    
     var body: some View {
         if let communityDetails {
             if communityDetails.subscribed == .notSubscribed {
@@ -49,7 +43,7 @@ struct SubscribeButton: View {
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         do {
             let request = FollowCommunityRequest(
-                account: account,
+                account: appState.currentActiveAccount,
                 communityId: communityId,
                 follow: shouldSubscribe
             )

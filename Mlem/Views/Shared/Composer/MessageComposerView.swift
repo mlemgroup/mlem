@@ -13,7 +13,6 @@ struct MessageComposerView: View {
     @EnvironmentObject var appState: AppState
     
     // MARK: Parameters
-    let account: SavedAccount
     let recipient: APIPerson
     
     // MARK: State and other
@@ -90,7 +89,12 @@ struct MessageComposerView: View {
         do {
             isSubmitting = true
             
-            try await sendPrivateMessage(content: messageBody, recipient: recipient, account: account, appState: appState)
+            try await sendPrivateMessage(
+                content: messageBody,
+                recipient: recipient,
+                account: appState.currentActiveAccount,
+                appState: appState
+            )
             
             print("Post Successful")
             

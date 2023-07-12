@@ -35,7 +35,6 @@ struct SelectableSettingsItem<T: SettingsOptions>: View {
         Picker(selection: $currentValue) {
             ForEach(options) { settingsOption in
                 HStack {
-                    // settingsOption.icon
                     Text(String(settingsOption.label))
                 }
             }

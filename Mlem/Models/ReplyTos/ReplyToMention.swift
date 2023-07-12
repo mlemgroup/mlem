@@ -10,12 +10,10 @@ import SwiftUI
 
 struct ReplyToMention: ReplyTo {
     let mention: APIPersonMentionView
-    let account: SavedAccount
     let appState: AppState
     
     func embeddedView() -> AnyView {
-        return AnyView(InboxMentionView(account: account,
-                                        mention: mention,
+        return AnyView(InboxMentionView(mention: mention,
                                         menuFunctions: [])
             .padding(.horizontal))
     }
@@ -24,7 +22,7 @@ struct ReplyToMention: ReplyTo {
         try await postCommentWithoutTracker(postId: mention.post.id,
                                             commentId: mention.comment.id,
                                             commentContents: commentContents,
-                                            account: account,
+                                            account: appState.currentActiveAccount,
                                             appState: appState)
     }
 }

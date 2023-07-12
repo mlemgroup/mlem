@@ -12,14 +12,13 @@ struct AccountsPage: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
-    @Binding var isShowingInstanceAdditionSheet: Bool
-
-    @State var selection: Int?
-
+    @State private var isShowingInstanceAdditionSheet: Bool = false
+    @Binding var selectedAccount: SavedAccount?
+    
     var body: some View {
         VStack {
             if !accountsTracker.savedAccounts.isEmpty {
-                List(selection: $appState.currentActiveAccount) {
+                List(selection: $selectedAccount) {
                     ForEach(accountsTracker.savedAccounts, id: \.self) { savedAccount in
                         HStack(alignment: .center) {
                             Text(savedAccount.username)
@@ -42,11 +41,14 @@ struct AccountsPage: View {
                 .foregroundColor(.secondary)
             }
         }
+        .sheet(isPresented: $isShowingInstanceAdditionSheet) {
+            AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet)
+        }
         .navigationTitle("Accounts")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    isShowingInstanceAdditionSheet.toggle()
+                    isShowingInstanceAdditionSheet = true
                 } label: {
                     Image(systemName: "plus")
                 }

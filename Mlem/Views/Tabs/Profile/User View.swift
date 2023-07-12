@@ -14,7 +14,6 @@ import SwiftUI
 /// View for showing user profiles
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
-/// - **account**: Authenticated account to make the requests
 struct UserView: View {
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
@@ -24,7 +23,6 @@ struct UserView: View {
     
     // parameters
     @State var userID: Int
-    @State var account: SavedAccount
     @State var userDetails: APIPersonView?
 
     @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
@@ -149,7 +147,7 @@ struct UserView: View {
     }
     
     private func isShowingOwnProfile() -> Bool {
-        return userID == account.id
+        return userID == appState.currentActiveAccount.id
     }
     
     @ViewBuilder
@@ -337,8 +335,8 @@ struct UserView: View {
     
     private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
         let request = try GetPersonDetailsRequest(
-            accessToken: account.accessToken,
-            instanceURL: account.instanceLink,
+            accessToken: appState.currentActiveAccount.accessToken,
+            instanceURL: appState.currentActiveAccount.instanceLink,
             limit: 20, // TODO: Stream pages
             savedOnly: savedItems,
             personId: userID
@@ -360,13 +358,16 @@ struct UserView: View {
      */
     private func postEntry(for post: APIPostView) -> some View {
         NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
-            FeedPost(postView: post,
-                     account: account,
-                     showPostCreator: false,
-                     showCommunity: true,
-                     isDragging: $isDragging,
-                     replyToPost: nil
-            )
+            VStack(spacing: 0) {
+                FeedPost(postView: post,
+                         showPostCreator: false,
+                         showCommunity: true,
+                         isDragging: $isDragging,
+                         replyToPost: nil
+                )
+                
+                Divider()
+            }
         }
         .buttonStyle(.plain)
     }
@@ -375,16 +376,19 @@ struct UserView: View {
      User comment
      */
     private func commentEntry(for comment: HierarchicalComment) -> some View {
-        CommentItem(
-            account: account,
-            hierarchicalComment: comment,
-            postContext: nil,
-            depth: 0,
-            showPostContext: true,
-            showCommentCreator: false,
-            isDragging: $isDragging,
-            replyToComment: nil
-        )
+        VStack(spacing: 0) {
+            CommentItem(
+                hierarchicalComment: comment,
+                postContext: nil,
+                depth: 0,
+                showPostContext: true,
+                showCommentCreator: false,
+                isDragging: $isDragging,
+                replyToComment: nil
+            )
+            
+            Divider()
+        }
     }
 }
 
@@ -557,7 +561,6 @@ struct UserViewPreview: PreviewProvider {
     static var previews: some View {
         UserView(
             userID: 123,
-            account: previewAccount,
             userDetails: APIPersonView(
                 person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .normal),
                 counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)

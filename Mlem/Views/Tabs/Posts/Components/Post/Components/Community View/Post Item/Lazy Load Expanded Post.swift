@@ -15,7 +15,6 @@ struct LazyLoadExpandedPost: View {
     
     @EnvironmentObject var appState: AppState
     
-    @State var account: SavedAccount
     @State var post: APIPost
     
     @State private var loadedPostView: APIPostView?
@@ -25,7 +24,7 @@ struct LazyLoadExpandedPost: View {
     var body: some View {
         Group {
             if let loadedPost = loadedPostView {
-                ExpandedPost(account: account, post: loadedPost)
+                ExpandedPost(post: loadedPost)
                     .environmentObject(postTracker)
             } else {
                 progressView
@@ -38,7 +37,7 @@ struct LazyLoadExpandedPost: View {
             Text("Loading post details…")
         }
         .task(priority: .background) {
-            let request = GetPostRequest(account: account, id: post.id, commentId: nil)
+            let request = GetPostRequest(account: appState.currentActiveAccount, id: post.id, commentId: nil)
             do {
                 let response = try await APIClient().perform(request: request)
                 postTracker.add([response.postView])

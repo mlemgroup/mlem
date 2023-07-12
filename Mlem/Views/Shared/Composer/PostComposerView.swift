@@ -58,11 +58,6 @@ struct PostComposerView: View {
     
     func submitPost() async {
         do {
-            guard let account = appState.currentActiveAccount else {
-                print("Cannot Submit, No Active Account")
-                return
-            }
-            
             guard postTitle.trimmed.isNotEmpty else {
                 errorDialogMessage = "You need to enter a title for your post."
                 isShowingErrorDialog = true
@@ -83,7 +78,7 @@ struct PostComposerView: View {
                                postURL: postURL.trimmed,
                                postIsNSFW: isNSFW,
                                postTracker: postTracker,
-                               account: account)
+                               account: appState.currentActiveAccount)
             
             print("Post Successful")
             

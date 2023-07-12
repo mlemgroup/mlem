@@ -8,7 +8,7 @@
 import Foundation
 
 enum VoteComplexStyle: String, CaseIterable, Identifiable, SettingsOptions {
-    case standard, symmetric
+    case standard, symmetric, plain
 
     var id: Self { self }
 
