@@ -111,19 +111,33 @@ struct CommunityView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Menu {
-                    feedTypeMenuItem(for: .subscribed)
-                    feedTypeMenuItem(for: .local)
-                    feedTypeMenuItem(for: .all)
-                } label: {
-                    HStack(alignment: .center, spacing: 0) {
-                        Text(community?.name ?? feedType.rawValue)
-                            .font(.headline)
-                        if !isInSpecificCommunity {
+                if let community = community {
+                    NavigationLink(value:
+                                    CommunitySidebarLinkWithContext(
+                                        community: community,
+                                        communityDetails: communityDetails
+                                    )) {
+                                        Text(community.name)
+                                            .font(.headline)
+                                            .foregroundColor(.primary)
+                                            .accessibilityHint("Activate to view sidebar.")
+                                    }
+                } else {
+                    Menu {
+                        feedTypeMenuItem(for: .subscribed)
+                        feedTypeMenuItem(for: .local)
+                        feedTypeMenuItem(for: .all)
+                    } label: {
+                        HStack(alignment: .center, spacing: 0) {
+                            Text(feedType.rawValue)
+                                .font(.headline)
                             Image(systemName: "chevron.down")
                                 .scaleEffect(0.7)
                         }
-                    }.foregroundColor(.primary)
+                        .foregroundColor(.primary)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityHint("Activate to change feeds.")
+                    }
                 }
             }
         }
