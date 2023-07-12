@@ -35,8 +35,6 @@ class APIClient {
         
         let urlRequest = try urlRequest(from: request)
         
-        print(urlRequest)
-        
         let (data, response) = try await execute(urlRequest)
         
         if let response = response as? HTTPURLResponse {

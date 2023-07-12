@@ -9,13 +9,9 @@ import Foundation
 import SwiftUI
 
 struct VoteComplex: View {
-    // whether to display default or symmetric score
-    // @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
-
     let style: VoteComplexStyle
     let vote: ScoringOperation
     let score: Int
-    let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
 
@@ -23,11 +19,11 @@ struct VoteComplex: View {
         Group {
             switch style {
             case .standard:
-                StandardVoteComplex(vote: vote, score: score, height: height, upvote: upvote, downvote: downvote)
+                StandardVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
             case .symmetric:
-                SymmetricVoteComplex(vote: vote, score: score, height: height, upvote: upvote, downvote: downvote)
+                SymmetricVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
             case .plain:
-                PlainVoteComplex(vote: vote, score: score, height: height, upvote: upvote, downvote: downvote)
+                PlainVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
             }
         }
         .accessibilityElement(children: .ignore)

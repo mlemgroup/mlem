@@ -14,7 +14,6 @@ struct PlainVoteComplex: View {
     
     let vote: ScoringOperation
     let score: Int
-    let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
 
@@ -54,6 +53,5 @@ struct PlainVoteComplex: View {
                 }
             }
         }
-        .frame(height: height)
     }
 }

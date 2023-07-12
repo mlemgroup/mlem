@@ -51,7 +51,6 @@ struct CommentInteractionBar: View {
                     VoteComplex(style: commentVoteComplexStyle,
                                 vote: displayedVote,
                                 score: displayedScore,
-                                height: height,
                                 upvote: upvote,
                                 downvote: downvote)
                         .padding(.trailing, 8)
@@ -72,7 +71,6 @@ struct CommentInteractionBar: View {
                     VoteComplex(style: commentVoteComplexStyle,
                                 vote: displayedVote,
                                 score: displayedScore,
-                                height: height,
                                 upvote: upvote,
                                 downvote: downvote)
                         .padding(.trailing, 8)

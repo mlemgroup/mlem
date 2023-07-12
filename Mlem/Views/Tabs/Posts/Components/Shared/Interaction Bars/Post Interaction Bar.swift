@@ -23,12 +23,6 @@ struct PostInteractionBar: View {
     
     @EnvironmentObject var postTracker: PostTracker
 
-    // constants
-    let iconPadding: CGFloat = 4
-    let iconCorner: CGFloat = 2
-    let scoreItemWidth: CGFloat = 12
-    let height: CGFloat = 24 // DO NOT CHANGE PLS
-
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation
     @State var dirtyScore: Int
@@ -70,13 +64,11 @@ struct PostInteractionBar: View {
 
     var body: some View {
         ZStack {
-            // HStack(spacing: 12) {
             HStack(spacing: 0) {
                 if !shouldShowVoteComplexOnRight {
                     VoteComplex(style: postVoteComplexStyle,
                                 vote: displayedVote,
                                 score: displayedScore,
-                                height: height,
                                 upvote: upvote,
                                 downvote: downvote)
                         .padding(.trailing, 8)
@@ -96,7 +88,6 @@ struct PostInteractionBar: View {
                     VoteComplex(style: postVoteComplexStyle,
                                 vote: displayedVote,
                                 score: displayedScore,
-                                height: height,
                                 upvote: upvote,
                                 downvote: downvote)
                         .padding(.trailing, 8)

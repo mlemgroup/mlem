@@ -15,7 +15,6 @@ struct SymmetricVoteComplex: View {
     
     let vote: ScoringOperation
     let score: Int
-    let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
 
@@ -64,6 +63,5 @@ struct SymmetricVoteComplex: View {
         }
         // undo score squishing weirdness
         .offset(x: (shouldShowVoteComplexOnRight ? 1 : -1) * (AppConstants.postAndCommentSpacing + 6))
-        .frame(height: height)
     }
 }

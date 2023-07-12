@@ -15,7 +15,6 @@ struct StandardVoteComplex: View {
     // parameters
     let vote: ScoringOperation
     let score: Int
-    let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
 
@@ -31,14 +30,13 @@ struct StandardVoteComplex: View {
                     Text(String(score))
                 }
                 // custom set because grouping image and text makes height do bad things
-                .frame(height: height)
+                .frame(height: AppConstants.barIconSize + 2 * AppConstants.barIconPadding)
                 .padding(.horizontal, 4) // for the background to look right
                 .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                     .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
                 .foregroundColor(vote == .upvote ? .white : .primary)
                 .padding(.leading, AppConstants.postAndCommentSpacing - 4) // offset, undo background padding
             }
-            .frame(height: height)
             
             if appState.enableDownvote {
                 Button {
@@ -48,7 +46,6 @@ struct StandardVoteComplex: View {
                 } label: {
                     DownvoteButtonLabel(vote: vote)
                 }
-                .frame(height: height)
                 .padding(.leading, -6) // clusters a little tighter
             }
         }

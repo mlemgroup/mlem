@@ -70,8 +70,6 @@ struct FeedPost: View {
         VStack(spacing: 0) {
             postItem
                 .background(Color.systemBackground)
-                // .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
-                // .padding(.all, horizontalSizeClass == .regular ? nil : 0)
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
                         Button {
@@ -88,10 +86,6 @@ struct FeedPost: View {
                     primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
                     secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
                 )
-
-//            if horizontalSizeClass == .compact {
-//                Divider()
-//            }
         }
         .sheet(isPresented: $isComposingReport) {
             ReportComposerView(reportedPost: postView)

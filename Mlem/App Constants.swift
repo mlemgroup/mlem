@@ -70,7 +70,7 @@ struct AppConstants {
     static let iconToTextSpacing: CGFloat = 2 // spacing between icons and text in info components
     // NOTE: barIconHitbox = (barIconSize + 2 * barIconPadding) + (2 * postAndCommentSpacing)
     static let barIconSize: CGFloat = 15.5 // square size of a bar button
-    static let barIconPadding: CGFloat = 5 // padding for bar button
+    static let barIconPadding: CGFloat = 4.25 // padding for bar button
     static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
     
     // MARK: - SFSymbols
