@@ -30,6 +30,7 @@ class AppState: ObservableObject {
     init(defaultAccount: SavedAccount, selectedAccount: Binding<SavedAccount?>) {
         _selectedAccount = selectedAccount
         self.currentActiveAccount = defaultAccount
+        defaultAccountId = currentActiveAccount.id
         accountUpdated()
     }
     
