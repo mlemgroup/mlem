@@ -7,17 +7,20 @@
 
 import SwiftUI
 
-struct DownvoteButton: View {
+struct DownvoteButtonLabel: View {
     let vote: ScoringOperation
-    let size: CGFloat
 
     var body: some View {
         Image(systemName: "arrow.down")
-            .frame(width: size, height: size)
+            .resizable()
+            .scaledToFit()
+            .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+            .padding(AppConstants.barIconPadding)
             .foregroundColor(vote == .downvote ? .white : .primary)
             .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(vote == .downvote ? .downvoteColor : .clear))
-
+            .padding(AppConstants.postAndCommentSpacing)
+            .contentShape(Rectangle())
     }
 }

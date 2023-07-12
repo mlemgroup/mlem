@@ -12,7 +12,6 @@ struct SaveButton: View {
     // ==== PARAMETERS ==== //
 
     let isSaved: Bool
-    let size: CGFloat
     let accessibilityContext: String
 
     let save: () -> Void
@@ -25,16 +24,24 @@ struct SaveButton: View {
     // ==== BODY ==== //
 
     var body: some View {
-        Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
-            .frame(width: size, height: size)
-            .foregroundColor(isSaved ? .white : .primary)
-            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-                .aspectRatio(1, contentMode: .fit)
-                .foregroundColor(isSaved ? .saveColor : .clear))
-            .onTapGesture { save() }
-            .accessibilityRemoveTraits(.isImage)
-            .accessibilityAddTraits(.isButton)
-            .accessibilityLabel(saveButtonText)
-            .accessibilityAction(named: saveButtonText) { save() }
+        Button {
+            save()
+        } label: {
+            Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+                .resizable()
+                .scaledToFit()
+                .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+                .padding(AppConstants.barIconPadding)
+                .foregroundColor(isSaved ? .white : .primary)
+                .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                    .aspectRatio(1, contentMode: .fit)
+                    .foregroundColor(isSaved ? .saveColor : .clear))
+                .padding(AppConstants.postAndCommentSpacing)
+                .contentShape(Rectangle())
+                .fontWeight(.medium) // makes it look a little nicer
+        }
+        .accessibilityAddTraits(.isButton)
+        .accessibilityLabel(saveButtonText)
+        .accessibilityAction(.default) { save() }
     }
 }

@@ -14,13 +14,14 @@ import Foundation
  */
 struct PostInteractionBar: View {
     @EnvironmentObject var appState: AppState
+    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
+    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
+    @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
+    @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
+    @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
+    
     @EnvironmentObject var postTracker: PostTracker
-
-    // constants
-    let iconPadding: CGFloat = 4
-    let iconCorner: CGFloat = 2
-    let scoreItemWidth: CGFloat = 12
-    let height: CGFloat = 24
 
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation
@@ -63,21 +64,49 @@ struct PostInteractionBar: View {
 
     var body: some View {
         ZStack {
-            HStack(spacing: 12) {
-                VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
-                    .padding(.trailing, 8)
+            HStack(spacing: 0) {
+                if !shouldShowVoteComplexOnRight {
+                    VoteComplex(style: postVoteComplexStyle,
+                                vote: displayedVote,
+                                score: displayedScore,
+                                upvote: upvote,
+                                downvote: downvote)
+                        .padding(.trailing, 8)
+                } else {
+                    SaveButton(isSaved: displayedSaved, accessibilityContext: "post") {
+                        Task(priority: .userInitiated) {
+                            await savePost()
+                        }
+                    }
+                    
+                    ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
+                }
                 
                 Spacer()
                 
-                SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "post") {
-                    Task(priority: .userInitiated) {
-                        await savePost()
+                if shouldShowVoteComplexOnRight {
+                    VoteComplex(style: postVoteComplexStyle,
+                                vote: displayedVote,
+                                score: displayedScore,
+                                upvote: upvote,
+                                downvote: downvote)
+                        .padding(.trailing, 8)
+                } else {
+                    SaveButton(isSaved: displayedSaved, accessibilityContext: "post") {
+                        Task(priority: .userInitiated) {
+                            await savePost()
+                        }
                     }
+                    
+                    ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
                 }
-                
-                ReplyButton(replyCount: postView.counts.comments, accessibilityContext: "post", reply: replyToPost)
             }
-            TimestampView(date: postView.post.published, spacing: AppConstants.iconToTextSpacing)
+            
+            InfoStack(score: shouldShowScoreInPostBar ? postView.counts.score : nil,
+                      myVote: shouldShowScoreInPostBar ? postView.myVote ?? .resetVote : nil,
+                      published: shouldShowTimeInPostBar ? postView.published : nil,
+                      commentCount: shouldShowRepliesInPostBar ? postView.counts.comments : nil,
+                      saved: shouldShowSavedInPostBar ? postView.saved : nil)
         }
         .font(.callout)
     }
