@@ -135,10 +135,7 @@ struct FeedPost: View {
                     }
                     
                     if postSize == .headline {
-                        HeadlinePost(
-                            postView: postView,
-                            account: account
-                        )
+                        HeadlinePost(postView: postView)
                     } else {
                         LargePost(
                             postView: postView,

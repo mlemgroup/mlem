@@ -341,7 +341,6 @@ struct CommunityView: View {
                 NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
                     FeedPost(
                         postView: post,
-                        account: account,
                         showPostCreator: shouldShowPostCreator,
                         showCommunity: !isInSpecificCommunity,
                         isDragging: $isDragging,

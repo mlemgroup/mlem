@@ -360,7 +360,6 @@ struct UserView: View {
         NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
             VStack(spacing: 0) {
                 FeedPost(postView: post,
-                         account: account,
                          showPostCreator: false,
                          showCommunity: true,
                          isDragging: $isDragging,
@@ -379,7 +378,6 @@ struct UserView: View {
     private func commentEntry(for comment: HierarchicalComment) -> some View {
         VStack(spacing: 0) {
             CommentItem(
-                account: account,
                 hierarchicalComment: comment,
                 postContext: nil,
                 depth: 0,
