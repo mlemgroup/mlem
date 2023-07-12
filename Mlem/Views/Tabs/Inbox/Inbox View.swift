@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import CachedAsyncImage
+import AlertToast
 
 enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
@@ -57,6 +58,11 @@ struct InboxView: View {
     @State var isComposing: Bool = false
     @State var composingTo: ComposingTypes = .commentReply(nil)
     
+    // - reports
+    @State var isComposingReport: Bool = false
+    @State var messageToReport: APIPrivateMessageView?
+    @State var commentToReport: APICommentView?
+    
     // utility
     @State var isDragging: Bool = false
     @State private var navigationPath = NavigationPath()
@@ -69,6 +75,9 @@ struct InboxView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
+        }
+        .toast(isPresenting: $appState.isShowingToast, duration: 2) {
+            appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
     }
     
@@ -123,6 +132,13 @@ struct InboxView: View {
                         .presentationDetents([.medium, .large])
                 }
             }
+        }
+        // TODO: this can be fewer sheets
+        .sheet(item: $messageToReport) { message in
+            ReportComposerView(reportedMessage: message)
+        }
+        .sheet(item: $commentToReport) { comment in
+            ReportComposerView(reportedComment: comment)
         }
         // load view if empty or account has changed
         .task(priority: .userInitiated) {

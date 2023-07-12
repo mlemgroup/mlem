@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AlertToast
 
 extension InboxView {
     
@@ -78,6 +79,16 @@ extension InboxView {
         // reply
         ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
             replyToCommentReply(commentReply: commentReply)
+        })
+        
+        // block
+        ret.append(MenuFunction(text: "Block User",
+                                imageName: "person.fill.xmark",
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            Task(priority: .userInitiated) {
+                await blockUser(userId: commentReply.creator.id)
+            }
         })
         
         return ret
@@ -153,6 +164,16 @@ extension InboxView {
         ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
             replyToMention(mention: mention)
         })
+
+        // block
+        ret.append(MenuFunction(text: "Block User",
+                                imageName: "person.fill.xmark",
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            Task(priority: .userInitiated) {
+                await blockUser(userId: mention.creator.id)
+            }
+        })
         
         return ret
     }
@@ -198,6 +219,55 @@ extension InboxView {
             replyToMessage(message: message)
         })
         
+        // report
+        ret.append(MenuFunction(text: "Report",
+                                imageName: "exclamationmark.shield",
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            reportMessage(message: message)
+        })
+        
+        // block
+        ret.append(MenuFunction(text: "Block User",
+                                imageName: "person.fill.xmark",
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            Task(priority: .userInitiated) {
+                await blockUser(userId: message.creator.id)
+            }
+        })
+        
         return ret
+    }
+    
+    func blockUser(userId: Int) async {
+        do {
+            let blocked = try await blockPerson(
+                account: appState.currentActiveAccount,
+                personId: userId,
+                blocked: true
+            )// Show Toast
+            
+            // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
+            if blocked {
+                let toast = AlertToast(
+                    displayMode: .alert,
+                    type: .complete(.blue),
+                    title: "Blocked user"
+                )
+                appState.toast = toast
+                appState.isShowingToast = true
+                
+                filterUser(userId: userId)
+            }
+        } catch {
+            let toast = AlertToast(
+                displayMode: .alert,
+                type: .error(.red),
+                title: "Unable to block user"
+            )
+            appState.toast = toast
+            appState.isShowingToast = true
+        }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
@@ -223,8 +224,52 @@ extension CommentItem {
             enabled: true) {
                 isComposingReport = true
             })
+        
+        // block
+        // block
+        ret.append(MenuFunction(text: "Block User",
+                                imageName: "person.fill.xmark",
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            Task(priority: .userInitiated) {
+                await blockUser(userId: hierarchicalComment.commentView.creator.id)
+            }
+        })
                    
         return ret
+    }
+    
+    func blockUser(userId: Int) async {
+        do {
+            let blocked = try await blockPerson(
+                account: appState.currentActiveAccount,
+                personId: userId,
+                blocked: true
+            )// Show Toast
+            
+            // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
+            if blocked {
+                let toast = AlertToast(
+                    displayMode: .alert,
+                    type: .complete(.blue),
+                    title: "Blocked user"
+                )
+                appState.toast = toast
+                appState.isShowingToast = true
+                
+                commentTracker.filter { comment in
+                    comment.commentView.creator.id != userId
+                }
+            }
+        } catch {
+            let toast = AlertToast(
+                displayMode: .alert,
+                type: .error(.red),
+                title: "Unable to block user"
+            )
+            appState.toast = toast
+            appState.isShowingToast = true
+        }
     }
     // swiftlint:enable function_body_length
 }

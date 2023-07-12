@@ -108,6 +108,7 @@ struct PostInteractionBar: View {
                       commentCount: shouldShowRepliesInPostBar ? postView.counts.comments : nil,
                       saved: shouldShowSavedInPostBar ? postView.saved : nil)
         }
+        .buttonStyle(.plain) // TODO: do we want a lil fade animation?
         .font(.callout)
     }
     

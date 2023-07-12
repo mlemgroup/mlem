@@ -145,7 +145,7 @@ struct CommentItem: View {
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             .sheet(isPresented: $isComposingReport) {
-                ReportComposerView(reportedPost: nil, reportedComment: hierarchicalComment.commentView)
+                ReportComposerView(reportedComment: hierarchicalComment.commentView)
             }
             
             Divider()

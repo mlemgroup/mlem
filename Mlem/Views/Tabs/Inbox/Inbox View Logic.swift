@@ -62,6 +62,20 @@ extension InboxView {
         }
     }
     
+    func filterUser(userId: Int) {
+        repliesTracker.filter { reply in
+            reply.creator.id != userId
+        }
+        mentionsTracker.filter { mention in
+            mention.creator.id != userId
+        }
+        messagesTracker.filter { message in
+            message.creator.id != userId
+        }
+        
+        aggregateAllTrackers()
+    }
+    
     func loadTrackerPage(tracker: InboxTracker) async {
         do {
             try await tracker.loadNextPage(account: appState.currentActiveAccount)
@@ -200,5 +214,9 @@ extension InboxView {
                 print("failed to mark message as read!")
             }
         }
+    }
+    
+    func reportMessage(message: APIPrivateMessageView) {
+        messageToReport = message
     }
 }

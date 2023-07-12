@@ -47,15 +47,10 @@ struct SymmetricVoteComplex: View {
             if appState.enableDownvote {
                 Button {
                     Task(priority: .userInitiated) {
-                        await upvote()
+                        await downvote()
                     }
                 } label: {
                     DownvoteButtonLabel(vote: vote)
-                        .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                await downvote()
-                            }
-                        }
                 }
                 // squish it towards the score
                 .offset(x: -AppConstants.postAndCommentSpacing)

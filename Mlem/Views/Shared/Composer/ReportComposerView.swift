@@ -11,6 +11,13 @@ struct ReportComposerView: View {
     
     var reportedPost: APIPostView?
     var reportedComment: APICommentView?
+    var reportedMessage: APIPrivateMessageView?
+    
+    init(reportedPost: APIPostView? = nil, reportedComment: APICommentView? = nil, reportedMessage: APIPrivateMessageView? = nil) {
+        self.reportedPost = reportedPost
+        self.reportedComment = reportedComment
+        self.reportedMessage = reportedMessage
+    }
     
     // environment
     @EnvironmentObject var appState: AppState
@@ -57,6 +64,21 @@ struct ReportComposerView: View {
         }
     }
     
+    func submitMessageReport(for message: APIPrivateMessageView) async {
+        do {
+            isSubmitting = true
+            
+            _ = try await reportMessage(messageId: message.id,
+                                        reason: reportReason,
+                                        appState: appState)
+            
+            dismiss()
+        } catch {
+            appState.contextualError = .init(underlyingError: error)
+            isSubmitting = false
+        }
+    }
+    
     private var isReadyToPost: Bool {
         return !reportReason.isEmpty
     }
@@ -88,6 +110,9 @@ struct ReportComposerView: View {
                                 enableSwipeActions: false,
                                 replyToComment: nil
                             )
+                        } else if let message = reportedMessage {
+                            InboxMessageView(message: message, menuFunctions: [])
+                                .padding(AppConstants.postAndCommentSpacing)
                         }
                         
                         TextField("Reason for report",
@@ -95,8 +120,6 @@ struct ReportComposerView: View {
                                   axis: .vertical)
                         .accessibilityLabel("Report Reason")
                         .padding()
-                        
-                        Spacer().layoutPriority(1)
                     }
                     
                     // Loading Indicator
@@ -129,6 +152,8 @@ struct ReportComposerView: View {
                                     await submitPostReport(for: report)
                                 } else if let report = reportedComment {
                                     await submitCommentReport(for: report)
+                                } else if let report = reportedMessage {
+                                    await submitMessageReport(for: report)
                                 }
                             }
                         } label: {

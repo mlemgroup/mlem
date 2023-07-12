@@ -20,3 +20,17 @@ func blockPerson(
         let response = try await APIClient().perform(request: request)
         return response.blocked
     }
+
+@MainActor
+func blockPerson(
+    account: SavedAccount,
+    personId: Int,
+    blocked: Bool) async throws -> Bool {
+        let request = BlockPersonRequest(
+            account: account,
+            personId: personId,
+            block: blocked
+        )
+        let response = try await APIClient().perform(request: request)
+        return response.blocked
+    }
