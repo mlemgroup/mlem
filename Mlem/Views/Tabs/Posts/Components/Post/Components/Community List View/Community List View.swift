@@ -75,7 +75,7 @@ struct CommunityListView: View {
                             feedType: .all,
                             iconName: "cloud.circle.fill",
                             iconColor: .blue,
-                            description: "All communities that federate with your server"
+                            description: "All known communities that federate with your server"
                         )
 
                         ForEach(calculateVisibleCommunitySections()) { communitySection in
