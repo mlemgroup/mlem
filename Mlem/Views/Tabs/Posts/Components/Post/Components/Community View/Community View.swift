@@ -320,7 +320,7 @@ struct CommunityView: View {
             feedType = setFeedType
         } label: {
             if feedType == setFeedType {
-                Label(setFeedType.rawValue, systemImage: "checkmark")
+                Label(setFeedType.label, systemImage: "checkmark")
             } else {
                 Text(setFeedType.label)
             }
