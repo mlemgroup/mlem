@@ -111,28 +111,6 @@ struct CommunityView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                /*
-                 if !isShowingCommunitySearch {
-                 HStack(alignment: .center, spacing: 0) {
-                 Text(community?.name ?? feedType.rawValue)
-                 .font(.headline)
-                 Image(systemName: "chevron.down")
-                 .scaleEffect(0.7)
-                 }
-                 .accessibilityElement(children: .ignore)
-                 .accessibilityLabel("\(community?.name ?? feedType.rawValue)")
-                 .accessibilityAddTraits(.isButton)
-                 .accessibilityHint("Activate to search and select feeds")
-                 .onTapGesture {
-                 isSearchFieldFocused = true
-                 
-                 withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
-                 isShowingCommunitySearch.toggle()
-                 }
-                 
-                 }
-                 }
-                 */
                 Menu {
                     feedTypeMenuItem(for: .subscribed)
                     feedTypeMenuItem(for: .local)
