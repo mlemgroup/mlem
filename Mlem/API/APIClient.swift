@@ -52,7 +52,7 @@ class APIClient {
             // associated value in the same was as the response to allow requests to define
             // their own error models when necessary, or drop back to this as the default...
             
-            if apiError.error == "not_logged_in" {
+            if apiError.isNotLoggedIn {
                 throw APIClientError.invalidSession
             }
             
