@@ -27,6 +27,7 @@ class PostTracker: FeedTracker<APIPostView> {
         type: FeedType,
         filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
     ) async throws {
+        let currentPage = page
         let response = try await perform(
             GetPostsRequest(
                 account: account,
@@ -39,6 +40,18 @@ class PostTracker: FeedTracker<APIPostView> {
             filtering: filtering
         )
 
+        // so although the API kindly returns `400`/"not_logged_in" for expired
+        // sessions _without_ 2FA enabled, currently once you enable 2FA on an account
+        // an expired session for a call with optional authentication such as loading
+        // posts returns a `200` with an empty list of data 😭
+        // if we get back an empty list for page 1, chances are this session is borked and
+        // the API doesn't want to tell us - so to avoid the user being confused, we'll fire
+        // off an authenticated call in the background and if appropriate show the expired
+        // session modal. We should be able to remove this once the API behaves as expected.
+        if currentPage == 1 && response.posts.isEmpty {
+            try await attemptAuthenticatedCall(with: account)
+        }
+        
         preloadImages(response.posts)
     }
 
@@ -108,5 +121,22 @@ class PostTracker: FeedTracker<APIPostView> {
         filter({
             return $0.creator.id != personId
         })
+    }
+    
+    private func attemptAuthenticatedCall(with account: SavedAccount) async throws {
+        let request = GetPrivateMessagesRequest(
+            account: account,
+            page: 1,
+            limit: 1
+        )
+        
+        do {
+            try await APIClient().perform(request: request)
+        } catch {
+            // we're only interested in throwing for invalid sessions here...
+            if case APIClientError.invalidSession = error {
+                throw error
+            }
+        }
     }
 }
