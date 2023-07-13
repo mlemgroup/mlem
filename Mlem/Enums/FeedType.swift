@@ -13,9 +13,9 @@ enum FeedType: String, Encodable, SettingsOptions {
 
     var label: String {
         switch self {
-        case .all: return "All Known".capitalized
-        case .local: return self.rawValue.capitalized
-        case .subscribed: return self.rawValue.capitalized
+        case .all: return "All Known"
+        case .local: return self.rawValue
+        case .subscribed: return self.rawValue
         }
     }
     
