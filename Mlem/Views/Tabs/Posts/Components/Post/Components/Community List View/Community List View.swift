@@ -7,7 +7,11 @@
 
 import SwiftUI
 
-struct CommunitySection: Identifiable {
+struct CommunitySection: Identifiable, Equatable {
+    static func == (lhs: CommunitySection, rhs: CommunitySection) -> Bool {
+        lhs.viewId == rhs.viewId
+    }
+    
     let id = UUID()
     let viewId: String
     let sidebarEntry: any SidebarEntry
@@ -15,11 +19,14 @@ struct CommunitySection: Identifiable {
     let accessibilityLabel: String
 }
 
-struct CommunityListView: View {
+struct CommunityListView: View, Equatable {
+    static func == (lhs: CommunityListView, rhs: CommunityListView) -> Bool {
+        lhs.communitySections == rhs.communitySections
+        && lhs.selectedCommunity == rhs.selectedCommunity
+    }
+    
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
-    @Environment(\.openURL) var openURL
-    @Environment(\.navigationPath) var navigationPath
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @State var subscribedCommunities = [APICommunity]()

@@ -23,8 +23,10 @@ struct FeedRoot: View {
     var body: some View {
 
         NavigationSplitView {
-            CommunityListView(selectedCommunity: $rootDetails)
-                .id(appState.currentActiveAccount.id)
+            EquatableView(
+                content: CommunityListView(selectedCommunity: $rootDetails)
+            )
+            .id(appState.currentActiveAccount.id)
         } detail: {
             if let rootDetails {
                 NavigationStack(path: $navigationPath) {
