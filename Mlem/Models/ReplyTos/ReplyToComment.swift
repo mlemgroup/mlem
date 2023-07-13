@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ReplyToComment: ReplyTo {
     let comment: APICommentView
-    let account: SavedAccount
     let appState: AppState
     let commentTracker: CommentTracker
     
@@ -28,6 +27,6 @@ struct ReplyToComment: ReplyTo {
                               postId: comment.post.id,
                               commentContents: commentContents,
                               commentTracker: commentTracker,
-                              account: account)
+                              account: appState.currentActiveAccount)
     }
 }

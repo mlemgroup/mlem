@@ -124,7 +124,7 @@ struct CommunityView: View {
         }
         .sheet(item: $replyingToPost) { post in
             GeneralCommentComposerView(
-                replyTo: ReplyToFeedPost(post: post)
+                replyTo: ReplyToFeedPost(appState: appState, post: post)
             )
         }
         .toolbar {

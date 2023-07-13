@@ -10,8 +10,7 @@ import SwiftUI
 
 struct ReplyToFeedPost: ReplyTo {
     
-    @EnvironmentObject var appState: AppState
-    
+    let appState: AppState
     let post: APIPostView
     
     func embeddedView() -> AnyView {
