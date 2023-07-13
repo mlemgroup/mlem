@@ -52,7 +52,7 @@ struct HeadlinePost: View {
                             StickiedTag(tagType: .community)
                         }
                         
-                        Text(postView.post.name)
+                        Text(verbatim: postView.post.name)
                             .font(.headline)
                             .padding(.trailing)
                         

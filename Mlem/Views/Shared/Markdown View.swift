@@ -229,7 +229,7 @@ struct MarkdownView: View {
 
     @MainActor func generateView() -> some View {
         let blocks = parseMarkdownForImages(text: text)
-        
+//        verbatim
         return VStack {
             ForEach(blocks) { block in
                 if block.isImage {
@@ -239,7 +239,11 @@ struct MarkdownView: View {
                         CachedImageWithNsfwFilter(isNsfw: isNsfw, url: URL(string: String(block.text)))
                     }
                 } else {
-                    getMarkdown(text: String(block.text))
+                    if replaceImagesWithEmoji {
+                        Text(verbatim: String(block.text))
+                    } else {
+                        getMarkdown(text: String(block.text))
+                    }
                 }
             }
         }

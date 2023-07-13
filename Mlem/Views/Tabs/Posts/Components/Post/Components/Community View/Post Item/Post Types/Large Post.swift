@@ -41,7 +41,7 @@ struct LargePost: View {
                     StickiedTag(tagType: .community)
                 }
                 
-                Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
+                Text(verbatim: "\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic(postView.post.deleted)
