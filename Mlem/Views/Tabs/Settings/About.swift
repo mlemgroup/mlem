@@ -41,8 +41,6 @@ struct About: View {
                                   link: "https://github.com/JakeShirley")
                     DeveloperView(name: "Eric",
                                   link: "https://github.com/EricBAndrews")
-                    DeveloperView(name: "Mormaer",
-                                  link: "https://github.com/mormaer")
                     DeveloperView(name: "Jonathan",
                                   link: "https://github.com/ShadowJonathan")
                 } header: {
