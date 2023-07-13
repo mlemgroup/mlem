@@ -81,7 +81,10 @@ struct UserView: View {
             header(for: userDetails)
             
             if let bio = userDetails.person.bio {
-                MarkdownView(text: bio, isNsfw: false).padding()
+                EquatableView(content:
+                                MarkdownView(text: bio, isNsfw: false)
+                )
+                .padding()
             }
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {

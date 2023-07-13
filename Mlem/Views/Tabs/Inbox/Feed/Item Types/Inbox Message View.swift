@@ -32,7 +32,7 @@ struct InboxMessageView: View {
                     .foregroundColor(.accentColor)
                     .frame(height: userAvatarWidth)
                 
-                MarkdownView(text: message.privateMessage.content, isNsfw: false)
+                EquatableView(content: MarkdownView(text: message.privateMessage.content, isNsfw: false))
                     .font(.subheadline)
             }
             

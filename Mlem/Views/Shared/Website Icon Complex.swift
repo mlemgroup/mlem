@@ -51,9 +51,11 @@ struct WebsiteIconComplex: View {
     var body: some View {
         VStack(spacing: 0) {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
-                CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
-                    .frame(maxHeight: 400)
-                    .clipped()
+                EquatableView(content:
+                    CachedImageWithNsfwFilter(isNsfw: post.nsfw, url: thumbnailURL)
+                )
+                .frame(maxHeight: 400)
+                .clipped()
             }
             
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {

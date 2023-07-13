@@ -87,7 +87,9 @@ struct CommunitySidebarView: View {
                     .communityView
                     .community
                     .description {
-                    MarkdownView(text: description, isNsfw: false).padding()
+                    EquatableView(content:
+                                    MarkdownView(text: description, isNsfw: false)
+                        ).padding()
                 }
             } else if selectionSection == 1 {
                 VStack {

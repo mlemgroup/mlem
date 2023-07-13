@@ -10,8 +10,11 @@ import SwiftUI
 import MarkdownUI
 import NukeUI
 
-struct CachedImageWithNsfwFilter: View {
-
+struct CachedImageWithNsfwFilter: View, Equatable {
+    static func == (lhs: CachedImageWithNsfwFilter, rhs: CachedImageWithNsfwFilter) -> Bool {
+        lhs.url == rhs.url && lhs.isNsfw == rhs.isNsfw
+    }
+    
     let isNsfw: Bool
     let url: URL?
 

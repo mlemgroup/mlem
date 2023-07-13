@@ -211,7 +211,10 @@ struct MarkdownBlock: Identifiable {
     let id: Int
 }
 
-struct MarkdownView: View {
+struct MarkdownView: View, Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.text == rhs.text && lhs.isNsfw == rhs.isNsfw
+    }
 
     @State var text: String
     let isNsfw: Bool
@@ -236,7 +239,9 @@ struct MarkdownView: View {
                     if replaceImagesWithEmoji {
                         getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️")
                     } else {
-                        CachedImageWithNsfwFilter(isNsfw: isNsfw, url: URL(string: String(block.text)))
+                        EquatableView(content:
+                                        CachedImageWithNsfwFilter(isNsfw: isNsfw, url: URL(string: String(block.text)))
+                                      )
                     }
                 } else {
                     if replaceImagesWithEmoji {

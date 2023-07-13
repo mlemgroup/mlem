@@ -65,7 +65,9 @@ struct CommentBodyView: View {
                     .italic()
                     .foregroundColor(.secondary)
             } else if !isCollapsed {
-                MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
+                EquatableView(content:
+                                MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
+                )
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
 

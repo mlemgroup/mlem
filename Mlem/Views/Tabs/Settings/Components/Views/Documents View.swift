@@ -48,7 +48,7 @@ struct DocumentsView: View {
     
     func documentView(doc: Document) -> some View {
         ScrollView {
-            MarkdownView(text: doc.body, isNsfw: false)
+            EquatableView(content: MarkdownView(text: doc.body, isNsfw: false))
         }
         .padding()
     }

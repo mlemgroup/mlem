@@ -63,7 +63,9 @@ struct LargePost: View {
         switch postView.postType {
         case .image(let url):
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                CachedImageWithNsfwFilter(isNsfw: postView.post.nsfw, url: url)
+                EquatableView(content:
+                                CachedImageWithNsfwFilter(isNsfw: postView.post.nsfw, url: url)
+                              )
                     .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : AppConstants.maxFeedPostHeight, alignment: .center)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
                     .clipped()
@@ -87,12 +89,16 @@ struct LargePost: View {
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
             if isExpanded {
-                MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
+                EquatableView(content:
+                                MarkdownView(text: bodyText, isNsfw: postView.post.nsfw)
+                              )
                     .font(.subheadline)
             } else {
-                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "),
-                             isNsfw: postView.post.nsfw,
-                             replaceImagesWithEmoji: true)
+                EquatableView(content:
+                                MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "),
+                                             isNsfw: postView.post.nsfw,
+                                             replaceImagesWithEmoji: true)
+                              )
                     .lineLimit(8)
                     .font(.subheadline)
             }
