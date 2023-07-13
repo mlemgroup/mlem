@@ -17,6 +17,11 @@ struct TokenRefreshView: View {
         case incorrectLogin
     }
     
+    enum FocusedField: Hashable {
+        case password
+        case onetimecode
+    }
+    
     @EnvironmentObject var appState: AppState
     
     @Environment(\.dismiss) var dismiss
@@ -29,49 +34,53 @@ struct TokenRefreshView: View {
     @State private var viewState: ViewState = .initial
     @State private var showing2FAAlert = false
     
+    @FocusState private var selectedField: FocusedField?
+    
     var body: some View {
-        VStack {
-            ScrollView(showsIndicators: false) {
-                header
-                informationText
-                passwordField
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .center, spacing: 15) {
+                    header
+                        .padding()
+                    informationText
+                }
+                Grid(alignment: .trailing, verticalSpacing: 15) {
+                    passwordField
+                    oneTimeCodeView
+                }
             }
-            
-            Spacer()
-            cancelButton
+            .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Session Expired")
+            .interactiveDismissDisabled()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    cancelButton
+                }
+            }
         }
-        .alert("2FA Required", isPresented: $showing2FAAlert) {
-            SecureField("Enter 2FA Token", text: $twoFactorCode)
-            Button("OK", action: refreshTokenUsing2FA)
-        }
-        .multilineTextAlignment(.center)
-        .padding()
-        .interactiveDismissDisabled()
     }
     
     // MARK: - Subviews
     
     @ViewBuilder
     private var header: some View {
-        switch viewState {
-        case .initial, .incorrectLogin:
-            Image(systemName: "exclamationmark.triangle")
-                .resizable()
-                .foregroundColor(.red)
-                .frame(width: 100, height: 100)
-                .padding(.vertical, 50)
-        case .refreshing:
-            ProgressView()
-                .controlSize(.large)
-                .frame(width: 100, height: 100)
-                .padding(.vertical, 50)
-        case .success:
-            Image(systemName: "checkmark.circle.fill")
-                .resizable()
-                .foregroundColor(.green)
-                .frame(width: 100, height: 100)
-                .padding(.vertical, 50)
+        Group {
+            switch viewState {
+            case .initial, .incorrectLogin:
+                Image(systemName: "exclamationmark.triangle")
+                    .resizable()
+                    .foregroundColor(.red)
+            case .refreshing:
+                ProgressView()
+                    .controlSize(.large)
+            case .success:
+                Image(systemName: "checkmark.circle.fill")
+                    .resizable()
+                    .foregroundColor(.green)
+            }
         }
+        .frame(width: 100, height: 100)
     }
     
     private var informationText: some View {
@@ -84,67 +93,92 @@ struct TokenRefreshView: View {
         Please enter the password for\n\(account.username)@\(account.instanceLink.host() ?? "")
         """
         case .refreshing:
-            text = "Setting up your new session..."
+            text = "Logging In..."
         case .success:
-            text = "New session created"
+            text = "Login Succesful"
         }
         
-        // using an ideal height below so that it can expand further if needed
-        // but won't collapse for the shorter phrases to keep things a bit less... jiggly
-        
         return Text(text)
+            .padding()
             .font(.body)
-            .padding(.bottom, 16)
-            .frame(idealHeight: 150)
+            .multilineTextAlignment(.center)
+            .dynamicTypeSize(.small ... .accessibility1)
     }
     
     @ViewBuilder
     private var passwordField: some View {
-        VStack {
-            SecureField("Password", text: $password)
-                .textContentType(.password)
-                .submitLabel(.continue)
-                .textFieldStyle(.roundedBorder)
-                .disabled(shouldDisableControls)
-                .onSubmit {
-                    updateViewState(.refreshing)
-                    Task {
-                        do {
-                            let token = try await refreshToken(with: password)
-                            updateViewState(.success)
-                            await didReceive(token)
-                        } catch {
-                            HapticManager.shared.error()
-                            
-                            if case let APIClientError.response(apiError, _) = error,
-                               apiError.isIncorrectLogin {
-                                updateViewState(.incorrectLogin)
-                                return
+            GridRow {
+                Text("Password")
+                    .foregroundColor(.secondary)
+                    .accessibilityHidden(true)
+                SecureField("Password", text: $password)
+                    .focused($selectedField, equals: FocusedField.password)
+                    .textContentType(.password)
+                    .submitLabel(.continue)
+                    .dynamicTypeSize(.small ... .accessibility2)
+                    .disabled(shouldDisableControls)
+                    .onSubmit {
+                        updateViewState(.refreshing)
+                        Task {
+                            do {
+                                let token = try await refreshToken(with: password)
+                                updateViewState(.success)
+                                await didReceive(token)
+                            } catch {
+                                AppConstants.hapticManager.notificationOccurred(.error)
+                                
+                                if case let APIClientError.response(apiError, _) = error,
+                                   apiError.isIncorrectLogin {
+                                    updateViewState(.incorrectLogin)
+                                    selectedField = .password
+                                    return
+                                }
+                                
+                                if case let APIClientError.response(apiError, _) = error,
+                                   apiError.requires2FA {
+                                    showing2FAAlert = true
+                                    selectedField = .onetimecode
+                                    return
+                                }
+                                
+                                updateViewState(.initial)
                             }
-                            
-                            if case let APIClientError.response(apiError, _) = error,
-                               apiError.requires2FA {
-                                showing2FAAlert = true
-                                return
-                            }
-                            
-                            updateViewState(.initial)
                         }
                     }
-                }
-        }
-        
-        if viewState == .incorrectLogin {
-            Text("The password you entered was incorrect")
-                .font(.footnote)
-                .foregroundColor(.red)
+            }
+        GridRow {
+            if viewState == .incorrectLogin {
+                Text("The password you entered was incorrect")
+                    .font(.footnote)
+                    .foregroundColor(.red)
+            }
         }
     }
     
+    @ViewBuilder
+    private var oneTimeCodeView: some View {
+        if showing2FAAlert {
+            GridRow {
+                Text("Code")
+                    .foregroundColor(.secondary)
+                    .accessibilityHidden(true)
+                SecureField("Enter one-time code", text: $twoFactorCode)
+                    .focused($selectedField, equals: FocusedField.onetimecode)
+                    .textContentType(.oneTimeCode)
+                    .submitLabel(.go)
+                    .onSubmit {
+                        refreshTokenUsing2FA()
+                    }
+            }
+        }
+        
+    }
+    
     private var cancelButton: some View {
-        Button("Cancel") {
+        Button("Logout", role: .destructive) {
             dismiss()
         }
+        .foregroundColor(.red)
         .disabled(shouldDisableControls)
     }
     
@@ -207,4 +241,19 @@ struct TokenRefreshView: View {
             return false
         }
     }
+}
+
+struct TokenRefreshViewPreview: PreviewProvider {
+    
+    static let account = SavedAccount(id: 1,
+                                      instanceLink: URL(string: "https://lemmy.world")!,
+                                      accessToken: "dfas",
+                                      username: "kronusdark")
+    
+    static var previews: some View {
+        TokenRefreshView(account: account) { _ in
+            print("Refreshed")
+        }
+    }
+    
 }

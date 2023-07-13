@@ -124,6 +124,7 @@ struct CommunityLabel: View {
     @ViewBuilder
     private var communityName: some View {
         Text(community.name)
+            .dynamicTypeSize(.small ... .accessibility1)
             .font(.footnote)
             .bold()
     }
@@ -132,7 +133,7 @@ struct CommunityLabel: View {
     private var communityInstance: some View {
         if let host = community.actorId.host() {
             Text("@\(host)")
-                .minimumScaleFactor(0.01)
+                .dynamicTypeSize(.small ... .accessibility2)
                 .lineLimit(1)
                 .opacity(0.6)
                 .font(.caption)
