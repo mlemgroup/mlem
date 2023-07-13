@@ -33,18 +33,17 @@ struct ContentView: View {
                         .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                 }.tag(2)
 
-            NavigationView {
-                ProfileView(userID: appState.currentActiveAccount.id)
-            } .tabItem {
-                Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-                    .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-            }.tag(3)
+            ProfileView(userID: appState.currentActiveAccount.id)
+                .tabItem {
+                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
+                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                }
+                .tag(3)
 
-            NavigationView {
-                SearchView()
-            } .tabItem {
-                Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-            }.tag(4)
+            SearchView()
+                .tabItem {
+                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                }.tag(4)
 
             SettingsView()
                 .tabItem {

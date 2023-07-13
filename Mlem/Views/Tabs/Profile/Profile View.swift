@@ -26,5 +26,6 @@ struct ProfileView: View {
                 .edgesIgnoringSafeArea(.top)
                 .toolbar(.hidden)
         }
+        .handleLemmyLinkResolution(navigationPath: $navigationPath)
     }
 }
