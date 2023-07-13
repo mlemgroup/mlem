@@ -175,7 +175,7 @@ struct TokenRefreshView: View {
     }
     
     private var cancelButton: some View {
-        Button("Logout", role: .destructive) {
+        Button("Cancel", role: .destructive) {
             dismiss()
         }
         .foregroundColor(.red)
