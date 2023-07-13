@@ -8,7 +8,7 @@
 import Foundation
 
 import SwiftUI
-import CachedAsyncImage
+import NukeUI
 
 struct CommunitySidebarHeaderAvatar: View {
     @State var shouldClipAvatar: Bool = false
@@ -17,22 +17,26 @@ struct CommunitySidebarHeaderAvatar: View {
     var body: some View {
         ZStack {
             if let avatarURL = imageUrl {
-                CachedAsyncImage(url: avatarURL) { image in
-                    if shouldClipAvatar {
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .clipShape(Circle())
-                            .overlay(Circle()
-                            .stroke(.secondary, lineWidth: 2))
+                LazyImage(url: avatarURL) { state in
+                    if let image = state.image {
+                        if shouldClipAvatar {
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .clipShape(Circle())
+                                .overlay(Circle()
+                                    .stroke(.secondary, lineWidth: 2))
+                        } else {
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        }
+                    } else if state.error != nil {
+                        Circle().strokeBorder(.background, lineWidth: 2)
+                            .background(Circle().fill(.secondary))
                     } else {
-                        image
-                            .resizable()
-                            .scaledToFill()
+                        ProgressView()
                     }
-
-                } placeholder: {
-                    ProgressView()
                 }
             } else {
                 // TODO: Default avatar?

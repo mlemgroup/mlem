@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2023-06-11.
 //
 
-import CachedAsyncImage
+import NukeUI
 import Foundation
 import SwiftUI
 
@@ -71,27 +71,34 @@ struct HeadlinePost: View {
         }
     }
 
+    @MainActor
     @ViewBuilder
     private var thumbnailImage: some View {
         Group {
             switch postView.postType {
             case .image(let url):
-                CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
-                } placeholder: {
-                    ProgressView()
+                LazyImage(url: url) { state in
+                    if let image = state.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
+                    } else if state.error != nil {
+                        Image(systemName: "safari")
+                    } else {
+                        ProgressView()
+                    }
                 }
             case .link(let url):
-                CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
-                } placeholder: {
-                    Image(systemName: "safari")
+                LazyImage(url: url) { state in
+                    if let image = state.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
+                    } else {
+                        Image(systemName: "safari")
+                    }
                 }
             case .text:
                 Image(systemName: "text.book.closed")

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import NukeUI
 
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -70,12 +70,12 @@ struct UserProfileLabel: View {
             userName
         }
     }
-    
+    @MainActor
     @ViewBuilder
     private var userAvatar: some View {
         Group {
             if let userAvatarLink = user.avatar {
-                CachedAsyncImage(url: avatarUrl(from: userAvatarLink), urlCache: AppConstants.urlCache) { image in
+                LazyImage(url: avatarUrl(from: userAvatarLink)) { image in
                     if let avatar = image.image {
                         avatar
                             .resizable()

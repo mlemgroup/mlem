@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import CachedAsyncImage
+import NukeUI
 
 struct PostHeader: View {
     // appstorage
@@ -72,11 +72,12 @@ struct PostHeader: View {
         .foregroundColor(.secondary)
     }
 
+    @MainActor
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
             if let communityAvatarLink = postView.community.icon {
-                CachedAsyncImage(url: communityAvatarLink, urlCache: AppConstants.urlCache) { image in
+                LazyImage(url: communityAvatarLink) { image in
                     if let avatar = image.image {
                         avatar
                             .resizable()

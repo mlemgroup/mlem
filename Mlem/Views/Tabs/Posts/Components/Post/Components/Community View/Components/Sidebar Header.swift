@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import NukeUI
 
 struct CommunitySidebarHeader: View {
     var title: String
@@ -25,11 +25,16 @@ struct CommunitySidebarHeader: View {
             // Banner
             VStack {
                 if let bannerUrl = bannerURL {
-                    CachedAsyncImage(url: bannerUrl) { image in
-                        image.centerCropped()
-                    } placeholder: {
-                        ProgressView()
-                    }.frame(height: 200)
+                    LazyImage(url: bannerUrl) { state in
+                        if let image = state.image {
+                            image.centerCropped()
+                        } else if state.error != nil {
+                            EmptyView()
+                        } else {
+                            ProgressView()
+                        }
+                    }
+                    .frame(height: 200)
                 }
             }
             VStack {

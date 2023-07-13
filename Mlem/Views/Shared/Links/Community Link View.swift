@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import CachedAsyncImage
+import NukeUI
 
 private let clipOptOut = ["beehaw.org"]
 
@@ -149,11 +149,12 @@ struct CommunityLabel: View {
         serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
     }
     
+    @MainActor
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
             if let communityAvatarLink = community.icon {
-                CachedAsyncImage(url: avatarUrl(from: communityAvatarLink), urlCache: AppConstants.urlCache) { image in
+                LazyImage(url: avatarUrl(from: communityAvatarLink)) { image in
                     if let avatar = image.image {
                         avatar
                             .resizable()

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import NukeUI
 
 struct AvatarView: View {
 
@@ -14,7 +14,7 @@ struct AvatarView: View {
     var overridenSize: CGFloat = 15
 
     var body: some View {
-        CachedAsyncImage(url: avatarLink, urlCache: AppConstants.urlCache) { phase in
+        LazyImage(url: avatarLink) { phase in
             if let avatar = phase.image { /// Success
                 avatar
                     .resizable()

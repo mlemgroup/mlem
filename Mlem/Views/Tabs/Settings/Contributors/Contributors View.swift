@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
+import NukeUI
 
 struct ContributorsView: View {
 
@@ -14,14 +14,22 @@ struct ContributorsView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
-            CachedAsyncImage(url: contributor.avatarLink, urlCache: AppConstants.urlCache) { image in
-                image
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 100, height: 100)
+            LazyImage(url: contributor.avatarLink) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                } else if state.error != nil {
+                    Color.red
+                        .frame(width: 100, height: 100)
+                        .blur(radius: 30)
+                        .overlay { Image(systemName: "exclamationmark.triangle") }
+                        .clipShape(Circle())
+                } else {
+                    ProgressView()
+                        .frame(width: 100, height: 100)
+                }
             }
 
             VStack(alignment: .center, spacing: 5) {

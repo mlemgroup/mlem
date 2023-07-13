@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import CachedAsyncImage
 
 enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
