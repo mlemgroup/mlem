@@ -15,20 +15,6 @@ struct SettingsView: View {
 
     @State private var accountToSwitchTo: SavedAccount?
 
-    func getVersionString() -> String {
-        var result = "n/a"
-
-        if let releaseVersion = Bundle.main.releaseVersionNumber {
-            result = releaseVersion
-        }
-
-        if let buildVersion = Bundle.main.buildVersionNumber {
-            result.append(" (\(buildVersion))")
-        }
-
-        return result
-    }
-
     var body: some View {
         NavigationView {
             List {

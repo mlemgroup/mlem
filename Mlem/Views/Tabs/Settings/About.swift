@@ -46,20 +46,7 @@ struct About: View {
                     DeveloperView(name: "Jonathan",
                                   link: "https://github.com/ShadowJonathan")
                 } header: {
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            Image("logo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                    .frame(height: 128)
-                                .clipShape(Circle())
-                            Spacer()
-                        }
-                        Spacer(minLength: 20)
-                    }
-
+                    appHeaderView
                 }
 
                 Section("Special Contributions") {
@@ -78,6 +65,38 @@ struct About: View {
         .background(Color.secondarySystemBackground)
         .navigationTitle("About Mlem")
         .listStyle(.insetGrouped)
+    }
+    
+    var versionString: String {
+        var result = "n/a"
+
+        if let releaseVersion = Bundle.main.releaseVersionNumber {
+            result = releaseVersion
+        }
+
+        if let buildVersion = Bundle.main.buildVersionNumber {
+            result.append(" (\(buildVersion))")
+        }
+
+        return result
+    }
+    
+    @ViewBuilder
+    private var appHeaderView: some View {
+        VStack(spacing: 15) {
+            Spacer()
+            HStack {
+                Spacer()
+                Image("logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                        .frame(height: 128)
+                    .clipShape(Circle())
+                Spacer()
+            }
+            Text("mlem \(versionString)")
+            Spacer(minLength: 5)
+        }
     }
 }
 
