@@ -38,6 +38,7 @@ struct CachedImageWithNsfwFilter: View {
             } else if state.error != nil {
                 // Indicates an error
                 Color.red
+                    .frame(minWidth: 300, minHeight: 300)
                     .blur(radius: 30)
                     .allowsHitTesting(false)
                     .overlay(VStack {
