@@ -38,7 +38,7 @@ struct CachedImageWithNsfwFilter: View {
             } else if state.error != nil {
                 // Indicates an error
                 Color.red
-                    .frame(minWidth: 300, minHeight: 300)
+                    .frame(idealWidth: 300, idealHeight: 300)
                     .blur(radius: 30)
                     .allowsHitTesting(false)
                     .overlay(VStack {
@@ -51,6 +51,7 @@ struct CachedImageWithNsfwFilter: View {
                     .padding(8))
             } else {
                 ProgressView() // Acts as a placeholder
+                    .frame(idealWidth: 300, idealHeight: 300)
             }
         }
     }
