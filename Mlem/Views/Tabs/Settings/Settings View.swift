@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct SettingsView: View {
-    
+
     @EnvironmentObject var appState: AppState
-    
+
     @Environment(\.openURL) private var openURL
 
     @State private var accountToSwitchTo: SavedAccount?
-    
+
     @State private var specialContributors: [Contributor] = [
         Contributor(
             name: "Seb Jachec",
@@ -84,6 +84,7 @@ struct SettingsView: View {
                     }
                 }
 
+                #if !os(macOS) && !targetEnvironment(macCatalyst)
                 Section {
                     NavigationLink {
                         AlternativeIcons()
@@ -95,7 +96,8 @@ struct SettingsView: View {
                         }
                     }
                 }
-                
+                #endif
+
                 Section {
                     NavigationLink {
                         AccountsPage(selectedAccount: $accountToSwitchTo)
@@ -170,7 +172,7 @@ struct SettingsView: View {
                     }
                     .buttonStyle(.plain)
                      */
-                    
+
                     /* Disabled - Can't seem to get the Matrix link to work with "#" in it
                     Link(destination: URL(string: "https://matrix.to/#/#mlemapp:matrix.org")!) {
                         Image(systemName: "chart.bar.doc.horizontal")
@@ -179,7 +181,7 @@ struct SettingsView: View {
                     }
                     .buttonStyle(.plain)
                      */
-                    
+
                     Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
                         Label {
                             Text("Mlem GitHub Repository")
@@ -190,7 +192,7 @@ struct SettingsView: View {
                         }
                     }
                     .buttonStyle(.plain)
-                    
+
                     NavigationLink {
                         DocumentsView()
                     } label: {
