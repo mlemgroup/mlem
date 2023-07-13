@@ -63,9 +63,6 @@ struct About: View {
                 }
 
                 Section("Special Contributions") {
-                    DeveloperView(name: "David (Founder)",
-                                  link: "https://github.com/buresdv",
-                                  color: .red)
                     DeveloperView(name: "tht7",
                                   link: "https://github.com/tht7",
                                   color: .cyan)
