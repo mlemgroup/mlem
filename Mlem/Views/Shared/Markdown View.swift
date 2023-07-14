@@ -232,7 +232,6 @@ struct MarkdownView: View, Equatable {
 
     @MainActor func generateView() -> some View {
         let blocks = parseMarkdownForImages(text: text)
-//        verbatim
         return VStack {
             ForEach(blocks) { block in
                 if block.isImage {
@@ -244,11 +243,7 @@ struct MarkdownView: View, Equatable {
                                       )
                     }
                 } else {
-                    if replaceImagesWithEmoji {
-                        Text(verbatim: String(block.text))
-                    } else {
-                        getMarkdown(text: String(block.text))
-                    }
+                    getMarkdown(text: String(block.text))
                 }
             }
         }

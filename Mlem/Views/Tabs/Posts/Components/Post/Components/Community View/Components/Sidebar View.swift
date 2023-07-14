@@ -58,10 +58,7 @@ struct CommunitySidebarView: View {
     }
     
     private func getRelativeTime(date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        
-        return formatter.localizedString(for: date, relativeTo: Date.now)
+        AppConstants.relativeDateFormatter.localizedString(for: date, relativeTo: Date.now)
     }
     
     @ViewBuilder

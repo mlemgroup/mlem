@@ -17,6 +17,7 @@ struct AppConstants {
 
     // MARK: - Date parsing
     static let dateComponentsFormatter: DateComponentsFormatter = DateComponentsFormatter()
+    static let relativeDateFormatter: RelativeDateTimeFormatter = RelativeDateTimeFormatter()
 
     // MARK: - Keychain
     static let keychain: Keychain = Keychain(service: "com.hanners.Mlem-keychain")
@@ -59,7 +60,8 @@ struct AppConstants {
     static let shortSwipeDragMin: CGFloat = 60
     
     // MARK: - Sizes
-    static let maxFeedPostHeight: CGFloat = 400
+    static let maxFeedPostHeight: CGFloat = 500
+    static let minFeedPostHeight: CGFloat = 200
     static let largeAvatarSize: CGFloat = 32
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
