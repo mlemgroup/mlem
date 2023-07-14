@@ -24,6 +24,7 @@ let iconFinder = Regex {
 struct AlternativeIcons: View {
 
     @State var currentIcon: String? = UIApplication.shared.alternateIconName
+    @EnvironmentObject var easterTracker: EasterFlagsTracker
 
     var body: some View {
         List {
@@ -46,11 +47,18 @@ struct AlternativeIcons: View {
             AlternativeIcon(id: nil, name: "Mlem", author: "By Clay/s", selected: currentIconSelection == nil)
         ]
         allIcons.append(contentsOf: altIcons.keys.map { key in
+            print("found icon: \(key)")
             let match = key.firstMatch(of: iconFinder)
             let name = (match?.output.1 != nil) ? String(match!.output.1) : key
             var author = (match?.output.2 != nil) ? "By \(String(match!.output.2))" : ""
             author = author.replacingOccurrences(of: "Clays", with: "Clay/s")
             return AlternativeIcon(id: key, name: name, author: author, selected: currentIconSelection == key)
+        }.filter {
+            if let id = $0.id,
+               let requiredEasterFlag = easterDependentIcons[id] {
+                return easterTracker.flags.contains(requiredEasterFlag)
+            }
+            return true
         }.sorted(by: { lhs, rhs in
             lhs.name > rhs.name
         }))

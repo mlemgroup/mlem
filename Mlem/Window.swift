@@ -6,25 +6,56 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct Window: View {
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
+    @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
-    
+
     @State var selectedAccount: SavedAccount?
     
+    @State var easterRewardsToastsQueue: [AlertToast] = .init()
+    @State var easterRewardsToastDisaply: AlertToast?
+    @State var easterRewardShouldShow = false
+
     var body: some View {
-        if let selectedAccount {
-            view(for: selectedAccount)
-        } else {
-            NavigationStack {
-                AccountsPage(selectedAccount: $selectedAccount)
+        ZStack {
+            if let selectedAccount {
+                view(for: selectedAccount)
+            } else {
+                NavigationStack {
+                    AccountsPage(selectedAccount: $selectedAccount)
+                }
+            }
+            
+            // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
+            Color.clear
+                .toast(isPresenting: $easterRewardShouldShow, duration: 2.0) {
+                    easterRewardsToastDisaply ?? AlertToast(displayMode: .hud, type: .error(.clear))
+                } completion: {
+                    if !easterRewardsToastsQueue.isEmpty {
+                        easterRewardsToastDisaply = easterRewardsToastsQueue.popLast()
+                        easterRewardShouldShow = true
+                    }
+                }
+        }
+        .onChange(of: selectedAccount) {
+            if let host = $0?.instanceLink.host() {
+                setEasterFlag("login:\(host)")
             }
         }
+        .onAppear {
+            if let host = selectedAccount?.instanceLink.host() {
+                setEasterFlag("login:\(host)")
+            }
+        }
+        .environment(\.setEasterFlag, setEasterFlag)
+        .environmentObject(easterFlagsTracker)
     }
-    
+
     @ViewBuilder
     private func view(for account: SavedAccount) -> some View {
         ContentView()
@@ -37,7 +68,7 @@ struct Window: View {
             .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
             .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
     }
-    
+
     private func saveFilteredKeywords(_ newValue: [String]) {
         print("Change detected in filtered keywords: \(newValue)")
         do {
@@ -53,7 +84,7 @@ struct Window: View {
             print("Failed while encoding filters to data: \(encodingError)")
         }
     }
-    
+
     private func saveFavouriteCommunities(_ newValue: [FavoriteCommunity]) {
         print("Change detected in favorited communities")
 
@@ -67,6 +98,32 @@ struct Window: View {
             }
         } catch let encodingError {
             print("Failed while encoding favorited communities to data: \(encodingError)")
+        }
+    }
+
+    func setEasterFlag(_ flag: String) {
+        let (isNew, _) = easterFlagsTracker.flags.insert(flag)
+        
+        if isNew, let rewards = easterReward[flag] {
+            // time to display a cute message to the user about his new toy!
+            for reward in rewards {
+                switch reward {
+                case let .icon(iconName, _):
+                    easterRewardsToastsQueue.append(
+                        AlertToast(
+                            displayMode: .banner(.slide),
+                            type: .regular,
+                            title: "New icon unlocked!",
+                            subTitle: "Unlocked the \"\(iconName)\" icon"
+                        )
+                    )
+                }
+            }
+            
+            if !easterRewardsToastsQueue.isEmpty {
+                easterRewardsToastDisaply = easterRewardsToastsQueue.popLast()
+                easterRewardShouldShow = true
+            }
         }
     }
 }
