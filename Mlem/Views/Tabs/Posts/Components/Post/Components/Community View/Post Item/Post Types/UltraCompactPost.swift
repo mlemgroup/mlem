@@ -71,7 +71,7 @@ struct UltraCompactPost: View {
                 }
                 .padding(.bottom, -2)
                 
-                Text(postView.post.name)
+                Text(verbatim: postView.post.name)
                     .font(.subheadline)
     
                 compactInfo
