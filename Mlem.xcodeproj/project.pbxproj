@@ -21,6 +21,7 @@
 		507573982A5AD60100AA7ABD /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573972A5AD60100AA7ABD /* ErrorAlert.swift */; };
 		508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508845CE2A3641160088E483 /* JSONDecoder+Default.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
+		50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B582A61D889005D57DD /* APIClient+Dependency.swift */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
 		50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */; };
 		50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */; };
@@ -362,6 +363,7 @@
 		507573952A5AD5CF00AA7ABD /* ContextualError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualError.swift; sourceTree = "<group>"; };
 		507573972A5AD60100AA7ABD /* ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
 		508845CE2A3641160088E483 /* JSONDecoder+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Default.swift"; sourceTree = "<group>"; };
+		50C99B582A61D889005D57DD /* APIClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Dependency.swift"; sourceTree = "<group>"; };
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
 		50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshView.swift; sourceTree = "<group>"; };
 		50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTrackerItemProviding.swift; sourceTree = "<group>"; };
@@ -817,6 +819,14 @@
 			path = "Error Handling";
 			sourceTree = "<group>";
 		};
+		50C99B572A61D85D005D57DD /* Dependency */ = {
+			isa = PBXGroup;
+			children = (
+				50C99B582A61D889005D57DD /* APIClient+Dependency.swift */,
+			);
+			path = Dependency;
+			sourceTree = "<group>";
+		};
 		50F830EC2A4C8F8D00D67099 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
@@ -1114,6 +1124,7 @@
 				CD14461F2A5B328600610EF1 /* Data */,
 				B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */,
 				637218002A3A2AAD008C4816 /* API */,
+				50C99B572A61D85D005D57DD /* Dependency */,
 				507573922A5AD57F00AA7ABD /* Error Handling */,
 				50F830EC2A4C8F8D00D67099 /* Feed */,
 				63344C5E2A080C5F001BC616 /* Styles */,
@@ -1975,6 +1986,7 @@
 				6DD8677A2A5083A200BEB00F /* Community Sidebar Link.swift in Sources */,
 				50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */,
 				507573962A5AD5CF00AA7ABD /* ContextualError.swift in Sources */,
+				50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */,
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
 				CDDCF6572A678298003DA3AC /* FancyTabBarSelection.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
