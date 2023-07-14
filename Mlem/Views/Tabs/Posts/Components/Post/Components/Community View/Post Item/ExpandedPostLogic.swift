@@ -61,7 +61,6 @@ extension ExpandedPost {
     
     func replyToComment(replyTo: APICommentView) {
         commentReplyingTo = replyTo
-        isReplyingToComment = true
     }
     
     // MARK: Helper functions

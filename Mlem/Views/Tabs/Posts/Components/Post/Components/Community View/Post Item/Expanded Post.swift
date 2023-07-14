@@ -34,7 +34,6 @@ struct ExpandedPost: View {
 
     @State private var isInTheMiddleOfStyling: Bool = false
     @State internal var isPostingComment: Bool = false
-    @State internal var isReplyingToComment: Bool = false
     @State private var isComposingReport: Bool = false
     @State internal var commentReplyingTo: APICommentView?
 
@@ -65,13 +64,11 @@ struct ExpandedPost: View {
         .sheet(isPresented: $isPostingComment) {
             CommentComposerView(replyTo: post)
         }
-        .sheet(isPresented: $isReplyingToComment) {
-            if let comment = commentReplyingTo {
-                let replyTo: ReplyToComment = ReplyToComment(comment: comment,
-                                                             appState: appState,
-                                                             commentTracker: commentTracker)
-                GeneralCommentComposerView(replyTo: replyTo)
-            }
+        .sheet(item: $commentReplyingTo) { comment in
+            let replyTo: ReplyToComment = ReplyToComment(comment: comment,
+                                                         appState: appState,
+                                                         commentTracker: commentTracker)
+            GeneralCommentComposerView(replyTo: replyTo)
         }
         .environmentObject(commentTracker)
         .environmentObject(commentReplyTracker)
