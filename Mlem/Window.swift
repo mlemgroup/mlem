@@ -18,7 +18,7 @@ struct Window: View {
     @State var selectedAccount: SavedAccount?
     
     @State var easterRewardsToastsQueue: [AlertToast] = .init()
-    @State var easterRewardsToastDisaply: AlertToast?
+    @State var easterRewardsToastDisplay: AlertToast?
     @State var easterRewardShouldShow = false
 
     var body: some View {
@@ -34,10 +34,10 @@ struct Window: View {
             // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
             Color.clear
                 .toast(isPresenting: $easterRewardShouldShow, duration: 2.0) {
-                    easterRewardsToastDisaply ?? AlertToast(displayMode: .hud, type: .error(.clear))
+                    easterRewardsToastDisplay ?? AlertToast(displayMode: .hud, type: .error(.clear))
                 } completion: {
                     if !easterRewardsToastsQueue.isEmpty {
-                        easterRewardsToastDisaply = easterRewardsToastsQueue.popLast()
+                        easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
                         easterRewardShouldShow = true
                     }
                 }
@@ -121,7 +121,7 @@ struct Window: View {
             }
             
             if !easterRewardsToastsQueue.isEmpty {
-                easterRewardsToastDisaply = easterRewardsToastsQueue.popLast()
+                easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
                 easterRewardShouldShow = true
             }
         }
