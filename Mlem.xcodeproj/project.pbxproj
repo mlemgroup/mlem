@@ -20,6 +20,7 @@
 		507573962A5AD5CF00AA7ABD /* ContextualError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573952A5AD5CF00AA7ABD /* ContextualError.swift */; };
 		507573982A5AD60100AA7ABD /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573972A5AD60100AA7ABD /* ErrorAlert.swift */; };
 		508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508845CE2A3641160088E483 /* JSONDecoder+Default.swift */; };
+		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
 		50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */; };
 		50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */; };
@@ -675,6 +676,7 @@
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
+				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
@@ -1759,6 +1761,7 @@
 				B104A6D92A59BF3C00B3E725 /* NukeExtensions */,
 				B104A6DB2A59BF3C00B3E725 /* NukeUI */,
 				B104A6DD2A59BF3C00B3E725 /* NukeVideo */,
+				50C99B552A61D792005D57DD /* Dependencies */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -1839,6 +1842,7 @@
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
+				50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -2567,6 +2571,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-dependencies";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.1;
+			};
+		};
 		636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -2618,6 +2630,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		50C99B552A61D792005D57DD /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = Dependencies;
+		};
 		636250DB2A18111400FC59B4 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
