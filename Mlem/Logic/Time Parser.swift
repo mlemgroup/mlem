@@ -7,7 +7,15 @@
 
 import Foundation
 
-func getTimeIntervalFromNow(date: Date, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .abbreviated) -> String {
-    AppConstants.relativeDateFormatter.unitsStyle = unitsStyle
-    return AppConstants.relativeDateFormatter.localizedString(for: date, relativeTo: Date())
+func getTimeIntervalFromNow(date: Date, unitsStyle: DateComponentsFormatter.UnitsStyle = .abbreviated) -> String {
+    AppConstants.dateComponentsFormatter.unitsStyle = unitsStyle
+    AppConstants.dateComponentsFormatter.maximumUnitCount = 1
+    
+    let interval = date.timeIntervalSinceNow
+    if interval > -1 {
+        return "Now"
+    }
+    
+    let value = AppConstants.dateComponentsFormatter.string(from: abs(interval))
+    return value ?? "Unknown"
 }
