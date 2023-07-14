@@ -68,7 +68,6 @@ struct ExpandedPost: View {
         .sheet(isPresented: $isReplyingToComment) {
             if let comment = commentReplyingTo {
                 let replyTo: ReplyToComment = ReplyToComment(comment: comment,
-                                                             account: appState.currentActiveAccount,
                                                              appState: appState,
                                                              commentTracker: commentTracker)
                 GeneralCommentComposerView(replyTo: replyTo)

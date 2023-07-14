@@ -78,3 +78,6 @@ In order to benefit please ensure you have [Homebrew](https://brew.sh) installed
 ## License
 
 Mlem is fully open-source, licensed under GPL 3.0 with an addendum for compliance with the Apple App Store. See LICENSE for details.
+
+### Icons
+Beehaw Community Icon by Aaron Schneider is included under [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
