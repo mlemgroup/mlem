@@ -8,7 +8,7 @@
 import Foundation
 
 struct AlternativeIcon: Identifiable {
-    let id: IconId?
+    let id: String?
     let name: String
     let author: String?
     let selected: Bool

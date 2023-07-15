@@ -7,7 +7,10 @@
 
 import Foundation
 
-typealias IconId = String
+enum IconId: String {
+    case beehawCommunity = "Beehaw Community By Aaron Schneider",
+         mlemhaw = "Mlemhaw By Clays"
+}
 typealias EasterFlag = String
 
 enum RewardType {
@@ -16,12 +19,12 @@ enum RewardType {
 
 let easterReward: [EasterFlag: [RewardType]] = [
     "login:beehaw.org": [
-        .icon(iconName: "Mlemhaw", iconId: "Mlemhaw By Clays"),
-        .icon(iconName: "Beehaw Community", iconId: "Beehaw Community By Aaron Schneider")
+        .icon(iconName: "Mlemhaw", iconId: .mlemhaw),
+        .icon(iconName: "Beehaw Community", iconId: .beehawCommunity)
     ]
 ]
 
 let easterDependentIcons: [IconId: EasterFlag] = [
-    "Mlemhaw By Clays": "login:beehaw.org",
-    "Beehaw Community By Aaron Schneider": "login:beehaw.org"
+    .mlemhaw: "login:beehaw.org",
+    .beehawCommunity: "login:beehaw.org"
 ]

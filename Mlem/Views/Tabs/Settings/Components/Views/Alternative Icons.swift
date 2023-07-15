@@ -54,7 +54,7 @@ struct AlternativeIcons: View {
             author = author.replacingOccurrences(of: "Clays", with: "Clay/s")
             return AlternativeIcon(id: key, name: name, author: author, selected: currentIconSelection == key)
         }.filter {
-            if let id = $0.id,
+            if let id = IconId(rawValue: $0.id ?? "Default"),
                let requiredEasterFlag = easterDependentIcons[id] {
                 return easterTracker.flags.contains(requiredEasterFlag)
             }
