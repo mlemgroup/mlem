@@ -12,9 +12,9 @@ struct CustomizePostView: View {
     @EnvironmentObject var appState: AppState
     
     // body
-    @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
-    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
-    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     
     // interactions and info
