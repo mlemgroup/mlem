@@ -54,7 +54,7 @@ struct NSFWOverlay: ViewModifier {
 }
 
 extension View {
-    func applyNsfwOverlay(isNsfw: Bool) -> some View {
+    func applyNsfwOverlay(_ isNsfw: Bool) -> some View {
         modifier(NSFWOverlay(isNsfw: isNsfw))
     }
 }

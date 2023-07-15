@@ -1,5 +1,5 @@
 //
-//  MarkdownImageProvider.swift
+//  Cached Image.swift
 //  Mlem
 //
 //  Created by tht7 on 26/06/2023.

@@ -53,7 +53,7 @@ struct WebsiteIconComplex: View {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
                 CachedImage(url: thumbnailURL)
                     .frame(maxHeight: 400)
-                    .applyNsfwOverlay(isNsfw: post.nsfw)
+                    .applyNsfwOverlay(post.nsfw)
                     .clipped()
             }
             
