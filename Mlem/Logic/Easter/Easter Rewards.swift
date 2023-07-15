@@ -11,20 +11,22 @@ enum IconId: String {
     case beehawCommunity = "Beehaw Community By Aaron Schneider",
          mlemhaw = "Mlemhaw By Clays"
 }
-typealias EasterFlag = String
+enum EasterFlag: String, Codable {
+    case loginBeehaw = "login:beehaw.org"
+}
 
 enum RewardType {
     case icon(iconName: String, iconId: IconId)
 }
 
 let easterReward: [EasterFlag: [RewardType]] = [
-    "login:beehaw.org": [
+    .loginBeehaw: [
         .icon(iconName: "Mlemhaw", iconId: .mlemhaw),
         .icon(iconName: "Beehaw Community", iconId: .beehawCommunity)
     ]
 ]
 
 let easterDependentIcons: [IconId: EasterFlag] = [
-    .mlemhaw: "login:beehaw.org",
-    .beehawCommunity: "login:beehaw.org"
+    .mlemhaw: .loginBeehaw,
+    .beehawCommunity: .loginBeehaw
 ]

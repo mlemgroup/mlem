@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 private struct EasterFlagSetter: EnvironmentKey {
-    static let defaultValue: (_ flag: String) -> Void = { _ in }
+    static let defaultValue: (_ flag: EasterFlag) -> Void = { _ in }
 }
 
 extension EnvironmentValues {
-    var setEasterFlag: (_ flag: String) -> Void {
+    var setEasterFlag: (_ flag: EasterFlag) -> Void {
         get { self[EasterFlagSetter.self] }
         set { self[EasterFlagSetter.self] = newValue }
       }

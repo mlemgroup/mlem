@@ -10,7 +10,7 @@ import Combine
 
 @MainActor
 class EasterFlagsTracker: ObservableObject {
-    @Published var flags: Set<String>
+    @Published var flags: Set<EasterFlag>
     private var updateObservar: AnyCancellable?
     
     init() {
@@ -18,13 +18,13 @@ class EasterFlagsTracker: ObservableObject {
         updateObservar = $flags.sink { EasterFlagsTracker.saveFlags($0) }
     }
     
-    static func loadFlags() -> Set<String> {
+    static func loadFlags() -> Set<EasterFlag> {
         if FileManager.default.fileExists(atPath: AppConstants.easterFlagsFilePath.path) {
             do {
                 return try decodeFromFile(
                     fromURL: AppConstants.easterFlagsFilePath,
                     whatToDecode: .easterFlags
-                ) as? Set<String> ?? .init()
+                ) as? Set<EasterFlag> ?? .init()
             } catch {
                 print(String(describing: error))
             }
@@ -40,7 +40,7 @@ class EasterFlagsTracker: ObservableObject {
         return .init()
     }
     
-    static func saveFlags(_ flags: Set<String>) {
+    static func saveFlags(_ flags: Set<EasterFlag>) {
         Task(priority: .background) {
             do {
                 let encodedEasterFlags: Data = try encodeForSaving(object: flags)
