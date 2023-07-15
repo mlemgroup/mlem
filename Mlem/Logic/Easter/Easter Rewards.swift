@@ -12,7 +12,7 @@ enum IconId: String {
          mlemhaw = "Mlemhaw By Clays"
 }
 enum EasterFlag: Codable, Hashable {
-    case login(host: String)
+    case login(host: RecognizedLemmyInstances)
 }
 
 enum RewardType {
@@ -20,13 +20,13 @@ enum RewardType {
 }
 
 let easterReward: [EasterFlag: [RewardType]] = [
-    .login(host: "beehew.org"): [
+    .login(host: .beehaw): [
         .icon(iconName: "Mlemhaw", iconId: .mlemhaw),
         .icon(iconName: "Beehaw Community", iconId: .beehawCommunity)
     ]
 ]
 
 let easterDependentIcons: [IconId: EasterFlag] = [
-    .mlemhaw: .login(host: "beehew.org"),
-    .beehawCommunity: .login(host: "beehew.org")
+    .mlemhaw: .login(host: .beehaw),
+    .beehawCommunity: .login(host: .beehaw)
 ]

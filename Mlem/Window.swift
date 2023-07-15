@@ -42,20 +42,21 @@ struct Window: View {
                     }
                 }
         }
-        .onChange(of: selectedAccount) {
-            if let host = $0?.instanceLink.host() {
-                setEasterFlag(.login(host: host))
-            }
-        }
-        .onAppear {
-            if let host = selectedAccount?.instanceLink.host() {
-                setEasterFlag(.login(host: host))
-            }
-        }
+        .onChange(of: selectedAccount) { _ in onLogin() }
+        .onAppear(perform: onLogin)
         .environment(\.setEasterFlag, setEasterFlag)
         .environmentObject(easterFlagsTracker)
     }
 
+    func onLogin() {
+        if let host =
+            RecognizedLemmyInstances(rawValue:
+                                        selectedAccount?.instanceLink.host() ?? "unknown"
+            ) {
+            setEasterFlag(.login(host: host))
+        }
+    }
+    
     @ViewBuilder
     private func view(for account: SavedAccount) -> some View {
         ContentView()
