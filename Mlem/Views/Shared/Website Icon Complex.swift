@@ -51,8 +51,9 @@ struct WebsiteIconComplex: View {
     var body: some View {
         VStack(spacing: 0) {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
-                CachedImage(isNsfw: post.nsfw, url: thumbnailURL)
+                CachedImage(url: thumbnailURL)
                     .frame(maxHeight: 400)
+                    .applyNsfwOverlay(isNsfw: post.nsfw)
                     .clipped()
             }
             
@@ -92,6 +93,7 @@ struct WebsiteIconComplex: View {
             RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
                 .stroke(Color(.secondarySystemBackground), lineWidth: 1)
         )
+        .contentShape(Rectangle())
         .onTapGesture {
             if let url = post.url {
                 openURL(url)

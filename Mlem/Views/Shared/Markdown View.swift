@@ -236,7 +236,8 @@ struct MarkdownView: View {
                     if replaceImagesWithEmoji {
                         getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️")
                     } else {
-                        CachedImage(isNsfw: isNsfw, url: URL(string: String(block.text)))
+                        CachedImage(url: URL(string: String(block.text)))
+                            .applyNsfwOverlay(isNsfw: isNsfw)
                     }
                 } else {
                     getMarkdown(text: String(block.text))
