@@ -81,6 +81,14 @@ extension InboxView {
             replyToCommentReply(commentReply: commentReply)
         })
         
+        // report
+        ret.append(MenuFunction(text: "Report Comment",
+                                imageName: AppConstants.reportSymbolName,
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            reportCommentReply(commentReply: commentReply)
+        })
+        
         // block
         ret.append(MenuFunction(text: "Block User",
                                 imageName: "person.fill.xmark",
@@ -164,6 +172,14 @@ extension InboxView {
         ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
             replyToMention(mention: mention)
         })
+        
+        // report
+        ret.append(MenuFunction(text: "Report Comment",
+                                imageName: AppConstants.reportSymbolName,
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            reportMention(mention: mention)
+        })
 
         // block
         ret.append(MenuFunction(text: "Block User",
@@ -220,8 +236,8 @@ extension InboxView {
         })
         
         // report
-        ret.append(MenuFunction(text: "Report",
-                                imageName: "exclamationmark.shield",
+        ret.append(MenuFunction(text: "Report Message",
+                                imageName: AppConstants.reportSymbolName,
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             reportMessage(message: message)

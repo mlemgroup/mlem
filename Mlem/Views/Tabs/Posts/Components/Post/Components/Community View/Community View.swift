@@ -16,12 +16,12 @@ struct CommunityView: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("postSize") var postSize: PostSize = .headline
-
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
-
+    
     @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     
     // parameters
@@ -30,102 +30,94 @@ struct CommunityView: View {
     
     // variables
     @State var communityDetails: GetCommunityResponse?
-
+    
     @State private var postSortType: PostSortType = .hot
     @State private var didLoad: Bool = false
-
+    
     @State private var isRefreshing: Bool = false
-
+    
     @State private var isComposingPost: Bool = false
     @State private var isPostingPost: Bool = false
-
+    
     @State var isDragging: Bool = false
-    @State var replyingToPost: APIPostView?
     
     private let scrollToTopId = "top"
-
+    
     var isInSpecificCommunity: Bool { community != nil }
     
     init(community: APICommunity?, feedType: FeedType) {
         self.community = community
         self._feedType = State(initialValue: feedType)
     }
-
+    
     var body: some View {
-        ZStack(alignment: .top) {
-            ScrollViewReader { scrollProxy in
-                ScrollView(showsIndicators: false) {
-                    EmptyView().id(scrollToTopId) // 🙄
-                    if postTracker.items.isEmpty {
-                        noPostsView
-                    } else {
-                        LazyVStack(spacing: 0) {
-                            bannerView
-                            postListView
-                            loadingMorePostsView
-                        }
-                    }
-                }
-                .background(Color.secondarySystemBackground)
-                .refreshable {
-                    Task(priority: .userInitiated) {
-                        isRefreshing = true
-                        defer { isRefreshing = false }
-                        await refreshFeed()
-                    }
-                }
-                .onAppear {
-                    Task(priority: .userInitiated) {
-                        if postTracker.items.isEmpty {
-                            print("Post tracker is empty")
-                            await loadFeed()
-                        } else {
-                            print("Post tracker is not empty")
-                        }
-                    }
-                    Task(priority: .background) {
-                        if isInSpecificCommunity, let community {
-                            do {
-                                communityDetails = try await loadCommunityDetails(
-                                    community: community,
-                                    account: appState.currentActiveAccount
-                                )
-                            } catch {
-                                print("Failed while fetching community details: \(error)")
-                                
-                                appState.contextualError = .init(
-                                    title: "Could not load community information",
-                                    message: "The server might be overloaded.\nTry again later.",
-                                    underlyingError: error
-                                )
-                            }
-                        }
-                    }
-                }
-                .onChange(of: feedType) { _ in
-                    Task(priority: .userInitiated) {
-                        await refreshFeed()
-                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                    }
-                }
-                .onChange(of: postSortType) { _ in
-                    Task(priority: .userInitiated) {
-                        await refreshFeed()
-                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                    }
-                }
-                .onChange(of: appState.currentActiveAccount) { _ in
-                    Task {
-                        await refreshFeed()
-                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
+        ScrollViewReader { scrollProxy in
+            ScrollView(showsIndicators: false) {
+                EmptyView().id(scrollToTopId) // 🙄
+                if postTracker.items.isEmpty {
+                    noPostsView
+                } else {
+                    LazyVStack(spacing: 0) {
+                        bannerView
+                        postListView
+                        loadingMorePostsView
                     }
                 }
             }
-        }
-        .sheet(item: $replyingToPost) { post in
-            GeneralCommentComposerView(
-                replyTo: ReplyToFeedPost(appState: appState, post: post)
-            )
+            .background(Color.secondarySystemBackground)
+            .refreshable {
+                Task(priority: .userInitiated) {
+                    isRefreshing = true
+                    defer { isRefreshing = false }
+                    await refreshFeed()
+                }
+            }
+            .onAppear {
+                Task(priority: .userInitiated) {
+                    if postTracker.items.isEmpty {
+                        print("Post tracker is empty")
+                        await loadFeed()
+                    } else {
+                        print("Post tracker is not empty")
+                    }
+                }
+                Task(priority: .background) {
+                    if isInSpecificCommunity, let community {
+                        do {
+                            communityDetails = try await loadCommunityDetails(
+                                community: community,
+                                account: appState.currentActiveAccount
+                            )
+                        } catch {
+                            print("Failed while fetching community details: \(error)")
+                            
+                            appState.contextualError = .init(
+                                title: "Could not load community information",
+                                message: "The server might be overloaded.\nTry again later.",
+                                underlyingError: error
+                            )
+                        }
+                    }
+                }
+            }
+            .onChange(of: feedType) { _ in
+                Task(priority: .userInitiated) {
+                    await refreshFeed()
+                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
+                }
+            }
+            .onChange(of: postSortType) { _ in
+                Task(priority: .userInitiated) {
+                    await refreshFeed()
+                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
+                }
+            }
+            .onChange(of: appState.currentActiveAccount) { _ in
+                Task {
+                    await refreshFeed()
+                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
+                }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -315,7 +307,7 @@ struct CommunityView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private var noPostsView: some View {
         if postTracker.isLoading {
@@ -323,7 +315,7 @@ struct CommunityView: View {
         } else {
             VStack(alignment: .center, spacing: 5) {
                 Image(systemName: "text.bubble")
-
+                
                 Text("No posts to be found")
             }
             .padding()
@@ -331,7 +323,7 @@ struct CommunityView: View {
             .frame(maxWidth: .infinity)
         }
     }
-
+    
     @ViewBuilder
     private var bannerView: some View {
         if isInSpecificCommunity {
@@ -342,7 +334,7 @@ struct CommunityView: View {
             }
         }
     }
-
+    
     private var postListView: some View {
         ForEach(postTracker.items, id: \.id) { post in
             VStack(spacing: 0) {
@@ -351,8 +343,7 @@ struct CommunityView: View {
                         postView: post,
                         showPostCreator: shouldShowPostCreator,
                         showCommunity: !isInSpecificCommunity,
-                        isDragging: $isDragging,
-                        replyToPost: replyToPost
+                        isDragging: $isDragging
                     )
                 }
                 Divider()
@@ -367,7 +358,7 @@ struct CommunityView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private var loadingMorePostsView: some View {
         if postTracker.isLoading {
@@ -383,11 +374,7 @@ struct CommunityView: View {
             .accessibilityElement(children: .combine)
         }
     }
-
-    func replyToPost(replyTo: APIPostView) {
-        replyingToPost = replyTo
-    }
-
+    
     func loadFeed() async {
         do {
             try await postTracker.loadNextPage(
@@ -403,7 +390,7 @@ struct CommunityView: View {
             handle(error)
         }
     }
-
+    
     func refreshFeed() async {
         do {
             try await postTracker.refresh(
@@ -419,7 +406,7 @@ struct CommunityView: View {
             handle(error)
         }
     }
-
+    
     private func handle(_ error: Error) {
         let title: String?
         let errorMessage: String?
@@ -430,8 +417,8 @@ struct CommunityView: View {
                 return
             }
             
-        title = "Unable to connect to Lemmy"
-        errorMessage = "Please check your internet connection and try again"
+            title = "Unable to connect to Lemmy"
+            errorMessage = "Please check your internet connection and try again"
         default:
             title = nil
             errorMessage = nil

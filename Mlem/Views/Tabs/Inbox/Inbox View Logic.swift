@@ -111,11 +111,6 @@ extension InboxView {
         return lhs.published > rhs.published
     }
     
-    // INTERACTION
-    func voteOnComment(comment: APIComment) {
-        print("voting on \(comment.content)")
-    }
-    
     // MARK: Callbacks
     
     // REPLIES
@@ -153,8 +148,11 @@ extension InboxView {
     }
     
     func replyToCommentReply(commentReply: APICommentReplyView) {
-        composingTo = .commentReply(commentReply)
-        isComposing = true
+        responseItem = ConcreteRespondable(appState: appState, commentReply: commentReply)
+    }
+    
+    func reportCommentReply(commentReply: APICommentReplyView) {
+        responseItem = ConcreteRespondable(appState: appState, commentReply: commentReply, report: true)
     }
     
     // MENTIONS
@@ -189,16 +187,15 @@ extension InboxView {
         }
     }
     
+    func reportMention(mention: APIPersonMentionView) {
+        responseItem = ConcreteRespondable(appState: appState, mention: mention, report: true)
+    }
+    
     func replyToMention(mention: APIPersonMentionView) {
-        composingTo = .mention(mention)
-        isComposing = true
+        responseItem = ConcreteRespondable(appState: appState, mention: mention)
     }
     
     // MESSAGES
-    func replyToMessage(message: APIPrivateMessageView) {
-        composingTo = .message(message.creator)
-        isComposing = true
-    }
     
     func toggleMessageRead(message: APIPrivateMessageView) {
         Task(priority: .userInitiated) {
@@ -216,7 +213,11 @@ extension InboxView {
         }
     }
     
+    func replyToMessage(message: APIPrivateMessageView) {
+        responseItem = ConcreteRespondable(appState: appState, message: message)
+    }
+    
     func reportMessage(message: APIPrivateMessageView) {
-        messageToReport = message
+        responseItem = ConcreteRespondable(appState: appState, message: message, report: true)
     }
 }

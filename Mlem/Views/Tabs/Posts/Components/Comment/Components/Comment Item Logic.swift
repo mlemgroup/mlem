@@ -129,11 +129,6 @@ extension CommentItem {
             return
         }
     }
-
-//    @MainActor
-//    func replyToComment() {
-//        commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
-//    }
     
     // MARK: helpers
     
@@ -225,7 +220,6 @@ extension CommentItem {
                 isComposingReport = true
             })
         
-        // block
         // block
         ret.append(MenuFunction(text: "Block User",
                                 imageName: "person.fill.xmark",

@@ -76,16 +76,11 @@ struct CommentItem: View {
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
         _dirtySaved = State(initialValue: hierarchicalComment.commentView.saved)
-
-//        let commentor = hierarchicalComment.commentView.creator
-//        commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
     }
 
     // MARK: State
 
     @State var isCollapsed: Bool = false
-
-    // let commentorLabel: String
 
     // MARK: Body
 
@@ -145,7 +140,9 @@ struct CommentItem: View {
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             .sheet(isPresented: $isComposingReport) {
-                ReportComposerView(reportedComment: hierarchicalComment.commentView)
+                ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
+                                                                              comment: hierarchicalComment.commentView,
+                                                                              report: true))
             }
             
             Divider()

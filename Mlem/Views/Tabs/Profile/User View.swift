@@ -362,8 +362,7 @@ struct UserView: View {
                 FeedPost(postView: post,
                          showPostCreator: false,
                          showCommunity: true,
-                         isDragging: $isDragging,
-                         replyToPost: nil
+                         isDragging: $isDragging
                 )
                 
                 Divider()

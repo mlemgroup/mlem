@@ -25,18 +25,14 @@ struct ExpandedPost: View {
     @EnvironmentObject var postTracker: PostTracker
 
     @State var post: APIPostView
+    
+    @State var responseItem: ConcreteRespondable?
 
     @State private var sortSelection = 0
 
     @State private var commentSortingType: CommentSortType = .top
 
-    @State private var replyingToCommentID: Int?
-
     @State private var isInTheMiddleOfStyling: Bool = false
-    @State internal var isPostingComment: Bool = false
-    @State internal var isReplyingToComment: Bool = false
-    @State private var isComposingReport: Bool = false
-    @State internal var commentReplyingTo: APICommentView?
 
     @State private var viewID: UUID = UUID()
     
@@ -62,16 +58,8 @@ struct ExpandedPost: View {
             }
         }
         .scrollDisabled(isDragging)
-        .sheet(isPresented: $isPostingComment) {
-            CommentComposerView(replyTo: post)
-        }
-        .sheet(isPresented: $isReplyingToComment) {
-            if let comment = commentReplyingTo {
-                let replyTo: ReplyToComment = ReplyToComment(comment: comment,
-                                                             appState: appState,
-                                                             commentTracker: commentTracker)
-                GeneralCommentComposerView(replyTo: replyTo)
-            }
+        .sheet(item: $responseItem) { responseItem in
+            ResponseComposerView(concreteRespondable: responseItem)
         }
         .environmentObject(commentTracker)
         .environmentObject(commentReplyTracker)
@@ -103,9 +91,6 @@ struct ExpandedPost: View {
             withAnimation(.easeIn(duration: 0.4)) {
                 commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
             }
-        }
-        .sheet(isPresented: $isComposingReport) {
-            ReportComposerView(reportedPost: post)
         }
     }
     // subviews
