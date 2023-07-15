@@ -11,8 +11,8 @@ enum IconId: String {
     case beehawCommunity = "Beehaw Community By Aaron Schneider",
          mlemhaw = "Mlemhaw By Clays"
 }
-enum EasterFlag: String, Codable {
-    case loginBeehaw = "login:beehaw.org"
+enum EasterFlag: Codable, Hashable {
+    case login(host: String)
 }
 
 enum RewardType {
@@ -20,13 +20,13 @@ enum RewardType {
 }
 
 let easterReward: [EasterFlag: [RewardType]] = [
-    .loginBeehaw: [
+    .login(host: "beehew.org"): [
         .icon(iconName: "Mlemhaw", iconId: .mlemhaw),
         .icon(iconName: "Beehaw Community", iconId: .beehawCommunity)
     ]
 ]
 
 let easterDependentIcons: [IconId: EasterFlag] = [
-    .mlemhaw: .loginBeehaw,
-    .beehawCommunity: .loginBeehaw
+    .mlemhaw: .login(host: "beehew.org"),
+    .beehawCommunity: .login(host: "beehew.org")
 ]

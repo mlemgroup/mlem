@@ -43,15 +43,13 @@ struct Window: View {
                 }
         }
         .onChange(of: selectedAccount) {
-            if let host = $0?.instanceLink.host(),
-               let flag = EasterFlag(rawValue: "login:\(host)") {
-                setEasterFlag(flag)
+            if let host = $0?.instanceLink.host() {
+                setEasterFlag(.login(host: host))
             }
         }
         .onAppear {
-            if let host = selectedAccount?.instanceLink.host(),
-               let flag = EasterFlag(rawValue: "login:\(host)") {
-                setEasterFlag(flag)
+            if let host = selectedAccount?.instanceLink.host() {
+                setEasterFlag(.login(host: host))
             }
         }
         .environment(\.setEasterFlag, setEasterFlag)
