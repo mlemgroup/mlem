@@ -5,9 +5,13 @@
 //  Created by Eric Andrews on 2023-06-20.
 //
 
+import Dependencies
 import SwiftUI
 
 struct CommentItem: View {
+    
+    @Dependency(\.commentRepository) var commentRepository
+    
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
 

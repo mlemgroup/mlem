@@ -5,10 +5,13 @@
 //  Created by Eric Andrews on 2023-07-15.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct ReportComment: Respondable {
+    
+    @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { comment.id }
     let appState: AppState
@@ -25,7 +28,7 @@ struct ReportComment: Respondable {
             .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }
     
-    func sendResponse(responseContents: String) async throws {
-        _ = try await reportComment(account: appState.currentActiveAccount, commentId: comment.id, reason: responseContents)
+    func sendResponse(responseContents: String) async {
+        await commentRepository.reportComment(id: comment.id, reason: responseContents)
     }
 }

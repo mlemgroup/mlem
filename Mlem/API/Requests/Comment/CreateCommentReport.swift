@@ -23,12 +23,12 @@ struct CreateCommentReportRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         commentId: Int,
         reason: String
     ) {
-        self.instanceURL = account.instanceLink
-        self.body = .init(auth: account.accessToken, comment_id: commentId, reason: reason)
+        self.instanceURL = session.URL
+        self.body = .init(auth: session.token, comment_id: commentId, reason: reason)
     }
 }
 

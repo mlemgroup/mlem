@@ -5,6 +5,7 @@
 //  Created by Jake Shirley on 6/25/23.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 import CachedAsyncImage
@@ -29,6 +30,9 @@ enum ComposingTypes {
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
+    
+    @Dependency(\.commentRepository) var commentRepository
+    
     // MARK: Global
     @EnvironmentObject var appState: AppState
     

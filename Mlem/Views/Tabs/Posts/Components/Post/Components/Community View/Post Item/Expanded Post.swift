@@ -5,6 +5,7 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
+import Dependencies
 import SwiftUI
 
 internal enum PossibleStyling {
@@ -12,6 +13,9 @@ internal enum PossibleStyling {
 }
 
 struct ExpandedPost: View {
+    
+    @Dependency(\.commentRepository) var commentRepository
+    
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false

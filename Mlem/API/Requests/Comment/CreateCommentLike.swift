@@ -23,15 +23,15 @@ struct CreateCommentLikeRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         commentId: Int,
-        score: ScoringOperation
+        score: Int
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             comment_id: commentId,
-            score: score.rawValue,
-            auth: account.accessToken
+            score: score,
+            auth: session.token
         )
     }
 }

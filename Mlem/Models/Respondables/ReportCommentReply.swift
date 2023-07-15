@@ -5,10 +5,13 @@
 //  Created by Eric Andrews on 2023-07-14.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct ReportCommentReply: Respondable {
+    
+    @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { commentReply.id }
     let appState: AppState
@@ -22,9 +25,10 @@ struct ReportCommentReply: Respondable {
             .padding(.horizontal))
     }
     
-    func sendResponse(responseContents: String) async throws {
-        _ = try await reportComment(account: appState.currentActiveAccount,
-                                    commentId: commentReply.commentReply.commentId,
-                                    reason: responseContents)
+    func sendResponse(responseContents: String) async {
+        await commentRepository.reportComment(
+            id: commentReply.commentReply.commentId,
+            reason: responseContents
+        )
     }
 }

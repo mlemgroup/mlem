@@ -10,32 +10,23 @@ import AlertToast
 
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
-        do {
-            let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await _ = rateComment(
-                commentId: hierarchicalComment.commentView.id,
-                operation: operation,
-                account: appState.currentActiveAccount,
-                commentTracker: commentTracker,
-                appState: appState
-            )
-        } catch {
-            appState.contextualError = .init(underlyingError: error)
+        let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+        if let updatedComment = await commentRepository.voteOnComment(
+            id: hierarchicalComment.commentView.id,
+            vote: operation
+        ) {
+            commentTracker.comments.update(with: updatedComment)
         }
     }
     
     func deleteComment() async {
-        do {
-            // TODO: rename this function and/or move `deleteComment` out of the global scope
-            // to avoid having to explicitly refer to our own module
-            try await _ = Mlem.deleteComment(
-                comment: hierarchicalComment.commentView,
-                account: appState.currentActiveAccount,
-                commentTracker: commentTracker,
-                appState: appState
-            )
-        } catch {
-            appState.contextualError = .init(underlyingError: error)
+        let comment = hierarchicalComment.commentView.comment
+        if let updatedComment = await commentRepository.deleteComment(
+            id: comment.id,
+            // TODO: the UI for this only allows delete, but the operation can be undone it appears...
+            shouldDelete: true
+        ) {
+            commentTracker.comments.update(with: updatedComment.commentView)
         }
     }
     
@@ -110,23 +101,19 @@ extension CommentItem {
      Sends a save request for the current post
      */
     func saveComment() async {
-        guard dirty else {
-            // fake save
-            dirtySaved.toggle()
-            dirty = true
-
-            do {
-                try await sendSaveCommentRequest(account: appState.currentActiveAccount,
-                                                 commentId: hierarchicalComment.id,
-                                                 save: dirtySaved,
-                                                 commentTracker: commentTracker)
-            } catch {
-                appState.contextualError = .init(underlyingError: error)
-            }
-
-            // unfake save
-            dirty = false
+        guard !dirty else {
             return
+        }
+        
+        defer { dirty = false }
+        dirty = true
+        dirtySaved.toggle()
+        
+        if let response = await commentRepository.saveComment(
+            id: hierarchicalComment.id,
+            shouldSave: dirtySaved
+        ) {
+            commentTracker.comments.update(with: response.commentView)
         }
     }
     

@@ -26,20 +26,20 @@ struct CreateCommentRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         content: String,
         languageId: Int?,
         parentId: Int?,
         postId: Int
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             content: content,
             post_id: postId,
             parent_id: parentId,
             language_id: languageId,
             form_id: nil,
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

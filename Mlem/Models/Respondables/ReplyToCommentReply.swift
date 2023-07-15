@@ -6,15 +6,19 @@
 //
 
 import Foundation
+import Dependencies
 import SwiftUI
 
 struct ReplyToCommentReply: Respondable {
+
+    @Dependency(\.commentRepository) var commentRepository
     
-    var id: Int { commentReply.id }
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
     let commentReply: APICommentReplyView
+    
+    var id: Int { commentReply.id }
     
     func embeddedView() -> AnyView {
         return AnyView(InboxReplyView(reply: commentReply,
@@ -23,10 +27,10 @@ struct ReplyToCommentReply: Respondable {
     }
     
     func sendResponse(responseContents: String) async throws {
-        try await postCommentWithoutTracker(postId: commentReply.post.id,
-                                            commentId: commentReply.comment.id,
-                                            commentContents: responseContents,
-                                            account: appState.currentActiveAccount,
-                                            appState: appState)
+        await commentRepository.postComment(
+            content: responseContents,
+            parentId: commentReply.comment.id,
+            postId: commentReply.post.id
+        )
     }
 }

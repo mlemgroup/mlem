@@ -116,17 +116,13 @@ extension InboxView {
     // REPLIES
     func voteOnCommentReply(commentReply: APICommentReplyView, inputOp: ScoringOperation) {
         Task(priority: .userInitiated) {
-            do {
-                let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-                try await _ = rateCommentReply(commentReply: commentReply,
-                                               operation: operation,
-                                               account: appState.currentActiveAccount,
-                                               commentReplyTracker: repliesTracker,
-                                               appState: appState)
-                // TODO: more granular/less expensive merge options
-                if curTab == .all { aggregateAllTrackers() }
-            } catch {
-                print("failed to vote!")
+            let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+            if let updatedReply = await commentRepository.voteOnCommentReply(commentReply, vote: operation) {
+                repliesTracker.update(with: updatedReply)
+                if curTab == .all {
+                    // TODO: more granular/less expensive merge options
+                    aggregateAllTrackers()
+                }
             }
         }
     }
@@ -158,15 +154,12 @@ extension InboxView {
     // MENTIONS
     func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
         Task(priority: .userInitiated) {
-            do {
-                let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-                try await ratePersonMention(personMention: mention,
-                                            operation: operation,
-                                            account: appState.currentActiveAccount,
-                                            mentionsTracker: mentionsTracker,
-                                            appState: appState)
-                
-                if curTab == .all { aggregateAllTrackers() }
+            let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+            if let updatedMention = await commentRepository.voteOnPersonMention(mention, vote: operation) {
+                mentionsTracker.update(with: updatedMention)
+                if curTab == .all {
+                    aggregateAllTrackers()
+                }
             }
         }
     }

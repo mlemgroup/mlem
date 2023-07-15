@@ -6,15 +6,19 @@
 //
 
 import Foundation
+import Dependencies
 import SwiftUI
 
 struct ReplyToMention: Respondable {
     
-    var id: Int { mention.id }
+    @Dependency(\.commentRepository) var commentRepository
+    
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
     let mention: APIPersonMentionView
+    
+    var id: Int { mention.id }
     
     func embeddedView() -> AnyView {
         return AnyView(InboxMentionView(mention: mention,
@@ -22,11 +26,11 @@ struct ReplyToMention: Respondable {
             .padding(.horizontal))
     }
     
-    func sendResponse(responseContents: String) async throws {
-        try await postCommentWithoutTracker(postId: mention.post.id,
-                                            commentId: mention.comment.id,
-                                            commentContents: responseContents,
-                                            account: appState.currentActiveAccount,
-                                            appState: appState)
+    func sendResponse(responseContents: String) async {
+        await commentRepository.postComment(
+            content: responseContents,
+            parentId: mention.comment.id,
+            postId: mention.post.id
+        )
     }
 }

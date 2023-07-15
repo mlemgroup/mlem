@@ -203,17 +203,8 @@ extension ExpandedPost {
         defer { commentTracker.isLoading = false }
 
         commentTracker.isLoading = true
-        do {
-            let request = GetCommentsRequest(account: appState.currentActiveAccount, postId: post.post.id)
-            let response = try await APIClient().perform(request: request)
-            commentTracker.comments = sortComments(response.comments.hierarchicalRepresentation, by: defaultCommentSorting)
-        } catch {
-            appState.contextualError = .init(
-                title: "Failed to load comments",
-                message: "Please refresh to try again",
-                underlyingError: error
-            )
-        }
+            let comments = await commentRepository.comments(for: post.post.id)
+            commentTracker.comments = sortComments(comments, by: defaultCommentSorting)
     }
 
     internal func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortType) -> [HierarchicalComment] {

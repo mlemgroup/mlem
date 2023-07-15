@@ -17,27 +17,13 @@ struct GetCommentRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
-
+        session: APISession,
         id: Int
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.queryItems = [
             .init(name: "id", value: id.description),
-
-            .init(name: "auth", value: account.accessToken)
-        ]
-    }
-
-    init(
-        instanceURL: URL,
-
-        id: Int
-    ) {
-        self.instanceURL = instanceURL
-
-        self.queryItems = [
-            .init(name: "id", value: id.description)
+            .init(name: "auth", value: session.token)
         ]
     }
 }

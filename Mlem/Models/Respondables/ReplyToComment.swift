@@ -6,9 +6,13 @@
 //
 
 import Foundation
+import Dependencies
 import SwiftUI
 
 struct ReplyToComment: Respondable {
+    
+    @Dependency(\.commentRepository) var commentRepository
+    
     var id: Int { comment.id }
     let appState: AppState
     let canUpload: Bool = true
@@ -26,19 +30,22 @@ struct ReplyToComment: Respondable {
             .padding(.horizontal))
     }
     
-    func sendResponse(responseContents: String) async throws {
-        if let commentTracker = commentTracker {
-            try await postComment(to: comment.id,
-                                  postId: comment.post.id,
-                                  commentContents: responseContents,
-                                  commentTracker: commentTracker,
-                                  account: appState.currentActiveAccount)
-        } else {
-            try await postCommentWithoutTracker(postId: comment.post.id,
-                                                commentId: comment.id,
-                                                commentContents: responseContents,
-                                                account: appState.currentActiveAccount,
-                                                appState: appState)
+    func sendResponse(responseContents: String) async {
+        let postedComment = await commentRepository.postComment(
+            content: responseContents,
+            parentId: comment.id,
+            postId: comment.post.id
+        )
+        
+        await MainActor.run {
+            if let commentTracker, let postedComment {
+                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
+                    // the return value from `.update(with: ...)` is discardable by design but
+                    // the `withAnimation` closure implicitly returns it resulting in a warning for an unused
+                    // value, the `_` is there to silence this as it's expected
+                    _ = commentTracker.comments.update(with: postedComment.commentView)
+                }
+            }
         }
     }
 }

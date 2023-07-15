@@ -30,26 +30,3 @@ func deletePost(
         throw error
     }
 }
-
-@MainActor
-func deleteComment(
-    comment: APICommentView,
-    account: SavedAccount,
-    commentTracker: CommentTracker,
-    appState: AppState
-) async throws -> HierarchicalComment? {
-    do {
-        let request = DeleteCommentRequest(
-            account: account,
-            commentId: comment.id
-        )
-        
-        let response = try await APIClient().perform(request: request)
-        let updatedComment = commentTracker.comments.update(with: response.commentView)
-        HapticManager.shared.destructiveSuccess()
-        return updatedComment
-    } catch {
-        HapticManager.shared.error()
-        throw error
-    }
-}
