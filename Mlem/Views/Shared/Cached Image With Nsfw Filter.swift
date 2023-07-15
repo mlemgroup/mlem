@@ -32,9 +32,9 @@ struct CachedImageWithNsfwFilter: View {
                 image
                     .resizable()
                     .scaledToFill()
-                    .blur(radius: showNsfwFilter ? 30 : 0)
+                    // .blur(radius: showNsfwFilter ? 30 : 0)
                     .allowsHitTesting(false)
-                    .overlay(nsfwOverlay)
+                    // .overlay(nsfwOverlay)
             } else if state.error != nil {
                 // Indicates an error
                 Color.red
@@ -81,7 +81,8 @@ struct CachedImageWithNsfwFilter: View {
                     showNsfwFilterToggle.toggle()
                 }
                 .padding(4)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                // .frame(alignment: .topLeading)
+                // .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
     }
 }
