@@ -91,7 +91,7 @@ extension InboxView {
         
         // block
         ret.append(MenuFunction(text: "Block User",
-                                imageName: "person.fill.xmark",
+                                imageName: AppConstants.blockUserSymbolName,
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             Task(priority: .userInitiated) {
@@ -183,7 +183,7 @@ extension InboxView {
 
         // block
         ret.append(MenuFunction(text: "Block User",
-                                imageName: "person.fill.xmark",
+                                imageName: AppConstants.blockUserSymbolName,
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             Task(priority: .userInitiated) {
@@ -245,7 +245,7 @@ extension InboxView {
         
         // block
         ret.append(MenuFunction(text: "Block User",
-                                imageName: "person.fill.xmark",
+                                imageName: AppConstants.blockUserSymbolName,
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             Task(priority: .userInitiated) {

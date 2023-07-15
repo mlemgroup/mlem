@@ -214,7 +214,7 @@ extension CommentItem {
         // report
         ret.append(MenuFunction(
             text: "Report",
-            imageName: "exclamationmark.shield",
+            imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
             enabled: true) {
                 isComposingReport = true
@@ -222,7 +222,7 @@ extension CommentItem {
         
         // block
         ret.append(MenuFunction(text: "Block User",
-                                imageName: "person.fill.xmark",
+                                imageName: AppConstants.blockUserSymbolName,
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             Task(priority: .userInitiated) {
