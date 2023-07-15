@@ -148,7 +148,7 @@ struct CommunityView: View {
                         feedTypeMenuItem(for: .all)
                     } label: {
                         HStack(alignment: .center, spacing: 0) {
-                            Text(feedType.rawValue)
+                            Text(feedType.label)
                                 .font(.headline)
                             Image(systemName: "chevron.down")
                                 .scaleEffect(0.7)
