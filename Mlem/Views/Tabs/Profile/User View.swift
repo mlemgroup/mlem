@@ -17,9 +17,11 @@ import SwiftUI
 struct UserView: View {
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
+    @AppStorage("shouldHideNsfw") var shouldHideNsfw: Bool = true
     
     // environment
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var filtersTracker: FiltersTracker
     
     // parameters
     @State var userID: Int
@@ -315,7 +317,13 @@ struct UserView: View {
                 .sorted(by: { $0.comment.published > $1.comment.published})
                 .map({HierarchicalComment(comment: $0, children: [])}))
             
-            privatePostTracker.add(authoredContent.posts)
+            privatePostTracker.add(authoredContent.posts
+                .filter {
+                    // post name doesn't contain a filtered keyword
+                    !$0.post.name.contains(filtersTracker.filteredKeywords) &&
+                    // post is not NSFW, if NSFW is hidden
+                    !(shouldHideNsfw && ($0.post.nsfw || $0.community.nsfw))
+                })
             
             if let savedContent = savedContentData {
                 privateCommentTracker.add(savedContent.comments

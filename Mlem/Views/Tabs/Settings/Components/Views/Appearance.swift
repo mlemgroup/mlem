@@ -11,6 +11,7 @@ struct AppearanceSettingsView: View {
     
     // appearance
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
+    @AppStorage("shouldHideNsfw") var shouldHideNsfw: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
@@ -78,10 +79,16 @@ struct AppearanceSettingsView: View {
                         options: PostSize.allCases
                     )
                     
+                    SwitchableSettingsItem(settingPictureSystemName: "eye.slash",
+                                           settingPictureColor: .pink,
+                                           settingName: "Hide NSFW",
+                                           isTicked: $shouldHideNsfw)
+                    
                     SwitchableSettingsItem(settingPictureSystemName: "eye.trianglebadge.exclamationmark",
                                            settingPictureColor: .pink,
                                            settingName: "Blur NSFW",
                                            isTicked: $shouldBlurNsfw)
+                    .disabled(shouldHideNsfw)
                 }
                 
                 Section("Comments") {

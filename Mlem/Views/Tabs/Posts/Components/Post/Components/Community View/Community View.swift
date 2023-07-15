@@ -12,6 +12,7 @@ import SwiftUI
 struct CommunityView: View {
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    @AppStorage("shouldHideNsfw") var shouldHideNsfw: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
@@ -396,7 +397,10 @@ struct CommunityView: View {
                 sort: postSortType,
                 type: feedType,
                 filtering: { postView in
-                    !postView.post.name.contains(filtersTracker.filteredKeywords)
+                    // post name doesn't contain a filtered keyword
+                    !postView.post.name.contains(filtersTracker.filteredKeywords) &&
+                    // post is not NSFW, if NSFW is hidden
+                    !(shouldHideNsfw && (postView.post.nsfw || postView.community.nsfw))
                 }
             )
         } catch {

@@ -10,9 +10,6 @@ Mlem does not collect or store any user data. We do not collect any personally i
 ## Servers and Data Control
 Mlem connects to servers that we do not host or have control over. While we strive to ensure the security and privacy of your data within our App, we cannot guarantee the security or privacy practices of the external servers. Any data stored or processed on these servers is subject to the respective privacy policies and terms of service of those servers.
 
-## Adult Content
-Lemmy is a link aggregator platform, and while some instances that Mlem accesses may host adult content, it blocks such content by default. We take reasonable measures to prevent the display of explicit or adult content within the App, but we cannot guarantee that all instances or communities will follow the appropriate procedures to label adult content. It is your responsibility to exercise caution while accessing external content.
-
 ## Third-Party Services
 Mlem does not integrate any third-party services, advertising networks, or analytics tools that collect personal information or track your activities within the App. We prioritize user privacy and do not engage in any data sharing or tracking practices.
 
