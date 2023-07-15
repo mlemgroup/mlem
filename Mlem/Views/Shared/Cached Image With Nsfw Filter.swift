@@ -9,16 +9,17 @@ import Foundation
 import SwiftUI
 import MarkdownUI
 import NukeUI
+import Nuke
 
 struct CachedImageWithNsfwFilter: View {
-
+    
     let isNsfw: Bool
     let url: URL?
-
+    
     @State var showNsfwFilterToggle: Bool
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     var showNsfwFilter: Bool { self.isNsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
-
+    
     init(isNsfw: Bool, url: URL?) {
         self.isNsfw = isNsfw
         self.url = url
@@ -27,32 +28,41 @@ struct CachedImageWithNsfwFilter: View {
     }
     
     var body: some View {
-        LazyImage(url: url) { state in
-            if let image = state.image {
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .blur(radius: showNsfwFilter ? 30 : 0)
-                    .allowsHitTesting(false)
-                    .overlay(nsfwOverlay)
-            } else if state.error != nil {
-                // Indicates an error
-                Color.red
-                    .frame(minWidth: 300, minHeight: 300)
-                    .blur(radius: 30)
-                    .allowsHitTesting(false)
-                    .overlay(VStack {
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.largeTitle)
-                        Text("Error")
-                            .fontWeight(.black)
-                    }
-                    .foregroundColor(.white)
-                    .padding(8))
-            } else {
-                ProgressView() // Acts as a placeholder
-                    .frame(minWidth: 300, minHeight: 300)
+        GeometryReader { proxy in
+            let width = proxy.frame(in: .local).width
+            let processors: [ImageProcessing] = [.resize(size: .init(width: width, height: 200))]
+
+            LazyImage(url: url) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 400)
+                        .frame(maxWidth: .infinity)
+                        .blur(radius: showNsfwFilter ? 30 : 0)
+                        .allowsHitTesting(false)
+                        .overlay(nsfwOverlay)
+                } else if state.error != nil {
+                    // Indicates an error
+                    Color.red
+                        .frame(minWidth: 300, minHeight: 300)
+                        .blur(radius: 30)
+                        .allowsHitTesting(false)
+                        .overlay(VStack {
+                            Image(systemName: "exclamationmark.triangle")
+                                .font(.largeTitle)
+                            Text("Error")
+                                .fontWeight(.black)
+                        }
+                            .foregroundColor(.white)
+                            .padding(8))
+                } else {
+                    ProgressView() // Acts as a placeholder
+                        .frame(minWidth: 300, minHeight: 300)
+                }
             }
+            .processors(processors)
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
     

@@ -33,6 +33,8 @@ struct CommunityLinkView: View {
     let extraText: String?
     let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system setting
     
+    @Environment(\.navigationPath) var navigationPath
+
     init(community: APICommunity,
          serverInstanceLocation: ServerInstanceLocation = .bottom,
          overrideShowAvatar: Bool? = nil,
@@ -45,7 +47,9 @@ struct CommunityLinkView: View {
     }
     
     var body: some View {
-        NavigationLink(value: community) {
+        Button {
+            navigationPath.wrappedValue.append(community)
+        } label: {
             HStack {
                 CommunityLabel(community: community,
                                serverInstanceLocation: serverInstanceLocation,

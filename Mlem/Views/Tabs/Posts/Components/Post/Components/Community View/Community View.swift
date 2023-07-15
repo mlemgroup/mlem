@@ -21,6 +21,8 @@ struct CommunityView: View {
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
+    
+    @Environment(\.navigationPath) var navigationPath
 
     @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     
@@ -52,73 +54,67 @@ struct CommunityView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .top) {
-            ScrollViewReader { scrollProxy in
-                ScrollView(showsIndicators: false) {
-                    EmptyView().id(scrollToTopId) // 🙄
+        ScrollViewReader { scrollProxy in
+            List {
+                EmptyView().id(scrollToTopId) // 🙄
+                bannerView
+                postListView
+                loadingMorePostsView
+            }
+            .listStyle(.plain)
+            .edgesIgnoringSafeArea(.horizontal)
+            .background(Color.secondarySystemBackground)
+            .refreshable {
+                Task(priority: .userInitiated) {
+                    isRefreshing = true
+                    defer { isRefreshing = false }
+                    await refreshFeed()
+                }
+            }
+            .onAppear {
+                Task(priority: .userInitiated) {
                     if postTracker.items.isEmpty {
-                        noPostsView
+                        print("Post tracker is empty")
+                        await loadFeed()
                     } else {
-                        LazyVStack(spacing: 0) {
-                            bannerView
-                            postListView
-                            loadingMorePostsView
+                        print("Post tracker is not empty")
+                    }
+                }
+                Task(priority: .background) {
+                    if isInSpecificCommunity, let community {
+                        do {
+                            communityDetails = try await loadCommunityDetails(
+                                community: community,
+                                account: appState.currentActiveAccount
+                            )
+                        } catch {
+                            print("Failed while fetching community details: \(error)")
+                            
+                            appState.contextualError = .init(
+                                title: "Could not load community information",
+                                message: "The server might be overloaded.\nTry again later.",
+                                underlyingError: error
+                            )
                         }
                     }
                 }
-                .background(Color.secondarySystemBackground)
-                .refreshable {
-                    Task(priority: .userInitiated) {
-                        isRefreshing = true
-                        defer { isRefreshing = false }
-                        await refreshFeed()
-                    }
+            }
+            .onChange(of: feedType) { _ in
+                Task(priority: .userInitiated) {
+                    await refreshFeed()
+                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
                 }
-                .onAppear {
-                    Task(priority: .userInitiated) {
-                        if postTracker.items.isEmpty {
-                            print("Post tracker is empty")
-                            await loadFeed()
-                        } else {
-                            print("Post tracker is not empty")
-                        }
-                    }
-                    Task(priority: .background) {
-                        if isInSpecificCommunity, let community {
-                            do {
-                                communityDetails = try await loadCommunityDetails(
-                                    community: community,
-                                    account: appState.currentActiveAccount
-                                )
-                            } catch {
-                                print("Failed while fetching community details: \(error)")
-                                
-                                appState.contextualError = .init(
-                                    title: "Could not load community information",
-                                    message: "The server might be overloaded.\nTry again later.",
-                                    underlyingError: error
-                                )
-                            }
-                        }
-                    }
+            }
+            .onChange(of: postSortType) { _ in
+                Task(priority: .userInitiated) {
+                    await refreshFeed()
+                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
                 }
-                .onChange(of: feedType) { _ in
-                    Task(priority: .userInitiated) {
-                        await refreshFeed()
-                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                    }
-                }
-                .onChange(of: postSortType) { _ in
-                    Task(priority: .userInitiated) {
-                        await refreshFeed()
-                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                    }
-                }
-                .onChange(of: appState.currentActiveAccount) { _ in
-                    Task {
-                        await refreshFeed()
-                        scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                    }
+            }
+            .onChange(of: appState.currentActiveAccount) { _ in
+                Task {
+                    await refreshFeed()
+                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
                 }
             }
         }
@@ -345,19 +341,16 @@ struct CommunityView: View {
 
     private var postListView: some View {
         ForEach(postTracker.items, id: \.id) { post in
-            VStack(spacing: 0) {
-                NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
-                    FeedPost(
-                        postView: post,
-                        showPostCreator: shouldShowPostCreator,
-                        showCommunity: !isInSpecificCommunity,
-                        isDragging: $isDragging,
-                        replyToPost: replyToPost
-                    )
-                }
-                Divider()
+            Button {
+                navigationPath.wrappedValue.append(PostLinkWithContext(post: post, postTracker: postTracker))
+            } label: {
+                FeedPost(
+                    postView: post,
+                    showPostCreator: shouldShowPostCreator,
+                    showCommunity: !isInSpecificCommunity,
+                    isDragging: $isDragging,
+                    replyToPost: replyToPost)
             }
-            .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .onAppear {
                 Task(priority: .medium) {
                     if postTracker.shouldLoadContent(after: post) {

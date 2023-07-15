@@ -82,7 +82,6 @@ struct UltraCompactPost: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(AppConstants.postAndCommentSpacing)
     }
     
     @ViewBuilder

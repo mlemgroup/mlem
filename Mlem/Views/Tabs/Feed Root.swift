@@ -43,6 +43,7 @@ struct FeedRoot: View {
         .handleLemmyLinkResolution(
             navigationPath: $navigationPath
         )
+        .edgesIgnoringSafeArea(.horizontal)
         .environment(\.navigationPath, $navigationPath)
         .environmentObject(appState)
         .environmentObject(accountsTracker)
