@@ -8,7 +8,7 @@
 import Foundation
 
 internal enum WhatToDecode {
-    case accounts, filteredKeywords, favoriteCommunities, recentSearches
+    case accounts, filteredKeywords, favoriteCommunities, recentSearches, easterFlags
 }
 
 func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Codable {
@@ -25,6 +25,8 @@ func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Coda
                 return try JSONDecoder().decode([FavoriteCommunity].self, from: rawData)
             case .recentSearches:
                 return try JSONDecoder().decode([String].self, from: rawData)
+            case .easterFlags:
+                return try JSONDecoder().decode(Set<String>.self, from: rawData)
             }
         } catch let decodingError {
             throw decodingError
