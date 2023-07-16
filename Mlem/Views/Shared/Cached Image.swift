@@ -15,38 +15,45 @@ import Nuke
 struct CachedImage: View {
 
     let url: URL?
+    let shouldExpand: Bool
     @State var bigPicMode: URL?
 
-    init(url: URL?) {
+    init(url: URL?, shouldExpand: Bool = true) {
         self.url = url
+        self.shouldExpand = shouldExpand
     }
     
     var body: some View {
         LazyImage(url: url) { state in
             if let image = state.image {
-                image
+                let imageView = image
                     .resizable()
                     .scaledToFill()
-                    .onTapGesture {
-                        Task(priority: .userInitiated) {
-                            do {
-                                let (data, _) = try await ImagePipeline.shared.data(for: url!)
-                                let fileType = url?.pathExtension ?? "png"
-                                let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
-                                if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
-                                    print("file exsists")
-                                    try FileManager.default.removeItem(at: quicklook)
+                if shouldExpand {
+                    imageView
+                        .onTapGesture {
+                            Task(priority: .userInitiated) {
+                                do {
+                                    let (data, _) = try await ImagePipeline.shared.data(for: url!)
+                                    let fileType = url?.pathExtension ?? "png"
+                                    let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
+                                    if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
+                                        print("file exsists")
+                                        try FileManager.default.removeItem(at: quicklook)
+                                    }
+                                    try data.write(to: quicklook)
+                                    await MainActor.run {
+                                        bigPicMode = quicklook
+                                    }
+                                } catch {
+                                    print(String(describing: error))
                                 }
-                                try data.write(to: quicklook)
-                                await MainActor.run {
-                                    bigPicMode = quicklook
-                                }
-                            } catch {
-                                print(String(describing: error))
                             }
                         }
-                    }
-                    .quickLookPreview($bigPicMode)
+                        .quickLookPreview($bigPicMode)
+                } else {
+                    imageView
+                }
             } else if state.error != nil {
                 // Indicates an error
                 Color.red
