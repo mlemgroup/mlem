@@ -28,7 +28,6 @@ struct SwipeyView: ViewModifier {
     @State var dragBackground: Color? = .systemBackground
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
-
     // isDragging callback
     @Binding var isDragging: Bool
     
@@ -59,7 +58,6 @@ struct SwipeyView: ViewModifier {
         self.secondaryLeadingAction = secondaryLeadingAction
         self.primaryTrailingAction = primaryTrailingAction
         self.secondaryTrailingAction = secondaryTrailingAction
-        
         // other init
         _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
