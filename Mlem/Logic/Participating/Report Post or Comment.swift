@@ -11,8 +11,7 @@ import Foundation
 func reportPost(
     postId: Int,
     account: SavedAccount,
-    reason: String,
-    appState: AppState
+    reason: String
 ) async throws -> APIPostReportView {
     do {
         let request = CreatePostReportRequest(
@@ -32,10 +31,9 @@ func reportPost(
 
 @MainActor
 func reportComment(
-    commentId: Int,
     account: SavedAccount,
-    reason: String,
-    appState: AppState
+    commentId: Int,
+    reason: String
 ) async throws -> APICommentReportView {
     do {
         let request = CreateCommentReportRequest(

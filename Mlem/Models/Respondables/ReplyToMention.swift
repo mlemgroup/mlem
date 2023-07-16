@@ -8,9 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct ReplyToMention: ReplyTo {
-    let mention: APIPersonMentionView
+struct ReplyToMention: Respondable {
+    
+    var id: Int { mention.id }
     let appState: AppState
+    let canUpload: Bool = true
+    let modalName: String = "New Comment"
+    let mention: APIPersonMentionView
     
     func embeddedView() -> AnyView {
         return AnyView(InboxMentionView(mention: mention,
@@ -18,10 +22,10 @@ struct ReplyToMention: ReplyTo {
             .padding(.horizontal))
     }
     
-    func sendReply(commentContents: String) async throws {
+    func sendResponse(responseContents: String) async throws {
         try await postCommentWithoutTracker(postId: mention.post.id,
                                             commentId: mention.comment.id,
-                                            commentContents: commentContents,
+                                            commentContents: responseContents,
                                             account: appState.currentActiveAccount,
                                             appState: appState)
     }

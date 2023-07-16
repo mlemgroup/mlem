@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import CachedAsyncImage
+import AlertToast
 
 enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
@@ -53,22 +54,24 @@ struct InboxView: View {
     // - current view
     @State var curTab: InboxTab = .all
     
-    // - replies and messages
-    @State var isComposing: Bool = false
-    @State var composingTo: ComposingTypes = .commentReply(nil)
+    // - responses
+    @State var responseItem: ConcreteRespondable?
     
     // utility
     @State var isDragging: Bool = false
     @State private var navigationPath = NavigationPath()
     
     var body: some View {
-        // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of Views which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
+        // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
         NavigationStack(path: $navigationPath) {
             contentView
                 .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
+        }
+        .toast(isPresenting: $appState.isShowingToast, duration: 2) {
+            appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
     }
     
@@ -104,25 +107,8 @@ struct InboxView: View {
                 }
             }
         }
-        .sheet(isPresented: $isComposing) { [isComposing] in // capture here to force state re-eval
-            switch composingTo {
-            case .commentReply(let commentReplyingTo):
-                if let commentReply = commentReplyingTo {
-                    let replyTo = ReplyToCommentReply(commentReply: commentReply,
-                                                      appState: appState)
-                    GeneralCommentComposerView(replyTo: replyTo)
-                }
-            case .mention(let mentionReplyingTo):
-                if let mentionReply = mentionReplyingTo {
-                    let replyTo = ReplyToMention(mention: mentionReply, appState: appState)
-                    GeneralCommentComposerView(replyTo: replyTo)
-                }
-            case .message(let personReplyingTo):
-                if let recipient = personReplyingTo {
-                    MessageComposerView(recipient: recipient)
-                        .presentationDetents([.medium, .large])
-                }
-            }
+        .sheet(item: $responseItem) { responseItem in
+            ResponseComposerView(concreteRespondable: responseItem)
         }
         // load view if empty or account has changed
         .task(priority: .userInitiated) {

@@ -8,9 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct ReplyToFeedPost: ReplyTo {
+struct ReplyToFeedPost: Respondable {
     
+    var id: Int { post.id }
     let appState: AppState
+    let canUpload: Bool = true
+    let modalName: String = "New Comment"
     let post: APIPostView
     
     func embeddedView() -> AnyView {
@@ -18,11 +21,11 @@ struct ReplyToFeedPost: ReplyTo {
             .padding(.horizontal))
     }
     
-    func sendReply(commentContents: String) async throws {
+    func sendResponse(responseContents: String) async throws {
         try await postCommentWithoutTracker(
             postId: post.post.id,
             commentId: nil,
-            commentContents: commentContents,
+            commentContents: responseContents,
             account: appState.currentActiveAccount,
             appState: appState)
     }

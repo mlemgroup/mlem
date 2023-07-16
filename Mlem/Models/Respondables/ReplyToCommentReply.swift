@@ -8,10 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct ReplyToCommentReply: ReplyTo {
+struct ReplyToCommentReply: Respondable {
     
-    let commentReply: APICommentReplyView
+    var id: Int { commentReply.id }
     let appState: AppState
+    let canUpload: Bool = true
+    let modalName: String = "New Comment"
+    let commentReply: APICommentReplyView
     
     func embeddedView() -> AnyView {
         return AnyView(InboxReplyView(reply: commentReply,
@@ -19,10 +22,10 @@ struct ReplyToCommentReply: ReplyTo {
             .padding(.horizontal))
     }
     
-    func sendReply(commentContents: String) async throws {
+    func sendResponse(responseContents: String) async throws {
         try await postCommentWithoutTracker(postId: commentReply.post.id,
                                             commentId: commentReply.comment.id,
-                                            commentContents: commentContents,
+                                            commentContents: responseContents,
                                             account: appState.currentActiveAccount,
                                             appState: appState)
     }
