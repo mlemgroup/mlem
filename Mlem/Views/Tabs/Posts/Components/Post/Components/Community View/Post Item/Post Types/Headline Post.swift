@@ -35,7 +35,7 @@ struct HeadlinePost: View {
         return .secondary
     }
 
-    var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
+    var showNsfwFilter: Bool { (postView.post.nsfw || postView.community.nsfw) && shouldBlurNsfw }
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {

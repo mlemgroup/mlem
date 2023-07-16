@@ -28,7 +28,7 @@ struct UltraCompactPost: View {
     // computed
     let voteColor: Color
     let voteIconName: String
-    var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
+    var showNsfwFilter: Bool { (postView.post.nsfw || postView.community.nsfw) && shouldBlurNsfw }
 
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
