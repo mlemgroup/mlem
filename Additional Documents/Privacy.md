@@ -1,6 +1,6 @@
 # Privacy Policy for Mlem Mobile Application
 
-Effective Date: July 8th, 2023
+Effective Date: July 15th, 2023
 
 Thank you for using Mlem! This Privacy Policy outlines how your personal information is collected, used, and protected when you use the Mlem mobile application ("App"). Please read this Privacy Policy carefully to understand our practices regarding your personal information. By using the Mlem mobile application, you acknowledge that you have read and understood this Privacy Policy and agree to the collection, use, and disclosure of your information as described herein.
 
@@ -9,9 +9,6 @@ Mlem does not collect or store any user data. We do not collect any personally i
 
 ## Servers and Data Control
 Mlem connects to servers that we do not host or have control over. While we strive to ensure the security and privacy of your data within our App, we cannot guarantee the security or privacy practices of the external servers. Any data stored or processed on these servers is subject to the respective privacy policies and terms of service of those servers.
-
-## Adult Content
-Lemmy is a link aggregator platform, and while some instances that Mlem accesses may host adult content, it blocks such content by default. We take reasonable measures to prevent the display of explicit or adult content within the App, but we cannot guarantee that all instances or communities will follow the appropriate procedures to label adult content. It is your responsibility to exercise caution while accessing external content.
 
 ## Third-Party Services
 Mlem does not integrate any third-party services, advertising networks, or analytics tools that collect personal information or track your activities within the App. We prioritize user privacy and do not engage in any data sharing or tracking practices.
