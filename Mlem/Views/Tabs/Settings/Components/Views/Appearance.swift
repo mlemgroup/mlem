@@ -72,7 +72,7 @@ struct AppearanceSettingsView: View {
                     }
                     
                     SelectableSettingsItem(
-                        settingIconSystemName: "rectangle.compress.vertical",
+                        settingIconSystemName: AppConstants.compactSymbolName,
                         settingName: "Post size",
                         currentValue: $postSize,
                         options: PostSize.allCases

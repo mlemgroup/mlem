@@ -106,6 +106,14 @@ struct AppConstants {
     static let reportSymbolName: String = "exclamationmark.shield"
     static let blockUserSymbolName: String = "person.fill.xmark"
     
+    // settings
+    static let compactSymbolName: String = "rectangle.grid.1x2"
+    static let compactSymbolNameFill: String = "rectangle.grid.1x2.fill"
+    static let headlineSymbolName: String = "rectangle"
+    static let headlineSymbolNameFill: String = "rectangle.fill"
+    static let largeSymbolName: String = "text.below.photo"
+    static let largeSymbolNameFill: String = "text.below.photo.fill"
+    
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
 }
