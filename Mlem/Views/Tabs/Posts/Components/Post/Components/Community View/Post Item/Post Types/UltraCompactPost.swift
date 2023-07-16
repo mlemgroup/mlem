@@ -12,8 +12,8 @@ import CachedAsyncImage
 struct UltraCompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
-    @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
+    @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
     @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
 
     // constants

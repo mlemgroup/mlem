@@ -11,7 +11,7 @@ import CachedAsyncImage
 
 struct PostHeader: View {
     // appstorage
-    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     
     // parameters
     var postView: APIPostView
