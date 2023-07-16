@@ -14,7 +14,7 @@ struct AccountsPage: View {
     @Environment(\.forceOnboard) var forceOnboard
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
-    @Binding var selectedAccount: SavedAccount?
+    @State var selectedAccount: SavedAccount?
     
     let onboarding: Bool
     
@@ -62,6 +62,10 @@ struct AccountsPage: View {
                 }
                 .accessibilityLabel("Add a new account.")
             }
+        }
+        .onChange(of: selectedAccount) { account in
+            guard let account else { return }
+            appState.setActiveAccount(account)
         }
     }
 }

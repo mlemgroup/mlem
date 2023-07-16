@@ -113,7 +113,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                 }
                 
                 print("lookup: \(lookup) (original: \(url.absoluteString))")
-                // Wooo this is a lemmy server we're talking to! time to pasre this url and push it to the stack
+                // Wooo this is a lemmy server we're talking to! time to parse this url and push it to the stack
                 do {
                     let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account, query: lookup))
                     
