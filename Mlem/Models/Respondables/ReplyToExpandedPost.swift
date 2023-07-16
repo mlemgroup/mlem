@@ -18,7 +18,7 @@ struct ReplyToExpandedPost: Respondable {
     let commentTracker: CommentTracker
     
     func embeddedView() -> AnyView {
-        return AnyView(ExpandedPost(post: post)
+        return AnyView(LargePost(postView: post, isExpanded: true)
             .padding(.horizontal))
     }
     
