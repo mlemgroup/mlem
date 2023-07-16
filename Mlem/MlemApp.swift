@@ -34,6 +34,15 @@ struct MlemApp: App {
                     URLCache.shared = AppConstants.urlCache
 
                     setupAppShortcuts()
+                    
+                    // clear out tmp directory
+                    let tempDirectory = FileManager.default.enumerator(atPath: FileManager.default.temporaryDirectory.absoluteString
+                    )
+                    if let tempDirectory = tempDirectory {
+                        for case let file as URL in tempDirectory {
+                            try? FileManager.default.removeItem(at: file)
+                        }
+                    }
 
                     // set app theme to user preference
                     let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene

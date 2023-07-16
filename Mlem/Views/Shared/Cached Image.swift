@@ -8,11 +8,14 @@
 import Foundation
 import SwiftUI
 import MarkdownUI
+import QuickLook
 import NukeUI
+import Nuke
 
 struct CachedImage: View {
 
     let url: URL?
+    @State var bigPicMode: URL?
 
     init(url: URL?) {
         self.url = url
@@ -24,6 +27,26 @@ struct CachedImage: View {
                 image
                     .resizable()
                     .scaledToFill()
+                    .onTapGesture {
+                        Task(priority: .userInitiated) {
+                            do {
+                                let (data, _) = try await ImagePipeline.shared.data(for: url!)
+                                let fileType = url?.pathExtension ?? "png"
+                                let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
+                                if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
+                                    print("file exsists")
+                                    try FileManager.default.removeItem(at: quicklook)
+                                }
+                                try data.write(to: quicklook)
+                                await MainActor.run {
+                                    bigPicMode = quicklook
+                                }
+                            } catch {
+                                print(String(describing: error))
+                            }
+                        }
+                    }
+                    .quickLookPreview($bigPicMode)
             } else if state.error != nil {
                 // Indicates an error
                 Color.red
