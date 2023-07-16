@@ -65,7 +65,7 @@ struct LargePost: View {
         case .image(let url):
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 CachedImage(url: url)
-                    .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : AppConstants.maxFeedPostHeight, alignment: .center)
+                    .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : AppConstants.maxFeedPostHeight, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
                     .clipped()
