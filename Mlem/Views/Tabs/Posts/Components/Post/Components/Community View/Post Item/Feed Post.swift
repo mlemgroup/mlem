@@ -22,11 +22,11 @@ import AlertToast
  */
 struct FeedPost: View {
     // MARK: Environment
-    @AppStorage("postSize") var postSize: PostSize = .headline
+    @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
-    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
 
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState

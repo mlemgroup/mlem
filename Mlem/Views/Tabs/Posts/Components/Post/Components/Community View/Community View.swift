@@ -15,8 +15,8 @@ struct CommunityView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
-    @AppStorage("postSize") var postSize: PostSize = .headline
-
+    @AppStorage("postSize") var postSize: PostSize = .large
+  
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
@@ -249,35 +249,43 @@ struct CommunityView: View {
                     }
 
                     Menu {
-                        if postSize != .compact {
-                            Button {
-                                postSize = .compact
-                            } label: {
-                                Label("Compact", systemImage: "rectangle.compress.vertical")
-                            }
+                        Button {
+                            postSize = .compact
+                        } label: {
+                            Label("Compact",
+                                  systemImage: postSize == .compact
+                                  ? AppConstants.compactSymbolNameFill
+                                  : AppConstants.compactSymbolName)
                         }
-
-                        if postSize != .headline {
-                            Button {
-                                postSize = .headline
-                            } label: {
-                                Label("Headline", systemImage: "rectangle")
-                            }
+                        .disabled(postSize == .compact)
+                        
+                        Button {
+                            postSize = .headline
+                        } label: {
+                            Label("Headline",
+                                  systemImage: postSize == .headline
+                                  ? AppConstants.headlineSymbolNameFill
+                                  : AppConstants.headlineSymbolName)
                         }
-
-                        if postSize != .large {
-                            Button {
-                                postSize = .large
-                            } label: {
-                                Label("Large", systemImage: "rectangle.expand.vertical")
-                            }
+                        .disabled(postSize == .headline)
+                        
+                        Button {
+                            postSize = .large
+                        } label: {
+                            Label("Large",
+                                  systemImage: postSize == .large
+                                  ? AppConstants.largeSymbolNameFill
+                                  : AppConstants.largeSymbolName)
                         }
+                        .disabled(postSize == .large)
                     } label: {
-                        Label("Post size", systemImage: "rectangle.compress.vertical")
+                        Label("Post Size", systemImage: "rectangle.expand.vertical")
                     }
                     .foregroundColor(.primary)
                 } label: {
                     Label("More", systemImage: "ellipsis")
+                        .frame(height: AppConstants.barIconHitbox)
+                        .contentShape(Rectangle())
                 }
             }
         }
