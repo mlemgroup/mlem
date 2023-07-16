@@ -72,27 +72,6 @@ struct SwipeyView: ViewModifier {
     // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
-        ZStack {
-            // background
-            dragBackground
-
-            // symbols
-            HStack(spacing: 0) {
-                Image(systemName: leadingSwipeSymbol ?? "exclamationmark.triangle")
-                    .font(.title)
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 20)
-                Spacer()
-                Image(systemName: trailingSwipeSymbol ?? "exclamationmark.triangle")
-                    .font(.title)
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 20)
-            }
-            .accessibilityHidden(true) // prevent these from popping up in VO
-
-            // content
             content
                 .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
                 .highPriorityGesture(
@@ -152,7 +131,25 @@ struct SwipeyView: ViewModifier {
                         prevDragPosition = dragPosition
                     }
                 }
-        }
+                .background {
+                    dragBackground
+                        .overlay {
+                            HStack(spacing: 0) {
+                                Image(systemName: leadingSwipeSymbol ?? "exclamationmark.triangle")
+                                    .font(.title)
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                                Spacer()
+                                Image(systemName: trailingSwipeSymbol ?? "exclamationmark.triangle")
+                                    .font(.title)
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                            }
+                            .accessibilityHidden(true) // prevent these from popping up in VO
+                        }
+                }
         // prevents various animation glitches
         .transaction { transaction in
             transaction.disablesAnimations = true
