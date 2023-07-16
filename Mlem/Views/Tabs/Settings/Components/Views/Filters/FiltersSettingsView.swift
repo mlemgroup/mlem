@@ -41,21 +41,21 @@ struct FiltersSettingsView: View {
             } header: {
                 Text("Filtered Keywords")
             } footer: {
-                Text("Posts containing these keywords in their title will not be shown")
+                Text("Posts containing these keywords in their title will not be shown.")
             }
 
             Section {
                 Button {
                     showShareSheet(URLtoShare: AppConstants.filteredKeywordsFilePath)
                 } label: {
-                    Label("Export filters", systemImage: "square.and.arrow.up")
+                    Label("Export Filters", systemImage: "square.and.arrow.up")
                 }
                 .disabled(filtersTracker.filteredKeywords.isEmpty)
 
                 Button {
                     isShowingKeywordImporter = true
                 } label: {
-                    Label("Import filters", systemImage: "square.and.arrow.down")
+                    Label("Import Filters", systemImage: "square.and.arrow.down")
                 }
                 .fileImporter(isPresented: $isShowingKeywordImporter, allowedContentTypes: [.json]) { result in
                     do {
@@ -109,11 +109,13 @@ struct FiltersSettingsView: View {
                 Button(role: .destructive) {
                     isShowingFilterDeletionConfirmation = true
                 } label: {
-                    Label("Delete all filters", systemImage: "trash")
+                    Label("Delete All Filters", systemImage: "trash")
                         .foregroundColor(.red)
+                        .opacity(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count == 0 ? 0.6 : 1)
                 }
+                .disabled(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count == 0)
                 .confirmationDialog(
-                    "Are you sure you want to delete all your filters?",
+                    "Are you sure you want to delete all filters?",
                     isPresented: $isShowingFilterDeletionConfirmation,
                     titleVisibility: .visible) {
                         Button(role: .destructive) {

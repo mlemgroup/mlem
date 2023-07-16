@@ -7,7 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030AC04F2A6464DA00037155 /* CommunitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */; };
+		030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC0512A64666C00037155 /* UserSettingsView.swift */; };
 		03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* TimestampView.swift */; };
+		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
+		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
+		03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */; };
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		507573912A5AD53C00AA7ABD /* Error+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573902A5AD53C00AA7ABD /* Error+Equatable.swift */; };
 		507573942A5AD59E00AA7ABD /* EquatableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573932A5AD59E00AA7ABD /* EquatableError.swift */; };
@@ -47,13 +52,13 @@
 		6332FDD327F080EF0009A98A /* Community View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6332FDD227F080EF0009A98A /* Community View.swift */; };
 		63344C4D2A07ABEE001BC616 /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C4C2A07ABEE001BC616 /* Community.swift */; };
 		63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */; };
-		63344C542A07D193001BC616 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C532A07D193001BC616 /* Filters.swift */; };
+		63344C542A07D193001BC616 /* FiltersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C532A07D193001BC616 /* FiltersSettingsView.swift */; };
 		63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C552A07D81D001BC616 /* Array - Prepend.swift */; };
 		63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */; };
 		63344C5D2A08070B001BC616 /* Critical Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C5C2A08070B001BC616 /* Critical Errors.swift */; };
 		63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C5F2A080CA1001BC616 /* Outlined Web Complex Style.swift */; };
 		63344C622A08460D001BC616 /* View - Border on Specific Sides.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C612A08460D001BC616 /* View - Border on Specific Sides.swift */; };
-		63344C672A08D4E3001BC616 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C662A08D4E3001BC616 /* Appearance.swift */; };
+		63344C672A08D4E3001BC616 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C662A08D4E3001BC616 /* AppearanceSettingsView.swift */; };
 		63344C6A2A08F448001BC616 /* Sticky Image View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C692A08F448001BC616 /* Sticky Image View.swift */; };
 		63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C6D2A097FA1001BC616 /* View - Hide View.swift */; };
 		63344C712A098060001BC616 /* Sidebar View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C702A098060001BC616 /* Sidebar View.swift */; };
@@ -123,7 +128,7 @@
 		637218762A3A2AAD008C4816 /* BlockCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218412A3A2AAD008C4816 /* BlockCommunity.swift */; };
 		637218772A3A2AAD008C4816 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637218422A3A2AAD008C4816 /* APIRequest.swift */; };
 		637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6374570F2A18CB6600B69C03 /* Custom Text Field.swift */; };
-		638535712A1779BC00815781 /* General.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535702A1779BC00815781 /* General.swift */; };
+		638535712A1779BC00815781 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638535702A1779BC00815781 /* GeneralSettingsView.swift */; };
 		6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E0292A03D0C3006B3C1D /* Post Tracker.swift */; };
 		6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E02B2A03D1EC006B3C1D /* App State.swift */; };
 		6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */; };
@@ -200,7 +205,7 @@
 		6DEB0FFD2A4F891B007CAB99 /* User Moderator Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */; };
 		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
-		AD1B0D352A5F63F60006F554 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D342A5F63F60006F554 /* About.swift */; };
+		AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D342A5F63F60006F554 /* AboutView.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
 		ADAEFE542A52921C0047F0A9 /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */; };
 		ADDC9E3A2A5CEAA100383D58 /* BlockPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDC9E392A5CEAA100383D58 /* BlockPerson.swift */; };
@@ -222,7 +227,7 @@
 		B1A5A8152A4C882F00F203DB /* AlternativeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */; };
 		B1A5A8172A4C889200F203DB /* AlternativeIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5A8162A4C889200F203DB /* AlternativeIconCell.swift */; };
 		B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B78D632A51D53900F72485 /* AppDelegate.swift */; };
-		B1CB6E732A4C5B1100DA9675 /* Alternative Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */; };
+		B1CB6E732A4C5B1100DA9675 /* IconSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E722A4C5B1100DA9675 /* IconSettingsView.swift */; };
 		B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */; };
 		CD04D5D72A3614A8008EF95B /* Post Interaction Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */; };
 		CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D82A3614BE008EF95B /* Large Post.swift */; };
@@ -235,9 +240,9 @@
 		CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77E2A4F263B0081D102 /* Menu Function.swift */; };
 		CD05E7812A4F7A4B0081D102 /* Inbox Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7802A4F7A4B0081D102 /* Inbox Tracker.swift */; };
 		CD1446182A58FC3B00610EF1 /* InfoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446172A58FC3B00610EF1 /* InfoStack.swift */; };
-		CD14461B2A5A4B6D00610EF1 /* CustomizePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD14461A2A5A4B6D00610EF1 /* CustomizePostView.swift */; };
+		CD14461B2A5A4B6D00610EF1 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */; };
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
-		CD1446232A5B336900610EF1 /* Documents View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446222A5B336900610EF1 /* Documents View.swift */; };
+		CD1446232A5B336900610EF1 /* LicensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446222A5B336900610EF1 /* LicensesView.swift */; };
 		CD1446252A5B357900610EF1 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446242A5B357900610EF1 /* Document.swift */; };
 		CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446262A5B36DA00610EF1 /* EULA.swift */; };
 		CD1446292A5CAAAD00610EF1 /* Plain Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446282A5CAAAD00610EF1 /* Plain Vote Complex.swift */; };
@@ -286,7 +291,7 @@
 		CD69F5792A43942F0028D4F7 /* Save Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5782A43942F0028D4F7 /* Save Comment.swift */; };
 		CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */; };
 		CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EE2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift */; };
-		CDDB08782A5DF1330075BFEE /* CustomizeCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CustomizeCommentView.swift */; };
+		CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */; };
 		CDE6A80B2A43E9F00062D161 /* CommentSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */; };
 		CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */; };
 		CDE6A8162A490AE00062D161 /* Inbox Message View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A8152A490AE00062D161 /* Inbox Message View.swift */; };
@@ -319,7 +324,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySettingsView.swift; sourceTree = "<group>"; };
+		030AC0512A64666C00037155 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
+		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
+		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
+		03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		507573902A5AD53C00AA7ABD /* Error+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Equatable.swift"; sourceTree = "<group>"; };
 		507573932A5AD59E00AA7ABD /* EquatableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableError.swift; sourceTree = "<group>"; };
@@ -360,13 +370,13 @@
 		6332FDD227F080EF0009A98A /* Community View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community View.swift"; sourceTree = "<group>"; };
 		63344C4C2A07ABEE001BC616 /* Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community.swift; sourceTree = "<group>"; };
 		63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filters Tracker.swift"; sourceTree = "<group>"; };
-		63344C532A07D193001BC616 /* Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
+		63344C532A07D193001BC616 /* FiltersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersSettingsView.swift; sourceTree = "<group>"; };
 		63344C552A07D81D001BC616 /* Array - Prepend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array - Prepend.swift"; sourceTree = "<group>"; };
 		63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array - Move Elements Around.swift"; sourceTree = "<group>"; };
 		63344C5C2A08070B001BC616 /* Critical Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Critical Errors.swift"; sourceTree = "<group>"; };
 		63344C5F2A080CA1001BC616 /* Outlined Web Complex Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Outlined Web Complex Style.swift"; sourceTree = "<group>"; };
 		63344C612A08460D001BC616 /* View - Border on Specific Sides.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - Border on Specific Sides.swift"; sourceTree = "<group>"; };
-		63344C662A08D4E3001BC616 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		63344C662A08D4E3001BC616 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
 		63344C692A08F448001BC616 /* Sticky Image View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sticky Image View.swift"; sourceTree = "<group>"; };
 		63344C6D2A097FA1001BC616 /* View - Hide View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - Hide View.swift"; sourceTree = "<group>"; };
 		63344C702A098060001BC616 /* Sidebar View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar View.swift"; sourceTree = "<group>"; };
@@ -438,7 +448,7 @@
 		637218412A3A2AAD008C4816 /* BlockCommunity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockCommunity.swift; sourceTree = "<group>"; };
 		637218422A3A2AAD008C4816 /* APIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		6374570F2A18CB6600B69C03 /* Custom Text Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Text Field.swift"; sourceTree = "<group>"; };
-		638535702A1779BC00815781 /* General.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = General.swift; sourceTree = "<group>"; };
+		638535702A1779BC00815781 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		6386E0292A03D0C3006B3C1D /* Post Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Tracker.swift"; sourceTree = "<group>"; };
 		6386E02B2A03D1EC006B3C1D /* App State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App State.swift"; sourceTree = "<group>"; };
 		6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Tracker.swift"; sourceTree = "<group>"; };
@@ -510,14 +520,14 @@
 		6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Moderator Link.swift"; sourceTree = "<group>"; };
 		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
-		AD1B0D342A5F63F60006F554 /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
+		AD1B0D342A5F63F60006F554 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		ADAEFE532A52921C0047F0A9 /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
 		ADDC9E392A5CEAA100383D58 /* BlockPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockPerson.swift; sourceTree = "<group>"; };
 		ADDC9E3B2A5CF02A00383D58 /* BlockPersonLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockPersonLogic.swift; sourceTree = "<group>"; };
 		ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
-		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
 		B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperationQueue - Easy init.swift"; sourceTree = "<group>"; };
+		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
 		B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed Root.swift"; sourceTree = "<group>"; };
 		B11D72822A49FAA7009DC22F /* Cached Image With Nsfw Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cached Image With Nsfw Filter.swift"; sourceTree = "<group>"; };
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
@@ -528,7 +538,7 @@
 		B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIcon.swift; sourceTree = "<group>"; };
 		B1A5A8162A4C889200F203DB /* AlternativeIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIconCell.swift; sourceTree = "<group>"; };
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alternative Icons.swift"; sourceTree = "<group>"; };
+		B1CB6E722A4C5B1100DA9675 /* IconSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsView.swift; sourceTree = "<group>"; };
 		B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle - Current App Icon.swift"; sourceTree = "<group>"; };
 		CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Interaction Bar.swift"; sourceTree = "<group>"; };
 		CD04D5D82A3614BE008EF95B /* Large Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Large Post.swift"; sourceTree = "<group>"; };
@@ -541,9 +551,9 @@
 		CD05E77E2A4F263B0081D102 /* Menu Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Function.swift"; sourceTree = "<group>"; };
 		CD05E7802A4F7A4B0081D102 /* Inbox Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Tracker.swift"; sourceTree = "<group>"; };
 		CD1446172A58FC3B00610EF1 /* InfoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStack.swift; sourceTree = "<group>"; };
-		CD14461A2A5A4B6D00610EF1 /* CustomizePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizePostView.swift; sourceTree = "<group>"; };
+		CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
-		CD1446222A5B336900610EF1 /* Documents View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Documents View.swift"; sourceTree = "<group>"; };
+		CD1446222A5B336900610EF1 /* LicensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensesView.swift; sourceTree = "<group>"; };
 		CD1446242A5B357900610EF1 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		CD1446262A5B36DA00610EF1 /* EULA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULA.swift; sourceTree = "<group>"; };
 		CD1446282A5CAAAD00610EF1 /* Plain Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Plain Vote Complex.swift"; sourceTree = "<group>"; };
@@ -592,7 +602,7 @@
 		CD69F5782A43942F0028D4F7 /* Save Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Save Comment.swift"; sourceTree = "<group>"; };
 		CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsReadRequest.swift; sourceTree = "<group>"; };
 		CDA145EE2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsRead.swift; sourceTree = "<group>"; };
-		CDDB08772A5DF1330075BFEE /* CustomizeCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCommentView.swift; sourceTree = "<group>"; };
+		CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSettingsView.swift; sourceTree = "<group>"; };
 		CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSortType.swift; sourceTree = "<group>"; };
 		CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Embedded Post.swift"; sourceTree = "<group>"; };
 		CDE6A8152A490AE00062D161 /* Inbox Message View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Message View.swift"; sourceTree = "<group>"; };
@@ -641,6 +651,103 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		030AC0402A62F7E700037155 /* Appearance */ = {
+			isa = PBXGroup;
+			children = (
+				63344C662A08D4E3001BC616 /* AppearanceSettingsView.swift */,
+				030AC0502A64666000037155 /* User */,
+				030AC04D2A64646100037155 /* Community */,
+				030AC04A2A62F8D500037155 /* Theme */,
+				030AC0492A62F8CA00037155 /* Icon */,
+				030AC0452A62F89000037155 /* Post */,
+				030AC0482A62F8C300037155 /* Comment */,
+			);
+			path = Appearance;
+			sourceTree = "<group>";
+		};
+		030AC0412A62F80600037155 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				AD1B0D342A5F63F60006F554 /* AboutView.swift */,
+				03E0B9C92A62B4A400FED265 /* ContributorsView.swift */,
+				CD1446222A5B336900610EF1 /* LicensesView.swift */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		030AC0422A62F82600037155 /* Advanced */ = {
+			isa = PBXGroup;
+			children = (
+				03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */,
+			);
+			path = Advanced;
+			sourceTree = "<group>";
+		};
+		030AC0432A62F82B00037155 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				638535702A1779BC00815781 /* GeneralSettingsView.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		030AC0442A62F83100037155 /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				63344C532A07D193001BC616 /* FiltersSettingsView.swift */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
+		030AC0452A62F89000037155 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		030AC0482A62F8C300037155 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		030AC0492A62F8CA00037155 /* Icon */ = {
+			isa = PBXGroup;
+			children = (
+				B1CB6E722A4C5B1100DA9675 /* IconSettingsView.swift */,
+				B1A5A8162A4C889200F203DB /* AlternativeIconCell.swift */,
+			);
+			path = Icon;
+			sourceTree = "<group>";
+		};
+		030AC04A2A62F8D500037155 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		030AC04D2A64646100037155 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
+		030AC0502A64666000037155 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				030AC0512A64666C00037155 /* UserSettingsView.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		507573922A5AD57F00AA7ABD /* Error Handling */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,8 +889,9 @@
 		6332FDBE27EFB04E0009A98A /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				63344C522A07D189001BC616 /* Views */,
+				6363D5F927EE1BDA00E34822 /* Settings View.swift */,
 				6332FDBF27EFB05F0009A98A /* Settings Item.swift */,
+				63344C522A07D189001BC616 /* Views */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -867,13 +975,11 @@
 		63344C522A07D189001BC616 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CD1446192A5A4B6000610EF1 /* Detail Views */,
-				63344C532A07D193001BC616 /* Filters.swift */,
-				63344C662A08D4E3001BC616 /* Appearance.swift */,
-				638535702A1779BC00815781 /* General.swift */,
-				B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */,
-				B1A5A8162A4C889200F203DB /* AlternativeIconCell.swift */,
-				CD1446222A5B336900610EF1 /* Documents View.swift */,
+				030AC0432A62F82B00037155 /* General */,
+				030AC0402A62F7E700037155 /* Appearance */,
+				030AC0442A62F83100037155 /* Filters */,
+				030AC0412A62F80600037155 /* About */,
+				030AC0422A62F82600037155 /* Advanced */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1024,8 +1130,6 @@
 			isa = PBXGroup;
 			children = (
 				6332FDBE27EFB04E0009A98A /* Components */,
-				6363D5F927EE1BDA00E34822 /* Settings View.swift */,
-				AD1B0D342A5F63F60006F554 /* About.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1395,15 +1499,6 @@
 			path = "Interaction Bars";
 			sourceTree = "<group>";
 		};
-		CD1446192A5A4B6000610EF1 /* Detail Views */ = {
-			isa = PBXGroup;
-			children = (
-				CD14461A2A5A4B6D00610EF1 /* CustomizePostView.swift */,
-				CDDB08772A5DF1330075BFEE /* CustomizeCommentView.swift */,
-			);
-			path = "Detail Views";
-			sourceTree = "<group>";
-		};
 		CD14461F2A5B328600610EF1 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1711,7 +1806,7 @@
 				63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */,
 				6372186A2A3A2AAD008C4816 /* GetComment.swift in Sources */,
 				637218472A3A2AAD008C4816 /* APICommentView.swift in Sources */,
-				63344C542A07D193001BC616 /* Filters.swift in Sources */,
+				63344C542A07D193001BC616 /* FiltersSettingsView.swift in Sources */,
 				6372185C2A3A2AAD008C4816 /* APICommunity.swift in Sources */,
 				6372185D2A3A2AAD008C4816 /* APICommunityAggregates.swift in Sources */,
 				63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */,
@@ -1741,6 +1836,7 @@
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
 				CD3FBCE72A4A8CE300B2063F /* Messages Feed View.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */,
+				03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */,
 				63344C622A08460D001BC616 /* View - Border on Specific Sides.swift in Sources */,
 				637218702A3A2AAD008C4816 /* ResolveObject.swift in Sources */,
 				CDE6A8162A490AE00062D161 /* Inbox Message View.swift in Sources */,
@@ -1774,6 +1870,7 @@
 				630737892A1CD1E900039852 /* String.swift in Sources */,
 				63A01E542A2B980100C84E04 /* Subscribe Button.swift in Sources */,
 				6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */,
+				03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */,
 				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
 				637218582A3A2AAD008C4816 /* APISite.swift in Sources */,
 				6DE1183E2A4A4FF500810C7E /* Delete Post or Comment.swift in Sources */,
@@ -1783,12 +1880,12 @@
 				637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */,
 				6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */,
 				CDF8426F2A4A385A00723DA0 /* Inbox Item Type.swift in Sources */,
-				CD1446232A5B336900610EF1 /* Documents View.swift in Sources */,
+				CD1446232A5B336900610EF1 /* LicensesView.swift in Sources */,
 				6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */,
 				63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */,
-				B1CB6E732A4C5B1100DA9675 /* Alternative Icons.swift in Sources */,
+				B1CB6E732A4C5B1100DA9675 /* IconSettingsView.swift in Sources */,
 				CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */,
-				CDDB08782A5DF1330075BFEE /* CustomizeCommentView.swift in Sources */,
+				CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
 				6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */,
 				CD05E7812A4F7A4B0081D102 /* Inbox Tracker.swift in Sources */,
@@ -1802,7 +1899,7 @@
 				B1A5A8172A4C889200F203DB /* AlternativeIconCell.swift in Sources */,
 				50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */,
 				63A200532A2DDD38005CDDE3 /* Dictionary - Append.swift in Sources */,
-				CD14461B2A5A4B6D00610EF1 /* CustomizePostView.swift in Sources */,
+				CD14461B2A5A4B6D00610EF1 /* PostSettingsView.swift in Sources */,
 				CD64832D2A38CE4E00EE6CA3 /* Vote Complex Style.swift in Sources */,
 				637218492A3A2AAD008C4816 /* APICommentReplyView.swift in Sources */,
 				6317ABCB2A37292700603D76 /* FeedType.swift in Sources */,
@@ -1819,7 +1916,7 @@
 				63344C4D2A07ABEE001BC616 /* Community.swift in Sources */,
 				CDF842612A49EA3900723DA0 /* Mentions Tracker.swift in Sources */,
 				6D693A4C2A51B99E009E2D76 /* APICommentReport.swift in Sources */,
-				63344C672A08D4E3001BC616 /* Appearance.swift in Sources */,
+				63344C672A08D4E3001BC616 /* AppearanceSettingsView.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication - First Key Window.swift in Sources */,
 				631711552A27C45900FE08C4 /* Selectable Text.swift in Sources */,
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
@@ -1861,6 +1958,7 @@
 				CDF8425C2A49E4C000723DA0 /* APIPersonMentionView.swift in Sources */,
 				6DCE71292A53C26600CFEB5E /* ServerInstanceLocation.swift in Sources */,
 				6314C9F12A194FFA00B08405 /* Post Comment.swift in Sources */,
+				03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */,
 				637218662A3A2AAD008C4816 /* SavePost.swift in Sources */,
 				637218452A3A2AAD008C4816 /* APICommentAggregates.swift in Sources */,
 				6D80037B2A46458800363206 /* Lazy Load Expanded Post.swift in Sources */,
@@ -1893,7 +1991,7 @@
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
 				CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */,
 				CD69F5792A43942F0028D4F7 /* Save Comment.swift in Sources */,
-				638535712A1779BC00815781 /* General.swift in Sources */,
+				638535712A1779BC00815781 /* GeneralSettingsView.swift in Sources */,
 				CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */,
 				507573912A5AD53C00AA7ABD /* Error+Equatable.swift in Sources */,
 				6D693A482A51B904009E2D76 /* CreateCommentReport.swift in Sources */,
@@ -1906,7 +2004,7 @@
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
 				6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
-				AD1B0D352A5F63F60006F554 /* About.swift in Sources */,
+				AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */,
 				637218612A3A2AAD008C4816 /* CreatePostLike.swift in Sources */,
 				63CE4E712A06B21B00405271 /* Avatar View.swift in Sources */,
 				CD69F5712A422EDD0028D4F7 /* Comment Interaction Bar.swift in Sources */,
@@ -1933,6 +2031,7 @@
 				637218552A3A2AAD008C4816 /* APITagline.swift in Sources */,
 				6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */,
 				CD6483302A38D31C00EE6CA3 /* Standard Vote Complex.swift in Sources */,
+				030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */,
 				63E5D3982A13DCFB00EC1FBD /* Remove Community from Favorites.swift in Sources */,
 				6372184A2A3A2AAD008C4816 /* APIPost.swift in Sources */,
 				6D693A3E2A5113DF009E2D76 /* CreatePostReport.swift in Sources */,
@@ -1947,6 +2046,7 @@
 				CD6483322A38D3A600EE6CA3 /* Symmetric Vote Complex.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				6D693A462A51175E009E2D76 /* Report Post or Comment.swift in Sources */,
+				030AC04F2A6464DA00037155 /* CommunitySettingsView.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,
 				63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */,
 				637218462A3A2AAD008C4816 /* APIComment.swift in Sources */,

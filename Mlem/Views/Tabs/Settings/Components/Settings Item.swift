@@ -47,3 +47,49 @@ struct SelectableSettingsItem<T: SettingsOptions>: View {
         }
     }
 }
+
+struct SquircleLabelStyle: LabelStyle {
+    var color: Color
+    var fontSize: CGFloat = 17
+    
+    func makeBody(configuration: Configuration) -> some View {
+        Label {
+            configuration.title
+        } icon: {
+            configuration.icon
+                .font(.system(size: fontSize))
+                .foregroundColor(.white)
+                .frame(width: 28, height: 28)
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 7))
+        }
+    }
+}
+
+struct SettingsPickerButton<PickerLabel: View>: View {
+    @Binding var isOn: Bool
+    
+    let label: PickerLabel
+    
+    init(isOn: Binding<Bool>, @ViewBuilder _ label: () -> PickerLabel) {
+            self.label = label()
+            _isOn = isOn
+        }
+    
+    var body: some View {
+        Button { isOn.toggle() } label: {
+            HStack {
+                label
+                Spacer()
+                if isOn {
+                    Image(systemName: "checkmark")
+                        .foregroundStyle(.blue)
+                        .transition(.opacity)
+                }
+            }
+            .contentShape(Rectangle())
+            .animation(.linear(duration: 0.2), value: isOn)
+        }
+        .buttonStyle(.plain)
+    }
+}

@@ -13,7 +13,7 @@ struct AccountsPage: View {
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
-    @Binding var selectedAccount: SavedAccount?
+    @State var selectedAccount: SavedAccount?
     
     var body: some View {
         VStack {
@@ -54,6 +54,10 @@ struct AccountsPage: View {
                 }
                 .accessibilityLabel("Add a new account.")
             }
+        }
+        .onChange(of: selectedAccount) { account in
+            guard let account else { return }
+            appState.setActiveAccount(account)
         }
     }
 
