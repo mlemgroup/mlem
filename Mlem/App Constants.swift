@@ -50,6 +50,10 @@ struct AppConstants {
     static let recentSearchesFilePath = { applicationSupportDirectoryPath
         .appendingPathComponent("Recent Searches", conformingTo: .json)
     }()
+    
+    static let easterFlagsFilePath = { applicationSupportDirectoryPath
+        .appendingPathComponent("Easter eggs flags", conformingTo: .json)
+    }()
 
     // MARK: - Haptics
     static let hapticManager: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()

@@ -214,6 +214,9 @@
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
 		B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B14E93C42A470D5100D6DA93 /* AlertToast */; };
 		B157E0C42A507B8000B02C8B /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* Window.swift */; };
+		B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A1C2A606B950056CF99 /* Easter Rewards.swift */; };
+		B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */; };
+		B1955A212A6145C00056CF99 /* Environment - EasterFlagSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */; };
 		B1A26FE12A44AAB200B91A32 /* Navigation getter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */; };
 		B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */; };
 		B1A5A8152A4C882F00F203DB /* AlternativeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */; };
@@ -221,6 +224,7 @@
 		B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B78D632A51D53900F72485 /* AppDelegate.swift */; };
 		B1CB6E732A4C5B1100DA9675 /* Alternative Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */; };
 		B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */; };
+		B1DD00BD2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DD00BC2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift */; };
 		CD04D5D72A3614A8008EF95B /* Post Interaction Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */; };
 		CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5D82A3614BE008EF95B /* Large Post.swift */; };
 		CD04D5DB2A36154F008EF95B /* Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DA2A36154F008EF95B /* Save.swift */; };
@@ -529,6 +533,9 @@
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
 		B14E93C12A45D3B300D6DA93 /* Community Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link.swift"; sourceTree = "<group>"; };
 		B157E0C32A507B8000B02C8B /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
+		B1955A1C2A606B950056CF99 /* Easter Rewards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Easter Rewards.swift"; sourceTree = "<group>"; };
+		B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasterFlagsTracker.swift; sourceTree = "<group>"; };
+		B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment - EasterFlagSetter.swift"; sourceTree = "<group>"; };
 		B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation getter.swift"; sourceTree = "<group>"; };
 		B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - Handle Lemmy Links.swift"; sourceTree = "<group>"; };
 		B1A5A8142A4C882F00F203DB /* AlternativeIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIcon.swift; sourceTree = "<group>"; };
@@ -536,6 +543,7 @@
 		B1B78D632A51D53900F72485 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1CB6E722A4C5B1100DA9675 /* Alternative Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alternative Icons.swift"; sourceTree = "<group>"; };
 		B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle - Current App Icon.swift"; sourceTree = "<group>"; };
+		B1DD00BC2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecognizedLemmyInstances.swift; sourceTree = "<group>"; };
 		CD04D5D62A3614A8008EF95B /* Post Interaction Bar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Interaction Bar.swift"; sourceTree = "<group>"; };
 		CD04D5D82A3614BE008EF95B /* Large Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Large Post.swift"; sourceTree = "<group>"; };
 		CD04D5DA2A36154F008EF95B /* Save.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Save.swift; sourceTree = "<group>"; };
@@ -759,6 +767,7 @@
 		6318EDC527EE4E0B00BFCAE8 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				B1955A1B2A606B810056CF99 /* Easter */,
 				6D8F08FA2A4029A1003EB4FD /* Get Favorited Communities.swift */,
 				6314C9EF2A194FEE00B08405 /* Participating */,
 				63F0C7A92A05232D00A18C5D /* File Management */,
@@ -837,6 +846,7 @@
 				507573902A5AD53C00AA7ABD /* Error+Equatable.swift */,
 				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
 				CDA217F22A63202600BDA173 /* NSFW Overlay.swift */,
+				B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1267,6 +1277,7 @@
 				631711562A27C70E00FE08C4 /* Comment Reply Tracker.swift */,
 				63AF452C2A2F37EB00E0266F /* Own Account Tracker.swift */,
 				6DA61F862A5720EA001EA633 /* RecentSearchesTracker.swift */,
+				B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -1399,6 +1410,15 @@
 				6DD867792A5083A200BEB00F /* Community Sidebar Link.swift */,
 			);
 			path = "Navigation Contexts";
+			sourceTree = "<group>";
+		};
+		B1955A1B2A606B810056CF99 /* Easter */ = {
+			isa = PBXGroup;
+			children = (
+				B1955A1C2A606B950056CF99 /* Easter Rewards.swift */,
+				B1DD00BC2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift */,
+			);
+			path = Easter;
 			sourceTree = "<group>";
 		};
 		CD1446162A58FC2F00610EF1 /* Interaction Bars */ = {
@@ -1745,6 +1765,7 @@
 				CD04D5DB2A36154F008EF95B /* Save.swift in Sources */,
 				6332FDD327F080EF0009A98A /* Community View.swift in Sources */,
 				CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */,
+				B1955A212A6145C00056CF99 /* Environment - EasterFlagSetter.swift in Sources */,
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
 				6372185F2A3A2AAD008C4816 /* LoginRequest.swift in Sources */,
 				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
@@ -1777,6 +1798,7 @@
 				ADDC9E3A2A5CEAA100383D58 /* BlockPerson.swift in Sources */,
 				6372186B2A3A2AAD008C4816 /* GetComments.swift in Sources */,
 				6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */,
+				B1DD00BD2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift in Sources */,
 				6DA61F892A575DF1001EA633 /* URL - Lemmy Image Parameters.swift in Sources */,
 				ADDC9E3C2A5CF02A00383D58 /* BlockPersonLogic.swift in Sources */,
 				CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */,
@@ -1787,6 +1809,7 @@
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				CD6483342A39F1C100EE6CA3 /* API Post View - Post Type.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
+				B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */,
 				6354F30A2A2E20040074C08D /* Alert - Multiple Alerts.swift in Sources */,
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				6372186C2A3A2AAD008C4816 /* SaveComment.swift in Sources */,
@@ -1851,6 +1874,7 @@
 				CDF842612A49EA3900723DA0 /* Mentions Tracker.swift in Sources */,
 				6D693A4C2A51B99E009E2D76 /* APICommentReport.swift in Sources */,
 				63344C672A08D4E3001BC616 /* Appearance.swift in Sources */,
+				B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication - First Key Window.swift in Sources */,
 				631711552A27C45900FE08C4 /* Selectable Text.swift in Sources */,
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
