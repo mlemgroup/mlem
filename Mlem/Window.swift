@@ -27,9 +27,8 @@ struct Window: View {
                 view(for: selectedAccount)
             } else {
                 NavigationStack {
-                    AccountsPage(selectedAccount: $selectedAccount)
+                    AccountsPage()
                 }
-            }
 
             // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
             Color.clear
