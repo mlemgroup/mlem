@@ -62,6 +62,20 @@ extension InboxView {
         }
     }
     
+    func filterUser(userId: Int) {
+        repliesTracker.filter { reply in
+            reply.creator.id != userId
+        }
+        mentionsTracker.filter { mention in
+            mention.creator.id != userId
+        }
+        messagesTracker.filter { message in
+            message.creator.id != userId
+        }
+        
+        aggregateAllTrackers()
+    }
+    
     func loadTrackerPage(tracker: InboxTracker) async {
         do {
             try await tracker.loadNextPage(account: appState.currentActiveAccount)
@@ -95,11 +109,6 @@ extension InboxView {
      */
     func wasPostedAfter(lhs: InboxItem, rhs: InboxItem) -> Bool {
         return lhs.published > rhs.published
-    }
-    
-    // INTERACTION
-    func voteOnComment(comment: APIComment) {
-        print("voting on \(comment.content)")
     }
     
     // MARK: Callbacks
@@ -139,8 +148,11 @@ extension InboxView {
     }
     
     func replyToCommentReply(commentReply: APICommentReplyView) {
-        composingTo = .commentReply(commentReply)
-        isComposing = true
+        responseItem = ConcreteRespondable(appState: appState, commentReply: commentReply)
+    }
+    
+    func reportCommentReply(commentReply: APICommentReplyView) {
+        responseItem = ConcreteRespondable(appState: appState, commentReply: commentReply, report: true)
     }
     
     // MENTIONS
@@ -175,16 +187,15 @@ extension InboxView {
         }
     }
     
+    func reportMention(mention: APIPersonMentionView) {
+        responseItem = ConcreteRespondable(appState: appState, mention: mention, report: true)
+    }
+    
     func replyToMention(mention: APIPersonMentionView) {
-        composingTo = .mention(mention)
-        isComposing = true
+        responseItem = ConcreteRespondable(appState: appState, mention: mention)
     }
     
     // MESSAGES
-    func replyToMessage(message: APIPrivateMessageView) {
-        composingTo = .message(message.creator)
-        isComposing = true
-    }
     
     func toggleMessageRead(message: APIPrivateMessageView) {
         Task(priority: .userInitiated) {
@@ -200,5 +211,13 @@ extension InboxView {
                 print("failed to mark message as read!")
             }
         }
+    }
+    
+    func replyToMessage(message: APIPrivateMessageView) {
+        responseItem = ConcreteRespondable(appState: appState, message: message)
+    }
+    
+    func reportMessage(message: APIPrivateMessageView) {
+        responseItem = ConcreteRespondable(appState: appState, message: message, report: true)
     }
 }

@@ -102,6 +102,10 @@ struct AppConstants {
     static let emptyMarkUnreadSymbolName: String = "envelope.open"
     static let fullMarkUnreadSymbolName: String = "envelope.fill"
     
+    // report/block
+    static let reportSymbolName: String = "exclamationmark.shield"
+    static let blockUserSymbolName: String = "person.fill.xmark"
+    
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
 }

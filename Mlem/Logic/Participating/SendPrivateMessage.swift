@@ -11,8 +11,7 @@ import Foundation
 func sendPrivateMessage(
     content: String,
     recipient: APIPerson,
-    account: SavedAccount,
-    appState: AppState
+    account: SavedAccount
 ) async throws {
     do {
         let request = CreatePrivateMessageRequest(account: account, content: content, recipient: recipient)

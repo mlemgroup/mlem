@@ -32,6 +32,9 @@ struct FeedPost: View {
     @EnvironmentObject var appState: AppState
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    @State var responseItem: ConcreteRespondable?
+    
     // MARK: Parameters
 
     init(postView: APIPostView,
@@ -39,14 +42,12 @@ struct FeedPost: View {
          showCommunity: Bool = true,
          showInteractionBar: Bool = true,
          enableSwipeActions: Bool = true,
-         isDragging: Binding<Bool>,
-         replyToPost: ((APIPostView) -> Void)?) {
+         isDragging: Binding<Bool>) {
         self.postView = postView
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
-        self.replyToPost = replyToPost
         self._isDragging = isDragging
     }
 
@@ -55,7 +56,6 @@ struct FeedPost: View {
     let showCommunity: Bool
     let showInteractionBar: Bool
     let enableSwipeActions: Bool
-    let replyToPost: ((APIPostView) -> Void)?
 
     // MARK: State
 
@@ -89,8 +89,8 @@ struct FeedPost: View {
                     secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
                 )
         }
-        .sheet(isPresented: $isComposingReport) {
-            ReportComposerView(reportedPost: postView)
+        .sheet(item: $responseItem) { responseItem in
+            ResponseComposerView(concreteRespondable: responseItem)
         }
     }
 
@@ -153,7 +153,7 @@ struct FeedPost: View {
                                        voteOnPost: voteOnPost,
                                        updatedSavePost: { _ in await savePost() },
                                        deletePost: deletePost,
-                                       replyToPost: replyToThisPost)
+                                       replyToPost: replyToPost)
                 }
             }
         }
@@ -211,10 +211,8 @@ struct FeedPost: View {
         }
     }
 
-    func replyToThisPost() {
-        if let replyCallback = replyToPost {
-            replyCallback(postView)
-        }
+    func replyToPost() {
+        responseItem = ConcreteRespondable(appState: appState, post: postView)
     }
 
     /// Votes on a post
@@ -246,11 +244,9 @@ struct FeedPost: View {
             appState.contextualError = .init(underlyingError: error)
         }
     }
-
-    func replyToPostWrapper() async {
-        if let replyToPostCallback = replyToPost {
-            replyToPostCallback(postView)
-        }
+    
+    func reportPost() {
+        responseItem = ConcreteRespondable(appState: appState, post: postView, report: true)
     }
 
     // swiftlint:disable function_body_length
@@ -298,15 +294,13 @@ struct FeedPost: View {
         })
 
         // reply
-        if let replyCallback = replyToPost {
-            ret.append(MenuFunction(
-                text: "Reply",
-                imageName: "arrowshape.turn.up.left",
-                destructiveActionPrompt: nil,
-                enabled: true) {
-                    replyCallback(postView)
-                })
-        }
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                replyToPost()
+            })
 
         // delete
         if postView.creator.id == appState.currentActiveAccount.id {
@@ -334,17 +328,17 @@ struct FeedPost: View {
 
         // report
         ret.append(MenuFunction(
-            text: "Report",
-            imageName: "exclamationmark.shield",
+            text: "Report Post",
+            imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
             enabled: true) {
-                isComposingReport = true
+                reportPost()
             })
 
         // block user
         ret.append(MenuFunction(
             text: "Block User",
-            imageName: "person.fill.xmark",
+            imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: nil,
             enabled: true) {
                 Task(priority: .userInitiated) {
@@ -404,15 +398,11 @@ extension FeedPost {
     }
 
     var replySwipeAction: SwipeAction? {
-        if replyToPost != nil {
-            return SwipeAction(
-                symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
-                color: .accentColor,
-                action: replyToPostWrapper
-            )
-        } else {
-            return nil
-        }
+        return SwipeAction(
+            symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
+            color: .accentColor,
+            action: replyToPost
+        )
     }
 }
 // swiftlint:enable type_body_length

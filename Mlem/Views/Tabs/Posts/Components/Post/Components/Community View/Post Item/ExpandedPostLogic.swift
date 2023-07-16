@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AlertToast
 
 extension ExpandedPost {
     
@@ -56,12 +57,44 @@ extension ExpandedPost {
     }
     
     func replyToPost() {
-        isPostingComment = true
+        responseItem = ConcreteRespondable(appState: appState, post: post, commentTracker: commentTracker)
     }
     
-    func replyToComment(replyTo: APICommentView) {
-        commentReplyingTo = replyTo
-        isReplyingToComment = true
+    func reportPost() {
+        responseItem = ConcreteRespondable(appState: appState, post: post, report: true)
+    }
+    
+    func replyToComment(comment: APICommentView) {
+        responseItem = ConcreteRespondable(appState: appState, comment: comment, commentTracker: commentTracker)
+    }
+    
+    func blockUser() async {
+        do {
+            let blocked = try await blockPerson(
+                account: appState.currentActiveAccount,
+                person: post.creator,
+                blocked: true
+            )
+            if blocked {
+                postTracker.removePosts(from: post.creator.id)
+
+                let toast = AlertToast(
+                    displayMode: .alert,
+                    type: .complete(.blue),
+                    title: "Blocked \(post.creator.name)"
+                )
+                appState.toast = toast
+                appState.isShowingToast = true
+            } // Show Toast
+        } catch {
+            let toast = AlertToast(
+                displayMode: .alert,
+                type: .error(.red),
+                title: "Unable to block \(post.creator.name)"
+            )
+            appState.toast = toast
+            appState.isShowingToast = true
+        }
     }
     
     // MARK: Helper functions
@@ -116,7 +149,7 @@ extension ExpandedPost {
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
             enabled: true) {
-                isPostingComment = true
+                replyToPost()
             })
         
         // delete
@@ -142,6 +175,25 @@ extension ExpandedPost {
                 showShareSheet(URLtoShare: url)
             }
         })
+        
+        // report
+        ret.append(MenuFunction(text: "Report Post",
+                                imageName: AppConstants.reportSymbolName,
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            reportPost()
+        })
+        
+        // block user
+        ret.append(MenuFunction(
+            text: "Block User",
+            imageName: AppConstants.blockUserSymbolName,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                Task(priority: .userInitiated) {
+                    await blockUser()
+                }
+            })
         
         return ret
     }
