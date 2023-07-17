@@ -28,10 +28,7 @@ struct SwipeyView: ViewModifier {
     @State var dragBackground: Color? = .systemBackground
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
-    
-    // haptics
-    let tapper: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
-    
+
     // isDragging callback
     @Binding var isDragging: Bool
     
@@ -112,14 +109,13 @@ struct SwipeyView: ViewModifier {
                         trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
                         dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
                         if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                                HapticManager.shared.lightTap()
-                            tapper.impactOccurred()
+                            HapticManager.shared.gentleInfo()
                         }
                     } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
                         dragBackground = primaryTrailingAction?.color
                         if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
-                            tapper.impactOccurred()
+                            HapticManager.shared.gentleInfo()
                         }
                     } else if dragPosition < 0 {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
@@ -131,13 +127,13 @@ struct SwipeyView: ViewModifier {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
                         dragBackground = primaryLeadingAction?.color
                         if prevDragPosition <= AppConstants.shortSwipeDragMin {
-                            tapper.impactOccurred()
+                            HapticManager.shared.gentleInfo()
                         }
                     } else {
                         leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
                         dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
                         if prevDragPosition <= AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                            tapper.impactOccurred()
+                            HapticManager.shared.gentleInfo()
                         }
                     }
                     prevDragPosition = dragPosition

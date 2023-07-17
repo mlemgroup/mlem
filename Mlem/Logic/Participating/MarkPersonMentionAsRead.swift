@@ -22,12 +22,12 @@ func sendMarkPersonMentionAsReadRequest(
             read: read
         )
 
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
         
         mentionTracker.update(with: response.personMentionView)
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }

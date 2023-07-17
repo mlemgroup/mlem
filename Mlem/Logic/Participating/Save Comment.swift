@@ -15,13 +15,13 @@ func sendSaveCommentRequest(account: SavedAccount,
     do {
         let request = SaveCommentRequest(account: account, commentId: commentId, save: save)
 
-        AppConstants.hapticManager.notificationOccurred(.success)
-
+        HapticManager.shared.gentleSuccess()
+        
         let response = try await APIClient().perform(request: request)
 
         commentTracker.comments.update(with: response.commentView)
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }

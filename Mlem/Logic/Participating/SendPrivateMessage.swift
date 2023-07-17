@@ -15,10 +15,10 @@ func sendPrivateMessage(
 ) async throws {
     do {
         let request = CreatePrivateMessageRequest(account: account, content: content, recipient: recipient)
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.success()
         try await APIClient().perform(request: request)
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }

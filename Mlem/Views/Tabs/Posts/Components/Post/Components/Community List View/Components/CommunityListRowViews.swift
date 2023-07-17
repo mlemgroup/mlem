@@ -49,9 +49,7 @@ struct CommuntiyFeedRowView: View {
                 }
                 Spacer()
                 Button("Favorite Community") {
-                    // Nice little haptics
-                    let generator = UINotificationFeedbackGenerator()
-                    generator.notificationOccurred(.success)
+                    HapticManager.shared.gentleSuccess()
 
                     toggleFavorite()
 

@@ -55,9 +55,6 @@ struct AppConstants {
         .appendingPathComponent("Easter eggs flags", conformingTo: .json)
     }()
 
-    // MARK: - Haptics
-    static let hapticManager: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
-
     // MARK: - DragGesture thresholds
     static let longSwipeDragMin: CGFloat = 150
     static let shortSwipeDragMin: CGFloat = 60
