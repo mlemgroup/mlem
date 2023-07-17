@@ -86,7 +86,6 @@ struct AboutView: View {
                 }
             }
         }
-        .handleLemmyViews()
         .navigationTitle("About")
     }
     
