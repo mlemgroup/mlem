@@ -7,16 +7,37 @@
 
 import Foundation
 import SwiftUI
+import CoreHaptics
 
 class HapticManager {
     
     let lightImpactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     let rigidImpactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
     let notificationGenerator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
+    var hapticEngine: CHHapticEngine?
     
     static let shared = HapticManager()
     
-    private init() {}
+    private init() {
+        // create and start the engine if this device supports haptics
+        hapticEngine = initEngine()
+    }
+    
+    /**
+     If this device supports haptics, creates and returns a CHHaptic engine; otherwise returns nil
+     */
+    func initEngine() -> CHHapticEngine? {
+        if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
+            do {
+                let ret = try CHHapticEngine()
+                try ret.start()
+                return ret
+            } catch {
+                print("There was an error creating the engine: \(error.localizedDescription)")
+            }
+        }
+        return nil
+    }
     
     // MARK: Informative
     
@@ -61,7 +82,25 @@ class HapticManager {
      Success notification for events like blocking a user, sending a report
      */
     func violentSuccess() {
-        notificationGenerator.notificationOccurred(.warning)
+        if let engine = hapticEngine {
+            let e1 = CHHapticEvent(eventType: .hapticTransient,
+                                   parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.25),
+                                                CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.75)],
+                                   relativeTime: 0)
+            let e2 = CHHapticEvent(eventType: .hapticTransient,
+                                   parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
+                                                CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)],
+                                   relativeTime: 0.5)
+            
+            do {
+                let pattern = try CHHapticPattern(events: [e1, e2], parameters: [])
+                let player = try engine.makePlayer(with: pattern)
+                try player.start(atTime: 0)
+            } catch {
+                print("Failed to play pattern: \(error.localizedDescription).")
+            }
+            // notificationGenerator.notificationOccurred(.warning)
+        }
     }
     
     // MARK: Failure
