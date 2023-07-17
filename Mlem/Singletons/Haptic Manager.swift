@@ -36,6 +36,7 @@ class HapticManager {
                 try ret.start()
                 return ret
             } catch {
+                // TODO: feed to error handler once we have swift-repositories
                 print("There was an error creating the engine: \(error.localizedDescription)")
             }
         }
