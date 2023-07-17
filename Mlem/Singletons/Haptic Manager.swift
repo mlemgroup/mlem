@@ -6,13 +6,16 @@
 //
 
 import Foundation
+import SwiftUI
 
 class HapticManager {
+    
+    let tapper: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     static let shared = HapticManager()
     
     func lightTap() {
-        print("light tap")
+        tapper.impactOccurred()
     }
     
     private init() {
