@@ -28,10 +28,10 @@ struct SwipeyView: ViewModifier {
     @State var dragBackground: Color? = .systemBackground
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
-
+    
     // haptics
     let tapper: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
-
+    
     // isDragging callback
     @Binding var isDragging: Bool
     
@@ -62,100 +62,110 @@ struct SwipeyView: ViewModifier {
         self.secondaryLeadingAction = secondaryLeadingAction
         self.primaryTrailingAction = primaryTrailingAction
         self.secondaryTrailingAction = secondaryTrailingAction
-
+        
         // other init
         _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
         _isDragging = isDragging
     }
-
+    
     // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
-            content
-                .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-                .highPriorityGesture(
-                    DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
-                        .updating($dragState) { value, state, _ in
-                            // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
-                            if dragState != .zero || value.location.x > 70 {
-                                state = value.translation.width
-                            }
+        content
+            .background {
+                // add a little shadow under the edge
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .border(width: 10, edges: [.leading, .trailing], color: .black)
+                    .shadow(radius: 5)
+                    .mask(Rectangle().frame(width: UIScreen.main.bounds.width + 20)) // clip top/bottom
+            }
+            .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
+        // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
+            .highPriorityGesture(
+                DragGesture(minimumDistance: 30, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
+                    .updating($dragState) { value, state, _ in
+                        // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
+                        if dragState != .zero || value.location.x > 70 {
+                            state = value.translation.width
                         }
-                )
-                .onChange(of: dragState) { newDragState in
-                    // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
-                    if newDragState == .zero {
-                        draggingDidEnd()
-                    } else {
-                        guard shouldRespondToDragPosition(newDragState) else {
-                            // as swipe actions are optional we don't allow dragging without a primary action
-                            return
-                        }
-                        
-                        // update position
-                        dragPosition = newDragState
-
-                        // update color and symbol. If crossed an edge, play a gentle haptic
-                        if dragPosition < -1 * AppConstants.longSwipeDragMin {
-                            trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
-                            dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
-                            if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                                tapper.impactOccurred()
-                            }
-                        } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
-                            trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
-                            dragBackground = primaryTrailingAction?.color
-                            if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
-                                tapper.impactOccurred()
-                            }
-                        } else if dragPosition < 0 {
-                            trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
-                            dragBackground = primaryTrailingAction?.color.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
-                        } else if dragPosition < AppConstants.shortSwipeDragMin {
-                            leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
-                            dragBackground = primaryLeadingAction?.color.opacity(dragPosition / AppConstants.shortSwipeDragMin)
-                        } else if dragPosition < AppConstants.longSwipeDragMin {
-                            leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
-                            dragBackground = primaryLeadingAction?.color
-                            if prevDragPosition <= AppConstants.shortSwipeDragMin {
-                                tapper.impactOccurred()
-                            }
-                        } else {
-                            leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
-                            dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
-                            if prevDragPosition <= AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                                tapper.impactOccurred()
-                            }
-                        }
-                        prevDragPosition = dragPosition
                     }
-                }
-                .background {
-                    dragBackground
-                        .overlay {
-                            HStack(spacing: 0) {
-                                Image(systemName: leadingSwipeSymbol ?? "exclamationmark.triangle")
-                                    .font(.title)
-                                    .frame(width: 20, height: 20)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 20)
-                                Spacer()
-                                Image(systemName: trailingSwipeSymbol ?? "exclamationmark.triangle")
-                                    .font(.title)
-                                    .frame(width: 20, height: 20)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 20)
-                            }
-                            .accessibilityHidden(true) // prevent these from popping up in VO
+            )
+            .onChange(of: dragState) { newDragState in
+                // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
+                if newDragState == .zero {
+                    print("\n\n\n")
+                    draggingDidEnd()
+                } else {
+                    guard shouldRespondToDragPosition(newDragState) else {
+                        // as swipe actions are optional we don't allow dragging without a primary action
+                        return
+                    }
+                    
+                    // update position
+                    dragPosition = newDragState
+                    
+                    // update color and symbol. If crossed an edge, play a gentle haptic
+                    if dragPosition < -1 * AppConstants.longSwipeDragMin {
+                        trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
+                        dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
+                        if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
+                            tapper.impactOccurred()
                         }
+                    } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
+                        trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
+                        dragBackground = primaryTrailingAction?.color
+                        if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
+                            tapper.impactOccurred()
+                        }
+                    } else if dragPosition < 0 {
+                        trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
+                        dragBackground = primaryTrailingAction?.color.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
+                    } else if dragPosition < AppConstants.shortSwipeDragMin {
+                        leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
+                        dragBackground = primaryLeadingAction?.color.opacity(dragPosition / AppConstants.shortSwipeDragMin)
+                    } else if dragPosition < AppConstants.longSwipeDragMin {
+                        leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
+                        dragBackground = primaryLeadingAction?.color
+                        if prevDragPosition <= AppConstants.shortSwipeDragMin {
+                            tapper.impactOccurred()
+                        }
+                    } else {
+                        leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
+                        dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
+                        if prevDragPosition <= AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
+                            tapper.impactOccurred()
+                        }
+                    }
+                    prevDragPosition = dragPosition
                 }
+            }
+            .background {
+                dragBackground
+                    .overlay {
+                        HStack(spacing: 0) {
+                            Image(systemName: leadingSwipeSymbol ?? "exclamationmark.triangle")
+                                .font(.title)
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                            Spacer()
+                            Image(systemName: trailingSwipeSymbol ?? "exclamationmark.triangle")
+                                .font(.title)
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                        }
+                        .accessibilityHidden(true) // prevent these from popping up in VO
+                    }
+            }
         // prevents various animation glitches
-        .transaction { transaction in
-            transaction.disablesAnimations = true
-        }
+            .transaction { transaction in
+                transaction.disablesAnimations = true
+            }
         // disables links from highlighting when tapped
-        .buttonStyle(EmptyButtonStyle())
+            .buttonStyle(EmptyButtonStyle())
     }
     
     private func draggingDidEnd() {
@@ -188,6 +198,7 @@ struct SwipeyView: ViewModifier {
     private func reset() {
         withAnimation(.spring(response: 0.3)) {
             dragPosition = .zero
+            prevDragPosition = .zero
             leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
             trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
             dragBackground = .systemBackground
