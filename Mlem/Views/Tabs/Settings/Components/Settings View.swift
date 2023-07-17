@@ -60,6 +60,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .handleLemmyViews()
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
 
