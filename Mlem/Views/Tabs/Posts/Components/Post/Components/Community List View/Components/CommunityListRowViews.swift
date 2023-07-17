@@ -41,12 +41,8 @@ struct CommuntiyFeedRowView: View {
         NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {
             HStack {
                 // NavigationLink with invisible array
-                HStack(alignment: .bottom, spacing: 0) {
-                    Text(community.name)
-                    if let website = community.actorId.host(percentEncoded: false) {
-                        Text("@\(website)").font(.footnote).foregroundColor(.gray).opacity(0.5)
-                    }
-                }
+                communityNameLabel
+
                 Spacer()
                 Button("Favorite Community") {
                     // Nice little haptics
@@ -78,6 +74,22 @@ struct CommuntiyFeedRowView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(communityLabel)
+    }
+
+	private var communityNameText: Text {
+		Text(community.name)
+	}
+
+    @ViewBuilder
+    private var communityNameLabel: some View {
+        if let website = community.actorId.host(percentEncoded: false) {
+            communityNameText +
+            Text("@\(website)")
+                .font(.footnote)
+                .foregroundColor(.gray.opacity(0.5))
+        } else {
+            communityNameText
+        }
     }
 
     private var communityLabel: String {
