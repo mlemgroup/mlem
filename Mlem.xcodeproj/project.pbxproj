@@ -300,6 +300,7 @@
 		CDA217EE2A630F3300BDA173 /* ReportPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217ED2A630F3300BDA173 /* ReportPost.swift */; };
 		CDA217F32A63202600BDA173 /* NSFW Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217F22A63202600BDA173 /* NSFW Overlay.swift */; };
 		CDDB08782A5DF1330075BFEE /* CustomizeCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CustomizeCommentView.swift */; };
+		CDDCF6402A65F77F003DA3AC /* ObservableRespondable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF63F2A65F77F003DA3AC /* ObservableRespondable.swift */; };
 		CDE6A80B2A43E9F00062D161 /* CommentSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */; };
 		CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */; };
 		CDE6A8162A490AE00062D161 /* Inbox Message View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A8152A490AE00062D161 /* Inbox Message View.swift */; };
@@ -619,6 +620,7 @@
 		CDA217ED2A630F3300BDA173 /* ReportPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPost.swift; sourceTree = "<group>"; };
 		CDA217F22A63202600BDA173 /* NSFW Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFW Overlay.swift"; sourceTree = "<group>"; };
 		CDDB08772A5DF1330075BFEE /* CustomizeCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCommentView.swift; sourceTree = "<group>"; };
+		CDDCF63F2A65F77F003DA3AC /* ObservableRespondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableRespondable.swift; sourceTree = "<group>"; };
 		CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSortType.swift; sourceTree = "<group>"; };
 		CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Embedded Post.swift"; sourceTree = "<group>"; };
 		CDE6A8152A490AE00062D161 /* Inbox Message View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Message View.swift"; sourceTree = "<group>"; };
@@ -1487,6 +1489,7 @@
 				CDA217E52A63016A00BDA173 /* ReportMessage.swift */,
 				CDA217E92A63093E00BDA173 /* ReportComment.swift */,
 				CDA217ED2A630F3300BDA173 /* ReportPost.swift */,
+				CDDCF63F2A65F77F003DA3AC /* ObservableRespondable.swift */,
 			);
 			path = Respondables;
 			sourceTree = "<group>";
@@ -1862,6 +1865,7 @@
 				6317ABCB2A37292700603D76 /* FeedType.swift in Sources */,
 				CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */,
 				637218642A3A2AAD008C4816 /* GetPost.swift in Sources */,
+				CDDCF6402A65F77F003DA3AC /* ObservableRespondable.swift in Sources */,
 				63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */,
 				CDA217E42A62FB3300BDA173 /* ReplyToMessage.swift in Sources */,
 				CD69F5732A4239D70028D4F7 /* Comment Item.swift in Sources */,

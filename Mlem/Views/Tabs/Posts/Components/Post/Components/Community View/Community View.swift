@@ -24,6 +24,7 @@ struct CommunityView: View {
     @Environment(\.setEasterFlag) var setEasterFlag
 
     @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
+    @StateObject var observableRespondable: ObservableRespondable = .init()
 
     // parameters
     var community: APICommunity?
@@ -294,12 +295,16 @@ struct CommunityView: View {
                 PostComposerView(community: community)
             }
         }
+        .sheet(item: $observableRespondable.concreteRespondable) { respondable in
+            ResponseComposerView(concreteRespondable: respondable)
+        }
         .onAppear {
             if !didLoad {
                 didLoad = true
                 postSortType = defaultPostSorting
             }
         }
+        .environmentObject(observableRespondable)
         .environmentObject(postTracker)
         .navigationBarTitleDisplayMode(.inline)
     }

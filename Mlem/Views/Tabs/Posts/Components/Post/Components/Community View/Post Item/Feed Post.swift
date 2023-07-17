@@ -30,6 +30,7 @@ struct FeedPost: View {
 
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var observableRespondable: ObservableRespondable
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
@@ -212,7 +213,8 @@ struct FeedPost: View {
     }
 
     func replyToPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: postView)
+        // responseItem = ConcreteRespondable(appState: appState, post: postView)
+        observableRespondable.updateWith(concreteRespondable: ConcreteRespondable(appState: appState, post: postView))
     }
 
     /// Votes on a post
