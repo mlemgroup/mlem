@@ -17,10 +17,9 @@ func blockPerson(
             personId: person.id,
             block: blocked
         )
-        // let response = try await APIClient().perform(request: request)
+        let response = try await APIClient().perform(request: request)
         HapticManager.shared.violentSuccess()
-        // return response.blocked
-        return true
+        return response.blocked
     }
 
 @MainActor
