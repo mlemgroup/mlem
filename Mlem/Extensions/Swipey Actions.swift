@@ -192,7 +192,6 @@ struct SwipeyView: ViewModifier {
                 }
             } else if finalDragPosition > AppConstants.shortSwipeDragMin {
                 Task(priority: .userInitiated) {
-                    print("primary leading")
                     await primaryLeadingAction?.action()
                 }
             }
