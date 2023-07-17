@@ -22,6 +22,7 @@ func sendMarkCommentReplyAsReadRequest(
             read: read
         )
 
+        HapticManager.shared.lightTap()
         AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         

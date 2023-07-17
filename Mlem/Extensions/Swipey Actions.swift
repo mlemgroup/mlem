@@ -112,6 +112,7 @@ struct SwipeyView: ViewModifier {
                         trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
                         dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
                         if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
+                                HapticManager.shared.lightTap()
                             tapper.impactOccurred()
                         }
                     } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
