@@ -159,32 +159,34 @@ struct SwipeyView: ViewModifier {
     }
     
     private func draggingDidEnd() {
-        // TODO: instant upvote feedback (waiting on backend)
-        if prevDragPosition < -1 * AppConstants.longSwipeDragMin {
-            Task(priority: .userInitiated) {
-                let action = secondaryTrailingAction ?? primaryTrailingAction
-                await action?.action()
-            }
-        } else if prevDragPosition < -1 * AppConstants.shortSwipeDragMin {
-            Task(priority: .userInitiated) {
-                await primaryTrailingAction?.action()
-            }
-        } else if prevDragPosition > AppConstants.longSwipeDragMin {
-            Task(priority: .userInitiated) {
-                let action = secondaryLeadingAction ?? primaryLeadingAction
-                await action?.action()
-            }
-        } else if prevDragPosition > AppConstants.shortSwipeDragMin {
-            Task(priority: .userInitiated) {
-                await primaryLeadingAction?.action()
+        reset()
+        
+        // TEMP: need to delay the call being sent because otherwise the state update cancels the animation. This should be fixed with backend support for fakers, since the vote won't change and so the animation won't stop (hopefully). This delay matches the response field of the reset() animation.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            if prevDragPosition < -1 * AppConstants.longSwipeDragMin {
+                Task(priority: .userInitiated) {
+                    let action = secondaryTrailingAction ?? primaryTrailingAction
+                    await action?.action()
+                }
+            } else if prevDragPosition < -1 * AppConstants.shortSwipeDragMin {
+                Task(priority: .userInitiated) {
+                    await primaryTrailingAction?.action()
+                }
+            } else if prevDragPosition > AppConstants.longSwipeDragMin {
+                Task(priority: .userInitiated) {
+                    let action = secondaryLeadingAction ?? primaryLeadingAction
+                    await action?.action()
+                }
+            } else if prevDragPosition > AppConstants.shortSwipeDragMin {
+                Task(priority: .userInitiated) {
+                    await primaryLeadingAction?.action()
+                }
             }
         }
-        
-        reset()
     }
     
     private func reset() {
-        withAnimation(.interactiveSpring()) {
+        withAnimation(.spring(response: 0.3)) {
             dragPosition = .zero
             leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
             trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
