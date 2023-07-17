@@ -77,8 +77,8 @@ struct CommunityView: View {
                         
                         LazyVGrid(columns: columns, spacing: 0) {
                             postListView
+                            loadingMorePostsView
                         }
-                        loadingMorePostsView
                     }
                 }
             }
@@ -406,10 +406,12 @@ struct CommunityView: View {
             VStack(alignment: .center) {
                 ProgressView()
                     .frame(width: 16, height: 16)
+                
                 Text("Loading more posts...")
             }
+            .multilineTextAlignment(.center)
             .padding()
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .foregroundColor(.secondary)
             .background(Color.systemBackground)
             .accessibilityElement(children: .combine)
