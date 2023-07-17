@@ -32,7 +32,6 @@ struct NSFWOverlay: ViewModifier {
                     .font(.callout)
             }
             .foregroundColor(.white)
-            .padding(8)
             .onTapGesture {
                 showNsfwFilterToggle.toggle()
             }

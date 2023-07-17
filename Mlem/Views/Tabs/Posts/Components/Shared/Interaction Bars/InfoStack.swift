@@ -14,6 +14,21 @@ struct InfoStack: View {
     let published: Date?
     let commentCount: Int?
     let saved: Bool?
+    let fontSize: Font
+    
+    init(score: Int?,
+         myVote: ScoringOperation?,
+         published: Date?,
+         commentCount: Int?,
+         saved: Bool?,
+         fontSize: Font = .footnote) {
+        self.score = score
+        self.myVote = myVote
+        self.published = published
+        self.commentCount = commentCount
+        self.saved = saved
+        self.fontSize = fontSize
+    }
     
     var body: some View {
         HStack(spacing: 12) {
@@ -40,6 +55,6 @@ struct InfoStack: View {
             }
         }
         .foregroundColor(.secondary)
-        .font(.footnote)
+        .font(fontSize)
     }
 }

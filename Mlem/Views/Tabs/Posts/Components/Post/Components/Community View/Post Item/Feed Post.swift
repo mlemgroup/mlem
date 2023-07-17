@@ -108,11 +108,13 @@ struct FeedPost: View {
     var postItem: some View {
 
         if postSize == .compact {
-            UltraCompactPost(
+            CompactPost(
                 postView: postView,
                 showCommunity: showCommunity,
                 menuFunctions: genMenuFunctions()
             )
+        } else if postSize == .card {
+            CardPost(postView: postView)
         } else {
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
@@ -389,8 +391,11 @@ extension FeedPost {
     }
 
     var saveSwipeAction: SwipeAction {
-        SwipeAction(
-            symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
+        let (emptySymbolName, fullSymbolName) = postView.saved
+        ? (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
+        : (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
+        return SwipeAction(
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,
             action: savePost
         )

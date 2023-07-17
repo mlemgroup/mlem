@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import CachedAsyncImage
 
-struct UltraCompactPost: View {
+struct CompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true

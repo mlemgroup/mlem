@@ -67,8 +67,7 @@ struct LargePost: View {
                 CachedImage(url: url)
                     .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : AppConstants.maxFeedPostHeight, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
-                    .cornerRadius(AppConstants.largeItemCornerRadius)
-                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
                 postBodyView
             }
         case .link:

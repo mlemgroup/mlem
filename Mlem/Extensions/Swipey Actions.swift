@@ -141,17 +141,21 @@ struct SwipeyView: ViewModifier {
                 dragBackground
                     .overlay {
                         HStack(spacing: 0) {
-                            Image(systemName: leadingSwipeSymbol ?? "exclamationmark.triangle")
-                                .font(.title)
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 20)
+                            if dragPosition > 0 {
+                                Image(systemName: leadingSwipeSymbol ?? "exclamationmark.triangle")
+                                    .font(.title)
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                            }
                             Spacer()
-                            Image(systemName: trailingSwipeSymbol ?? "exclamationmark.triangle")
-                                .font(.title)
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 20)
+                            if dragPosition < 0 {
+                                Image(systemName: trailingSwipeSymbol ?? "exclamationmark.triangle")
+                                    .font(.title)
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                            }
                         }
                         .accessibilityHidden(true) // prevent these from popping up in VO
                     }

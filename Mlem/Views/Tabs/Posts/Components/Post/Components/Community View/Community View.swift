@@ -47,6 +47,15 @@ struct CommunityView: View {
     private let scrollToTopId = "top"
 
     var isInSpecificCommunity: Bool { community != nil }
+    
+    // other
+    var cardDimension: CGFloat { UIScreen.main.bounds.width / 2 }
+    
+    var columns: [GridItem] { postSize == .card
+        ? [GridItem(.flexible(), spacing: 0), GridItem(.flexible(), spacing: 0)]
+        // ? [GridItem(.fixed(cardDimension), spacing: 0), GridItem(.fixed(cardDimension), spacing: 0)]
+        : [GridItem(.flexible(), spacing: 0)]
+    }
 
     init(community: APICommunity?, feedType: FeedType, showLoading: Bool = false) {
         self.community = community
@@ -63,9 +72,12 @@ struct CommunityView: View {
                 } else if postTracker.items.isEmpty {
                     noPostsView
                 } else {
-                    LazyVStack(spacing: 0) {
+                    VStack(spacing: 0) {
                         bannerView
-                        postListView
+                        
+                        LazyVGrid(columns: columns, spacing: 0) {
+                            postListView
+                        }
                         loadingMorePostsView
                     }
                 }
@@ -265,6 +277,16 @@ struct CommunityView: View {
                         .disabled(postSize == .compact)
                         
                         Button {
+                            postSize = .card
+                        } label: {
+                            Label("Card",
+                                  systemImage: postSize == .compact
+                                  ? AppConstants.compactSymbolNameFill
+                                  : AppConstants.compactSymbolName)
+                        }
+                        .disabled(postSize == .card)
+                        
+                        Button {
                             postSize = .headline
                         } label: {
                             Label("Headline",
@@ -363,6 +385,7 @@ struct CommunityView: View {
                         isDragging: $isDragging,
                         responseItem: $responseItem
                     )
+                    .clipped()
                 }
                 Divider()
             }
