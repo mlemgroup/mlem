@@ -34,7 +34,7 @@ struct SettingsView: View {
                     NavigationLink {
                         AppearanceSettingsView()
                     } label: {
-                        Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .blue))
+                        Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .pink))
                     }
 
                     NavigationLink {
@@ -56,7 +56,7 @@ struct SettingsView: View {
                     NavigationLink {
                         AdvancedSettingsView()
                     } label: {
-                        Label("Advanced", systemImage: "gearshape.2.fill").labelStyle(SquircleLabelStyle(color: .brown))
+                        Label("Advanced", systemImage: "gearshape.2.fill").labelStyle(SquircleLabelStyle(color: .gray))
                     }
                 }
             }
