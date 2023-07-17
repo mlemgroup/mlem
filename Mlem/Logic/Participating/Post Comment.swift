@@ -25,6 +25,8 @@ func postComment(
     )
 
     let response = try await APIClient().perform(request: request)
+    HapticManager.shared.success()
+    
     let comment = HierarchicalComment(comment: response.commentView, children: [])
     withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
         commentTracker.comments.prepend(comment)
@@ -50,6 +52,7 @@ func postComment(
     )
 
     let response = try await APIClient().perform(request: request)
+    HapticManager.shared.success()
 
     withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
         // the return value from `.update(with: ...)` is discardable by design but
@@ -79,4 +82,5 @@ func postCommentWithoutTracker(
     )
     
     _ = try await APIClient().perform(request: request)
+    HapticManager.shared.success()
 }

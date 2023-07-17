@@ -19,20 +19,22 @@ func postPost(
     postIsNSFW: Bool,
     postTracker: PostTracker,
     account: SavedAccount) async throws {
-    let request = CreatePostRequest(
-        account: account,
-        communityId: community.id,
-        name: postTitle,
-        nsfw: postIsNSFW,
-        body: postBody,
-        url: postURL
-    )
-
-    let response = try await APIClient().perform(request: request)
-    await MainActor.run {
-        withAnimation {
-            postTracker.prepend(response.postView)
+        let request = CreatePostRequest(
+            account: account,
+            communityId: community.id,
+            name: postTitle,
+            nsfw: postIsNSFW,
+            body: postBody,
+            url: postURL
+        )
+        
+        let response = try await APIClient().perform(request: request)
+        HapticManager.shared.success()
+        
+        await MainActor.run {
+            withAnimation {
+                postTracker.prepend(response.postView)
+            }
         }
     }
-}
 // swiftlint:enable function_parameter_count
