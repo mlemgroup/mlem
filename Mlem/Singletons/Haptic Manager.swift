@@ -84,22 +84,31 @@ class HapticManager {
     func violentSuccess() {
         if let engine = hapticEngine {
             let event1 = CHHapticEvent(eventType: .hapticTransient,
-                                   parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.25),
-                                                CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.75)],
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.6),
+                                                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 1.0)],
                                    relativeTime: 0)
             let event2 = CHHapticEvent(eventType: .hapticTransient,
-                                   parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
-                                                CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)],
-                                   relativeTime: 0.5)
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.4),
+                                                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)],
+                                   relativeTime: 0.55)
+            let event3 = CHHapticEvent(eventType: .hapticTransient,
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0),
+                                                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.4)],
+                                   relativeTime: 0.7)
+            let event4 = CHHapticEvent(eventType: .hapticTransient,
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0),
+                                                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.6)],
+                                   relativeTime: 0.71)
             
             do {
-                let pattern = try CHHapticPattern(events: [event1, event2], parameters: [])
+                let pattern = try CHHapticPattern(events: [event1, event2, event3, event4], parameters: [])
                 let player = try engine.makePlayer(with: pattern)
                 try player.start(atTime: 0)
             } catch {
                 print("Failed to play pattern: \(error.localizedDescription).")
             }
-            // notificationGenerator.notificationOccurred(.warning)
+        } else {
+            print("no engine")
         }
     }
     
