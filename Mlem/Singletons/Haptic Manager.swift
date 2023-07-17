@@ -83,17 +83,17 @@ class HapticManager {
      */
     func violentSuccess() {
         if let engine = hapticEngine {
-            let e1 = CHHapticEvent(eventType: .hapticTransient,
+            let event1 = CHHapticEvent(eventType: .hapticTransient,
                                    parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.25),
                                                 CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.75)],
                                    relativeTime: 0)
-            let e2 = CHHapticEvent(eventType: .hapticTransient,
+            let event2 = CHHapticEvent(eventType: .hapticTransient,
                                    parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
                                                 CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)],
                                    relativeTime: 0.5)
             
             do {
-                let pattern = try CHHapticPattern(events: [e1, e2], parameters: [])
+                let pattern = try CHHapticPattern(events: [event1, event2], parameters: [])
                 let player = try engine.makePlayer(with: pattern)
                 try player.start(atTime: 0)
             } catch {
