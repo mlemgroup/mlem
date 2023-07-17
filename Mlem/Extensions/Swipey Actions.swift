@@ -75,11 +75,13 @@ struct SwipeyView: ViewModifier {
         content
         // add a little shadow under the edge
             .background {
-                Rectangle()
-                    .foregroundColor(.clear)
-                    .border(width: 10, edges: [.leading, .trailing], color: .black)
-                    .shadow(radius: 5)
-                    .mask(Rectangle().frame(width: UIScreen.main.bounds.width + 20)) // clip top/bottom
+                GeometryReader { proxy in
+                    Rectangle()
+                        .foregroundColor(.clear)
+                        .border(width: 10, edges: [.leading, .trailing], color: .black)
+                        .shadow(radius: 5)
+                        .mask(Rectangle().frame(width: proxy.size.width + 20)) // clip top/bottom
+                }
             }
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
         // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
