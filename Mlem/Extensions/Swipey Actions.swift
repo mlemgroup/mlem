@@ -73,8 +73,8 @@ struct SwipeyView: ViewModifier {
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
+        // add a little shadow under the edge
             .background {
-                // add a little shadow under the edge
                 Rectangle()
                     .foregroundColor(.clear)
                     .border(width: 10, edges: [.leading, .trailing], color: .black)
@@ -95,7 +95,6 @@ struct SwipeyView: ViewModifier {
             .onChange(of: dragState) { newDragState in
                 // if dragState changes and is now 0, gesture has ended; compute action based on last detected position
                 if newDragState == .zero {
-                    print("\n\n\n")
                     draggingDidEnd()
                 } else {
                     guard shouldRespondToDragPosition(newDragState) else {
