@@ -31,7 +31,7 @@ struct TokenRefreshView: View {
     
     @State private var password = ""
     @State private var twoFactorCode = ""
-    @State private var viewState: ViewState = .initial
+    @State private var viewState: ViewState = .success
     @State private var showing2FAAlert = false
     
     @FocusState private var selectedField: FocusedField?
@@ -41,6 +41,8 @@ struct TokenRefreshView: View {
             ScrollView {
                 VStack(alignment: .center, spacing: 5) {
                     header
+                    Spacer()
+                    informationText
                 }
                 .padding()
                 Spacer(minLength: 15)
@@ -52,6 +54,7 @@ struct TokenRefreshView: View {
                     oneTimeCodeView
                         .dynamicTypeSize(.small ... .xxxLarge)
                 }
+                .disabled(shouldDisableControls)
             }
             .edgesIgnoringSafeArea(.horizontal)
             .navigationBarTitleDisplayMode(.inline)
@@ -59,6 +62,9 @@ struct TokenRefreshView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     cancelButton
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    submitButton
                 }
             }
         }
@@ -73,12 +79,21 @@ struct TokenRefreshView: View {
             case .refreshing:
                 ProgressView()
                     .controlSize(.large)
+                    .frame(height: 60)
             case .success:
-                Image(systemName: "checkmark.circle.fill")
+                Image(systemName: "checkmark")
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 60)
                     .foregroundColor(.green)
+                    .padding()
             default:
-                informationText
+                Text("Your session has expired")
+                    .font(.title)
+                    .bold()
+                    .padding()
+                    .multilineTextAlignment(.center)
+                    .dynamicTypeSize(.small ... .accessibility1)
             }
         }
     }
@@ -86,14 +101,11 @@ struct TokenRefreshView: View {
     @ViewBuilder
     private var informationText: some View {
         switch viewState {
-        case .initial, .incorrectLogin:
-            
-            Text("Your session has expired")
-                .font(.title)
-                .bold()
-                .padding()
-                .multilineTextAlignment(.center)
-                .dynamicTypeSize(.small ... .accessibility1)
+        case .incorrectLogin:
+            Text("The password you entered was incorrect")
+                .font(.footnote)
+                .foregroundColor(.red)
+        case .initial:
             Text("Please enter the password for")
                 .font(.body)
                 .dynamicTypeSize(.small ... .xxxLarge)
@@ -123,39 +135,10 @@ struct TokenRefreshView: View {
                     .onSubmit {
                         updateViewState(.refreshing)
                         Task {
-                            do {
-                                let token = try await refreshToken(with: password)
-                                updateViewState(.success)
-                                await didReceive(token)
-                            } catch {
-                                AppConstants.hapticManager.notificationOccurred(.error)
-                                
-                                if case let APIClientError.response(apiError, _) = error,
-                                   apiError.isIncorrectLogin {
-                                    updateViewState(.incorrectLogin)
-                                    selectedField = .password
-                                    return
-                                }
-                                
-                                if case let APIClientError.response(apiError, _) = error,
-                                   apiError.requires2FA {
-                                    showing2FAAlert = true
-                                    selectedField = .onetimecode
-                                    return
-                                }
-                                
-                                updateViewState(.initial)
-                            }
+                            await refreshTokenFlow()
                         }
                     }
             }
-        GridRow {
-            if viewState == .incorrectLogin {
-                Text("The password you entered was incorrect")
-                    .font(.footnote)
-                    .foregroundColor(.red)
-            }
-        }
     }
     
     @ViewBuilder
@@ -189,7 +172,43 @@ struct TokenRefreshView: View {
         .disabled(shouldDisableControls)
     }
     
+    private var submitButton: some View {
+        Button("Submit") {
+            updateViewState(.refreshing)
+            Task {
+                await refreshTokenFlow()
+            }
+        }
+        .disabled(shouldDisableControls)
+    }
+    
     // MARK: - Private methods
+    
+    private func refreshTokenFlow() async {
+        do {
+            let token = try await refreshToken(with: password)
+            updateViewState(.success)
+            await didReceive(token)
+        } catch {
+            AppConstants.hapticManager.notificationOccurred(.error)
+            
+            if case let APIClientError.response(apiError, _) = error,
+               apiError.isIncorrectLogin {
+                updateViewState(.incorrectLogin)
+                selectedField = .password
+                return
+            }
+            
+            if case let APIClientError.response(apiError, _) = error,
+               apiError.requires2FA {
+                showing2FAAlert = true
+                selectedField = .onetimecode
+                return
+            }
+            
+            updateViewState(.initial)
+        }
+    }
     
     private func refreshToken(with newPassword: String, twoFactorToken: String? = nil) async throws -> String {
         let request = LoginRequest(
