@@ -23,14 +23,19 @@ struct ContentView: View {
         FancyTabBar(selection: $tabSelection) {
             FeedRoot()
                 .fancyTabItem(tag: 1) {
-                    VStack(spacing: AppConstants.iconToTextSpacing) {
+                    AnyView(VStack(spacing: AppConstants.iconToTextSpacing) {
                         Image(systemName: tabSelection == 1 ? "scroll.fill" : "scroll")
                         
                         Text("Feeds")
-                    }
+                    })
+                } labelActive: {
+                    AnyView(Text("active"))
                 }
             InboxView()
                 .fancyTabItem(tag: 2) {
+                    Label("Inbox", systemImage: "mail.stack")
+                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                } labelActive: {
                     Label("Inbox", systemImage: "mail.stack")
                         .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
                 }
@@ -39,15 +44,23 @@ struct ContentView: View {
                 .fancyTabItem(tag: 3) {
                     Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
                         .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                } labelActive: {
+                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
+                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
                 }
             
             SearchView()
                 .fancyTabItem(tag: 4) {
                     Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                } labelActive: {
+                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
                 }
             
             SettingsView()
                 .fancyTabItem(tag: 5) {
+                    Label("Settings", systemImage: "gear")
+                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
+                } labelActive: {
                     Label("Settings", systemImage: "gear")
                         .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
                 }

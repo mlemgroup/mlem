@@ -31,9 +31,17 @@ struct FancyTabBar<Selection: Hashable, Content: View>: View {
                 
                 HStack {
                     ForEach(tabItemKeys, id: \.hashValue) { key in
-                        tabItems[key]?.label()
-                            .contentShape(Rectangle())
-                            .onTapGesture { selection = key }
+                        Group {
+                            if selection == key {
+                                tabItems[key]?.labelActive()
+                            } else {
+                                tabItems[key]?.label()
+                                
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle())
+                        .onTapGesture { selection = key }
                     }
                 }
                 .padding()

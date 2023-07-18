@@ -14,11 +14,13 @@ struct FancyTabItem<Selection: Hashable, V: View>: ViewModifier {
     private let tagHashValue: Int
     private let tag: Selection
     @ViewBuilder private let label: () -> V
+    @ViewBuilder private let labelActive: () -> V
     
-    init(tag: Selection, @ViewBuilder label: @escaping () -> V) {
+    init(tag: Selection, @ViewBuilder label: @escaping () -> V, @ViewBuilder labelActive: @escaping () -> V) {
         self.tagHashValue = tag.hashValue
         self.tag = tag
         self.label = label
+        self.labelActive = labelActive
     }
     
     func body(content: Content) -> some View {
@@ -34,7 +36,8 @@ struct FancyTabItem<Selection: Hashable, V: View>: ViewModifier {
         // and this big ugly one adds its label builder to the dictionary
         .preference(key: FancyTabItemLabelBuilderPreferenceKey<Selection>.self,
                     value: [tag: FancyTabItemLabelBuilder(tag: tag,
-                                                          label: { AnyView(Group(content: label)) })]
+                                                          label: { AnyView(label()) },
+                                                          labelActive: { AnyView(labelActive()) })]
         )
     }
 }
@@ -42,7 +45,8 @@ struct FancyTabItem<Selection: Hashable, V: View>: ViewModifier {
 extension View {
     @ViewBuilder
     func fancyTabItem<Selection: Hashable, V: View>(tag: Selection,
-                                                    @ViewBuilder label: @escaping () -> V) -> some View {
-        modifier(FancyTabItem(tag: tag, label: label))
+                                                    @ViewBuilder label: @escaping () -> V,
+                                                    @ViewBuilder labelActive: @escaping () -> V) -> some View {
+        modifier(FancyTabItem(tag: tag, label: label, labelActive: labelActive))
     }
 }
