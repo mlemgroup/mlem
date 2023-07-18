@@ -11,8 +11,9 @@ import Dependencies
 
 class CommentRepository {
     
-    @Dependency(\.apiClient) var apiClient
-    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.apiClient) private var apiClient
+    @Dependency(\.errorHandler) private var errorHandler
+    @Dependency(\.hapticManager) private var hapticManager
     
     func comment(with id: Int) async -> HierarchicalComment? {
         do {
@@ -52,10 +53,10 @@ class CommentRepository {
     func voteOnComment(id: Int, vote: ScoringOperation) async -> APICommentView? {
         do {
             let response = try await apiClient.applyCommentScore(id: id, score: vote.rawValue)
-            HapticManager.shared.gentleSuccess() // TODO: ...
+            hapticManager.gentleSuccess()
             return response.commentView
         } catch {
-            HapticManager.shared.error() // TODO: ...
+            hapticManager.error()
             errorHandler.handle(
                 .init(underlyingError: error)
             )
@@ -122,7 +123,7 @@ class CommentRepository {
                     postId: postId
                 )
             
-            HapticManager.shared.success() // TODO: dependency...
+            hapticManager.success()
             return .init(comment: response.commentView, children: [])
         } catch {
             errorHandler.handle(
@@ -168,10 +169,10 @@ class CommentRepository {
     func deleteComment(id: Int, shouldDelete: Bool) async -> HierarchicalComment? {
         do {
             let response = try await apiClient.deleteComment(id: id, deleted: shouldDelete)
-            HapticManager.shared.destructiveSuccess() // TODO: make dependency...
+            hapticManager.destructiveSuccess()
             return .init(comment: response.commentView, children: [])
         } catch {
-            HapticManager.shared.error() // TODO: make dependency...
+            hapticManager.error()
             let verb = shouldDelete ? "delete" : "restore"
             errorHandler.handle(
                 .init(
@@ -188,10 +189,10 @@ class CommentRepository {
     func saveComment(id: Int, shouldSave: Bool) async -> HierarchicalComment? {
         do {
             let response = try await apiClient.saveComment(id: id, shouldSave: shouldSave)
-            HapticManager.shared.gentleSuccess() // TODO: ...
+            hapticManager.gentleSuccess()
             return .init(comment: response.commentView, children: [])
         } catch {
-            HapticManager.shared.error() // TODO: ...
+            hapticManager.error()
             errorHandler.handle(
                 .init(underlyingError: error)
             )
@@ -204,10 +205,10 @@ class CommentRepository {
     func reportComment(id: Int, reason: String) async -> APICommentReportView? {
         do {
             let response = try await apiClient.reportComment(id: id, reason: reason)
-            HapticManager.shared.violentSuccess() // TODO: ...
+            hapticManager.violentSuccess()
             return response.commentReportView
         } catch {
-            HapticManager.shared.error() // TODO: ...
+            hapticManager.error()
             errorHandler.handle(
                 .init(underlyingError: error)
             )
