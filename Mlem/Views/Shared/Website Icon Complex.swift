@@ -51,7 +51,7 @@ struct WebsiteIconComplex: View {
     var body: some View {
         VStack(spacing: 0) {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
-                CachedImage(url: thumbnailURL)
+                CachedImage(url: thumbnailURL, shouldExpand: false)
                     .frame(maxHeight: 400)
                     .applyNsfwOverlay(post.nsfw)
                     .clipped()
