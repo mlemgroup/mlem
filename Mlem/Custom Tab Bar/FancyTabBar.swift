@@ -44,10 +44,7 @@ struct FancyTabBar<Selection: Hashable, Content: View>: View {
                 .background(.regularMaterial)
             }
             .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
-//                print("item keys changed")
-//                print($0)
                 self.tabItemKeys = $0
-                // self.tabItemKeys.append(contentsOf: $0)
             }
             .onPreferenceChange(FancyTabItemLabelBuilderPreferenceKey<Selection>.self) {
                 // self.tabItems = self.tabItems.reduce($0)

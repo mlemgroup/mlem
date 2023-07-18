@@ -26,8 +26,7 @@ struct FancyTabItem<Selection: Hashable, V: View>: ViewModifier {
             if selectedTagHashValue == tagHashValue {
                 content
             } else {
-                // EmptyView()
-                Text("not selected")
+                Color.clear
             }
         }
         // this little preference tells the parent bar that this tab item exists

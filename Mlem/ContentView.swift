@@ -8,59 +8,69 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
-
+    
     @State private var errorAlert: ErrorAlert?
     @State private var expiredSessionAccount: SavedAccount?
-
+    
+    @Binding var selectedAccount: SavedAccount?
+    
     @State private var tabSelection: Int = 1
-
+    
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
-
+    
     var body: some View {
         // TabView(selection: $tabSelection) {
         FancyTabBar(selection: $tabSelection) {
-            FeedRoot()
-                .fancyTabItem(tag: 1) {
-                    Label("Feeds", systemImage: "scroll")
-                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
+            if let selectedAccount = selectedAccount {
+                Group {
+                    // FeedRoot()
+                    Text("feeds")
+                        .fancyTabItem(tag: 1) {
+                            Label("Feeds", systemImage: "scroll")
+                                .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
+                        }
+                    //                .tabItem {
+                    //                    Label("Feeds", systemImage: "scroll")
+                    //                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
+                    //                }.tag(1)
+                    
+                    // InboxView()
+                    Text("inbox")
+                        .fancyTabItem(tag: 2) {
+                            Label("Inbox", systemImage: "mail.stack")
+                                .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                        }
+                    //                .tabItem {
+                    //                    Label("Inbox", systemImage: "mail.stack")
+                    //                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                    //                }.tag(2)
+                    
+                    //            ProfileView(userID: appState.currentActiveAccount.id)
+                    //                .tabItem {
+                    //                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
+                    //                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                    //                }
+                    //                .tag(3)
+                    //
+                    //            SearchView()
+                    //                .tabItem {
+                    //                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                    //                }.tag(4)
+                    //
+                    //            SettingsView()
+                    //                .tabItem {
+                    //                    Label("Settings", systemImage: "gear")
+                    //                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
+                    //                }.tag(5)
                 }
-//                .tabItem {
-//                    Label("Feeds", systemImage: "scroll")
-//                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-//                }.tag(1)
-
-            InboxView()
-                .fancyTabItem(tag: 2) {
-                    Label("Inbox", systemImage: "mail.stack")
-                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                }
-//                .tabItem {
-//                    Label("Inbox", systemImage: "mail.stack")
-//                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-//                }.tag(2)
-
-//            ProfileView(userID: appState.currentActiveAccount.id)
-//                .tabItem {
-//                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-//                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-//                }
-//                .tag(3)
-//
-//            SearchView()
-//                .tabItem {
-//                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-//                }.tag(4)
-//
-//            SettingsView()
-//                .tabItem {
-//                    Label("Settings", systemImage: "gear")
-//                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
-//                }.tag(5)
+                .environmentObject(AppState(defaultAccount: selectedAccount, selectedAccount: $selectedAccount))
+            }
+            
         }
-        .onChange(of: appState.contextualError) { handle($0) }
+        // .onChange(of: appState.contextualError) { handle($0) }
         .alert(using: $errorAlert) { content in
             Alert(
                 title: Text(content.title),
@@ -77,9 +87,9 @@ struct ContentView: View {
             }
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
-        .environmentObject(appState)
+        // .environmentObject(appState)
     }
-
+    
     // MARK: helpers
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"
@@ -91,7 +101,7 @@ struct ContentView: View {
 extension ContentView {
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         let outcome = URLHandler.handle(url)
-
+        
         switch outcome.action {
         case let .error(message):
             errorAlert = .init(
@@ -101,7 +111,7 @@ extension ContentView {
         default:
             break
         }
-
+        
         return outcome.result
     }
 }
@@ -113,18 +123,18 @@ extension ContentView {
         guard let contextualError else {
             return
         }
-
-        #if DEBUG
+        
+#if DEBUG
         print("☠️ ERROR ☠️")
         print("🕵️ -> \(contextualError.underlyingError.description)")
         print("📝 -> \(contextualError.underlyingError.localizedDescription)")
-        #endif
-
+#endif
+        
         defer {
             // ensure we clear our the error once we've handled it...
             appState.contextualError = nil
         }
-
+        
         if let clientError = contextualError.underlyingError.base as? APIClientError {
             switch clientError {
             case .invalidSession:
@@ -136,15 +146,15 @@ extension ContentView {
                 break
             }
         }
-
+        
         let title = contextualError.title ?? ""
         let message = contextualError.message ?? ""
-
+        
         guard !title.isEmpty || !message.isEmpty else {
             // no title or message was supplied so don't notify the user of this...
             return
         }
-
+        
         errorAlert = .init(title: title, message: message)
     }
 }
