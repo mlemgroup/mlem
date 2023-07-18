@@ -190,7 +190,7 @@ struct TokenRefreshView: View {
             updateViewState(.success)
             await didReceive(token)
         } catch {
-            AppConstants.hapticManager.notificationOccurred(.error)
+            HapticManager.shared.error()
             
             if case let APIClientError.response(apiError, _) = error,
                apiError.isIncorrectLogin {
