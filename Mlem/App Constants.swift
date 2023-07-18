@@ -73,6 +73,8 @@ struct AppConstants {
     static let barIconSize: CGFloat = 15.5 // square size of a bar button
     static let barIconPadding: CGFloat = 4.25 // padding for bar button
     static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
+    static let settingsIconSize: CGFloat = 28
+    static let settingsIconCornerRadius: CGFloat = 7
     
     // MARK: - SFSymbols
     // votes

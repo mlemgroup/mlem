@@ -11,7 +11,6 @@ import SwiftUI
 struct CommentSettingsView: View {
     
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
-    @AppStorage("thumbnailsOnRight") var shouldShowThumbnailsOnRight: Bool = false
     // interactions and info
     @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .standard
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false

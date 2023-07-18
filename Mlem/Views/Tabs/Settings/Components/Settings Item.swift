@@ -59,10 +59,18 @@ struct SquircleLabelStyle: LabelStyle {
             configuration.icon
                 .font(.system(size: fontSize))
                 .foregroundColor(.white)
-                .frame(width: 28, height: 28)
+                .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
                 .background(color)
-                .clipShape(RoundedRectangle(cornerRadius: 7))
+                .clipShape(RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius))
         }
+    }
+}
+
+struct SettingsButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
     }
 }
 
