@@ -24,6 +24,8 @@ struct CommunityView: View {
     @Environment(\.setEasterFlag) var setEasterFlag
 
     @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
+    
+    @State var responseItem: ConcreteRespondable?
 
     // parameters
     var community: APICommunity?
@@ -294,6 +296,9 @@ struct CommunityView: View {
                 PostComposerView(community: community)
             }
         }
+        .sheet(item: $responseItem) { responseItem in
+            ResponseComposerView(concreteRespondable: responseItem)
+        }
         .onAppear {
             if !didLoad {
                 didLoad = true
@@ -352,7 +357,8 @@ struct CommunityView: View {
                         postView: post,
                         showPostCreator: shouldShowPostCreator,
                         showCommunity: !isInSpecificCommunity,
-                        isDragging: $isDragging
+                        isDragging: $isDragging,
+                        responseItem: $responseItem
                     )
                 }
                 Divider()
