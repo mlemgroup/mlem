@@ -33,7 +33,7 @@ struct FeedPost: View {
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    @State var responseItem: ConcreteRespondable?
+    @Binding var responseItem: ConcreteRespondable?
     
     // MARK: Parameters
 
@@ -42,13 +42,15 @@ struct FeedPost: View {
          showCommunity: Bool = true,
          showInteractionBar: Bool = true,
          enableSwipeActions: Bool = true,
-         isDragging: Binding<Bool>) {
+         isDragging: Binding<Bool>,
+         responseItem: Binding<ConcreteRespondable?>) {
         self.postView = postView
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
         self._isDragging = isDragging
+        self._responseItem = responseItem
     }
 
     let postView: APIPostView
@@ -88,9 +90,6 @@ struct FeedPost: View {
                     primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
                     secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
                 )
-        }
-        .sheet(item: $responseItem) { responseItem in
-            ResponseComposerView(concreteRespondable: responseItem)
         }
     }
 
