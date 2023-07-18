@@ -44,7 +44,6 @@ struct FancyTabBar<Selection: Hashable, Content: View>: View {
                         .onTapGesture { selection = key }
                     }
                 }
-                .padding()
                 .background(.regularMaterial)
             }
             .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {

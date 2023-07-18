@@ -23,46 +23,46 @@ struct ContentView: View {
         FancyTabBar(selection: $tabSelection) {
             FeedRoot()
                 .fancyTabItem(tag: 1) {
-                    AnyView(VStack(spacing: AppConstants.iconToTextSpacing) {
-                        Image(systemName: tabSelection == 1 ? "scroll.fill" : "scroll")
-                        
-                        Text("Feeds")
-                    })
+                    FancyTabBarLabel(symbolName: "scroll", text: "Feeds")
+                        .contextMenu {
+                            Button("hit me!") {
+                                print("hit!")
+                            }
+                        }
                 } labelActive: {
-                    AnyView(Text("active"))
+                    FancyTabBarLabel(symbolName: "scroll.fill", text: "Feeds", color: .accentColor)
+                        .contextMenu {
+                            Button("hit me!") {
+                                print("hit!")
+                            }
+                        }
                 }
             InboxView()
                 .fancyTabItem(tag: 2) {
-                    Label("Inbox", systemImage: "mail.stack")
-                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                    FancyTabBarLabel(tagHash: 2.hashValue, symbolName: "mail.stack", text: "Inbox")
                 } labelActive: {
-                    Label("Inbox", systemImage: "mail.stack")
-                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                    FancyTabBarLabel(tagHash: 2.hashValue, symbolName: "mail.stack.fill", text: "Inbox", color: .accentColor)
                 }
             
             ProfileView(userID: appState.currentActiveAccount.id)
                 .fancyTabItem(tag: 3) {
-                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                    FancyTabBarLabel(symbolName: "person.circle", text: appState.currentActiveAccount.username)
                 } labelActive: {
-                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                    FancyTabBarLabel(symbolName: "person.circle.fill", text: appState.currentActiveAccount.username, color: .accentColor)
                 }
             
             SearchView()
                 .fancyTabItem(tag: 4) {
-                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                    FancyTabBarLabel(symbolName: "magnifyingglass", text: "Search")
                 } labelActive: {
-                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                    FancyTabBarLabel(symbolName: "text.magnifyingglass", text: "Search", color: .accentColor)
                 }
             
             SettingsView()
                 .fancyTabItem(tag: 5) {
-                    Label("Settings", systemImage: "gear")
-                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
+                    FancyTabBarLabel(symbolName: "gear", text: "Settings")
                 } labelActive: {
-                    Label("Settings", systemImage: "gear")
-                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
+                    FancyTabBarLabel(symbolName: "gear", text: "Settings", color: .accentColor)
                 }
             
         }

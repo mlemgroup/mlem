@@ -305,6 +305,7 @@
 		CDDCF6452A66375E003DA3AC /* FancyTabItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6442A66375E003DA3AC /* FancyTabItemViewModifier.swift */; };
 		CDDCF6472A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6462A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift */; };
 		CDDCF6492A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6482A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift */; };
+		CDDCF64F2A672C0A003DA3AC /* FancyTabBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF64E2A672C0A003DA3AC /* FancyTabBarLabel.swift */; };
 		CDE6A80B2A43E9F00062D161 /* CommentSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */; };
 		CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */; };
 		CDE6A8162A490AE00062D161 /* Inbox Message View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A8152A490AE00062D161 /* Inbox Message View.swift */; };
@@ -629,6 +630,7 @@
 		CDDCF6442A66375E003DA3AC /* FancyTabItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemViewModifier.swift; sourceTree = "<group>"; };
 		CDDCF6462A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarSelectionEnvironmentKey.swift; sourceTree = "<group>"; };
 		CDDCF6482A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemLabelBuilder.swift; sourceTree = "<group>"; };
+		CDDCF64E2A672C0A003DA3AC /* FancyTabBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarLabel.swift; sourceTree = "<group>"; };
 		CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSortType.swift; sourceTree = "<group>"; };
 		CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Embedded Post.swift"; sourceTree = "<group>"; };
 		CDE6A8152A490AE00062D161 /* Inbox Message View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Message View.swift"; sourceTree = "<group>"; };
@@ -1550,6 +1552,7 @@
 				CDDCF6442A66375E003DA3AC /* FancyTabItemViewModifier.swift */,
 				CDDCF6462A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift */,
 				CDDCF6482A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift */,
+				CDDCF64E2A672C0A003DA3AC /* FancyTabBarLabel.swift */,
 			);
 			path = "Custom Tab Bar";
 			sourceTree = "<group>";
@@ -1926,6 +1929,7 @@
 				6D405AFF2A43E66600C65F9C /* User Profile Label.swift in Sources */,
 				CD391F9A2A537EF900E213B5 /* CommentBodyView.swift in Sources */,
 				63344C562A07D81D001BC616 /* Array - Prepend.swift in Sources */,
+				CDDCF64F2A672C0A003DA3AC /* FancyTabBarLabel.swift in Sources */,
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
 				CDF8425E2A49E61A00723DA0 /* APIPersonMention.swift in Sources */,
 				CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */,

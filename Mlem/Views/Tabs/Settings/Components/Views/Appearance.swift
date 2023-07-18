@@ -13,6 +13,7 @@ struct AppearanceSettingsView: View {
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
+    @AppStorage("showTabNames") var showTabNames: Bool = true
     
     // display sides
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
@@ -133,12 +134,16 @@ struct AppearanceSettingsView: View {
                     )
                 }
                 
-                Section("Privacy") {
+                Section("Navigation Bar") {
                     SwitchableSettingsItem(settingPictureSystemName: "person.fill",
                                            settingPictureColor: .pink,
                                            settingName: "Show Username In Navigation Bar",
                                            isTicked: $showUsernameInNavigationBar)
                     
+                    SwitchableSettingsItem(settingPictureSystemName: "t.square",
+                                           settingPictureColor: .pink,
+                                           settingName: "Show Tab Labels",
+                                           isTicked: $showTabNames)
                 }
             }
         }

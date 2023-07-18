@@ -13,6 +13,8 @@ struct FancyTabItem<Selection: Hashable, V: View>: ViewModifier {
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     private let tagHashValue: Int
     private let tag: Selection
+    
+    // what's this? *two* labels? well... yeah. I tried *really* hard to make it one label that read the current tab state to toggle between active and passive display, but state updates stubbornly refuse to propagate down to the label so here we are
     @ViewBuilder private let label: () -> V
     @ViewBuilder private let labelActive: () -> V
     
