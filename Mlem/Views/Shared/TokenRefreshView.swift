@@ -39,22 +39,23 @@ struct TokenRefreshView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .center, spacing: 15) {
+                VStack(alignment: .center, spacing: 5) {
                     header
-                        .padding()
-                    informationText
                 }
+                .padding()
+                Spacer(minLength: 15)
                 Grid(alignment: .trailing, verticalSpacing: 15) {
-                    passwordField
-                    oneTimeCodeView
+                    Divider()
+                    passwordField.padding(.horizontal)
+                    Divider()
+                    oneTimeCodeView.padding(.horizontal)
                 }
             }
-            .padding()
+            .edgesIgnoringSafeArea(.horizontal)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Session Expired")
             .interactiveDismissDisabled()
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     cancelButton
                 }
             }
@@ -67,10 +68,6 @@ struct TokenRefreshView: View {
     private var header: some View {
         Group {
             switch viewState {
-            case .initial, .incorrectLogin:
-                Image(systemName: "exclamationmark.triangle")
-                    .resizable()
-                    .foregroundColor(.red)
             case .refreshing:
                 ProgressView()
                     .controlSize(.large)
@@ -78,31 +75,32 @@ struct TokenRefreshView: View {
                 Image(systemName: "checkmark.circle.fill")
                     .resizable()
                     .foregroundColor(.green)
+            default:
+                informationText
             }
         }
-        .frame(width: 100, height: 100)
     }
     
+    @ViewBuilder
     private var informationText: some View {
-        let text: String
-        
         switch viewState {
         case .initial, .incorrectLogin:
-            text = """
-        Your current session has expired, you will need to log in to continue.\n
-        Please enter the password for\n\(account.username)@\(account.instanceLink.host() ?? "")
-        """
+            
+            Text("Your session has expired")
+                .font(.title)
+                .bold()
+                .padding()
+                .multilineTextAlignment(.center)
+                .dynamicTypeSize(.small ... .accessibility1)
+            Text("Please enter the password for")
+                .font(.body)
+            Text("\(account.username)@\(account.instanceLink.host ?? "")" )
+                .font(.subheadline)
         case .refreshing:
-            text = "Logging In..."
+            Text("Logging In...")
         case .success:
-            text = "Login Succesful"
+            Text("Login Succesful")
         }
-        
-        return Text(text)
-            .padding()
-            .font(.body)
-            .multilineTextAlignment(.center)
-            .dynamicTypeSize(.small ... .accessibility1)
     }
     
     @ViewBuilder
@@ -111,7 +109,7 @@ struct TokenRefreshView: View {
                 Text("Password")
                     .foregroundColor(.secondary)
                     .accessibilityHidden(true)
-                SecureField("Password", text: $password)
+                SecureField("", text: $password)
                     .focused($selectedField, equals: FocusedField.password)
                     .textContentType(.password)
                     .submitLabel(.continue)
@@ -158,18 +156,22 @@ struct TokenRefreshView: View {
     @ViewBuilder
     private var oneTimeCodeView: some View {
         if showing2FAAlert {
-            GridRow {
-                Text("Code")
-                    .foregroundColor(.secondary)
-                    .accessibilityHidden(true)
-                SecureField("Enter one-time code", text: $twoFactorCode)
-                    .focused($selectedField, equals: FocusedField.onetimecode)
-                    .textContentType(.oneTimeCode)
-                    .submitLabel(.go)
-                    .onSubmit {
-                        refreshTokenUsing2FA()
-                    }
+            Group {
+                GridRow {
+                    Text("Code")
+                        .foregroundColor(.secondary)
+                        .accessibilityHidden(true)
+                    SecureField("Enter one-time code", text: $twoFactorCode)
+                        .focused($selectedField, equals: FocusedField.onetimecode)
+                        .textContentType(.oneTimeCode)
+                        .submitLabel(.go)
+                        .onSubmit {
+                            refreshTokenUsing2FA()
+                        }
+                }
+                Divider()
             }
+
         }
         
     }
@@ -178,7 +180,6 @@ struct TokenRefreshView: View {
         Button("Cancel", role: .destructive) {
             dismiss()
         }
-        .foregroundColor(.red)
         .disabled(shouldDisableControls)
     }
     
