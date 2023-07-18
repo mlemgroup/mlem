@@ -22,41 +22,30 @@ struct Window: View {
     @State var easterRewardShouldShow = false
 
     var body: some View {
-        ContentView(selectedAccount: $selectedAccount)
-//             .id(selectedAccount?.id ?? 0)
-//            .environmentObject(filtersTracker)
-            // .environmentObject(AppState(defaultAccount: selectedAccount, selectedAccount: $selectedAccount))
-//            .environmentObject(favoriteCommunitiesTracker)
-//            .environmentObject(communitySearchResultsTracker)
-//            .environmentObject(recentSearchesTracker)
-//            .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
-//            .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
-        // }
-        
-//        ZStack {
-//            if let selectedAccount {
-//                view(for: selectedAccount)
-//            } else {
-//                NavigationStack {
-//                    AccountsPage(selectedAccount: $selectedAccount)
-//                }
-//            }
-//
-//            // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
-//            Color.clear
-//                .toast(isPresenting: $easterRewardShouldShow, duration: 2.0) {
-//                    easterRewardsToastDisplay ?? AlertToast(displayMode: .hud, type: .error(.clear))
-//                } completion: {
-//                    if !easterRewardsToastsQueue.isEmpty {
-//                        easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
-//                        easterRewardShouldShow = true
-//                    }
-//                }
-//        }
-//            .onChange(of: selectedAccount) { _ in onLogin() }
-//            .onAppear(perform: onLogin)
-//            .environment(\.setEasterFlag, setEasterFlag)
-//            .environmentObject(easterFlagsTracker)
+        ZStack {
+            if let selectedAccount {
+                view(for: selectedAccount)
+            } else {
+                NavigationStack {
+                    AccountsPage(selectedAccount: $selectedAccount)
+                }
+            }
+
+            // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
+            Color.clear
+                .toast(isPresenting: $easterRewardShouldShow, duration: 2.0) {
+                    easterRewardsToastDisplay ?? AlertToast(displayMode: .hud, type: .error(.clear))
+                } completion: {
+                    if !easterRewardsToastsQueue.isEmpty {
+                        easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
+                        easterRewardShouldShow = true
+                    }
+                }
+        }
+        .onChange(of: selectedAccount) { _ in onLogin() }
+        .onAppear(perform: onLogin)
+        .environment(\.setEasterFlag, setEasterFlag)
+        .environmentObject(easterFlagsTracker)
     }
 
     func onLogin() {
@@ -68,18 +57,18 @@ struct Window: View {
         }
     }
     
-//    @ViewBuilder
-//    private func view(for account: SavedAccount) -> some View {
-//        ContentView()
-//            .id(account.id)
-//            .environmentObject(filtersTracker)
-//            .environmentObject(AppState(defaultAccount: account, selectedAccount: $selectedAccount))
-//            .environmentObject(favoriteCommunitiesTracker)
-//            .environmentObject(communitySearchResultsTracker)
-//            .environmentObject(recentSearchesTracker)
-//            .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
-//            .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
-//    }
+    @ViewBuilder
+    private func view(for account: SavedAccount) -> some View {
+        ContentView()
+            .id(account.id)
+            .environmentObject(filtersTracker)
+            .environmentObject(AppState(defaultAccount: account, selectedAccount: $selectedAccount))
+            .environmentObject(favoriteCommunitiesTracker)
+            .environmentObject(communitySearchResultsTracker)
+            .environmentObject(recentSearchesTracker)
+            .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
+            .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
+    }
 
     private func saveFilteredKeywords(_ newValue: [String]) {
         print("Change detected in filtered keywords: \(newValue)")

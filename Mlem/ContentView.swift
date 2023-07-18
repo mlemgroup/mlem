@@ -15,62 +15,45 @@ struct ContentView: View {
     @State private var errorAlert: ErrorAlert?
     @State private var expiredSessionAccount: SavedAccount?
     
-    @Binding var selectedAccount: SavedAccount?
-    
     @State private var tabSelection: Int = 1
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
     var body: some View {
-        // TabView(selection: $tabSelection) {
         FancyTabBar(selection: $tabSelection) {
-            if let selectedAccount = selectedAccount {
-                Group {
-                    // FeedRoot()
-                    Text("feeds")
-                        .fancyTabItem(tag: 1) {
-                            Label("Feeds", systemImage: "scroll")
-                                .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-                        }
-                    //                .tabItem {
-                    //                    Label("Feeds", systemImage: "scroll")
-                    //                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-                    //                }.tag(1)
-                    
-                    // InboxView()
-                    Text("inbox")
-                        .fancyTabItem(tag: 2) {
-                            Label("Inbox", systemImage: "mail.stack")
-                                .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                        }
-                    //                .tabItem {
-                    //                    Label("Inbox", systemImage: "mail.stack")
-                    //                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                    //                }.tag(2)
-                    
-                    //            ProfileView(userID: appState.currentActiveAccount.id)
-                    //                .tabItem {
-                    //                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-                    //                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-                    //                }
-                    //                .tag(3)
-                    //
-                    //            SearchView()
-                    //                .tabItem {
-                    //                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-                    //                }.tag(4)
-                    //
-                    //            SettingsView()
-                    //                .tabItem {
-                    //                    Label("Settings", systemImage: "gear")
-                    //                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
-                    //                }.tag(5)
+            FeedRoot()
+                .fancyTabItem(tag: 1) {
+                    VStack(spacing: AppConstants.iconToTextSpacing) {
+                        Image(systemName: tabSelection == 1 ? "scroll.fill" : "scroll")
+                        
+                        Text("Feeds")
+                    }
                 }
-                .environmentObject(AppState(defaultAccount: selectedAccount, selectedAccount: $selectedAccount))
-            }
+            InboxView()
+                .fancyTabItem(tag: 2) {
+                    Label("Inbox", systemImage: "mail.stack")
+                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
+                }
+            
+            ProfileView(userID: appState.currentActiveAccount.id)
+                .fancyTabItem(tag: 3) {
+                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
+                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+                }
+            
+            SearchView()
+                .fancyTabItem(tag: 4) {
+                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
+                }
+            
+            SettingsView()
+                .fancyTabItem(tag: 5) {
+                    Label("Settings", systemImage: "gear")
+                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
+                }
             
         }
-        // .onChange(of: appState.contextualError) { handle($0) }
+        .onChange(of: appState.contextualError) { handle($0) }
         .alert(using: $errorAlert) { content in
             Alert(
                 title: Text(content.title),
@@ -87,7 +70,7 @@ struct ContentView: View {
             }
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
-        // .environmentObject(appState)
+        .environmentObject(appState)
     }
     
     // MARK: helpers

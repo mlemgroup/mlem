@@ -31,7 +31,7 @@ struct FancyTabItemPreferenceKey<Selection: Hashable>: PreferenceKey {
 
 struct FancyTabItemLabelBuilder<Selection: Hashable>: Hashable, Equatable {
     let tag: Selection
-    let label: () -> AnyView
+    let label: (_: Bool?) -> AnyView
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(tag)
