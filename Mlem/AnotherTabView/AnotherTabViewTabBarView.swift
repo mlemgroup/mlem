@@ -11,6 +11,7 @@ struct AnotherTabViewTabBarView: View {
 	static let fontSize: CGFloat = 18
 	
 	let items: [AnotherTabItem]
+    let itemLabels: [AnotherTabItem: AnotherTabItemLabelBuilder]
 	
 	@Binding var selectedItem: AnotherTabItem
 	
@@ -34,10 +35,10 @@ struct AnotherTabViewTabBarView: View {
                 Spacer()
             }
         }
-		.onPreferenceChange(AnotherTabViewTabBarViewHeightPreferenceKey.self, perform: { value in
+		.onPreferenceChange(AnotherTabViewTabBarViewHeightPrefKey.self, perform: { value in
 			barHeight = value
 		})
-		.frame(height: barHeight)
+		// .frame(height: barHeight)
         .background(.regularMaterial)
 		.ignoresSafeArea(edges: .horizontal)
 		.ignoresSafeArea(edges: .bottom)
@@ -49,12 +50,14 @@ struct AnotherTabViewTabBarView: View {
 	
 	func tabItemView(_ item: AnotherTabItem) -> some View {
 		let barHeight = (2*Self.vPadding) + Self.fontSize
-		
-		return Text(item.title)
-			.padding(.vertical, Self.vPadding)
-			.foregroundColor(foregroundColorFor(item))
-			.font(.system(size: Self.fontSize, weight: .regular, design: .rounded))
-			.preference(key: AnotherTabViewTabBarViewHeightPreferenceKey.self, value: barHeight)
+	
+        return itemLabels[item]?.label()
+        
+//		return Text(item.title)
+//			.padding(.vertical, Self.vPadding)
+//			.foregroundColor(foregroundColorFor(item))
+//			.font(.system(size: Self.fontSize, weight: .regular, design: .rounded))
+//			.preference(key: AnotherTabViewTabBarViewHeightPrefKey.self, value: barHeight)
 	}
 	
 	func foregroundColorFor(_ item: AnotherTabItem) -> Color {
@@ -66,7 +69,7 @@ struct AnotherTabViewTabBarView: View {
 	}
 }
 
-struct AnotherTabViewTabBarViewHeightPreferenceKey: PreferenceKey {
+struct AnotherTabViewTabBarViewHeightPrefKey: PreferenceKey {
 	static var defaultValue: CGFloat = 0
 	
 	static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {

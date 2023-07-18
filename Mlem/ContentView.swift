@@ -22,19 +22,29 @@ struct ContentView: View {
     var body: some View {
         AnotherTabView(selection: $tabSelection) {
             FeedRoot()
-                .anotherTabItem(.feed, selectedItem: tabSelection)
+                .anotherTabItem(.feed, selectedItem: tabSelection) {
+                    AnyView(Text("Feed"))
+                }
 
             InboxView()
-                .anotherTabItem(.inbox, selectedItem: tabSelection)
+                .anotherTabItem(.inbox, selectedItem: tabSelection) {
+                    AnyView(Text("Inbox"))
+                }
 
             ProfileView(userID: appState.currentActiveAccount.id)
-                .anotherTabItem(.profile, selectedItem: tabSelection)
+                .anotherTabItem(.profile, selectedItem: tabSelection) {
+                    AnyView(Text("Profile"))
+                }
 
             SearchView()
-                .anotherTabItem(.search, selectedItem: tabSelection)
+                .anotherTabItem(.search, selectedItem: tabSelection) {
+                    AnyView(Text("Search"))
+                }
 
             SettingsView()
-                .anotherTabItem(.settings, selectedItem: tabSelection)
+                .anotherTabItem(.settings, selectedItem: tabSelection) {
+                    AnyView(Text("Settings"))
+                }
         }
         .onChange(of: appState.contextualError) { handle($0) }
         .alert(using: $errorAlert) { content in

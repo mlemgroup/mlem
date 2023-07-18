@@ -310,6 +310,7 @@
 		CDDCF6452A66375E003DA3AC /* FancyTabItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6442A66375E003DA3AC /* FancyTabItemViewModifier.swift */; };
 		CDDCF6472A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6462A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift */; };
 		CDDCF6492A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6482A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift */; };
+		CDDCF64B2A670CC6003DA3AC /* AnotherTabItemLabelPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF64A2A670CC6003DA3AC /* AnotherTabItemLabelPrefKey.swift */; };
 		CDE6A80B2A43E9F00062D161 /* CommentSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */; };
 		CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */; };
 		CDE6A8162A490AE00062D161 /* Inbox Message View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A8152A490AE00062D161 /* Inbox Message View.swift */; };
@@ -639,6 +640,7 @@
 		CDDCF6442A66375E003DA3AC /* FancyTabItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemViewModifier.swift; sourceTree = "<group>"; };
 		CDDCF6462A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarSelectionEnvironmentKey.swift; sourceTree = "<group>"; };
 		CDDCF6482A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemLabelBuilder.swift; sourceTree = "<group>"; };
+		CDDCF64A2A670CC6003DA3AC /* AnotherTabItemLabelPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherTabItemLabelPrefKey.swift; sourceTree = "<group>"; };
 		CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSortType.swift; sourceTree = "<group>"; };
 		CDE6A80C2A45EAB30062D161 /* Embedded Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Embedded Post.swift"; sourceTree = "<group>"; };
 		CDE6A8152A490AE00062D161 /* Inbox Message View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Message View.swift"; sourceTree = "<group>"; };
@@ -695,6 +697,7 @@
 				431DC8022A66E93700D2FEF9 /* AnotherTabViewItemsPreferencesKey.swift */,
 				431DC7FF2A66E93700D2FEF9 /* AnotherTabViewItemViewModifier.swift */,
 				431DC8012A66E93700D2FEF9 /* AnotherTabViewTabBarView.swift */,
+				CDDCF64A2A670CC6003DA3AC /* AnotherTabItemLabelPrefKey.swift */,
 			);
 			path = AnotherTabView;
 			sourceTree = "<group>";
@@ -2015,6 +2018,7 @@
 				638535712A1779BC00815781 /* General.swift in Sources */,
 				CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */,
 				507573912A5AD53C00AA7ABD /* Error+Equatable.swift in Sources */,
+				CDDCF64B2A670CC6003DA3AC /* AnotherTabItemLabelPrefKey.swift in Sources */,
 				6D693A482A51B904009E2D76 /* CreateCommentReport.swift in Sources */,
 				CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */,
 				6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */,
