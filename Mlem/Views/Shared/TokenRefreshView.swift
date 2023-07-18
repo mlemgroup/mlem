@@ -44,11 +44,13 @@ struct TokenRefreshView: View {
                 }
                 .padding()
                 Spacer(minLength: 15)
-                Grid(alignment: .trailing, verticalSpacing: 15) {
+                Grid(alignment: .trailing, horizontalSpacing: 0, verticalSpacing: 15) {
                     Divider()
-                    passwordField.padding(.horizontal)
+                    passwordField
+                        .dynamicTypeSize(.small ... .xxxLarge)
                     Divider()
-                    oneTimeCodeView.padding(.horizontal)
+                    oneTimeCodeView
+                        .dynamicTypeSize(.small ... .xxxLarge)
                 }
             }
             .edgesIgnoringSafeArea(.horizontal)
@@ -94,8 +96,10 @@ struct TokenRefreshView: View {
                 .dynamicTypeSize(.small ... .accessibility1)
             Text("Please enter the password for")
                 .font(.body)
+                .dynamicTypeSize(.small ... .xxxLarge)
             Text("\(account.username)@\(account.instanceLink.host ?? "")" )
                 .font(.subheadline)
+                .dynamicTypeSize(.small ... .xxxLarge)
         case .refreshing:
             Text("Logging In...")
         case .success:
@@ -109,6 +113,7 @@ struct TokenRefreshView: View {
                 Text("Password")
                     .foregroundColor(.secondary)
                     .accessibilityHidden(true)
+                    .padding(.horizontal)
                 SecureField("", text: $password)
                     .focused($selectedField, equals: FocusedField.password)
                     .textContentType(.password)
@@ -161,6 +166,7 @@ struct TokenRefreshView: View {
                     Text("Code")
                         .foregroundColor(.secondary)
                         .accessibilityHidden(true)
+                        .padding(.horizontal)
                     SecureField("Enter one-time code", text: $twoFactorCode)
                         .focused($selectedField, equals: FocusedField.onetimecode)
                         .textContentType(.oneTimeCode)
