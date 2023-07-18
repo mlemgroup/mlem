@@ -15,50 +15,26 @@ struct ContentView: View {
     @State private var errorAlert: ErrorAlert?
     @State private var expiredSessionAccount: SavedAccount?
 
-    @State private var tabSelection: Int = 1
+    @State private var tabSelection: AnotherTabItem = .feed
 
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
 
     var body: some View {
-        // TabView(selection: $tabSelection) {
-        FancyTabBar(selection: $tabSelection) {
+        AnotherTabView(selection: $tabSelection) {
             FeedRoot()
-                .fancyTabItem(tag: 1) {
-                    Label("Feeds", systemImage: "scroll")
-                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-                }
-//                .tabItem {
-//                    Label("Feeds", systemImage: "scroll")
-//                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-//                }.tag(1)
+                .anotherTabItem(.feed, selectedItem: tabSelection)
 
             InboxView()
-                .fancyTabItem(tag: 2) {
-                    Label("Inbox", systemImage: "mail.stack")
-                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                }
-//                .tabItem {
-//                    Label("Inbox", systemImage: "mail.stack")
-//                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-//                }.tag(2)
+                .anotherTabItem(.inbox, selectedItem: tabSelection)
 
-//            ProfileView(userID: appState.currentActiveAccount.id)
-//                .tabItem {
-//                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-//                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-//                }
-//                .tag(3)
-//
-//            SearchView()
-//                .tabItem {
-//                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-//                }.tag(4)
-//
-//            SettingsView()
-//                .tabItem {
-//                    Label("Settings", systemImage: "gear")
-//                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
-//                }.tag(5)
+            ProfileView(userID: appState.currentActiveAccount.id)
+                .anotherTabItem(.profile, selectedItem: tabSelection)
+
+            SearchView()
+                .anotherTabItem(.search, selectedItem: tabSelection)
+
+            SettingsView()
+                .anotherTabItem(.settings, selectedItem: tabSelection)
         }
         .onChange(of: appState.contextualError) { handle($0) }
         .alert(using: $errorAlert) { content in
