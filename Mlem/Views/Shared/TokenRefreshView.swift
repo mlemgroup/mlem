@@ -114,7 +114,7 @@ struct TokenRefreshView: View {
                             updateViewState(.success)
                             await didReceive(token)
                         } catch {
-                            AppConstants.hapticManager.notificationOccurred(.error)
+                            HapticManager.shared.error()
                             
                             if case let APIClientError.response(apiError, _) = error,
                                apiError.isIncorrectLogin {
@@ -176,7 +176,7 @@ struct TokenRefreshView: View {
     
     private func didReceive(_ newToken: String) async {
         // small artifical delay so the user sees confirmation of success
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.success()
         try? await Task.sleep(for: .seconds(0.5))
         
         await MainActor.run {
