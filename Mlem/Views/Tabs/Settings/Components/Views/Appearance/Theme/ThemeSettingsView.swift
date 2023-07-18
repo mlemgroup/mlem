@@ -32,20 +32,20 @@ struct ThemeLabel: View {
         } icon: {
             if color2 != nil {
                 color1
-                    .frame(width: 28, height: 28)
+                    .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
                     .overlay { ThemeTriangle().fill(color2!) }
-                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius))
                     .overlay {
-                        RoundedRectangle(cornerRadius: 7)
+                        RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius)
                             .stroke(outlineColor, lineWidth: 1)
                     }
                 
             } else {
                 color1
-                    .frame(width: 28, height: 28)
-                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                    .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
+                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius))
                     .overlay {
-                        RoundedRectangle(cornerRadius: 7)
+                        RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius)
                             .stroke(outlineColor, lineWidth: 1)
                     }
             }

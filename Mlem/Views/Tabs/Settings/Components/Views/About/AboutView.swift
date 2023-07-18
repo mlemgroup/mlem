@@ -24,35 +24,24 @@ struct AboutView: View {
                     Link(destination: URL(string: "https://mlem.group/")!) {
                         Label("Website", systemImage: "globe").labelStyle(SquircleLabelStyle(color: .blue))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SettingsButtonStyle())
                     
-                    Button {
-                        Task {
-                            do {
-                                let request = GetCommunityRequest(account: appState.currentActiveAccount, communityId: 346)
-                                let community = try await APIClient().perform(request: request).communityView
-                                $navigationPath.wrappedValue.append(community)
-                            } catch {
-                                print("Couldn't load Mlem community")
-                            }
-                        }
-                        
-                    } label: {
+                    Link(destination: URL(string: "https://lemmy.world/c/mlemapp@lemmy.ml")!) {
                         Label("Official Community", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .green, fontSize: 15))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SettingsButtonStyle())
                     
                     Link(destination: URL(string: "https://matrix.to/#/%23mlemapp:matrix.org")!) {
                         Label("Matrix Room", systemImage: "chart.bar.doc.horizontal").labelStyle(SquircleLabelStyle(color: .teal))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SettingsButtonStyle())
                 }
                 
                 Section {
                     Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
                         Label("Github Repository", image: "logo.github").labelStyle(SquircleLabelStyle(color: .black))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SettingsButtonStyle())
                     
                     NavigationLink {
                         ContributorsView()
@@ -105,7 +94,7 @@ struct AboutView: View {
     
     @ViewBuilder
     private var appHeaderView: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: AppConstants.postAndCommentSpacing) {
             Image("logo")
                 .resizable()
                 .frame(width: 100, height: 100)
