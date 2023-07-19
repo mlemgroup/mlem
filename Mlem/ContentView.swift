@@ -16,7 +16,6 @@ struct ContentView: View {
     @State private var expiredSessionAccount: SavedAccount?
     
     // tabs
-    // @State private var tabSelection: Int = 1
     @State private var tabSelection: TabSelection = .feeds
     @State private var showLoading: Bool = false
     
