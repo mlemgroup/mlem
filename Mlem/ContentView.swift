@@ -18,67 +18,53 @@ struct ContentView: View {
     // tabs
     @State private var tabSelection: TabSelection = .feeds
     @State private var showLoading: Bool = false
+    @GestureState private var isDetectingLongPress = false
+    
+    @State private var isPresentingAccountSwitcher: Bool = false
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
     var body: some View {
-        FancyTabBar(selection: $tabSelection) {
-            FeedRoot(showLoading: showLoading)
-                .fancyTabItem(tag: TabSelection.feeds) {
-                    FancyTabBarLabel(tag: TabSelection.feeds,
-                                     symbolName: "scroll",
-                                     activeSymbolName: "scroll.fill")
-                }
-            InboxView()
-                .fancyTabItem(tag: TabSelection.inbox) {
-                    FancyTabBarLabel(tag: TabSelection.inbox,
-                                     symbolName: "mail.stack",
-                                     activeSymbolName: "mail.stack.fill")
-                }
-            
-            ProfileView(userID: appState.currentActiveAccount.id)
-                .fancyTabItem(tag: TabSelection.profile) {
-                    FancyTabBarLabel(tag: TabSelection.profile,
-                                     customText: appState.currentActiveAccount.username,
-                                     symbolName: "person.circle",
-                                     activeSymbolName: "person.circle.fill")
-                    .contextMenu {
-                        ForEach(accountsTracker.savedAccounts) { account in
-                            Button(account.fullName()) {
-                                // new accounts always go to the Feeds tab, so set that immediately
-                                tabSelection = .feeds
-                                // fake loading to smooth the transition
-                                showLoading = true
-                                // this delay makes sure the appState isn't updated until after the animation is finished, since that causes an ugly little duplication of the account item
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
-                                    // appState change should trigger re-eval of state and reset showLoading, but just in case
-                                    defer { showLoading = false }
-                                    appState.setActiveAccount(account)
-                                }
-                            }
-                            .disabled(appState.currentActiveAccount == account)
-                        }
+        FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcher) {
+            Group {
+                FeedRoot(showLoading: showLoading)
+                    .fancyTabItem(tag: TabSelection.feeds) {
+                        FancyTabBarLabel(tag: TabSelection.feeds,
+                                         symbolName: "scroll",
+                                         activeSymbolName: "scroll.fill")
                     }
-                }
-
-            SearchView()
-                .fancyTabItem(tag: TabSelection.search) {
-                    FancyTabBarLabel(tag: TabSelection.search,
-                                     symbolName: "magnifyingglass",
-                                     activeSymbolName: "text.magnifyingglass")
-                }
-
-            SettingsView()
-                .fancyTabItem(tag: TabSelection.settings) {
-                    FancyTabBarLabel(tag: TabSelection.settings,
-                                     symbolName: "gear")
-                }
-            
+                InboxView()
+                    .fancyTabItem(tag: TabSelection.inbox) {
+                        FancyTabBarLabel(tag: TabSelection.inbox,
+                                         symbolName: "mail.stack",
+                                         activeSymbolName: "mail.stack.fill")
+                    }
+                
+                ProfileView(userID: appState.currentActiveAccount.id)
+                    .fancyTabItem(tag: TabSelection.profile) {
+                        FancyTabBarLabel(tag: TabSelection.profile,
+                                         customText: appState.currentActiveAccount.username,
+                                         symbolName: "person.circle",
+                                         activeSymbolName: "person.circle.fill")
+                        .simultaneousGesture(accountSwitchLongPress)
+                    }
+                SearchView()
+                    .fancyTabItem(tag: TabSelection.search) {
+                        FancyTabBarLabel(tag: TabSelection.search,
+                                         symbolName: "magnifyingglass",
+                                         activeSymbolName: "text.magnifyingglass")
+                    }
+                
+                SettingsView()
+                    .fancyTabItem(tag: TabSelection.settings) {
+                        FancyTabBarLabel(tag: TabSelection.settings,
+                                         symbolName: "gear")
+                    }
+            }
+            // .simultaneousGesture(accountSwitchDrag)
         }
+        // .simultaneousGesture(accountSwitchDrag)
         .onChange(of: appState.contextualError) { handle($0) }
-        .onChange(of: appState.currentActiveAccount) { _ in
-            print("yo")
-        }
         .alert(using: $errorAlert) { content in
             Alert(
                 title: Text(content.title),
@@ -94,6 +80,10 @@ struct ContentView: View {
                 appState.setActiveAccount(updatedAccount)
             }
         }
+        .sheet(isPresented: $isPresentingAccountSwitcher) {
+            AccountsPage()
+                .presentationDetents([.medium, .large])
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
     }
@@ -101,6 +91,20 @@ struct ContentView: View {
     // MARK: helpers
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"
+    }
+    
+    func showAccountSwitcher() {
+        isPresentingAccountSwitcher = true
+    }
+    
+    var accountSwitchLongPress: some Gesture {
+        LongPressGesture()
+            .onEnded { _ in
+                // disable long press in accessibility mode to prevent conflict with HUD
+                if !UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory {
+                    isPresentingAccountSwitcher = true
+                }
+            }
     }
 }
 

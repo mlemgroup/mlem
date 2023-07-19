@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Environment(\.openURL) private var openURL
 
     @State private var accountToSwitchTo: SavedAccount?
+    @State private var isPresentingAccountSheet: Bool = false
 
     var body: some View {
         NavigationView {
@@ -63,17 +64,17 @@ struct SettingsView: View {
                 }
                 #endif
 
-                Section {
-                    NavigationLink {
-                        AccountsPage(selectedAccount: $accountToSwitchTo)
-                    } label: {
-                        HStack(alignment: .center) {
-                            Image(systemName: "person.fill.questionmark")
-                                .foregroundColor(.mint)
-                            Text("Switch Account")
-                        }
-                    }
-                }
+//                 Section {
+//                    NavigationLink {
+//                        AccountsPage(selectedAccount: $accountToSwitchTo)
+//                    } label: {
+//                        HStack(alignment: .center) {
+//                            Image(systemName: "person.fill.questionmark")
+//                                .foregroundColor(.mint)
+//                            Text("Switch Account")
+//                        }
+//                    }
+//                 }
 
                 Section {
                     NavigationLink {

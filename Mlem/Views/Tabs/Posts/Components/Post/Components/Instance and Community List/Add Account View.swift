@@ -19,6 +19,8 @@ enum Field: Hashable {
 struct AddSavedInstanceView: View {
     @EnvironmentObject var communityTracker: SavedAccountTracker
     @EnvironmentObject var appState: AppState
+    
+    @Environment(\.dismiss) var dismiss
 
     @Binding var isShowingSheet: Bool
 
@@ -37,6 +39,9 @@ struct AddSavedInstanceView: View {
 
     @State private var errorAlert: ErrorAlert?
     @FocusState private var focusedField: Field?
+    
+    let onboarding: Bool
+    @Binding var currentAccount: SavedAccount?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -134,6 +139,13 @@ struct AddSavedInstanceView: View {
                     Text("Log In")
                 }
                 .disabled(instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
+                
+                Button(role: .destructive) {
+                    isShowingSheet = false
+                } label: {
+                    Text("Cancel")
+                }
+                
             }
             .disabled(isShowingEndpointDiscoverySpinner)
         }
@@ -188,10 +200,17 @@ struct AddSavedInstanceView: View {
             // MARK: - Save the account's credentials into the keychain
 
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
-            communityTracker.savedAccounts.append(newAccount)
+            communityTracker.addAccount(account: newAccount)
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                isShowingSheet = false
+            dismiss()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                currentAccount = newAccount
+                
+                // appState is not present on onboarding screen
+                if !onboarding {
+                    appState.setActiveAccount(newAccount)
+                }
             }
         } catch {
             handle(error)

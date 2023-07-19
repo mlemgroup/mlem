@@ -37,17 +37,24 @@ struct UserView: View {
     @State var responseItem: ConcreteRespondable?
     @FocusState var isReplyFieldFocused
     
+    // account switching
+    var isSelf: Bool { userID == appState.currentActiveAccount.id }
+    @State private var isPresentingAccountSwitcher: Bool = false
+    
     struct FeedItem: Identifiable {
         let id = UUID()
         let published: Date
         let comment: HierarchicalComment?
         let post: APIPostView?
     }
-    
+
     var body: some View {
         contentView
             .sheet(item: $responseItem) { responseItem in
                 ResponseComposerView(concreteRespondable: responseItem)
+            }
+            .sheet(isPresented: $isPresentingAccountSwitcher) {
+                AccountsPage()
             }
     }
 
@@ -65,6 +72,17 @@ struct UserView: View {
         if let user = userDetails, !moderatedCommunities.isEmpty {
             NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
                 Image(systemName: "shield")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var accountSwitcher: some View {
+        if isSelf {
+            Button {
+                isPresentingAccountSwitcher = true
+            } label: {
+                Image(systemName: "repeat")
             }
         }
     }
@@ -125,6 +143,7 @@ struct UserView: View {
             await tryLoadUser()
         }.toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
+                accountSwitcher
                 moderatorButton
             }
         }
