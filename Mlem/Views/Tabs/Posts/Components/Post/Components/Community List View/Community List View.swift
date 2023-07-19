@@ -52,22 +52,22 @@ struct CommunityListView: View {
                     List(selection: $selectedCommunity) {
                         HomepageFeedRowView(
                             feedType: .subscribed,
-                            iconName: "house.circle.fill",
+                            iconName: "newspaper.circle.fill",
                             iconColor: .red,
                             description: "Subscribed communities from all servers"
                         )
                             .id("top") // For "scroll to top" sidebar item
                         HomepageFeedRowView(
                             feedType: .local,
-                            iconName: "building.2.crop.circle.fill",
+                            iconName: "house.circle.fill",
                             iconColor: .green,
                             description: "Local communities from your server"
                         )
                         HomepageFeedRowView(
                             feedType: .all,
-                            iconName: "cloud.circle.fill",
+                            iconName: "repeat.circle.fill",
                             iconColor: .blue,
-                            description: "All known communities that federate with your server"
+                            description: "All communities that federate with your server"
                         )
 
                         ForEach(calculateVisibleCommunitySections()) { communitySection in
@@ -176,8 +176,6 @@ struct CommunityListView: View {
 
                 let newSubscribedCommunities = response.communities.map({
                     return $0.community
-                }).sorted(by: {
-                    $0.name < $1.name
                 })
 
                 refreshedCommunities.append(contentsOf: newSubscribedCommunities)
@@ -188,7 +186,7 @@ struct CommunityListView: View {
                 moreCommunities = response.communities.count == communitiesRequestCount
             } while (moreCommunities)
 
-            subscribedCommunities = refreshedCommunities.sorted(by: { $0.name < $1.name })
+            subscribedCommunities = refreshedCommunities.sorted()
         } catch {
             appState.contextualError = .init(underlyingError: error)
         }
@@ -221,7 +219,7 @@ struct CommunityListView: View {
         // Add or remove subscribed sub locally
         if isSubscribed {
             subscribedCommunities.append(community)
-            subscribedCommunities = subscribedCommunities.sorted(by: { $0.name < $1.name })
+            subscribedCommunities = subscribedCommunities.sorted()
         } else {
             if let index = subscribedCommunities.firstIndex(where: { $0 == community }) {
                 subscribedCommunities.remove(at: index)
@@ -236,7 +234,7 @@ struct CommunityListView: View {
         result.append(contentsOf: favoritedCommunitiesTracker.favoriteCommunities.map({ $0.community }))
 
         // Remove duplicates and sort by name
-        result = Array(Set(result)).sorted(by: { $0.name < $1.name })
+        result = Array(Set(result)).sorted()
 
         return result
     }
