@@ -67,6 +67,7 @@ struct FancyTabBarLabel: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 10)
+        .contentShape(Rectangle())
         .foregroundColor(active ? activeColor : color)
     }
 }
