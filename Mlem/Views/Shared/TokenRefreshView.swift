@@ -31,7 +31,7 @@ struct TokenRefreshView: View {
     
     @State private var password = ""
     @State private var twoFactorCode = ""
-    @State private var viewState: ViewState = .success
+    @State private var viewState: ViewState = .initial
     @State private var showing2FAAlert = false
     
     @FocusState private var selectedField: FocusedField?
