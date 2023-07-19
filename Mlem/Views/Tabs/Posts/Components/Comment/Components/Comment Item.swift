@@ -11,6 +11,7 @@ import SwiftUI
 struct CommentItem: View {
     
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.errorHandler) var errorHandler
     
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
@@ -22,7 +23,6 @@ struct CommentItem: View {
     @State var dirtySaved: Bool // = false
     @State var dirty: Bool = false
 
-    @State var isShowingAlert: Bool = false
     @State var isComposingReport: Bool = false
 
     // computed properties--if dirty, show dirty value, otherwise show post value
@@ -157,9 +157,6 @@ struct CommentItem: View {
         .clipped()
         .padding(.leading, depth == 0 ? 0 : indent)
         .transition(.move(edge: .top).combined(with: .opacity))
-        .alert("Not yet implemented!", isPresented: $isShowingAlert) {
-            Button("I love beta apps", role: .cancel) { }
-        }
     }
 
     // MARK: Subviews

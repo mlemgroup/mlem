@@ -117,12 +117,17 @@ extension InboxView {
     func voteOnCommentReply(commentReply: APICommentReplyView, inputOp: ScoringOperation) {
         Task(priority: .userInitiated) {
             let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            if let updatedReply = await commentRepository.voteOnCommentReply(commentReply, vote: operation) {
+            do {
+                let updatedReply = try await commentRepository.voteOnCommentReply(commentReply, vote: operation)
                 repliesTracker.update(with: updatedReply)
                 if curTab == .all {
                     // TODO: more granular/less expensive merge options
                     aggregateAllTrackers()
                 }
+            } catch {
+                errorHandler.handle(
+                    .init(underlyingError: error)
+                )
             }
         }
     }
@@ -155,11 +160,16 @@ extension InboxView {
     func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
         Task(priority: .userInitiated) {
             let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            if let updatedMention = await commentRepository.voteOnPersonMention(mention, vote: operation) {
+            do {
+                let updatedMention = try await commentRepository.voteOnPersonMention(mention, vote: operation)
                 mentionsTracker.update(with: updatedMention)
                 if curTab == .all {
                     aggregateAllTrackers()
                 }
+            } catch {
+                errorHandler.handle(
+                    .init(underlyingError: error)
+                )
             }
         }
     }

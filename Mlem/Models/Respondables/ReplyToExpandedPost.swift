@@ -26,11 +26,13 @@ struct ReplyToExpandedPost: Respondable {
     }
     
     func sendResponse(responseContents: String) async throws {
-        if let comment = await commentRepository.postComment(content: responseContents, postId: post.post.id) {
-            await MainActor.run {
-                withAnimation {
-                    commentTracker.comments.prepend(comment)
-                }
+        let comment = try await commentRepository.postComment(
+            content: responseContents,
+            postId: post.post.id
+        )
+        await MainActor.run {
+            withAnimation {
+                commentTracker.comments.prepend(comment)
             }
         }
     }

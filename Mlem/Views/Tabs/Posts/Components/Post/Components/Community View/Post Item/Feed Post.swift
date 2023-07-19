@@ -12,15 +12,19 @@
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 
-import CachedAsyncImage
-import QuickLook
-import SwiftUI
 import AlertToast
+import CachedAsyncImage
+import Dependencies
+import SwiftUI
+import QuickLook
 
 /**
  Displays a single post in the feed
  */
 struct FeedPost: View {
+    
+    @Dependency(\.errorHandler) var errorHandler
+    
     // MARK: Environment
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -200,13 +204,13 @@ struct FeedPost: View {
                 appState.isShowingToast = true
             } // Show Toast
         } catch {
-            let toast = AlertToast(
-                displayMode: .alert,
-                type: .error(.red),
-                title: "Unable to block \(postView.creator.name)"
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block \(postView.creator.name)",
+                    style: .toast,
+                    underlyingError: error
+                )
             )
-            appState.toast = toast
-            appState.isShowingToast = true
         }
     }
 

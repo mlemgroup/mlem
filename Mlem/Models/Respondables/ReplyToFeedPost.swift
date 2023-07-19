@@ -26,6 +26,6 @@ struct ReplyToFeedPost: Respondable {
     }
     
     func sendResponse(responseContents: String) async throws {
-        await commentRepository.postComment(content: responseContents, postId: post.post.id)
+        try await commentRepository.postComment(content: responseContents, postId: post.post.id)
     }
 }

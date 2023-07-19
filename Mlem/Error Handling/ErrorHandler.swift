@@ -10,8 +10,7 @@ import Foundation
 
 class ErrorHandler: ObservableObject {
     
-    @Published var alert: ErrorAlert?
-    @Published var sessionExpired = false
+    @Published private(set) var sessionExpired = false
     
     private(set) var contextualError: ContextualError?
     
@@ -31,22 +30,22 @@ class ErrorHandler: ObservableObject {
                     sessionExpired = true
                     return
                 case let .response(apiError, _):
-                    alert = .init(title: "Error", message: apiError.error)
+                    ErrorDisplayer.displayAlert(title: "Error", message: apiError.error)
                     return
                 default:
                     break
                 }
             }
             
-            let title = error.title ?? ""
-            let message = error.message ?? ""
-            
-            guard !title.isEmpty || !message.isEmpty else {
-                // no title or message was supplied so don't notify the user of this...
-                return
+            switch error.style {
+            case .alert:
+                ErrorDisplayer.displayAlert(title: error.title, message: error.message)
+            case .toast:
+                if let message = error.title ?? error.message {
+                    ErrorDisplayer.displayToast(title: message)
+                }
             }
             
-            alert = .init(title: title, message: message)
         }
     }
     

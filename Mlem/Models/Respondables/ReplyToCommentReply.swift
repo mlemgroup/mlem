@@ -27,7 +27,7 @@ struct ReplyToCommentReply: Respondable {
     }
     
     func sendResponse(responseContents: String) async throws {
-        await commentRepository.postComment(
+        try await commentRepository.postComment(
             content: responseContents,
             parentId: commentReply.comment.id,
             postId: commentReply.post.id

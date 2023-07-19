@@ -12,61 +12,45 @@ import Dependencies
 class CommentRepository {
     
     @Dependency(\.apiClient) private var apiClient
-    @Dependency(\.errorHandler) private var errorHandler
     @Dependency(\.hapticManager) private var hapticManager
     
-    func comment(with id: Int) async -> HierarchicalComment? {
+    func comment(with id: Int) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.loadComment(id: id)
+            hapticManager.success()
             return .init(comment: response.commentView, children: [])
         } catch {
-            errorHandler.handle(
-                .init(
-                    title: "Failed to load comment",
-                    message: "Please try again",
-                    underlyingError: error
-                )
-            )
-            
-            return nil
+            hapticManager.error()
+            throw error
         }
     }
     
-    func comments(for postId: Int) async -> [HierarchicalComment] {
+    func comments(for postId: Int) async throws -> [HierarchicalComment] {
         do {
-            return try await apiClient
-                .loadComments(for: postId)
-                .hierarchicalRepresentation
+            let response = try await apiClient.loadComments(for: postId)
+            hapticManager.success()
+            return response.hierarchicalRepresentation
         } catch {
-            errorHandler.handle(
-                .init(
-                    title: "Failed to load comments",
-                    message: "Please refresh to try again",
-                    underlyingError: error
-                )
-            )
-            
-            return []
+            hapticManager.error()
+            throw error
         }
     }
     
-    func voteOnComment(id: Int, vote: ScoringOperation) async -> APICommentView? {
+    func voteOnComment(id: Int, vote: ScoringOperation) async throws -> APICommentView {
         do {
             let response = try await apiClient.applyCommentScore(id: id, score: vote.rawValue)
             hapticManager.gentleSuccess()
             return response.commentView
         } catch {
             hapticManager.error()
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
-            
-            return nil
+            throw error
         }
     }
     
-    func voteOnCommentReply(_ reply: APICommentReplyView, vote: ScoringOperation) async -> APICommentReplyView? {
-        if let updatedCommentView = await voteOnComment(id: reply.comment.id, vote: vote) {
+    func voteOnCommentReply(_ reply: APICommentReplyView, vote: ScoringOperation) async throws -> APICommentReplyView {
+        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
+        do {
+            let updatedCommentView = try await voteOnComment(id: reply.comment.id, vote: vote)
             return .init(
                 commentReply: reply.commentReply,
                 comment: updatedCommentView.comment,
@@ -81,30 +65,33 @@ class CommentRepository {
                 creatorBlocked: updatedCommentView.creatorBlocked,
                 myVote: updatedCommentView.myVote
             )
+        } catch {
+            throw error
         }
-        
-        return nil
     }
     
-    func voteOnPersonMention(_ mention: APIPersonMentionView, vote: ScoringOperation) async -> APIPersonMentionView? {
-        if let updatedCommentView = await voteOnComment(id: mention.comment.id, vote: vote) {
-            return .init(
-                personMention: mention.personMention,
-                comment: updatedCommentView.comment,
-                creator: mention.creator,
-                post: updatedCommentView.post,
-                community: updatedCommentView.community,
-                recipient: mention.recipient,
-                counts: updatedCommentView.counts,
-                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                subscribed: updatedCommentView.subscribed,
-                saved: updatedCommentView.saved,
-                creatorBlocked: updatedCommentView.creatorBlocked,
-                myVote: updatedCommentView.myVote
-            )
+    func voteOnPersonMention(_ mention: APIPersonMentionView, vote: ScoringOperation) async throws -> APIPersonMentionView {
+        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
+        do {
+            let updatedCommentView = try await voteOnComment(id: mention.comment.id, vote: vote)
+                return .init(
+                    personMention: mention.personMention,
+                    comment: updatedCommentView.comment,
+                    creator: mention.creator,
+                    post: updatedCommentView.post,
+                    community: updatedCommentView.community,
+                    recipient: mention.recipient,
+                    counts: updatedCommentView.counts,
+                    creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+                    subscribed: updatedCommentView.subscribed,
+                    saved: updatedCommentView.saved,
+                    creatorBlocked: updatedCommentView.creatorBlocked,
+                    myVote: updatedCommentView.myVote
+                )
+        } catch {
+            throw error
         }
-        
-        return nil
+
     }
     
     @discardableResult
@@ -113,7 +100,7 @@ class CommentRepository {
         languageId: Int? = nil,
         parentId: Int? = nil,
         postId: Int
-    ) async -> HierarchicalComment? {
+    ) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient
                 .createComment(
@@ -122,19 +109,12 @@ class CommentRepository {
                     parentId: parentId,
                     postId: postId
                 )
-            
+
             hapticManager.success()
             return .init(comment: response.commentView, children: [])
         } catch {
-            errorHandler.handle(
-                .init(
-                    title: "Failed to post comment",
-                    message: "Please try again",
-                    underlyingError: error
-                )
-            )
-            
-            return nil
+            hapticManager.error()
+            throw error
         }
     }
     
@@ -144,76 +124,55 @@ class CommentRepository {
         distinguished: Bool? = nil,
         languageId: Int? = nil,
         formId: String? = nil
-    ) async -> CommentResponse? {
+    ) async throws -> CommentResponse {
         do {
-            return try await apiClient.editComment(
+            let response = try await apiClient.editComment(
                 id: id,
                 content: content,
                 distinguished: distinguished,
                 languageId: languageId,
                 formId: formId
             )
-        } catch {
-            errorHandler.handle(
-                .init(
-                    title: "Failed to edit comment",
-                    message: "Please try again",
-                    underlyingError: error
-                )
-            )
             
-            return nil
+            hapticManager.success()
+            return response
+        } catch {
+            hapticManager.error()
+            throw error
         }
     }
     
-    func deleteComment(id: Int, shouldDelete: Bool) async -> HierarchicalComment? {
+    func deleteComment(id: Int, shouldDelete: Bool) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.deleteComment(id: id, deleted: shouldDelete)
             hapticManager.destructiveSuccess()
             return .init(comment: response.commentView, children: [])
         } catch {
             hapticManager.error()
-            let verb = shouldDelete ? "delete" : "restore"
-            errorHandler.handle(
-                .init(
-                    title: "Failed to \(verb) comment",
-                    message: "Please try again",
-                    underlyingError: error
-                )
-            )
-            
-            return nil
+            throw error
         }
     }
     
-    func saveComment(id: Int, shouldSave: Bool) async -> HierarchicalComment? {
+    func saveComment(id: Int, shouldSave: Bool) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.saveComment(id: id, shouldSave: shouldSave)
             hapticManager.gentleSuccess()
             return .init(comment: response.commentView, children: [])
         } catch {
             hapticManager.error()
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
-            
-            return nil
+            throw error
         }
     }
     
     @discardableResult
-    func reportComment(id: Int, reason: String) async -> APICommentReportView? {
+    func reportComment(id: Int, reason: String) async throws -> APICommentReportView {
         do {
             let response = try await apiClient.reportComment(id: id, reason: reason)
             hapticManager.violentSuccess()
             return response.commentReportView
         } catch {
             hapticManager.error()
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
-            
-            return nil
+            throw error
         }
     }
 }

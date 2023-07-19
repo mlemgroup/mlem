@@ -28,7 +28,7 @@ struct ReportComment: Respondable {
             .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }
     
-    func sendResponse(responseContents: String) async {
-        await commentRepository.reportComment(id: comment.id, reason: responseContents)
+    func sendResponse(responseContents: String) async throws {
+        try await commentRepository.reportComment(id: comment.id, reason: responseContents)
     }
 }

@@ -15,6 +15,7 @@ internal enum PossibleStyling {
 struct ExpandedPost: View {
     
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.errorHandler) var errorHandler
     
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top

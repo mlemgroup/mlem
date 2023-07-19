@@ -11,22 +11,32 @@ import AlertToast
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
         let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-        if let updatedComment = await commentRepository.voteOnComment(
-            id: hierarchicalComment.commentView.id,
-            vote: operation
-        ) {
+        do {
+            let updatedComment = try await commentRepository.voteOnComment(
+                id: hierarchicalComment.commentView.id,
+                vote: operation
+            )
             commentTracker.comments.update(with: updatedComment)
+        } catch {
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     
     func deleteComment() async {
         let comment = hierarchicalComment.commentView.comment
-        if let updatedComment = await commentRepository.deleteComment(
-            id: comment.id,
-            // TODO: the UI for this only allows delete, but the operation can be undone it appears...
-            shouldDelete: true
-        ) {
+        do {
+            let updatedComment = try await commentRepository.deleteComment(
+                id: comment.id,
+                // TODO: the UI for this only allows delete, but the operation can be undone it appears...
+                shouldDelete: true
+            )
             commentTracker.comments.update(with: updatedComment.commentView)
+        } catch {
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     
@@ -109,12 +119,19 @@ extension CommentItem {
         dirty = true
         dirtySaved.toggle()
         
-        if let response = await commentRepository.saveComment(
-            id: hierarchicalComment.id,
-            shouldSave: dirtySaved
-        ) {
+        do {
+            let response = try await commentRepository.saveComment(
+                id: hierarchicalComment.id,
+                shouldSave: dirtySaved
+            )
+            
             commentTracker.comments.update(with: response.commentView)
+        } catch {
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
+
     }
     
     // MARK: helpers
@@ -243,13 +260,13 @@ extension CommentItem {
                 }
             }
         } catch {
-            let toast = AlertToast(
-                displayMode: .alert,
-                type: .error(.red),
-                title: "Unable to block user"
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block user",
+                    style: .toast,
+                    underlyingError: error
+                )
             )
-            appState.toast = toast
-            appState.isShowingToast = true
         }
     }
     // swiftlint:enable function_body_length

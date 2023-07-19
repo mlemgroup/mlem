@@ -16,7 +16,6 @@ struct ContentView: View {
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     
     @State private var errorAlert: ErrorAlert?
-    @State private var expiredSessionAccount: SavedAccount?
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
@@ -65,10 +64,14 @@ struct ContentView: View {
                     }
             }
         }
-        .onChange(of: appState.contextualError) { handle($0) } // TODO: remove once all using `.errorHandler`
-        .onReceive(errorHandler.$alert) { errorAlert = $0 }
+        // TODO: remove once all using `.errorHandler` as the `appState` will no longer receive these...
+        .onChange(of: appState.contextualError) { errorHandler.handle($0) }
         .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired { expiredSessionAccount = appState.currentActiveAccount }
+            if expired {
+                ErrorDisplayer.presentTokenRefreshFlow(for: appState.currentActiveAccount) { updatedAccount in
+                    appState.setActiveAccount(updatedAccount)
+                }
+            }
         }
         .alert(using: $errorAlert) { content in
             Alert(
@@ -79,11 +82,6 @@ struct ContentView: View {
                     action: { errorAlert = nil }
                 )
             )
-        }
-        .sheet(item: $expiredSessionAccount) { account in
-            TokenRefreshView(account: account) { updatedAccount in
-                appState.setActiveAccount(updatedAccount)
-            }
         }
         .sheet(isPresented: $isPresentingAccountSwitcher) {
             AccountsPage(onboarding: false)
@@ -130,48 +128,5 @@ extension ContentView {
         }
         
         return outcome.result
-    }
-}
-
-// MARK: - Error handling
-
-extension ContentView {
-    func handle(_ contextualError: ContextualError?) {
-        guard let contextualError else {
-            return
-        }
-        
-#if DEBUG
-        print("☠️ ERROR ☠️")
-        print("🕵️ -> \(contextualError.underlyingError.description)")
-        print("📝 -> \(contextualError.underlyingError.localizedDescription)")
-#endif
-        
-        defer {
-            // ensure we clear our the error once we've handled it...
-            appState.contextualError = nil
-        }
-        
-        if let clientError = contextualError.underlyingError.base as? APIClientError {
-            switch clientError {
-            case .invalidSession:
-                expiredSessionAccount = appState.currentActiveAccount
-                return
-            case let .response(apiError, _):
-                errorAlert = .init(title: "Error", message: apiError.error)
-            default:
-                break
-            }
-        }
-        
-        let title = contextualError.title ?? ""
-        let message = contextualError.message ?? ""
-        
-        guard !title.isEmpty || !message.isEmpty else {
-            // no title or message was supplied so don't notify the user of this...
-            return
-        }
-        
-        errorAlert = .init(title: title, message: message)
     }
 }

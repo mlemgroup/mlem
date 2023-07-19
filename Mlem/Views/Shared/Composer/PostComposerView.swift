@@ -5,6 +5,7 @@
 //  Created by Weston Hanners on 6/29/23.
 //
 
+import Dependencies
 import SwiftUI
 
 extension HorizontalAlignment {
@@ -18,6 +19,8 @@ extension HorizontalAlignment {
 }
 
 struct PostComposerView: View {
+    
+    @Dependency(\.errorHandler) var errorHandler
     
     init(community: APICommunity) {
         self.community = community
@@ -85,8 +88,10 @@ struct PostComposerView: View {
             dismiss()
             
         } catch {
-            print("Something went wrong)")
             isSubmitting = false
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     

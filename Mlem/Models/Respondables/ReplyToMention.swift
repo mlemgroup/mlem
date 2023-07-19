@@ -26,8 +26,8 @@ struct ReplyToMention: Respondable {
             .padding(.horizontal))
     }
     
-    func sendResponse(responseContents: String) async {
-        await commentRepository.postComment(
+    func sendResponse(responseContents: String) async throws {
+        try await commentRepository.postComment(
             content: responseContents,
             parentId: mention.comment.id,
             postId: mention.post.id

@@ -277,13 +277,13 @@ extension InboxView {
                 filterUser(userId: userId)
             }
         } catch {
-            let toast = AlertToast(
-                displayMode: .alert,
-                type: .error(.red),
-                title: "Unable to block user"
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block user",
+                    style: .toast,
+                    underlyingError: error
+                )
             )
-            appState.toast = toast
-            appState.isShowingToast = true
         }
     }
 }

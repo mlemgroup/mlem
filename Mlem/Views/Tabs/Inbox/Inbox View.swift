@@ -32,6 +32,7 @@ enum ComposingTypes {
 struct InboxView: View {
     
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.errorHandler) var errorHandler
     
     // MARK: Global
     @EnvironmentObject var appState: AppState
