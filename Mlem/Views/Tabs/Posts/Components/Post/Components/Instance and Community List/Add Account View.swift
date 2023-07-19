@@ -95,6 +95,7 @@ struct AddSavedInstanceView: View {
                         Text("Username")
                         Spacer()
                         TextField("Username", text: $usernameOrEmail, prompt: Text("Salmoon"))
+                            .textContentType(.username)
                             .autocorrectionDisabled()
                             .keyboardType(.default)
                             .textInputAutocapitalization(.never)
@@ -104,17 +105,18 @@ struct AddSavedInstanceView: View {
                         Text("Password")
                         Spacer()
                         SecureField("Password", text: $password, prompt: Text("VeryStrongPassword"))
+                            .textContentType(.password)
                             .submitLabel(.go)
                     }
 
                     if isShowingTwoFactorText {
                         HStack {
-                            Text("2FA Token")
+                            Text("One-time code")
                             Spacer()
-                            SecureField("TwoFactorToken", text: $twoFactorToken, prompt: Text("000000"))
+                            SecureField("One-time code", text: $twoFactorToken, prompt: Text("000000"))
                                 .focused($focusedField, equals: .twoFactorField)
+                                .textContentType(.oneTimeCode)
                                 .submitLabel(.go)
-                                .keyboardType(.asciiCapableNumberPad)
                                 .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                                     focusedField = .twoFactorField

@@ -235,6 +235,7 @@
 		CD05E7792A4E381A0081D102 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7782A4E381A0081D102 /* PostSize.swift */; };
 		CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77E2A4F263B0081D102 /* Menu Function.swift */; };
 		CD05E7812A4F7A4B0081D102 /* Inbox Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7802A4F7A4B0081D102 /* Inbox Tracker.swift */; };
+		CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */; };
 		CD1446182A58FC3B00610EF1 /* InfoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446172A58FC3B00610EF1 /* InfoStack.swift */; };
 		CD14461B2A5A4B6D00610EF1 /* CustomizePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD14461A2A5A4B6D00610EF1 /* CustomizePostView.swift */; };
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
@@ -554,6 +555,7 @@
 		CD05E7782A4E381A0081D102 /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CD05E77E2A4F263B0081D102 /* Menu Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Function.swift"; sourceTree = "<group>"; };
 		CD05E7802A4F7A4B0081D102 /* Inbox Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Tracker.swift"; sourceTree = "<group>"; };
+		CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Haptic Manager.swift"; sourceTree = "<group>"; };
 		CD1446172A58FC3B00610EF1 /* InfoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStack.swift; sourceTree = "<group>"; };
 		CD14461A2A5A4B6D00610EF1 /* CustomizePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizePostView.swift; sourceTree = "<group>"; };
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
@@ -969,6 +971,7 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
+				CD0BE42D2A65A72D00314B24 /* Singletons */,
 				CD14461F2A5B328600610EF1 /* Data */,
 				B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */,
 				637218002A3A2AAD008C4816 /* API */,
@@ -1419,6 +1422,14 @@
 				B1DD00BC2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift */,
 			);
 			path = Easter;
+			sourceTree = "<group>";
+		};
+		CD0BE42D2A65A72D00314B24 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */,
+			);
+			path = Singletons;
 			sourceTree = "<group>";
 		};
 		CD1446162A58FC2F00610EF1 /* Interaction Bars */ = {
@@ -1910,6 +1921,7 @@
 				CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */,
 				B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
+				CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */,
 				637218522A3A2AAD008C4816 /* APIFederatedInstances.swift in Sources */,
 				6D405B012A43E79400C65F9C /* Sidebar Header Avatar.swift in Sources */,
 				CDF8425C2A49E4C000723DA0 /* APIPersonMentionView.swift in Sources */,

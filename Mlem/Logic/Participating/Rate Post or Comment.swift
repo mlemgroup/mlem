@@ -28,12 +28,12 @@ func ratePost(
             score: operation
         )
 
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
         postTracker.update(with: response.postView)
         return response.postView
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }
@@ -53,12 +53,12 @@ func rateComment(
             score: operation
         )
 
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
         let updatedComment = commentTracker.comments.update(with: response.commentView)
         return updatedComment
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }
@@ -78,7 +78,7 @@ func rateCommentReply(
             score: operation
         )
 
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
         
         let newCommentReplyView = APICommentReplyView(commentReply: commentReply.commentReply,
@@ -96,7 +96,7 @@ func rateCommentReply(
         
         commentReplyTracker.update(with: newCommentReplyView)
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }
@@ -116,7 +116,7 @@ func ratePersonMention(
             score: operation
         )
 
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
   
         let newPersonMentionView = APIPersonMentionView(personMention: personMention.personMention,
@@ -134,7 +134,7 @@ func ratePersonMention(
 
         mentionsTracker.update(with: newPersonMentionView)
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }

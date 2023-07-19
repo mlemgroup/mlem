@@ -289,8 +289,7 @@ struct SectionIndexTitles: View {
                     proxy.scrollTo(viewId, anchor: .center)
 
                     // Play nice tappy taps
-                    let impact = UIImpactFeedbackGenerator(style: .rigid)
-                    impact.impactOccurred()
+                    HapticManager.shared.rigidInfo()
                 }
             }
         }

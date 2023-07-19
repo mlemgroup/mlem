@@ -39,6 +39,7 @@ struct CommunityView: View {
 
     @State private var isComposingPost: Bool = false
     @State private var isPostingPost: Bool = false
+    @State var responseItem: ConcreteRespondable?
 
     @State var isDragging: Bool = false
 
@@ -294,6 +295,9 @@ struct CommunityView: View {
                 PostComposerView(community: community)
             }
         }
+        .sheet(item: $responseItem) { responseItem in
+            ResponseComposerView(concreteRespondable: responseItem)
+        }
         .onAppear {
             if !didLoad {
                 didLoad = true
@@ -352,7 +356,8 @@ struct CommunityView: View {
                         postView: post,
                         showPostCreator: shouldShowPostCreator,
                         showCommunity: !isInSpecificCommunity,
-                        isDragging: $isDragging
+                        isDragging: $isDragging,
+                        responseItem: $responseItem
                     )
                 }
                 Divider()

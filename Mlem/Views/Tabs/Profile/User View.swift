@@ -34,6 +34,7 @@ struct UserView: View {
     
     @State private var selectionSection = UserViewTab.overview
     @State var isDragging: Bool = false
+    @State var responseItem: ConcreteRespondable?
     @FocusState var isReplyFieldFocused
     
     struct FeedItem: Identifiable {
@@ -45,6 +46,9 @@ struct UserView: View {
     
     var body: some View {
         contentView
+            .sheet(item: $responseItem) { responseItem in
+                ResponseComposerView(concreteRespondable: responseItem)
+            }
     }
 
     @ViewBuilder
@@ -362,7 +366,8 @@ struct UserView: View {
                 FeedPost(postView: post,
                          showPostCreator: false,
                          showCommunity: true,
-                         isDragging: $isDragging
+                         isDragging: $isDragging,
+                         responseItem: $responseItem
                 )
                 
                 Divider()
