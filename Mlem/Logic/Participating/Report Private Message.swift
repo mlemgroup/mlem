@@ -19,10 +19,10 @@ func reportMessage(
                                                         reason: reason)
         
         let response = try await APIClient().perform(request: request)
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.violentSuccess()
         return response.privateMessageReportView
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }

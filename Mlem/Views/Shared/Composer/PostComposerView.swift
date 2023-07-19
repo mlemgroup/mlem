@@ -115,10 +115,11 @@ struct PostComposerView: View {
                         HStack {
                             Text("Title")
                                 .foregroundColor(.secondary)
+                                .dynamicTypeSize(.small ... .accessibility2)
                                 .accessibilityHidden(true)
                             TextField("Your post title", text: $postTitle)
                                 .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                            
+                                .dynamicTypeSize(.small ... .accessibility2)
                                 .accessibilityLabel("Title")
                         }
                         
@@ -126,10 +127,12 @@ struct PostComposerView: View {
                         HStack {
                             Text("URL")
                                 .foregroundColor(.secondary)
+                                .dynamicTypeSize(.small ... .accessibility2)
                                 .accessibilityHidden(true)
                             
                             TextField("Your post link (Optional)", text: $postURL)
                                 .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                                .dynamicTypeSize(.small ... .accessibility2)
                                 .keyboardType(.URL)
                                 .autocorrectionDisabled()
                                 .autocapitalization(.none)
@@ -149,6 +152,7 @@ struct PostComposerView: View {
                     TextField("What do you want to say? (Optional)",
                               text: $postBody,
                               axis: .vertical)
+                    .dynamicTypeSize(.small ... .accessibility2)
                     .accessibilityLabel("Post Body")
                     Spacer()
                 }

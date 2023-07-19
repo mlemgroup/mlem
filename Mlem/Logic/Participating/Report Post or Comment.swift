@@ -21,10 +21,10 @@ func reportPost(
         )
         
         let response = try await APIClient().perform(request: request)
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.violentSuccess()
         return response.postReportView
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }
@@ -43,10 +43,10 @@ func reportComment(
         )
         
         let response = try await APIClient().perform(request: request)
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.violentSuccess()
         return response.commentReportView
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }

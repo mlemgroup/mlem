@@ -23,10 +23,10 @@ func deletePost(
         
         let response = try await APIClient().perform(request: request)
         postTracker.update(with: response.postView)
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.destructiveSuccess()
         return response.postView
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }
@@ -46,10 +46,10 @@ func deleteComment(
         
         let response = try await APIClient().perform(request: request)
         let updatedComment = commentTracker.comments.update(with: response.commentView)
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.destructiveSuccess()
         return updatedComment
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.error()
         throw error
     }
 }
