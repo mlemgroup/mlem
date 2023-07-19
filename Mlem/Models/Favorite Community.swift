@@ -14,3 +14,9 @@ struct FavoriteCommunity: Identifiable, Codable, Equatable {
 
     let community: APICommunity
 }
+
+extension FavoriteCommunity: Comparable {
+    static func < (lhs: FavoriteCommunity, rhs: FavoriteCommunity) -> Bool {
+        return lhs.community < rhs.community
+    }
+}

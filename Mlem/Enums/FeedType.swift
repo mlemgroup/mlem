@@ -13,7 +13,7 @@ enum FeedType: String, Encodable, SettingsOptions {
 
     var label: String {
         switch self {
-        case .all: return "All Known"
+        case .all: return self.rawValue
         case .local: return self.rawValue
         case .subscribed: return self.rawValue
         }
