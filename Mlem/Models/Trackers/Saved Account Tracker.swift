@@ -121,13 +121,5 @@ class SavedAccountTracker: ObservableObject {
         
         let instance = accountsByInstance[hostName] ?? []
         accountsByInstance[hostName] = instance + [account]
-        
-//        if var instance = accountsByInstance[hostName] {
-//            // do it this way to force the update to publish
-//            accountsByInstance[hostName] = instance + [account]
-//        } else {
-//            // this shouldn't really happen but instanceLink.host is optional so here we are
-//            accountsByInstance[hostName] = [account]
-//        }
     }
 }

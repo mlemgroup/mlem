@@ -61,9 +61,7 @@ struct ContentView: View {
                                          symbolName: "gear")
                     }
             }
-            // .simultaneousGesture(accountSwitchDrag)
         }
-        // .simultaneousGesture(accountSwitchDrag)
         .onChange(of: appState.contextualError) { handle($0) }
         .alert(using: $errorAlert) { content in
             Alert(

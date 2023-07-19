@@ -64,18 +64,6 @@ struct SettingsView: View {
                 }
                 #endif
 
-//                 Section {
-//                    NavigationLink {
-//                        AccountsPage(selectedAccount: $accountToSwitchTo)
-//                    } label: {
-//                        HStack(alignment: .center) {
-//                            Image(systemName: "person.fill.questionmark")
-//                                .foregroundColor(.mint)
-//                            Text("Switch Account")
-//                        }
-//                    }
-//                 }
-
                 Section {
                     NavigationLink {
                         About()
