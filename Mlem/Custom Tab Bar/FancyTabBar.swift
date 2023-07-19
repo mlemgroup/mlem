@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct FancyTabBar<Selection: Hashable, Content: View>: View {
+struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
     @Binding private var selection: Selection
     private let content: () -> Content
@@ -27,24 +27,27 @@ struct FancyTabBar<Selection: Hashable, Content: View>: View {
                 ZStack { content() }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 
-                Divider()
-                
-                HStack {
-                    ForEach(tabItemKeys, id: \.hashValue) { key in
-                        Group {
-                            if selection == key {
-                                tabItems[key]?.labelActive()
-                            } else {
-                                tabItems[key]?.label()
-                                
-                            }
+                Group {
+                    Divider()
+                    
+                    HStack(spacing: 0) {
+                        ForEach(tabItemKeys, id: \.hashValue) { key in
+                            tabItems[key]?.label()
+                                .accessibilityElement(children: .combine)
+                            // IDK how to get the "Tab: 1 of 5" VO working--hopefully there's a nice clean way, if not we can add an 'index: Int' field to the FancyTabBarSelection protocol and use that 🙃
+                                .accessibilityLabel("Tab of \(tabItems.count.description)")
+                                .frame(maxWidth: .infinity)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    withAnimation(.spring(response: 0.25)) {
+                                        selection = key
+                                    }
+                                }
                         }
-                        .frame(maxWidth: .infinity)
-                        .contentShape(Rectangle())
-                        .onTapGesture { selection = key }
                     }
+                    .background(.regularMaterial)
                 }
-                .background(.regularMaterial)
+                .accessibilityElement(children: .contain)
             }
             .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
                 self.tabItemKeys = $0

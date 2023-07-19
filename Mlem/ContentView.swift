@@ -15,58 +15,71 @@ struct ContentView: View {
     @State private var errorAlert: ErrorAlert?
     @State private var expiredSessionAccount: SavedAccount?
     
-    @State private var tabSelection: Int = 1
+    // tabs
+    // @State private var tabSelection: Int = 1
+    @State private var tabSelection: TabSelection = .feeds
+    @State private var showLoading: Bool = false
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
     var body: some View {
         FancyTabBar(selection: $tabSelection) {
-            FeedRoot()
-                .fancyTabItem(tag: 1) {
-                    FancyTabBarLabel(symbolName: "scroll", text: "Feeds")
-                        .contextMenu {
-                            Button("hit me!") {
-                                print("hit!")
-                            }
-                        }
-                } labelActive: {
-                    FancyTabBarLabel(symbolName: "scroll.fill", text: "Feeds", color: .accentColor)
-                        .contextMenu {
-                            Button("hit me!") {
-                                print("hit!")
-                            }
-                        }
+            FeedRoot(showLoading: showLoading)
+                .fancyTabItem(tag: TabSelection.feeds) {
+                    FancyTabBarLabel(tag: TabSelection.feeds,
+                                     symbolName: "scroll",
+                                     activeSymbolName: "scroll.fill")
                 }
             InboxView()
-                .fancyTabItem(tag: 2) {
-                    FancyTabBarLabel(tagHash: 2.hashValue, symbolName: "mail.stack", text: "Inbox")
-                } labelActive: {
-                    FancyTabBarLabel(tagHash: 2.hashValue, symbolName: "mail.stack.fill", text: "Inbox", color: .accentColor)
+                .fancyTabItem(tag: TabSelection.inbox) {
+                    FancyTabBarLabel(tag: TabSelection.inbox,
+                                     symbolName: "mail.stack",
+                                     activeSymbolName: "mail.stack.fill")
                 }
             
             ProfileView(userID: appState.currentActiveAccount.id)
-                .fancyTabItem(tag: 3) {
-                    FancyTabBarLabel(symbolName: "person.circle", text: appState.currentActiveAccount.username)
-                } labelActive: {
-                    FancyTabBarLabel(symbolName: "person.circle.fill", text: appState.currentActiveAccount.username, color: .accentColor)
+                .fancyTabItem(tag: TabSelection.profile) {
+                    FancyTabBarLabel(tag: TabSelection.profile,
+                                     customText: appState.currentActiveAccount.username,
+                                     symbolName: "person.circle",
+                                     activeSymbolName: "person.circle.fill")
+                    .contextMenu {
+                        ForEach(accountsTracker.savedAccounts) { account in
+                            Button(account.fullName()) {
+                                // new accounts always go to the Feeds tab, so set that immediately
+                                tabSelection = .feeds
+                                // fake loading to smooth the transition
+                                showLoading = true
+                                // this delay makes sure the appState isn't updated until after the animation is finished, since that causes an ugly little duplication of the account item
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
+                                    // appState change should trigger re-eval of state and reset showLoading, but just in case
+                                    defer { showLoading = false }
+                                    appState.setActiveAccount(account)
+                                }
+                            }
+                            .disabled(appState.currentActiveAccount == account)
+                        }
+                    }
                 }
-            
+
             SearchView()
-                .fancyTabItem(tag: 4) {
-                    FancyTabBarLabel(symbolName: "magnifyingglass", text: "Search")
-                } labelActive: {
-                    FancyTabBarLabel(symbolName: "text.magnifyingglass", text: "Search", color: .accentColor)
+                .fancyTabItem(tag: TabSelection.search) {
+                    FancyTabBarLabel(tag: TabSelection.search,
+                                     symbolName: "magnifyingglass",
+                                     activeSymbolName: "text.magnifyingglass")
                 }
-            
+
             SettingsView()
-                .fancyTabItem(tag: 5) {
-                    FancyTabBarLabel(symbolName: "gear", text: "Settings")
-                } labelActive: {
-                    FancyTabBarLabel(symbolName: "gear", text: "Settings", color: .accentColor)
+                .fancyTabItem(tag: TabSelection.settings) {
+                    FancyTabBarLabel(tag: TabSelection.settings,
+                                     symbolName: "gear")
                 }
             
         }
         .onChange(of: appState.contextualError) { handle($0) }
+        .onChange(of: appState.currentActiveAccount) { _ in
+            print("yo")
+        }
         .alert(using: $errorAlert) { content in
             Alert(
                 title: Text(content.title),

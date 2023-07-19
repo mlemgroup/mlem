@@ -8,21 +8,17 @@
 import Foundation
 import SwiftUI
 
-struct FancyTabItem<Selection: Hashable, V: View>: ViewModifier {
+struct FancyTabItem<Selection: FancyTabBarSelection, V: View>: ViewModifier {
     
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     private let tagHashValue: Int
     private let tag: Selection
-    
-    // what's this? *two* labels? well... yeah. I tried *really* hard to make it one label that read the current tab state to toggle between active and passive display, but state updates stubbornly refuse to propagate down to the label so here we are
     @ViewBuilder private let label: () -> V
-    @ViewBuilder private let labelActive: () -> V
     
-    init(tag: Selection, @ViewBuilder label: @escaping () -> V, @ViewBuilder labelActive: @escaping () -> V) {
+    init(tag: Selection, @ViewBuilder label: @escaping () -> V) {
         self.tagHashValue = tag.hashValue
         self.tag = tag
         self.label = label
-        self.labelActive = labelActive
     }
     
     func body(content: Content) -> some View {
@@ -38,17 +34,14 @@ struct FancyTabItem<Selection: Hashable, V: View>: ViewModifier {
         // and this big ugly one adds its label builder to the dictionary
         .preference(key: FancyTabItemLabelBuilderPreferenceKey<Selection>.self,
                     value: [tag: FancyTabItemLabelBuilder(tag: tag,
-                                                          label: { AnyView(label()) },
-                                                          labelActive: { AnyView(labelActive()) })]
-        )
+                                                          label: { AnyView(label()) })])
     }
 }
 
 extension View {
     @ViewBuilder
-    func fancyTabItem<Selection: Hashable, V: View>(tag: Selection,
-                                                    @ViewBuilder label: @escaping () -> V,
-                                                    @ViewBuilder labelActive: @escaping () -> V) -> some View {
-        modifier(FancyTabItem(tag: tag, label: label, labelActive: labelActive))
+    func fancyTabItem<Selection: FancyTabBarSelection, V: View>(tag: Selection,
+                                                                @ViewBuilder label: @escaping () -> V) -> some View {
+        modifier(FancyTabItem(tag: tag, label: label))
     }
 }
