@@ -8,50 +8,77 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
-
+    
     @State private var errorAlert: ErrorAlert?
     @State private var expiredSessionAccount: SavedAccount?
-
-    @State private var tabSelection = 1
-
+    
+    // tabs
+    @State private var tabSelection: TabSelection = .feeds
+    @State private var showLoading: Bool = false
+    
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
-
+    
     var body: some View {
-        TabView(selection: $tabSelection) {
-            FeedRoot()
-                .tabItem {
-                    Label("Feeds", systemImage: "scroll")
-                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-                }.tag(1)
-
-            InboxView()
-                .tabItem {
-                    Label("Inbox", systemImage: "mail.stack")
-                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                }.tag(2)
-
-            ProfileView(userID: appState.currentActiveAccount.id)
-                .tabItem {
-                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
+        FancyTabBar(selection: $tabSelection) {
+            FeedRoot(showLoading: showLoading)
+                .fancyTabItem(tag: TabSelection.feeds) {
+                    FancyTabBarLabel(tag: TabSelection.feeds,
+                                     symbolName: "scroll",
+                                     activeSymbolName: "scroll.fill")
                 }
-                .tag(3)
+            InboxView()
+                .fancyTabItem(tag: TabSelection.inbox) {
+                    FancyTabBarLabel(tag: TabSelection.inbox,
+                                     symbolName: "mail.stack",
+                                     activeSymbolName: "mail.stack.fill")
+                }
+            
+            ProfileView(userID: appState.currentActiveAccount.id)
+                .fancyTabItem(tag: TabSelection.profile) {
+                    FancyTabBarLabel(tag: TabSelection.profile,
+                                     customText: appState.currentActiveAccount.username,
+                                     symbolName: "person.circle",
+                                     activeSymbolName: "person.circle.fill")
+                    .contextMenu {
+                        ForEach(accountsTracker.savedAccounts) { account in
+                            Button(account.fullName()) {
+                                // new accounts always go to the Feeds tab, so set that immediately
+                                tabSelection = .feeds
+                                // fake loading to smooth the transition
+                                showLoading = true
+                                // this delay makes sure the appState isn't updated until after the animation is finished, since that causes an ugly little duplication of the account item
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
+                                    // appState change should trigger re-eval of state and reset showLoading, but just in case
+                                    defer { showLoading = false }
+                                    appState.setActiveAccount(account)
+                                }
+                            }
+                            .disabled(appState.currentActiveAccount == account)
+                        }
+                    }
+                }
 
             SearchView()
-                .tabItem {
-                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-                }.tag(4)
+                .fancyTabItem(tag: TabSelection.search) {
+                    FancyTabBarLabel(tag: TabSelection.search,
+                                     symbolName: "magnifyingglass",
+                                     activeSymbolName: "text.magnifyingglass")
+                }
 
             SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
-                }.tag(5)
+                .fancyTabItem(tag: TabSelection.settings) {
+                    FancyTabBarLabel(tag: TabSelection.settings,
+                                     symbolName: "gear")
+                }
+            
         }
         .onChange(of: appState.contextualError) { handle($0) }
+        .onChange(of: appState.currentActiveAccount) { _ in
+            print("yo")
+        }
         .alert(using: $errorAlert) { content in
             Alert(
                 title: Text(content.title),
@@ -70,7 +97,7 @@ struct ContentView: View {
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
     }
-
+    
     // MARK: helpers
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"
@@ -82,7 +109,7 @@ struct ContentView: View {
 extension ContentView {
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         let outcome = URLHandler.handle(url)
-
+        
         switch outcome.action {
         case let .error(message):
             errorAlert = .init(
@@ -92,7 +119,7 @@ extension ContentView {
         default:
             break
         }
-
+        
         return outcome.result
     }
 }
@@ -104,18 +131,18 @@ extension ContentView {
         guard let contextualError else {
             return
         }
-
-        #if DEBUG
+        
+#if DEBUG
         print("☠️ ERROR ☠️")
         print("🕵️ -> \(contextualError.underlyingError.description)")
         print("📝 -> \(contextualError.underlyingError.localizedDescription)")
-        #endif
-
+#endif
+        
         defer {
             // ensure we clear our the error once we've handled it...
             appState.contextualError = nil
         }
-
+        
         if let clientError = contextualError.underlyingError.base as? APIClientError {
             switch clientError {
             case .invalidSession:
@@ -127,15 +154,15 @@ extension ContentView {
                 break
             }
         }
-
+        
         let title = contextualError.title ?? ""
         let message = contextualError.message ?? ""
-
+        
         guard !title.isEmpty || !message.isEmpty else {
             // no title or message was supplied so don't notify the user of this...
             return
         }
-
+        
         errorAlert = .init(title: title, message: message)
     }
 }

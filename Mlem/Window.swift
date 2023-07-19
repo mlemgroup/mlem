@@ -30,7 +30,7 @@ struct Window: View {
                     AccountsPage(selectedAccount: $selectedAccount)
                 }
             }
-            
+
             // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
             Color.clear
                 .toast(isPresenting: $easterRewardShouldShow, duration: 2.0) {

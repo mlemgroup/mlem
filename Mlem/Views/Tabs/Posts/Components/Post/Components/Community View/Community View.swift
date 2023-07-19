@@ -28,6 +28,7 @@ struct CommunityView: View {
     // parameters
     var community: APICommunity?
     @State var feedType: FeedType
+    let showLoading: Bool // if this is true, "loading posts" will always display
 
     // variables
     @State var communityDetails: GetCommunityResponse?
@@ -47,16 +48,19 @@ struct CommunityView: View {
 
     var isInSpecificCommunity: Bool { community != nil }
 
-    init(community: APICommunity?, feedType: FeedType) {
+    init(community: APICommunity?, feedType: FeedType, showLoading: Bool = false) {
         self.community = community
         self._feedType = State(initialValue: feedType)
+        self.showLoading = showLoading
     }
 
     var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView(showsIndicators: false) {
                 EmptyView().id(scrollToTopId) // 🙄
-                if postTracker.items.isEmpty {
+                if showLoading {
+                    LoadingView(whatIsLoading: .posts)
+                } else if postTracker.items.isEmpty {
                     noPostsView
                 } else {
                     LazyVStack(spacing: 0) {

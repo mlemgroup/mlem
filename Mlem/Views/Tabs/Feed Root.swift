@@ -19,6 +19,8 @@ struct FeedRoot: View {
 
     @State var rootDetails: CommunityLinkWithContext?
     @State var isShowingToast: Bool = false
+    
+    let showLoading: Bool
 
     var body: some View {
 
@@ -30,7 +32,8 @@ struct FeedRoot: View {
                 NavigationStack(path: $navigationPath) {
                     CommunityView(
                         community: rootDetails.community,
-                        feedType: rootDetails.feedType
+                        feedType: rootDetails.feedType,
+                        showLoading: showLoading
                     )
                     .environmentObject(appState)
                     .handleLemmyViews()
@@ -88,6 +91,6 @@ struct FeedRoot: View {
 
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
-        FeedRoot()
+        FeedRoot(showLoading: false)
     }
 }
