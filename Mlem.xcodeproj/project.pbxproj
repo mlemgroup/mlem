@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		030AC04F2A6464DA00037155 /* CommunitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */; };
 		030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC0512A64666C00037155 /* UserSettingsView.swift */; };
-		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
+		03B643572A6864CD00F65700 /* NavigationBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* NavigationBarSettingsView.swift */; };
 		03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* TimestampView.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
 		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
@@ -349,7 +349,7 @@
 /* Begin PBXFileReference section */
 		030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySettingsView.swift; sourceTree = "<group>"; };
 		030AC0512A64666C00037155 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
-		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
+		03B643562A6864CD00F65700 /* NavigationBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarSettingsView.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
@@ -701,7 +701,7 @@
 			isa = PBXGroup;
 			children = (
 				63344C662A08D4E3001BC616 /* AppearanceSettingsView.swift */,
-				03B643552A6863E800F65700 /* TabBar */,
+				03B643552A6863E800F65700 /* NavigationBar */,
 				030AC0502A64666000037155 /* User */,
 				030AC04D2A64646100037155 /* Community */,
 				030AC04A2A62F8D500037155 /* Theme */,
@@ -795,12 +795,12 @@
 			path = User;
 			sourceTree = "<group>";
 		};
-		03B643552A6863E800F65700 /* TabBar */ = {
+		03B643552A6863E800F65700 /* NavigationBar */ = {
 			isa = PBXGroup;
 			children = (
-				03B643562A6864CD00F65700 /* TabBarSettingsView.swift */,
+				03B643562A6864CD00F65700 /* NavigationBarSettingsView.swift */,
 			);
-			path = TabBar;
+			path = NavigationBar;
 			sourceTree = "<group>";
 		};
 		507573922A5AD57F00AA7ABD /* Error Handling */ = {
@@ -2135,7 +2135,7 @@
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
 				632E8EE627EE63D3007E8D75 /* Upvote.swift in Sources */,
 				B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */,
-				03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */,
+				03B643572A6864CD00F65700 /* NavigationBarSettingsView.swift in Sources */,
 				CDF842642A49EAFA00723DA0 /* GetPersonMentions.swift in Sources */,
 				6D405B052A43E82300C65F9C /* Sidebar Header.swift in Sources */,
 				63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */,

@@ -29,6 +29,7 @@ struct Window: View {
                 NavigationStack {
                     AccountsPage()
                 }
+            }
 
             // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
             Color.clear
