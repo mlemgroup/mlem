@@ -14,3 +14,11 @@ struct FavoriteCommunity: Identifiable, Codable, Equatable {
 
     let community: APICommunity
 }
+
+extension FavoriteCommunity: Comparable {
+    static func < (lhs: FavoriteCommunity, rhs: FavoriteCommunity) -> Bool {
+        let lhsFullCommunity = lhs.community.name + (lhs.community.actorId.host ?? "")
+        let rhsFullCommunity = rhs.community.name + (rhs.community.actorId.host ?? "")
+        return lhsFullCommunity < rhsFullCommunity
+    }
+}

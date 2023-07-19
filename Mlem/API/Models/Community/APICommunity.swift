@@ -36,3 +36,11 @@ extension APICommunity: Equatable, Hashable {
         hasher.combine(self.id)
     }
 }
+
+extension APICommunity: Comparable {
+    static func < (lhs: APICommunity, rhs: APICommunity) -> Bool {
+        let lhsFullCommunity = lhs.name + (lhs.actorId.host ?? "")
+        let rhsFullCommunity = rhs.name + (rhs.actorId.host ?? "")
+        return lhsFullCommunity < rhsFullCommunity
+    }
+}

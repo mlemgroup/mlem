@@ -11,5 +11,5 @@ func getFavoritedCommunities(account: SavedAccount, favoritedCommunitiesTracker:
     return favoritedCommunitiesTracker.favoriteCommunities
         .filter { $0.forAccountID == account.id }
         .map { $0.community }
-        .sorted(by: { $0.name < $1.name })
+        .sorted()
 }
