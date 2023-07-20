@@ -16,6 +16,7 @@ struct Window: View {
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
 
     @State var selectedAccount: SavedAccount?
+    // @State var onboarding: Bool = true
     
     @State var easterRewardsToastsQueue: [AlertToast] = .init()
     @State var easterRewardsToastDisplay: AlertToast?
@@ -44,6 +45,7 @@ struct Window: View {
         }
         .onChange(of: selectedAccount) { _ in onLogin() }
         .onAppear(perform: onLogin)
+        .environment(\.forceOnboard, forceOnboard)
         .environment(\.setEasterFlag, setEasterFlag)
         .environmentObject(easterFlagsTracker)
     }
@@ -126,5 +128,9 @@ struct Window: View {
                 easterRewardShouldShow = true
             }
         }
+    }
+    
+    func forceOnboard() {
+        selectedAccount = nil
     }
 }

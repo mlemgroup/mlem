@@ -29,13 +29,24 @@ class SavedAccountTracker: ObservableObject {
     }
     
     func addAccount(account: SavedAccount) {
+        // prevent dupes
+        guard !savedAccounts.contains(account) else {
+            return
+        }
+        
         savedAccounts.append(account)
         addAccountToInstanceMap(account: account)
     }
     
-    func removeAccount(account: SavedAccount) {
-        // remove from array--do this second to force update
-        savedAccounts = savedAccounts.filter { savedAccount in
+    // TODO: pass in AppState using a dependency or something nice like that
+    func removeAccount(account: SavedAccount, appState: AppState, forceOnboard: () -> Void) {
+        // force onboarding if this will remove the last account
+//        if appState.currentActiveAccount == account, savedAccounts.count == 1 {
+//            forceOnboard()
+//        }
+        
+        // remove from array
+        let filteredAccounts = savedAccounts.filter { savedAccount in
             savedAccount != account
         }
         
@@ -53,6 +64,15 @@ class SavedAccountTracker: ObservableObject {
                 accountsByInstance[hostName] = filteredAccounts
             }
         }
+        
+        // if another account exists, swap to it; otherwise force onboarding
+        if let firstAccount: SavedAccount = filteredAccounts.first {
+            appState.setActiveAccount(firstAccount)
+        } else {
+            forceOnboard()
+        }
+        
+        savedAccounts = filteredAccounts
     }
 
     static func loadAccounts() -> [SavedAccount] {

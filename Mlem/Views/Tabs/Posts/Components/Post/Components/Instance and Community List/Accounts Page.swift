@@ -11,6 +11,7 @@ import AlertToast
 struct AccountsPage: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
+    @Environment(\.forceOnboard) var forceOnboard
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
     @Binding var selectedAccount: SavedAccount?
@@ -47,11 +48,10 @@ struct AccountsPage: View {
                             }
                             .swipeActions {
                                 Button("Delete", role: .destructive) {
-                                    accountsTracker.removeAccount(account: account)
+                                    accountsTracker.removeAccount(account: account, appState: appState, forceOnboard: forceOnboard)
                                 }
                             }
                             .foregroundColor(appState.currentActiveAccount == account ? .secondary : .primary)
-                            .disabled(appState.currentActiveAccount == account)
                         }
                     }
                 }
