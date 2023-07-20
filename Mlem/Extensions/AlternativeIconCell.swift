@@ -19,6 +19,11 @@ struct AlternativeIconCell: View {
         } label: {
             HStack {
                 getImage()
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(10.0)
                 VStack(alignment: .leading) {
                     Text(icon.name)
                     if let author = icon.author {
@@ -35,7 +40,7 @@ struct AlternativeIconCell: View {
         }.accessibilityElement(children: .combine)
     }
 
-    func getImage() -> some View {
+    func getImage() -> Image {
         let image = {
             guard let id = icon.id else {
                 return Bundle.main.iconFileName
@@ -47,12 +52,8 @@ struct AlternativeIconCell: View {
             }
             return Image(uiImage: UIImage(named: id) ?? UIImage(imageLiteralResourceName: id))
         }
+  
         return image()
-            .resizable()
-            .scaledToFit()
-            .frame(width: 60, height: 60)
-            .foregroundColor(Color.white)
-            .cornerRadius(10.0)
     }
 }
 

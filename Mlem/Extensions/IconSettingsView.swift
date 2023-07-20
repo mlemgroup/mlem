@@ -68,7 +68,8 @@ struct IconSettingsView: View {
 
     }
 
-    static func getCurrentIcon() -> some View {
+    // static func getCurrentIcon() -> some View {
+    static func getCurrentIcon() -> Image {
         let icon = AlternativeIcon(
             id: UIApplication.shared.alternateIconName,
             name: "",

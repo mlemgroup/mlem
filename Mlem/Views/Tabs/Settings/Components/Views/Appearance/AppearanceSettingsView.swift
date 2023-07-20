@@ -37,10 +37,10 @@ struct AppearanceSettingsView: View {
                            Text("App Icon")
                         } icon: {
                             IconSettingsView.getCurrentIcon()
-//                                .resizable()
-//                                .scaledToFit()
-//                                .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
-//                                .cornerRadius(AppConstants.settingsIconCornerRadius)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
+                                .cornerRadius(AppConstants.settingsIconCornerRadius)
                         }
                     }
                     #endif
