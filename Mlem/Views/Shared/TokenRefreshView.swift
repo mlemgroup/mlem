@@ -139,6 +139,9 @@ struct TokenRefreshView: View {
                         }
                     }
             }
+            .onTapGesture {
+                selectedField = .password
+            }
     }
     
     @ViewBuilder
@@ -157,6 +160,9 @@ struct TokenRefreshView: View {
                         .onSubmit {
                             refreshTokenUsing2FA()
                         }
+                }
+                .onTapGesture {
+                    selectedField = .onetimecode
                 }
                 Divider()
             }

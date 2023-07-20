@@ -39,7 +39,8 @@ struct AddSavedInstanceView: View {
     @EnvironmentObject var appState: AppState
     
     @Environment(\.dismiss) var dismiss
-        
+    @Environment(\.openURL) private var openURL
+
     @State private var instance: String = ""
     @State private var username = ""
     @State private var password = ""
@@ -65,8 +66,8 @@ struct AddSavedInstanceView: View {
                      horizontalSpacing: 0,
                      verticalSpacing: 15) {
                     formSection
-                }
-                     .disabled(viewState == .loading)
+                }.disabled(viewState == .loading)
+                footerView
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Sign In")
@@ -127,7 +128,11 @@ struct AddSavedInstanceView: View {
                         .onSubmit {
                             focusedField = .username
                         }
-                }.padding(.horizontal)
+                }
+                .padding(.horizontal)
+                .onTapGesture {
+                    focusedField = .instance
+                }
                 Divider()
                 GridRow {
                     Text("Username")
@@ -141,7 +146,11 @@ struct AddSavedInstanceView: View {
                         .onSubmit {
                             focusedField = .password
                         }
-                }.padding(.horizontal)
+                }
+                .padding(.horizontal)
+                .onTapGesture {
+                    focusedField = .username
+                }
                 Divider()
                 GridRow {
                     Text("Password")
@@ -155,7 +164,11 @@ struct AddSavedInstanceView: View {
                                 await tryToAddAccount()
                             }
                         }
-                }.padding(.horizontal)
+                }
+                .padding(.horizontal)
+                .onTapGesture {
+                    focusedField = .password
+                }
                 Divider()
             case .onetimecode:
                 Divider()
@@ -171,7 +184,11 @@ struct AddSavedInstanceView: View {
                         .onAppear {
                             focusedField = .onetimecode
                         }
-                }.padding(.horizontal)
+                }
+                .padding(.horizontal)
+                .onTapGesture {
+                    focusedField = .onetimecode
+                }
                 Divider()
             case .success:
                 Spacer()
@@ -214,6 +231,18 @@ struct AddSavedInstanceView: View {
         .padding()
         .multilineTextAlignment(.center)
         .dynamicTypeSize(.small ... .accessibility1)
+    }
+    
+    @ViewBuilder
+    var footerView: some View {
+        Text("What is Lemmy?")
+            .font(.footnote)
+            .foregroundColor(.blue)
+            .accessibilityAddTraits(.isLink)
+            .padding()
+            .onTapGesture {
+                openURL(URL(string: "https://join-lemmy.org")!)
+            }
     }
     
     func tryToAddAccount() async {
