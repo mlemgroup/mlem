@@ -31,3 +31,7 @@ Please develop according to the following principles:
 - One View per file. A file containing a View struct must end in "View". We're yet to decide on an official naming scheme for files - feel free to offer your thoughts [here](https://github.com/mlemgroup/mlem/issues/55).
 - Within reason, any complex of views that renders a single component of a larger view should be placed in a descriptively named function, computed property or `@ViewBuilder` variable beneath the body of the View. This keeps pyramids from piling up and makes our accessibility experts' work easier.
 - If you can reuse code, do. Prefer abstracting common components to a generic struct and common logic to a generic function.
+
+## Testing
+
+We operate a Lemmy Instance at https://test-mlem.jo.wtf/ which you may use for testing purposes.
