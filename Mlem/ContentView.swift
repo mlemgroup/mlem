@@ -43,7 +43,7 @@ struct ContentView: View {
                 ProfileView(userID: appState.currentActiveAccount.id)
                     .fancyTabItem(tag: TabSelection.profile) {
                         FancyTabBarLabel(tag: TabSelection.profile,
-                                         customText: appState.currentActiveAccount.username,
+                                         customText: computeUsername(account: appState.currentActiveAccount),
                                          symbolName: "person.circle",
                                          activeSymbolName: "person.circle.fill")
                         .simultaneousGesture(accountSwitchLongPress)
@@ -79,7 +79,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $isPresentingAccountSwitcher) {
-            AccountsPage()
+            AccountsPage(onboarding: false)
                 .presentationDetents([.medium, .large])
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))

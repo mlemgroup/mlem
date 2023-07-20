@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
-import Nuke
 
 internal enum FavoritesPurgingError {
     case failedToDeleteOldFavoritesFile, failedToCreateNewEmptyFile
 }
 
 struct GeneralSettingsView: View {
+    
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
@@ -21,30 +23,36 @@ struct GeneralSettingsView: View {
     @EnvironmentObject var appState: AppState
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
-    @State private var diskUsage: Int64 = 0
 
     var body: some View {
         List {
-
-            SelectableSettingsItem(
-                settingIconSystemName: "arrow.right.circle",
-                settingName: "Default Feed",
-                currentValue: $defaultFeed,
-                options: FeedType.allCases
-            )
             
-            Section("Default Sorting") {
+            Section {
+                Toggle("Blur NSFW Content", isOn: $shouldBlurNsfw)
+            } footer: {
+                // swiftlint:disable line_length
+                Text("When enabled, Not Safe For Work content will be blurred until you click on it. If you want to disable NSFW content from appearing entirely, you can do so from Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
+                // swiftlint:enable line_length
+            }
+            
+            Section {
+                Picker("Default Feed", selection: $defaultFeed) {
+                    ForEach(FeedType.allCases, id: \.self) {
+                        Text($0.label)
+                    }
+                }
+            } footer: {
+                Text("The feed to show by default when you open the app.")
+            }
+            
+            Section {
                 HStack {
-                    Image(systemName: "text.line.first.and.arrowtriangle.forward")
-                        .foregroundColor(.pink)
                     Text("Posts")
                     Spacer()
                     PostSortMenu(selectedSortingOption: $defaultPostSorting, shortLabel: true)
                 }
                 
                 HStack {
-                    Image(systemName: "text.line.first.and.arrowtriangle.forward")
-                        .foregroundColor(.pink)
                     Text("Comments")
                     Spacer()
                     Menu {
@@ -68,18 +76,22 @@ struct GeneralSettingsView: View {
                         .frame(maxWidth: .infinity)
                     }
                 }
+            } header: {
+                Text("Default Sorting")
+            } footer: {
+                Text("The sort mode that is selected by default when you open the app.")
             }
 
             Section {
                 Button(role: .destructive) {
                     isShowingFavoritesDeletionConfirmation.toggle()
                 } label: {
-                    Label("Delete favorites", systemImage: "trash")
+                    Label("Delete Community Favorites", systemImage: "trash")
                         .foregroundColor(.red)
                 }
                 .disabled(favoritesTracker.favoriteCommunities.isEmpty)
                 .confirmationDialog(
-                    "Delete favorites for all accounts?",
+                    "Delete community favorites for all accounts?",
                     isPresented: $isShowingFavoritesDeletionConfirmation,
                     titleVisibility: .visible) {
                         Button(role: .destructive) {
@@ -119,34 +131,14 @@ struct GeneralSettingsView: View {
                         }
 
                 } message: {
-                    Text("Would you like to delete all your favorited communities for all accounts?\nYou cannot undo this action.")
+                    Text("You cannot undo this action.")
                 }
 
-            }
-
-            Section {
-                Button(role: .destructive) {
-                    URLCache.shared.removeAllCachedResponses()
-                    ImagePipeline.shared.cache.removeAll()
-                    diskUsage = Int64(URLCache.shared.currentDiskUsage)
-                } label: {
-                    Label("Cache: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")
-                        .foregroundColor(.red)
-                }
-            }
-            header: {
-                Text("Disk Usage")
-            }
-            footer: {
-                Text("All images are cached for fast reuse.")
+            } footer: {
+                Text("Community favorites are stored on-device and are not tied to your Lemmy account.")
             }
 
         }
-        .onAppear {
-            diskUsage = Int64(URLCache.shared.currentDiskUsage)
-        }
-        .refreshable {
-            diskUsage = Int64(URLCache.shared.currentDiskUsage)
-        }
+        .navigationTitle("General")
     }
 }

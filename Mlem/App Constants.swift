@@ -10,7 +10,7 @@ import KeychainAccess
 import UIKit
 
 struct AppConstants {
-    static let cacheSize = 500_000_000 // 500MiB in bytes
+    static let cacheSize = 500_000_000 // 500MB in bytes
     static let urlCache: URLCache = URLCache(memoryCapacity: cacheSize, diskCapacity: cacheSize)
     static let webSocketSession: URLSession = URLSession(configuration: .default)
     static let urlSession: URLSession = URLSession(configuration: .default)
@@ -73,6 +73,8 @@ struct AppConstants {
     static let barIconSize: CGFloat = 15.5 // square size of a bar button
     static let barIconPadding: CGFloat = 4.25 // padding for bar button
     static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
+    static let settingsIconSize: CGFloat = 28
+    static let settingsIconCornerRadius: CGFloat = 7
     
     // MARK: - SFSymbols
     // votes
