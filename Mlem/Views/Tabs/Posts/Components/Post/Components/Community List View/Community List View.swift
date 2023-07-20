@@ -357,6 +357,13 @@ func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
     )
 }
 
+func generateFakeAccount() -> SavedAccount {
+    return SavedAccount(id: 12345,
+                        instanceLink: URL(string: "https://lemmy.world")!,
+                        accessToken: "TOKEN",
+                        username: "mlemguy")
+}
+
 func generateFakeFavoritedCommunity(id: Int, namePrefix: String) -> FavoriteCommunity {
     return FavoriteCommunity(forAccountID: 0, community: generateFakeCommunity(id: id, namePrefix: namePrefix))
 }

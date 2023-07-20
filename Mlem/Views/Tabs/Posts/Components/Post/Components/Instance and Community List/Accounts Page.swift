@@ -29,8 +29,7 @@ struct AccountsPage: View {
         let instances = Array(accountsTracker.accountsByInstance.keys)
         
         if onboarding || instances.isEmpty || isShowingInstanceAdditionSheet {
-            AddSavedInstanceView(isShowingSheet: $isShowingInstanceAdditionSheet,
-                                 onboarding: onboarding,
+            AddSavedInstanceView(onboarding: onboarding,
                                  currentAccount: $selectedAccount)
         } else {
             List {

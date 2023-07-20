@@ -81,7 +81,7 @@ struct TokenRefreshView: View {
                     .controlSize(.large)
                     .frame(height: 60)
             case .success:
-                Image(systemName: "checkmark")
+                Image(systemName: "checkmark.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 60)
@@ -150,7 +150,7 @@ struct TokenRefreshView: View {
                         .foregroundColor(.secondary)
                         .accessibilityHidden(true)
                         .padding(.horizontal)
-                    SecureField("Enter one-time code", text: $twoFactorCode)
+                    SecureField("000000", text: $twoFactorCode)
                         .focused($selectedField, equals: FocusedField.onetimecode)
                         .textContentType(.oneTimeCode)
                         .submitLabel(.go)
