@@ -127,6 +127,7 @@ struct SwipeyView: ViewModifier {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
                         dragBackground = primaryLeadingAction?.color
                         if prevDragPosition <= AppConstants.shortSwipeDragMin {
+                            print(prevDragPosition, dragPosition)
                             HapticManager.shared.gentleInfo()
                         }
                     } else {
