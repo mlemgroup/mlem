@@ -24,4 +24,10 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         try container.encode("redacted", forKey: .accessToken)
         try container.encode(self.username, forKey: .username)
     }
+    
+    static func == (lhs: SavedAccount, rhs: SavedAccount) -> Bool {
+        return lhs.id == rhs.id &&
+        lhs.instanceLink == rhs.instanceLink &&
+        lhs.username == rhs.username
+    }
 }
