@@ -21,7 +21,7 @@ And that's not all; Mlem is also extensively optimized and performant, which mea
 ## Want to chat about Mlem?
 You're welcome to join our [community on lemmy.ml](https://lemmy.ml/c/mlemapp) or [Matrix room](https://matrix.to/#/#mlemapp:matrix.org)!
 
-## Contribution
+## Contributing
 
 Read our [contribution guide](./CONTRIBUTING.md) to get started!
 
