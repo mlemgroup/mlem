@@ -83,7 +83,7 @@ struct SwipeyView: ViewModifier {
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
         // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
             .highPriorityGesture(
-                DragGesture(minimumDistance: 30, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
+                DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
                     .updating($dragState) { value, state, _ in
                         // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
                         if dragState != .zero || value.location.x > 70 {
@@ -105,35 +105,59 @@ struct SwipeyView: ViewModifier {
                     dragPosition = newDragState
                     
                     // update color and symbol. If crossed an edge, play a gentle haptic
-                    if dragPosition < -1 * AppConstants.longSwipeDragMin {
+                    if dragPosition <= -1 * AppConstants.longSwipeDragMin {
                         trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
                         dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
-                        if prevDragPosition >= -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                            HapticManager.shared.gentleInfo()
+                        
+                        if prevDragPosition > -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
+                            // crossed from short swipe -> long swipe
+                            HapticManager.shared.firmerInfo()
                         }
-                    } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
+                    } else if dragPosition <= -1 * AppConstants.shortSwipeDragMin {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
                         dragBackground = primaryTrailingAction?.color
-                        if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
+                        
+                        if prevDragPosition > -1 * AppConstants.shortSwipeDragMin {
+                            // crossed from no swipe -> short swipe
                             HapticManager.shared.gentleInfo()
+                        } else if prevDragPosition <= -1 * AppConstants.longSwipeDragMin {
+                            // crossed from long swipe -> short swipe
+                            HapticManager.shared.mushyInfo()
                         }
                     } else if dragPosition < 0 {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
                         dragBackground = primaryTrailingAction?.color.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
+                        
+                        if prevDragPosition <= -1 * AppConstants.shortSwipeDragMin {
+                            // crossed from short swipe -> no swipe
+                            HapticManager.shared.mushyInfo()
+                        }
                     } else if dragPosition < AppConstants.shortSwipeDragMin {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
                         dragBackground = primaryLeadingAction?.color.opacity(dragPosition / AppConstants.shortSwipeDragMin)
+                        
+                        if prevDragPosition >= AppConstants.shortSwipeDragMin {
+                            // crossed from short swipe -> no swipe
+                            HapticManager.shared.mushyInfo()
+                        }
                     } else if dragPosition < AppConstants.longSwipeDragMin {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
                         dragBackground = primaryLeadingAction?.color
-                        if prevDragPosition <= AppConstants.shortSwipeDragMin {
+                        
+                        if prevDragPosition < AppConstants.shortSwipeDragMin {
+                            // crossed from no swipe -> short swipe
                             HapticManager.shared.gentleInfo()
+                        } else if prevDragPosition >= AppConstants.longSwipeDragMin {
+                            // crossed from long swipe -> short swipe
+                            HapticManager.shared.mushyInfo()
                         }
                     } else {
                         leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
                         dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
-                        if prevDragPosition <= AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                            HapticManager.shared.gentleInfo()
+                        
+                        if prevDragPosition < AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
+                            // crossed from short swipe -> long swipe
+                            HapticManager.shared.firmerInfo()
                         }
                     }
                     prevDragPosition = dragPosition
@@ -196,7 +220,7 @@ struct SwipeyView: ViewModifier {
     }
     
     private func reset() {
-        withAnimation(.spring(response: 0.3)) {
+        withAnimation(.spring(response: 0.25)) {
             dragPosition = .zero
             prevDragPosition = .zero
             leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName

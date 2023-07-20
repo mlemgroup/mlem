@@ -51,8 +51,40 @@ class HapticManager {
     func gentleInfo() {
         if let engine = hapticEngine {
             let event1 = CHHapticEvent(eventType: .hapticTransient,
-                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.4),
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.45),
                                                     CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.55)],
+                                   relativeTime: 0)
+            
+            playPattern(engine: engine, events: [event1])
+        } else {
+            print("no engine")
+        }
+    }
+    
+    /**
+     Firmer tap. Used for slightly less subtle feedback
+     */
+    func firmerInfo() {
+        if let engine = hapticEngine {
+            let event1 = CHHapticEvent(eventType: .hapticTransient,
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.75),
+                                                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.9)],
+                                   relativeTime: 0)
+            
+            playPattern(engine: engine, events: [event1])
+        } else {
+            print("no engine")
+        }
+    }
+    
+    /**
+     Mushy, gentle tap. Used for extremely subtle feedback
+     */
+    func mushyInfo() {
+        if let engine = hapticEngine {
+            let event1 = CHHapticEvent(eventType: .hapticTransient,
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.45),
+                                                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.2)],
                                    relativeTime: 0)
             
             playPattern(engine: engine, events: [event1])
@@ -72,11 +104,13 @@ class HapticManager {
     
     /**
      Success notification for events that don't need a heavy haptic--votes, saves, etc
+     
+     NOTE: this is a gentleInfo and a firmerInfo played in quick succession
      */
     func gentleSuccess() {
         if let engine = hapticEngine {
             let event1 = CHHapticEvent(eventType: .hapticTransient,
-                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.4),
+                                       parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.45),
                                                     CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.55)],
                                    relativeTime: 0)
             let event2 = CHHapticEvent(eventType: .hapticTransient,
