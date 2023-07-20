@@ -111,6 +111,8 @@ struct AppConstants {
     // settings
     static let compactSymbolName: String = "rectangle.grid.1x2"
     static let compactSymbolNameFill: String = "rectangle.grid.1x2.fill"
+    static let cardSymbolName: String = "square.grid.2x2"
+    static let cardSymbolNameFill: String = "square.grid.2x2.fill"
     static let headlineSymbolName: String = "rectangle"
     static let headlineSymbolNameFill: String = "rectangle.fill"
     static let largeSymbolName: String = "text.below.photo"

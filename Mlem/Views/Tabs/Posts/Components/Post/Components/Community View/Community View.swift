@@ -281,8 +281,8 @@ struct CommunityView: View {
                         } label: {
                             Label("Card",
                                   systemImage: postSize == .compact
-                                  ? AppConstants.compactSymbolNameFill
-                                  : AppConstants.compactSymbolName)
+                                  ? AppConstants.cardSymbolNameFill
+                                  : AppConstants.cardSymbolName)
                         }
                         .disabled(postSize == .card)
                         

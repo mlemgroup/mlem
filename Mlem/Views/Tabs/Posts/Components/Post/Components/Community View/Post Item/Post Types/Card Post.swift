@@ -37,6 +37,8 @@ struct CardPost: View {
                 
                 postContentView
                 
+                Spacer()
+                
                 InfoStack(score: postView.counts.score,
                           myVote: postView.myVote ?? .resetVote,
                           published: postView.published,
@@ -45,6 +47,7 @@ struct CardPost: View {
                           fontSize: .caption)
                 .frame(maxWidth: .infinity)
             }
+            .frame(maxHeight: .infinity)
             .padding(AppConstants.cardPostSpacing)
             
             Divider()
