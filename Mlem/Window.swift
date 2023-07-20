@@ -16,7 +16,6 @@ struct Window: View {
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
 
     @State var selectedAccount: SavedAccount?
-    // @State var onboarding: Bool = true
     
     @State var easterRewardsToastsQueue: [AlertToast] = .init()
     @State var easterRewardsToastDisplay: AlertToast?

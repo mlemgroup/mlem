@@ -40,13 +40,8 @@ class SavedAccountTracker: ObservableObject {
     
     // TODO: pass in AppState using a dependency or something nice like that
     func removeAccount(account: SavedAccount, appState: AppState, forceOnboard: () -> Void) {
-        // force onboarding if this will remove the last account
-//        if appState.currentActiveAccount == account, savedAccounts.count == 1 {
-//            forceOnboard()
-//        }
-        
         // remove from array
-        let filteredAccounts = savedAccounts.filter { savedAccount in
+        savedAccounts = savedAccounts.filter { savedAccount in
             savedAccount != account
         }
         
@@ -66,13 +61,11 @@ class SavedAccountTracker: ObservableObject {
         }
         
         // if another account exists, swap to it; otherwise force onboarding
-        if let firstAccount: SavedAccount = filteredAccounts.first {
+        if let firstAccount: SavedAccount = savedAccounts.first {
             appState.setActiveAccount(firstAccount)
         } else {
             forceOnboard()
         }
-        
-        savedAccounts = filteredAccounts
     }
 
     static func loadAccounts() -> [SavedAccount] {
