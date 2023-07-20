@@ -39,18 +39,12 @@ struct AddSavedInstanceView: View {
     @EnvironmentObject var appState: AppState
     
     @Environment(\.dismiss) var dismiss
-    
-    @Binding var isShowingSheet: Bool
-    
+        
     @State private var instance: String = ""
     @State private var username = ""
     @State private var password = ""
     @State private var twoFactorCode = ""
-    @State private var viewState: ViewState = .initial {
-        didSet {
-            print("** State Changed \(viewState)")
-        }
-    }
+    @State private var viewState: ViewState = .initial
     
     @State private var showing2FAAlert = false
     @State private var errorMessage = ""
@@ -91,7 +85,7 @@ struct AddSavedInstanceView: View {
                 if !onboarding {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button(role: .destructive) {
-                            isShowingSheet = false
+                            dismiss()
                         } label: {
                             Text("Cancel")
                         }
@@ -185,7 +179,6 @@ struct AddSavedInstanceView: View {
                 ProgressView()
             }
         }
-        .transition(.move(edge: .leading))
     }
     
     @ViewBuilder
@@ -216,7 +209,6 @@ struct AddSavedInstanceView: View {
                 Text("Unhandled Shit 🙈")
             }
         }
-        .transition(.scale)
         .font(.subheadline)
         .bold()
         .padding()
@@ -257,7 +249,10 @@ struct AddSavedInstanceView: View {
             
             let response = try await APIClient().perform(request: loginRequest)
             
-            viewState = .success
+            withAnimation {
+                viewState = .success
+            }
+            
             let newAccount = SavedAccount(
                 id: try await getUserID(authToken: response.jwt, instanceURL: instanceURL),
                 instanceLink: instanceURL,
@@ -319,7 +314,11 @@ struct AddSavedInstanceView: View {
             message = "Please check your internet connection and try again"
         case APIClientError.response(let errorResponse, _) where errorResponse.requires2FA:
             message = ""
-            viewState = .onetimecode
+            
+            withAnimation {
+                viewState = .onetimecode
+            }
+            
             return
         case APIClientError.response(let errorResponse, _) where errorResponse.isIncorrectLogin:
             message = "Please check your username and password"
@@ -356,13 +355,10 @@ struct AddSavedInstanceView: View {
 
 struct AddSavedInstanceView_Previews: PreviewProvider {
     
-    static var isShowingSheet = Binding.constant(false)
-    
     static var savedAccount = Binding<SavedAccount?>.constant(generateFakeAccount())
     
     static var previews: some View {
-        AddSavedInstanceView(isShowingSheet: AddSavedInstanceView_Previews.isShowingSheet,
-                             onboarding: true,
+        AddSavedInstanceView(onboarding: true,
                              currentAccount: AddSavedInstanceView_Previews.savedAccount)
     }
     
