@@ -12,14 +12,9 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let instanceLink: URL
     let accessToken: String
     let username: String
-    
-    func fullName() -> String {
-        var ret = username
-        if let host = instanceLink.host() {
-            ret.append("@" + host.description)
-        }
-        return ret
-    }
+  
+    // convenience
+    var hostName: String? { instanceLink.host?.description }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

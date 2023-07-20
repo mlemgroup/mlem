@@ -16,10 +16,14 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     @State private var tabItemKeys: [Selection] = []
     @State private var tabItems: [Selection: FancyTabItemLabelBuilder<Selection>] = [:]
     
+    var dragUpGestureCallback: (() -> Void)?
+    
     init(selection: Binding<Selection>,
+         dragUpGestureCallback: (() -> Void)? = nil,
          @ViewBuilder content: @escaping () -> Content) {
         self._selection = selection
         self.content = content
+        self.dragUpGestureCallback = dragUpGestureCallback
     }
     
     var body: some View {
@@ -38,13 +42,25 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                                 .accessibilityLabel("Tab of \(tabItems.count.description)")
                                 .frame(maxWidth: .infinity)
                                 .contentShape(Rectangle())
-                                .onTapGesture {
-                                    withAnimation(.spring(response: 0.25)) {
-                                        selection = key
+                            // high priority to prevent conflict with long press/drag
+                                .highPriorityGesture(
+                                    TapGesture()
+                                        .onEnded {
+                                        withAnimation(.spring(response: 0.25)) {
+                                            selection = key
+                                        }
                                     }
-                                }
+                                )
                         }
                     }
+                    .gesture(
+                        DragGesture()
+                            .onChanged { gesture in
+                                if let callback = dragUpGestureCallback, gesture.translation.height < -100 {
+                                    callback()
+                                }
+                            }
+                    )
                     .background(.regularMaterial)
                 }
                 .accessibilityElement(children: .contain)

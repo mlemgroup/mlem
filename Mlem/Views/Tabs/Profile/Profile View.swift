@@ -23,8 +23,6 @@ struct ProfileView: View {
         NavigationStack(path: $navigationPath) {
             UserView(userID: userID)
                 .handleLemmyViews()
-                .edgesIgnoringSafeArea(.top)
-                .toolbar(.hidden)
         }
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
     }

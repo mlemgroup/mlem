@@ -52,6 +52,17 @@ struct FancyTabBarLabel: View {
     }
     
     var body: some View {
+        labelDisplay
+        .accessibilityShowsLargeContentViewer {
+            labelDisplay
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 10)
+        .contentShape(Rectangle())
+        .foregroundColor(active ? activeColor : color)
+    }
+    
+    var labelDisplay: some View {
         VStack(spacing: 4) {
             if let symbolName = symbolName {
                 Image(systemName: active ? activeSymbolName ?? symbolName : symbolName)
@@ -62,12 +73,8 @@ struct FancyTabBarLabel: View {
             
             if showTabNames, let text = labelText {
                 Text(text)
-                    .font(.caption2)
+                    .font(.system(size: 10))
             }
         }
-        .frame(maxWidth: .infinity)
-        .padding(.top, 10)
-        .contentShape(Rectangle())
-        .foregroundColor(active ? activeColor : color)
     }
 }
