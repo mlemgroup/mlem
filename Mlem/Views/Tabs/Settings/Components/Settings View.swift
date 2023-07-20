@@ -19,7 +19,7 @@ struct SettingsView: View {
             List {
                 Section {
                     NavigationLink {
-                        AccountsPage()
+                        AccountsPage(onboarding: false)
                     } label: {
                         Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
                     }

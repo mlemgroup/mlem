@@ -54,7 +54,7 @@ struct UserView: View {
                 ResponseComposerView(concreteRespondable: responseItem)
             }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
-                AccountsPage()
+                AccountsPage(onboarding: false)
             }
     }
 

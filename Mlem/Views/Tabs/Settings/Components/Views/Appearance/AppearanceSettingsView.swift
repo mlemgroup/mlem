@@ -50,12 +50,6 @@ struct AppearanceSettingsView: View {
                     NavigationLink {
                         PostSettingsView()
                     } label: {
-                        Label("Tab Bar", systemImage: "square").labelStyle(SquircleLabelStyle(color: .purple))
-                    }
-                    
-                    NavigationLink {
-                        PostSettingsView()
-                    } label: {
                         Label("Posts", systemImage: "doc.plaintext.fill").labelStyle(SquircleLabelStyle(color: .pink))
                     }
                     
@@ -75,6 +69,13 @@ struct AppearanceSettingsView: View {
                         UserSettingsView()
                     } label: {
                         Label("Users", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .blue))
+                    }
+                }
+                Section {
+                    NavigationLink {
+                        TabBarSettingsView()
+                    } label: {
+                        Label("Tab Bar", systemImage: "square").labelStyle(SquircleLabelStyle(color: .purple))
                     }
                 }
             }
