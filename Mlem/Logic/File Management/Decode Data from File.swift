@@ -26,7 +26,7 @@ func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Coda
             case .recentSearches:
                 return try JSONDecoder().decode([String].self, from: rawData)
             case .easterFlags:
-                return try JSONDecoder().decode(Set<EasterFlag>.self, from: rawData)
+                return try JSONDecoder().decode(Set<String>.self, from: rawData)
             }
         } catch let decodingError {
             throw decodingError
