@@ -159,6 +159,7 @@ struct CommunityView: View {
                 }
             }
         }
+        .fancyTabScrollCompatible()
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 PostSortMenu(selectedSortingOption: Binding(
