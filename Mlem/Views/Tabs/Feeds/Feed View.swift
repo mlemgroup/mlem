@@ -64,7 +64,6 @@ struct FeedView: View {
                     noPostsView
                 } else {
                     LazyVStack(spacing: 0) {
-                        bannerView
                         postListView
                         loadingMorePostsView
                     }
