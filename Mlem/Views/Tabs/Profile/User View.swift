@@ -82,7 +82,7 @@ struct UserView: View {
             Button {
                 isPresentingAccountSwitcher = true
             } label: {
-                Image(systemName: "repeat")
+                Image(systemName: "person.crop.circle.badge.plus")
             }
         }
     }
