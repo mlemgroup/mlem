@@ -70,7 +70,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        if let callback = dragUpGestureCallback, gesture.translation.height < -100 {
+                        if let callback = dragUpGestureCallback, gesture.translation.height < -50 {
                             callback()
                         }
                     }
