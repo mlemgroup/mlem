@@ -30,7 +30,7 @@ struct FeedRoot: View {
         } detail: {
             if let rootDetails {
                 NavigationStack(path: $navigationPath) {
-                    CommunityView(
+                    FeedView(
                         community: rootDetails.community,
                         feedType: rootDetails.feedType,
                         showLoading: showLoading

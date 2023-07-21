@@ -9,7 +9,7 @@ import SwiftUI
 
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
-struct CommunityView: View {
+struct FeedView: View {
 
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
