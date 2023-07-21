@@ -36,12 +36,12 @@ class ErrorDisplayer {
         )
         
         if let toastView = UIHostingController(rootView: toast).view,
-           let window = UIApplication.shared.firstKeyWindow {
+           let controller = UIApplication.shared.topMostViewController {
             toastView.translatesAutoresizingMaskIntoConstraints = false
             toastView.alpha = 0
-            window.addSubview(toastView)
-            toastView.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
-            toastView.centerYAnchor.constraint(equalTo: window.centerYAnchor).isActive = true
+            controller.view.addSubview(toastView)
+            toastView.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor).isActive = true
+            toastView.centerYAnchor.constraint(equalTo: controller.view.centerYAnchor).isActive = true
             UIView.animate(withDuration: 0.3) {
                 toastView.alpha = 1
             }
