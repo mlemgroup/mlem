@@ -27,15 +27,15 @@ struct EditCommentRequest: APIPutRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
 
         commentId: Int,
-        content: String? = nil,
-        distinguished: Bool? = nil,
-        languageId: Int? = nil,
-        formId: String? = nil
+        content: String?,
+        distinguished: Bool?,
+        languageId: Int?,
+        formId: String?
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
 
         self.body = .init(
             comment_id: commentId,
@@ -44,7 +44,7 @@ struct EditCommentRequest: APIPutRequest {
             language_id: languageId,
             form_id: formId,
 
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

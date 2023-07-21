@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ErrorAlert {
+struct ErrorAlert: Equatable {
     let title: String
     let message: String
 }

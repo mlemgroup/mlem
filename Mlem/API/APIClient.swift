@@ -20,14 +20,40 @@ enum APIClientError: Error {
     case invalidSession
 }
 
+struct APISession {
+    let token: String
+    let URL: URL
+}
+
 class APIClient {
 
-    let session: URLSession
+    let urlSession: URLSession
     let decoder: JSONDecoder
     
+    private var _session: APISession?
+    private var session: APISession {
+        get throws {
+            guard let _session else {
+                throw APIClientError.invalidSession
+            }
+            
+            return _session
+        }
+    }
+    
+    // MARK: - Initialisation
+    
     init(session: URLSession = .init(configuration: .default), decoder: JSONDecoder = .defaultDecoder) {
-        self.session = session
+        self.urlSession = session
         self.decoder = decoder
+    }
+    
+    // MARK: - Public methods
+    
+    /// Configures the clients session based on the passed in account
+    /// - Parameter account: a `SavedAccount` to use when configuring the clients session
+    func configure(for account: SavedAccount) {
+        self._session = .init(token: account.accessToken, URL: account.instanceLink)
     }
     
     @discardableResult
@@ -62,10 +88,12 @@ class APIClient {
         
         return try decoder.decode(Request.Response.self, from: data)
     }
-
+    
+    // MARK: - Private methods
+    
     private func execute(_ urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         do {
-            return try await session.data(for: urlRequest)
+            return try await urlSession.data(for: urlRequest)
         } catch {
             if case URLError.cancelled = error as NSError {
                 throw APIClientError.cancelled
@@ -100,5 +128,102 @@ class APIClient {
         } catch {
             throw APIClientError.encoding(error)
         }
+    }
+}
+
+// MARK: Comment Requests
+
+extension APIClient {
+    func loadComments(
+        for postId: Int,
+        maxDepth: Int = 15,
+        type: FeedType = .all,
+        sort: CommentSortType? = nil,
+        page: Int? = nil,
+        limit: Int? = nil,
+        communityId: Int? = nil,
+        communityName: String? = nil,
+        parentId: Int? = nil,
+        savedOnly: Bool? = nil
+    ) async throws -> [APICommentView] {
+        let request = GetCommentsRequest(
+            session: try session,
+            postId: postId,
+            maxDepth: maxDepth,
+            type: type,
+            sort: sort,
+            page: page,
+            limit: limit,
+            communityId: communityId,
+            communityName: communityName,
+            parentId: parentId,
+            savedOnly: savedOnly
+        )
+        
+        return try await perform(request: request).comments
+    }
+    
+    func loadComment(id: Int) async throws -> CommentResponse {
+        let request = GetCommentRequest(session: try session, id: id)
+        return try await perform(request: request)
+    }
+    
+    func createComment(
+        content: String,
+        languageId: Int? = nil,
+        parentId: Int? = nil,
+        postId: Int
+    ) async throws -> CommentResponse {
+        let request = CreateCommentRequest(
+            session: try session,
+            content: content,
+            languageId: languageId,
+            parentId: parentId,
+            postId: postId
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    func applyCommentScore(id: Int, score: Int) async throws -> CommentResponse {
+        let request = CreateCommentLikeRequest(session: try session, commentId: id, score: score)
+        return try await perform(request: request)
+    }
+    
+    func editComment(
+        id: Int,
+        content: String? = nil,
+        distinguished: Bool? = nil,
+        languageId: Int? = nil,
+        formId: String? = nil
+    ) async throws -> CommentResponse {
+        let request = EditCommentRequest(
+            session: try session,
+            commentId: id,
+            content: content,
+            distinguished: distinguished,
+            languageId: languageId,
+            formId: formId
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    func deleteComment(
+        id: Int,
+        deleted: Bool
+    ) async throws -> CommentResponse {
+        let request = DeleteCommentRequest(session: try session, commentId: id, deleted: deleted)
+        return try await perform(request: request)
+    }
+    
+    func saveComment(id: Int, shouldSave: Bool) async throws -> CommentResponse {
+        let request = SaveCommentRequest(session: try session, commentId: id, save: shouldSave)
+        return try await perform(request: request)
+    }
+    
+    func reportComment(id: Int, reason: String) async throws -> CreateCommentReportResponse {
+        let request = CreateCommentReportRequest(session: try session, commentId: id, reason: reason)
+        return try await perform(request: request)
     }
 }

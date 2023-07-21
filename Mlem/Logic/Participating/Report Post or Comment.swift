@@ -28,25 +28,3 @@ func reportPost(
         throw error
     }
 }
-
-@MainActor
-func reportComment(
-    account: SavedAccount,
-    commentId: Int,
-    reason: String
-) async throws -> APICommentReportView {
-    do {
-        let request = CreateCommentReportRequest(
-            account: account,
-            commentId: commentId,
-            reason: reason
-        )
-        
-        let response = try await APIClient().perform(request: request)
-        HapticManager.shared.violentSuccess()
-        return response.commentReportView
-    } catch {
-        HapticManager.shared.error()
-        throw error
-    }
-}

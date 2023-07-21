@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import Dependencies
 import SwiftUI
 
 struct ReplyToExpandedPost: Respondable {
+    
+    @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { post.id }
     let appState: AppState
@@ -23,10 +26,14 @@ struct ReplyToExpandedPost: Respondable {
     }
     
     func sendResponse(responseContents: String) async throws {
-        try await postComment(to: post,
-                              commentContents: responseContents,
-                              commentTracker: commentTracker,
-                              account: appState.currentActiveAccount,
-                              appState: appState)
+        let comment = try await commentRepository.postComment(
+            content: responseContents,
+            postId: post.post.id
+        )
+        await MainActor.run {
+            withAnimation {
+                commentTracker.comments.prepend(comment)
+            }
+        }
     }
 }

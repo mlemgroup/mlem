@@ -5,11 +5,14 @@
 //  Created by Eric Andrews on 2023-07-03.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct ResponseComposerView: View {
-  
+    
+    @Dependency(\.errorHandler) var errorHandler
+    
     let respondable: any Respondable
     
     init(concreteRespondable: ConcreteRespondable) {
@@ -20,7 +23,6 @@ struct ResponseComposerView: View {
 
     @State var replybody: String = ""
     @State var isSubmitting: Bool = false
-    @State var errorOccurred: Bool = false
 
     private var isReadyToReply: Bool {
         return replybody.trimmed.isNotEmpty
@@ -81,18 +83,19 @@ struct ResponseComposerView: View {
                                 try await respondable.sendResponse(responseContents: replybody)
                                 dismiss()
                             } catch {
-                                errorOccurred = true
+                                errorHandler.handle(
+                                    .init(
+                                        title: "Failed to Send",
+                                        message: "Something went wrong!",
+                                        underlyingError: error
+                                    )
+                                )
                             }
                         }
                     } label: {
                         Image(systemName: "paperplane")
                     }.disabled(isSubmitting || !isReadyToReply)
                 }
-            }
-            .alert("Failed to Send", isPresented: $errorOccurred) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text("Something went wrong!")
             }
             .navigationTitle(respondable.modalName)
             .navigationBarTitleDisplayMode(.inline)

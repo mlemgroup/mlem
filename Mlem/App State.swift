@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import Dependencies
 import SwiftUI
 import AlertToast
 
 class AppState: ObservableObject {
-
+    
+    @Dependency(\.apiClient) var apiClient
+    
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
     @Binding private var selectedAccount: SavedAccount?
     @Published private(set) var currentActiveAccount: SavedAccount
@@ -53,6 +56,9 @@ class AppState: ObservableObject {
     }
     
     private func accountUpdated() {
+        // ensure our client session is updated
+        apiClient.configure(for: currentActiveAccount)
+        
         Task {
             let request = GetSiteRequest(account: currentActiveAccount)
             if let response = try? await APIClient().perform(request: request) {

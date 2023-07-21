@@ -17,26 +17,25 @@ struct GetCommentsRequest: APIGetRequest {
 
     // lemmy_api_common::comment::GetComments
     init(
-        account: SavedAccount,
+        session: APISession,
         postId: Int,
-        maxDepth: Int = 15,
-        type: FeedType = .all,
-        // TODO replace this with proper comment sort type, current one has .active, which is not in API
-        sort: String? = nil,
-        page: Int? = nil,
-        limit: Int? = nil,
-        communityId: Int? = nil,
-        communityName: String? = nil,
-        parentId: Int? = nil,
-        savedOnly: Bool? = nil
+        maxDepth: Int,
+        type: FeedType,
+        sort: CommentSortType?,
+        page: Int?,
+        limit: Int?,
+        communityId: Int?,
+        communityName: String?,
+        parentId: Int?,
+        savedOnly: Bool?
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: session.token),
             .init(name: "post_id", value: "\(postId)"),
             .init(name: "max_depth", value: "\(maxDepth)"),
             .init(name: "type_", value: type.rawValue),
-            .init(name: "sort", value: sort),
+            .init(name: "sort", value: sort?.rawValue.description),
             .init(name: "page", value: page.map(String.init)),
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "community_id", value: communityId.map(String.init)),

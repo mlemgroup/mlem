@@ -10,9 +10,14 @@ import UIKit
 
 extension UIApplication {
     var firstKeyWindow: UIWindow? {
-        return UIApplication.shared.connectedScenes
+        connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .filter { $0.activationState == .foregroundActive }
-            .first?.keyWindow
+            .first?
+            .keyWindow
+    }
+    
+    var topMostViewController: UIViewController? {
+        UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController()
     }
 }

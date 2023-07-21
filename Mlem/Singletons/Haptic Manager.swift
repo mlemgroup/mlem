@@ -21,7 +21,7 @@ class HapticManager {
     // singleton to use in app
     static let shared = HapticManager()
     
-    private init() {
+    init() {
         // create and start the engine if this device supports haptics
         hapticEngine = initEngine()
     }

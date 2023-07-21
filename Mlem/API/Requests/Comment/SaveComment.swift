@@ -24,18 +24,18 @@ struct SaveCommentRequest: APIPutRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
 
         commentId: Int,
         save: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
 
         self.body = .init(
             comment_id: commentId,
             save: save,
 
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

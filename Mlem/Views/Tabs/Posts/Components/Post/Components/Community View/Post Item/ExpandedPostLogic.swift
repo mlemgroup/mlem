@@ -87,13 +87,13 @@ extension ExpandedPost {
                 appState.isShowingToast = true
             } // Show Toast
         } catch {
-            let toast = AlertToast(
-                displayMode: .alert,
-                type: .error(.red),
-                title: "Unable to block \(post.creator.name)"
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block \(post.creator.name)",
+                    style: .toast,
+                    underlyingError: error
+                )
             )
-            appState.toast = toast
-            appState.isShowingToast = true
         }
     }
     
@@ -201,17 +201,18 @@ extension ExpandedPost {
 
     func loadComments() async {
         defer { commentTracker.isLoading = false }
-
         commentTracker.isLoading = true
+        
         do {
-            let request = GetCommentsRequest(account: appState.currentActiveAccount, postId: post.post.id)
-            let response = try await APIClient().perform(request: request)
-            commentTracker.comments = sortComments(response.comments.hierarchicalRepresentation, by: defaultCommentSorting)
+            let comments = try await commentRepository.comments(for: post.post.id)
+            commentTracker.comments = sortComments(comments, by: defaultCommentSorting)
         } catch {
-            appState.contextualError = .init(
-                title: "Failed to load comments",
-                message: "Please refresh to try again",
-                underlyingError: error
+            errorHandler.handle(
+                .init(
+                    title: "Failed to load comments",
+                    message: "Please refresh to try again",
+                    underlyingError: error
+                )
             )
         }
     }
