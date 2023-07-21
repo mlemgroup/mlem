@@ -62,6 +62,7 @@ struct ExpandedPost: View {
                 }
             }
         }
+        .fancyTabScrollCompatible()
         .scrollDisabled(isDragging)
         .sheet(item: $responseItem) { responseItem in
             ResponseComposerView(concreteRespondable: responseItem)
