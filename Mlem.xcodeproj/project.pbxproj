@@ -960,9 +960,7 @@
 		632E8EE327EE63B3007E8D75 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				CD1446162A58FC2F00610EF1 /* Interaction Bars */,
 				63344C682A08F42C001BC616 /* Images */,
-				632E8EE427EE63BD007E8D75 /* Buttons */,
 				63CE4E702A06B21B00405271 /* Avatar View.swift */,
 				631711542A27C45900FE08C4 /* Selectable Text.swift */,
 			);
@@ -1211,6 +1209,7 @@
 		6363D5F427EE1BAE00E34822 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				CD2E14782A6B283D004198DE /* Feeds */,
 				6DA61F7F2A55B831001EA633 /* Search */,
 				6DE1183A2A4A215F00810C7E /* Profile */,
 				6DFF50412A48DEC0001E648D /* Inbox */,
@@ -1463,6 +1462,9 @@
 		6386E03E2A04570F006B3C1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				CD2E147B2A6B2891004198DE /* Components */,
+				CD2E147A2A6B2871004198DE /* Comments */,
+				CD2E14792A6B285F004198DE /* Posts */,
 				ADF266932A4E89F800EBA648 /* Composer */,
 				CD525F662A4B892900BCA794 /* Links */,
 				6314C9EC2A18EF2D00B08405 /* Reply Editor */,
@@ -1628,6 +1630,36 @@
 				AD1B0D362A5F7A260006F554 /* Licenses.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		CD2E14782A6B283D004198DE /* Feeds */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Feeds;
+			sourceTree = "<group>";
+		};
+		CD2E14792A6B285F004198DE /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
+		CD2E147A2A6B2871004198DE /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
+		CD2E147B2A6B2891004198DE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				632E8EE427EE63BD007E8D75 /* Buttons */,
+				CD1446162A58FC2F00610EF1 /* Interaction Bars */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		CD2E18272A3B695D00224F8A /* Post Types */ = {
