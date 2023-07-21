@@ -40,13 +40,20 @@ struct PostSettingsView: View {
     
     var body: some View {
         Form {
-            Section("Post Size") {
-                SelectableSettingsItem(
-                    settingIconSystemName: "rectangle.compress.vertical",
-                    settingName: "Post size",
-                    currentValue: $postSize,
-                    options: PostSize.allCases
-                )
+            Section {
+                HStack {
+                    PostDisplayModeView(postSize: .large, imageName: "LargePost", selected: $postSize)
+                    PostDisplayModeView(postSize: .headline, imageName: "HeadlinePost", selected: $postSize)
+                    PostDisplayModeView(postSize: .compact, imageName: "CompactPost", selected: $postSize)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 120)
+                .padding(10)
+
+            } header: {
+                Text("Display As")
+            } footer: {
+                Text("You can change this setting quickly from the top-right of the Feeds tab.")
             }
             
             Section("Display Sides") {

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		030AC04F2A6464DA00037155 /* CommunitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */; };
 		030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC0512A64666C00037155 /* UserSettingsView.swift */; };
+		038DB0392A6AFB4E003E87BD /* PostDisplayModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038DB0382A6AFB4D003E87BD /* PostDisplayModeView.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
 		03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* TimestampView.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
@@ -350,6 +351,7 @@
 /* Begin PBXFileReference section */
 		030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySettingsView.swift; sourceTree = "<group>"; };
 		030AC0512A64666C00037155 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
+		038DB0382A6AFB4D003E87BD /* PostDisplayModeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDisplayModeView.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
@@ -751,6 +753,7 @@
 		030AC0452A62F89000037155 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				038DB0382A6AFB4D003E87BD /* PostDisplayModeView.swift */,
 				CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */,
 			);
 			path = Post;
@@ -2165,6 +2168,7 @@
 				CD391F942A533B7700E213B5 /* RespondableProtocol.swift in Sources */,
 				CD69F56F2A41EDF50028D4F7 /* Swipey Actions.swift in Sources */,
 				CD391F902A533AFF00E213B5 /* ReplyToFeedPost.swift in Sources */,
+				038DB0392A6AFB4E003E87BD /* PostDisplayModeView.swift in Sources */,
 				637218632A3A2AAD008C4816 /* CreatePost.swift in Sources */,
 				CDE6A80B2A43E9F00062D161 /* CommentSortType.swift in Sources */,
 				503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */,
