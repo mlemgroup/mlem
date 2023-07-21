@@ -342,17 +342,6 @@ struct FeedView: View {
         }
     }
 
-    @ViewBuilder
-    private var bannerView: some View {
-        if isInSpecificCommunity {
-            if shouldShowCommunityHeaders {
-                if let communityBannerURL = community?.banner {
-                    StickyImageView(url: communityBannerURL)
-                }
-            }
-        }
-    }
-
     private var postListView: some View {
         ForEach(postTracker.items, id: \.id) { post in
             VStack(spacing: 0) {
