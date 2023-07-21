@@ -32,10 +32,10 @@ struct NSFWToggle: View {
     var body: some View {
         Text("NSFW")
             .dynamicTypeSize(.small ... .accessibility2)
-            .foregroundColor(isEnabled ? .white : .gray.opacity(0.6))
+            .foregroundColor(isEnabled ? .white : .secondary.opacity(0.7))
             .padding(2)
             .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-                .foregroundColor(isEnabled ? .red : .white))
+                .foregroundColor(isEnabled ? .red : .systemBackground))
             .font((compact ? Font.caption : Font.subheadline).weight(Font.Weight.black))
             .accessibilityAddTraits(.isButton)
             .accessibilityLabel("NSFW Toggle, \(isEnabled ? "Enabled" : "Disabled")")
@@ -48,12 +48,13 @@ struct NSFWToggle: View {
 
 struct NSFWPreviews: PreviewProvider {
     static var previews: some View {
-        NSFWTag(compact: false)
-        NSFWTag(compact: true)
-        NSFWToggle(compact: true, isEnabled: Binding.constant(true))
-        NSFWToggle(compact: true, isEnabled: Binding.constant(false))
-        NSFWToggle(compact: false, isEnabled: Binding.constant(true))
-        NSFWToggle(compact: false, isEnabled: Binding.constant(false))
+        VStack {
+            NSFWToggle(compact: false, isEnabled: .constant(true))
+            NSFWToggle(compact: false, isEnabled: .constant(false))
+            NSFWToggle(compact: true, isEnabled: .constant(true))
+            NSFWToggle(compact: true, isEnabled: .constant(false))
+
+        }
 
     }
 }
