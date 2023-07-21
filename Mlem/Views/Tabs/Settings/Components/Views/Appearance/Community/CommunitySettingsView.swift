@@ -28,6 +28,7 @@ struct CommunitySettingsView: View {
                 isTicked: $shouldShowCommunityHeaders
             )
         }
+        .fancyTabScrollCompatible()
         .navigationTitle("Communities")
     }
 }

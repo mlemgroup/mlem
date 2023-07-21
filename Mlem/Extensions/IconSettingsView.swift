@@ -33,6 +33,7 @@ struct IconSettingsView: View {
                 AlternativeIconCell(icon: icon, setAppIcon: setAppIcon)
             }
         }
+        .fancyTabScrollCompatible()
     }
 
     func getAllIcons() -> [AlternativeIcon] {

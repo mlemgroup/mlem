@@ -60,6 +60,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .fancyTabScrollCompatible()
             .handleLemmyViews()
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)

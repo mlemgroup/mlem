@@ -303,6 +303,7 @@
 		CD7B53B92A5F263D00006E81 /* APIPrivateMessageReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53B82A5F263D00006E81 /* APIPrivateMessageReport.swift */; };
 		CD7B53BB2A5F27DB00006E81 /* Report Private Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53BA2A5F27DB00006E81 /* Report Private Message.swift */; };
 		CD863FBA2A6AEB5900A31ED9 /* TabSafeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */; };
+		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
 		CD9DD8832A622A6C0044EA8E /* ReportCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */; };
 		CD9DD8852A62302A0044EA8E /* ConcreteRespondable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8842A62302A0044EA8E /* ConcreteRespondable.swift */; };
 		CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */; };
@@ -645,6 +646,7 @@
 		CD7B53B82A5F263D00006E81 /* APIPrivateMessageReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPrivateMessageReport.swift; sourceTree = "<group>"; };
 		CD7B53BA2A5F27DB00006E81 /* Report Private Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report Private Message.swift"; sourceTree = "<group>"; };
 		CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSafeScrollView.swift; sourceTree = "<group>"; };
+		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCommentReply.swift; sourceTree = "<group>"; };
 		CD9DD8842A62302A0044EA8E /* ConcreteRespondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteRespondable.swift; sourceTree = "<group>"; };
 		CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsReadRequest.swift; sourceTree = "<group>"; };
@@ -1472,6 +1474,7 @@
 				6374570F2A18CB6600B69C03 /* Custom Text Field.swift */,
 				B11D72822A49FAA7009DC22F /* Cached Image.swift */,
 				50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */,
+				CD863FBB2A6B026400A31ED9 /* DocumentView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2102,6 +2105,7 @@
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
 				CDF8425E2A49E61A00723DA0 /* APIPersonMention.swift in Sources */,
 				CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */,
+				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */,
 				CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */,

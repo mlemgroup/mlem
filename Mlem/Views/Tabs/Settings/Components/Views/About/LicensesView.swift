@@ -29,49 +29,32 @@ struct LicensesView: View {
                 
                 Section("Open Source Licenses") {
                     NavigationLink("Alert Toast") {
-                        ScrollView {
-                            MarkdownView(text: alertToastLicense.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: alertToastLicense.body)
                     }
                     
                     NavigationLink("Debounced OnChange") {
-                        ScrollView {
-                            MarkdownView(text: debouncedOnChangeLicense.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: debouncedOnChangeLicense.body)
                     }
                     
                     NavigationLink("KeychainAccess") {
-                        ScrollView {
-                            MarkdownView(text: keychainAccessLicense.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: keychainAccessLicense.body)
                     }
                     
                     NavigationLink("Nuke") {
-                        ScrollView {
-                            MarkdownView(text: nukeLicense.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: nukeLicense.body)
                     }
                     
                     NavigationLink("Swift Markdown UI") {
-                        ScrollView {
-                            MarkdownView(text: swiftMarkdownUILIcense.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: swiftMarkdownUILIcense.body)
                     }
                     
                     NavigationLink("SwiftUI Cached Async Image") {
-                        ScrollView {
-                            MarkdownView(text: swiftUICachedAsyncImageLicense.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: swiftUICachedAsyncImageLicense.body)
                     }
                     
                 }
             }
+            .fancyTabScrollCompatible()
         }
         .navigationTitle("Licenses")
     }

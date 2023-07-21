@@ -133,6 +133,7 @@ struct UserView: View {
                 savedFeed
             }
         }
+        .fancyTabScrollCompatible()
         .environmentObject(privateCommentReplyTracker)
         .environmentObject(privatePostTracker)
         .environmentObject(privateCommentTracker)

@@ -22,5 +22,6 @@ struct TabBarSettingsView: View {
                 // swiftlint:enable line_length
             }
         }
+        .fancyTabScrollCompatible()
     }
 }
