@@ -951,13 +951,6 @@
 			path = Logic;
 			sourceTree = "<group>";
 		};
-		632E8EE327EE63B3007E8D75 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		632E8EE427EE63BD007E8D75 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1021,20 +1014,17 @@
 		6332FDC427EFD5CA0009A98A /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				6D91D4522A41596E006B8F9A /* Community List View */,
-				6332FDD427F080FA0009A98A /* Community View */,
-				6332FDCD27EFDD0A0009A98A /* Instance and Community List */,
 			);
 			path = Components;
 			sourceTree = "<group>";
 		};
-		6332FDCD27EFDD0A0009A98A /* Instance and Community List */ = {
+		6332FDCD27EFDD0A0009A98A /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
 				6332FDCE27EFDD2E0009A98A /* Accounts Page.swift */,
 				63F0C7B82A0533C700A18C5D /* Add Account View.swift */,
 			);
-			path = "Instance and Community List";
+			path = Accounts;
 			sourceTree = "<group>";
 		};
 		6332FDD427F080FA0009A98A /* Community View */ = {
@@ -1220,7 +1210,6 @@
 		6363D5FE27EE1E9600E34822 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				632E8EE327EE63B3007E8D75 /* Shared */,
 				6363D60027EE1EA800E34822 /* Comment */,
 				6363D5FF27EE1EA000E34822 /* Post */,
 			);
@@ -1443,6 +1432,7 @@
 		6386E03E2A04570F006B3C1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				6332FDCD27EFDD0A0009A98A /* Accounts */,
 				CD2E147B2A6B2891004198DE /* Components */,
 				CD2E147A2A6B2871004198DE /* Comments */,
 				CD2E14792A6B285F004198DE /* Posts */,
@@ -1616,6 +1606,8 @@
 		CD2E14782A6B283D004198DE /* Feeds */ = {
 			isa = PBXGroup;
 			children = (
+				6332FDD427F080FA0009A98A /* Community View */,
+				6D91D4522A41596E006B8F9A /* Community List View */,
 				6332FDD227F080EF0009A98A /* Feed View.swift */,
 				B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */,
 			);
