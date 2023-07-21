@@ -46,7 +46,7 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.profile) {
                         FancyTabBarLabel(tag: TabSelection.profile,
                                          customText: computeUsername(account: appState.currentActiveAccount),
-                                         symbolName: "person.circle",
+                                         symbolName: "folder.fill",
                                          activeSymbolName: "person.circle.fill")
                         .simultaneousGesture(accountSwitchLongPress)
                     }
