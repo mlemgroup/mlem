@@ -27,7 +27,7 @@ struct Window: View {
                 view(for: selectedAccount)
             } else {
                 NavigationStack {
-                    AccountsPage(onboarding: true)
+                    AddSavedInstanceView(onboarding: true, currentAccount: $selectedAccount)
                 }
             }
 
