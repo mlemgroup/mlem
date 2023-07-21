@@ -22,19 +22,14 @@ struct FancyTabItem<Selection: FancyTabBarSelection, V: View>: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        Group {
-            if selectedTagHashValue == tagHashValue {
-                content
-            } else {
-                Color.clear
-            }
-        }
+        content
+            .zIndex(selectedTagHashValue == tagHashValue ? 1 : 0)
         // this little preference tells the parent bar that this tab item exists
-        .preference(key: FancyTabItemPreferenceKey<Selection>.self, value: [tag])
+            .preference(key: FancyTabItemPreferenceKey<Selection>.self, value: [tag])
         // and this big ugly one adds its label builder to the dictionary
-        .preference(key: FancyTabItemLabelBuilderPreferenceKey<Selection>.self,
-                    value: [tag: FancyTabItemLabelBuilder(tag: tag,
-                                                          label: { AnyView(label()) })])
+            .preference(key: FancyTabItemLabelBuilderPreferenceKey<Selection>.self,
+                        value: [tag: FancyTabItemLabelBuilder(tag: tag,
+                                                              label: { AnyView(label()) })])
     }
 }
 

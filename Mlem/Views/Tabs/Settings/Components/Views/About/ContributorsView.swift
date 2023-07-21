@@ -57,6 +57,7 @@ struct ContributorsView: View {
                               color: .cyan)
             }
         }
+        .fancyTabScrollCompatible()
         .navigationTitle("Contributors")
     }
 }

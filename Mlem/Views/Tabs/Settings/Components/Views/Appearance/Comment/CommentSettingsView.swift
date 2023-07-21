@@ -57,5 +57,6 @@ struct CommentSettingsView: View {
                                        isTicked: $shouldShowRepliesInCommentBar)
             }
         }
+        .fancyTabScrollCompatible()
     }
 }

@@ -69,6 +69,7 @@ struct ThemeSettingsView: View {
             .labelsHidden()
             .pickerStyle(.inline)
         }
+        .fancyTabScrollCompatible()
         .navigationTitle("Theme")
     }
 }

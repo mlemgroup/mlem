@@ -52,18 +52,12 @@ struct AboutView: View {
                 
                 Section {
                     NavigationLink {
-                        ScrollView {
-                            MarkdownView(text: privacyPolicy.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: privacyPolicy.body)
                     } label: {
                         Label("Privacy Policy", systemImage: "hand.raised.fill").labelStyle(SquircleLabelStyle(color: .blue))
                     }
                     NavigationLink {
-                        ScrollView {
-                            MarkdownView(text: eula.body, isNsfw: false)
-                                .padding()
-                        }
+                        DocumentView(text: eula.body)
                     } label: {
                         Label("EULA", systemImage: "doc.plaintext.fill").labelStyle(SquircleLabelStyle(color: .purple))
                     }
@@ -74,6 +68,7 @@ struct AboutView: View {
                     }
                 }
             }
+            .fancyTabScrollCompatible()
         }
         .navigationTitle("About")
     }

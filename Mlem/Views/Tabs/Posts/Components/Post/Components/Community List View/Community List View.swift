@@ -46,7 +46,6 @@ struct CommunityListView: View {
     }
 
     var body: some View {
-        VStack {
             ScrollViewReader { scrollProxy in
                 HStack {
                     List(selection: $selectedCommunity) {
@@ -90,6 +89,7 @@ struct CommunityListView: View {
                         }
 
                     }
+                    .fancyTabScrollCompatible()
                     .navigationTitle("Communities")
                     .listStyle(PlainListStyle())
                     .scrollIndicators(.hidden)
@@ -97,7 +97,6 @@ struct CommunityListView: View {
                     SectionIndexTitles(proxy: scrollProxy, communitySections: communitySections)
                 }
             }
-        }
         .refreshable {
             await refreshCommunitiesList()
         }

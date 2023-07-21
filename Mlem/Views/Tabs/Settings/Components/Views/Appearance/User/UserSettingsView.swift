@@ -29,6 +29,8 @@ struct UserSettingsView: View {
                     isTicked: $shouldShowUserHeaders
                 )
             }
-        }.navigationTitle("Users")
+        }
+        .fancyTabScrollCompatible()
+        .navigationTitle("Users")
     }
 }

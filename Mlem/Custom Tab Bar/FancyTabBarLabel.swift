@@ -41,7 +41,7 @@ struct FancyTabBarLabel: View {
          customText: String? = nil,
          symbolName: String? = nil,
          activeSymbolName: String? = nil,
-         customColor: Color = Color(uiColor: .darkGray),
+         customColor: Color = Color.primary,
          activeColor: Color = .accentColor) {
         self.tagHash = tag.hashValue
         self.symbolName = symbolName
@@ -56,10 +56,12 @@ struct FancyTabBarLabel: View {
         .accessibilityShowsLargeContentViewer {
             labelDisplay
         }
-        .frame(maxWidth: .infinity)
         .padding(.top, 10)
+        .frame(maxWidth: .infinity)
+        .frame(height: AppConstants.fancyTabBarHeight)
         .contentShape(Rectangle())
-        .foregroundColor(active ? activeColor : color)
+        .foregroundColor(active ? activeColor : color.opacity(0.4))
+        .animation(.spring(response: 0.25), value: active)
     }
     
     var labelDisplay: some View {

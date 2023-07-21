@@ -144,6 +144,7 @@ struct FiltersSettingsView: View {
 
             }
         }
+        .fancyTabScrollCompatible()
         .navigationTitle("Filters")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

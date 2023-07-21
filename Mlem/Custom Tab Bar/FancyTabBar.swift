@@ -27,23 +27,23 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     }
     
     var body: some View {
-            ZStack(content: content)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .safeAreaInset(edge: .bottom, alignment: .center) {
-                    // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up
-                    VStack {
-                        Spacer()
-                        tabBar
-                    }
-                    .ignoresSafeArea(.keyboard, edges: .bottom)
+        ZStack(content: content)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .safeAreaInset(edge: .bottom, alignment: .center) {
+                // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up
+                VStack {
+                    Spacer()
+                    tabBar
                 }
-                .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
-                    self.tabItemKeys = $0
-                }
-                .onPreferenceChange(FancyTabItemLabelBuilderPreferenceKey<Selection>.self) {
-                    self.tabItems = $0
-                }
-                .environment(\.tabSelectionHashValue, selection.hashValue)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+            }
+            .environment(\.tabSelectionHashValue, selection.hashValue)
+            .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
+                self.tabItemKeys = $0
+            }
+            .onPreferenceChange(FancyTabItemLabelBuilderPreferenceKey<Selection>.self) {
+                self.tabItems = $0
+            }
     }
     
     private var tabBar: some View {
@@ -54,17 +54,15 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 ForEach(tabItemKeys, id: \.hashValue) { key in
                     tabItems[key]?.label()
                         .accessibilityElement(children: .combine)
-                    // IDK how to get the "Tab: 1 of 5" VO working--hopefully there's a nice clean way, if not we can add an 'index: Int' field to the FancyTabBarSelection protocol and use that 🙃
-                        .accessibilityLabel("Tab of \(tabItems.count.description)")
+                    // IDK how to get the "Tab: 1 of 5" VO working natively so here's a janky solution
+                        .accessibilityLabel("Tab \(key.index) of \(tabItems.count.description)")
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
                     // high priority to prevent conflict with long press/drag
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
-                                    withAnimation(.spring(response: 0.25)) {
-                                        selection = key
-                                    }
+                                    selection = key
                                 }
                         )
                 }
@@ -72,12 +70,12 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        if let callback = dragUpGestureCallback, gesture.translation.height < -100 {
+                        if let callback = dragUpGestureCallback, gesture.translation.height < -50 {
                             callback()
                         }
                     }
             )
-            .background(.regularMaterial)
+            .background(.thinMaterial)
         }
         .accessibilityElement(children: .contain)    }
 }
