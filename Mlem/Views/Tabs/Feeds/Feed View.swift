@@ -9,7 +9,7 @@ import SwiftUI
 
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
-struct CommunityView: View {
+struct FeedView: View {
 
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -64,7 +64,6 @@ struct CommunityView: View {
                     noPostsView
                 } else {
                     LazyVStack(spacing: 0) {
-                        bannerView
                         postListView
                         loadingMorePostsView
                     }
@@ -339,17 +338,6 @@ struct CommunityView: View {
             .padding()
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity)
-        }
-    }
-
-    @ViewBuilder
-    private var bannerView: some View {
-        if isInSpecificCommunity {
-            if shouldShowCommunityHeaders {
-                if let communityBannerURL = community?.banner {
-                    StickyImageView(url: communityBannerURL)
-                }
-            }
         }
     }
 

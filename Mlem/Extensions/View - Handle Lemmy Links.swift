@@ -19,21 +19,21 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: APICommunityView.self) { context in
-                CommunityView(community: context.community, feedType: .all)
+                FeedView(community: context.community, feedType: .all)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APICommunity.self) { community in
-                CommunityView(community: community, feedType: .all)
+                FeedView(community: community, feedType: .all)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: CommunityLinkWithContext.self) { context in
-                CommunityView(community: context.community, feedType: context.feedType)
+                FeedView(community: context.community, feedType: context.feedType)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
