@@ -106,6 +106,7 @@ struct InboxView: View {
                     }
                 }
             }
+            .fancyTabScrollCompatible()
             .refreshable {
                 Task(priority: .userInitiated) {
                     await refreshFeed()

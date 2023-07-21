@@ -56,8 +56,9 @@ struct FancyTabBarLabel: View {
         .accessibilityShowsLargeContentViewer {
             labelDisplay
         }
-        .frame(maxWidth: .infinity)
         .padding(.top, 10)
+        .frame(maxWidth: .infinity)
+        .frame(height: AppConstants.fancyTabBarHeight)
         .contentShape(Rectangle())
         .foregroundColor(active ? activeColor : color)
         .animation(.spring(response: 0.25), value: active)
