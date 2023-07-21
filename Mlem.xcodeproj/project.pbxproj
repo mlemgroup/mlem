@@ -1378,8 +1378,8 @@
 		6386E03E2A04570F006B3C1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				6332FDCD27EFDD0A0009A98A /* Accounts */,
 				CD2E147B2A6B2891004198DE /* Components */,
+				6332FDCD27EFDD0A0009A98A /* Accounts */,
 				CD2E147A2A6B2871004198DE /* Comments */,
 				CD2E14792A6B285F004198DE /* Posts */,
 				ADF266932A4E89F800EBA648 /* Composer */,
