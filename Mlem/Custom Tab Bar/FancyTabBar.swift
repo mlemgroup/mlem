@@ -27,23 +27,23 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     }
     
     var body: some View {
-            ZStack(content: content)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .safeAreaInset(edge: .bottom, alignment: .center) {
-                    // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up
-                    VStack {
-                        Spacer()
-                        tabBar
-                    }
-                    .ignoresSafeArea(.keyboard, edges: .bottom)
+        ZStack(content: content)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .safeAreaInset(edge: .bottom, alignment: .center) {
+                // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up
+                VStack {
+                    Spacer()
+                    tabBar
                 }
-                .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
-                    self.tabItemKeys = $0
-                }
-                .onPreferenceChange(FancyTabItemLabelBuilderPreferenceKey<Selection>.self) {
-                    self.tabItems = $0
-                }
-                .environment(\.tabSelectionHashValue, selection.hashValue)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+            }
+            .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
+                self.tabItemKeys = $0
+            }
+            .onPreferenceChange(FancyTabItemLabelBuilderPreferenceKey<Selection>.self) {
+                self.tabItems = $0
+            }
+            .environment(\.tabSelectionHashValue, selection.hashValue)
     }
     
     private var tabBar: some View {
@@ -62,9 +62,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
-                                    withAnimation(.spring(response: 0.25)) {
-                                        selection = key
-                                    }
+                                    selection = key
                                 }
                         )
                 }
@@ -77,7 +75,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         }
                     }
             )
-            .background(.regularMaterial)
+            .background(.thinMaterial)
         }
         .accessibilityElement(children: .contain)    }
 }

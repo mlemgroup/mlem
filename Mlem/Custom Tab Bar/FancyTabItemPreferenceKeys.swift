@@ -21,10 +21,11 @@ struct FancyTabItemLabelBuilderPreferenceKey<Selection: FancyTabBarSelection>: P
 }
 
 // preference key--this lets each view add itself to the list of keys
-struct FancyTabItemPreferenceKey<FancyTabBarSelection: Hashable>: PreferenceKey {
-    static var defaultValue: [FancyTabBarSelection] { [] }
+struct FancyTabItemPreferenceKey<Selection: FancyTabBarSelection>: PreferenceKey {
+    static var defaultValue: [Selection] { [] }
 
-    static func reduce(value: inout [FancyTabBarSelection], nextValue: () -> [FancyTabBarSelection]) {
+    static func reduce(value: inout [Selection], nextValue: () -> [Selection]) {
         value.append(contentsOf: nextValue())
+        value.sort() // preserve stability of view order
     }
 }

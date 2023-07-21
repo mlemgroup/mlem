@@ -60,6 +60,7 @@ struct FancyTabBarLabel: View {
         .padding(.top, 10)
         .contentShape(Rectangle())
         .foregroundColor(active ? activeColor : color)
+        .animation(.spring(response: 0.25), value: active)
     }
     
     var labelDisplay: some View {
