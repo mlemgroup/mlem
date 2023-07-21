@@ -17,10 +17,8 @@ class CommentRepository {
     func comment(with id: Int) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.loadComment(id: id)
-            hapticManager.success()
             return .init(comment: response.commentView, children: [])
         } catch {
-            hapticManager.error()
             throw error
         }
     }
@@ -28,10 +26,8 @@ class CommentRepository {
     func comments(for postId: Int) async throws -> [HierarchicalComment] {
         do {
             let response = try await apiClient.loadComments(for: postId)
-            hapticManager.success()
             return response.hierarchicalRepresentation
         } catch {
-            hapticManager.error()
             throw error
         }
     }
