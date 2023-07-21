@@ -138,6 +138,9 @@ struct UltraCompactPost: View {
             }
             
             InfoStack(score: postView.counts.score,
+                      // TODO: ERIC FIX THIS
+                      upvotes: nil,
+                      downvotes: nil,
                       myVote: postView.myVote ?? .resetVote,
                       published: postView.published,
                       commentCount: postView.counts.comments,

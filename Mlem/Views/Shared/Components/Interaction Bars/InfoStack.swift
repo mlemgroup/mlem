@@ -10,6 +10,8 @@ import SwiftUI
 
 struct InfoStack: View {    
     let score: Int?
+    let upvotes: Int?
+    let downvotes: Int?
     let myVote: ScoringOperation?
     let published: Date?
     let commentCount: Int?
@@ -17,10 +19,24 @@ struct InfoStack: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            if let myVote = myVote, let score = score {
-                HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
-                    Text(String(score))
+            if let myVote = myVote {
+                if let score = score {
+                    HStack(spacing: AppConstants.iconToTextSpacing) {
+                        Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
+                        Text(String(score))
+                    }
+                } else if let upvotes = upvotes, let downvotes = downvotes {
+                    HStack(spacing: AppConstants.iconToTextSpacing) {
+                        Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
+                        Text(String(upvotes))
+                    }
+                    
+                    HStack(spacing: AppConstants.iconToTextSpacing) {
+                        Image(systemName: myVote == .downvote
+                              ? AppConstants.fullDownvoteSymbolName
+                              : AppConstants.emptyDownvoteSymbolName)
+                        Text(String(downvotes))
+                    }
                 }
             }
             

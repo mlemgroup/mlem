@@ -87,6 +87,9 @@ struct CommentInteractionBar: View {
             }
             
             InfoStack(score: shouldShowScoreInCommentBar ? displayedScore : nil,
+                      // TODO: ERIC add these + settings
+                      upvotes: nil,
+                      downvotes: nil,
                       myVote: shouldShowScoreInCommentBar ? displayedVote : nil,
                       published: shouldShowTimeInCommentBar ? commentView.comment.published : nil,
                       commentCount: shouldShowRepliesInCommentBar ? commentView.counts.childCount : nil,

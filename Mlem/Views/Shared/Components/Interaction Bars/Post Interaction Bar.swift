@@ -102,11 +102,16 @@ struct PostInteractionBar: View {
                 }
             }
             
-            InfoStack(score: shouldShowScoreInPostBar ? postView.counts.score : nil,
-                      myVote: shouldShowScoreInPostBar ? postView.myVote ?? .resetVote : nil,
-                      published: shouldShowTimeInPostBar ? postView.published : nil,
-                      commentCount: shouldShowRepliesInPostBar ? postView.counts.comments : nil,
-                      saved: shouldShowSavedInPostBar ? postView.saved : nil)
+            InfoStack(
+                // score: shouldShowScoreInPostBar ? postView.counts.score : nil,
+                // myVote: shouldShowScoreInPostBar ? postView.myVote ?? .resetVote : nil,
+                score: nil,
+                upvotes: postView.counts.upvotes,
+                downvotes: postView.counts.downvotes,
+                myVote: displayedVote,
+                published: shouldShowTimeInPostBar ? postView.published : nil,
+                commentCount: shouldShowRepliesInPostBar ? postView.counts.comments : nil,
+                saved: shouldShowSavedInPostBar ? postView.saved : nil)
         }
         .buttonStyle(.plain) // TODO: do we want a lil fade animation?
         .font(.callout)
