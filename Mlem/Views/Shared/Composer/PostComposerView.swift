@@ -112,7 +112,15 @@ struct PostComposerView: View {
                         )
                         Spacer()
                         // NSFW Toggle
-                        NSFWToggle(compact: false, isEnabled: $isNSFW)
+                        Toggle(isOn: $isNSFW) {
+                            Text("NSFW")
+                                .foregroundStyle(.secondary)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+                        .toggleStyle(.switch)
+                        .controlSize(.mini)
+                        .tint(.red)
                     }
                     
                     VStack(alignment: .labelStart) {
