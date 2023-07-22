@@ -28,17 +28,13 @@ struct SwipeyView: ViewModifier {
     @State var dragBackground: Color? = .systemBackground
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
-
-    // isDragging callback
-    @Binding var isDragging: Bool
     
     let primaryLeadingAction: SwipeAction?
     let secondaryLeadingAction: SwipeAction?
     let primaryTrailingAction: SwipeAction?
     let secondaryTrailingAction: SwipeAction?
     
-    init(isDragging: Binding<Bool>,
-         primaryLeadingAction: SwipeAction?,
+    init(primaryLeadingAction: SwipeAction?,
          secondaryLeadingAction: SwipeAction?,
          primaryTrailingAction: SwipeAction?,
          secondaryTrailingAction: SwipeAction?
@@ -63,7 +59,6 @@ struct SwipeyView: ViewModifier {
         // other init
         _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
-        _isDragging = isDragging
     }
     
     // swiftlint:disable cyclomatic_complexity
@@ -246,15 +241,13 @@ struct SwipeyView: ViewModifier {
 
 extension View {
     @ViewBuilder
-    func addSwipeyActions(isDragging: Binding<Bool>,
-                          primaryLeadingAction: SwipeAction?,
+    func addSwipeyActions(primaryLeadingAction: SwipeAction?,
                           secondaryLeadingAction: SwipeAction?,
                           primaryTrailingAction: SwipeAction?,
                           secondaryTrailingAction: SwipeAction?
     ) -> some View {
         modifier(
             SwipeyView(
-                isDragging: isDragging,
                 primaryLeadingAction: primaryLeadingAction,
                 secondaryLeadingAction: secondaryLeadingAction,
                 primaryTrailingAction: primaryTrailingAction,

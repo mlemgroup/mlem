@@ -46,14 +46,14 @@ struct FeedPost: View {
          showCommunity: Bool = true,
          showInteractionBar: Bool = true,
          enableSwipeActions: Bool = true,
-         isDragging: Binding<Bool>,
+         // isDragging: Binding<Bool>,
          responseItem: Binding<ConcreteRespondable?>) {
         self.postView = postView
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
-        self._isDragging = isDragging
+        // self._isDragging = isDragging
         self._responseItem = responseItem
     }
 
@@ -70,7 +70,7 @@ struct FeedPost: View {
     @State private var isComposingReport: Bool = false
 
     // swipe-to-vote
-    @Binding var isDragging: Bool
+    // @Binding var isDragging: Bool
 
     var body: some View {
         VStack(spacing: 0) {
@@ -88,7 +88,7 @@ struct FeedPost: View {
                     }
                 }
                 .addSwipeyActions(
-                    isDragging: $isDragging,
+                    // isDragging: $isDragging,
                     primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
                     secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
                     primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,

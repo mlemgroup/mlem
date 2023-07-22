@@ -71,8 +71,7 @@ extension InboxView {
                     }
                 }
             }
-            .addSwipeyActions(isDragging: $isDragging,
-                              primaryLeadingAction: nil,
+            .addSwipeyActions(primaryLeadingAction: nil,
                               secondaryLeadingAction: nil,
                               primaryTrailingAction: toggleMessageReadSwipeAction(message: message),
                               secondaryTrailingAction: replyToMessageSwipeAction(message: message))

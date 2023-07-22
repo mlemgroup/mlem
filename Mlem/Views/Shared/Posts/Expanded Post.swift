@@ -41,8 +41,6 @@ struct ExpandedPost: View {
 
     @State private var viewID: UUID = UUID()
     
-    @State var isDragging: Bool = false
-
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -63,7 +61,6 @@ struct ExpandedPost: View {
             }
         }
         .fancyTabScrollCompatible()
-        .scrollDisabled(isDragging)
         .sheet(item: $responseItem) { responseItem in
             ResponseComposerView(concreteRespondable: responseItem)
         }
@@ -180,7 +177,6 @@ struct ExpandedPost: View {
                     depth: 0,
                     showPostContext: false,
                     showCommentCreator: true,
-                    isDragging: $isDragging,
                     replyToComment: replyToComment
                 )
             }

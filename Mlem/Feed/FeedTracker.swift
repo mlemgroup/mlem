@@ -10,7 +10,8 @@ import Foundation
 
 class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
-    @Published private(set) var isLoading: Bool = true
+    // isLoading is accessible but does not publish its state because it triggers lots of unexpected view redraws
+    private(set) var isLoading: Bool = true
     @Published private(set) var items: [Item]
 
     private(set) var page: Int = 1
@@ -38,6 +39,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
            itemIndex >= thresholdIndex {
+            print("itemIndex: \(itemIndex), thresholdIndex: \(thresholdIndex)")
             return true
         }
 
