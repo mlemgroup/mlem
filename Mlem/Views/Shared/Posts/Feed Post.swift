@@ -53,7 +53,6 @@ struct FeedPost: View {
         self.showCommunity = showCommunity
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
-        // self._isDragging = isDragging
         self._responseItem = responseItem
     }
 
@@ -68,9 +67,6 @@ struct FeedPost: View {
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
-
-    // swipe-to-vote
-    // @Binding var isDragging: Bool
 
     var body: some View {
         VStack(spacing: 0) {

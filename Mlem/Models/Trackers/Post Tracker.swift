@@ -78,7 +78,31 @@ class PostTracker: FeedTracker<APIPostView> {
             preloadImages(response.posts)
         }
     }
-
+    
+    func hardRefresh(
+        account: SavedAccount,
+        communityId: Int?,
+        sort: PostSortType?,
+        type: FeedType,
+        filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
+    ) async throws {
+        let response = try await hardRefresh(
+            GetPostsRequest(
+                account: account,
+                communityId: communityId,
+                page: 1,
+                sort: sort,
+                type: type,
+                limit: 25
+            ),
+            filtering: filtering
+        )
+        
+        Task(priority: .background) {
+            preloadImages(response.posts)
+        }
+    }
+    
     // MARK: - Private methods
 
     private func preloadImages(_ newPosts: [APIPostView]) {

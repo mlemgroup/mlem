@@ -347,7 +347,6 @@ struct FeedViewOld: View {
                         postView: post,
                         showPostCreator: shouldShowPostCreator,
                         showCommunity: !isInSpecificCommunity,
-                        // isDragging: $isDragging,
                         responseItem: $responseItem
                     )
                 }

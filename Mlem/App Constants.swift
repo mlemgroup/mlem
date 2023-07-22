@@ -90,9 +90,11 @@ struct AppConstants {
                                                                    .downvote: "arrow.down.square.fill"
     ]
     
-    // reply
+    // reply/send
     static let emptyReplySymbolName: String = "arrowshape.turn.up.left"
     static let fullReplySymbolName: String = "arrowshape.turn.up.left.fill"
+    static let sendSymbolName: String = "paperplane"
+    static let sendSymbolNameFill: String = "paperplane.fill"
     
     // save
     static let emptySaveSymbolName: String = "bookmark"
@@ -110,13 +112,92 @@ struct AppConstants {
     static let reportSymbolName: String = "exclamationmark.shield"
     static let blockUserSymbolName: String = "person.fill.xmark"
     
-    // settings
+    // post sizes
+    static let postSizeSettingsSymbolName: String = "rectangle.expand.vertical"
     static let compactSymbolName: String = "rectangle.grid.1x2"
     static let compactSymbolNameFill: String = "rectangle.grid.1x2.fill"
     static let headlineSymbolName: String = "rectangle"
     static let headlineSymbolNameFill: String = "rectangle.fill"
     static let largeSymbolName: String = "text.below.photo"
     static let largeSymbolNameFill: String = "text.below.photo.fill"
+    static let blurNsfwSymbolName: String = "eye.trianglebadge.exclamationmark"
+    static let postSizeToSymbolName: [PostSize: String] = [.compact: compactSymbolName,
+                                                           .headline: headlineSymbolName,
+                                                           .large: largeSymbolName]
+    static let postSizeToSymbolNameFill: [PostSize: String] = [.compact: compactSymbolNameFill,
+                                                           .headline: headlineSymbolNameFill,
+                                                           .large: largeSymbolNameFill]
+    
+    // feeds
+    static let federatedFeedSymbolName: String = "network"
+    static let localFeedSymbolName: String = "house"
+    static let localFeedSymbolNameFill: String = "house.fill"
+    static let subscribedFeedSymbolName: String = "newspaper"
+    static let subscribedFeedSymbolNameFill: String = "newspaper.fill"
+    static let feedTypeToSymbolName: [FeedType: String] = [.all: federatedFeedSymbolName,
+                                                           .local: localFeedSymbolName,
+                                                           .subscribed: subscribedFeedSymbolName]
+    static let feedTypeToSymbolNameFill: [FeedType: String] = [.all: federatedFeedSymbolName,
+                                                               .local: localFeedSymbolNameFill,
+                                                               .subscribed: subscribedFeedSymbolNameFill]
+    
+    // sort types
+    static let activeSortSymbolName: String = "popcorn" // not married to this idea 
+    static let activeSortSymbolNameFill: String = "popcorn.bubble"
+    static let hotSortSymbolName: String = "flame"
+    static let hotSortSymbolNameFill: String = "flame.fill"
+    // we can workshop new/old--books is already used for documentation and there's an issue open saying that "new" needs a better symbol. I thought these two were funny together.
+    static let newSortSymbolName: String = "hare"
+    static let newSortSymbolNameFill: String = "hare.fill"
+    static let oldSortSymbolName: String = "tortoise"
+    static let oldSortSymbolNameFill: String = "tortoise.fill"
+    static let newCommentsSymbolName: String = "exclamationmark.bubble"
+    static let newCommentsSymbolNameFill: String = "exclamationmark.bubble.fill"
+    static let mostCommentsSymbolName: String = "bubble.left.and.bubble.right"
+    static let mostCommentsSymbolNameFill: String = "bubble.left.and.bubble.right.fill"
+    static let topSymbolName: String = "trophy"
+    static let topSymbolNameFill: String = "trophy.fill"
+    static let timeSymbolName: String = "calendar.day.timeline.leading"
+    static let timeSymbolNameFill: String = "calendar.day.timeline.leading.fill"
+    // I'm starting to think that maybe this logic should live in the enum...
+    static let sortTypeToSymbolName: [PostSortType: String] = [.active: activeSortSymbolName,
+                                                               .hot: hotSortSymbolName,
+                                                               .new: newSortSymbolName,
+                                                               .old: oldSortSymbolName,
+                                                               .newComments: newCommentsSymbolName,
+                                                               .mostComments: mostCommentsSymbolName,
+                                                               .topAll: timeSymbolName,
+                                                               .topDay: timeSymbolName,
+                                                               .topHour: timeSymbolName,
+                                                               .topWeek: timeSymbolName,
+                                                               .topYear: timeSymbolName,
+                                                               .topMonth: timeSymbolName,
+                                                               .topSixHour: timeSymbolName,
+                                                               .topTwelveHour: timeSymbolName ]
+    static let sortTypeToSymbolNameFill: [PostSortType: String] = [.active: activeSortSymbolNameFill,
+                                                                   .hot: hotSortSymbolNameFill,
+                                                                   .new: newSortSymbolNameFill,
+                                                                   .old: oldSortSymbolNameFill,
+                                                                   .newComments: newCommentsSymbolNameFill,
+                                                                   .mostComments: mostCommentsSymbolNameFill,
+                                                                   .topAll: timeSymbolNameFill,
+                                                                   .topDay: timeSymbolNameFill,
+                                                                   .topHour: timeSymbolNameFill,
+                                                                   .topWeek: timeSymbolNameFill,
+                                                                   .topYear: timeSymbolNameFill,
+                                                                   .topMonth: timeSymbolNameFill,
+                                                                   .topSixHour: timeSymbolNameFill,
+                                                                   .topTwelveHour: timeSymbolNameFill]
+    
+    // common operations
+    static let shareSymbolName: String = "square.and.arrow.up"
+    static let subscribeSymbolName: String = "plus.circle"
+    static let unsubscribeSymbolName: String = "multiply.circle"
+    static let blockSymbolName: String = "eye.slash"
+    static let unblockSymbolName: String = "eye"
+    
+    // misc
+    static let missingSymbolName: String = "questionmark.square.dashed"
     
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]

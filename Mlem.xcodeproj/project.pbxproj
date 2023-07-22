@@ -329,6 +329,8 @@
 		CDE8F2392A68DA7D00E0AE68 /* Environment - Force Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */; };
 		CDF1EF122A6B672C003594B6 /* Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF112A6B672C003594B6 /* Feed View.swift */; };
 		CDF1EF142A6B6D6E003594B6 /* Feed View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF132A6B6D6E003594B6 /* Feed View Logic.swift */; };
+		CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */; };
+		CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF172A6C40C9003594B6 /* Menu Button.swift */; };
 		CDF8425C2A49E4C000723DA0 /* APIPersonMentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8425B2A49E4C000723DA0 /* APIPersonMentionView.swift */; };
 		CDF8425E2A49E61A00723DA0 /* APIPersonMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8425D2A49E61A00723DA0 /* APIPersonMention.swift */; };
 		CDF842612A49EA3900723DA0 /* Mentions Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF842602A49EA3900723DA0 /* Mentions Tracker.swift */; };
@@ -671,6 +673,8 @@
 		CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment - Force Onboard.swift"; sourceTree = "<group>"; };
 		CDF1EF112A6B672C003594B6 /* Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed View.swift"; sourceTree = "<group>"; };
 		CDF1EF132A6B6D6E003594B6 /* Feed View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed View Logic.swift"; sourceTree = "<group>"; };
+		CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "End Of Feed View.swift"; sourceTree = "<group>"; };
+		CDF1EF172A6C40C9003594B6 /* Menu Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Button.swift"; sourceTree = "<group>"; };
 		CDF8425B2A49E4C000723DA0 /* APIPersonMentionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonMentionView.swift; sourceTree = "<group>"; };
 		CDF8425D2A49E61A00723DA0 /* APIPersonMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonMention.swift; sourceTree = "<group>"; };
 		CDF842602A49EA3900723DA0 /* Mentions Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mentions Tracker.swift"; sourceTree = "<group>"; };
@@ -964,6 +968,7 @@
 				CD04D5DA2A36154F008EF95B /* Save.swift */,
 				CD04D5DC2A361564008EF95B /* Reply.swift */,
 				CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */,
+				CDF1EF172A6C40C9003594B6 /* Menu Button.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -1107,7 +1112,6 @@
 				50C99B572A61D85D005D57DD /* Dependency */,
 				50C99B5A2A61F5BA005D57DD /* Repositories */,
 				507573922A5AD57F00AA7ABD /* Error Handling */,
-				50F830EC2A4C8F8D00D67099 /* Feed */,
 				63344C5E2A080C5F001BC616 /* Styles */,
 				63F0C7A02A05198600A18C5D /* Enums */,
 				630D753C27F65E44006E60C9 /* Info.plist */,
@@ -1364,6 +1368,7 @@
 		6386E0282A03D0B8006B3C1D /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
+				50F830EC2A4C8F8D00D67099 /* Feed */,
 				CDF8425F2A49EA2A00723DA0 /* Inbox */,
 				6386E0292A03D0C3006B3C1D /* Post Tracker.swift */,
 				6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */,
@@ -1583,6 +1588,7 @@
 			children = (
 				632E8EE427EE63BD007E8D75 /* Buttons */,
 				CD1446162A58FC2F00610EF1 /* Interaction Bars */,
+				CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2127,6 +2133,7 @@
 				6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */,
 				50F830FA2A4C935C00D67099 /* FeedTracker.swift in Sources */,
 				CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */,
+				CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */,
 				CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */,
 				6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
@@ -2198,6 +2205,7 @@
 				CD04D5E72A3636FB008EF95B /* Headline Post.swift in Sources */,
 				6DA61F852A568F99001EA633 /* Int.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
+				CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */,
 				637218542A3A2AAD008C4816 /* APILanguage.swift in Sources */,
 				AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */,
 				6372186E2A3A2AAD008C4816 /* DeleteComment.swift in Sources */,

@@ -8,9 +8,12 @@
 import Foundation
 
 enum PostSortType: String, Codable, CaseIterable, Identifiable {
-    case active = "Active"
     case hot = "Hot"
+    case active = "Active"
     case new = "New"
+    case old = "Old"
+    case newComments = "NewComments"
+    case mostComments = "MostComments"
     case topHour = "TopHour"
     case topSixHour = "TopSixHour"
     case topTwelveHour = "TopTwelveHour"
@@ -19,13 +22,10 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     case topMonth = "TopMonth"
     case topYear = "TopYear"
     case topAll = "TopAll"
-    case old = "Old"
-    case newComments = "NewComments"
-    case mostComments = "MostComments"
     
     var id: Self { self }
     
-    static var outerTypes: [PostSortType] {[.active, .hot, .new, .newComments, .mostComments, .old]}
+    static var outerTypes: [PostSortType] {[.hot, .active, .new, .old, .newComments, .mostComments]}
     static var topTypes: [PostSortType] {[.topHour, .topSixHour, .topTwelveHour, .topDay, .topWeek, .topMonth, .topYear, .topAll]}
 
     var shortDescription: String {
