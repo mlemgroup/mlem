@@ -42,9 +42,9 @@ struct PostSettingsView: View {
         Form {
             Section {
                 HStack {
-                    PostDisplayModeView(postSize: .large, imageName: "LargePost", selected: $postSize)
-                    PostDisplayModeView(postSize: .headline, imageName: "HeadlinePost", selected: $postSize)
-                    PostDisplayModeView(postSize: .compact, imageName: "CompactPost", selected: $postSize)
+                    PostDisplayModeView(postSize: .large, selected: $postSize)
+                    PostDisplayModeView(postSize: .headline, selected: $postSize)
+                    PostDisplayModeView(postSize: .compact, selected: $postSize)
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 120)

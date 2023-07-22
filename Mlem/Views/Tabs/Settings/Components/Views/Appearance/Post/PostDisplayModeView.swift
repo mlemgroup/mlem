@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PostDisplayModeView: View {
     @State var postSize: PostSize
-    var imageName: String
     
     @Binding var selected: PostSize
     
@@ -21,7 +20,7 @@ struct PostDisplayModeView: View {
         } label: {
             VStack(spacing: 10) {
                 ZStack {
-                    Image(imageName)
+                    Image(postSize.imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .fontWeight(.ultraLight)

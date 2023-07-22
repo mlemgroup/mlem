@@ -16,5 +16,16 @@ extension PostSize: SettingsOptions {
         return self.rawValue.capitalized
     }
     
+    var imageName: String {
+        switch self {
+        case .compact:
+            return "CompactPost"
+        case .headline:
+            return "HeadlinePost"
+        case .large:
+            return "LargePost"
+        }
+    }
+    
     var id: Self { self }
 }
