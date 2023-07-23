@@ -107,9 +107,10 @@ struct CommunitySidebarView: View {
                         }
                         Divider()
                     }
-                }.padding(.vertical)
+                }.padding(.top)
             }
         }
+        .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
