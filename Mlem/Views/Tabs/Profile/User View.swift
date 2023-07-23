@@ -385,7 +385,6 @@ struct UserView: View {
                 FeedPost(postView: post,
                          showPostCreator: false,
                          showCommunity: true,
-                         // isDragging: $isDragging,
                          responseItem: $responseItem
                 )
                 

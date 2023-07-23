@@ -46,7 +46,6 @@ struct FeedPost: View {
          showCommunity: Bool = true,
          showInteractionBar: Bool = true,
          enableSwipeActions: Bool = true,
-         // isDragging: Binding<Bool>,
          responseItem: Binding<ConcreteRespondable?>) {
         self.postView = postView
         self.showPostCreator = showPostCreator
@@ -84,7 +83,6 @@ struct FeedPost: View {
                     }
                 }
                 .addSwipeyActions(
-                    // isDragging: $isDragging,
                     primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
                     secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
                     primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
