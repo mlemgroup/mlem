@@ -16,6 +16,7 @@ struct ExpandedPost: View {
     
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top

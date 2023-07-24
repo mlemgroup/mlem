@@ -9,10 +9,8 @@
 // Since padding varies depending on compact/large view, it is handled *entirely* in those components. No padding should
 // appear anywhere in this file.
 
-// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 
-import AlertToast
 import CachedAsyncImage
 import Dependencies
 import SwiftUI
@@ -24,6 +22,7 @@ import QuickLook
 struct FeedPost: View {
     
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // MARK: Environment
     @AppStorage("postSize") var postSize: PostSize = .large
@@ -188,15 +187,8 @@ struct FeedPost: View {
             )
             if blocked {
                 postTracker.removePosts(from: postView.creator.id)
-
-                let toast = AlertToast(
-                    displayMode: .alert,
-                    type: .complete(.blue),
-                    title: "Blocked \(postView.creator.name)"
-                )
-                appState.toast = toast
-                appState.isShowingToast = true
-            } // Show Toast
+                await notifier.add(.success("Blocked \(postView.creator.name)"))
+            }
         } catch {
             errorHandler.handle(
                 .init(
@@ -403,4 +395,3 @@ extension FeedPost {
     }
 }
 // swiftlint:enable type_body_length
-// swiftlint:enable file_length

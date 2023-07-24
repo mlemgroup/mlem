@@ -9,7 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 import CachedAsyncImage
-import AlertToast
 
 enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
@@ -33,6 +32,7 @@ struct InboxView: View {
     
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // MARK: Global
     @EnvironmentObject var appState: AppState
@@ -73,9 +73,6 @@ struct InboxView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
-        }
-        .toast(isPresenting: $appState.isShowingToast, duration: 2) {
-            appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
     }
     

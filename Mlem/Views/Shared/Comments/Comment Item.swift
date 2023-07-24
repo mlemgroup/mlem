@@ -12,6 +12,7 @@ struct CommentItem: View {
     
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false

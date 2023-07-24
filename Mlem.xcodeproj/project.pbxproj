@@ -18,8 +18,12 @@
 		03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */; };
 		500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */; };
 		5016A2B12A67EB8600B257E8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B02A67EB8600B257E8 /* UIViewController.swift */; };
-		5016A2B32A67EC0700B257E8 /* ErrorDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B22A67EC0700B257E8 /* ErrorDisplayer.swift */; };
+		5016A2B32A67EC0700B257E8 /* NotificationDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B22A67EC0700B257E8 /* NotificationDisplayer.swift */; };
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
+		5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D03C2A6DE0AA00B22EE3 /* Notifier.swift */; };
+		5064D03F2A6DE0DB00B22EE3 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */; };
+		5064D0412A6E63E000B22EE3 /* Task+Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D0402A6E63E000B22EE3 /* Task+Notifiable.swift */; };
+		5064D0432A6E645D00B22EE3 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D0422A6E645D00B22EE3 /* Notifiable.swift */; };
 		507573912A5AD53C00AA7ABD /* Error+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573902A5AD53C00AA7ABD /* Error+Equatable.swift */; };
 		507573942A5AD59E00AA7ABD /* EquatableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573932A5AD59E00AA7ABD /* EquatableError.swift */; };
 		507573962A5AD5CF00AA7ABD /* ContextualError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573952A5AD5CF00AA7ABD /* ContextualError.swift */; };
@@ -371,8 +375,12 @@
 		03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+Dependency.swift"; sourceTree = "<group>"; };
 		5016A2B02A67EB8600B257E8 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		5016A2B22A67EC0700B257E8 /* ErrorDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDisplayer.swift; sourceTree = "<group>"; };
+		5016A2B22A67EC0700B257E8 /* NotificationDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDisplayer.swift; sourceTree = "<group>"; };
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
+		5064D03C2A6DE0AA00B22EE3 /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
+		5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
+		5064D0402A6E63E000B22EE3 /* Task+Notifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Notifiable.swift"; sourceTree = "<group>"; };
+		5064D0422A6E645D00B22EE3 /* Notifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiable.swift; sourceTree = "<group>"; };
 		507573902A5AD53C00AA7ABD /* Error+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Equatable.swift"; sourceTree = "<group>"; };
 		507573932A5AD59E00AA7ABD /* EquatableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableError.swift; sourceTree = "<group>"; };
 		507573952A5AD5CF00AA7ABD /* ContextualError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualError.swift; sourceTree = "<group>"; };
@@ -829,6 +837,16 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		5064D03B2A6DE05000B22EE3 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				5016A2B22A67EC0700B257E8 /* NotificationDisplayer.swift */,
+				5064D03C2A6DE0AA00B22EE3 /* Notifier.swift */,
+				5064D0422A6E645D00B22EE3 /* Notifiable.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		507573922A5AD57F00AA7ABD /* Error Handling */ = {
 			isa = PBXGroup;
 			children = (
@@ -836,7 +854,6 @@
 				507573932A5AD59E00AA7ABD /* EquatableError.swift */,
 				507573972A5AD60100AA7ABD /* ErrorAlert.swift */,
 				50C99B5F2A6299D8005D57DD /* ErrorHandler.swift */,
-				5016A2B22A67EC0700B257E8 /* ErrorDisplayer.swift */,
 			);
 			path = "Error Handling";
 			sourceTree = "<group>";
@@ -848,6 +865,7 @@
 				50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */,
 				50C99B612A629C06005D57DD /* ErrorHandler+Dependency.swift */,
 				500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */,
+				5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */,
 			);
 			path = Dependency;
 			sourceTree = "<group>";
@@ -1021,6 +1039,7 @@
 				CDA217F22A63202600BDA173 /* NSFW Overlay.swift */,
 				B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */,
 				CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */,
+				5064D0402A6E63E000B22EE3 /* Task+Notifiable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1118,6 +1137,7 @@
 				50C99B572A61D85D005D57DD /* Dependency */,
 				50C99B5A2A61F5BA005D57DD /* Repositories */,
 				507573922A5AD57F00AA7ABD /* Error Handling */,
+				5064D03B2A6DE05000B22EE3 /* Notifications */,
 				63344C5E2A080C5F001BC616 /* Styles */,
 				63F0C7A02A05198600A18C5D /* Enums */,
 				630D753C27F65E44006E60C9 /* Info.plist */,
@@ -1950,6 +1970,7 @@
 				637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */,
 				637218722A3A2AAD008C4816 /* HideCommunity.swift in Sources */,
 				63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */,
+				5064D0432A6E645D00B22EE3 /* Notifiable.swift in Sources */,
 				6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */,
 				CD3FBCE32A4A844800B2063F /* Replies Feed View.swift in Sources */,
 				637218652A3A2AAD008C4816 /* GetPosts.swift in Sources */,
@@ -1978,7 +1999,7 @@
 				6DA61F892A575DF1001EA633 /* URL - Lemmy Image Parameters.swift in Sources */,
 				ADDC9E3C2A5CF02A00383D58 /* BlockPersonLogic.swift in Sources */,
 				CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */,
-				5016A2B32A67EC0700B257E8 /* ErrorDisplayer.swift in Sources */,
+				5016A2B32A67EC0700B257E8 /* NotificationDisplayer.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				507573942A5AD59E00AA7ABD /* EquatableError.swift in Sources */,
 				CDE6A81A2A490B970062D161 /* Inbox Reply View.swift in Sources */,
@@ -2000,6 +2021,7 @@
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
 				CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */,
 				CD391F982A537E8E00E213B5 /* ReplyToComment.swift in Sources */,
+				5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */,
 				CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */,
 				630737892A1CD1E900039852 /* String.swift in Sources */,
 				63A01E542A2B980100C84E04 /* Subscribe Button.swift in Sources */,
@@ -2067,6 +2089,7 @@
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
 				637218502A3A2AAD008C4816 /* APIPersonAggregates.swift in Sources */,
 				6D693A422A5114DF009E2D76 /* APIPostReport.swift in Sources */,
+				5064D03F2A6DE0DB00B22EE3 /* Notifier+Dependency.swift in Sources */,
 				6D8003792A45FD1300363206 /* Bundle.swift in Sources */,
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63344C712A098060001BC616 /* Sidebar View.swift in Sources */,
@@ -2163,6 +2186,7 @@
 				637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */,
 				CD1446182A58FC3B00610EF1 /* InfoStack.swift in Sources */,
 				6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */,
+				5064D0412A6E63E000B22EE3 /* Task+Notifiable.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
 				6D8F08FF2A4029AE003EB4FD /* Community List View.swift in Sources */,

@@ -6,9 +6,12 @@
 //  
 //
 
+import Dependencies
 import Foundation
 
 class ErrorHandler: ObservableObject {
+    
+    @Dependency(\.notifier) private var notifier
     
     @Published private(set) var sessionExpired = false
     
@@ -30,22 +33,14 @@ class ErrorHandler: ObservableObject {
                     sessionExpired = true
                     return
                 case let .response(apiError, _):
-                    ErrorDisplayer.displayAlert(title: "Error", message: apiError.error)
+                    await notifier.add(.failure(apiError.error))
                     return
                 default:
                     break
                 }
             }
             
-            switch error.style {
-            case .alert:
-                ErrorDisplayer.displayAlert(title: error.title, message: error.message)
-            case .toast:
-                if let message = error.title ?? error.message {
-                    ErrorDisplayer.displayToast(title: message)
-                }
-            }
-            
+            await notifier.add(error)
         }
     }
     
