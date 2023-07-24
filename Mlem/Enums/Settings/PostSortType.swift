@@ -77,23 +77,30 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return self.shortDescription
         }
     }
-    
-    var imageName: String {
+}
+
+extension PostSortType: AssociatedIcon {
+    var iconName: String {
         switch self {
-        case .active:
-            return "bubble.left.and.bubble.right"
-        case .hot:
-            return "flame"
-        case .new:
-            return "sun.max"
-        case .newComments:
-            return "ellipsis.bubble"
-        case .mostComments:
-            return "chart.line.uptrend.xyaxis"
-        case .old:
-            return "books.vertical"
-        default:
-            return "calendar.day.timeline.left"
+        case .active: return AppConstants.activeSortSymbolName
+        case .hot: return AppConstants.hotSortSymbolName
+        case.new: return AppConstants.newSortSymbolName
+        case .old: return AppConstants.oldSortSymbolName
+        case .newComments: return AppConstants.newCommentsSymbolName
+        case .mostComments: return AppConstants.mostCommentsSymbolName
+        default: return AppConstants.timeSymbolName
+        }
+    }
+    
+    var iconNameFill: String {
+        switch self {
+        case .active: return AppConstants.activeSortSymbolNameFill
+        case .hot: return AppConstants.hotSortSymbolNameFill
+        case.new: return AppConstants.newSortSymbolNameFill
+        case .old: return AppConstants.oldSortSymbolNameFill
+        case .newComments: return AppConstants.newCommentsSymbolNameFill
+        case .mostComments: return AppConstants.mostCommentsSymbolNameFill
+        default: return AppConstants.timeSymbolNameFill
         }
     }
 }

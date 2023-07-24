@@ -23,3 +23,21 @@ enum FeedType: String, Encodable, SettingsOptions {
     case local = "Local"
     case subscribed = "Subscribed"
 }
+
+extension FeedType: AssociatedIcon {
+    var iconName: String {
+        switch self {
+        case .all: return AppConstants.federatedFeedSymbolName
+        case .local: return AppConstants.localFeedSymbolName
+        case .subscribed: return AppConstants.subscribeSymbolName
+        }
+    }
+    
+    var iconNameFill: String {
+        switch self {
+        case .all: return AppConstants.federatedFeedSymbolName
+        case .local: return AppConstants.localFeedSymbolNameFill
+        case .subscribed: return AppConstants.subscribedFeedSymbolNameFill
+        }
+    }
+}

@@ -18,7 +18,7 @@ struct PostSortMenu: View {
             ForEach(PostSortType.outerTypes, id: \.self) { type in
                 OptionButton(
                     title: type.shortDescription,
-                    imageName: type.imageName,
+                    imageName: type.iconName,
                     option: type,
                     selectedOption: $selectedSortingOption
                 )
@@ -28,7 +28,7 @@ struct PostSortMenu: View {
                 ForEach(PostSortType.topTypes, id: \.self) { type in
                     OptionButton(
                         title: type.shortDescription,
-                        imageName: type.imageName,
+                        imageName: type.iconName,
                         option: type,
                         selectedOption: $selectedSortingOption
                     )
@@ -41,14 +41,14 @@ struct PostSortMenu: View {
             if shortLabel {
                 HStack {
                     Spacer()
-                    Image(systemName: selectedSortingOption.imageName)
+                    Image(systemName: selectedSortingOption.iconName)
                         .tint(.pink)
                     Text(selectedSortingOption.shortDescription)
                         .tint(.pink)
                 }
                 .frame(maxWidth: .infinity)
             } else {
-                Label("Selected sorting by  \"\(selectedSortingOption.description)\"", systemImage: selectedSortingOption.imageName)
+                Label("Selected sorting by  \"\(selectedSortingOption.description)\"", systemImage: selectedSortingOption.iconName)
             }
         }
     }

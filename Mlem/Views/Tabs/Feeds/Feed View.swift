@@ -47,10 +47,6 @@ struct FeedView: View {
     @State var isComposingPost: Bool = false
     @State var responseItem: ConcreteRespondable?
     
-    // MARK: Computed/Internal
-    
-    var isInSpecificCommunity: Bool { community != nil }
-    
     // MARK: - Main Views
     
     var body: some View {
@@ -198,7 +194,7 @@ struct FeedView: View {
             }
         } label: {
             Label("Selected sorting by \(postSortType.description)",
-                  systemImage: AppConstants.sortTypeToSymbolName[postSortType] ?? AppConstants.missingSymbolName)
+                  systemImage: postSortType.iconName)
         }
     }
     

@@ -62,24 +62,16 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to refresh this tracker, this will reset the state of the tracker to it's first page and set the retrieved items when returned
     /// - Parameter request: An `APIRequest` that conforms to `FeedItemProviding` with an `Item` type that matches this trackers generic type
+    /// - Parameter clearBeforeFetch: If true, causes the tracker to empty its items before it fetches new data
     /// - Returns: The `Response` type of the request as a discardable result
     @discardableResult func refresh<Request: APIRequest>(
         _ request: Request,
+        clearBeforeFetch: Bool = false,
         filtering: @escaping (_: Request.Response.Item) -> Bool = { _ in true }
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
-        let response = try await retrieveItems(with: request)
-        await reset(with: response.items)
-        return response
-    }
-    
-    /// A refresh method that clears the tracker before loading the new items.
-    /// - Parameter request: An `APIRequest` that conforms to `FeedItemProviding` with an `Item` type that matches this trackers generic type
-    /// - Returns: The `Response` type of the request as a discardable result
-    @discardableResult func hardRefresh<Request: APIRequest>(
-        _ request: Request,
-        filtering: @escaping (_: Request.Response.Item) -> Bool = { _ in true }
-    ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
-        await reset()
+        if clearBeforeFetch {
+            await reset()
+        }
         let response = try await retrieveItems(with: request)
         await reset(with: response.items)
         return response

@@ -60,6 +60,7 @@ class PostTracker: FeedTracker<APIPostView> {
         communityId: Int?,
         sort: PostSortType?,
         type: FeedType,
+        clearBeforeFetch: Bool = false,
         filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
     ) async throws {
         let response = try await refresh(
@@ -71,33 +72,10 @@ class PostTracker: FeedTracker<APIPostView> {
                 type: type,
                 limit: 25
             ),
+            clearBeforeFetch: clearBeforeFetch,
             filtering: filtering
         )
 
-        Task(priority: .background) {
-            preloadImages(response.posts)
-        }
-    }
-    
-    func hardRefresh(
-        account: SavedAccount,
-        communityId: Int?,
-        sort: PostSortType?,
-        type: FeedType,
-        filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
-    ) async throws {
-        let response = try await hardRefresh(
-            GetPostsRequest(
-                account: account,
-                communityId: communityId,
-                page: 1,
-                sort: sort,
-                type: type,
-                limit: 25
-            ),
-            filtering: filtering
-        )
-        
         Task(priority: .background) {
             preloadImages(response.posts)
         }

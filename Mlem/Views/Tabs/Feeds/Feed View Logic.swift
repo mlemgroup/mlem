@@ -64,11 +64,12 @@ extension FeedView {
         defer { isLoading = false }
         isLoading = true
         do {
-            try await postTracker.hardRefresh(
+            try await postTracker.refresh(
                 account: appState.currentActiveAccount,
                 communityId: community?.id,
                 sort: postSortType,
                 type: feedType,
+                clearBeforeFetch: true,
                 filtering: { postView in
                     !postView.post.name.contains(filtersTracker.filteredKeywords)
                 })
@@ -80,7 +81,7 @@ extension FeedView {
     // MARK: Community loading
     
     func fetchCommunityDetails() async {
-        if isInSpecificCommunity, let community {
+        if let community {
             do {
                 communityDetails = try await loadCommunityDetails(
                     community: community,
@@ -103,9 +104,9 @@ extension FeedView {
     func genOuterSortMenuFunctions() -> [MenuFunction] {
         return PostSortType.outerTypes.map { type in
             let isSelected = postSortType == type
-            let imageName = isSelected ? AppConstants.sortTypeToSymbolNameFill[type] : AppConstants.sortTypeToSymbolName[type]
+            let imageName = isSelected ? type.iconNameFill : type.iconName
             return MenuFunction(text: type.description,
-                                imageName: imageName ?? AppConstants.missingSymbolName,
+                                imageName: imageName,
                                 destructiveActionPrompt: nil,
                                 enabled: !isSelected) {
                 postSortType = type
@@ -190,7 +191,7 @@ extension FeedView {
         // share
         ret.append(MenuFunction(text: "Share",
                                 imageName: AppConstants.shareSymbolName,
-                               destructiveActionPrompt: nil,
+                                destructiveActionPrompt: nil,
                                 enabled: true) {
             showShareSheet(URLtoShare: community.actorId)
         })
@@ -203,7 +204,7 @@ extension FeedView {
             : ("Block", AppConstants.blockSymbolName, "Really block \(community.name)?")
             ret.append(MenuFunction(text: blockText,
                                     imageName: blockSymbol,
-                                   destructiveActionPrompt: blockPrompt,
+                                    destructiveActionPrompt: blockPrompt,
                                     enabled: true) {
                 Task(priority: .userInitiated) {
                     await block(communityId: community.id, shouldBlock: !communityDetails.communityView.blocked)
@@ -220,10 +221,10 @@ extension FeedView {
         
         FeedType.allCases.forEach { type in
             let (imageName, enabled) = type != feedType
-            ? (AppConstants.feedTypeToSymbolName[type], true)
-            : (AppConstants.feedTypeToSymbolNameFill[type], false)
+            ? (type.iconName, true)
+            : (type.iconNameFill, false)
             ret.append(MenuFunction(text: type.label,
-                                    imageName: imageName ?? AppConstants.missingSymbolName,
+                                    imageName: imageName,
                                     destructiveActionPrompt: nil,
                                     enabled: enabled,
                                     callback: { feedType = type }))
@@ -235,11 +236,11 @@ extension FeedView {
     func genPostSizeSwitchingFunctions() -> [MenuFunction] {
         return PostSize.allCases.map { size in
             let (imageName, enabled) = size != postSize
-            ? (AppConstants.postSizeToSymbolName[size], true)
-            : (AppConstants.postSizeToSymbolNameFill[size], false)
+            ? (size.iconName, true)
+            : (size.iconNameFill, false)
             
             return MenuFunction(text: size.label,
-                                imageName: imageName ?? AppConstants.missingSymbolName,
+                                imageName: imageName,
                                 destructiveActionPrompt: nil,
                                 enabled: enabled,
                                 callback: { postSize = size })
@@ -273,7 +274,7 @@ extension FeedView {
     }
     
     // MARK: TODO: MOVE TO REPOSITORY MODEL
-                       
+    
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         hapticManager.success()
         do {
@@ -282,8 +283,8 @@ extension FeedView {
                 communityId: communityId,
                 follow: shouldSubscribe
             )
-
-            let response = try await APIClient().perform(request: request)
+            
+            _ = try await APIClient().perform(request: request)
             
             // re-fetch to get new subscribed status
             // TODO: do this in middleware model with a state faker to avoid a second API call
@@ -296,23 +297,23 @@ extension FeedView {
             // will not update so will continue to be accurate
             appState.contextualError = .init(underlyingError: error)
         }
-            }
-                       
-                       private func block(communityId: Int, shouldBlock: Bool) async {
-                do {
-                    hapticManager.violentSuccess()
-                    let request = BlockCommunityRequest(
-                        account: appState.currentActiveAccount,
-                        communityId: communityId,
-                        block: shouldBlock
-                    )
-                    
-                    let response = try await APIClient().perform(request: request)
-                    await fetchCommunityDetails()
-                } catch {
-                    // TODO: If we fail here and want to notify the user we should
-                    // pass a message into the contextual error below
-                    appState.contextualError = .init(underlyingError: error)
-                }
-            }
-                       }
+    }
+    
+    private func block(communityId: Int, shouldBlock: Bool) async {
+        do {
+            hapticManager.violentSuccess()
+            let request = BlockCommunityRequest(
+                account: appState.currentActiveAccount,
+                communityId: communityId,
+                block: shouldBlock
+            )
+            
+            let response = try await APIClient().perform(request: request)
+            await fetchCommunityDetails()
+        } catch {
+            // TODO: If we fail here and want to notify the user we should
+            // pass a message into the contextual error below
+            appState.contextualError = .init(underlyingError: error)
+        }
+    }
+}
