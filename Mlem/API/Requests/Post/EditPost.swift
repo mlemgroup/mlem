@@ -32,7 +32,7 @@ struct EditPostRequest: APIPutRequest {
 
         postId: Int,
         name: String?,
-        url: URL?,
+        url: String?,
         body: String?,
         nsfw: Bool?,
         languageId: Int?
@@ -42,7 +42,7 @@ struct EditPostRequest: APIPutRequest {
         self.body = .init(
             post_id: postId,
             name: name,
-            url: url,
+            url: URL(string: url ?? ""),
             body: body,
             nsfw: nsfw,
             language_id: languageId,

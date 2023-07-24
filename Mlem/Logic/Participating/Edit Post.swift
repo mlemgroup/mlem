@@ -21,7 +21,7 @@ import SwiftUI
             account: account,
             postId: postId,
             name: postTitle,
-            url: URL(string: postURL!),
+            url: postURL,
             body: postBody,
             nsfw: postIsNSFW,
             languageId: nil
