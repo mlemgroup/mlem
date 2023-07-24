@@ -33,7 +33,6 @@ struct UserView: View {
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
-    @State var isDragging: Bool = false
     @State var responseItem: ConcreteRespondable?
     @FocusState var isReplyFieldFocused
     
@@ -386,7 +385,6 @@ struct UserView: View {
                 FeedPost(postView: post,
                          showPostCreator: false,
                          showCommunity: true,
-                         isDragging: $isDragging,
                          responseItem: $responseItem
                 )
                 
@@ -407,7 +405,6 @@ struct UserView: View {
                 depth: 0,
                 showPostContext: true,
                 showCommentCreator: false,
-                isDragging: $isDragging,
                 replyToComment: nil
             )
             

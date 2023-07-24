@@ -1,442 +1,234 @@
 //
-//  Community View.swift
+//  Feed View (new).swift
 //  Mlem
 //
-//  Created by David Bureš on 27.03.2022.
+//  Created by Eric Andrews on 2023-07-21.
 //
 
+import Foundation
 import SwiftUI
+import Dependencies
 
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
 struct FeedView: View {
-
+    
+    // MARK: Environment and settings
+    
+    @Dependency(\.hapticManager) var hapticManager
+    
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("postSize") var postSize: PostSize = .large
-  
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
-    @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
-    @Environment(\.setEasterFlag) var setEasterFlag
-
-    @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
-
-    // parameters
-    var community: APICommunity?
+    
+    // MARK: Parameters and init
+    
+    let community: APICommunity?
+    let showLoading: Bool
     @State var feedType: FeedType
-    let showLoading: Bool // if this is true, "loading posts" will always display
-
-    // variables
-    @State var communityDetails: GetCommunityResponse?
-
-    @State private var postSortType: PostSortType = .hot
-    @State private var didLoad: Bool = false
-
-    @State private var isRefreshing: Bool = false
-
-    @State private var isComposingPost: Bool = false
-    @State private var isPostingPost: Bool = false
-    @State var responseItem: ConcreteRespondable?
-
-    @State var isDragging: Bool = false
-
-    private let scrollToTopId = "top"
-
-    var isInSpecificCommunity: Bool { community != nil }
-
+    
     init(community: APICommunity?, feedType: FeedType, showLoading: Bool = false) {
         self.community = community
-        self._feedType = State(initialValue: feedType)
         self.showLoading = showLoading
+        self._feedType = State(initialValue: feedType)
     }
-
+    
+    // MARK: State
+    
+    @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
+    
+    @State var communityDetails: GetCommunityResponse?
+    @State var postSortType: PostSortType = .hot
+    @State var isLoading: Bool = false
+    @State var isComposingPost: Bool = false
+    @State var responseItem: ConcreteRespondable?
+    
+    // MARK: - Main Views
+    
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            ScrollView(showsIndicators: false) {
-                EmptyView().id(scrollToTopId) // 🙄
-                if showLoading {
-                    LoadingView(whatIsLoading: .posts)
-                } else if postTracker.items.isEmpty {
-                    noPostsView
-                } else {
-                    LazyVStack(spacing: 0) {
-                        postListView
-                        loadingMorePostsView
-                    }
-                }
-            }
+        contentView
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.secondarySystemBackground)
-            .refreshable {
-                Task(priority: .userInitiated) {
-                    isRefreshing = true
-                    defer { isRefreshing = false }
-                    await refreshFeed()
-                }
+            .toolbar {
+                ToolbarItem(placement: .principal) { toolbarHeader }
+                ToolbarItem(placement: .navigationBarTrailing) { sortMenu }
+                ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
-            .onAppear {
-                Task(priority: .userInitiated) {
-                    if postTracker.items.isEmpty {
-                        print("Post tracker is empty")
-                        await loadFeed()
-                    } else {
-                        print("Post tracker is not empty")
-                    }
-                }
-                Task(priority: .background) {
-                    if isInSpecificCommunity, let community {
-                        do {
-                            communityDetails = try await loadCommunityDetails(
-                                community: community,
-                                account: appState.currentActiveAccount
-                            )
-                        } catch {
-                            print("Failed while fetching community details: \(error)")
-
-                            appState.contextualError = .init(
-                                title: "Could not load community information",
-                                message: "The server might be overloaded.\nTry again later.",
-                                underlyingError: error
-                            )
-                        }
-                    }
-                }
+            .navigationBarTitleDisplayMode(.inline)
+            .environmentObject(postTracker)
+            .task(priority: .userInitiated) { await initFeed() }
+            .task(priority: .background) { await fetchCommunityDetails() }
+        // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
+            .task(id: feedType) {
+                await hardRefreshFeed()
             }
-            .onChange(of: feedType) { _ in
-                Task(priority: .userInitiated) {
-                    await refreshFeed()
-                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                }
+            .task(id: postSortType) {
+                await hardRefreshFeed()
             }
-            .onChange(of: postSortType) { _ in
-                Task(priority: .userInitiated) {
-                    await refreshFeed()
-                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                }
+            .task(id: appState.currentActiveAccount) {
+                await hardRefreshFeed()
             }
-            .onChange(of: appState.currentActiveAccount) { _ in
-                Task {
-                    await refreshFeed()
-                    scrollProxy.scrollTo(scrollToTopId, anchor: .top)
-                }
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
+            .refreshable { await refreshFeed() }
+            .sheet(isPresented: $isComposingPost) {
                 if let community = community {
-                    NavigationLink(value:
-                                    CommunitySidebarLinkWithContext(
-                                        community: community,
-                                        communityDetails: communityDetails
-                                    )) {
-                                        Text(community.name)
-                                            .font(.headline)
-                                            .foregroundColor(.primary)
-                                            .accessibilityHint("Activate to view sidebar.")
-                                    }
-                } else {
-                    Menu {
-                        feedTypeMenuItem(for: .subscribed)
-                        feedTypeMenuItem(for: .local)
-                        feedTypeMenuItem(for: .all)
-                    } label: {
-                        HStack(alignment: .center, spacing: 0) {
-                            Text(feedType.label)
-                                .font(.headline)
-                            Image(systemName: "chevron.down")
-                                .scaleEffect(0.7)
-                        }
-                        .foregroundColor(.primary)
-                        .accessibilityElement(children: .combine)
-                        .accessibilityHint("Activate to change feeds.")
-                        // this disables the implicit animation on the header view...
-                        .transaction { $0.animation = nil }
+                    PostComposerView(community: community)
+                }
+            }
+            .sheet(item: $responseItem) { responseItem in
+                ResponseComposerView(concreteRespondable: responseItem)
+            }
+            .environmentObject(postTracker) // needed for posting post
+    }
+    
+    @ViewBuilder
+    private var contentView: some View {
+        ScrollView {
+            if postTracker.items.isEmpty {
+                noPostsView()
+            } else {
+                LazyVStack(spacing: 0) {
+                    ForEach(postTracker.items) { postView in
+                        feedPost(for: postView)
                     }
+                    
+                    EndOfFeedView(isLoading: isLoading)
                 }
             }
         }
         .fancyTabScrollCompatible()
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                PostSortMenu(selectedSortingOption: Binding(
-                    get: {
-                        postSortType
-                    },
-                    set: { newValue in
-                        self.postSortType = newValue
-                    }
-                ))
-
-                Menu {
-                    if let specificCommunity = community {
-                        NavigationLink(value:
-                                        CommunitySidebarLinkWithContext(
-                                            community: specificCommunity,
-                                            communityDetails: communityDetails
-                                        )) {
-                                            Label("Sidebar", systemImage: "sidebar.right")
-                                        }
-
-                        Button {
-                            isComposingPost.toggle()
-                        } label: {
-                            Label("New Post", systemImage: "paperplane.fill")
-                        }
-                    }
-                    Divider()
-                    if let communityDetails {
-
-                        if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
-                            // This is when a community is already favorited
-                            Button(role: .destructive) {
-                                unfavoriteCommunity(
-                                    community: community!,
-                                    favoritedCommunitiesTracker: favoriteCommunitiesTracker
-                                )
-                            } label: {
-                                Label("Unfavorite", systemImage: "star.slash")
-                            }
-                        } else {
-                            Button {
-                                favoriteCommunity(
-                                    account: appState.currentActiveAccount,
-                                    community: community!,
-                                    favoritedCommunitiesTracker: favoriteCommunitiesTracker
-                                )
-                            } label: {
-                                Label("Favorite", systemImage: "star")
-                            }
-                            .tint(.yellow)
-                        }
-
-                        SubscribeButton(
-                            communityDetails: Binding(
-                                get: {
-                                    communityDetails.communityView
-                                },
-                                set: { newValue in
-                                    guard let newValue else { return }
-                                    self.communityDetails?.communityView = newValue
-                                })
-                        )
-
-                        BlockCommunityButton(communityDetails: Binding(
-                            get: {
-                                communityDetails.communityView
-                            },
-                            set: { newValue in
-                                guard let newValue else { return }
-                                self.communityDetails?.communityView = newValue
-                            }))
-
-                        Divider()
-
-                        if let actorId = community?.actorId {
-                            Button {
-                                showShareSheet(URLtoShare: actorId)
-                            } label: {
-                                Label("Share", systemImage: "square.and.arrow.up")
-                            }
-                        }
-                    }
-
-                    Button {
-                        shouldBlurNsfw.toggle()
-                    } label: {
-                        if shouldBlurNsfw {
-                            Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
-                        } else {
-                            Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
-                        }
-                    }
-
-                    Menu {
-                        Button {
-                            postSize = .compact
-                        } label: {
-                            Label("Compact",
-                                  systemImage: postSize == .compact
-                                  ? AppConstants.compactSymbolNameFill
-                                  : AppConstants.compactSymbolName)
-                        }
-                        .disabled(postSize == .compact)
-                        
-                        Button {
-                            postSize = .headline
-                        } label: {
-                            Label("Headline",
-                                  systemImage: postSize == .headline
-                                  ? AppConstants.headlineSymbolNameFill
-                                  : AppConstants.headlineSymbolName)
-                        }
-                        .disabled(postSize == .headline)
-                        
-                        Button {
-                            postSize = .large
-                        } label: {
-                            Label("Large",
-                                  systemImage: postSize == .large
-                                  ? AppConstants.largeSymbolNameFill
-                                  : AppConstants.largeSymbolName)
-                        }
-                        .disabled(postSize == .large)
-                    } label: {
-                        Label("Post Size", systemImage: "rectangle.expand.vertical")
-                    }
-                    .foregroundColor(.primary)
-                } label: {
-                    Label("More", systemImage: "ellipsis")
-                        .frame(height: AppConstants.barIconHitbox)
-                        .contentShape(Rectangle())
-                }
-            }
-        }
-        .sheet(isPresented: $isComposingPost) {
-            if let community = community {
-                PostComposerView(community: community)
-            }
-        }
-        .sheet(item: $responseItem) { responseItem in
-            ResponseComposerView(concreteRespondable: responseItem)
-        }
-        .onAppear {
-            if !didLoad {
-                didLoad = true
-                postSortType = defaultPostSorting
-            }
-        }
-        .environmentObject(postTracker)
-        .navigationBarTitleDisplayMode(.inline)
     }
-
+    
     @ViewBuilder
-    private func feedTypeMenuItem(for setFeedType: FeedType) -> some View {
-        Button {
-            feedType = setFeedType
-        } label: {
-            if feedType == setFeedType {
-                Label(setFeedType.label, systemImage: "checkmark")
-            } else {
-                Text(setFeedType.label)
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var noPostsView: some View {
-        if postTracker.isLoading {
+    private func noPostsView() -> some View {
+        if isLoading {
             LoadingView(whatIsLoading: .posts)
         } else {
             VStack(alignment: .center, spacing: 5) {
                 Image(systemName: "text.bubble")
-
+                
                 Text("No posts to be found")
             }
             .padding()
             .foregroundColor(.secondary)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
-
-    private var postListView: some View {
-        ForEach(postTracker.items, id: \.id) { post in
-            VStack(spacing: 0) {
-                NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
-                    FeedPost(
-                        postView: post,
-                        showPostCreator: shouldShowPostCreator,
-                        showCommunity: !isInSpecificCommunity,
-                        isDragging: $isDragging,
-                        responseItem: $responseItem
-                    )
-                }
-                Divider()
-            }
-            .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
-            .onAppear {
-                Task(priority: .medium) {
-                    if postTracker.shouldLoadContent(after: post) {
-                        await loadFeed()
-                    }
-                }
-            }
-        }
-    }
-
+    
+    // MARK: Helper Views
+    
     @ViewBuilder
-    private var loadingMorePostsView: some View {
-        if postTracker.isLoading {
-            VStack(alignment: .center) {
-                ProgressView()
-                    .frame(width: 16, height: 16)
-                Text("Loading more posts...")
+    private func feedPost(for postView: APIPostView) -> some View {
+        VStack(spacing: 0) {
+            NavigationLink(value: PostLinkWithContext(post: postView, postTracker: postTracker)) {
+                FeedPost(
+                    postView: postView,
+                    showPostCreator: shouldShowPostCreator,
+                    showCommunity: false,
+                    responseItem: $responseItem)
             }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.secondary)
-            .background(Color.systemBackground)
-            .accessibilityElement(children: .combine)
+            Divider()
         }
-    }
-
-    func loadFeed() async {
-        do {
-            try await postTracker.loadNextPage(
-                account: appState.currentActiveAccount,
-                communityId: community?.id,
-                sort: postSortType,
-                type: feedType,
-                filtering: { postView in
-                    !postView.post.name.contains(filtersTracker.filteredKeywords)
-                }
-            )
-        } catch {
-            handle(error)
-        }
-    }
-
-    func refreshFeed() async {
-        do {
-            try await postTracker.refresh(
-                account: appState.currentActiveAccount,
-                communityId: community?.id,
-                sort: postSortType,
-                type: feedType,
-                filtering: { postView in
-                    !postView.post.name.contains(filtersTracker.filteredKeywords)
-                }
-            )
-        } catch {
-            handle(error)
-        }
-    }
-
-    private func handle(_ error: Error) {
-        let title: String?
-        let errorMessage: String?
-
-        switch error {
-        case APIClientError.networking:
-            guard postTracker.items.isEmpty else {
-                return
+        .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
+        .task(priority: .medium) {
+            if postTracker.shouldLoadContent(after: postView) {
+                await loadFeed()
             }
-
-            title = "Unable to connect to Lemmy"
-            errorMessage = "Please check your internet connection and try again"
-        default:
-            title = nil
-            errorMessage = nil
         }
-
-        appState.contextualError = .init(
-            title: title,
-            message: errorMessage,
-            underlyingError: error
-        )
+    }
+    
+    @ViewBuilder
+    private var ellipsisMenu: some View {
+        Menu {
+            if let community, let communityDetails {
+                // until we find a nice way to put nav stuff in MenuFunction, this'll have to do :(
+                NavigationLink(value:
+                                CommunitySidebarLinkWithContext(
+                                    community: community,
+                                    communityDetails: communityDetails
+                                )) {
+                                    Label("Sidebar", systemImage: "sidebar.right")
+                                }
+                
+                ForEach(genCommunitySpecificMenuFunctions(for: community)) { menuFunction in
+                    MenuButton(menuFunction: menuFunction)
+                }
+            }
+            
+            Divider()
+            
+            ForEach(genEllipsisMenuFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction)
+            }
+            
+            Menu {
+                ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
+                    MenuButton(menuFunction: menuFunction)
+                }
+            } label: {
+                Label("Post Size", systemImage: AppConstants.postSizeSettingsSymbolName)
+            }
+        } label: {
+            Label("More", systemImage: "ellipsis")
+                .frame(height: AppConstants.barIconHitbox)
+                .contentShape(Rectangle())
+        }
+    }
+    
+    @ViewBuilder
+    private var sortMenu: some View {
+        Menu {
+            ForEach(genOuterSortMenuFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction)
+            }
+            
+            Menu {
+                ForEach(genTopSortMenuFunctions()) { menuFunction in
+                    MenuButton(menuFunction: menuFunction)
+                }
+            } label: {
+                Label("Top...", systemImage: AppConstants.topSymbolName)
+            }
+        } label: {
+            Label("Selected sorting by \(postSortType.description)",
+                  systemImage: postSortType.iconName)
+        }
+    }
+    
+    @ViewBuilder
+    private var toolbarHeader: some View {
+        if let community = community {
+            NavigationLink(value:
+                            CommunitySidebarLinkWithContext(
+                                community: community,
+                                communityDetails: communityDetails
+                            )) {
+                                Text(community.name)
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                                    .accessibilityHint("Activate to view sidebar.")
+                            }
+        } else {
+            Menu {
+                ForEach(genFeedSwitchingFunctions()) { menuFunction in
+                    MenuButton(menuFunction: menuFunction)
+                }
+            } label: {
+                HStack(alignment: .center, spacing: 0) {
+                    Text(feedType.label)
+                        .font(.headline)
+                    Image(systemName: "chevron.down")
+                        .scaleEffect(0.7)
+                }
+                .foregroundColor(.primary)
+                .accessibilityElement(children: .combine)
+                .accessibilityHint("Activate to change feeds.")
+                // this disables the implicit animation on the header view...
+                .transaction { $0.animation = nil }
+            }
+        }
     }
 }
-// swiftlint:enable type_body_length
-// swiftlint:enable file_length

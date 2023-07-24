@@ -51,8 +51,6 @@ struct CommentItem: View {
     let showInteractionBar: Bool
     let enableSwipeActions: Bool
     let replyToComment: ((APICommentView) -> Void)?
-
-    @Binding var isDragging: Bool
     
     // MARK: Computed
 
@@ -62,7 +60,6 @@ struct CommentItem: View {
          depth: Int,
          showPostContext: Bool,
          showCommentCreator: Bool,
-         isDragging: Binding<Bool>,
          showInteractionBar: Bool = true,
          enableSwipeActions: Bool = true,
          replyToComment: ((APICommentView) -> Void)?
@@ -75,7 +72,6 @@ struct CommentItem: View {
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
         self.replyToComment = replyToComment
-        _isDragging = isDragging
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
@@ -135,12 +131,10 @@ struct CommentItem: View {
                 }
             }
             .background(Color.systemBackground)
-            .addSwipeyActions(
-                isDragging: $isDragging,
-                primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
-                secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
-                primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
-                secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
+            .addSwipeyActions(primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
+                              secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
+                              primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
+                              secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
             .sheet(isPresented: $isComposingReport) {
@@ -200,7 +194,6 @@ struct CommentItem: View {
                         depth: depth + 1,
                         showPostContext: false,
                         showCommentCreator: true,
-                        isDragging: $isDragging,
                         replyToComment: replyToComment
                     )
                 }

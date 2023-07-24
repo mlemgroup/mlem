@@ -10,7 +10,8 @@ import Foundation
 
 class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
-    @Published private(set) var isLoading: Bool = true
+    // isLoading is accessible but does not publish its state because it triggers lots of unexpected view redraws
+    private(set) var isLoading: Bool = true
     @Published private(set) var items: [Item]
 
     private(set) var page: Int = 1
@@ -61,11 +62,16 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to refresh this tracker, this will reset the state of the tracker to it's first page and set the retrieved items when returned
     /// - Parameter request: An `APIRequest` that conforms to `FeedItemProviding` with an `Item` type that matches this trackers generic type
+    /// - Parameter clearBeforeFetch: If true, causes the tracker to empty its items before it fetches new data
     /// - Returns: The `Response` type of the request as a discardable result
     @discardableResult func refresh<Request: APIRequest>(
         _ request: Request,
+        clearBeforeFetch: Bool = false,
         filtering: @escaping (_: Request.Response.Item) -> Bool = { _ in true }
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
+        if clearBeforeFetch {
+            await reset()
+        }
         let response = try await retrieveItems(with: request)
         await reset(with: response.items)
         return response

@@ -63,7 +63,6 @@ struct InboxView: View {
     @State var responseItem: ConcreteRespondable?
     
     // utility
-    @State var isDragging: Bool = false
     @State private var navigationPath = NavigationPath()
     
     var body: some View {

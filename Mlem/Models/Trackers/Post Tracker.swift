@@ -60,6 +60,7 @@ class PostTracker: FeedTracker<APIPostView> {
         communityId: Int?,
         sort: PostSortType?,
         type: FeedType,
+        clearBeforeFetch: Bool = false,
         filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
     ) async throws {
         let response = try await refresh(
@@ -71,6 +72,7 @@ class PostTracker: FeedTracker<APIPostView> {
                 type: type,
                 limit: 25
             ),
+            clearBeforeFetch: clearBeforeFetch,
             filtering: filtering
         )
 
@@ -78,7 +80,7 @@ class PostTracker: FeedTracker<APIPostView> {
             preloadImages(response.posts)
         }
     }
-
+    
     // MARK: - Private methods
 
     private func preloadImages(_ newPosts: [APIPostView]) {
