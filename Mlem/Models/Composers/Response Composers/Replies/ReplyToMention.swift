@@ -9,7 +9,7 @@ import Foundation
 import Dependencies
 import SwiftUI
 
-struct ReplyToMention: EditorModel {
+struct ReplyToMention: ResponseEditorModel {
 
     @Dependency(\.commentRepository) var commentRepository
     

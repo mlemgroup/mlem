@@ -7,9 +7,14 @@
 import Foundation
 
 class EditorTracker: ObservableObject {
-    @Published var editing: ConcreteEditorModel?
+    @Published var editingResponse: ConcreteEditorModel?
+    @Published var editPost: PostEditorModel?
 
-    func openEditor(with editorModel: ConcreteEditorModel) {
-        editing = editorModel
+    func openEditor(with editingResponse: ConcreteEditorModel) {
+        self.editingResponse = editingResponse
+    }
+    
+    func openEditor(with editPost: PostEditorModel) {
+        self.editPost = editPost
     }
 }

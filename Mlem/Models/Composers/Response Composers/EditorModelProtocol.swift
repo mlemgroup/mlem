@@ -11,7 +11,7 @@ import SwiftUI
 /**
  Protocol for things that can be responded to--e.g., with a comment or a report
  */
-protocol EditorModel: Identifiable {
+protocol ResponseEditorModel: Identifiable {
     var id: Int { get }
     
     var appState: AppState { get }

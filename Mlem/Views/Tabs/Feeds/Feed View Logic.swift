@@ -151,7 +151,9 @@ extension FeedView {
                                 imageName: AppConstants.sendSymbolNameFill,
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
-            isComposingPost = true
+            editorTracker.openEditor(with: PostEditorModel(community: community,
+                                                           appState: appState,
+                                                           postTracker: postTracker))
         })
         
         // subscribe/unsubscribe

@@ -62,8 +62,11 @@ struct Window: View {
             .environmentObject(editorTracker)
             .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
             .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
-            .sheet(item: $editorTracker.editing) { editing in
-                EditorView(concreteEditorModel: editing)
+            .sheet(item: $editorTracker.editingResponse) { editing in
+                ResponseEditorView(concreteEditorModel: editing)
+            }
+            .sheet(item: $editorTracker.editPost) { editing in
+                PostComposerView(editModel: editing)
             }
     }
 

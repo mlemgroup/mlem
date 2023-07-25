@@ -1,25 +1,24 @@
 //
-//  ReplyToCommentReply.swift
+//  ReportCommentReply.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2023-07-03.
+//  Created by Eric Andrews on 2023-07-14.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 import SwiftUI
 
-struct ReplyToCommentReply: EditorModel {
-
+struct ReportCommentReply: ResponseEditorModel {
+    
     @Dependency(\.commentRepository) var commentRepository
     
+    var id: Int { commentReply.id }
     let appState: AppState
-    let canUpload: Bool = true
-    let modalName: String = "New Comment"
+    let canUpload: Bool = false
+    let modalName: String = "Report Comment"
     let prefillContents: String? = nil
     let commentReply: APICommentReplyView
-    
-    var id: Int { commentReply.id }
     
     func embeddedView() -> AnyView {
         return AnyView(InboxReplyView(reply: commentReply,
@@ -28,10 +27,9 @@ struct ReplyToCommentReply: EditorModel {
     }
     
     func sendResponse(responseContents: String) async throws {
-        try await commentRepository.postComment(
-            content: responseContents,
-            parentId: commentReply.comment.id,
-            postId: commentReply.post.id
+        try await commentRepository.reportComment(
+            id: commentReply.commentReply.commentId,
+            reason: responseContents
         )
     }
 }
