@@ -17,6 +17,7 @@ struct Window: View {
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
+    @StateObject var editorTracker: EditorTracker = .init()
 
     @State var selectedAccount: SavedAccount?
 
@@ -60,6 +61,9 @@ struct Window: View {
             .environmentObject(recentSearchesTracker)
             .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
             .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
+            .sheet(item: $editorTracker.editing) { editing in
+                            EditorView(concreteEditorModel: editing)
+                        }
     }
 
     private func saveFilteredKeywords(_ newValue: [String]) {

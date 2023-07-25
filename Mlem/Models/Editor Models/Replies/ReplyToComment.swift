@@ -17,6 +17,7 @@ struct ReplyToComment: EditorModel {
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
+    let prefillContents: String? = nil
     let comment: APICommentView
     let prefillContents: String?
     let commentTracker: CommentTracker?
