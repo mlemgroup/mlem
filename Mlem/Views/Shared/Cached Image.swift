@@ -17,10 +17,14 @@ struct CachedImage: View {
     let url: URL?
     let shouldExpand: Bool
     @State var bigPicMode: URL?
+    let maxHeight: CGFloat
 
-    init(url: URL?, shouldExpand: Bool = true) {
+    init(url: URL?,
+         shouldExpand: Bool = true,
+         maxHeight: CGFloat = .infinity) {
         self.url = url
         self.shouldExpand = shouldExpand
+        self.maxHeight = maxHeight
     }
     
     var body: some View {
@@ -29,6 +33,14 @@ struct CachedImage: View {
                 let imageView = image
                     .resizable()
                     .scaledToFill()
+                    .clipped()
+                    .allowsHitTesting(false)
+                    .overlay(alignment: .top) {
+                        // weeps in janky hack but this lets us tap the image only in the area we want
+                        Rectangle()
+                            .frame(maxHeight: maxHeight)
+                            .opacity(0.00000000001)
+                    }
                 if shouldExpand {
                     imageView
                         .onTapGesture {
