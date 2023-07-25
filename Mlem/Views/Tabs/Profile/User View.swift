@@ -25,7 +25,7 @@ struct UserView: View {
     @State var userID: Int
     @State var userDetails: APIPersonView?
 
-    @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
+    // @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
@@ -33,7 +33,6 @@ struct UserView: View {
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
-    @FocusState var isReplyFieldFocused
     
     // account switching
     var isSelf: Bool { userID == appState.currentActiveAccount.id }
@@ -129,7 +128,6 @@ struct UserView: View {
             }
         }
         .fancyTabScrollCompatible()
-        .environmentObject(privateCommentReplyTracker)
         .environmentObject(privatePostTracker)
         .environmentObject(privateCommentTracker)
         .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)

@@ -36,7 +36,6 @@ struct CommentEditor: EditorModel {
 
         if let commentTracker {
             commentTracker.comments.update(with: edited.commentView)
-            // commentTracker.update(with: edited.commentView)
         }
     }
 }

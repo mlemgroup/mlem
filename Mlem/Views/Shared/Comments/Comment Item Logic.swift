@@ -95,14 +95,14 @@ extension CommentItem {
         editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
                                                            comment: hierarchicalComment.commentView,
                                                            commentTracker: commentTracker,
-                                                           operation: .reply))
+                                                           operation: CommentOperation.replyToComment))
     }
 
     func editComment() {
         editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
                                                            comment: hierarchicalComment.commentView,
                                                            commentTracker: commentTracker,
-                                                           operation: .edit))
+                                                           operation: CommentOperation.editComment))
     }
     
     /**
@@ -237,7 +237,7 @@ extension CommentItem {
             enabled: true) {
                 editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
                                                                    comment: hierarchicalComment.commentView,
-                                                                   report: true))
+                                                                   operation: CommentOperation.reportComment))
             })
         
         // block

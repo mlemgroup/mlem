@@ -17,10 +17,19 @@ struct ReplyToComment: EditorModel {
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
-    let prefillContents: String? = nil
     let comment: APICommentView
-    
+    let prefillContents: String?
     let commentTracker: CommentTracker?
+    
+    init(appState: AppState,
+         comment: APICommentView,
+         prefillContents: String? = nil,
+         commentTracker: CommentTracker? = nil) {
+        self.appState = appState
+        self.comment = comment
+        self.prefillContents = prefillContents
+        self.commentTracker = commentTracker
+    }
     
     func embeddedView() -> AnyView {
         return AnyView(CommentBodyView(commentView: comment,
@@ -38,8 +47,8 @@ struct ReplyToComment: EditorModel {
             postId: comment.post.id
         )
         
-        await MainActor.run {
-            if let commentTracker {
+        if let commentTracker {
+            await MainActor.run {
                 withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
                     // the return value from `.update(with: ...)` is discardable by design but
                     // the `withAnimation` closure implicitly returns it resulting in a warning for an unused
