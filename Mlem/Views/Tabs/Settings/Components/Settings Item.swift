@@ -61,7 +61,7 @@ struct SquircleLabelStyle: LabelStyle {
                 .foregroundColor(.white)
                 .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
                 .background(color)
-                .clipShape(RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         }
     }
 }

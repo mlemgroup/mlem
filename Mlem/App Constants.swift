@@ -75,7 +75,6 @@ struct AppConstants {
     static let barIconPadding: CGFloat = 4.25 // padding for bar button
     static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
     static let settingsIconSize: CGFloat = 28
-    static let settingsIconCornerRadius: CGFloat = 7
     static let fancyTabBarHeight: CGFloat = 48 // total height of the fancy tab bar
     
     // MARK: - SFSymbols
