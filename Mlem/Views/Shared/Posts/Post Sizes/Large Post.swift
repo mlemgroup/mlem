@@ -22,6 +22,9 @@ struct LargePost: View {
     // parameters
     let postView: APIPostView
     let isExpanded: Bool
+    
+    // computed
+    let maxHeight: CGFloat
 
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
@@ -30,6 +33,7 @@ struct LargePost: View {
     ) {
         self.postView = postView
         self.isExpanded = isExpanded
+        self.maxHeight = isExpanded ? .infinity : AppConstants.maxFeedPostHeight
     }
 
     var body: some View {
@@ -64,8 +68,8 @@ struct LargePost: View {
         switch postView.postType {
         case .image(let url):
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                CachedImage(url: url)
-                    .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : AppConstants.maxFeedPostHeight, alignment: .top)
+                CachedImage(url: url, maxHeight: maxHeight)
+                    .frame(maxWidth: .infinity, maxHeight: maxHeight, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
                     .clipped()
