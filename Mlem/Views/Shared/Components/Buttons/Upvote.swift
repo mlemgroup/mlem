@@ -17,7 +17,7 @@ struct UpvoteButtonLabel: View {
             .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
             .padding(AppConstants.barIconPadding)
             .foregroundColor(vote == .upvote ? .white : .primary)
-            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+            .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
             .padding(AppConstants.postAndCommentSpacing)

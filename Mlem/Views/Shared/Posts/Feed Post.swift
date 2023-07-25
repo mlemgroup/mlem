@@ -378,8 +378,11 @@ extension FeedPost {
     }
 
     var saveSwipeAction: SwipeAction {
-        SwipeAction(
-            symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
+        let (emptySymbolName, fullSymbolName) = postView.saved
+        ? (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
+        : (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
+        return SwipeAction(
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,
             action: savePost
         )
