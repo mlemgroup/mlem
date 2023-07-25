@@ -11,7 +11,7 @@ import SwiftUI
 /**
  Protocol for things that can be responded to--e.g., with a comment or a report
  */
-protocol Respondable: Identifiable {
+protocol EditorModel: Identifiable {
     var id: Int { get }
     
     var appState: AppState { get }
@@ -19,6 +19,8 @@ protocol Respondable: Identifiable {
     var canUpload: Bool { get } // whether the response can include uploaded images
     
     var modalName: String { get } // what to title the modal
+    
+    var prefillContents: String? { get } // optional, contents to prepopulate the editor with
     
     func embeddedView() -> AnyView
     

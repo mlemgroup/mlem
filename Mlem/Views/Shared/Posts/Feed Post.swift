@@ -32,11 +32,10 @@ struct FeedPost: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
 
     @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
-    @Binding var responseItem: ConcreteRespondable?
     
     // MARK: Parameters
 
@@ -44,14 +43,12 @@ struct FeedPost: View {
          showPostCreator: Bool = true,
          showCommunity: Bool = true,
          showInteractionBar: Bool = true,
-         enableSwipeActions: Bool = true,
-         responseItem: Binding<ConcreteRespondable?>) {
+         enableSwipeActions: Bool = true) {
         self.postView = postView
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
-        self._responseItem = responseItem
     }
 
     let postView: APIPostView
@@ -201,7 +198,7 @@ struct FeedPost: View {
     }
 
     func replyToPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: postView)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, post: postView, operation: .reply))
     }
 
     /// Votes on a post
@@ -235,7 +232,7 @@ struct FeedPost: View {
     }
     
     func reportPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: postView, report: true)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, post: postView, operation: .report))
     }
 
     // swiftlint:disable function_body_length

@@ -33,7 +33,6 @@ struct UserView: View {
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
-    @State var responseItem: ConcreteRespondable?
     @FocusState var isReplyFieldFocused
     
     // account switching
@@ -49,9 +48,6 @@ struct UserView: View {
 
     var body: some View {
         contentView
-            .sheet(item: $responseItem) { responseItem in
-                ResponseComposerView(concreteRespondable: responseItem)
-            }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 AccountsPage(onboarding: false)
             }
@@ -384,8 +380,7 @@ struct UserView: View {
             VStack(spacing: 0) {
                 FeedPost(postView: post,
                          showPostCreator: false,
-                         showCommunity: true,
-                         responseItem: $responseItem
+                         showCommunity: true
                 )
                 
                 Divider()
@@ -404,8 +399,7 @@ struct UserView: View {
                 postContext: nil,
                 depth: 0,
                 showPostContext: true,
-                showCommentCreator: false,
-                replyToComment: nil
+                showCommentCreator: false
             )
             
             Divider()

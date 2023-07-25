@@ -35,6 +35,7 @@ struct CommentItem: View {
 
     @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
+    @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
 
     // MARK: Constants
@@ -51,7 +52,6 @@ struct CommentItem: View {
     let showCommentCreator: Bool
     let showInteractionBar: Bool
     let enableSwipeActions: Bool
-    let replyToComment: ((APICommentView) -> Void)?
     
     // MARK: Computed
 
@@ -62,8 +62,7 @@ struct CommentItem: View {
          showPostContext: Bool,
          showCommentCreator: Bool,
          showInteractionBar: Bool = true,
-         enableSwipeActions: Bool = true,
-         replyToComment: ((APICommentView) -> Void)?
+         enableSwipeActions: Bool = true
     ) {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
@@ -72,7 +71,6 @@ struct CommentItem: View {
         self.showCommentCreator = showCommentCreator
         self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
-        self.replyToComment = replyToComment
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
@@ -97,7 +95,7 @@ struct CommentItem: View {
                     .padding(.top, AppConstants.postAndCommentSpacing)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
 
-                    if showInteractionBar {
+                    if showInteractionBar && !isCollapsed {
                         CommentInteractionBar(commentView: hierarchicalComment.commentView,
                                               displayedScore: displayedScore,
                                               displayedVote: displayedVote,
@@ -106,7 +104,7 @@ struct CommentItem: View {
                                               downvote: downvote,
                                               saveComment: saveComment,
                                               deleteComment: deleteComment,
-                                              replyToComment: replyToCommentUnwrapped)
+                                              replyToComment: replyToComment)
                     } else {
                         Spacer()
                             .frame(height: AppConstants.postAndCommentSpacing)
@@ -138,11 +136,6 @@ struct CommentItem: View {
                               secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
             )
             .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
-            .sheet(isPresented: $isComposingReport) {
-                ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
-                                                                              comment: hierarchicalComment.commentView,
-                                                                              report: true))
-            }
             
             Divider()
 
@@ -194,8 +187,7 @@ struct CommentItem: View {
                         postContext: postContext,
                         depth: depth + 1,
                         showPostContext: false,
-                        showCommentCreator: true,
-                        replyToComment: replyToComment
+                        showCommentCreator: true
                     )
                 }
             }
@@ -242,14 +234,10 @@ extension CommentItem {
     }
 
     var replySwipeAction: SwipeAction? {
-        if replyToComment != nil {
-            return SwipeAction(
-                symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
-                color: .accentColor,
-                action: replyToCommentAsyncWrapper
-            )
-        } else {
-            return nil
-        }
+        return SwipeAction(
+            symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
+            color: .accentColor,
+            action: replyToCommentAsyncWrapper
+        )
     }
 }

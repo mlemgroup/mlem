@@ -149,11 +149,11 @@ extension InboxView {
     }
     
     func replyToCommentReply(commentReply: APICommentReplyView) {
-        responseItem = ConcreteRespondable(appState: appState, commentReply: commentReply)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, commentReply: commentReply))
     }
     
     func reportCommentReply(commentReply: APICommentReplyView) {
-        responseItem = ConcreteRespondable(appState: appState, commentReply: commentReply, report: true)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, commentReply: commentReply, report: true))
     }
     
     // MENTIONS
@@ -191,11 +191,11 @@ extension InboxView {
     }
     
     func reportMention(mention: APIPersonMentionView) {
-        responseItem = ConcreteRespondable(appState: appState, mention: mention, report: true)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, mention: mention, report: true))
     }
     
     func replyToMention(mention: APIPersonMentionView) {
-        responseItem = ConcreteRespondable(appState: appState, mention: mention)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, mention: mention))
     }
     
     // MESSAGES
@@ -217,10 +217,10 @@ extension InboxView {
     }
     
     func replyToMessage(message: APIPrivateMessageView) {
-        responseItem = ConcreteRespondable(appState: appState, message: message)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, message: message))
     }
     
     func reportMessage(message: APIPrivateMessageView) {
-        responseItem = ConcreteRespondable(appState: appState, message: message, report: true)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, message: message, report: true))
     }
 }

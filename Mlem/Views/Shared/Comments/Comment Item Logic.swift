@@ -91,19 +91,25 @@ extension CommentItem {
         }
     }
     
+    func replyToComment() {
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: hierarchicalComment.commentView,
+                                                           commentTracker: commentTracker,
+                                                           operation: .reply))
+    }
+
+    func editComment() {
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: hierarchicalComment.commentView,
+                                                           commentTracker: commentTracker,
+                                                           operation: .edit))
+    }
+    
     /**
      Asynchronous wrapper around replyToComment so that it can be used in swipey actions
      */
     func replyToCommentAsyncWrapper() async {
-        if let replyCallback = replyToComment {
-            replyCallback(hierarchicalComment.commentView)
-        }
-    }
-    
-    func replyToCommentUnwrapped() {
-        if let replyCallback = replyToComment {
-            replyCallback(hierarchicalComment.commentView)
-        }
+        replyToComment()
     }
 
     /**
@@ -180,15 +186,13 @@ extension CommentItem {
         })
         
         // reply
-        if let replyCallback = replyToComment {
-            ret.append(MenuFunction(
-                text: "Reply",
-                imageName: "arrowshape.turn.up.left",
-                destructiveActionPrompt: nil,
-                enabled: true) {
-                    replyCallback(hierarchicalComment.commentView)
-                })
-        }
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                replyToComment()
+            })
         
         // delete
         if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
@@ -220,7 +224,9 @@ extension CommentItem {
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
             enabled: true) {
-                isComposingReport = true
+                editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                                   comment: hierarchicalComment.commentView,
+                                                                   report: true))
             })
         
         // block

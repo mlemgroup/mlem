@@ -9,7 +9,7 @@ import Foundation
 import Dependencies
 import SwiftUI
 
-struct ReplyToComment: Respondable {
+struct ReplyToComment: EditorModel {
     
     @Dependency(\.commentRepository) var commentRepository
     
@@ -17,6 +17,7 @@ struct ReplyToComment: Respondable {
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
+    let prefillContents: String? = nil
     let comment: APICommentView
     
     let commentTracker: CommentTracker?

@@ -36,6 +36,7 @@ struct InboxView: View {
     
     // MARK: Global
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var editorTracker: EditorTracker
     
     // MARK: Internal
     // id of the last account loaded with
@@ -58,9 +59,6 @@ struct InboxView: View {
     // input state handling
     // - current view
     @State var curTab: InboxTab = .all
-    
-    // - responses
-    @State var responseItem: ConcreteRespondable?
     
     // utility
     @State private var navigationPath = NavigationPath()
@@ -108,9 +106,6 @@ struct InboxView: View {
                     await refreshFeed()
                 }
             }
-        }
-        .sheet(item: $responseItem) { responseItem in
-            ResponseComposerView(concreteRespondable: responseItem)
         }
         // load view if empty or account has changed
         .task(priority: .userInitiated) {

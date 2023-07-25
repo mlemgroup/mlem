@@ -9,14 +9,14 @@ import Foundation
 import Dependencies
 import SwiftUI
 
-struct ReplyToExpandedPost: Respondable {
-    
+struct ReplyToExpandedPost: EditorModel {
     @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { post.id }
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
+    let prefillContents: String? = nil
     let post: APIPostView
     let commentTracker: CommentTracker
     
