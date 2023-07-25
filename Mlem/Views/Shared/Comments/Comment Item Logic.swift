@@ -194,6 +194,17 @@ extension CommentItem {
                 replyToComment()
             })
         
+        // edit
+        if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
+            ret.append(MenuFunction(
+                text: "Edit",
+                imageName: "pencil",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                    editComment()
+                })
+        }
+        
         // delete
         if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
             ret.append(MenuFunction(
