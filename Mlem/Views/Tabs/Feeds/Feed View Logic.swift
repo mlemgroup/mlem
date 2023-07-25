@@ -60,21 +60,23 @@ extension FeedView {
     /**
      Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
      */
-    func hardRefreshFeed() async {
-        defer { isLoading = false }
-        isLoading = true
-        do {
-            try await postTracker.refresh(
-                account: appState.currentActiveAccount,
-                communityId: community?.id,
-                sort: postSortType,
-                type: feedType,
-                clearBeforeFetch: true,
-                filtering: { postView in
-                    !postView.post.name.contains(filtersTracker.filteredKeywords)
-                })
-        } catch {
-            handle(error)
+    func hardRefreshFeed() {
+        Task(priority: .userInitiated) {
+            defer { isLoading = false }
+            isLoading = true
+            do {
+                try await postTracker.refresh(
+                    account: appState.currentActiveAccount,
+                    communityId: community?.id,
+                    sort: postSortType,
+                    type: feedType,
+                    clearBeforeFetch: true,
+                    filtering: { postView in
+                        !postView.post.name.contains(filtersTracker.filteredKeywords)
+                    })
+            } catch {
+                handle(error)
+            }
         }
     }
     

@@ -63,14 +63,14 @@ struct FeedView: View {
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }
         // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
-            .task(id: feedType) {
-                await hardRefreshFeed()
+            .onChange(of: feedType) { _ in
+                hardRefreshFeed()
             }
-            .task(id: postSortType) {
-                await hardRefreshFeed()
+            .onChange(of: postSortType) { _ in
+                hardRefreshFeed()
             }
-            .task(id: appState.currentActiveAccount) {
-                await hardRefreshFeed()
+            .onChange(of: appState.currentActiveAccount) { _ in
+                hardRefreshFeed()
             }
             .refreshable { await refreshFeed() }
             .sheet(isPresented: $isComposingPost) {
@@ -81,7 +81,6 @@ struct FeedView: View {
             .sheet(item: $responseItem) { responseItem in
                 ResponseComposerView(concreteRespondable: responseItem)
             }
-            .environmentObject(postTracker) // needed for posting post
     }
     
     @ViewBuilder
