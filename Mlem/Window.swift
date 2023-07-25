@@ -59,11 +59,12 @@ struct Window: View {
             .environmentObject(favoriteCommunitiesTracker)
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
+            .environmentObject(editorTracker)
             .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
             .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
             .sheet(item: $editorTracker.editing) { editing in
-                            EditorView(concreteEditorModel: editing)
-                        }
+                EditorView(concreteEditorModel: editing)
+            }
     }
 
     private func saveFilteredKeywords(_ newValue: [String]) {
