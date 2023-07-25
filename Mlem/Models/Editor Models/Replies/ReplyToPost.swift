@@ -10,6 +10,7 @@ import SwiftUI
 import Dependencies
 
 struct ReplyToPost: EditorModel {
+    
     @Dependency(\.commentRepository) var commentRepository
     
     let appState: AppState
