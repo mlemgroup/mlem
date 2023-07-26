@@ -11,11 +11,13 @@ import Dependencies
 struct ContentView: View {
     
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.personRepository) var personRepository
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     
     @StateObject var editorTracker: EditorTracker = .init()
+    @StateObject var unreadTracker: UnreadTracker = .init()
     
     @State private var errorAlert: ErrorAlert?
     
@@ -42,7 +44,7 @@ struct ContentView: View {
                         FancyTabBarLabel(tag: TabSelection.inbox,
                                          symbolName: "mail.stack",
                                          activeSymbolName: "mail.stack.fill",
-                                         badgeCount: 10)
+                                         badgeCount: unreadTracker.total)
                     }
                 
                 ProfileView(userID: appState.currentActiveAccount.id)
@@ -69,6 +71,20 @@ struct ContentView: View {
         }
         // TODO: remove once all using `.errorHandler` as the `appState` will no longer receive these...
         .onChange(of: appState.contextualError) { errorHandler.handle($0) }
+        .task(id: appState.currentActiveAccount) {
+            print("account changed to \(appState.currentActiveAccount.username)")
+            
+            // get inbox count
+            Task(priority: .background) {
+                do {
+                    let unreadCounts = try await personRepository.getUnreadCounts()
+                    unreadTracker.update(with: unreadCounts)
+                    // print(unreadCounts)
+                } catch {
+                    appState.contextualError = .init(underlyingError: error)
+                }
+            }
+        }
         .onReceive(errorHandler.$sessionExpired) { expired in
             if expired {
                 NotificationDisplayer.presentTokenRefreshFlow(for: appState.currentActiveAccount) { updatedAccount in
@@ -99,6 +115,7 @@ struct ContentView: View {
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
         .environmentObject(editorTracker)
+        .environmentObject(unreadTracker)
     }
     
     // MARK: helpers

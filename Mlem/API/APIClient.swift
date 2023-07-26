@@ -226,4 +226,10 @@ extension APIClient {
         let request = CreateCommentReportRequest(session: try session, commentId: id, reason: reason)
         return try await perform(request: request)
     }
+    
+    // MARK: Person Requests
+    func getUnreadCount() async throws -> APIPersonUnreadCounts {
+        let request = GetPersonUnreadCount(session: try session)
+        return try await perform(request: request)
+    }
 }

@@ -8,6 +8,9 @@
 import Foundation
 
 extension InboxView {
+    
+    // MARK: Tracker Updates
+    
     func refreshFeed() async {
         do {
             isLoading = true
@@ -104,16 +107,8 @@ extension InboxView {
         isLoading = false
     }
     
-    /**
-     returns true if lhs was posted after rhs
-     */
-    func wasPostedAfter(lhs: InboxItem, rhs: InboxItem) -> Bool {
-        return lhs.published > rhs.published
-    }
+    // MARK: - Replies
     
-    // MARK: Callbacks
-    
-    // REPLIES
     func voteOnCommentReply(commentReply: APICommentReplyView, inputOp: ScoringOperation) {
         Task(priority: .userInitiated) {
             let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
@@ -141,6 +136,12 @@ extension InboxView {
                                                             commentReplyTracker: repliesTracker,
                                                             appState: appState)
                 
+                if commentReplyView.commentReply.read {
+                    unreadTracker.unreadReply()
+                } else {
+                    unreadTracker.readReply()
+                }
+                
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 print("failed to mark read!")
@@ -160,7 +161,8 @@ extension InboxView {
                                                            operation: InboxItemOperation.reportInboxItem))
     }
     
-    // MENTIONS
+    // MARK: Mentions
+    
     func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
         Task(priority: .userInitiated) {
             let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
@@ -187,6 +189,12 @@ extension InboxView {
                                                              mentionTracker: mentionsTracker,
                                                              appState: appState)
                 
+                if mention.personMention.read {
+                    unreadTracker.unreadMention()
+                } else {
+                    unreadTracker.readMention()
+                }
+                
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 print("failed to mark mention as read!")
@@ -206,7 +214,7 @@ extension InboxView {
                                                            operation: InboxItemOperation.replyToInboxItem))
     }
     
-    // MESSAGES
+    // MARK: Messages
     
     func toggleMessageRead(message: APIPrivateMessageView) {
         Task(priority: .userInitiated) {
@@ -216,6 +224,12 @@ extension InboxView {
                                                               account: appState.currentActiveAccount,
                                                               messagesTracker: messagesTracker,
                                                               appState: appState)
+                
+                if message.privateMessage.read {
+                    unreadTracker.unreadMessage()
+                } else {
+                    unreadTracker.readMessage()
+                }
                 
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
@@ -234,5 +248,27 @@ extension InboxView {
         editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
                                                            message: message,
                                                            operation: InboxItemOperation.reportInboxItem))
+    }
+    
+    // MARK: - Helpers
+    
+    /**
+     returns true if lhs was posted after rhs
+     */
+    func wasPostedAfter(lhs: InboxItem, rhs: InboxItem) -> Bool {
+        return lhs.published > rhs.published
+    }
+    
+    func genMenuFunctions() -> [MenuFunction] {
+        var ret: [MenuFunction] = .init()
+        
+        ret.append(MenuFunction(text: "Show Unread",
+                                imageName: "line.3.horizontal.decrease.circle",
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            print("filtering to only unread")
+        })
+        
+        return ret
     }
 }
