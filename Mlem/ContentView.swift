@@ -15,6 +15,8 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     
+    @StateObject var editorTracker: EditorTracker = .init()
+    
     @State private var errorAlert: ErrorAlert?
     
     // tabs
@@ -87,8 +89,12 @@ struct ContentView: View {
             AccountsPage(onboarding: false)
                 .presentationDetents([.medium, .large])
         }
+        .sheet(item: $editorTracker.editing) { editing in
+            EditorView(concreteEditorModel: editing)
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
+        .environmentObject(editorTracker)
     }
     
     // MARK: helpers
