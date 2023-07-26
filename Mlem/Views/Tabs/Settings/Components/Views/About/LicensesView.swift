@@ -28,10 +28,6 @@ struct LicensesView: View {
                 }
                 
                 Section("Open Source Licenses") {
-                    NavigationLink("Alert Toast") {
-                        DocumentView(text: alertToastLicense.body)
-                    }
-                    
                     NavigationLink("Debounced OnChange") {
                         DocumentView(text: debouncedOnChangeLicense.body)
                     }

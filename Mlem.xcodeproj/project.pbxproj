@@ -229,7 +229,6 @@
 		B11D72832A49FAA7009DC22F /* Cached Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D72822A49FAA7009DC22F /* Cached Image.swift */; };
 		B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93BF2A45CA3400D6DA93 /* Post Link.swift */; };
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
-		B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B14E93C42A470D5100D6DA93 /* AlertToast */; };
 		B157E0C42A507B8000B02C8B /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* Window.swift */; };
 		B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A1C2A606B950056CF99 /* Easter Rewards.swift */; };
 		B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */; };
@@ -709,7 +708,6 @@
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
-				B14E93C52A470D5100D6DA93 /* AlertToast in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
@@ -1796,7 +1794,6 @@
 				63E5D38F2A13CE4100EC1FBD /* DebouncedOnChange */,
 				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
 				636250DB2A18111400FC59B4 /* KeychainAccess */,
-				B14E93C42A470D5100D6DA93 /* AlertToast */,
 				B104A6D72A59BF3C00B3E725 /* Nuke */,
 				B104A6D92A59BF3C00B3E725 /* NukeExtensions */,
 				B104A6DB2A59BF3C00B3E725 /* NukeUI */,
@@ -1880,7 +1877,6 @@
 				63E5D38E2A13CE4100EC1FBD /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
 				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
 				50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 			);
@@ -2675,14 +2671,6 @@
 				minimumVersion = 12.1.2;
 			};
 		};
-		B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/elai950/AlertToast.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.9;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2730,11 +2718,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeVideo;
-		};
-		B14E93C42A470D5100D6DA93 /* AlertToast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B14E93C32A470D5000D6DA93 /* XCRemoteSwiftPackageReference "AlertToast" */;
-			productName = AlertToast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
