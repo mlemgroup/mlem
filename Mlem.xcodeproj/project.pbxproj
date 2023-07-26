@@ -30,6 +30,8 @@
 		507573962A5AD5CF00AA7ABD /* ContextualError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573952A5AD5CF00AA7ABD /* ContextualError.swift */; };
 		507573982A5AD60100AA7ABD /* ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507573972A5AD60100AA7ABD /* ErrorAlert.swift */; };
 		508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508845CE2A3641160088E483 /* JSONDecoder+Default.swift */; };
+		50A881242A71A4CD003E3661 /* PersistenceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881232A71A4CD003E3661 /* PersistenceRepository.swift */; };
+		50A881262A71A511003E3661 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
 		50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B582A61D889005D57DD /* APIClient+Dependency.swift */; };
 		50C99B5C2A61F5EB005D57DD /* CommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */; };
@@ -166,10 +168,6 @@
 		63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* PostSortType.swift */; };
 		63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A52A05225100A18C5D /* Saved Account.swift */; };
 		63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */; };
-		63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7AA2A05233C00A18C5D /* Write Data to File.swift */; };
-		63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7AC2A05235400A18C5D /* Encode for Saving.swift */; };
-		63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */; };
-		63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */; };
 		63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 63F0C7B62A052F5000A18C5D /* CachedAsyncImage */; };
 		63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Account View.swift */; };
 		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
@@ -413,6 +411,8 @@
 		507573952A5AD5CF00AA7ABD /* ContextualError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualError.swift; sourceTree = "<group>"; };
 		507573972A5AD60100AA7ABD /* ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlert.swift; sourceTree = "<group>"; };
 		508845CE2A3641160088E483 /* JSONDecoder+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Default.swift"; sourceTree = "<group>"; };
+		50A881232A71A4CD003E3661 /* PersistenceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepository.swift; sourceTree = "<group>"; };
+		50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
 		50C99B582A61D889005D57DD /* APIClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Dependency.swift"; sourceTree = "<group>"; };
 		50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
 		50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentRepository+Dependency.swift"; sourceTree = "<group>"; };
@@ -549,10 +549,6 @@
 		63F0C7A12A0519BA00A18C5D /* PostSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSortType.swift; sourceTree = "<group>"; };
 		63F0C7A52A05225100A18C5D /* Saved Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account.swift"; sourceTree = "<group>"; };
 		63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Saved Account Tracker.swift"; sourceTree = "<group>"; };
-		63F0C7AA2A05233C00A18C5D /* Write Data to File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Write Data to File.swift"; sourceTree = "<group>"; };
-		63F0C7AC2A05235400A18C5D /* Encode for Saving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encode for Saving.swift"; sourceTree = "<group>"; };
-		63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decode Data from File.swift"; sourceTree = "<group>"; };
-		63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Create Empty File.swift"; sourceTree = "<group>"; };
 		63F0C7B82A0533C700A18C5D /* Add Account View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Add Account View.swift"; sourceTree = "<group>"; };
 		63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionWebSocketTask - Send Ping.swift"; sourceTree = "<group>"; };
 		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
@@ -919,6 +915,7 @@
 				50C99B612A629C06005D57DD /* ErrorHandler+Dependency.swift */,
 				500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */,
 				5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */,
+				50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */,
 			);
 			path = Dependency;
 			sourceTree = "<group>";
@@ -929,6 +926,7 @@
 				50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */,
 				CD82A2522A716B8100111034 /* PersonRepository.swift */,
 				CD6F29A92A78003A00F20B6B /* PostRepository.swift */,
+				50A881232A71A4CD003E3661 /* PersistenceRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -1026,7 +1024,6 @@
 				B1955A1B2A606B810056CF99 /* Easter */,
 				6D8F08FA2A4029A1003EB4FD /* Get Favorited Communities.swift */,
 				6314C9EF2A194FEE00B08405 /* Participating */,
-				63F0C7A92A05232D00A18C5D /* File Management */,
 				630049EB27EF390900D5105B /* Networking */,
 				6322A5D127F88CFD00135D4F /* Time Parser.swift */,
 				6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */,
@@ -1519,17 +1516,6 @@
 				CDE9CE4E2A7B0B1B002B97DD /* Haptic.swift */,
 			);
 			path = Enums;
-			sourceTree = "<group>";
-		};
-		63F0C7A92A05232D00A18C5D /* File Management */ = {
-			isa = PBXGroup;
-			children = (
-				63F0C7AA2A05233C00A18C5D /* Write Data to File.swift */,
-				63F0C7AC2A05235400A18C5D /* Encode for Saving.swift */,
-				63F0C7AE2A05256C00A18C5D /* Decode Data from File.swift */,
-				63F0C7B02A0525FB00A18C5D /* Create Empty File.swift */,
-			);
-			path = "File Management";
 			sourceTree = "<group>";
 		};
 		6D91D4532A41597B006B8F9A /* Components */ = {
@@ -2114,7 +2100,6 @@
 				63344C542A07D193001BC616 /* FiltersSettingsView.swift in Sources */,
 				6372185C2A3A2AAD008C4816 /* APICommunity.swift in Sources */,
 				6372185D2A3A2AAD008C4816 /* APICommunityAggregates.swift in Sources */,
-				63F0C7B12A0525FB00A18C5D /* Create Empty File.swift in Sources */,
 				CD04D5DB2A36154F008EF95B /* Save.swift in Sources */,
 				CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */,
 				B1955A212A6145C00056CF99 /* Environment - EasterFlagSetter.swift in Sources */,
@@ -2140,6 +2125,7 @@
 				CD18DC732A522A7C002C56BC /* CreatePrivateMessageRequest.swift in Sources */,
 				CD525F652A4B6D8F00BCA794 /* Community Link View.swift in Sources */,
 				637218592A3A2AAD008C4816 /* APISiteAggregates.swift in Sources */,
+				50A881262A71A511003E3661 /* PersistenceRepository+Dependency.swift in Sources */,
 				6DA7E9A22A50764E0095AB68 /* UserViewTab.swift in Sources */,
 				CD863FBA2A6AEB5900A31ED9 /* TabSafeScrollView.swift in Sources */,
 				637218772A3A2AAD008C4816 /* APIRequest.swift in Sources */,
@@ -2179,7 +2165,6 @@
 				50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */,
 				507573962A5AD5CF00AA7ABD /* ContextualError.swift in Sources */,
 				50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */,
-				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
 				CDDCF6572A678298003DA3AC /* FancyTabBarSelection.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
 				CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */,
@@ -2204,7 +2189,6 @@
 				CD1446232A5B336900610EF1 /* LicensesView.swift in Sources */,
 				CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */,
 				6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */,
-				63F0C7AB2A05233C00A18C5D /* Write Data to File.swift in Sources */,
 				CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */,
 				CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
@@ -2253,7 +2237,6 @@
 				6D693A422A5114DF009E2D76 /* APIPostReport.swift in Sources */,
 				5064D03F2A6DE0DB00B22EE3 /* Notifier+Dependency.swift in Sources */,
 				6D8003792A45FD1300363206 /* Bundle.swift in Sources */,
-				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63344C712A098060001BC616 /* Sidebar View.swift in Sources */,
 				6DE118392A4A20D600810C7E /* Lazy Load Post Link.swift in Sources */,
 				CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */,
@@ -2268,6 +2251,7 @@
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
 				CDF8425E2A49E61A00723DA0 /* APIPersonMention.swift in Sources */,
 				CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */,
+				50A881242A71A4CD003E3661 /* PersistenceRepository.swift in Sources */,
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */,

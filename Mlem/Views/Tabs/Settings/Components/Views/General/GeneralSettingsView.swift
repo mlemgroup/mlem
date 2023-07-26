@@ -110,20 +110,7 @@ struct GeneralSettingsView: View {
                         Button(role: .destructive) {
                             do {
                                 try FileManager.default.removeItem(at: AppConstants.favoriteCommunitiesFilePath)
-
-                                do {
-                                    try createEmptyFile(at: AppConstants.favoriteCommunitiesFilePath)
-
-                                    favoritesTracker.favoriteCommunities = .init()
-                                } catch let emptyFileCreationError {
-                                    appState.contextualError = .init(
-                                        title: "Couldn't recreate favorites file",
-                                        message: "Try restarting Mlem.",
-                                        underlyingError: emptyFileCreationError
-                                    )
-                                    
-                                    print("Failed while creting empty file: \(emptyFileCreationError)")
-                                }
+                                favoritesTracker.favoriteCommunities = .init()
                             } catch let fileDeletionError {
                                 appState.contextualError = .init(
                                     title: "Couldn't delete favorites",

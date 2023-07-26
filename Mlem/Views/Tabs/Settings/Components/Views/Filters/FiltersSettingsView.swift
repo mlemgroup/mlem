@@ -66,19 +66,11 @@ struct FiltersSettingsView: View {
                             return
                         }
 
-                        print("URL of imported file: \(urlOfImportedFile)")
                         do {
-                            let decodedKeywords = try decodeFromFile(
-                                fromURL: urlOfImportedFile,
-                                whatToDecode: .filteredKeywords
-                            ) as? [String] ?? []
-
-                            urlOfImportedFile.stopAccessingSecurityScopedResource()
-
-                            print("Decoded these: \(decodedKeywords)")
-
+                            let data = try Data(contentsOf: urlOfImportedFile, options: .mappedIfSafe)
+                            let keywords = try JSONDecoder().decode([String].self, from: data)
                             withAnimation {
-                                filtersTracker.filteredKeywords = decodedKeywords
+                                filtersTracker.filteredKeywords = keywords
                             }
                         } catch let decodingError {
                             appState.contextualError = .init(
@@ -86,8 +78,6 @@ struct FiltersSettingsView: View {
                                 message: "Try again. If the problem keeps happening, try reinstalling Mlem.",
                                 underlyingError: decodingError
                             )
-                            
-                            print("Failed while decoding blocklist: \(decodingError)")
                         }
 
                     } catch let blocklistImportingError {
@@ -99,7 +89,6 @@ struct FiltersSettingsView: View {
                                      """,
                             underlyingError: blocklistImportingError
                         )
-                        print("Failed while reading file: \(blocklistImportingError)")
                     }
                 }
 
@@ -111,9 +100,9 @@ struct FiltersSettingsView: View {
                 } label: {
                     Label("Delete All Filters", systemImage: "trash")
                         .foregroundColor(.red)
-                        .opacity(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count == 0 ? 0.6 : 1)
+                        .opacity(filtersTracker.filteredKeywords.isEmpty ? 0.6 : 1)
                 }
-                .disabled(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count == 0)
+                .disabled(filtersTracker.filteredKeywords.isEmpty)
                 .confirmationDialog(
                     "Are you sure you want to delete all filters?",
                     isPresented: $isShowingFilterDeletionConfirmation,
@@ -122,10 +111,9 @@ struct FiltersSettingsView: View {
                             isShowingFilterDeletionConfirmation = false
                             withAnimation {
                                 filtersTracker.filteredKeywords = .init()
-                                filtersTracker.filteredUsers = .init()
                             }
                         } label: {
-                            Text("Delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters")
+                            Text("Delete \(filtersTracker.filteredKeywords.count) filters")
                         }
 
                         Button(role: .cancel) {
@@ -136,7 +124,7 @@ struct FiltersSettingsView: View {
                     } message: {
                         Text(
                              """
-                             You are about to delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters.
+                             You are about to delete \(filtersTracker.filteredKeywords.count) filters.
                              You cannot undo this action.
                              """
                         )
@@ -150,7 +138,7 @@ struct FiltersSettingsView: View {
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 EditButton()
-                    .disabled(filtersTracker.filteredKeywords.isEmpty && filtersTracker.filteredUsers.isEmpty)
+                    .disabled(filtersTracker.filteredKeywords.isEmpty)
             }
         }
     }

@@ -54,9 +54,6 @@ struct MlemApp: App {
                     UITabBar.appearance().scrollEdgeAppearance = appearance
                 }
         }
-        .onChange(of: accountsTracker.savedAccounts) { _ in
-            accountsTracker.saveToDisk()
-        }
         .onChange(of: lightOrDarkMode) { value in
             let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
             windowScene?.windows.first?.overrideUserInterfaceStyle = value
