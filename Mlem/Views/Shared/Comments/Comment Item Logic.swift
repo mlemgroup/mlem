@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AlertToast
 
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
@@ -243,18 +242,11 @@ extension CommentItem {
                 account: appState.currentActiveAccount,
                 personId: userId,
                 blocked: true
-            )// Show Toast
+            )
             
             // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
             if blocked {
-                let toast = AlertToast(
-                    displayMode: .alert,
-                    type: .complete(.blue),
-                    title: "Blocked user"
-                )
-                appState.toast = toast
-                appState.isShowingToast = true
-                
+                await notifier.add(.success("Blocked user"))
                 commentTracker.filter { comment in
                     comment.commentView.creator.id != userId
                 }

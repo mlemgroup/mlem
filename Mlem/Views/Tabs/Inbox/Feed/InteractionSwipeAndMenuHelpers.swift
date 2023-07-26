@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AlertToast
 
 extension InboxView {
     
@@ -262,18 +261,11 @@ extension InboxView {
                 account: appState.currentActiveAccount,
                 personId: userId,
                 blocked: true
-            )// Show Toast
+            )
             
             // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
             if blocked {
-                let toast = AlertToast(
-                    displayMode: .alert,
-                    type: .complete(.blue),
-                    title: "Blocked user"
-                )
-                appState.toast = toast
-                appState.isShowingToast = true
-                
+                await notifier.add(.success("Blocked user"))
                 filterUser(userId: userId)
             }
         } catch {

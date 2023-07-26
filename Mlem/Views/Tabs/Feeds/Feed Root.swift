@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AlertToast
 
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
@@ -18,7 +17,6 @@ struct FeedRoot: View {
     @State var navigationPath = NavigationPath()
 
     @State var rootDetails: CommunityLinkWithContext?
-    @State var isShowingToast: Bool = false
     
     let showLoading: Bool
 
@@ -49,9 +47,6 @@ struct FeedRoot: View {
         .environment(\.navigationPath, $navigationPath)
         .environmentObject(appState)
         .environmentObject(accountsTracker)
-        .toast(isPresenting: $appState.isShowingToast, duration: 2) {
-            appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
-        }
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:

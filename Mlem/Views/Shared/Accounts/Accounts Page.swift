@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AlertToast
 
 struct AccountsPage: View {
     @EnvironmentObject var appState: AppState

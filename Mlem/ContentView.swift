@@ -68,7 +68,7 @@ struct ContentView: View {
         .onChange(of: appState.contextualError) { errorHandler.handle($0) }
         .onReceive(errorHandler.$sessionExpired) { expired in
             if expired {
-                ErrorDisplayer.presentTokenRefreshFlow(for: appState.currentActiveAccount) { updatedAccount in
+                NotificationDisplayer.presentTokenRefreshFlow(for: appState.currentActiveAccount) { updatedAccount in
                     appState.setActiveAccount(updatedAccount)
                 }
             }

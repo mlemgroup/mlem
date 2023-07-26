@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AlertToast
 
 extension ExpandedPost {
     
@@ -77,15 +76,8 @@ extension ExpandedPost {
             )
             if blocked {
                 postTracker.removePosts(from: post.creator.id)
-
-                let toast = AlertToast(
-                    displayMode: .alert,
-                    type: .complete(.blue),
-                    title: "Blocked \(post.creator.name)"
-                )
-                appState.toast = toast
-                appState.isShowingToast = true
-            } // Show Toast
+                await notifier.add(.success("Blocked \(post.creator.name)"))
+            }
         } catch {
             errorHandler.handle(
                 .init(
