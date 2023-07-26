@@ -17,13 +17,13 @@ class ErrorHandler: ObservableObject {
     
     private(set) var contextualError: ContextualError?
     
-    func handle(_ error: ContextualError?) {
+    func handle(_ error: ContextualError?, file: StaticString = #fileID, function: StaticString = #function, line: Int = #line) {
         guard let error else {
             return
         }
         
         #if DEBUG
-        log(error)
+        log(error, file, function, line)
         #endif
 
         Task { @MainActor in
@@ -48,9 +48,10 @@ class ErrorHandler: ObservableObject {
         }
     }
     
-    private func log(_ error: ContextualError) {
+    private func log(_ error: ContextualError, _ file: StaticString, _ function: StaticString, _ line: Int) {
         print("☠️ ERROR ☠️")
         print("🕵️ -> \(error.underlyingError.description)")
         print("📝 -> \(error.underlyingError.localizedDescription)")
+        print("📂 -> \(file) | \(function) | line: \(line)")
     }
 }
