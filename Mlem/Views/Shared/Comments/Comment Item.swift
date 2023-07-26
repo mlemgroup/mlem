@@ -86,66 +86,9 @@ struct CommentItem: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Group {
-                VStack(alignment: .leading, spacing: 0) {
-                    CommentBodyView(commentView: hierarchicalComment.commentView,
-                                    isCollapsed: isCollapsed,
-                                    showPostContext: showPostContext,
-                                    showCommentCreator: showCommentCreator,
-                                    menuFunctions: genMenuFunctions())
-                    .padding(.top, AppConstants.postAndCommentSpacing)
-                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
-
-                    if showInteractionBar {
-                        CommentInteractionBar(commentView: hierarchicalComment.commentView,
-                                              displayedScore: displayedScore,
-                                              displayedVote: displayedVote,
-                                              displayedSaved: displayedSaved,
-                                              upvote: upvote,
-                                              downvote: downvote,
-                                              saveComment: saveComment,
-                                              deleteComment: deleteComment,
-                                              replyToComment: replyToCommentUnwrapped)
-                    } else {
-                        Spacer()
-                            .frame(height: AppConstants.postAndCommentSpacing)
-                    }
-                }
-            }
-            .contentShape(Rectangle()) // allow taps in blank space to register
-            .onTapGesture {
-                withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
-                    // Perhaps we want an explict flag for this in the future?
-                    if !showPostContext {
-                        isCollapsed.toggle()
-                    }
-                }
-            }
-            .contextMenu {
-                ForEach(genMenuFunctions()) { item in
-                    Button {
-                        item.callback()
-                    } label: {
-                        Label(item.text, systemImage: item.imageName)
-                    }
-                }
-            }
-            .background(Color.systemBackground)
-            .addSwipeyActions(primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
-                              secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
-                              primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
-                              secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
-            )
-            .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
-            .sheet(isPresented: $isComposingReport) {
-                ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
-                                                                              comment: hierarchicalComment.commentView,
-                                                                              report: true))
-            }
-            
+            commentBody(hierarchicalComment: self.hierarchicalComment)
             Divider()
-
-            childComments
+            childComments(children: self.hierarchicalComment.children)
                 .transition(.move(edge: .top).combined(with: .opacity))
         }
         .clipped()
@@ -154,24 +97,84 @@ struct CommentItem: View {
     }
 
     // MARK: Subviews
-
+    
+    @ViewBuilder
+    private func commentBody(hierarchicalComment: HierarchicalComment) -> some View {
+        Group {
+            VStack(alignment: .leading, spacing: 0) {
+                CommentBodyView(commentView: hierarchicalComment.commentView,
+                                isCollapsed: isCollapsed,
+                                showPostContext: showPostContext,
+                                showCommentCreator: showCommentCreator,
+                                menuFunctions: genMenuFunctions())
+                .padding(.top, AppConstants.postAndCommentSpacing)
+                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                
+                if showInteractionBar {
+                    CommentInteractionBar(commentView: hierarchicalComment.commentView,
+                                          displayedScore: displayedScore,
+                                          displayedVote: displayedVote,
+                                          displayedSaved: displayedSaved,
+                                          upvote: upvote,
+                                          downvote: downvote,
+                                          saveComment: saveComment,
+                                          deleteComment: deleteComment,
+                                          replyToComment: replyToCommentUnwrapped)
+                } else {
+                    Spacer()
+                        .frame(height: AppConstants.postAndCommentSpacing)
+                }
+            }
+        }
+        .contentShape(Rectangle()) // allow taps in blank space to register
+        .onTapGesture {
+            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
+                // Perhaps we want an explict flag for this in the future?
+                if !showPostContext {
+                    isCollapsed.toggle()
+                }
+            }
+        }
+        .contextMenu {
+            ForEach(genMenuFunctions()) { item in
+                Button { item.callback() } label: { Label(item.text, systemImage: item.imageName) }
+            }
+        }
+        .background(Color.systemBackground)
+        .addSwipeyActions(primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
+                          secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
+                          primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
+                          secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
+        )
+        .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
+        .sheet(isPresented: $isComposingReport) {
+            ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
+                                                                          comment: hierarchicalComment.commentView,
+                                                                          report: true))
+        }
+    }
 
     @ViewBuilder
-    var childComments: some View {
+    private func childComments(children: [HierarchicalComment]) -> some View {
         if !isCollapsed {
             // lazy stack because there might be *lots* of these
-            LazyVStack(spacing: 0) {
+//            LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
+//                    commentBody(hierarchicalComment: child)
+//                        .padding(.leading, child.depth == 0 ? 0 : CGFloat(child.depth) * CGFloat(indent))
+//                    if child.children.isEmpty == false {
+//                        childComments(children: child.children)
+//                    }
                     CommentItem(
                         hierarchicalComment: child,
                         postContext: postContext,
-                        depth: depth + 1,
+                        depth: child.depth,
                         showPostContext: false,
                         showCommentCreator: true,
                         replyToComment: replyToComment
                     )
                 }
-            }
+//            }
         }
     }
 }

@@ -11,10 +11,12 @@ import Foundation
 class HierarchicalComment: ObservableObject {
     let commentView: APICommentView
     var children: [HierarchicalComment]
+    let depth: Int
 
-    init(comment: APICommentView, children: [HierarchicalComment]) {
+    init(comment: APICommentView, children: [HierarchicalComment], depth: Int = -1) {
         self.commentView = comment
         self.children = children
+        self.depth = depth
     }
 }
 
@@ -90,17 +92,32 @@ extension [APICommentView] {
 
         let identifiedComments = Dictionary(uniqueKeysWithValues: allComments.lazy.map { ($0.id, $0) })
 
-        /// Recursively populates child comments by looking up IDs from `childrenById`
-        func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
+        func populateChildren(_ comment: APICommentView, depth: Int) -> HierarchicalComment {
             guard let childIds = childrenById[comment.id] else {
-                return .init(comment: comment, children: [])
+                return .init(comment: comment, children: [], depth: depth)
             }
-
-            let commentWithChildren = HierarchicalComment(comment: comment, children: [])
+            
+            let commentWithChildren = HierarchicalComment(comment: comment, children: [], depth: depth)
             commentWithChildren.children = childIds
                 .compactMap { id -> HierarchicalComment? in
                     guard let child = identifiedComments[id] else { return nil }
-                    return populateChildren(child)
+                    return populateChildren(child, depth: depth + 1)
+                }
+            
+            return commentWithChildren
+        }
+        
+        /// Recursively populates child comments by looking up IDs from `childrenById`
+        func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
+            guard let childIds = childrenById[comment.id] else {
+                return .init(comment: comment, children: [], depth: 0)
+            }
+
+            let commentWithChildren = HierarchicalComment(comment: comment, children: [], depth: 0)
+            commentWithChildren.children = childIds
+                .compactMap { id -> HierarchicalComment? in
+                    guard let child = identifiedComments[id] else { return nil }
+                    return populateChildren(child, depth: 1)
                 }
 
             return commentWithChildren
