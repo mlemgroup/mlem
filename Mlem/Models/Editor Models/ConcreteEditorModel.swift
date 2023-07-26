@@ -19,7 +19,7 @@ enum CommentOperation {
  Operations that can be performed on a post
  */
 enum PostOperation {
-    case replyToPost, reportPost, editPost
+    case replyToPost, reportPost
 }
 
 /**
@@ -57,10 +57,6 @@ extension ConcreteEditorModel {
         switch operation {
         case .replyToPost: self.editorModel = ReplyToPost(appState: appState, post: post)
         case .reportPost: self.editorModel = ReportPost(appState: appState, post: post)
-        case .editPost:
-            assertionFailure("editing not supported yet")
-            // shouldn't ever get here, but it makes the compiler happy
-            self.editorModel = ReplyToPost(appState: appState, post: post)
         }
     }
 

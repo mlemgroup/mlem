@@ -75,6 +75,7 @@ struct FeedView: View {
             .sheet(isPresented: $isComposingPost) {
                 if let community = community {
                     PostComposerView(community: community)
+                        .environmentObject(postTracker)
                 }
             }
     }

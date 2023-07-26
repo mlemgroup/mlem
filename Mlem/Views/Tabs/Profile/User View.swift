@@ -25,7 +25,6 @@ struct UserView: View {
     @State var userID: Int
     @State var userDetails: APIPersonView?
 
-    // @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
