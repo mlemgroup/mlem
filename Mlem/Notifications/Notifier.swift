@@ -8,12 +8,8 @@
 
 import Foundation
 
+/// An actor to queue notifications which should be presented to the user
 actor Notifier {
-    
-    enum Message: Notifiable {
-        case success(String)
-        case failure(String)
-    }
     
     private var queue = [Notifiable]() {
         didSet {
@@ -30,7 +26,7 @@ actor Notifier {
         )
     }
     
-    func add(_ message: Message) {
+    func add(_ message: NotificationMessage) {
         queue.append(message)
     }
     

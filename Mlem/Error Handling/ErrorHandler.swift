@@ -33,6 +33,7 @@ class ErrorHandler: ObservableObject {
                     sessionExpired = true
                     return
                 case let .response(apiError, _):
+                    // this will display API errors as simple error toasts
                     await notifier.add(.failure(apiError.error))
                     return
                 default:
@@ -40,6 +41,9 @@ class ErrorHandler: ObservableObject {
                 }
             }
             
+            // if it's not an API error or a session expiration just pass to our notifier
+            // the notifier logic wil handle displaying the error if appropriate based
+            // on the values supplied when the error was created
             await notifier.add(error)
         }
     }
