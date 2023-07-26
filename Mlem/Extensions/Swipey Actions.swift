@@ -77,7 +77,7 @@ struct SwipeyView: ViewModifier {
             }
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
         // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
-            .highPriorityGesture(
+            .gesture(
                 DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
                     .updating($dragState) { value, state, _ in
                         // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
