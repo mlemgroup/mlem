@@ -88,11 +88,11 @@ struct CommentItem: View {
         VStack(spacing: 0) {
             commentBody(hierarchicalComment: self.hierarchicalComment)
             Divider()
-            childComments(children: self.hierarchicalComment.children)
-                .transition(.move(edge: .top).combined(with: .opacity))
+//            childComments(children: self.hierarchicalComment.children)
+//                .transition(.move(edge: .top).combined(with: .opacity))
         }
         .clipped()
-        .padding(.leading, depth == 0 ? 0 : indent)
+        .padding(.leading, depth == 0 ? 0 : CGFloat(hierarchicalComment.depth) * CGFloat(indent))
         .transition(.move(edge: .top).combined(with: .opacity))
     }
 

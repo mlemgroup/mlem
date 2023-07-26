@@ -125,6 +125,11 @@ extension [APICommentView] {
 
         let parents = allComments[..<childrenStartIndex]
         let result = parents.map(populateChildren)
-        return result
+        
+        func flatten(_ comment: HierarchicalComment) -> [HierarchicalComment] {
+            return [comment] + comment.children.flatMap(flatten)
+        }
+        let flatResult = result.flatMap(flatten)
+        return flatResult
     }
 }
