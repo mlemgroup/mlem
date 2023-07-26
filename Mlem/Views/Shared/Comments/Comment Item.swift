@@ -158,13 +158,14 @@ struct CommentItem: View {
     private func childComments(children: [HierarchicalComment]) -> some View {
         if !isCollapsed {
             // lazy stack because there might be *lots* of these
-//            LazyVStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
-//                    commentBody(hierarchicalComment: child)
-//                        .padding(.leading, child.depth == 0 ? 0 : CGFloat(child.depth) * CGFloat(indent))
-//                    if child.children.isEmpty == false {
-//                        childComments(children: child.children)
-//                    }
+                    // swiftlint:disable redundant_discardable_let
+                    let indent = (0...depth)
+                        .map { _ in "\t" }
+                        .reduce("") { $0 + $1 }
+                    let _ = print(indent, "draw child comment \(child.id) at depth \(depth + 1): \(child.commentView.comment.content.prefix(30))")
+                    // swiftlint:enable redundant_discardable_let
                     CommentItem(
                         hierarchicalComment: child,
                         postContext: postContext,
@@ -174,7 +175,7 @@ struct CommentItem: View {
                         replyToComment: replyToComment
                     )
                 }
-//            }
+            }
         }
     }
 }

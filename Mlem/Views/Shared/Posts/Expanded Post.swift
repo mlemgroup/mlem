@@ -42,24 +42,40 @@ struct ExpandedPost: View {
     @State private var viewID: UUID = UUID()
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                postView
-                
-                Divider()
-                    .background(.black)
-
-                if commentTracker.isLoading {
-                    commentsLoadingView
+        //        VStack(spacing: 0) {
+        ////            ScrollView {
+        //                //            Section {
+        //                postView
+        //                //            }
+        //                
+        //                //                Divider()
+        //                //                    .background(.black)
+        //                
+        //                //            Section {
+        //                if commentTracker.isLoading {
+        //                    commentsLoadingView
+        //                } else {
+        //                    if commentTracker.comments.count == 0 {
+        //                        noCommentsView
+        //                    } else {
+        //                        commentsView
+        //                    }
+        //                }
+        //                //            }
+        ////            }
+        //        }
+        Group {
+            if commentTracker.isLoading {
+                commentsLoadingView
+            } else {
+                if commentTracker.comments.count == 0 {
+                    noCommentsView
                 } else {
-                    if commentTracker.comments.count == 0 {
-                        noCommentsView
-                    } else {
-                        commentsView
-                    }
+                    commentsView
                 }
             }
         }
+        .listStyle(PlainListStyle())
         .fancyTabScrollCompatible()
         .sheet(item: $responseItem) { responseItem in
             ResponseComposerView(concreteRespondable: responseItem)
@@ -169,8 +185,11 @@ struct ExpandedPost: View {
      Displays the comments
      */
     private var commentsView: some View {
-        LazyVStack(alignment: .leading, spacing: 0) {
-            ForEach(commentTracker.comments) { comment in
+//        LazyVStack(alignment: .leading, spacing: 0) {
+        List(commentTracker.comments) { comment in
+                // swiftlint:disable redundant_discardable_let
+                let _ = print("drawing parent comment \(comment.id) at depth 0: \(comment.commentView.comment.content.prefix(30))")
+                // swiftlint:enable redundant_discardable_let
                 CommentItem(
                     hierarchicalComment: comment,
                     postContext: post,
@@ -180,7 +199,7 @@ struct ExpandedPost: View {
                     replyToComment: replyToComment
                 )
             }
-        }
+//        }
         .environmentObject(commentTracker)
     }
 }
