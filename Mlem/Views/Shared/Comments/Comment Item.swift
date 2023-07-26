@@ -155,32 +155,6 @@ struct CommentItem: View {
 
     // MARK: Subviews
 
-    @ViewBuilder
-    var commentBody: some View {
-        VStack(spacing: AppConstants.postAndCommentSpacing) {
-            // comment text or placeholder
-            if hierarchicalComment.commentView.comment.deleted {
-                Text("Comment was deleted")
-                    .italic()
-                    .foregroundColor(.secondary)
-            } else if hierarchicalComment.commentView.comment.removed {
-                Text("Comment was removed")
-                    .italic()
-                    .foregroundColor(.secondary)
-            } else if !isCollapsed {
-                MarkdownView(text: hierarchicalComment.commentView.comment.content, isNsfw: hierarchicalComment.commentView.post.nsfw)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-            }
-
-            // embedded post
-            if showPostContext {
-                EmbeddedPost(
-                    community: hierarchicalComment.commentView.community,
-                    post: hierarchicalComment.commentView.post
-                )
-            }
-        }
-    }
 
     @ViewBuilder
     var childComments: some View {
