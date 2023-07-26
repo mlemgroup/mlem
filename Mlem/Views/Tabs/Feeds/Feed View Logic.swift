@@ -310,7 +310,7 @@ extension FeedView {
                 block: shouldBlock
             )
             
-            let response = try await APIClient().perform(request: request)
+            _ = try await APIClient().perform(request: request)
             await fetchCommunityDetails()
         } catch {
             // TODO: If we fail here and want to notify the user we should
