@@ -40,6 +40,10 @@ struct LicensesView: View {
                         DocumentView(text: nukeLicense.body)
                     }
                     
+                    NavigationLink("Swift Dependencies") {
+                        DocumentView(text: swiftDependenciesLicense.body)
+                    }
+                    
                     NavigationLink("Swift Markdown UI") {
                         DocumentView(text: swiftMarkdownUILIcense.body)
                     }
