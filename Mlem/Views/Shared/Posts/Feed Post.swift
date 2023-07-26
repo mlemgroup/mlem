@@ -9,6 +9,7 @@
 // Since padding varies depending on compact/large view, it is handled *entirely* in those components. No padding should
 // appear anywhere in this file.
 
+// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 
 import CachedAsyncImage
@@ -407,3 +408,4 @@ extension FeedPost {
     }
 }
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length

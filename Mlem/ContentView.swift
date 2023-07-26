@@ -89,8 +89,11 @@ struct ContentView: View {
             AccountsPage(onboarding: false)
                 .presentationDetents([.medium, .large])
         }
-        .sheet(item: $editorTracker.editing) { editing in
-            EditorView(concreteEditorModel: editing)
+        .sheet(item: $editorTracker.editingResponse) { editing in
+            ResponseEditorView(concreteEditorModel: editing)
+        }
+        .sheet(item: $editorTracker.editPost) { editing in
+            PostComposerView(editModel: editing)
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
