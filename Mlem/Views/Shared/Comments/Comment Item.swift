@@ -85,15 +85,17 @@ struct CommentItem: View {
     // MARK: Body
 
     var body: some View {
-        VStack(spacing: 0) {
-            commentBody(hierarchicalComment: self.hierarchicalComment)
-            Divider()
-//            childComments(children: self.hierarchicalComment.children)
-//                .transition(.move(edge: .top).combined(with: .opacity))
+        if !isCollapsed {
+            VStack(spacing: 0) {
+                commentBody(hierarchicalComment: self.hierarchicalComment)
+                Divider()
+                //            childComments(children: self.hierarchicalComment.children)
+                //                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+            .clipped()
+            .padding(.leading, depth == 0 ? 0 : CGFloat(hierarchicalComment.depth) * CGFloat(indent))
+            .transition(.move(edge: .top).combined(with: .opacity))
         }
-        .clipped()
-        .padding(.leading, depth == 0 ? 0 : CGFloat(hierarchicalComment.depth) * CGFloat(indent))
-        .transition(.move(edge: .top).combined(with: .opacity))
     }
 
     // MARK: Subviews
