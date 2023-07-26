@@ -303,6 +303,7 @@
 		CD7B53B72A5F258B00006E81 /* APIPrivateMessageReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53B62A5F258B00006E81 /* APIPrivateMessageReportView.swift */; };
 		CD7B53B92A5F263D00006E81 /* APIPrivateMessageReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53B82A5F263D00006E81 /* APIPrivateMessageReport.swift */; };
 		CD7B53BB2A5F27DB00006E81 /* Report Private Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B53BA2A5F27DB00006E81 /* Report Private Message.swift */; };
+		CD82A24C2A70A26900111034 /* View - CustomBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A24B2A70A26900111034 /* View - CustomBadge.swift */; };
 		CD863FBA2A6AEB5900A31ED9 /* TabSafeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */; };
 		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
 		CD9DD8832A622A6C0044EA8E /* ReportCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */; };
@@ -655,6 +656,7 @@
 		CD7B53B62A5F258B00006E81 /* APIPrivateMessageReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPrivateMessageReportView.swift; sourceTree = "<group>"; };
 		CD7B53B82A5F263D00006E81 /* APIPrivateMessageReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPrivateMessageReport.swift; sourceTree = "<group>"; };
 		CD7B53BA2A5F27DB00006E81 /* Report Private Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report Private Message.swift"; sourceTree = "<group>"; };
+		CD82A24B2A70A26900111034 /* View - CustomBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - CustomBadge.swift"; sourceTree = "<group>"; };
 		CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSafeScrollView.swift; sourceTree = "<group>"; };
 		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCommentReply.swift; sourceTree = "<group>"; };
@@ -1043,6 +1045,7 @@
 				B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */,
 				CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */,
 				5064D0402A6E63E000B22EE3 /* Task+Notifiable.swift */,
+				CD82A24B2A70A26900111034 /* View - CustomBadge.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2149,6 +2152,7 @@
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
 				CD1446292A5CAAAD00610EF1 /* Plain Vote Complex.swift in Sources */,
 				6D8F08FB2A4029A1003EB4FD /* Get Favorited Communities.swift in Sources */,
+				CD82A24C2A70A26900111034 /* View - CustomBadge.swift in Sources */,
 				B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,

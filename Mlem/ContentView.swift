@@ -41,7 +41,8 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.inbox) {
                         FancyTabBarLabel(tag: TabSelection.inbox,
                                          symbolName: "mail.stack",
-                                         activeSymbolName: "mail.stack.fill")
+                                         activeSymbolName: "mail.stack.fill",
+                                         badgeCount: 10)
                     }
                 
                 ProfileView(userID: appState.currentActiveAccount.id)
