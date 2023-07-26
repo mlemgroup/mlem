@@ -89,7 +89,7 @@ struct ContentView: View {
             AccountsPage(onboarding: false)
                 .presentationDetents([.medium, .large])
         }
-        .sheet(item: $editorTracker.editingResponse) { editing in
+        .sheet(item: $editorTracker.editResponse) { editing in
             ResponseEditorView(concreteEditorModel: editing)
         }
         .sheet(item: $editorTracker.editPost) { editing in

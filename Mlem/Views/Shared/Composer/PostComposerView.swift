@@ -65,12 +65,13 @@ struct PostComposerView: View {
     }
 }
 
-// disabled because mocking app state is a bear
-// struct PostComposerView_Previews: PreviewProvider {
-//    static let community = generateFakeCommunity(id: 1,
-//                                                 namePrefix: "mlem")
-//
-//    static var previews: some View {
-//        PostComposerView(editModel: PostEditorModel(community: community, appState: AppState()))
-//    }
-// }
+struct PostComposerView_Previews: PreviewProvider {
+    static let community = generateFakeCommunity(id: 1,
+                                                 namePrefix: "mlem")
+    
+    static var previews: some View {
+        PostComposerView(editModel: PostEditorModel(community: community,
+                                                    appState: AppState(defaultAccount: generateFakeAccount(),
+                                                                       selectedAccount: Binding.constant(generateFakeAccount()))))
+    }
+}
