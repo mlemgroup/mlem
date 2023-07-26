@@ -1,5 +1,5 @@
 //
-//  ReplyToMention.swift
+//  ReplyToCommentReply.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-03.
@@ -9,28 +9,29 @@ import Foundation
 import Dependencies
 import SwiftUI
 
-struct ReplyToMention: Respondable {
-    
+struct ReplyToCommentReply: EditorModel {
+
     @Dependency(\.commentRepository) var commentRepository
     
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
-    let mention: APIPersonMentionView
+    let prefillContents: String? = nil
+    let commentReply: APICommentReplyView
     
-    var id: Int { mention.id }
+    var id: Int { commentReply.id }
     
     func embeddedView() -> AnyView {
-        return AnyView(InboxMentionView(mention: mention,
-                                        menuFunctions: [])
+        return AnyView(InboxReplyView(reply: commentReply,
+                                      menuFunctions: [])
             .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {
         try await commentRepository.postComment(
             content: responseContents,
-            parentId: mention.comment.id,
-            postId: mention.post.id
+            parentId: commentReply.comment.id,
+            postId: commentReply.post.id
         )
     }
 }

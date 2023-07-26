@@ -1,5 +1,5 @@
 //
-//  InboxCommentComposerView.swift
+//  EditorView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-03.
@@ -9,27 +9,28 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct ResponseComposerView: View {
+struct EditorView: View {
     
     @Dependency(\.errorHandler) var errorHandler
     
-    let respondable: any Respondable
+    let editorModel: any EditorModel
     
-    init(concreteRespondable: ConcreteRespondable) {
-        self.respondable = concreteRespondable.respondable // don't need the wrapper
+    init(concreteEditorModel: ConcreteEditorModel) {
+        self.editorModel = concreteEditorModel.editorModel // don't need the wrapper
+        self._editorBody = State(initialValue: concreteEditorModel.editorModel.prefillContents ?? "")
     }
 
     @Environment(\.dismiss) var dismiss
 
-    @State var replybody: String = ""
+    @State var editorBody: String
     @State var isSubmitting: Bool = false
 
     private var isReadyToReply: Bool {
-        return replybody.trimmed.isNotEmpty
+        return editorBody.trimmed.isNotEmpty
     }
     
     func uploadImage() {
-        if respondable.canUpload {
+        if editorModel.canUpload {
             print("Uploading")
         } else {
             print("Uploading disabled for this sort of response")
@@ -43,14 +44,14 @@ struct ResponseComposerView: View {
                     
                     // Post Text
                     TextField("What do you want to say?",
-                              text: $replybody,
+                              text: $editorBody,
                               axis: .vertical)
                     .accessibilityLabel("Response Body")
                     .padding(AppConstants.postAndCommentSpacing)
                     
                     Divider()
                     
-                    respondable.embeddedView()
+                    editorModel.embeddedView()
                 }
             }
             .overlay {
@@ -77,28 +78,33 @@ struct ResponseComposerView: View {
                     // Submit Button
                     Button {
                         Task(priority: .userInitiated) {
-                            defer { isSubmitting = false }
-                            do {
-                                isSubmitting = true
-                                try await respondable.sendResponse(responseContents: replybody)
-                                dismiss()
-                            } catch {
-                                errorHandler.handle(
-                                    .init(
-                                        title: "Failed to Send",
-                                        message: "Something went wrong!",
-                                        underlyingError: error
-                                    )
-                                )
-                            }
+                            await submit()
                         }
                     } label: {
                         Image(systemName: "paperplane")
                     }.disabled(isSubmitting || !isReadyToReply)
                 }
             }
-            .navigationTitle(respondable.modalName)
+            .navigationTitle(editorModel.modalName)
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+    
+    @MainActor
+    private func submit() async {
+        defer { isSubmitting = false }
+        do {
+            isSubmitting = true
+            try await editorModel.sendResponse(responseContents: editorBody)
+            dismiss()
+        } catch {
+            errorHandler.handle(
+                .init(
+                    title: "Failed to Send",
+                    message: "Something went wrong!",
+                    underlyingError: error
+                )
+            )
         }
     }
 }

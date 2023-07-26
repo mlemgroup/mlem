@@ -24,6 +24,7 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
 
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var editorTracker: EditorTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
     @StateObject var commentReplyTracker: CommentReplyTracker = .init()
@@ -31,16 +32,10 @@ struct ExpandedPost: View {
     @EnvironmentObject var postTracker: PostTracker
 
     @State var post: APIPostView
-    
-    @State var responseItem: ConcreteRespondable?
 
     @State private var sortSelection = 0
 
     @State private var commentSortingType: CommentSortType = .top
-
-    @State private var isInTheMiddleOfStyling: Bool = false
-
-    @State private var viewID: UUID = UUID()
     
     var body: some View {
         ScrollView {
@@ -62,9 +57,6 @@ struct ExpandedPost: View {
             }
         }
         .fancyTabScrollCompatible()
-        .sheet(item: $responseItem) { responseItem in
-            ResponseComposerView(concreteRespondable: responseItem)
-        }
         .environmentObject(commentTracker)
         .environmentObject(commentReplyTracker)
         .navigationBarTitle(post.community.name, displayMode: .inline)
@@ -177,11 +169,9 @@ struct ExpandedPost: View {
                     postContext: post,
                     depth: 0,
                     showPostContext: false,
-                    showCommentCreator: true,
-                    replyToComment: replyToComment
+                    showCommentCreator: true
                 )
             }
         }
-        .environmentObject(commentTracker)
     }
 }

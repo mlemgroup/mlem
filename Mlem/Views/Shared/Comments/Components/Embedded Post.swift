@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct EmbeddedPost: View {
-    // environmnet
-    @EnvironmentObject var postTracker: PostTracker
+    // used to handle the lazy load embedded post
+    @StateObject var postTracker: PostTracker = .init()
     
     let community: APICommunity
     let post: APIPost

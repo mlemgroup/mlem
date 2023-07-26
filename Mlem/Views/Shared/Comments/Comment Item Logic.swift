@@ -91,19 +91,25 @@ extension CommentItem {
         }
     }
     
+    func replyToComment() {
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: hierarchicalComment.commentView,
+                                                           commentTracker: commentTracker,
+                                                           operation: CommentOperation.replyToComment))
+    }
+
+    func editComment() {
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: hierarchicalComment.commentView,
+                                                           commentTracker: commentTracker,
+                                                           operation: CommentOperation.editComment))
+    }
+    
     /**
      Asynchronous wrapper around replyToComment so that it can be used in swipey actions
      */
     func replyToCommentAsyncWrapper() async {
-        if let replyCallback = replyToComment {
-            replyCallback(hierarchicalComment.commentView)
-        }
-    }
-    
-    func replyToCommentUnwrapped() {
-        if let replyCallback = replyToComment {
-            replyCallback(hierarchicalComment.commentView)
-        }
+        replyToComment()
     }
 
     /**
@@ -180,13 +186,22 @@ extension CommentItem {
         })
         
         // reply
-        if let replyCallback = replyToComment {
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                replyToComment()
+            })
+        
+        // edit
+        if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
             ret.append(MenuFunction(
-                text: "Reply",
-                imageName: "arrowshape.turn.up.left",
+                text: "Edit",
+                imageName: "pencil",
                 destructiveActionPrompt: nil,
                 enabled: true) {
-                    replyCallback(hierarchicalComment.commentView)
+                    editComment()
                 })
         }
         
@@ -220,7 +235,9 @@ extension CommentItem {
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
             enabled: true) {
-                isComposingReport = true
+                editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                                   comment: hierarchicalComment.commentView,
+                                                                   operation: CommentOperation.reportComment))
             })
         
         // block

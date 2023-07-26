@@ -45,7 +45,6 @@ struct FeedView: View {
     @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = false
     @State var isComposingPost: Bool = false
-    @State var responseItem: ConcreteRespondable?
     
     // MARK: - Main Views
     
@@ -76,10 +75,8 @@ struct FeedView: View {
             .sheet(isPresented: $isComposingPost) {
                 if let community = community {
                     PostComposerView(community: community)
+                        .environmentObject(postTracker)
                 }
-            }
-            .sheet(item: $responseItem) { responseItem in
-                ResponseComposerView(concreteRespondable: responseItem)
             }
     }
     
@@ -126,8 +123,7 @@ struct FeedView: View {
                 FeedPost(
                     postView: postView,
                     showPostCreator: shouldShowPostCreator,
-                    showCommunity: false,
-                    responseItem: $responseItem)
+                    showCommunity: false)
             }
             Divider()
         }

@@ -56,15 +56,23 @@ extension ExpandedPost {
     }
     
     func replyToPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: post, commentTracker: commentTracker)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           post: post,
+                                                           commentTracker: commentTracker,
+                                                           operation: PostOperation.replyToPost))
     }
     
     func reportPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: post, report: true)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           post: post,
+                                                           operation: PostOperation.reportPost))
     }
     
     func replyToComment(comment: APICommentView) {
-        responseItem = ConcreteRespondable(appState: appState, comment: comment, commentTracker: commentTracker)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: comment,
+                                                           commentTracker: commentTracker,
+                                                           operation: CommentOperation.replyToComment))
     }
     
     func blockUser() async {

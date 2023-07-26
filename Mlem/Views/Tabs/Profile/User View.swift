@@ -25,7 +25,6 @@ struct UserView: View {
     @State var userID: Int
     @State var userDetails: APIPersonView?
 
-    @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
@@ -33,8 +32,6 @@ struct UserView: View {
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
-    @State var responseItem: ConcreteRespondable?
-    @FocusState var isReplyFieldFocused
     
     // account switching
     var isSelf: Bool { userID == appState.currentActiveAccount.id }
@@ -49,9 +46,6 @@ struct UserView: View {
 
     var body: some View {
         contentView
-            .sheet(item: $responseItem) { responseItem in
-                ResponseComposerView(concreteRespondable: responseItem)
-            }
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 AccountsPage(onboarding: false)
             }
@@ -133,7 +127,6 @@ struct UserView: View {
             }
         }
         .fancyTabScrollCompatible()
-        .environmentObject(privateCommentReplyTracker)
         .environmentObject(privatePostTracker)
         .environmentObject(privateCommentTracker)
         .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
@@ -384,8 +377,7 @@ struct UserView: View {
             VStack(spacing: 0) {
                 FeedPost(postView: post,
                          showPostCreator: false,
-                         showCommunity: true,
-                         responseItem: $responseItem
+                         showCommunity: true
                 )
                 
                 Divider()
@@ -404,8 +396,7 @@ struct UserView: View {
                 postContext: nil,
                 depth: 0,
                 showPostContext: true,
-                showCommentCreator: false,
-                replyToComment: nil
+                showCommentCreator: false
             )
             
             Divider()

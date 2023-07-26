@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct ReportMention: Respondable {
+struct ReportMention: EditorModel {
     
     @Dependency(\.commentRepository) var commentRepository
     
@@ -17,6 +17,7 @@ struct ReportMention: Respondable {
     let appState: AppState
     let canUpload: Bool = false
     let modalName: String = "Report Comment"
+    let prefillContents: String? = nil
     let mention: APIPersonMentionView
     
     func embeddedView() -> AnyView {
