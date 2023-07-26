@@ -43,9 +43,9 @@ struct ExpandedPost: View {
     
     var body: some View {
         //        VStack(spacing: 0) {
-        ////            ScrollView {
+                    ScrollView {
         //                //            Section {
-        //                postView
+                        postView
         //                //            }
         //                
         //                //                Divider()
@@ -64,7 +64,7 @@ struct ExpandedPost: View {
         //                //            }
         ////            }
         //        }
-        Group {
+//        ScrollView {
             if commentTracker.isLoading {
                 commentsLoadingView
             } else {
@@ -185,8 +185,8 @@ struct ExpandedPost: View {
      Displays the comments
      */
     private var commentsView: some View {
-//        LazyVStack(alignment: .leading, spacing: 0) {
-        List(commentTracker.comments) { comment in
+        LazyVStack(alignment: .leading, spacing: 0) {
+            ForEach(commentTracker.comments) { comment in
                 // swiftlint:disable redundant_discardable_let
                 let _ = print("drawing parent comment \(comment.id) at depth 0: \(comment.commentView.comment.content.prefix(30))")
                 // swiftlint:enable redundant_discardable_let
@@ -199,7 +199,7 @@ struct ExpandedPost: View {
                     replyToComment: replyToComment
                 )
             }
-//        }
+        }
         .environmentObject(commentTracker)
     }
 }
