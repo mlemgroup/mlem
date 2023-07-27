@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
-    @AppStorage("compactComments") var compactComments: Bool = true
+    @AppStorage("compactComments") var compactComments: Bool = false
     
     let commentView: APICommentView
     let isCollapsed: Bool

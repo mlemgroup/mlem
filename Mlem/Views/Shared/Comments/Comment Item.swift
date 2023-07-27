@@ -16,7 +16,7 @@ struct CommentItem: View {
     
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
-    @AppStorage("compactComments") var compactComments: Bool = true
+    @AppStorage("compactComments") var compactComments: Bool = false
 
     // MARK: Temporary
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
