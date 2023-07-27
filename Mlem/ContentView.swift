@@ -29,6 +29,7 @@ struct ContentView: View {
     @State private var isPresentingAccountSwitcher: Bool = false
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
+    @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcher) {
@@ -44,7 +45,7 @@ struct ContentView: View {
                         FancyTabBarLabel(tag: TabSelection.inbox,
                                          symbolName: "mail.stack",
                                          activeSymbolName: "mail.stack.fill",
-                                         badgeCount: unreadTracker.total)
+                                         badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0)
                     }
                 
                 ProfileView(userID: appState.currentActiveAccount.id)

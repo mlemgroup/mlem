@@ -11,16 +11,22 @@ extension InboxView {
     
     // MARK: Tracker Updates
     
-    func refreshFeed() async {
+    func refreshFeed(clearBeforeFetch: Bool = false) async {
+        defer { isLoading = false }
         do {
+            if clearBeforeFetch {
+                allItems = .init()
+            }
+            
             isLoading = true
             
             // load feeds in parallel
             async let repliesRefresh: () = refreshRepliesTracker()
             async let mentionsRefresh: () = refreshMentionsTracker()
             async let messagesRefresh: () = refreshMessagesTracker()
+            async let unreadRefresh: () = unreadTracker.update(with: personRepository.getUnreadCounts())
             
-            _ = try await [ repliesRefresh, mentionsRefresh, messagesRefresh ]
+            _ = try await [ repliesRefresh, mentionsRefresh, messagesRefresh, unreadRefresh ]
             
             errorOccurred = false
             
@@ -49,19 +55,19 @@ extension InboxView {
     
     func refreshRepliesTracker() async throws {
         if curTab == .all || curTab == .replies {
-            try await repliesTracker.refresh(account: appState.currentActiveAccount)
+            try await repliesTracker.refresh(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
         }
     }
     
     func refreshMentionsTracker() async throws {
         if curTab == .all || curTab == .mentions {
-            try await mentionsTracker.refresh(account: appState.currentActiveAccount)
+            try await mentionsTracker.refresh(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
         }
     }
     
     func refreshMessagesTracker() async throws {
         if curTab == .all || curTab == .messages {
-            try await messagesTracker.refresh(account: appState.currentActiveAccount)
+            try await messagesTracker.refresh(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
         }
     }
     
@@ -79,9 +85,14 @@ extension InboxView {
         aggregateAllTrackers()
     }
     
+    func filterRead() async {
+        shouldFilterRead.toggle()
+        await refreshFeed(clearBeforeFetch: true)
+    }
+    
     func loadTrackerPage(tracker: InboxTracker) async {
         do {
-            try await tracker.loadNextPage(account: appState.currentActiveAccount)
+            try await tracker.loadNextPage(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
             aggregateAllTrackers()
             // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-merge the whole damn array
         } catch let message {
@@ -91,15 +102,24 @@ extension InboxView {
     
     func aggregateAllTrackers() {
         let mentions = mentionsTracker.items.map { item in
-            InboxItem(published: item.personMention.published, id: item.id, type: .mention(item))
+            InboxItem(published: item.personMention.published,
+                      baseId: item.id,
+                      read: item.personMention.read,
+                      type: .mention(item))
         }
         
         let messages = messagesTracker.items.map { item in
-            InboxItem(published: item.privateMessage.published, id: item.id, type: .message(item))
+            InboxItem(published: item.privateMessage.published,
+                      baseId: item.id,
+                      read: item.privateMessage.read,
+                      type: .message(item))
         }
         
         let replies = repliesTracker.items.map { item in
-            InboxItem(published: item.commentReply.published, id: item.id, type: .reply(item))
+            InboxItem(published: item.commentReply.published,
+                      baseId: item.id,
+                      read: item.commentReply.read,
+                      type: .reply(item))
         }
         
         allItems = merge(arr1: mentions, arr2: messages, compare: wasPostedAfter)
@@ -262,11 +282,17 @@ extension InboxView {
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
-        ret.append(MenuFunction(text: "Show Unread",
-                                imageName: "line.3.horizontal.decrease.circle",
+        let (filterReadText, filterReadSymbol) = shouldFilterRead
+        ? ("Show All", AppConstants.filterSymbolNameFill)
+        : ("Show Only Unread", AppConstants.filterSymbolName)
+        
+        ret.append(MenuFunction(text: filterReadText,
+                                imageName: filterReadSymbol,
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
-            print("filtering to only unread")
+            Task(priority: .userInitiated) {
+                await filterRead()
+            }
         })
         
         return ret

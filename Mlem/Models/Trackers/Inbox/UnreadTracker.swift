@@ -20,6 +20,7 @@ class UnreadTracker: ObservableObject {
         total = 0
     }
     
+    @MainActor
     func update(with counts: APIPersonUnreadCounts) {
         replies = counts.replies
         mentions = counts.mentions

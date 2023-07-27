@@ -154,6 +154,8 @@ struct AppConstants {
     static let unsubscribeSymbolName: String = "multiply.circle"
     static let blockSymbolName: String = "eye.slash"
     static let unblockSymbolName: String = "eye"
+    static let filterSymbolName: String = "line.3.horizontal.decrease.circle"
+    static let filterSymbolNameFill: String = "line.3.horizontal.decrease.circle.fill"
     
     // misc
     static let missingSymbolName: String = "questionmark.square.dashed"
