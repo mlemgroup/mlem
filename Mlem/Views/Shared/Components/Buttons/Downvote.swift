@@ -17,7 +17,7 @@ struct DownvoteButtonLabel: View {
             .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
             .padding(AppConstants.barIconPadding)
             .foregroundColor(vote == .downvote ? .white : .primary)
-            .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+            .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                 .aspectRatio(1, contentMode: .fit)
                 .foregroundColor(vote == .downvote ? .downvoteColor : .clear))
             .padding(AppConstants.postAndCommentSpacing)

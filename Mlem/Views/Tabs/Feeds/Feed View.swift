@@ -24,6 +24,7 @@ struct FeedView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
+    @EnvironmentObject var editorTracker: EditorTracker
     
     // MARK: Parameters and init
     
@@ -44,7 +45,6 @@ struct FeedView: View {
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = false
-    @State var isComposingPost: Bool = false
     
     // MARK: - Main Views
     
@@ -72,12 +72,6 @@ struct FeedView: View {
                 hardRefreshFeed()
             }
             .refreshable { await refreshFeed() }
-            .sheet(isPresented: $isComposingPost) {
-                if let community = community {
-                    PostComposerView(community: community)
-                        .environmentObject(postTracker)
-                }
-            }
     }
     
     @ViewBuilder

@@ -67,14 +67,14 @@ struct AppConstants {
     static let largeAvatarSpacing: CGFloat = 10
     static let postAndCommentSpacing: CGFloat = 10
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
-    static let smallItemCornerRadius: CGFloat = 4 // buttons, tags, compact thumbnails
+    static let smallItemCornerRadius: CGFloat = 6 // settings items, compact thumbnails
+    static let tinyItemCornerRadius: CGFloat = 4 // buttons
     static let iconToTextSpacing: CGFloat = 2 // spacing between icons and text in info components
     // NOTE: barIconHitbox = (barIconSize + 2 * barIconPadding) + (2 * postAndCommentSpacing)
     static let barIconSize: CGFloat = 15.5 // square size of a bar button
     static let barIconPadding: CGFloat = 4.25 // padding for bar button
     static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
     static let settingsIconSize: CGFloat = 28
-    static let settingsIconCornerRadius: CGFloat = 7
     static let fancyTabBarHeight: CGFloat = 48 // total height of the fancy tab bar
     
     // MARK: - SFSymbols

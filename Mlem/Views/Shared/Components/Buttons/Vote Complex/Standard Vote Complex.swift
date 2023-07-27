@@ -32,7 +32,7 @@ struct StandardVoteComplex: View {
                 // custom set because grouping image and text makes height do bad things
                 .frame(height: AppConstants.barIconSize + 2 * AppConstants.barIconPadding)
                 .padding(.horizontal, 4) // for the background to look right
-                .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
                 .foregroundColor(vote == .upvote ? .white : .primary)
                 .padding(.leading, AppConstants.postAndCommentSpacing - 4) // offset, undo background padding

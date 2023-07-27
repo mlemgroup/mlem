@@ -39,7 +39,7 @@ struct AppearanceSettingsView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
-                            .cornerRadius(AppConstants.settingsIconCornerRadius)
+                            .cornerRadius(AppConstants.smallItemCornerRadius)
                     }
                 }
 #endif

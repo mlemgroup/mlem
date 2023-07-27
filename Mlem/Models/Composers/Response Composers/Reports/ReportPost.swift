@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ReportPost: EditorModel {
+struct ReportPost: ResponseEditorModel {
     
     var id: Int { post.id }
     let appState: AppState

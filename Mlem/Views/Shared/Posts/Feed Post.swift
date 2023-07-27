@@ -9,6 +9,7 @@
 // Since padding varies depending on compact/large view, it is handled *entirely* in those components. No padding should
 // appear anywhere in this file.
 
+// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 
 import CachedAsyncImage
@@ -202,6 +203,13 @@ struct FeedPost: View {
                                                            post: postView,
                                                            operation: PostOperation.replyToPost))
     }
+    
+    func editPost() {
+        editorTracker.openEditor(with: PostEditorModel(community: postView.community,
+                                                       appState: appState,
+                                                       postTracker: postTracker,
+                                                       editPost: postView.post))
+    }
 
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
@@ -290,8 +298,17 @@ struct FeedPost: View {
                 replyToPost()
             })
 
-        // delete
         if postView.creator.id == appState.currentActiveAccount.id {
+            // edit
+            ret.append(MenuFunction(
+                text: "Edit",
+                imageName: "pencil",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                    editPost()
+                })
+            
+            // delete
             ret.append(MenuFunction(
                 text: "Delete",
                 imageName: "trash",
@@ -347,12 +364,6 @@ extension FeedPost {
     // context, which at present would require some work as it occurs down inside the post interaction bar
     // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
 
-//    private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
-//    private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
-//    private var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
-//    private var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
-//    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-
     var upvoteSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = postView.myVote == .upvote ?
         (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
@@ -378,8 +389,11 @@ extension FeedPost {
     }
 
     var saveSwipeAction: SwipeAction {
-        SwipeAction(
-            symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
+        let (emptySymbolName, fullSymbolName) = postView.saved
+        ? (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
+        : (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
+        return SwipeAction(
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,
             action: savePost
         )
@@ -394,3 +408,4 @@ extension FeedPost {
     }
 }
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length

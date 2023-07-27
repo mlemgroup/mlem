@@ -9,11 +9,11 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct EditorView: View {
+struct ResponseEditorView: View {
     
     @Dependency(\.errorHandler) var errorHandler
     
-    let editorModel: any EditorModel
+    let editorModel: any ResponseEditorModel
     
     init(concreteEditorModel: ConcreteEditorModel) {
         self.editorModel = concreteEditorModel.editorModel // don't need the wrapper

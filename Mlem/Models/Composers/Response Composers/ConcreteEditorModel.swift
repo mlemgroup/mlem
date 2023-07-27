@@ -34,9 +34,9 @@ enum InboxItemOperation {
  */
 struct ConcreteEditorModel: Identifiable {
     var id: Int { editorModel.id }
-    let editorModel: any EditorModel
+    let editorModel: any ResponseEditorModel
 
-    init(editorModel: any EditorModel) {
+    init(editorModel: any ResponseEditorModel) {
         self.editorModel = editorModel
     }
 }
