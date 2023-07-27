@@ -14,11 +14,11 @@ extension InboxView {
     func refreshFeed(clearBeforeFetch: Bool = false) async {
         defer { isLoading = false }
         do {
+            isLoading = true
+            
             if clearBeforeFetch {
                 allItems = .init()
             }
-            
-            isLoading = true
             
             // load feeds in parallel
             async let repliesRefresh: () = refreshRepliesTracker()
@@ -88,6 +88,15 @@ extension InboxView {
     func filterRead() async {
         shouldFilterRead.toggle()
         await refreshFeed(clearBeforeFetch: true)
+    }
+    
+    func markAllAsRead() async {
+        do {
+            try await personRepository.markAllAsRead()
+            await refreshFeed()
+        } catch {
+            appState.contextualError = .init(underlyingError: error)
+        }
     }
     
     func loadTrackerPage(tracker: InboxTracker) async {
@@ -292,6 +301,15 @@ extension InboxView {
                                 enabled: true) {
             Task(priority: .userInitiated) {
                 await filterRead()
+            }
+        })
+        
+        ret.append(MenuFunction(text: "Mark All as Read",
+                                imageName: "envelope.open",
+                               destructiveActionPrompt: nil,
+                                enabled: true) {
+            Task(priority: .userInitiated) {
+                await markAllAsRead()
             }
         })
         

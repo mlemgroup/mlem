@@ -60,6 +60,8 @@ class APIClient {
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
         
         let urlRequest = try urlRequest(from: request)
+        
+        print(urlRequest)
 
         let (data, response) = try await execute(urlRequest)
         
@@ -231,5 +233,10 @@ extension APIClient {
     func getUnreadCount() async throws -> APIPersonUnreadCounts {
         let request = GetPersonUnreadCount(session: try session)
         return try await perform(request: request)
+    }
+    
+    func markAllAsRead() async throws {
+        let request = MarkAllAsRead(session: try session)
+        try await perform(request: request)
     }
 }

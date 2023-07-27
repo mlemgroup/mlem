@@ -20,4 +20,12 @@ class PersonRepository {
             throw error
         }
     }
+    
+    func markAllAsRead() async throws {
+        do {
+            try await apiClient.markAllAsRead()
+        } catch {
+            throw error
+        }
+    }
 }
