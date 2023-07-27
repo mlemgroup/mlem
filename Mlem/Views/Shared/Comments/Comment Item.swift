@@ -16,6 +16,7 @@ struct CommentItem: View {
     
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    @AppStorage("compactComments") var compactComments: Bool = true
 
     // MARK: Temporary
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
@@ -50,10 +51,11 @@ struct CommentItem: View {
     let depth: Int
     let showPostContext: Bool
     let showCommentCreator: Bool
-    let showInteractionBar: Bool
     let enableSwipeActions: Bool
     
     // MARK: Computed
+    
+    var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
 
     // init needed to get dirty and clean aligned
     init(hierarchicalComment: HierarchicalComment,
@@ -61,7 +63,6 @@ struct CommentItem: View {
          depth: Int,
          showPostContext: Bool,
          showCommentCreator: Bool,
-         showInteractionBar: Bool = true,
          enableSwipeActions: Bool = true
     ) {
         self.hierarchicalComment = hierarchicalComment
@@ -69,7 +70,6 @@ struct CommentItem: View {
         self.depth = depth
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
-        self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
@@ -90,12 +90,12 @@ struct CommentItem: View {
                     CommentBodyView(commentView: hierarchicalComment.commentView,
                                     isCollapsed: isCollapsed,
                                     showPostContext: showPostContext,
-                                    showCommentCreator: showCommentCreator,
                                     menuFunctions: genMenuFunctions())
+                    // top and bottom spacing uses default even when compact--it's *too* compact otherwise
                     .padding(.top, AppConstants.postAndCommentSpacing)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
 
-                    if showInteractionBar && !isCollapsed {
+                    if !isCollapsed && !compactComments {
                         CommentInteractionBar(commentView: hierarchicalComment.commentView,
                                               displayedScore: displayedScore,
                                               displayedVote: displayedVote,

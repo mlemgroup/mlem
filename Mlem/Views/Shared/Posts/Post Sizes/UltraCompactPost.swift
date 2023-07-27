@@ -54,7 +54,7 @@ struct UltraCompactPost: View {
                 thumbnailImage
             }
             
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
                     Group {
                         if showCommunity {

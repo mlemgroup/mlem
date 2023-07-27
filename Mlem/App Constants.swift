@@ -65,7 +65,8 @@ struct AppConstants {
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
-    static let postAndCommentSpacing: CGFloat = 10
+    static let postAndCommentSpacing: CGFloat = 10 // standard spacing for 
+    static let compactSpacing: CGFloat = 6
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
     static let smallItemCornerRadius: CGFloat = 6 // settings items, compact thumbnails
     static let tinyItemCornerRadius: CGFloat = 4 // buttons
