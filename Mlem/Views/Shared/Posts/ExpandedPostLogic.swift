@@ -152,8 +152,17 @@ extension ExpandedPost {
                 replyToPost()
             })
         
-        // delete
         if post.creator.id == appState.currentActiveAccount.id {
+            // edit
+            ret.append(MenuFunction(
+                text: "Edit",
+                imageName: "pencil",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                    editorTracker.openEditor(with: PostEditorModel(community: post.community, appState: appState, editPost: post.post))
+                })
+            
+            // delete
             ret.append(MenuFunction(
                 text: "Delete",
                 imageName: "trash",
