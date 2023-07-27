@@ -14,8 +14,9 @@ import Foundation
  */
 struct CommentInteractionBar: View {
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
-    @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .standard
-    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
+    @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .plain
+    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = true
+    @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
@@ -46,7 +47,7 @@ struct CommentInteractionBar: View {
 
     var body: some View {
         ZStack {
-            HStack(spacing: 12) {
+            HStack(spacing: 0) {
                 if !shouldShowVoteComplexOnRight {
                     VoteComplex(style: commentVoteComplexStyle,
                                 vote: displayedVote,
@@ -86,10 +87,12 @@ struct CommentInteractionBar: View {
                 }
             }
             
-            InfoStack(score: shouldShowScoreInCommentBar ? displayedScore : nil,
-                      // TODO: ERIC add these + settings
-                      upvotes: nil,
-                      downvotes: nil,
+            InfoStack(votes: shouldShowScoreInCommentBar
+                      ? DetailedVotes(score: displayedScore,
+                                      upvotes: commentView.counts.upvotes,
+                                      downvotes: commentView.counts.downvotes,
+                                      showDownvotes: showCommentDownvotesSeparately)
+                      : nil,
                       myVote: shouldShowScoreInCommentBar ? displayedVote : nil,
                       published: shouldShowTimeInCommentBar ? commentView.comment.published : nil,
                       commentCount: shouldShowRepliesInCommentBar ? commentView.counts.childCount : nil,

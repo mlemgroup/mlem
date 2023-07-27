@@ -13,8 +13,9 @@ struct CommentSettingsView: View {
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     // interactions and info
-    @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .plain
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
+    @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
@@ -37,20 +38,24 @@ struct CommentSettingsView: View {
             }
 
             Section("Interactions and Info") {
-                SelectableSettingsItem(
-                    settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote complex style",
-                    currentValue: $commentVoteComplexStyle,
-                    options: VoteComplexStyle.allCases
-                )
+//                SelectableSettingsItem(
+//                    settingIconSystemName: "arrow.up.arrow.down.square",
+//                    settingName: "Vote complex style",
+//                    currentValue: $commentVoteComplexStyle,
+//                    options: VoteComplexStyle.allCases
+//                )
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                                            settingPictureColor: .pink,
                                                            settingName: "Show user server instance",
                                                            isTicked: $shouldShowUserServerInComment)
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                        settingPictureColor: .pink,
-                                       settingName: "Show upvotes in info",
+                                       settingName: "Show score in info",
                                        isTicked: $shouldShowScoreInCommentBar)
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                                       settingPictureColor: .pink,
+                                       settingName: "Show downvotes separately",
+                                       isTicked: $showCommentDownvotesSeparately)
                 SwitchableSettingsItem(settingPictureSystemName: "clock",
                                        settingPictureColor: .pink,
                                        settingName: "Show time posted in info",

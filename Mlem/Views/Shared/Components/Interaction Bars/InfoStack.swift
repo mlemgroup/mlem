@@ -8,10 +8,17 @@
 import Foundation
 import SwiftUI
 
-struct InfoStack: View {    
-    let score: Int?
-    let upvotes: Int?
-    let downvotes: Int?
+// this simplifies the two-phase logic of "show votes at all? -> show downvotes separately?"--can be passed in as an optional for the first, and contains the toggle for the second. Can't just grab settings value for the second because InfoStack is used in both posts and comments.
+struct DetailedVotes {
+    let score: Int
+    let upvotes: Int
+    let downvotes: Int
+    let showDownvotes: Bool
+}
+
+struct InfoStack: View {
+  
+    let votes: DetailedVotes?
     let myVote: ScoringOperation?
     let published: Date?
     let commentCount: Int?
@@ -19,23 +26,23 @@ struct InfoStack: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            if let myVote = myVote {
-                if let score = score {
-                    HStack(spacing: AppConstants.iconToTextSpacing) {
-                        Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
-                        Text(String(score))
-                    }
-                } else if let upvotes = upvotes, let downvotes = downvotes {
+            if let myVote = myVote, let votes {
+                if votes.showDownvotes {
                     HStack(spacing: AppConstants.iconToTextSpacing) {
                         Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
-                        Text(String(upvotes))
+                        Text(String(votes.upvotes))
                     }
                     
                     HStack(spacing: AppConstants.iconToTextSpacing) {
                         Image(systemName: myVote == .downvote
                               ? AppConstants.fullDownvoteSymbolName
                               : AppConstants.emptyDownvoteSymbolName)
-                        Text(String(downvotes))
+                        Text(String(votes.downvotes))
+                    }
+                } else {
+                    HStack(spacing: AppConstants.iconToTextSpacing) {
+                        Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
+                        Text(String(votes.score))
                     }
                 }
             }
