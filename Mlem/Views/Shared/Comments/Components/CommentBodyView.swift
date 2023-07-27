@@ -49,7 +49,7 @@ struct CommentBodyView: View {
             HStack(spacing: 12) {
                 UserProfileLink(
                     user: commentView.creator,
-                    serverInstanceLocation: serverInstanceLocation, // shouldShowUserServerInComment ? .bottom : .disabled,
+                    serverInstanceLocation: serverInstanceLocation,
                     postContext: commentView.post,
                     commentContext: commentView.comment
                 )

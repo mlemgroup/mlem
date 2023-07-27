@@ -54,8 +54,6 @@ struct CommentItem: View {
     let enableSwipeActions: Bool
     
     // MARK: Computed
-    
-    var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
 
     // init needed to get dirty and clean aligned
     init(hierarchicalComment: HierarchicalComment,
