@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CommunitySidebarView: View {
     
-    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.errorHandler) var errorHandler
     
     // parameters
@@ -23,10 +23,10 @@ struct CommunitySidebarView: View {
 
     var body: some View {
         Section {
-            if let shownError = errorMessage {
-                errorView(errorDetials: shownError)
-            } else if let loadedDetails = communityDetails {
+            if let loadedDetails = communityDetails {
                 view(for: loadedDetails)
+            } else if let shownError = errorMessage {
+                errorView(errorDetails: shownError)
             } else {
                 LoadingView(whatIsLoading: .communityDetails)
             }
@@ -46,9 +46,10 @@ struct CommunitySidebarView: View {
     
     private func loadCommunity() async {
         do {
-            communityDetails = try await apiClient.getCommunityDetails(id: community.id)
+            errorMessage = nil
+            communityDetails = try await communityRepository.loadDetails(for: community.id)
         } catch {
-            errorMessage = "An error has occurred, please try refreshing"
+            errorMessage = "We were unable to load this communities details, please try again."
             errorHandler.handle(
                 .init(underlyingError: error)
             )
@@ -112,13 +113,13 @@ struct CommunitySidebarView: View {
     }
     
     @ViewBuilder
-    func errorView(errorDetials: String) -> some View {
+    func errorView(errorDetails: String) -> some View {
         VStack(spacing: 10) {
             Image(systemName: "exclamationmark.bubble")
                 .font(.title)
             
             Text("Community details loading failed!")
-            Text(errorDetials)
+            Text(errorDetails)
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)

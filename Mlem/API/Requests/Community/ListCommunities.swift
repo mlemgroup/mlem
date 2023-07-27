@@ -19,18 +19,18 @@ struct ListCommunitiesRequest: APIGetRequest {
     init(
         session: APISession,
 
-        sort: PostSortType?,
+        sort: String?,
         page: Int?,
         limit: Int?,
 
-        type: FeedType = .all
+        type: String
     ) {
         self.instanceURL = session.URL
         self.queryItems = [
-            .init(name: "sort", value: sort?.rawValue),
+            .init(name: "sort", value: sort),
             .init(name: "limit", value: limit?.description),
             .init(name: "page", value: page?.description),
-            .init(name: "type_", value: type.rawValue),
+            .init(name: "type_", value: type),
 
             .init(name: "auth", value: session.token)
         ]

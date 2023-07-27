@@ -77,7 +77,7 @@ extension FeedView {
     func fetchCommunityDetails() async {
         if let community {
             do {
-                communityDetails = try await apiClient.getCommunityDetails(id: community.id)
+                communityDetails = try await communityRepository.loadDetails(for: community.id)
             } catch {
                 errorHandler.handle(
                     .init(
@@ -279,29 +279,26 @@ extension FeedView {
         (showReadPosts || !postView.read)
     }
     
-    // MARK: TODO: MOVE TO REPOSITORY MODEL
-    
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         hapticManager.play(haptic: .success, priority: .high)
-        do {            
-            _ = try await apiClient.followCommunity(id: communityId, shouldSubscribe: shouldSubscribe)
+        do {
+            let response = try await communityRepository.updateSubscription(for: communityId, subscribed: shouldSubscribe)
+            // TODO: we receive the updated `APICommunityView` here to update our local state
+            // so there is no need to make a second call but we still need to address 'faking'
+            // the state while the call is in flight
+            communityDetails?.communityView = response
             
             let communityName = community?.name ?? "community"
-            Task {
-                if shouldSubscribe {
-                    await notifier.add(.success("Subscibed to \(communityName)"))
-                } else {
-                    await notifier.add(.success("Unsubscribed from \(communityName)"))
-                }
+            if shouldSubscribe {
+                await notifier.add(.success("Subscibed to \(communityName)"))
+            } else {
+                await notifier.add(.success("Unsubscribed from \(communityName)"))
             }
-            
-            // re-fetch to get new subscribed status
-            // TODO: do this in middleware model with a state faker to avoid a second API call
-            await fetchCommunityDetails()
         } catch {
-            // TODO: If we fail here and want to notify the user we can pass values into the below error
+            hapticManager.play(haptic: .failure, priority: .high)
+            let phrase = shouldSubscribe ? "subscribe to" : "unsubscribe from"
             errorHandler.handle(
-                .init(underlyingError: error)
+                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
             )
         }
     }
@@ -309,23 +306,23 @@ extension FeedView {
     private func block(communityId: Int, shouldBlock: Bool) async {
         do {
             hapticManager.play(haptic: .violentSuccess, priority: .high)
-            
+
+            let response: BlockCommunityResponse
             let communityName = community?.name ?? "community"
-            Task {
-                if shouldBlock {
-                    await notifier.add(.success("Blocked \(communityName)"))
-                } else {
-                    await notifier.add(.success("Unblocked \(communityName)"))
-                }
+            if shouldBlock {
+                response = try await communityRepository.blockCommunity(id: communityId)
+                await notifier.add(.success("Blocked \(communityName)"))
+            } else {
+                response = try await communityRepository.unblockCommunity(id: communityId)
+                await notifier.add(.success("Unblocked \(communityName)"))
             }
-            
-            _ = try await apiClient.blockCommunity(id: communityId, shouldBlock: shouldBlock)
-            await fetchCommunityDetails()
+
+            communityDetails?.communityView = response.communityView
         } catch {
-            // TODO: If we fail here and want to notify the user we should
-            // pass a message into the contextual error below
+            hapticManager.play(haptic: .failure, priority: .high)
+            let phrase = shouldBlock ? "block" : "unblock"
             errorHandler.handle(
-                .init(underlyingError: error)
+                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
             )
         }
     }

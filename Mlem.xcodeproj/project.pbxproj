@@ -44,6 +44,10 @@
 		50A881262A71A511003E3661 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */; };
 		50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */; };
 		50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */; };
+		50A881282A71D66B003E3661 /* APIClient+Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881272A71D66B003E3661 /* APIClient+Community.swift */; };
+		50A8812A2A72D6BD003E3661 /* CommunityRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881292A72D6BD003E3661 /* CommunityRepository.swift */; };
+		50A8812C2A72D727003E3661 /* CommunityRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A8812B2A72D727003E3661 /* CommunityRepository+Dependency.swift */; };
+		50A8812E2A72D76C003E3661 /* APIClient+Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
 		50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B582A61D889005D57DD /* APIClient+Dependency.swift */; };
 		50C99B5C2A61F5EB005D57DD /* CommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */; };
@@ -67,7 +71,6 @@
 		6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318EDC627EE4E1500BFCAE8 /* Post.swift */; };
 		6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318EDC827EE4E1C00BFCAE8 /* Comment.swift */; };
 		6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318EDCA27EE4E2200BFCAE8 /* User.swift */; };
-		6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320BFD02A2F7AF500ECF661 /* Download UIImage from URL.swift */; };
 		6322A5CB27F77A4D00135D4F /* Loading View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6322A5CA27F77A4D00135D4F /* Loading View.swift */; };
 		6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6322A5CF27F8629700135D4F /* User Profile Link.swift */; };
 		6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6322A5D127F88CFD00135D4F /* Time Parser.swift */; };
@@ -421,6 +424,10 @@
 		50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
 		50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringOperation.swift; sourceTree = "<group>"; };
 		50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepositoryTests.swift; sourceTree = "<group>"; };
+		50A881272A71D66B003E3661 /* APIClient+Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Community.swift"; sourceTree = "<group>"; };
+		50A881292A72D6BD003E3661 /* CommunityRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRepository.swift; sourceTree = "<group>"; };
+		50A8812B2A72D727003E3661 /* CommunityRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityRepository+Dependency.swift"; sourceTree = "<group>"; };
+		50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Comment.swift"; sourceTree = "<group>"; };
 		50C99B582A61D889005D57DD /* APIClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Dependency.swift"; sourceTree = "<group>"; };
 		50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
 		50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentRepository+Dependency.swift"; sourceTree = "<group>"; };
@@ -444,7 +451,6 @@
 		6318EDC627EE4E1500BFCAE8 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		6318EDC827EE4E1C00BFCAE8 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		6318EDCA27EE4E2200BFCAE8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		6320BFD02A2F7AF500ECF661 /* Download UIImage from URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Download UIImage from URL.swift"; sourceTree = "<group>"; };
 		6322A5CA27F77A4D00135D4F /* Loading View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Loading View.swift"; sourceTree = "<group>"; };
 		6322A5CF27F8629700135D4F /* User Profile Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Profile Link.swift"; sourceTree = "<group>"; };
 		6322A5D127F88CFD00135D4F /* Time Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Time Parser.swift"; sourceTree = "<group>"; };
@@ -943,6 +949,8 @@
 			children = (
 				CD82A2512A716B5D00111034 /* Repositories */,
 				50C99B582A61D889005D57DD /* APIClient+Dependency.swift */,
+				50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */,
+				50A8812B2A72D727003E3661 /* CommunityRepository+Dependency.swift */,
 				50C99B612A629C06005D57DD /* ErrorHandler+Dependency.swift */,
 				500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */,
 				5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */,
@@ -957,6 +965,7 @@
 				50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */,
 				CD82A2522A716B8100111034 /* PersonRepository.swift */,
 				CD6F29A92A78003A00F20B6B /* PostRepository.swift */,
+				50A881292A72D6BD003E3661 /* CommunityRepository.swift */,
 				50A881232A71A4CD003E3661 /* PersistenceRepository.swift */,
 			);
 			path = Repositories;
@@ -997,7 +1006,6 @@
 			children = (
 				63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */,
 				63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */,
-				6320BFD02A2F7AF500ECF661 /* Download UIImage from URL.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1295,6 +1303,8 @@
 			children = (
 				637218012A3A2AAD008C4816 /* APIClient.swift */,
 				03A1B3F52A83FFDA00AB0DE0 /* Protocol */,
+				50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */,
+				50A881272A71D66B003E3661 /* APIClient+Community.swift */,
 				637218022A3A2AAD008C4816 /* Internal */,
 				637218042A3A2AAD008C4816 /* Models */,
 				637218242A3A2AAD008C4816 /* Requests */,
@@ -2197,7 +2207,6 @@
 				5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */,
 				CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */,
 				630737892A1CD1E900039852 /* String.swift in Sources */,
-				6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */,
 				03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */,
 				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
 				637218582A3A2AAD008C4816 /* APISite.swift in Sources */,
@@ -2303,6 +2312,7 @@
 				03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */,
 				6322A5D027F8629700135D4F /* User Profile Link.swift in Sources */,
 				6372184B2A3A2AAD008C4816 /* APIPostAggregates.swift in Sources */,
+				50A8812C2A72D727003E3661 /* CommunityRepository+Dependency.swift in Sources */,
 				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
 				CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */,
 				CD4E98A32A69BEDC0026C4D9 /* IconSettingsView.swift in Sources */,
@@ -2341,11 +2351,13 @@
 				507573912A5AD53C00AA7ABD /* Error+Equatable.swift in Sources */,
 				6D693A482A51B904009E2D76 /* CreateCommentReport.swift in Sources */,
 				CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */,
+				50A881282A71D66B003E3661 /* APIClient+Community.swift in Sources */,
 				6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */,
 				50F830FA2A4C935C00D67099 /* FeedTracker.swift in Sources */,
 				CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */,
 				CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */,
 				6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */,
+				50A8812A2A72D6BD003E3661 /* CommunityRepository.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
 				038A16E72A7A9C430087987E /* LayoutWidgetCollection.swift in Sources */,
 				6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */,
@@ -2421,6 +2433,7 @@
 				CD18DC6F2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift in Sources */,
 				CD82A2552A716C7C00111034 /* APIPersonUnreadCounts.swift in Sources */,
 				CD04D5E72A3636FB008EF95B /* Headline Post.swift in Sources */,
+				50A8812E2A72D76C003E3661 /* APIClient+Comment.swift in Sources */,
 				6DA61F852A568F99001EA633 /* Int.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
 				CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */,
