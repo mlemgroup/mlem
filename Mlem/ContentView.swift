@@ -73,18 +73,7 @@ struct ContentView: View {
         // TODO: remove once all using `.errorHandler` as the `appState` will no longer receive these...
         .onChange(of: appState.contextualError) { errorHandler.handle($0) }
         .task(id: appState.currentActiveAccount) {
-            print("account changed to \(appState.currentActiveAccount.username)")
-            
-            // get inbox count
-            Task(priority: .background) {
-                do {
-                    let unreadCounts = try await personRepository.getUnreadCounts()
-                    unreadTracker.update(with: unreadCounts)
-                    // print(unreadCounts)
-                } catch {
-                    appState.contextualError = .init(underlyingError: error)
-                }
-            }
+            accountChanged()
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
             if expired {
@@ -119,7 +108,23 @@ struct ContentView: View {
         .environmentObject(unreadTracker)
     }
     
-    // MARK: helpers
+    // MARK: Helpers
+    
+    /**
+     Function that executes whenever the account changes to handle any state updates that need to happen
+     */
+    func accountChanged() {
+        // refresh unread count
+        Task(priority: .background) {
+            do {
+                let unreadCounts = try await personRepository.getUnreadCounts()
+                unreadTracker.update(with: unreadCounts)
+            } catch {
+                appState.contextualError = .init(underlyingError: error)
+            }
+        }
+    }
+    
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"
     }
