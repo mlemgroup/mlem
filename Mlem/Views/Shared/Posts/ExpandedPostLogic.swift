@@ -205,7 +205,9 @@ extension ExpandedPost {
         
         do {
             let comments = try await commentRepository.comments(for: post.post.id)
-            commentTracker.comments = sortComments(comments, by: defaultCommentSorting)
+            let sorted = sortComments(comments, by: defaultCommentSorting)
+            let flat = sorted.flatMap(flatMapChildren)
+            commentTracker.comments = flat
         } catch {
             errorHandler.handle(
                 .init(
@@ -235,5 +237,9 @@ extension ExpandedPost {
             newComment.children = sortComments(comment.children, by: sort)
             return newComment
         }
+    }
+    
+    func flatMapChildren(_ comment: HierarchicalComment) -> [HierarchicalComment] {
+        return [comment] + comment.children.flatMap(flatMapChildren)
     }
 }

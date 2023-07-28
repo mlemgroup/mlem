@@ -13,10 +13,10 @@ class HierarchicalComment: ObservableObject {
     var children: [HierarchicalComment]
     let depth: Int
 
-    init(comment: APICommentView, children: [HierarchicalComment], depth: Int = -1) {
+    init(comment: APICommentView, children: [HierarchicalComment], depth: Int = 0) {
         self.commentView = comment
         self.children = children
-        self.depth = depth
+        self.depth = max(0, commentView.comment.path.split(separator: ".").count - 2)
     }
 }
 
@@ -79,6 +79,58 @@ extension [APICommentView] {
 
     /// A representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
     var hierarchicalRepresentation: [HierarchicalComment] {
+        var allComments = self
+        
+        let childrenStartIndex = allComments.partition(by: { $0.comment.parentId != nil })
+        let children = allComments[childrenStartIndex...]
+        
+        var childrenById = [APICommentView.ID: [APICommentView.ID]]()
+        children.forEach { child in
+            guard let parentId = child.comment.parentId else { return }
+            childrenById[parentId] = (childrenById[parentId] ?? []) + [child.id]
+        }
+        
+        let identifiedComments = Dictionary(uniqueKeysWithValues: allComments.lazy.map { ($0.id, $0) })
+        
+        /// Recursively populates child comments by looking up IDs from `childrenById`
+        func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
+            guard let childIds = childrenById[comment.id] else {
+                return .init(comment: comment, children: [])
+            }
+            
+            let commentWithChildren = HierarchicalComment(comment: comment, children: [])
+            commentWithChildren.children = childIds
+                .compactMap { id -> HierarchicalComment? in
+                    guard let child = identifiedComments[id] else { return nil }
+                    return populateChildren(child)
+                }
+            
+            return commentWithChildren
+        }
+        
+        let parents = allComments[..<childrenStartIndex]
+        let result = parents.map(populateChildren)
+        return result
+    }
+    
+    func flatMapChildren(_ comment: HierarchicalComment) -> [HierarchicalComment] {
+        return [comment] + comment.children.flatMap(flatMapChildren)
+    }
+    
+    func flatRep() -> [HierarchicalComment] {
+        let x = hierarchicalRepresentation
+            .flatMap(flatMapChildren)
+        print(x.count)
+        return x
+    }
+    
+    /// A flattened representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
+    /// Comments are ordered as they would visually appear.
+    var flattenedHierarchicalRepresentation: [HierarchicalComment] {
+//        return hierarchicalRepresentation.flatMap(flatMapChildren)
+//        return flatRep()
+        return hierarchicalRepresentation
+        
         var allComments = self
 
         let childrenStartIndex = allComments.partition(by: { $0.comment.parentId != nil })

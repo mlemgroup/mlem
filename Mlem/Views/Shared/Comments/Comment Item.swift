@@ -45,7 +45,7 @@ struct CommentItem: View {
 
     let hierarchicalComment: HierarchicalComment
     let postContext: APIPostView? // TODO: redundant with comment.post?
-    let depth: Int
+    var depth: Int { hierarchicalComment.depth < 0 ? 0 : hierarchicalComment.depth }
     let showPostContext: Bool
     let showCommentCreator: Bool
     let showInteractionBar: Bool
@@ -66,7 +66,7 @@ struct CommentItem: View {
     ) {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
-        self.depth = depth
+//        self.depth = depth
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
         self.showInteractionBar = showInteractionBar
