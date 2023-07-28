@@ -28,7 +28,7 @@ struct PostSettingsView: View {
     // Complications
     @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .plain
     @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
