@@ -31,12 +31,14 @@ enum ComposingTypes {
 struct InboxView: View {
     
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.personRepository) var personRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
     // MARK: Global
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     // MARK: Internal
     // id of the last account loaded with
@@ -48,6 +50,7 @@ struct InboxView: View {
     
     // loading handling
     @State var isLoading: Bool = true
+    @State var shouldFilterRead: Bool = false
     
     // item feeds
     @State var allItems: [InboxItem] = .init()
@@ -69,6 +72,9 @@ struct InboxView: View {
             contentView
                 .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
+                }
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
         }
@@ -135,5 +141,18 @@ struct InboxView: View {
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)
+    }
+    
+    @ViewBuilder
+    private var ellipsisMenu: some View {
+        Menu {
+            ForEach(genMenuFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction)
+            }
+        } label: {
+            Label("More", systemImage: "ellipsis")
+                .frame(height: AppConstants.barIconHitbox)
+                .contentShape(Rectangle())
+        }
     }
 }

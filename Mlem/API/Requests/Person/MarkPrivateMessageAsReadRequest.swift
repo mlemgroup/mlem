@@ -38,9 +38,3 @@ struct MarkPrivateMessageAsRead: APIPostRequest {
 struct PrivateMessageResponse: Decodable {
     let privateMessageView: APIPrivateMessageView
 }
-
-// pub struct MarkPrivateMessageAsRead {
-//   pub private_message_id: PrivateMessageId,
-//   pub read: bool,
-//   pub auth: Sensitive<String>,
-// }

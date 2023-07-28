@@ -11,11 +11,13 @@ import Dependencies
 struct ContentView: View {
     
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.personRepository) var personRepository
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     
     @StateObject var editorTracker: EditorTracker = .init()
+    @StateObject var unreadTracker: UnreadTracker = .init()
     
     @State private var errorAlert: ErrorAlert?
     
@@ -27,6 +29,7 @@ struct ContentView: View {
     @State private var isPresentingAccountSwitcher: Bool = false
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
+    @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcher) {
@@ -41,7 +44,8 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.inbox) {
                         FancyTabBarLabel(tag: TabSelection.inbox,
                                          symbolName: "mail.stack",
-                                         activeSymbolName: "mail.stack.fill")
+                                         activeSymbolName: "mail.stack.fill",
+                                         badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0)
                     }
                 
                 ProfileView(userID: appState.currentActiveAccount.id)
@@ -68,6 +72,9 @@ struct ContentView: View {
         }
         // TODO: remove once all using `.errorHandler` as the `appState` will no longer receive these...
         .onChange(of: appState.contextualError) { errorHandler.handle($0) }
+        .task(id: appState.currentActiveAccount) {
+            accountChanged()
+        }
         .onReceive(errorHandler.$sessionExpired) { expired in
             if expired {
                 NotificationDisplayer.presentTokenRefreshFlow(for: appState.currentActiveAccount) { updatedAccount in
@@ -98,9 +105,26 @@ struct ContentView: View {
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
         .environmentObject(editorTracker)
+        .environmentObject(unreadTracker)
     }
     
-    // MARK: helpers
+    // MARK: Helpers
+    
+    /**
+     Function that executes whenever the account changes to handle any state updates that need to happen
+     */
+    func accountChanged() {
+        // refresh unread count
+        Task(priority: .background) {
+            do {
+                let unreadCounts = try await personRepository.getUnreadCounts()
+                unreadTracker.update(with: unreadCounts)
+            } catch {
+                appState.contextualError = .init(underlyingError: error)
+            }
+        }
+    }
+    
     func computeUsername(account: SavedAccount) -> String {
         return showUsernameInNavigationBar ? account.username : "Profile"
     }

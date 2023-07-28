@@ -41,6 +41,7 @@ struct Window: View {
     }
 
     func onLogin() {
+        // set easter flags
         if let host =
             RecognizedLemmyInstances(rawValue:
                                         selectedAccount?.instanceLink.host() ?? "unknown"

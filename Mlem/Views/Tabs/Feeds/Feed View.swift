@@ -117,7 +117,7 @@ struct FeedView: View {
                 FeedPost(
                     postView: postView,
                     showPostCreator: shouldShowPostCreator,
-                    showCommunity: false)
+                    showCommunity: community == nil)
             }
             Divider()
         }
