@@ -19,6 +19,8 @@ struct CommentBodyView: View {
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
     
+    var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
+    
     var serverInstanceLocation: ServerInstanceLocation {
         if shouldShowUserServerInComment {
             return .disabled
@@ -93,11 +95,10 @@ struct CommentBodyView: View {
         }
     }
     
+    @ViewBuilder
     func compactScoreDisplay() -> some View {
-        let myVote = commentView.myVote ?? .resetVote
-        
-        return HStack(spacing: 12) {
-            if showCommentDownvotesSeparately {
+        if showCommentDownvotesSeparately {
+            HStack(spacing: 12) {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
                     Text(String(commentView.counts.upvotes))
@@ -107,14 +108,16 @@ struct CommentBodyView: View {
                     Image(systemName: myVote == .downvote ? AppConstants.fullDownvoteSymbolName : AppConstants.emptyDownvoteSymbolName)
                     Text(String(commentView.counts.downvotes))
                 }
-            } else {
-                HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
-                    Text(String(commentView.counts.score))
-                }
             }
+            .foregroundColor(.secondary)
+            .font(.footnote)
+        } else {
+            HStack(spacing: AppConstants.iconToTextSpacing) {
+                Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
+                Text(String(commentView.counts.score))
+            }
+            .foregroundColor(.secondary)
+            .font(.footnote)
         }
-        .foregroundColor(.secondary)
-        .font(.footnote)
     }
 }
