@@ -49,7 +49,7 @@ struct CommentBodyView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
-            HStack(spacing: 12) {
+            HStack(spacing: AppConstants.compactSpacing) {
                 UserProfileLink(
                     user: commentView.creator,
                     serverInstanceLocation: serverInstanceLocation,
@@ -97,8 +97,13 @@ struct CommentBodyView: View {
     
     @ViewBuilder
     func compactScoreDisplay() -> some View {
-        if showCommentDownvotesSeparately {
-            HStack(spacing: 12) {
+        // HStack(spacing: 8) {
+        Group {
+            // time
+            TimestampView(date: commentView.comment.published)
+            
+            // votes
+            if showCommentDownvotesSeparately {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
                     Text(String(commentView.counts.upvotes))
@@ -108,16 +113,17 @@ struct CommentBodyView: View {
                     Image(systemName: myVote == .downvote ? AppConstants.fullDownvoteSymbolName : AppConstants.emptyDownvoteSymbolName)
                     Text(String(commentView.counts.downvotes))
                 }
+            } else {
+                HStack(spacing: AppConstants.iconToTextSpacing) {
+                    Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
+                    Text(String(commentView.counts.score))
+                }
+                .foregroundColor(.secondary)
+                .font(.footnote)
             }
-            .foregroundColor(.secondary)
-            .font(.footnote)
-        } else {
-            HStack(spacing: AppConstants.iconToTextSpacing) {
-                Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
-                Text(String(commentView.counts.score))
-            }
-            .foregroundColor(.secondary)
-            .font(.footnote)
+            
         }
+        .foregroundColor(.secondary)
+        .font(.footnote)
     }
 }
