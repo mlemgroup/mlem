@@ -27,7 +27,6 @@ struct ExpandedPost: View {
     @EnvironmentObject var editorTracker: EditorTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
-    @StateObject var commentReplyTracker: CommentReplyTracker = .init()
 
     @EnvironmentObject var postTracker: PostTracker
 
@@ -58,7 +57,6 @@ struct ExpandedPost: View {
         }
         .fancyTabScrollCompatible()
         .environmentObject(commentTracker)
-        .environmentObject(commentReplyTracker)
         .navigationBarTitle(post.community.name, displayMode: .inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {

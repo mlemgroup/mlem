@@ -45,7 +45,6 @@
 		6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6307378C2A1CEB7C00039852 /* My Vote.swift */; };
 		6314C9EB2A18D9C500B08405 /* Reply Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9EA2A18D9C500B08405 /* Reply Editor.swift */; };
 		6314C9EE2A18EF3A00B08405 /* Keyboard Accessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */; };
-		631711572A27C70E00FE08C4 /* Comment Reply Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631711562A27C70E00FE08C4 /* Comment Reply Tracker.swift */; };
 		6317ABCB2A37292700603D76 /* FeedType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317ABCA2A37292700603D76 /* FeedType.swift */; };
 		6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */; };
 		6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */; };
@@ -410,7 +409,6 @@
 		630D753C27F65E44006E60C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6314C9EA2A18D9C500B08405 /* Reply Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reply Editor.swift"; sourceTree = "<group>"; };
 		6314C9ED2A18EF3A00B08405 /* Keyboard Accessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard Accessories.swift"; sourceTree = "<group>"; };
-		631711562A27C70E00FE08C4 /* Comment Reply Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Reply Tracker.swift"; sourceTree = "<group>"; };
 		6317ABCA2A37292700603D76 /* FeedType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedType.swift; sourceTree = "<group>"; };
 		6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stickied Tag.swift"; sourceTree = "<group>"; };
 		6318DE5527FBAE3600CC2AD6 /* Share Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Share Sheet.swift"; sourceTree = "<group>"; };
@@ -1425,7 +1423,6 @@
 				63E5D38C2A13BCDE00EC1FBD /* Community Search Result Tracker.swift */,
 				63E5D3912A13CF2300EC1FBD /* Favorite Community Tracker.swift */,
 				63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */,
-				631711562A27C70E00FE08C4 /* Comment Reply Tracker.swift */,
 				6DA61F862A5720EA001EA633 /* RecentSearchesTracker.swift */,
 				B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */,
 				CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */,
@@ -1706,6 +1703,15 @@
 			path = "Vote Complex";
 			sourceTree = "<group>";
 		};
+		CD82A2512A716B5D00111034 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */,
+				CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
 		CDA2C5242A705D3100649D5A /* Composers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1745,15 +1751,6 @@
 				CDB0117C2A6F703800D043EB /* CommentEditor.swift */,
 			);
 			path = Editors;
-			sourceTree = "<group>";
-		};
-		CD82A2512A716B5D00111034 /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */,
-				CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */,
-			);
-			path = Repositories;
 			sourceTree = "<group>";
 		};
 		CDC6A8C82A6F1C8000CC11AC /* Protocols */ = {
@@ -2096,7 +2093,6 @@
 				637218532A3A2AAD008C4816 /* APIMyUserInfo.swift in Sources */,
 				637218582A3A2AAD008C4816 /* APISite.swift in Sources */,
 				6DE1183E2A4A4FF500810C7E /* Delete Post or Comment.swift in Sources */,
-				631711572A27C70E00FE08C4 /* Comment Reply Tracker.swift in Sources */,
 				B11D72832A49FAA7009DC22F /* Cached Image.swift in Sources */,
 				6386E02A2A03D0C3006B3C1D /* Post Tracker.swift in Sources */,
 				637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */,
