@@ -97,7 +97,6 @@ struct CommentBodyView: View {
     
     @ViewBuilder
     func compactScoreDisplay() -> some View {
-        // HStack(spacing: 8) {
         Group {
             // time
             TimestampView(date: commentView.comment.published)
