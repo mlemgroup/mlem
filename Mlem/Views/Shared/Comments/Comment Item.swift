@@ -35,7 +35,6 @@ struct CommentItem: View {
     // MARK: Environment
 
     @EnvironmentObject var commentTracker: CommentTracker
-    @EnvironmentObject var commentReplyTracker: CommentReplyTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
 

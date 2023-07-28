@@ -209,8 +209,8 @@ extension ExpandedPost {
     // swiftlint:enable function_body_length
 
     func loadComments() async {
-        defer { commentTracker.isLoading = false }
-        commentTracker.isLoading = true
+        defer { isLoading = false }
+        isLoading = true
         
         do {
             let comments = try await commentRepository.comments(for: post.post.id)
@@ -223,6 +223,20 @@ extension ExpandedPost {
                     underlyingError: error
                 )
             )
+        }
+    }
+    
+    /**
+     Refreshes the comment feed. Does not touch the isLoading bool, since that status cue is handled implicitly by .refreshable
+     */
+    func refreshComments() async {
+        do {
+            let comments = try await commentRepository.comments(for: post.post.id)
+            commentTracker.comments = sortComments(comments, by: defaultCommentSorting)
+        } catch {
+            errorHandler.handle(.init(title: "Failed to refresh",
+                                      message: "Please try again",
+                                      underlyingError: error))
         }
     }
 
