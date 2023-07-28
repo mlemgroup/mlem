@@ -107,9 +107,9 @@ struct PostInteractionBar: View {
                       ? DetailedVotes(score: postView.counts.score,
                                       upvotes: postView.counts.upvotes,
                                       downvotes: postView.counts.downvotes,
+                                      myVote: displayedVote,
                                       showDownvotes: showDownvotesSeparately)
                       : nil,
-                      myVote: displayedVote,
                       published: shouldShowTimeInPostBar ? postView.published : nil,
                       commentCount: shouldShowRepliesInPostBar ? postView.counts.comments : nil,
                       saved: shouldShowSavedInPostBar ? postView.saved : nil)

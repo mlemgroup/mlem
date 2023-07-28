@@ -91,9 +91,9 @@ struct CommentInteractionBar: View {
                       ? DetailedVotes(score: displayedScore,
                                       upvotes: commentView.counts.upvotes,
                                       downvotes: commentView.counts.downvotes,
+                                      myVote: commentView.myVote ?? .resetVote,
                                       showDownvotes: showCommentDownvotesSeparately)
                       : nil,
-                      myVote: shouldShowScoreInCommentBar ? displayedVote : nil,
                       published: shouldShowTimeInCommentBar ? commentView.comment.published : nil,
                       commentCount: shouldShowRepliesInCommentBar ? commentView.counts.childCount : nil,
                       saved: shouldShowSavedInCommentBar ? commentView.saved : nil)

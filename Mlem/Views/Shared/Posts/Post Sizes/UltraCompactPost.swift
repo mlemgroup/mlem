@@ -141,8 +141,8 @@ struct UltraCompactPost: View {
             InfoStack(votes: DetailedVotes(score: postView.counts.score,
                                            upvotes: postView.counts.upvotes,
                                            downvotes: postView.counts.downvotes,
+                                           myVote: postView.myVote ?? .resetVote,
                                            showDownvotes: showDownvotesSeparately),
-                      myVote: postView.myVote ?? .resetVote,
                       published: postView.published,
                       commentCount: postView.counts.comments,
                       saved: postView.saved)
