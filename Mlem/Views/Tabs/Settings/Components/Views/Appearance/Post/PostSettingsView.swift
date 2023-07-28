@@ -26,7 +26,8 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     
     // Complications
-    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .plain
+    @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
     @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
@@ -84,16 +85,21 @@ struct PostSettingsView: View {
             }
             
             Section("Interactions and Info") {
-                SelectableSettingsItem(
-                    settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote complex style",
-                    currentValue: $postVoteComplexStyle,
-                    options: VoteComplexStyle.allCases
-                )
+                // TEMPORARILY DISABLED to see if users complain
+//                SelectableSettingsItem(
+//                    settingIconSystemName: "arrow.up.arrow.down.square",
+//                    settingName: "Vote complex style",
+//                    currentValue: $postVoteComplexStyle,
+//                    options: VoteComplexStyle.allCases
+//                )
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                        settingPictureColor: .pink,
-                                       settingName: "Show upvotes in info",
+                                       settingName: "Show score in info",
                                        isTicked: $shouldShowScoreInPostBar)
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                                       settingPictureColor: .pink,
+                                       settingName: "Show downvotes separately",
+                                       isTicked: $showDownvotesSeparately)
                 SwitchableSettingsItem(settingPictureSystemName: "clock",
                                        settingPictureColor: .pink,
                                        settingName: "Show time posted in info",

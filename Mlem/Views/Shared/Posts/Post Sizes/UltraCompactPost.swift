@@ -15,6 +15,7 @@ struct UltraCompactPost: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
     @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
+    @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
 
     // constants
     let thumbnailSize: CGFloat = 60
@@ -137,8 +138,11 @@ struct UltraCompactPost: View {
                 NSFWTag(compact: true)
             }
             
-            InfoStack(score: postView.counts.score,
-                      myVote: postView.myVote ?? .resetVote,
+            InfoStack(votes: DetailedVotes(score: postView.counts.score,
+                                           upvotes: postView.counts.upvotes,
+                                           downvotes: postView.counts.downvotes,
+                                           myVote: postView.myVote ?? .resetVote,
+                                           showDownvotes: showDownvotesSeparately),
                       published: postView.published,
                       commentCount: postView.counts.comments,
                       saved: postView.saved)
