@@ -43,19 +43,16 @@ struct FeedPost: View {
     init(postView: APIPostView,
          showPostCreator: Bool = true,
          showCommunity: Bool = true,
-         showInteractionBar: Bool = true,
          enableSwipeActions: Bool = true) {
         self.postView = postView
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
-        self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
     }
 
     let postView: APIPostView
     let showPostCreator: Bool
     let showCommunity: Bool
-    let showInteractionBar: Bool
     let enableSwipeActions: Bool
 
     // MARK: State
@@ -140,15 +137,13 @@ struct FeedPost: View {
                 }
                 .padding(.top, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
-
-                if showInteractionBar {
-                    PostInteractionBar(postView: postView,
-                                       menuFunctions: genMenuFunctions(),
-                                       voteOnPost: voteOnPost,
-                                       updatedSavePost: { _ in await savePost() },
-                                       deletePost: deletePost,
-                                       replyToPost: replyToPost)
-                }
+                
+                PostInteractionBar(postView: postView,
+                                   menuFunctions: genMenuFunctions(),
+                                   voteOnPost: voteOnPost,
+                                   updatedSavePost: { _ in await savePost() },
+                                   deletePost: deletePost,
+                                   replyToPost: replyToPost)
             }
         }
     }

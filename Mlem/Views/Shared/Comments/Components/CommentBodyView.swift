@@ -10,23 +10,33 @@ import SwiftUI
 
 struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    @AppStorage("compactComments") var compactComments: Bool = false
     
     let commentView: APICommentView
     let isCollapsed: Bool
     let showPostContext: Bool
-    let showCommentCreator: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
+    
+    var serverInstanceLocation: ServerInstanceLocation {
+        if shouldShowUserServerInComment {
+            return .disabled
+        } else if compactComments {
+            return .trailing
+        } else {
+            return .bottom
+        }
+    }
+    
+    var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
 
     init(commentView: APICommentView,
          isCollapsed: Bool,
          showPostContext: Bool,
-         showCommentCreator: Bool,
          menuFunctions: [MenuFunction]) {
         self.commentView = commentView
         self.isCollapsed = isCollapsed
         self.showPostContext = showPostContext
-        self.showCommentCreator = showCommentCreator
         self.menuFunctions = menuFunctions
         
         let commentor = commentView.creator
@@ -35,13 +45,11 @@ struct CommentBodyView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            // TEMPORARILY DISABLED: hiding comment creator--doesn't appear to be used anywhere in the code?
-            // if showCommentCreator {
-            HStack {
+        VStack(alignment: .leading, spacing: spacing) {
+            HStack(spacing: 12) {
                 UserProfileLink(
                     user: commentView.creator,
-                    serverInstanceLocation: shouldShowUserServerInComment ? .bottom : .disabled,
+                    serverInstanceLocation: serverInstanceLocation,
                     postContext: commentView.post,
                     commentContext: commentView.comment
                 )
@@ -51,22 +59,27 @@ struct CommentBodyView: View {
                 
                 Spacer()
                 
-                EllipsisMenu(size: 24, menuFunctions: menuFunctions)
+                if compactComments {
+                    compactScoreDisplay()
+                }
+                
+                EllipsisMenu(size: compactComments ? 20 : 24, menuFunctions: menuFunctions)
             }
-            // }
             
             // comment text or placeholder
-            if commentView.comment.deleted {
-                Text("Comment was deleted")
-                    .italic()
-                    .foregroundColor(.secondary)
-            } else if commentView.comment.removed {
-                Text("Comment was removed")
-                    .italic()
-                    .foregroundColor(.secondary)
-            } else if !isCollapsed {
-                MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+            Group {
+                if commentView.comment.deleted {
+                    Text("Comment was deleted")
+                        .italic()
+                        .foregroundColor(.secondary)
+                } else if commentView.comment.removed {
+                    Text("Comment was removed")
+                        .italic()
+                        .foregroundColor(.secondary)
+                } else if !isCollapsed {
+                    MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
             }
 
             // embedded post
@@ -77,5 +90,19 @@ struct CommentBodyView: View {
                 )
             }
         }
+    }
+    
+    func compactScoreDisplay() -> some View {
+        let myVote = commentView.myVote ?? .resetVote
+        
+        // TODO: ERIC add split vote support for this once that PR is in (that's what this HStack is here for)
+        // HStack(spacing: 12) {
+        return HStack(spacing: AppConstants.iconToTextSpacing) {
+            Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
+            Text(String(commentView.counts.score))
+        }
+        .foregroundColor(.secondary)
+        .font(.footnote)
+        // }
     }
 }

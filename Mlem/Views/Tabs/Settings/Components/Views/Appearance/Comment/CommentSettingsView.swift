@@ -11,6 +11,7 @@ import SwiftUI
 struct CommentSettingsView: View {
     
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
+    @AppStorage("compactComments") var compactComments: Bool = false
     // interactions and info
     @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .standard
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
@@ -21,6 +22,13 @@ struct CommentSettingsView: View {
     
     var body: some View {
         List {
+            Section("Comment Size") {
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.compactSymbolName,
+                                       settingPictureColor: .pink,
+                                       settingName: "Compact comments",
+                                       isTicked: $compactComments)
+            }
+            
             Section("Display Sides") {
                 SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
                                        settingPictureColor: .pink,
