@@ -13,15 +13,13 @@ enum InboxItemType {
     case reply(APICommentReplyView)
     
     var hasherId: Int {
-        if case .mention(let _) = self {
+        switch self {
+        case .mention:
             return 0
-        } else if case .message(let _) = self {
+        case .message:
             return 1
-        } else if case .reply(let _) = self {
+        case .reply:
             return 2
-        } else {
-            assertionFailure("Unhandled InboxItemType")
-            return -1
         }
     }
 }
