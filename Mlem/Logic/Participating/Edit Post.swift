@@ -34,7 +34,6 @@ import SwiftUI
             postTracker.update(with: response.postView)
             
             if let responseCallback {
-                print("responding")
                 responseCallback(response.postView)
             }
         }
