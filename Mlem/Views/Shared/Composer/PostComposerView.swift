@@ -47,7 +47,9 @@ struct PostComposerView: View {
                                    postURL: postURL,
                                    postIsNSFW: isNSFW,
                                    postTracker: postTracker,
-                                   account: appState.currentActiveAccount)
+                                   account: appState.currentActiveAccount,
+                                   responseCallback: editModel.responseCallback)
+                
                 print("Edit successful")
             } else {
                 try await postPost(to: editModel.community,

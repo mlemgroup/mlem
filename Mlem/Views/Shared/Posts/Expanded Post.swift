@@ -55,6 +55,7 @@ struct ExpandedPost: View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
+                    .id(post.hashValue)
                 
                 Divider()
                     .background(.black)
