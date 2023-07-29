@@ -159,7 +159,11 @@ extension ExpandedPost {
                 imageName: "pencil",
                 destructiveActionPrompt: nil,
                 enabled: true) {
-                    editorTracker.openEditor(with: PostEditorModel(community: post.community, appState: appState, editPost: post.post))
+                    editorTracker.openEditor(with: PostEditorModel(community: post.community,
+                                                                   appState: appState,
+                                                                   postTracker: postTracker,
+                                                                   editPost: post.post,
+                                                                   responseCallback: updatePost))
                 })
             
             // delete
@@ -258,5 +262,9 @@ extension ExpandedPost {
             newComment.children = sortComments(comment.children, by: sort)
             return newComment
         }
+    }
+    
+    func updatePost(newPost: APIPostView) {
+        post = newPost
     }
 }
