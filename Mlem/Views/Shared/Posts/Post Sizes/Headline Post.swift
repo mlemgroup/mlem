@@ -34,13 +34,11 @@ struct HeadlinePost: View {
         return .secondary
     }
 
-    var showNsfwFilter: Bool { (postView.post.nsfw || postView.community.nsfw) && shouldBlurNsfw }
-
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack(alignment: .top, spacing: spacing) {
                 if shouldShowPostThumbnails && !thumbnailsOnRight {
-                    ThumbnailImage(postView: postView)
+                    ThumbnailImageView(postView: postView)
                 }
 
                 VStack(spacing: 2) {
@@ -64,7 +62,7 @@ struct HeadlinePost: View {
                 }
                 
                 if shouldShowPostThumbnails && thumbnailsOnRight {
-                    ThumbnailImage(postView: postView)
+                    ThumbnailImageView(postView: postView)
                 }
             }
         }

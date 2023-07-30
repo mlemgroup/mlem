@@ -28,7 +28,6 @@ struct UltraCompactPost: View {
     // computed
     let voteColor: Color
     let voteIconName: String
-    var showNsfwFilter: Bool { (postView.post.nsfw || postView.community.nsfw) && shouldBlurNsfw }
 
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
@@ -51,7 +50,7 @@ struct UltraCompactPost: View {
     var body: some View {
         HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
             if shouldShowPostThumbnails && !thumbnailsOnRight {
-                ThumbnailImage(postView: postView)
+                ThumbnailImageView(postView: postView)
             }
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
@@ -78,7 +77,7 @@ struct UltraCompactPost: View {
             }
             
             if shouldShowPostThumbnails && thumbnailsOnRight {
-                ThumbnailImage(postView: postView)
+                ThumbnailImageView(postView: postView)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

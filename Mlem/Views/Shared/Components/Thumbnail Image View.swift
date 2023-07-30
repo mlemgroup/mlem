@@ -1,5 +1,5 @@
 //
-//  ThumbnailImage.swift
+//  ThumbnailImageView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-29.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ThumbnailImage: View {
+struct ThumbnailImageView: View {
     
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
