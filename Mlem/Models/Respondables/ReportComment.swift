@@ -21,6 +21,7 @@ struct ReportComment: Respondable {
     
     func embeddedView() -> AnyView {
         return AnyView(CommentBodyView(commentView: comment,
+                                       isParentCollapsed: .constant(false),
                                        isCollapsed: .constant(false),
                                        showPostContext: true,
                                        showCommentCreator: true,

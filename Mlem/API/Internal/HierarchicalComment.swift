@@ -13,6 +13,7 @@ class HierarchicalComment: ObservableObject {
     var children: [HierarchicalComment]
     let depth: Int
     
+    @Published var isParentCollapsed: Bool = false
     @Published var isCollapsed: Bool = false
 
     init(comment: APICommentView, children: [HierarchicalComment], depth: Int = 0) {

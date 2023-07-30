@@ -81,15 +81,21 @@ struct CommentItem: View {
     // MARK: Body
 
     var body: some View {
-        VStack(spacing: 0) {
-            commentBody(hierarchicalComment: self.hierarchicalComment)
-            Divider()
-            //            childComments(children: self.hierarchicalComment.children)
-            //                .transition(.move(edge: .top).combined(with: .opacity))
+        if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed {
+            EmptyView()
+        } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed {
+            EmptyView()
+        } else {
+            VStack(spacing: 0) {
+                commentBody(hierarchicalComment: self.hierarchicalComment)
+                Divider()
+                //            childComments(children: self.hierarchicalComment.children)
+                //                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+            .clipped()
+            .padding(.leading, depth == 0 ? 0 : CGFloat(hierarchicalComment.depth) * CGFloat(indent))
+            .transition(.move(edge: .top).combined(with: .opacity))
         }
-        .clipped()
-        .padding(.leading, depth == 0 ? 0 : CGFloat(hierarchicalComment.depth) * CGFloat(indent))
-        .transition(.move(edge: .top).combined(with: .opacity))
     }
 
     // MARK: Subviews
@@ -99,6 +105,7 @@ struct CommentItem: View {
         Group {
             VStack(alignment: .leading, spacing: 0) {
                 CommentBodyView(commentView: hierarchicalComment.commentView,
+                                isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                                 isCollapsed: $hierarchicalComment.isCollapsed,
                                 showPostContext: showPostContext,
                                 showCommentCreator: showCommentCreator,
@@ -117,8 +124,7 @@ struct CommentItem: View {
                                           deleteComment: deleteComment,
                                           replyToComment: replyToCommentUnwrapped)
                 } else {
-                    Spacer()
-                        .frame(height: AppConstants.postAndCommentSpacing)
+                    Spacer().frame(height: AppConstants.postAndCommentSpacing)
                 }
             }
         }
@@ -127,7 +133,7 @@ struct CommentItem: View {
             withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
                 // Perhaps we want an explict flag for this in the future?
                 if !showPostContext {
-                    hierarchicalComment.isCollapsed.toggle()
+                    commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
                 }
             }
         }
