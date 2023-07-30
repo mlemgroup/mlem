@@ -190,26 +190,23 @@ struct SwipeyView: ViewModifier {
         
         reset()
         
-        // TEMP: need to delay the call being sent because otherwise the state update cancels the animation. This should be fixed with backend support for fakers, since the vote won't change and so the animation won't stop (hopefully). This delay matches the response field of the reset() animation.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            if finalDragPosition < -1 * AppConstants.longSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    let action = secondaryTrailingAction ?? primaryTrailingAction
-                    await action?.action()
-                }
-            } else if finalDragPosition < -1 * AppConstants.shortSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    await primaryTrailingAction?.action()
-                }
-            } else if finalDragPosition > AppConstants.longSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    let action = secondaryLeadingAction ?? primaryLeadingAction
-                    await action?.action()
-                }
-            } else if finalDragPosition > AppConstants.shortSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    await primaryLeadingAction?.action()
-                }
+        if finalDragPosition < -1 * AppConstants.longSwipeDragMin {
+            Task(priority: .userInitiated) {
+                let action = secondaryTrailingAction ?? primaryTrailingAction
+                await action?.action()
+            }
+        } else if finalDragPosition < -1 * AppConstants.shortSwipeDragMin {
+            Task(priority: .userInitiated) {
+                await primaryTrailingAction?.action()
+            }
+        } else if finalDragPosition > AppConstants.longSwipeDragMin {
+            Task(priority: .userInitiated) {
+                let action = secondaryLeadingAction ?? primaryLeadingAction
+                await action?.action()
+            }
+        } else if finalDragPosition > AppConstants.shortSwipeDragMin {
+            Task(priority: .userInitiated) {
+                await primaryLeadingAction?.action()
             }
         }
     }

@@ -76,9 +76,6 @@ struct CommentItem: View {
 
                     if !isCollapsed && !compactComments {
                         CommentInteractionBar(commentView: hierarchicalComment.commentModel,
-//                                              displayedScore: displayedScore,
-//                                              displayedVote: displayedVote,
-//                                              displayedSaved: displayedSaved,
                                               upvote: upvote,
                                               downvote: downvote,
                                               saveComment: saveComment,
@@ -132,7 +129,7 @@ struct CommentItem: View {
     var commentBody: some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {
             // comment text or placeholder
-            if hierarchicalComment.commentModel.comment.deleted {
+            if hierarchicalComment.commentModel.deleted {
                 Text("Comment was deleted")
                     .italic()
                     .foregroundColor(.secondary)

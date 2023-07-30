@@ -8,57 +8,23 @@
 import SwiftUI
 
 extension CommentItem {
-    func voteOnComment(inputOp: ScoringOperation) async {
-        let operation = hierarchicalComment.commentModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-        
-        // update comments locally (fake state)
-        let newVotes = hierarchicalComment.commentModel.votes.applyScoringOperation(operation: operation)
-        commentTracker.comments.update(with: CommentModel(comment: hierarchicalComment.commentModel.comment,
-                                                          creator: hierarchicalComment.commentModel.creator,
-                                                          post: hierarchicalComment.commentModel.post,
-                                                          community: hierarchicalComment.commentModel.community,
-                                                          votes: newVotes,
-                                                          numReplies: hierarchicalComment.commentModel.numReplies,
-                                                          published: hierarchicalComment.commentModel.published,
-                                                          updated: hierarchicalComment.commentModel.updated,
-                                                          saved: hierarchicalComment.commentModel.saved))
-        
-        do {
-            let updatedComment = try await commentRepository.voteOnComment(
-                id: hierarchicalComment.commentModel.comment.id,
-                vote: operation
-            )
-            commentTracker.comments.update(with: CommentModel(from: updatedComment))
-        } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
-        }
+    
+    // MARK: Convenience Functions
+    // these just wrap tracker calls so that the rest of the code is all pretty
+    func upvote() async {
+        await commentTracker.voteOnComment(hierarchicalComment: hierarchicalComment, inputOp: .upvote)
+    }
+    
+    func downvote() async {
+        await commentTracker.voteOnComment(hierarchicalComment: hierarchicalComment, inputOp: .downvote)
+    }
+    
+    func saveComment() async {
+        await commentTracker.toggleCommentSaved(hierarchicalComment: hierarchicalComment)
     }
     
     func deleteComment() async {
-        let comment = hierarchicalComment.commentModel.comment
-        do {
-            let updatedComment = try await commentRepository.deleteComment(
-                id: comment.id,
-                // TODO: the UI for this only allows delete, but the operation can be undone it appears...
-                shouldDelete: true
-            )
-            commentTracker.comments.update(with: updatedComment.commentModel)
-        } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
-        }
-    }
-    
-    func upvote() async {
-        await voteOnComment(inputOp: .upvote)
-    }
-
-    func downvote() async {
-        // don't do anything if currently awaiting a vote response
-        await voteOnComment(inputOp: .downvote)
+        await commentTracker.deleteComment(hierarchicalComment: hierarchicalComment)
     }
     
     func replyToComment() {
@@ -80,39 +46,6 @@ extension CommentItem {
      */
     func replyToCommentAsyncWrapper() async {
         replyToComment()
-    }
-
-    /**
-     Sends a save request for the current post
-     */
-    func saveComment() async {
-        do {
-            _ = try await commentRepository.saveComment(id: hierarchicalComment.commentModel.comment.id,
-                                                    shouldSave: !hierarchicalComment.commentModel.saved)
-        } catch {
-            appState.contextualError = .init(underlyingError: error)
-        }
-//        guard !dirty else {
-//            return
-//        }
-//
-//        defer { dirty = false }
-//        dirty = true
-//        dirtySaved.toggle()
-//
-//        do {
-//            let response = try await commentRepository.saveComment(
-//                id: hierarchicalComment.id,
-//                shouldSave: dirtySaved
-//            )
-//
-//            commentTracker.comments.update(with: response.commentModel)
-//        } catch {
-//            errorHandler.handle(
-//                .init(underlyingError: error)
-//            )
-//        }
-
     }
     
     // MARK: helpers
@@ -187,7 +120,7 @@ extension CommentItem {
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
-                enabled: !hierarchicalComment.commentModel.comment.deleted) {
+                enabled: !hierarchicalComment.commentModel.deleted) {
                 Task(priority: .userInitiated) {
                     await deleteComment()
                 }

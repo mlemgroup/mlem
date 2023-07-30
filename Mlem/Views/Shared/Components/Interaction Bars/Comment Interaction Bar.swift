@@ -106,7 +106,7 @@ struct CommentInteractionBar: View {
             return false
         }
         
-        if commentView.comment.deleted {
+        if commentView.deleted {
             return false
         }
         

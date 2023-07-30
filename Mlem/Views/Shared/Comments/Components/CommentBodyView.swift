@@ -13,13 +13,13 @@ struct CommentBodyView: View {
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     
-    let commentView: CommentModel
+    let commentModel: CommentModel
     let isCollapsed: Bool
     let showPostContext: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
     
-    var myVote: ScoringOperation { commentView.votes.myVote }
+    var myVote: ScoringOperation { commentModel.votes.myVote }
     
     var serverInstanceLocation: ServerInstanceLocation {
         if shouldShowUserServerInComment {
@@ -37,7 +37,7 @@ struct CommentBodyView: View {
          isCollapsed: Bool,
          showPostContext: Bool,
          menuFunctions: [MenuFunction]) {
-        self.commentView = commentView
+        self.commentModel = commentView
         self.isCollapsed = isCollapsed
         self.showPostContext = showPostContext
         self.menuFunctions = menuFunctions
@@ -51,10 +51,10 @@ struct CommentBodyView: View {
         VStack(alignment: .leading, spacing: spacing) {
             HStack(spacing: AppConstants.compactSpacing) {
                 UserProfileLink(
-                    user: commentView.creator,
+                    user: commentModel.creator,
                     serverInstanceLocation: serverInstanceLocation,
-                    postContext: commentView.post,
-                    commentContext: commentView.comment
+                    postContext: commentModel.post,
+                    commentContext: commentModel.comment
                 )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(commentorLabel)
@@ -71,16 +71,16 @@ struct CommentBodyView: View {
             
             // comment text or placeholder
             Group {
-                if commentView.comment.deleted {
+                if commentModel.deleted {
                     Text("Comment was deleted")
                         .italic()
                         .foregroundColor(.secondary)
-                } else if commentView.comment.removed {
+                } else if commentModel.comment.removed {
                     Text("Comment was removed")
                         .italic()
                         .foregroundColor(.secondary)
                 } else if !isCollapsed {
-                    MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
+                    MarkdownView(text: commentModel.comment.content, isNsfw: commentModel.post.nsfw)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
             }
@@ -88,8 +88,8 @@ struct CommentBodyView: View {
             // embedded post
             if showPostContext {
                 EmbeddedPost(
-                    community: commentView.community,
-                    post: commentView.post
+                    community: commentModel.community,
+                    post: commentModel.post
                 )
             }
         }
@@ -99,23 +99,23 @@ struct CommentBodyView: View {
     func compactScoreDisplay() -> some View {
         Group {
             // time
-            TimestampView(date: commentView.published)
+            TimestampView(date: commentModel.published)
             
             // votes
             if showCommentDownvotesSeparately {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
-                    Text(String(commentView.votes.upvotes))
+                    Text(String(commentModel.votes.upvotes))
                 }
                 
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .downvote ? AppConstants.fullDownvoteSymbolName : AppConstants.emptyDownvoteSymbolName)
-                    Text(String(commentView.votes.downvotes))
+                    Text(String(commentModel.votes.downvotes))
                 }
             } else {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
-                    Text(String(commentView.votes.total))
+                    Text(String(commentModel.votes.total))
                 }
                 .foregroundColor(.secondary)
                 .font(.footnote)
