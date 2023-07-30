@@ -403,6 +403,7 @@ struct UserView: View {
                 hierarchicalComment: comment,
                 postContext: nil,
                 depth: 0,
+                indentBehaviour: .never,
                 showPostContext: true,
                 showCommentCreator: false,
                 replyToComment: nil

@@ -10,6 +10,10 @@ import SwiftUI
 
 struct CommentItem: View {
     
+    enum IndentBehaviour {
+        case standard, never
+    }
+    
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
     
@@ -45,6 +49,7 @@ struct CommentItem: View {
 
     @ObservedObject var hierarchicalComment: HierarchicalComment
     let postContext: APIPostView? // TODO: redundant with comment.post?
+    let indentBehaviour: IndentBehaviour
     var depth: Int { hierarchicalComment.depth < 0 ? 0 : hierarchicalComment.depth }
     let showPostContext: Bool
     let showCommentCreator: Bool
@@ -53,11 +58,28 @@ struct CommentItem: View {
     let replyToComment: ((APICommentView) -> Void)?
     
     // MARK: Computed
+    
+    private var indentValue: CGFloat {
+        if depth == 0 || indentBehaviour == .never {
+            return 0
+        } else {
+            return CGFloat(hierarchicalComment.depth) * CGFloat(indent)
+        }
+    }
+
+    private var borderWidth: CGFloat {
+        if depth == 0 || indentBehaviour == .never {
+            return 0
+        } else {
+            return 2
+        }
+    }
 
     // init needed to get dirty and clean aligned
     init(hierarchicalComment: HierarchicalComment,
          postContext: APIPostView?,
          depth: Int,
+         indentBehaviour: IndentBehaviour = .standard,
          showPostContext: Bool,
          showCommentCreator: Bool,
          showInteractionBar: Bool = true,
@@ -67,6 +89,7 @@ struct CommentItem: View {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
 //        self.depth = depth
+        self.indentBehaviour = indentBehaviour
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
         self.showInteractionBar = showInteractionBar
@@ -93,7 +116,7 @@ struct CommentItem: View {
                 //                .transition(.move(edge: .top).combined(with: .opacity))
             }
             .clipped()
-            .padding(.leading, depth == 0 ? 0 : CGFloat(hierarchicalComment.depth) * CGFloat(indent))
+            .padding(.leading, indentValue)
             .transition(.move(edge: .top).combined(with: .opacity))
         }
     }
@@ -148,7 +171,7 @@ struct CommentItem: View {
                           primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
                           secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
         )
-        .border(width: depth == 0 ? 0 : 2, edges: [.leading], color: threadingColors[depth % threadingColors.count])
+        .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
         .sheet(isPresented: $isComposingReport) {
             ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
                                                                           comment: hierarchicalComment.commentView,
