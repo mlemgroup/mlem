@@ -117,12 +117,12 @@ struct CommentItem: View {
             }
             .clipped()
             .padding(.leading, indentValue)
-            .transition(.move(edge: .top).combined(with: .opacity))
         }
     }
 
     // MARK: Subviews
     
+    // swiftlint:disable function_body_length
     @ViewBuilder
     private func commentBody(hierarchicalComment: HierarchicalComment) -> some View {
         Group {
@@ -150,6 +150,12 @@ struct CommentItem: View {
                     Spacer().frame(height: AppConstants.postAndCommentSpacing)
                 }
             }
+            .transition(
+                .asymmetric(
+                    insertion: .move(edge: .bottom).combined(with: .opacity),
+                    removal: .move(edge: .top).combined(with: .opacity)
+                )
+            )
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
         .onTapGesture {
@@ -178,6 +184,7 @@ struct CommentItem: View {
                                                                           report: true))
         }
     }
+    // swiftlint:enable function_body_length
 
     @ViewBuilder
     private func childComments(children: [HierarchicalComment]) -> some View {
