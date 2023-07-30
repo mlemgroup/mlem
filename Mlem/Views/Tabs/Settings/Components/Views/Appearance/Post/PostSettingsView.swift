@@ -39,6 +39,8 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
     
+    @State private var selection: String = "Compact"
+
     var body: some View {
         Form {
             Section("Post Size") {

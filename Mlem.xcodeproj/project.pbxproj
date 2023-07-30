@@ -10,6 +10,8 @@
 		030AC04F2A6464DA00037155 /* CommunitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */; };
 		030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC0512A64666C00037155 /* UserSettingsView.swift */; };
 		032EAFED2A6DB56D00CC19A6 /* Edit Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032EAFEC2A6DB56D00CC19A6 /* Edit Post.swift */; };
+		038A16DF2A75172C0087987E /* PostLayoutEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16DE2A75172C0087987E /* PostLayoutEditView.swift */; };
+		038A16E12A75AA880087987E /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E02A75AA880087987E /* WidgetModel.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
 		03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* TimestampView.swift */; };
 		03CB329E2A6D8E910021EF27 /* PostDetailEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB329D2A6D8E910021EF27 /* PostDetailEditorView.swift */; };
@@ -393,6 +395,8 @@
 		030AC04E2A6464DA00037155 /* CommunitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySettingsView.swift; sourceTree = "<group>"; };
 		030AC0512A64666C00037155 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
 		032EAFEC2A6DB56D00CC19A6 /* Edit Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Edit Post.swift"; sourceTree = "<group>"; };
+		038A16DE2A75172C0087987E /* PostLayoutEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutEditView.swift; sourceTree = "<group>"; };
+		038A16E02A75AA880087987E /* WidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModel.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostDetailEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailEditorView.swift; sourceTree = "<group>"; };
@@ -838,6 +842,8 @@
 			isa = PBXGroup;
 			children = (
 				CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */,
+				038A16E02A75AA880087987E /* WidgetModel.swift */,
+				038A16DE2A75172C0087987E /* PostLayoutEditView.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -2263,6 +2269,7 @@
 				63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */,
 				CD4E98A12A69BE980026C4D9 /* AlternativeIconCell.swift in Sources */,
 				CDA217E42A62FB3300BDA173 /* ReplyToMessage.swift in Sources */,
+				038A16DF2A75172C0087987E /* PostLayoutEditView.swift in Sources */,
 				CD69F5732A4239D70028D4F7 /* Comment Item.swift in Sources */,
 				CD18DC6D2A5203BF002C56BC /* MarkPersonMentionAsRead.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Feed Post.swift in Sources */,
@@ -2435,6 +2442,7 @@
 				63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */,
 				637218462A3A2AAD008C4816 /* APIComment.swift in Sources */,
 				637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */,
+				038A16E12A75AA880087987E /* WidgetModel.swift in Sources */,
 				63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */,
 				CD391FA02A545F8600E213B5 /* UltraCompactPost.swift in Sources */,
 				6314C9EE2A18EF3A00B08405 /* Keyboard Accessories.swift in Sources */,
