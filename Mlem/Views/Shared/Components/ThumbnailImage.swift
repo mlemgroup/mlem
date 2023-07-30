@@ -21,10 +21,10 @@ struct ThumbnailImage: View {
             switch postView.postType {
             case .image(let url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
-                CachedImage(url: url)
+                CachedImage(url: url, maxHeight: AppConstants.thumbnailSize)
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .link(let url):
-                CachedImage(url: url)
+                CachedImage(url: url, maxHeight: AppConstants.thumbnailSize)
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .text:
                 Image(systemName: "text.book.closed")
@@ -36,6 +36,7 @@ struct ThumbnailImage: View {
         .font(.title)
         .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
         .background(Color(UIColor.systemGray4))
+        .contentShape(Rectangle())
         .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))

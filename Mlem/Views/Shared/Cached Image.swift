@@ -33,6 +33,7 @@ struct CachedImage: View {
                 let imageView = image
                     .resizable()
                     .scaledToFill()
+                    .frame(maxHeight: maxHeight)
                     .clipped()
                     .allowsHitTesting(false)
                     .overlay(alignment: .top) {
