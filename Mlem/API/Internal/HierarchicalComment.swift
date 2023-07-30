@@ -16,10 +16,12 @@ class HierarchicalComment: ObservableObject {
     @Published var isParentCollapsed: Bool = false
     @Published var isCollapsed: Bool = false
 
-    init(comment: APICommentView, children: [HierarchicalComment], depth: Int = 0) {
+    init(comment: APICommentView, children: [HierarchicalComment], depth: Int = 0, parentCollapsed: Bool, collapsed: Bool) {
         self.commentView = comment
         self.children = children
         self.depth = max(0, commentView.comment.path.split(separator: ".").count - 2)
+        self.isParentCollapsed = parentCollapsed
+        self.isCollapsed = collapsed
     }
 }
 
@@ -42,8 +44,16 @@ extension [HierarchicalComment] {
         for (index, element) in self.enumerated() {
             if element.id == targetId {
                 // we've found the comment we're targeting so re-create it and ensure we retain it's children
-                let updatedComment = HierarchicalComment(comment: commentView, children: element.children)
-                self[index] = .init(comment: commentView, children: element.children)
+                let updatedComment = HierarchicalComment(
+                    comment: commentView,
+                    children: element.children,
+                    parentCollapsed: element.isParentCollapsed,
+                    collapsed: element.isCollapsed)
+                self[index] = .init(
+                    comment: commentView,
+                    children: element.children,
+                    parentCollapsed: element.isParentCollapsed,
+                    collapsed: element.isCollapsed)
                 return updatedComment
             } else if let updatedComment = self[index].children.insert(commentView: commentView) {
                 // if the parent wasn't the target, recursively check the children before moving on...
@@ -63,7 +73,11 @@ extension [HierarchicalComment] {
         for (index, element) in self.enumerated() {
             if element.id == parentId {
                 // we've found the comment we're replying too, so re-create it and append this to it's children
-                let reply = HierarchicalComment(comment: commentView, children: [])
+                let reply = HierarchicalComment(
+                    comment: commentView,
+                    children: [],
+                    parentCollapsed: element.isParentCollapsed,
+                    collapsed: element.isCollapsed)
                 let updatedParent = self[index]
                 updatedParent.children.append(reply)
                 self[index] = updatedParent
@@ -98,10 +112,18 @@ extension [APICommentView] {
         /// Recursively populates child comments by looking up IDs from `childrenById`
         func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
             guard let childIds = childrenById[comment.id] else {
-                return .init(comment: comment, children: [])
+                return .init(
+                    comment: comment,
+                    children: [],
+                    parentCollapsed: false,
+                    collapsed: false)
             }
             
-            let commentWithChildren = HierarchicalComment(comment: comment, children: [])
+            let commentWithChildren = HierarchicalComment(
+                comment: comment,
+                children: [],
+                parentCollapsed: false,
+                collapsed: false)
             commentWithChildren.children = childIds
                 .compactMap { id -> HierarchicalComment? in
                     guard let child = identifiedComments[id] else { return nil }

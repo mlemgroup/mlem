@@ -8,13 +8,18 @@
 import Foundation
 
 class CommentTracker: ObservableObject {
-    @Published var comments: [HierarchicalComment] = .init()
+    @Published var commentsView: [HierarchicalComment] = .init()
     @Published var isLoading: Bool = true
     
     private var ids: Set<Int> = .init()
-    
-    func setComments(_ treeView: [HierarchicalComment]) {
-        self.comments = treeView.flatMap(flatMapChildren)
+
+    private var _comments: [HierarchicalComment] = []
+    var comments: [HierarchicalComment] {
+        get { _comments }
+        set {
+            _comments = newValue
+            self.commentsView = _comments.flatMap(flatMapChildren)
+        }
     }
     
     private func flatMapChildren(_ comment: HierarchicalComment) -> [HierarchicalComment] {
@@ -31,7 +36,7 @@ class CommentTracker: ObservableObject {
             return
         }
         let collapseChildren = !comment.isCollapsed
-        comments.forEach {
+        commentsView.forEach {
             let thisPath = $0.commentView.comment.path
             let isChild = thisPath
                 .components(separatedBy: ".")
@@ -45,6 +50,10 @@ class CommentTracker: ObservableObject {
                 /// This should only run once.
                 print("parent comment \(parentPath) collapse: \(!$0.isCollapsed)")
                 $0.isCollapsed.toggle()
+                /// isCollapsed == isParentCollapsed, when comment is a parent comment.
+                if $0.commentView.comment.parentId == nil {
+                    $0.isParentCollapsed.toggle()
+                }
             } else {
                 /// Child comment.
                 print("child comment \($0.commentView.comment.path) collapse: \(!comment.isCollapsed)")

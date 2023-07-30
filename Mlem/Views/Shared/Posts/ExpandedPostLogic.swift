@@ -206,7 +206,7 @@ extension ExpandedPost {
         do {
             let comments = try await commentRepository.comments(for: post.post.id)
             let sorted = sortComments(comments, by: defaultCommentSorting)
-            commentTracker.setComments(sorted)
+            commentTracker.comments = sorted
         } catch {
             errorHandler.handle(
                 .init(

@@ -103,12 +103,16 @@ struct CommentItem: View {
 
     // MARK: Body
 
+    // swiftlint:disable line_length
     var body: some View {
-        if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed {
+        if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
             EmptyView()
-        } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed {
+        } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
             EmptyView()
         } else {
+            // swiftlint:disable redundant_discardable_let
+            let _ = print("drawing comment \(hierarchicalComment.id) at depth \(depth), parent.collapsed \(hierarchicalComment.isParentCollapsed), self.collapsed \(hierarchicalComment.isCollapsed), saved \(hierarchicalComment.commentView.saved): \(hierarchicalComment.commentView.comment.content.prefix(50))")
+            // swiftlint:enable redundant_discardable_let
             VStack(spacing: 0) {
                 commentBody(hierarchicalComment: self.hierarchicalComment)
                 Divider()
@@ -117,8 +121,10 @@ struct CommentItem: View {
             }
             .clipped()
             .padding(.leading, indentValue)
+//            .id(hierarchicalComment.id)
         }
     }
+    // swiftlint:enable line_length
 
     // MARK: Subviews
     

@@ -186,10 +186,7 @@ struct ExpandedPost: View {
      */
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
-            ForEach(commentTracker.comments) { comment in
-                // swiftlint:disable redundant_discardable_let
-                let _ = print("drawing parent comment \(comment.id) at depth 0: \(comment.commentView.comment.content.prefix(30))")
-                // swiftlint:enable redundant_discardable_let
+            ForEach(commentTracker.commentsView) { comment in
                 CommentItem(
                     hierarchicalComment: comment,
                     postContext: post,
@@ -198,6 +195,7 @@ struct ExpandedPost: View {
                     showCommentCreator: true,
                     replyToComment: replyToComment
                 )
+//                .id(comment.commentView.comment.path)
             }
         }
         .environmentObject(commentTracker)
