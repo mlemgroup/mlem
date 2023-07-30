@@ -52,7 +52,7 @@ struct UltraCompactPost: View {
     var body: some View {
         HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
             if shouldShowPostThumbnails && !thumbnailsOnRight {
-                thumbnailImage
+                ThumbnailImage(postView: postView)
             }
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
@@ -79,48 +79,11 @@ struct UltraCompactPost: View {
             }
             
             if shouldShowPostThumbnails && thumbnailsOnRight {
-                thumbnailImage
+                ThumbnailImage(postView: postView)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(AppConstants.postAndCommentSpacing)
-    }
-    
-    @ViewBuilder
-    private var thumbnailImage: some View {
-        Group {
-            switch postView.postType {
-            case .image(let url):
-                CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
-                } placeholder: {
-                    ProgressView()
-                }
-            case .link(let url):
-                CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .blur(radius: showNsfwFilter ? 8 : 0) // blur nsfw
-                } placeholder: {
-                    Image(systemName: "safari")
-                }
-            case .text:
-                Image(systemName: "text.book.closed")
-            case .titleOnly:
-                Image(systemName: "character.bubble")
-            }
-        }
-        .foregroundColor(.secondary)
-        .font(.title)
-        .frame(width: thumbnailSize, height: thumbnailSize)
-        .background(Color(UIColor.systemGray4))
-        .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
-        .overlay(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
-            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
     }
     
     @ViewBuilder
