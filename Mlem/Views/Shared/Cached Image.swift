@@ -69,20 +69,14 @@ struct CachedImage: View {
                 }
             } else if state.error != nil {
                 // Indicates an error
-                Color.red
-                    .frame(minWidth: 300, minHeight: 300)
-                    .blur(radius: 30)
-                    .overlay(VStack {
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.largeTitle)
-                        Text("Error")
-                            .fontWeight(.black)
-                    }
-                    .foregroundColor(.white)
-                    .padding(8))
+                Image(systemName: "questionmark.square.dashed")
+                    .background(Color(uiColor: .systemGray4))
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .cornerRadius(AppConstants.smallItemCornerRadius)
             } else {
                 ProgressView() // Acts as a placeholder
-                    .frame(minWidth: 300, minHeight: 300)
+                    .frame(maxWidth: .infinity, maxHeight: maxHeight)
             }
         }
     }
