@@ -69,15 +69,23 @@ struct CachedImage: View {
                 }
             } else if state.error != nil {
                 // Indicates an error
-                Image(systemName: "questionmark.square.dashed")
+                imageNotFound()
+                    .frame(maxWidth: .infinity, maxHeight: min(300, maxHeight))
                     .background(Color(uiColor: .systemGray4))
                     .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .cornerRadius(AppConstants.smallItemCornerRadius)
             } else {
                 ProgressView() // Acts as a placeholder
                     .frame(maxWidth: .infinity, maxHeight: maxHeight)
             }
         }
+    }
+    
+    func imageNotFound() -> some View {
+        Image(systemName: "questionmark.square.dashed")
+            .resizable()
+            .scaledToFit()
+            .frame(maxWidth: AppConstants.thumbnailSize, maxHeight: AppConstants.thumbnailSize)
+            .padding(AppConstants.postAndCommentSpacing)
     }
 }
