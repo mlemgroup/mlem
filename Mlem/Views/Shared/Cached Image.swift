@@ -33,6 +33,7 @@ struct CachedImage: View {
                 let imageView = image
                     .resizable()
                     .scaledToFill()
+                    .frame(maxHeight: maxHeight)
                     .clipped()
                     .allowsHitTesting(false)
                     .overlay(alignment: .top) {
@@ -68,21 +69,23 @@ struct CachedImage: View {
                 }
             } else if state.error != nil {
                 // Indicates an error
-                Color.red
-                    .frame(minWidth: 300, minHeight: 300)
-                    .blur(radius: 30)
-                    .overlay(VStack {
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.largeTitle)
-                        Text("Error")
-                            .fontWeight(.black)
-                    }
-                    .foregroundColor(.white)
-                    .padding(8))
+                imageNotFound()
+                    .frame(maxWidth: .infinity, maxHeight: min(300, maxHeight))
+                    .background(Color(uiColor: .systemGray4))
+                    .foregroundColor(.secondary)
+                    .cornerRadius(AppConstants.smallItemCornerRadius)
             } else {
                 ProgressView() // Acts as a placeholder
-                    .frame(minWidth: 300, minHeight: 300)
+                    .frame(maxWidth: .infinity, maxHeight: maxHeight)
             }
         }
+    }
+    
+    func imageNotFound() -> some View {
+        Image(systemName: "questionmark.square.dashed")
+            .resizable()
+            .scaledToFit()
+            .frame(maxWidth: AppConstants.thumbnailSize, maxHeight: AppConstants.thumbnailSize)
+            .padding(AppConstants.postAndCommentSpacing)
     }
 }
