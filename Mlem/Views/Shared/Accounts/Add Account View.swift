@@ -252,11 +252,11 @@ struct AddSavedInstanceView: View {
             viewState = .loading
         }
         
-        let sanitizedLink = instance
-            .replacingOccurrences(of: "https://", with: "")
-            .replacingOccurrences(of: "http://", with: "")
-            .replacingOccurrences(of: "www.", with: "")
-            .lowercased()
+        // There should always be a match, but we return if there isn't just to be safe
+        guard let match = instance.firstMatch(of: /^(?:https?:\/\/)?(?:www\.)?([^\/.?]+\.[^\/.?]+)/) else {
+            return
+        }
+        let sanitizedLink = String(match.1)
         
         print("Sanitized link: \(sanitizedLink)")
         
