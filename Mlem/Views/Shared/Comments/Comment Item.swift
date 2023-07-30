@@ -43,7 +43,7 @@ struct CommentItem: View {
 
     // MARK: Parameters
 
-    let hierarchicalComment: HierarchicalComment
+    @ObservedObject var hierarchicalComment: HierarchicalComment
     let postContext: APIPostView? // TODO: redundant with comment.post?
     var depth: Int { hierarchicalComment.depth < 0 ? 0 : hierarchicalComment.depth }
     let showPostContext: Bool
@@ -78,10 +78,6 @@ struct CommentItem: View {
         _dirtySaved = State(initialValue: hierarchicalComment.commentView.saved)
     }
 
-    // MARK: State
-
-    @State var isCollapsed: Bool = false
-
     // MARK: Body
 
     var body: some View {
@@ -103,7 +99,7 @@ struct CommentItem: View {
         Group {
             VStack(alignment: .leading, spacing: 0) {
                 CommentBodyView(commentView: hierarchicalComment.commentView,
-                                isCollapsed: isCollapsed,
+                                isCollapsed: $hierarchicalComment.isCollapsed,
                                 showPostContext: showPostContext,
                                 showCommentCreator: showCommentCreator,
                                 menuFunctions: genMenuFunctions())
@@ -131,7 +127,7 @@ struct CommentItem: View {
             withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
                 // Perhaps we want an explict flag for this in the future?
                 if !showPostContext {
-                    isCollapsed.toggle()
+                    hierarchicalComment.isCollapsed.toggle()
                 }
             }
         }
@@ -156,7 +152,7 @@ struct CommentItem: View {
 
     @ViewBuilder
     private func childComments(children: [HierarchicalComment]) -> some View {
-        if !isCollapsed {
+        if !hierarchicalComment.isCollapsed {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in

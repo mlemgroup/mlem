@@ -12,6 +12,8 @@ class HierarchicalComment: ObservableObject {
     let commentView: APICommentView
     var children: [HierarchicalComment]
     let depth: Int
+    
+    @Published var isCollapsed: Bool = false
 
     init(comment: APICommentView, children: [HierarchicalComment], depth: Int = 0) {
         self.commentView = comment

@@ -12,19 +12,19 @@ struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     let commentView: APICommentView
-    let isCollapsed: Bool
+    @Binding var isCollapsed: Bool
     let showPostContext: Bool
     let showCommentCreator: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
 
     init(commentView: APICommentView,
-         isCollapsed: Bool,
+         isCollapsed: Binding<Bool>,
          showPostContext: Bool,
          showCommentCreator: Bool,
          menuFunctions: [MenuFunction]) {
         self.commentView = commentView
-        self.isCollapsed = isCollapsed
+        self._isCollapsed = isCollapsed
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
         self.menuFunctions = menuFunctions
