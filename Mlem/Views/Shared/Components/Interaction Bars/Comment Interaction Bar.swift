@@ -31,11 +31,11 @@ struct CommentInteractionBar: View {
     let scoreItemWidth: CGFloat = 12
 
     // parameters
-    let commentView: APICommentView
+    let commentView: CommentModel
 
-    let displayedScore: Int
-    let displayedVote: ScoringOperation
-    let displayedSaved: Bool
+//    let displayedScore: Int
+//    let displayedVote: ScoringOperation
+//    let displayedSaved: Bool
     
     let upvote: () async -> Void
     let downvote: () async -> Void
@@ -50,19 +50,19 @@ struct CommentInteractionBar: View {
             HStack(spacing: 0) {
                 if !shouldShowVoteComplexOnRight {
                     VoteComplex(style: commentVoteComplexStyle,
-                                vote: displayedVote,
-                                score: displayedScore,
+                                vote: commentView.votes.myVote,
+                                score: commentView.votes.total,
                                 upvote: upvote,
                                 downvote: downvote)
                         .padding(.trailing, 8)
                 } else {
-                    SaveButton(isSaved: displayedSaved, accessibilityContext: "comment") {
+                    SaveButton(isSaved: commentView.saved, accessibilityContext: "comment") {
                         Task(priority: .userInitiated) {
                             await saveComment()
                         }
                     }
 
-                    ReplyButton(replyCount: commentView.counts.childCount, accessibilityContext: "comment", reply: replyToComment)
+                    ReplyButton(replyCount: commentView.numReplies, accessibilityContext: "comment", reply: replyToComment)
                         .foregroundColor(.primary)
                 }
                 
@@ -70,32 +70,32 @@ struct CommentInteractionBar: View {
                 
                 if shouldShowVoteComplexOnRight {
                     VoteComplex(style: commentVoteComplexStyle,
-                                vote: displayedVote,
-                                score: displayedScore,
+                                vote: commentView.votes.myVote,
+                                score: commentView.votes.total,
                                 upvote: upvote,
                                 downvote: downvote)
                         .padding(.trailing, 8)
                 } else {
-                    SaveButton(isSaved: displayedSaved, accessibilityContext: "comment") {
+                    SaveButton(isSaved: commentView.saved, accessibilityContext: "comment") {
                         Task(priority: .userInitiated) {
                             await saveComment()
                         }
                     }
                     
-                    ReplyButton(replyCount: commentView.counts.childCount, accessibilityContext: "comment", reply: replyToComment)
+                    ReplyButton(replyCount: commentView.numReplies, accessibilityContext: "comment", reply: replyToComment)
                         .foregroundColor(.primary)
                 }
             }
             
             InfoStack(votes: shouldShowScoreInCommentBar
-                      ? DetailedVotes(score: displayedScore,
-                                      upvotes: commentView.counts.upvotes,
-                                      downvotes: commentView.counts.downvotes,
-                                      myVote: commentView.myVote ?? .resetVote,
+                      ? DetailedVotes(score: commentView.votes.total,
+                                      upvotes: commentView.votes.upvotes,
+                                      downvotes: commentView.votes.downvotes,
+                                      myVote: commentView.votes.myVote,
                                       showDownvotes: showCommentDownvotesSeparately)
                       : nil,
                       published: shouldShowTimeInCommentBar ? commentView.comment.published : nil,
-                      commentCount: shouldShowRepliesInCommentBar ? commentView.counts.childCount : nil,
+                      commentCount: shouldShowRepliesInCommentBar ? commentView.numReplies : nil,
                       saved: shouldShowSavedInCommentBar ? commentView.saved : nil)
         }
         .font(.callout)

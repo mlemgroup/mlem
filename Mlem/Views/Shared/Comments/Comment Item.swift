@@ -17,20 +17,6 @@ struct CommentItem: View {
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
-
-    // MARK: Temporary
-    // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
-    @State var dirtyVote: ScoringOperation // = .resetVote
-    @State var dirtyScore: Int // = 0
-    @State var dirtySaved: Bool // = false
-    @State var dirty: Bool = false
-
-    @State var isComposingReport: Bool = false
-
-    // computed properties--if dirty, show dirty value, otherwise show post value
-    var displayedVote: ScoringOperation { dirty ? dirtyVote : hierarchicalComment.commentView.myVote ?? .resetVote }
-    var displayedScore: Int { dirty ? dirtyScore : hierarchicalComment.commentView.counts.score }
-    var displayedSaved: Bool { dirty ? dirtySaved : hierarchicalComment.commentView.saved }
     
     // MARK: Environment
 
@@ -45,7 +31,7 @@ struct CommentItem: View {
 
     // MARK: Parameters
 
-    let hierarchicalComment: HierarchicalComment
+    var hierarchicalComment: HierarchicalComment
     let postContext: APIPostView? // TODO: redundant with comment.post?
     let depth: Int
     let showPostContext: Bool
@@ -68,10 +54,6 @@ struct CommentItem: View {
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
         self.enableSwipeActions = enableSwipeActions
-
-        _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
-        _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
-        _dirtySaved = State(initialValue: hierarchicalComment.commentView.saved)
     }
 
     // MARK: State
@@ -84,7 +66,7 @@ struct CommentItem: View {
         VStack(spacing: 0) {
             Group {
                 VStack(alignment: .leading, spacing: 0) {
-                    CommentBodyView(commentView: hierarchicalComment.commentView,
+                    CommentBodyView(commentView: hierarchicalComment.commentModel,
                                     isCollapsed: isCollapsed,
                                     showPostContext: showPostContext,
                                     menuFunctions: genMenuFunctions())
@@ -93,10 +75,10 @@ struct CommentItem: View {
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
 
                     if !isCollapsed && !compactComments {
-                        CommentInteractionBar(commentView: hierarchicalComment.commentView,
-                                              displayedScore: displayedScore,
-                                              displayedVote: displayedVote,
-                                              displayedSaved: displayedSaved,
+                        CommentInteractionBar(commentView: hierarchicalComment.commentModel,
+//                                              displayedScore: displayedScore,
+//                                              displayedVote: displayedVote,
+//                                              displayedSaved: displayedSaved,
                                               upvote: upvote,
                                               downvote: downvote,
                                               saveComment: saveComment,
@@ -150,24 +132,24 @@ struct CommentItem: View {
     var commentBody: some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {
             // comment text or placeholder
-            if hierarchicalComment.commentView.comment.deleted {
+            if hierarchicalComment.commentModel.comment.deleted {
                 Text("Comment was deleted")
                     .italic()
                     .foregroundColor(.secondary)
-            } else if hierarchicalComment.commentView.comment.removed {
+            } else if hierarchicalComment.commentModel.comment.removed {
                 Text("Comment was removed")
                     .italic()
                     .foregroundColor(.secondary)
             } else if !isCollapsed {
-                MarkdownView(text: hierarchicalComment.commentView.comment.content, isNsfw: hierarchicalComment.commentView.post.nsfw)
+                MarkdownView(text: hierarchicalComment.commentModel.comment.content, isNsfw: hierarchicalComment.commentModel.post.nsfw)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
 
             // embedded post
             if showPostContext {
                 EmbeddedPost(
-                    community: hierarchicalComment.commentView.community,
-                    post: hierarchicalComment.commentView.post
+                    community: hierarchicalComment.commentModel.community,
+                    post: hierarchicalComment.commentModel.post
                 )
             }
         }
@@ -178,7 +160,7 @@ struct CommentItem: View {
         if !isCollapsed {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
-                ForEach(hierarchicalComment.children) { child in
+                ForEach(hierarchicalComment.children, id: \.commentModel.hashValue) { child in
                     CommentItem(
                         hierarchicalComment: child,
                         postContext: postContext,
@@ -196,12 +178,24 @@ struct CommentItem: View {
 
 extension CommentItem {
     
-    private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
-    private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
-    private var emptyDownvoteSymbolName: String { displayedVote == .downvote ? "minus.square" : "arrow.down.square" }
-    private var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
-    private var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
-    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
+    private var emptyVoteSymbolName: String { hierarchicalComment.commentModel.votes.myVote == .upvote
+        ? "minus.square"
+        : "arrow.up.square" }
+    private var upvoteSymbolName: String { hierarchicalComment.commentModel.votes.myVote == .upvote
+        ? "minus.square.fill"
+        : "arrow.up.square.fill" }
+    private var emptyDownvoteSymbolName: String { hierarchicalComment.commentModel.votes.myVote == .downvote
+        ? "minus.square"
+        : "arrow.down.square" }
+    private var downvoteSymbolName: String { hierarchicalComment.commentModel.votes.myVote == .downvote
+        ? "minus.square.fill"
+        : "arrow.down.square.fill" }
+    private var emptySaveSymbolName: String { hierarchicalComment.commentModel.saved
+        ? "bookmark.slash"
+        : "bookmark" }
+    private var saveSymbolName: String { hierarchicalComment.commentModel.saved
+        ? "bookmark.slash.fill"
+        : "bookmark.fill" }
     private var emptyReplySymbolName: String { "arrowshape.turn.up.left" }
     private var replySymbolName: String { "arrowshape.turn.up.left.fill" }
     

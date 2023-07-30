@@ -13,16 +13,16 @@ struct ReplyToComment: ResponseEditorModel {
     
     @Dependency(\.commentRepository) var commentRepository
     
-    var id: Int { comment.id }
+    var id: Int { comment.hashValue }
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
-    let comment: APICommentView
+    let comment: CommentModel
     let prefillContents: String?
     let commentTracker: CommentTracker?
     
     init(appState: AppState,
-         comment: APICommentView,
+         comment: CommentModel,
          prefillContents: String? = nil,
          commentTracker: CommentTracker? = nil) {
         self.appState = appState
@@ -42,7 +42,7 @@ struct ReplyToComment: ResponseEditorModel {
     func sendResponse(responseContents: String) async throws {
         let postedComment = try await commentRepository.postComment(
             content: responseContents,
-            parentId: comment.id,
+            parentId: comment.comment.id,
             postId: comment.post.id
         )
         
@@ -52,7 +52,7 @@ struct ReplyToComment: ResponseEditorModel {
                     // the return value from `.update(with: ...)` is discardable by design but
                     // the `withAnimation` closure implicitly returns it resulting in a warning for an unused
                     // value, the `_` is there to silence this as it's expected
-                    _ = commentTracker.comments.update(with: postedComment.commentView)
+                    _ = commentTracker.comments.update(with: postedComment.commentModel)
                 }
             }
         }

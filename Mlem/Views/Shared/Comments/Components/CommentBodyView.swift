@@ -13,13 +13,13 @@ struct CommentBodyView: View {
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     
-    let commentView: APICommentView
+    let commentView: CommentModel
     let isCollapsed: Bool
     let showPostContext: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
     
-    var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
+    var myVote: ScoringOperation { commentView.votes.myVote }
     
     var serverInstanceLocation: ServerInstanceLocation {
         if shouldShowUserServerInComment {
@@ -33,7 +33,7 @@ struct CommentBodyView: View {
     
     var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
     
-    init(commentView: APICommentView,
+    init(commentView: CommentModel,
          isCollapsed: Bool,
          showPostContext: Bool,
          menuFunctions: [MenuFunction]) {
@@ -99,23 +99,23 @@ struct CommentBodyView: View {
     func compactScoreDisplay() -> some View {
         Group {
             // time
-            TimestampView(date: commentView.comment.published)
+            TimestampView(date: commentView.published)
             
             // votes
             if showCommentDownvotesSeparately {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
-                    Text(String(commentView.counts.upvotes))
+                    Text(String(commentView.votes.upvotes))
                 }
                 
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .downvote ? AppConstants.fullDownvoteSymbolName : AppConstants.emptyDownvoteSymbolName)
-                    Text(String(commentView.counts.downvotes))
+                    Text(String(commentView.votes.downvotes))
                 }
             } else {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
-                    Text(String(commentView.counts.score))
+                    Text(String(commentView.votes.total))
                 }
                 .foregroundColor(.secondary)
                 .font(.footnote)

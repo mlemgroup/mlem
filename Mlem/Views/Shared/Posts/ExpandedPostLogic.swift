@@ -68,7 +68,7 @@ extension ExpandedPost {
                                                            operation: PostOperation.reportPost))
     }
     
-    func replyToComment(comment: APICommentView) {
+    func replyToComment(comment: CommentModel) {
         editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
                                                            comment: comment,
                                                            commentTracker: commentTracker,
@@ -248,13 +248,13 @@ extension ExpandedPost {
         let sortedComments: [HierarchicalComment]
         switch sort {
         case .new:
-            sortedComments = comments.sorted(by: { $0.commentView.comment.published > $1.commentView.comment.published })
+            sortedComments = comments.sorted(by: { $0.commentModel.comment.published > $1.commentModel.comment.published })
         case .old:
-            sortedComments = comments.sorted(by: { $0.commentView.comment.published < $1.commentView.comment.published })
+            sortedComments = comments.sorted(by: { $0.commentModel.comment.published < $1.commentModel.comment.published })
         case .top:
-            sortedComments = comments.sorted(by: { $0.commentView.counts.score > $1.commentView.counts.score })
+            sortedComments = comments.sorted(by: { $0.commentModel.votes.total > $1.commentModel.votes.total })
         case .hot:
-            sortedComments = comments.sorted(by: { $0.commentView.counts.childCount > $1.commentView.counts.childCount })
+            sortedComments = comments.sorted(by: { $0.commentModel.numReplies > $1.commentModel.numReplies })
         }
 
         return sortedComments.map { comment in

@@ -248,17 +248,17 @@ struct UserView: View {
             // Matched saved state
             .filter({
                 if savedItems {
-                    return $0.commentView.saved
+                    return $0.commentModel.saved
                 } else {
                     // If we un-favorited something while
                     // here we don't want it showing up in our feed
-                    return $0.commentView.creator.id == userID
+                    return $0.commentModel.creator.id == userID
                 }
             })
         
             // Create Feed Items
             .map({
-                return FeedItem(published: $0.commentView.comment.published, comment: $0, post: nil)
+                return FeedItem(published: $0.commentModel.comment.published, comment: $0, post: nil)
             })
         
             // Newest first
@@ -329,14 +329,14 @@ struct UserView: View {
             
             privateCommentTracker.add(authoredContent.comments
                 .sorted(by: { $0.comment.published > $1.comment.published})
-                .map({HierarchicalComment(comment: $0, children: [])}))
+                .map({HierarchicalComment(comment: CommentModel(from: $0), children: [])}))
             
             privatePostTracker.add(authoredContent.posts)
             
             if let savedContent = savedContentData {
                 privateCommentTracker.add(savedContent.comments
                     .sorted(by: { $0.comment.published > $1.comment.published})
-                    .map({HierarchicalComment(comment: $0, children: [])}))
+                    .map({HierarchicalComment(comment: CommentModel(from: $0), children: [])}))
                 
                 privatePostTracker.add(savedContent.posts)
             }

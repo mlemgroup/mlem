@@ -13,12 +13,12 @@ struct ReportComment: ResponseEditorModel {
     
     @Dependency(\.commentRepository) var commentRepository
     
-    var id: Int { comment.id }
+    var id: Int { comment.hashValue }
     let appState: AppState
     let canUpload: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
-    let comment: APICommentView
+    let comment: CommentModel
     
     func embeddedView() -> AnyView {
         return AnyView(CommentBodyView(commentView: comment,
@@ -29,6 +29,6 @@ struct ReportComment: ResponseEditorModel {
     }
     
     func sendResponse(responseContents: String) async throws {
-        try await commentRepository.reportComment(id: comment.id, reason: responseContents)
+        try await commentRepository.reportComment(id: comment.comment.id, reason: responseContents)
     }
 }

@@ -14,7 +14,7 @@ class CommentTracker: ObservableObject {
     
     /// A method to add new comments into the tracker, duplicate comments will be rejected
     func add(_ newComments: [HierarchicalComment]) {
-        let accepted = newComments.filter { ids.insert($0.id).inserted }
+        let accepted = newComments.filter { ids.insert($0.commentModel.comment.id).inserted }
         comments.append(contentsOf: accepted)
     }
     
@@ -29,7 +29,7 @@ class CommentTracker: ObservableObject {
             
             // Remove the ID from the IDs set as well
             if !filterResult {
-                ids.remove($0.id)
+                ids.remove($0.commentModel.comment.id)
                 removedElements += 1
             }
             return filterResult

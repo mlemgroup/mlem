@@ -17,11 +17,11 @@ struct CommentEditor: ResponseEditorModel {
     let canUpload: Bool = true
     let modalName: String = "Edit Comment"
     var prefillContents: String? { comment.comment.content }
-    let comment: APICommentView
+    let comment: CommentModel
 
     let commentTracker: CommentTracker?
 
-    var id: Int { comment.id }
+    var id: Int { comment.hashValue }
 
     func embeddedView() -> AnyView {
         return AnyView(EmptyView())
@@ -29,13 +29,13 @@ struct CommentEditor: ResponseEditorModel {
 
     @MainActor
     func sendResponse(responseContents: String) async throws {
-        let edited = try await commentRepository.editComment(id: comment.id,
+        let edited = try await commentRepository.editComment(id: comment.comment.id,
                                                              content: responseContents,
                                                              distinguished: nil,
                                                              languageId: nil)
 
         if let commentTracker {
-            commentTracker.comments.update(with: edited.commentView)
+            commentTracker.comments.update(with: CommentModel(from: edited.commentView))
         }
     }
 }

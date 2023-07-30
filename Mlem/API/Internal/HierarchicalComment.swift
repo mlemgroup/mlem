@@ -9,17 +9,18 @@ import Foundation
 
 /// A model which represents a comment and it's child relationships
 class HierarchicalComment: ObservableObject {
-    let commentView: APICommentView
+    let commentModel: CommentModel
     var children: [HierarchicalComment]
+    
+    /**
+     ID of the underlying comment
+     */
+    var commentId: Int { commentModel.comment.id }
 
-    init(comment: APICommentView, children: [HierarchicalComment]) {
-        self.commentView = comment
+    init(comment: CommentModel, children: [HierarchicalComment]) {
+        self.commentModel = comment
         self.children = children
     }
-}
-
-extension HierarchicalComment: Identifiable {
-    var id: Int { commentView.id }
 }
 
 extension [HierarchicalComment] {
@@ -27,36 +28,36 @@ extension [HierarchicalComment] {
     /// A method to insert an updated `APICommentView` into this array of `HierarchicalComment`
     /// - Parameter commentView: The `APICommentView` you wish to insert
     /// - Returns: An optional `HierarchicalComment` containing the updated comment and it's original chidren if found
-    @discardableResult mutating func update(with commentView: APICommentView) -> HierarchicalComment? {
-        return self.insert(commentView: commentView)
+    @discardableResult mutating func update(with commentModel: CommentModel) -> HierarchicalComment? {
+        return self.insert(commentModel: commentModel)
     }
 
-    private mutating func insert(commentView: APICommentView) -> HierarchicalComment? {
-        let targetId = commentView.id
+    private mutating func insert(commentModel: CommentModel) -> HierarchicalComment? {
+        let targetId = commentModel.comment.id
 
         for (index, element) in self.enumerated() {
-            if element.id == targetId {
+            if element.commentId == targetId {
                 // we've found the comment we're targeting so re-create it and ensure we retain it's children
-                let updatedComment = HierarchicalComment(comment: commentView, children: element.children)
-                self[index] = .init(comment: commentView, children: element.children)
+                let updatedComment = HierarchicalComment(comment: commentModel, children: element.children)
+                self[index] = .init(comment: commentModel, children: element.children)
                 return updatedComment
-            } else if let updatedComment = self[index].children.insert(commentView: commentView) {
+            } else if let updatedComment = self[index].children.insert(commentModel: commentModel) {
                 // if the parent wasn't the target, recursively check the children before moving on...
                 return updatedComment
             }
         }
 
-        return insertReply(commentView: commentView)
+        return insertReply(commentView: commentModel)
     }
 
-    private mutating func insertReply(commentView: APICommentView) -> HierarchicalComment? {
+    private mutating func insertReply(commentView: CommentModel) -> HierarchicalComment? {
         guard let parentId = commentView.comment.parentId else {
             // can't be a reply without a parent 🤷
             return nil
         }
 
         for (index, element) in self.enumerated() {
-            if element.id == parentId {
+            if element.commentId == parentId {
                 // we've found the comment we're replying too, so re-create it and append this to it's children
                 let reply = HierarchicalComment(comment: commentView, children: [])
                 let updatedParent = self[index]
@@ -93,10 +94,10 @@ extension [APICommentView] {
         /// Recursively populates child comments by looking up IDs from `childrenById`
         func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
             guard let childIds = childrenById[comment.id] else {
-                return .init(comment: comment, children: [])
+                return .init(comment: CommentModel(from: comment), children: [])
             }
 
-            let commentWithChildren = HierarchicalComment(comment: comment, children: [])
+            let commentWithChildren = HierarchicalComment(comment: CommentModel(from: comment), children: [])
             commentWithChildren.children = childIds
                 .compactMap { id -> HierarchicalComment? in
                     guard let child = identifiedComments[id] else { return nil }

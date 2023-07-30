@@ -131,7 +131,7 @@ struct ExpandedPost: View {
      */
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
-            ForEach(commentTracker.comments, id: \.commentView.comment.hashValue) { comment in
+            ForEach(commentTracker.comments, id: \.commentModel.comment.hashValue) { comment in
                 CommentItem(
                     hierarchicalComment: comment,
                     postContext: post,

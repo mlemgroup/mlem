@@ -9,13 +9,26 @@ import SwiftUI
 
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
-        let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+        let operation = hierarchicalComment.commentModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+        
+        // update comments locally (fake state)
+        let newVotes = hierarchicalComment.commentModel.votes.applyScoringOperation(operation: operation)
+        commentTracker.comments.update(with: CommentModel(comment: hierarchicalComment.commentModel.comment,
+                                                          creator: hierarchicalComment.commentModel.creator,
+                                                          post: hierarchicalComment.commentModel.post,
+                                                          community: hierarchicalComment.commentModel.community,
+                                                          votes: newVotes,
+                                                          numReplies: hierarchicalComment.commentModel.numReplies,
+                                                          published: hierarchicalComment.commentModel.published,
+                                                          updated: hierarchicalComment.commentModel.updated,
+                                                          saved: hierarchicalComment.commentModel.saved))
+        
         do {
             let updatedComment = try await commentRepository.voteOnComment(
-                id: hierarchicalComment.commentView.id,
+                id: hierarchicalComment.commentModel.comment.id,
                 vote: operation
             )
-            commentTracker.comments.update(with: updatedComment)
+            commentTracker.comments.update(with: CommentModel(from: updatedComment))
         } catch {
             errorHandler.handle(
                 .init(underlyingError: error)
@@ -24,14 +37,14 @@ extension CommentItem {
     }
     
     func deleteComment() async {
-        let comment = hierarchicalComment.commentView.comment
+        let comment = hierarchicalComment.commentModel.comment
         do {
             let updatedComment = try await commentRepository.deleteComment(
                 id: comment.id,
                 // TODO: the UI for this only allows delete, but the operation can be undone it appears...
                 shouldDelete: true
             )
-            commentTracker.comments.update(with: updatedComment.commentView)
+            commentTracker.comments.update(with: updatedComment.commentModel)
         } catch {
             errorHandler.handle(
                 .init(underlyingError: error)
@@ -40,67 +53,24 @@ extension CommentItem {
     }
     
     func upvote() async {
-        // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake downvote
-            switch displayedVote {
-            case .upvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore - 1
-            case .resetVote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 1
-            case .downvote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 2
-            }
-            dirty = true
-
-            // wait for vote
-            await voteOnComment(inputOp: .upvote)
-
-            // unfake downvote and restore state
-            dirty = false
-            return
-        }
+        await voteOnComment(inputOp: .upvote)
     }
 
     func downvote() async {
         // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake upvote
-            switch displayedVote {
-            case .upvote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 2
-            case .resetVote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 1
-            case .downvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore + 1
-            }
-            dirty = true
-
-            // wait for vote
-            await voteOnComment(inputOp: .downvote)
-
-            // unfake upvote
-            dirty = false
-            return
-        }
+        await voteOnComment(inputOp: .downvote)
     }
     
     func replyToComment() {
         editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: hierarchicalComment.commentView,
+                                                           comment: hierarchicalComment.commentModel,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.replyToComment))
     }
 
     func editComment() {
         editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: hierarchicalComment.commentView,
+                                                           comment: hierarchicalComment.commentModel,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.editComment))
     }
@@ -116,26 +86,32 @@ extension CommentItem {
      Sends a save request for the current post
      */
     func saveComment() async {
-        guard !dirty else {
-            return
-        }
-        
-        defer { dirty = false }
-        dirty = true
-        dirtySaved.toggle()
-        
         do {
-            let response = try await commentRepository.saveComment(
-                id: hierarchicalComment.id,
-                shouldSave: dirtySaved
-            )
-            
-            commentTracker.comments.update(with: response.commentView)
+            _ = try await commentRepository.saveComment(id: hierarchicalComment.commentModel.comment.id,
+                                                    shouldSave: !hierarchicalComment.commentModel.saved)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            appState.contextualError = .init(underlyingError: error)
         }
+//        guard !dirty else {
+//            return
+//        }
+//
+//        defer { dirty = false }
+//        dirty = true
+//        dirtySaved.toggle()
+//
+//        do {
+//            let response = try await commentRepository.saveComment(
+//                id: hierarchicalComment.id,
+//                shouldSave: dirtySaved
+//            )
+//
+//            commentTracker.comments.update(with: response.commentModel)
+//        } catch {
+//            errorHandler.handle(
+//                .init(underlyingError: error)
+//            )
+//        }
 
     }
     
@@ -146,7 +122,7 @@ extension CommentItem {
         var ret: [MenuFunction] = .init()
         
         // upvote
-        let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
+        let (upvoteText, upvoteImg) = hierarchicalComment.commentModel.votes.myVote == .upvote ?
         ("Undo upvote", "arrow.up.square.fill") :
         ("Upvote", "arrow.up.square")
         ret.append(MenuFunction(
@@ -160,7 +136,7 @@ extension CommentItem {
         })
         
         // downvote
-        let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
+        let (downvoteText, downvoteImg) = hierarchicalComment.commentModel.votes.myVote == .downvote ?
         ("Undo downvote", "arrow.down.square.fill") :
         ("Downvote", "arrow.down.square")
         ret.append(MenuFunction(
@@ -174,7 +150,7 @@ extension CommentItem {
         })
         
         // save
-        let (saveText, saveImg) = hierarchicalComment.commentView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        let (saveText, saveImg) = hierarchicalComment.commentModel.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
         ret.append(MenuFunction(
             text: saveText,
             imageName: saveImg,
@@ -195,7 +171,7 @@ extension CommentItem {
             })
         
         // edit
-        if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
+        if hierarchicalComment.commentModel.creator.id == appState.currentActiveAccount.id {
             ret.append(MenuFunction(
                 text: "Edit",
                 imageName: "pencil",
@@ -206,12 +182,12 @@ extension CommentItem {
         }
         
         // delete
-        if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
+        if hierarchicalComment.commentModel.creator.id == appState.currentActiveAccount.id {
             ret.append(MenuFunction(
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
-                enabled: !hierarchicalComment.commentView.comment.deleted) {
+                enabled: !hierarchicalComment.commentModel.comment.deleted) {
                 Task(priority: .userInitiated) {
                     await deleteComment()
                 }
@@ -219,7 +195,7 @@ extension CommentItem {
         }
         
         // share
-        if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
+        if let url = URL(string: hierarchicalComment.commentModel.comment.apId) {
             ret.append(MenuFunction(
                 text: "Share",
                 imageName: "square.and.arrow.up",
@@ -236,7 +212,7 @@ extension CommentItem {
             destructiveActionPrompt: nil,
             enabled: true) {
                 editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                                   comment: hierarchicalComment.commentView,
+                                                                   comment: hierarchicalComment.commentModel,
                                                                    operation: CommentOperation.reportComment))
             })
         
@@ -246,7 +222,7 @@ extension CommentItem {
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             Task(priority: .userInitiated) {
-                await blockUser(userId: hierarchicalComment.commentView.creator.id)
+                await blockUser(userId: hierarchicalComment.commentModel.creator.id)
             }
         })
                    
@@ -265,7 +241,7 @@ extension CommentItem {
             if blocked {
                 await notifier.add(.success("Blocked user"))
                 commentTracker.filter { comment in
-                    comment.commentView.creator.id != userId
+                    comment.commentModel.creator.id != userId
                 }
             }
         } catch {

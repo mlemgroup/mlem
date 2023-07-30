@@ -67,7 +67,7 @@ extension ConcreteEditorModel {
      - .editComment: comment compser editing the comment. If commentTracker present, updates it.
      */
     init(appState: AppState,
-         comment: APICommentView,
+         comment: CommentModel,
          commentTracker: CommentTracker? = nil,
          operation: CommentOperation) {
         switch operation {
