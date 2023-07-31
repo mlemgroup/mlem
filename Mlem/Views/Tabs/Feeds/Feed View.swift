@@ -45,6 +45,7 @@ struct FeedView: View {
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = false
+    @State var showReadPosts: Bool = true
     
     // MARK: - Main Views
     
@@ -69,6 +70,9 @@ struct FeedView: View {
                 hardRefreshFeed()
             }
             .onChange(of: appState.currentActiveAccount) { _ in
+                hardRefreshFeed()
+            }
+            .onChange(of: showReadPosts) { _ in
                 hardRefreshFeed()
             }
             .refreshable { await refreshFeed() }

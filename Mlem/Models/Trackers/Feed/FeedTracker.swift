@@ -35,7 +35,8 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
             return false
         }
 
-        let thresholdIndex = items.index(items.endIndex, offsetBy: thresholdOffset)
+        let thresholdIndex = max(items.index(items.endIndex, offsetBy: thresholdOffset), 0)
+        // print("my index: \(items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier })), threshold index: \(thresholdIndex)")
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
            itemIndex >= thresholdIndex {
@@ -54,7 +55,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
         let response = try await retrieveItems(with: request)
 
-        add(response.items, filtering: filtering)
+        await add(response.items, filtering: filtering)
         page += 1
 
         return response
@@ -79,6 +80,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to add new items into the tracker, duplicate items will be rejected
     /// - Parameter newItems: The array of new `Item`'s you wish to add
+    @MainActor
     func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true}) {
         let accepted = dedupedItems(from: newItems.filter(filtering))
         if !shouldPerformMergeSorting {
