@@ -126,11 +126,12 @@ struct AppConstants {
     static let blurNsfwSymbolName: String = "eye.trianglebadge.exclamationmark"
     
     // feeds
-    static let federatedFeedSymbolName: String = "network"
-    static let localFeedSymbolName: String = "house"
-    static let localFeedSymbolNameFill: String = "house.fill"
-    static let subscribedFeedSymbolName: String = "newspaper"
-    static let subscribedFeedSymbolNameFill: String = "newspaper.fill"
+    static let federatedFeedSymbolName: String = "circle.hexagongrid.circle" // "arrow.left.arrow.right.circle"
+    static let federatedFeedSymbolNameFill: String = "circle.hexagongrid.circle.fill" // "arrow.left.arrow.right.circle.fill"
+    static let localFeedSymbolName: String = "house.circle"
+    static let localFeedSymbolNameFill: String = "house.circle.fill"
+    static let subscribedFeedSymbolName: String = "newspaper.circle"
+    static let subscribedFeedSymbolNameFill: String = "newspaper.circle.fill"
     
     // sort types
     static let activeSortSymbolName: String = "popcorn" // not married to this idea 
@@ -161,6 +162,7 @@ struct AppConstants {
     static let filterSymbolNameFill: String = "line.3.horizontal.decrease.circle.fill"
     
     // misc
+    static let switchUserSymbolName: String = "person.crop.circle.badge.plus"
     static let missingSymbolName: String = "questionmark.square.dashed"
     
     // MARK: - Other
