@@ -57,7 +57,6 @@ extension FeedView {
      Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
      */
     func hardRefreshFeed() async {
-        // Task(priority: .userInitiated) {
             defer { isLoading = false }
             isLoading = true
             do {
@@ -71,7 +70,6 @@ extension FeedView {
             } catch {
                 handle(error)
             }
-        // }
     }
     
     // MARK: Community loading

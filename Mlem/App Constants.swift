@@ -168,4 +168,5 @@ struct AppConstants {
     
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
+    static let infiniteLoadThresholdOffset: Int = -10
 }

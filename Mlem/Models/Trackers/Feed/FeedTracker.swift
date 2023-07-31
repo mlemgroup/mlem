@@ -17,7 +17,6 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     private(set) var page: Int = 1
 
     private var ids: Set<Item.UniqueIdentifier> = .init(minimumCapacity: 1_000)
-    private var thresholdOffset: Int = -10
     private let shouldPerformMergeSorting: Bool
 
     init(shouldPerformMergeSorting: Bool = true, initialItems: [Item] = .init()) {
@@ -35,7 +34,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
             return false
         }
 
-        let thresholdIndex = items.index(items.endIndex, offsetBy: thresholdOffset)
+        let thresholdIndex = items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset)
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
            itemIndex >= thresholdIndex {
@@ -49,7 +48,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     @MainActor func shouldLoadContentPrecisely(after item: Item) -> Bool {
         guard !isLoading else { return false }
         
-        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: thresholdOffset))
+        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset))
   
         if let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
            itemIndex == thresholdIndex {
@@ -61,7 +60,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to perform a request to retrieve  tracker items
     /// - Parameter request: An `APIRequest` that conforms to `FeedItemProviding` with an `Item` type that matches this trackers generic type
-    /// - Returns: Newly added items
+    /// - Returns: The `Response` type of the request as a discardable result
     @discardableResult func perform<Request: APIRequest>(
         _ request: Request,
         filtering: @escaping (_: Request.Response.Item) -> Bool = { _ in true}

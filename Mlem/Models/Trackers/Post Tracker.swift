@@ -46,7 +46,7 @@ class PostTracker: FeedTracker<APIPostView> {
             )
             
             responsePosts = response.posts
-        } while !responsePosts.isEmpty && numItems == items.count
+        } while !responsePosts.isEmpty && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
 
         // so although the API kindly returns `400`/"not_logged_in" for expired
         // sessions _without_ 2FA enabled, currently once you enable 2FA on an account
