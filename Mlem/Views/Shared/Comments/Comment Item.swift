@@ -108,18 +108,12 @@ struct CommentItem: View {
         } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
             EmptyView()
         } else {
-            // swiftlint:disable redundant_discardable_let
-            let _ = print("drawing comment \(hierarchicalComment.id) at depth \(depth), parent.collapsed \(hierarchicalComment.isParentCollapsed), self.collapsed \(hierarchicalComment.isCollapsed), saved \(hierarchicalComment.commentView.saved): \(hierarchicalComment.commentView.comment.content.prefix(50))")
-            // swiftlint:enable redundant_discardable_let
             VStack(spacing: 0) {
                 commentBody(hierarchicalComment: self.hierarchicalComment)
                 Divider()
-                //            childComments(children: self.hierarchicalComment.children)
-                //                .transition(.move(edge: .top).combined(with: .opacity))
             }
             .clipped()
             .padding(.leading, indentValue)
-//            .id(hierarchicalComment.id)
         }
     }
     // swiftlint:enable line_length
@@ -189,30 +183,6 @@ struct CommentItem: View {
         }
     }
     // swiftlint:enable function_body_length
-
-    @ViewBuilder
-    private func childComments(children: [HierarchicalComment]) -> some View {
-        if !hierarchicalComment.isCollapsed {
-            // lazy stack because there might be *lots* of these
-            LazyVStack(spacing: 0) {
-                ForEach(hierarchicalComment.children) { child in
-                    // swiftlint:disable redundant_discardable_let
-                    let indent = (0...depth)
-                        .map { _ in "\t" }
-                        .reduce("") { $0 + $1 }
-                    let _ = print(indent, "draw child comment \(child.id) at depth \(depth + 1): \(child.commentView.comment.content.prefix(30))")
-                    // swiftlint:enable redundant_discardable_let
-                    CommentItem(
-                        hierarchicalComment: child,
-                        postContext: postContext,
-                        showPostContext: false,
-                        showCommentCreator: true,
-                        replyToComment: replyToComment
-                    )
-                }
-            }
-        }
-    }
 }
 
 // MARK: - Swipe Actions
