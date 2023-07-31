@@ -11,12 +11,17 @@ import Foundation
 class HierarchicalComment: ObservableObject {
     let commentView: APICommentView
     var children: [HierarchicalComment]
+    /// Indicates comment's position in a post's parent/child comment thread.
+    ///
+    /// Values range from `0...Int.max`, where 0 indicates the parent comment.
     let depth: Int
     
+    /// - Note: Parent is the top-level (i.e. depth=0) comment, and not necessarily the current comment's immediate ancestor comment.
     @Published var isParentCollapsed: Bool = false
+    /// Indicates whether the *current* comment is collapsed.
     @Published var isCollapsed: Bool = false
 
-    init(comment: APICommentView, children: [HierarchicalComment], depth: Int = 0, parentCollapsed: Bool, collapsed: Bool) {
+    init(comment: APICommentView, children: [HierarchicalComment], parentCollapsed: Bool, collapsed: Bool) {
         self.commentView = comment
         self.children = children
         self.depth = max(0, commentView.comment.path.split(separator: ".").count - 2)

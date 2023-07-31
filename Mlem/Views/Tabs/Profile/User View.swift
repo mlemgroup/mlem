@@ -402,7 +402,6 @@ struct UserView: View {
             CommentItem(
                 hierarchicalComment: comment,
                 postContext: nil,
-                depth: 0,
                 indentBehaviour: .never,
                 showPostContext: true,
                 showCommentCreator: false,

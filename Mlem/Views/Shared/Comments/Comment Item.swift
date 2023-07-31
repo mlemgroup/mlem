@@ -78,7 +78,6 @@ struct CommentItem: View {
     // init needed to get dirty and clean aligned
     init(hierarchicalComment: HierarchicalComment,
          postContext: APIPostView?,
-         depth: Int,
          indentBehaviour: IndentBehaviour = .standard,
          showPostContext: Bool,
          showCommentCreator: Bool,
@@ -88,7 +87,6 @@ struct CommentItem: View {
     ) {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
-//        self.depth = depth
         self.indentBehaviour = indentBehaviour
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
@@ -207,7 +205,6 @@ struct CommentItem: View {
                     CommentItem(
                         hierarchicalComment: child,
                         postContext: postContext,
-                        depth: child.depth,
                         showPostContext: false,
                         showCommentCreator: true,
                         replyToComment: replyToComment

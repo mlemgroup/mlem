@@ -169,7 +169,6 @@ struct ExpandedPost: View {
                 CommentItem(
                     hierarchicalComment: comment,
                     postContext: post,
-                    depth: comment.depth,
                     showPostContext: false,
                     showCommentCreator: true,
                     replyToComment: replyToComment
