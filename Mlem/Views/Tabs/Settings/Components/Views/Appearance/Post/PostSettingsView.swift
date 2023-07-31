@@ -85,13 +85,12 @@ struct PostSettingsView: View {
             }
             
             Section("Interactions and Info") {
-                // TEMPORARILY DISABLED to see if users complain
-//                SelectableSettingsItem(
-//                    settingIconSystemName: "arrow.up.arrow.down.square",
-//                    settingName: "Vote complex style",
-//                    currentValue: $postVoteComplexStyle,
-//                    options: VoteComplexStyle.allCases
-//                )
+                SelectableSettingsItem(
+                    settingIconSystemName: "arrow.up.arrow.down.square",
+                    settingName: "Vote complex style",
+                    currentValue: $postVoteComplexStyle,
+                    options: VoteComplexStyle.allCases
+                )
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                        settingPictureColor: .pink,
                                        settingName: "Show score in info",
