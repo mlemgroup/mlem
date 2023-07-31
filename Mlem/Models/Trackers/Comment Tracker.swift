@@ -18,47 +18,7 @@ class CommentTracker: ObservableObject {
         get { _comments }
         set {
             _comments = newValue
-            self.commentsView = _comments.flatMap(flatMapChildren)
-        }
-    }
-    
-    private func flatMapChildren(_ comment: HierarchicalComment) -> [HierarchicalComment] {
-        return [comment] + comment.children.flatMap(flatMapChildren)
-    }
-    
-    func setCollapsed(_ isCollapsed: Bool, comment: HierarchicalComment) {
-        _setCollapsedUsingFlatView(isCollapsed, comment: comment)
-    }
-    
-    private func _setCollapsedUsingFlatView(_ isCollapsed: Bool, comment: HierarchicalComment) {
-        let parentPath = comment.commentView.comment.path
-        guard let commentPathAsParent = parentPath.components(separatedBy: ".").last else {
-            return
-        }
-        let collapseChildren = !comment.isCollapsed
-        commentsView.forEach {
-            let thisPath = $0.commentView.comment.path
-            let isChild = thisPath
-                .components(separatedBy: ".")
-                .contains { $0 == commentPathAsParent }
-            guard isChild else {
-                print("skip comment \($0.commentView.comment.path), not child")
-                return
-            }
-            if thisPath == parentPath {
-                /// This is the parent comment: Keep partially visible.
-                /// This should only run once.
-                print("parent comment \(parentPath) collapse: \(!$0.isCollapsed)")
-                $0.isCollapsed.toggle()
-                /// isCollapsed == isParentCollapsed, when comment is a parent comment.
-                if $0.commentView.comment.parentId == nil {
-                    $0.isParentCollapsed.toggle()
-                }
-            } else {
-                /// Child comment.
-                print("child comment \($0.commentView.comment.path) collapse: \(!comment.isCollapsed)")
-                $0.isParentCollapsed = collapseChildren
-            }
+            self.commentsView = _comments.flatMap(HierarchicalComment.recursiveFlatMap)
         }
     }
     
@@ -86,5 +46,53 @@ class CommentTracker: ObservableObject {
         })
         
         return removedElements
+    }
+}
+
+// MARK: - Expand/Collapse Comments
+extension CommentTracker {
+    
+    /// Mark `comment` as collapsed or not, triggering view updates, if necessary.
+    func setCollapsed(_ isCollapsed: Bool, comment: HierarchicalComment) {
+        _setCollapsed(isCollapsed, comment: comment, flatView: commentsView)
+    }
+    
+    /// - Parameter flatView: A 1D array of `HierarchicalComment` of parent/child comments, where elements are ordered as they would appear on screen.
+    private func _setCollapsed(_ isCollapsed: Bool, comment: HierarchicalComment, flatView: [HierarchicalComment]) {
+        let parentPath = comment.commentView.comment.path
+        guard let commentPathAsParent = parentPath.components(separatedBy: ".").last else {
+            return
+        }
+        let collapseChildren = !comment.isCollapsed
+        flatView.forEach {
+            let thisPath = $0.commentView.comment.path
+            let isChild = thisPath
+                .components(separatedBy: ".")
+                .contains { $0 == commentPathAsParent }
+            guard isChild else {
+#if DEBUG
+                print("skip comment \($0.commentView.comment.path), not child")
+#endif
+                return
+            }
+            if thisPath == parentPath {
+                /// This is the parent comment: Keep partially visible.
+                /// This should only run once.
+#if DEBUG
+                print("parent comment \(parentPath) collapse: \(!$0.isCollapsed)")
+#endif
+                $0.isCollapsed.toggle()
+                /// isCollapsed == isParentCollapsed, when comment is a parent comment.
+                if $0.commentView.comment.parentId == nil {
+                    $0.isParentCollapsed.toggle()
+                }
+            } else {
+                /// Child comment.
+#if DEBUG
+                print("child comment \($0.commentView.comment.path) collapse: \(!comment.isCollapsed)")
+#endif
+                $0.isParentCollapsed = collapseChildren
+            }
+        }
     }
 }

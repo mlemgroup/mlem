@@ -92,6 +92,16 @@ extension [HierarchicalComment] {
     }
 }
 
+internal extension HierarchicalComment {
+    
+    /// Recursively flat maps `comment.children`, preprending `comment` to that array.
+    ///
+    /// For example: Pass this function into `flatMap()` on array of parent `HierarchicalComment`s in order to construct an array of parent/child `[HierarchicalComment]` in a single array.
+    static func recursiveFlatMap(_ comment: HierarchicalComment) -> [HierarchicalComment] {
+        [comment] + comment.children.flatMap(recursiveFlatMap)
+    }
+}
+
 extension [APICommentView] {
 
     /// A representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
