@@ -38,12 +38,12 @@ struct CommentSettingsView: View {
             }
 
             Section("Interactions and Info") {
-//                SelectableSettingsItem(
-//                    settingIconSystemName: "arrow.up.arrow.down.square",
-//                    settingName: "Vote complex style",
-//                    currentValue: $commentVoteComplexStyle,
-//                    options: VoteComplexStyle.allCases
-//                )
+                SelectableSettingsItem(
+                    settingIconSystemName: "arrow.up.arrow.down.square",
+                    settingName: "Vote complex style",
+                    currentValue: $commentVoteComplexStyle,
+                    options: VoteComplexStyle.allCases
+                )
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                                            settingPictureColor: .pink,
                                                            settingName: "Show user server instance",
