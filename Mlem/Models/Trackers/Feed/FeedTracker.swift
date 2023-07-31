@@ -93,15 +93,14 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to add new items into the tracker, duplicate items will be rejected
     /// - Parameter newItems: The array of new `Item`'s you wish to add
-    /// - Returns Newly added items
     @MainActor
-    @discardableResult func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true}) -> [Item] {
+    func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true}) {
         let accepted = dedupedItems(from: newItems.filter(filtering))
         if !shouldPerformMergeSorting {
             RunLoop.main.perform { [self] in
                 items.append(contentsOf: accepted)
             }
-            return accepted
+            return
         }
 
         let merged =  merge(arr1: items, arr2: accepted, compare: { $0.published > $1.published })
@@ -109,7 +108,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
             items = merged
         }
         
-        return accepted
+        return
     }
 
     /// A method to add an item  to the start of the current list of items
