@@ -70,27 +70,27 @@ extension CommentTracker {
                 .components(separatedBy: ".")
                 .contains { $0 == commentPathAsParent }
             guard isChild else {
-#if DEBUG
-                print("skip comment \($0.commentView.comment.path), not child")
-#endif
+                /// Skip this comment, not a child of parent at `parentPath`.
                 return
             }
             if thisPath == parentPath {
                 /// This is the parent comment: Keep partially visible.
                 /// This should only run once.
-#if DEBUG
-                print("parent comment \(parentPath) collapse: \(!$0.isCollapsed)")
-#endif
                 $0.isCollapsed.toggle()
                 /// isCollapsed == isParentCollapsed, when comment is a parent comment.
                 if $0.commentView.comment.parentId == nil {
                     $0.isParentCollapsed.toggle()
                 }
             } else {
+                // - TODO: We don't keep child comments collapsed if user toggles parent comment's collapsed state
+                // 1. Collapse child comment.
+                // 2. Collapse parent comment.
+                // 3. Expand parent comment.
+                // Expected: Original child comment to stay collapsed.
+                // Actual: All child comments are toggled to expanded state.
+                
                 /// Child comment.
-#if DEBUG
-                print("child comment \($0.commentView.comment.path) collapse: \(!comment.isCollapsed)")
-#endif
+                /// Child may need to be collapsed even if comment itself isn't collapsed.
                 $0.isParentCollapsed = collapseChildren
             }
         }
