@@ -43,6 +43,7 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
             .task { await loadComments() }
+            .task { await markPostAsRead() }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {

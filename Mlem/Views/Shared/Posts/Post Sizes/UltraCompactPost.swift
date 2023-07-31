@@ -74,6 +74,7 @@ struct UltraCompactPost: View {
                 
                 Text(postView.post.name)
                     .font(.subheadline)
+                    .foregroundColor(postView.read ? .secondary : .primary)
     
                 compactInfo
             }

@@ -11,6 +11,12 @@ extension ExpandedPost {
     
     // MARK: Interaction callbacks
     
+    // TODO: add flag
+    func markPostAsRead() async {
+        // TODO: implement
+        print("marking as read")
+    }
+    
     /// Votes on a post
     /// - Parameter inputOp: The voting operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
