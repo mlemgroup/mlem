@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Dependencies
 
 struct UltraCompactPost: View {
     // app storage
@@ -15,6 +16,12 @@ struct UltraCompactPost: View {
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
     @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
     @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
+    
+    // environment and dependencies
+    @Dependency(\.postRepository) var postRepository
+    @Dependency(\.errorHandler) var errorHandler
+    
+    @EnvironmentObject var postTracker: PostTracker
 
     // constants
     let thumbnailSize: CGFloat = 60

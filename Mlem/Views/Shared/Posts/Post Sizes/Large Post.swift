@@ -49,6 +49,7 @@ struct LargePost: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic(postView.post.deleted)
+                    .foregroundColor(postView.read ? .secondary : .primary)
                 
                 Spacer()
                 if postView.post.nsfw {

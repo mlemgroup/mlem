@@ -13,8 +13,12 @@ extension ExpandedPost {
     
     // TODO: add flag
     func markPostAsRead() async {
-        // TODO: implement
-        print("marking as read")
+        do {
+            post = try await postRepository.markRead(for: post.post.id, read: true)
+            postTracker.update(with: post)
+        } catch {
+            errorHandler.handle(.init(underlyingError: error))
+        }
     }
     
     /// Votes on a post

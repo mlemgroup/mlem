@@ -15,6 +15,7 @@ internal enum PossibleStyling {
 struct ExpandedPost: View {
     
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
