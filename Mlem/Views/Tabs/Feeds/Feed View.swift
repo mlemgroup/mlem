@@ -65,16 +65,24 @@ struct FeedView: View {
             .task(priority: .background) { await fetchCommunityDetails() }
         // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
             .onChange(of: feedType) { _ in
-                hardRefreshFeed()
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
             }
             .onChange(of: postSortType) { _ in
-                hardRefreshFeed()
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
             }
             .onChange(of: appState.currentActiveAccount) { _ in
-                hardRefreshFeed()
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
             }
             .onChange(of: showReadPosts) { _ in
-                hardRefreshFeed()
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
             }
             .onChange(of: shouldLoad) { value in
                 Task(priority: .medium) {

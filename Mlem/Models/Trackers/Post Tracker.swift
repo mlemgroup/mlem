@@ -31,7 +31,7 @@ class PostTracker: FeedTracker<APIPostView> {
         
         // retry this until we get some items that pass the filter
         var responsePosts: [APIPostView] = .init()
-        var numItems = items.count
+        let numItems = items.count
         repeat {
             print("loading more posts")
             let response = try await perform(
