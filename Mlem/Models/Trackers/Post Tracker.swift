@@ -9,24 +9,6 @@ import Foundation
 import Nuke
 
 class PostTracker: FeedTracker<APIPostView> {
-    
-    // EXPERIMENTAL
-    
-    @Published var shoudLoad: Bool = false
-    
-    @MainActor
-    func sawItem(item: APIPostView) {
-        if shouldLoadContent(after: item) {
-            self.shoudLoad = true
-        }
-    }
-    
-    @MainActor
-    func loaded() {
-        self.shoudLoad = false
-    }
-    
-    // END EXPERIMENTAL
 
     private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
                                              destination: .memoryCache,
@@ -78,8 +60,6 @@ class PostTracker: FeedTracker<APIPostView> {
         if currentPage == 1 && responsePosts.isEmpty {
             try await attemptAuthenticatedCall(with: account)
         }
-        
-        await loaded()
         
         // don't preload filtered images
         preloadImages(responsePosts.filter(filtering))

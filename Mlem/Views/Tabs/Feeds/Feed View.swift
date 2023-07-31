@@ -46,6 +46,7 @@ struct FeedView: View {
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = false
+    @State var shouldLoad: Bool = false
     
     // MARK: - Main Views
     
@@ -75,10 +76,11 @@ struct FeedView: View {
             .onChange(of: showReadPosts) { _ in
                 hardRefreshFeed()
             }
-            .onChange(of: postTracker.shoudLoad) { value in
+            .onChange(of: shouldLoad) { value in
                 Task(priority: .medium) {
                     if value {
                         await loadFeed()
+                        shouldLoad = false
                     }
                 }
             }
@@ -133,11 +135,11 @@ struct FeedView: View {
             Divider()
         }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
-        .task(priority: .medium) {
-            postTracker.sawItem(item: postView)
-//            if postTracker.shouldLoadContent(after: postView) {
-//                await loadFeed()
-//            }
+        // .task(priority: .medium) {
+        .onAppear {
+            if postTracker.shouldLoadContent(after: postView) {
+                shouldLoad = true
+            }
         }
     }
     
