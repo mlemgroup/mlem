@@ -42,29 +42,8 @@ struct ExpandedPost: View {
     @State private var viewID: UUID = UUID()
     
     var body: some View {
-        //        VStack(spacing: 0) {
-                    ScrollView {
-        //                //            Section {
-                        postView
-        //                //            }
-        //                
-        //                //                Divider()
-        //                //                    .background(.black)
-        //                
-        //                //            Section {
-        //                if commentTracker.isLoading {
-        //                    commentsLoadingView
-        //                } else {
-        //                    if commentTracker.comments.count == 0 {
-        //                        noCommentsView
-        //                    } else {
-        //                        commentsView
-        //                    }
-        //                }
-        //                //            }
-        ////            }
-        //        }
-//        ScrollView {
+        ScrollView {
+            postView
             if commentTracker.isLoading {
                 commentsLoadingView
             } else {
@@ -195,7 +174,6 @@ struct ExpandedPost: View {
                     showCommentCreator: true,
                     replyToComment: replyToComment
                 )
-//                .id(comment.commentView.comment.path)
             }
         }
         .environmentObject(commentTracker)
