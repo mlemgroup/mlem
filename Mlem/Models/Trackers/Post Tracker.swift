@@ -33,7 +33,6 @@ class PostTracker: FeedTracker<APIPostView> {
         var responsePosts: [APIPostView] = .init()
         let numItems = items.count
         repeat {
-            print("loading more posts")
             let response = try await perform(
                 GetPostsRequest(
                     account: account,

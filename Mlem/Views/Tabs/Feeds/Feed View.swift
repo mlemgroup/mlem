@@ -85,11 +85,9 @@ struct FeedView: View {
                 }
             }
             .onChange(of: shouldLoad) { value in
-                Task(priority: .medium) {
-                    if value {
-                        await loadFeed()
-                        shouldLoad = false
-                    }
+                if value {
+                    Task(priority: .medium) { await loadFeed() }
+                    shouldLoad = false
                 }
             }
             .refreshable { await refreshFeed() }
@@ -143,9 +141,9 @@ struct FeedView: View {
             Divider()
         }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
-        // .task(priority: .medium) {
         .onAppear {
-            if postTracker.shouldLoadContent(after: postView) {
+            // on appear, flag whether new content should be loaded. Actual loading is attached to the feed view itself so that it doesn't get cancelled by view derenders
+            if postTracker.shouldLoadContentPrecisely(after: postView) {
                 shouldLoad = true
             }
         }

@@ -39,7 +39,20 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
            itemIndex >= thresholdIndex {
-            print("Should load content after \(itemIndex) (threshold \(thresholdIndex)")
+            return true
+        }
+
+        return false
+    }
+    
+    /// Similar to above, but only returns true if this item *is* the threshold item
+    @MainActor func shouldLoadContentPrecisely(after item: Item) -> Bool {
+        guard !isLoading else { return false }
+        
+        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: thresholdOffset))
+  
+        if let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
+           itemIndex == thresholdIndex {
             return true
         }
 
