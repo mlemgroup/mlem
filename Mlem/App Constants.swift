@@ -22,40 +22,6 @@ struct AppConstants {
     // MARK: - Keychain
     static let keychain: Keychain = Keychain(service: "com.hanners.Mlem-keychain")
 
-    // MARK: - Files
-    private static let applicationSupportDirectoryPath = {
-        guard let path = try? FileManager.default.url(
-            for: .applicationSupportDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true
-        ) else {
-            fatalError("unable to access application support path")
-        }
-
-        return path
-    }()
-
-    static let savedAccountsFilePath = { applicationSupportDirectoryPath
-        .appendingPathComponent("Saved Accounts", conformingTo: .json)
-    }()
-
-    static let filteredKeywordsFilePath = { applicationSupportDirectoryPath
-        .appendingPathComponent("Blocked Keywords", conformingTo: .json)
-    }()
-
-    static let favoriteCommunitiesFilePath = { applicationSupportDirectoryPath
-        .appendingPathComponent("Favorite Communities", conformingTo: .json)
-    }()
-    
-    static let recentSearchesFilePath = { applicationSupportDirectoryPath
-        .appendingPathComponent("Recent Searches", conformingTo: .json)
-    }()
-    
-    static let easterFlagsFilePath = { applicationSupportDirectoryPath
-        .appendingPathComponent("Easter eggs flags", conformingTo: .json)
-    }()
-
     // MARK: - DragGesture thresholds
     static let longSwipeDragMin: CGFloat = 150
     static let shortSwipeDragMin: CGFloat = 60

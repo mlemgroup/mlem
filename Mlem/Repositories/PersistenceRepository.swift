@@ -9,6 +9,27 @@
 import Dependencies
 import Foundation
 
+private enum Path {
+    private static var root = {
+        guard let path = try? FileManager.default.url(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        ) else {
+            fatalError("unable to access application support path")
+        }
+
+        return path
+    }()
+
+    static var savedAccounts = { root.appendingPathComponent("Saved Accounts", conformingTo: .json) }()
+    static var filteredKeywords = { root.appendingPathComponent("Blocked Keywords", conformingTo: .json) }()
+    static var favoriteCommunities = { root.appendingPathComponent("Favorite Communities", conformingTo: .json) }()
+    static var recentSearches = { root.appendingPathComponent("Recent Searches", conformingTo: .json) }()
+    static var easterFlags = { root.appendingPathComponent("Easter eggs flags", conformingTo: .json) }()
+}
+
 class PersistenceRepository {
     
     @Dependency(\.errorHandler) private var errorHandler
@@ -16,7 +37,7 @@ class PersistenceRepository {
     // MARK: - Public methods
     
     func loadAccounts() -> [SavedAccount] {
-        let accounts = load([SavedAccount].self, from: AppConstants.savedAccountsFilePath) ?? []
+        let accounts = load([SavedAccount].self, from: Path.savedAccounts) ?? []
         return accounts.compactMap { account -> SavedAccount? in
             guard let token = AppConstants.keychain["\(account.id)_accessToken"] else {
                 return nil
@@ -32,39 +53,39 @@ class PersistenceRepository {
     }
     
     func saveAccounts(_ value: [SavedAccount]) {
-        save(value, to: AppConstants.savedAccountsFilePath)
+        save(value, to: Path.savedAccounts)
     }
     
     func loadRecentSearches() -> [String] {
-        load([String].self, from: AppConstants.recentSearchesFilePath) ?? []
+        load([String].self, from: Path.recentSearches) ?? []
     }
     
     func saveRecentSearches(_ value: [String]) {
-        save(value, to: AppConstants.recentSearchesFilePath)
+        save(value, to: Path.recentSearches)
     }
     
     func loadFavoriteCommunities() -> [FavoriteCommunity] {
-        load([FavoriteCommunity].self, from: AppConstants.favoriteCommunitiesFilePath) ?? []
+        load([FavoriteCommunity].self, from: Path.favoriteCommunities) ?? []
     }
     
     func saveFavoriteCommunities(_ value: [FavoriteCommunity]) {
-        save(value, to: AppConstants.favoriteCommunitiesFilePath)
+        save(value, to: Path.favoriteCommunities)
     }
     
     func loadEasterFlags() -> Set<EasterFlag> {
-        load(Set<EasterFlag>.self, from: AppConstants.easterFlagsFilePath) ?? .init()
+        load(Set<EasterFlag>.self, from: Path.easterFlags) ?? .init()
     }
     
     func saveEasterFlags(_ value: Set<EasterFlag>) {
-        save(value, to: AppConstants.easterFlagsFilePath)
+        save(value, to: Path.easterFlags)
     }
     
     func loadFilteredKeywords() -> [String] {
-        load([String].self, from: AppConstants.filteredKeywordsFilePath) ?? []
+        load([String].self, from: Path.filteredKeywords) ?? []
     }
     
     func saveFilteredKeywords(_ value: [String]) {
-        save(value, to: AppConstants.filteredKeywordsFilePath)
+        save(value, to: Path.filteredKeywords)
     }
     
     // MARK: Private methods

@@ -5,10 +5,13 @@
 //  Created by David Bureš on 07.05.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct FiltersSettingsView: View {
 
+    @Dependency(\.errorHandler) var errorHandler
+    
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var appState: AppState
 
@@ -46,7 +49,18 @@ struct FiltersSettingsView: View {
 
             Section {
                 Button {
-                    showShareSheet(URLtoShare: AppConstants.filteredKeywordsFilePath)
+                    do {
+                        try filtersTracker.filteredKeywords.export(filename: "filtered_keywords")
+                    } catch {
+                        errorHandler.handle(
+                            .init(
+                                title: "Unable to export filters, please try again.",
+                                style: .toast,
+                                underlyingError: error
+                            )
+                        )
+                    }
+                    
                 } label: {
                     Label("Export Filters", systemImage: "square.and.arrow.up")
                 }

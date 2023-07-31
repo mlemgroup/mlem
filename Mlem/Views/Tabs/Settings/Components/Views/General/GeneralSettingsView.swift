@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-internal enum FavoritesPurgingError {
-    case failedToDeleteOldFavoritesFile, failedToCreateNewEmptyFile
-}
-
 struct GeneralSettingsView: View {
     
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -108,22 +104,11 @@ struct GeneralSettingsView: View {
                     isPresented: $isShowingFavoritesDeletionConfirmation,
                     titleVisibility: .visible) {
                         Button(role: .destructive) {
-                            do {
-                                try FileManager.default.removeItem(at: AppConstants.favoriteCommunitiesFilePath)
-                                favoritesTracker.favoriteCommunities = .init()
-                            } catch let fileDeletionError {
-                                appState.contextualError = .init(
-                                    title: "Couldn't delete favorites",
-                                    message: "Try restarting Mlem.",
-                                    underlyingError: fileDeletionError
-                                )
-                                
-                                print("Failed while deleting favorites: \(fileDeletionError)")
-                            }
+                            favoritesTracker.favoriteCommunities = .init()
                         } label: {
                             Text("Delete all favorites")
                         }
-
+                        
                         Button(role: .cancel) {
                             isShowingFavoritesDeletionConfirmation.toggle()
                         } label: {

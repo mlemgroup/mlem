@@ -19,6 +19,7 @@
 		500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */; };
 		5016A2B12A67EB8600B257E8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B02A67EB8600B257E8 /* UIViewController.swift */; };
 		5016A2B32A67EC0700B257E8 /* NotificationDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B22A67EC0700B257E8 /* NotificationDisplayer.swift */; };
+		503A5D752A78EF3C00488C38 /* Encodable+Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503A5D742A78EF3C00488C38 /* Encodable+Export.swift */; };
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D03C2A6DE0AA00B22EE3 /* Notifier.swift */; };
 		5064D03F2A6DE0DB00B22EE3 /* Notifier+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */; };
@@ -400,6 +401,7 @@
 		500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+Dependency.swift"; sourceTree = "<group>"; };
 		5016A2B02A67EB8600B257E8 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		5016A2B22A67EC0700B257E8 /* NotificationDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDisplayer.swift; sourceTree = "<group>"; };
+		503A5D742A78EF3C00488C38 /* Encodable+Export.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Export.swift"; sourceTree = "<group>"; };
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		5064D03C2A6DE0AA00B22EE3 /* Notifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifier.swift; sourceTree = "<group>"; };
 		5064D03E2A6DE0DB00B22EE3 /* Notifier+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notifier+Dependency.swift"; sourceTree = "<group>"; };
@@ -1094,6 +1096,7 @@
 				CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */,
 				5064D0402A6E63E000B22EE3 /* Task+Notifiable.swift */,
 				CD82A24B2A70A26900111034 /* View - CustomBadge.swift */,
+				503A5D742A78EF3C00488C38 /* Encodable+Export.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2317,6 +2320,7 @@
 				6332FDC327EFCB5F0009A98A /* Color.swift in Sources */,
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */,
+				503A5D752A78EF3C00488C38 /* Encodable+Export.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
 				CD82A2532A716B8100111034 /* PersonRepository.swift in Sources */,
 				CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */,
