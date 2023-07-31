@@ -11,14 +11,18 @@ extension FeedView {
     
     // MARK: Feed loading
     
+    // NOTE: using defer { isLoading = false } causes unwanted behavior where isLoading is set to false before loading is complete, triggering an erroneous "end of feed" view--putting it inside both the do and the catch is annoyingly duplicitave, but works
+    
     func initFeed() async {
         defer { isLoading = false }
         isLoading = true
         if postTracker.items.isEmpty {
             print("Post tracker is empty")
             await loadFeed()
+            // isLoading = false
         } else {
             print("Post tracker is not empty")
+            // isLoading = false
         }
     }
     
@@ -33,8 +37,10 @@ extension FeedView {
                 type: feedType,
                 filtering: filter
             )
+            // isLoading = false
         } catch {
             handle(error)
+            // isLoading = false
         }
     }
     

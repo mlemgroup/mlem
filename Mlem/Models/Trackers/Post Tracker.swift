@@ -9,6 +9,24 @@ import Foundation
 import Nuke
 
 class PostTracker: FeedTracker<APIPostView> {
+    
+    // EXPERIMENTAL
+    
+    @Published var shoudLoad: Bool = false
+    
+    @MainActor
+    func sawItem(item: APIPostView) {
+        if shouldLoadContent(after: item) {
+            self.shoudLoad = true
+        }
+    }
+    
+    @MainActor
+    func loaded() {
+        self.shoudLoad = false
+    }
+    
+    // END EXPERIMENTAL
 
     private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
                                              destination: .memoryCache,
@@ -29,12 +47,11 @@ class PostTracker: FeedTracker<APIPostView> {
     ) async throws {
         let currentPage = page
         
-        print(currentPage)
-        
         // retry this until we get some items that pass the filter
         var responsePosts: [APIPostView] = .init()
         var numItems = items.count
         repeat {
+            print("loading more posts")
             let response = try await perform(
                 GetPostsRequest(
                     account: account,
@@ -48,7 +65,6 @@ class PostTracker: FeedTracker<APIPostView> {
             )
             
             responsePosts = response.posts
-            numItems = items.count
         } while !responsePosts.isEmpty && numItems == items.count
 
         // so although the API kindly returns `400`/"not_logged_in" for expired
@@ -63,10 +79,13 @@ class PostTracker: FeedTracker<APIPostView> {
             try await attemptAuthenticatedCall(with: account)
         }
         
-        // TODO: should we preload filtered images?
-        preloadImages(responsePosts)
+        await loaded()
+        
+        // don't preload filtered images
+        preloadImages(responsePosts.filter(filtering))
     }
 
+    @MainActor
     func refresh(
         account: SavedAccount,
         communityId: Int?,

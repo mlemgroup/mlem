@@ -20,6 +20,7 @@ struct FeedView: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("postSize") var postSize: PostSize = .large
+    @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -45,7 +46,6 @@ struct FeedView: View {
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = false
-    @State var showReadPosts: Bool = true
     
     // MARK: - Main Views
     
@@ -74,6 +74,13 @@ struct FeedView: View {
             }
             .onChange(of: showReadPosts) { _ in
                 hardRefreshFeed()
+            }
+            .onChange(of: postTracker.shoudLoad) { value in
+                Task(priority: .medium) {
+                    if value {
+                        await loadFeed()
+                    }
+                }
             }
             .refreshable { await refreshFeed() }
     }
@@ -127,9 +134,10 @@ struct FeedView: View {
         }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
         .task(priority: .medium) {
-            if postTracker.shouldLoadContent(after: postView) {
-                await loadFeed()
-            }
+            postTracker.sawItem(item: postView)
+//            if postTracker.shouldLoadContent(after: postView) {
+//                await loadFeed()
+//            }
         }
     }
     

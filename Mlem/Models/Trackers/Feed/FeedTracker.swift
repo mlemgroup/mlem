@@ -35,11 +35,11 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
             return false
         }
 
-        let thresholdIndex = max(items.index(items.endIndex, offsetBy: thresholdOffset), 0)
-        // print("my index: \(items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier })), threshold index: \(thresholdIndex)")
+        let thresholdIndex = items.index(items.endIndex, offsetBy: thresholdOffset)
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
            itemIndex >= thresholdIndex {
+            print("Should load content after \(itemIndex) (threshold \(thresholdIndex)")
             return true
         }
 
@@ -48,7 +48,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to perform a request to retrieve  tracker items
     /// - Parameter request: An `APIRequest` that conforms to `FeedItemProviding` with an `Item` type that matches this trackers generic type
-    /// - Returns: The `Response` type of the request as a discardable result
+    /// - Returns: Newly added items
     @discardableResult func perform<Request: APIRequest>(
         _ request: Request,
         filtering: @escaping (_: Request.Response.Item) -> Bool = { _ in true}
@@ -80,20 +80,23 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to add new items into the tracker, duplicate items will be rejected
     /// - Parameter newItems: The array of new `Item`'s you wish to add
+    /// - Returns Newly added items
     @MainActor
-    func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true}) {
+    @discardableResult func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true}) -> [Item] {
         let accepted = dedupedItems(from: newItems.filter(filtering))
         if !shouldPerformMergeSorting {
             RunLoop.main.perform { [self] in
                 items.append(contentsOf: accepted)
             }
-            return
+            return accepted
         }
 
         let merged =  merge(arr1: items, arr2: accepted, compare: { $0.published > $1.published })
         RunLoop.main.perform { [self] in
             items = merged
         }
+        
+        return accepted
     }
 
     /// A method to add an item  to the start of the current list of items
