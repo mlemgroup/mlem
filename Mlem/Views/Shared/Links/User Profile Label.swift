@@ -156,6 +156,7 @@ struct UserProfileLabel: View {
                 .lineLimit(1)
                 .opacity(0.6)
                 .font(.caption)
+                .allowsHitTesting(false)
         } else {
             EmptyView()
         }
