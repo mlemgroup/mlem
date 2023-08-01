@@ -157,14 +157,15 @@ struct FiltersSettingsView: View {
 
     func addKeyword(_ newKeyword: String) {
         if !newKeyword.isEmpty {
-            if filtersTracker.filteredKeywords.contains(newKeyword) { /// If the word is already in there, just move it to the top
+            // If the word is already in there, just move it to the top
+            if filtersTracker.filteredKeywords.contains(newKeyword.lowercased()) {
                 let indexOfPreviousOccurence: Int = filtersTracker.filteredKeywords.firstIndex(where: { $0 == newKeyword })!
                 withAnimation {
                     filtersTracker.filteredKeywords.move(from: indexOfPreviousOccurence, to: 0)
                 }
             } else {
                 withAnimation {
-                    filtersTracker.filteredKeywords.prepend(newKeyword)
+                    filtersTracker.filteredKeywords.prepend(newKeyword.lowercased())
                 }
             }
 
