@@ -26,8 +26,9 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     
     // Complications
-    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
+    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .plain
+    @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
@@ -92,8 +93,12 @@ struct PostSettingsView: View {
                 )
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                        settingPictureColor: .pink,
-                                       settingName: "Show upvotes in info",
+                                       settingName: "Show score in info",
                                        isTicked: $shouldShowScoreInPostBar)
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                                       settingPictureColor: .pink,
+                                       settingName: "Show downvotes separately",
+                                       isTicked: $showDownvotesSeparately)
                 SwitchableSettingsItem(settingPictureSystemName: "clock",
                                        settingPictureColor: .pink,
                                        settingName: "Show time posted in info",

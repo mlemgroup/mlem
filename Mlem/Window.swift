@@ -5,10 +5,13 @@
 //  Created by tht7 on 01/07/2023.
 //
 
+import Dependencies
 import SwiftUI
-import AlertToast
 
 struct Window: View {
+    
+    @Dependency(\.notifier) var notifier
+    
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
@@ -16,40 +19,29 @@ struct Window: View {
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
 
     @State var selectedAccount: SavedAccount?
-    
-    @State var easterRewardsToastsQueue: [AlertToast] = .init()
-    @State var easterRewardsToastDisplay: AlertToast?
-    @State var easterRewardShouldShow = false
 
     var body: some View {
-        ZStack {
-            if let selectedAccount {
-                view(for: selectedAccount)
-            } else {
-                NavigationStack {
-                    AddSavedInstanceView(onboarding: true, currentAccount: $selectedAccount)
-                }
+        content
+            .onChange(of: selectedAccount) { _ in onLogin() }
+            .onAppear(perform: onLogin)
+            .environment(\.forceOnboard, forceOnboard)
+            .environment(\.setEasterFlag, setEasterFlag)
+            .environmentObject(easterFlagsTracker)
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        if let selectedAccount {
+            view(for: selectedAccount)
+        } else {
+            NavigationStack {
+                AddSavedInstanceView(onboarding: true, currentAccount: $selectedAccount)
             }
-
-            // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
-            Color.clear
-                .toast(isPresenting: $easterRewardShouldShow, duration: 2.0) {
-                    easterRewardsToastDisplay ?? AlertToast(displayMode: .hud, type: .error(.clear))
-                } completion: {
-                    if !easterRewardsToastsQueue.isEmpty {
-                        easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
-                        easterRewardShouldShow = true
-                    }
-                }
         }
-        .onChange(of: selectedAccount) { _ in onLogin() }
-        .onAppear(perform: onLogin)
-        .environment(\.forceOnboard, forceOnboard)
-        .environment(\.setEasterFlag, setEasterFlag)
-        .environmentObject(easterFlagsTracker)
     }
 
     func onLogin() {
+        // set easter flags
         if let host =
             RecognizedLemmyInstances(rawValue:
                                         selectedAccount?.instanceLink.host() ?? "unknown"
@@ -108,23 +100,8 @@ struct Window: View {
         
         if isNew, let rewards = easterReward[flag] {
             // time to display a cute message to the user about his new toy!
-            for reward in rewards {
-                switch reward {
-                case let .icon(iconName, _):
-                    easterRewardsToastsQueue.append(
-                        AlertToast(
-                            displayMode: .banner(.slide),
-                            type: .regular,
-                            title: "New icon unlocked!",
-                            subTitle: "Unlocked the \"\(iconName)\" icon"
-                        )
-                    )
-                }
-            }
-            
-            if !easterRewardsToastsQueue.isEmpty {
-                easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
-                easterRewardShouldShow = true
+            Task {
+                await notifier.add(rewards)
             }
         }
     }

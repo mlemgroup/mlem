@@ -8,12 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct ReportPost: Respondable {
+struct ReportPost: ResponseEditorModel {
     
     var id: Int { post.id }
     let appState: AppState
     let canUpload: Bool = false
     let modalName: String = "Report Post"
+    let prefillContents: String? = nil
     let post: APIPostView
     
     func embeddedView() -> AnyView {

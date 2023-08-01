@@ -15,8 +15,8 @@ import SwiftUI
     postURL: String?,
     postIsNSFW: Bool,
     postTracker: PostTracker,
-    
-    account: SavedAccount) async throws -> APIPostView {
+    account: SavedAccount,
+    responseCallback: ((APIPostView) -> Void)? = nil) async throws -> APIPostView {
         let request = EditPostRequest(
             account: account,
             postId: postId,
@@ -32,6 +32,10 @@ import SwiftUI
         
         await MainActor.run {
             postTracker.update(with: response.postView)
+            
+            if let responseCallback {
+                responseCallback(response.postView)
+            }
         }
         
         return response.postView

@@ -28,7 +28,6 @@ extension APIPostView: Identifiable {
 
 extension APIPostView: Equatable {
     static func == (lhs: APIPostView, rhs: APIPostView) -> Bool {
-        // defer to our child `post` value conformance
         lhs.hashValue == rhs.hashValue
     }
 }
@@ -39,6 +38,7 @@ extension APIPostView: Hashable {
         hasher.combine(self.myVote)
         hasher.combine(self.saved)
         hasher.combine(self.read)
+        hasher.combine(self.post.updated)
     }
 }
 

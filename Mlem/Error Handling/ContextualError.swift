@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ContextualError: Error, Equatable {
+struct ContextualError: Error, Equatable, Notifiable {
     
     enum PreferredStyle {
         case alert

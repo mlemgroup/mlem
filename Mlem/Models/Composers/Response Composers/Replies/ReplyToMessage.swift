@@ -8,11 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct ReplyToMessage: Respondable {
+struct ReplyToMessage: ResponseEditorModel {
     var id: Int { message.id }
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Message"
+    let prefillContents: String? = nil
     let message: APIPrivateMessageView
     
     func embeddedView() -> AnyView {

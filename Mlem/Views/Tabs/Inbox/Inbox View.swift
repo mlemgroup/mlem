@@ -9,7 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 import CachedAsyncImage
-import AlertToast
 
 enum InboxTab: String, CaseIterable, Identifiable {
     case all, replies, mentions, messages
@@ -32,10 +31,14 @@ enum ComposingTypes {
 struct InboxView: View {
     
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.personRepository) var personRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // MARK: Global
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     // MARK: Internal
     // id of the last account loaded with
@@ -47,6 +50,7 @@ struct InboxView: View {
     
     // loading handling
     @State var isLoading: Bool = true
+    @State var shouldFilterRead: Bool = false
     
     // item feeds
     @State var allItems: [InboxItem] = .init()
@@ -59,9 +63,6 @@ struct InboxView: View {
     // - current view
     @State var curTab: InboxTab = .all
     
-    // - responses
-    @State var responseItem: ConcreteRespondable?
-    
     // utility
     @State private var navigationPath = NavigationPath()
     
@@ -71,11 +72,11 @@ struct InboxView: View {
             contentView
                 .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
+                }
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
-        }
-        .toast(isPresenting: $appState.isShowingToast, duration: 2) {
-            appState.toast ?? AlertToast(type: .regular, title: "Missing toast info")
         }
     }
     
@@ -112,9 +113,6 @@ struct InboxView: View {
                 }
             }
         }
-        .sheet(item: $responseItem) { responseItem in
-            ResponseComposerView(concreteRespondable: responseItem)
-        }
         // load view if empty or account has changed
         .task(priority: .userInitiated) {
             // if a tracker is empty or the account has changed, refresh
@@ -143,5 +141,18 @@ struct InboxView: View {
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)
+    }
+    
+    @ViewBuilder
+    private var ellipsisMenu: some View {
+        Menu {
+            ForEach(genMenuFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction)
+            }
+        } label: {
+            Label("More", systemImage: "ellipsis")
+                .frame(height: AppConstants.barIconHitbox)
+                .contentShape(Rectangle())
+        }
     }
 }

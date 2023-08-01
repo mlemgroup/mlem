@@ -33,7 +33,7 @@ struct SaveButton: View {
                 .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
                 .padding(AppConstants.barIconPadding)
                 .foregroundColor(isSaved ? .white : .primary)
-                .background(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundColor(isSaved ? .saveColor : .clear))
                 .padding(AppConstants.postAndCommentSpacing)

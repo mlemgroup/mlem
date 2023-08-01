@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AlertToast
 
 extension ExpandedPost {
     
@@ -57,15 +56,23 @@ extension ExpandedPost {
     }
     
     func replyToPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: post, commentTracker: commentTracker)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           post: post,
+                                                           commentTracker: commentTracker,
+                                                           operation: PostOperation.replyToPost))
     }
     
     func reportPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: post, report: true)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           post: post,
+                                                           operation: PostOperation.reportPost))
     }
     
     func replyToComment(comment: APICommentView) {
-        responseItem = ConcreteRespondable(appState: appState, comment: comment, commentTracker: commentTracker)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: comment,
+                                                           commentTracker: commentTracker,
+                                                           operation: CommentOperation.replyToComment))
     }
     
     func blockUser() async {
@@ -77,15 +84,8 @@ extension ExpandedPost {
             )
             if blocked {
                 postTracker.removePosts(from: post.creator.id)
-
-                let toast = AlertToast(
-                    displayMode: .alert,
-                    type: .complete(.blue),
-                    title: "Blocked \(post.creator.name)"
-                )
-                appState.toast = toast
-                appState.isShowingToast = true
-            } // Show Toast
+                await notifier.add(.success("Blocked \(post.creator.name)"))
+            }
         } catch {
             errorHandler.handle(
                 .init(
@@ -152,8 +152,21 @@ extension ExpandedPost {
                 replyToPost()
             })
         
-        // delete
         if post.creator.id == appState.currentActiveAccount.id {
+            // edit
+            ret.append(MenuFunction(
+                text: "Edit",
+                imageName: "pencil",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                    editorTracker.openEditor(with: PostEditorModel(community: post.community,
+                                                                   appState: appState,
+                                                                   postTracker: postTracker,
+                                                                   editPost: post.post,
+                                                                   responseCallback: updatePost))
+                })
+            
+            // delete
             ret.append(MenuFunction(
                 text: "Delete",
                 imageName: "trash",
@@ -200,8 +213,8 @@ extension ExpandedPost {
     // swiftlint:enable function_body_length
 
     func loadComments() async {
-        defer { commentTracker.isLoading = false }
-        commentTracker.isLoading = true
+        defer { isLoading = false }
+        isLoading = true
         
         do {
             let comments = try await commentRepository.comments(for: post.post.id)
@@ -215,6 +228,20 @@ extension ExpandedPost {
                     underlyingError: error
                 )
             )
+        }
+    }
+    
+    /**
+     Refreshes the comment feed. Does not touch the isLoading bool, since that status cue is handled implicitly by .refreshable
+     */
+    func refreshComments() async {
+        do {
+            let comments = try await commentRepository.comments(for: post.post.id)
+            commentTracker.comments = sortComments(comments, by: defaultCommentSorting)
+        } catch {
+            errorHandler.handle(.init(title: "Failed to refresh",
+                                      message: "Please try again",
+                                      underlyingError: error))
         }
     }
 
@@ -236,5 +263,9 @@ extension ExpandedPost {
             newComment.children = sortComments(comment.children, by: sort)
             return newComment
         }
+    }
+    
+    func updatePost(newPost: APIPostView) {
+        post = newPost
     }
 }

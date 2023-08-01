@@ -21,6 +21,7 @@ struct FancyTabBarLabel: View {
     let labelText: String?
     let color: Color
     let activeColor: Color
+    let badgeCount: Int?
     
     var active: Bool { tagHash == selectedTagHashValue }
     
@@ -36,19 +37,22 @@ struct FancyTabBarLabel: View {
      - activeSymbolName: if present and symbolName is present, label will display this symbol when active
      - customColor: overrides the default color (UIColor.darkGray)
      - activeColor: overrides the default active color (Color.accentColor)
+     - badgeCount: count to display as badge
      */
     init(tag: any FancyTabBarSelection,
          customText: String? = nil,
          symbolName: String? = nil,
          activeSymbolName: String? = nil,
          customColor: Color = Color.primary,
-         activeColor: Color = .accentColor) {
+         activeColor: Color = .accentColor,
+         badgeCount: Int? = nil) {
         self.tagHash = tag.hashValue
         self.symbolName = symbolName
         self.activeSymbolName = activeSymbolName
         self.labelText = customText ?? tag.labelText
         self.color = customColor
         self.activeColor = activeColor
+        self.badgeCount = badgeCount
     }
     
     var body: some View {
@@ -56,12 +60,13 @@ struct FancyTabBarLabel: View {
         .accessibilityShowsLargeContentViewer {
             labelDisplay
         }
+        .customBadge(badgeCount)
         .padding(.top, 10)
         .frame(maxWidth: .infinity)
         .frame(height: AppConstants.fancyTabBarHeight)
         .contentShape(Rectangle())
         .foregroundColor(active ? activeColor : color.opacity(0.4))
-        .animation(.spring(response: 0.25), value: active)
+        .animation(.easeOut(duration: 0.25), value: active)
     }
     
     var labelDisplay: some View {

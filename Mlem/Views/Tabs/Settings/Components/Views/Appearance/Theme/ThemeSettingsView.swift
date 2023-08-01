@@ -34,18 +34,18 @@ struct ThemeLabel: View {
                 color1
                     .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
                     .overlay { ThemeTriangle().fill(color2!) }
-                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius))
+                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
                     .overlay {
-                        RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius)
+                        RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                             .stroke(outlineColor, lineWidth: 1)
                     }
                 
             } else {
                 color1
                     .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
-                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius))
+                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
                     .overlay {
-                        RoundedRectangle(cornerRadius: AppConstants.settingsIconCornerRadius)
+                        RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
                             .stroke(outlineColor, lineWidth: 1)
                     }
             }

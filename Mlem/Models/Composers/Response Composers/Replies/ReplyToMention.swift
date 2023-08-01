@@ -9,13 +9,14 @@ import Foundation
 import Dependencies
 import SwiftUI
 
-struct ReplyToMention: Respondable {
-    
+struct ReplyToMention: ResponseEditorModel {
+
     @Dependency(\.commentRepository) var commentRepository
     
     let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
+    let prefillContents: String? = nil
     let mention: APIPersonMentionView
     
     var id: Int { mention.id }

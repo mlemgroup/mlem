@@ -10,28 +10,41 @@ import SwiftUI
 
 struct CommentBodyView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    @AppStorage("compactComments") var compactComments: Bool = false
+    @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     
     @Binding var isParentCollapsed: Bool
     @Binding var isCollapsed: Bool
     
     let commentView: APICommentView
     let showPostContext: Bool
-    let showCommentCreator: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
-
+    
+    var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
+    
+    var serverInstanceLocation: ServerInstanceLocation {
+        if shouldShowUserServerInComment {
+            return .disabled
+        } else if compactComments {
+            return .trailing
+        } else {
+            return .bottom
+        }
+    }
+    
+    var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
+    
     init(commentView: APICommentView,
          isParentCollapsed: Binding<Bool>,
          isCollapsed: Binding<Bool>,
          showPostContext: Bool,
-         showCommentCreator: Bool,
          menuFunctions: [MenuFunction]) {
         self._isParentCollapsed = isParentCollapsed
         self._isCollapsed = isCollapsed
         
         self.commentView = commentView
         self.showPostContext = showPostContext
-        self.showCommentCreator = showCommentCreator
         self.menuFunctions = menuFunctions
         
         let commentor = commentView.creator
@@ -40,13 +53,11 @@ struct CommentBodyView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
-            // TEMPORARILY DISABLED: hiding comment creator--doesn't appear to be used anywhere in the code?
-            // if showCommentCreator {
-            HStack {
+        VStack(alignment: .leading, spacing: spacing) {
+            HStack(spacing: AppConstants.compactSpacing) {
                 UserProfileLink(
                     user: commentView.creator,
-                    serverInstanceLocation: shouldShowUserServerInComment ? .bottom : .disabled,
+                    serverInstanceLocation: serverInstanceLocation,
                     postContext: commentView.post,
                     commentContext: commentView.comment
                 )
@@ -56,24 +67,29 @@ struct CommentBodyView: View {
                 
                 Spacer()
                 
-                EllipsisMenu(size: 24, menuFunctions: menuFunctions)
+                if compactComments {
+                    compactScoreDisplay()
+                }
+                
+                EllipsisMenu(size: compactComments ? 20 : 24, menuFunctions: menuFunctions)
             }
-            // }
             
             // comment text or placeholder
-            if commentView.comment.deleted {
-                Text("Comment was deleted")
-                    .italic()
-                    .foregroundColor(.secondary)
-            } else if commentView.comment.removed {
-                Text("Comment was removed")
-                    .italic()
-                    .foregroundColor(.secondary)
-            } else if !isCollapsed {
-                MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+            Group {
+                if commentView.comment.deleted {
+                    Text("Comment was deleted")
+                        .italic()
+                        .foregroundColor(.secondary)
+                } else if commentView.comment.removed {
+                    Text("Comment was removed")
+                        .italic()
+                        .foregroundColor(.secondary)
+                } else if !isCollapsed {
+                    MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
             }
-
+            
             // embedded post
             if showPostContext {
                 EmbeddedPost(
@@ -82,5 +98,36 @@ struct CommentBodyView: View {
                 )
             }
         }
+    }
+    
+    @ViewBuilder
+    func compactScoreDisplay() -> some View {
+        Group {
+            // time
+            TimestampView(date: commentView.comment.published)
+            
+            // votes
+            if showCommentDownvotesSeparately {
+                HStack(spacing: AppConstants.iconToTextSpacing) {
+                    Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
+                    Text(String(commentView.counts.upvotes))
+                }
+                
+                HStack(spacing: AppConstants.iconToTextSpacing) {
+                    Image(systemName: myVote == .downvote ? AppConstants.fullDownvoteSymbolName : AppConstants.emptyDownvoteSymbolName)
+                    Text(String(commentView.counts.downvotes))
+                }
+            } else {
+                HStack(spacing: AppConstants.iconToTextSpacing) {
+                    Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
+                    Text(String(commentView.counts.score))
+                }
+                .foregroundColor(.secondary)
+                .font(.footnote)
+            }
+            
+        }
+        .foregroundColor(.secondary)
+        .font(.footnote)
     }
 }

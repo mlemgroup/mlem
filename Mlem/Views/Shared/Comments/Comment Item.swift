@@ -16,9 +16,11 @@ struct CommentItem: View {
     
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    @AppStorage("compactComments") var compactComments: Bool = false
 
     // MARK: Temporary
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
@@ -37,7 +39,7 @@ struct CommentItem: View {
     // MARK: Environment
 
     @EnvironmentObject var commentTracker: CommentTracker
-    @EnvironmentObject var commentReplyTracker: CommentReplyTracker
+    @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
 
     // MARK: Constants
@@ -53,9 +55,7 @@ struct CommentItem: View {
     var depth: Int { hierarchicalComment.depth < 0 ? 0 : hierarchicalComment.depth }
     let showPostContext: Bool
     let showCommentCreator: Bool
-    let showInteractionBar: Bool
     let enableSwipeActions: Bool
-    let replyToComment: ((APICommentView) -> Void)?
     
     // MARK: Computed
     
@@ -81,18 +81,14 @@ struct CommentItem: View {
          indentBehaviour: IndentBehaviour = .standard,
          showPostContext: Bool,
          showCommentCreator: Bool,
-         showInteractionBar: Bool = true,
-         enableSwipeActions: Bool = true,
-         replyToComment: ((APICommentView) -> Void)?
+         enableSwipeActions: Bool = true
     ) {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
         self.indentBehaviour = indentBehaviour
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
-        self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
-        self.replyToComment = replyToComment
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
@@ -129,12 +125,12 @@ struct CommentItem: View {
                                 isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                                 isCollapsed: $hierarchicalComment.isCollapsed,
                                 showPostContext: showPostContext,
-                                showCommentCreator: showCommentCreator,
                                 menuFunctions: genMenuFunctions())
+                // top and bottom spacing uses default even when compact--it's *too* compact otherwise
                 .padding(.top, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
-                if showInteractionBar {
+                if !hierarchicalComment.isCollapsed && !compactComments {
                     CommentInteractionBar(commentView: hierarchicalComment.commentView,
                                           displayedScore: displayedScore,
                                           displayedVote: displayedVote,
@@ -143,9 +139,10 @@ struct CommentItem: View {
                                           downvote: downvote,
                                           saveComment: saveComment,
                                           deleteComment: deleteComment,
-                                          replyToComment: replyToCommentUnwrapped)
+                                          replyToComment: replyToComment)
                 } else {
-                    Spacer().frame(height: AppConstants.postAndCommentSpacing)
+                    Spacer()
+                        .frame(height: AppConstants.postAndCommentSpacing)
                 }
             }
             .transition(
@@ -166,7 +163,11 @@ struct CommentItem: View {
         }
         .contextMenu {
             ForEach(genMenuFunctions()) { item in
-                Button { item.callback() } label: { Label(item.text, systemImage: item.imageName) }
+                Button {
+                    item.callback()
+                } label: {
+                    Label(item.text, systemImage: item.imageName)
+                }
             }
         }
         .background(Color.systemBackground)
@@ -176,11 +177,11 @@ struct CommentItem: View {
                           secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
-        .sheet(isPresented: $isComposingReport) {
-            ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
-                                                                          comment: hierarchicalComment.commentView,
-                                                                          report: true))
-        }
+//        .sheet(isPresented: $isComposingReport) {
+//            ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
+//                                                                          comment: hierarchicalComment.commentView,
+//                                                                          report: true))
+//        }
     }
     // swiftlint:enable function_body_length
 }
@@ -224,14 +225,10 @@ extension CommentItem {
     }
 
     var replySwipeAction: SwipeAction? {
-        if replyToComment != nil {
-            return SwipeAction(
-                symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
-                color: .accentColor,
-                action: replyToCommentAsyncWrapper
-            )
-        } else {
-            return nil
-        }
+        return SwipeAction(
+            symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
+            color: .accentColor,
+            action: replyToCommentAsyncWrapper
+        )
     }
 }

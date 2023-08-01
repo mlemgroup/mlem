@@ -15,7 +15,7 @@ enum EasterFlag: Codable, Hashable {
     case login(host: RecognizedLemmyInstances)
 }
 
-enum RewardType {
+enum RewardType: Notifiable {
     case icon(iconName: String, iconId: IconId)
 }
 

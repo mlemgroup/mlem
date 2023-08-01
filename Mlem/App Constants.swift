@@ -61,24 +61,27 @@ struct AppConstants {
     
     // MARK: - Sizes
     static let maxFeedPostHeight: CGFloat = 400
+    static let thumbnailSize: CGFloat = 60
     static let largeAvatarSize: CGFloat = 32
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
     static let largeAvatarSpacing: CGFloat = 10
-    static let postAndCommentSpacing: CGFloat = 10
+    static let postAndCommentSpacing: CGFloat = 10 // standard spacing for the app
+    static let compactSpacing: CGFloat = 6 // standard spacing for compact things
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
-    static let smallItemCornerRadius: CGFloat = 4 // buttons, tags, compact thumbnails
+    static let smallItemCornerRadius: CGFloat = 6 // settings items, compact thumbnails
+    static let tinyItemCornerRadius: CGFloat = 4 // buttons
     static let iconToTextSpacing: CGFloat = 2 // spacing between icons and text in info components
     // NOTE: barIconHitbox = (barIconSize + 2 * barIconPadding) + (2 * postAndCommentSpacing)
     static let barIconSize: CGFloat = 15.5 // square size of a bar button
     static let barIconPadding: CGFloat = 4.25 // padding for bar button
     static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
     static let settingsIconSize: CGFloat = 28
-    static let settingsIconCornerRadius: CGFloat = 7
     static let fancyTabBarHeight: CGFloat = 48 // total height of the fancy tab bar
     
     // MARK: - SFSymbols
     // votes
+    static let generalVoteSymbolName: String = "arrow.up.arrow.down.square"
     static let emptyUpvoteSymbolName: String = "arrow.up.square"
     static let fullUpvoteSymbolName: String = "arrow.up.square.fill"
     static let emptyDownvoteSymbolName: String = "arrow.down.square"
@@ -123,11 +126,12 @@ struct AppConstants {
     static let blurNsfwSymbolName: String = "eye.trianglebadge.exclamationmark"
     
     // feeds
-    static let federatedFeedSymbolName: String = "network"
-    static let localFeedSymbolName: String = "house"
-    static let localFeedSymbolNameFill: String = "house.fill"
-    static let subscribedFeedSymbolName: String = "newspaper"
-    static let subscribedFeedSymbolNameFill: String = "newspaper.fill"
+    static let federatedFeedSymbolName: String = "circle.hexagongrid.circle" // "arrow.left.arrow.right.circle"
+    static let federatedFeedSymbolNameFill: String = "circle.hexagongrid.circle.fill" // "arrow.left.arrow.right.circle.fill"
+    static let localFeedSymbolName: String = "house.circle"
+    static let localFeedSymbolNameFill: String = "house.circle.fill"
+    static let subscribedFeedSymbolName: String = "newspaper.circle"
+    static let subscribedFeedSymbolNameFill: String = "newspaper.circle.fill"
     
     // sort types
     static let activeSortSymbolName: String = "popcorn" // not married to this idea 
@@ -154,8 +158,11 @@ struct AppConstants {
     static let unsubscribeSymbolName: String = "multiply.circle"
     static let blockSymbolName: String = "eye.slash"
     static let unblockSymbolName: String = "eye"
+    static let filterSymbolName: String = "line.3.horizontal.decrease.circle"
+    static let filterSymbolNameFill: String = "line.3.horizontal.decrease.circle.fill"
     
     // misc
+    static let switchUserSymbolName: String = "person.crop.circle.badge.plus"
     static let missingSymbolName: String = "questionmark.square.dashed"
     
     // MARK: - Other

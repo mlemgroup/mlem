@@ -15,8 +15,9 @@ import Foundation
 struct PostInteractionBar: View {
     @EnvironmentObject var appState: AppState
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
-    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .standard
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
+    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .plain
+    @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
@@ -102,8 +103,13 @@ struct PostInteractionBar: View {
                 }
             }
             
-            InfoStack(score: shouldShowScoreInPostBar ? postView.counts.score : nil,
-                      myVote: shouldShowScoreInPostBar ? postView.myVote ?? .resetVote : nil,
+            InfoStack(votes: shouldShowScoreInPostBar
+                      ? DetailedVotes(score: postView.counts.score,
+                                      upvotes: postView.counts.upvotes,
+                                      downvotes: postView.counts.downvotes,
+                                      myVote: displayedVote,
+                                      showDownvotes: showDownvotesSeparately)
+                      : nil,
                       published: shouldShowTimeInPostBar ? postView.published : nil,
                       commentCount: shouldShowRepliesInPostBar ? postView.counts.comments : nil,
                       saved: shouldShowSavedInPostBar ? postView.saved : nil)

@@ -12,8 +12,6 @@
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 
-import AlertToast
-import CachedAsyncImage
 import Dependencies
 import SwiftUI
 import QuickLook
@@ -24,6 +22,7 @@ import QuickLook
 struct FeedPost: View {
     
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // MARK: Environment
     @AppStorage("postSize") var postSize: PostSize = .large
@@ -33,32 +32,26 @@ struct FeedPost: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
 
     @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
-    @Binding var responseItem: ConcreteRespondable?
     
     // MARK: Parameters
 
     init(postView: APIPostView,
          showPostCreator: Bool = true,
          showCommunity: Bool = true,
-         showInteractionBar: Bool = true,
-         enableSwipeActions: Bool = true,
-         responseItem: Binding<ConcreteRespondable?>) {
+         enableSwipeActions: Bool = true) {
         self.postView = postView
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
-        self.showInteractionBar = showInteractionBar
         self.enableSwipeActions = enableSwipeActions
-        self._responseItem = responseItem
     }
 
     let postView: APIPostView
     let showPostCreator: Bool
     let showCommunity: Bool
-    let showInteractionBar: Bool
     let enableSwipeActions: Bool
 
     // MARK: State
@@ -143,15 +136,13 @@ struct FeedPost: View {
                 }
                 .padding(.top, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
-
-                if showInteractionBar {
-                    PostInteractionBar(postView: postView,
-                                       menuFunctions: genMenuFunctions(),
-                                       voteOnPost: voteOnPost,
-                                       updatedSavePost: { _ in await savePost() },
-                                       deletePost: deletePost,
-                                       replyToPost: replyToPost)
-                }
+                
+                PostInteractionBar(postView: postView,
+                                   menuFunctions: genMenuFunctions(),
+                                   voteOnPost: voteOnPost,
+                                   updatedSavePost: { _ in await savePost() },
+                                   deletePost: deletePost,
+                                   replyToPost: replyToPost)
             }
         }
     }
@@ -188,15 +179,8 @@ struct FeedPost: View {
             )
             if blocked {
                 postTracker.removePosts(from: postView.creator.id)
-
-                let toast = AlertToast(
-                    displayMode: .alert,
-                    type: .complete(.blue),
-                    title: "Blocked \(postView.creator.name)"
-                )
-                appState.toast = toast
-                appState.isShowingToast = true
-            } // Show Toast
+                await notifier.add(.success("Blocked \(postView.creator.name)"))
+            }
         } catch {
             errorHandler.handle(
                 .init(
@@ -209,7 +193,16 @@ struct FeedPost: View {
     }
 
     func replyToPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: postView)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           post: postView,
+                                                           operation: PostOperation.replyToPost))
+    }
+    
+    func editPost() {
+        editorTracker.openEditor(with: PostEditorModel(community: postView.community,
+                                                       appState: appState,
+                                                       postTracker: postTracker,
+                                                       editPost: postView.post))
     }
 
     /// Votes on a post
@@ -243,7 +236,7 @@ struct FeedPost: View {
     }
     
     func reportPost() {
-        responseItem = ConcreteRespondable(appState: appState, post: postView, report: true)
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, post: postView, operation: PostOperation.reportPost))
     }
 
     // swiftlint:disable function_body_length
@@ -299,8 +292,17 @@ struct FeedPost: View {
                 replyToPost()
             })
 
-        // delete
         if postView.creator.id == appState.currentActiveAccount.id {
+            // edit
+            ret.append(MenuFunction(
+                text: "Edit",
+                imageName: "pencil",
+                destructiveActionPrompt: nil,
+                enabled: true) {
+                    editPost()
+                })
+            
+            // delete
             ret.append(MenuFunction(
                 text: "Delete",
                 imageName: "trash",
@@ -356,12 +358,6 @@ extension FeedPost {
     // context, which at present would require some work as it occurs down inside the post interaction bar
     // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
 
-//    private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
-//    private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
-//    private var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
-//    private var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
-//    private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-
     var upvoteSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = postView.myVote == .upvote ?
         (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
@@ -387,8 +383,11 @@ extension FeedPost {
     }
 
     var saveSwipeAction: SwipeAction {
-        SwipeAction(
-            symbol: .init(emptyName: "bookmark", fillName: "bookmark.fill"),
+        let (emptySymbolName, fullSymbolName) = postView.saved
+        ? (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
+        : (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
+        return SwipeAction(
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,
             action: savePost
         )

@@ -73,7 +73,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
             await reset()
         }
         let response = try await retrieveItems(with: request)
-        await reset(with: response.items)
+        await reset(with: response.items, filteredWith: filtering)
         return response
     }
 

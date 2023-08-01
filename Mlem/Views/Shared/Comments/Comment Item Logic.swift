@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AlertToast
 
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
@@ -92,19 +91,25 @@ extension CommentItem {
         }
     }
     
+    func replyToComment() {
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: hierarchicalComment.commentView,
+                                                           commentTracker: commentTracker,
+                                                           operation: CommentOperation.replyToComment))
+    }
+
+    func editComment() {
+        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                           comment: hierarchicalComment.commentView,
+                                                           commentTracker: commentTracker,
+                                                           operation: CommentOperation.editComment))
+    }
+    
     /**
      Asynchronous wrapper around replyToComment so that it can be used in swipey actions
      */
     func replyToCommentAsyncWrapper() async {
-        if let replyCallback = replyToComment {
-            replyCallback(hierarchicalComment.commentView)
-        }
-    }
-    
-    func replyToCommentUnwrapped() {
-        if let replyCallback = replyToComment {
-            replyCallback(hierarchicalComment.commentView)
-        }
+        replyToComment()
     }
 
     /**
@@ -181,13 +186,22 @@ extension CommentItem {
         })
         
         // reply
-        if let replyCallback = replyToComment {
+        ret.append(MenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                replyToComment()
+            })
+        
+        // edit
+        if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
             ret.append(MenuFunction(
-                text: "Reply",
-                imageName: "arrowshape.turn.up.left",
+                text: "Edit",
+                imageName: "pencil",
                 destructiveActionPrompt: nil,
                 enabled: true) {
-                    replyCallback(hierarchicalComment.commentView)
+                    editComment()
                 })
         }
         
@@ -221,7 +235,9 @@ extension CommentItem {
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
             enabled: true) {
-                isComposingReport = true
+                editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
+                                                                   comment: hierarchicalComment.commentView,
+                                                                   operation: CommentOperation.reportComment))
             })
         
         // block
@@ -243,18 +259,11 @@ extension CommentItem {
                 account: appState.currentActiveAccount,
                 personId: userId,
                 blocked: true
-            )// Show Toast
+            )
             
             // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
             if blocked {
-                let toast = AlertToast(
-                    displayMode: .alert,
-                    type: .complete(.blue),
-                    title: "Blocked user"
-                )
-                appState.toast = toast
-                appState.isShowingToast = true
-                
+                await notifier.add(.success("Blocked user"))
                 commentTracker.filter { comment in
                     comment.commentView.creator.id != userId
                 }

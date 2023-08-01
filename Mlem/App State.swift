@@ -8,7 +8,6 @@
 import Foundation
 import Dependencies
 import SwiftUI
-import AlertToast
 
 class AppState: ObservableObject {
     
@@ -20,10 +19,6 @@ class AppState: ObservableObject {
     
     @Published var contextualError: ContextualError?
     
-    // for those  messages that are less of a .alert ;)
-    @Published var isShowingToast: Bool = false
-    @Published var toast: AlertToast?
-
     @Published var enableDownvote: Bool = true
     
     /// Initialises our app state

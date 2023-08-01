@@ -9,12 +9,21 @@ import Foundation
 import SwiftUI
 
 /**
- Protocol for items in the inbox to allow a unified, sorted feed
+ Wrapper for items in the inbox to allow a unified, sorted feed
  */
 struct InboxItem: Identifiable {
     let published: Date
-    let id: Int
+    let baseId: Int
+    var id: Int { hashId() }
+    let read: Bool
     let type: InboxItemType
+    
+    private func hashId() -> Int {
+        var hasher = Hasher()
+        hasher.combine(baseId)
+        hasher.combine(type.hasherId)
+        return hasher.finalize()
+    }
 }
 
 extension InboxItem: Comparable {

@@ -16,6 +16,7 @@ struct ExpandedPost: View {
     
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
@@ -23,32 +24,44 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
 
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var editorTracker: EditorTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
-    @StateObject var commentReplyTracker: CommentReplyTracker = .init()
-
     @EnvironmentObject var postTracker: PostTracker
-
     @State var post: APIPostView
     
-    @State var responseItem: ConcreteRespondable?
+    @State var isLoading: Bool = false
 
     @State private var sortSelection = 0
-
     @State private var commentSortingType: CommentSortType = .top
-
-    @State private var isInTheMiddleOfStyling: Bool = false
-
-    @State private var viewID: UUID = UUID()
     
     var body: some View {
+        contentView
+            .environmentObject(commentTracker)
+            .navigationBarTitle(post.community.name, displayMode: .inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
+            }
+            .task { await loadComments() }
+            .refreshable { await refreshComments() }
+            .onChange(of: commentSortingType) { newSortingType in
+                withAnimation(.easeIn(duration: 0.4)) {
+                    commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
+                }
+            }
+    }
+    
+    private var contentView: some View {
         ScrollView {
-            postView
-            if commentTracker.isLoading {
-                commentsLoadingView
-            } else {
-                if commentTracker.comments.count == 0 {
-                    noCommentsView
+            VStack(spacing: 0) {
+                postView
+                    .id(post.hashValue)
+                
+                Divider()
+                    .background(.black)
+
+                if commentTracker.comments.isEmpty {
+                    noCommentsView()
                 } else {
                     commentsView
                 }
@@ -56,42 +69,9 @@ struct ExpandedPost: View {
         }
         .listStyle(PlainListStyle())
         .fancyTabScrollCompatible()
-        .sheet(item: $responseItem) { responseItem in
-            ResponseComposerView(concreteRespondable: responseItem)
-        }
-        .environmentObject(commentTracker)
-        .environmentObject(commentReplyTracker)
-        .navigationBarTitle(post.community.name, displayMode: .inline)
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Menu {
-                    ForEach(CommentSortType.allCases, id: \.self) { type in
-                        Button {
-                            commentSortingType = type
-                        } label: {
-                            Label(type.description, systemImage: type.imageName)
-                        }
-                        .disabled(type == commentSortingType)
-                    }
-
-                } label: {
-                    Label(commentSortingType.description, systemImage: commentSortingType.imageName)
-                }
-            }
-        }
-        .refreshable {
-            Task(priority: .userInitiated) {
-                commentTracker.comments = .init()
-                await loadComments()
-            }
-        }
-        .onChange(of: commentSortingType) { newSortingType in
-            withAnimation(.easeIn(duration: 0.4)) {
-                commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
-            }
-        }
     }
-    // subviews
+    
+    // MARK: Subviews
 
     /**
      Displays the post itself, plus a little divider to keep it visually distinct from comments
@@ -127,37 +107,24 @@ struct ExpandedPost: View {
     }
 
     /**
-     Displays a loading indicator for the comments
-     */
-    private var commentsLoadingView: some View {
-        ProgressView("Loading comments…")
-            .padding(.top, AppConstants.postAndCommentSpacing)
-            .task(priority: .userInitiated) {
-                if post.counts.comments != 0 {
-                    await loadComments()
-                } else {
-                    commentTracker.isLoading = false
-                }
-            }
-            .onAppear {
-                commentSortingType = defaultCommentSorting
-            }
-    }
-
-    /**
      Displays a "no comments" message
      */
-    private var noCommentsView: some View {
-        VStack(spacing: 2) {
-            VStack(spacing: 5) {
-                Image(systemName: "binoculars")
-                Text("No comments to be found")
+    @ViewBuilder
+    private func noCommentsView() -> some View {
+        if isLoading {
+            LoadingView(whatIsLoading: .comments)
+        } else {
+            VStack(spacing: 2) {
+                VStack(spacing: 5) {
+                    Image(systemName: "binoculars")
+                    Text("No comments to be found")
+                }
+                Text("Why not post the first one?")
+                    .font(.caption)
             }
-            Text("Why not post the first one?")
-                .font(.caption)
+            .foregroundColor(.secondary)
+            .padding()
         }
-        .foregroundColor(.secondary)
-        .padding()
     }
 
     /**
@@ -165,16 +132,30 @@ struct ExpandedPost: View {
      */
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
-            ForEach(commentTracker.commentsView) { comment in
+            ForEach(commentTracker.commentsView, id: \.commentView.comment.hashValue) { comment in
                 CommentItem(
                     hierarchicalComment: comment,
                     postContext: post,
                     showPostContext: false,
-                    showCommentCreator: true,
-                    replyToComment: replyToComment
+                    showCommentCreator: true
                 )
             }
         }
-        .environmentObject(commentTracker)
+    }
+    
+    private var toolbarMenu: some View {
+        Menu {
+            ForEach(CommentSortType.allCases, id: \.self) { type in
+                Button {
+                    commentSortingType = type
+                } label: {
+                    Label(type.description, systemImage: type.imageName)
+                }
+                .disabled(type == commentSortingType)
+            }
+
+        } label: {
+            Label(commentSortingType.description, systemImage: commentSortingType.imageName)
+        }
     }
 }
