@@ -278,7 +278,7 @@ extension FeedView {
     }
     
     private func filter(postView: APIPostView) -> Bool {
-        return !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
+        !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
         (showReadPosts || !postView.read)
     }
     
