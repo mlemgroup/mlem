@@ -16,7 +16,7 @@ class HierarchicalComment: ObservableObject {
     /// Values range from `0...Int.max`, where 0 indicates the parent comment.
     let depth: Int
     
-    /// - Note: Parent is the top-level (i.e. depth=0) comment, and not necessarily the current comment's immediate ancestor comment.
+    /// The *closest* parent's collapsed state.
     @Published var isParentCollapsed: Bool = false
     /// Indicates whether the *current* comment is collapsed.
     @Published var isCollapsed: Bool = false
@@ -104,6 +104,28 @@ internal extension HierarchicalComment {
     /// For example: Pass this function into `flatMap()` on array of parent `HierarchicalComment`s in order to construct an array of parent/child `[HierarchicalComment]` in a single array.
     static func recursiveFlatMap(_ comment: HierarchicalComment) -> [HierarchicalComment] {
         [comment] + comment.children.flatMap(recursiveFlatMap)
+    }
+}
+
+// MARK: - Expanded/Collapsed State
+internal extension HierarchicalComment {
+    
+    /// Sets this comment's collapsed state, while updating children with closest (and applicable) parent's collapsed state.
+    func setCollapsed(_ isCollapsed: Bool) {
+        self.isCollapsed = isCollapsed
+        self.children.forEach { child in
+            self.setParentCollapsed(isCollapsed)
+        }
+    }
+    
+    /// Recursively sets comment's `isParentCollapsed` state using the closest (and applicable) parent's value.
+    private func setParentCollapsed(_ isParentCollapsed: Bool) {
+        self.isParentCollapsed = isParentCollapsed
+        self.children.forEach { child in
+            /// If self is collapsed, all children's isParentCollapsed must also be true, since it's the closest parent that matters.
+            let closestParentCollapsed = self.isCollapsed ? true : isParentCollapsed
+            child.setParentCollapsed(closestParentCollapsed)
+        }
     }
 }
 
