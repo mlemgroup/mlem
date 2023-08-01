@@ -54,7 +54,30 @@ extension CommentTracker {
     
     /// Mark `comment` as collapsed or not, triggering view updates, if necessary.
     func setCollapsed(_ isCollapsed: Bool, comment: HierarchicalComment) {
-        _setCollapsed(isCollapsed, comment: comment, flatView: commentsView)
+//        _setCollapsed(isCollapsed, comment: comment, flatView: commentsView)
+        _setCollapsed_recursive(isCollapsed, comment: comment)
+    }
+    
+    /// Recursively set collapsed state on children if self is not collapsed.
+    /// If self is collapsed, children's isParentCollapsed should be true, which would have already been set.
+    private func setCollapsed_recurseIfSelfNotCollapsed(isParentCollapsed: Bool, _ comment: HierarchicalComment) {
+        comment.isParentCollapsed = isParentCollapsed
+        comment.children.forEach { child in
+            let overrideParentCollapsed = comment.isCollapsed ? true : isParentCollapsed
+            self.setCollapsed_recurseIfSelfNotCollapsed(
+                isParentCollapsed: overrideParentCollapsed,
+                child)
+        }
+    }
+    
+    private func _setCollapsed_recursive(_ isCollapsed: Bool, comment: HierarchicalComment) {
+        comment.isCollapsed = isCollapsed
+        comment.children.forEach { child in
+            self.setCollapsed_recurseIfSelfNotCollapsed(
+                isParentCollapsed: isCollapsed,
+                child)
+        }
+        debugPrintComments(comment: comment)
     }
     
     /// - Parameter flatView: A 1D array of `HierarchicalComment` of parent/child comments, where elements are ordered as they would appear on screen.
@@ -94,5 +117,20 @@ extension CommentTracker {
                 $0.isParentCollapsed = collapseChildren
             }
         }
+        debugPrintComments(comment: comment)
     }
+    
+    // swiftlint:disable line_length
+    private func debugPrintComments(comment: HierarchicalComment) {
+#if DEBUG
+        //        flatView.forEach { print("\($0.commentView.comment.path) - \($0.isParentCollapsed), \($0.isCollapsed)") }
+        func printComment(_ comment: HierarchicalComment) {
+            print("\(comment.commentView.comment.path) \(comment.commentView.comment.content.prefix(30)) - parent: \(comment.isParentCollapsed), self: \(comment.isCollapsed)")
+            comment.children.forEach(printComment)
+        }
+        print("* * *")
+        printComment(comment)
+#endif
+    }
+    // swiftlint:enable line_length
 }
