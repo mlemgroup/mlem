@@ -114,7 +114,7 @@ internal extension HierarchicalComment {
     func setCollapsed(_ isCollapsed: Bool) {
         self.isCollapsed = isCollapsed
         self.children.forEach { child in
-            self.setParentCollapsed(isCollapsed)
+            child.setParentCollapsed(isCollapsed)
         }
     }
     
