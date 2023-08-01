@@ -132,7 +132,9 @@ struct FeedPost: View {
 
                     // posting user
                     if showPostCreator {
-                        UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom)
+                        UserProfileLink(user: postView.creator,
+                                        serverInstanceLocation: .bottom,
+                                        postContext: postView.post)
                     }
                 }
                 .padding(.top, AppConstants.postAndCommentSpacing)

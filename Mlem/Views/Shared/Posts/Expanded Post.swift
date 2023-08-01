@@ -91,7 +91,9 @@ struct ExpandedPost: View {
                     isExpanded: true
                 )
                 
-                UserProfileLink(user: post.creator, serverInstanceLocation: .bottom)
+                UserProfileLink(user: post.creator,
+                                serverInstanceLocation: .bottom,
+                                postContext: post.post)
             }
             .padding(.top, AppConstants.postAndCommentSpacing)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)

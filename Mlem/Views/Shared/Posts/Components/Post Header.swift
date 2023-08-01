@@ -50,7 +50,8 @@ struct PostHeader: View {
                 }
                 Text("by")
                 UserProfileLink(user: postView.creator,
-                                serverInstanceLocation: shouldShowUserServerInPost ? .bottom : .disabled)
+                                serverInstanceLocation: shouldShowUserServerInPost ? .bottom : .disabled,
+                                postContext: postView.post)
             }
 
             Spacer()
