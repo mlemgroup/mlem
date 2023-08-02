@@ -13,6 +13,7 @@ struct FeedRoot: View {
     @Environment(\.scenePhase) var phase
 
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
+    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @State var navigationPath = NavigationPath()
 
@@ -31,6 +32,7 @@ struct FeedRoot: View {
                     FeedView(
                         community: rootDetails.community,
                         feedType: rootDetails.feedType,
+                        sortType: defaultPostSorting,
                         showLoading: showLoading
                     )
                     .environmentObject(appState)

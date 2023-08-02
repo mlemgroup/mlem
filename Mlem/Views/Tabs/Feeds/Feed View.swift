@@ -17,7 +17,6 @@ struct FeedView: View {
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
@@ -33,13 +32,14 @@ struct FeedView: View {
     let showLoading: Bool
     @State var feedType: FeedType
     
-    init(community: APICommunity?, feedType: FeedType, showLoading: Bool = false) {
+    init(community: APICommunity?, feedType: FeedType, sortType: PostSortType, showLoading: Bool = false) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         
         self.community = community
         self.showLoading = showLoading
         
         self._feedType = State(initialValue: feedType)
+        self._postSortType = .init(initialValue: sortType)
         self._postTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
     }
     
@@ -48,7 +48,7 @@ struct FeedView: View {
     @StateObject var postTracker: PostTracker
     
     @State var communityDetails: GetCommunityResponse?
-    @State var postSortType: PostSortType = .hot
+    @State var postSortType: PostSortType
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
