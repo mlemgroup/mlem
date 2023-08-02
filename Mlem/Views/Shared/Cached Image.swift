@@ -41,7 +41,7 @@ struct CachedImage: View {
             self._size = State(initialValue: fixedSize)
             self._shouldRecomputeSize = State(initialValue: false)
         } else if let url, let cachedSize = AppConstants.imageSizeCache.object(forKey: NSString(string: url.description)) {
-            // found a size in the size, just use that--don't care if we have the image or not
+            // found a size in the cache, just use that--don't care if we have the image or not
             self._size = State(initialValue: cachedSize.size)
             self._shouldRecomputeSize = State(initialValue: false)
         } else if let url, let testImage = ImagePipeline.shared.cache[url] {
