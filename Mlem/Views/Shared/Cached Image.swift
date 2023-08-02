@@ -13,33 +13,44 @@ import NukeUI
 import Nuke
 
 struct CachedImage: View {
-
+    
     let url: URL?
     let shouldExpand: Bool
     @State var bigPicMode: URL?
-    let maxHeight: CGFloat
-
+    let size: CGSize
+    
+    // TODO: Right now images that don't load in time get shoved into a square, which is good enough for now, but in the futured the image should be able to resize itself once the image loads and save that size for the future--perhaps look into a size cache that doesn't get as aggressively evicted
+    
     init(url: URL?,
          shouldExpand: Bool = true,
          maxHeight: CGFloat = .infinity) {
         self.url = url
         self.shouldExpand = shouldExpand
-        self.maxHeight = maxHeight
+        
+        let screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+        
+        if let url, let testImage = ImagePipeline.shared.cache[url] {
+            let ratio = screenWidth / testImage.image.size.width
+            size = CGSize(width: screenWidth,
+                          height: min(maxHeight, testImage.image.size.height * ratio))
+        } else {
+            size = CGSize(width: screenWidth, height: screenWidth)
+        }
     }
     
     var body: some View {
         LazyImage(url: url) { state in
-            if let image = state.image {
-                let imageView = image
+            if let image = state.imageContainer {
+                let imageView = Image(uiImage: image.image)
                     .resizable()
                     .scaledToFill()
-                    .frame(maxHeight: maxHeight)
+                    .frame(width: size.width, height: size.height)
                     .clipped()
                     .allowsHitTesting(false)
                     .overlay(alignment: .top) {
                         // weeps in janky hack but this lets us tap the image only in the area we want
                         Rectangle()
-                            .frame(maxHeight: maxHeight)
+                            .frame(maxHeight: size.height)
                             .opacity(0.00000000001)
                     }
                 if shouldExpand {
@@ -70,15 +81,17 @@ struct CachedImage: View {
             } else if state.error != nil {
                 // Indicates an error
                 imageNotFound()
-                    .frame(maxWidth: .infinity, maxHeight: min(300, maxHeight))
+                    .frame(width: size.width, height: size.height)
                     .background(Color(uiColor: .systemGray4))
                     .foregroundColor(.secondary)
                     .cornerRadius(AppConstants.smallItemCornerRadius)
             } else {
                 ProgressView() // Acts as a placeholder
-                    .frame(maxWidth: .infinity, maxHeight: maxHeight)
+                    .frame(width: size.width, height: size.height)
             }
         }
+        .processors([.resize(size: size)])
+        .frame(width: size.width, height: size.height)
     }
     
     func imageNotFound() -> some View {

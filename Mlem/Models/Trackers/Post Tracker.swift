@@ -13,7 +13,7 @@ class PostTracker: FeedTracker<APIPostView> {
     private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
                                              destination: .memoryCache,
                                              maxConcurrentRequestCount: 40)
-
+    
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
     ///   - account: The `SavedAccount` for the logged in user
