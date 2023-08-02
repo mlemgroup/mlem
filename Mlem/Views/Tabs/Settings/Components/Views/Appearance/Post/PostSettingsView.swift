@@ -136,8 +136,7 @@ struct PostSettingsView: View {
                     removed: false,
                     thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
                     updated: nil
-                )
-                )
+                ))
                 .padding(.horizontal)
                 
                 SwitchableSettingsItem(
