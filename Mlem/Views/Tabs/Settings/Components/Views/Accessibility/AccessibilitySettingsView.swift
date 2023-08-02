@@ -61,5 +61,7 @@ struct AccessibilitySettingsView: View {
                 Text("Configure how this app behaves when the system \"differentiate without color\" option is on")
             }
         }
+        .fancyTabScrollCompatible()
+        .navigationTitle("Accessibility")
     }
 }
