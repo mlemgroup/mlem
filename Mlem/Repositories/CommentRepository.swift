@@ -17,7 +17,7 @@ class CommentRepository {
     func comment(with id: Int) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.loadComment(id: id)
-            return .init(comment: response.commentView, children: [])
+            return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             throw error
         }
@@ -107,7 +107,7 @@ class CommentRepository {
                 )
 
             hapticManager.success()
-            return .init(comment: response.commentView, children: [])
+            return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             hapticManager.error()
             throw error
@@ -142,7 +142,7 @@ class CommentRepository {
         do {
             let response = try await apiClient.deleteComment(id: id, deleted: shouldDelete)
             hapticManager.destructiveSuccess()
-            return .init(comment: response.commentView, children: [])
+            return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             hapticManager.error()
             throw error
@@ -153,7 +153,7 @@ class CommentRepository {
         do {
             let response = try await apiClient.saveComment(id: id, shouldSave: shouldSave)
             hapticManager.gentleSuccess()
-            return .init(comment: response.commentView, children: [])
+            return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             hapticManager.error()
             throw error

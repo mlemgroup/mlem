@@ -73,6 +73,7 @@ struct SwipeyView: ViewModifier {
                         .border(width: 10, edges: [.leading, .trailing], color: .black)
                         .shadow(radius: 5)
                         .mask(Rectangle().frame(width: proxy.size.width + 20)) // clip top/bottom
+                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
                 }
             }
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it

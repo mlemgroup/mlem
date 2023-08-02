@@ -22,7 +22,8 @@ struct ReportComment: ResponseEditorModel {
     
     func embeddedView() -> AnyView {
         return AnyView(CommentBodyView(commentView: comment,
-                                       isCollapsed: false,
+                                       isParentCollapsed: .constant(false),
+                                       isCollapsed: .constant(false),
                                        showPostContext: true,
                                        menuFunctions: [])
             .padding(.horizontal, AppConstants.postAndCommentSpacing))

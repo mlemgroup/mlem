@@ -13,8 +13,10 @@ struct CommentBodyView: View {
     @AppStorage("compactComments") var compactComments: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     
+    @Binding var isParentCollapsed: Bool
+    @Binding var isCollapsed: Bool
+    
     let commentView: APICommentView
-    let isCollapsed: Bool
     let showPostContext: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
@@ -34,11 +36,14 @@ struct CommentBodyView: View {
     var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
     
     init(commentView: APICommentView,
-         isCollapsed: Bool,
+         isParentCollapsed: Binding<Bool>,
+         isCollapsed: Binding<Bool>,
          showPostContext: Bool,
          menuFunctions: [MenuFunction]) {
+        self._isParentCollapsed = isParentCollapsed
+        self._isCollapsed = isCollapsed
+        
         self.commentView = commentView
-        self.isCollapsed = isCollapsed
         self.showPostContext = showPostContext
         self.menuFunctions = menuFunctions
         

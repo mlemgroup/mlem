@@ -329,14 +329,14 @@ struct UserView: View {
             
             privateCommentTracker.add(authoredContent.comments
                 .sorted(by: { $0.comment.published > $1.comment.published})
-                .map({HierarchicalComment(comment: $0, children: [])}))
+                .map({HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false)}))
             
             privatePostTracker.add(authoredContent.posts)
             
             if let savedContent = savedContentData {
                 privateCommentTracker.add(savedContent.comments
                     .sorted(by: { $0.comment.published > $1.comment.published})
-                    .map({HierarchicalComment(comment: $0, children: [])}))
+                    .map({HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false)}))
                 
                 privatePostTracker.add(savedContent.posts)
             }
@@ -394,7 +394,7 @@ struct UserView: View {
             CommentItem(
                 hierarchicalComment: comment,
                 postContext: nil,
-                depth: 0,
+                indentBehaviour: .never,
                 showPostContext: true,
                 showCommentCreator: false
             )
