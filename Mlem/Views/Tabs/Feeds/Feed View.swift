@@ -14,6 +14,7 @@ struct FeedView: View {
     // MARK: Environment and settings
     
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.notifier) var notifier
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true

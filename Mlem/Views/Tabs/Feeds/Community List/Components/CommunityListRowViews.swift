@@ -5,6 +5,7 @@
 //  Created by Jake Shirley on 6/19/23.
 //
 
+import Dependencies
 import SwiftUI
 
 struct HeaderView: View {
@@ -36,6 +37,8 @@ struct CommuntiyFeedRowView: View {
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
+    
+    @Dependency(\.notifier) var notifier
 
     var body: some View {
         NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {
@@ -108,9 +111,15 @@ struct CommuntiyFeedRowView: View {
         if isFavorited() {
             unfavoriteCommunity(community: community, favoritedCommunitiesTracker: favoritesTracker)
             UIAccessibility.post(notification: .announcement, argument: "Un-favorited \(community.name)")
+            Task {
+                await notifier.add(.success("Un-favorited \(community.name)"))
+            }
         } else {
             favoriteCommunity(account: appState.currentActiveAccount, community: community, favoritedCommunitiesTracker: favoritesTracker)
             UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
+            Task {
+                await notifier.add(.success("Favorited \(community.name)"))
+            }
         }
     }
 
@@ -133,6 +142,15 @@ struct CommuntiyFeedRowView: View {
             )
 
             _ = try await APIClient().perform(request: request)
+            
+            Task {
+                if shouldSubscribe {
+                    await notifier.add(.success("Subscibed to \(community.name)"))
+                } else {
+                    await notifier.add(.success("Unsubscribed from \(community.name)"))
+                }
+            }
+
         } catch {
             // TODO: If we fail here and want to notify the user we should pass a message
             // into the contextual error below

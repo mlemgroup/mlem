@@ -180,6 +180,9 @@ extension FeedView {
                                     enabled: true) {
                 unfavoriteCommunity(community: community,
                                     favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                Task {
+                    await notifier.add(.success("Un-favorited \(community.name)"))
+                }
             })
         } else {
             ret.append(MenuFunction(text: "Favorite",
@@ -189,6 +192,9 @@ extension FeedView {
                 favoriteCommunity(account: appState.currentActiveAccount,
                                   community: community,
                                   favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                Task {
+                    await notifier.add(.success("Favorited \(community.name)"))
+                }
             })
         }
         
@@ -289,6 +295,14 @@ extension FeedView {
             )
             
             _ = try await APIClient().perform(request: request)
+            
+            Task {
+                if shouldSubscribe {
+                    await notifier.add(.success("Subscibed to \(community!.name)"))
+                } else {
+                    await notifier.add(.success("Unsubscribed from \(community!.name)"))
+                }
+            }
             
             // re-fetch to get new subscribed status
             // TODO: do this in middleware model with a state faker to avoid a second API call

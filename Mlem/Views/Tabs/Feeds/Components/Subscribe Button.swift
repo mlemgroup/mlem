@@ -5,12 +5,15 @@
 //  Created by David Bureš on 03.06.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct SubscribeButton: View {
     @EnvironmentObject var appState: AppState
 
     @Binding var communityDetails: APICommunityView?
+    
+    @Dependency(\.notifier) var notifier
     
     var body: some View {
         if let communityDetails {
@@ -51,6 +54,16 @@ struct SubscribeButton: View {
             )
 
             let response = try await APIClient().perform(request: request)
+            
+            let community = response.communityView.community
+            Task {
+                if shouldSubscribe {
+                    await notifier.add(.success("Subscibed to \(community.name)"))
+                } else {
+                    await notifier.add(.success("Unsubscribed from \(community.name)"))
+                }
+            }
+            
             self.communityDetails = response.communityView
         } catch {
             // TODO: If we fail here and want to notify the user we'd ideally
