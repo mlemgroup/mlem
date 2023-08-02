@@ -19,26 +19,29 @@ struct CachedImage: View {
     @State var bigPicMode: URL?
     let size: CGSize
     
+    // TODO: Right now images that don't load in time get shoved into a square, which is good enough for now, but in the futured the image should be able to resize itself once the image loads and save that size for the future--perhaps look into a size cache that doesn't get as aggressively evicted
+    
     init(url: URL?,
          shouldExpand: Bool = true,
          maxHeight: CGFloat = .infinity) {
         self.url = url
         self.shouldExpand = shouldExpand
         
+        let screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+        
         if let url, let testImage = ImagePipeline.shared.cache[url] {
-            let screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
             let ratio = screenWidth / testImage.image.size.width
             size = CGSize(width: screenWidth,
                           height: min(maxHeight, testImage.image.size.height * ratio))
         } else {
-            size = CGSize(width: UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2), height: 200)
+            size = CGSize(width: screenWidth, height: screenWidth)
         }
     }
     
     var body: some View {
         LazyImage(url: url) { state in
-            if let image = state.image {
-                let imageView = image
+            if let image = state.imageContainer {
+                let imageView = Image(uiImage: image.image)
                     .resizable()
                     .scaledToFill()
                     .frame(width: size.width, height: size.height)
