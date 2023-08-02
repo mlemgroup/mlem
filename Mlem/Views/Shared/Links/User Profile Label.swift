@@ -79,16 +79,17 @@ struct UserProfileLabel: View {
     private var userAvatar: some View {
         Group {
             if let userAvatarLink = user.avatar {
-                CachedAsyncImage(url: avatarUrl(from: userAvatarLink), urlCache: AppConstants.urlCache) { image in
-                    if let avatar = image.image {
-                        avatar
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: avatarSize(), height: avatarSize())
-                    } else {
-                        defaultUserAvatar()
-                    }
-                }
+                defaultUserAvatar()
+//                CachedAsyncImage(url: avatarUrl(from: userAvatarLink), urlCache: AppConstants.urlCache) { image in
+//                    if let avatar = image.image {
+//                        avatar
+//                            .resizable()
+//                            .scaledToFill()
+//                            .frame(width: avatarSize(), height: avatarSize())
+//                    } else {
+//                        defaultUserAvatar()
+//                    }
+//                }
             } else {
                 defaultUserAvatar()
             }

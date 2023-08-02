@@ -61,14 +61,16 @@ struct WebsiteIconComplex: View {
                 if shouldShowWebsiteHost {
                     HStack {
                         if shouldShowWebsiteIcon {
-                            CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                Image(systemName: "globe")
-                            }
-                            .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
+                            CachedImage(url: faviconURL,
+                                        fixedSize: CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize))
+//                            CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache) { image in
+//                                image
+//                                    .resizable()
+//                                    .scaledToFit()
+//                            } placeholder: {
+//                                Image(systemName: "globe")
+//                            }
+//                            .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
                         }
                         
                         Text(linkHost)

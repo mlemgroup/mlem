@@ -157,16 +157,17 @@ struct CommunityLabel: View {
     private var communityAvatar: some View {
         Group {
             if let communityAvatarLink = community.icon {
-                CachedAsyncImage(url: avatarUrl(from: communityAvatarLink), urlCache: AppConstants.urlCache) { image in
-                    if let avatar = image.image {
-                        avatar
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: avatarSize(), height: avatarSize())
-                    } else {
-                        defaultCommunityAvatar()
-                    }
-                }
+                defaultCommunityAvatar()
+//                CachedAsyncImage(url: avatarUrl(from: communityAvatarLink), urlCache: AppConstants.urlCache) { image in
+//                    if let avatar = image.image {
+//                        avatar
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: avatarSize(), height: avatarSize())
+//                    } else {
+//                        defaultCommunityAvatar()
+//                    }
+//                }
             } else {
                 defaultCommunityAvatar()
             }

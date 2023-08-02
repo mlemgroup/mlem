@@ -77,19 +77,23 @@ struct PostHeader: View {
     private var communityAvatar: some View {
         Group {
             if let communityAvatarLink = postView.community.icon {
-                CachedAsyncImage(url: communityAvatarLink, urlCache: AppConstants.urlCache) { image in
-                    if let avatar = image.image {
-                        avatar
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: communityIconSize, height: communityIconSize)
-                    } else {
-                        Image("Default Community")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
-                    }
-                }
+                Image("Default Community")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
+//                CachedAsyncImage(url: communityAvatarLink, urlCache: AppConstants.urlCache) { image in
+//                    if let avatar = image.image {
+//                        avatar
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: communityIconSize, height: communityIconSize)
+//                    } else {
+//                        Image("Default Community")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
+//                    }
+//                }
             } else {
                 Image("Default Community")
                     .resizable()
