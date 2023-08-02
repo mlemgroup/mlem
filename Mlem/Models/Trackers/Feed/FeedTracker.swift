@@ -18,9 +18,13 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     private var ids: Set<Item.UniqueIdentifier> = .init(minimumCapacity: 1_000)
     private let shouldPerformMergeSorting: Bool
+    let internetSpeed: InternetSpeed
 
-    init(shouldPerformMergeSorting: Bool = true, initialItems: [Item] = .init()) {
+    init(shouldPerformMergeSorting: Bool = true,
+         internetSpeed: InternetSpeed,
+         initialItems: [Item] = .init()) {
         self.shouldPerformMergeSorting = shouldPerformMergeSorting
+        self.internetSpeed = internetSpeed
         items = initialItems
     }
 

@@ -15,6 +15,8 @@ struct GeneralSettingsView: View {
     
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
@@ -80,6 +82,17 @@ struct GeneralSettingsView: View {
                 Text("Default Sorting")
             } footer: {
                 Text("The sort mode that is selected by default when you open the app.")
+            }
+            
+            Section {
+                SelectableSettingsItem(settingIconSystemName: AppConstants.connectionSymbolName,
+                                       settingName: "Internet Speed",
+                                       currentValue: $internetSpeed,
+                                       options: InternetSpeed.allCases)
+            } header: {
+                Text("Connection Type")
+            } footer: {
+                Text("Optimizes performance for your internet speed. You may need to restart the app for all optimizations to take effect.")
             }
 
             Section {

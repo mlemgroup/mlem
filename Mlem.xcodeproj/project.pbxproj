@@ -329,6 +329,10 @@
 		CDA2C5262A705D6000649D5A /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA2C5252A705D6000649D5A /* PostEditor.swift */; };
 		CDB0117D2A6F703800D043EB /* CommentEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0117C2A6F703800D043EB /* CommentEditor.swift */; };
 		CDB0117F2A6F70A000D043EB /* Editor Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */; };
+		CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */; };
+		CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */; };
+		CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */; };
+		CDC1C9432A7AC24600072E3D /* ReadCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C9422A7AC24600072E3D /* ReadCheck.swift */; };
 		CDC6A8CA2A6F1C8D00CC11AC /* AssociatedIconProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6A8C92A6F1C8D00CC11AC /* AssociatedIconProtocol.swift */; };
 		CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */; };
 		CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */; };
@@ -692,6 +696,10 @@
 		CDA2C5252A705D6000649D5A /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
 		CDB0117C2A6F703800D043EB /* CommentEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditor.swift; sourceTree = "<group>"; };
 		CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editor Tracker.swift"; sourceTree = "<group>"; };
+		CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
+		CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
+		CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadMarkStyle.swift; sourceTree = "<group>"; };
+		CDC1C9422A7AC24600072E3D /* ReadCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCheck.swift; sourceTree = "<group>"; };
 		CDC6A8C92A6F1C8D00CC11AC /* AssociatedIconProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedIconProtocol.swift; sourceTree = "<group>"; };
 		CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSettingsView.swift; sourceTree = "<group>"; };
 		CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBar.swift; sourceTree = "<group>"; };
@@ -1095,6 +1103,7 @@
 			isa = PBXGroup;
 			children = (
 				030AC0432A62F82B00037155 /* General */,
+				CDC1C93D2A7AB8B400072E3D /* Accessibility */,
 				030AC0402A62F7E700037155 /* Appearance */,
 				030AC0442A62F83100037155 /* Filters */,
 				030AC0412A62F80600037155 /* About */,
@@ -1649,6 +1658,7 @@
 				CD1446162A58FC2F00610EF1 /* Interaction Bars */,
 				CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */,
 				CD45BCED2A75CA7200A2899C /* Thumbnail Image View.swift */,
+				CDC1C9422A7AC24600072E3D /* ReadCheck.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1702,6 +1712,8 @@
 				CDE6A80A2A43E9F00062D161 /* CommentSortType.swift */,
 				63F0C7A12A0519BA00A18C5D /* PostSortType.swift */,
 				CD05E7782A4E381A0081D102 /* PostSize.swift */,
+				CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */,
+				CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1766,6 +1778,14 @@
 				CDB0117C2A6F703800D043EB /* CommentEditor.swift */,
 			);
 			path = Editors;
+			sourceTree = "<group>";
+		};
+		CDC1C93D2A7AB8B400072E3D /* Accessibility */ = {
+			isa = PBXGroup;
+			children = (
+				CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */,
+			);
+			path = Accessibility;
 			sourceTree = "<group>";
 		};
 		CDC6A8C82A6F1C8000CC11AC /* Protocols */ = {
@@ -2041,6 +2061,7 @@
 				CDDCF6472A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
 				B104A6E02A59C19400B3E725 /* OperationQueue - Easy init.swift in Sources */,
+				CDC1C9432A7AC24600072E3D /* ReadCheck.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */,
 				CD69F5612A40B6270028D4F7 /* Save Post.swift in Sources */,
 				637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */,
@@ -2235,11 +2256,14 @@
 				CD69F5752A42479A0028D4F7 /* Comment Item Logic.swift in Sources */,
 				6D7782342A48EE8C008AC1BF /* APIPrivateMessageView.swift in Sources */,
 				B11A1A782A4EFF2B00520DB4 /* Feed Root.swift in Sources */,
+				CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */,
 				50C99B622A629C06005D57DD /* ErrorHandler+Dependency.swift in Sources */,
+				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* Downvote.swift in Sources */,
+				CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */,
 				6372186D2A3A2AAD008C4816 /* EditComment.swift in Sources */,
 				6D693A4A2A51B98F009E2D76 /* APICommentReportView.swift in Sources */,
 				637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */,

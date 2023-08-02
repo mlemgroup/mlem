@@ -40,6 +40,8 @@ struct InboxView: View {
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
     
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    
     // MARK: Internal
     // id of the last account loaded with
     @State var lastKnownAccountId: Int = 0
@@ -54,10 +56,19 @@ struct InboxView: View {
     
     // item feeds
     @State var allItems: [InboxItem] = .init()
-    @StateObject var mentionsTracker: MentionsTracker = .init()
-    @StateObject var messagesTracker: MessagesTracker = .init()
-    @StateObject var repliesTracker: RepliesTracker = .init()
-    @StateObject var dummyPostTracker: PostTracker = .init() // used for nav
+    @StateObject var mentionsTracker: MentionsTracker // = .init(internetSpeed: internetSpeed)
+    @StateObject var messagesTracker: MessagesTracker // = .init(internetSpeed: internetSpeed)
+    @StateObject var repliesTracker: RepliesTracker // = .init(internetSpeed: internetSpeed)
+    @StateObject var dummyPostTracker: PostTracker // = .init(internetSpeed: internetSpeed) // used for nav
+    
+    init() {
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        
+        self._mentionsTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
+        self._messagesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
+        self._repliesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
+        self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
+    }
     
     // input state handling
     // - current view

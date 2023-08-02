@@ -25,13 +25,22 @@ struct UserView: View {
     @State var userID: Int
     @State var userDetails: APIPersonView?
 
-    @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
+    @StateObject private var privatePostTracker: PostTracker
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
     @State private var showingCakeDay = false
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
+    
+    init(userID: Int, userDetails: APIPersonView? = nil) {
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        
+        self._userID = State(initialValue: userID)
+        self._userDetails = State(initialValue: userDetails)
+        
+        self._privatePostTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
+    }
     
     // account switching
     var isSelf: Bool { userID == appState.currentActiveAccount.id }

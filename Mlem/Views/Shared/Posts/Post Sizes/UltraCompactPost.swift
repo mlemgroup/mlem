@@ -17,9 +17,13 @@ struct UltraCompactPost: View {
     @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
     @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
     
+    @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
+    
     // environment and dependencies
     @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
+    
+    @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
     
     @EnvironmentObject var postTracker: PostTracker
 
@@ -35,6 +39,7 @@ struct UltraCompactPost: View {
     // computed
     let voteColor: Color
     let voteIconName: String
+    var showReadCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
@@ -73,6 +78,8 @@ struct UltraCompactPost: View {
                     }
                     
                     Spacer()
+                    
+                    if showReadCheck { ReadCheck() }
                     
                     EllipsisMenu(size: 12, menuFunctions: menuFunctions)
                         .padding(.trailing, 6)

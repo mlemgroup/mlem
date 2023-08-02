@@ -25,6 +25,7 @@ extension FeedView {
     func loadFeed() async {
         defer { isLoading = false }
         isLoading = true
+        print("called loadFeed")
         do {
             try await postTracker.loadNextPage(
                 account: appState.currentActiveAccount,

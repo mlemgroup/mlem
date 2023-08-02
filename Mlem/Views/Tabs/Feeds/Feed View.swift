@@ -34,14 +34,18 @@ struct FeedView: View {
     @State var feedType: FeedType
     
     init(community: APICommunity?, feedType: FeedType, showLoading: Bool = false) {
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        
         self.community = community
         self.showLoading = showLoading
+        
         self._feedType = State(initialValue: feedType)
+        self._postTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
     }
     
     // MARK: State
     
-    @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
+    @StateObject var postTracker: PostTracker
     
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType = .hot
@@ -86,6 +90,7 @@ struct FeedView: View {
             }
             .onChange(of: shouldLoad) { value in
                 if value {
+                    print("should load more posts...")
                     Task(priority: .medium) { await loadFeed() }
                     shouldLoad = false
                 }

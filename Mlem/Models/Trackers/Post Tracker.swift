@@ -7,6 +7,7 @@
 
 import Foundation
 import Nuke
+import SwiftUI
 
 class PostTracker: FeedTracker<APIPostView> {
 
@@ -29,6 +30,8 @@ class PostTracker: FeedTracker<APIPostView> {
     ) async throws {
         let currentPage = page
         
+        print("internet speed: \(internetSpeed.label)")
+        
         // retry this until we get some items that pass the filter
         var responsePosts: [APIPostView] = .init()
         let numItems = items.count
@@ -40,12 +43,13 @@ class PostTracker: FeedTracker<APIPostView> {
                     page: page,
                     sort: sort,
                     type: type,
-                    limit: page == 1 ? 25 : 50
+                    limit: internetSpeed.pageSize
                 ),
                 filtering: filtering
             )
             
             responsePosts = response.posts
+            print("got \(responsePosts.count) posts, there are \(items.count) total posts")
         } while !responsePosts.isEmpty && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
 
         // so although the API kindly returns `400`/"not_logged_in" for expired
@@ -80,7 +84,7 @@ class PostTracker: FeedTracker<APIPostView> {
                 page: 1,
                 sort: sort,
                 type: type,
-                limit: 25
+                limit: internetSpeed.pageSize
             ),
             clearBeforeFetch: clearBeforeFetch,
             filtering: filtering

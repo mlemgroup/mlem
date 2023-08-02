@@ -32,6 +32,9 @@ struct FeedPost: View {
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
+    
+    @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
+    @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var editorTracker: EditorTracker
@@ -61,10 +64,16 @@ struct FeedPost: View {
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
+    
+    // MARK: Computed
+    
+    var barThickness: CGFloat { !postView.read && diffWithoutColor && readMarkStyle == .bar  ? CGFloat(readBarThickness) : .zero }
+    var showCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
         VStack(spacing: 0) {
             postItem
+                .border(width: barThickness, edges: [.leading], color: .secondary)
                 .background(Color.systemBackground)
 //                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
 //                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
@@ -119,15 +128,11 @@ struct FeedPost: View {
                         CommunityLinkView(community: postView.community)
 
                         Spacer()
-                        
-                        if diffWithoutColor && postView.read {
-                            Image(systemName: "checkmark")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 10, height: 10)
-                                .foregroundColor(.secondary)
-                        }
 
+                        if showCheck {
+                            ReadCheck()
+                        }
+                        
                         EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                     }
 
