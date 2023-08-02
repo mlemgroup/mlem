@@ -24,6 +24,7 @@ struct LargePost: View {
     
     // computed
     let maxHeight: CGFloat
+    let titleColor: Color
 
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
@@ -33,6 +34,7 @@ struct LargePost: View {
         self.postView = postView
         self.isExpanded = isExpanded
         self.maxHeight = isExpanded ? .infinity : AppConstants.maxFeedPostHeight
+        self.titleColor = !isExpanded && postView.read ? Color.secondary : Color.primary
     }
 
     var body: some View {
@@ -49,7 +51,7 @@ struct LargePost: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic(postView.post.deleted)
-                    .foregroundColor(postView.read ? .secondary : .primary)
+                    .foregroundColor(titleColor)
                 
                 Spacer()
                 if postView.post.nsfw {

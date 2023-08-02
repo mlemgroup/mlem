@@ -25,6 +25,8 @@ struct FeedPost: View {
     @Dependency(\.notifier) var notifier
     
     // MARK: Environment
+    @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
+    
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
@@ -117,6 +119,14 @@ struct FeedPost: View {
                         CommunityLinkView(community: postView.community)
 
                         Spacer()
+                        
+                        if diffWithoutColor && postView.read {
+                            Image(systemName: "checkmark")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 10, height: 10)
+                                .foregroundColor(.secondary)
+                        }
 
                         EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                     }
