@@ -16,7 +16,7 @@ struct WebsiteIconComplex: View {
 
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
-    let postView: APIPostView
+    let post: APIPost
 
     @State private var overridenWebsiteFaviconName: String = "globe"
 
@@ -24,7 +24,7 @@ struct WebsiteIconComplex: View {
 
     var faviconURL: URL? {
         guard
-            let baseURL = postView.post.url?.host,
+            let baseURL = post.url?.host,
             let imageURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")
         else {
             return nil
@@ -34,15 +34,15 @@ struct WebsiteIconComplex: View {
     }
     
     var linkLabel: String {
-        if let embedTitle = postView.post.embedTitle {
+        if let embedTitle = post.embedTitle {
             return embedTitle
         } else {
-            return postView.post.name
+            return post.name
         }
     }
     
     var linkHost: String {
-        if let url = postView.post.url {
+        if let url = post.url {
             return url.host ?? "some website"
         }
         return "some website"
@@ -50,10 +50,10 @@ struct WebsiteIconComplex: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if shouldShowWebsitePreviews, let thumbnailURL = postView.post.thumbnailUrl {
+            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
                 CachedImage(url: thumbnailURL, shouldExpand: false)
                     .frame(maxHeight: 400)
-                    .applyNsfwOverlay(postView.post.nsfw)
+                    .applyNsfwOverlay(post.nsfw)
                     .clipped()
             }
             
@@ -95,7 +95,7 @@ struct WebsiteIconComplex: View {
         )
         .contentShape(Rectangle())
         .onTapGesture {
-            if let url = postView.post.url {
+            if let url = post.url {
                 openURL(url)
             }
         }

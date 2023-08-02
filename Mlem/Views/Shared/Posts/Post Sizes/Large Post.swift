@@ -76,7 +76,7 @@ struct LargePost: View {
             }
         case .link:
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                WebsiteIconComplex(postView: postView)
+                WebsiteIconComplex(post: postView.post)
                 postBodyView
             }
         case .text(let postBody):

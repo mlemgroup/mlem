@@ -14,8 +14,6 @@ class PostTracker: FeedTracker<APIPostView> {
                                              destination: .memoryCache,
                                              maxConcurrentRequestCount: 40)
     
-    var imageSizes: [Int: CGSize] = .init()
-
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
     ///   - account: The `SavedAccount` for the logged in user
@@ -110,9 +108,7 @@ class PostTracker: FeedTracker<APIPostView> {
                     imageRequests.append(ImageRequest(url: favIconURL))
                 }
                 if let url = url {
-                    imageRequests.append(ImageRequest(url: url,
-                                                      // processors: [ComputeSizeProcessor(post: postView)],
-                                                      priority: .high))
+                    imageRequests.append(ImageRequest(url: url, priority: .high))
                 }
             default:
                 break
