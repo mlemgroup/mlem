@@ -37,8 +37,8 @@ struct CachedImage: View {
     
     var body: some View {
         LazyImage(url: url) { state in
-            if let image = state.imageContainer {
-                let imageView = Image(uiImage: image.image)
+            if let image = state.image {
+                let imageView = image
                     .resizable()
                     .scaledToFill()
                     .frame(width: size.width, height: size.height)
