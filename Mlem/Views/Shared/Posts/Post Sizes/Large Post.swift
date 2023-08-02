@@ -23,8 +23,8 @@ struct LargePost: View {
     let isExpanded: Bool
     
     // computed
-    let maxHeight: CGFloat
-    let titleColor: Color
+    var maxHeight: CGFloat { isExpanded ? .infinity : AppConstants.maxFeedPostHeight }
+    var titleColor: Color { !isExpanded && postView.read ? .secondary : .primary }
 
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
@@ -33,8 +33,6 @@ struct LargePost: View {
     ) {
         self.postView = postView
         self.isExpanded = isExpanded
-        self.maxHeight = isExpanded ? .infinity : AppConstants.maxFeedPostHeight
-        self.titleColor = !isExpanded && postView.read ? Color.secondary : Color.primary
     }
 
     var body: some View {
