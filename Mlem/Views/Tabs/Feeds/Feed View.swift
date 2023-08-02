@@ -48,7 +48,7 @@ struct FeedView: View {
     @StateObject var postTracker: PostTracker
     
     @State var communityDetails: GetCommunityResponse?
-    @State var postSortType: PostSortType = .hot
+    @State var postSortType: PostSortType?
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
@@ -207,8 +207,8 @@ struct FeedView: View {
                 Label("Top...", systemImage: AppConstants.topSymbolName)
             }
         } label: {
-            Label("Selected sorting by \(postSortType.description)",
-                  systemImage: postSortType.iconName)
+            Label("Selected sorting by \(postSortType?.description ?? defaultPostSorting.description)",
+                  systemImage: postSortType?.iconName ?? defaultPostSorting.iconName)
         }
     }
     

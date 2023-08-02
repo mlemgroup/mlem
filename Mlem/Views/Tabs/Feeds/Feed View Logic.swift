@@ -30,7 +30,7 @@ extension FeedView {
             try await postTracker.loadNextPage(
                 account: appState.currentActiveAccount,
                 communityId: community?.id,
-                sort: postSortType,
+                sort: postSortType ?? defaultPostSorting,
                 type: feedType,
                 filtering: filter
             )
@@ -45,7 +45,7 @@ extension FeedView {
             try await postTracker.refresh(
                 account: appState.currentActiveAccount,
                 communityId: community?.id,
-                sort: postSortType,
+                sort: postSortType ?? defaultPostSorting,
                 type: feedType,
                 filtering: filter
             )
@@ -64,7 +64,7 @@ extension FeedView {
                 try await postTracker.refresh(
                     account: appState.currentActiveAccount,
                     communityId: community?.id,
-                    sort: postSortType,
+                    sort: postSortType ?? defaultPostSorting,
                     type: feedType,
                     clearBeforeFetch: true,
                     filtering: filter)
@@ -98,7 +98,7 @@ extension FeedView {
     
     func genOuterSortMenuFunctions() -> [MenuFunction] {
         return PostSortType.outerTypes.map { type in
-            let isSelected = postSortType == type
+            let isSelected = postSortType ?? defaultPostSorting == type
             let imageName = isSelected ? type.iconNameFill : type.iconName
             return MenuFunction(text: type.description,
                                 imageName: imageName,
@@ -111,7 +111,7 @@ extension FeedView {
     
     func genTopSortMenuFunctions() -> [MenuFunction] {
         return PostSortType.topTypes.map { type in
-            let isSelected = postSortType == type
+            let isSelected = postSortType ?? defaultPostSorting == type
             return MenuFunction(text: type.description,
                                 imageName: isSelected ? AppConstants.timeSymbolNameFill : AppConstants.timeSymbolName,
                                 destructiveActionPrompt: nil,
