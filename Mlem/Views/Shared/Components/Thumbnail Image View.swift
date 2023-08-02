@@ -16,15 +16,17 @@ struct ThumbnailImageView: View {
     
     var showNsfwFilter: Bool { (postView.post.nsfw || postView.community.nsfw) && shouldBlurNsfw }
     
+    let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
+    
     var body: some View {
         Group {
             switch postView.postType {
             case .image(let url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
-                CachedImage(url: url, maxHeight: AppConstants.thumbnailSize)
+                CachedImage(url: url, fixedSize: size)
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .link(let url):
-                CachedImage(url: url, maxHeight: AppConstants.thumbnailSize)
+                CachedImage(url: url, fixedSize: size)
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .text:
                 Image(systemName: "text.book.closed")
