@@ -32,6 +32,13 @@ struct SettingsView: View {
                     }
                     
                     NavigationLink {
+                        AccessibilitySettingsView()
+                    } label: {
+                        // apparently the Apple a11y symbol isn't an SFSymbol
+                        Label("Accessibility", systemImage: "hand.point.up.braille.fill").labelStyle(SquircleLabelStyle(color: .blue))
+                    }
+                    
+                    NavigationLink {
                         AppearanceSettingsView()
                     } label: {
                         Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .pink))

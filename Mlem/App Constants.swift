@@ -165,7 +165,9 @@ struct AppConstants {
     // misc
     static let switchUserSymbolName: String = "person.crop.circle.badge.plus"
     static let missingSymbolName: String = "questionmark.square.dashed"
+    static let connectionSymbolName: String = "antenna.radiowaves.left.and.right"
     
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
+    static let infiniteLoadThresholdOffset: Int = -10
 }

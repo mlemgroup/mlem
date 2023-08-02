@@ -25,15 +25,14 @@ extension FeedView {
     func loadFeed() async {
         defer { isLoading = false }
         isLoading = true
+        print("called loadFeed")
         do {
             try await postTracker.loadNextPage(
                 account: appState.currentActiveAccount,
                 communityId: community?.id,
                 sort: postSortType,
                 type: feedType,
-                filtering: { postView in
-                    !postView.post.name.contains(filtersTracker.filteredKeywords)
-                }
+                filtering: filter
             )
         } catch {
             handle(error)
@@ -48,9 +47,7 @@ extension FeedView {
                 communityId: community?.id,
                 sort: postSortType,
                 type: feedType,
-                filtering: { postView in
-                    !postView.post.name.contains(filtersTracker.filteredKeywords)
-                }
+                filtering: filter
             )
         } catch {
             handle(error)
@@ -60,8 +57,7 @@ extension FeedView {
     /**
      Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
      */
-    func hardRefreshFeed() {
-        Task(priority: .userInitiated) {
+    func hardRefreshFeed() async {
             defer { isLoading = false }
             isLoading = true
             do {
@@ -71,13 +67,10 @@ extension FeedView {
                     sort: postSortType,
                     type: feedType,
                     clearBeforeFetch: true,
-                    filtering: { postView in
-                        !postView.post.name.contains(filtersTracker.filteredKeywords)
-                    })
+                    filtering: filter)
             } catch {
                 handle(error)
             }
-        }
     }
     
     // MARK: Community loading
@@ -139,6 +132,14 @@ extension FeedView {
             enabled: true) {
                 shouldBlurNsfw.toggle()
             })
+        
+        let showReadPostsText = showReadPosts ? "Hide read" : "Show read"
+        ret.append(MenuFunction(text: showReadPostsText,
+                                imageName: "book",
+                                destructiveActionPrompt: nil,
+                                enabled: true) {
+            showReadPosts.toggle()
+        })
         
         return ret
     }
@@ -275,6 +276,11 @@ extension FeedView {
             message: errorMessage,
             underlyingError: error
         )
+    }
+    
+    private func filter(postView: APIPostView) -> Bool {
+        !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
+        (showReadPosts || !postView.read)
     }
     
     // MARK: TODO: MOVE TO REPOSITORY MODEL

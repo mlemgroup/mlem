@@ -20,6 +20,7 @@ struct FeedView: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("postSize") var postSize: PostSize = .large
+    @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -33,18 +34,23 @@ struct FeedView: View {
     @State var feedType: FeedType
     
     init(community: APICommunity?, feedType: FeedType, showLoading: Bool = false) {
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        
         self.community = community
         self.showLoading = showLoading
+        
         self._feedType = State(initialValue: feedType)
+        self._postTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
     }
     
     // MARK: State
     
-    @StateObject var postTracker: PostTracker = .init(shouldPerformMergeSorting: false)
+    @StateObject var postTracker: PostTracker
     
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = false
+    @State var shouldLoad: Bool = false
     
     // MARK: - Main Views
     
@@ -63,13 +69,31 @@ struct FeedView: View {
             .task(priority: .background) { await fetchCommunityDetails() }
         // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
             .onChange(of: feedType) { _ in
-                hardRefreshFeed()
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
             }
             .onChange(of: postSortType) { _ in
-                hardRefreshFeed()
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
             }
             .onChange(of: appState.currentActiveAccount) { _ in
-                hardRefreshFeed()
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
+            }
+            .onChange(of: showReadPosts) { _ in
+                Task(priority: .userInitiated) {
+                    await hardRefreshFeed()
+                }
+            }
+            .onChange(of: shouldLoad) { value in
+                if value {
+                    print("should load more posts...")
+                    Task(priority: .medium) { await loadFeed() }
+                    shouldLoad = false
+                }
             }
             .refreshable { await refreshFeed() }
     }
@@ -122,9 +146,10 @@ struct FeedView: View {
             Divider()
         }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
-        .task(priority: .medium) {
-            if postTracker.shouldLoadContent(after: postView) {
-                await loadFeed()
+        .onAppear {
+            // on appear, flag whether new content should be loaded. Actual loading is attached to the feed view itself so that it doesn't get cancelled by view derenders
+            if postTracker.shouldLoadContentPrecisely(after: postView) {
+                shouldLoad = true
             }
         }
     }

@@ -15,6 +15,7 @@ internal enum PossibleStyling {
 struct ExpandedPost: View {
     
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
@@ -43,6 +44,7 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
             .task { await loadComments() }
+            .task { await markPostAsRead() }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {

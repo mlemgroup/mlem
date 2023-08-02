@@ -7,6 +7,7 @@
 
 import Foundation
 import Nuke
+import SwiftUI
 
 class PostTracker: FeedTracker<APIPostView> {
 
@@ -28,17 +29,28 @@ class PostTracker: FeedTracker<APIPostView> {
         filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
     ) async throws {
         let currentPage = page
-        let response = try await perform(
-            GetPostsRequest(
-                account: account,
-                communityId: communityId,
-                page: page,
-                sort: sort,
-                type: type,
-                limit: page == 1 ? 25 : 50
-            ),
-            filtering: filtering
-        )
+        
+        print("internet speed: \(internetSpeed.label)")
+        
+        // retry this until we get some items that pass the filter
+        var responsePosts: [APIPostView] = .init()
+        let numItems = items.count
+        repeat {
+            let response = try await perform(
+                GetPostsRequest(
+                    account: account,
+                    communityId: communityId,
+                    page: page,
+                    sort: sort,
+                    type: type,
+                    limit: internetSpeed.pageSize
+                ),
+                filtering: filtering
+            )
+            
+            responsePosts = response.posts
+            print("got \(responsePosts.count) posts, there are \(items.count) total posts")
+        } while !responsePosts.isEmpty && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
 
         // so although the API kindly returns `400`/"not_logged_in" for expired
         // sessions _without_ 2FA enabled, currently once you enable 2FA on an account
@@ -48,13 +60,15 @@ class PostTracker: FeedTracker<APIPostView> {
         // the API doesn't want to tell us - so to avoid the user being confused, we'll fire
         // off an authenticated call in the background and if appropriate show the expired
         // session modal. We should be able to remove this once the API behaves as expected.
-        if currentPage == 1 && response.posts.isEmpty {
+        if currentPage == 1 && responsePosts.isEmpty {
             try await attemptAuthenticatedCall(with: account)
         }
         
-        preloadImages(response.posts)
+        // don't preload filtered images
+        preloadImages(responsePosts.filter(filtering))
     }
 
+    @MainActor
     func refresh(
         account: SavedAccount,
         communityId: Int?,
@@ -70,7 +84,7 @@ class PostTracker: FeedTracker<APIPostView> {
                 page: 1,
                 sort: sort,
                 type: type,
-                limit: 25
+                limit: internetSpeed.pageSize
             ),
             clearBeforeFetch: clearBeforeFetch,
             filtering: filtering

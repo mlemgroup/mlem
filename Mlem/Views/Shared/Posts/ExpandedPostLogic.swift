@@ -11,6 +11,16 @@ extension ExpandedPost {
     
     // MARK: Interaction callbacks
     
+    // TODO: add flag
+    func markPostAsRead() async {
+        do {
+            post = try await postRepository.markRead(for: post.post.id, read: true)
+            postTracker.update(with: post)
+        } catch {
+            errorHandler.handle(.init(underlyingError: error))
+        }
+    }
+    
     /// Votes on a post
     /// - Parameter inputOp: The voting operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {

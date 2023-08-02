@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Dependencies
 
 struct UltraCompactPost: View {
     // app storage
@@ -15,6 +16,16 @@ struct UltraCompactPost: View {
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
     @AppStorage("thumbnailsOnRight") var thumbnailsOnRight: Bool = false
     @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
+    
+    @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
+    
+    // environment and dependencies
+    @Dependency(\.postRepository) var postRepository
+    @Dependency(\.errorHandler) var errorHandler
+    
+    @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
+    
+    @EnvironmentObject var postTracker: PostTracker
 
     // constants
     let thumbnailSize: CGFloat = 60
@@ -28,6 +39,7 @@ struct UltraCompactPost: View {
     // computed
     let voteColor: Color
     let voteIconName: String
+    var showReadCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
@@ -67,6 +79,8 @@ struct UltraCompactPost: View {
                     
                     Spacer()
                     
+                    if showReadCheck { ReadCheck() }
+                    
                     EllipsisMenu(size: 12, menuFunctions: menuFunctions)
                         .padding(.trailing, 6)
                 }
@@ -74,6 +88,7 @@ struct UltraCompactPost: View {
                 
                 Text(postView.post.name)
                     .font(.subheadline)
+                    .foregroundColor(postView.read ? .secondary : .primary)
     
                 compactInfo
             }

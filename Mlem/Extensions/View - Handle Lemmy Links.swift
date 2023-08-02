@@ -14,6 +14,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var savedAccounts: SavedAccountTracker
+    
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
 
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
@@ -51,7 +53,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APIPostView.self) { post in
                 ExpandedPost(post: post)
                 .environmentObject(
-                    PostTracker(shouldPerformMergeSorting: false, initialItems: [post])
+                    PostTracker(shouldPerformMergeSorting: false, internetSpeed: internetSpeed, initialItems: [post])
                 )
                 .environmentObject(appState)
             }

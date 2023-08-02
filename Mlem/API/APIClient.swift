@@ -131,6 +131,14 @@ class APIClient {
     }
 }
 
+// MARK: Post Requests
+extension APIClient {
+    func markPostAsRead(for postId: Int, read: Bool) async throws -> PostResponse {
+        let request = MarkPostReadRequest(session: try session, postId: postId, read: read)
+        return try await perform(request: request)
+    }
+}
+
 // MARK: Comment Requests
 
 extension APIClient {
