@@ -16,26 +16,27 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var savedAccounts: SavedAccountTracker
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-
+    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: APICommunityView.self) { context in
-                FeedView(community: context.community, feedType: .all)
+                FeedView(community: context.community, feedType: .all, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APICommunity.self) { community in
-                FeedView(community: community, feedType: .all)
+                FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: CommunityLinkWithContext.self) { context in
-                FeedView(community: context.community, feedType: context.feedType)
+                FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
