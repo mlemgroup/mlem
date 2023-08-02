@@ -17,56 +17,39 @@ struct CachedImage: View {
     let url: URL?
     let shouldExpand: Bool
     @State var bigPicMode: URL?
-    let maxHeight: CGFloat
-    @State var size: CGSize
-    
-    let postView: APIPostView?
+    let size: CGSize
 
     init(url: URL?,
          shouldExpand: Bool = true,
-         maxHeight: CGFloat = .infinity,
-         postView: APIPostView? = nil) {
+         maxHeight: CGFloat = .infinity) {
         self.url = url
         self.shouldExpand = shouldExpand
-        self.maxHeight = maxHeight
-        self.postView = postView
-        self._size = State(initialValue: postView?.size ?? CGSize(width: 1, height: 1))
         
-        if let url {
-            let testImage = ImagePipeline.shared.cache[url]
-            print(testImage?.image.size)
+        if let url, let testImage = ImagePipeline.shared.cache[url] {
+            let screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+            let ratio = screenWidth / testImage.image.size.width
+            size = CGSize(width: screenWidth,
+                          height: min(maxHeight, testImage.image.size.height * ratio))
+        } else {
+            size = CGSize(width: UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2), height: 200)
         }
     }
     
     var body: some View {
-        GeometryReader { geo in
+        // GeometryReader { geo in
             LazyImage(url: url) { state in
                 if let image = state.imageContainer {
                     let imageView = Image(uiImage: image.image)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: size.width, height: min(size.height, maxHeight))
+                        .frame(width: size.width, height: size.height)
                         .clipped()
                         .allowsHitTesting(false)
                         .overlay(alignment: .top) {
                             // weeps in janky hack but this lets us tap the image only in the area we want
                             Rectangle()
-                                .frame(maxHeight: min(size.height, maxHeight))
+                                .frame(maxHeight: size.height)
                                 .opacity(0.00000000001)
-                        }
-                        .onAppear {
-                            if let postView {
-                                // print("\(postView.id) appeared")
-                                
-                                let ratio = geo.size.width / image.image.size.width
-                                
-                                // print(ratio)
-                                
-                                let newSize = CGSize(width: geo.size.width,
-                                                     height: image.image.size.height * ratio)
-                                size = newSize
-                                postView.setSize(newSize: newSize)
-                            }
                         }
                     if shouldExpand {
                         imageView
@@ -102,14 +85,11 @@ struct CachedImage: View {
                         .cornerRadius(AppConstants.smallItemCornerRadius)
                 } else {
                     ProgressView() // Acts as a placeholder
-                        .frame(width: size.width, height: min(size.height, maxHeight))
+                        .frame(width: size.width, height: size.height)
                 }
             }
             .processors([.resize(size: size)])
-            .frame(width: size.width, height: min(size.height, maxHeight))
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: min(size.height, maxHeight))
+            .frame(width: size.width, height: size.height)
     }
     
     func imageNotFound() -> some View {
