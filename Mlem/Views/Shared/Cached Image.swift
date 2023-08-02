@@ -41,18 +41,18 @@ struct CachedImage: View {
             self._size = State(initialValue: fixedSize)
             self._shouldRecomputeSize = State(initialValue: false)
         } else if let url, let cachedSize = AppConstants.imageSizeCache.object(forKey: NSString(string: url.description)) {
-            // found a size in the cache, just use that--don't care if we have the image or not
+            // if we find a size in the size cache, use it
             self._size = State(initialValue: cachedSize.size)
             self._shouldRecomputeSize = State(initialValue: false)
         } else if let url, let testImage = ImagePipeline.shared.cache[url] {
-            // found an image that isn't cached--compute its size, cache the size, and set our state
+            // if we have nothing in the size cache but the image is ready, compute its size, use it, and cache it
             let ratio = screenWidth / testImage.image.size.width
             self._size = State(initialValue: CGSize(width: screenWidth,
                                                     height: min(maxHeight, testImage.image.size.height * ratio)))
             self._shouldRecomputeSize = State(initialValue: false)
             cacheImageSize()
         } else {
-            // nothing in the cache *and* no image! default to square
+            // if there's nothing in the cache *and* no image, default to square :(
             self._size = State(initialValue: CGSize(width: screenWidth, height: screenWidth))
             self._shouldRecomputeSize = State(initialValue: true)
         }
