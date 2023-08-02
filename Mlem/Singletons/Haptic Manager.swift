@@ -23,7 +23,19 @@ class HapticManager {
     
     init() {
         // create and start the engine if this device supports haptics
+        print("initialized haptic engine")
         hapticEngine = initEngine()
+        
+        // if the engine stops, tell us why
+        hapticEngine?.stoppedHandler = { reason in
+            print("The engine stopped: \(reason)")
+        }
+        
+        // if the engine fails, attempt to restart
+        hapticEngine?.resetHandler = { [weak self] in
+            print("The engine reset")
+            self?.handleEngineFailure()
+        }
     }
     
     /**
@@ -41,6 +53,35 @@ class HapticManager {
             }
         }
         return nil
+    }
+    
+    /**
+     Restarts the engine if it is present, creates it if not. Can be passed a pattern to play on start.
+     */
+    func handleEngineFailure(with events: [CHHapticEvent]? = nil) {
+        if let hapticEngine {
+            start(engine: hapticEngine)
+            
+            if let events {
+                do {
+                    let pattern = try CHHapticPattern(events: events, parameters: [])
+                    let player = try hapticEngine.makePlayer(with: pattern)
+                    try player.start(atTime: 0)
+                } catch {
+                    print("Failed to play pattern: \(error.localizedDescription). Will not restart engine.")
+                }
+            }
+        } else {
+            hapticEngine = initEngine()
+        }
+    }
+    
+    func start(engine: CHHapticEngine) {
+        do {
+            try engine.start()
+        } catch {
+            print("Failed to start the engine: \(error)")
+        }
     }
     
     // MARK: - Informative
@@ -210,8 +251,9 @@ class HapticManager {
             let player = try engine.makePlayer(with: pattern)
             try player.start(atTime: 0)
         } catch {
+            // worst-case scenario--
             print("Failed to play pattern: \(error.localizedDescription). Attempting to restart engine.")
-            hapticEngine = initEngine()
+            handleEngineFailure(with: events)
         }
     }
 }
