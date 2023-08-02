@@ -14,137 +14,169 @@ private struct WidgetView: View {
     
     var animation: Namespace.ID
     
+    func icon(_ imageName: String) -> some View {
+        Image(systemName: imageName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+    }
+    
     var body: some View {
-        VStack {
-            Text(widget.type.rawValue)
+        HStack {
+            switch widget.type {
+            case .upvote:
+                icon("arrow.up")
+            case .downvote:
+                icon("arrow.down")
+            case .save:
+                icon("bookmark")
+            case .reply:
+                icon("arrowshape.turn.up.left")
+            default:
+                EmptyView()
+            }
         }
-            .frame(maxHeight: .infinity)
-            .frame(maxWidth: .infinity)
-            .background(Color(UIColor.systemGroupedBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 5))
-            .matchedGeometryEffect(id: "Widget\(widget.hashValue)\(isDragging)", in: animation)
+        .frame(maxWidth: .infinity, maxHeight: 50)
+        .background(Color(UIColor.secondarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 5))
+        // .shadow(color: .black.opacity(0.05), radius: 3, x: 3, y: 3)
+        .matchedGeometryEffect(id: "Widget\(widget.hashValue)", in: animation)
+        .transition(.scale(scale: 1))
     }
 }
 
 struct PostLayoutEditView: View {
     
     @Namespace var animation
-    
     @StateObject private var widgetModel: LayoutWidgetModel = .init()
     
-    @State private var widgetDragging: PostLayoutWidget?
-    @State private var offset = CGSize.zero
-    
-    @State private var hoveringTray: Bool = false
-    
     func interactionBarwidgetView(_ widget: PostLayoutWidget, outerFrame: CGRect) -> some View {
-        GeometryReader { geometry in
-            
-            let callback = {
-                let rect = geometry.frame(in: .global)
-                    .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y - 250)
-                widgetModel.setItemRect(widget, rect)
+        HStack {
+            GeometryReader { geometry in
+                
+                switch widget.type {
+                case .placeholder(let wrappedValue):
+                    Color.clear
+                        .frame(maxWidth: wrappedValue.width, maxHeight: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        .padding(10)
+                default:
+                    let widgetView = {
+                        if widgetModel.widgetDragging == nil {
+                            let rect = geometry.frame(in: .global)
+                                .offsetBy(dx: -outerFrame.origin.x - 10, dy: -outerFrame.origin.y - 100)
+                            widgetModel.setItemRect(widget, rect)
+                        }
+                        return WidgetView(widget: widget, isDragging: false, animation: animation)
+
+                    }
+                    
+                    widgetView()
+                }
             }
-            
-            WidgetView(widget: widget, isDragging: false, animation: animation)
-                .padding(10)
-                .onAppear(perform: callback)
-                .onChange(of: geometry.size) { _ in callback() }
         }
+        .frame(maxWidth: widget.type.width)
     }
     
     func interactionBar(_ outerFrame: CGRect) -> some View {
-        HStack(spacing: 0) {
-            ForEach(widgetModel.items, id: \.self) { widget in
+        HStack(spacing: 10) {
+            ForEach(widgetModel.itemsWithPlaceholder, id: \.self) { widget in
                 interactionBarwidgetView(widget, outerFrame: outerFrame)
+                    .transition(.scale(scale: 1))
+                    .zIndex(widgetModel.lastDraggedWidget == widget ? 1 : 0)
             }
         }
+        .zIndex(1)
+        .transition(.scale(scale: 1))
         .frame(maxWidth: .infinity)
-        .frame(height: 50)
+        .frame(height: 40)
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { value in
-                    if widgetDragging == nil {
-                        widgetDragging = widgetModel.getItemAtLocation(value.location)
-                        if widgetDragging != nil {
-                            widgetModel.removeItem(widgetDragging!)
-                        }
-                    }
-                    
-                    if widgetDragging != nil {
-                        offset = CGSize(
-                            width: widgetDragging!.rect!.origin.x
-                            + value.translation.width,
-                            height: widgetDragging!.rect!.origin.y
-                            + value.translation.height + 250
-                        )
-                    }
+                    widgetModel.setWidgetDragging(value)
                 }
                 .onEnded { _ in
-                    offset = .zero
-                    hoveringTray = false
-                    if widgetDragging != nil {
-                        widgetModel.addItem(widgetDragging!, index: 0)
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        widgetModel.dropWidget()
                     }
-                    widgetDragging = nil
                 }
         )
+        .padding(10)
     }
     
-    func tray() -> some View {
-        VStack {
-            if hoveringTray {
-                Image(systemName: "trash")
-                    .resizable()
-                    .foregroundStyle(.red)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50)
-                    .padding(100)
-                Spacer()
-            } else {
-                Text("Tray")
+    func tray(_ outerFrame: CGRect) -> some View {
+        GeometryReader { geometry in
+            let callback = {
+                widgetModel.trayY = geometry
+                    .frame(in: .global)
+                    .minY - outerFrame.origin.y - 90
             }
+            VStack {
+                if widgetModel.predictedDropLocation == .tray {
+                    VStack {
+                        Image(systemName: "trash")
+                            .resizable()
+                            .foregroundStyle(.red)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 40)
+                            .padding(100)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(.red.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(20)
+                } else {
+                    Text("Tray")
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: 300)
+            .onAppear(perform: callback)
         }
-        .frame(height: 600)
-        .frame(maxWidth: .infinity)
-        .background(hoveringTray ? .red.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
     var body: some View {
-        ScrollView {
-            ZStack(alignment: .topLeading) {
+        ZStack(alignment: .topLeading) {
+            GeometryReader { geometry in
+                let frame = geometry.frame(in: .global)
                 VStack(spacing: 20) {
-                    GeometryReader { geometry in
-                        let frame = geometry.frame(in: .global)
-                        VStack {
-                            Text(widgetDragging?.type.rawValue ?? "None")
-                            Spacer()
-                            interactionBar(frame)
-                        }
+                    VStack {
+                        Spacer()
+                        Text("Customise Widgets")
+                            .fontWeight(.semibold)
+                            .font(.title2)
+                        Spacer()
+                        Divider()
                     }
-                    .frame(height: 300)
-                    .frame(maxWidth: .infinity)
-                    .background(Color(UIColor.secondarySystemGroupedBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    
-                    tray()
-                }
-                
-                if offset != CGSize.zero && widgetDragging != nil {
-                    HStack {
-                        WidgetView(widget: widgetDragging!, animation: animation)
-                            .padding(10)
-                    }
-                    .frame(width: widgetDragging!.rect!.width, height: widgetDragging!.rect!.height)
-                    .offset(offset)
-                    .zIndex(1)
+                    .frame(height: 70)
+                    interactionBar(frame)
+                        .frame(maxWidth: .infinity)
+                    Divider()
+                    Text("Tap and hold widgets to add, remove, or rearrange them.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                    Divider()
+                    Spacer()
+                    tray(frame)
+                    Spacer()
                 }
             }
-            .padding(20)
-            .animation(.easeOut(duration: 0.2), value: widgetDragging)
+            
+            if widgetModel.shouldShowDraggingWidget {
+                HStack {
+                    WidgetView(widget: widgetModel.widgetDragging!, animation: animation)
+                }
+                .frame(
+                    width: widgetModel.widgetDragging!.rect!.width,
+                    height: widgetModel.widgetDragging!.rect!.height
+                )
+                .offset(widgetModel.widgetDraggingOffset)
+                .zIndex(2)
+                .transition(.scale(scale: 1))
+            }
         }
-        .fancyTabScrollCompatible()
+        .animation(.default, value: widgetModel.itemsWithPlaceholder)
+        // .animation(.easeOut(duration: 0.2), value: widgetModel.widgetDragging)
         .background(Color(UIColor.systemGroupedBackground))
     }
     

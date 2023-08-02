@@ -39,7 +39,7 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
     
-    @State private var selection: String = "Compact"
+    @State private var showingWidgetSheet = false
 
     var body: some View {
         Form {
@@ -51,12 +51,11 @@ struct PostSettingsView: View {
                     options: PostSize.allCases
                 )
             }
-            
             Section("Display Sides") {
                 SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
                                        settingName: "Vote Buttons On Right",
                                        isTicked: $shouldShowVoteComplexOnRight)
-                
+
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
                                        settingName: "Thumbnails On Right",
                                        isTicked: $shouldShowThumbnailsOnRight)
@@ -81,12 +80,14 @@ struct PostSettingsView: View {
             }
             
             Section("Interactions and Info") {
+
                 SelectableSettingsItem(
                     settingIconSystemName: "arrow.up.arrow.down.square",
                     settingName: "Vote Buttons",
                     currentValue: $postVoteComplexStyle,
                     options: VoteComplexStyle.allCases
                 )
+
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                        settingName: "Show Score In Info",
                                        isTicked: $shouldShowScoreInPostBar)
@@ -105,29 +106,33 @@ struct PostSettingsView: View {
             }
             
             Section("Website Previews") {
-                WebsiteIconComplex(post: APIPost(
-                    id: 0,
-                    name: "",
-                    url: URL(string: "https://lemmy.ml/post/1011734")!,
-                    body: "",
-                    creatorId: 0,
-                    communityId: 0,
-                    deleted: false,
-                    embedDescription: nil,
-                    embedTitle: "I am an example of a website preview.\nCustomize me!",
-                    embedVideoUrl: nil,
-                    featuredCommunity: false,
-                    featuredLocal: false,
-                    languageId: 0,
-                    apId: "https://lemmy.ml/post/1011068",
-                    local: true,
-                    locked: false,
-                    nsfw: false,
-                    published: .now,
-                    removed: false,
-                    thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
-                    updated: nil
-                ))
+
+                WebsiteIconComplex(post:
+                                    APIPost(
+                                        id: 0,
+                                        name: "",
+                                        url: URL(string: "https://lemmy.ml/post/1011734")!,
+                                        body: "",
+                                        creatorId: 0,
+                                        communityId: 0,
+                                        deleted: false,
+                                        embedDescription: nil,
+                                        embedTitle: "I am an example of a website preview.\nCustomize me!",
+                                        embedVideoUrl: nil,
+                                        featuredCommunity: false,
+                                        featuredLocal: false,
+                                        languageId: 0,
+                                        apId: "https://lemmy.ml/post/1011068",
+                                        local: true,
+                                        locked: false,
+                                        nsfw: false,
+                                        published: .now,
+                                        removed: false,
+                                        thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
+                                        updated: nil
+                                    )
+                )
+    
                 .padding(.horizontal)
                 
                 SwitchableSettingsItem(
@@ -147,10 +152,13 @@ struct PostSettingsView: View {
                     isTicked: $shouldShowWebsitePreviews
                 )
             }
-            
+
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showingWidgetSheet) {
+            PostLayoutEditView()
+        }
     }
 }
