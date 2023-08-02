@@ -16,7 +16,7 @@ struct WebsiteIconComplex: View {
 
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
-    @State var post: APIPost
+    let post: APIPost
 
     @State private var overridenWebsiteFaviconName: String = "globe"
 

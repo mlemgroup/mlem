@@ -10,6 +10,7 @@ import CachedAsyncImage
 
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
@@ -20,6 +21,9 @@ struct UserProfileLabel: View {
     @State var postContext: APIPost?
     @State var commentContext: APIComment?
     @State var communityContext: GetCommunityResponse?
+
+    var blurAvatar: Bool { shouldBlurNsfw && (postContext?.nsfw ?? false ||
+                                             communityContext?.communityView.community.nsfw ?? false) }
     
     init(user: APIPerson,
          serverInstanceLocation: ServerInstanceLocation,
@@ -90,6 +94,7 @@ struct UserProfileLabel: View {
             }
         }
         .frame(width: avatarSize(), height: avatarSize())
+        .blur(radius: blurAvatar ? 4 : 0)
         .clipShape(Circle())
         .overlay(Circle()
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
@@ -156,6 +161,7 @@ struct UserProfileLabel: View {
                 .lineLimit(1)
                 .opacity(0.6)
                 .font(.caption)
+                .allowsHitTesting(false)
         } else {
             EmptyView()
         }

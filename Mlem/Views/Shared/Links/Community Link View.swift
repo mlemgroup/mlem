@@ -63,11 +63,15 @@ struct CommunityLinkView: View {
 struct CommunityLabel: View {
     // settings
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     // parameters
     let community: APICommunity
     let serverInstanceLocation: ServerInstanceLocation
     let overrideShowAvatar: Bool? // if present, shows or hides the avatar according to value; otherwise uses system setting
+    
+    // computed
+    var blurAvatar: Bool { shouldBlurNsfw && community.nsfw }
 
     var showAvatar: Bool {
         if let overrideShowAvatar = overrideShowAvatar {
@@ -89,14 +93,12 @@ struct CommunityLabel: View {
         Group {
             HStack(alignment: .bottom, spacing: AppConstants.largeAvatarSpacing) {
                 if showAvatar {
-                    if shouldClipAvatar(community: community) {
-                        communityAvatar
-                            .clipShape(Circle())
-                            .overlay(Circle()
-                                .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-                    } else {
-                        communityAvatar
-                    }
+                    communityAvatar
+                        .blur(radius: blurAvatar ? 4 : 0)
+                        .clipShape(Circle())
+                        .overlay(Circle()
+                            .stroke(Color(UIColor.secondarySystemBackground),
+                                    lineWidth: shouldClipAvatar(community: community) ? 1 : 0))
                 }
                 
                 switch serverInstanceLocation {
@@ -137,6 +139,7 @@ struct CommunityLabel: View {
                 .lineLimit(1)
                 .opacity(0.6)
                 .font(.caption)
+                .allowsHitTesting(false)
         } else {
             EmptyView()
         }

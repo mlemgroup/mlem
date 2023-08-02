@@ -63,9 +63,10 @@ struct FeedPost: View {
     var body: some View {
         VStack(spacing: 0) {
             postItem
-                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
-                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
-                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
+                .background(Color.systemBackground)
+//                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
+//                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
+//                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
                         Button {
@@ -131,7 +132,9 @@ struct FeedPost: View {
 
                     // posting user
                     if showPostCreator {
-                        UserProfileLink(user: postView.creator, serverInstanceLocation: .bottom)
+                        UserProfileLink(user: postView.creator,
+                                        serverInstanceLocation: .bottom,
+                                        postContext: postView.post)
                     }
                 }
                 .padding(.top, AppConstants.postAndCommentSpacing)
