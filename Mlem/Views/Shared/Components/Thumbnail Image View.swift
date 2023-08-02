@@ -26,7 +26,7 @@ struct ThumbnailImageView: View {
                 CachedImage(url: url, fixedSize: size)
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .link(let url):
-                CachedImage(url: url, fixedSize: size)// maxHeight: AppConstants.thumbnailSize)
+                CachedImage(url: url, fixedSize: size)
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .text:
                 Image(systemName: "text.book.closed")
