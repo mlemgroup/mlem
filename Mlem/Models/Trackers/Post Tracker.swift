@@ -13,6 +13,8 @@ class PostTracker: FeedTracker<APIPostView> {
     private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
                                              destination: .memoryCache,
                                              maxConcurrentRequestCount: 40)
+    
+    var imageSizes: [Int: CGSize] = .init()
 
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
@@ -108,7 +110,9 @@ class PostTracker: FeedTracker<APIPostView> {
                     imageRequests.append(ImageRequest(url: favIconURL))
                 }
                 if let url = url {
-                    imageRequests.append(ImageRequest(url: url, priority: .high))
+                    imageRequests.append(ImageRequest(url: url,
+                                                      // processors: [ComputeSizeProcessor(post: postView)],
+                                                      priority: .high))
                 }
             default:
                 break

@@ -31,6 +31,8 @@ struct MlemApp: App {
                     // imageConfig.isRateLimiterEnabled
                     ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
                     
+                    // TODO: add image pipeline config to cache image size
+                    
                     URLCache.shared = AppConstants.urlCache
 
                     setupAppShortcuts()

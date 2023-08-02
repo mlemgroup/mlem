@@ -67,7 +67,7 @@ struct LargePost: View {
         switch postView.postType {
         case .image(let url):
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                CachedImage(url: url, maxHeight: maxHeight)
+                CachedImage(url: url, maxHeight: maxHeight, postView: postView)
                     .frame(maxWidth: .infinity, maxHeight: maxHeight, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
@@ -76,7 +76,7 @@ struct LargePost: View {
             }
         case .link:
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                WebsiteIconComplex(post: postView.post)
+                WebsiteIconComplex(postView: postView)
                 postBodyView
             }
         case .text(let postBody):

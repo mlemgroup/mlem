@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_views::structs::PostView
-struct APIPostView: Decodable {
+class APIPostView: Decodable, @unchecked Sendable {
     let post: APIPost
     let creator: APIPerson
     let community: APICommunity
@@ -20,6 +20,37 @@ struct APIPostView: Decodable {
     let creatorBlocked: Bool
     var myVote: ScoringOperation?
     let unreadComments: Int
+    var size: CGSize?
+    
+    func setSize(newSize: CGSize) {
+        self.size = newSize
+        // print("setting size of \(id) to \(newSize)")
+    }
+    
+    init(post: APIPost,
+         creator: APIPerson,
+         community: APICommunity,
+         creatorBannedFromCommunity: Bool,
+         counts: APIPostAggregates,
+         subscribed: APISubscribedStatus,
+         saved: Bool,
+         read: Bool,
+         creatorBlocked: Bool,
+         myVote: ScoringOperation? = nil,
+         unreadComments: Int) {
+        self.post = post
+        self.creator = creator
+        self.community = community
+        self.creatorBannedFromCommunity = creatorBannedFromCommunity
+        self.counts = counts
+        self.subscribed = subscribed
+        self.saved = saved
+        self.read = read
+        self.creatorBlocked = creatorBlocked
+        self.myVote = myVote
+        self.unreadComments = unreadComments
+        self.size = nil
+    }
 }
 
 extension APIPostView: Identifiable {

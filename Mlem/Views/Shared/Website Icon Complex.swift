@@ -16,7 +16,7 @@ struct WebsiteIconComplex: View {
 
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
-    @State var post: APIPost
+    let postView: APIPostView
 
     @State private var overridenWebsiteFaviconName: String = "globe"
 
@@ -24,7 +24,7 @@ struct WebsiteIconComplex: View {
 
     var faviconURL: URL? {
         guard
-            let baseURL = post.url?.host,
+            let baseURL = postView.post.url?.host,
             let imageURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")
         else {
             return nil
@@ -34,15 +34,15 @@ struct WebsiteIconComplex: View {
     }
     
     var linkLabel: String {
-        if let embedTitle = post.embedTitle {
+        if let embedTitle = postView.post.embedTitle {
             return embedTitle
         } else {
-            return post.name
+            return postView.post.name
         }
     }
     
     var linkHost: String {
-        if let url = post.url {
+        if let url = postView.post.url {
             return url.host ?? "some website"
         }
         return "some website"
@@ -50,10 +50,10 @@ struct WebsiteIconComplex: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
-                CachedImage(url: thumbnailURL, shouldExpand: false)
+            if shouldShowWebsitePreviews, let thumbnailURL = postView.post.thumbnailUrl {
+                CachedImage(url: thumbnailURL, shouldExpand: false, postView: postView)
                     .frame(maxHeight: 400)
-                    .applyNsfwOverlay(post.nsfw)
+                    .applyNsfwOverlay(postView.post.nsfw)
                     .clipped()
             }
             
@@ -95,7 +95,7 @@ struct WebsiteIconComplex: View {
         )
         .contentShape(Rectangle())
         .onTapGesture {
-            if let url = post.url {
+            if let url = postView.post.url {
                 openURL(url)
             }
         }
