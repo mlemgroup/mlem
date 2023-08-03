@@ -28,12 +28,10 @@ func ratePost(
             score: operation
         )
 
-        HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
         postTracker.update(with: response.postView)
         return response.postView
     } catch {
-        HapticManager.shared.error()
         throw error
     }
 }

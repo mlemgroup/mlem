@@ -11,6 +11,7 @@ import SwiftUI
 struct Window: View {
     
     @Dependency(\.notifier) var notifier
+    @Dependency(\.hapticManager) var hapticManager
     
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
@@ -48,6 +49,8 @@ struct Window: View {
             ) {
             setEasterFlag(.login(host: host))
         }
+        
+        _ = hapticManager.initEngine()
     }
     
     @ViewBuilder

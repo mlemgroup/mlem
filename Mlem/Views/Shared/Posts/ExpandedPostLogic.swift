@@ -25,6 +25,7 @@ extension ExpandedPost {
     /// - Parameter inputOp: The voting operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
+            hapticManager.play(haptic: .gentleSuccess)
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             self.post = try await ratePost(
                 postId: post.post.id,
@@ -34,6 +35,7 @@ extension ExpandedPost {
                 appState: appState
             )
         } catch {
+            hapticManager.play(haptic: .failure)
             appState.contextualError = .init(underlyingError: error)
         }
     }

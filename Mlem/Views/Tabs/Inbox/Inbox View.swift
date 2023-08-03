@@ -34,6 +34,7 @@ struct InboxView: View {
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.hapticManager) var hapticManager
     
     // MARK: Global
     @EnvironmentObject var appState: AppState

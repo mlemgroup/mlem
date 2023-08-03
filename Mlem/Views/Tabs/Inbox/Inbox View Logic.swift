@@ -157,6 +157,7 @@ extension InboxView {
     }
     
     func toggleCommentReplyRead(commentReplyView: APICommentReplyView) {
+        hapticManager.play(haptic: .gentleSuccess)
         Task(priority: .userInitiated) {
             do {
                 try await sendMarkCommentReplyAsReadRequest(commentReply: commentReplyView,
@@ -173,6 +174,7 @@ extension InboxView {
                 
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
+                hapticManager.play(haptic: .failure)
                 print("failed to mark read!")
             }
         }
@@ -193,6 +195,7 @@ extension InboxView {
     // MARK: Mentions
     
     func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
+        hapticManager.play(haptic: .gentleSuccess)
         Task(priority: .userInitiated) {
             let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             do {
@@ -202,14 +205,14 @@ extension InboxView {
                     aggregateAllTrackers()
                 }
             } catch {
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                hapticManager.play(haptic: .failure)
+                errorHandler.handle(.init(underlyingError: error))
             }
         }
     }
     
     func toggleMentionRead(mention: APIPersonMentionView) {
+        hapticManager.play(haptic: .gentleSuccess)
         Task(priority: .userInitiated) {
             do {
                 try await sendMarkPersonMentionAsReadRequest(personMention: mention,
@@ -226,6 +229,7 @@ extension InboxView {
                 
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
+                hapticManager.play(haptic: .failure)
                 print("failed to mark mention as read!")
             }
         }
@@ -246,6 +250,7 @@ extension InboxView {
     // MARK: Messages
     
     func toggleMessageRead(message: APIPrivateMessageView) {
+        hapticManager.play(haptic: .gentleSuccess)
         Task(priority: .userInitiated) {
             do {
                 try await sendMarkPrivateMessageAsReadRequest(messageView: message,
@@ -262,6 +267,7 @@ extension InboxView {
                 
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
+                hapticManager.play(haptic: .failure)
                 print("failed to mark message as read!")
             }
         }

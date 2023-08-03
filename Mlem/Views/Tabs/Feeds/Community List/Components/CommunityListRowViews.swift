@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct HeaderView: View {
     let title: String
@@ -34,6 +35,8 @@ struct CommuntiyFeedRowView: View {
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
 
+    @Dependency(\.hapticManager) var hapticManager
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
 
@@ -45,7 +48,7 @@ struct CommuntiyFeedRowView: View {
 
                 Spacer()
                 Button("Favorite Community") {
-                    HapticManager.shared.gentleSuccess()
+                    hapticManager.play(haptic: .gentleSuccess)
 
                     toggleFavorite()
 

@@ -349,6 +349,16 @@
 		CDE6A8182A490AF20062D161 /* Inbox Mention View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A8172A490AF20062D161 /* Inbox Mention View.swift */; };
 		CDE6A81A2A490B970062D161 /* Inbox Reply View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE6A8192A490B970062D161 /* Inbox Reply View.swift */; };
 		CDE8F2392A68DA7D00E0AE68 /* Environment - Force Onboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */; };
+		CDE9CE4C2A7B0831002B97DD /* Gentle Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE4B2A7B0831002B97DD /* Gentle Info.ahap */; };
+		CDE9CE4F2A7B0B1B002B97DD /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE9CE4E2A7B0B1B002B97DD /* Haptic.swift */; };
+		CDE9CE512A7B0C66002B97DD /* Firmer Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE502A7B0C66002B97DD /* Firmer Info.ahap */; };
+		CDE9CE532A7B1100002B97DD /* Mushy Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE522A7B1100002B97DD /* Mushy Info.ahap */; };
+		CDE9CE572A7B11FD002B97DD /* Rigid Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE562A7B11FD002B97DD /* Rigid Info.ahap */; };
+		CDE9CE5D2A7B2290002B97DD /* Gentle Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE5C2A7B2290002B97DD /* Gentle Success.ahap */; };
+		CDE9CE5F2A7B3197002B97DD /* Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE5E2A7B3197002B97DD /* Success.ahap */; };
+		CDE9CE612A7B32EB002B97DD /* Destructive Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE602A7B32EB002B97DD /* Destructive Success.ahap */; };
+		CDE9CE652A7B338E002B97DD /* Violent Success.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE642A7B338E002B97DD /* Violent Success.ahap */; };
+		CDE9CE682A7B3481002B97DD /* Failure.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CDE9CE672A7B3481002B97DD /* Failure.ahap */; };
 		CDF1EF122A6B672C003594B6 /* Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF112A6B672C003594B6 /* Feed View.swift */; };
 		CDF1EF142A6B6D6E003594B6 /* Feed View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF132A6B6D6E003594B6 /* Feed View Logic.swift */; };
 		CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */; };
@@ -716,6 +726,16 @@
 		CDE6A8172A490AF20062D161 /* Inbox Mention View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Mention View.swift"; sourceTree = "<group>"; };
 		CDE6A8192A490B970062D161 /* Inbox Reply View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Reply View.swift"; sourceTree = "<group>"; };
 		CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment - Force Onboard.swift"; sourceTree = "<group>"; };
+		CDE9CE4B2A7B0831002B97DD /* Gentle Info.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Gentle Info.ahap"; sourceTree = "<group>"; };
+		CDE9CE4E2A7B0B1B002B97DD /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
+		CDE9CE502A7B0C66002B97DD /* Firmer Info.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Firmer Info.ahap"; sourceTree = "<group>"; };
+		CDE9CE522A7B1100002B97DD /* Mushy Info.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Mushy Info.ahap"; sourceTree = "<group>"; };
+		CDE9CE562A7B11FD002B97DD /* Rigid Info.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Rigid Info.ahap"; sourceTree = "<group>"; };
+		CDE9CE5C2A7B2290002B97DD /* Gentle Success.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Gentle Success.ahap"; sourceTree = "<group>"; };
+		CDE9CE5E2A7B3197002B97DD /* Success.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = Success.ahap; sourceTree = "<group>"; };
+		CDE9CE602A7B32EB002B97DD /* Destructive Success.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Destructive Success.ahap"; sourceTree = "<group>"; };
+		CDE9CE642A7B338E002B97DD /* Violent Success.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Violent Success.ahap"; sourceTree = "<group>"; };
+		CDE9CE672A7B3481002B97DD /* Failure.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = Failure.ahap; sourceTree = "<group>"; };
 		CDF1EF112A6B672C003594B6 /* Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed View.swift"; sourceTree = "<group>"; };
 		CDF1EF132A6B6D6E003594B6 /* Feed View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed View Logic.swift"; sourceTree = "<group>"; };
 		CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "End Of Feed View.swift"; sourceTree = "<group>"; };
@@ -1166,9 +1186,9 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
+				CDE9CE4A2A7B07F6002B97DD /* Haptics */,
 				CDC6A8C82A6F1C8000CC11AC /* Protocols */,
 				CDDCF6412A662444003DA3AC /* Custom Tab Bar */,
-				CD0BE42D2A65A72D00314B24 /* Singletons */,
 				CD14461F2A5B328600610EF1 /* Data */,
 				B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */,
 				637218002A3A2AAD008C4816 /* API */,
@@ -1496,6 +1516,7 @@
 				CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */,
 				6DCE71282A53C26600CFEB5E /* ServerInstanceLocation.swift */,
 				CDDCF6522A677F45003DA3AC /* TabSelection.swift */,
+				CDE9CE4E2A7B0B1B002B97DD /* Haptic.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -1585,14 +1606,6 @@
 				B1DD00BC2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift */,
 			);
 			path = Easter;
-			sourceTree = "<group>";
-		};
-		CD0BE42D2A65A72D00314B24 /* Singletons */ = {
-			isa = PBXGroup;
-			children = (
-				CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */,
-			);
-			path = Singletons;
 			sourceTree = "<group>";
 		};
 		CD1446162A58FC2F00610EF1 /* Interaction Bars */ = {
@@ -1834,6 +1847,47 @@
 			path = "Item Types";
 			sourceTree = "<group>";
 		};
+		CDE9CE4A2A7B07F6002B97DD /* Haptics */ = {
+			isa = PBXGroup;
+			children = (
+				CDE9CE662A7B3473002B97DD /* Failure */,
+				CDE9CE592A7B2264002B97DD /* Success */,
+				CDE9CE582A7B13B9002B97DD /* Info */,
+				CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */,
+			);
+			path = Haptics;
+			sourceTree = "<group>";
+		};
+		CDE9CE582A7B13B9002B97DD /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				CDE9CE4B2A7B0831002B97DD /* Gentle Info.ahap */,
+				CDE9CE502A7B0C66002B97DD /* Firmer Info.ahap */,
+				CDE9CE522A7B1100002B97DD /* Mushy Info.ahap */,
+				CDE9CE562A7B11FD002B97DD /* Rigid Info.ahap */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		CDE9CE592A7B2264002B97DD /* Success */ = {
+			isa = PBXGroup;
+			children = (
+				CDE9CE5C2A7B2290002B97DD /* Gentle Success.ahap */,
+				CDE9CE5E2A7B3197002B97DD /* Success.ahap */,
+				CDE9CE602A7B32EB002B97DD /* Destructive Success.ahap */,
+				CDE9CE642A7B338E002B97DD /* Violent Success.ahap */,
+			);
+			path = Success;
+			sourceTree = "<group>";
+		};
+		CDE9CE662A7B3473002B97DD /* Failure */ = {
+			isa = PBXGroup;
+			children = (
+				CDE9CE672A7B3481002B97DD /* Failure.ahap */,
+			);
+			path = Failure;
+			sourceTree = "<group>";
+		};
 		CDF842582A49D23800723DA0 /* Messages */ = {
 			isa = PBXGroup;
 			children = (
@@ -1993,6 +2047,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				6363D5CC27EE196A00E34822 /* Preview Assets.xcassets in Resources */,
+				CDE9CE4C2A7B0831002B97DD /* Gentle Info.ahap in Resources */,
+				CDE9CE572A7B11FD002B97DD /* Rigid Info.ahap in Resources */,
+				CDE9CE5D2A7B2290002B97DD /* Gentle Success.ahap in Resources */,
+				CDE9CE682A7B3481002B97DD /* Failure.ahap in Resources */,
+				CDE9CE652A7B338E002B97DD /* Violent Success.ahap in Resources */,
+				CDE9CE512A7B0C66002B97DD /* Firmer Info.ahap in Resources */,
+				CDE9CE5F2A7B3197002B97DD /* Success.ahap in Resources */,
+				CDE9CE532A7B1100002B97DD /* Mushy Info.ahap in Resources */,
+				CDE9CE612A7B32EB002B97DD /* Destructive Success.ahap in Resources */,
 				6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */,
 				6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */,
 			);
@@ -2294,6 +2357,7 @@
 				637218732A3A2AAD008C4816 /* FollowCommunity.swift in Sources */,
 				637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */,
 				CD1446182A58FC3B00610EF1 /* InfoStack.swift in Sources */,
+				CDE9CE4F2A7B0B1B002B97DD /* Haptic.swift in Sources */,
 				6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */,
 				5064D0412A6E63E000B22EE3 /* Task+Notifiable.swift in Sources */,
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,

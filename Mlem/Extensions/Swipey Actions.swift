@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct SwipeAction {
     
@@ -20,6 +21,8 @@ struct SwipeAction {
 }
 
 struct SwipeyView: ViewModifier {
+    
+    @Dependency(\.hapticManager) var hapticManager
     
     // state
     @GestureState var dragState: CGFloat = .zero
@@ -107,7 +110,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition > -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                             // crossed from short swipe -> long swipe
-                            HapticManager.shared.firmerInfo()
+                            hapticManager.play(haptic: .firmerInfo)
                         }
                     } else if dragPosition <= -1 * AppConstants.shortSwipeDragMin {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
@@ -115,10 +118,10 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition > -1 * AppConstants.shortSwipeDragMin {
                             // crossed from no swipe -> short swipe
-                            HapticManager.shared.gentleInfo()
+                            hapticManager.play(haptic: .gentleInfo)
                         } else if prevDragPosition <= -1 * AppConstants.longSwipeDragMin {
                             // crossed from long swipe -> short swipe
-                            HapticManager.shared.mushyInfo()
+                            hapticManager.play(haptic: .mushyInfo)
                         }
                     } else if dragPosition < 0 {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
@@ -126,7 +129,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition <= -1 * AppConstants.shortSwipeDragMin {
                             // crossed from short swipe -> no swipe
-                            HapticManager.shared.mushyInfo()
+                            hapticManager.play(haptic: .mushyInfo)
                         }
                     } else if dragPosition < AppConstants.shortSwipeDragMin {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
@@ -134,7 +137,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition >= AppConstants.shortSwipeDragMin {
                             // crossed from short swipe -> no swipe
-                            HapticManager.shared.mushyInfo()
+                            hapticManager.play(haptic: .mushyInfo)
                         }
                     } else if dragPosition < AppConstants.longSwipeDragMin {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
@@ -142,10 +145,10 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition < AppConstants.shortSwipeDragMin {
                             // crossed from no swipe -> short swipe
-                            HapticManager.shared.gentleInfo()
+                            hapticManager.play(haptic: .gentleInfo)
                         } else if prevDragPosition >= AppConstants.longSwipeDragMin {
                             // crossed from long swipe -> short swipe
-                            HapticManager.shared.mushyInfo()
+                            hapticManager.play(haptic: .mushyInfo)
                         }
                     } else {
                         leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
@@ -153,7 +156,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition < AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                             // crossed from short swipe -> long swipe
-                            HapticManager.shared.firmerInfo()
+                            hapticManager.play(haptic: .firmerInfo)
                         }
                     }
                     prevDragPosition = dragPosition

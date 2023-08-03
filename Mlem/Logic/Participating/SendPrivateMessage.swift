@@ -16,9 +16,9 @@ func sendPrivateMessage(
     do {
         let request = CreatePrivateMessageRequest(account: account, content: content, recipient: recipient)
         try await APIClient().perform(request: request)
-        HapticManager.shared.success()
+        HapticManager.shared.play(haptic: .success)
     } catch {
-        HapticManager.shared.error()
+        HapticManager.shared.play(haptic: .failure)
         throw error
     }
 }
