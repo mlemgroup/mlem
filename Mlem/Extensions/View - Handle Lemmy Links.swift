@@ -122,19 +122,21 @@ struct HandleLemmyLinkResolution: ViewModifier {
                     do {
                         let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account, query: lookup))
                         
-                        // this is gonna be a bit of an ugly if switch but oh well for now
-                        if let post = resolution.post {
-                            // wop wop that was a post link!
-                            return navigationPath.wrappedValue.append(post)
-                        } else if let community = resolution.community {
-                            return navigationPath.wrappedValue.append(community)
-                        } else if let user = resolution.person?.person {
-                            return navigationPath.wrappedValue.append(user)
+                        await MainActor.run {
+                            // this is gonna be a bit of an ugly if switch but oh well for now
+                            if let post = resolution.post {
+                                // wop wop that was a post link!
+                                return navigationPath.wrappedValue.append(post)
+                            } else if let community = resolution.community {
+                                return navigationPath.wrappedValue.append(community)
+                            } else if let user = resolution.person?.person {
+                                return navigationPath.wrappedValue.append(user)
+                            }
+                            // else if let d = resolution.comment {
+                            // hmm I don't think we can do that right now!
+                            // so I'll skip and let the system open it instead
+                            // }
                         }
-                        // else if let d = resolution.comment {
-                        // hmm I don't think we can do that right now!
-                        // so I'll skip and let the system open it instead
-                        // }
                     } catch {
                         guard case let APIClientError.response(apiError, _) = error,
                               apiError.error == "couldnt_find_object",
