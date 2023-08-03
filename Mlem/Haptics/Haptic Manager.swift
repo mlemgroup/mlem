@@ -41,7 +41,7 @@ class HapticManager {
     /**
      If this device supports haptics, creates and returns a CHHaptic engine; otherwise returns nil
      */
-    func initEngine() -> CHHapticEngine? {
+    @discardableResult func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
                 let ret = try CHHapticEngine()

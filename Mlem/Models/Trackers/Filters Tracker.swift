@@ -5,36 +5,21 @@
 //  Created by David Bureš on 07.05.2023.
 //
 
+import Combine
+import Dependencies
 import Foundation
 
 class FiltersTracker: ObservableObject {
+    
+    @Dependency(\.persistenceRepository) private var persistenceRepository
+    
     @Published var filteredKeywords: [String] = .init()
-    @Published var filteredUsers: [String] = .init()
+    private var updateObserver: AnyCancellable?
 
     init() {
-        _filteredUsers = .init(initialValue: [])
-        _filteredKeywords = .init(initialValue: FiltersTracker.loadFilters())
-    }
-
-    static func loadFilters() -> [String] {
-        if FileManager.default.fileExists(atPath: AppConstants.filteredKeywordsFilePath.path) {
-            do {
-                return try decodeFromFile(
-                    fromURL: AppConstants.filteredKeywordsFilePath,
-                    whatToDecode: .filteredKeywords
-                ) as? [String] ?? []
-            } catch let savedKeywordsDecodingError {
-                print("Failed while decoding saved filtered keywords: \(savedKeywordsDecodingError)")
-            }
-        } else {
-            print("Filtered keywords file does not exist, will try to create it")
-            do {
-                try createEmptyFile(at: AppConstants.filteredKeywordsFilePath)
-            } catch let emptyFileCreationError {
-                print("Failed while creating an empty file: \(emptyFileCreationError)")
-            }
+        _filteredKeywords = .init(initialValue: persistenceRepository.loadFilteredKeywords())
+        updateObserver = $filteredKeywords.sink { [weak self] in
+            self?.persistenceRepository.saveFilteredKeywords($0)
         }
-        return []
-
     }
 }
