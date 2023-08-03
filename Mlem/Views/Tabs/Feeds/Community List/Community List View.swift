@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct CommunitySection: Identifiable {
     let id = UUID()
@@ -241,6 +242,9 @@ struct CommunityListView: View {
 
 // Original article here: https://www.fivestars.blog/code/section-title-index-swiftui.html
 struct SectionIndexTitles: View {
+    
+    @Dependency(\.hapticManager) var hapticManager
+    
     let proxy: ScrollViewProxy
     let communitySections: [CommunitySection]
     @GestureState private var dragLocation: CGPoint = .zero
@@ -288,7 +292,8 @@ struct SectionIndexTitles: View {
                     proxy.scrollTo(viewId, anchor: .center)
 
                     // Play nice tappy taps
-                    HapticManager.shared.rigidInfo()
+                    // HapticManager.shared.rigidInfo()
+                    hapticManager.play(haptic: .rigidInfo)
                 }
             }
         }

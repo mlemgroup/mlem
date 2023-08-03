@@ -280,7 +280,7 @@ extension FeedView {
     // MARK: TODO: MOVE TO REPOSITORY MODEL
     
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
-        hapticManager.success()
+        hapticManager.play(haptic: .success)
         do {
             let request = FollowCommunityRequest(
                 account: appState.currentActiveAccount,
@@ -305,7 +305,7 @@ extension FeedView {
     
     private func block(communityId: Int, shouldBlock: Bool) async {
         do {
-            hapticManager.violentSuccess()
+            hapticManager.play(haptic: .violentSuccess)
             let request = BlockCommunityRequest(
                 account: appState.currentActiveAccount,
                 communityId: communityId,

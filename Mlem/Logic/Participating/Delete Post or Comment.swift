@@ -23,10 +23,10 @@ func deletePost(
         
         let response = try await APIClient().perform(request: request)
         postTracker.update(with: response.postView)
-        HapticManager.shared.destructiveSuccess()
+        HapticManager.shared.play(haptic: .destructiveSuccess)
         return response.postView
     } catch {
-        HapticManager.shared.error()
+        HapticManager.shared.play(haptic: .failure)
         throw error
     }
 }

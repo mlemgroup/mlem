@@ -21,13 +21,11 @@ func sendMarkCommentReplyAsReadRequest(
             commentId: commentReply.id,
             read: read
         )
-
-        HapticManager.shared.gentleSuccess()
+        
         let response = try await APIClient().perform(request: request)
         
         commentReplyTracker.update(with: response.commentReplyView)
     } catch {
-        HapticManager.shared.error()
         throw error
     }
 }

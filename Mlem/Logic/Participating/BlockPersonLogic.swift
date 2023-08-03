@@ -18,7 +18,7 @@ func blockPerson(
             block: blocked
         )
         let response = try await APIClient().perform(request: request)
-        HapticManager.shared.violentSuccess()
+        HapticManager.shared.play(haptic: .violentSuccess)
         return response.blocked
     }
 

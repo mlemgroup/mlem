@@ -23,6 +23,7 @@ struct FeedPost: View {
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.hapticManager) var hapticManager
     
     // MARK: Environment
     @AppStorage("postSize") var postSize: PostSize = .large
@@ -212,6 +213,7 @@ struct FeedPost: View {
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
+            hapticManager.play(haptic: .gentleSuccess)
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             _ = try await ratePost(
                 postId: postView.post.id,
@@ -221,6 +223,7 @@ struct FeedPost: View {
                 appState: appState
             )
         } catch {
+            hapticManager.play(haptic: .failure)
             appState.contextualError = .init(underlyingError: error)
         }
     }

@@ -21,10 +21,10 @@ func reportPost(
         )
         
         let response = try await APIClient().perform(request: request)
-        HapticManager.shared.violentSuccess()
+        HapticManager.shared.play(haptic: .violentSuccess)
         return response.postReportView
     } catch {
-        HapticManager.shared.error()
+        HapticManager.shared.play(haptic: .failure)
         throw error
     }
 }

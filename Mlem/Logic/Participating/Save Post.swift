@@ -14,14 +14,16 @@ func sendSavePostRequest(account: SavedAccount,
     do {
         let request = SavePostRequest(account: account, postId: postId, save: save)
 
-        HapticManager.shared.gentleSuccess()
+        // TODO: Move this elsewhere
+        // HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
 
         postTracker.update(with: response.postView)
 
         return response.postView
     } catch {
-        HapticManager.shared.error()
+        // TODO: Move this elsewhere
+        // HapticManager.shared.play(haptic: .failure)
         throw error
     }
 }
