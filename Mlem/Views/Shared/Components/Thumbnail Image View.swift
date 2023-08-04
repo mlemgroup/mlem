@@ -16,7 +16,8 @@ struct ThumbnailImageView: View {
     
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
-    @Environment(\.openURL) private var openURL
+    @Dependency(\.postRepository) var postRepository
+    @Environment(\.openURL) private var openURL 
     
     let postView: APIPostView
     
@@ -64,7 +65,7 @@ struct ThumbnailImageView: View {
     func markPostAsRead() {
         Task(priority: .userInitiated) {
             do {
-                let readPost = try await apiClient.markPostAsRead(for: postView.post.id, read: true)
+                let readPost = try await postRepository.markPostAsRead(for: postView.post.id, read: true)
                 postTracker.update(with: readPost.postView)
             } catch {
                 errorHandler.handle(.init(underlyingError: error))
