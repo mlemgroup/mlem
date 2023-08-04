@@ -12,6 +12,9 @@
 		032EAFED2A6DB56D00CC19A6 /* Edit Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032EAFEC2A6DB56D00CC19A6 /* Edit Post.swift */; };
 		038A16DF2A75172C0087987E /* PostLayoutEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16DE2A75172C0087987E /* PostLayoutEditView.swift */; };
 		038A16E12A75AA880087987E /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E02A75AA880087987E /* WidgetModel.swift */; };
+		038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E42A7A97380087987E /* LayoutWidgetView.swift */; };
+		038A16E72A7A9C430087987E /* PostLayoutWidgetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E62A7A9C430087987E /* PostLayoutWidgetCollection.swift */; };
+		038A16E92A7A9C640087987E /* PostLayoutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E82A7A9C640087987E /* PostLayoutWidget.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
 		03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* TimestampView.swift */; };
 		03CB329E2A6D8E910021EF27 /* PostDetailEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB329D2A6D8E910021EF27 /* PostDetailEditorView.swift */; };
@@ -397,6 +400,9 @@
 		032EAFEC2A6DB56D00CC19A6 /* Edit Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Edit Post.swift"; sourceTree = "<group>"; };
 		038A16DE2A75172C0087987E /* PostLayoutEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutEditView.swift; sourceTree = "<group>"; };
 		038A16E02A75AA880087987E /* WidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModel.swift; sourceTree = "<group>"; };
+		038A16E42A7A97380087987E /* LayoutWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetView.swift; sourceTree = "<group>"; };
+		038A16E62A7A9C430087987E /* PostLayoutWidgetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutWidgetCollection.swift; sourceTree = "<group>"; };
+		038A16E82A7A9C640087987E /* PostLayoutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutWidget.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostDetailEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailEditorView.swift; sourceTree = "<group>"; };
@@ -843,7 +849,10 @@
 			children = (
 				CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */,
 				038A16E02A75AA880087987E /* WidgetModel.swift */,
+				038A16E82A7A9C640087987E /* PostLayoutWidget.swift */,
+				038A16E62A7A9C430087987E /* PostLayoutWidgetCollection.swift */,
 				038A16DE2A75172C0087987E /* PostLayoutEditView.swift */,
+				038A16E42A7A97380087987E /* LayoutWidgetView.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -2204,6 +2213,7 @@
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */,
 				CD6483342A39F1C100EE6CA3 /* API Post View - Post Type.swift in Sources */,
+				038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */,
 				CDB0117F2A6F70A000D043EB /* Editor Tracker.swift in Sources */,
@@ -2305,6 +2315,7 @@
 				50A881242A71A4CD003E3661 /* PersistenceRepository.swift in Sources */,
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
+				038A16E92A7A9C640087987E /* PostLayoutWidget.swift in Sources */,
 				CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */,
 				CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */,
 				CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */,
@@ -2381,6 +2392,7 @@
 				CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */,
 				6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
+				038A16E72A7A9C430087987E /* PostLayoutWidgetCollection.swift in Sources */,
 				6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
 				AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */,
