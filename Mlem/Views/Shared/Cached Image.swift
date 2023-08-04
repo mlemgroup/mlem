@@ -118,7 +118,6 @@ struct CachedImage: View {
                         .quickLookPreview($bigPicMode)
                         .onChange(of: bigPicMode) { mode in
                             if mode == nil, let dismissCallback {
-                                print("dismissed")
                                 dismissCallback()
                             }
                         }
