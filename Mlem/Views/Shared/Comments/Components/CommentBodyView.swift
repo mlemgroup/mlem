@@ -87,6 +87,7 @@ struct CommentBodyView: View {
                 } else if !isCollapsed {
                     MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
+                        .transition(.markdownView())
                 }
             }
             

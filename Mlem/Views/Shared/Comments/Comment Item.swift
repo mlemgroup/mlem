@@ -96,27 +96,58 @@ struct CommentItem: View {
     }
 
     // MARK: Body
-
+    
     // swiftlint:disable line_length
-    var body: some View {
+    private var bodyOpacity: Double {
         if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            EmptyView()
+            return 0
         } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            EmptyView()
+            return 0
         } else {
-            VStack(spacing: 0) {
-                commentBody(hierarchicalComment: self.hierarchicalComment)
-                Divider()
-            }
-            .clipped()
-            .padding(.leading, indentValue)
+            return 1
         }
+    }
+    
+    private var bodyHeight: CGFloat? {
+        if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+            return 0.0000001
+        } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+            return 0.0000001
+        } else {
+            return nil
+        }
+    }
+
+    var body: some View {
+//        Group {
+//            if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+//                EmptyView()
+//                    .id(hierarchicalComment.id)
+////                    .transition(.commentView())
+//            } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+//                EmptyView()
+//                    .id(hierarchicalComment.id)
+////                    .transition(.commentView())
+//            } else {
+                VStack(spacing: 0) {
+                    commentBody(hierarchicalComment: self.hierarchicalComment)
+                    Divider()
+                }
+                .id(hierarchicalComment.id)
+                .frame(height: bodyHeight)
+                .opacity(bodyOpacity)
+                .transition(.commentView())
+                .clipped()
+                .padding(.leading, indentValue)
+//            }
+//        }
+//        .id(hierarchicalComment.id)
+//        .transition(.commentView())
     }
     // swiftlint:enable line_length
 
     // MARK: Subviews
     
-    // swiftlint:disable function_body_length
     @ViewBuilder
     private func commentBody(hierarchicalComment: HierarchicalComment) -> some View {
         Group {
@@ -145,16 +176,10 @@ struct CommentItem: View {
                         .frame(height: AppConstants.postAndCommentSpacing)
                 }
             }
-            .transition(
-                .asymmetric(
-                    insertion: .move(edge: .bottom).combined(with: .opacity),
-                    removal: .move(edge: .top).combined(with: .opacity)
-                )
-            )
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
         .onTapGesture {
-            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
+            withAnimation(.showHideComment()) {
                 // Perhaps we want an explict flag for this in the future?
                 if !showPostContext {
                     commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
@@ -183,7 +208,6 @@ struct CommentItem: View {
 //                                                                          report: true))
 //        }
     }
-    // swiftlint:enable function_body_length
 }
 
 // MARK: - Swipe Actions
