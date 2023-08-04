@@ -11,7 +11,13 @@ internal extension Animation {
     
     /// Animation for expanding or collapsing a comment and its child comments.
     static func showHideComment() -> Animation {
-        .interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)
+        let standard = (0.4, 1.0, 0.25)
+        /// I like this =)
+        let quick = (0.2, 1.0, 0.25)
+        return .interactiveSpring(
+            response: standard.0,
+            dampingFraction: standard.1,
+            blendDuration: standard.2)
     }
 }
 
