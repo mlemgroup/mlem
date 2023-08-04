@@ -25,5 +25,6 @@ extension APICommunityView: Hashable, Equatable, Identifiable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.community.id)
         hasher.combine(self.subscribed)
+        hasher.combine(self.blocked)
     }
 }
