@@ -22,16 +22,20 @@ struct CachedImage: View {
     @State var size: CGSize
     @State var shouldRecomputeSize: Bool
     
+    var imageNotFound: () -> AnyView
+    
     let maxHeight: CGFloat
     let screenWidth: CGFloat
     
     init(url: URL?,
          shouldExpand: Bool = true,
          maxHeight: CGFloat = .infinity,
-         fixedSize: CGSize? = nil) {
+         fixedSize: CGSize? = nil,
+         imageNotFound: @escaping () -> AnyView = imageNotFoundDefault) {
         self.url = url
         self.shouldExpand = shouldExpand
         self.maxHeight = maxHeight
+        self.imageNotFound = imageNotFound
         
         screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
         
@@ -113,8 +117,6 @@ struct CachedImage: View {
                 imageNotFound()
                     .frame(width: size.width, height: size.height)
                     .background(Color(uiColor: .systemGray4))
-                    .foregroundColor(.secondary)
-                    .cornerRadius(AppConstants.smallItemCornerRadius)
             } else {
                 ProgressView() // Acts as a placeholder
                     .frame(width: size.width, height: size.height)
@@ -124,12 +126,15 @@ struct CachedImage: View {
         .frame(width: size.width, height: size.height)
     }
     
-    func imageNotFound() -> some View {
-        Image(systemName: "questionmark.square.dashed")
+    static func imageNotFoundDefault() -> AnyView {
+        AnyView(Image(systemName: "questionmark.square.dashed")
             .resizable()
             .scaledToFit()
             .frame(maxWidth: AppConstants.thumbnailSize, maxHeight: AppConstants.thumbnailSize)
             .padding(AppConstants.postAndCommentSpacing)
+            .background(Color(uiColor: .systemGray4))
+            .foregroundColor(.secondary)
+        )
     }
     
     /**
