@@ -98,51 +98,24 @@ struct CommentItem: View {
     // MARK: Body
     
     // swiftlint:disable line_length
-    private var bodyOpacity: Double {
-        if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            return 0
-        } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            return 0
-        } else {
-            return 1
-        }
-    }
-    
-    private var bodyHeight: CGFloat? {
-        if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            return 0.0000001
-        } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            return 0.0000001
-        } else {
-            return nil
-        }
-    }
-
     var body: some View {
-//        Group {
-//            if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-//                EmptyView()
-//                    .id(hierarchicalComment.id)
-////                    .transition(.commentView())
-//            } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-//                EmptyView()
-//                    .id(hierarchicalComment.id)
-////                    .transition(.commentView())
-//            } else {
-                VStack(spacing: 0) {
-                    commentBody(hierarchicalComment: self.hierarchicalComment)
-                    Divider()
+        Group {
+            VStack(spacing: 0) {
+                if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+                    EmptyView()
+                } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+                    EmptyView()
+                } else {
+                    Group {
+                        commentBody(hierarchicalComment: self.hierarchicalComment)
+                        Divider()
+                    }
+                    .clipped()
+                    .padding(.leading, indentValue)
                 }
-                .id(hierarchicalComment.id)
-                .frame(height: bodyHeight)
-                .opacity(bodyOpacity)
-                .transition(.commentView())
-                .clipped()
-                .padding(.leading, indentValue)
-//            }
-//        }
-//        .id(hierarchicalComment.id)
-//        .transition(.commentView())
+            }
+        }
+        .transition(.commentView())
     }
     // swiftlint:enable line_length
 

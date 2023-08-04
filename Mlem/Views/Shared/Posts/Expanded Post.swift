@@ -144,7 +144,6 @@ struct ExpandedPost: View {
                     showPostContext: false,
                     showCommentCreator: true
                 )
-//                .id(comment.id)
             }
         }
     }
