@@ -16,6 +16,7 @@ struct ThumbnailImageView: View {
     
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
+    @Environment(\.openURL) private var openURL
     
     let postView: APIPostView
     
@@ -34,6 +35,12 @@ struct ThumbnailImageView: View {
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .link(let url):
                 CachedImage(url: url, shouldExpand: false, fixedSize: size)
+                    .onTapGesture {
+                        if let url = postView.post.url {
+                            openURL(url)
+                            markPostAsRead()
+                        }
+                    }
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .text:
                 Image(systemName: "text.book.closed")
