@@ -66,6 +66,15 @@ struct SettingsView: View {
                         Label("Advanced", systemImage: "gearshape.2.fill").labelStyle(SquircleLabelStyle(color: .gray))
                     }
                 }
+                
+                Section {
+                    NavigationLink {
+                        ExperimentalSettingsView()
+                    } label: {
+                        Label("Experimental", systemImage: "loupe")
+                            .labelStyle(SquircleLabelStyle(color: .purple))
+                    }
+                }
             }
             .fancyTabScrollCompatible()
             .handleLemmyViews()
