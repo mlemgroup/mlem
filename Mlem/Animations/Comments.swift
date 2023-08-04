@@ -13,11 +13,14 @@ internal extension Animation {
     static func showHideComment() -> Animation {
         let standard = (0.4, 1.0, 0.25)
         /// I like this =)
-        let quick = (0.2, 1.0, 0.25)
+//        let quick = (0.2, 1.0, 0.25)
+        /// Even nicer =P
+//        let quick = (0.225, 1.0, 0.275)
+        let animationValues = standard
         return .interactiveSpring(
-            response: standard.0,
-            dampingFraction: standard.1,
-            blendDuration: standard.2)
+            response: animationValues.0,
+            dampingFraction: animationValues.1,
+            blendDuration: animationValues.2)
     }
 }
 
@@ -25,9 +28,6 @@ internal extension AnyTransition {
     
     static func markdownView() -> AnyTransition {
         .opacity
-//        .move(edge: .top).combined(with: .opacity)
-//        .push(from: .bottom).combined(with: .opacity)
-        
     }
     
     static func commentView() -> AnyTransition {
@@ -40,15 +40,6 @@ internal extension AnyTransition {
 //        .asymmetric(
 //            insertion: .move(edge: .leading),
 //            removal: .move(edge: .trailing)
-//        )
-        
-//        .move(edge: .top).combined(with: .opacity)
-        
-//        .push(from: .bottom).combined(with: .opacity)
-        
-//        .asymmetric(
-//            insertion: .slide.combined(with: .opacity),
-//            removal: .slide.combined(with: .opacity)
 //        )
     }
 }
