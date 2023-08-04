@@ -66,7 +66,7 @@ struct ThumbnailImageView: View {
         Task(priority: .userInitiated) {
             do {
                 let readPost = try await postRepository.markRead(for: postView.post.id, read: true)
-                postTracker.update(with: readPost.postView)
+                postTracker.update(with: readPost)
             } catch {
                 errorHandler.handle(.init(underlyingError: error))
             }
