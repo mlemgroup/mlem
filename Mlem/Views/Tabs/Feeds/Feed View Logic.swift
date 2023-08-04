@@ -318,6 +318,8 @@ extension FeedView {
             }
 
             communityDetails?.communityView = response.communityView
+            // refresh the feed after blocking which will show/hide the posts
+            await hardRefreshFeed()
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             let phrase = shouldBlock ? "block" : "unblock"
