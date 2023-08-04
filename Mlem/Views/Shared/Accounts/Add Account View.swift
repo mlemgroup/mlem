@@ -253,7 +253,7 @@ struct AddSavedInstanceView: View {
         }
         
         // There should always be a match, but we return if there isn't just to be safe
-        guard let match = instance.firstMatch(of: /^(?:https?:\/\/)?(?:www\.)?([^\/\?]+?)(?:\.*$|\/)/) else {
+        guard let match = instance.firstMatch(of: /^(?:https?:\/\/)?(?:www\.)?(?:[\.\s]*)([^\/\?]+?)(?:[\.\s]*$|\/)/) else {
             return
         }
         let sanitizedLink = String(match.1)
