@@ -8,9 +8,9 @@
 import Foundation
 import SwiftUI
 
-enum DeploymentEnv {
+enum DeploymentEnv: Equatable {
     
-    enum DistributionChannel {
+    enum DistributionChannel: Equatable {
         case appStore, testFlight
         /// `StoreKit` receipt not found.
         case unknown

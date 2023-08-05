@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State var navigationPath = NavigationPath()
 
     @Environment(\.openURL) private var openURL
+    @Environment(\.deploymentEnv) private var deploymentEnv
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -75,6 +76,7 @@ struct SettingsView: View {
                             .labelStyle(SquircleLabelStyle(color: .purple))
                     }
                 }
+                .isHidden(deploymentEnv == .production(.appStore), remove: true)
             }
             .fancyTabScrollCompatible()
             .handleLemmyViews()
