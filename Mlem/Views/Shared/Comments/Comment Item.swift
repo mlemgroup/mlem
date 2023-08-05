@@ -152,7 +152,7 @@ struct CommentItem: View {
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
         .onTapGesture {
-            withAnimation(.showHideComment()) {
+            withAnimation(.showHideComment(!hierarchicalComment.isCollapsed)) {
                 // Perhaps we want an explict flag for this in the future?
                 if !showPostContext {
                     commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)

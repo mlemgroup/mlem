@@ -10,8 +10,8 @@ import SwiftUI
 internal extension Animation {
     
     /// Animation for expanding or collapsing a comment and its child comments.
-    static func showHideComment() -> Animation {
-        let standard = (0.4, 1.0, 0.25)
+    static func showHideComment(_ collapse: Bool) -> Animation {
+        let standard = (0.4, 1.0, collapse ? 0.25 : 0.3)
         let animationValues = standard
         return .interactiveSpring(
             response: animationValues.0,
