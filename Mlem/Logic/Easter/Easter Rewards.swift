@@ -8,9 +8,10 @@
 import Foundation
 
 enum IconId: String {
-    case beehawCommunity = "Beehaw Community By Aaron Schneider",
-         mlemhaw = "Mlemhaw By Clays"
+    case beehawCommunity = "Beehaw Community By Aaron Schneider"
+    case mlemhaw = "Mlemhaw By Clays"
 }
+
 enum EasterFlag: Codable, Hashable {
     case login(host: RecognizedLemmyInstances)
 }

@@ -156,17 +156,10 @@ struct CommunityLabel: View {
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
-            if let communityAvatarLink = community.icon {
-                CachedAsyncImage(url: avatarUrl(from: communityAvatarLink), urlCache: AppConstants.urlCache) { image in
-                    if let avatar = image.image {
-                        avatar
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: avatarSize(), height: avatarSize())
-                    } else {
-                        defaultCommunityAvatar()
-                    }
-                }
+            if let url = community.icon {
+                CachedImage(url: avatarUrl(from: url),
+                            fixedSize: CGSize(width: avatarSize(), height: avatarSize()),
+                            imageNotFound: defaultCommunityAvatar)
             } else {
                 defaultCommunityAvatar()
             }
@@ -175,11 +168,12 @@ struct CommunityLabel: View {
         .accessibilityHidden(true)
     }
     
-    private func defaultCommunityAvatar() -> some View {
-        Image(systemName: "building.2.crop.circle.fill")
+    private func defaultCommunityAvatar() -> AnyView {
+        AnyView(Image(systemName: "building.2.crop.circle.fill")
             .resizable()
             .scaledToFit()
             .frame(width: avatarSize(), height: avatarSize())
             .foregroundColor(.secondary)
+        )
     }
 }

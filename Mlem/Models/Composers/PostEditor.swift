@@ -18,7 +18,7 @@ struct PostEditorModel: Identifiable {
     
     init(community: APICommunity,
          appState: AppState,
-         postTracker: PostTracker = PostTracker(shouldPerformMergeSorting: false),
+         postTracker: PostTracker = PostTracker(shouldPerformMergeSorting: false, internetSpeed: .slow),
          editPost: APIPost? = nil,
          responseCallback: ((APIPostView) -> Void)? = nil) {
         self.community = community

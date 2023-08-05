@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-internal enum FavoritesPurgingError {
-    case failedToDeleteOldFavoritesFile, failedToCreateNewEmptyFile
-}
-
 struct GeneralSettingsView: View {
     
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
@@ -81,6 +79,17 @@ struct GeneralSettingsView: View {
             } footer: {
                 Text("The sort mode that is selected by default when you open the app.")
             }
+            
+            Section {
+                SelectableSettingsItem(settingIconSystemName: AppConstants.connectionSymbolName,
+                                       settingName: "Internet Speed",
+                                       currentValue: $internetSpeed,
+                                       options: InternetSpeed.allCases)
+            } header: {
+                Text("Connection Type")
+            } footer: {
+                Text("Optimizes performance for your internet speed. You may need to restart the app for all optimizations to take effect.")
+            }
 
             Section {
                 Button(role: .destructive) {
@@ -95,35 +104,11 @@ struct GeneralSettingsView: View {
                     isPresented: $isShowingFavoritesDeletionConfirmation,
                     titleVisibility: .visible) {
                         Button(role: .destructive) {
-                            do {
-                                try FileManager.default.removeItem(at: AppConstants.favoriteCommunitiesFilePath)
-
-                                do {
-                                    try createEmptyFile(at: AppConstants.favoriteCommunitiesFilePath)
-
-                                    favoritesTracker.favoriteCommunities = .init()
-                                } catch let emptyFileCreationError {
-                                    appState.contextualError = .init(
-                                        title: "Couldn't recreate favorites file",
-                                        message: "Try restarting Mlem.",
-                                        underlyingError: emptyFileCreationError
-                                    )
-                                    
-                                    print("Failed while creting empty file: \(emptyFileCreationError)")
-                                }
-                            } catch let fileDeletionError {
-                                appState.contextualError = .init(
-                                    title: "Couldn't delete favorites",
-                                    message: "Try restarting Mlem.",
-                                    underlyingError: fileDeletionError
-                                )
-                                
-                                print("Failed while deleting favorites: \(fileDeletionError)")
-                            }
+                            favoritesTracker.favoriteCommunities = .init()
                         } label: {
                             Text("Delete all favorites")
                         }
-
+                        
                         Button(role: .cancel) {
                             isShowingFavoritesDeletionConfirmation.toggle()
                         } label: {

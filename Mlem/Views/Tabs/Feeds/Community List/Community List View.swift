@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct CommunitySection: Identifiable {
     let id = UUID()
@@ -241,6 +242,9 @@ struct CommunityListView: View {
 
 // Original article here: https://www.fivestars.blog/code/section-title-index-swiftui.html
 struct SectionIndexTitles: View {
+    
+    @Dependency(\.hapticManager) var hapticManager
+    
     let proxy: ScrollViewProxy
     let communitySections: [CommunitySection]
     @GestureState private var dragLocation: CGPoint = .zero
@@ -288,7 +292,8 @@ struct SectionIndexTitles: View {
                     proxy.scrollTo(viewId, anchor: .center)
 
                     // Play nice tappy taps
-                    HapticManager.shared.rigidInfo()
+                    // HapticManager.shared.rigidInfo()
+                    hapticManager.play(haptic: .rigidInfo)
                 }
             }
         }
@@ -367,18 +372,21 @@ func generateFakeFavoritedCommunity(id: Int, namePrefix: String) -> FavoriteComm
     return FavoriteCommunity(forAccountID: 0, community: generateFakeCommunity(id: id, namePrefix: namePrefix))
 }
 
-struct CommunityListViewPreview: PreviewProvider {
-    static let favoritesTracker: FavoriteCommunitiesTracker = FavoriteCommunitiesTracker(favoriteCommunities: [
-        generateFakeFavoritedCommunity(id: 0, namePrefix: fakeCommunityPrefixes[0]),
-        generateFakeFavoritedCommunity(id: 20, namePrefix: fakeCommunityPrefixes[20]),
-        generateFakeFavoritedCommunity(id: 10, namePrefix: fakeCommunityPrefixes[10])
-    ])
-    static var previews: some View {
-        CommunityListView(
-            testCommunities: fakeCommunityPrefixes.enumerated().map({ index, element in
-                generateFakeCommunity(id: index, namePrefix: element)
-            }),
-            selectedCommunity: .constant(nil)
-        ).environmentObject(favoritesTracker)
-    }
-}
+// TODO: commenting this out for now as the tracker no longer takes an argument purely for constructing previews
+// I'll look at moving the community calls into a repostiory next and that way we can stub mock data via the dependency 🤞
+
+// struct CommunityListViewPreview: PreviewProvider {
+//    static let favoritesTracker: FavoriteCommunitiesTracker = FavoriteCommunitiesTracker(favoriteCommunities: [
+//        generateFakeFavoritedCommunity(id: 0, namePrefix: fakeCommunityPrefixes[0]),
+//        generateFakeFavoritedCommunity(id: 20, namePrefix: fakeCommunityPrefixes[20]),
+//        generateFakeFavoritedCommunity(id: 10, namePrefix: fakeCommunityPrefixes[10])
+//    ])
+//    static var previews: some View {
+//        CommunityListView(
+//            testCommunities: fakeCommunityPrefixes.enumerated().map({ index, element in
+//                generateFakeCommunity(id: index, namePrefix: element)
+//            }),
+//            selectedCommunity: .constant(nil)
+//        ).environmentObject(favoritesTracker)
+//    }
+// }

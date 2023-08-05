@@ -14,26 +14,29 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var savedAccounts: SavedAccountTracker
-
+    
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: APICommunityView.self) { context in
-                FeedView(community: context.community, feedType: .all)
+                FeedView(community: context.community, feedType: .all, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APICommunity.self) { community in
-                FeedView(community: community, feedType: .all)
+                FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: CommunityLinkWithContext.self) { context in
-                FeedView(community: context.community, feedType: context.feedType)
+                FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
@@ -51,7 +54,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: APIPostView.self) { post in
                 ExpandedPost(post: post)
                 .environmentObject(
-                    PostTracker(shouldPerformMergeSorting: false, initialItems: [post])
+                    PostTracker(shouldPerformMergeSorting: false, internetSpeed: internetSpeed, initialItems: [post])
                 )
                 .environmentObject(appState)
             }
@@ -119,19 +122,21 @@ struct HandleLemmyLinkResolution: ViewModifier {
                     do {
                         let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account, query: lookup))
                         
-                        // this is gonna be a bit of an ugly if switch but oh well for now
-                        if let post = resolution.post {
-                            // wop wop that was a post link!
-                            return navigationPath.wrappedValue.append(post)
-                        } else if let community = resolution.community {
-                            return navigationPath.wrappedValue.append(community)
-                        } else if let user = resolution.person?.person {
-                            return navigationPath.wrappedValue.append(user)
+                        await MainActor.run {
+                            // this is gonna be a bit of an ugly if switch but oh well for now
+                            if let post = resolution.post {
+                                // wop wop that was a post link!
+                                return navigationPath.wrappedValue.append(post)
+                            } else if let community = resolution.community {
+                                return navigationPath.wrappedValue.append(community)
+                            } else if let user = resolution.person?.person {
+                                return navigationPath.wrappedValue.append(user)
+                            }
+                            // else if let d = resolution.comment {
+                            // hmm I don't think we can do that right now!
+                            // so I'll skip and let the system open it instead
+                            // }
                         }
-                        // else if let d = resolution.comment {
-                        // hmm I don't think we can do that right now!
-                        // so I'll skip and let the system open it instead
-                        // }
                     } catch {
                         guard case let APIClientError.response(apiError, _) = error,
                               apiError.error == "couldnt_find_object",

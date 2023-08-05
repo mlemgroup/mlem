@@ -23,13 +23,19 @@ struct FeedPost: View {
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.hapticManager) var hapticManager
     
     // MARK: Environment
+    @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
+    
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
+    
+    @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
+    @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var editorTracker: EditorTracker
@@ -59,10 +65,16 @@ struct FeedPost: View {
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
+    
+    // MARK: Computed
+    
+    var barThickness: CGFloat { !postView.read && diffWithoutColor && readMarkStyle == .bar  ? CGFloat(readBarThickness) : .zero }
+    var showCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
         VStack(spacing: 0) {
             postItem
+                .border(width: barThickness, edges: [.leading], color: .secondary)
                 .background(Color.systemBackground)
 //                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
 //                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
@@ -118,6 +130,10 @@ struct FeedPost: View {
 
                         Spacer()
 
+                        if showCheck {
+                            ReadCheck()
+                        }
+                        
                         EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                     }
 
@@ -212,6 +228,7 @@ struct FeedPost: View {
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
+            hapticManager.play(haptic: .gentleSuccess)
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             _ = try await ratePost(
                 postId: postView.post.id,
@@ -221,6 +238,7 @@ struct FeedPost: View {
                 appState: appState
             )
         } catch {
+            hapticManager.play(haptic: .failure)
             appState.contextualError = .init(underlyingError: error)
         }
     }

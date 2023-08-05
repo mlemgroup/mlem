@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class MessagesTracker: FeedTracker<APIPrivateMessageView>, InboxTracker {
@@ -15,7 +16,7 @@ class MessagesTracker: FeedTracker<APIPrivateMessageView>, InboxTracker {
             GetPrivateMessagesRequest(
                 account: account,
                 page: page,
-                limit: 50,
+                limit: internetSpeed.pageSize,
                 unreadOnly: unreadOnly
             )
         )
@@ -26,7 +27,7 @@ class MessagesTracker: FeedTracker<APIPrivateMessageView>, InboxTracker {
             GetPrivateMessagesRequest(
                 account: account,
                 page: 1,
-                limit: 50,
+                limit: internetSpeed.pageSize,
                 unreadOnly: unreadOnly
             )
         )

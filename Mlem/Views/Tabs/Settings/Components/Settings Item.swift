@@ -39,10 +39,11 @@ struct SelectableSettingsItem<T: SettingsOptions>: View {
                 }
             }
         } label: {
-            HStack(alignment: .center) {
+            Label {
+                Text(settingName)
+            } icon: {
                 Image(systemName: settingIconSystemName)
                     .foregroundColor(.pink)
-                Text(settingName)
             }
         }
     }

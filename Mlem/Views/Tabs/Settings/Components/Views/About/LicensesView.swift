@@ -28,9 +28,6 @@ struct LicensesView: View {
                 }
                 
                 Section("Open Source Licenses") {
-                    NavigationLink("Debounced OnChange") {
-                        DocumentView(text: debouncedOnChangeLicense.body)
-                    }
                     
                     NavigationLink("KeychainAccess") {
                         DocumentView(text: keychainAccessLicense.body)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class MentionsTracker: FeedTracker<APIPersonMentionView>, InboxTracker {
@@ -16,7 +17,7 @@ class MentionsTracker: FeedTracker<APIPersonMentionView>, InboxTracker {
                 account: account,
                 sort: .new,
                 page: page,
-                limit: 50,
+                limit: internetSpeed.pageSize,
                 unreadOnly: unreadOnly
             )
         )
@@ -28,7 +29,7 @@ class MentionsTracker: FeedTracker<APIPersonMentionView>, InboxTracker {
                 account: account,
                 sort: .new,
                 page: 1,
-                limit: 50,
+                limit: internetSpeed.pageSize,
                 unreadOnly: unreadOnly
             )
         )

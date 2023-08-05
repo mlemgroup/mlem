@@ -17,11 +17,14 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     private(set) var page: Int = 1
 
     private var ids: Set<Item.UniqueIdentifier> = .init(minimumCapacity: 1_000)
-    private var thresholdOffset: Int = -10
     private let shouldPerformMergeSorting: Bool
+    let internetSpeed: InternetSpeed
 
-    init(shouldPerformMergeSorting: Bool = true, initialItems: [Item] = .init()) {
+    init(shouldPerformMergeSorting: Bool = true,
+         internetSpeed: InternetSpeed,
+         initialItems: [Item] = .init()) {
         self.shouldPerformMergeSorting = shouldPerformMergeSorting
+        self.internetSpeed = internetSpeed
         items = initialItems
     }
 
@@ -35,10 +38,24 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
             return false
         }
 
-        let thresholdIndex = items.index(items.endIndex, offsetBy: thresholdOffset)
+        let thresholdIndex = items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset)
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
            itemIndex >= thresholdIndex {
+            return true
+        }
+
+        return false
+    }
+    
+    /// Similar to above, but only returns true if this item *is* the threshold item
+    @MainActor func shouldLoadContentPrecisely(after item: Item) -> Bool {
+        guard !isLoading else { return false }
+        
+        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset))
+  
+        if let itemIndex = items.firstIndex(where: { $0.uniqueIdentifier == item.uniqueIdentifier }),
+           itemIndex == thresholdIndex {
             return true
         }
 
@@ -54,7 +71,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
         let response = try await retrieveItems(with: request)
 
-        add(response.items, filtering: filtering)
+        await add(response.items, filtering: filtering)
         page += 1
 
         return response
@@ -79,6 +96,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     /// A method to add new items into the tracker, duplicate items will be rejected
     /// - Parameter newItems: The array of new `Item`'s you wish to add
+    @MainActor
     func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true}) {
         let accepted = dedupedItems(from: newItems.filter(filtering))
         if !shouldPerformMergeSorting {
@@ -92,6 +110,8 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
         RunLoop.main.perform { [self] in
             items = merged
         }
+        
+        return
     }
 
     /// A method to add an item  to the start of the current list of items
