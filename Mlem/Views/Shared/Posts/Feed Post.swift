@@ -244,6 +244,9 @@ struct FeedPost: View {
     }
 
     func savePost() async {
+        
+        hapticManager.play(haptic: .success)
+        
         do {
             _ = try await sendSavePostRequest(
                 account: appState.currentActiveAccount,

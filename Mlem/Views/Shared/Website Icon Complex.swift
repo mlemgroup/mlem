@@ -17,6 +17,13 @@ struct WebsiteIconComplex: View {
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
     let post: APIPost
+    var onTapActions: (() -> Void)?
+    
+    init(post: APIPost,
+         onTapActions: (() -> Void)? = nil) {
+        self.post = post
+        self.onTapActions = onTapActions
+    }
 
     @State private var overridenWebsiteFaviconName: String = "globe"
 
@@ -97,6 +104,9 @@ struct WebsiteIconComplex: View {
         .onTapGesture {
             if let url = post.url {
                 openURL(url)
+                if let onTapActions {
+                    onTapActions()
+                }
             }
         }
     }
