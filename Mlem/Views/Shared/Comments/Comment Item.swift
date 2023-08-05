@@ -110,12 +110,13 @@ struct CommentItem: View {
                         commentBody(hierarchicalComment: self.hierarchicalComment)
                         Divider()
                     }
+                    /// Clips any transitions to this view, otherwise comments will animate over other ones.
                     .clipped()
                     .padding(.leading, indentValue)
+                    .transition(.commentView())
                 }
             }
         }
-        .transition(.commentView())
     }
     // swiftlint:enable line_length
 
@@ -123,31 +124,29 @@ struct CommentItem: View {
     
     @ViewBuilder
     private func commentBody(hierarchicalComment: HierarchicalComment) -> some View {
-        Group {
-            VStack(alignment: .leading, spacing: 0) {
-                CommentBodyView(commentView: hierarchicalComment.commentView,
-                                isParentCollapsed: $hierarchicalComment.isParentCollapsed,
-                                isCollapsed: $hierarchicalComment.isCollapsed,
-                                showPostContext: showPostContext,
-                                menuFunctions: genMenuFunctions())
-                // top and bottom spacing uses default even when compact--it's *too* compact otherwise
-                .padding(.top, AppConstants.postAndCommentSpacing)
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                
-                if !hierarchicalComment.isCollapsed && !compactComments {
-                    CommentInteractionBar(commentView: hierarchicalComment.commentView,
-                                          displayedScore: displayedScore,
-                                          displayedVote: displayedVote,
-                                          displayedSaved: displayedSaved,
-                                          upvote: upvote,
-                                          downvote: downvote,
-                                          saveComment: saveComment,
-                                          deleteComment: deleteComment,
-                                          replyToComment: replyToComment)
-                } else {
-                    Spacer()
-                        .frame(height: AppConstants.postAndCommentSpacing)
-                }
+        VStack(alignment: .leading, spacing: 0) {
+            CommentBodyView(commentView: hierarchicalComment.commentView,
+                            isParentCollapsed: $hierarchicalComment.isParentCollapsed,
+                            isCollapsed: $hierarchicalComment.isCollapsed,
+                            showPostContext: showPostContext,
+                            menuFunctions: genMenuFunctions())
+            // top and bottom spacing uses default even when compact--it's *too* compact otherwise
+            .padding(.top, AppConstants.postAndCommentSpacing)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            
+            if !hierarchicalComment.isCollapsed && !compactComments {
+                CommentInteractionBar(commentView: hierarchicalComment.commentView,
+                                      displayedScore: displayedScore,
+                                      displayedVote: displayedVote,
+                                      displayedSaved: displayedSaved,
+                                      upvote: upvote,
+                                      downvote: downvote,
+                                      saveComment: saveComment,
+                                      deleteComment: deleteComment,
+                                      replyToComment: replyToComment)
+            } else {
+                Spacer()
+                    .frame(height: AppConstants.postAndCommentSpacing)
             }
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
