@@ -296,11 +296,12 @@ extension FeedView {
             
             _ = try await APIClient().perform(request: request)
             
+            let communityName = community?.name ?? "community"
             Task {
                 if shouldSubscribe {
-                    await notifier.add(.success("Subscibed to \(community!.name)"))
+                    await notifier.add(.success("Subscibed to \(communityName)"))
                 } else {
-                    await notifier.add(.success("Unsubscribed from \(community!.name)"))
+                    await notifier.add(.success("Unsubscribed from \(communityName)"))
                 }
             }
             
@@ -325,6 +326,15 @@ extension FeedView {
                 communityId: communityId,
                 block: shouldBlock
             )
+            
+            let communityName = community?.name ?? "community"
+            Task {
+                if shouldBlock {
+                    await notifier.add(.success("Blocked \(communityName)"))
+                } else {
+                    await notifier.add(.success("Unblocked \(communityName)"))
+                }
+            }
             
             _ = try await APIClient().perform(request: request)
             await fetchCommunityDetails()
