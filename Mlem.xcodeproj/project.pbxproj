@@ -161,7 +161,6 @@
 		63D64E052A1BC20D00FD39C6 /* Post Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D64E042A1BC20D00FD39C6 /* Post Post.swift */; };
 		63DF71F12A02999C002AC14E /* App Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DF71F02A02999C002AC14E /* App Constants.swift */; };
 		63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D38C2A13BCDE00EC1FBD /* Community Search Result Tracker.swift */; };
-		63E5D3902A13CE4100EC1FBD /* DebouncedOnChange in Frameworks */ = {isa = PBXBuildFile; productRef = 63E5D38F2A13CE4100EC1FBD /* DebouncedOnChange */; };
 		63E5D3922A13CF2300EC1FBD /* Favorite Community Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3912A13CF2300EC1FBD /* Favorite Community Tracker.swift */; };
 		63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3932A13CF3600EC1FBD /* Favorite Community.swift */; };
 		63E5D3962A13DAF200EC1FBD /* Mark Community as Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */; };
@@ -754,7 +753,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63E5D3902A13CE4100EC1FBD /* DebouncedOnChange in Frameworks */,
 				63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
@@ -1941,7 +1939,6 @@
 			name = Mlem;
 			packageProductDependencies = (
 				63F0C7B62A052F5000A18C5D /* CachedAsyncImage */,
-				63E5D38F2A13CE4100EC1FBD /* DebouncedOnChange */,
 				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
 				636250DB2A18111400FC59B4 /* KeychainAccess */,
 				B104A6D72A59BF3C00B3E725 /* Nuke */,
@@ -2024,7 +2021,6 @@
 			mainGroup = 6363D5B827EE196700E34822;
 			packageReferences = (
 				63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
-				63E5D38E2A13CE4100EC1FBD /* XCRemoteSwiftPackageReference "DebouncedOnChange" */,
 				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
@@ -2823,14 +2819,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		63E5D38E2A13CE4100EC1FBD /* XCRemoteSwiftPackageReference "DebouncedOnChange" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Tunous/DebouncedOnChange.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
@@ -2864,11 +2852,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
-		};
-		63E5D38F2A13CE4100EC1FBD /* DebouncedOnChange */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63E5D38E2A13CE4100EC1FBD /* XCRemoteSwiftPackageReference "DebouncedOnChange" */;
-			productName = DebouncedOnChange;
 		};
 		63F0C7B62A052F5000A18C5D /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;

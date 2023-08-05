@@ -79,16 +79,9 @@ struct UserProfileLabel: View {
     private var userAvatar: some View {
         Group {
             if let userAvatarLink = user.avatar {
-                CachedAsyncImage(url: avatarUrl(from: userAvatarLink), urlCache: AppConstants.urlCache) { image in
-                    if let avatar = image.image {
-                        avatar
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: avatarSize(), height: avatarSize())
-                    } else {
-                        defaultUserAvatar()
-                    }
-                }
+                CachedImage(url: userAvatarLink,
+                            fixedSize: CGSize(width: avatarSize(), height: avatarSize()),
+                            imageNotFound: defaultUserAvatar)
             } else {
                 defaultUserAvatar()
             }
@@ -109,12 +102,13 @@ struct UserProfileLabel: View {
         serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
     }
     
-    private func defaultUserAvatar() -> some View {
-        Image(systemName: "person.circle")
+    private func defaultUserAvatar() -> AnyView {
+        AnyView(Image(systemName: "person.circle")
             .resizable()
             .scaledToFill()
             .frame(width: avatarSize(), height: avatarSize())
             .foregroundColor(.secondary)
+        )
     }
     
     @ViewBuilder
