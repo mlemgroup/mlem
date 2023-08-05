@@ -14,10 +14,8 @@ struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @EnvironmentObject var postTracker: PostTracker
     
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
-    // @Dependency(\.postRepository) var postRepository
-    // TODO: Eric use repository 
+    @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL 
     
     let postView: APIPostView
@@ -66,8 +64,8 @@ struct ThumbnailImageView: View {
     func markPostAsRead() {
         Task(priority: .userInitiated) {
             do {
-                let readPost = try await apiClient.markPostAsRead(for: postView.post.id, read: true)
-                postTracker.update(with: readPost.postView)
+                let readPost = try await postRepository.markRead(for: postView.post.id, read: true)
+                postTracker.update(with: readPost)
             } catch {
                 errorHandler.handle(.init(underlyingError: error))
             }
