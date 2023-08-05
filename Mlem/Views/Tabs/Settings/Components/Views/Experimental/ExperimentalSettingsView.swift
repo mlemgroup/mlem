@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct ExperimentalSettingsView: View {
+    
+    @AppStorage("useExperimentalSettings") var useExperimentalSettings: Bool = false
+    
     var body: some View {
         List {
             Section {
-                Toggle(isOn: .constant(false), label: {
+                Toggle(isOn: $useExperimentalSettings, label: {
                     Text("Use Experimental Settings")
                 })
             } header: {
