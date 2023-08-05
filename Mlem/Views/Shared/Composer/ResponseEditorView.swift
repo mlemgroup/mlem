@@ -55,7 +55,6 @@ struct ResponseEditorView: View {
                     .accessibilityLabel("Response Body")
                     .padding(AppConstants.postAndCommentSpacing)
                     .focused($focusedField, equals: .editorBody)
-                    .scrollDismissesKeyboard(.interactively)
                     .onAppear {
                         focusedField = .editorBody
                     }
@@ -66,6 +65,7 @@ struct ResponseEditorView: View {
                 }
                 .padding(.bottom, AppConstants.editorOverscroll)
             }
+            .scrollDismissesKeyboard(.automatic)
             .overlay {
                 // Loading Indicator
                 if isSubmitting {
