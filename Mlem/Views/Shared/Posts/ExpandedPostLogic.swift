@@ -44,6 +44,9 @@ extension ExpandedPost {
      Sends a save request for the current post
      */
     func savePost(_ save: Bool) async throws {
+        
+        hapticManager.play(haptic: .success)
+        
         self.post = try await sendSavePostRequest(
             account: appState.currentActiveAccount,
             postId: post.post.id,
