@@ -45,6 +45,7 @@ struct AppConstants {
     static let barIconHitbox: CGFloat = 44 // Apple HIG guidelines
     static let settingsIconSize: CGFloat = 28
     static let fancyTabBarHeight: CGFloat = 48 // total height of the fancy tab bar
+    static let editorOverscroll: CGFloat = 30
     
     // MARK: - SFSymbols
     // votes
