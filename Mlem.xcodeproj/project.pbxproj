@@ -240,7 +240,6 @@
 		CD04D5DB2A36154F008EF95B /* Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DA2A36154F008EF95B /* Save.swift */; };
 		CD04D5DD2A361564008EF95B /* Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DC2A361564008EF95B /* Reply.swift */; };
 		CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DE2A361585008EF95B /* Empty Button Style.swift */; };
-		CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E42A362AD3008EF95B /* Post Header.swift */; };
 		CD04D5E72A3636FB008EF95B /* Headline Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E62A3636FB008EF95B /* Headline Post.swift */; };
 		CD05E7792A4E381A0081D102 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7782A4E381A0081D102 /* PostSize.swift */; };
 		CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77E2A4F263B0081D102 /* Menu Function.swift */; };
@@ -616,7 +615,6 @@
 		CD04D5DA2A36154F008EF95B /* Save.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Save.swift; sourceTree = "<group>"; };
 		CD04D5DC2A361564008EF95B /* Reply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reply.swift; sourceTree = "<group>"; };
 		CD04D5DE2A361585008EF95B /* Empty Button Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Empty Button Style.swift"; sourceTree = "<group>"; };
-		CD04D5E42A362AD3008EF95B /* Post Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Header.swift"; sourceTree = "<group>"; };
 		CD04D5E62A3636FB008EF95B /* Headline Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Headline Post.swift"; sourceTree = "<group>"; };
 		CD05E7782A4E381A0081D102 /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CD05E77E2A4F263B0081D102 /* Menu Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Function.swift"; sourceTree = "<group>"; };
@@ -995,7 +993,6 @@
 			isa = PBXGroup;
 			children = (
 				6318DE5327FB958800CC2AD6 /* Stickied Tag.swift */,
-				CD04D5E42A362AD3008EF95B /* Post Header.swift */,
 				CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */,
 			);
 			path = Components;
@@ -2329,7 +2326,6 @@
 				50F830FA2A4C935C00D67099 /* FeedTracker.swift in Sources */,
 				CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */,
 				CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */,
-				CD04D5E52A362AD3008EF95B /* Post Header.swift in Sources */,
 				6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */,
 				6318EDC927EE4E1C00BFCAE8 /* Comment.swift in Sources */,
 				6D8601EE2A43C0B1002A56FC /* Image.swift in Sources */,
