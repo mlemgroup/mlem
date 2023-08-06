@@ -166,7 +166,6 @@
 		63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A12A0519BA00A18C5D /* PostSortType.swift */; };
 		63F0C7A62A05225100A18C5D /* Saved Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A52A05225100A18C5D /* Saved Account.swift */; };
 		63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7A72A0522FC00A18C5D /* Saved Account Tracker.swift */; };
-		63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 63F0C7B62A052F5000A18C5D /* CachedAsyncImage */; };
 		63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Account View.swift */; };
 		63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */; };
 		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
@@ -741,7 +740,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63F0C7B72A052F5000A18C5D /* CachedAsyncImage in Frameworks */,
 				B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */,
 				63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */,
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
@@ -1913,7 +1911,6 @@
 			);
 			name = Mlem;
 			packageProductDependencies = (
-				63F0C7B62A052F5000A18C5D /* CachedAsyncImage */,
 				63D24EDB2A169F12005CCA81 /* MarkdownUI */,
 				636250DB2A18111400FC59B4 /* KeychainAccess */,
 				B104A6D72A59BF3C00B3E725 /* Nuke */,
@@ -1995,7 +1992,6 @@
 			);
 			mainGroup = 6363D5B827EE196700E34822;
 			packageReferences = (
-				63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
@@ -2787,14 +2783,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
@@ -2820,11 +2808,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 63D24EDA2A169F12005CCA81 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
-		};
-		63F0C7B62A052F5000A18C5D /* CachedAsyncImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63F0C7B52A052F5000A18C5D /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
 		};
 		B104A6D72A59BF3C00B3E725 /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;
