@@ -5,7 +5,6 @@
 //  Created by Jake Shirley on 6/19/23.
 //
 
-import Dependencies
 import SwiftUI
 import Dependencies
 
@@ -37,11 +36,10 @@ struct CommuntiyFeedRowView: View {
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
 
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.notifier) var notifier
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
-    
-    @Dependency(\.notifier) var notifier
 
     var body: some View {
         NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {
