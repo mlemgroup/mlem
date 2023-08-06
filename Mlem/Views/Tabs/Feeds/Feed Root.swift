@@ -12,6 +12,7 @@ struct FeedRoot: View {
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -87,6 +88,11 @@ struct FeedRoot: View {
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.feeds.hashValue {
                 print("switched to Feed tab")
+            }
+        }
+        .onChange(of: selectedNavigationTabHashValue) { newValue in
+            if newValue == TabSelection.feeds.hashValue {
+                print("re-selected \(TabSelection.feeds) tab")
             }
         }
     }

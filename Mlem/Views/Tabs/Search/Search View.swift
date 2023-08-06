@@ -16,6 +16,7 @@ struct SearchView: View {
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
 
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     
     // private state
     @State private var isSearching: Bool = false
@@ -47,6 +48,11 @@ struct SearchView: View {
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.search.hashValue {
                 print("switched to Search tab")
+            }
+        }
+        .onChange(of: selectedNavigationTabHashValue) { newValue in
+            if newValue == TabSelection.search.hashValue {
+                print("re-selected \(TabSelection.search) tab")
             }
         }
     }

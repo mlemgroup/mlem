@@ -42,7 +42,8 @@ struct InboxView: View {
     @EnvironmentObject var unreadTracker: UnreadTracker
     
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     // MARK: Internal
@@ -94,6 +95,11 @@ struct InboxView: View {
                 .onChange(of: selectedTagHashValue) { newValue in
                     if newValue == TabSelection.inbox.hashValue {
                         print("switched to inbox tab")
+                    }
+                }
+                .onChange(of: selectedNavigationTabHashValue) { newValue in
+                    if newValue == TabSelection.inbox.hashValue {
+                        print("re-selected \(TabSelection.inbox) tab")
                     }
                 }
         }

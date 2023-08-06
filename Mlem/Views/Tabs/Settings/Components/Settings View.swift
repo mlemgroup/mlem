@@ -14,6 +14,7 @@ struct SettingsView: View {
 
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -78,6 +79,12 @@ struct SettingsView: View {
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.settings.hashValue {
                 print("switched to Settings tab")
+            }
+        }
+        .onChange(of: selectedNavigationTabHashValue) { newValue in
+            if newValue == TabSelection.settings.hashValue {
+                print("re-selected \(TabSelection.settings) tab")
+                
             }
         }
     }

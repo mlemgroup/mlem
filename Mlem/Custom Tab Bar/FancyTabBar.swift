@@ -11,6 +11,8 @@ import SwiftUI
 struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
     @Binding private var selection: Selection
+    @Binding private var navigationSelection: Selection
+    
     private let content: () -> Content
     
     @State private var tabItemKeys: [Selection] = []
@@ -19,9 +21,11 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     var dragUpGestureCallback: (() -> Void)?
     
     init(selection: Binding<Selection>,
+         navigationSelection: Binding<Selection>,
          dragUpGestureCallback: (() -> Void)? = nil,
          @ViewBuilder content: @escaping () -> Content) {
         self._selection = selection
+        self._navigationSelection = navigationSelection
         self.content = content
         self.dragUpGestureCallback = dragUpGestureCallback
     }
@@ -38,6 +42,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .environment(\.tabSelectionHashValue, selection.hashValue)
+            .environment(\.tabNavigationSelectionHashValue, navigationSelection.hashValue)
             .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
                 self.tabItemKeys = $0
             }
@@ -62,6 +67,16 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
+                                    /// If user tapped on tab that's already selected.
+                                    if key.hashValue == selection.hashValue {
+                                        // swiftlint:disable force_cast
+                                        navigationSelection = TabSelection._tabBarNavigation as! Selection
+                                        // swiftlint:enable force_cast
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                            self.navigationSelection = key
+                                        }
+                                    }
+                                    
                                     selection = key
                                 }
                         )
