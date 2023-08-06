@@ -10,6 +10,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+@MainActor
 class SavedAccountTracker: ObservableObject {
     
     @Dependency(\.persistenceRepository) private var persistenceRepository
@@ -31,8 +32,10 @@ class SavedAccountTracker: ObservableObject {
             addAccountToInstanceMap(account: account)
         }
         
-        updateObserver = $savedAccounts.sink { [weak self] in
-            self?.persistenceRepository.saveAccounts($0)
+        updateObserver = $savedAccounts.sink { [weak self] value in
+            Task {
+                try await self?.persistenceRepository.saveAccounts(value)
+            }
         }
     }
     

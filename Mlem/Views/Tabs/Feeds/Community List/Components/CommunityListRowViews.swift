@@ -110,13 +110,13 @@ struct CommuntiyFeedRowView: View {
 
     private func toggleFavorite() {
         if isFavorited() {
-            unfavoriteCommunity(community: community, favoritedCommunitiesTracker: favoritesTracker)
+            favoritesTracker.unfavorite(community)
             UIAccessibility.post(notification: .announcement, argument: "Unfavorited \(community.name)")
             Task {
                 await notifier.add(.success("Unfavorited \(community.name)"))
             }
         } else {
-            favoriteCommunity(account: appState.currentActiveAccount, community: community, favoritedCommunitiesTracker: favoritesTracker)
+            favoritesTracker.favorite(community, for: appState.currentActiveAccount)
             UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
             Task {
                 await notifier.add(.success("Favorited \(community.name)"))
@@ -124,11 +124,8 @@ struct CommuntiyFeedRowView: View {
         }
     }
 
-    internal func isFavorited() -> Bool {
-        return getFavoritedCommunities(
-            account: appState.currentActiveAccount,
-            favoritedCommunitiesTracker: favoritesTracker
-        ).contains(community)
+    private func isFavorited() -> Bool {
+        favoritesTracker.favoriteCommunities(for: appState.currentActiveAccount).contains(community)
     }
 
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
