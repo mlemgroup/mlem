@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import CachedAsyncImage
 
 private let clipOptOut = ["beehaw.org"]
 
@@ -158,6 +157,7 @@ struct CommunityLabel: View {
         Group {
             if let url = community.icon {
                 CachedImage(url: avatarUrl(from: url),
+                            shouldExpand: false,
                             fixedSize: CGSize(width: avatarSize(), height: avatarSize()),
                             imageNotFound: defaultCommunityAvatar)
             } else {

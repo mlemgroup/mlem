@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -80,6 +79,7 @@ struct UserProfileLabel: View {
         Group {
             if let userAvatarLink = user.avatar {
                 CachedImage(url: userAvatarLink,
+                            shouldExpand: false,
                             fixedSize: CGSize(width: avatarSize(), height: avatarSize()),
                             imageNotFound: defaultUserAvatar)
             } else {

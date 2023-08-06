@@ -5,7 +5,6 @@
 //  Created by David Bureš on 04.05.2023.
 //
 
-import CachedAsyncImage
 import Foundation
 import SwiftUI
 
@@ -68,14 +67,10 @@ struct WebsiteIconComplex: View {
                 if shouldShowWebsiteHost {
                     HStack {
                         if shouldShowWebsiteIcon {
-                            CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                Image(systemName: "globe")
-                            }
-                            .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
+                            CachedImage(url: faviconURL,
+                                        shouldExpand: false,
+                                        fixedSize: CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize),
+                                        imageNotFound: { AnyView(Image(systemName: "globe")) })
                         }
                         
                         Text(linkHost)

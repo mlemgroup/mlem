@@ -45,10 +45,6 @@ struct LicensesView: View {
                         DocumentView(text: swiftMarkdownUILIcense.body)
                     }
                     
-                    NavigationLink("SwiftUI Cached Async Image") {
-                        DocumentView(text: swiftUICachedAsyncImageLicense.body)
-                    }
-                    
                 }
             }
             .fancyTabScrollCompatible()
