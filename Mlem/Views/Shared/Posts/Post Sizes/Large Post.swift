@@ -5,14 +5,17 @@
 //  Created by Eric Andrews on 2023-06-10.
 //
 
-import SwiftUI
-
 import Foundation
+import SwiftUI
+import Dependencies
 
 struct LargePost: View {
     // constants
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
+    @Dependency(\.postRepository) var postRepository
+    @Dependency(\.errorHandler) var errorHandler
+    
     // global state
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
@@ -68,7 +71,9 @@ struct LargePost: View {
         switch postView.postType {
         case .image(let url):
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                CachedImage(url: url, maxHeight: maxHeight)
+                CachedImage(url: url,
+                            maxHeight: maxHeight,
+                            dismissCallback: markPostAsRead)
                     .frame(maxWidth: .infinity, maxHeight: maxHeight, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
@@ -77,7 +82,7 @@ struct LargePost: View {
             }
         case .link:
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                WebsiteIconComplex(post: postView.post)
+                WebsiteIconComplex(post: postView.post, onTapActions: markPostAsRead)
                 postBodyView
             }
         case .text(let postBody):
@@ -101,6 +106,20 @@ struct LargePost: View {
                              replaceImagesWithEmoji: true)
                     .lineLimit(8)
                     .font(.subheadline)
+            }
+        }
+    }
+    
+    /**
+     Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
+     */
+    func markPostAsRead() {
+        Task(priority: .userInitiated) {
+            do {
+                let readPost = try await postRepository.markRead(for: postView.post.id, read: true)
+                postTracker.update(with: readPost)
+            } catch {
+                errorHandler.handle(.init(underlyingError: error))
             }
         }
     }
