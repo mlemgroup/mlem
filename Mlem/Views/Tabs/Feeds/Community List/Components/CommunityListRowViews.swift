@@ -113,9 +113,9 @@ struct CommuntiyFeedRowView: View {
     private func toggleFavorite() {
         if isFavorited() {
             unfavoriteCommunity(community: community, favoritedCommunitiesTracker: favoritesTracker)
-            UIAccessibility.post(notification: .announcement, argument: "Un-favorited \(community.name)")
+            UIAccessibility.post(notification: .announcement, argument: "Unfavorited \(community.name)")
             Task {
-                await notifier.add(.success("Un-favorited \(community.name)"))
+                await notifier.add(.success("Unfavorited \(community.name)"))
             }
         } else {
             favoriteCommunity(account: appState.currentActiveAccount, community: community, favoritedCommunitiesTracker: favoritesTracker)

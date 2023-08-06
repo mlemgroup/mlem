@@ -181,7 +181,7 @@ extension FeedView {
                 unfavoriteCommunity(community: community,
                                     favoritedCommunitiesTracker: favoriteCommunitiesTracker)
                 Task {
-                    await notifier.add(.success("Un-favorited \(community.name)"))
+                    await notifier.add(.success("Unfavorited \(community.name)"))
                 }
             })
         } else {

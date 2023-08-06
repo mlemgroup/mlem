@@ -259,7 +259,7 @@ struct UserView: View {
                 if savedItems {
                     return $0.commentView.saved
                 } else {
-                    // If we un-favorited something while
+                    // If we unfavorited something while
                     // here we don't want it showing up in our feed
                     return $0.commentView.creator.id == userID
                 }
@@ -283,7 +283,7 @@ struct UserView: View {
                 if savedItems {
                     return $0.saved
                 } else {
-                    // If we un-favorited something while
+                    // If we unfavorited something while
                     // here we don't want it showing up in our feed
                     return $0.creator.id == userID
                 }
