@@ -25,4 +25,20 @@ class FavoriteCommunitiesTracker: ObservableObject {
             }
         }
     }
+    
+    func favoriteCommunities(for account: SavedAccount) -> [APICommunity] {
+        favoriteCommunities
+            .filter { $0.forAccountID == account.id }
+            .map { $0.community }
+            .sorted()
+    }
+    
+    func favorite(_ community: APICommunity, for account: SavedAccount) {
+        let newFavorite = FavoriteCommunity(forAccountID: account.id, community: community)
+        favoriteCommunities.append(newFavorite)
+    }
+    
+    func unfavorite(_ community: APICommunity) {
+        favoriteCommunities.removeAll(where: { $0.community.id == community.id })
+    }
 }

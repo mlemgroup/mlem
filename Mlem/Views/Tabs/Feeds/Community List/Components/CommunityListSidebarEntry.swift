@@ -45,7 +45,8 @@ struct FavoritesSidebarEntry: SidebarEntry {
     var sidebarLabel: String?
     var sidebarIcon: String?
 
+    @MainActor
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
-        return getFavoritedCommunities(account: account, favoritedCommunitiesTracker: favoritesTracker).contains(community)
+        favoritesTracker.favoriteCommunities(for: account).contains(community)
     }
 }

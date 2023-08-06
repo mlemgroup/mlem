@@ -178,8 +178,7 @@ extension FeedView {
                                     imageName: "star.slash",
                                     destructiveActionPrompt: "Really unfavorite \(community.name)?",
                                     enabled: true) {
-                unfavoriteCommunity(community: community,
-                                    favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                favoriteCommunitiesTracker.unfavorite(community)
                 Task {
                     await notifier.add(.success("Unfavorited \(community.name)"))
                 }
@@ -189,9 +188,7 @@ extension FeedView {
                                     imageName: "star",
                                     destructiveActionPrompt: nil,
                                     enabled: true) {
-                favoriteCommunity(account: appState.currentActiveAccount,
-                                  community: community,
-                                  favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                favoriteCommunitiesTracker.favorite(community, for: appState.currentActiveAccount)
                 Task {
                     await notifier.add(.success("Favorited \(community.name)"))
                 }
