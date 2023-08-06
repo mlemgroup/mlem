@@ -19,7 +19,6 @@ struct CommentItem: View {
     @Dependency(\.notifier) var notifier
     
     // appstorage
-    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
 
     // MARK: Temporary
