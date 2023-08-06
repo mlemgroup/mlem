@@ -106,6 +106,8 @@ struct LargePost: View {
                              replaceImagesWithEmoji: true)
                     .lineLimit(8)
                     .font(.subheadline)
+                    .opacity(0.5)
+                    .contentShape(Rectangle())
             }
         }
     }
