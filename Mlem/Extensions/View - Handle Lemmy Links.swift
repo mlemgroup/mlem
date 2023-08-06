@@ -137,6 +137,9 @@ struct HandleLemmyLinkResolution: ViewModifier {
                             // so I'll skip and let the system open it instead
                             // }
                         }
+                        
+                        // as the link was handled we return, else it would also be passed to the default URL handling below
+                        return
                     } catch {
                         guard case let APIClientError.response(apiError, _) = error,
                               apiError.error == "couldnt_find_object",
