@@ -9,6 +9,7 @@ import Combine
 import Dependencies
 import Foundation
 
+@MainActor
 class FavoriteCommunitiesTracker: ObservableObject {
     
     @Dependency(\.persistenceRepository) var persistenceRepository
@@ -18,8 +19,10 @@ class FavoriteCommunitiesTracker: ObservableObject {
 
     init() {
         self.favoriteCommunities = persistenceRepository.loadFavoriteCommunities()
-        self.updateObserver = $favoriteCommunities.sink { [weak self] in
-            self?.persistenceRepository.saveFavoriteCommunities($0)
+        self.updateObserver = $favoriteCommunities.sink { [weak self] value in
+            Task {
+                try await self?.persistenceRepository.saveFavoriteCommunities(value)
+            }
         }
     }
 }
