@@ -41,6 +41,8 @@ struct InboxView: View {
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
     
+    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+    
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     // MARK: Internal
@@ -89,6 +91,11 @@ struct InboxView: View {
                 }
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
+                .onChange(of: selectedTagHashValue) { newValue in
+                    if newValue == TabSelection.inbox.hashValue {
+                        print("switched to inbox tab")
+                    }
+                }
         }
     }
     

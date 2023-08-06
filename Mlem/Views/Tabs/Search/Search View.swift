@@ -15,6 +15,8 @@ struct SearchView: View {
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
 
+    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+    
     // private state
     @State private var isSearching: Bool = false
     @State private var lastSearchedText: String = ""
@@ -41,6 +43,11 @@ struct SearchView: View {
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
         .onSubmit(of: .search) {
             performSearch()
+        }
+        .onChange(of: selectedTagHashValue) { newValue in
+            if newValue == TabSelection.search.hashValue {
+                print("switched to Search tab")
+            }
         }
     }
     

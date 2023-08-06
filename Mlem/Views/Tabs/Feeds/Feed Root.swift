@@ -11,7 +11,8 @@ struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
     @Environment(\.scenePhase) var phase
-
+    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+    
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
@@ -81,6 +82,11 @@ struct FeedRoot: View {
 
                     shortcutItemToProcess = nil
                 }
+            }
+        }
+        .onChange(of: selectedTagHashValue) { newValue in
+            if newValue == TabSelection.feeds.hashValue {
+                print("switched to Feed tab")
             }
         }
     }
