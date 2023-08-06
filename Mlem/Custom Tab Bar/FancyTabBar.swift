@@ -46,12 +46,20 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
             }
     }
     
-    private func getAccessibilityLabel(tabIndex: Selection) -> String {
-        if let tabLabel = tabItems[tabIndex]?.tag.labelText {
-            return "\(tabLabel), Tab \(tabIndex.index) of \(tabItems.count.description)"
-        } else {
-            return "Tab \(tabIndex.index) of \(tabItems.count.description)"
+    private func getAccessibilityLabel(tab: Selection) -> String {
+        var label = String()
+        
+        if selection == tab {
+            label += "Selected, "
         }
+        
+        if let tabLabel = tabItems[tab]?.tag.labelText {
+            label += "\(tabLabel), "
+        }
+        
+        label += "Tab \(tab.index) of \(tabItems.count.description)"
+        
+        return label
     }
     
     private var tabBar: some View {
@@ -63,7 +71,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                     tabItems[key]?.label()
                         .accessibilityElement(children: .combine)
                     // IDK how to get the "Tab: 1 of 5" VO working natively so here's a janky solution
-                        .accessibilityLabel(getAccessibilityLabel(tabIndex: key))
+                        .accessibilityLabel(getAccessibilityLabel(tab: key))
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
                     // high priority to prevent conflict with long press/drag
