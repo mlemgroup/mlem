@@ -35,6 +35,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                     Spacer()
                     tabBar
                 }
+                .accessibilitySortPriority(-1)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .environment(\.tabSelectionHashValue, selection.hashValue)
