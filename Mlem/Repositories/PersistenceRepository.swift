@@ -52,40 +52,40 @@ class PersistenceRepository {
         }
     }
     
-    func saveAccounts(_ value: [SavedAccount]) {
-        save(value, to: Path.savedAccounts)
+    func saveAccounts(_ value: [SavedAccount]) async throws {
+        try await save(value, to: Path.savedAccounts)
     }
     
     func loadRecentSearches() -> [String] {
         load([String].self, from: Path.recentSearches) ?? []
     }
     
-    func saveRecentSearches(_ value: [String]) {
-        save(value, to: Path.recentSearches)
+    func saveRecentSearches(_ value: [String]) async throws {
+        try await save(value, to: Path.recentSearches)
     }
     
     func loadFavoriteCommunities() -> [FavoriteCommunity] {
         load([FavoriteCommunity].self, from: Path.favoriteCommunities) ?? []
     }
     
-    func saveFavoriteCommunities(_ value: [FavoriteCommunity]) {
-        save(value, to: Path.favoriteCommunities)
+    func saveFavoriteCommunities(_ value: [FavoriteCommunity]) async throws {
+        try await save(value, to: Path.favoriteCommunities)
     }
     
     func loadEasterFlags() -> Set<EasterFlag> {
         load(Set<EasterFlag>.self, from: Path.easterFlags) ?? .init()
     }
     
-    func saveEasterFlags(_ value: Set<EasterFlag>) {
-        save(value, to: Path.easterFlags)
+    func saveEasterFlags(_ value: Set<EasterFlag>) async throws {
+        try await save(value, to: Path.easterFlags)
     }
     
     func loadFilteredKeywords() -> [String] {
         load([String].self, from: Path.filteredKeywords) ?? []
     }
     
-    func saveFilteredKeywords(_ value: [String]) {
-        save(value, to: Path.filteredKeywords)
+    func saveFilteredKeywords(_ value: [String]) async throws {
+        try await save(value, to: Path.filteredKeywords)
     }
     
     // MARK: Private methods
@@ -108,8 +108,8 @@ class PersistenceRepository {
         }
     }
     
-    private func save<T: Encodable>(_ value: T, to path: URL) {
-        Task(priority: .background) {
+    private func save<T: Encodable>(_ value: T, to path: URL) async throws {
+        return try await Task(priority: .background) {
             do {
                 let data = try JSONEncoder().encode(value)
                 try data.write(to: path, options: .atomic)
@@ -117,7 +117,9 @@ class PersistenceRepository {
                 errorHandler.handle(
                     .init(underlyingError: error)
                 )
+                
+                throw error
             }
-        }
+        }.value
     }
 }

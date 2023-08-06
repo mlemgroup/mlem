@@ -5,7 +5,6 @@
 //  Created by David Bureš on 02.04.2022.
 //
 
-import CachedAsyncImage
 import SwiftUI
 
 // swiftlint:disable file_length

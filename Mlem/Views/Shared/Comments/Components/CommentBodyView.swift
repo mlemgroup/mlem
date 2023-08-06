@@ -24,7 +24,7 @@ struct CommentBodyView: View {
     var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
     
     var serverInstanceLocation: ServerInstanceLocation {
-        if shouldShowUserServerInComment {
+        if !shouldShowUserServerInComment {
             return .disabled
         } else if compactComments {
             return .trailing

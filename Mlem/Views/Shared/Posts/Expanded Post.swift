@@ -22,7 +22,8 @@ struct ExpandedPost: View {
     
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
-    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
+    @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
 
     @EnvironmentObject var appState: AppState
@@ -74,6 +75,22 @@ struct ExpandedPost: View {
         .fancyTabScrollCompatible()
     }
     
+    var userServerInstanceLocation: ServerInstanceLocation {
+        if !shouldShowUserServerInPost {
+            return .disabled
+        } else {
+            return .bottom
+        }
+    }
+    
+    var communityServerInstanceLocation: ServerInstanceLocation {
+        if !shouldShowCommunityServerInPost {
+            return .disabled
+        } else {
+            return .bottom
+        }
+    }
+    
     // MARK: Subviews
 
     /**
@@ -83,7 +100,9 @@ struct ExpandedPost: View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
                 HStack {
-                    CommunityLinkView(community: post.community)
+                    CommunityLinkView(
+                        community: post.community,
+                        serverInstanceLocation: communityServerInstanceLocation)
                     
                     Spacer()
                     
@@ -96,8 +115,7 @@ struct ExpandedPost: View {
                 )
                 
                 UserProfileLink(user: post.creator,
-                                serverInstanceLocation: .bottom,
-                                postContext: post.post)
+                                serverInstanceLocation: userServerInstanceLocation)
             }
             .padding(.top, AppConstants.postAndCommentSpacing)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)

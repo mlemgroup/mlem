@@ -8,6 +8,7 @@
 import Dependencies
 import Foundation
 
+@MainActor
 class RecentSearchesTracker: ObservableObject {
     
     @Dependency(\.persistenceRepository) var persistenceRepository
@@ -31,11 +32,17 @@ class RecentSearchesTracker: ObservableObject {
             recentSearches = recentSearches.dropLast(1)
         }
         
-        persistenceRepository.saveRecentSearches(recentSearches)
+        saveRecentSearches()
     }
     
     func clearRecentSearches() {
         recentSearches.removeAll()
-        persistenceRepository.saveRecentSearches(recentSearches)
+        saveRecentSearches()
+    }
+    
+    private func saveRecentSearches() {
+        Task {
+            try await persistenceRepository.saveRecentSearches(recentSearches)
+        }
     }
 }
