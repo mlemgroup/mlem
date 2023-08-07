@@ -30,16 +30,43 @@ private enum Path {
     static var easterFlags = { root.appendingPathComponent("Easter eggs flags", conformingTo: .json) }()
 }
 
+private struct DiskAccess {
+    static func load(from path: URL) throws -> Data {
+        try Data(contentsOf: path, options: .mappedIfSafe)
+    }
+    
+    static func save(_ data: Data, to path: URL) async throws {
+        try await Task(priority: .background) {
+            try data.write(to: path, options: .atomic)
+        }
+            .value
+    }
+}
+
 class PersistenceRepository {
     
     @Dependency(\.errorHandler) private var errorHandler
+    
+    private var keychainAccess: (String) -> String?
+    private var read: (URL) throws -> Data
+    private var write: (Data, URL) async throws -> Void
+    
+    init(
+        keychainAccess: @escaping (String) -> String?,
+        read: @escaping (URL) throws -> Data = { try DiskAccess.load(from: $0) },
+        write: @escaping (Data, URL) async throws -> Void = { try await DiskAccess.save($0, to: $1) }
+    ) {
+        self.keychainAccess = keychainAccess
+        self.read = read
+        self.write = write
+    }
     
     // MARK: - Public methods
     
     func loadAccounts() -> [SavedAccount] {
         let accounts = load([SavedAccount].self, from: Path.savedAccounts) ?? []
         return accounts.compactMap { account -> SavedAccount? in
-            guard let token = AppConstants.keychain["\(account.id)_accessToken"] else {
+            guard let token = keychainAccess("\(account.id)_accessToken") else {
                 return nil
             }
 
@@ -92,7 +119,7 @@ class PersistenceRepository {
     
     private func load<T: Decodable>(_ model: T.Type, from path: URL) -> T? {
         do {
-            let data = try Data(contentsOf: path, options: .mappedIfSafe)
+            let data = try read(path)
             
             guard !data.isEmpty else {
                 return nil
@@ -109,17 +136,13 @@ class PersistenceRepository {
     }
     
     private func save<T: Encodable>(_ value: T, to path: URL) async throws {
-        return try await Task(priority: .background) {
-            do {
-                let data = try JSONEncoder().encode(value)
-                try data.write(to: path, options: .atomic)
-            } catch {
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
-                
-                throw error
-            }
-        }.value
+        do {
+            let data = try JSONEncoder().encode(value)
+            try await write(data, path)
+        } catch {
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
+        }
     }
 }
