@@ -14,6 +14,8 @@ import Nuke
 
 struct CachedImage: View {
     
+    @EnvironmentObject var quickLookPreview: QuickLookPreview
+    
     let url: URL?
     let shouldExpand: Bool
     @State var bigPicMode: URL?
@@ -108,19 +110,23 @@ struct CachedImage: View {
                                     }
                                     try data.write(to: quicklook)
                                     await MainActor.run {
-                                        bigPicMode = quicklook
+//                                        bigPicMode = quicklook
+                                        quickLookPreview.url = quicklook
                                     }
                                 } catch {
                                     print(String(describing: error))
                                 }
                             }
                         }
-                        .quickLookPreview($bigPicMode)
-                        .onChange(of: bigPicMode) { mode in
-                            if mode == nil, let dismissCallback {
-                                dismissCallback()
-                            }
+                        .fullScreenCover(item: $quickLookPreview.url) { url in
+                            QuickLookView(urls: [url])
                         }
+//                        .quickLookPreview($bigPicMode)
+//                        .onChange(of: bigPicMode) { mode in
+//                            if mode == nil, let dismissCallback {
+//                                dismissCallback()
+//                            }
+//                        }
                 } else {
                     imageView
                 }
