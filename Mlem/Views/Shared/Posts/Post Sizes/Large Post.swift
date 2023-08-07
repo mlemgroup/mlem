@@ -103,7 +103,8 @@ struct LargePost: View {
             } else {
                 MarkdownView(text: bodyText.components(separatedBy: .newlines).joined(separator: " "),
                              isNsfw: postView.post.nsfw,
-                             replaceImagesWithEmoji: true)
+                             replaceImagesWithEmoji: true,
+                             isDeemphasized: true)
                     .lineLimit(8)
                     .font(.subheadline)
             }

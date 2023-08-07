@@ -171,6 +171,11 @@ extension Theme {
                         .stroke(Color(.secondarySystemBackground), lineWidth: 1.5)
                 )
         }
+    
+    static let mlemDeemphasized = mlem
+        .text {
+            ForegroundColor(.secondary)
+        }
 }
 
 private extension Color {
@@ -216,11 +221,13 @@ struct MarkdownView: View {
     @State var text: String
     let isNsfw: Bool
     let replaceImagesWithEmoji: Bool
+    let isDeemphasized: Bool
     
-    init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false) {
+    init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isDeemphasized: Bool = false) {
         self.text = text
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
+        self.isDeemphasized = isDeemphasized
     }
 
     var body: some View {
@@ -229,18 +236,19 @@ struct MarkdownView: View {
 
     @MainActor func generateView() -> some View {
         let blocks = parseMarkdownForImages(text: text)
+        let theme: Theme = isDeemphasized ? .mlemDeemphasized : .mlem
         
         return VStack {
             ForEach(blocks) { block in
                 if block.isImage {
                     if replaceImagesWithEmoji {
-                        getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️")
+                        getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
                     } else {
                         CachedImage(url: URL(string: String(block.text)))
                             .applyNsfwOverlay(isNsfw)
                     }
                 } else {
-                    getMarkdown(text: String(block.text))
+                    getMarkdown(text: String(block.text), theme: theme)
                 }
             }
         }
@@ -295,9 +303,9 @@ struct MarkdownView: View {
         return blocks
     }
 
-    func getMarkdown(text: String) -> some View {
+    func getMarkdown(text: String, theme: Theme = .mlem) -> some View {
         Markdown(text)
             .frame(maxWidth: .infinity, alignment: .topLeading)
-            .markdownTheme(.mlem)
+            .markdownTheme(theme)
     }
 }
