@@ -10,8 +10,10 @@ import SwiftUI
 
 struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
+    typealias NavigationSelection = any FancyTabBarSelection
+    
     @Binding private var selection: Selection
-    @Binding private var navigationSelection: Selection
+    @Binding private var navigationSelection: NavigationSelection
     
     private let content: () -> Content
     
@@ -21,7 +23,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     var dragUpGestureCallback: (() -> Void)?
     
     init(selection: Binding<Selection>,
-         navigationSelection: Binding<Selection>,
+         navigationSelection: Binding<NavigationSelection>,
          dragUpGestureCallback: (() -> Void)? = nil,
          @ViewBuilder content: @escaping () -> Content) {
         self._selection = selection
@@ -69,9 +71,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                                 .onEnded {
                                     /// If user tapped on tab that's already selected.
                                     if key.hashValue == selection.hashValue {
-                                        // swiftlint:disable force_cast
-                                        navigationSelection = TabSelection._tabBarNavigation as! Selection
-                                        // swiftlint:enable force_cast
+                                        navigationSelection = TabSelection._tabBarNavigation
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                                             self.navigationSelection = key
                                         }

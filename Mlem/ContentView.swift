@@ -23,7 +23,7 @@ struct ContentView: View {
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
-    @State private var tabNavigation: TabSelection = ._tabBarNavigation
+    @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
     @State private var showLoading: Bool = false
     @GestureState private var isDetectingLongPress = false
     
