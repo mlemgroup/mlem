@@ -85,7 +85,7 @@ struct InfoStack: View {
         }
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(votes.upvotes) downvotes")
+        .accessibilityLabel("\(votes.downvotes) downvotes")
     }
     
     @ViewBuilder
