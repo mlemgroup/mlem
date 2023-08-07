@@ -40,7 +40,6 @@ struct SaveButton: View {
                 .contentShape(Rectangle())
                 .fontWeight(.medium) // makes it look a little nicer
         }
-        .accessibilityAddTraits(.isButton)
         .accessibilityLabel(saveButtonText)
         .accessibilityAction(.default) { save() }
     }
