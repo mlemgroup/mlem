@@ -11,8 +11,6 @@ class LayoutWidgetModel: ObservableObject {
     
     private(set) var collections: [LayoutWidgetCollection] = []
     
-    @Published var trayY: CGFloat = 0
-    
     @Published var widgetDragging: PostLayoutWidget?
     @Published var lastDraggedWidget: PostLayoutWidget?
     @Published var widgetDraggingCollection: LayoutWidgetCollection?
@@ -42,12 +40,11 @@ class LayoutWidgetModel: ObservableObject {
         }
         
         if widgetDragging != nil {
-            
             widgetDraggingOffset = CGSize(
-                width: widgetDragging!.rect!.origin.x
-                + value.translation.width + 10,
-                height: widgetDragging!.rect!.origin.y
-                + value.translation.height + 70
+                width: widgetDragging!.rect!.minX
+                + value.translation.width,
+                height: widgetDragging!.rect!.minY
+                + value.translation.height
             )
             
             for collection in self.collections {

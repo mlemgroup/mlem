@@ -12,7 +12,7 @@
 		032EAFED2A6DB56D00CC19A6 /* Edit Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032EAFEC2A6DB56D00CC19A6 /* Edit Post.swift */; };
 		038A16DF2A75172C0087987E /* PostLayoutEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16DE2A75172C0087987E /* PostLayoutEditView.swift */; };
 		038A16E12A75AA880087987E /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E02A75AA880087987E /* WidgetModel.swift */; };
-		038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E42A7A97380087987E /* LayoutWidgetView.swift */; };
+		038A16E52A7A97380087987E /* PostLayoutWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E42A7A97380087987E /* PostLayoutWidgetView.swift */; };
 		038A16E72A7A9C430087987E /* PostLayoutWidgetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E62A7A9C430087987E /* PostLayoutWidgetCollection.swift */; };
 		038A16E92A7A9C640087987E /* PostLayoutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E82A7A9C640087987E /* PostLayoutWidget.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
@@ -400,7 +400,7 @@
 		032EAFEC2A6DB56D00CC19A6 /* Edit Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Edit Post.swift"; sourceTree = "<group>"; };
 		038A16DE2A75172C0087987E /* PostLayoutEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutEditView.swift; sourceTree = "<group>"; };
 		038A16E02A75AA880087987E /* WidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModel.swift; sourceTree = "<group>"; };
-		038A16E42A7A97380087987E /* LayoutWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetView.swift; sourceTree = "<group>"; };
+		038A16E42A7A97380087987E /* PostLayoutWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutWidgetView.swift; sourceTree = "<group>"; };
 		038A16E62A7A9C430087987E /* PostLayoutWidgetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutWidgetCollection.swift; sourceTree = "<group>"; };
 		038A16E82A7A9C640087987E /* PostLayoutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLayoutWidget.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
@@ -852,7 +852,7 @@
 				038A16E82A7A9C640087987E /* PostLayoutWidget.swift */,
 				038A16E62A7A9C430087987E /* PostLayoutWidgetCollection.swift */,
 				038A16DE2A75172C0087987E /* PostLayoutEditView.swift */,
-				038A16E42A7A97380087987E /* LayoutWidgetView.swift */,
+				038A16E42A7A97380087987E /* PostLayoutWidgetView.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -2213,7 +2213,7 @@
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */,
 				CD6483342A39F1C100EE6CA3 /* API Post View - Post Type.swift in Sources */,
-				038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */,
+				038A16E52A7A97380087987E /* PostLayoutWidgetView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */,
 				CDB0117F2A6F70A000D043EB /* Editor Tracker.swift in Sources */,

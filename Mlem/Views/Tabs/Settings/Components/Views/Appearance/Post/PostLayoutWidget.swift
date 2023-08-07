@@ -7,13 +7,17 @@
 
 import SwiftUI
 
-indirect enum WidgetType: Hashable {
-    case placeholder(wrappedValue: WidgetType)
+indirect enum PostLayoutWidgetType: Hashable {
+    case placeholder(wrappedValue: PostLayoutWidgetType)
     case spacer
     case upvote
     case downvote
     case save
     case reply
+    case share
+    case upvoteCounter
+    case downvoteCounter
+    case scoreCounter
     
     var width: CGFloat {
         switch self {
@@ -29,16 +33,24 @@ indirect enum WidgetType: Hashable {
             return 40
         case .reply:
             return 40
+        case .share:
+            return 40
+        case .upvoteCounter:
+            return 70
+        case .downvoteCounter:
+            return 70
+        case .scoreCounter:
+            return 90
         }
         
     }
 }
 
 class PostLayoutWidget: Equatable, Hashable {
-    var type: WidgetType
+    var type: PostLayoutWidgetType
     var rect: CGRect?
     
-    init(_ type: WidgetType) {
+    init(_ type: PostLayoutWidgetType) {
         self.type = type
     }
     

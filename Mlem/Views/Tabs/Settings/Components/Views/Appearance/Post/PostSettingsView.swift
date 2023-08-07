@@ -43,25 +43,32 @@ struct PostSettingsView: View {
 
     var body: some View {
         Form {
-            Section("Post Size") {
+            Section {
                 SelectableSettingsItem(
                     settingIconSystemName: "rectangle.compress.vertical",
                     settingName: "Post Size",
                     currentValue: $postSize,
                     options: PostSize.allCases
                 )
+            
+                Button {
+                    showingWidgetSheet = true
+                } label: {
+                    HStack {
+                        Text("Customize widgets")
+                        Spacer()
+                        Image(systemName: "arrow.up.square.fill")
+                        Image(systemName: "arrow.down.square")
+                    }
+                    .foregroundStyle(.pink)
+                }
             }
-            Section("Display Sides") {
-                SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
-                                       settingName: "Vote Buttons On Right",
-                                       isTicked: $shouldShowVoteComplexOnRight)
+            
+            Section("Body") {
 
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
                                        settingName: "Thumbnails On Right",
                                        isTicked: $shouldShowThumbnailsOnRight)
-            }
-            
-            Section("Body") {
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                        settingName: "Show User Server Instance",
                                        isTicked: $shouldShowUserServerInPost)
@@ -80,13 +87,6 @@ struct PostSettingsView: View {
             }
             
             Section("Interactions and Info") {
-
-                SelectableSettingsItem(
-                    settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote Buttons",
-                    currentValue: $postVoteComplexStyle,
-                    options: VoteComplexStyle.allCases
-                )
 
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                        settingName: "Show Score In Info",
@@ -158,7 +158,7 @@ struct PostSettingsView: View {
         .navigationTitle("Posts")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingWidgetSheet) {
-            PostLayoutEditView()
+            PostLayoutEditView($showingWidgetSheet)
         }
     }
 }

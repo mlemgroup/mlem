@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LayoutWidgetView: View {
+struct PostLayoutWidgetView: View {
     
     var widget: PostLayoutWidget
     var isDragging: Bool = false
@@ -22,7 +22,7 @@ struct LayoutWidgetView: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             switch widget.type {
             case .upvote:
                 icon("arrow.up")
@@ -32,14 +32,25 @@ struct LayoutWidgetView: View {
                 icon("bookmark")
             case .reply:
                 icon("arrowshape.turn.up.left")
+            case .share:
+                icon("square.and.arrow.up")
+            case .upvoteCounter:
+                icon("arrow.up")
+                Text("9")
+            case .downvoteCounter:
+                icon("arrow.down")
+                Text("2")
+            case .scoreCounter:
+                icon("arrow.up")
+                Text("7")
+                icon("arrow.down")
             default:
                 EmptyView()
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: 50)
+        .frame(maxWidth: .infinity, maxHeight: 40)
         .background(Color(UIColor.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 5))
-        // .shadow(color: .black.opacity(0.05), radius: 3, x: 3, y: 3)
         .matchedGeometryEffect(id: "Widget\(widget.hashValue)", in: animation)
         .transition(.scale(scale: 1))
     }

@@ -36,7 +36,7 @@ class UnorderedWidgetCollection: LayoutWidgetCollection {
     
 }
 
-class OrderedLayoutWidgetCollection: LayoutWidgetCollection {
+class OrderedWidgetCollection: LayoutWidgetCollection {
     
     @Published var itemsWithPlaceholder: [PostLayoutWidget] = .init()
     override var itemsToRender: [PostLayoutWidget] { self.itemsWithPlaceholder }
@@ -49,8 +49,8 @@ class OrderedLayoutWidgetCollection: LayoutWidgetCollection {
     
     override func update(isHovered: Bool, value: DragGesture.Value, widgetDragging: PostLayoutWidget) {
         if isHovered {
-            if value.translation.width == 0 {
-                self.predictedDropIndex = self.items.firstIndex(of: widgetDragging)!
+            if value.translation.width == 0 && self.items.contains(widgetDragging) {
+                self.predictedDropIndex = self.items.firstIndex(of: widgetDragging)
             } else {
                 self.setPredictedDropIndex(value: value, widgetDragging: widgetDragging)
             }
@@ -67,7 +67,9 @@ class OrderedLayoutWidgetCollection: LayoutWidgetCollection {
     
     func updatePlaceholderPosition(widgetDragging: PostLayoutWidget, index: Int) {
         var retItems = self.items
-        retItems.remove(at: retItems.firstIndex(of: widgetDragging)!)
+        if let widgetDraggingIndex = retItems.firstIndex(of: widgetDragging) {
+            retItems.remove(at: widgetDraggingIndex)
+        }
         self.itemsWithPlaceholder = Array(
             retItems[ 0 ..< index]
             + [PostLayoutWidget(.placeholder(wrappedValue: widgetDragging.type))]
@@ -76,7 +78,9 @@ class OrderedLayoutWidgetCollection: LayoutWidgetCollection {
     }
     func removePlaceholder(widgetDragging: PostLayoutWidget) {
         var retItems = self.items
-        retItems.remove(at: retItems.firstIndex(of: widgetDragging)!)
+        if let index = retItems.firstIndex(of: widgetDragging) {
+            retItems.remove(at: index)
+        }
         self.itemsWithPlaceholder = retItems
     }
     
@@ -84,18 +88,21 @@ class OrderedLayoutWidgetCollection: LayoutWidgetCollection {
         var nodes: [Float] = []
         
         for item in self.items {
-            if value.translation.width < 0 {
-                nodes.append(Float(item.rect!.minX) + 5)
+            if !self.items.contains(widgetDragging) {
+                nodes.append(Float(item.rect!.minX) - 5)
+            } else if value.translation.width < 0 {
+                nodes.append(Float(item.rect!.minX) - 5)
             } else {
-                nodes.append(Float(item.rect!.maxX) + 15)
+                nodes.append(Float(item.rect!.maxX) + 5)
             }
         }
-        let comparisonX = Float(widgetDragging.rect!.origin.x + value.translation.width + 10)
+        let comparisonX = Float(widgetDragging.rect!.origin.x + value.translation.width)
                         + Float(widgetDragging.rect!.width) / 2.0
 
-        let closest = nodes.enumerated().min(by: {
+        if let closest = nodes.enumerated().min(by: {
             abs($0.element - comparisonX) < abs($1.element - comparisonX)
-        })
-        self.predictedDropIndex = closest!.offset
+        }) {
+            self.predictedDropIndex = closest.offset
+        }
     }
 }
