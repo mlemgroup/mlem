@@ -27,7 +27,6 @@ struct VoteComplex: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityValue("\(score) votes")
         .accessibilityAdjustableAction { direction in
             switch direction {
             case .increment:
