@@ -52,34 +52,28 @@ struct PostSettingsView: View {
             
             Section("Display Sides") {
                 SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
-                                       settingPictureColor: .pink,
                                        settingName: "Vote Buttons On Right",
                                        isTicked: $shouldShowVoteComplexOnRight)
                 
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
-                                       settingPictureColor: .pink,
                                        settingName: "Thumbnails On Right",
                                        isTicked: $shouldShowThumbnailsOnRight)
             }
             
             Section("Body") {
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
-                                       settingPictureColor: .pink,
                                        settingName: "Show User Server Instance",
                                        isTicked: $shouldShowUserServerInPost)
                 
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
-                                       settingPictureColor: .pink,
                                        settingName: "Show Community Server Instance",
                                        isTicked: $shouldShowCommunityServerInPost)
                 
                 SwitchableSettingsItem(settingPictureSystemName: "signature",
-                                       settingPictureColor: .pink,
                                        settingName: "Show Post Creator",
                                        isTicked: $shouldShowPostCreator)
                 
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
-                                       settingPictureColor: .pink,
                                        settingName: "Show Post Thumbnails",
                                        isTicked: $shouldShowPostThumbnails)
             }
@@ -92,23 +86,18 @@ struct PostSettingsView: View {
                     options: VoteComplexStyle.allCases
                 )
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
-                                       settingPictureColor: .pink,
                                        settingName: "Show Score In Info",
                                        isTicked: $shouldShowScoreInPostBar)
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.generalVoteSymbolName,
-                                       settingPictureColor: .pink,
                                        settingName: "Show Downvotes Separately",
                                        isTicked: $showDownvotesSeparately)
                 SwitchableSettingsItem(settingPictureSystemName: "clock",
-                                       settingPictureColor: .pink,
                                        settingName: "Show Time Posted In Info",
                                        isTicked: $shouldShowTimeInPostBar)
                 SwitchableSettingsItem(settingPictureSystemName: "bookmark",
-                                       settingPictureColor: .pink,
                                        settingName: "Show Saved Status In Info",
                                        isTicked: $shouldShowSavedInPostBar)
                 SwitchableSettingsItem(settingPictureSystemName: "bubble.right",
-                                       settingPictureColor: .pink,
                                        settingName: "Show Replies In Info",
                                        isTicked: $shouldShowRepliesInPostBar)
             }
@@ -141,20 +130,17 @@ struct PostSettingsView: View {
                 
                 SwitchableSettingsItem(
                     settingPictureSystemName: "network",
-                    settingPictureColor: .pink,
                     settingName: "Show Website Address",
                     isTicked: $shouldShowWebsiteHost
                 )
                 SwitchableSettingsItem(
                     settingPictureSystemName: "globe",
-                    settingPictureColor: .pink,
                     settingName: "Show Website Icon",
                     isTicked: $shouldShowWebsiteIcon
                 )
                 .disabled(!shouldShowWebsiteHost)
                 SwitchableSettingsItem(
                     settingPictureSystemName: "photo.circle.fill",
-                    settingPictureColor: .pink,
                     settingName: "Show Website Preview",
                     isTicked: $shouldShowWebsitePreviews
                 )
