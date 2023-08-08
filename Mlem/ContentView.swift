@@ -12,6 +12,7 @@ struct ContentView: View {
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.personRepository) var personRepository
+    @Dependency(\.hapticManager) var hapticManager
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
@@ -30,9 +31,12 @@ struct ContentView: View {
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
+    
+    var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
-        FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcher) {
+        FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
                 FeedRoot(showLoading: showLoading)
                     .fancyTabItem(tag: TabSelection.feeds) {
@@ -129,15 +133,19 @@ struct ContentView: View {
         return showUsernameInNavigationBar ? account.username : "Profile"
     }
     
-    func showAccountSwitcher() {
-        isPresentingAccountSwitcher = true
+    func showAccountSwitcherDragCallback() {
+        if !homeButtonExists {
+            hapticManager.play(haptic: .rigidInfo)
+            isPresentingAccountSwitcher = true
+        }
     }
     
     var accountSwitchLongPress: some Gesture {
         LongPressGesture()
             .onEnded { _ in
                 // disable long press in accessibility mode to prevent conflict with HUD
-                if !UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory {
+                if !accessibilityFont {
+                    hapticManager.play(haptic: .rigidInfo)
                     isPresentingAccountSwitcher = true
                 }
             }
