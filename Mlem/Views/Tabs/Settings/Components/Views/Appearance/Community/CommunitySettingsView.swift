@@ -17,14 +17,14 @@ struct CommunitySettingsView: View {
             SwitchableSettingsItem(
                 settingPictureSystemName: "person.2.circle.fill",
                 settingPictureColor: .pink,
-                settingName: "Show community avatars",
+                settingName: "Show Community Avatars",
                 isTicked: $shouldShowCommunityIcons
             )
 
             SwitchableSettingsItem(
                 settingPictureSystemName: "rectangle.grid.1x2",
                 settingPictureColor: .pink,
-                settingName: "Show community banners",
+                settingName: "Show Community Banners",
                 isTicked: $shouldShowCommunityHeaders
             )
         }

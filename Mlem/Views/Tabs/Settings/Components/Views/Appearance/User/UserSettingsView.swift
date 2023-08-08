@@ -18,14 +18,14 @@ struct UserSettingsView: View {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "person.circle.fill",
                     settingPictureColor: .pink,
-                    settingName: "Show user avatars",
+                    settingName: "Show User Avatars",
                     isTicked: $shouldShowUserAvatars
                 )
 
                 SwitchableSettingsItem(
                     settingPictureSystemName: "rectangle.grid.1x2",
                     settingPictureColor: .pink,
-                    settingName: "Show user banners",
+                    settingName: "Show User Banners",
                     isTicked: $shouldShowUserHeaders
                 )
             }
