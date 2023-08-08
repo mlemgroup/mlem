@@ -36,6 +36,7 @@ struct AccessibilitySettingsView: View {
                         Spacer()
                         
                         Text(String(format: "%.0f", readBarThicknessSlider))
+                            .foregroundColor(.secondary)
                     }
                     .frame(maxWidth: .infinity)
                     

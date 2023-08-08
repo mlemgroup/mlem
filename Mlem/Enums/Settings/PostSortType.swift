@@ -79,6 +79,12 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+extension PostSortType: SettingsOptions {
+    var label: String {
+        self.shortDescription
+    }
+}
+
 extension PostSortType: AssociatedIcon {
     var iconName: String {
         switch self {
