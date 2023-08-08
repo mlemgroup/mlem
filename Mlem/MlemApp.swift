@@ -57,9 +57,8 @@ struct MlemApp: App {
                         UITabBar.appearance().scrollEdgeAppearance = appearance
                         
                         // check whether this device has a home button
-                        if #available(iOS 11.0, *),
-                            let bottomInset = windowScene?.windows[0].safeAreaInsets.bottom,
-                            bottomInset > 0 {
+                        // note: this only works in iOS 11+; since we're incompatible with anything under 16, that shouldn't be a problem
+                        if let bottomInset = windowScene?.windows[0].safeAreaInsets.bottom, bottomInset > 0 {
                             homeButtonExists = false
                         } else {
                             homeButtonExists = true
