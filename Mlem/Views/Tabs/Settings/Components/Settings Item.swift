@@ -16,11 +16,13 @@ struct SwitchableSettingsItem: View {
     @Binding var isTicked: Bool
 
     var body: some View {
-        HStack {
-            Image(systemName: settingPictureSystemName)
-                .foregroundColor(settingPictureColor)
-
-            Toggle(settingName, isOn: $isTicked)
+        Toggle(isOn: $isTicked) {
+            Label {
+                Text(settingName)
+            } icon: {
+                Image(systemName: settingPictureSystemName)
+                    .foregroundColor(settingPictureColor)
+            }
         }
     }
 }

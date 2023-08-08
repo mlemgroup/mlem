@@ -40,7 +40,7 @@ struct CommentSettingsView: View {
             Section("Interactions and Info") {
                 SelectableSettingsItem(
                     settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote complex style",
+                    settingName: "Vote buttons",
                     currentValue: $commentVoteComplexStyle,
                     options: VoteComplexStyle.allCases
                 )
