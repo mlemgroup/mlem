@@ -135,7 +135,6 @@ struct ContentView: View {
     
     func showAccountSwitcherDragCallback() {
         if !homeButtonExists {
-            hapticManager.play(haptic: .rigidInfo)
             isPresentingAccountSwitcher = true
         }
     }
