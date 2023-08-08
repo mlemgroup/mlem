@@ -175,6 +175,7 @@ extension Theme {
     static let mlemDeemphasized = mlem
         .text {
             ForegroundColor(.secondary)
+            FontSize(16)
         }
 }
 

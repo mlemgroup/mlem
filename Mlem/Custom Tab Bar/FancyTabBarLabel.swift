@@ -66,7 +66,7 @@ struct FancyTabBarLabel: View {
         .frame(height: AppConstants.fancyTabBarHeight)
         .contentShape(Rectangle())
         .foregroundColor(active ? activeColor : color.opacity(0.4))
-        .animation(.easeOut(duration: 0.25), value: active)
+        .animation(.linear(duration: 0.1), value: active)
     }
     
     var labelDisplay: some View {

@@ -13,6 +13,7 @@ import XCTestDynamicOverlay
 @main
 struct MlemApp: App {
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
+    @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
 
     @StateObject var accountsTracker: SavedAccountTracker = .init()
 
@@ -54,6 +55,14 @@ struct MlemApp: App {
                         appearance.backgroundEffect = UIBlurEffect.init(style: .systemThinMaterial)
                         UITabBar.appearance().standardAppearance = appearance
                         UITabBar.appearance().scrollEdgeAppearance = appearance
+                        
+                        // check whether this device has a home button
+                        // note: this only works in iOS 11+; since we're incompatible with anything under 16, that shouldn't be a problem
+                        if let bottomInset = windowScene?.windows[0].safeAreaInsets.bottom, bottomInset > 0 {
+                            homeButtonExists = false
+                        } else {
+                            homeButtonExists = true
+                        }
                     }
             }
         }
