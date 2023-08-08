@@ -13,7 +13,7 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     
-    @StateObject private var quickLookPreview: QuickLookPreview = .init()
+    @StateObject private var quickLookPreview: QuickLookPaths = .init()
     
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
@@ -61,10 +61,6 @@ struct Window: View {
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
             .environmentObject(quickLookPreview)
-//            .fullScreenCover(item: $quickLookPreview.url) { url in
-//                QuickLookView(urls: [url])
-////                    .background(TransparentBackground())
-//            }
     }
     
     func forceOnboard() {

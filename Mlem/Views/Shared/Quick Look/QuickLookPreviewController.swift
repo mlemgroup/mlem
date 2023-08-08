@@ -1,33 +1,14 @@
 //
-//  QuickLookView.swift
+//  QuickLookPreviewController.swift
 //  Mlem
 //
 //  Created by Bosco Ho on 2023-08-07.
 //
 
-import Foundation
+import UIKit
 import QuickLook
-import SwiftUI
-import UIKit.UINavigationController
 
-struct QuickLookView: UIViewControllerRepresentable {
-
-    let urls: [URL]
-        
-    func makeUIViewController(context: Context) -> QuickLookPreviewController {
-        .init(urls: urls)
-    }
-    
-    func makeCoordinator() -> QuickLookDataSource {
-        .init(urls: urls)
-    }
-    
-    func updateUIViewController(_ uiViewController: QuickLookPreviewController, context: Context) {
-        // no-op.
-    }
-}
-
-///
+/// QuickLookPreviewController allows us to use UIKit's Quick Look view inside SwiftUI with interactive dismiss gesture, and a transparent background.
 final class QuickLookPreviewController: UIViewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     
     let urls: [URL]
@@ -42,7 +23,7 @@ final class QuickLookPreviewController: UIViewController, QLPreviewControllerDat
     }
     
     private var qlPreviewController: QLPreviewController?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
@@ -64,9 +45,10 @@ final class QuickLookPreviewController: UIViewController, QLPreviewControllerDat
     override func willMove(toParent parent: UIViewController?) {
         super.willMove(toParent: parent)
         /// Set the parent `SwiftUI.PresentationHostingController` background colour to transparent, so we can see behind Quick Look when user interactively dismisses Quick Look.
-        /// Other techniques call for using a separate "TransparentViewController" to achieve this effect, but it doesn't seem necessary(?) [2023.08]
+        /// Other techniques call for using a separate "TransparentViewController" to achieve this effect, but it doesn't seem necessary(?).
+        /// It's possible those techniques want to guarantee that the parent view is just a dumb shim view. [2023.08]
         parent?.view?.backgroundColor = .clear
-//        parent?.modalPresentationStyle = .overFullScreen
+        //        parent?.modalPresentationStyle = .overFullScreen
     }
     
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
@@ -74,35 +56,11 @@ final class QuickLookPreviewController: UIViewController, QLPreviewControllerDat
     }
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        urls[index] as NSURL
-    }
-    
-    func previewControllerWillDismiss(_ controller: QLPreviewController) {
-        dismiss(animated: false)
+        urls[index] as QLPreviewItem
     }
     
     func previewControllerDidDismiss(_ controller: QLPreviewController) {
+        /// This dismisses QuickLook's parent view, which is transparent to users.
         dismiss(animated: false)
     }
-}
-
-final class QuickLookDataSource: QLPreviewControllerDataSource {
-    
-    let urls: [URL]
-    
-    init(urls: [URL]) {
-        self.urls = urls
-    }
-    
-    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        urls.count
-    }
-    
-    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        urls[index] as NSURL
-    }
-}
-
-final class QuickLookPreview: ObservableObject {
-    @Published var url: URL?
 }
