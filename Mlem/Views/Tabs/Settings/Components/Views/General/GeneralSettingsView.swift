@@ -31,7 +31,7 @@ struct GeneralSettingsView: View {
                                        isTicked: $shouldBlurNsfw)
             } footer: {
                 // swiftlint:disable line_length
-                Text("When enabled, Not Safe For Work content will be blurred until you click on it. If you want to disable NSFW content from appearing entirely, you can do so from Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
+                Text("Blurs content flagged as Not Safe For Work until you click on it. If you want to disable NSFW content from appearing entirely, you can do so from Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
                 // swiftlint:enable line_length
             }
             

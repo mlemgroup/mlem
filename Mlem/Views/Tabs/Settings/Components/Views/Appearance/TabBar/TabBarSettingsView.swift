@@ -23,9 +23,7 @@ struct TabBarSettingsView: View {
                                        settingName: "Show Username",
                                        isTicked: $showUsernameInNavigationBar)
             } footer: {
-                // swiftlint:disable line_length
-                Text("When enabled, your username will be displayed as the label for the Profile tab. You may wish to turn this off for privacy reasons.")
-                // swiftlint:enable line_length
+                Text("Displays your username as the label for the \"Profile\" tab.")
             }
             
             SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
