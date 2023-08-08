@@ -15,13 +15,11 @@ struct TabBarSettingsView: View {
     var body: some View {
         Form {
             SwitchableSettingsItem(settingPictureSystemName: "tag",
-                                   settingPictureColor: .pink,
                                    settingName: "Show Tab Labels",
                                    isTicked: $showTabNames)
             
             Section {
                 SwitchableSettingsItem(settingPictureSystemName: "person.text.rectangle",
-                                       settingPictureColor: .pink,
                                        settingName: "Show Username",
                                        isTicked: $showUsernameInNavigationBar)
             } footer: {
@@ -31,7 +29,6 @@ struct TabBarSettingsView: View {
             }
             
             SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
-                                   settingPictureColor: .pink,
                                    settingName: "Show Unread Count",
                                    isTicked: $showInboxUnreadBadge)
         }
