@@ -172,13 +172,13 @@ struct ExpandedPost: View {
                 Button {
                     commentSortingType = type
                 } label: {
-                    Label(type.description, systemImage: type.imageName)
+                    Label(type.description, systemImage: type.iconName)
                 }
                 .disabled(type == commentSortingType)
             }
 
         } label: {
-            Label(commentSortingType.description, systemImage: commentSortingType.imageName)
+            Label(commentSortingType.description, systemImage: commentSortingType.iconName)
         }
     }
 }

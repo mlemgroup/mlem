@@ -8,12 +8,22 @@
 import SwiftUI
 
 struct SwitchableSettingsItem: View {
-    @State var settingPictureSystemName: String
-    @State var settingPictureColor: Color
-
-    @State var settingName: String
+    let settingPictureSystemName: String
+    let settingPictureColor: Color
+    let settingName: String
 
     @Binding var isTicked: Bool
+    
+    init(settingPictureSystemName: String,
+         settingPictureColor: Color = .pink,
+         settingName: String,
+         isTicked: Binding<Bool>) {
+        self.settingPictureSystemName = settingPictureSystemName
+        self.settingPictureColor = settingPictureColor
+        self.settingName = settingName
+        
+        self._isTicked = isTicked
+    }
 
     var body: some View {
         Toggle(isOn: $isTicked) {

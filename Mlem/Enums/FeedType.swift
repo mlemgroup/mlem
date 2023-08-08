@@ -29,7 +29,7 @@ extension FeedType: AssociatedIcon {
         switch self {
         case .all: return AppConstants.federatedFeedSymbolName
         case .local: return AppConstants.localFeedSymbolName
-        case .subscribed: return AppConstants.subscribeSymbolName
+        case .subscribed: return AppConstants.subscribedFeedSymbolName
         }
     }
     
@@ -38,6 +38,17 @@ extension FeedType: AssociatedIcon {
         case .all: return AppConstants.federatedFeedSymbolName
         case .local: return AppConstants.localFeedSymbolNameFill
         case .subscribed: return AppConstants.subscribedFeedSymbolNameFill
+        }
+    }
+    
+    /**
+     Icon to use in system settings. This should be removed when the "unified symbol handling" is closed
+     */
+    var settingsIconName: String {
+        switch self {
+        case .all: return "circle.hexagongrid"
+        case .local: return "house"
+        case .subscribed: return "newspaper"
         }
     }
 }

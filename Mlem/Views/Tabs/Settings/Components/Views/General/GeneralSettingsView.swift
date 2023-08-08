@@ -26,7 +26,9 @@ struct GeneralSettingsView: View {
         List {
             
             Section {
-                Toggle("Blur NSFW Content", isOn: $shouldBlurNsfw)
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.blurNsfwSymbolName,
+                                       settingName: "Blur NSFW content",
+                                       isTicked: $shouldBlurNsfw)
             } footer: {
                 // swiftlint:disable line_length
                 Text("When enabled, Not Safe For Work content will be blurred until you click on it. If you want to disable NSFW content from appearing entirely, you can do so from Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
@@ -34,46 +36,24 @@ struct GeneralSettingsView: View {
             }
             
             Section {
-                Picker("Default Feed", selection: $defaultFeed) {
-                    ForEach(FeedType.allCases, id: \.self) {
-                        Text($0.label)
-                    }
-                }
+                SelectableSettingsItem(settingIconSystemName: defaultFeed.settingsIconName,
+                                       settingName: "Default feed",
+                                       currentValue: $defaultFeed,
+                                       options: FeedType.allCases)
             } footer: {
                 Text("The feed to show by default when you open the app.")
             }
             
             Section {
-                HStack {
-                    Text("Posts")
-                    Spacer()
-                    PostSortMenu(selectedSortingOption: $defaultPostSorting, shortLabel: true)
-                }
+                SelectableSettingsItem(settingIconSystemName: defaultPostSorting.iconName,
+                                       settingName: "Posts",
+                                       currentValue: $defaultPostSorting,
+                                       options: PostSortType.allCases)
                 
-                HStack {
-                    Text("Comments")
-                    Spacer()
-                    Menu {
-                        ForEach(CommentSortType.allCases, id: \.self) { type in
-                            Button {
-                                defaultCommentSorting = type
-                            } label: {
-                                Label(type.description, systemImage: type.imageName)
-                            }
-                            .disabled(type == defaultCommentSorting)
-                        }
-
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Image(systemName: defaultCommentSorting.imageName)
-                                .tint(.pink)
-                            Text(defaultCommentSorting.description)
-                                .tint(.pink)
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                }
+                SelectableSettingsItem(settingIconSystemName: defaultCommentSorting.iconName,
+                                       settingName: "Comments",
+                                       currentValue: $defaultCommentSorting,
+                                       options: CommentSortType.allCases)
             } header: {
                 Text("Default Sorting")
             } footer: {
@@ -97,6 +77,7 @@ struct GeneralSettingsView: View {
                 } label: {
                     Label("Delete Community Favorites", systemImage: "trash")
                         .foregroundColor(.red)
+                        .opacity(favoritesTracker.favoriteCommunities.isEmpty ? 0.6 : 1)
                 }
                 .disabled(favoritesTracker.favoriteCommunities.isEmpty)
                 .confirmationDialog(
