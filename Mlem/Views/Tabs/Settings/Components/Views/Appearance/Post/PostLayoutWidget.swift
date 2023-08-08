@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-indirect enum PostLayoutWidgetType: Hashable {
-    case placeholder(wrappedValue: PostLayoutWidgetType)
-    case spacer
+indirect enum PostLayoutWidgetType: String, Hashable, Codable, CaseIterable {
+    var id: Self { self }
+    
+    case infoStack
     case upvote
     case downvote
     case save
@@ -19,11 +20,13 @@ indirect enum PostLayoutWidgetType: Hashable {
     case downvoteCounter
     case scoreCounter
     
+    static var allCases: [PostLayoutWidgetType] {
+        return [.infoStack, .upvote, .downvote, .save, .reply, .share, .upvoteCounter, .downvoteCounter, .scoreCounter]
+    }
+    
     var width: CGFloat {
         switch self {
-        case .placeholder(let wrappedValue):
-            return wrappedValue.width
-        case .spacer:
+        case .infoStack:
             return .infinity
         case .upvote:
             return 40
@@ -42,7 +45,25 @@ indirect enum PostLayoutWidgetType: Hashable {
         case .scoreCounter:
             return 90
         }
-        
+    }
+    
+    var cost: Float {
+        switch self {
+        case .scoreCounter:
+            return 3
+        case .upvoteCounter:
+            return 2
+        case .downvoteCounter:
+            return 2
+        case .infoStack:
+            return 0
+        default:
+            return 1
+        }
+    }
+    
+    var canRemove: Bool {
+        return self != .infoStack
     }
 }
 

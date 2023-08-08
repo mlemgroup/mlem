@@ -14,6 +14,7 @@ class LayoutWidgetModel: ObservableObject {
     @Published var widgetDragging: PostLayoutWidget?
     @Published var lastDraggedWidget: PostLayoutWidget?
     @Published var widgetDraggingCollection: LayoutWidgetCollection?
+    @Published var collectionHovering: LayoutWidgetCollection?
     @Published var predictedDropCollection: LayoutWidgetCollection?
     
     @Published var widgetDraggingOffset = CGSize.zero
@@ -30,13 +31,20 @@ class LayoutWidgetModel: ObservableObject {
 
         for collection in self.collections where collection.rect != nil {
             if collection.rect!.contains(value.location) {
-                self.predictedDropCollection = collection
+                self.collectionHovering = collection
+                if widgetDraggingCollection == collection || (
+                    (widgetDragging?.type.canRemove ?? true)
+                    && collection.isValidDropLocation(widgetDragging)
+                ) {
+                    self.predictedDropCollection = collection
+                }
                 break
             }
         }
-        if widgetDragging == nil && self.predictedDropCollection != nil {
-            self.widgetDragging = self.predictedDropCollection!.getItemAtLocation(value.location)
-            widgetDraggingCollection = predictedDropCollection
+        if widgetDragging == nil && self.collectionHovering != nil {
+            self.widgetDragging = self.collectionHovering!.getItemAtLocation(value.location)
+            widgetDraggingCollection = collectionHovering
+            predictedDropCollection = collectionHovering
         }
         
         if widgetDragging != nil {

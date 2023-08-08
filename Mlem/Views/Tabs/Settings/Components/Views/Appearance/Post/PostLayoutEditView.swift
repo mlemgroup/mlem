@@ -10,28 +10,36 @@ import SwiftUI
 struct PostLayoutEditView: View {
     
     @Binding var showingSheet: Bool
+    var onSave: (_ widgets: [PostLayoutWidgetType]) -> Void
     
     @Namespace var animation
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    
     @StateObject var barCollection: OrderedWidgetCollection
     @StateObject var trayCollection: UnorderedWidgetCollection
     
     @StateObject private var widgetModel: LayoutWidgetModel
     
-    init(_ showingSheet: Binding<Bool>) {
-        let bar = OrderedWidgetCollection([
-            .init(.upvote),
-            .init(.downvote),
-            .init(.spacer),
-            .init(.save)
-       ])
+    init(_ showingSheet: Binding<Bool>, widgets: [PostLayoutWidgetType],
+         onSave: @escaping (_ widgets: [PostLayoutWidgetType]) -> Void) {
+        self.onSave = onSave
+        
+        var barWidgets: [PostLayoutWidget] = .init()
+        
+        for widget in widgets {
+            barWidgets.append(.init(widget))
+        }
+        
+        var trayWidgets: [PostLayoutWidget] = .init()
+        
+        for widget in PostLayoutWidgetType.allCases where !widgets.contains(widget) {
+            trayWidgets.append(.init(widget))
+        }
+        
+        let bar = OrderedWidgetCollection(barWidgets, costLimit: 7)
         _showingSheet = showingSheet
-        let tray = UnorderedWidgetCollection([
-            .init(.scoreCounter),
-            .init(.upvoteCounter),
-            .init(.downvoteCounter),
-            .init(.reply),
-            .init(.share)
-        ])
+        
+        let tray = UnorderedWidgetCollection(trayWidgets)
         
         _barCollection = StateObject(wrappedValue: bar)
         _trayCollection = StateObject(wrappedValue: tray)
@@ -45,25 +53,20 @@ struct PostLayoutEditView: View {
                 VStack(spacing: 0) {
                     VStack {
                         Spacer()
-                        ZStack {
-                            Text("Customise Widgets")
-                                .fontWeight(.semibold)
-                                .font(.title2)
-                            HStack {
-                                Spacer()
-                                Button {
-                                    showingSheet = false
-                                } label: {
-                                    Image(systemName: "multiply.circle.fill")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 26)
-                                        .foregroundStyle(.tertiary)
+                        HStack {
+                            Button("Cancel") {
+                                showingSheet = false
+                            }
+                            Spacer()
+                            Button("Save") {
+                                Task {
+                                    self.onSave(self.barCollection.items.compactMap { $0.type })
                                 }
-                                .buttonStyle(.plain)
-                                .padding(.horizontal, 20)
+                                
+                                showingSheet = false
                             }
                         }
+                        .padding(.horizontal, 20)
                         Spacer()
                         Divider()
                     }
@@ -74,14 +77,31 @@ struct PostLayoutEditView: View {
                         .frame(height: 125)
                         .padding(.horizontal, 30)
                         .zIndex(1)
+                        .opacity(
+                            (widgetModel.widgetDraggingCollection == trayCollection
+                            && !barCollection.isValidDropLocation(widgetModel.widgetDragging))
+                            ? 0.3
+                            : 1
+                        )
                     VStack {
                         Divider()
-                        Text("Tap and hold widgets to add, remove, or rearrange them.")
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                            .padding()
+                        Spacer()
+                        if widgetModel.widgetDraggingCollection == trayCollection
+                            && !barCollection.isValidDropLocation(widgetModel.widgetDragging) {
+                            Text("Too many widgets!")
+                                .font(.callout)
+                                .foregroundStyle(.red)
+                                .padding()
+                        } else {
+                            Text("Tap and hold widgets to add, remove, or rearrange them.")
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                                .padding()
+                        }
+                        Spacer()
                         Divider()
                     }
+                    .frame(height: 150)
                     tray(frame)
                         .padding(.vertical, 40)
                         .zIndex(1)
@@ -103,7 +123,7 @@ struct PostLayoutEditView: View {
         
             if widgetModel.shouldShowDraggingWidget {
                 HStack {
-                    PostLayoutWidgetView(widget: widgetModel.widgetDragging!, animation: animation)
+                    LayoutWidgetView(widget: widgetModel.widgetDragging!, animation: animation)
                 }
                 .frame(
                     width: widgetModel.widgetDragging!.rect!.width,
@@ -144,7 +164,7 @@ struct PostLayoutEditView: View {
         
         var widgets = [PostLayoutWidgetType: PostLayoutWidget]()
         for widget in trayCollection.itemsToRender {
-            widgets[widget.type] = widget
+            widgets[widget!.type] = widget
         }
         
         func trayWidgetView(_ widgetType: PostLayoutWidgetType) -> some View {
@@ -157,6 +177,7 @@ struct PostLayoutEditView: View {
                 }
             }
             .frame(width: widgetType.width == .infinity ? 150 : widgetType.width, height: 40)
+            
         }
         
         return GeometryReader { geometry in
@@ -179,9 +200,6 @@ struct PostLayoutEditView: View {
                         trayWidgetView(.share)
                         trayWidgetView(.reply)
                     }
-                    HStack(spacing: 20) {
-                        trayWidgetView(.spacer)
-                    }
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
@@ -191,32 +209,43 @@ struct PostLayoutEditView: View {
         }
     }
     
-    func placedWidgetView(_ widget: PostLayoutWidget, outerFrame: CGRect) -> some View {
-        HStack {
-            GeometryReader { geometry in
-                
-                switch widget.type {
-                case .placeholder(let wrappedValue):
-                    Color.clear
-                        .frame(maxWidth: wrappedValue.width, maxHeight: .infinity)
-                        .padding(10)
-                default:
-                    let widgetView = {
-                        if widgetModel.widgetDragging == nil {
-                            let rect = geometry.frame(in: .global)
-                                .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y)
-                            widget.rect = rect
+    func placedWidgetView(_ widget: PostLayoutWidget?, outerFrame: CGRect) -> some View {
+        let widgetWidth = widget?.type.width ?? (widgetModel.widgetDragging?.type.width ?? 0)
+        let stack = {
+                HStack {
+                GeometryReader { geometry in
+                    Group {
+                        if let widget = widget {
+                            let widgetView = {
+                                if widgetModel.widgetDragging == nil {
+                                    let rect = geometry.frame(in: .global)
+                                        .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y)
+                                    widget.rect = rect
+                                }
+                                return LayoutWidgetView(widget: widget, isDragging: false, animation: animation)
+                                
+                            }
+                            
+                            widgetView()
+                        } else {
+                            Color.clear
+                                .frame(maxWidth: widgetWidth, maxHeight: .infinity)
+                                .padding(10)
                         }
-                        return PostLayoutWidgetView(widget: widget, isDragging: false, animation: animation)
-
                     }
-                    
-                    widgetView()
                 }
             }
+            .transition(.scale(scale: 1))
+            .zIndex(widgetModel.lastDraggedWidget == widget ? 1 : 0)
         }
-        .frame(maxWidth: widget.type.width)
+        
+        return HStack {
+            if widgetWidth == .infinity {
+                stack().frame(maxWidth: .infinity)
+            } else {
+                stack().frame(width: widgetWidth)
+            }
+        }
         .transition(.scale(scale: 1))
-        .zIndex(widgetModel.lastDraggedWidget == widget ? 1 : 0)
     }
 }

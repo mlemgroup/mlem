@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PostLayoutWidgetView: View {
+struct LayoutWidgetView: View {
     
     var widget: PostLayoutWidget
     var isDragging: Bool = false

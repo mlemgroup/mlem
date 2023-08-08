@@ -1,5 +1,5 @@
 //
-//  PostLayoutWidgetCollection.swift
+//  LayoutWidgetCollection.swift
 //  Mlem
 //
 //  Created by Sjmarf on 02/08/2023.
@@ -7,13 +7,17 @@
 
 import SwiftUI
 
-class LayoutWidgetCollection: ObservableObject {
-    @Published var items: [PostLayoutWidget] = .init()
-    var itemsToRender: [PostLayoutWidget] { self.items }
-    var rect: CGRect?
+class LayoutWidgetCollection: ObservableObject, Equatable {
     
-    init(_ items: [PostLayoutWidget]) {
+    var id = UUID()
+    @Published var items: [PostLayoutWidget] = .init()
+    var itemsToRender: [PostLayoutWidget?] { self.items }
+    var rect: CGRect?
+    var costLimit: Float
+    
+    init(_ items: [PostLayoutWidget], costLimit: Float = .infinity) {
         _items = Published(wrappedValue: items)
+        self.costLimit = costLimit
     }
     
     func update(isHovered: Bool, value: DragGesture.Value, widgetDragging: PostLayoutWidget) {}
@@ -30,6 +34,21 @@ class LayoutWidgetCollection: ObservableObject {
         }
         return nil
     }
+    
+    func isValidDropLocation(_ widgetDragging: PostLayoutWidget? = nil) -> Bool {
+        costLimit == .infinity || totalCost(widgetDragging) <= costLimit
+    }
+    
+    func totalCost(_ widgetDragging: PostLayoutWidget? = nil) -> Float {
+        self.items.reduce(0) { accumulator, element in
+            accumulator + element.type.cost
+        } + (widgetDragging?.type.cost ?? 0)
+    }
+    
+    static func == (lhs: LayoutWidgetCollection, rhs: LayoutWidgetCollection) -> Bool {
+        lhs.id == rhs.id
+    }
+    
 }
 
 class UnorderedWidgetCollection: LayoutWidgetCollection {
@@ -38,12 +57,12 @@ class UnorderedWidgetCollection: LayoutWidgetCollection {
 
 class OrderedWidgetCollection: LayoutWidgetCollection {
     
-    @Published var itemsWithPlaceholder: [PostLayoutWidget] = .init()
-    override var itemsToRender: [PostLayoutWidget] { self.itemsWithPlaceholder }
+    @Published var itemsWithPlaceholder: [PostLayoutWidget?] = .init()
+    override var itemsToRender: [PostLayoutWidget?] { self.itemsWithPlaceholder }
     var predictedDropIndex: Int?
     
-    override init(_ items: [PostLayoutWidget]) {
-        super.init(items)
+    override init(_ items: [PostLayoutWidget], costLimit: Float = .infinity) {
+        super.init(items, costLimit: costLimit)
         itemsWithPlaceholder = self.items
     }
     
@@ -70,11 +89,9 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
         if let widgetDraggingIndex = retItems.firstIndex(of: widgetDragging) {
             retItems.remove(at: widgetDraggingIndex)
         }
-        self.itemsWithPlaceholder = Array(
-            retItems[ 0 ..< index]
-            + [PostLayoutWidget(.placeholder(wrappedValue: widgetDragging.type))]
-            + retItems[ index ..< retItems.count]
-        )
+        self.itemsWithPlaceholder = Array(retItems[ 0 ..< index])
+        self.itemsWithPlaceholder.append(nil)
+        self.itemsWithPlaceholder += Array(retItems[ index ..< retItems.count])
     }
     func removePlaceholder(widgetDragging: PostLayoutWidget) {
         var retItems = self.items
@@ -96,6 +113,10 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
                 nodes.append(Float(item.rect!.maxX) + 5)
             }
         }
+        if !self.items.contains(widgetDragging) && !self.items.isEmpty {
+            nodes.append(Float(self.items.last!.rect!.maxX) + 5)
+        }
+        
         let comparisonX = Float(widgetDragging.rect!.origin.x + value.translation.width)
                         + Float(widgetDragging.rect!.width) / 2.0
 

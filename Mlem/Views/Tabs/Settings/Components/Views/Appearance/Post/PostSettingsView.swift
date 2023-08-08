@@ -10,6 +10,7 @@ import SwiftUI
 
 struct PostSettingsView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = PostSize.headline
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
@@ -154,11 +155,16 @@ struct PostSettingsView: View {
             }
 
         }
+        
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingWidgetSheet) {
-            PostLayoutEditView($showingWidgetSheet)
+            PostLayoutEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups!.post, onSave: { widgets in
+                layoutWidgetTracker.groups?.post = widgets
+                layoutWidgetTracker.saveToDisk()
+            })
+                .interactiveDismissDisabled()
         }
     }
 }
