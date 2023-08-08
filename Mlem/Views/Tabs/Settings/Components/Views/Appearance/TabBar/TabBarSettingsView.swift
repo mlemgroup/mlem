@@ -16,13 +16,13 @@ struct TabBarSettingsView: View {
         Form {
             SwitchableSettingsItem(settingPictureSystemName: "tag",
                                    settingPictureColor: .pink,
-                                   settingName: "Show tab labels",
+                                   settingName: "Show Tab Labels",
                                    isTicked: $showTabNames)
             
             Section {
                 SwitchableSettingsItem(settingPictureSystemName: "person.text.rectangle",
                                        settingPictureColor: .pink,
-                                       settingName: "Show username",
+                                       settingName: "Show Username",
                                        isTicked: $showUsernameInNavigationBar)
             } footer: {
                 // swiftlint:disable line_length
@@ -32,7 +32,7 @@ struct TabBarSettingsView: View {
             
             SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
                                    settingPictureColor: .pink,
-                                   settingName: "Show unread count",
+                                   settingName: "Show Unread Count",
                                    isTicked: $showInboxUnreadBadge)
         }
         .fancyTabScrollCompatible()

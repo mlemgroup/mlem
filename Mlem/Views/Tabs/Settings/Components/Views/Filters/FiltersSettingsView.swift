@@ -63,7 +63,7 @@ struct FiltersSettingsView: View {
                     
                 } label: {
                     Label {
-                        Text("Export filters")
+                        Text("Export Filters")
                     } icon: {
                         Image(systemName: "square.and.arrow.up")
                             .opacity(filtersTracker.filteredKeywords.isEmpty ? 0.6 : 1)

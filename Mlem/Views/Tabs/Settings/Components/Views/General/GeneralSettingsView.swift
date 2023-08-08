@@ -27,7 +27,7 @@ struct GeneralSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.blurNsfwSymbolName,
-                                       settingName: "Blur NSFW content",
+                                       settingName: "Blur NSFW Content",
                                        isTicked: $shouldBlurNsfw)
             } footer: {
                 // swiftlint:disable line_length
@@ -37,7 +37,7 @@ struct GeneralSettingsView: View {
             
             Section {
                 SelectableSettingsItem(settingIconSystemName: defaultFeed.settingsIconName,
-                                       settingName: "Default feed",
+                                       settingName: "Default Feed",
                                        currentValue: $defaultFeed,
                                        options: FeedType.allCases)
             } footer: {
