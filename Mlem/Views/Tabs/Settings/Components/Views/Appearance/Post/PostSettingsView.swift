@@ -87,7 +87,7 @@ struct PostSettingsView: View {
             Section("Interactions and Info") {
                 SelectableSettingsItem(
                     settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote complex style",
+                    settingName: "Vote buttons",
                     currentValue: $postVoteComplexStyle,
                     options: VoteComplexStyle.allCases
                 )
