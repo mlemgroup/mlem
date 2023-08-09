@@ -28,9 +28,11 @@ struct LargePost: View {
 
     // parameters
     let postView: APIPostView
-    let isExpanded: Bool
     
     @Binding var layoutMode: LayoutMode
+    private var isExpanded: Bool {
+        layoutMode == .maximize
+    }
     
     // computed
     var maxHeight: CGFloat { isExpanded ? .infinity : AppConstants.maxFeedPostHeight }
@@ -39,10 +41,8 @@ struct LargePost: View {
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
-        isExpanded: Bool,
         layoutMode: Binding<LayoutMode>) {
         self.postView = postView
-        self.isExpanded = isExpanded
         self._layoutMode = layoutMode
     }
 

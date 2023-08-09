@@ -128,7 +128,6 @@ struct ExpandedPost: View {
                 
                 LargePost(
                     postView: post,
-                    isExpanded: true,
                     layoutMode: .constant(.maximize)
                 )
                 

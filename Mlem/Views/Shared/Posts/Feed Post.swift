@@ -163,7 +163,6 @@ struct FeedPost: View {
                     } else {
                         LargePost(
                             postView: postView,
-                            isExpanded: false,
                             layoutMode: .constant(.preferredSize)
                         )
                     }
