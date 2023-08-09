@@ -162,6 +162,8 @@ struct ExpandedPost: View {
                     showPostContext: false,
                     showCommentCreator: true
                 )
+                /// [2023.08] Manually set zIndex so child comments don't overlap parent comments on collapse/expand animations. `Int.max` doesn't work, which is why this is set to just some big value.
+                .zIndex(.maxZIndex - Double(comment.depth))
             }
         }
     }
