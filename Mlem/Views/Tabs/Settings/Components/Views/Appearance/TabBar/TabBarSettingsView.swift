@@ -14,44 +14,53 @@ struct TabBarSettingsView: View {
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
         
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var savedAccountTracker: SavedAccountTracker
     
     @State var textFieldEntry: String = ""
     
     var body: some View {
         Form {
-            SwitchableSettingsItem(settingPictureSystemName: "tag",
-                                   settingName: "Show Tab Labels",
-                                   isTicked: $showTabNames)
-            
-//            Section {
-//                SwitchableSettingsItem(settingPictureSystemName: "person.text.rectangle",
-//                                       settingName: "Show Username",
-//                                       isTicked: $showUsernameInNavigationBar)
-//            } footer: {
-//                Text("Displays your username as the label for the \"Profile\" tab.")
-//            }
-            
-            SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
-                                   settingName: "Show Unread Count",
-                                   isTicked: $showInboxUnreadBadge)
-            
-            VStack {
+            Section {
                 SelectableSettingsItem(settingIconSystemName: "person.text.rectangle",
                                        settingName: "Profile Tab Label",
                                        currentValue: $profileTabLabel,
                                        options: ProfileTabLabel.allCases)
                 
-                TextField(text: $textFieldEntry, prompt: Text(appState.currentActiveAccount.username)) {
-                    Text("Nickname")
+                if profileTabLabel == .nickname {
+                    Label {
+                        TextField(text: $textFieldEntry, prompt: Text(appState.currentNickname)) {
+                            Text("Nickname")
+                        }
+                        .autocorrectionDisabled(true)
+                        .textInputAutocapitalization(.never)
+                        .onSubmit {
+                            print(textFieldEntry)
+                            let newAccount = SavedAccount(from: appState.currentActiveAccount, storedNickname: textFieldEntry)
+                            appState.changeDisplayedNickname(to: textFieldEntry)
+                            savedAccountTracker.replaceAccount(account: newAccount)
+                        }
+                    } icon: {
+                        Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                            .foregroundColor(.pink)
+                    }
                 }
-                .onSubmit {
-                    appState.setNickname(nickname: textFieldEntry)
-                }
+            }
+            
+            Section {
+                SwitchableSettingsItem(settingPictureSystemName: "tag",
+                                       settingName: "Show Tab Labels",
+                                       isTicked: $showTabNames)
+                
+                SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
+                                       settingName: "Show Unread Count",
+                                       isTicked: $showInboxUnreadBadge)
             }
         }
         .fancyTabScrollCompatible()
-        .onChange(of: appState.currentActiveAccount.nickname) { _ in
-            textFieldEntry = appState.currentActiveAccount.nickname
+        .animation(.easeIn, value: profileTabLabel)
+        .onChange(of: appState.currentActiveAccount.nickname) { nickname in
+            print("new nickname: \(nickname)")
+            textFieldEntry = nickname // appState.currentActiveAccount.nickname
         }
     }
 }

@@ -23,7 +23,7 @@ class HapticManager {
     
     init() {
         // create and start the engine if this device supports haptics
-        print("initialized haptic engine")
+        print("Initialized haptic engine")
         hapticEngine = initEngine()
         
         // if the engine stops, tell us why
