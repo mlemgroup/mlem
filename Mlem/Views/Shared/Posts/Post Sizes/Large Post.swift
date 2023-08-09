@@ -56,6 +56,23 @@ struct LargePost: View {
             return 2
         }
     }
+    @ViewBuilder
+    private var postBodyBackground: some View {
+        switch layoutMode {
+        case .minimize:
+            Color.secondarySystemBackground
+        default:
+            Color.clear
+        }
+    }
+    private var postBodyInsets: EdgeInsets {
+        switch layoutMode {
+        case .minimize:
+            return .init(top: 12, leading: 12, bottom: 12, trailing: 12)
+        default:
+            return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        }
+    }
     
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
@@ -98,18 +115,22 @@ struct LargePost: View {
         switch postView.postType {
         case .image(let url):
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                CachedImage(url: url,
-                            maxHeight: maxHeight,
-                            dismissCallback: markPostAsRead)
+                if layoutMode != .minimize {
+                    CachedImage(url: url,
+                                maxHeight: maxHeight,
+                                dismissCallback: markPostAsRead)
                     .frame(maxWidth: .infinity, maxHeight: maxHeight, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
                     .clipped()
+                }
                 postBodyView
             }
         case .link:
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                WebsiteIconComplex(post: postView.post, onTapActions: markPostAsRead)
+                if layoutMode != .minimize {
+                    WebsiteIconComplex(post: postView.post, onTapActions: markPostAsRead)
+                }
                 postBodyView
             }
         case .text(let postBody):
@@ -130,8 +151,11 @@ struct LargePost: View {
                 replaceImagesWithEmoji: isExpanded ? false : true,
                 isDeemphasized: isExpanded ? false : true
             )
-            .lineLimit(lineLimit)
             .font(.subheadline)
+            .lineLimit(lineLimit)
+            .padding(postBodyInsets)
+            .background(postBodyBackground)
+            .cornerRadius(8)
         }
     }
     
