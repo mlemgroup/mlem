@@ -132,7 +132,7 @@ struct ExpandedPost: View {
                     layoutMode: $postLayoutMode
                 )
                 .onTapGesture {
-                    withAnimation {
+                    withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)) {
                         postLayoutMode = postLayoutMode == .maximize ? .minimize : .maximize
                     }
                 }
