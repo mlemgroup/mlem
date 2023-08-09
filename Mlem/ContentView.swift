@@ -12,6 +12,7 @@ struct ContentView: View {
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.personRepository) var personRepository
+    @Dependency(\.hapticManager) var hapticManager
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
@@ -28,11 +29,14 @@ struct ContentView: View {
     
     @State private var isPresentingAccountSwitcher: Bool = false
     
-    @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
+    
+    var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
-        FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcher) {
+        FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
                 FeedRoot(showLoading: showLoading)
                     .fancyTabItem(tag: TabSelection.feeds) {
@@ -126,18 +130,26 @@ struct ContentView: View {
     }
     
     func computeUsername(account: SavedAccount) -> String {
-        return showUsernameInNavigationBar ? account.username : "Profile"
+        switch profileTabLabel {
+        case .username: return account.username
+        case .instance: return account.hostName ?? account.username
+        case .nickname: return appState.currentNickname
+        case .anonymous: return "Profile"
+        }
     }
     
-    func showAccountSwitcher() {
-        isPresentingAccountSwitcher = true
+    func showAccountSwitcherDragCallback() {
+        if !homeButtonExists {
+            isPresentingAccountSwitcher = true
+        }
     }
     
     var accountSwitchLongPress: some Gesture {
         LongPressGesture()
             .onEnded { _ in
                 // disable long press in accessibility mode to prevent conflict with HUD
-                if !UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory {
+                if !accessibilityFont {
+                    hapticManager.play(haptic: .rigidInfo)
                     isPresentingAccountSwitcher = true
                 }
             }

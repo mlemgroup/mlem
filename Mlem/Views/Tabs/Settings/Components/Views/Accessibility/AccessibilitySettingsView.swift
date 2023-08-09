@@ -36,6 +36,7 @@ struct AccessibilitySettingsView: View {
                         Spacer()
                         
                         Text(String(format: "%.0f", readBarThicknessSlider))
+                            .foregroundColor(.secondary)
                     }
                     .frame(maxWidth: .infinity)
                     
@@ -58,7 +59,7 @@ struct AccessibilitySettingsView: View {
             } header: {
                 Text("Differentiate Without Color")
             } footer: {
-                Text("Configure how this app behaves when the system \"differentiate without color\" option is on")
+                Text("Configure how this app behaves when the system \"differentiate without color\" option is on.")
             }
         }
         .fancyTabScrollCompatible()

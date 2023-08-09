@@ -97,12 +97,17 @@ struct FeedPost: View {
         }
     }
 
-    private func calculateServerInstanceLocation() -> ServerInstanceLocation {
-        guard shouldShowUserServerInPost else {
+    var userServerInstanceLocation: ServerInstanceLocation {
+        if !shouldShowUserServerInPost {
             return .disabled
+        } else {
+            return .bottom
         }
-        if postSize == .compact {
-            return .trailing
+    }
+    
+    var communityServerInstanceLocation: ServerInstanceLocation {
+        if !shouldShowCommunityServerInPost {
+            return .disabled
         } else {
             return .bottom
         }
@@ -126,7 +131,9 @@ struct FeedPost: View {
                     //    CommunityLinkView(community: postView.community)
                     // }
                     HStack {
-                        CommunityLinkView(community: postView.community)
+                        CommunityLinkView(
+                            community: postView.community,
+                            serverInstanceLocation: communityServerInstanceLocation)
 
                         Spacer()
 
@@ -149,8 +156,7 @@ struct FeedPost: View {
                     // posting user
                     if showPostCreator {
                         UserProfileLink(user: postView.creator,
-                                        serverInstanceLocation: .bottom,
-                                        postContext: postView.post)
+                                        serverInstanceLocation: userServerInstanceLocation)
                     }
                 }
                 .padding(.top, AppConstants.postAndCommentSpacing)
@@ -244,6 +250,9 @@ struct FeedPost: View {
     }
 
     func savePost() async {
+        
+        hapticManager.play(haptic: .success)
+        
         do {
             _ = try await sendSavePostRequest(
                 account: appState.currentActiveAccount,

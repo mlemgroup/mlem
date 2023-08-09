@@ -17,7 +17,7 @@ struct PostSortMenu: View {
         Menu {
             ForEach(PostSortType.outerTypes, id: \.self) { type in
                 OptionButton(
-                    title: type.shortDescription,
+                    title: type.label,
                     imageName: type.iconName,
                     option: type,
                     selectedOption: $selectedSortingOption
@@ -27,7 +27,7 @@ struct PostSortMenu: View {
             Menu {
                 ForEach(PostSortType.topTypes, id: \.self) { type in
                     OptionButton(
-                        title: type.shortDescription,
+                        title: type.label,
                         imageName: type.iconName,
                         option: type,
                         selectedOption: $selectedSortingOption
@@ -43,7 +43,7 @@ struct PostSortMenu: View {
                     Spacer()
                     Image(systemName: selectedSortingOption.iconName)
                         .tint(.pink)
-                    Text(selectedSortingOption.shortDescription)
+                    Text(selectedSortingOption.label)
                         .tint(.pink)
                 }
                 .frame(maxWidth: .infinity)

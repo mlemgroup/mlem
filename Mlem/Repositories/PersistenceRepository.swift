@@ -30,69 +30,91 @@ private enum Path {
     static var easterFlags = { root.appendingPathComponent("Easter eggs flags", conformingTo: .json) }()
 }
 
+private struct DiskAccess {
+    static func load(from path: URL) throws -> Data {
+        try Data(contentsOf: path, options: .mappedIfSafe)
+    }
+    
+    static func save(_ data: Data, to path: URL) async throws {
+        try await Task(priority: .background) {
+            try data.write(to: path, options: .atomic)
+        }
+            .value
+    }
+}
+
 class PersistenceRepository {
     
     @Dependency(\.errorHandler) private var errorHandler
+    
+    private var keychainAccess: (String) -> String?
+    private var read: (URL) throws -> Data
+    private var write: (Data, URL) async throws -> Void
+    
+    init(
+        keychainAccess: @escaping (String) -> String?,
+        read: @escaping (URL) throws -> Data = { try DiskAccess.load(from: $0) },
+        write: @escaping (Data, URL) async throws -> Void = { try await DiskAccess.save($0, to: $1) }
+    ) {
+        self.keychainAccess = keychainAccess
+        self.read = read
+        self.write = write
+    }
     
     // MARK: - Public methods
     
     func loadAccounts() -> [SavedAccount] {
         let accounts = load([SavedAccount].self, from: Path.savedAccounts) ?? []
         return accounts.compactMap { account -> SavedAccount? in
-            guard let token = AppConstants.keychain["\(account.id)_accessToken"] else {
+            guard let token = keychainAccess("\(account.id)_accessToken") else {
                 return nil
             }
-
-            return SavedAccount(
-                id: account.id,
-                instanceLink: account.instanceLink,
-                accessToken: token,
-                username: account.username
-            )
+            
+            return SavedAccount(from: account, accessToken: token)
         }
     }
     
-    func saveAccounts(_ value: [SavedAccount]) {
-        save(value, to: Path.savedAccounts)
+    func saveAccounts(_ value: [SavedAccount]) async throws {
+        try await save(value, to: Path.savedAccounts)
     }
     
     func loadRecentSearches() -> [String] {
         load([String].self, from: Path.recentSearches) ?? []
     }
     
-    func saveRecentSearches(_ value: [String]) {
-        save(value, to: Path.recentSearches)
+    func saveRecentSearches(_ value: [String]) async throws {
+        try await save(value, to: Path.recentSearches)
     }
     
     func loadFavoriteCommunities() -> [FavoriteCommunity] {
         load([FavoriteCommunity].self, from: Path.favoriteCommunities) ?? []
     }
     
-    func saveFavoriteCommunities(_ value: [FavoriteCommunity]) {
-        save(value, to: Path.favoriteCommunities)
+    func saveFavoriteCommunities(_ value: [FavoriteCommunity]) async throws {
+        try await save(value, to: Path.favoriteCommunities)
     }
     
     func loadEasterFlags() -> Set<EasterFlag> {
         load(Set<EasterFlag>.self, from: Path.easterFlags) ?? .init()
     }
     
-    func saveEasterFlags(_ value: Set<EasterFlag>) {
-        save(value, to: Path.easterFlags)
+    func saveEasterFlags(_ value: Set<EasterFlag>) async throws {
+        try await save(value, to: Path.easterFlags)
     }
     
     func loadFilteredKeywords() -> [String] {
         load([String].self, from: Path.filteredKeywords) ?? []
     }
     
-    func saveFilteredKeywords(_ value: [String]) {
-        save(value, to: Path.filteredKeywords)
+    func saveFilteredKeywords(_ value: [String]) async throws {
+        try await save(value, to: Path.filteredKeywords)
     }
     
     // MARK: Private methods
     
     private func load<T: Decodable>(_ model: T.Type, from path: URL) -> T? {
         do {
-            let data = try Data(contentsOf: path, options: .mappedIfSafe)
+            let data = try read(path)
             
             guard !data.isEmpty else {
                 return nil
@@ -108,16 +130,14 @@ class PersistenceRepository {
         }
     }
     
-    private func save<T: Encodable>(_ value: T, to path: URL) {
-        Task(priority: .background) {
-            do {
-                let data = try JSONEncoder().encode(value)
-                try data.write(to: path, options: .atomic)
-            } catch {
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
-            }
+    private func save<T: Encodable>(_ value: T, to path: URL) async throws {
+        do {
+            let data = try JSONEncoder().encode(value)
+            try await write(data, path)
+        } catch {
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
 }

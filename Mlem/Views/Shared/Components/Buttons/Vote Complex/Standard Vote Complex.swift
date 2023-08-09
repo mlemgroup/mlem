@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct StandardVoteComplex: View {
+struct ClassicVoteComplex: View {
     
     @EnvironmentObject var appState: AppState
     

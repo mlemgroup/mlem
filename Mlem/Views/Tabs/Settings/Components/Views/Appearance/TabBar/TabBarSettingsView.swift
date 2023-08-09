@@ -8,24 +8,58 @@
 import SwiftUI
 
 struct TabBarSettingsView: View {
-    @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
         
+    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var savedAccountTracker: SavedAccountTracker
+    
+    @State var textFieldEntry: String = ""
+    
     var body: some View {
         Form {
-            Toggle("Show Labels", isOn: $showTabNames)
-            
             Section {
-                Toggle("Show Username", isOn: $showUsernameInNavigationBar)
-            } footer: {
-                // swiftlint:disable line_length
-                Text("When enabled, your username will be displayed as the label for the Profile tab. You may wish to turn this off for privacy reasons.")
-                // swiftlint:enable line_length
+                SelectableSettingsItem(settingIconSystemName: "person.text.rectangle",
+                                       settingName: "Profile Tab Label",
+                                       currentValue: $profileTabLabel,
+                                       options: ProfileTabLabel.allCases)
+                
+                if profileTabLabel == .nickname {
+                    Label {
+                        TextField(text: $textFieldEntry, prompt: Text(appState.currentNickname)) {
+                            Text("Nickname")
+                        }
+                        .autocorrectionDisabled(true)
+                        .textInputAutocapitalization(.never)
+                        .onSubmit {
+                            print(textFieldEntry)
+                            let newAccount = SavedAccount(from: appState.currentActiveAccount, storedNickname: textFieldEntry)
+                            appState.changeDisplayedNickname(to: textFieldEntry)
+                            savedAccountTracker.replaceAccount(account: newAccount)
+                        }
+                    } icon: {
+                        Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                            .foregroundColor(.pink)
+                    }
+                }
             }
             
-            Toggle("Show Unread Count", isOn: $showInboxUnreadBadge)
+            Section {
+                SwitchableSettingsItem(settingPictureSystemName: "tag",
+                                       settingName: "Show Tab Labels",
+                                       isTicked: $showTabNames)
+                
+                SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
+                                       settingName: "Show Unread Count",
+                                       isTicked: $showInboxUnreadBadge)
+            }
         }
         .fancyTabScrollCompatible()
+        .animation(.easeIn, value: profileTabLabel)
+        .onChange(of: appState.currentActiveAccount.nickname) { nickname in
+            print("new nickname: \(nickname)")
+            textFieldEntry = nickname // appState.currentActiveAccount.nickname
+        }
     }
 }

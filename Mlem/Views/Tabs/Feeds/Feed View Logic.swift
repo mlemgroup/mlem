@@ -25,7 +25,6 @@ extension FeedView {
     func loadFeed() async {
         defer { isLoading = false }
         isLoading = true
-        print("called loadFeed")
         do {
             try await postTracker.loadNextPage(
                 account: appState.currentActiveAccount,
@@ -179,17 +178,20 @@ extension FeedView {
                                     imageName: "star.slash",
                                     destructiveActionPrompt: "Really unfavorite \(community.name)?",
                                     enabled: true) {
-                unfavoriteCommunity(community: community,
-                                    favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                favoriteCommunitiesTracker.unfavorite(community)
+                Task {
+                    await notifier.add(.success("Unfavorited \(community.name)"))
+                }
             })
         } else {
             ret.append(MenuFunction(text: "Favorite",
                                     imageName: "star",
                                     destructiveActionPrompt: nil,
                                     enabled: true) {
-                favoriteCommunity(account: appState.currentActiveAccount,
-                                  community: community,
-                                  favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                favoriteCommunitiesTracker.favorite(community, for: appState.currentActiveAccount)
+                Task {
+                    await notifier.add(.success("Favorited \(community.name)"))
+                }
             })
         }
         
@@ -296,6 +298,15 @@ extension FeedView {
             
             _ = try await APIClient().perform(request: request)
             
+            let communityName = community?.name ?? "community"
+            Task {
+                if shouldSubscribe {
+                    await notifier.add(.success("Subscibed to \(communityName)"))
+                } else {
+                    await notifier.add(.success("Unsubscribed from \(communityName)"))
+                }
+            }
+            
             // re-fetch to get new subscribed status
             // TODO: do this in middleware model with a state faker to avoid a second API call
             await fetchCommunityDetails()
@@ -317,6 +328,15 @@ extension FeedView {
                 communityId: communityId,
                 block: shouldBlock
             )
+            
+            let communityName = community?.name ?? "community"
+            Task {
+                if shouldBlock {
+                    await notifier.add(.success("Blocked \(communityName)"))
+                } else {
+                    await notifier.add(.success("Unblocked \(communityName)"))
+                }
+            }
             
             _ = try await APIClient().perform(request: request)
             await fetchCommunityDetails()

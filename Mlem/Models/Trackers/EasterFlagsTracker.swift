@@ -20,8 +20,10 @@ class EasterFlagsTracker: ObservableObject {
     
     init() {
         _flags = .init(initialValue: persistenceRepository.loadEasterFlags())
-        updateObserver = $flags.sink { [weak self] in
-            self?.persistenceRepository.saveEasterFlags($0)
+        updateObserver = $flags.sink { [weak self] value in
+            Task {
+                try await self?.persistenceRepository.saveEasterFlags(value)
+            }
         }
     }
     

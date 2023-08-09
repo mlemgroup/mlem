@@ -5,7 +5,6 @@
 //  Created by David Bureš on 02.04.2022.
 //
 
-import CachedAsyncImage
 import SwiftUI
 
 // swiftlint:disable file_length
@@ -259,7 +258,7 @@ struct UserView: View {
                 if savedItems {
                     return $0.commentView.saved
                 } else {
-                    // If we un-favorited something while
+                    // If we unfavorited something while
                     // here we don't want it showing up in our feed
                     return $0.commentView.creator.id == userID
                 }
@@ -283,7 +282,7 @@ struct UserView: View {
                 if savedItems {
                     return $0.saved
                 } else {
-                    // If we un-favorited something while
+                    // If we unfavorited something while
                     // here we don't want it showing up in our feed
                     return $0.creator.id == userID
                 }

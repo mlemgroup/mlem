@@ -36,6 +36,7 @@ struct CommuntiyFeedRowView: View {
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
 
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.notifier) var notifier
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
@@ -109,19 +110,22 @@ struct CommuntiyFeedRowView: View {
 
     private func toggleFavorite() {
         if isFavorited() {
-            unfavoriteCommunity(community: community, favoritedCommunitiesTracker: favoritesTracker)
-            UIAccessibility.post(notification: .announcement, argument: "Un-favorited \(community.name)")
+            favoritesTracker.unfavorite(community)
+            UIAccessibility.post(notification: .announcement, argument: "Unfavorited \(community.name)")
+            Task {
+                await notifier.add(.success("Unfavorited \(community.name)"))
+            }
         } else {
-            favoriteCommunity(account: appState.currentActiveAccount, community: community, favoritedCommunitiesTracker: favoritesTracker)
+            favoritesTracker.favorite(community, for: appState.currentActiveAccount)
             UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
+            Task {
+                await notifier.add(.success("Favorited \(community.name)"))
+            }
         }
     }
 
-    internal func isFavorited() -> Bool {
-        return getFavoritedCommunities(
-            account: appState.currentActiveAccount,
-            favoritedCommunitiesTracker: favoritesTracker
-        ).contains(community)
+    private func isFavorited() -> Bool {
+        favoritesTracker.favoriteCommunities(for: appState.currentActiveAccount).contains(community)
     }
 
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
@@ -136,6 +140,15 @@ struct CommuntiyFeedRowView: View {
             )
 
             _ = try await APIClient().perform(request: request)
+            
+            Task {
+                if shouldSubscribe {
+                    await notifier.add(.success("Subscibed to \(community.name)"))
+                } else {
+                    await notifier.add(.success("Unsubscribed from \(community.name)"))
+                }
+            }
+
         } catch {
             // TODO: If we fail here and want to notify the user we should pass a message
             // into the contextual error below

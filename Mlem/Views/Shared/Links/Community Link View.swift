@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import CachedAsyncImage
 
 private let clipOptOut = ["beehaw.org"]
 
@@ -72,6 +71,10 @@ struct CommunityLabel: View {
     
     // computed
     var blurAvatar: Bool { shouldBlurNsfw && community.nsfw }
+    var avatarSize: CGSize { serverInstanceLocation == .bottom
+        ? CGSize(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+        : CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
+    }
 
     var showAvatar: Bool {
         if let overrideShowAvatar = overrideShowAvatar {
@@ -115,7 +118,6 @@ struct CommunityLabel: View {
                         communityName
                         communityInstance
                     }
-                    .foregroundColor(.secondary)
                 }
                 
             }
@@ -129,6 +131,7 @@ struct CommunityLabel: View {
             .dynamicTypeSize(.small ... .accessibility1)
             .font(.footnote)
             .bold()
+            .foregroundColor(.secondary)
     }
     
     @ViewBuilder
@@ -137,7 +140,7 @@ struct CommunityLabel: View {
             Text("@\(host)")
                 .dynamicTypeSize(.small ... .accessibility2)
                 .lineLimit(1)
-                .opacity(0.6)
+                .foregroundColor(Color(uiColor: .tertiaryLabel))
                 .font(.caption)
                 .allowsHitTesting(false)
         } else {
@@ -145,26 +148,19 @@ struct CommunityLabel: View {
         }
     }
     
-    private func avatarSize() -> CGFloat {
-        serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
-    }
-    
-    private func avatarUrl(from: URL) -> URL {
-        serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
-    }
-    
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
             if let url = community.icon {
-                CachedImage(url: avatarUrl(from: url),
-                            fixedSize: CGSize(width: avatarSize(), height: avatarSize()),
+                CachedImage(url: url.withIcon64Parameters,
+                            shouldExpand: false,
+                            fixedSize: avatarSize,
                             imageNotFound: defaultCommunityAvatar)
             } else {
                 defaultCommunityAvatar()
             }
         }
-        .frame(width: avatarSize(), height: avatarSize())
+        .frame(width: avatarSize.width, height: avatarSize.height)
         .accessibilityHidden(true)
     }
     
@@ -172,7 +168,7 @@ struct CommunityLabel: View {
         AnyView(Image(systemName: "building.2.crop.circle.fill")
             .resizable()
             .scaledToFit()
-            .frame(width: avatarSize(), height: avatarSize())
+            .frame(width: avatarSize.width, height: avatarSize.height)
             .foregroundColor(.secondary)
         )
     }

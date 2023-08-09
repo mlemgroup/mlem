@@ -30,41 +30,80 @@ struct InfoStack: View {
         HStack(spacing: 12) {
             if let votes {
                 if votes.showDownvotes {
-                    HStack(spacing: AppConstants.iconToTextSpacing) {
-                        Image(systemName: votes.myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
-                        Text(String(votes.upvotes))
-                    }
-                    
-                    HStack(spacing: AppConstants.iconToTextSpacing) {
-                        Image(systemName: votes.myVote == .downvote
-                              ? AppConstants.fullDownvoteSymbolName
-                              : AppConstants.emptyDownvoteSymbolName)
-                        Text(String(votes.downvotes))
-                    }
+                    upvotesView(votes: votes)
+                    downvotesView(votes: votes)
                 } else {
-                    HStack(spacing: AppConstants.iconToTextSpacing) {
-                        Image(systemName: AppConstants.scoringOpToVoteImage[votes.myVote]!)
-                        Text(String(votes.score))
-                    }
+                    netVotesView(votes: votes)
                 }
             }
             
-            if let published = published {
+            if let published {
                 TimestampView(date: published, spacing: AppConstants.iconToTextSpacing)
             }
             
-            if let saved = saved {
-                Image(systemName: saved ? AppConstants.fullSaveSymbolName : AppConstants.emptySaveSymbolName)
+            if let saved {
+                savedView(isSaved: saved)
             }
             
-            if let commentCount = commentCount {
-                HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: "bubble.right")
-                    Text(commentCount.description)
-                }
+            if let commentCount {
+                repliesView(numReplies: commentCount)
             }
         }
         .foregroundColor(.secondary)
         .font(.footnote)
+    }
+    
+    @ViewBuilder
+    func netVotesView(votes: DetailedVotes) -> some View {
+        HStack(spacing: AppConstants.iconToTextSpacing) {
+            Image(systemName: AppConstants.scoringOpToVoteImage[votes.myVote]!)
+            Text(String(votes.score))
+        }
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(votes.score) net votes")
+    }
+    
+    @ViewBuilder
+    func upvotesView(votes: DetailedVotes) -> some View {
+        HStack(spacing: AppConstants.iconToTextSpacing) {
+            Image(systemName: votes.myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
+            Text(String(votes.upvotes))
+        }
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(votes.upvotes) upvotes")
+    }
+    
+    @ViewBuilder
+    func downvotesView(votes: DetailedVotes) -> some View {
+        HStack(spacing: AppConstants.iconToTextSpacing) {
+            Image(systemName: votes.myVote == .downvote
+                  ? AppConstants.fullDownvoteSymbolName
+                  : AppConstants.emptyDownvoteSymbolName)
+            Text(String(votes.downvotes))
+        }
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(votes.downvotes) downvotes")
+    }
+    
+    @ViewBuilder
+    func savedView(isSaved: Bool) -> some View {
+        Image(systemName: isSaved ? AppConstants.fullSaveSymbolName : AppConstants.emptySaveSymbolName)
+            .accessibilityAddTraits(.isStaticText)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(isSaved ? "saved" : "")
+    }
+    
+    @ViewBuilder
+    func repliesView(numReplies: Int) -> some View {
+        HStack(spacing: AppConstants.iconToTextSpacing) {
+            Image(systemName: "bubble.right")
+            Text(numReplies.description)
+        }
+        .accessibilityAddTraits(.isStaticText)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(numReplies) comments")
     }
 }

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
 struct CommunitySidebarHeader: View {
     var title: String
@@ -25,11 +24,9 @@ struct CommunitySidebarHeader: View {
             // Banner
             VStack {
                 if let bannerUrl = bannerURL {
-                    CachedAsyncImage(url: bannerUrl) { image in
-                        image.centerCropped()
-                    } placeholder: {
-                        ProgressView()
-                    }.frame(height: 200)
+                    CachedImage(url: bannerUrl,
+                                shouldExpand: false,
+                                fixedSize: CGSize(width: UIScreen.main.bounds.width, height: 200))
                 }
             }
             VStack {

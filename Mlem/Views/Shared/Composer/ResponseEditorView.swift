@@ -11,6 +11,10 @@ import SwiftUI
 
 struct ResponseEditorView: View {
     
+    private enum Field: Hashable {
+        case editorBody
+    }
+    
     @Dependency(\.errorHandler) var errorHandler
     
     let editorModel: any ResponseEditorModel
@@ -24,6 +28,8 @@ struct ResponseEditorView: View {
 
     @State var editorBody: String
     @State var isSubmitting: Bool = false
+    
+    @FocusState private var focusedField: Field?
 
     private var isReadyToReply: Bool {
         return editorBody.trimmed.isNotEmpty
@@ -48,12 +54,18 @@ struct ResponseEditorView: View {
                               axis: .vertical)
                     .accessibilityLabel("Response Body")
                     .padding(AppConstants.postAndCommentSpacing)
+                    .focused($focusedField, equals: .editorBody)
+                    .onAppear {
+                        focusedField = .editorBody
+                    }
                     
                     Divider()
                     
                     editorModel.embeddedView()
                 }
+                .padding(.bottom, AppConstants.editorOverscroll)
             }
+            .scrollDismissesKeyboard(.automatic)
             .overlay {
                 // Loading Indicator
                 if isSubmitting {

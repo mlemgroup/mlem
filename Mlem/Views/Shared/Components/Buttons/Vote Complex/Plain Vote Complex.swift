@@ -41,15 +41,10 @@ struct PlainVoteComplex: View {
             if appState.enableDownvote {
                 Button {
                     Task(priority: .userInitiated) {
-                        await upvote()
+                        await downvote()
                     }
                 } label: {
                     DownvoteButtonLabel(vote: vote)
-                        .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                await downvote()
-                            }
-                        }
                 }
             }
         }

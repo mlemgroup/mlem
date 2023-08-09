@@ -5,15 +5,15 @@
 //  Created by Eric Andrews on 2023-06-10.
 //
 
-import SwiftUI
-
 import Foundation
+import SwiftUI
 
 /**
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
 struct PostInteractionBar: View {
     @EnvironmentObject var appState: AppState
+    
     @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
     @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .plain
     @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
