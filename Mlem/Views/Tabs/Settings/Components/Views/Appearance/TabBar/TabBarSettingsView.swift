@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TabBarSettingsView: View {
-    @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
