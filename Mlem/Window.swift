@@ -12,7 +12,7 @@ struct Window: View {
     
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
-    
+        
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
