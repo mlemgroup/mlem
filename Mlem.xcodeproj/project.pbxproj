@@ -33,12 +33,15 @@
 		508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508845CE2A3641160088E483 /* JSONDecoder+Default.swift */; };
 		50A881242A71A4CD003E3661 /* PersistenceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881232A71A4CD003E3661 /* PersistenceRepository.swift */; };
 		50A881262A71A511003E3661 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */; };
+		50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
 		50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B582A61D889005D57DD /* APIClient+Dependency.swift */; };
 		50C99B5C2A61F5EB005D57DD /* CommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */; };
 		50C99B5E2A61F611005D57DD /* CommentRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */; };
 		50C99B602A6299D8005D57DD /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B5F2A6299D8005D57DD /* ErrorHandler.swift */; };
 		50C99B622A629C06005D57DD /* ErrorHandler+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B612A629C06005D57DD /* ErrorHandler+Dependency.swift */; };
+		50DBB8E02A805836002870B1 /* MockErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */; };
+		50DBB8E22A80F9E4002870B1 /* APICommunity+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
 		50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */; };
 		50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */; };
@@ -409,11 +412,14 @@
 		508845CE2A3641160088E483 /* JSONDecoder+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Default.swift"; sourceTree = "<group>"; };
 		50A881232A71A4CD003E3661 /* PersistenceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepository.swift; sourceTree = "<group>"; };
 		50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
+		50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepositoryTests.swift; sourceTree = "<group>"; };
 		50C99B582A61D889005D57DD /* APIClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Dependency.swift"; sourceTree = "<group>"; };
 		50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
 		50C99B5D2A61F611005D57DD /* CommentRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentRepository+Dependency.swift"; sourceTree = "<group>"; };
 		50C99B5F2A6299D8005D57DD /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		50C99B612A629C06005D57DD /* ErrorHandler+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorHandler+Dependency.swift"; sourceTree = "<group>"; };
+		50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockErrorHandler.swift; sourceTree = "<group>"; };
+		50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APICommunity+Mock.swift"; sourceTree = "<group>"; };
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
 		50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshView.swift; sourceTree = "<group>"; };
 		50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTrackerItemProviding.swift; sourceTree = "<group>"; };
@@ -899,6 +905,14 @@
 			path = "Error Handling";
 			sourceTree = "<group>";
 		};
+		50C86AB82A7E507200277519 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		50C99B572A61D85D005D57DD /* Dependency */ = {
 			isa = PBXGroup;
 			children = (
@@ -921,6 +935,15 @@
 				50A881232A71A4CD003E3661 /* PersistenceRepository.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		50DBB8DE2A805770002870B1 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */,
+				50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		50F830EC2A4C8F8D00D67099 /* Feed */ = {
@@ -1213,6 +1236,8 @@
 		6363D5D927EE196A00E34822 /* MlemTests */ = {
 			isa = PBXGroup;
 			children = (
+				50DBB8DE2A805770002870B1 /* Mocks */,
+				50C86AB82A7E507200277519 /* Persistence */,
 				6363D5DA27EE196A00E34822 /* MlemTests.swift */,
 			);
 			path = MlemTests;
@@ -2426,7 +2451,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50DBB8E02A805836002870B1 /* MockErrorHandler.swift in Sources */,
 				6363D5DB27EE196A00E34822 /* MlemTests.swift in Sources */,
+				50DBB8E22A80F9E4002870B1 /* APICommunity+Mock.swift in Sources */,
+				50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2661,11 +2689,11 @@
 				CLANG_ENABLE_CODE_COVERAGE = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -2682,11 +2710,11 @@
 				CLANG_ENABLE_CODE_COVERAGE = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -2702,10 +2730,11 @@
 				CLANG_ENABLE_CODE_COVERAGE = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -2721,10 +2750,11 @@
 				CLANG_ENABLE_CODE_COVERAGE = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZSVA6DVZHM;
+				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidbures.MlemUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;

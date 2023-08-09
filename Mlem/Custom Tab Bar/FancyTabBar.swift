@@ -10,6 +10,8 @@ import SwiftUI
 
 struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
+    @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
+    
     @Binding private var selection: Selection
     private let content: () -> Content
     
@@ -92,7 +94,9 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         }
                     }
             )
+            .padding(.bottom, homeButtonExists ? 2.5 : 0)
             .background(.thinMaterial)
         }
-        .accessibilityElement(children: .contain)    }
+        .accessibilityElement(children: .contain)
+    }
 }
