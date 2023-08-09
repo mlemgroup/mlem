@@ -1,6 +1,6 @@
 # Mlem - the iOS Lemmy Client
 
-Mlem is a client for [Lemmy](https://join-lemmy.org) - a Reddit-esque, open-source link aggregator. With Mlem, you can effortlessly participate in the conversation across all Lemmy servers. 
+Mlem is a client for [Lemmy](https://join-lemmy.org) - a Reddit-esque, open-source link aggregator. With Mlem, you can effortlessly participate in the conversation across all Lemmy servers.
 
 [You can download Mlem here.](https://apps.apple.com/gb/app/mlem-for-lemmy/id6450543782) Mlem requires iOS 16 or later.
 
@@ -19,7 +19,7 @@ And that's not all; Mlem is also extensively optimized and performant, which mea
 <img src="https://github.com/mlemgroup/mlem/assets/78750526/30478f39-169d-47ea-b983-a453af2b0959" width="30%">
 
 ## Want to chat about Mlem?
-You're welcome to join our [community on lemmy.ml](https://lemmy.ml/c/mlemapp) or [Matrix room](https://matrix.to/#/#mlemapp:matrix.org)!
+You're welcome to join our [community on lemmy.ml](https://lemmy.ml/c/mlemapp) or [Matrix room](https://matrix.to/#/#mlemappspace:matrix.org)!
 
 ## Contributing
 
