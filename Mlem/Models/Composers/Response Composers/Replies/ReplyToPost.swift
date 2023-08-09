@@ -33,7 +33,7 @@ struct ReplyToPost: ResponseEditorModel {
     var id: Int { post.id }
     
     func embeddedView() -> AnyView {
-        return AnyView(LargePost(postView: post, isExpanded: true)
+        return AnyView(LargePost(postView: post, isExpanded: true, layoutMode: .constant(.maximize))
             .padding(.horizontal))
     }
     

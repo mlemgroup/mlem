@@ -128,7 +128,8 @@ struct ExpandedPost: View {
                 
                 LargePost(
                     postView: post,
-                    isExpanded: true
+                    isExpanded: true,
+                    layoutMode: .constant(.maximize)
                 )
                 
                 UserProfileLink(user: post.creator,

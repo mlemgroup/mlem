@@ -10,6 +10,11 @@ import SwiftUI
 import Dependencies
 
 struct LargePost: View {
+    
+    enum LayoutMode {
+        case minimize, preferredSize, maximize
+    }
+    
     // constants
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
@@ -25,6 +30,8 @@ struct LargePost: View {
     let postView: APIPostView
     let isExpanded: Bool
     
+    @Binding var layoutMode: LayoutMode
+    
     // computed
     var maxHeight: CGFloat { isExpanded ? .infinity : AppConstants.maxFeedPostHeight }
     var titleColor: Color { !isExpanded && postView.read ? .secondary : .primary }
@@ -32,10 +39,11 @@ struct LargePost: View {
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
-        isExpanded: Bool
-    ) {
+        isExpanded: Bool,
+        layoutMode: Binding<LayoutMode>) {
         self.postView = postView
         self.isExpanded = isExpanded
+        self._layoutMode = layoutMode
     }
 
     var body: some View {
