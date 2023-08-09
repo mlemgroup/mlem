@@ -37,7 +37,7 @@ struct ContentView: View {
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
-        FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcher) {
+        FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
                 FeedRoot(showLoading: showLoading)
                     .fancyTabItem(tag: TabSelection.feeds) {
