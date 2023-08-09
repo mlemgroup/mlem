@@ -20,7 +20,7 @@ struct CachedImage: View {
     // state vars to track the current image size and whether that size needs to be recomputed when the image actually loads. Combined with the image size cache, this produces good scrolling behavior except in the case where we scroll past an image and it derenders before it ever gets a chance to load, in which case that image will cause a slight hiccup on the way back up. That's kind of an unsolvable problem, since we can't know the size before we load the image at all, but that's fine because it shouldn't really happen during normal use. If we really want to guarantee smooth feed scrolling we can squish any image with no cached size into a square, but that feels like squishing a lot of images for the sake of a fringe case.
     @State var size: CGSize
     @State var shouldRecomputeSize: Bool
-    @StateObject private var quickLookPaths: QuickLookPaths = .init()
+    @State private var quickLookUrl: URL?
     
     var imageNotFound: () -> AnyView
     
@@ -108,14 +108,19 @@ struct CachedImage: View {
                                     }
                                     try data.write(to: quicklook)
                                     await MainActor.run {
-                                        quickLookPaths.url = quicklook
+                                        quickLookUrl = quicklook
                                     }
                                 } catch {
                                     print(String(describing: error))
                                 }
                             }
                         }
-                        .fullScreenCover(item: $quickLookPaths.url) { url in
+                        .onChange(of: quickLookUrl) { url in
+                            if url == nil, let dismissCallback {
+                                dismissCallback()
+                            }
+                        }
+                        .fullScreenCover(item: $quickLookUrl) { url in
                             QuickLookView(urls: [url])
                         }
                 } else {

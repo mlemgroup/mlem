@@ -362,7 +362,6 @@
 		CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */; };
 		CDF8426F2A4A385A00723DA0 /* Inbox Item Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */; };
 		E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */; };
-		E453A1D22A81C3EB0004BB8A /* QuickLookPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = E453A1D12A81C3EB0004BB8A /* QuickLookPaths.swift */; };
 		E4DDB4342A819C8000B3A7E0 /* QuickLookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */; };
 /* End PBXBuildFile section */
 
@@ -737,7 +736,6 @@
 		CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item.swift"; sourceTree = "<group>"; };
 		CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item Type.swift"; sourceTree = "<group>"; };
 		E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreviewController.swift; sourceTree = "<group>"; };
-		E453A1D12A81C3EB0004BB8A /* QuickLookPaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPaths.swift; sourceTree = "<group>"; };
 		E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1903,7 +1901,6 @@
 		E453A1CE2A81C1F20004BB8A /* Quick Look */ = {
 			isa = PBXGroup;
 			children = (
-				E453A1D12A81C3EB0004BB8A /* QuickLookPaths.swift */,
 				E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */,
 				E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */,
 			);
@@ -2255,7 +2252,6 @@
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */,
-				E453A1D22A81C3EB0004BB8A /* QuickLookPaths.swift in Sources */,
 				CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */,
 				CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */,
 				CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */,
