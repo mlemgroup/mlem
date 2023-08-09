@@ -1,6 +1,6 @@
 Hello!
 
-If you're reading this, you probably want to contribute to Mlem. Welcome! We're happy to have you on board. You may wish to join our [Matrix room](https://matrix.to/#/#mlemapp:matrix.org) if you haven't already.
+If you're reading this, you probably want to contribute to Mlem. Welcome! We're happy to have you on board. You may wish to join our [Matrix room](https://matrix.to/#/#mlemappspace:matrix.org) if you haven't already.
 
 ## Prerequesites
 

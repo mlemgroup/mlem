@@ -24,7 +24,7 @@ struct CommentBodyView: View {
     var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
     
     var serverInstanceLocation: ServerInstanceLocation {
-        if shouldShowUserServerInComment {
+        if !shouldShowUserServerInComment {
             return .disabled
         } else if compactComments {
             return .trailing
@@ -87,6 +87,7 @@ struct CommentBodyView: View {
                 } else if !isCollapsed {
                     MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
+                        .transition(.markdownView())
                 }
             }
             

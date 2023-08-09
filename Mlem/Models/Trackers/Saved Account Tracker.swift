@@ -10,6 +10,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+@MainActor
 class SavedAccountTracker: ObservableObject {
     
     @Dependency(\.persistenceRepository) private var persistenceRepository
@@ -31,14 +32,18 @@ class SavedAccountTracker: ObservableObject {
             addAccountToInstanceMap(account: account)
         }
         
-        updateObserver = $savedAccounts.sink { [weak self] in
-            self?.persistenceRepository.saveAccounts($0)
+        updateObserver = $savedAccounts.sink { [weak self] value in
+            Task {
+                try await self?.persistenceRepository.saveAccounts(value)
+            }
         }
     }
     
     func addAccount(account: SavedAccount) {
+        print("Adding account: \(account.username) (\(account.nickname))")
         // prevent dupes
         guard !savedAccounts.contains(account) else {
+            print("dupe!")
             return
         }
         
@@ -46,14 +51,64 @@ class SavedAccountTracker: ObservableObject {
         addAccountToInstanceMap(account: account)
     }
     
+    /**
+     Replaces an account with another equivalent account. Useful for changing non-identifying properties.
+     */
+    func replaceAccount(account: SavedAccount) {
+        // ensure present
+        guard savedAccounts.contains(account) else {
+            assertionFailure("Tried to replace account that does not exist")
+            return
+        }
+        
+        // replace in data structures
+        replaceAccountInArray(account: account)
+        replaceAccountInInstanceMap(account: account)
+    }
+    
     // TODO: pass in AppState using a dependency or something nice like that
     func removeAccount(account: SavedAccount, appState: AppState, forceOnboard: () -> Void) {
-        // remove from array
+        // remove from data structures
+        removeAccountFromArray(account: account)
+        removeAccountFromInstanceMap(account: account)
+        
+        // if another account exists, swap to it; otherwise force onboarding
+        if let firstAccount: SavedAccount = savedAccounts.first {
+            appState.setActiveAccount(firstAccount)
+        } else {
+            forceOnboard()
+        }
+    }
+    
+    // MARK: Helpers
+    
+    func removeAccountFromArray(account: SavedAccount) {
         savedAccounts = savedAccounts.filter { savedAccount in
             savedAccount != account
         }
+    }
+    
+    func replaceAccountInArray(account: SavedAccount) {
+        if let idx = savedAccounts.firstIndex(of: account) {
+            savedAccounts[idx] = account
+        }
+    }
+    
+    func addAccountToInstanceMap(account: SavedAccount) {
+        let hostName = account.hostName ?? "Other"
         
-        // remove from map
+        let instance = accountsByInstance[hostName] ?? []
+        accountsByInstance[hostName] = instance + [account]
+    }
+    
+    func replaceAccountInInstanceMap(account: SavedAccount) {
+        let hostName = account.hostName ?? "Other"
+        if var instance = accountsByInstance[hostName], let idx = instance.firstIndex(of: account) {
+            instance[idx] = account
+        }
+    }
+    
+    func removeAccountFromInstanceMap(account: SavedAccount) {
         let hostName = account.hostName ?? "Other"
         if let instance = accountsByInstance[hostName] {
             let filteredAccounts = instance.filter { savedAccount in
@@ -67,22 +122,6 @@ class SavedAccountTracker: ObservableObject {
                 accountsByInstance[hostName] = filteredAccounts
             }
         }
-        
-        // if another account exists, swap to it; otherwise force onboarding
-        if let firstAccount: SavedAccount = savedAccounts.first {
-            appState.setActiveAccount(firstAccount)
-        } else {
-            forceOnboard()
-        }
     }
     
-    // MARK: Helpers
-    
-    func addAccountToInstanceMap(account: SavedAccount) {
-        let hostName = account.hostName ?? "Other"
-        print("adding \(account.username) to \(hostName)")
-        
-        let instance = accountsByInstance[hostName] ?? []
-        accountsByInstance[hostName] = instance + [account]
-    }
 }

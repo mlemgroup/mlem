@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -48,6 +47,11 @@ struct UserProfileLabel: View {
         }
     }
     
+    var avatarSize: CGSize { serverInstanceLocation == .bottom
+        ? CGSize(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+        : CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
+    }
+    
     static let developerNames = [
         "lemmy.tespia.org/u/navi",
         "beehaw.org/u/jojo",
@@ -80,13 +84,14 @@ struct UserProfileLabel: View {
         Group {
             if let userAvatarLink = user.avatar {
                 CachedImage(url: userAvatarLink,
-                            fixedSize: CGSize(width: avatarSize(), height: avatarSize()),
+                            shouldExpand: false,
+                            fixedSize: avatarSize,
                             imageNotFound: defaultUserAvatar)
             } else {
                 defaultUserAvatar()
             }
         }
-        .frame(width: avatarSize(), height: avatarSize())
+        .frame(width: avatarSize.width, height: avatarSize.height)
         .blur(radius: blurAvatar ? 4 : 0)
         .clipShape(Circle())
         .overlay(Circle()
@@ -94,19 +99,11 @@ struct UserProfileLabel: View {
         .accessibilityHidden(true)
     }
     
-    private func avatarSize() -> CGFloat {
-        serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
-    }
-    
-    private func avatarUrl(from: URL) -> URL {
-        serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
-    }
-    
     private func defaultUserAvatar() -> AnyView {
         AnyView(Image(systemName: "person.circle")
             .resizable()
             .scaledToFill()
-            .frame(width: avatarSize(), height: avatarSize())
+            .frame(width: avatarSize.width, height: avatarSize.height)
             .foregroundColor(.secondary)
         )
     }
@@ -116,8 +113,9 @@ struct UserProfileLabel: View {
         let flair = calculateLinkFlair()
         
         HStack(spacing: 4) {
-            if let flairImage = flair.image, serverInstanceLocation != .trailing {
+            if let flairImage = flair.image {
                 flairImage
+                    .imageScale(serverInstanceLocation == .bottom ? .large : .small)
                     .foregroundColor(flair.color)
             }
             
@@ -136,7 +134,6 @@ struct UserProfileLabel: View {
                 }
             }
         }
-        .foregroundColor(.secondary)
     }
     
     @ViewBuilder
@@ -153,7 +150,7 @@ struct UserProfileLabel: View {
             Text("@\(host)")
                 .minimumScaleFactor(0.01)
                 .lineLimit(1)
-                .opacity(0.6)
+                .foregroundColor(Color(uiColor: .tertiaryLabel))
                 .font(.caption)
                 .allowsHitTesting(false)
         } else {

@@ -19,7 +19,6 @@ struct CommentItem: View {
     @Dependency(\.notifier) var notifier
     
     // appstorage
-    @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
 
     // MARK: Temporary
@@ -96,65 +95,62 @@ struct CommentItem: View {
     }
 
     // MARK: Body
-
+    
     // swiftlint:disable line_length
     var body: some View {
-        if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            EmptyView()
-        } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
-            EmptyView()
-        } else {
+        Group {
             VStack(spacing: 0) {
-                commentBody(hierarchicalComment: self.hierarchicalComment)
-                Divider()
+                if hierarchicalComment.isParentCollapsed, hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+                    EmptyView()
+                } else if hierarchicalComment.isParentCollapsed, !hierarchicalComment.isCollapsed, hierarchicalComment.commentView.comment.parentId != nil {
+                    EmptyView()
+                } else {
+                    Group {
+                        commentBody(hierarchicalComment: self.hierarchicalComment)
+                        Divider()
+                    }
+                    /// Clips any transitions to this view, otherwise comments will animate over other ones.
+                    .clipped()
+                    .padding(.leading, indentValue)
+                    .transition(.commentView())
+                }
             }
-            .clipped()
-            .padding(.leading, indentValue)
         }
     }
     // swiftlint:enable line_length
 
     // MARK: Subviews
     
-    // swiftlint:disable function_body_length
     @ViewBuilder
     private func commentBody(hierarchicalComment: HierarchicalComment) -> some View {
-        Group {
-            VStack(alignment: .leading, spacing: 0) {
-                CommentBodyView(commentView: hierarchicalComment.commentView,
-                                isParentCollapsed: $hierarchicalComment.isParentCollapsed,
-                                isCollapsed: $hierarchicalComment.isCollapsed,
-                                showPostContext: showPostContext,
-                                menuFunctions: genMenuFunctions())
-                // top and bottom spacing uses default even when compact--it's *too* compact otherwise
-                .padding(.top, AppConstants.postAndCommentSpacing)
-                .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                
-                if !hierarchicalComment.isCollapsed && !compactComments {
-                    CommentInteractionBar(commentView: hierarchicalComment.commentView,
-                                          displayedScore: displayedScore,
-                                          displayedVote: displayedVote,
-                                          displayedSaved: displayedSaved,
-                                          upvote: upvote,
-                                          downvote: downvote,
-                                          saveComment: saveComment,
-                                          deleteComment: deleteComment,
-                                          replyToComment: replyToComment)
-                } else {
-                    Spacer()
-                        .frame(height: AppConstants.postAndCommentSpacing)
-                }
+        VStack(alignment: .leading, spacing: 0) {
+            CommentBodyView(commentView: hierarchicalComment.commentView,
+                            isParentCollapsed: $hierarchicalComment.isParentCollapsed,
+                            isCollapsed: $hierarchicalComment.isCollapsed,
+                            showPostContext: showPostContext,
+                            menuFunctions: genMenuFunctions())
+            // top and bottom spacing uses default even when compact--it's *too* compact otherwise
+            .padding(.top, AppConstants.postAndCommentSpacing)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            
+            if !hierarchicalComment.isCollapsed && !compactComments {
+                CommentInteractionBar(commentView: hierarchicalComment.commentView,
+                                      displayedScore: displayedScore,
+                                      displayedVote: displayedVote,
+                                      displayedSaved: displayedSaved,
+                                      upvote: upvote,
+                                      downvote: downvote,
+                                      saveComment: saveComment,
+                                      deleteComment: deleteComment,
+                                      replyToComment: replyToComment)
+            } else {
+                Spacer()
+                    .frame(height: AppConstants.postAndCommentSpacing)
             }
-            .transition(
-                .asymmetric(
-                    insertion: .move(edge: .bottom).combined(with: .opacity),
-                    removal: .move(edge: .top).combined(with: .opacity)
-                )
-            )
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
         .onTapGesture {
-            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
+            withAnimation(.showHideComment(!hierarchicalComment.isCollapsed)) {
                 // Perhaps we want an explict flag for this in the future?
                 if !showPostContext {
                     commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
@@ -183,7 +179,6 @@ struct CommentItem: View {
 //                                                                          report: true))
 //        }
     }
-    // swiftlint:enable function_body_length
 }
 
 // MARK: - Swipe Actions

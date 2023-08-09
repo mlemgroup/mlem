@@ -9,6 +9,7 @@ import Combine
 import Dependencies
 import Foundation
 
+@MainActor
 class FiltersTracker: ObservableObject {
     
     @Dependency(\.persistenceRepository) private var persistenceRepository
@@ -18,8 +19,10 @@ class FiltersTracker: ObservableObject {
 
     init() {
         _filteredKeywords = .init(initialValue: persistenceRepository.loadFilteredKeywords())
-        updateObserver = $filteredKeywords.sink { [weak self] in
-            self?.persistenceRepository.saveFilteredKeywords($0)
+        updateObserver = $filteredKeywords.sink { [weak self] value in
+            Task {
+                try await self?.persistenceRepository.saveFilteredKeywords(value)
+            }
         }
     }
 }

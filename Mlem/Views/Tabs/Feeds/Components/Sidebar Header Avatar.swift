@@ -8,7 +8,6 @@
 import Foundation
 
 import SwiftUI
-import CachedAsyncImage
 
 struct CommunitySidebarHeaderAvatar: View {
     @State var shouldClipAvatar: Bool = false
@@ -17,23 +16,12 @@ struct CommunitySidebarHeaderAvatar: View {
     var body: some View {
         ZStack {
             if let avatarURL = imageUrl {
-                CachedAsyncImage(url: avatarURL) { image in
-                    if shouldClipAvatar {
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .clipShape(Circle())
-                            .overlay(Circle()
-                            .stroke(.secondary, lineWidth: 2))
-                    } else {
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    }
-
-                } placeholder: {
-                    ProgressView()
-                }
+                CachedImage(url: avatarURL,
+                            shouldExpand: false,
+                            fixedSize: CGSize(width: 120, height: 120))
+                .clipShape(Circle())
+                .overlay(Circle()
+                    .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
             } else {
                 // TODO: Default avatar?
                 // TIL you cannot fill and stroke at the same time

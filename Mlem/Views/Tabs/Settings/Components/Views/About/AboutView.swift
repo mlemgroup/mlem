@@ -9,9 +9,9 @@ import SwiftUI
 
 struct AboutView: View {
     @EnvironmentObject var appState: AppState
-    
+
     @Binding var navigationPath: NavigationPath
-    
+
     var body: some View {
         Group {
             List {
@@ -19,37 +19,37 @@ struct AboutView: View {
                     appHeaderView
                         .listRowBackground(Color(.systemGroupedBackground))
                 }
-                
+
                 Section {
                     Link(destination: URL(string: "https://mlem.group/")!) {
                         Label("Website", systemImage: "globe").labelStyle(SquircleLabelStyle(color: .blue))
                     }
                     .buttonStyle(SettingsButtonStyle())
-                    
+
                     Link(destination: URL(string: "https://lemmy.world/c/mlemapp@lemmy.ml")!) {
                         Label("Official Community", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .green, fontSize: 15))
                     }
                     .buttonStyle(SettingsButtonStyle())
-                    
-                    Link(destination: URL(string: "https://matrix.to/#/%23mlemapp:matrix.org")!) {
+
+                    Link(destination: URL(string: "https://matrix.to/#/%23mlemappspace:matrix.org")!) {
                         Label("Matrix Room", systemImage: "chart.bar.doc.horizontal").labelStyle(SquircleLabelStyle(color: .teal))
                     }
                     .buttonStyle(SettingsButtonStyle())
                 }
-                
+
                 Section {
                     Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
                         Label("Github Repository", image: "logo.github").labelStyle(SquircleLabelStyle(color: .black))
                     }
                     .buttonStyle(SettingsButtonStyle())
-                    
+
                     NavigationLink {
                         ContributorsView()
                     } label: {
                         Label("Contributors", systemImage: "person.2.fill").labelStyle(SquircleLabelStyle(color: .teal))
                     }
                 }
-                
+
                 Section {
                     NavigationLink {
                         DocumentView(text: privacyPolicy.body)
@@ -72,7 +72,7 @@ struct AboutView: View {
         }
         .navigationTitle("About")
     }
-    
+
     var versionString: String {
         var result = "n/a"
 
@@ -86,7 +86,7 @@ struct AboutView: View {
 
         return result
     }
-    
+
     @ViewBuilder
     private var appHeaderView: some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {

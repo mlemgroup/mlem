@@ -11,6 +11,8 @@ import SwiftUI
 struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
     typealias NavigationSelection = any FancyTabBarSelection
+
+    @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     
     @Binding private var selection: Selection
     @Binding private var navigationSelection: NavigationSelection
@@ -41,6 +43,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                     Spacer()
                     tabBar
                 }
+                .accessibilitySortPriority(-1)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .environment(\.tabSelectionHashValue, selection.hashValue)
@@ -53,6 +56,22 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
             }
     }
     
+    private func getAccessibilityLabel(tab: Selection) -> String {
+        var label = String()
+        
+        if selection == tab {
+            label += "Selected, "
+        }
+        
+        if let tabLabel = tabItems[tab]?.tag.labelText {
+            label += "\(tabLabel), "
+        }
+        
+        label += "Tab \(tab.index) of \(tabItems.count.description)"
+        
+        return label
+    }
+    
     private var tabBar: some View {
         VStack(spacing: 0) {
             Divider()
@@ -62,7 +81,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                     tabItems[key]?.label()
                         .accessibilityElement(children: .combine)
                     // IDK how to get the "Tab: 1 of 5" VO working natively so here's a janky solution
-                        .accessibilityLabel("Tab \(key.index) of \(tabItems.count.description)")
+                        .accessibilityLabel(getAccessibilityLabel(tab: key))
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
                     // high priority to prevent conflict with long press/drag
@@ -90,7 +109,9 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         }
                     }
             )
+            .padding(.bottom, homeButtonExists ? 2.5 : 0)
             .background(.thinMaterial)
         }
-        .accessibilityElement(children: .contain)    }
+        .accessibilityElement(children: .contain)
+    }
 }

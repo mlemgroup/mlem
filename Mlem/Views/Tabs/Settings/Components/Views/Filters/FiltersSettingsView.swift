@@ -62,7 +62,12 @@ struct FiltersSettingsView: View {
                     }
                     
                 } label: {
-                    Label("Export Filters", systemImage: "square.and.arrow.up")
+                    Label {
+                        Text("Export Filters")
+                    } icon: {
+                        Image(systemName: "square.and.arrow.up")
+                            .opacity(filtersTracker.filteredKeywords.isEmpty ? 0.6 : 1)
+                    }
                 }
                 .disabled(filtersTracker.filteredKeywords.isEmpty)
 

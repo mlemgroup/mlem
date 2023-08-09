@@ -16,6 +16,7 @@ class AppState: ObservableObject {
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
     @Binding private var selectedAccount: SavedAccount?
     @Published private(set) var currentActiveAccount: SavedAccount
+    @Published private(set) var currentNickname: String
     
     @Published var contextualError: ContextualError?
     
@@ -28,6 +29,7 @@ class AppState: ObservableObject {
     init(defaultAccount: SavedAccount, selectedAccount: Binding<SavedAccount?>) {
         _selectedAccount = selectedAccount
         self.currentActiveAccount = defaultAccount
+        self.currentNickname = defaultAccount.nickname
         defaultAccountId = currentActiveAccount.id
         accountUpdated()
     }
@@ -48,6 +50,13 @@ class AppState: ObservableObject {
         }
         
         accountUpdated()
+    }
+    
+    /**
+     Update the nickname. This is needed to quickly propagate changes from settings over to the tab bar, since nickname doesn't affect account identity and so changing it doesn't always prompt redraws
+     */
+    func changeDisplayedNickname(to nickname: String) {
+        currentNickname = nickname
     }
     
     private func accountUpdated() {

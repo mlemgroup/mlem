@@ -20,6 +20,10 @@ extension HorizontalAlignment {
 
 struct PostDetailEditorView: View {
     
+    private enum Field: Hashable {
+        case title, url, body
+    }
+    
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.dismiss) var dismiss
@@ -35,6 +39,8 @@ struct PostDetailEditorView: View {
     @State var isSubmitting: Bool = false
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
+    
+    @FocusState private var focusedField: Field?
     
     init(
         community: APICommunity,
@@ -135,6 +141,10 @@ struct PostDetailEditorView: View {
                                 .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
                                 .dynamicTypeSize(.small ... .accessibility2)
                                 .accessibilityLabel("Title")
+                                .focused($focusedField, equals: .title)
+                                .onAppear {
+                                    focusedField = .title
+                                }
                         }
                         
                         // URL Row
@@ -151,6 +161,7 @@ struct PostDetailEditorView: View {
                                 .autocorrectionDisabled()
                                 .autocapitalization(.none)
                                 .accessibilityLabel("URL")
+                                .focused($focusedField, equals: .url)
                             
                             // Upload button, temporarily hidden
                             //                        Button(action: uploadImage) {
@@ -168,6 +179,8 @@ struct PostDetailEditorView: View {
                               axis: .vertical)
                     .dynamicTypeSize(.small ... .accessibility2)
                     .accessibilityLabel("Post Body")
+                    .focused($focusedField, equals: .body)
+                    
                     Spacer()
                 }
                 .padding()
@@ -184,7 +197,7 @@ struct PostDetailEditorView: View {
                     .allowsHitTesting(false)
                 }
             }
-
+            .scrollDismissesKeyboard(.automatic)
             .navigationTitle("New Post")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
