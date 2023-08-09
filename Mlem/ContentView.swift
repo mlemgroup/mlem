@@ -130,7 +130,8 @@ struct ContentView: View {
     }
     
     func computeUsername(account: SavedAccount) -> String {
-        return showUsernameInNavigationBar ? account.username : "Profile"
+        // return showUsernameInNavigationBar ? account.username : "Profile"
+        account.nickname
     }
     
     func showAccountSwitcherDragCallback() {

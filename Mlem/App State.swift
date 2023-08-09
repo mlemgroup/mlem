@@ -50,6 +50,10 @@ class AppState: ObservableObject {
         accountUpdated()
     }
     
+    func setNickname(nickname: String) {
+        currentActiveAccount.storedNickname = nickname
+    }
+    
     private func accountUpdated() {
         // ensure our client session is updated
         apiClient.configure(for: currentActiveAccount)

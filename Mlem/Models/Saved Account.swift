@@ -12,9 +12,27 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let instanceLink: URL
     let accessToken: String
     let username: String
+    var storedNickname: String?
+    
+    init(id: Int,
+         instanceLink: URL,
+         accessToken: String,
+         username: String,
+         storedNickname: String? = nil) {
+        self.id = id
+        self.instanceLink = instanceLink
+        self.accessToken = accessToken
+        self.username = username
+        self.storedNickname = storedNickname
+    }
   
     // convenience
     var hostName: String? { instanceLink.host?.description }
+    
+    /**
+     If there is a nickname stored, returns that; otherwise returns the username
+     */
+    var nickname: String { storedNickname ?? username }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
