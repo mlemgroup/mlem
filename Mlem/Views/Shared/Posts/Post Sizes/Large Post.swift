@@ -35,9 +35,28 @@ struct LargePost: View {
     }
     
     // computed
-    var maxHeight: CGFloat { isExpanded ? .infinity : AppConstants.maxFeedPostHeight }
+    private var maxHeight: CGFloat {
+        switch layoutMode {
+        case .maximize:
+            return .infinity
+        case .preferredSize:
+            return AppConstants.maxFeedPostHeight
+        case .minimize:
+            return 44
+        }
+    }
     var titleColor: Color { !isExpanded && postView.read ? .secondary : .primary }
-
+    private var lineLimit: Int? {
+        switch layoutMode {
+        case .maximize:
+            return nil
+        case .preferredSize:
+            return 8
+        case .minimize:
+            return 2
+        }
+    }
+    
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
@@ -111,7 +130,7 @@ struct LargePost: View {
                 replaceImagesWithEmoji: isExpanded ? false : true,
                 isDeemphasized: isExpanded ? false : true
             )
-            .lineLimit(isExpanded ? nil : 8)
+            .lineLimit(lineLimit)
             .font(.subheadline)
         }
     }
