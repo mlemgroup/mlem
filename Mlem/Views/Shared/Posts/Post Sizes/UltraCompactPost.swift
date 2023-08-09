@@ -72,8 +72,7 @@ struct UltraCompactPost: View {
                             CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                         } else {
                             UserProfileLink(user: postView.creator,
-                                            serverInstanceLocation: .trailing,
-                                            postContext: postView.post)
+                                            serverInstanceLocation: .trailing)
                         }
                     }
                     
