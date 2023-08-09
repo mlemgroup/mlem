@@ -10,6 +10,8 @@ import Dependencies
 
 struct ContentView: View {
     
+    @Environment(\.scenePhase) var scenePhase
+    
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
@@ -111,6 +113,12 @@ struct ContentView: View {
         .environmentObject(appState)
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
+        .onChange(of: scenePhase) { phase in
+            // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
+            if phase != .active {
+                isPresentingAccountSwitcher = false
+            }
+        }
     }
     
     // MARK: Helpers
