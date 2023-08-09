@@ -235,8 +235,6 @@ struct LayoutWidgetEditView: View {
                     }
                 }
             }
-            .transition(.scale(scale: 1))
-            .zIndex(widgetModel.lastDraggedWidget == widget ? 1 : 0)
         }
         
         return HStack {
@@ -247,5 +245,6 @@ struct LayoutWidgetEditView: View {
             }
         }
         .transition(.scale(scale: 1))
+        .zIndex(widgetModel.lastDraggedWidget == widget ? 1 : 0)
     }
 }

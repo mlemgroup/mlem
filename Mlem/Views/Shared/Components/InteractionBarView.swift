@@ -110,7 +110,7 @@ struct InteractionBarView: View {
                               saved: shouldShowSaved ? apiView.saved : nil,
                               alignment: infoStackAlignment(offset)
                         )
-                        .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                        .padding(AppConstants.postAndCommentSpacing)
                         .frame(maxWidth: .infinity)
                 }
             }
