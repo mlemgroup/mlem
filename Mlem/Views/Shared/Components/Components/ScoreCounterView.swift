@@ -58,5 +58,6 @@ struct ScoreCounterView: View {
             }
         }
         .monospacedDigit()
+        .fixedSize(horizontal: true, vertical: false)
     }
 }
