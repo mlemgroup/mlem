@@ -12,9 +12,7 @@ struct Window: View {
     
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
-    
-    @StateObject private var quickLookPreview: QuickLookPaths = .init()
-    
+        
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
@@ -60,7 +58,6 @@ struct Window: View {
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
-            .environmentObject(quickLookPreview)
     }
     
     func forceOnboard() {
