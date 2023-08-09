@@ -27,7 +27,7 @@ enum CommentSortType: String, Codable, CaseIterable, Identifiable {
         }
     }
     
-    var imageName: String {
+    var iconName: String {
         switch self {
         case .new:
             return "sun.max"
@@ -38,5 +38,11 @@ enum CommentSortType: String, Codable, CaseIterable, Identifiable {
         case .old:
             return "books.vertical"
         }
+    }
+}
+
+extension CommentSortType: SettingsOptions {
+    var label: String {
+        self.rawValue.capitalized
     }
 }

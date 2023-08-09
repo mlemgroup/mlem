@@ -14,17 +14,21 @@ struct TabBarSettingsView: View {
         
     var body: some View {
         Form {
-            Toggle("Show Labels", isOn: $showTabNames)
+            SwitchableSettingsItem(settingPictureSystemName: "tag",
+                                   settingName: "Show Tab Labels",
+                                   isTicked: $showTabNames)
             
             Section {
-                Toggle("Show Username", isOn: $showUsernameInNavigationBar)
+                SwitchableSettingsItem(settingPictureSystemName: "person.text.rectangle",
+                                       settingName: "Show Username",
+                                       isTicked: $showUsernameInNavigationBar)
             } footer: {
-                // swiftlint:disable line_length
-                Text("When enabled, your username will be displayed as the label for the Profile tab. You may wish to turn this off for privacy reasons.")
-                // swiftlint:enable line_length
+                Text("Displays your username as the label for the \"Profile\" tab.")
             }
             
-            Toggle("Show Unread Count", isOn: $showInboxUnreadBadge)
+            SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
+                                   settingName: "Show Unread Count",
+                                   isTicked: $showInboxUnreadBadge)
         }
         .fancyTabScrollCompatible()
     }

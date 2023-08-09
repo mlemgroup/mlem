@@ -18,12 +18,12 @@ struct VoteComplex: View {
     var body: some View {
         Group {
             switch style {
-            case .standard:
-                StandardVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
-            case .symmetric:
-                SymmetricVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
             case .plain:
                 PlainVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
+            case .classic:
+                ClassicVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
+            case .symmetric:
+                SymmetricVoteComplex(vote: vote, score: score, upvote: upvote, downvote: downvote)
             }
         }
         .accessibilityElement(children: .ignore)

@@ -27,8 +27,33 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     
     static var outerTypes: [PostSortType] {[.hot, .active, .new, .old, .newComments, .mostComments]}
     static var topTypes: [PostSortType] {[.topHour, .topSixHour, .topTwelveHour, .topDay, .topWeek, .topMonth, .topYear, .topAll]}
+    
+    var description: String {
+        switch self {
+        case .topHour:
+            return "Top of the last hour"
+        case .topSixHour:
+            return "Top of the last six hours"
+        case .topTwelveHour:
+            return "Top of the last twelve hours"
+        case .topDay:
+            return "Top of today"
+        case .topWeek:
+            return "Top of the week"
+        case .topMonth:
+            return "Top of the month"
+        case .topYear:
+            return "Top of the year"
+        case .topAll:
+            return "Top of all time"
+        default:
+            return self.label
+        }
+    }
+}
 
-    var shortDescription: String {
+extension PostSortType: SettingsOptions {
+    var label: String {
         switch self {
         case .newComments:
             return "New comments"
@@ -52,29 +77,6 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return "All time"
         default:
             return self.rawValue
-        }
-    }
-    
-    var description: String {
-        switch self {
-        case .topHour:
-            return "Top of the last hour"
-        case .topSixHour:
-            return "Top of the last six hours"
-        case .topTwelveHour:
-            return "Top of the last twelve hours"
-        case .topDay:
-            return "Top of today"
-        case .topWeek:
-            return "Top of the week"
-        case .topMonth:
-            return "Top of the month"
-        case .topYear:
-            return "Top of the year"
-        case .topAll:
-            return "Top of all time"
-        default:
-            return self.shortDescription
         }
     }
 }
