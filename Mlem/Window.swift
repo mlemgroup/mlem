@@ -59,6 +59,7 @@ struct Window: View {
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
+            .environmentObject(layoutWidgetTracker)
     }
     
     func forceOnboard() {

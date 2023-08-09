@@ -13,7 +13,6 @@ struct CommentSettingsView: View {
     
     @AppStorage("compactComments") var compactComments: Bool = false
     // interactions and info
-    @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .plain
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
@@ -34,7 +33,7 @@ struct CommentSettingsView: View {
                     showingWidgetSheet = true
                 } label: {
                     HStack {
-                        Text("Customize widgets")
+                        Text("Customize Widgets")
                         Spacer()
                         Image(systemName: "arrow.up.square.fill")
                         Image(systemName: "arrow.down.square")
@@ -42,16 +41,10 @@ struct CommentSettingsView: View {
                     .foregroundStyle(.pink)
                 }
             } footer: {
-                Text("Comment widgets are visible when 'Compact comments' is off.")
+                Text("Comment widgets are visible when 'Compact Comments' is off.")
             }
 
             Section("Interactions and Info") {
-                SelectableSettingsItem(
-                    settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote Buttons",
-                    currentValue: $commentVoteComplexStyle,
-                    options: VoteComplexStyle.allCases
-                )
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                        settingName: "Show User Server Instance",
                                        isTicked: $shouldShowUserServerInComment)
@@ -76,9 +69,9 @@ struct CommentSettingsView: View {
         .navigationTitle("Comments")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingWidgetSheet) {
-            PostLayoutEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups!.comment, onSave: { widgets in
-                layoutWidgetTracker.groups?.comment = widgets
-                layoutWidgetTracker.saveToDisk()
+            LayoutWidgetEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+                layoutWidgetTracker.groups.comment = widgets
+                layoutWidgetTracker.saveLayoutWidgets()
             })
                 .interactiveDismissDisabled()
         }

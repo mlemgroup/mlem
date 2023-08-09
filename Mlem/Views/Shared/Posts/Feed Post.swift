@@ -34,16 +34,31 @@ struct FeedPost: View {
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
+    @AppStorage("showPostDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
+    @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
+    @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
+    @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
+    
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
-
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
+    @State var dirtyVote: ScoringOperation = .resetVote
+    @State var dirtyScore: Int = 0
+    @State var dirtySaved: Bool = false
+    @State var dirty: Bool = false
+    
     // MARK: Parameters
+    let postView: APIPostView
+    let showPostCreator: Bool
+    let showCommunity: Bool
+    let enableSwipeActions: Bool
 
     init(postView: APIPostView,
          showPostCreator: Bool = true,
@@ -55,10 +70,9 @@ struct FeedPost: View {
         self.enableSwipeActions = enableSwipeActions
     }
 
-    let postView: APIPostView
-    let showPostCreator: Bool
-    let showCommunity: Bool
-    let enableSwipeActions: Bool
+    var displayedVote: ScoringOperation { dirty ? dirtyVote : postView.myVote ?? .resetVote }
+    var displayedScore: Int { dirty ? dirtyScore : postView.counts.score }
+    var displayedSaved: Bool { dirty ? dirtySaved : postView.saved }
 
     // MARK: State
 
@@ -162,24 +176,82 @@ struct FeedPost: View {
                 .padding(.top, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
-                PostInteractionBar(postView: postView,
-                                   menuFunctions: genMenuFunctions(),
-                                   voteOnPost: voteOnPost,
-                                   updatedSavePost: { _ in await savePost() },
-                                   deletePost: deletePost,
-                                   replyToPost: replyToPost)
+                InteractionBarView(
+                    apiView: postView,
+                    accessibilityContext: "post",
+                    widgets: layoutWidgetTracker.groups.post,
+                    displayedScore: displayedScore,
+                    displayedVote: displayedVote,
+                    displayedSaved: displayedSaved,
+                    upvote: upvotePost,
+                    downvote: downvotePost,
+                    save: savePost,
+                    reply: replyToPost,
+                    share: {
+                        if let url = URL(string: postView.post.apId) {
+                            showShareSheet(URLtoShare: url)
+                        }
+                    },
+                    shouldShowScore: shouldShowScoreInPostBar,
+                    showDownvotesSeparately: showPostDownvotesSeparately,
+                    shouldShowTime: shouldShowTimeInPostBar,
+                    shouldShowSaved: shouldShowSavedInPostBar,
+                    shouldShowReplies: shouldShowRepliesInPostBar
+                )
             }
         }
     }
 
-    // Reply handlers
-
     func upvotePost() async {
-        await voteOnPost(inputOp: .upvote)
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            // fake downvote
+            switch displayedVote {
+            case .upvote:
+                dirtyVote = .resetVote
+                dirtyScore = displayedScore - 1
+            case .resetVote:
+                dirtyVote = .upvote
+                dirtyScore = displayedScore + 1
+            case .downvote:
+                dirtyVote = .upvote
+                dirtyScore = displayedScore + 2
+            }
+            dirty = true
+
+            // wait for vote
+            await voteOnPost(inputOp: .upvote)
+
+            // unfake downvote
+            dirty = false
+            return
+        }
     }
 
     func downvotePost() async {
-        await voteOnPost(inputOp: .downvote)
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            // fake upvote
+            switch displayedVote {
+            case .upvote:
+                dirtyVote = .downvote
+                dirtyScore = displayedScore - 2
+            case .resetVote:
+                dirtyVote = .downvote
+                dirtyScore = displayedScore - 1
+            case .downvote:
+                dirtyVote = .resetVote
+                dirtyScore = displayedScore + 1
+            }
+            dirty = true
+
+            // wait for vote
+            await voteOnPost(inputOp: .downvote)
+
+            // unfake upvote
+            dirty = false
+            return
+        }
     }
 
     func deletePost() async {
@@ -250,18 +322,24 @@ struct FeedPost: View {
     }
 
     func savePost() async {
-        
-        hapticManager.play(haptic: .success)
-        
-        do {
-            _ = try await sendSavePostRequest(
-                account: appState.currentActiveAccount,
-                postId: postView.post.id,
-                save: !postView.saved,
-                postTracker: postTracker
-            )
-        } catch {
-            appState.contextualError = .init(underlyingError: error)
+        guard dirty else {
+            // fake save
+            dirtySaved.toggle()
+            dirty = true
+            hapticManager.play(haptic: .success)
+            
+            do {
+                _ = try await sendSavePostRequest(
+                    account: appState.currentActiveAccount,
+                    postId: postView.post.id,
+                    save: dirtySaved,
+                    postTracker: postTracker
+                )
+            } catch {
+                appState.contextualError = .init(underlyingError: error)
+            }
+            dirty = false
+            return
         }
     }
     

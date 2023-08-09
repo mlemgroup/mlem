@@ -26,9 +26,8 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     
     // Complications
-    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .plain
     @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
@@ -55,7 +54,7 @@ struct PostSettingsView: View {
                     showingWidgetSheet = true
                 } label: {
                     HStack {
-                        Text("Customize widgets")
+                        Text("Customize Widgets")
                         Spacer()
                         Image(systemName: "arrow.up.square.fill")
                         Image(systemName: "arrow.down.square")
@@ -161,9 +160,9 @@ struct PostSettingsView: View {
         .navigationTitle("Posts")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingWidgetSheet) {
-            PostLayoutEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups!.post, onSave: { widgets in
-                layoutWidgetTracker.groups?.post = widgets
-                layoutWidgetTracker.saveToDisk()
+            LayoutWidgetEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+                layoutWidgetTracker.groups.post = widgets
+                layoutWidgetTracker.saveLayoutWidgets()
             })
                 .interactiveDismissDisabled()
         }

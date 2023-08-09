@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-indirect enum PostLayoutWidgetType: String, Hashable, Codable, CaseIterable {
+indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     var id: Self { self }
     
     case infoStack
@@ -20,7 +20,7 @@ indirect enum PostLayoutWidgetType: String, Hashable, Codable, CaseIterable {
     case downvoteCounter
     case scoreCounter
     
-    static var allCases: [PostLayoutWidgetType] {
+    static var allCases: [LayoutWidgetType] {
         return [.infoStack, .upvote, .downvote, .save, .reply, .share, .upvoteCounter, .downvoteCounter, .scoreCounter]
     }
     
@@ -67,11 +67,11 @@ indirect enum PostLayoutWidgetType: String, Hashable, Codable, CaseIterable {
     }
 }
 
-class PostLayoutWidget: Equatable, Hashable {
-    var type: PostLayoutWidgetType
+class LayoutWidget: Equatable, Hashable {
+    var type: LayoutWidgetType
     var rect: CGRect?
     
-    init(_ type: PostLayoutWidgetType) {
+    init(_ type: LayoutWidgetType) {
         self.type = type
     }
     
@@ -79,7 +79,7 @@ class PostLayoutWidget: Equatable, Hashable {
         hasher.combine(type)
     }
     
-    static func == (lhs: PostLayoutWidget, rhs: PostLayoutWidget) -> Bool {
+    static func == (lhs: LayoutWidget, rhs: LayoutWidget) -> Bool {
         return lhs.type == rhs.type
     }
 }

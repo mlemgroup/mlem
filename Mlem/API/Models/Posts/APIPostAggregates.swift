@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::aggregates::structs::PostAggregates
-struct APIPostAggregates: Decodable {
+struct APIPostAggregates: Decodable, APIContentAggregatesProtocol {
     let id: Int
     let postId: Int
     let comments: Int

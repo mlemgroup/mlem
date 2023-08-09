@@ -11,8 +11,8 @@ class LayoutWidgetModel: ObservableObject {
     
     private(set) var collections: [LayoutWidgetCollection] = []
     
-    @Published var widgetDragging: PostLayoutWidget?
-    @Published var lastDraggedWidget: PostLayoutWidget?
+    @Published var widgetDragging: LayoutWidget?
+    @Published var lastDraggedWidget: LayoutWidget?
     @Published var widgetDraggingCollection: LayoutWidgetCollection?
     @Published var collectionHovering: LayoutWidgetCollection?
     @Published var predictedDropCollection: LayoutWidgetCollection?

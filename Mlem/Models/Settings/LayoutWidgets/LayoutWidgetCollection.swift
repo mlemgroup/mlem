@@ -10,23 +10,23 @@ import SwiftUI
 class LayoutWidgetCollection: ObservableObject, Equatable {
     
     var id = UUID()
-    @Published var items: [PostLayoutWidget] = .init()
-    var itemsToRender: [PostLayoutWidget?] { self.items }
+    @Published var items: [LayoutWidget] = .init()
+    var itemsToRender: [LayoutWidget?] { self.items }
     var rect: CGRect?
     var costLimit: Float
     
-    init(_ items: [PostLayoutWidget], costLimit: Float = .infinity) {
+    init(_ items: [LayoutWidget], costLimit: Float = .infinity) {
         _items = Published(wrappedValue: items)
         self.costLimit = costLimit
     }
     
-    func update(isHovered: Bool, value: DragGesture.Value, widgetDragging: PostLayoutWidget) {}
+    func update(isHovered: Bool, value: DragGesture.Value, widgetDragging: LayoutWidget) {}
     
-    func drop(_ widget: PostLayoutWidget) {
+    func drop(_ widget: LayoutWidget) {
         self.items.append(widget)
     }
     
-    func getItemAtLocation(_ location: CGPoint) -> PostLayoutWidget? {
+    func getItemAtLocation(_ location: CGPoint) -> LayoutWidget? {
         for widget in items where widget.rect != nil {
             if widget.rect?.contains(location) ?? false {
                 return widget
@@ -35,11 +35,11 @@ class LayoutWidgetCollection: ObservableObject, Equatable {
         return nil
     }
     
-    func isValidDropLocation(_ widgetDragging: PostLayoutWidget? = nil) -> Bool {
+    func isValidDropLocation(_ widgetDragging: LayoutWidget? = nil) -> Bool {
         costLimit == .infinity || totalCost(widgetDragging) <= costLimit
     }
     
-    func totalCost(_ widgetDragging: PostLayoutWidget? = nil) -> Float {
+    func totalCost(_ widgetDragging: LayoutWidget? = nil) -> Float {
         self.items.reduce(0) { accumulator, element in
             accumulator + element.type.cost
         } + (widgetDragging?.type.cost ?? 0)
@@ -57,16 +57,16 @@ class UnorderedWidgetCollection: LayoutWidgetCollection {
 
 class OrderedWidgetCollection: LayoutWidgetCollection {
     
-    @Published var itemsWithPlaceholder: [PostLayoutWidget?] = .init()
-    override var itemsToRender: [PostLayoutWidget?] { self.itemsWithPlaceholder }
+    @Published var itemsWithPlaceholder: [LayoutWidget?] = .init()
+    override var itemsToRender: [LayoutWidget?] { self.itemsWithPlaceholder }
     var predictedDropIndex: Int?
     
-    override init(_ items: [PostLayoutWidget], costLimit: Float = .infinity) {
+    override init(_ items: [LayoutWidget], costLimit: Float = .infinity) {
         super.init(items, costLimit: costLimit)
         itemsWithPlaceholder = self.items
     }
     
-    override func update(isHovered: Bool, value: DragGesture.Value, widgetDragging: PostLayoutWidget) {
+    override func update(isHovered: Bool, value: DragGesture.Value, widgetDragging: LayoutWidget) {
         if isHovered {
             if value.translation.width == 0 && self.items.contains(widgetDragging) {
                 self.predictedDropIndex = self.items.firstIndex(of: widgetDragging)
@@ -79,12 +79,12 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
         }
     }
     
-    override func drop(_ widget: PostLayoutWidget) {
+    override func drop(_ widget: LayoutWidget) {
         self.items.insert(widget, at: predictedDropIndex!)
         itemsWithPlaceholder = items
     }
     
-    func updatePlaceholderPosition(widgetDragging: PostLayoutWidget, index: Int) {
+    func updatePlaceholderPosition(widgetDragging: LayoutWidget, index: Int) {
         var retItems = self.items
         if let widgetDraggingIndex = retItems.firstIndex(of: widgetDragging) {
             retItems.remove(at: widgetDraggingIndex)
@@ -93,7 +93,7 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
         self.itemsWithPlaceholder.append(nil)
         self.itemsWithPlaceholder += Array(retItems[ index ..< retItems.count])
     }
-    func removePlaceholder(widgetDragging: PostLayoutWidget) {
+    func removePlaceholder(widgetDragging: LayoutWidget) {
         var retItems = self.items
         if let index = retItems.firstIndex(of: widgetDragging) {
             retItems.remove(at: index)
@@ -101,7 +101,7 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
         self.itemsWithPlaceholder = retItems
     }
     
-    func setPredictedDropIndex(value: DragGesture.Value, widgetDragging: PostLayoutWidget) {
+    func setPredictedDropIndex(value: DragGesture.Value, widgetDragging: LayoutWidget) {
         var nodes: [Float] = []
         
         for item in self.items {

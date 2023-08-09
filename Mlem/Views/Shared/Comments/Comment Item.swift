@@ -19,6 +19,11 @@ struct CommentItem: View {
     @Dependency(\.notifier) var notifier
     
     // appstorage
+    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = true
+    @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
+    @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
+    @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
+    @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("compactComments") var compactComments: Bool = false
 
     // MARK: Temporary
@@ -40,6 +45,7 @@ struct CommentItem: View {
     @EnvironmentObject var commentTracker: CommentTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     // MARK: Constants
 
@@ -123,29 +129,44 @@ struct CommentItem: View {
     
     @ViewBuilder
     private func commentBody(hierarchicalComment: HierarchicalComment) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            CommentBodyView(commentView: hierarchicalComment.commentView,
-                            isParentCollapsed: $hierarchicalComment.isParentCollapsed,
-                            isCollapsed: $hierarchicalComment.isCollapsed,
-                            showPostContext: showPostContext,
-                            menuFunctions: genMenuFunctions())
-            // top and bottom spacing uses default even when compact--it's *too* compact otherwise
-            .padding(.top, AppConstants.postAndCommentSpacing)
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            
-            if !hierarchicalComment.isCollapsed && !compactComments {
-                CommentInteractionBar(commentView: hierarchicalComment.commentView,
-                                      displayedScore: displayedScore,
-                                      displayedVote: displayedVote,
-                                      displayedSaved: displayedSaved,
-                                      upvote: upvote,
-                                      downvote: downvote,
-                                      saveComment: saveComment,
-                                      deleteComment: deleteComment,
-                                      replyToComment: replyToComment)
-            } else {
-                Spacer()
-                    .frame(height: AppConstants.postAndCommentSpacing)
+        Group {
+            VStack(alignment: .leading, spacing: 0) {
+                CommentBodyView(commentView: hierarchicalComment.commentView,
+                                isParentCollapsed: $hierarchicalComment.isParentCollapsed,
+                                isCollapsed: $hierarchicalComment.isCollapsed,
+                                showPostContext: showPostContext,
+                                menuFunctions: genMenuFunctions())
+                // top and bottom spacing uses default even when compact--it's *too* compact otherwise
+                .padding(.top, AppConstants.postAndCommentSpacing)
+                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                
+                if !hierarchicalComment.isCollapsed && !compactComments {
+                    InteractionBarView(
+                        apiView: hierarchicalComment.commentView,
+                        accessibilityContext: "comment",
+                        widgets: layoutWidgetTracker.groups.comment,
+                        displayedScore: displayedScore,
+                        displayedVote: displayedVote,
+                        displayedSaved: displayedSaved,
+                        upvote: upvote,
+                        downvote: downvote,
+                        save: saveComment,
+                        reply: replyToComment,
+                        share: {
+                            if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
+                                showShareSheet(URLtoShare: url)
+                            }
+                        },
+                        shouldShowScore: shouldShowScoreInCommentBar,
+                        showDownvotesSeparately: showCommentDownvotesSeparately,
+                        shouldShowTime: shouldShowTimeInCommentBar,
+                        shouldShowSaved: shouldShowSavedInCommentBar,
+                        shouldShowReplies: shouldShowRepliesInCommentBar
+                    )
+                } else {
+                    Spacer()
+                        .frame(height: AppConstants.postAndCommentSpacing)
+                }
             }
         }
         .contentShape(Rectangle()) // allow taps in blank space to register

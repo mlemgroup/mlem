@@ -19,15 +19,19 @@ struct DetailedVotes {
     let showDownvotes: Bool
 }
 
-struct InfoStack: View {
+struct InfoStackView: View {
   
     let votes: DetailedVotes?
     let published: Date?
     let commentCount: Int?
     let saved: Bool?
+    let alignment: HorizontalAlignment
     
     var body: some View {
         HStack(spacing: 12) {
+            if alignment == .trailing {
+                Spacer()
+            }
             if let votes {
                 if votes.showDownvotes {
                     upvotesView(votes: votes)
@@ -47,6 +51,9 @@ struct InfoStack: View {
             
             if let commentCount {
                 repliesView(numReplies: commentCount)
+            }
+            if alignment == .leading {
+                Spacer()
             }
         }
         .foregroundColor(.secondary)

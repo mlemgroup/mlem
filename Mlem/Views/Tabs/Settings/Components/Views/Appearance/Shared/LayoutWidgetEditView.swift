@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct PostLayoutEditView: View {
+struct LayoutWidgetEditView: View {
     
     @Binding var showingSheet: Bool
-    var onSave: (_ widgets: [PostLayoutWidgetType]) -> Void
+    var onSave: (_ widgets: [LayoutWidgetType]) -> Void
     
     @Namespace var animation
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -20,19 +20,19 @@ struct PostLayoutEditView: View {
     
     @StateObject private var widgetModel: LayoutWidgetModel
     
-    init(_ showingSheet: Binding<Bool>, widgets: [PostLayoutWidgetType],
-         onSave: @escaping (_ widgets: [PostLayoutWidgetType]) -> Void) {
+    init(_ showingSheet: Binding<Bool>, widgets: [LayoutWidgetType],
+         onSave: @escaping (_ widgets: [LayoutWidgetType]) -> Void) {
         self.onSave = onSave
         
-        var barWidgets: [PostLayoutWidget] = .init()
+        var barWidgets: [LayoutWidget] = .init()
         
         for widget in widgets {
             barWidgets.append(.init(widget))
         }
         
-        var trayWidgets: [PostLayoutWidget] = .init()
+        var trayWidgets: [LayoutWidget] = .init()
         
-        for widget in PostLayoutWidgetType.allCases where !widgets.contains(widget) {
+        for widget in LayoutWidgetType.allCases where !widgets.contains(widget) {
             trayWidgets.append(.init(widget))
         }
         
@@ -162,12 +162,12 @@ struct PostLayoutEditView: View {
     
     func tray(_ outerFrame: CGRect) -> some View {
         
-        var widgets = [PostLayoutWidgetType: PostLayoutWidget]()
+        var widgets = [LayoutWidgetType: LayoutWidget]()
         for widget in trayCollection.itemsToRender {
             widgets[widget!.type] = widget
         }
         
-        func trayWidgetView(_ widgetType: PostLayoutWidgetType) -> some View {
+        func trayWidgetView(_ widgetType: LayoutWidgetType) -> some View {
             Group {
                 if let widget = widgets[widgetType] {
                     placedWidgetView(widget, outerFrame: outerFrame)
@@ -209,7 +209,7 @@ struct PostLayoutEditView: View {
         }
     }
     
-    func placedWidgetView(_ widget: PostLayoutWidget?, outerFrame: CGRect) -> some View {
+    func placedWidgetView(_ widget: LayoutWidget?, outerFrame: CGRect) -> some View {
         let widgetWidth = widget?.type.width ?? (widgetModel.widgetDragging?.type.width ?? 0)
         let stack = {
                 HStack {

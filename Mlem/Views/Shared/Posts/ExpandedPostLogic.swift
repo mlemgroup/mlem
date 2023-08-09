@@ -21,6 +21,58 @@ extension ExpandedPost {
         }
     }
     
+    func upvotePost() async {
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            // fake downvote
+            switch displayedVote {
+            case .upvote:
+                dirtyVote = .resetVote
+                dirtyScore = displayedScore - 1
+            case .resetVote:
+                dirtyVote = .upvote
+                dirtyScore = displayedScore + 1
+            case .downvote:
+                dirtyVote = .upvote
+                dirtyScore = displayedScore + 2
+            }
+            dirty = true
+
+            // wait for vote
+            await voteOnPost(inputOp: .upvote)
+
+            // unfake downvote
+            dirty = false
+            return
+        }
+    }
+
+    func downvotePost() async {
+        // don't do anything if currently awaiting a vote response
+        guard dirty else {
+            // fake upvote
+            switch displayedVote {
+            case .upvote:
+                dirtyVote = .downvote
+                dirtyScore = displayedScore - 2
+            case .resetVote:
+                dirtyVote = .downvote
+                dirtyScore = displayedScore - 1
+            case .downvote:
+                dirtyVote = .resetVote
+                dirtyScore = displayedScore + 1
+            }
+            dirty = true
+
+            // wait for vote
+            await voteOnPost(inputOp: .downvote)
+
+            // unfake upvote
+            dirty = false
+            return
+        }
+    }
+    
     /// Votes on a post
     /// - Parameter inputOp: The voting operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
@@ -43,16 +95,26 @@ extension ExpandedPost {
     /**
      Sends a save request for the current post
      */
-    func savePost(_ save: Bool) async throws {
-        
-        hapticManager.play(haptic: .success)
-        
-        self.post = try await sendSavePostRequest(
-            account: appState.currentActiveAccount,
-            postId: post.post.id,
-            save: save,
-            postTracker: postTracker
-        )
+    func savePost() async {
+        guard dirty else {
+            // fake save
+            dirtySaved.toggle()
+            dirty = true
+            hapticManager.play(haptic: .success)
+            
+            do {
+                self.post = try await sendSavePostRequest(
+                    account: appState.currentActiveAccount,
+                    postId: post.post.id,
+                    save: dirtySaved,
+                    postTracker: postTracker
+                )
+            } catch {
+                appState.contextualError = .init(underlyingError: error)
+            }
+            dirty = false
+            return
+        }
     }
     
     func deletePost() async {
@@ -154,7 +216,7 @@ extension ExpandedPost {
             destructiveActionPrompt: nil,
             enabled: true) {
             Task(priority: .userInitiated) {
-                try await savePost(_: !post.saved)
+                await savePost()
             }
         })
         

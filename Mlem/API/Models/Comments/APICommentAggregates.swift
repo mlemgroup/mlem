@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::aggregates::structs::CommentAggregates
-struct APICommentAggregates: Decodable {
+struct APICommentAggregates: Decodable, APIContentAggregatesProtocol {
     let id: Int
     let commentId: Int
     let score: Int
@@ -16,4 +16,6 @@ struct APICommentAggregates: Decodable {
     let downvotes: Int
     let published: Date
     let childCount: Int
+    
+    var comments: Int { childCount }
 }

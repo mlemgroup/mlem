@@ -9,15 +9,13 @@ import SwiftUI
 
 import Foundation
 
-struct ReplyButton: View {
+struct ReplyButtonView: View {
 
     // MARK: Parameters
 
-    let replyCount: Int
     let reply: (() -> Void)?
 
-    init(replyCount: Int, accessibilityContext: String, reply: (() -> Void)?) {
-        self.replyCount = replyCount
+    init(accessibilityContext: String, reply: (() -> Void)?) {
         self.reply = reply
         
         self.replyIcon = reply == nil ? "quote.bubble.left" : "arrowshape.turn.up.left"

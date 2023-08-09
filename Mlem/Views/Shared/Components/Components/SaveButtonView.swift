@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SaveButton: View {
+struct SaveButtonView: View {
 
     // ==== PARAMETERS ==== //
 
