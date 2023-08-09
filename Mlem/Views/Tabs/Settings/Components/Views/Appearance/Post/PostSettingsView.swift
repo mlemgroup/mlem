@@ -13,7 +13,6 @@ struct PostSettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = PostSize.headline
-    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
     
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
@@ -63,6 +62,8 @@ struct PostSettingsView: View {
                     }
                     .foregroundStyle(.pink)
                 }
+            } footer: {
+                Text("Post widgets are visible in Large or Headline mode.")
             }
             
             Section("Body") {

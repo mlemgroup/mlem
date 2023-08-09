@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct CommentSettingsView: View {
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
-    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     // interactions and info
     @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .plain
@@ -21,18 +21,28 @@ struct CommentSettingsView: View {
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
+    @State private var showingWidgetSheet = false
+    
     var body: some View {
-        List {
-            Section("Comment Size") {
+        Form {
+            Section {
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.compactSymbolName,
                                        settingName: "Compact Comments",
                                        isTicked: $compactComments)
-            }
-            
-            Section("Display Sides") {
-                SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
-                                       settingName: "Vote Buttons On Right",
-                                       isTicked: $shouldShowVoteComplexOnRight)
+                
+                Button {
+                    showingWidgetSheet = true
+                } label: {
+                    HStack {
+                        Text("Customize widgets")
+                        Spacer()
+                        Image(systemName: "arrow.up.square.fill")
+                        Image(systemName: "arrow.down.square")
+                    }
+                    .foregroundStyle(.pink)
+                }
+            } footer: {
+                Text("Comment widgets are visible when 'Compact comments' is off.")
             }
 
             Section("Interactions and Info") {
@@ -63,5 +73,14 @@ struct CommentSettingsView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationTitle("Comments")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showingWidgetSheet) {
+            PostLayoutEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups!.comment, onSave: { widgets in
+                layoutWidgetTracker.groups?.comment = widgets
+                layoutWidgetTracker.saveToDisk()
+            })
+                .interactiveDismissDisabled()
+        }
     }
 }
