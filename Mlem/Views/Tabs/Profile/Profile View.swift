@@ -16,6 +16,9 @@ struct ProfileView: View {
     
     // environment
     @EnvironmentObject var appState: AppState
+    
+    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
     @State private var navigationPath = NavigationPath()
     
@@ -25,5 +28,15 @@ struct ProfileView: View {
                 .handleLemmyViews()
         }
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
+        .onChange(of: selectedTagHashValue) { newValue in
+            if newValue == TabSelection.profile.hashValue {
+                print("switched to Profile tab")
+            }
+        }
+        .onChange(of: selectedNavigationTabHashValue) { newValue in
+            if newValue == TabSelection.profile.hashValue {
+                print("re-selected \(TabSelection.profile) tab")
+            }
+        }
     }
 }
