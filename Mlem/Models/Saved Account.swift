@@ -12,7 +12,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let instanceLink: URL
     let accessToken: String
     let username: String
-    var storedNickname: String?
+    let storedNickname: String?
     
     init(id: Int,
          instanceLink: URL,
@@ -24,6 +24,19 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.accessToken = accessToken
         self.username = username
         self.storedNickname = storedNickname
+    }
+    
+    /**
+     Convenience initializer to create an equal copy with different non-identifying properties.
+     */
+    init(from account: SavedAccount,
+         accessToken: String? = nil,
+         storedNickname: String? = nil) {
+        self.id = account.id
+        self.instanceLink = account.instanceLink
+        self.accessToken = accessToken ?? account.accessToken
+        self.username = account.username
+        self.storedNickname = storedNickname ?? account.storedNickname
     }
   
     // convenience
@@ -41,6 +54,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         try container.encode(self.instanceLink, forKey: .instanceLink)
         try container.encode("redacted", forKey: .accessToken)
         try container.encode(self.username, forKey: .username)
+        try container.encode(self.storedNickname, forKey: .storedNickname)
     }
     
     static func == (lhs: SavedAccount, rhs: SavedAccount) -> Bool {

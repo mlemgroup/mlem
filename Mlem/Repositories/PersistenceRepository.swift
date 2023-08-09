@@ -69,13 +69,8 @@ class PersistenceRepository {
             guard let token = keychainAccess("\(account.id)_accessToken") else {
                 return nil
             }
-
-            return SavedAccount(
-                id: account.id,
-                instanceLink: account.instanceLink,
-                accessToken: token,
-                username: account.username
-            )
+            
+            return SavedAccount(from: account, accessToken: token)
         }
     }
     
