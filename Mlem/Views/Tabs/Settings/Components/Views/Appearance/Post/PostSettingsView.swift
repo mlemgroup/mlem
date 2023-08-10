@@ -54,7 +54,12 @@ struct PostSettingsView: View {
                         layoutWidgetTracker.saveLayoutWidgets()
                     })
                 } label: {
-                    Label("Customize Widgets", systemImage: "wand.and.stars").labelStyle(SquircleLabelStyle(color: .purple))
+                    Label {
+                        Text("Customize Widgets")
+                    } icon: {
+                        Image(systemName: "wand.and.stars")
+                            .foregroundColor(.pink)
+                    }
                 }
                 
             } footer: {
