@@ -10,9 +10,9 @@ import SwiftUI
 
 struct PostSettingsView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = PostSize.headline
-    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
     
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
@@ -26,9 +26,8 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     
     // Complications
-    @AppStorage("postVoteComplexStyle") var postVoteComplexStyle: VoteComplexStyle = .plain
     @AppStorage("showDownvotesSeparately") var showDownvotesSeparately: Bool = false
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
@@ -38,29 +37,40 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
-    
+
     var body: some View {
         Form {
-            Section("Post Size") {
+            Section {
                 SelectableSettingsItem(
                     settingIconSystemName: "rectangle.compress.vertical",
                     settingName: "Post Size",
                     currentValue: $postSize,
                     options: PostSize.allCases
                 )
-            }
             
-            Section("Display Sides") {
-                SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
-                                       settingName: "Vote Buttons On Right",
-                                       isTicked: $shouldShowVoteComplexOnRight)
+                NavigationLink {
+                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+                        layoutWidgetTracker.groups.post = widgets
+                        layoutWidgetTracker.saveLayoutWidgets()
+                    })
+                } label: {
+                    Label {
+                        Text("Customize Widgets")
+                    } icon: {
+                        Image(systemName: "wand.and.stars")
+                            .foregroundColor(.pink)
+                    }
+                }
                 
-                SwitchableSettingsItem(settingPictureSystemName: "photo",
-                                       settingName: "Thumbnails On Right",
-                                       isTicked: $shouldShowThumbnailsOnRight)
+            } footer: {
+                Text("Post widgets are visible in Large or Headline mode.")
             }
             
             Section("Body") {
+
+                SwitchableSettingsItem(settingPictureSystemName: "photo",
+                                       settingName: "Thumbnails On Right",
+                                       isTicked: $shouldShowThumbnailsOnRight)
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                        settingName: "Show User Server Instance",
                                        isTicked: $shouldShowUserServerInPost)
@@ -79,12 +89,7 @@ struct PostSettingsView: View {
             }
             
             Section("Interactions and Info") {
-                SelectableSettingsItem(
-                    settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote Buttons",
-                    currentValue: $postVoteComplexStyle,
-                    options: VoteComplexStyle.allCases
-                )
+
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
                                        settingName: "Show Score In Info",
                                        isTicked: $shouldShowScoreInPostBar)
@@ -103,29 +108,33 @@ struct PostSettingsView: View {
             }
             
             Section("Website Previews") {
-                WebsiteIconComplex(post: APIPost(
-                    id: 0,
-                    name: "",
-                    url: URL(string: "https://lemmy.ml/post/1011734")!,
-                    body: "",
-                    creatorId: 0,
-                    communityId: 0,
-                    deleted: false,
-                    embedDescription: nil,
-                    embedTitle: "I am an example of a website preview.\nCustomize me!",
-                    embedVideoUrl: nil,
-                    featuredCommunity: false,
-                    featuredLocal: false,
-                    languageId: 0,
-                    apId: "https://lemmy.ml/post/1011068",
-                    local: true,
-                    locked: false,
-                    nsfw: false,
-                    published: .now,
-                    removed: false,
-                    thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
-                    updated: nil
-                ))
+
+                WebsiteIconComplex(post:
+                                    APIPost(
+                                        id: 0,
+                                        name: "",
+                                        url: URL(string: "https://lemmy.ml/post/1011734")!,
+                                        body: "",
+                                        creatorId: 0,
+                                        communityId: 0,
+                                        deleted: false,
+                                        embedDescription: nil,
+                                        embedTitle: "I am an example of a website preview.\nCustomize me!",
+                                        embedVideoUrl: nil,
+                                        featuredCommunity: false,
+                                        featuredLocal: false,
+                                        languageId: 0,
+                                        apId: "https://lemmy.ml/post/1011068",
+                                        local: true,
+                                        locked: false,
+                                        nsfw: false,
+                                        published: .now,
+                                        removed: false,
+                                        thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
+                                        updated: nil
+                                    )
+                )
+    
                 .padding(.horizontal)
                 
                 SwitchableSettingsItem(
@@ -145,8 +154,9 @@ struct PostSettingsView: View {
                     isTicked: $shouldShowWebsitePreviews
                 )
             }
-            
+
         }
+        
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
         .navigationBarTitleDisplayMode(.inline)

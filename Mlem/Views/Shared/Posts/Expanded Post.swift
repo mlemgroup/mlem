@@ -25,13 +25,29 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
+    
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
+    @AppStorage("showPostDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
+    @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
+    @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
+    @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: PostTracker
     @State var post: APIPostView
+    
+    @State var dirtyVote: ScoringOperation = .resetVote
+    @State var dirtyScore: Int = 0
+    @State var dirtySaved: Bool = false
+    @State var dirty: Bool = false
+    
+    var displayedVote: ScoringOperation { dirty ? dirtyVote : post.myVote ?? .resetVote }
+    var displayedScore: Int { dirty ? dirtyScore : post.counts.score }
+    var displayedSaved: Bool { dirty ? dirtySaved : post.saved }
     
     @State var isLoading: Bool = false
 
@@ -120,12 +136,28 @@ struct ExpandedPost: View {
             .padding(.top, AppConstants.postAndCommentSpacing)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             
-            PostInteractionBar(postView: post,
-                               menuFunctions: genMenuFunctions(),
-                               voteOnPost: voteOnPost,
-                               updatedSavePost: savePost,
-                               deletePost: deletePost,
-                               replyToPost: replyToPost)
+            InteractionBarView(
+                apiView: post,
+                accessibilityContext: "post",
+                widgets: layoutWidgetTracker.groups.post,
+                displayedScore: displayedScore,
+                displayedVote: displayedVote,
+                displayedSaved: displayedSaved,
+                upvote: upvotePost,
+                downvote: downvotePost,
+                save: savePost,
+                reply: replyToPost,
+                share: {
+                    if let url = URL(string: post.post.apId) {
+                        showShareSheet(URLtoShare: url)
+                    }
+                },
+                shouldShowScore: shouldShowScoreInPostBar,
+                showDownvotesSeparately: showPostDownvotesSeparately,
+                shouldShowTime: shouldShowTimeInPostBar,
+                shouldShowSaved: shouldShowSavedInPostBar,
+                shouldShowReplies: shouldShowRepliesInPostBar
+            )
         }
     }
 

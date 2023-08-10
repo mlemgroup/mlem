@@ -50,10 +50,15 @@ struct AppConstants {
     // MARK: - SFSymbols
     // votes
     static let generalVoteSymbolName: String = "arrow.up.arrow.down.square"
+    
+    static let plainUpvoteSymbolName: String = "arrow.up"
     static let emptyUpvoteSymbolName: String = "arrow.up.square"
     static let fullUpvoteSymbolName: String = "arrow.up.square.fill"
+    
+    static let plainDownvoteSymbolName: String = "arrow.down"
     static let emptyDownvoteSymbolName: String = "arrow.down.square"
     static let fullDownvoteSymbolName: String = "arrow.down.square.fill"
+    
     static let emptyResetVoteSymbolName: String = "minus.square"
     static let fullResetVoteSymbolName: String = "minus.square.fill"
     static let scoringOpToVoteImage: [ScoringOperation?: String] = [.upvote: "arrow.up.square.fill",

@@ -18,6 +18,7 @@ struct Window: View {
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
+    @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
 
     @State var selectedAccount: SavedAccount?
 
@@ -58,6 +59,7 @@ struct Window: View {
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
+            .environmentObject(layoutWidgetTracker)
     }
     
     func forceOnboard() {

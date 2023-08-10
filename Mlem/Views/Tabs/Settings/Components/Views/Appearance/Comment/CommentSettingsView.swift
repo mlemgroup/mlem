@@ -9,11 +9,10 @@ import Foundation
 import SwiftUI
 
 struct CommentSettingsView: View {
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
-    @AppStorage("voteComplexOnRight") var shouldShowVoteComplexOnRight: Bool = false
     @AppStorage("compactComments") var compactComments: Bool = false
     // interactions and info
-    @AppStorage("commentVoteComplexStyle") var commentVoteComplexStyle: VoteComplexStyle = .plain
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
@@ -22,26 +21,30 @@ struct CommentSettingsView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     var body: some View {
-        List {
-            Section("Comment Size") {
+        Form {
+            Section {
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.compactSymbolName,
                                        settingName: "Compact Comments",
                                        isTicked: $compactComments)
-            }
-            
-            Section("Display Sides") {
-                SwitchableSettingsItem(settingPictureSystemName: "arrow.up.arrow.down",
-                                       settingName: "Vote Buttons On Right",
-                                       isTicked: $shouldShowVoteComplexOnRight)
+                
+                NavigationLink {
+                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+                        layoutWidgetTracker.groups.comment = widgets
+                        layoutWidgetTracker.saveLayoutWidgets()
+                    })
+                } label: {
+                    Label {
+                        Text("Customize Widgets")
+                    } icon: {
+                        Image(systemName: "wand.and.stars")
+                            .foregroundColor(.pink)
+                    }
+                }
+            } footer: {
+                Text("Comment widgets are visible when 'Compact Comments' is off.")
             }
 
             Section("Interactions and Info") {
-                SelectableSettingsItem(
-                    settingIconSystemName: "arrow.up.arrow.down.square",
-                    settingName: "Vote Buttons",
-                    currentValue: $commentVoteComplexStyle,
-                    options: VoteComplexStyle.allCases
-                )
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                                        settingName: "Show User Server Instance",
                                        isTicked: $shouldShowUserServerInComment)
@@ -63,5 +66,7 @@ struct CommentSettingsView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationTitle("Comments")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_views::structs::PostView
-struct APIPostView: Decodable {
+struct APIPostView: Decodable, APIContentViewProtocol {
     let post: APIPost
     let creator: APIPerson
     let community: APICommunity

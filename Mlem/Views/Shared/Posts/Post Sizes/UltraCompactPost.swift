@@ -37,26 +37,12 @@ struct UltraCompactPost: View {
     let menuFunctions: [MenuFunction]
     
     // computed
-    let voteColor: Color
-    let voteIconName: String
     var showReadCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
-        
-        switch postView.myVote {
-        case .upvote:
-            voteIconName = "arrow.up"
-            voteColor = .upvoteColor
-        case .downvote:
-            voteIconName = "arrow.down"
-            voteColor = .downvoteColor
-        default:
-            voteIconName = "arrow.up"
-            voteColor = .secondary
-        }
     }
     
     var body: some View {
@@ -115,14 +101,15 @@ struct UltraCompactPost: View {
                 NSFWTag(compact: true)
             }
             
-            InfoStack(votes: DetailedVotes(score: postView.counts.score,
+            InfoStackView(votes: DetailedVotes(score: postView.counts.score,
                                            upvotes: postView.counts.upvotes,
                                            downvotes: postView.counts.downvotes,
                                            myVote: postView.myVote ?? .resetVote,
                                            showDownvotes: showDownvotesSeparately),
                       published: postView.published,
                       commentCount: postView.counts.comments,
-                      saved: postView.saved)
+                      saved: postView.saved,
+                      alignment: .center)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .font(.footnote)
