@@ -27,7 +27,7 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
     
     @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
-    @AppStorage("showPostDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
+    @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
