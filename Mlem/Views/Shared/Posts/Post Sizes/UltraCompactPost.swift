@@ -37,26 +37,12 @@ struct UltraCompactPost: View {
     let menuFunctions: [MenuFunction]
     
     // computed
-    let voteColor: Color
-    let voteIconName: String
     var showReadCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.postView = postView
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
-        
-        switch postView.myVote {
-        case .upvote:
-            voteIconName = "arrow.up"
-            voteColor = .upvoteColor
-        case .downvote:
-            voteIconName = "arrow.down"
-            voteColor = .downvoteColor
-        default:
-            voteIconName = "arrow.up"
-            voteColor = .secondary
-        }
     }
     
     var body: some View {

@@ -25,7 +25,7 @@ struct UpvoteCounterView: View {
                 }
             } label: {
                 HStack(spacing: 8) {
-                    Image(systemName: "arrow.up")
+                    Image(systemName: AppConstants.plainUpvoteSymbolName)
                     Text(String(score))
                         .monospacedDigit()
                 }
@@ -35,7 +35,6 @@ struct UpvoteCounterView: View {
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .foregroundColor(vote == .upvote ? .upvoteColor : .clear))
                 .foregroundColor(vote == .upvote ? .white : .primary)
-                // .padding(.leading, AppConstants.postAndCommentSpacing - 4) // offset, undo background padding
                 .padding(AppConstants.postAndCommentSpacing)
             }
         }

@@ -37,8 +37,6 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
-    
-    @State private var showingWidgetSheet = false
 
     var body: some View {
         Form {
@@ -50,17 +48,15 @@ struct PostSettingsView: View {
                     options: PostSize.allCases
                 )
             
-                Button {
-                    showingWidgetSheet = true
+                NavigationLink {
+                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+                        layoutWidgetTracker.groups.post = widgets
+                        layoutWidgetTracker.saveLayoutWidgets()
+                    })
                 } label: {
-                    HStack {
-                        Text("Customize Widgets")
-                        Spacer()
-                        Image(systemName: "arrow.up.square.fill")
-                        Image(systemName: "arrow.down.square")
-                    }
-                    .foregroundStyle(.pink)
+                    Label("Customize Widgets", systemImage: "wand.and.stars").labelStyle(SquircleLabelStyle(color: .purple))
                 }
+                
             } footer: {
                 Text("Post widgets are visible in Large or Headline mode.")
             }
@@ -159,12 +155,5 @@ struct PostSettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showingWidgetSheet) {
-            LayoutWidgetEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
-                layoutWidgetTracker.groups.post = widgets
-                layoutWidgetTracker.saveLayoutWidgets()
-            })
-                .interactiveDismissDisabled()
-        }
     }
 }

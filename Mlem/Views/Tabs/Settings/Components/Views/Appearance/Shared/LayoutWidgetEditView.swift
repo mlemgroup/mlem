@@ -27,8 +27,8 @@ private struct WidgetCollectionView: ViewModifier {
 }
 
 struct LayoutWidgetEditView: View {
+    @Environment(\.isPresented) var isPresented
     
-    @Binding var showingSheet: Bool
     var onSave: (_ widgets: [LayoutWidgetType]) -> Void
     
     @Namespace var animation
@@ -39,24 +39,16 @@ struct LayoutWidgetEditView: View {
     
     @StateObject private var widgetModel: LayoutWidgetModel
     
-    init(_ showingSheet: Binding<Bool>, widgets: [LayoutWidgetType],
+    init(widgets: [LayoutWidgetType],
          onSave: @escaping (_ widgets: [LayoutWidgetType]) -> Void) {
         self.onSave = onSave
         
-        var barWidgets: [LayoutWidget] = .init()
-        
-        for widget in widgets {
-            barWidgets.append(.init(widget))
-        }
-        
-        var trayWidgets: [LayoutWidget] = .init()
-        
-        for widget in LayoutWidgetType.allCases where !widgets.contains(widget) {
-            trayWidgets.append(.init(widget))
-        }
+        let barWidgets = widgets.map { LayoutWidget($0) }
+        let trayWidgets = LayoutWidgetType.allCases
+            .filter { !widgets.contains($0) }
+            .map { LayoutWidget($0) }
         
         let bar = OrderedWidgetCollection(barWidgets, costLimit: 7)
-        _showingSheet = showingSheet
         
         let tray = UnorderedWidgetCollection(trayWidgets)
         
@@ -70,7 +62,6 @@ struct LayoutWidgetEditView: View {
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .global)
                 VStack(spacing: 0) {
-                    header
                     interactionBar(frame)
                         .frame(height: 125)
                         .padding(.horizontal, 30)
@@ -101,13 +92,13 @@ struct LayoutWidgetEditView: View {
                     }
             )
         
-            if widgetModel.shouldShowDraggingWidget {
+            if widgetModel.shouldShowDraggingWidget, let widgetDragging = widgetModel.widgetDragging, let rect = widgetDragging.rect {
                 HStack {
-                    LayoutWidgetView(widget: widgetModel.widgetDragging!, animation: animation)
+                    LayoutWidgetView(widget: widgetDragging, animation: animation)
                 }
                 .frame(
-                    width: widgetModel.widgetDragging!.rect!.width,
-                    height: widgetModel.widgetDragging!.rect!.height
+                    width: rect.width,
+                    height: rect.height
                 )
                 .offset(widgetModel.widgetDraggingOffset)
                 .zIndex(2)
@@ -115,29 +106,15 @@ struct LayoutWidgetEditView: View {
             }
         }
         .background(Color(UIColor.systemGroupedBackground))
-    }
-    
-    var header: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Button("Cancel") {
-                    showingSheet = false
-                }
-                Spacer()
-                Button("Save") {
-                    Task {
-                        self.onSave(self.barCollection.items.compactMap { $0.type })
-                    }
-                    
-                    showingSheet = false
+        .onChange(of: isPresented) { newValue in
+            if newValue == false {
+                print("SAVING")
+                Task {
+                    self.onSave(self.barCollection.items.compactMap { $0.type })
                 }
             }
-            .padding(.horizontal, 20)
-            Spacer()
-            Divider()
         }
-        .frame(height: 70)
+        .navigationTitle("Widgets")
     }
     
     var infoText: some View {

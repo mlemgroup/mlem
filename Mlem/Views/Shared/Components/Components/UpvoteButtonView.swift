@@ -17,7 +17,7 @@ struct UpvoteButtonView: View {
                 await upvote()
             }
         } label: {
-            Image(systemName: "arrow.up")
+            Image(systemName: AppConstants.plainUpvoteSymbolName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)

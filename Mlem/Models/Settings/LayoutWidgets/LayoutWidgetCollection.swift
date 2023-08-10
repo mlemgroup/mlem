@@ -27,15 +27,11 @@ class LayoutWidgetCollection: ObservableObject, Equatable {
     }
     
     func getItemAtLocation(_ location: CGPoint) -> LayoutWidget? {
-        for widget in items where widget.rect != nil {
-            if widget.rect?.contains(location) ?? false {
-                return widget
-            }
-        }
-        return nil
+        items.first { $0.rect?.contains(location) ?? false }
     }
     
     func isValidDropLocation(_ widgetDragging: LayoutWidget? = nil) -> Bool {
+        // costLimit == .infinity is for optimisation
         costLimit == .infinity || totalCost(widgetDragging) <= costLimit
     }
     
@@ -46,11 +42,11 @@ class LayoutWidgetCollection: ObservableObject, Equatable {
     }
     
     func getItemDictionary() -> [LayoutWidgetType: LayoutWidget] {
-        var widgets = [LayoutWidgetType: LayoutWidget]()
-        for widget in itemsToRender {
-            widgets[widget!.type] = widget
+        itemsToRender.reduce(into: [LayoutWidgetType: LayoutWidget]()) { dict, widget in
+            if let widget = widget {
+                dict[widget.type] = widget
+            }
         }
-        return widgets
     }
     
     static func == (lhs: LayoutWidgetCollection, rhs: LayoutWidgetCollection) -> Bool {
@@ -79,9 +75,11 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
             if value.translation.width == 0 && self.items.contains(widgetDragging) {
                 self.predictedDropIndex = self.items.firstIndex(of: widgetDragging)
             } else {
-                self.setPredictedDropIndex(value: value, widgetDragging: widgetDragging)
+                self.predictedDropIndex = computeDropIndex(value: value, widgetDragging: widgetDragging)
             }
-            updatePlaceholderPosition(widgetDragging: widgetDragging, index: predictedDropIndex!)
+            if let predictedDropIndex = predictedDropIndex {
+                updatePlaceholderPosition(widgetDragging: widgetDragging, index: predictedDropIndex)
+            }
         } else {
             removePlaceholder(widgetDragging: widgetDragging)
         }
@@ -109,20 +107,22 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
         self.itemsWithPlaceholder = retItems
     }
     
-    func setPredictedDropIndex(value: DragGesture.Value, widgetDragging: LayoutWidget) {
+    func computeDropIndex(value: DragGesture.Value, widgetDragging: LayoutWidget) -> Int? {
         var nodes: [Float] = []
         
         for item in self.items {
-            if !self.items.contains(widgetDragging) {
-                nodes.append(Float(item.rect!.minX) - 5)
-            } else if value.translation.width < 0 {
-                nodes.append(Float(item.rect!.minX) - 5)
-            } else {
-                nodes.append(Float(item.rect!.maxX) + 5)
+            if let rect = item.rect {
+                if !self.items.contains(widgetDragging) {
+                    nodes.append(Float(rect.minX) - 5)
+                } else if value.translation.width < 0 {
+                    nodes.append(Float(rect.minX) - 5)
+                } else {
+                    nodes.append(Float(rect.maxX) + 5)
+                }
             }
         }
-        if !self.items.contains(widgetDragging) && !self.items.isEmpty {
-            nodes.append(Float(self.items.last!.rect!.maxX) + 5)
+        if !self.items.contains(widgetDragging), let lastRect = self.items.last?.rect {
+            nodes.append(Float(lastRect.maxX) + 5)
         }
         
         let comparisonX = Float(widgetDragging.rect!.origin.x + value.translation.width)
@@ -131,7 +131,8 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
         if let closest = nodes.enumerated().min(by: {
             abs($0.element - comparisonX) < abs($1.element - comparisonX)
         }) {
-            self.predictedDropIndex = closest.offset
+            return closest.offset
         }
+        return nil
     }
 }

@@ -18,7 +18,7 @@ struct ReplyButtonView: View {
     init(accessibilityContext: String, reply: (() -> Void)?) {
         self.reply = reply
         
-        self.replyIcon = reply == nil ? "quote.bubble.left" : "arrowshape.turn.up.left"
+        self.replyIcon = reply == nil ? "quote.bubble.left" : AppConstants.emptyReplySymbolName
         self.replyButtonText = "Reply to \(accessibilityContext)"
     }
 

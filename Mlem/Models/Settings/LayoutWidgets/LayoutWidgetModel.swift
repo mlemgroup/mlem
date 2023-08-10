@@ -29,8 +29,8 @@ class LayoutWidgetModel: ObservableObject {
     
     func setWidgetDragging(_ value: DragGesture.Value) {
 
-        for collection in self.collections where collection.rect != nil {
-            if collection.rect!.contains(value.location) {
+        for collection in self.collections {
+            if let collectionRect = collection.rect, collectionRect.contains(value.location) {
                 self.collectionHovering = collection
                 if widgetDraggingCollection == collection || (
                     (widgetDragging?.type.canRemove ?? true)
@@ -47,16 +47,18 @@ class LayoutWidgetModel: ObservableObject {
             predictedDropCollection = collectionHovering
         }
         
-        if widgetDragging != nil {
-            widgetDraggingOffset = CGSize(
-                width: widgetDragging!.rect!.minX
-                + value.translation.width,
-                height: widgetDragging!.rect!.minY
-                + value.translation.height
-            )
+        if let widgetDragging = widgetDragging {
+            if let rect = widgetDragging.rect {
+                widgetDraggingOffset = CGSize(
+                    width: rect.minX
+                    + value.translation.width,
+                    height: rect.minY
+                    + value.translation.height
+                )
+            }
             
             for collection in self.collections {
-                collection.update(isHovered: collection === self.predictedDropCollection, value: value, widgetDragging: widgetDragging!)
+                collection.update(isHovered: collection === self.predictedDropCollection, value: value, widgetDragging: widgetDragging)
             }
         }
     }
@@ -64,14 +66,14 @@ class LayoutWidgetModel: ObservableObject {
     func dropWidget() {
         widgetDraggingOffset = .zero
         
-        if widgetDragging != nil {
-            if let index = widgetDraggingCollection!.items.firstIndex(of: widgetDragging!) {
+        if let widgetDragging = widgetDragging {
+            if let index = widgetDraggingCollection!.items.firstIndex(of: widgetDragging) {
                 widgetDraggingCollection!.items.remove(at: index)
             }
-            predictedDropCollection!.drop(widgetDragging!)
+            predictedDropCollection!.drop(widgetDragging)
             
             lastDraggedWidget = widgetDragging
-            widgetDragging = nil
+            self.widgetDragging = nil
         }
         
         predictedDropCollection = nil

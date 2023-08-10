@@ -25,7 +25,7 @@ struct DownvoteCounterView: View {
                 }
             } label: {
                 HStack(spacing: 8) {
-                    Image(systemName: "arrow.down")
+                    Image(systemName: AppConstants.plainDownvoteSymbolName)
                     Text(String(score))
                         .monospacedDigit()
                 }
@@ -35,7 +35,6 @@ struct DownvoteCounterView: View {
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
                     .foregroundColor(vote == .downvote ? .downvoteColor : .clear))
                 .foregroundColor(vote == .downvote ? .white : .primary)
-                // .padding(.leading, AppConstants.postAndCommentSpacing - 4) // offset, undo background padding
                 .padding(AppConstants.postAndCommentSpacing)
             }
         }

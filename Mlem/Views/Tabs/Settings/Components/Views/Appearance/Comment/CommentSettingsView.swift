@@ -20,8 +20,6 @@ struct CommentSettingsView: View {
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
-    @State private var showingWidgetSheet = false
-    
     var body: some View {
         Form {
             Section {
@@ -29,16 +27,13 @@ struct CommentSettingsView: View {
                                        settingName: "Compact Comments",
                                        isTicked: $compactComments)
                 
-                Button {
-                    showingWidgetSheet = true
+                NavigationLink {
+                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+                        layoutWidgetTracker.groups.comment = widgets
+                        layoutWidgetTracker.saveLayoutWidgets()
+                    })
                 } label: {
-                    HStack {
-                        Text("Customize Widgets")
-                        Spacer()
-                        Image(systemName: "arrow.up.square.fill")
-                        Image(systemName: "arrow.down.square")
-                    }
-                    .foregroundStyle(.pink)
+                    Label("Customize Widgets", systemImage: "wand.and.stars").labelStyle(SquircleLabelStyle(color: .purple))
                 }
             } footer: {
                 Text("Comment widgets are visible when 'Compact Comments' is off.")
@@ -68,12 +63,5 @@ struct CommentSettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Comments")
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showingWidgetSheet) {
-            LayoutWidgetEditView($showingWidgetSheet, widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
-                layoutWidgetTracker.groups.comment = widgets
-                layoutWidgetTracker.saveLayoutWidgets()
-            })
-                .interactiveDismissDisabled()
-        }
     }
 }
