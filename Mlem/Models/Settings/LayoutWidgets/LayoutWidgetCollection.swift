@@ -45,6 +45,14 @@ class LayoutWidgetCollection: ObservableObject, Equatable {
         } + (widgetDragging?.type.cost ?? 0)
     }
     
+    func getItemDictionary() -> [LayoutWidgetType: LayoutWidget] {
+        var widgets = [LayoutWidgetType: LayoutWidget]()
+        for widget in itemsToRender {
+            widgets[widget!.type] = widget
+        }
+        return widgets
+    }
+    
     static func == (lhs: LayoutWidgetCollection, rhs: LayoutWidgetCollection) -> Bool {
         lhs.id == rhs.id
     }
