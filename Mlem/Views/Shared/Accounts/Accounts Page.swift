@@ -53,7 +53,6 @@ struct AccountsPage: View {
                         isShowingInstanceAdditionSheet = true
                     } label: {
                         Text("Add Account")
-                            .foregroundColor(Color.accentColor)
                     }
                     .accessibilityLabel("Add a new account.")
                 }
