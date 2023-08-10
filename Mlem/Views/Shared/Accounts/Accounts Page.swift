@@ -49,18 +49,14 @@ struct AccountsPage: View {
                         }
                     }
                     
-                    Section(header: Text("")) { // empty header to force a little spacing
-                        Button {
-                            isShowingInstanceAdditionSheet = true
-                        } label: {
-                            Text("Add Account")
-                                .foregroundColor(Color.accentColor)
-                        }
-                        .accessibilityLabel("Add a new account.")
+                    Button {
+                        isShowingInstanceAdditionSheet = true
+                    } label: {
+                        Text("Add Account")
+                            .foregroundColor(Color.accentColor)
                     }
+                    .accessibilityLabel("Add a new account.")
                 }
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: -20g, trailing: 0))
-                // .listStyle(.plain)
             }
         }
         .onAppear {
