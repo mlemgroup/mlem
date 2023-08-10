@@ -70,29 +70,8 @@ struct LayoutWidgetEditView: View {
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .global)
                 VStack(spacing: 0) {
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Button("Cancel") {
-                                showingSheet = false
-                            }
-                            Spacer()
-                            Button("Save") {
-                                Task {
-                                    self.onSave(self.barCollection.items.compactMap { $0.type })
-                                }
-                                
-                                showingSheet = false
-                            }
-                        }
-                        .padding(.horizontal, 20)
-                        Spacer()
-                        Divider()
-                    }
-                    .frame(height: 70)
-                    
+                    header
                     interactionBar(frame)
-                        .frame(maxWidth: .infinity)
                         .frame(height: 125)
                         .padding(.horizontal, 30)
                         .zIndex(1)
@@ -102,25 +81,7 @@ struct LayoutWidgetEditView: View {
                             ? 0.3
                             : 1
                         )
-                    VStack {
-                        Divider()
-                        Spacer()
-                        if widgetModel.widgetDraggingCollection == trayCollection
-                            && !barCollection.isValidDropLocation(widgetModel.widgetDragging) {
-                            Text("Too many widgets!")
-                                .font(.callout)
-                                .foregroundStyle(.red)
-                                .padding()
-                        } else {
-                            Text("Tap and hold widgets to add, remove, or rearrange them.")
-                                .font(.callout)
-                                .foregroundStyle(.secondary)
-                                .padding()
-                        }
-                        Spacer()
-                        Divider()
-                    }
-                    .frame(height: 150)
+                    infoText
                     tray(frame)
                         .padding(.vertical, 40)
                         .zIndex(1)
@@ -154,6 +115,51 @@ struct LayoutWidgetEditView: View {
             }
         }
         .background(Color(UIColor.systemGroupedBackground))
+    }
+    
+    var header: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Button("Cancel") {
+                    showingSheet = false
+                }
+                Spacer()
+                Button("Save") {
+                    Task {
+                        self.onSave(self.barCollection.items.compactMap { $0.type })
+                    }
+                    
+                    showingSheet = false
+                }
+            }
+            .padding(.horizontal, 20)
+            Spacer()
+            Divider()
+        }
+        .frame(height: 70)
+    }
+    
+    var infoText: some View {
+        VStack {
+            Divider()
+            Spacer()
+            if widgetModel.widgetDraggingCollection == trayCollection
+                && !barCollection.isValidDropLocation(widgetModel.widgetDragging) {
+                Text("Too many widgets!")
+                    .font(.callout)
+                    .foregroundStyle(.red)
+                    .padding()
+            } else {
+                Text("Tap and hold widgets to add, remove, or rearrange them.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .padding()
+            }
+            Spacer()
+            Divider()
+        }
+        .frame(height: 150)
     }
     
     func interactionBar(_ outerFrame: CGRect) -> some View {

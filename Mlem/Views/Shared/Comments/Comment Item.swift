@@ -125,6 +125,7 @@ struct CommentItem: View {
     }
     // swiftlint:enable line_length
 
+    // swiftlint:disable function_body_length
     // MARK: Subviews
     
     @ViewBuilder
@@ -200,6 +201,7 @@ struct CommentItem: View {
 //                                                                          report: true))
 //        }
     }
+    // swiftlint:enable function_body_length
 }
 
 // MARK: - Swipe Actions
