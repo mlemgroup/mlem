@@ -74,6 +74,22 @@ struct LargePost: View {
         }
     }
     
+    private func postBodyText(_ bodyText: String, layoutMode: LayoutMode) -> String {
+        switch layoutMode {
+        case .maximize:
+            return bodyText
+        case .preferredSize:
+            return bodyText
+                .components(separatedBy: .newlines)
+                .joined(separator: " ")
+        case .minimize:
+            let lines = bodyText.components(separatedBy: .newlines)
+            let endIndex = lines.index(lines.startIndex, offsetBy: 2, limitedBy: lines.endIndex) ?? lines.endIndex
+            let sublines = lines[0..<endIndex].joined(separator: " ")
+            return sublines
+        }
+    }
+    
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
@@ -146,11 +162,12 @@ struct LargePost: View {
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
             MarkdownView(
-                text: isExpanded ? bodyText : bodyText.components(separatedBy: .newlines).joined(separator: " "),
+                text: postBodyText(bodyText, layoutMode: layoutMode),
                 isNsfw: postView.post.nsfw,
                 replaceImagesWithEmoji: isExpanded ? false : true,
                 isDeemphasized: isExpanded ? false : true
             )
+            .id(postView.id)
             .font(.subheadline)
             .lineLimit(lineLimit)
             .padding(postBodyInsets)
