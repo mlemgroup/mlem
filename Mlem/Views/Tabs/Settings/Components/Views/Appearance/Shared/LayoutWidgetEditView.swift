@@ -165,7 +165,13 @@ struct LayoutWidgetEditView: View {
     func interactionBar(_ outerFrame: CGRect) -> some View {
         HStack(spacing: 10) {
             ForEach(barCollection.itemsToRender, id: \.self) { widget in
-                placedWidgetView(widget, outerFrame: outerFrame)
+                if let widget = widget {
+                    placedWidgetView(widget, outerFrame: outerFrame)
+                } else {
+                    Color.clear
+                        .frame(maxWidth: widgetModel.widgetDragging?.type.width ?? 0, maxHeight: .infinity)
+                        .padding(10)
+                }
             }
         }
         .animation(.default, value: barCollection.itemsToRender)
@@ -219,29 +225,13 @@ struct LayoutWidgetEditView: View {
         
     }
     
-    func placedWidgetView(_ widget: LayoutWidget?, outerFrame: CGRect) -> some View {
-        let widgetWidth = widget?.type.width ?? (widgetModel.widgetDragging?.type.width ?? 0)
+    func placedWidgetView(_ widget: LayoutWidget, outerFrame: CGRect) -> some View {
+        let widgetWidth = widget.type.width
 
         return HStack {
             GeometryReader { geometry in
                 Group {
-                    if let widget = widget {
-                        let widgetView = {
-                            if widgetModel.widgetDragging == nil {
-                                let rect = geometry.frame(in: .global)
-                                    .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y)
-                                widget.rect = rect
-                            }
-                            return LayoutWidgetView(widget: widget, isDragging: false, animation: animation)
-                            
-                        }
-                        
-                        widgetView()
-                    } else {
-                        Color.clear
-                            .frame(maxWidth: widgetWidth, maxHeight: .infinity)
-                            .padding(10)
-                    }
+                    placedWidgetViewWrapper(widget, outerFrame: outerFrame, geometry: geometry)
                 }
             }
         }
@@ -249,5 +239,14 @@ struct LayoutWidgetEditView: View {
         .frame(maxWidth: .infinity)
         .frame(width: widgetWidth == .infinity ? nil : widgetWidth)
         .transition(.scale(scale: 1))
+    }
+    
+    func placedWidgetViewWrapper(_ widget: LayoutWidget, outerFrame: CGRect, geometry: GeometryProxy) -> some View {
+        if widgetModel.widgetDragging == nil {
+            let rect = geometry.frame(in: .global)
+                .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y)
+            widget.rect = rect
+        }
+        return LayoutWidgetView(widget: widget, isDragging: false, animation: animation)
     }
 }
