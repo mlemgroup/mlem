@@ -10,12 +10,12 @@ import SwiftUI
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
+    @EnvironmentObject var feedSortTypeTracker: FeedSortTypeTracker
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @State var navigationPath = NavigationPath()
 
@@ -34,7 +34,9 @@ struct FeedRoot: View {
                     FeedView(
                         community: rootDetails.community,
                         feedType: rootDetails.feedType,
-                        sortType: defaultPostSorting,
+                        sortType: rootDetails.community != nil
+                        ? feedSortTypeTracker.getSortType(for: rootDetails.community!)
+                        : feedSortTypeTracker.getSortType(for: rootDetails.feedType),
                         showLoading: showLoading
                     )
                     .environmentObject(appState)

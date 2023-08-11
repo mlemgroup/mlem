@@ -19,8 +19,10 @@ struct GeneralSettingsView: View {
 
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var feedSortTypeTracker: FeedSortTypeTracker
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
+    @State private var isShowingSortTypesDeletionConfirmation: Bool = false
 
     var body: some View {
         List {
@@ -99,11 +101,38 @@ struct GeneralSettingsView: View {
                 } message: {
                     Text("You cannot undo this action.")
                 }
+                
+                Button(role: .destructive) {
+                    isShowingSortTypesDeletionConfirmation.toggle()
+                } label: {
+                    Label("Delete Community Sort Preferences", systemImage: "trash")
+                        .foregroundColor(.red)
+                        .opacity(feedSortTypeTracker.isEmpty ? 0.6 : 1)
+                }
+                .disabled(feedSortTypeTracker.isEmpty)
+                .confirmationDialog(
+                    "Delete sort preferences for \(feedSortTypeTracker.count) communities?",
+                    isPresented: $isShowingSortTypesDeletionConfirmation,
+                    titleVisibility: .visible) {
+                        Button(role: .destructive) {
+                            feedSortTypeTracker.clear()
+                        } label: {
+                            Text("Delete all sort prefernces")
+                        }
+                        
+                        Button(role: .cancel) {
+                            isShowingSortTypesDeletionConfirmation.toggle()
+                        } label: {
+                            Text("Cancel")
+                        }
+
+                } message: {
+                    Text("You cannot undo this action.")
+                }
 
             } footer: {
-                Text("Community favorites are stored on-device and are not tied to your Lemmy account.")
+                Text("Community preferences are stored on-device and are not tied to your Lemmy account.")
             }
-
         }
         .fancyTabScrollCompatible()
         .navigationTitle("General")

@@ -14,29 +14,37 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var savedAccounts: SavedAccountTracker
+    @EnvironmentObject var feedSortTypeTracker: FeedSortTypeTracker
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: APICommunityView.self) { context in
-                FeedView(community: context.community, feedType: .all, sortType: defaultPostSorting)
+                FeedView(
+                    community: context.community,
+                    feedType: .all,
+                    sortType: feedSortTypeTracker.getSortType(for: context.community))
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APICommunity.self) { community in
-                FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
+                FeedView(community: community, feedType: .all, sortType: feedSortTypeTracker.getSortType(for: community))
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
                     .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: CommunityLinkWithContext.self) { context in
-                FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
+                FeedView(
+                    community: context.community,
+                    feedType: context.feedType,
+                    sortType: context.community != nil
+                    ? feedSortTypeTracker.getSortType(for: context.community!)
+                    : feedSortTypeTracker.getSortType(for: context.feedType))
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())

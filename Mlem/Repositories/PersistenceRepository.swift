@@ -29,6 +29,7 @@ private enum Path {
     static var recentSearches = { root.appendingPathComponent("Recent Searches", conformingTo: .json) }()
     static var easterFlags = { root.appendingPathComponent("Easter eggs flags", conformingTo: .json) }()
     static var layoutWidgets = { root.appendingPathComponent("Layout Widgets", conformingTo: .json) }()
+    static var feedSortTypes = { root.appendingPathComponent("Feed Sorting Preferences", conformingTo: .json) }()
 }
 
 private struct DiskAccess {
@@ -117,6 +118,14 @@ class PersistenceRepository {
     
     func saveLayoutWidgets(_ value: LayoutWidgetGroups) async throws {
         try await save(value, to: Path.layoutWidgets)
+    }
+    
+    func loadFeedSortingPreferences() -> [String: PostSortType] {
+        load([String: PostSortType].self, from: Path.feedSortTypes) ?? .init()
+    }
+    
+    func saveFeedSortingPreferences(_ value: [String: PostSortType]) async throws {
+        try await save(value, to: Path.feedSortTypes)
     }
     
     // MARK: Private methods

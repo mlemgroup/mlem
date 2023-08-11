@@ -19,6 +19,7 @@ struct Window: View {
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
+    @StateObject var feedSortTypeTracker: FeedSortTypeTracker = .init()
 
     @State var selectedAccount: SavedAccount?
 
@@ -60,6 +61,7 @@ struct Window: View {
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
             .environmentObject(layoutWidgetTracker)
+            .environmentObject(feedSortTypeTracker)
     }
     
     func forceOnboard() {

@@ -26,6 +26,7 @@ struct FeedView: View {
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var feedSortTypeTracker: FeedSortTypeTracker
     
     // MARK: Parameters and init
     
@@ -76,6 +77,11 @@ struct FeedView: View {
             }
             .onChange(of: postSortType) { _ in
                 Task(priority: .userInitiated) {
+                    if let community {
+                        feedSortTypeTracker.setSortType(for: community, sortType: postSortType)
+                    } else {
+                        feedSortTypeTracker.setSortType(for: feedType, sortType: postSortType)
+                    }
                     await hardRefreshFeed()
                 }
             }

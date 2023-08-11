@@ -196,6 +196,7 @@
 		6D693A482A51B904009E2D76 /* CreateCommentReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A472A51B904009E2D76 /* CreateCommentReport.swift */; };
 		6D693A4A2A51B98F009E2D76 /* APICommentReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A492A51B98F009E2D76 /* APICommentReportView.swift */; };
 		6D693A4C2A51B99E009E2D76 /* APICommentReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A4B2A51B99E009E2D76 /* APICommentReport.swift */; };
+		6D6B322A2A85B47100A410CD /* Feed Sort Type Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6B32292A85B47100A410CD /* Feed Sort Type Tracker.swift */; };
 		6D7782342A48EE8C008AC1BF /* APIPrivateMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7782332A48EE8C008AC1BF /* APIPrivateMessageView.swift */; };
 		6D7782362A48EED8008AC1BF /* APIPrivateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7782352A48EED8008AC1BF /* APIPrivateMessage.swift */; };
 		6D8003792A45FD1300363206 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8003782A45FD1300363206 /* Bundle.swift */; };
@@ -586,6 +587,7 @@
 		6D693A472A51B904009E2D76 /* CreateCommentReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentReport.swift; sourceTree = "<group>"; };
 		6D693A492A51B98F009E2D76 /* APICommentReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommentReportView.swift; sourceTree = "<group>"; };
 		6D693A4B2A51B99E009E2D76 /* APICommentReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommentReport.swift; sourceTree = "<group>"; };
+		6D6B32292A85B47100A410CD /* Feed Sort Type Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed Sort Type Tracker.swift"; sourceTree = "<group>"; };
 		6D7782332A48EE8C008AC1BF /* APIPrivateMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPrivateMessageView.swift; sourceTree = "<group>"; };
 		6D7782352A48EED8008AC1BF /* APIPrivateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPrivateMessage.swift; sourceTree = "<group>"; };
 		6D8003782A45FD1300363206 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
@@ -1536,6 +1538,7 @@
 				034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */,
 				B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */,
 				CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */,
+				6D6B32292A85B47100A410CD /* Feed Sort Type Tracker.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -2261,6 +2264,7 @@
 				CD1446232A5B336900610EF1 /* LicensesView.swift in Sources */,
 				CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */,
 				6318DE5627FBAE3600CC2AD6 /* Share Sheet.swift in Sources */,
+				6D6B322A2A85B47100A410CD /* Feed Sort Type Tracker.swift in Sources */,
 				CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */,
 				CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
