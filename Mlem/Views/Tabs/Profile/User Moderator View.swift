@@ -23,7 +23,6 @@ struct UserModeratorView: View {
             }
         }
         .navigationTitle("Moderator Details")
-        .barBackgroundColor()
         .navigationBarTitleDisplayMode(.inline)
         .headerProminence(.standard)
         .listStyle(.plain)

@@ -223,7 +223,6 @@ struct PostDetailEditorView: View {
             } message: {
                 Text(errorDialogMessage)
             }
-            .barBackgroundColor()
             .navigationBarTitleDisplayMode(.inline)
         }
     }

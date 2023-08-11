@@ -43,6 +43,5 @@ struct AdvancedSettingsView: View {
             diskUsage = Int64(URLCache.shared.currentDiskUsage)
         }
         .navigationTitle("Advanced")
-        .barBackgroundColor()
     }
 }

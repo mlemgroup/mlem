@@ -50,6 +50,5 @@ struct LicensesView: View {
             .fancyTabScrollCompatible()
         }
         .navigationTitle("Licenses")
-        .barBackgroundColor()
     }
 }

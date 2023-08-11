@@ -115,7 +115,6 @@ struct LayoutWidgetEditView: View {
             }
         }
         .navigationTitle("Widgets")
-        .barBackgroundColor()
     }
     
     var infoText: some View {
