@@ -64,6 +64,6 @@ struct AccessibilitySettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Accessibility")
-        .barBackgroundColor()
+        .navigationBarColor()
     }
 }

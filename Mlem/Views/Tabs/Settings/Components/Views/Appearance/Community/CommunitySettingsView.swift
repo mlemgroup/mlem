@@ -28,6 +28,6 @@ struct CommunitySettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Communities")
-        .barBackgroundColor()
+        .navigationBarColor()
     }
 }

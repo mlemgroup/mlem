@@ -97,7 +97,7 @@ struct ResponseEditorView: View {
                     }.disabled(isSubmitting || !isReadyToReply)
                 }
             }
-            .barBackgroundColor()
+            .navigationBarColor()
             .navigationTitle(editorModel.modalName)
             .navigationBarTitleDisplayMode(.inline)
         }

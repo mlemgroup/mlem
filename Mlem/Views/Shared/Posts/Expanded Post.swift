@@ -89,7 +89,7 @@ struct ExpandedPost: View {
         }
         .listStyle(PlainListStyle())
         .fancyTabScrollCompatible()
-        .barBackgroundColor()
+        .navigationBarColor()
     }
     
     var userServerInstanceLocation: ServerInstanceLocation {

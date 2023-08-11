@@ -67,7 +67,7 @@ struct CommentSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Comments")
-        .barBackgroundColor()
+        .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
     }
 }

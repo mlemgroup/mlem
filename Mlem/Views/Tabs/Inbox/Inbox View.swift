@@ -86,7 +86,7 @@ struct InboxView: View {
             contentView
                 .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)
-                .barBackgroundColor()
+                .navigationBarColor()
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
                 }

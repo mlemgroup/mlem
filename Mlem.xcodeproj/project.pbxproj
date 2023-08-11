@@ -218,7 +218,7 @@
 		6DEB0FFD2A4F891B007CAB99 /* User Moderator Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */; };
 		6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50422A48DED3001E648D /* Inbox View.swift */; };
 		6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF50442A48E373001E648D /* GetPrivateMessages.swift */; };
-		88B165B62A863357007C9115 /* BarBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B165B52A863357007C9115 /* BarBackgroundColor.swift */; };
+		88B165B82A8643F4007C9115 /* View - NavigationBar Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B165B72A8643F4007C9115 /* View - NavigationBar Color.swift */; };
 		AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D342A5F63F60006F554 /* AboutView.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
 		ADDC9E3A2A5CEAA100383D58 /* BlockPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDC9E392A5CEAA100383D58 /* BlockPerson.swift */; };
@@ -609,7 +609,7 @@
 		6DEB0FFC2A4F891B007CAB99 /* User Moderator Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Moderator Link.swift"; sourceTree = "<group>"; };
 		6DFF50422A48DED3001E648D /* Inbox View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View.swift"; sourceTree = "<group>"; };
 		6DFF50442A48E373001E648D /* GetPrivateMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPrivateMessages.swift; sourceTree = "<group>"; };
-		88B165B52A863357007C9115 /* BarBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarBackgroundColor.swift; sourceTree = "<group>"; };
+		88B165B72A8643F4007C9115 /* View - NavigationBar Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - NavigationBar Color.swift"; sourceTree = "<group>"; };
 		AD1B0D342A5F63F60006F554 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		ADDC9E392A5CEAA100383D58 /* BlockPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockPerson.swift; sourceTree = "<group>"; };
@@ -1128,40 +1128,41 @@
 		6332FDC127EFCB530009A98A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				6D8003782A45FD1300363206 /* Bundle.swift */,
-				E4DDB4312A81819300B3A7E0 /* Double.swift */,
-				6332FDC227EFCB5F0009A98A /* Color.swift */,
-				6386E0392A0455BC006B3C1D /* String - Contains Elements From Array.swift */,
-				63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */,
-				63344C552A07D81D001BC616 /* Array - Prepend.swift */,
-				63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */,
-				63344C612A08460D001BC616 /* View - Border on Specific Sides.swift */,
-				63344C6D2A097FA1001BC616 /* View - Hide View.swift */,
-				63D24ED82A169A5F005CCA81 /* UIApplication.swift */,
-				5016A2B02A67EB8600B257E8 /* UIViewController.swift */,
-				630737882A1CD1E900039852 /* String.swift */,
-				63A200522A2DDD38005CDDE3 /* Dictionary - Append.swift */,
 				6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */,
-				503BA26E2A2C94540052516C /* URL+Identifiable.swift */,
-				508845CE2A3641160088E483 /* JSONDecoder+Default.swift */,
 				CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */,
-				CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */,
-				6D8601ED2A43C0B1002A56FC /* Image.swift */,
-				6D15D74B2A44DC240061B5CB /* Date.swift */,
-				CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */,
-				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
-				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
+				63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */,
+				63344C552A07D81D001BC616 /* Array - Prepend.swift */,
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
-				6DA61F842A568F99001EA633 /* Int.swift */,
-				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
-				507573902A5AD53C00AA7ABD /* Error+Equatable.swift */,
-				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
-				CDA217F22A63202600BDA173 /* NSFW Overlay.swift */,
+				6D8003782A45FD1300363206 /* Bundle.swift */,
+				6332FDC227EFCB5F0009A98A /* Color.swift */,
+				6D15D74B2A44DC240061B5CB /* Date.swift */,
+				63A200522A2DDD38005CDDE3 /* Dictionary - Append.swift */,
+				E4DDB4312A81819300B3A7E0 /* Double.swift */,
+				503A5D742A78EF3C00488C38 /* Encodable+Export.swift */,
 				B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */,
 				CDE8F2382A68DA7D00E0AE68 /* Environment - Force Onboard.swift */,
+				507573902A5AD53C00AA7ABD /* Error+Equatable.swift */,
+				6D8601ED2A43C0B1002A56FC /* Image.swift */,
+				6DA61F842A568F99001EA633 /* Int.swift */,
+				508845CE2A3641160088E483 /* JSONDecoder+Default.swift */,
+				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
+				CDA217F22A63202600BDA173 /* NSFW Overlay.swift */,
+				B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */,
+				6386E0392A0455BC006B3C1D /* String - Contains Elements From Array.swift */,
+				630737882A1CD1E900039852 /* String.swift */,
+				CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */,
 				5064D0402A6E63E000B22EE3 /* Task+Notifiable.swift */,
+				63D24ED82A169A5F005CCA81 /* UIApplication.swift */,
+				CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */,
+				5016A2B02A67EB8600B257E8 /* UIViewController.swift */,
+				6DA61F882A575DF1001EA633 /* URL - Lemmy Image Parameters.swift */,
+				503BA26E2A2C94540052516C /* URL+Identifiable.swift */,
+				63F0C7BA2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift */,
+				63344C612A08460D001BC616 /* View - Border on Specific Sides.swift */,
 				CD82A24B2A70A26900111034 /* View - CustomBadge.swift */,
-				503A5D742A78EF3C00488C38 /* Encodable+Export.swift */,
+				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
+				63344C6D2A097FA1001BC616 /* View - Hide View.swift */,
+				88B165B72A8643F4007C9115 /* View - NavigationBar Color.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1861,7 +1862,6 @@
 				CDDCF6502A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift */,
 				CDDCF6562A678298003DA3AC /* FancyTabBarSelection.swift */,
 				CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */,
-				88B165B52A863357007C9115 /* BarBackgroundColor.swift */,
 			);
 			path = "Custom Tab Bar";
 			sourceTree = "<group>";
@@ -2441,7 +2441,6 @@
 				637218602A3A2AAD008C4816 /* EditPost.swift in Sources */,
 				6D693A402A51147E009E2D76 /* APIPostReportView.swift in Sources */,
 				637218562A3A2AAD008C4816 /* APILocalSite.swift in Sources */,
-				88B165B62A863357007C9115 /* BarBackgroundColor.swift in Sources */,
 				CDA217EE2A630F3300BDA173 /* ReportPost.swift in Sources */,
 				6372185B2A3A2AAD008C4816 /* APICommunityView.swift in Sources */,
 				637218552A3A2AAD008C4816 /* APITagline.swift in Sources */,
@@ -2449,6 +2448,7 @@
 				03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */,
 				CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */,
 				CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */,
+				88B165B82A8643F4007C9115 /* View - NavigationBar Color.swift in Sources */,
 				030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */,
 				CDA2C5262A705D6000649D5A /* PostEditor.swift in Sources */,
 				6372184A2A3A2AAD008C4816 /* APIPost.swift in Sources */,

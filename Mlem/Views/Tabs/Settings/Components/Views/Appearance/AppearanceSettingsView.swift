@@ -80,7 +80,7 @@ struct AppearanceSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Appearance")
-        .barBackgroundColor()
+        .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
     }
 }

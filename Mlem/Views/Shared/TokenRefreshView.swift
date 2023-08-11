@@ -59,7 +59,7 @@ struct TokenRefreshView: View {
             .edgesIgnoringSafeArea(.horizontal)
             .navigationBarTitleDisplayMode(.inline)
             .interactiveDismissDisabled()
-            .barBackgroundColor()
+            .navigationBarColor()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     cancelButton

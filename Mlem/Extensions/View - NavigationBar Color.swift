@@ -1,5 +1,5 @@
 //
-//  BarBackgroundColor.swift
+//  View - View - NavigationBar Color.swift
 //  Mlem
 //
 //  Created by fer0n on 11.08.23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BarBackgroundColorModifier: ViewModifier {
+struct NavigationBarColorModifier: ViewModifier {
     @AppStorage("showSolidBarColor") var showSolidBarColor: Bool = false
 
     func body(content: Content) -> some View {
@@ -22,7 +22,7 @@ struct BarBackgroundColorModifier: ViewModifier {
 }
 
 extension View {
-    func barBackgroundColor() -> some View {
-        self.modifier(BarBackgroundColorModifier())
+    func navigationBarColor() -> some View {
+        self.modifier(NavigationBarColorModifier())
     }
 }
