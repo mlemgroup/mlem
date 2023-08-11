@@ -14,6 +14,7 @@ struct BarBackgroundColorModifier: ViewModifier {
         if showSolidBarColor {
             content
                 .toolbarBackground(Color.systemBackground, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
         } else {
             content
         }
