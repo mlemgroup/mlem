@@ -30,5 +30,6 @@ struct UserSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Users")
+        .barBackgroundColor()
     }
 }

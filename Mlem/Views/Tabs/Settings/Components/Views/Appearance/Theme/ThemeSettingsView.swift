@@ -71,5 +71,6 @@ struct ThemeSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Theme")
+        .barBackgroundColor()
     }
 }

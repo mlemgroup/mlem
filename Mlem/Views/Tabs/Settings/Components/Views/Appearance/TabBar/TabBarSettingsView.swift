@@ -11,6 +11,7 @@ struct TabBarSettingsView: View {
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("showSolidBarColor") var showSolidBarColor: Bool = false
         
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccountTracker: SavedAccountTracker
@@ -54,8 +55,15 @@ struct TabBarSettingsView: View {
                                        settingName: "Show Unread Count",
                                        isTicked: $showInboxUnreadBadge)
             }
+            
+            Section {
+                SwitchableSettingsItem(settingPictureSystemName: "paintpalette",
+                                       settingName: "Solid Color",
+                                       isTicked: $showSolidBarColor)
+            }
         }
         .fancyTabScrollCompatible()
+        .barBackgroundColor()
         .animation(.easeIn, value: profileTabLabel)
         .onChange(of: appState.currentActiveAccount.nickname) { nickname in
             print("new nickname: \(nickname)")

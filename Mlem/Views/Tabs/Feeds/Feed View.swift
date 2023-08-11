@@ -53,18 +53,21 @@ struct FeedView: View {
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
+    @AppStorage("showSolidBarColor") var showSolidBarColor: Bool = false
+    
     // MARK: - Main Views
     
     var body: some View {
         contentView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.secondarySystemBackground)
+            .background(showSolidBarColor ? Color.systemBackground : Color.secondarySystemBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
                 ToolbarItem(placement: .navigationBarTrailing) { sortMenu }
                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .barBackgroundColor()
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }
