@@ -245,4 +245,10 @@ extension APIClient {
         let request = MarkAllAsRead(session: try session)
         try await perform(request: request)
     }
+    
+    // MARK: User Requests
+    func deleteUser(user: SavedAccount, password: String) async throws {
+        let request = DeleteAccountRequest(account: user, password: password)
+        try await perform(request: request)
+    }
 }
