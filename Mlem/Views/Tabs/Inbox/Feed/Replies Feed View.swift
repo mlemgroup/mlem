@@ -56,7 +56,11 @@ extension InboxView {
     }
     
     func inboxReplyViewWithInteraction(reply: APICommentReplyView) -> some View {
-        NavigationLink(value: LazyLoadPostLinkWithContext(post: reply.post, postTracker: dummyPostTracker, scrollTarget: reply.comment.id)) {
+        NavigationLink(value: LazyLoadPostLinkWithContext(
+            post: reply.post,
+            postTracker: dummyPostTracker,
+            scrollTarget: reply.comment.id
+        )) {
             InboxReplyView(reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
                 .padding(.vertical, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal)

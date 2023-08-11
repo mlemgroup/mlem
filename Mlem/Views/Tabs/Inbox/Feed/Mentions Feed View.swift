@@ -51,7 +51,11 @@ extension InboxView {
     }
     
     func inboxMentionViewWithInteraction(mention: APIPersonMentionView) -> some View {
-        NavigationLink(value: LazyLoadPostLinkWithContext(post: mention.post, postTracker: dummyPostTracker, scrollTarget: mention.comment.id)) {
+        NavigationLink(value: LazyLoadPostLinkWithContext(
+            post: mention.post,
+            postTracker: dummyPostTracker,
+            scrollTarget: mention.comment.id
+        )) {
             InboxMentionView(mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
                 .padding(.vertical, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal)
