@@ -9,7 +9,6 @@ import Foundation
 
 class CommentTracker: ObservableObject {
     @Published private(set) var commentsView: [HierarchicalComment] = .init()
-    @Published var isLoading: Bool = true
     
     private var ids: Set<Int> = .init()
 

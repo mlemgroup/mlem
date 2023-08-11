@@ -68,7 +68,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     .environmentObject(appState)
             }
             .navigationDestination(for: LazyLoadPostLinkWithContext.self) { post in
-                LazyLoadExpandedPost(post: post.post)
+                LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                     .environmentObject(post.postTracker)
                     .environmentObject(appState)
             }
