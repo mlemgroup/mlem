@@ -33,12 +33,12 @@ class CommentRepository {
     }
     
     func voteOnComment(id: Int, vote: ScoringOperation) async throws -> APICommentView {
-        hapticManager.play(haptic: .gentleSuccess)
+        hapticManager.play(haptic: .gentleSuccess, priority: .core)
         do {
             let response = try await apiClient.applyCommentScore(id: id, score: vote.rawValue)
             return response.commentView
         } catch {
-            hapticManager.play(haptic: .failure)
+            hapticManager.play(haptic: .failure, priority: .core)
             throw error
         }
     }
@@ -106,10 +106,10 @@ class CommentRepository {
                     postId: postId
                 )
 
-            hapticManager.play(haptic: .success)
+            hapticManager.play(haptic: .success, priority: .core)
             return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
-            hapticManager.play(haptic: .failure)
+            hapticManager.play(haptic: .failure, priority: .core)
             throw error
         }
     }
@@ -130,10 +130,10 @@ class CommentRepository {
                 formId: formId
             )
             
-            hapticManager.play(haptic: .success)
+            hapticManager.play(haptic: .success, priority: .core)
             return response
         } catch {
-            hapticManager.play(haptic: .failure)
+            hapticManager.play(haptic: .failure, priority: .core)
             throw error
         }
     }
@@ -141,10 +141,10 @@ class CommentRepository {
     func deleteComment(id: Int, shouldDelete: Bool) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.deleteComment(id: id, deleted: shouldDelete)
-            hapticManager.play(haptic: .destructiveSuccess)
+            hapticManager.play(haptic: .destructiveSuccess, priority: .core)
             return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
-            hapticManager.play(haptic: .failure)
+            hapticManager.play(haptic: .failure, priority: .core)
             throw error
         }
     }
@@ -152,10 +152,10 @@ class CommentRepository {
     func saveComment(id: Int, shouldSave: Bool) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.saveComment(id: id, shouldSave: shouldSave)
-            hapticManager.play(haptic: .gentleSuccess)
+            hapticManager.play(haptic: .gentleSuccess, priority: .core)
             return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
-            hapticManager.play(haptic: .failure)
+            hapticManager.play(haptic: .failure, priority: .core)
             throw error
         }
     }
@@ -164,10 +164,10 @@ class CommentRepository {
     func reportComment(id: Int, reason: String) async throws -> APICommentReportView {
         do {
             let response = try await apiClient.reportComment(id: id, reason: reason)
-            hapticManager.play(haptic: .violentSuccess)
+            hapticManager.play(haptic: .violentSuccess, priority: .core)
             return response.commentReportView
         } catch {
-            hapticManager.play(haptic: .failure)
+            hapticManager.play(haptic: .failure, priority: .core)
             throw error
         }
     }

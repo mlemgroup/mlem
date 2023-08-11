@@ -110,7 +110,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition > -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                             // crossed from short swipe -> long swipe
-                            hapticManager.play(haptic: .firmerInfo)
+                            hapticManager.play(haptic: .firmerInfo, priority: .core)
                         }
                     } else if dragPosition <= -1 * AppConstants.shortSwipeDragMin {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
@@ -118,10 +118,10 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition > -1 * AppConstants.shortSwipeDragMin {
                             // crossed from no swipe -> short swipe
-                            hapticManager.play(haptic: .gentleInfo)
+                            hapticManager.play(haptic: .gentleInfo, priority: .core)
                         } else if prevDragPosition <= -1 * AppConstants.longSwipeDragMin {
                             // crossed from long swipe -> short swipe
-                            hapticManager.play(haptic: .mushyInfo)
+                            hapticManager.play(haptic: .mushyInfo, priority: .all)
                         }
                     } else if dragPosition < 0 {
                         trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
@@ -129,7 +129,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition <= -1 * AppConstants.shortSwipeDragMin {
                             // crossed from short swipe -> no swipe
-                            hapticManager.play(haptic: .mushyInfo)
+                            hapticManager.play(haptic: .mushyInfo, priority: .all)
                         }
                     } else if dragPosition < AppConstants.shortSwipeDragMin {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
@@ -137,7 +137,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition >= AppConstants.shortSwipeDragMin {
                             // crossed from short swipe -> no swipe
-                            hapticManager.play(haptic: .mushyInfo)
+                            hapticManager.play(haptic: .mushyInfo, priority: .all)
                         }
                     } else if dragPosition < AppConstants.longSwipeDragMin {
                         leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
@@ -145,10 +145,10 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition < AppConstants.shortSwipeDragMin {
                             // crossed from no swipe -> short swipe
-                            hapticManager.play(haptic: .gentleInfo)
+                            hapticManager.play(haptic: .gentleInfo, priority: .core)
                         } else if prevDragPosition >= AppConstants.longSwipeDragMin {
                             // crossed from long swipe -> short swipe
-                            hapticManager.play(haptic: .mushyInfo)
+                            hapticManager.play(haptic: .mushyInfo, priority: .core)
                         }
                     } else {
                         leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
@@ -156,7 +156,7 @@ struct SwipeyView: ViewModifier {
                         
                         if prevDragPosition < AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                             // crossed from short swipe -> long swipe
-                            hapticManager.play(haptic: .firmerInfo)
+                            hapticManager.play(haptic: .firmerInfo, priority: .core)
                         }
                     }
                     prevDragPosition = dragPosition

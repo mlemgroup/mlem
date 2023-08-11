@@ -138,6 +138,7 @@ struct AppConstants {
     static let switchUserSymbolName: String = "person.crop.circle.badge.plus"
     static let missingSymbolName: String = "questionmark.square.dashed"
     static let connectionSymbolName: String = "antenna.radiowaves.left.and.right"
+    static let hapticSymbolName: String = "hand.tap"
     
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]

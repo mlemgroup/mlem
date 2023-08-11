@@ -21,7 +21,7 @@ struct SubscribeButton: View {
                 Button {
                     Task(priority: .userInitiated) {
                         print("Will subscribe")
-                        HapticManager.shared.play(haptic: .success)
+                        HapticManager.shared.play(haptic: .success, priority: .core)
                         await subscribe(communityId: communityDetails.community.id, shouldSubscribe: true)
                     }
                 } label: {
@@ -32,7 +32,7 @@ struct SubscribeButton: View {
                 Button(role: .destructive) {
                     Task(priority: .userInitiated) {
                         print("Will unsubscribe")
-                        HapticManager.shared.play(haptic: .destructiveSuccess)
+                        HapticManager.shared.play(haptic: .destructiveSuccess, priority: .core)
                         await subscribe(communityId: communityDetails.community.id, shouldSubscribe: false)
                     }
                 } label: {

@@ -16,6 +16,8 @@ struct GeneralSettingsView: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
+    
+    @AppStorage("hapticLevel") var hapticLevel: HapticLevel = .all
 
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
@@ -24,6 +26,12 @@ struct GeneralSettingsView: View {
 
     var body: some View {
         List {
+            Section {
+                SelectableSettingsItem(settingIconSystemName: AppConstants.hapticSymbolName,
+                                       settingName: "Haptic Level",
+                                       currentValue: $hapticLevel,
+                                       options: HapticLevel.allCases)
+            }
             
             Section {
                 SwitchableSettingsItem(settingPictureSystemName: AppConstants.blurNsfwSymbolName,

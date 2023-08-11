@@ -306,7 +306,7 @@ struct FeedPost: View {
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
-            hapticManager.play(haptic: .gentleSuccess)
+            hapticManager.play(haptic: .gentleSuccess, priority: .all)
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             _ = try await ratePost(
                 postId: postView.post.id,
@@ -316,7 +316,7 @@ struct FeedPost: View {
                 appState: appState
             )
         } catch {
-            hapticManager.play(haptic: .failure)
+            hapticManager.play(haptic: .failure, priority: .core)
             appState.contextualError = .init(underlyingError: error)
         }
     }
@@ -326,7 +326,7 @@ struct FeedPost: View {
             // fake save
             dirtySaved.toggle()
             dirty = true
-            hapticManager.play(haptic: .success)
+            hapticManager.play(haptic: .success, priority: .core)
             
             do {
                 _ = try await sendSavePostRequest(
