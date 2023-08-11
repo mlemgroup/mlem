@@ -15,6 +15,8 @@ struct AccountsPage: View {
     @State private var isShowingInstanceAdditionSheet: Bool = false
     @State var selectedAccount: SavedAccount?
     
+    @State var isShowingDeleteConfirm: Bool = false
+    
     let onboarding: Bool
     
     @Environment(\.dismiss) var dismiss
@@ -40,7 +42,7 @@ struct AccountsPage: View {
                                     }
                                 }
                                 .swipeActions {
-                                    Button("Delete", role: .destructive) {
+                                    Button("Remove", role: .destructive) {
                                         accountsTracker.removeAccount(account: account, appState: appState, forceOnboard: forceOnboard)
                                     }
                                 }
@@ -52,9 +54,16 @@ struct AccountsPage: View {
                     Button {
                         isShowingInstanceAdditionSheet = true
                     } label: {
-                        Text("Add Account")
+                        Label("Add Account", systemImage: AppConstants.switchUserSymbolName)
                     }
                     .accessibilityLabel("Add a new account.")
+                    
+                    Button(role: .destructive) {
+                        isShowingDeleteConfirm = true
+                    } label: {
+                        Label("Delete Current Account", systemImage: "trash")
+                            .foregroundColor(.red)
+                    }
                 }
             }
         }
@@ -64,6 +73,9 @@ struct AccountsPage: View {
         .onChange(of: selectedAccount) { account in
             guard let account else { return }
             appState.setActiveAccount(account)
+        }
+        .sheet(isPresented: $isShowingDeleteConfirm) {
+            DeleteAccountView()
         }
     }
 }
