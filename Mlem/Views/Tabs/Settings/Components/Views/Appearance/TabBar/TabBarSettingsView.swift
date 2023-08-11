@@ -11,7 +11,7 @@ struct TabBarSettingsView: View {
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
-    @AppStorage("showSolidBarColor") var showSolidBarColor: Bool = false
+    @AppStorage("isTranslucentBar") var isTranslucentBar: Bool = true
         
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccountTracker: SavedAccountTracker
@@ -58,8 +58,8 @@ struct TabBarSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(settingPictureSystemName: "paintpalette",
-                                       settingName: "Solid Color",
-                                       isTicked: $showSolidBarColor)
+                                       settingName: "Translucent",
+                                       isTicked: $isTranslucentBar)
             }
         }
         .fancyTabScrollCompatible()

@@ -13,7 +13,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     typealias NavigationSelection = any FancyTabBarSelection
 
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-    @AppStorage("showSolidBarColor") var showSolidBarColor: Bool = false
+    @AppStorage("isTranslucentBar") var isTranslucentBar: Bool = true
     
     @Binding private var selection: Selection
     @Binding private var navigationSelection: NavigationSelection
@@ -111,7 +111,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                     }
             )
             .padding(.bottom, homeButtonExists ? 2.5 : 0)
-            .background(showSolidBarColor ? Color.systemBackground.ignoresSafeArea(.all) : nil)
+            .background(isTranslucentBar ? nil : Color.systemBackground.ignoresSafeArea(.all))
             .background(.thinMaterial)
         }
         .accessibilityElement(children: .contain)

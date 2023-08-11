@@ -53,14 +53,14 @@ struct FeedView: View {
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
-    @AppStorage("showSolidBarColor") var showSolidBarColor: Bool = false
+    @AppStorage("isTranslucentBar") var isTranslucentBar: Bool = true
     
     // MARK: - Main Views
     
     var body: some View {
         contentView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(showSolidBarColor ? Color.systemBackground : Color.secondarySystemBackground)
+            .background(isTranslucentBar ? Color.secondarySystemBackground : Color.systemBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
                 ToolbarItem(placement: .navigationBarTrailing) { sortMenu }

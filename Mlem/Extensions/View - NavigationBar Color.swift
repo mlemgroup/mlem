@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct NavigationBarColorModifier: ViewModifier {
-    @AppStorage("showSolidBarColor") var showSolidBarColor: Bool = false
+    @AppStorage("isTranslucentBar") var isTranslucentBar: Bool = true
 
     func body(content: Content) -> some View {
-        if showSolidBarColor {
+        if isTranslucentBar {
+            content
+        } else {
             content
                 .toolbarBackground(Color.systemBackground, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
-        } else {
-            content
         }
     }
 }
