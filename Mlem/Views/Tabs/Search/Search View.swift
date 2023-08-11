@@ -109,6 +109,7 @@ struct SearchView: View {
                         }
                 }
             }
+            .fancyTabScrollCompatible()
         }
     }
     

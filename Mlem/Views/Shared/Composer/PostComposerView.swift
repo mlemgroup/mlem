@@ -5,194 +5,64 @@
 //  Created by Weston Hanners on 6/29/23.
 //
 
+import Dependencies
 import SwiftUI
-
-extension HorizontalAlignment {
-    enum LabelStart: AlignmentID {
-        static func defaultValue(in context: ViewDimensions) -> CGFloat {
-            context[HorizontalAlignment.leading]
-        }
-    }
-    
-    static let labelStart = HorizontalAlignment(LabelStart.self)
-}
 
 struct PostComposerView: View {
     
-    init(community: APICommunity) {
-        self.community = community
-    }
-    
-    var community: APICommunity
-        
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var postTracker: PostTracker
-    @EnvironmentObject var appState: AppState
-
-    @State var postTitle: String = ""
-    @State var postURL: String = ""
-    @State var postBody: String = ""
-    @State var isNSFW: Bool = false
     
-    @State var isSubmitting: Bool = false
-    @State var isShowingErrorDialog: Bool = false
-    @State var errorDialogMessage: String = ""
-
-    private var isReadyToPost: Bool {
-        // This only requirement to post is a title
-        return postTitle.trimmed.isNotEmpty
-    }
+    let appState: AppState
+    let postTracker: PostTracker
+    let editModel: PostEditorModel
     
-    private var isValidURL: Bool {
-        guard postURL.lowercased().hasPrefix("http://") ||
-                postURL.lowercased().hasPrefix("https://") else {
-            return false // URL protocol is missing
-        }
-
-        guard URL(string: postURL) != nil else {
-            return false // Not Parsable
-        }
+    @State var postTitle: String
+    @State var postURL: String
+    @State var postBody: String
+    @State var isNSFW: Bool
+    
+    init(editModel: PostEditorModel) {
+        self.appState = editModel.appState
+        self.postTracker = editModel.postTracker
+        self.editModel = editModel
         
-        return true
+        self._postTitle = State(initialValue: editModel.editPost?.name ?? "")
+        self._postURL = State(initialValue: editModel.editPost?.url?.description ?? "")
+        self._postBody = State(initialValue: editModel.editPost?.body ?? "")
+        self._isNSFW = State(initialValue: editModel.editPost?.nsfw ?? false)
     }
-    
-    func submitPost() async {
-        do {
-            guard postTitle.trimmed.isNotEmpty else {
-                errorDialogMessage = "You need to enter a title for your post."
-                isShowingErrorDialog = true
-                return
+
+    var body: some View {
+        PostDetailEditorView(
+            community: editModel.community,
+            postTitle: $postTitle,
+            postURL: $postURL,
+            postBody: $postBody,
+            isNSFW: $isNSFW
+        ) {
+            if let post = editModel.editPost {
+                try await editPost(postId: post.id,
+                                   postTitle: postTitle,
+                                   postBody: postBody,
+                                   postURL: postURL,
+                                   postIsNSFW: isNSFW,
+                                   postTracker: postTracker,
+                                   account: appState.currentActiveAccount,
+                                   responseCallback: editModel.responseCallback)
+                
+                print("Edit successful")
+            } else {
+                try await postPost(to: editModel.community,
+                                   postTitle: postTitle.trimmed,
+                                   postBody: postBody.trimmed,
+                                   postURL: postURL.trimmed,
+                                   postIsNSFW: isNSFW,
+                                   postTracker: postTracker,
+                                   account: appState.currentActiveAccount)
+                print("Post Successful")
             }
-            
-            guard postURL.lowercased().isEmpty || isValidURL else {
-                errorDialogMessage = "You seem to have entered an invalid URL, please check it again."
-                isShowingErrorDialog = true
-                return
-            }
-            
-            isSubmitting = true
-            
-            try await postPost(to: community,
-                               postTitle: postTitle.trimmed,
-                               postBody: postBody.trimmed,
-                               postURL: postURL.trimmed,
-                               postIsNSFW: isNSFW,
-                               postTracker: postTracker,
-                               account: appState.currentActiveAccount)
-            
-            print("Post Successful")
             
             dismiss()
-            
-        } catch {
-            print("Something went wrong)")
-            isSubmitting = false
-        }
-    }
-    
-    func uploadImage() {
-        print("Uploading")
-    }
-    
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                VStack(spacing: 15) {
-                    
-                    // Community Row
-                    HStack {
-                        CommunityLabel(community: community,
-                                       serverInstanceLocation: .bottom,
-                                       overrideShowAvatar: true
-                        )
-                        Spacer()
-                        // NSFW Toggle
-                        NSFWToggle(compact: false, isEnabled: $isNSFW)
-                    }
-                    
-                    VStack(alignment: .labelStart) {
-                        // Title Row
-                        HStack {
-                            Text("Title")
-                                .foregroundColor(.secondary)
-                                .accessibilityHidden(true)
-                            TextField("Your post title", text: $postTitle)
-                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                            
-                                .accessibilityLabel("Title")
-                        }
-                        
-                        // URL Row
-                        HStack {
-                            Text("URL")
-                                .foregroundColor(.secondary)
-                                .accessibilityHidden(true)
-                            
-                            TextField("Your post link (Optional)", text: $postURL)
-                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                                .keyboardType(.URL)
-                                .autocorrectionDisabled()
-                                .autocapitalization(.none)
-                                .accessibilityLabel("URL")
-                            
-                            // Upload button, temporarily hidden
-                            //                        Button(action: uploadImage) {
-                            //                            Image(systemName: "paperclip")
-                            //                                .font(.title3)
-                            //                                .dynamicTypeSize(.medium)
-                            //                        }
-                            //                        .accessibilityLabel("Upload Image")
-                        }
-                    }
-
-                    // Post Text
-                    TextField("What do you want to say? (Optional)",
-                              text: $postBody,
-                              axis: .vertical)
-                    .accessibilityLabel("Post Body")
-                    Spacer()
-                }
-                .padding()
-                
-                // Loading Indicator
-                if isSubmitting {
-                    ZStack {
-                        Color.gray.opacity(0.3)
-                        ProgressView()
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Submitting Post")
-                    .edgesIgnoringSafeArea(.all)
-                    .allowsHitTesting(false)
-                }
-            }
-
-            .navigationTitle("New Post")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel", role: .destructive) {
-                        dismiss()
-                    }
-                    .tint(.red)
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    // Submit Button
-                    Button {
-                        Task(priority: .userInitiated) {
-                            await submitPost()
-                        }
-                    } label: {
-                        Image(systemName: "paperplane")
-                    }.disabled(isSubmitting || !isReadyToPost)
-                }
-            }
-            .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(errorDialogMessage)
-            }
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
@@ -200,10 +70,10 @@ struct PostComposerView: View {
 struct PostComposerView_Previews: PreviewProvider {
     static let community = generateFakeCommunity(id: 1,
                                                  namePrefix: "mlem")
-        
+    
     static var previews: some View {
-        NavigationStack {
-            PostComposerView(community: community)
-        }
+        PostComposerView(editModel: PostEditorModel(community: community,
+                                                    appState: AppState(defaultAccount: generateFakeAccount(),
+                                                                       selectedAccount: Binding.constant(generateFakeAccount()))))
     }
 }

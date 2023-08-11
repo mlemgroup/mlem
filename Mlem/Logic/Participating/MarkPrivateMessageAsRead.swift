@@ -20,12 +20,14 @@ func sendMarkPrivateMessageAsReadRequest(
                                                privateMessageId: messageView.id,
                                                read: read)
 
-        AppConstants.hapticManager.notificationOccurred(.success)
+        // TODO: Move this elsewhere
+        // HapticManager.shared.gentleSuccess()
         let response = try await APIClient().perform(request: request)
         
         messagesTracker.update(with: response.privateMessageView)
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        // TODO: Move this elsewhere
+        // HapticManager.shared.play(haptic: .failure)
         throw error
     }
 }

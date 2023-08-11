@@ -6,52 +6,86 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct ContentView: View {
-
+    
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.personRepository) var personRepository
+    @Dependency(\.hapticManager) var hapticManager
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var accountsTracker: SavedAccountTracker
-
+    
+    @StateObject var editorTracker: EditorTracker = .init()
+    @StateObject var unreadTracker: UnreadTracker = .init()
+    
     @State private var errorAlert: ErrorAlert?
-    @State private var expiredSessionAccount: SavedAccount?
-
-    @State private var tabSelection = 1
-
-    @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
-
+    
+    // tabs
+    @State private var tabSelection: TabSelection = .feeds
+    @State private var showLoading: Bool = false
+    @GestureState private var isDetectingLongPress = false
+    
+    @State private var isPresentingAccountSwitcher: Bool = false
+    
+    @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
+    
+    var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
+    
     var body: some View {
-        TabView(selection: $tabSelection) {
-            FeedRoot()
-                .tabItem {
-                    Label("Feeds", systemImage: "scroll")
-                        .environment(\.symbolVariants, tabSelection == 1 ? .fill : .none)
-                }.tag(1)
-
-            InboxView()
-                .tabItem {
-                    Label("Inbox", systemImage: "mail.stack")
-                        .environment(\.symbolVariants, tabSelection == 2 ? .fill : .none)
-                }.tag(2)
-
-            ProfileView(userID: appState.currentActiveAccount.id)
-                .tabItem {
-                    Label(computeUsername(account: appState.currentActiveAccount), systemImage: "person.circle")
-                        .environment(\.symbolVariants, tabSelection == 3 ? .fill : .none)
-                }
-                .tag(3)
-
-            SearchView()
-                .tabItem {
-                    Label("Search", systemImage: tabSelection == 4 ? "text.magnifyingglass" : "magnifyingglass")
-                }.tag(4)
-
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                        .environment(\.symbolVariants, tabSelection == 5 ? .fill : .none)
-                }.tag(5)
+        FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcherDragCallback) {
+            Group {
+                FeedRoot(showLoading: showLoading)
+                    .fancyTabItem(tag: TabSelection.feeds) {
+                        FancyTabBarLabel(tag: TabSelection.feeds,
+                                         symbolName: "scroll",
+                                         activeSymbolName: "scroll.fill")
+                    }
+                InboxView()
+                    .fancyTabItem(tag: TabSelection.inbox) {
+                        FancyTabBarLabel(tag: TabSelection.inbox,
+                                         symbolName: "mail.stack",
+                                         activeSymbolName: "mail.stack.fill",
+                                         badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0)
+                    }
+                
+                ProfileView(userID: appState.currentActiveAccount.id)
+                    .fancyTabItem(tag: TabSelection.profile) {
+                        FancyTabBarLabel(tag: TabSelection.profile,
+                                         customText: computeUsername(account: appState.currentActiveAccount),
+                                         symbolName: "person.circle",
+                                         activeSymbolName: "person.circle.fill")
+                        .simultaneousGesture(accountSwitchLongPress)
+                    }
+                SearchView()
+                    .fancyTabItem(tag: TabSelection.search) {
+                        FancyTabBarLabel(tag: TabSelection.search,
+                                         symbolName: "magnifyingglass",
+                                         activeSymbolName: "text.magnifyingglass")
+                    }
+                
+                SettingsView()
+                    .fancyTabItem(tag: TabSelection.settings) {
+                        FancyTabBarLabel(tag: TabSelection.settings,
+                                         symbolName: "gear")
+                    }
+            }
         }
-        .onChange(of: appState.contextualError) { handle($0) }
+        // TODO: remove once all using `.errorHandler` as the `appState` will no longer receive these...
+        .onChange(of: appState.contextualError) { errorHandler.handle($0) }
+        .task(id: appState.currentActiveAccount) {
+            accountChanged()
+        }
+        .onReceive(errorHandler.$sessionExpired) { expired in
+            if expired {
+                NotificationDisplayer.presentTokenRefreshFlow(for: appState.currentActiveAccount) { updatedAccount in
+                    appState.setActiveAccount(updatedAccount)
+                }
+            }
+        }
         .alert(using: $errorAlert) { content in
             Alert(
                 title: Text(content.title),
@@ -62,18 +96,63 @@ struct ContentView: View {
                 )
             )
         }
-        .sheet(item: $expiredSessionAccount) { account in
-            TokenRefreshView(account: account) { updatedAccount in
-                appState.setActiveAccount(updatedAccount)
-            }
+        .sheet(isPresented: $isPresentingAccountSwitcher) {
+            AccountsPage(onboarding: false)
+                .presentationDetents([.medium, .large])
+        }
+        .sheet(item: $editorTracker.editResponse) { editing in
+            ResponseEditorView(concreteEditorModel: editing)
+        }
+        .sheet(item: $editorTracker.editPost) { editing in
+            PostComposerView(editModel: editing)
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
+        .environmentObject(editorTracker)
+        .environmentObject(unreadTracker)
     }
-
-    // MARK: helpers
+    
+    // MARK: Helpers
+    
+    /**
+     Function that executes whenever the account changes to handle any state updates that need to happen
+     */
+    func accountChanged() {
+        // refresh unread count
+        Task(priority: .background) {
+            do {
+                let unreadCounts = try await personRepository.getUnreadCounts()
+                unreadTracker.update(with: unreadCounts)
+            } catch {
+                appState.contextualError = .init(underlyingError: error)
+            }
+        }
+    }
+    
     func computeUsername(account: SavedAccount) -> String {
-        return showUsernameInNavigationBar ? account.username : "Profile"
+        switch profileTabLabel {
+        case .username: return account.username
+        case .instance: return account.hostName ?? account.username
+        case .nickname: return appState.currentNickname
+        case .anonymous: return "Profile"
+        }
+    }
+    
+    func showAccountSwitcherDragCallback() {
+        if !homeButtonExists {
+            isPresentingAccountSwitcher = true
+        }
+    }
+    
+    var accountSwitchLongPress: some Gesture {
+        LongPressGesture()
+            .onEnded { _ in
+                // disable long press in accessibility mode to prevent conflict with HUD
+                if !accessibilityFont {
+                    hapticManager.play(haptic: .rigidInfo)
+                    isPresentingAccountSwitcher = true
+                }
+            }
     }
 }
 
@@ -82,7 +161,7 @@ struct ContentView: View {
 extension ContentView {
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         let outcome = URLHandler.handle(url)
-
+        
         switch outcome.action {
         case let .error(message):
             errorAlert = .init(
@@ -92,50 +171,7 @@ extension ContentView {
         default:
             break
         }
-
+        
         return outcome.result
-    }
-}
-
-// MARK: - Error handling
-
-extension ContentView {
-    func handle(_ contextualError: ContextualError?) {
-        guard let contextualError else {
-            return
-        }
-
-        #if DEBUG
-        print("☠️ ERROR ☠️")
-        print("🕵️ -> \(contextualError.underlyingError.description)")
-        print("📝 -> \(contextualError.underlyingError.localizedDescription)")
-        #endif
-
-        defer {
-            // ensure we clear our the error once we've handled it...
-            appState.contextualError = nil
-        }
-
-        if let clientError = contextualError.underlyingError.base as? APIClientError {
-            switch clientError {
-            case .invalidSession:
-                expiredSessionAccount = appState.currentActiveAccount
-                return
-            case let .response(apiError, _):
-                errorAlert = .init(title: "Error", message: apiError.error)
-            default:
-                break
-            }
-        }
-
-        let title = contextualError.title ?? ""
-        let message = contextualError.message ?? ""
-
-        guard !title.isEmpty || !message.isEmpty else {
-            // no title or message was supplied so don't notify the user of this...
-            return
-        }
-
-        errorAlert = .init(title: title, message: message)
     }
 }

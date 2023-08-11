@@ -8,9 +8,12 @@
 import Foundation
 
 enum PostSortType: String, Codable, CaseIterable, Identifiable {
-    case active = "Active"
     case hot = "Hot"
+    case active = "Active"
     case new = "New"
+    case old = "Old"
+    case newComments = "NewComments"
+    case mostComments = "MostComments"
     case topHour = "TopHour"
     case topSixHour = "TopSixHour"
     case topTwelveHour = "TopTwelveHour"
@@ -19,16 +22,38 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     case topMonth = "TopMonth"
     case topYear = "TopYear"
     case topAll = "TopAll"
-    case old = "Old"
-    case newComments = "NewComments"
-    case mostComments = "MostComments"
     
     var id: Self { self }
     
-    static var outerTypes: [PostSortType] {[.active, .hot, .new, .newComments, .mostComments, .old]}
+    static var outerTypes: [PostSortType] {[.hot, .active, .new, .old, .newComments, .mostComments]}
     static var topTypes: [PostSortType] {[.topHour, .topSixHour, .topTwelveHour, .topDay, .topWeek, .topMonth, .topYear, .topAll]}
+    
+    var description: String {
+        switch self {
+        case .topHour:
+            return "Top of the last hour"
+        case .topSixHour:
+            return "Top of the last six hours"
+        case .topTwelveHour:
+            return "Top of the last twelve hours"
+        case .topDay:
+            return "Top of today"
+        case .topWeek:
+            return "Top of the week"
+        case .topMonth:
+            return "Top of the month"
+        case .topYear:
+            return "Top of the year"
+        case .topAll:
+            return "Top of all time"
+        default:
+            return self.label
+        }
+    }
+}
 
-    var shortDescription: String {
+extension PostSortType: SettingsOptions {
+    var label: String {
         switch self {
         case .newComments:
             return "New comments"
@@ -54,46 +79,30 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return self.rawValue
         }
     }
-    
-    var description: String {
+}
+
+extension PostSortType: AssociatedIcon {
+    var iconName: String {
         switch self {
-        case .topHour:
-            return "Top of the last hour"
-        case .topSixHour:
-            return "Top of the last six hours"
-        case .topTwelveHour:
-            return "Top of the last twelve hours"
-        case .topDay:
-            return "Top of today"
-        case .topWeek:
-            return "Top of the week"
-        case .topMonth:
-            return "Top of the month"
-        case .topYear:
-            return "Top of the year"
-        case .topAll:
-            return "Top of all time"
-        default:
-            return self.shortDescription
+        case .active: return AppConstants.activeSortSymbolName
+        case .hot: return AppConstants.hotSortSymbolName
+        case.new: return AppConstants.newSortSymbolName
+        case .old: return AppConstants.oldSortSymbolName
+        case .newComments: return AppConstants.newCommentsSymbolName
+        case .mostComments: return AppConstants.mostCommentsSymbolName
+        default: return AppConstants.timeSymbolName
         }
     }
     
-    var imageName: String {
+    var iconNameFill: String {
         switch self {
-        case .active:
-            return "bubble.left.and.bubble.right"
-        case .hot:
-            return "flame"
-        case .new:
-            return "sun.max"
-        case .newComments:
-            return "ellipsis.bubble"
-        case .mostComments:
-            return "chart.line.uptrend.xyaxis"
-        case .old:
-            return "books.vertical"
-        default:
-            return "calendar.day.timeline.left"
+        case .active: return AppConstants.activeSortSymbolNameFill
+        case .hot: return AppConstants.hotSortSymbolNameFill
+        case.new: return AppConstants.newSortSymbolNameFill
+        case .old: return AppConstants.oldSortSymbolNameFill
+        case .newComments: return AppConstants.newCommentsSymbolNameFill
+        case .mostComments: return AppConstants.mostCommentsSymbolNameFill
+        default: return AppConstants.timeSymbolNameFill
         }
     }
 }

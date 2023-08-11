@@ -13,7 +13,7 @@ enum FeedType: String, Encodable, SettingsOptions {
 
     var label: String {
         switch self {
-        case .all: return "All Known"
+        case .all: return self.rawValue
         case .local: return self.rawValue
         case .subscribed: return self.rawValue
         }
@@ -22,4 +22,33 @@ enum FeedType: String, Encodable, SettingsOptions {
     case all = "All"
     case local = "Local"
     case subscribed = "Subscribed"
+}
+
+extension FeedType: AssociatedIcon {
+    var iconName: String {
+        switch self {
+        case .all: return AppConstants.federatedFeedSymbolName
+        case .local: return AppConstants.localFeedSymbolName
+        case .subscribed: return AppConstants.subscribedFeedSymbolName
+        }
+    }
+    
+    var iconNameFill: String {
+        switch self {
+        case .all: return AppConstants.federatedFeedSymbolName
+        case .local: return AppConstants.localFeedSymbolNameFill
+        case .subscribed: return AppConstants.subscribedFeedSymbolNameFill
+        }
+    }
+    
+    /**
+     Icon to use in system settings. This should be removed when the "unified symbol handling" is closed
+     */
+    var settingsIconName: String {
+        switch self {
+        case .all: return "circle.hexagongrid"
+        case .local: return "house"
+        case .subscribed: return "newspaper"
+        }
+    }
 }

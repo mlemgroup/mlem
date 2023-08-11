@@ -8,5 +8,5 @@
 import Foundation
 
 protocol InboxTracker {
-    func loadNextPage(account: SavedAccount) async throws
+    func loadNextPage(account: SavedAccount, unreadOnly: Bool) async throws
 }

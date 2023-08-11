@@ -14,7 +14,8 @@ struct APIErrorResponse: Decodable {
 private let possibleCredentialErrors = [
     "incorrect_password",
     "password_incorrect",
-    "incorrect_login"
+    "incorrect_login",
+    "couldnt_find_that_username_or_email"
 ]
 
 extension APIErrorResponse {

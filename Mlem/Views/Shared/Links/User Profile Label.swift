@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
 struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
@@ -20,6 +20,9 @@ struct UserProfileLabel: View {
     @State var postContext: APIPost?
     @State var commentContext: APIComment?
     @State var communityContext: GetCommunityResponse?
+
+    var blurAvatar: Bool { shouldBlurNsfw && (postContext?.nsfw ?? false ||
+                                             communityContext?.communityView.community.nsfw ?? false) }
     
     init(user: APIPerson,
          serverInstanceLocation: ServerInstanceLocation,
@@ -42,6 +45,11 @@ struct UserProfileLabel: View {
         } else {
             return shouldShowUserAvatars
         }
+    }
+    
+    var avatarSize: CGSize { serverInstanceLocation == .bottom
+        ? CGSize(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+        : CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
     }
     
     static let developerNames = [
@@ -75,41 +83,29 @@ struct UserProfileLabel: View {
     private var userAvatar: some View {
         Group {
             if let userAvatarLink = user.avatar {
-                CachedAsyncImage(url: avatarUrl(from: userAvatarLink), urlCache: AppConstants.urlCache) { image in
-                    if let avatar = image.image {
-                        avatar
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: avatarSize(), height: avatarSize())
-                    } else {
-                        defaultUserAvatar()
-                    }
-                }
+                CachedImage(url: userAvatarLink,
+                            shouldExpand: false,
+                            fixedSize: avatarSize,
+                            imageNotFound: defaultUserAvatar)
             } else {
                 defaultUserAvatar()
             }
         }
-        .frame(width: avatarSize(), height: avatarSize())
+        .frame(width: avatarSize.width, height: avatarSize.height)
+        .blur(radius: blurAvatar ? 4 : 0)
         .clipShape(Circle())
         .overlay(Circle()
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
         .accessibilityHidden(true)
     }
     
-    private func avatarSize() -> CGFloat {
-        serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
-    }
-    
-    private func avatarUrl(from: URL) -> URL {
-        serverInstanceLocation == .bottom ? from.withIcon64Parameters : from.withIcon32Parameters
-    }
-    
-    private func defaultUserAvatar() -> some View {
-        Image(systemName: "person.circle")
+    private func defaultUserAvatar() -> AnyView {
+        AnyView(Image(systemName: "person.circle")
             .resizable()
             .scaledToFill()
-            .frame(width: avatarSize(), height: avatarSize())
+            .frame(width: avatarSize.width, height: avatarSize.height)
             .foregroundColor(.secondary)
+        )
     }
     
     @ViewBuilder
@@ -117,8 +113,9 @@ struct UserProfileLabel: View {
         let flair = calculateLinkFlair()
         
         HStack(spacing: 4) {
-            if let flairImage = flair.image, serverInstanceLocation != .trailing {
+            if let flairImage = flair.image {
                 flairImage
+                    .imageScale(serverInstanceLocation == .bottom ? .large : .small)
                     .foregroundColor(flair.color)
             }
             
@@ -137,7 +134,6 @@ struct UserProfileLabel: View {
                 }
             }
         }
-        .foregroundColor(.secondary)
     }
     
     @ViewBuilder
@@ -154,8 +150,9 @@ struct UserProfileLabel: View {
             Text("@\(host)")
                 .minimumScaleFactor(0.01)
                 .lineLimit(1)
-                .opacity(0.6)
+                .foregroundColor(Color(uiColor: .tertiaryLabel))
                 .font(.caption)
+                .allowsHitTesting(false)
         } else {
             EmptyView()
         }

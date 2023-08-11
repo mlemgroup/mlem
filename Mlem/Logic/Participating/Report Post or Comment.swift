@@ -21,32 +21,10 @@ func reportPost(
         )
         
         let response = try await APIClient().perform(request: request)
-        AppConstants.hapticManager.notificationOccurred(.success)
+        HapticManager.shared.play(haptic: .violentSuccess)
         return response.postReportView
     } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
-        throw error
-    }
-}
-
-@MainActor
-func reportComment(
-    account: SavedAccount,
-    commentId: Int,
-    reason: String
-) async throws -> APICommentReportView {
-    do {
-        let request = CreateCommentReportRequest(
-            account: account,
-            commentId: commentId,
-            reason: reason
-        )
-        
-        let response = try await APIClient().perform(request: request)
-        AppConstants.hapticManager.notificationOccurred(.success)
-        return response.commentReportView
-    } catch {
-        AppConstants.hapticManager.notificationOccurred(.error)
+        HapticManager.shared.play(haptic: .failure)
         throw error
     }
 }

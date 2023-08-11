@@ -5,7 +5,6 @@
 //  Created by David Bureš on 04.05.2023.
 //
 
-import CachedAsyncImage
 import Foundation
 import SwiftUI
 
@@ -16,7 +15,14 @@ struct WebsiteIconComplex: View {
 
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
 
-    @State var post: APIPost
+    let post: APIPost
+    var onTapActions: (() -> Void)?
+    
+    init(post: APIPost,
+         onTapActions: (() -> Void)? = nil) {
+        self.post = post
+        self.onTapActions = onTapActions
+    }
 
     @State private var overridenWebsiteFaviconName: String = "globe"
 
@@ -51,7 +57,7 @@ struct WebsiteIconComplex: View {
     var body: some View {
         VStack(spacing: 0) {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
-                CachedImage(url: thumbnailURL)
+                CachedImage(url: thumbnailURL, shouldExpand: false)
                     .frame(maxHeight: 400)
                     .applyNsfwOverlay(post.nsfw)
                     .clipped()
@@ -61,14 +67,10 @@ struct WebsiteIconComplex: View {
                 if shouldShowWebsiteHost {
                     HStack {
                         if shouldShowWebsiteIcon {
-                            CachedAsyncImage(url: faviconURL, urlCache: AppConstants.urlCache) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                Image(systemName: "globe")
-                            }
-                            .frame(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
+                            CachedImage(url: faviconURL,
+                                        shouldExpand: false,
+                                        fixedSize: CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize),
+                                        imageNotFound: { AnyView(Image(systemName: "globe")) })
                         }
                         
                         Text(linkHost)
@@ -97,6 +99,9 @@ struct WebsiteIconComplex: View {
         .onTapGesture {
             if let url = post.url {
                 openURL(url)
+                if let onTapActions {
+                    onTapActions()
+                }
             }
         }
     }

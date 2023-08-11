@@ -75,8 +75,7 @@ extension InboxView {
                         }
                     }
                 }
-                .addSwipeyActions(isDragging: $isDragging,
-                                  primaryLeadingAction: upvoteCommentReplySwipeAction(commentReply: reply),
+                .addSwipeyActions(primaryLeadingAction: upvoteCommentReplySwipeAction(commentReply: reply),
                                   secondaryLeadingAction: downvoteCommentReplySwipeAction(commentReply: reply),
                                   primaryTrailingAction: toggleCommentReplyReadSwipeAction(commentReply: reply),
                                   secondaryTrailingAction: replyToCommentReplySwipeAction(commentReply: reply))

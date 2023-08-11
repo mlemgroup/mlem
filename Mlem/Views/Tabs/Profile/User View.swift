@@ -5,7 +5,6 @@
 //  Created by David Bureš on 02.04.2022.
 //
 
-import CachedAsyncImage
 import SwiftUI
 
 // swiftlint:disable file_length
@@ -25,16 +24,26 @@ struct UserView: View {
     @State var userID: Int
     @State var userDetails: APIPersonView?
 
-    @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
-    @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
+    @StateObject private var privatePostTracker: PostTracker
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
     @State private var showingCakeDay = false
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
-    @State var isDragging: Bool = false
-    @FocusState var isReplyFieldFocused
+    
+    init(userID: Int, userDetails: APIPersonView? = nil) {
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        
+        self._userID = State(initialValue: userID)
+        self._userDetails = State(initialValue: userDetails)
+        
+        self._privatePostTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
+    }
+    
+    // account switching
+    var isSelf: Bool { userID == appState.currentActiveAccount.id }
+    @State private var isPresentingAccountSwitcher: Bool = false
     
     struct FeedItem: Identifiable {
         let id = UUID()
@@ -42,9 +51,12 @@ struct UserView: View {
         let comment: HierarchicalComment?
         let post: APIPostView?
     }
-    
+
     var body: some View {
         contentView
+            .sheet(isPresented: $isPresentingAccountSwitcher) {
+                AccountsPage(onboarding: false)
+            }
     }
 
     @ViewBuilder
@@ -61,6 +73,17 @@ struct UserView: View {
         if let user = userDetails, !moderatedCommunities.isEmpty {
             NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
                 Image(systemName: "shield")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var accountSwitcher: some View {
+        if isSelf {
+            Button {
+                isPresentingAccountSwitcher = true
+            } label: {
+                Image(systemName: AppConstants.switchUserSymbolName)
             }
         }
     }
@@ -111,7 +134,7 @@ struct UserView: View {
                 savedFeed
             }
         }
-        .environmentObject(privateCommentReplyTracker)
+        .fancyTabScrollCompatible()
         .environmentObject(privatePostTracker)
         .environmentObject(privateCommentTracker)
         .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
@@ -121,6 +144,7 @@ struct UserView: View {
             await tryLoadUser()
         }.toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
+                accountSwitcher
                 moderatorButton
             }
         }
@@ -234,7 +258,7 @@ struct UserView: View {
                 if savedItems {
                     return $0.commentView.saved
                 } else {
-                    // If we un-favorited something while
+                    // If we unfavorited something while
                     // here we don't want it showing up in our feed
                     return $0.commentView.creator.id == userID
                 }
@@ -258,7 +282,7 @@ struct UserView: View {
                 if savedItems {
                     return $0.saved
                 } else {
-                    // If we un-favorited something while
+                    // If we unfavorited something while
                     // here we don't want it showing up in our feed
                     return $0.creator.id == userID
                 }
@@ -313,14 +337,14 @@ struct UserView: View {
             
             privateCommentTracker.add(authoredContent.comments
                 .sorted(by: { $0.comment.published > $1.comment.published})
-                .map({HierarchicalComment(comment: $0, children: [])}))
+                .map({HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false)}))
             
             privatePostTracker.add(authoredContent.posts)
             
             if let savedContent = savedContentData {
                 privateCommentTracker.add(savedContent.comments
                     .sorted(by: { $0.comment.published > $1.comment.published})
-                    .map({HierarchicalComment(comment: $0, children: [])}))
+                    .map({HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false)}))
                 
                 privatePostTracker.add(savedContent.posts)
             }
@@ -361,8 +385,7 @@ struct UserView: View {
             VStack(spacing: 0) {
                 FeedPost(postView: post,
                          showPostCreator: false,
-                         showCommunity: true,
-                         isDragging: $isDragging
+                         showCommunity: true
                 )
                 
                 Divider()
@@ -379,11 +402,9 @@ struct UserView: View {
             CommentItem(
                 hierarchicalComment: comment,
                 postContext: nil,
-                depth: 0,
+                indentBehaviour: .never,
                 showPostContext: true,
-                showCommentCreator: false,
-                isDragging: $isDragging,
-                replyToComment: nil
+                showCommentCreator: false
             )
             
             Divider()

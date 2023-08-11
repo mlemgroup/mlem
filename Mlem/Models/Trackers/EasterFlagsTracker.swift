@@ -7,52 +7,31 @@
 
 import Foundation
 import Combine
+import Dependencies
 
 @MainActor
 class EasterFlagsTracker: ObservableObject {
-    @Published var flags: Set<EasterFlag>
-    private var updateObservar: AnyCancellable?
+    
+    @Dependency(\.persistenceRepository) private var persistenceRepository
+    @Dependency(\.notifier) private var notifier
+    
+    @Published var flags: Set<EasterFlag> = .init()
+    private var updateObserver: AnyCancellable?
     
     init() {
-        _flags = .init(initialValue: EasterFlagsTracker.loadFlags())
-        updateObservar = $flags.sink { EasterFlagsTracker.saveFlags($0) }
-    }
-    
-    static func loadFlags() -> Set<EasterFlag> {
-        if FileManager.default.fileExists(atPath: AppConstants.easterFlagsFilePath.path) {
-            do {
-                return try decodeFromFile(
-                    fromURL: AppConstants.easterFlagsFilePath,
-                    whatToDecode: .easterFlags
-                ) as? Set<EasterFlag> ?? .init()
-            } catch {
-                print(String(describing: error))
-            }
-            // TODO: Hande
-        } else {
-            // TODO: - AppConstants proper emptyFileCreationError handling
-            do {
-                try createEmptyFile(at: AppConstants.easterFlagsFilePath)
-            } catch {
-                // TODO: Hande
+        _flags = .init(initialValue: persistenceRepository.loadEasterFlags())
+        updateObserver = $flags.sink { [weak self] value in
+            Task {
+                try await self?.persistenceRepository.saveEasterFlags(value)
             }
         }
-        return .init()
     }
     
-    static func saveFlags(_ flags: Set<EasterFlag>) {
-        Task(priority: .background) {
-            do {
-                let encodedEasterFlags: Data = try encodeForSaving(object: flags)
-                
-                do {
-                    try writeDataToFile(data: encodedEasterFlags, fileURL: AppConstants.easterFlagsFilePath)
-                } catch let writingError {
-                    print("Failed while saving data to file: \(writingError)")
-                }
-            } catch let encodingError {
-                print("Failed while encoding accounts to data: \(encodingError)")
-            }
+    func setEasterFlag(_ flag: EasterFlag) {
+        let (isNew, _) = flags.insert(flag)
+        guard isNew, let rewards = easterReward[flag] else { return }
+        Task {
+            await notifier.add(rewards)
         }
     }
 }

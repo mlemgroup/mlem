@@ -23,15 +23,15 @@ struct DeleteCommentRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         commentId: Int,
-        deleted: Bool = true
+        deleted: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             comment_id: commentId,
             deleted: deleted,
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

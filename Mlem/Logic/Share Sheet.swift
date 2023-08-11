@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-func showShareSheet(URLtoShare: URL) {
+// TODO: let's stop with the global functions? 😬
+func showShareSheet(URLtoShare: URL, completion: UIActivityViewController.CompletionWithItemsHandler? = nil) {
     let activityVC = UIActivityViewController(activityItems: [URLtoShare], applicationActivities: nil)
+    activityVC.completionWithItemsHandler = completion
     UIApplication.shared.firstKeyWindow?.rootViewController?.present(activityVC, animated: true, completion: nil)
 }

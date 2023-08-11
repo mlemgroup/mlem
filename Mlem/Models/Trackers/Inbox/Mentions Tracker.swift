@@ -6,27 +6,31 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class MentionsTracker: FeedTracker<APIPersonMentionView>, InboxTracker {
-    func loadNextPage(account: SavedAccount) async throws {
+    
+    func loadNextPage(account: SavedAccount, unreadOnly: Bool = false) async throws {
         try await perform(
             GetPersonMentionsRequest(
                 account: account,
                 sort: .new,
                 page: page,
-                limit: 50
+                limit: internetSpeed.pageSize,
+                unreadOnly: unreadOnly
             )
         )
     }
     
-    func refresh(account: SavedAccount) async throws {
+    func refresh(account: SavedAccount, unreadOnly: Bool = false) async throws {
         try await refresh(
             GetPersonMentionsRequest(
                 account: account,
                 sort: .new,
                 page: 1,
-                limit: 50
+                limit: internetSpeed.pageSize,
+                unreadOnly: unreadOnly
             )
         )
     }

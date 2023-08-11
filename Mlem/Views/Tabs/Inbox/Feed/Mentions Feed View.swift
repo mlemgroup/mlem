@@ -70,8 +70,7 @@ extension InboxView {
                         }
                     }
                 }
-                .addSwipeyActions(isDragging: $isDragging,
-                                  primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
+                .addSwipeyActions(primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
                                   secondaryLeadingAction: downvoteMentionSwipeAction(mentionView: mention),
                                   primaryTrailingAction: toggleMentionReadSwipeAction(mentionView: mention),
                                   secondaryTrailingAction: replyToMentionSwipeAction(mentionView: mention))

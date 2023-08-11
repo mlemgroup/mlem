@@ -5,10 +5,14 @@
 //  Created by tht7 on 01/07/2023.
 //
 
+import Dependencies
 import SwiftUI
-import AlertToast
 
 struct Window: View {
+    
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.hapticManager) var hapticManager
+        
     @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
@@ -16,44 +20,31 @@ struct Window: View {
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
 
     @State var selectedAccount: SavedAccount?
-    
-    @State var easterRewardsToastsQueue: [AlertToast] = .init()
-    @State var easterRewardsToastDisplay: AlertToast?
-    @State var easterRewardShouldShow = false
 
     var body: some View {
-        ZStack {
-            if let selectedAccount {
-                view(for: selectedAccount)
-            } else {
-                NavigationStack {
-                    AccountsPage(selectedAccount: $selectedAccount)
-                }
-            }
-            
-            // this is a hack since it seems .toast freaking loves reseting and redrawing everything 🙄
-            Color.clear
-                .toast(isPresenting: $easterRewardShouldShow, duration: 2.0) {
-                    easterRewardsToastDisplay ?? AlertToast(displayMode: .hud, type: .error(.clear))
-                } completion: {
-                    if !easterRewardsToastsQueue.isEmpty {
-                        easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
-                        easterRewardShouldShow = true
-                    }
-                }
-        }
-        .onChange(of: selectedAccount) { _ in onLogin() }
-        .onAppear(perform: onLogin)
-        .environment(\.setEasterFlag, setEasterFlag)
-        .environmentObject(easterFlagsTracker)
+        content
+            .onChange(of: selectedAccount) { _ in onLogin() }
+            .onAppear(perform: onLogin)
+            .environment(\.forceOnboard, forceOnboard)
     }
 
     func onLogin() {
-        if let host =
-            RecognizedLemmyInstances(rawValue:
-                                        selectedAccount?.instanceLink.host() ?? "unknown"
-            ) {
-            setEasterFlag(.login(host: host))
+        if let host = selectedAccount?.instanceLink.host(),
+           let instance = RecognizedLemmyInstances(rawValue: host) {
+            easterFlagsTracker.setEasterFlag(.login(host: instance))
+        }
+        
+        hapticManager.initEngine()
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        if let selectedAccount {
+            view(for: selectedAccount)
+        } else {
+            NavigationStack {
+                AddSavedInstanceView(onboarding: true, currentAccount: $selectedAccount)
+            }
         }
     }
     
@@ -66,65 +57,10 @@ struct Window: View {
             .environmentObject(favoriteCommunitiesTracker)
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
-            .onChange(of: filtersTracker.filteredKeywords) { saveFilteredKeywords($0) }
-            .onChange(of: favoriteCommunitiesTracker.favoriteCommunities) { saveFavouriteCommunities($0) }
+            .environmentObject(easterFlagsTracker)
     }
-
-    private func saveFilteredKeywords(_ newValue: [String]) {
-        print("Change detected in filtered keywords: \(newValue)")
-        do {
-            let encodedFilteredKeywords: Data = try encodeForSaving(object: newValue)
-
-            print(encodedFilteredKeywords)
-            do {
-                try writeDataToFile(data: encodedFilteredKeywords, fileURL: AppConstants.filteredKeywordsFilePath)
-            } catch let writingError {
-                print("Failed while saving data to file: \(writingError)")
-            }
-        } catch let encodingError {
-            print("Failed while encoding filters to data: \(encodingError)")
-        }
-    }
-
-    private func saveFavouriteCommunities(_ newValue: [FavoriteCommunity]) {
-        print("Change detected in favorited communities")
-
-        do {
-            let encodedFavoriteCommunities: Data = try encodeForSaving(object: newValue)
-
-            do {
-                try writeDataToFile(data: encodedFavoriteCommunities, fileURL: AppConstants.favoriteCommunitiesFilePath)
-            } catch let writingError {
-                print("Failed while saving data to file: \(writingError)")
-            }
-        } catch let encodingError {
-            print("Failed while encoding favorited communities to data: \(encodingError)")
-        }
-    }
-
-    func setEasterFlag(_ flag: EasterFlag) {
-        let (isNew, _) = easterFlagsTracker.flags.insert(flag)
-        
-        if isNew, let rewards = easterReward[flag] {
-            // time to display a cute message to the user about his new toy!
-            for reward in rewards {
-                switch reward {
-                case let .icon(iconName, _):
-                    easterRewardsToastsQueue.append(
-                        AlertToast(
-                            displayMode: .banner(.slide),
-                            type: .regular,
-                            title: "New icon unlocked!",
-                            subTitle: "Unlocked the \"\(iconName)\" icon"
-                        )
-                    )
-                }
-            }
-            
-            if !easterRewardsToastsQueue.isEmpty {
-                easterRewardsToastDisplay = easterRewardsToastsQueue.popLast()
-                easterRewardShouldShow = true
-            }
-        }
+    
+    func forceOnboard() {
+        selectedAccount = nil
     }
 }

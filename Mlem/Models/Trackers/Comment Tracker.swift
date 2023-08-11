@@ -8,10 +8,19 @@
 import Foundation
 
 class CommentTracker: ObservableObject {
-    @Published var comments: [HierarchicalComment] = .init()
+    @Published private(set) var commentsView: [HierarchicalComment] = .init()
     @Published var isLoading: Bool = true
     
     private var ids: Set<Int> = .init()
+
+    private var _comments: [HierarchicalComment] = []
+    var comments: [HierarchicalComment] {
+        get { _comments }
+        set {
+            _comments = newValue
+            self.commentsView = _comments.flatMap(HierarchicalComment.recursiveFlatMap)
+        }
+    }
     
     /// A method to add new comments into the tracker, duplicate comments will be rejected
     func add(_ newComments: [HierarchicalComment]) {
@@ -38,4 +47,26 @@ class CommentTracker: ObservableObject {
         
         return removedElements
     }
+}
+
+// MARK: - Expand/Collapse Comments
+extension CommentTracker {
+    
+    /// Mark `comment` as collapsed or not, triggering view updates, if necessary.
+    func setCollapsed(_ isCollapsed: Bool, comment: HierarchicalComment) {
+        comment.setCollapsed(isCollapsed)
+    }
+    
+    // swiftlint:disable line_length
+    private func debugPrintComments(comment: HierarchicalComment) {
+#if DEBUG
+        func printComment(_ comment: HierarchicalComment) {
+            print("\(comment.commentView.comment.path) \(comment.commentView.comment.content.prefix(30)) - parent: \(comment.isParentCollapsed), self: \(comment.isCollapsed)")
+            comment.children.forEach(printComment)
+        }
+        print("* * *")
+        printComment(comment)
+#endif
+    }
+    // swiftlint:enable line_length
 }
