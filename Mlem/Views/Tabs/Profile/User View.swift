@@ -139,6 +139,7 @@ struct UserView: View {
         .environmentObject(privateCommentTracker)
         .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
         .navigationBarTitleDisplayMode(.inline)
+        .barBackgroundColor()
         .headerProminence(.standard)
         .refreshable {
             await tryLoadUser()

@@ -72,6 +72,7 @@ struct SettingsView: View {
             .fancyTabScrollCompatible()
             .handleLemmyViews()
             .navigationTitle("Settings")
+            .barBackgroundColor()
             .navigationBarTitleDisplayMode(.inline)
 
         }

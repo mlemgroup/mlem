@@ -69,6 +69,7 @@ struct AddSavedInstanceView: View {
                 }.disabled(viewState == .loading)
                 footerView
             }
+            .barBackgroundColor()
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Sign In")
             .toolbar {
