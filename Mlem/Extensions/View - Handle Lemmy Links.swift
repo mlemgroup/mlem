@@ -63,7 +63,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     .environmentObject(appState)
             }
             .navigationDestination(for: PostLinkWithContext.self) { post in
-                ExpandedPost(post: post.post)
+                ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                     .environmentObject(post.postTracker)
                     .environmentObject(appState)
             }

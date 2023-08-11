@@ -13,6 +13,7 @@ struct EmbeddedPost: View {
     
     let community: APICommunity
     let post: APIPost
+    let comment: APIComment
 
     @State var loadedPostDetails: APIPostView?
 
@@ -21,7 +22,7 @@ struct EmbeddedPost: View {
     // - enrich info
     // - navigation link to post
     var body: some View {
-        NavigationLink(value: LazyLoadPostLinkWithContext(post: post, postTracker: postTracker)) {
+        NavigationLink(value: LazyLoadPostLinkWithContext(post: post, postTracker: postTracker, scrollTarget: comment.id)) {
             postLinkButton()
         }
     }
@@ -107,6 +108,21 @@ struct EmbeddedPostPreview: PreviewProvider {
                 removed: false,
                 thumbnailUrl: nil,
                 updated: nil
+            ),
+            comment: APIComment(
+                id: 0,
+                creatorId: 0,
+                postId: 0,
+                content: "",
+                removed: false,
+                deleted: false,
+                published: Date.now,
+                updated: Date.now,
+                apId: "",
+                local: false,
+                path: "",
+                distinguished: false,
+                languageId: 0
             )
         )
     }
