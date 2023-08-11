@@ -148,8 +148,11 @@ struct ExpandedPost: View {
             if topVisibleId == 0 {
                 nextComment = commentTracker.commentsView.first
             } else {
-                if let index = commentTracker.commentsView.firstIndex(where: { $0.commentView.comment.id == topVisibleId }) {
-                    nextComment = commentTracker.commentsView[(index+1)...].first(where: { $0.depth == 0 })
+                if let index = commentTracker.commentsView.firstIndex(where: {
+                    $0.commentView.comment.id == topVisibleId
+                }) {
+                    let slice = commentTracker.commentsView[(index+1)...]
+                    nextComment = slice.first(where: { $0.depth == 0 })
                 }
             }
             if let nextComment = nextComment {
@@ -163,8 +166,11 @@ struct ExpandedPost: View {
             scrollTarget = 0
         }
         if let topVisibleCommentId = topVisibleCommentId {
-            if let index = commentTracker.commentsView.firstIndex(where: { $0.commentView.comment.id == topVisibleCommentId }) {
-                if let previousComment = commentTracker.commentsView[..<index].last(where: { $0.depth == 0 }) {
+            if let index = commentTracker.commentsView.firstIndex(where: {
+                $0.commentView.comment.id == topVisibleCommentId
+            }) {
+                let slice = commentTracker.commentsView[..<index]
+                if let previousComment = slice.last(where: { $0.depth == 0 }) {
                     scrollTarget = previousComment.commentView.comment.id
                 }
             }
