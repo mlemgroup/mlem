@@ -177,6 +177,13 @@ struct LargePost: View {
             if postView.post.nsfw {
                 NSFWTag(compact: false)
             }
+            
+            if layoutMode == .minimize {
+                Color.clear
+                    .padding(6)
+                    .frame(width: 28, height: 28, alignment: .center)
+                    .accessibilityHidden(true)
+            }
         }
     }
     
