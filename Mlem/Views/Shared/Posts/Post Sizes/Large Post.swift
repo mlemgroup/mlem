@@ -135,6 +135,8 @@ struct LargePost: View {
                     removal: .push(from: .top)))
                 .combined(with: .opacity)
             )
+            .accessibilityLabel("Post content is minimized.")
+            .accessibilityHint("Expands post content.")
     }
     
     private var postHeaderInsets: EdgeInsets {
