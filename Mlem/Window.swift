@@ -13,8 +13,7 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
-    
-    @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
+
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -61,7 +60,6 @@ struct Window: View {
             .id(account.id)
             .environmentObject(filtersTracker)
             .environmentObject(AppState(defaultAccount: account, selectedAccount: $selectedAccount))
-            .environmentObject(favoriteCommunitiesTracker)
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
