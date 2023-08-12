@@ -77,7 +77,7 @@ extension ExpandedPost {
     /// - Parameter inputOp: The voting operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
-            hapticManager.play(haptic: .gentleSuccess, priority: .all)
+            hapticManager.play(haptic: .gentleSuccess, priority: .low)
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             self.post = try await ratePost(
                 postId: post.post.id,
@@ -87,7 +87,7 @@ extension ExpandedPost {
                 appState: appState
             )
         } catch {
-            hapticManager.play(haptic: .failure, priority: .core)
+            hapticManager.play(haptic: .failure, priority: .high)
             appState.contextualError = .init(underlyingError: error)
         }
     }
@@ -100,7 +100,7 @@ extension ExpandedPost {
             // fake save
             dirtySaved.toggle()
             dirty = true
-            hapticManager.play(haptic: .success, priority: .all)
+            hapticManager.play(haptic: .success, priority: .low)
             
             do {
                 self.post = try await sendSavePostRequest(

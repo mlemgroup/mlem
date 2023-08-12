@@ -17,7 +17,7 @@ struct GeneralSettingsView: View {
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     
-    @AppStorage("hapticLevel") var hapticLevel: HapticLevel = .all
+    @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
 
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
@@ -30,7 +30,7 @@ struct GeneralSettingsView: View {
                 SelectableSettingsItem(settingIconSystemName: AppConstants.hapticSymbolName,
                                        settingName: "Haptic Level",
                                        currentValue: $hapticLevel,
-                                       options: HapticLevel.allCases)
+                                       options: HapticPriority.allCases)
             }
             
             Section {

@@ -19,10 +19,10 @@ func reportMessage(
                                                         reason: reason)
         
         let response = try await APIClient().perform(request: request)
-        HapticManager.shared.play(haptic: .violentSuccess, priority: .core)
+        HapticManager.shared.play(haptic: .violentSuccess, priority: .high)
         return response.privateMessageReportView
     } catch {
-        HapticManager.shared.play(haptic: .failure, priority: .core)
+        HapticManager.shared.play(haptic: .failure, priority: .high)
         throw error
     }
 }

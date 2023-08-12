@@ -293,7 +293,7 @@ struct SectionIndexTitles: View {
 
                     // Play nice tappy taps
                     // HapticManager.shared.rigidInfo()
-                    hapticManager.play(haptic: .rigidInfo, priority: .all)
+                    hapticManager.play(haptic: .rigidInfo, priority: .low)
                 }
             }
         }
