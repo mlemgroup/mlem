@@ -336,6 +336,7 @@
 		CDC1C9432A7AC24600072E3D /* ReadCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C9422A7AC24600072E3D /* ReadCheck.swift */; };
 		CDC6A8CA2A6F1C8D00CC11AC /* AssociatedIconProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6A8C92A6F1C8D00CC11AC /* AssociatedIconProtocol.swift */; };
 		CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */; };
+		CDDB2EDE2A85C2F1001D4B16 /* HapticPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB2EDD2A85C2F1001D4B16 /* HapticPriority.swift */; };
 		CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */; };
 		CDDCF6452A66375E003DA3AC /* FancyTabItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6442A66375E003DA3AC /* FancyTabItemViewModifier.swift */; };
 		CDDCF6472A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6462A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift */; };
@@ -723,6 +724,7 @@
 		CDC1C9422A7AC24600072E3D /* ReadCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadCheck.swift; sourceTree = "<group>"; };
 		CDC6A8C92A6F1C8D00CC11AC /* AssociatedIconProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedIconProtocol.swift; sourceTree = "<group>"; };
 		CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSettingsView.swift; sourceTree = "<group>"; };
+		CDDB2EDD2A85C2F1001D4B16 /* HapticPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPriority.swift; sourceTree = "<group>"; };
 		CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBar.swift; sourceTree = "<group>"; };
 		CDDCF6442A66375E003DA3AC /* FancyTabItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemViewModifier.swift; sourceTree = "<group>"; };
 		CDDCF6462A663849003DA3AC /* FancyTabBarSelectionEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarSelectionEnvironmentKey.swift; sourceTree = "<group>"; };
@@ -1776,6 +1778,7 @@
 				CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */,
 				CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */,
 				CD6483A52A82FAF200A5AE84 /* ProfileTabLabel.swift */,
+				CDDB2EDD2A85C2F1001D4B16 /* HapticPriority.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2157,6 +2160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DEB0FFB2A4F87BF007CAB99 /* User Moderator View.swift in Sources */,
+				CDDB2EDE2A85C2F1001D4B16 /* HapticPriority.swift in Sources */,
 				CD6F29AA2A78003A00F20B6B /* PostRepository.swift in Sources */,
 				63D64E052A1BC20D00FD39C6 /* Post Post.swift in Sources */,
 				63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */,

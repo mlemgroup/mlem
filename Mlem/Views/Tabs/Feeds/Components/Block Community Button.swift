@@ -49,7 +49,7 @@ struct BlockCommunityButton: View {
             )
 
             let response = try await APIClient().perform(request: request)
-            HapticManager.shared.play(haptic: .violentSuccess)
+            HapticManager.shared.play(haptic: .violentSuccess, priority: .high)
             self.communityDetails = response.communityView
         } catch {
             // TODO: If we fail here and want to notify the user we should
