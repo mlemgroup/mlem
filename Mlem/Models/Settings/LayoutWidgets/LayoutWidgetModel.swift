@@ -61,9 +61,8 @@ class LayoutWidgetModel: ObservableObject {
             }
         } else if let collectionHovering = self.collectionHovering {
             // if not dragging a widget and hovering over a collection, pick up the widget at the drag location
-            hapticManager.play(haptic: .gentleInfo, priority: .low)
-            
             self.widgetDragging = collectionHovering.getItemAtLocation(value.location)
+            if self.widgetDragging != nil { hapticManager.play(haptic: .gentleInfo, priority: .low) }
             widgetDraggingCollection = collectionHovering
             predictedDropCollection = collectionHovering
         }
