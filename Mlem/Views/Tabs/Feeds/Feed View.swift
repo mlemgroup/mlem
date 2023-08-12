@@ -53,14 +53,14 @@ struct FeedView: View {
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
-    @AppStorage("isTranslucentBar") var isTranslucentBar: Bool = true
+    @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
     // MARK: - Main Views
     
     var body: some View {
         contentView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(isTranslucentBar ? Color.secondarySystemBackground : Color.systemBackground)
+            .background(hasTranslucentInsets ? Color.secondarySystemBackground : Color.systemBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
                 ToolbarItem(placement: .navigationBarTrailing) { sortMenu }

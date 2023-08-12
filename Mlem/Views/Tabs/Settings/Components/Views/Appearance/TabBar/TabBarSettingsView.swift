@@ -11,7 +11,6 @@ struct TabBarSettingsView: View {
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
-    @AppStorage("isTranslucentBar") var isTranslucentBar: Bool = true
         
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccountTracker: SavedAccountTracker
@@ -54,12 +53,6 @@ struct TabBarSettingsView: View {
                 SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
                                        settingName: "Show Unread Count",
                                        isTicked: $showInboxUnreadBadge)
-            }
-            
-            Section {
-                SwitchableSettingsItem(settingPictureSystemName: "paintpalette",
-                                       settingName: "Translucent",
-                                       isTicked: $isTranslucentBar)
             }
         }
         .fancyTabScrollCompatible()

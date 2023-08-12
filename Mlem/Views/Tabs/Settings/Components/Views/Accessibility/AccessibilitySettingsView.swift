@@ -12,6 +12,7 @@ struct AccessibilitySettingsView: View {
     
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
+    @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
     @State private var readBarThicknessSlider: CGFloat = 3.0
     
@@ -60,6 +61,14 @@ struct AccessibilitySettingsView: View {
                 Text("Differentiate Without Color")
             } footer: {
                 Text("Configure how this app behaves when the system \"differentiate without color\" option is on.")
+            }
+            
+            Section {
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.transparencySymbolName,
+                                       settingName: "Translucent Insets",
+                                       isTicked: $hasTranslucentInsets)
+            } header: {
+                Text("Transparency")
             }
         }
         .fancyTabScrollCompatible()

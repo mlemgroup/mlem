@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct NavigationBarColorModifier: ViewModifier {
-    @AppStorage("isTranslucentBar") var isTranslucentBar: Bool = true
+    @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
 
     func body(content: Content) -> some View {
-        if isTranslucentBar {
+        if hasTranslucentInsets {
             content
         } else {
             content
