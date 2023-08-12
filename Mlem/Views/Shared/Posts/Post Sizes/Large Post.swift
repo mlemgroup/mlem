@@ -100,31 +100,83 @@ struct LargePost: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
-            // post title
-            HStack {
-                if postView.post.featuredLocal {
-                    StickiedTag(tagType: .local)
-                } else if postView.post.featuredCommunity {
-                    StickiedTag(tagType: .community)
-                }
-                
-                Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .italic(postView.post.deleted)
-                    .foregroundColor(titleColor)
-                
-                Spacer()
-                if postView.post.nsfw {
-                    NSFWTag(compact: false)
-                }
+            postHeaderView
+                .padding(postHeaderInsets)
+                .background(postHeaderBackground)
+                .cornerRadius(8)
+            if layoutMode != .minimize {
+                postContentView
             }
-            
-            postContentView
+        }
+        .overlay(alignment: .bottomTrailing) {
+            if layoutMode == .minimize {
+                minimizedIcon
+            }
         }
     }
 
     // MARK: - Subviews
+    
+    @ViewBuilder
+    private var minimizedIcon: some View {
+        Image(systemName: "rectangle.expand.vertical")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding(6)
+            .frame(width: 28, height: 28, alignment: .center)
+            .background(.quaternary)
+            .clipShape(Circle())
+            .offset(.init(width: -8, height: -8))
+            .shadow(radius: 2)
+            .transition(
+                .scale(scale: 1.5)
+                .combined(with: .asymmetric(
+                    insertion: .push(from: .bottom),
+                    removal: .push(from: .top)))
+                .combined(with: .opacity)
+            )
+    }
+    
+    private var postHeaderInsets: EdgeInsets {
+        switch layoutMode {
+        case .minimize:
+            return .init(top: 12, leading: 12, bottom: 12, trailing: 12)
+        default:
+            return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        }
+    }
+    
+    @ViewBuilder
+    private var postHeaderBackground: some View {
+        switch layoutMode {
+        case .minimize:
+            Color.secondarySystemBackground
+        default:
+            Color.clear
+        }
+    }
+    
+    @ViewBuilder
+    private var postHeaderView: some View {
+        HStack {
+            if postView.post.featuredLocal {
+                StickiedTag(tagType: .local)
+            } else if postView.post.featuredCommunity {
+                StickiedTag(tagType: .community)
+            }
+            
+            Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
+                .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .italic(postView.post.deleted)
+                .foregroundColor(titleColor)
+            
+            Spacer()
+            if postView.post.nsfw {
+                NSFWTag(compact: false)
+            }
+        }
+    }
     
     @ViewBuilder
     var postContentView: some View {
@@ -162,7 +214,7 @@ struct LargePost: View {
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
             MarkdownView(
-                text: postBodyText(bodyText, layoutMode: layoutMode),
+                text: bodyText,
                 isNsfw: postView.post.nsfw,
                 replaceImagesWithEmoji: isExpanded ? false : true,
                 isDeemphasized: isExpanded ? false : true
@@ -170,9 +222,6 @@ struct LargePost: View {
             .id(postView.id)
             .font(.subheadline)
             .lineLimit(lineLimit)
-            .padding(postBodyInsets)
-            .background(postBodyBackground)
-            .cornerRadius(8)
         }
     }
     
