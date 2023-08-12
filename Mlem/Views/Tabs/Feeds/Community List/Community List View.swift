@@ -92,6 +92,7 @@ struct CommunityListView: View {
                     }
                     .fancyTabScrollCompatible()
                     .navigationTitle("Communities")
+                    .navigationBarColor()
                     .listStyle(PlainListStyle())
                     .scrollIndicators(.hidden)
 

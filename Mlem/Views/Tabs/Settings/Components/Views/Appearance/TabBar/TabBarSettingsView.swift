@@ -56,6 +56,8 @@ struct TabBarSettingsView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationTitle("Tab Bar")
+        .navigationBarColor()
         .animation(.easeIn, value: profileTabLabel)
         .onChange(of: appState.currentActiveAccount.nickname) { nickname in
             print("new nickname: \(nickname)")

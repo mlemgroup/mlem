@@ -38,6 +38,7 @@ struct SearchView: View {
             content
                 .handleLemmyViews()
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationBarColor()
                 .navigationTitle("Search")
         }
         .handleLemmyLinkResolution(navigationPath: $navigationPath)

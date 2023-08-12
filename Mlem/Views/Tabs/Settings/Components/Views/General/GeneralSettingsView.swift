@@ -115,5 +115,6 @@ struct GeneralSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("General")
+        .navigationBarColor()
     }
 }

@@ -71,6 +71,7 @@ struct AboutView: View {
             .fancyTabScrollCompatible()
         }
         .navigationTitle("About")
+        .navigationBarColor()
     }
 
     var versionString: String {

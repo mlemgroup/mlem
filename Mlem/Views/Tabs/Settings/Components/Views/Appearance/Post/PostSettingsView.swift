@@ -159,6 +159,7 @@ struct PostSettingsView: View {
         
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
+        .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -13,6 +13,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     typealias NavigationSelection = any FancyTabBarSelection
 
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
+    @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
     @Binding private var selection: Selection
     @Binding private var navigationSelection: NavigationSelection
@@ -110,6 +111,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                     }
             )
             .padding(.bottom, homeButtonExists ? 2.5 : 0)
+            .background(hasTranslucentInsets ? nil : Color.systemBackground.ignoresSafeArea(.all))
             .background(.thinMaterial)
         }
         .accessibilityElement(children: .contain)

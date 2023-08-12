@@ -153,6 +153,7 @@ struct FiltersSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Filters")
+        .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .automatic) {

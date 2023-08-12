@@ -53,18 +53,21 @@ struct FeedView: View {
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
+    @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
+    
     // MARK: - Main Views
     
     var body: some View {
         contentView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.secondarySystemBackground)
+            .background(hasTranslucentInsets ? Color.secondarySystemBackground : Color.systemBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
                 ToolbarItem(placement: .navigationBarTrailing) { sortMenu }
                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarColor()
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }
