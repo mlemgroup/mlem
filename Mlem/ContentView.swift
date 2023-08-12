@@ -158,7 +158,7 @@ struct ContentView: View {
             .onEnded { _ in
                 // disable long press in accessibility mode to prevent conflict with HUD
                 if !accessibilityFont {
-                    hapticManager.play(haptic: .rigidInfo)
+                    hapticManager.play(haptic: .rigidInfo, priority: .high)
                     isPresentingAccountSwitcher = true
                 }
             }

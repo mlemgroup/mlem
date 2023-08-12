@@ -28,7 +28,7 @@ import SwiftUI
         )
         
         let response = try await APIClient().perform(request: request)
-        HapticManager.shared.play(haptic: .success)
+        HapticManager.shared.play(haptic: .success, priority: .high)
         
         await MainActor.run {
             postTracker.update(with: response.postView)
