@@ -55,7 +55,7 @@ struct InboxView: View {
     
     // loading handling
     @State var isLoading: Bool = true
-    @State var shouldFilterRead: Bool = false
+    @AppStorage("shouldFilterRead") var shouldFilterRead: Bool = false
     
     // item feeds
     @State var allItems: [InboxItem] = .init()
