@@ -146,7 +146,7 @@ struct LargePost: View {
         switch layoutMode {
         case .minimize:
             /// - Warning: Keep leading/trailing = 0, otherwise you'll trigger system animations for Text, which moves whole words around...unless that's what you want =) [2023.08]
-            return .init(top: 10, leading: 0, bottom: 10, trailing: 0)
+            return .init(top: 12, leading: 0, bottom: 12, trailing: 0)
         default:
             return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
