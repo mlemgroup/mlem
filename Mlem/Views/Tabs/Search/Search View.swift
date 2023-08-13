@@ -43,7 +43,7 @@ struct SearchView: View {
         }
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
-        .disableAutocorrection(true)
+        .autocorrectionDisabled(true)
         .onSubmit(of: .search) {
             performSearch()
         }
