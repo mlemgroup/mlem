@@ -77,7 +77,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
         VStack(spacing: 0) {
             Divider()
             
-            HStack(alignment: .top, spacing: 0) {
+            HStack(spacing: 0) {
                 ForEach(tabItemKeys, id: \.hashValue) { key in
                     tabItems[key]?.label()
                         .accessibilityElement(children: .combine)
