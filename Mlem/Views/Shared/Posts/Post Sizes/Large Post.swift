@@ -13,6 +13,28 @@ struct LargePost: View {
     
     enum LayoutMode {
         case minimize, preferredSize, maximize
+        
+        var maxHeight: CGFloat {
+            switch self {
+            case .maximize:
+                return .infinity
+            case .preferredSize:
+                return AppConstants.maxFeedPostHeight
+            case .minimize:
+                return 44
+            }
+        }
+        
+        var lineLimit: Int? {
+            switch self {
+            case .maximize:
+                return nil
+            case .preferredSize:
+                return 8
+            case .minimize:
+                return 2
+            }
+        }
     }
     
     // constants
@@ -35,27 +57,7 @@ struct LargePost: View {
     }
     
     // computed
-    private var maxHeight: CGFloat {
-        switch layoutMode {
-        case .maximize:
-            return .infinity
-        case .preferredSize:
-            return AppConstants.maxFeedPostHeight
-        case .minimize:
-            return 44
-        }
-    }
     var titleColor: Color { !isExpanded && postView.read ? .secondary : .primary }
-    private var lineLimit: Int? {
-        switch layoutMode {
-        case .maximize:
-            return nil
-        case .preferredSize:
-            return 8
-        case .minimize:
-            return 2
-        }
-    }
     
     @ViewBuilder
     private var postBodyBackground: some View {
@@ -201,9 +203,9 @@ struct LargePost: View {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
                     CachedImage(url: url,
-                                maxHeight: maxHeight,
+                                maxHeight: layoutMode.maxHeight,
                                 dismissCallback: markPostAsRead)
-                    .frame(maxWidth: .infinity, maxHeight: maxHeight, alignment: .top)
+                    .frame(maxWidth: .infinity, maxHeight: layoutMode.maxHeight, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
                     .clipped()
@@ -237,7 +239,7 @@ struct LargePost: View {
             )
             .id(postView.id)
             .font(.subheadline)
-            .lineLimit(lineLimit)
+            .lineLimit(layoutMode.lineLimit)
         }
     }
     
