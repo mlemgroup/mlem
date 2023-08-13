@@ -134,7 +134,7 @@ struct LargePost: View {
             .offset(.init(width: -8, height: -8))
             .shadow(radius: 4)
             .transition(
-                .scale(scale: 1.5)
+                .scale(scale: 1.5, anchor: .leading)
                 .combined(with: .asymmetric(
                     insertion: .push(from: .bottom),
                     removal: .push(from: .top)))
