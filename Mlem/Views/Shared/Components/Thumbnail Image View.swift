@@ -31,10 +31,14 @@ struct ThumbnailImageView: View {
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
                 CachedImage(url: url,
                             fixedSize: size,
+                            contentMode: .fill,
                             dismissCallback: markPostAsRead)
                     .blur(radius: showNsfwFilter ? 8 : 0)
             case .link(let url):
-                CachedImage(url: url, shouldExpand: false, fixedSize: size)
+                CachedImage(url: url,
+                            shouldExpand: false,
+                            fixedSize: size,
+                            contentMode: .fill)
                     .onTapGesture {
                         if let url = postView.post.url {
                             openURL(url)

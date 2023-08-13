@@ -26,7 +26,8 @@ struct CommunitySidebarHeader: View {
                 if let bannerUrl = bannerURL {
                     CachedImage(url: bannerUrl,
                                 shouldExpand: false,
-                                fixedSize: CGSize(width: UIScreen.main.bounds.width, height: 200))
+                                fixedSize: CGSize(width: UIScreen.main.bounds.width, height: 200),
+                                contentMode: .fill)
                 }
             }
             VStack {

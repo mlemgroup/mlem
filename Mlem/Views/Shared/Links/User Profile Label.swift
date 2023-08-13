@@ -86,7 +86,8 @@ struct UserProfileLabel: View {
                 CachedImage(url: userAvatarLink,
                             shouldExpand: false,
                             fixedSize: avatarSize,
-                            imageNotFound: defaultUserAvatar)
+                            imageNotFound: defaultUserAvatar,
+                            contentMode: .fill)
             } else {
                 defaultUserAvatar()
             }

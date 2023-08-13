@@ -18,7 +18,8 @@ struct CommunitySidebarHeaderAvatar: View {
             if let avatarURL = imageUrl {
                 CachedImage(url: avatarURL,
                             shouldExpand: false,
-                            fixedSize: CGSize(width: 120, height: 120))
+                            fixedSize: CGSize(width: 120, height: 120),
+                            contentMode: .fill)
                 .clipShape(Circle())
                 .overlay(Circle()
                     .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
