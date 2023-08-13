@@ -53,6 +53,7 @@ struct ExpandedPost: View {
 
     @State private var sortSelection = 0
     @State private var commentSortingType: CommentSortType = .top
+    @State private var postLayoutMode: LargePost.LayoutMode = .maximize
     
     var body: some View {
         contentView
@@ -128,8 +129,13 @@ struct ExpandedPost: View {
                 
                 LargePost(
                     postView: post,
-                    isExpanded: true
+                    layoutMode: $postLayoutMode
                 )
+                .onTapGesture {
+                    withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)) {
+                        postLayoutMode = postLayoutMode == .maximize ? .minimize : .maximize
+                    }
+                }
                 
                 UserProfileLink(user: post.creator,
                                 serverInstanceLocation: userServerInstanceLocation)

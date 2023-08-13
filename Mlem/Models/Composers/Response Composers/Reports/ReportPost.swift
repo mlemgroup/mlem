@@ -18,7 +18,7 @@ struct ReportPost: ResponseEditorModel {
     let post: APIPostView
     
     func embeddedView() -> AnyView {
-        return AnyView(LargePost(postView: post, isExpanded: true)
+        return AnyView(LargePost(postView: post, layoutMode: .constant(.maximize))
             .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }
     
