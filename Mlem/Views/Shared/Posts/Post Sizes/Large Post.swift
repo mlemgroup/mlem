@@ -232,7 +232,7 @@ struct LargePost: View {
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
             MarkdownView(
-                text: bodyText,
+                text: postBodyText(bodyText, layoutMode: layoutMode),
                 isNsfw: postView.post.nsfw,
                 replaceImagesWithEmoji: isExpanded ? false : true,
                 isInline: isExpanded ? false : true
