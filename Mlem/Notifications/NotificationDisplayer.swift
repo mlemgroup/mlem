@@ -165,6 +165,7 @@ class NotificationDisplayer {
     }
     
     private static func configureLayout(of toastView: UIView, in controller: UIViewController) {
+        toastView.isUserInteractionEnabled = false
         toastView.translatesAutoresizingMaskIntoConstraints = false
         toastView.backgroundColor = .clear
         toastView.alpha = 0 // start with the toast invisible
