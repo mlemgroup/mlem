@@ -98,6 +98,9 @@ struct LargePost: View {
         self._layoutMode = layoutMode
     }
 
+    @State private var scaleX: CGFloat = 1
+    @State private var scaleY: CGFloat = 1
+        
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
             postHeaderView
@@ -124,10 +127,10 @@ struct LargePost: View {
             .aspectRatio(contentMode: .fit)
             .padding(6)
             .frame(width: 28, height: 28, alignment: .center)
-            .background(.quaternary)
+            .background(.regularMaterial)
             .clipShape(Circle())
             .offset(.init(width: -8, height: -8))
-            .shadow(radius: 2)
+            .shadow(radius: 4)
             .transition(
                 .scale(scale: 1.5)
                 .combined(with: .asymmetric(
@@ -142,7 +145,8 @@ struct LargePost: View {
     private var postHeaderInsets: EdgeInsets {
         switch layoutMode {
         case .minimize:
-            return .init(top: 12, leading: 12, bottom: 12, trailing: 12)
+            /// - Warning: Keep leading/trailing = 0, otherwise you'll trigger system animations for Text, which moves whole words around...unless that's what you want =) [2023.08]
+            return .init(top: 10, leading: 0, bottom: 10, trailing: 0)
         default:
             return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
@@ -177,12 +181,17 @@ struct LargePost: View {
             if postView.post.nsfw {
                 NSFWTag(compact: false)
             }
-            
-            if layoutMode == .minimize {
-                Color.clear
-                    .padding(6)
-                    .frame(width: 28, height: 28, alignment: .center)
-                    .accessibilityHidden(true)
+        }
+        .scaleEffect(x: scaleX, y: scaleY)
+        .onChange(of: layoutMode) { newValue in
+            withAnimation(.easeOut(duration: 0.25)) {
+                if newValue == .minimize {
+                    scaleX = 0.95
+                    scaleY = 0.95
+                } else {
+                    scaleX = 1
+                    scaleY = 1
+                }
             }
         }
     }
