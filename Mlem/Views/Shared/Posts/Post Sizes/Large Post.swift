@@ -56,15 +56,16 @@ struct LargePost: View {
             return 2
         }
     }
+    
     @ViewBuilder
     private var postBodyBackground: some View {
-        switch layoutMode {
-        case .minimize:
+        if layoutMode == .minimize {
             Color.secondarySystemBackground
-        default:
+        } else {
             Color.clear
         }
     }
+    
     private var postBodyInsets: EdgeInsets {
         switch layoutMode {
         case .minimize:
