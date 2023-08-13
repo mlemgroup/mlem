@@ -74,7 +74,7 @@ struct CachedImage: View {
             if let imageContainer = state.imageContainer {
                 let imageView = Image(uiImage: imageContainer.image)
                     .resizable()
-                    .scaledToFill()
+                    .scaledToFit()
                     .frame(width: size.width, height: size.height)
                     .clipped()
                     .allowsHitTesting(false)
