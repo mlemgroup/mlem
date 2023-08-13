@@ -67,10 +67,9 @@ struct LargePost: View {
     }
     
     private var postBodyInsets: EdgeInsets {
-        switch layoutMode {
-        case .minimize:
+        if layoutMode == .minimize {
             return .init(top: 12, leading: 12, bottom: 12, trailing: 12)
-        default:
+        } else {
             return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
     }
@@ -144,21 +143,19 @@ struct LargePost: View {
     }
     
     private var postHeaderInsets: EdgeInsets {
-        switch layoutMode {
-        case .minimize:
+        if layoutMode == .minimize {
             /// - Warning: Keep leading/trailing = 0, otherwise you'll trigger system animations for Text, which moves whole words around...unless that's what you want =) [2023.08]
             return .init(top: 12, leading: 0, bottom: 12, trailing: 0)
-        default:
+        } else {
             return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
     }
     
     @ViewBuilder
     private var postHeaderBackground: some View {
-        switch layoutMode {
-        case .minimize:
+        if layoutMode == .minimize {
             Color.secondarySystemBackground
-        default:
+        } else {
             Color.clear
         }
     }
