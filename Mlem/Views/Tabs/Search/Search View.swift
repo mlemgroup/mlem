@@ -44,6 +44,7 @@ struct SearchView: View {
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
         .autocorrectionDisabled(true)
+        .textInputAutocapitalization(.never)
         .onSubmit(of: .search) {
             performSearch()
         }
