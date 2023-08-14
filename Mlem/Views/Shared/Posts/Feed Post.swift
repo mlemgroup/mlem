@@ -288,6 +288,28 @@ struct FeedPost: View {
             )
         }
     }
+    
+    func blockCommunity() async {
+        do {
+            let blocked = try await Mlem.blockCommunity(
+                account: appState.currentActiveAccount,
+                community: postView.community,
+                blocked: true
+            )
+            if blocked {
+                postTracker.removePosts(from: postView.creator.id)
+                await notifier.add(.success("Blocked \(postView.community.name)"))
+            }
+        } catch {
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block \(postView.community.name)",
+                    style: .toast,
+                    underlyingError: error
+                )
+            )
+        }
+    }
 
     func replyToPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
@@ -450,6 +472,17 @@ struct FeedPost: View {
             enabled: true) {
                 Task(priority: .userInitiated) {
                     await blockUser()
+                }
+            })
+        
+        // block community
+        ret.append(MenuFunction(
+            text: "Block Community",
+            imageName: AppConstants.blockSymbolName,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                Task(priority: .userInitiated) {
+                    await blockCommunity()
                 }
             })
 
