@@ -245,6 +245,8 @@ struct MarkdownView: View {
         let blocks = parseMarkdownForImages(text: text)
         let theme: Theme = isInline ? .plain : .mlem
         
+        print(blocks)
+        
         return VStack {
             ForEach(blocks) { block in
                 if block.isImage {
@@ -269,18 +271,12 @@ struct MarkdownView: View {
     }
     
     func parseMarkdownForImages(text: String) -> [MarkdownBlock] {
-        // this will capture the "![label](url)" pattern so we can hanble it separately
-        let imageLooker = Regex {
-            "!["
-            Capture {
-                ZeroOrMore(.any, .reluctant) // captures the label of the image
-            }
-            "]("
-            Capture {
-                ZeroOrMore(.any, .reluctant) // captures the url of the image
-            }
-            ")"
-        }
+        // this regex will capture the '![label](url "title") pattern so we can handle it separately
+        // piece by piece:
+        // !\[(.*?)\] matches '![label]' and captures 'label'
+        // \((.*?) matches '(url' and captures 'url'
+        // ( \"(.*)\")? matches ' "title"
+        let imageLooker = /!\[(.*?)\]\((.*?)( \"(.*)\")?\)/
             .ignoresCase()
         
         var blocks: [MarkdownBlock] = .init()
@@ -291,6 +287,10 @@ struct MarkdownView: View {
                 if let firstImage = try imageLooker.firstMatch(in: text[idx...]) {
                     // if there is some image found, add it to blocks
                     if firstImage.range.lowerBound == idx {
+                        print(firstImage.output.1)
+                        print(firstImage.output.2)
+                        print(firstImage.output.3)
+                        
                         // if the regex starts *right here*, add to images
                         blocks.append(MarkdownBlock(text: firstImage.output.2, isImage: true, id: blockId))
                         blockId += 1
