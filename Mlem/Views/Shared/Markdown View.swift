@@ -172,10 +172,16 @@ extension Theme {
                 )
         }
     
-    static let mlemDeemphasized = mlem
+    static let plain = Theme()
+        .link {
+            ForegroundColor(.link)
+        }
         .text {
             ForegroundColor(.secondary)
             FontSize(16)
+        }
+        .code {
+            
         }
 }
 
@@ -222,13 +228,13 @@ struct MarkdownView: View {
     @State var text: String
     let isNsfw: Bool
     let replaceImagesWithEmoji: Bool
-    let isDeemphasized: Bool
+    let isInline: Bool
     
-    init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isDeemphasized: Bool = false) {
-        self.text = text
+    init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isInline: Bool = false) {
+        self.text = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
-        self.isDeemphasized = isDeemphasized
+        self.isInline = isInline
     }
 
     var body: some View {
@@ -237,7 +243,7 @@ struct MarkdownView: View {
 
     @MainActor func generateView() -> some View {
         let blocks = parseMarkdownForImages(text: text)
-        let theme: Theme = isDeemphasized ? .mlemDeemphasized : .mlem
+        let theme: Theme = isInline ? .plain : .mlem
         
         return VStack {
             ForEach(blocks) { block in
@@ -253,6 +259,13 @@ struct MarkdownView: View {
                 }
             }
         }
+    }
+    
+    static func prepareInlineMarkdown(text: String) -> String {
+        return text
+            .components(separatedBy: .newlines)
+            .joined(separator: " ")
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
     }
     
     func parseMarkdownForImages(text: String) -> [MarkdownBlock] {

@@ -235,7 +235,7 @@ struct LargePost: View {
                 text: bodyText,
                 isNsfw: postView.post.nsfw,
                 replaceImagesWithEmoji: isExpanded ? false : true,
-                isDeemphasized: isExpanded ? false : true
+                isInline: isExpanded ? false : true
             )
             .id(postView.id)
             .font(.subheadline)
