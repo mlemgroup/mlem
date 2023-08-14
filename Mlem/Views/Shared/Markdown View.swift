@@ -271,10 +271,10 @@ struct MarkdownView: View {
     func parseMarkdownForImages(text: String) -> [MarkdownBlock] {
         // this regex will capture the '![label](url "title") pattern so we can handle it separately
         // piece by piece:
-        // !\[(.*?)\] matches '![label]' and captures 'label'
-        // \((.*?) matches '(url' and captures 'url'
-        // ( \"(.*)\")? matches ' "title"' or '', the capture is slightly garbage but we never use it
-        let imageLooker = /!\[(.*?)\]\((.*?)( \"(.*)\")?\)/
+        // !\[(?'label'[^\]]*)\] matches '![label]' and captures 'label' as label
+        // \((?'url'[^\s\)]*) matches '(url' and captures 'url' as url
+        // ( \"(?'title'[^\"]*)\")?\) matches ' "title")' or ')' and captures 'title' as title
+        let imageLooker = /!\[(?'label'[^\]]*)\]\((?'url'[^\s\)]*)( \"(?'title'[^\"]*)\")?\)/
             .ignoresCase()
         
         var blocks: [MarkdownBlock] = .init()
@@ -286,13 +286,13 @@ struct MarkdownView: View {
                     // if there is some image found, add it to blocks
                     if firstImage.range.lowerBound == idx {
                         // if the regex starts *right here*, add to images
-                        blocks.append(MarkdownBlock(text: firstImage.output.2, isImage: true, id: blockId))
+                        blocks.append(MarkdownBlock(text: firstImage.output.url, isImage: true, id: blockId))
                         blockId += 1
                     } else {
                         // otherwise, add text in between, then first match
                         blocks.append(MarkdownBlock(text: text[idx..<firstImage.range.lowerBound], isImage: false, id: blockId))
                         blockId += 1
-                        blocks.append(MarkdownBlock(text: firstImage.output.2, isImage: true, id: blockId))
+                        blocks.append(MarkdownBlock(text: firstImage.output.url, isImage: true, id: blockId))
                         blockId += 1
                     }
                     idx = firstImage.range.upperBound
