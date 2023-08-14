@@ -287,10 +287,6 @@ struct MarkdownView: View {
                 if let firstImage = try imageLooker.firstMatch(in: text[idx...]) {
                     // if there is some image found, add it to blocks
                     if firstImage.range.lowerBound == idx {
-                        print(firstImage.output.1)
-                        print(firstImage.output.2)
-                        print(firstImage.output.3)
-                        
                         // if the regex starts *right here*, add to images
                         blocks.append(MarkdownBlock(text: firstImage.output.2, isImage: true, id: blockId))
                         blockId += 1
