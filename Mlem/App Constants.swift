@@ -144,4 +144,8 @@ struct AppConstants {
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
     static let infiniteLoadThresholdOffset: Int = -10
+    
+    // MARK: - Text
+    static let blockUserPrompt: String = "Really block this user?"
+    static let reportPostPrompt: String = "Really report this post?"
 }

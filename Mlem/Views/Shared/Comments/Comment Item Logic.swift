@@ -233,7 +233,7 @@ extension CommentItem {
         ret.append(MenuFunction(
             text: "Report",
             imageName: AppConstants.reportSymbolName,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: "Really report?",
             enabled: true) {
                 editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
                                                                    comment: hierarchicalComment.commentView,
@@ -243,7 +243,7 @@ extension CommentItem {
         // block
         ret.append(MenuFunction(text: "Block User",
                                 imageName: AppConstants.blockUserSymbolName,
-                                destructiveActionPrompt: nil,
+                                destructiveActionPrompt: AppConstants.blockUserPrompt,
                                 enabled: true) {
             Task(priority: .userInitiated) {
                 await blockUser(userId: hierarchicalComment.commentView.creator.id)
