@@ -245,8 +245,6 @@ struct MarkdownView: View {
         let blocks = parseMarkdownForImages(text: text)
         let theme: Theme = isInline ? .plain : .mlem
         
-        print(blocks)
-        
         return VStack {
             ForEach(blocks) { block in
                 if block.isImage {
