@@ -273,7 +273,7 @@ struct MarkdownView: View {
         // piece by piece:
         // !\[(.*?)\] matches '![label]' and captures 'label'
         // \((.*?) matches '(url' and captures 'url'
-        // ( \"(.*)\")? matches ' "title"
+        // ( \"(.*)\")? matches ' "title"' or '', the capture is slightly garbage but we never use it
         let imageLooker = /!\[(.*?)\]\((.*?)( \"(.*)\")?\)/
             .ignoresCase()
         
