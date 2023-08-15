@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Nuke
 
 struct PostSettingsView: View {
     @EnvironmentObject var appState: AppState
@@ -40,7 +41,9 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
     
     func clearFeedImageCache() {
-        print("clearFeedImageCache now")
+        // Clearing cache doesn't seem to work: (shouldn't be a problem for the sizing issue)
+        URLCache.shared.removeAllCachedResponses()
+        ImagePipeline.shared.cache.removeAll()
     }
 
     var body: some View {
