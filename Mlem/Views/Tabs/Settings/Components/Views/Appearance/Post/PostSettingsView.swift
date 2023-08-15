@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Nuke
 
 struct PostSettingsView: View {
     @EnvironmentObject var appState: AppState
@@ -40,12 +39,6 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
     
-    func clearFeedImageCache() {
-        // Clearing cache doesn't seem to work: (shouldn't be a problem for the sizing issue)
-        URLCache.shared.removeAllCachedResponses()
-        ImagePipeline.shared.cache.removeAll()
-    }
-
     var body: some View {
         Form {
             Section {
@@ -167,9 +160,6 @@ struct PostSettingsView: View {
                 )
             }
 
-        }
-        .onChange(of: limitImageHeightInFeed) { _ in
-            clearFeedImageCache()
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
