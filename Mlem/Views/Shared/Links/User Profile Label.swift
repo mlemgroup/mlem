@@ -56,7 +56,7 @@ struct UserProfileLabel: View {
         "lemmy.tespia.org/u/navi",
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
-        "vlemmy.net/u/ericbandrews",
+        "lemmy.ml/u/ericbandrews",
         "programming.dev/u/tht7"
     ]
     
@@ -86,7 +86,8 @@ struct UserProfileLabel: View {
                 CachedImage(url: userAvatarLink,
                             shouldExpand: false,
                             fixedSize: avatarSize,
-                            imageNotFound: defaultUserAvatar)
+                            imageNotFound: defaultUserAvatar,
+                            contentMode: .fill)
             } else {
                 defaultUserAvatar()
             }
@@ -115,6 +116,7 @@ struct UserProfileLabel: View {
         HStack(spacing: 4) {
             if let flairImage = flair.image {
                 flairImage
+                    .font(.footnote)
                     .imageScale(serverInstanceLocation == .bottom ? .large : .small)
                     .foregroundColor(flair.color)
             }

@@ -155,7 +155,8 @@ struct CommunityLabel: View {
                 CachedImage(url: url.withIcon64Parameters,
                             shouldExpand: false,
                             fixedSize: avatarSize,
-                            imageNotFound: defaultCommunityAvatar)
+                            imageNotFound: defaultCommunityAvatar,
+                            contentMode: .fill)
             } else {
                 defaultCommunityAvatar()
             }

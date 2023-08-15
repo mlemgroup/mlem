@@ -113,11 +113,12 @@ struct LargePost: View {
                 postContentView
             }
         }
-        .overlay(alignment: .bottomTrailing) {
-            if layoutMode == .minimize {
-                minimizedIcon
-            }
-        }
+        // TEMPORARILY DISABLED so we can play with it on the nightly without the icon
+//        .overlay(alignment: .bottomTrailing) {
+//            if layoutMode == .minimize {
+//                minimizedIcon
+//            }
+//        }
     }
 
     // MARK: - Subviews
@@ -232,7 +233,7 @@ struct LargePost: View {
     var postBodyView: some View {
         if let bodyText = postView.post.body, !bodyText.isEmpty {
             MarkdownView(
-                text: bodyText,
+                text: postBodyText(bodyText, layoutMode: layoutMode),
                 isNsfw: postView.post.nsfw,
                 replaceImagesWithEmoji: isExpanded ? false : true,
                 isInline: isExpanded ? false : true
