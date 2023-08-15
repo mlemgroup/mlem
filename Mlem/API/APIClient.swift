@@ -246,3 +246,36 @@ extension APIClient {
         try await perform(request: request)
     }
 }
+
+// MARK: - Object Resolving methods
+
+enum ResolvedObject {
+    case post(APIPostView)
+    case person(APIPersonView)
+    case comment(APICommentView)
+    case community(APICommunityView)
+}
+
+extension APIClient {
+    func resolve(query: String) async throws -> ResolvedObject? {
+        let request = ResolveObjectRequest(session: try session, query: query)
+        let response = try await perform(request: request)
+        if let post = response.post {
+            return .post(post)
+        }
+        
+        if let person = response.person {
+            return .person(person)
+        }
+        
+        if let comment = response.comment {
+            return .comment(comment)
+        }
+        
+        if let community = response.community {
+            return .community(community)
+        }
+        
+        return nil
+    }
+}
