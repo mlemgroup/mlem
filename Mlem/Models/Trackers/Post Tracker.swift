@@ -130,9 +130,15 @@ class PostTracker: FeedTracker<APIPostView> {
         prefetcher.startPrefetching(with: imageRequests)
     }
     
-    func removePosts(from personId: Int) {
+    func removeUserPosts(from personId: Int) {
         filter({
             return $0.creator.id != personId
+        })
+    }
+    
+    func removeCommunityPosts(from communityId: Int) {
+        filter({
+            return $0.community.id != communityId
         })
     }
     

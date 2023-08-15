@@ -160,7 +160,7 @@ extension ExpandedPost {
                 blocked: true
             )
             if blocked {
-                postTracker.removePosts(from: post.creator.id)
+                postTracker.removeUserPosts(from: post.creator.id)
                 await notifier.add(.success("Blocked \(post.creator.name)"))
             }
         } catch {

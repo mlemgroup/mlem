@@ -275,7 +275,7 @@ struct FeedPost: View {
                 blocked: true
             )
             if blocked {
-                postTracker.removePosts(from: postView.creator.id)
+                postTracker.removeUserPosts(from: postView.creator.id)
                 await notifier.add(.success("Blocked \(postView.creator.name)"))
             }
         } catch {
@@ -297,7 +297,7 @@ struct FeedPost: View {
                 blocked: true
             )
             if blocked {
-                postTracker.removePosts(from: postView.creator.id)
+                postTracker.removeCommunityPosts(from: postView.community.id)
                 await notifier.add(.success("Blocked \(postView.community.name)"))
             }
         } catch {
