@@ -51,7 +51,6 @@ struct CachedImage: View {
         self.cornerRadius = cornerRadius ?? 0
         
         screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
-        // Problem: Size doesn't update properly when parent size changes
         
         // determine the size of the image
         if let fixedSize {
@@ -164,7 +163,6 @@ struct CachedImage: View {
      */
     private func cacheImageSize() {
         if let url {
-            print("updating size cache")
             AppConstants.imageSizeCache.setObject(ImageSize(size: size), forKey: NSString(string: url.description))
         }
     }

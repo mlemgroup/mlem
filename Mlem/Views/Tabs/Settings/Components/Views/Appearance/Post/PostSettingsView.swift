@@ -38,7 +38,7 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
-    
+
     var body: some View {
         Form {
             Section {
