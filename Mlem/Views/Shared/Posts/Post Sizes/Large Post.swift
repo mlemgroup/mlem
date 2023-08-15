@@ -204,11 +204,11 @@ struct LargePost: View {
                 if layoutMode != .minimize {
                     CachedImage(url: url,
                                 maxHeight: .infinity,
-                                dismissCallback: markPostAsRead,
-                                fullWidth: true)
-                    .padding(.horizontal, -AppConstants.postAndCommentSpacing)
+                                dismissCallback: markPostAsRead)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
+                    .cornerRadius(AppConstants.largeItemCornerRadius)
+                    .clipped()
                 }
                 postBodyView
             }
