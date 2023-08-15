@@ -28,6 +28,7 @@ struct AppConstants {
     
     // MARK: - Sizes
     static let maxFeedPostHeight: CGFloat = 400
+    static let maxFeedPostHeightExpanded: CGFloat = 3000
     static let thumbnailSize: CGFloat = 60
     static let largeAvatarSize: CGFloat = 32
     static let smallAvatarSize: CGFloat = 16

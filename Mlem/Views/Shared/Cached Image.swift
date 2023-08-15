@@ -41,8 +41,7 @@ struct CachedImage: View {
          imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
          contentMode: ContentMode = .fit,
          dismissCallback: (() -> Void)? = nil,
-         cornerRadius: CGFloat? = nil,
-         padding: CGFloat? = nil) {
+         cornerRadius: CGFloat? = nil) {
         self.url = url
         self.shouldExpand = shouldExpand
         self.maxHeight = maxHeight
@@ -51,7 +50,7 @@ struct CachedImage: View {
         self.dismissCallback = dismissCallback
         self.cornerRadius = cornerRadius ?? 0
         
-        screenWidth = UIScreen.main.bounds.width - ((padding ?? AppConstants.postAndCommentSpacing) * 2)
+        screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
         // Problem: Size doesn't update properly when parent size changes
         
         // determine the size of the image

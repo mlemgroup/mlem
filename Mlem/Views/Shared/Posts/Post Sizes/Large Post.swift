@@ -14,12 +14,12 @@ struct LargePost: View {
     enum LayoutMode {
         case minimize, preferredSize, maximize
         
-        var maxHeight: CGFloat {
+        func getMaxHeight(_ limitHeight: Bool = false) -> CGFloat {
             switch self {
             case .maximize:
                 return .infinity
             case .preferredSize:
-                return AppConstants.maxFeedPostHeight
+                return limitHeight ? AppConstants.maxFeedPostHeight : AppConstants.maxFeedPostHeightExpanded
             case .minimize:
                 return 44
             }
@@ -200,19 +200,17 @@ struct LargePost: View {
     
     @ViewBuilder
     var postContentView: some View {
-        let limitHeight = limitImageHeightInFeed && !isExpanded
         switch postView.postType {
         case .image(let url):
+            let limitHeight = limitImageHeightInFeed && !isExpanded
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
                     CachedImage(url: url,
-                                maxHeight: limitHeight ? layoutMode.maxHeight : .infinity,
+                                maxHeight: layoutMode.getMaxHeight(limitHeight),
                                 dismissCallback: markPostAsRead,
-                                cornerRadius: AppConstants.largeItemCornerRadius,
-                                padding: limitHeight ? nil : AppConstants.compactSpacing)
-                    .padding(.horizontal, limitHeight ? 0 : -AppConstants.compactSpacing)
+                                cornerRadius: AppConstants.largeItemCornerRadius)
                     .frame(maxWidth: .infinity,
-                           maxHeight: limitHeight ? layoutMode.maxHeight : .infinity,
+                           maxHeight: layoutMode.getMaxHeight(limitHeight),
                            alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                 }
