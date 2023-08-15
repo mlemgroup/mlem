@@ -105,6 +105,7 @@ struct AppConstants {
     static let localFeedSymbolNameFill: String = "house.circle.fill"
     static let subscribedFeedSymbolName: String = "newspaper.circle"
     static let subscribedFeedSymbolNameFill: String = "newspaper.circle.fill"
+    static let limitImageHeightInFeedSymbolName: String = "rectangle.expand.vertical"
     
     // sort types
     static let activeSortSymbolName: String = "popcorn" // not married to this idea 

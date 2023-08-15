@@ -40,7 +40,7 @@ struct CachedImage: View {
          imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
          contentMode: ContentMode = .fit,
          dismissCallback: (() -> Void)? = nil,
-         padding: CGFloat = AppConstants.postAndCommentSpacing) {
+         padding: CGFloat? = nil) {
         self.url = url
         self.shouldExpand = shouldExpand
         self.maxHeight = maxHeight
@@ -48,7 +48,7 @@ struct CachedImage: View {
         self.contentMode = contentMode
         self.dismissCallback = dismissCallback
         
-        screenWidth = UIScreen.main.bounds.width - (padding * 2)
+        screenWidth = UIScreen.main.bounds.width - ((padding ?? AppConstants.postAndCommentSpacing) * 2)
         
         // determine the size of the image
         if let fixedSize {

@@ -47,6 +47,7 @@ struct LargePost: View {
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
 
     // parameters
     let postView: APIPostView
@@ -204,12 +205,14 @@ struct LargePost: View {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
                     CachedImage(url: url,
-                                maxHeight: .infinity,
+                                maxHeight: limitImageHeightInFeed ? layoutMode.maxHeight : .infinity,
                                 dismissCallback: markPostAsRead,
-                                padding: AppConstants.compactSpacing)
+                                padding: limitImageHeightInFeed ? nil : AppConstants.compactSpacing)
                     .cornerRadius(AppConstants.largeItemCornerRadius)
-                    .padding(.horizontal, -AppConstants.compactSpacing)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .padding(.horizontal, limitImageHeightInFeed ? 0 : -AppConstants.compactSpacing)
+                    .frame(maxWidth: .infinity,
+                           maxHeight: limitImageHeightInFeed ? layoutMode.maxHeight : .infinity,
+                           alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                 }
                 postBodyView

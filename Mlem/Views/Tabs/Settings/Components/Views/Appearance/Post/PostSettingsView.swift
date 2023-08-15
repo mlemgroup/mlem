@@ -17,6 +17,7 @@ struct PostSettingsView: View {
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
     @AppStorage("thumbnailsOnRight") var shouldShowThumbnailsOnRight: Bool = false
+    @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
     
     // Community
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
@@ -37,6 +38,10 @@ struct PostSettingsView: View {
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteIcon") var shouldShowWebsiteIcon: Bool = true
+    
+    func clearFeedImageCache() {
+        print("clearFeedImageCache now")
+    }
 
     var body: some View {
         Form {
@@ -86,6 +91,10 @@ struct PostSettingsView: View {
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
                                        settingName: "Show Post Thumbnails",
                                        isTicked: $shouldShowPostThumbnails)
+                
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.limitImageHeightInFeedSymbolName,
+                                       settingName: "Limit Image Height In Feed",
+                                       isTicked: $limitImageHeightInFeed)
             }
             
             Section("Interactions and Info") {
@@ -156,7 +165,9 @@ struct PostSettingsView: View {
             }
 
         }
-        
+        .onChange(of: limitImageHeightInFeed) { _ in
+            clearFeedImageCache()
+        }
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
         .navigationBarColor()
