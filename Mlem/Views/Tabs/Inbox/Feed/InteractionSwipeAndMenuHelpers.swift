@@ -91,7 +91,7 @@ extension InboxView {
         // block
         ret.append(MenuFunction(text: "Block User",
                                 imageName: AppConstants.blockUserSymbolName,
-                                destructiveActionPrompt: nil,
+                                destructiveActionPrompt: AppConstants.blockUserPrompt,
                                 enabled: true) {
             Task(priority: .userInitiated) {
                 await blockUser(userId: commentReply.creator.id)
@@ -183,7 +183,7 @@ extension InboxView {
         // block
         ret.append(MenuFunction(text: "Block User",
                                 imageName: AppConstants.blockUserSymbolName,
-                                destructiveActionPrompt: nil,
+                                destructiveActionPrompt: AppConstants.blockUserPrompt,
                                 enabled: true) {
             Task(priority: .userInitiated) {
                 await blockUser(userId: mention.creator.id)
@@ -245,7 +245,7 @@ extension InboxView {
         // block
         ret.append(MenuFunction(text: "Block User",
                                 imageName: AppConstants.blockUserSymbolName,
-                                destructiveActionPrompt: nil,
+                                destructiveActionPrompt: AppConstants.blockUserPrompt,
                                 enabled: true) {
             Task(priority: .userInitiated) {
                 await blockUser(userId: message.creator.id)

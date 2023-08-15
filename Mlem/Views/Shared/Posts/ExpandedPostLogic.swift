@@ -269,7 +269,7 @@ extension ExpandedPost {
         // report
         ret.append(MenuFunction(text: "Report Post",
                                 imageName: AppConstants.reportSymbolName,
-                                destructiveActionPrompt: nil,
+                                destructiveActionPrompt: AppConstants.reportPostPrompt,
                                 enabled: true) {
             reportPost()
         })
@@ -278,7 +278,7 @@ extension ExpandedPost {
         ret.append(MenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true) {
                 Task(priority: .userInitiated) {
                     await blockUser()

@@ -26,6 +26,7 @@ struct CachedImage: View {
     
     let maxHeight: CGFloat
     let screenWidth: CGFloat
+    let contentMode: ContentMode
     
     /**
      Optional callback triggered when the quicklook preview is dismissed
@@ -37,12 +38,14 @@ struct CachedImage: View {
          maxHeight: CGFloat = .infinity,
          fixedSize: CGSize? = nil,
          imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
+         contentMode: ContentMode = .fit,
          dismissCallback: (() -> Void)? = nil,
          padding: CGFloat = AppConstants.postAndCommentSpacing) {
         self.url = url
         self.shouldExpand = shouldExpand
         self.maxHeight = maxHeight
         self.imageNotFound = imageNotFound
+        self.contentMode = contentMode
         self.dismissCallback = dismissCallback
         
         screenWidth = UIScreen.main.bounds.width - (padding * 2)
@@ -75,7 +78,7 @@ struct CachedImage: View {
             if let imageContainer = state.imageContainer {
                 let imageView = Image(uiImage: imageContainer.image)
                     .resizable()
-                    .scaledToFill()
+                    .aspectRatio(contentMode: contentMode)
                     .frame(width: size.width, height: size.height)
                     .clipped()
                     .allowsHitTesting(false)
