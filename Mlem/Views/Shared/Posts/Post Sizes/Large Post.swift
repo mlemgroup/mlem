@@ -207,8 +207,8 @@ struct LargePost: View {
                     CachedImage(url: url,
                                 maxHeight: limitImageHeightInFeed ? layoutMode.maxHeight : .infinity,
                                 dismissCallback: markPostAsRead,
+                                cornerRadius: AppConstants.largeItemCornerRadius,
                                 padding: limitImageHeightInFeed ? nil : AppConstants.compactSpacing)
-                    .cornerRadius(AppConstants.largeItemCornerRadius)
                     .padding(.horizontal, limitImageHeightInFeed ? 0 : -AppConstants.compactSpacing)
                     .frame(maxWidth: .infinity,
                            maxHeight: limitImageHeightInFeed ? layoutMode.maxHeight : .infinity,
