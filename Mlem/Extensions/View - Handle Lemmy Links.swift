@@ -86,6 +86,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
 
 struct HandleLemmyLinkResolution: ViewModifier {
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
@@ -120,26 +121,12 @@ struct HandleLemmyLinkResolution: ViewModifier {
                     print("lookup: \(lookup) (original: \(url.absoluteString))")
                     // Wooo this is a lemmy server we're talking to! time to parse this url and push it to the stack
                     do {
-                        let resolution = try await APIClient().perform(request: ResolveObjectRequest(account: account, query: lookup))
+                        let resolved = try await resolve(query: lookup, account: account)
                         
-                        await MainActor.run {
-                            // this is gonna be a bit of an ugly if switch but oh well for now
-                            if let post = resolution.post {
-                                // wop wop that was a post link!
-                                return navigationPath.wrappedValue.append(post)
-                            } else if let community = resolution.community {
-                                return navigationPath.wrappedValue.append(community)
-                            } else if let user = resolution.person?.person {
-                                return navigationPath.wrappedValue.append(user)
-                            }
-                            // else if let d = resolution.comment {
-                            // hmm I don't think we can do that right now!
-                            // so I'll skip and let the system open it instead
-                            // }
+                        if resolved {
+                            // as the link was handled we return, else it would also be passed to the default URL handling below
+                            return
                         }
-                        
-                        // as the link was handled we return, else it would also be passed to the default URL handling below
-                        return
                     } catch {
                         guard case let APIClientError.response(apiError, _) = error,
                               apiError.error == "couldnt_find_object",
@@ -172,6 +159,31 @@ struct HandleLemmyLinkResolution: ViewModifier {
         
         let outcome = URLHandler.handle(url)
         return outcome.result
+    }
+    
+    private func resolve(query: String, account: SavedAccount) async throws -> Bool {
+        let request = ResolveObjectRequest(account: account, query: query)
+        let resolution = try await apiClient.perform(request: request)
+        
+        return await MainActor.run {
+            // this is gonna be a bit of an ugly if switch but oh well for now
+            if let post = resolution.post {
+                // wop wop that was a post link!
+                navigationPath.wrappedValue.append(post)
+                return true
+            } else if let community = resolution.community {
+                navigationPath.wrappedValue.append(community)
+                return true
+            } else if let user = resolution.person?.person {
+                navigationPath.wrappedValue.append(user)
+                return true
+            }
+            // else if let d = resolution.comment {
+            // hmm I don't think we can do that right now!
+            // so I'll skip and let the system open it instead
+            // }
+            return false
+        }
     }
 }
 
