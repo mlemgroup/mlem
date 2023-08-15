@@ -275,13 +275,35 @@ struct FeedPost: View {
                 blocked: true
             )
             if blocked {
-                postTracker.removePosts(from: postView.creator.id)
+                postTracker.removeUserPosts(from: postView.creator.id)
                 await notifier.add(.success("Blocked \(postView.creator.name)"))
             }
         } catch {
             errorHandler.handle(
                 .init(
                     message: "Unable to block \(postView.creator.name)",
+                    style: .toast,
+                    underlyingError: error
+                )
+            )
+        }
+    }
+    
+    func blockCommunity() async {
+        do {
+            let blocked = try await Mlem.blockCommunity(
+                account: appState.currentActiveAccount,
+                community: postView.community,
+                blocked: true
+            )
+            if blocked {
+                postTracker.removeCommunityPosts(from: postView.community.id)
+                await notifier.add(.success("Blocked \(postView.community.name)"))
+            }
+        } catch {
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block \(postView.community.name)",
                     style: .toast,
                     underlyingError: error
                 )
@@ -450,6 +472,17 @@ struct FeedPost: View {
             enabled: true) {
                 Task(priority: .userInitiated) {
                     await blockUser()
+                }
+            })
+        
+        // block community
+        ret.append(MenuFunction(
+            text: "Block Community",
+            imageName: AppConstants.blockSymbolName,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                Task(priority: .userInitiated) {
+                    await blockCommunity()
                 }
             })
 
