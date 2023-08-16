@@ -100,7 +100,7 @@ struct OnboardingView: View {
                     CollapsibleTextItem(titleText: "About Lemmy",
                                         bodyText:
                                         """
-                                        Lemmy, like Mlem, is a free and open source project. There's no corporate interest behind it; it's a donation-driven project built and run by the users, for the users to offer a platform that can't be destroyed or manipulated on the whim of a small ownership group.
+                                        Lemmy, like Mlem, is a free and open source project. There's no corporate interest behind it; it's a donation-driven project built and run by and for the users to create a platform that can't be destroyed or manipulated on the whim of a small ownership group.
                                         
                                         Lemmy is a link aggregator: it is organized into user-moderated communities where people can post links, pictures, and plain text, and discuss them in a threaded comments section. You can subscribe to communities that fit your interests to create a custom feed of just the content that matters to you.
                                         """)
