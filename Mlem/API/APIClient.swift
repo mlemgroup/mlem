@@ -236,8 +236,31 @@ extension APIClient {
     }
     
     // MARK: Person Requests
+    
     func getUnreadCount() async throws -> APIPersonUnreadCounts {
         let request = GetPersonUnreadCount(session: try session)
+        return try await perform(request: request)
+    }
+    
+    func getPersonDetails(session: APISession, username: String) async throws -> GetPersonDetailsResponse {
+        // this call is used when a user is logging in and creating an account for the first time
+        // so an external session is required, as the expectation is the client will not yet have a session or
+        // the session will be for another account.
+        let request = try GetPersonDetailsRequest(session: session, username: username)
+        return try await perform(request: request)
+    }
+    
+    func getPersonDetails(for personId: Int, limit: Int?, savedOnly: Bool) async throws -> GetPersonDetailsResponse {
+        // this call is made by the `UserView` to load this user, or other Lemmy users details
+        // TODO: currently only the first page is loaded, with the passed in limit - we should instead be loading on
+        // demand as the user scrolls through this feed similar to what we do elsewhere
+        let request = try GetPersonDetailsRequest(
+            session: try session,
+            limit: limit,
+            savedOnly: savedOnly,
+            personId: personId
+        )
+        
         return try await perform(request: request)
     }
     
