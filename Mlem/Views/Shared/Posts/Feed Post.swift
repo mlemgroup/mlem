@@ -21,6 +21,7 @@ import QuickLook
  */
 struct FeedPost: View {
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
@@ -291,12 +292,8 @@ struct FeedPost: View {
     
     func blockCommunity() async {
         do {
-            let blocked = try await Mlem.blockCommunity(
-                account: appState.currentActiveAccount,
-                community: postView.community,
-                blocked: true
-            )
-            if blocked {
+            let response = try await apiClient.blockCommunity(id: postView.community.id, shouldBlock: true)
+            if response.blocked {
                 postTracker.removeCommunityPosts(from: postView.community.id)
                 await notifier.add(.success("Blocked \(postView.community.name)"))
             }

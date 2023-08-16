@@ -35,6 +35,8 @@ struct CommuntiyFeedRowView: View {
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
 
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     
@@ -133,13 +135,7 @@ struct CommuntiyFeedRowView: View {
         communitySubscriptionChanged(community, shouldSubscribe)
 
         do {
-            let request = FollowCommunityRequest(
-                account: appState.currentActiveAccount,
-                communityId: communityId,
-                follow: shouldSubscribe
-            )
-
-            _ = try await APIClient().perform(request: request)
+            _ = try await apiClient.followCommunity(id: communityId, shouldSubscribe: shouldSubscribe)
             
             Task {
                 if shouldSubscribe {
@@ -152,7 +148,9 @@ struct CommuntiyFeedRowView: View {
         } catch {
             // TODO: If we fail here and want to notify the user we should pass a message
             // into the contextual error below
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
             communitySubscriptionChanged(community, !shouldSubscribe)
         }
     }

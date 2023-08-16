@@ -5,11 +5,13 @@
 //  Created by David Bureš on 08.05.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct CommunitySidebarView: View {
     
-    @EnvironmentObject var appState: AppState
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
     
     // parameters
     let community: APICommunity
@@ -44,16 +46,12 @@ struct CommunitySidebarView: View {
     
     private func loadCommunity() async {
         do {
-            let request = GetCommunityRequest(account: appState.currentActiveAccount, communityId: community.id)
-            communityDetails = try await APIClient().perform(request: request)
-        } catch APIClientError.networking {
-            errorMessage = "Network error occurred, check your internet and retry"
-        } catch APIClientError.response {
-            errorMessage = "API error occurred, try refreshing"
-        } catch APIClientError.cancelled {
-            errorMessage = "Request was cancelled, try refreshing"
+            communityDetails = try await apiClient.getCommunityDetails(id: community.id)
         } catch {
-            errorMessage = "A decoding error occurred, try refreshing."
+            errorMessage = "An error has occurred, please try refreshing"
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     

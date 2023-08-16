@@ -13,6 +13,8 @@ struct FeedView: View {
     
     // MARK: Environment and settings
     
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     

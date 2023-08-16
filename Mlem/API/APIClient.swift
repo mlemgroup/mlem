@@ -335,4 +335,19 @@ extension APIClient {
         return try await perform(request: request)
     }
     // swiftlint:enable function_parameter_count
+    
+    func getCommunityDetails(id: Int) async throws -> GetCommunityResponse {
+        let request = GetCommunityRequest(session: try session, communityId: id)
+        return try await perform(request: request)
+    }
+    
+    func followCommunity(id: Int, shouldSubscribe: Bool) async throws -> CommunityResponse {
+        let request = FollowCommunityRequest(session: try session, communityId: id, follow: shouldSubscribe)
+        return try await perform(request: request)
+    }
+    
+    func blockCommunity(id: Int, shouldBlock: Bool) async throws -> BlockCommunityResponse {
+        let request = BlockCommunityRequest(session: try session, communityId: id, block: shouldBlock)
+        return try await perform(request: request)
+    }
 }

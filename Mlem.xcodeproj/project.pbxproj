@@ -56,7 +56,6 @@
 		50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */; };
 		50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */; };
 		50F830FA2A4C935C00D67099 /* FeedTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F92A4C935C00D67099 /* FeedTracker.swift */; };
-		53103A7B2A8A23AA0063DA2F /* BlockCommunityLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53103A7A2A8A23AA0063DA2F /* BlockCommunityLogic.swift */; };
 		630737892A1CD1E900039852 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630737882A1CD1E900039852 /* String.swift */; };
 		6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */; };
 		6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6307378C2A1CEB7C00039852 /* My Vote.swift */; };
@@ -91,7 +90,6 @@
 		63344C672A08D4E3001BC616 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C662A08D4E3001BC616 /* AppearanceSettingsView.swift */; };
 		63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C6D2A097FA1001BC616 /* View - Hide View.swift */; };
 		63344C712A098060001BC616 /* Sidebar View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C702A098060001BC616 /* Sidebar View.swift */; };
-		63344C752A09B075001BC616 /* Get Community Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63344C742A09B075001BC616 /* Get Community Details.swift */; };
 		6354F30A2A2E20040074C08D /* Alert - Multiple Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */; };
 		636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 636250DB2A18111400FC59B4 /* KeychainAccess */; };
 		6363D5C527EE196700E34822 /* MlemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6363D5C427EE196700E34822 /* MlemApp.swift */; };
@@ -445,7 +443,6 @@
 		50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshView.swift; sourceTree = "<group>"; };
 		50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTrackerItemProviding.swift; sourceTree = "<group>"; };
 		50F830F92A4C935C00D67099 /* FeedTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTracker.swift; sourceTree = "<group>"; };
-		53103A7A2A8A23AA0063DA2F /* BlockCommunityLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCommunityLogic.swift; sourceTree = "<group>"; };
 		630737882A1CD1E900039852 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		6307378A2A1CE2B300039852 /* Rate Post or Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rate Post or Comment.swift"; sourceTree = "<group>"; };
 		6307378C2A1CEB7C00039852 /* My Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "My Vote.swift"; sourceTree = "<group>"; };
@@ -481,7 +478,6 @@
 		63344C662A08D4E3001BC616 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
 		63344C6D2A097FA1001BC616 /* View - Hide View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - Hide View.swift"; sourceTree = "<group>"; };
 		63344C702A098060001BC616 /* Sidebar View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sidebar View.swift"; sourceTree = "<group>"; };
-		63344C742A09B075001BC616 /* Get Community Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Community Details.swift"; sourceTree = "<group>"; };
 		6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert - Multiple Alerts.swift"; sourceTree = "<group>"; };
 		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6363D5C427EE196700E34822 /* MlemApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemApp.swift; sourceTree = "<group>"; };
@@ -1023,7 +1019,6 @@
 			children = (
 				63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */,
 				63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */,
-				63344C742A09B075001BC616 /* Get Community Details.swift */,
 				6320BFD02A2F7AF500ECF661 /* Download UIImage from URL.swift */,
 			);
 			path = Networking;
@@ -1052,7 +1047,6 @@
 				CD18DC702A520A60002C56BC /* MarkPrivateMessageAsRead.swift */,
 				CD18DC742A522B38002C56BC /* SendPrivateMessage.swift */,
 				ADDC9E3B2A5CF02A00383D58 /* BlockPersonLogic.swift */,
-				53103A7A2A8A23AA0063DA2F /* BlockCommunityLogic.swift */,
 				CD7B53BA2A5F27DB00006E81 /* Report Private Message.swift */,
 			);
 			path = Participating;
@@ -2298,7 +2292,6 @@
 				CD18DC6D2A5203BF002C56BC /* MarkPersonMentionAsRead.swift in Sources */,
 				6318EDC327EE4D7F00BFCAE8 /* Feed Post.swift in Sources */,
 				CD05E7792A4E381A0081D102 /* PostSize.swift in Sources */,
-				63344C752A09B075001BC616 /* Get Community Details.swift in Sources */,
 				6D7782362A48EED8008AC1BF /* APIPrivateMessage.swift in Sources */,
 				5064D0452A71549C00B22EE3 /* NotificationMessage.swift in Sources */,
 				63344C4D2A07ABEE001BC616 /* Community.swift in Sources */,
@@ -2336,7 +2329,6 @@
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
 				CD82A2502A7162D400111034 /* GetPersonUnreadCount.swift in Sources */,
 				CD82A24C2A70A26900111034 /* View - CustomBadge.swift in Sources */,
-				53103A7B2A8A23AA0063DA2F /* BlockCommunityLogic.swift in Sources */,
 				B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,

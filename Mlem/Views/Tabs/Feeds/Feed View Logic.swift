@@ -77,17 +77,14 @@ extension FeedView {
     func fetchCommunityDetails() async {
         if let community {
             do {
-                communityDetails = try await loadCommunityDetails(
-                    community: community,
-                    account: appState.currentActiveAccount
-                )
+                communityDetails = try await apiClient.getCommunityDetails(id: community.id)
             } catch {
-                print("Failed while fetching community details: \(error)")
-                
-                appState.contextualError = .init(
-                    title: "Could not load community information",
-                    message: "The server might be overloaded.\nTry again later.",
-                    underlyingError: error
+                errorHandler.handle(
+                    .init(
+                        title: "Could not load community information",
+                        message: "The server might be overloaded.\nTry again later.",
+                        underlyingError: error
+                    )
                 )
             }
         }
@@ -289,14 +286,8 @@ extension FeedView {
     
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         hapticManager.play(haptic: .success, priority: .high)
-        do {
-            let request = FollowCommunityRequest(
-                account: appState.currentActiveAccount,
-                communityId: communityId,
-                follow: shouldSubscribe
-            )
-            
-            _ = try await APIClient().perform(request: request)
+        do {            
+            _ = try await apiClient.followCommunity(id: communityId, shouldSubscribe: shouldSubscribe)
             
             let communityName = community?.name ?? "community"
             Task {
@@ -323,11 +314,6 @@ extension FeedView {
     private func block(communityId: Int, shouldBlock: Bool) async {
         do {
             hapticManager.play(haptic: .violentSuccess, priority: .high)
-            let request = BlockCommunityRequest(
-                account: appState.currentActiveAccount,
-                communityId: communityId,
-                block: shouldBlock
-            )
             
             let communityName = community?.name ?? "community"
             Task {
@@ -338,12 +324,14 @@ extension FeedView {
                 }
             }
             
-            _ = try await APIClient().perform(request: request)
+            _ = try await apiClient.blockCommunity(id: communityId, shouldBlock: shouldBlock)
             await fetchCommunityDetails()
         } catch {
             // TODO: If we fail here and want to notify the user we should
             // pass a message into the contextual error below
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
 }
