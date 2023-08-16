@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// swiftlint:disable file_length
 enum UserIDRetrievalError: Error {
     case couldNotFetchUserInformation
 }
@@ -60,6 +61,7 @@ struct AddSavedInstanceView: View {
         NavigationStack {
             ScrollView {
                 VStack {
+                    title
                     headerSection
                 }
                 Grid(alignment: .trailing,
@@ -68,31 +70,6 @@ struct AddSavedInstanceView: View {
                     formSection
                 }.disabled(viewState == .loading)
                 footerView
-            }
-            .navigationBarColor()
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Sign In")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        Task {
-                            await tryToAddAccount()
-                        }
-                    } label: {
-                        Text("Log In")
-                    }
-                    .disabled(!isReadyToSubmit)
-                }
-                
-                if !onboarding {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(role: .destructive) {
-                            dismiss()
-                        } label: {
-                            Text("Cancel")
-                        }
-                    }
-                }
             }
             .transaction { transaction in
                 transaction.disablesAnimations = true
@@ -161,8 +138,10 @@ struct AddSavedInstanceView: View {
                         .textContentType(.password)
                         .submitLabel(.go)
                         .onSubmit {
-                            Task {
-                                await tryToAddAccount()
+                            if isReadyToSubmit {
+                                Task {
+                                    await tryToAddAccount()
+                                }
                             }
                         }
                 }
@@ -197,6 +176,36 @@ struct AddSavedInstanceView: View {
                 ProgressView()
             }
         }
+    }
+    
+    @ViewBuilder
+    var title: some View {
+        ZStack {
+            Text("Sign In")
+                .bold()
+            
+            HStack {
+                if !onboarding {
+                    Button(role: .destructive) {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
+                
+                Spacer()
+                
+                Button {
+                    Task {
+                        await tryToAddAccount()
+                    }
+                } label: {
+                    Text("Log In")
+                }
+                .disabled(!isReadyToSubmit)
+            }
+        }
+        .padding()
     }
     
     @ViewBuilder
@@ -391,5 +400,5 @@ struct AddSavedInstanceView_Previews: PreviewProvider {
         AddSavedInstanceView(onboarding: true,
                              currentAccount: AddSavedInstanceView_Previews.savedAccount)
     }
-    
 }
+// swiftlint:enable file_length
