@@ -154,13 +154,10 @@ extension ExpandedPost {
     
     func blockUser() async {
         do {
-            let blocked = try await blockPerson(
-                account: appState.currentActiveAccount,
-                person: post.creator,
-                blocked: true
-            )
-            if blocked {
+            let response = try await apiClient.blockPerson(id: post.creator.id, shouldBlock: true)
+            if response.blocked {
                 postTracker.removeUserPosts(from: post.creator.id)
+                hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked \(post.creator.name)"))
             }
         } catch {

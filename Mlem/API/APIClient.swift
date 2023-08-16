@@ -270,6 +270,11 @@ extension APIClient {
         let request = MarkAllAsRead(session: try session)
         try await perform(request: request)
     }
+    
+    func blockPerson(id: Int, shouldBlock: Bool) async throws -> BlockPersonResponse {
+        let request = BlockPersonRequest(session: try session, personId: id, block: shouldBlock)
+        return try await perform(request: request)
+    }
 }
 
 // MARK: - Object Resolving methods

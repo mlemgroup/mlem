@@ -252,17 +252,13 @@ extension CommentItem {
                    
         return ret
     }
+    // swiftlint:enable function_body_length
     
     func blockUser(userId: Int) async {
         do {
-            let blocked = try await blockPerson(
-                account: appState.currentActiveAccount,
-                personId: userId,
-                blocked: true
-            )
+            let response = try await apiClient.blockPerson(id: userId, shouldBlock: true)
             
-            // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
-            if blocked {
+            if response.blocked {
                 await notifier.add(.success("Blocked user"))
                 commentTracker.filter { comment in
                     comment.commentView.creator.id != userId
@@ -278,5 +274,4 @@ extension CommentItem {
             )
         }
     }
-    // swiftlint:enable function_body_length
 }

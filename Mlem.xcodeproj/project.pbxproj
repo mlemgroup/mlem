@@ -217,7 +217,6 @@
 		AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D342A5F63F60006F554 /* AboutView.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
 		ADDC9E3A2A5CEAA100383D58 /* BlockPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDC9E392A5CEAA100383D58 /* BlockPerson.swift */; };
-		ADDC9E3C2A5CF02A00383D58 /* BlockPersonLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDC9E3B2A5CF02A00383D58 /* BlockPersonLogic.swift */; };
 		ADF266952A4E8A1E00EBA648 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */; };
 		B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D72A59BF3C00B3E725 /* Nuke */; };
 		B104A6DA2A59BF3C00B3E725 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = B104A6D92A59BF3C00B3E725 /* NukeExtensions */; };
@@ -604,7 +603,6 @@
 		AD1B0D342A5F63F60006F554 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		ADDC9E392A5CEAA100383D58 /* BlockPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockPerson.swift; sourceTree = "<group>"; };
-		ADDC9E3B2A5CF02A00383D58 /* BlockPersonLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockPersonLogic.swift; sourceTree = "<group>"; };
 		ADF266942A4E8A1E00EBA648 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		B104A6DF2A59C19400B3E725 /* OperationQueue - Easy init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperationQueue - Easy init.swift"; sourceTree = "<group>"; };
 		B104A6E12A5AFC9F00B3E725 /* Mlem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mlem.entitlements; sourceTree = "<group>"; };
@@ -1040,7 +1038,6 @@
 				CD18DC6C2A5203BF002C56BC /* MarkPersonMentionAsRead.swift */,
 				CD18DC702A520A60002C56BC /* MarkPrivateMessageAsRead.swift */,
 				CD18DC742A522B38002C56BC /* SendPrivateMessage.swift */,
-				ADDC9E3B2A5CF02A00383D58 /* BlockPersonLogic.swift */,
 				CD7B53BA2A5F27DB00006E81 /* Report Private Message.swift */,
 			);
 			path = Participating;
@@ -2205,7 +2202,6 @@
 				6307378B2A1CE2B300039852 /* Rate Post or Comment.swift in Sources */,
 				B1DD00BD2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift in Sources */,
 				6DA61F892A575DF1001EA633 /* URL - Lemmy Image Parameters.swift in Sources */,
-				ADDC9E3C2A5CF02A00383D58 /* BlockPersonLogic.swift in Sources */,
 				E4DDB4322A81819300B3A7E0 /* Double.swift in Sources */,
 				CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */,
 				5016A2B32A67EC0700B257E8 /* NotificationDisplayer.swift in Sources */,
