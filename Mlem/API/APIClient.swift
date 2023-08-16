@@ -362,4 +362,20 @@ extension APIClient {
         
         return try await perform(request: request)
     }
+    
+    func login(
+        instanceURL: URL,
+        username: String,
+        password: String,
+        totpToken: String? = nil
+    ) async throws -> LoginResponse {
+        let request = LoginRequest(
+            instanceURL: instanceURL,
+            username: username,
+            password: password,
+            totpToken: totpToken
+        )
+        
+        return try await perform(request: request)
+    }
 }

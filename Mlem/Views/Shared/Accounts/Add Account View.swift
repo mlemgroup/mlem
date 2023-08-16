@@ -273,14 +273,12 @@ struct AddSavedInstanceView: View {
                 return
             }
             
-            let loginRequest = LoginRequest(
+            let response = try await apiClient.login(
                 instanceURL: instanceURL,
                 username: username,
                 password: password,
                 totpToken: twoFactorCode.isEmpty ? nil : twoFactorCode
             )
-            
-            let response = try await APIClient().perform(request: loginRequest)
             
             withAnimation {
                 viewState = .success
