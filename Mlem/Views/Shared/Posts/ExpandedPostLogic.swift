@@ -79,16 +79,16 @@ extension ExpandedPost {
         do {
             hapticManager.play(haptic: .gentleSuccess, priority: .low)
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            self.post = try await ratePost(
-                postId: post.post.id,
-                operation: operation,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let updatedPost = try await apiClient.ratePost(id: post.post.id, score: operation)
+            Task { @MainActor in
+                self.post = updatedPost
+                postTracker.update(with: updatedPost)
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     

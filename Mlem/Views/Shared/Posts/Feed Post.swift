@@ -323,13 +323,8 @@ struct FeedPost: View {
         do {
             hapticManager.play(haptic: .gentleSuccess, priority: .low)
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            _ = try await ratePost(
-                postId: postView.post.id,
-                operation: operation,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let updatedPost = try await apiClient.ratePost(id: postView.post.id, score: operation)
+            postTracker.update(with: updatedPost)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             appState.contextualError = .init(underlyingError: error)
