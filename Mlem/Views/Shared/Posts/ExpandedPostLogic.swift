@@ -237,7 +237,6 @@ extension ExpandedPost {
                 destructiveActionPrompt: nil,
                 enabled: true) {
                     editorTracker.openEditor(with: PostEditorModel(community: post.community,
-                                                                   appState: appState,
                                                                    postTracker: postTracker,
                                                                    editPost: post.post,
                                                                    responseCallback: updatePost))

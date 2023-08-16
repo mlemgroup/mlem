@@ -5,6 +5,8 @@
 //  Created by Nicholas Lawson on 04/06/2023.
 //
 
+// swiftlint:disable file_length
+
 import Foundation
 
 enum HTTPMethod {
@@ -378,4 +380,46 @@ extension APIClient {
         
         return try await perform(request: request)
     }
+    
+    func createPost(
+        communityId: Int,
+        name: String,
+        nsfw: Bool?,
+        body: String?,
+        url: String?
+    ) async throws -> PostResponse {
+        let request = CreatePostRequest(
+            session: try session,
+            communityId: communityId,
+            name: name,
+            nsfw: nsfw,
+            body: body,
+            url: url
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    func editPost(
+        postId: Int,
+        name: String?,
+        url: String?,
+        body: String?,
+        nsfw: Bool?,
+        languageId: Int? = nil
+    ) async throws -> PostResponse {
+        let request = EditPostRequest(
+            session: try session,
+            postId: postId,
+            name: name,
+            url: url,
+            body: body,
+            nsfw: nsfw,
+            languageId: languageId
+        )
+        
+        return try await perform(request: request)
+    }
 }
+
+// swiftlint:enable file_length

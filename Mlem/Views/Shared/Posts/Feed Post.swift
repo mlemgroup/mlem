@@ -316,7 +316,6 @@ struct FeedPost: View {
     
     func editPost() {
         editorTracker.openEditor(with: PostEditorModel(community: postView.community,
-                                                       appState: appState,
                                                        postTracker: postTracker,
                                                        editPost: postView.post))
     }

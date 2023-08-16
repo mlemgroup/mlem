@@ -149,7 +149,6 @@ extension FeedView {
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             editorTracker.openEditor(with: PostEditorModel(community: community,
-                                                           appState: appState,
                                                            postTracker: postTracker))
         })
         
