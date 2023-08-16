@@ -310,4 +310,29 @@ extension APIClient {
         let request = GetSiteRequest(session: try session)
         return try await perform(request: request)
     }
+    
+    // swiftlint:disable function_parameter_count
+    func performSearch(query: String,
+                       searchType: SearchType,
+                       sortOption: PostSortType,
+                       listingType: FeedType,
+                       page: Int?,
+                       limit: Int?
+    ) async throws -> SearchResponse {
+        let request = SearchRequest(
+            session: try session,
+            query: query,
+            searchType: searchType,
+            sortOption: sortOption,
+            listingType: listingType,
+            page: page,
+            communityId: nil,
+            communityName: nil,
+            creatorId: nil,
+            limit: limit
+        )
+        
+        return try await perform(request: request)
+    }
+    // swiftlint:enable function_parameter_count
 }
