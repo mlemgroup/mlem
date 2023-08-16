@@ -17,12 +17,11 @@ struct GetSiteRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount
+        session: APISession
     ) {
-        self.instanceURL = account.instanceLink
-
+        self.instanceURL = session.URL
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken)
+            .init(name: "auth", value: session.token)
         ]
     }
 

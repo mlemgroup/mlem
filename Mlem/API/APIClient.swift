@@ -279,3 +279,12 @@ extension APIClient {
         return nil
     }
 }
+
+// MARK: - Miscellaneous requests (these will end up in repositories soon)
+
+extension APIClient {
+    func loadSiteInformation() async throws -> SiteResponse {
+        let request = GetSiteRequest(session: try session)
+        return try await perform(request: request)
+    }
+}
