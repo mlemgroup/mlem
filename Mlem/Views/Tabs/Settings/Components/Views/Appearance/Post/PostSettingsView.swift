@@ -17,6 +17,7 @@ struct PostSettingsView: View {
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
     @AppStorage("thumbnailsOnRight") var shouldShowThumbnailsOnRight: Bool = false
+    @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
     
     // Community
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
@@ -86,6 +87,10 @@ struct PostSettingsView: View {
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
                                        settingName: "Show Post Thumbnails",
                                        isTicked: $shouldShowPostThumbnails)
+                
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.limitImageHeightInFeedSymbolName,
+                                       settingName: "Limit Image Height In Feed",
+                                       isTicked: $limitImageHeightInFeed)
             }
             
             Section("Interactions and Info") {
@@ -156,7 +161,6 @@ struct PostSettingsView: View {
             }
 
         }
-        
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
         .navigationBarColor()
