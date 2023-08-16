@@ -150,7 +150,7 @@ class PostTracker: FeedTracker<APIPostView> {
         )
         
         do {
-            try await APIClient().perform(request: request)
+            try await apiClient.perform(request: request)
         } catch {
             // we're only interested in throwing for invalid sessions here...
             if case APIClientError.invalidSession = error {
