@@ -420,6 +420,11 @@ extension APIClient {
         
         return try await perform(request: request)
     }
+    
+    func loadPost(id: Int, commentId: Int? = nil) async throws -> APIPostView {
+        let request = GetPostRequest(session: try session, id: id, commentId: commentId)
+        return try await perform(request: request).postView
+    }
 }
 
 // swiftlint:enable file_length

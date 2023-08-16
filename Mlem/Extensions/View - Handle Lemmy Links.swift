@@ -46,7 +46,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 CommunitySidebarView(
                     community: context.community,
                     communityDetails: context.communityDetails)
-                .environmentObject(appState)
                 .environmentObject(filtersTracker)
                 .environmentObject(CommunitySearchResultsTracker())
                 .environmentObject(favoriteCommunitiesTracker)
@@ -60,7 +59,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             }
             .navigationDestination(for: APIPost.self) { post in
                 LazyLoadExpandedPost(post: post)
-                    .environmentObject(appState)
             }
             .navigationDestination(for: PostLinkWithContext.self) { post in
                 ExpandedPost(post: post.post)
@@ -70,7 +68,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: LazyLoadPostLinkWithContext.self) { post in
                 LazyLoadExpandedPost(post: post.post)
                     .environmentObject(post.postTracker)
-                    .environmentObject(appState)
             }
             .navigationDestination(for: APIPerson.self) { user in
                 UserView(userID: user.id)
