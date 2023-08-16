@@ -67,7 +67,7 @@ struct FeedView: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarColor()
+            .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }
