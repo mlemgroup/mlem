@@ -17,7 +17,7 @@ struct ListCommunitiesRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        session: APISession,
 
         sort: PostSortType?,
         page: Int?,
@@ -25,34 +25,14 @@ struct ListCommunitiesRequest: APIGetRequest {
 
         type: FeedType = .all
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.queryItems = [
             .init(name: "sort", value: sort?.rawValue),
             .init(name: "limit", value: limit?.description),
             .init(name: "page", value: page?.description),
             .init(name: "type_", value: type.rawValue),
 
-            .init(name: "auth", value: account.accessToken)
-        ]
-    }
-
-    init(
-        instanceURL: URL,
-
-        sort: PostSortType?,
-        page: Int?,
-        limit: Int?,
-
-        type: FeedType = .all
-    ) {
-        self.instanceURL = instanceURL
-
-        self.queryItems = [
-            .init(name: "sort", value: sort?.rawValue),
-
-            .init(name: "limit", value: limit.map(String.init)),
-            .init(name: "page", value: page.map(String.init)),
-            .init(name: "type_", value: type.rawValue)
+            .init(name: "auth", value: session.token)
         ]
     }
 }

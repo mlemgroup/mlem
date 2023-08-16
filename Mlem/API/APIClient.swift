@@ -350,4 +350,16 @@ extension APIClient {
         let request = BlockCommunityRequest(session: try session, communityId: id, block: shouldBlock)
         return try await perform(request: request)
     }
+    
+    func loadCommunityList(sort: PostSortType?, page: Int?, limit: Int?, type: FeedType) async throws -> ListCommunityResponse {
+        let request = ListCommunitiesRequest(
+            session: try session,
+            sort: sort,
+            page: page,
+            limit: limit,
+            type: type
+        )
+        
+        return try await perform(request: request)
+    }
 }
