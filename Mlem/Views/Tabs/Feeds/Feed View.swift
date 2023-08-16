@@ -67,6 +67,7 @@ struct FeedView: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
+        /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
