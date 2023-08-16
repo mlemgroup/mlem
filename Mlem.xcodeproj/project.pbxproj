@@ -315,7 +315,6 @@
 		CD9DD8832A622A6C0044EA8E /* ReportCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */; };
 		CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8842A62302A0044EA8E /* ConcreteEditorModel.swift */; };
 		CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */; };
-		CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EE2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift */; };
 		CDA217E42A62FB3300BDA173 /* ReplyToMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217E32A62FB3300BDA173 /* ReplyToMessage.swift */; };
 		CDA217E62A63016A00BDA173 /* ReportMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217E52A63016A00BDA173 /* ReportMessage.swift */; };
 		CDA217E82A63029B00BDA173 /* ReportMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA217E72A63029B00BDA173 /* ReportMention.swift */; };
@@ -698,7 +697,6 @@
 		CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCommentReply.swift; sourceTree = "<group>"; };
 		CD9DD8842A62302A0044EA8E /* ConcreteEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteEditorModel.swift; sourceTree = "<group>"; };
 		CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsReadRequest.swift; sourceTree = "<group>"; };
-		CDA145EE2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsRead.swift; sourceTree = "<group>"; };
 		CDA217E32A62FB3300BDA173 /* ReplyToMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMessage.swift; sourceTree = "<group>"; };
 		CDA217E52A63016A00BDA173 /* ReportMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportMessage.swift; sourceTree = "<group>"; };
 		CDA217E72A63029B00BDA173 /* ReportMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportMention.swift; sourceTree = "<group>"; };
@@ -1034,7 +1032,6 @@
 				6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */,
 				CD69F5602A40B6270028D4F7 /* Save Post.swift */,
 				6D693A452A51175E009E2D76 /* Report Post or Comment.swift */,
-				CDA145EE2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift */,
 				CD18DC6C2A5203BF002C56BC /* MarkPersonMentionAsRead.swift */,
 				CD18DC702A520A60002C56BC /* MarkPrivateMessageAsRead.swift */,
 				CD18DC742A522B38002C56BC /* SendPrivateMessage.swift */,
@@ -2310,7 +2307,6 @@
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
 				038A16E92A7A9C640087987E /* LayoutWidget.swift in Sources */,
-				CDA145EF2A510C3D00DDAFC9 /* MarkCommentReplyAsRead.swift in Sources */,
 				CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */,
 				CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */,
 				CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */,

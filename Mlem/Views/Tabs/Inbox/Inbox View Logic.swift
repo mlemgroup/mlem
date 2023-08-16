@@ -160,12 +160,14 @@ extension InboxView {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             do {
-                try await sendMarkCommentReplyAsReadRequest(commentReply: commentReplyView,
-                                                            read: !commentReplyView.commentReply.read,
-                                                            account: appState.currentActiveAccount,
-                                                            commentReplyTracker: repliesTracker,
-                                                            appState: appState)
+                let response = try await commentRepository.markCommentReadStatus(
+                    id: commentReplyView.id,
+                    isRead: !commentReplyView.commentReply.read
+                )
                 
+                repliesTracker.update(with: response.commentReplyView)
+                
+                // TODO: should this be done _before_ the call, and then reverted in the `catch` if required?
                 if commentReplyView.commentReply.read {
                     unreadTracker.unreadReply()
                 } else {
@@ -175,7 +177,9 @@ extension InboxView {
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 hapticManager.play(haptic: .failure, priority: .low)
-                print("failed to mark read!")
+                errorHandler.handle(
+                    .init(underlyingError: error)
+                )
             }
         }
     }
