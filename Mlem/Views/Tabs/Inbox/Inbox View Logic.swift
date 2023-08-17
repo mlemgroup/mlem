@@ -217,12 +217,14 @@ extension InboxView {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             do {
-                try await sendMarkPersonMentionAsReadRequest(personMention: mention,
-                                                             read: !mention.personMention.read,
-                                                             account: appState.currentActiveAccount,
-                                                             mentionTracker: mentionsTracker,
-                                                             appState: appState)
+                let updatedMention = try await apiClient.markPersonMentionAsRead(
+                    mentionId: mention.personMention.id,
+                    isRead: !mention.personMention.read
+                )
                 
+                mentionsTracker.update(with: updatedMention)
+                
+                // TODO: should this be done before the above call and reverted in the catch if necessary?
                 if mention.personMention.read {
                     unreadTracker.unreadMention()
                 } else {
@@ -232,7 +234,9 @@ extension InboxView {
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 hapticManager.play(haptic: .failure, priority: .high)
-                print("failed to mark mention as read!")
+                errorHandler.handle(
+                    .init(underlyingError: error)
+                )
             }
         }
     }

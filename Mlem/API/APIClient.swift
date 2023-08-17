@@ -347,6 +347,11 @@ extension APIClient {
         let request = BlockPersonRequest(session: try session, personId: id, block: shouldBlock)
         return try await perform(request: request)
     }
+    
+    func markPersonMentionAsRead(mentionId: Int, isRead: Bool) async throws -> APIPersonMentionView {
+        let request = MarkPersonMentionAsRead(session: try session, personMentionId: mentionId, read: isRead)
+        return try await perform(request: request).personMentionView
+    }
 }
 
 // MARK: - Object Resolving methods
