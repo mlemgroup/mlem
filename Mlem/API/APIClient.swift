@@ -195,6 +195,12 @@ extension APIClient {
         let request = DeletePostRequest(session: try session, postId: id, deleted: shouldDelete)
         return try await perform(request: request).postView
     }
+    
+    @discardableResult
+    func reportPost(id: Int, reason: String) async throws -> APIPostReportView {
+        let request = CreatePostReportRequest(session: try session, postId: id, reason: reason)
+        return try await perform(request: request).postReportView
+    }
 }
 
 // MARK: Comment Requests

@@ -23,12 +23,12 @@ struct CreatePostReportRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         postId: Int,
         reason: String
     ) {
-        self.instanceURL = account.instanceLink
-        self.body = .init(auth: account.accessToken, post_id: postId, reason: reason)
+        self.instanceURL = session.URL
+        self.body = .init(auth: session.token, post_id: postId, reason: reason)
     }
 }
 

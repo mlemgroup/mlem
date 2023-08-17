@@ -56,7 +56,7 @@ extension ConcreteEditorModel {
          operation: PostOperation) {
         switch operation {
         case .replyToPost: self.editorModel = ReplyToPost(appState: appState, post: post)
-        case .reportPost: self.editorModel = ReportPost(appState: appState, post: post)
+        case .reportPost: self.editorModel = ReportPost(post: post)
         }
     }
 

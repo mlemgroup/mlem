@@ -187,7 +187,6 @@
 		6D693A3E2A5113DF009E2D76 /* CreatePostReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A3D2A5113DF009E2D76 /* CreatePostReport.swift */; };
 		6D693A402A51147E009E2D76 /* APIPostReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A3F2A51147E009E2D76 /* APIPostReportView.swift */; };
 		6D693A422A5114DF009E2D76 /* APIPostReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A412A5114DF009E2D76 /* APIPostReport.swift */; };
-		6D693A462A51175E009E2D76 /* Report Post or Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A452A51175E009E2D76 /* Report Post or Comment.swift */; };
 		6D693A482A51B904009E2D76 /* CreateCommentReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A472A51B904009E2D76 /* CreateCommentReport.swift */; };
 		6D693A4A2A51B98F009E2D76 /* APICommentReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A492A51B98F009E2D76 /* APICommentReportView.swift */; };
 		6D693A4C2A51B99E009E2D76 /* APICommentReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A4B2A51B99E009E2D76 /* APICommentReport.swift */; };
@@ -569,7 +568,6 @@
 		6D693A3D2A5113DF009E2D76 /* CreatePostReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostReport.swift; sourceTree = "<group>"; };
 		6D693A3F2A51147E009E2D76 /* APIPostReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPostReportView.swift; sourceTree = "<group>"; };
 		6D693A412A5114DF009E2D76 /* APIPostReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPostReport.swift; sourceTree = "<group>"; };
-		6D693A452A51175E009E2D76 /* Report Post or Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report Post or Comment.swift"; sourceTree = "<group>"; };
 		6D693A472A51B904009E2D76 /* CreateCommentReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentReport.swift; sourceTree = "<group>"; };
 		6D693A492A51B98F009E2D76 /* APICommentReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommentReportView.swift; sourceTree = "<group>"; };
 		6D693A4B2A51B99E009E2D76 /* APICommentReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICommentReport.swift; sourceTree = "<group>"; };
@@ -1023,7 +1021,6 @@
 			isa = PBXGroup;
 			children = (
 				CD69F5602A40B6270028D4F7 /* Save Post.swift */,
-				6D693A452A51175E009E2D76 /* Report Post or Comment.swift */,
 				CD18DC6C2A5203BF002C56BC /* MarkPersonMentionAsRead.swift */,
 				CD18DC702A520A60002C56BC /* MarkPrivateMessageAsRead.swift */,
 			);
@@ -2426,7 +2423,6 @@
 				63ABCE0E27F894060047A7D0 /* User View.swift in Sources */,
 				CD6483322A38D3A600EE6CA3 /* ScoreCounterView.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
-				6D693A462A51175E009E2D76 /* Report Post or Comment.swift in Sources */,
 				CD7B53B72A5F258B00006E81 /* APIPrivateMessageReportView.swift in Sources */,
 				030AC04F2A6464DA00037155 /* CommunitySettingsView.swift in Sources */,
 				6386E03A2A0455BC006B3C1D /* String - Contains Elements From Array.swift in Sources */,
