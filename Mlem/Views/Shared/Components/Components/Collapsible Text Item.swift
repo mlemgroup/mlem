@@ -18,7 +18,7 @@ struct CollapsibleTextItem: View {
     
     var body: some View {
         Button {
-            withAnimation(.interactiveSpring()) {
+            withAnimation(.spring(response: 0.5)) {
                 self.isCollapsed.toggle()
             }
         } label: {

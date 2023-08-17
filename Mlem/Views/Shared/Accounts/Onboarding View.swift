@@ -19,6 +19,8 @@ struct OnboardingView: View {
     @State var selectedTab: OnboardingTab = .welcome
     @State var hideNav: Bool = true
     
+    @State var selectedInstance: InstanceMetadata?
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             onboardingTab
@@ -34,6 +36,7 @@ struct OnboardingView: View {
                                  currentAccount: $selectedAccount)
             .tag(OnboardingTab.addAccount)
         }
+        .animation(.spring(response: 0.5), value: selectedTab)
         .tabViewStyle(PageTabViewStyle())
     }
     
@@ -51,9 +54,7 @@ struct OnboardingView: View {
             
             VStack {
                 Button {
-                    withAnimation {
-                        selectedTab = .about
-                    }
+                    selectedTab = .about
                 } label: {
                     Text("I'm new here")
                         .padding(.vertical, 5)
@@ -63,9 +64,7 @@ struct OnboardingView: View {
                 .buttonStyle(.borderedProminent)
                 
                 Button {
-                    withAnimation {
-                        selectedTab = .addAccount
-                    }
+                    selectedTab = .addAccount
                 } label: {
                     Text("I have a Lemmy account")
                         .padding(.vertical, 5)
@@ -122,9 +121,7 @@ struct OnboardingView: View {
                 Spacer()
                 
                 Button {
-                    withAnimation {
-                        selectedTab = .instances
-                    }
+                    selectedTab = .instances
                 } label: {
                     Text("Next")
                         .padding(5)
@@ -132,7 +129,7 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 
-                // add a little space for the tab selector
+                // add a little space for the tab selection indicator
                 Spacer()
                     .frame(height: 20)
             }
@@ -141,7 +138,6 @@ struct OnboardingView: View {
     }
     
     var instancesTab: some View {
-        Text("Instances")
-            .bold()
+        InstancePickerView(selectedInstance: $selectedInstance)
     }
 }

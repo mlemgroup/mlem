@@ -45,6 +45,13 @@ struct LicensesView: View {
                         DocumentView(text: swiftMarkdownUILIcense.body)
                     }
                     
+                    NavigationLink("Awesome Lemmy Instances") {
+                        DocumentView(text: awesomeLemmyInstancesLicense.body)
+                    }
+                    
+//                    NavigationView("CSV Importer") {
+//                        DocumentView(text: csvImporterLicense.body)
+//                    }
                 }
             }
             .fancyTabScrollCompatible()
