@@ -201,6 +201,11 @@ extension APIClient {
         let request = CreatePostReportRequest(session: try session, postId: id, reason: reason)
         return try await perform(request: request).postReportView
     }
+    
+    func savePost(id: Int, shouldSave: Bool) async throws -> APIPostView {
+        let request = SavePostRequest(session: try session, postId: id, save: shouldSave)
+        return try await perform(request: request).postView
+    }
 }
 
 // MARK: Comment Requests

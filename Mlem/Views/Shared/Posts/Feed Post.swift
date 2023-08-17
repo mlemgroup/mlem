@@ -339,14 +339,13 @@ struct FeedPost: View {
             hapticManager.play(haptic: .success, priority: .high)
             
             do {
-                _ = try await sendSavePostRequest(
-                    account: appState.currentActiveAccount,
-                    postId: postView.post.id,
-                    save: dirtySaved,
-                    postTracker: postTracker
-                )
+                let updatedPost = try await apiClient.savePost(id: postView.post.id, shouldSave: dirtySaved)
+                postTracker.update(with: updatedPost)
             } catch {
-                appState.contextualError = .init(underlyingError: error)
+                hapticManager.play(haptic: .failure, priority: .high)
+                errorHandler.handle(
+                    .init(underlyingError: error)
+                )
             }
             dirty = false
             return

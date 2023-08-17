@@ -289,7 +289,6 @@
 		CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55A2A400D820028D4F7 /* App Theme.swift */; };
 		CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */; };
 		CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */; };
-		CD69F5612A40B6270028D4F7 /* Save Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5602A40B6270028D4F7 /* Save Post.swift */; };
 		CD69F56F2A41EDF50028D4F7 /* Swipey Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */; };
 		CD69F5712A422EDD0028D4F7 /* InteractionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5702A422EDD0028D4F7 /* InteractionBarView.swift */; };
 		CD69F5732A4239D70028D4F7 /* Comment Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69F5722A4239D70028D4F7 /* Comment Item.swift */; };
@@ -667,7 +666,6 @@
 		CD69F55A2A400D820028D4F7 /* App Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Theme.swift"; sourceTree = "<group>"; };
 		CD69F55C2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUserInterfaceStyle - SettingsOption conformant.swift"; sourceTree = "<group>"; };
 		CD69F55E2A40121D0028D4F7 /* Ellipsis Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ellipsis Menu.swift"; sourceTree = "<group>"; };
-		CD69F5602A40B6270028D4F7 /* Save Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Save Post.swift"; sourceTree = "<group>"; };
 		CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swipey Actions.swift"; sourceTree = "<group>"; };
 		CD69F5702A422EDD0028D4F7 /* InteractionBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarView.swift; sourceTree = "<group>"; };
 		CD69F5722A4239D70028D4F7 /* Comment Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment Item.swift"; sourceTree = "<group>"; };
@@ -1020,7 +1018,6 @@
 		6314C9EF2A194FEE00B08405 /* Participating */ = {
 			isa = PBXGroup;
 			children = (
-				CD69F5602A40B6270028D4F7 /* Save Post.swift */,
 				CD18DC6C2A5203BF002C56BC /* MarkPersonMentionAsRead.swift */,
 				CD18DC702A520A60002C56BC /* MarkPrivateMessageAsRead.swift */,
 			);
@@ -2151,7 +2148,6 @@
 				B104A6E02A59C19400B3E725 /* OperationQueue - Easy init.swift in Sources */,
 				CDC1C9432A7AC24600072E3D /* ReadCheck.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */,
-				CD69F5612A40B6270028D4F7 /* Save Post.swift in Sources */,
 				034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */,
 				637218682A3A2AAD008C4816 /* CreateComment.swift in Sources */,
 				637218722A3A2AAD008C4816 /* HideCommunity.swift in Sources */,

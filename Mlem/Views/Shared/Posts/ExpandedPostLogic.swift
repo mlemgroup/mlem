@@ -103,14 +103,14 @@ extension ExpandedPost {
             hapticManager.play(haptic: .success, priority: .low)
             
             do {
-                self.post = try await sendSavePostRequest(
-                    account: appState.currentActiveAccount,
-                    postId: post.post.id,
-                    save: dirtySaved,
-                    postTracker: postTracker
-                )
+                let updatedPost = try await apiClient.savePost(id: post.post.id, shouldSave: dirtySaved)
+                postTracker.update(with: updatedPost)
+                self.post = updatedPost
             } catch {
-                appState.contextualError = .init(underlyingError: error)
+                hapticManager.play(haptic: .failure, priority: .low)
+                errorHandler.handle(
+                    .init(underlyingError: error)
+                )
             }
             dirty = false
             return
