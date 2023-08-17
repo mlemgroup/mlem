@@ -24,17 +24,15 @@ struct DeletePostRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
-
+        session: APISession,
         postId: Int,
         deleted: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             post_id: postId,
             deleted: deleted,
-
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

@@ -190,6 +190,11 @@ extension APIClient {
         let request = CreatePostLikeRequest(session: try session, postId: id, score: score)
         return try await perform(request: request).postView
     }
+    
+    func deletePost(id: Int, shouldDelete: Bool) async throws -> APIPostView {
+        let request = DeletePostRequest(session: try session, postId: id, deleted: shouldDelete)
+        return try await perform(request: request).postView
+    }
 }
 
 // MARK: Comment Requests

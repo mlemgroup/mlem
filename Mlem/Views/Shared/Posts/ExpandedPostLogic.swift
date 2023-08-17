@@ -119,16 +119,14 @@ extension ExpandedPost {
     
     func deletePost() async {
         do {
-            // TODO: renamed this function and/or move `deleteComment` out of the global scope to avoid
-            // having to refer to our own module
-            _ = try await Mlem.deletePost(
-                postId: post.post.id,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let response = try await apiClient.deletePost(id: post.post.id, shouldDelete: true)
+            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
+            postTracker.update(with: response)
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     

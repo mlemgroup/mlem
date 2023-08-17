@@ -257,14 +257,14 @@ struct FeedPost: View {
 
     func deletePost() async {
         do {
-            _ = try await Mlem.deletePost(
-                postId: postView.post.id,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let response = try await apiClient.deletePost(id: postView.post.id, shouldDelete: true)
+            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
+            postTracker.update(with: response)
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
 
