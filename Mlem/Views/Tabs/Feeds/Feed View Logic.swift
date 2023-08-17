@@ -269,10 +269,8 @@ extension FeedView {
             errorMessage = nil
         }
         
-        appState.contextualError = .init(
-            title: title,
-            message: errorMessage,
-            underlyingError: error
+        errorHandler.handle(
+            .init(title: title, message: errorMessage, underlyingError: error)
         )
     }
     
@@ -301,12 +299,10 @@ extension FeedView {
             // TODO: do this in middleware model with a state faker to avoid a second API call
             await fetchCommunityDetails()
         } catch {
-            // TODO: If we fail here and want to notify the user we'd ideally
-            // want to do so from the parent view, I think it would be worth refactoring
-            // this view so that the responsibility for performing the call is removed
-            // and handled by the parent, for now we will fail silently the UI state
-            // will not update so will continue to be accurate
-            appState.contextualError = .init(underlyingError: error)
+            // TODO: If we fail here and want to notify the user we can pass values into the below error
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     

@@ -326,7 +326,9 @@ struct FeedPost: View {
             postTracker.update(with: updatedPost)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
 

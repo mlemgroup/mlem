@@ -25,8 +25,6 @@ struct TokenRefreshView: View {
         case onetimecode
     }
     
-    @EnvironmentObject var appState: AppState
-    
     @Environment(\.dismiss) var dismiss
     
     let account: SavedAccount
