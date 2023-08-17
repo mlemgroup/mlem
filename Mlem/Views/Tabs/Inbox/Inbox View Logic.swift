@@ -253,12 +253,14 @@ extension InboxView {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             do {
-                try await sendMarkPrivateMessageAsReadRequest(messageView: message,
-                                                              read: !message.privateMessage.read,
-                                                              account: appState.currentActiveAccount,
-                                                              messagesTracker: messagesTracker,
-                                                              appState: appState)
+                let updatedMessage = try await apiClient.markPrivateMessageRead(
+                    id: message.id,
+                    isRead: !message.privateMessage.read
+                )
                 
+                messagesTracker.update(with: updatedMessage)
+                
+                // TODO: should this be done before the above call and reverted in the catch if necessary?
                 if message.privateMessage.read {
                     unreadTracker.unreadMessage()
                 } else {
@@ -268,7 +270,9 @@ extension InboxView {
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 hapticManager.play(haptic: .failure, priority: .low)
-                print("failed to mark message as read!")
+                errorHandler.handle(
+                    .init(underlyingError: error)
+                )
             }
         }
     }

@@ -469,6 +469,11 @@ extension APIClient {
         let request = CreatePrivateMessageRequest(session: try session, content: content, recipient: recipient)
         return try await perform(request: request)
     }
+    
+    func markPrivateMessageRead(id: Int, isRead: Bool) async throws -> APIPrivateMessageView {
+        let request = MarkPrivateMessageAsRead(session: try session, privateMessageId: id, read: isRead)
+        return try await perform(request: request).privateMessageView
+    }
 }
 
 // swiftlint:enable file_length
