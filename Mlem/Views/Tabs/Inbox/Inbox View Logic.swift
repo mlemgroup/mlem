@@ -185,14 +185,12 @@ extension InboxView {
     }
     
     func replyToCommentReply(commentReply: APICommentReplyView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           commentReply: commentReply,
+        editorTracker.openEditor(with: ConcreteEditorModel(commentReply: commentReply,
                                                            operation: InboxItemOperation.replyToInboxItem))
     }
     
     func reportCommentReply(commentReply: APICommentReplyView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           commentReply: commentReply,
+        editorTracker.openEditor(with: ConcreteEditorModel(commentReply: commentReply,
                                                            operation: InboxItemOperation.reportInboxItem))
     }
     
@@ -240,14 +238,12 @@ extension InboxView {
     }
     
     func reportMention(mention: APIPersonMentionView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           mention: mention,
+        editorTracker.openEditor(with: ConcreteEditorModel(mention: mention,
                                                            operation: InboxItemOperation.reportInboxItem))
     }
     
     func replyToMention(mention: APIPersonMentionView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           mention: mention,
+        editorTracker.openEditor(with: ConcreteEditorModel(mention: mention,
                                                            operation: InboxItemOperation.replyToInboxItem))
     }
     
@@ -278,14 +274,12 @@ extension InboxView {
     }
     
     func replyToMessage(message: APIPrivateMessageView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           message: message,
+        editorTracker.openEditor(with: ConcreteEditorModel(message: message,
                                                            operation: InboxItemOperation.replyToInboxItem))
     }
     
     func reportMessage(message: APIPrivateMessageView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           message: message,
+        editorTracker.openEditor(with: ConcreteEditorModel(message: message,
                                                            operation: InboxItemOperation.reportInboxItem))
     }
     

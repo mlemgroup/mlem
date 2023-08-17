@@ -49,13 +49,12 @@ extension ConcreteEditorModel {
      - .reportPost: report composer reporting the post. If postTracker present, updates it.
      - .editPost: post composer editing the post.
      */
-    init(appState: AppState,
-         post: APIPostView,
+    init(post: APIPostView,
          postTracker: PostTracker? = nil,
          commentTracker: CommentTracker? = nil,
          operation: PostOperation) {
         switch operation {
-        case .replyToPost: self.editorModel = ReplyToPost(appState: appState, post: post)
+        case .replyToPost: self.editorModel = ReplyToPost(post: post)
         case .reportPost: self.editorModel = ReportPost(post: post)
         }
     }
@@ -66,18 +65,14 @@ extension ConcreteEditorModel {
      - .reportComment: report composer reporting the comment.
      - .editComment: comment compser editing the comment. If commentTracker present, updates it.
      */
-    init(appState: AppState,
-         comment: APICommentView,
+    init(comment: APICommentView,
          commentTracker: CommentTracker? = nil,
          operation: CommentOperation) {
         switch operation {
-        case .replyToComment: self.editorModel = ReplyToComment(appState: appState,
-                                                                comment: comment,
+        case .replyToComment: self.editorModel = ReplyToComment(comment: comment,
                                                                 commentTracker: commentTracker)
-        case .reportComment: self.editorModel = ReportComment(appState: appState,
-                                                              comment: comment)
-        case .editComment: self.editorModel = CommentEditor(appState: appState,
-                                                            comment: comment,
+        case .reportComment: self.editorModel = ReportComment(comment: comment)
+        case .editComment: self.editorModel = CommentEditor(comment: comment,
                                                             commentTracker: commentTracker)
         }
     }
@@ -85,27 +80,27 @@ extension ConcreteEditorModel {
     /**
      Create a ConcreteEditorModel to reply to or report a comment reply
      */
-    init(appState: AppState, commentReply: APICommentReplyView, operation: InboxItemOperation) {
+    init(commentReply: APICommentReplyView, operation: InboxItemOperation) {
         switch operation {
-        case .replyToInboxItem: self.editorModel = ReplyToCommentReply(appState: appState, commentReply: commentReply)
-        case .reportInboxItem: self.editorModel = ReportCommentReply(appState: appState, commentReply: commentReply)
+        case .replyToInboxItem: self.editorModel = ReplyToCommentReply(commentReply: commentReply)
+        case .reportInboxItem: self.editorModel = ReportCommentReply(commentReply: commentReply)
         }
     }
 
     /**
      Create a ConcreteEditorModel to reply to or report a mention
      */
-    init(appState: AppState, mention: APIPersonMentionView, operation: InboxItemOperation) {
+    init(mention: APIPersonMentionView, operation: InboxItemOperation) {
         switch operation {
-        case .replyToInboxItem: self.editorModel = ReplyToMention(appState: appState, mention: mention)
-        case .reportInboxItem: self.editorModel = ReportMention(appState: appState, mention: mention)
+        case .replyToInboxItem: self.editorModel = ReplyToMention(mention: mention)
+        case .reportInboxItem: self.editorModel = ReportMention(mention: mention)
         }
     }
 
     /**
      Create a ConcreteEditorModel to reply to or report a message
      */
-    init(appState: AppState, message: APIPrivateMessageView, operation: InboxItemOperation) {
+    init(message: APIPrivateMessageView, operation: InboxItemOperation) {
         switch operation {
         case .replyToInboxItem: self.editorModel = ReplyToMessage(message: message)
         case .reportInboxItem: self.editorModel = ReportMessage(message: message)

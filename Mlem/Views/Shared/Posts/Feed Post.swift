@@ -306,8 +306,7 @@ struct FeedPost: View {
     }
 
     func replyToPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           post: postView,
+        editorTracker.openEditor(with: ConcreteEditorModel(post: postView,
                                                            operation: PostOperation.replyToPost))
     }
     
@@ -353,7 +352,7 @@ struct FeedPost: View {
     }
     
     func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, post: postView, operation: PostOperation.reportPost))
+        editorTracker.openEditor(with: ConcreteEditorModel(post: postView, operation: PostOperation.reportPost))
     }
 
     // swiftlint:disable function_body_length

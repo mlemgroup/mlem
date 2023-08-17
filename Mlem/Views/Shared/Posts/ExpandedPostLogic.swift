@@ -131,21 +131,18 @@ extension ExpandedPost {
     }
     
     func replyToPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           post: post,
+        editorTracker.openEditor(with: ConcreteEditorModel(post: post,
                                                            commentTracker: commentTracker,
                                                            operation: PostOperation.replyToPost))
     }
     
     func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           post: post,
+        editorTracker.openEditor(with: ConcreteEditorModel(post: post,
                                                            operation: PostOperation.reportPost))
     }
     
     func replyToComment(comment: APICommentView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: comment,
+        editorTracker.openEditor(with: ConcreteEditorModel(comment: comment,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.replyToComment))
     }

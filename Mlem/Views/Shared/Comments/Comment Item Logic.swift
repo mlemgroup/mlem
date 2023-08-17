@@ -92,15 +92,13 @@ extension CommentItem {
     }
     
     func replyToComment() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: hierarchicalComment.commentView,
+        editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.replyToComment))
     }
 
     func editComment() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: hierarchicalComment.commentView,
+        editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.editComment))
     }
@@ -235,8 +233,7 @@ extension CommentItem {
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: "Really report?",
             enabled: true) {
-                editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                                   comment: hierarchicalComment.commentView,
+                editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
                                                                    operation: CommentOperation.reportComment))
             })
         
