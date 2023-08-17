@@ -108,7 +108,7 @@ extension ConcreteEditorModel {
     init(appState: AppState, message: APIPrivateMessageView, operation: InboxItemOperation) {
         switch operation {
         case .replyToInboxItem: self.editorModel = ReplyToMessage(appState: appState, message: message)
-        case .reportInboxItem: self.editorModel = ReportMessage(appState: appState, message: message)
+        case .reportInboxItem: self.editorModel = ReportMessage(message: message)
         }
     }
 }
