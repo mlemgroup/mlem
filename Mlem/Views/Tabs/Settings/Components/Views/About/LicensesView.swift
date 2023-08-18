@@ -28,23 +28,13 @@ struct LicensesView: View {
                 }
                 
                 Section("Open Source Licenses") {
+                    NavigationLink("KeychainAccess", value: LicensesSettingsRoute.licenseDocument(keychainAccessLicense))
                     
-                    NavigationLink("KeychainAccess") {
-                        DocumentView(text: keychainAccessLicense.body)
-                    }
-                    
-                    NavigationLink("Nuke") {
-                        DocumentView(text: nukeLicense.body)
-                    }
-                    
-                    NavigationLink("Swift Dependencies") {
-                        DocumentView(text: swiftDependenciesLicense.body)
-                    }
-                    
-                    NavigationLink("Swift Markdown UI") {
-                        DocumentView(text: swiftMarkdownUILIcense.body)
-                    }
-                    
+                    NavigationLink("Nuke", value: LicensesSettingsRoute.licenseDocument(nukeLicense))
+
+                    NavigationLink("Swift Dependencies", value: LicensesSettingsRoute.licenseDocument(swiftDependenciesLicense))
+
+                    NavigationLink("Swift Markdown UI", value: LicensesSettingsRoute.licenseDocument(swiftMarkdownUILIcense))
                 }
             }
             .fancyTabScrollCompatible()

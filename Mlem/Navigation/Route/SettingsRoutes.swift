@@ -34,3 +34,14 @@ enum CommentSettingsRoute: Hashable, Codable {
 enum PostSettingsRoute: Hashable, Codable {
     case customizeWidgets
 }
+
+enum AboutSettingsRoute: Hashable {
+    case contributors
+    case privacyPolicy(Document)
+    case eula(Document)
+    case licenses
+}
+
+enum LicensesSettingsRoute: Hashable {
+    case licenseDocument(Document)
+}

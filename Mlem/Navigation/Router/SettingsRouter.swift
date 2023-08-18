@@ -77,6 +77,24 @@ struct SettingsRouter: ViewModifier {
                     })
                 }
             }
+            .navigationDestination(for: AboutSettingsRoute.self) { route in
+                switch route {
+                case .contributors:
+                    ContributorsView()
+                case .eula(let doc):
+                    DocumentView(text: doc.body)
+                case .privacyPolicy(let doc):
+                    DocumentView(text: doc.body)
+                case .licenses:
+                    LicensesView()
+                }
+            }
+            .navigationDestination(for: LicensesSettingsRoute.self) { route in
+                switch route {
+                case .licenseDocument(let doc):
+                    DocumentView(text: doc.body)
+                }
+            }
     }
     // swiftlint:enable cyclomatic_complexity
     // swiftlint:enable function_body_length
