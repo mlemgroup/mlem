@@ -1,5 +1,5 @@
 //
-//  NavigationRouter.swift
+//  SettingsRouter.swift
 //  Mlem
 //
 //  Created by Bosco Ho on 2023-08-18.
@@ -9,11 +9,11 @@ import SwiftUI
 
 extension View {
     func useSettingsNavigationRouter() -> some View {
-        modifier(SettingsNavigationRouter())
+        modifier(SettingsRouter())
     }
 }
 
-struct SettingsNavigationRouter: ViewModifier {
+struct SettingsRouter: ViewModifier {
     
     @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
@@ -22,7 +22,7 @@ struct SettingsNavigationRouter: ViewModifier {
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
-            .navigationDestination(for: SettingsNavigationRoute.self) { route in
+            .navigationDestination(for: SettingsRoute.self) { route in
                 switch route {
                 case .accountsPage(let onboarding):
                     AccountsPage(onboarding: onboarding)
@@ -40,7 +40,7 @@ struct SettingsNavigationRouter: ViewModifier {
                     AdvancedSettingsView()
                 }
             }
-            .navigationDestination(for: AppearanceSettingsNavigationRoute.self) { route in
+            .navigationDestination(for: AppearanceSettingsRoute.self) { route in
                 switch route {
                 case .theme:
                     ThemeSettingsView()
@@ -58,7 +58,7 @@ struct SettingsNavigationRouter: ViewModifier {
                     TabBarSettingsView()
                 }
             }
-            .navigationDestination(for: CommentSettingsNavigationRoute.self) { route in
+            .navigationDestination(for: CommentSettingsRoute.self) { route in
                 switch route {
                 case .layoutWidget:
                     LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
@@ -67,7 +67,7 @@ struct SettingsNavigationRouter: ViewModifier {
                     })
                 }
             }
-            .navigationDestination(for: PostSettingsNavigationRoute.self) { route in
+            .navigationDestination(for: PostSettingsRoute.self) { route in
                 switch route {
                 case .customizeWidgets:
                     /// We really should be passing in the layout widget through the route enum value, but that would involve making layout widget tracker hashable and codable.

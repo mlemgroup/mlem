@@ -7,16 +7,6 @@
 
 import SwiftUI
 
-enum AppearanceSettingsNavigationRoute: Hashable, Codable {
-    case theme
-    case appIcon
-    case posts
-    case comments
-    case communities
-    case users
-    case tabBar
-}
-
 struct AppearanceSettingsView: View {
 
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
@@ -24,7 +14,7 @@ struct AppearanceSettingsView: View {
     var body: some View {
         List {
             Section {
-                NavigationLink(value: AppearanceSettingsNavigationRoute.theme) {
+                NavigationLink(value: AppearanceSettingsRoute.theme) {
                     switch lightOrDarkMode {
                     case .unspecified:
                         ThemeLabel(title: "Theme", color1: .white, color2: .black)
@@ -37,7 +27,7 @@ struct AppearanceSettingsView: View {
                     }
                 }
 #if !os(macOS) && !targetEnvironment(macCatalyst)
-                NavigationLink(value: AppearanceSettingsNavigationRoute.appIcon) {
+                NavigationLink(value: AppearanceSettingsRoute.appIcon) {
                     Label {
                         Text("App Icon")
                     } icon: {
@@ -52,24 +42,24 @@ struct AppearanceSettingsView: View {
             }
             
             Section {
-                NavigationLink(value: AppearanceSettingsNavigationRoute.posts) {
+                NavigationLink(value: AppearanceSettingsRoute.posts) {
                     Label("Posts", systemImage: "doc.plaintext.fill").labelStyle(SquircleLabelStyle(color: .pink))
                 }
                 
-                NavigationLink(value: AppearanceSettingsNavigationRoute.comments) {
+                NavigationLink(value: AppearanceSettingsRoute.comments) {
                     Label("Comments", systemImage: "bubble.left.fill").labelStyle(SquircleLabelStyle(color: .orange))
                 }
                 
-                NavigationLink(value: AppearanceSettingsNavigationRoute.communities) {
+                NavigationLink(value: AppearanceSettingsRoute.communities) {
                     Label("Communities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .green, fontSize: 15))
                 }
                 
-                NavigationLink(value: AppearanceSettingsNavigationRoute.users) {
+                NavigationLink(value: AppearanceSettingsRoute.users) {
                     Label("Users", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .blue))
                 }
             }
             Section {
-                NavigationLink(value: AppearanceSettingsNavigationRoute.tabBar) {
+                NavigationLink(value: AppearanceSettingsRoute.tabBar) {
                     Label("Tab Bar", systemImage: "square").labelStyle(SquircleLabelStyle(color: .purple))
                 }
             }

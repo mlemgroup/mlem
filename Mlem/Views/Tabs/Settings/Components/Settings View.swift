@@ -7,16 +7,6 @@
 
 import SwiftUI
 
-enum SettingsNavigationRoute: Hashable, Codable {
-    case accountsPage(onboarding: Bool)
-    case general
-    case accessibility
-    case appearance
-    case contentFilters
-    case about
-    case advanced
-}
-
 struct SettingsView: View {
 
     @EnvironmentObject var appState: AppState
@@ -32,37 +22,37 @@ struct SettingsView: View {
         NavigationStack(path: $navigationPath) {
             List {
                 Section {
-                    NavigationLink(value: SettingsNavigationRoute.accountsPage(onboarding: false)) {
+                    NavigationLink(value: SettingsRoute.accountsPage(onboarding: false)) {
                         Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
                     }
                 }
                 Section {
-                    NavigationLink(value: SettingsNavigationRoute.general) {
+                    NavigationLink(value: SettingsRoute.general) {
                         Label("General", systemImage: "gear").labelStyle(SquircleLabelStyle(color: .gray))
                     }
                     
-                    NavigationLink(value: SettingsNavigationRoute.accessibility) {
+                    NavigationLink(value: SettingsRoute.accessibility) {
                         // apparently the Apple a11y symbol isn't an SFSymbol
                         Label("Accessibility", systemImage: "hand.point.up.braille.fill").labelStyle(SquircleLabelStyle(color: .blue))
                     }
                     
-                    NavigationLink(value: SettingsNavigationRoute.appearance) {
+                    NavigationLink(value: SettingsRoute.appearance) {
                         Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .pink))
                     }
 
-                    NavigationLink(value: SettingsNavigationRoute.contentFilters) {
+                    NavigationLink(value: SettingsRoute.contentFilters) {
                         Label("Content Filters", systemImage: "line.3.horizontal.decrease").labelStyle(SquircleLabelStyle(color: .orange))
                     }
                 }
                 
                 Section {
-                    NavigationLink(value: SettingsNavigationRoute.about) {
+                    NavigationLink(value: SettingsRoute.about) {
                         Label("About Mlem", systemImage: "info").labelStyle(SquircleLabelStyle(color: .blue))
                     }
                 }
                 
                 Section {
-                    NavigationLink(value: SettingsNavigationRoute.advanced) {
+                    NavigationLink(value: SettingsRoute.advanced) {
                         Label("Advanced", systemImage: "gearshape.2.fill").labelStyle(SquircleLabelStyle(color: .gray))
                     }
                 }

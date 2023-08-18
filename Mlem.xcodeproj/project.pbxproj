@@ -375,7 +375,8 @@
 		CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */; };
 		CDF8426F2A4A385A00723DA0 /* Inbox Item Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */; };
 		E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */; };
-		E4902BAB2A9024BF0054FB36 /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4902BAA2A9024BF0054FB36 /* NavigationRouter.swift */; };
+		E47B2B762A902DE200629AF7 /* SettingsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */; };
+		E4902BAB2A9024BF0054FB36 /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */; };
 		E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */; };
 		E4D4DBA22A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */; };
 		E4DDB4322A81819300B3A7E0 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4312A81819300B3A7E0 /* Double.swift */; };
@@ -766,7 +767,8 @@
 		CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item.swift"; sourceTree = "<group>"; };
 		CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item Type.swift"; sourceTree = "<group>"; };
 		E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreviewController.swift; sourceTree = "<group>"; };
-		E4902BAA2A9024BF0054FB36 /* NavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
+		E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoutes.swift; sourceTree = "<group>"; };
+		E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
 		E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabNavigationSelectionHashValueEnvironmentKey.swift; sourceTree = "<group>"; };
 		E4DDB4312A81819300B3A7E0 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -1982,10 +1984,27 @@
 			path = "Quick Look";
 			sourceTree = "<group>";
 		};
+		E47B2B742A902DB400629AF7 /* Route */ = {
+			isa = PBXGroup;
+			children = (
+				E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */,
+			);
+			path = Route;
+			sourceTree = "<group>";
+		};
+		E47B2B772A902E3C00629AF7 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
 		E4902BA92A90245E0054FB36 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				E4902BAA2A9024BF0054FB36 /* NavigationRouter.swift */,
+				E47B2B772A902E3C00629AF7 /* Router */,
+				E47B2B742A902DB400629AF7 /* Route */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -2260,6 +2279,7 @@
 				50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */,
 				CDDCF6572A678298003DA3AC /* FancyTabBarSelection.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
+				E47B2B762A902DE200629AF7 /* SettingsRoutes.swift in Sources */,
 				CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */,
 				CD391F982A537E8E00E213B5 /* ReplyToComment.swift in Sources */,
 				5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */,
@@ -2418,7 +2438,7 @@
 				507573912A5AD53C00AA7ABD /* Error+Equatable.swift in Sources */,
 				6D693A482A51B904009E2D76 /* CreateCommentReport.swift in Sources */,
 				CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */,
-				E4902BAB2A9024BF0054FB36 /* NavigationRouter.swift in Sources */,
+				E4902BAB2A9024BF0054FB36 /* SettingsRouter.swift in Sources */,
 				6307378D2A1CEB7C00039852 /* My Vote.swift in Sources */,
 				50F830FA2A4C935C00D67099 /* FeedTracker.swift in Sources */,
 				CD69F55D2A400DF50028D4F7 /* UIUserInterfaceStyle - SettingsOption conformant.swift in Sources */,
