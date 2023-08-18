@@ -20,6 +20,8 @@ enum SettingsNavigationRoute: Hashable, Codable {
 struct SettingsView: View {
 
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+
     @State var navigationPath = NavigationPath()
 
     @Environment(\.openURL) private var openURL
@@ -86,6 +88,43 @@ struct SettingsView: View {
                     AboutView(navigationPath: $navigationPath)
                 case .advanced:
                     AdvancedSettingsView()
+                }
+            }
+            .navigationDestination(for: AppearanceSettingsNavigationRoute.self) { route in
+                switch route {
+                case .theme:
+                    ThemeSettingsView()
+                case .appIcon:
+                    IconSettingsView()
+                case .posts:
+                    PostSettingsView()
+                case .comments:
+                    CommentSettingsView()
+                case .communities:
+                    CommunitySettingsView()
+                case .users:
+                    UserSettingsView()
+                case .tabBar:
+                    TabBarSettingsView()
+                }
+            }
+            .navigationDestination(for: CommentSettingsNavigationRoute.self) { route in
+                switch route {
+                case .layoutWidget:
+                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+                        layoutWidgetTracker.groups.comment = widgets
+                        layoutWidgetTracker.saveLayoutWidgets()
+                    })
+                }
+            }
+            .navigationDestination(for: PostSettingsNavigationRoute.self) { route in
+                switch route {
+                case .customizeWidgets:
+                    /// We really should be passing in the layout widget through the route enum value, but that would involve making layout widget tracker hashable and codable.
+                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+                        layoutWidgetTracker.groups.post = widgets
+                        layoutWidgetTracker.saveLayoutWidgets()
+                    })
                 }
             }
         }

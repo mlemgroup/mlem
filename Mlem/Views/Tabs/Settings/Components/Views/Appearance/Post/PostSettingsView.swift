@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+enum PostSettingsNavigationRoute: Hashable, Codable {
+    case customizeWidgets
+}
+
 struct PostSettingsView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -49,12 +53,7 @@ struct PostSettingsView: View {
                     options: PostSize.allCases
                 )
             
-                NavigationLink {
-                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
-                        layoutWidgetTracker.groups.post = widgets
-                        layoutWidgetTracker.saveLayoutWidgets()
-                    })
-                } label: {
+                NavigationLink(value: PostSettingsNavigationRoute.customizeWidgets) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {

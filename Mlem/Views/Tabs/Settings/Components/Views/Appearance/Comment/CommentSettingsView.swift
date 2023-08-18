@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+enum CommentSettingsNavigationRoute: Hashable, Codable {
+    case layoutWidget
+}
+
 struct CommentSettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
@@ -27,12 +31,7 @@ struct CommentSettingsView: View {
                                        settingName: "Compact Comments",
                                        isTicked: $compactComments)
                 
-                NavigationLink {
-                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
-                        layoutWidgetTracker.groups.comment = widgets
-                        layoutWidgetTracker.saveLayoutWidgets()
-                    })
-                } label: {
+                NavigationLink(value: CommentSettingsNavigationRoute.layoutWidget) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
