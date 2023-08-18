@@ -15,7 +15,7 @@ struct CreatePrivateMessageRequest: APIPostRequest {
     let path = "private_message"
     let body: Body
 
-    // lemmy_api_common::post::CreatePostLike
+    // lemmy_api_common::post::CreatePrivateMessage
     struct Body: Encodable {
         let auth: String
         let content: String
@@ -23,17 +23,11 @@ struct CreatePrivateMessageRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         content: String,
         recipient: APIPerson
     ) {
-        self.instanceURL = account.instanceLink
-        self.body = .init(auth: account.accessToken, content: content, recipient_id: recipient.id)
+        self.instanceURL = session.URL
+        self.body = .init(auth: session.token, content: content, recipient_id: recipient.id)
     }
 }
-
-// pub struct CreatePrivateMessage {
-//   pub content: String,
-//   pub recipient_id: PersonId,
-//   pub auth: Sensitive<String>,
-// }

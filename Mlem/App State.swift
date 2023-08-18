@@ -64,8 +64,7 @@ class AppState: ObservableObject {
         apiClient.configure(for: currentActiveAccount)
         
         Task {
-            let request = GetSiteRequest(account: currentActiveAccount)
-            if let response = try? await APIClient().perform(request: request) {
+            if let response = try? await apiClient.loadSiteInformation() {
                 await MainActor.run {
                     enableDownvote = response.siteView.localSite.enableDownvotes
                 }

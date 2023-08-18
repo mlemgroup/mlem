@@ -17,6 +17,10 @@ struct CommunitySection: Identifiable {
 }
 
 struct CommunityListView: View {
+    
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
+    
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
     @Environment(\.openURL) var openURL
@@ -165,15 +169,12 @@ struct CommunityListView: View {
             var refreshedCommunities: [APICommunity] = []
             var communitiesPage = 1
             repeat {
-                let request = ListCommunitiesRequest(
-                    account: appState.currentActiveAccount,
+                let response = try await apiClient.loadCommunityList(
                     sort: nil,
                     page: communitiesPage,
                     limit: communitiesRequestCount,
-                    type: FeedType.subscribed
+                    type: .subscribed
                 )
-
-                let response = try await APIClient().perform(request: request)
 
                 let newSubscribedCommunities = response.communities.map({
                     return $0.community
@@ -189,7 +190,9 @@ struct CommunityListView: View {
 
             subscribedCommunities = refreshedCommunities.sorted()
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
 

@@ -28,7 +28,7 @@ struct CreatePostRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         communityId: Int,
         name: String,
         nsfw: Bool?,
@@ -36,9 +36,9 @@ struct CreatePostRequest: APIPostRequest {
         // TODO change to `URL?`
         url: String?
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
-                auth: account.accessToken,
+                auth: session.token,
                 community_id: communityId,
                 name: name,
                 nsfw: nsfw,

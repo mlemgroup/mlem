@@ -14,7 +14,6 @@ struct ReportMention: ResponseEditorModel {
     @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { mention.id }
-    let appState: AppState
     let canUpload: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil

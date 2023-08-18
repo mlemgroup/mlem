@@ -14,8 +14,6 @@ import SwiftUI
 protocol ResponseEditorModel: Identifiable {
     var id: Int { get }
     
-    var appState: AppState { get }
-    
     var canUpload: Bool { get } // whether the response can include uploaded images
     
     var modalName: String { get } // what to title the modal

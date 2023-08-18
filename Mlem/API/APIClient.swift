@@ -5,6 +5,8 @@
 //  Created by Nicholas Lawson on 04/06/2023.
 //
 
+// swiftlint:disable file_length
+
 import Foundation
 
 enum HTTPMethod {
@@ -132,10 +134,77 @@ class APIClient {
 }
 
 // MARK: Post Requests
+
 extension APIClient {
     func markPostAsRead(for postId: Int, read: Bool) async throws -> PostResponse {
         let request = MarkPostReadRequest(session: try session, postId: postId, read: read)
         return try await perform(request: request)
+    }
+    
+    func loadPost(id: Int, commentId: Int? = nil) async throws -> APIPostView {
+        let request = GetPostRequest(session: try session, id: id, commentId: commentId)
+        return try await perform(request: request).postView
+    }
+    
+    func createPost(
+        communityId: Int,
+        name: String,
+        nsfw: Bool?,
+        body: String?,
+        url: String?
+    ) async throws -> PostResponse {
+        let request = CreatePostRequest(
+            session: try session,
+            communityId: communityId,
+            name: name,
+            nsfw: nsfw,
+            body: body,
+            url: url
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    func editPost(
+        postId: Int,
+        name: String?,
+        url: String?,
+        body: String?,
+        nsfw: Bool?,
+        languageId: Int? = nil
+    ) async throws -> PostResponse {
+        let request = EditPostRequest(
+            session: try session,
+            postId: postId,
+            name: name,
+            url: url,
+            body: body,
+            nsfw: nsfw,
+            languageId: languageId
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    func ratePost(id: Int, score: ScoringOperation) async throws -> APIPostView {
+        let request = CreatePostLikeRequest(session: try session, postId: id, score: score)
+        return try await perform(request: request).postView
+    }
+    
+    func deletePost(id: Int, shouldDelete: Bool) async throws -> APIPostView {
+        let request = DeletePostRequest(session: try session, postId: id, deleted: shouldDelete)
+        return try await perform(request: request).postView
+    }
+    
+    @discardableResult
+    func reportPost(id: Int, reason: String) async throws -> APIPostReportView {
+        let request = CreatePostReportRequest(session: try session, postId: id, reason: reason)
+        return try await perform(request: request).postReportView
+    }
+    
+    func savePost(id: Int, shouldSave: Bool) async throws -> APIPostView {
+        let request = SavePostRequest(session: try session, postId: id, save: shouldSave)
+        return try await perform(request: request).postView
     }
 }
 
@@ -235,15 +304,53 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    func markCommentReplyRead(id: Int, isRead: Bool) async throws -> CommentReplyResponse {
+        let request = MarkCommentReplyAsRead(session: try session, commentId: id, read: isRead)
+        return try await perform(request: request)
+    }
+    
     // MARK: Person Requests
+    
     func getUnreadCount() async throws -> APIPersonUnreadCounts {
         let request = GetPersonUnreadCount(session: try session)
+        return try await perform(request: request)
+    }
+    
+    func getPersonDetails(session: APISession, username: String) async throws -> GetPersonDetailsResponse {
+        // this call is used when a user is logging in and creating an account for the first time
+        // so an external session is required, as the expectation is the client will not yet have a session or
+        // the session will be for another account.
+        let request = try GetPersonDetailsRequest(session: session, username: username)
+        return try await perform(request: request)
+    }
+    
+    func getPersonDetails(for personId: Int, limit: Int?, savedOnly: Bool) async throws -> GetPersonDetailsResponse {
+        // this call is made by the `UserView` to load this user, or other Lemmy users details
+        // TODO: currently only the first page is loaded, with the passed in limit - we should instead be loading on
+        // demand as the user scrolls through this feed similar to what we do elsewhere
+        let request = try GetPersonDetailsRequest(
+            session: try session,
+            limit: limit,
+            savedOnly: savedOnly,
+            personId: personId
+        )
+        
         return try await perform(request: request)
     }
     
     func markAllAsRead() async throws {
         let request = MarkAllAsRead(session: try session)
         try await perform(request: request)
+    }
+    
+    func blockPerson(id: Int, shouldBlock: Bool) async throws -> BlockPersonResponse {
+        let request = BlockPersonRequest(session: try session, personId: id, block: shouldBlock)
+        return try await perform(request: request)
+    }
+    
+    func markPersonMentionAsRead(mentionId: Int, isRead: Bool) async throws -> APIPersonMentionView {
+        let request = MarkPersonMentionAsRead(session: try session, personMentionId: mentionId, read: isRead)
+        return try await perform(request: request).personMentionView
     }
 }
 
@@ -279,3 +386,99 @@ extension APIClient {
         return nil
     }
 }
+
+// MARK: - Miscellaneous requests (these will end up in repositories soon)
+
+extension APIClient {
+    func loadSiteInformation() async throws -> SiteResponse {
+        let request = GetSiteRequest(session: try session)
+        return try await perform(request: request)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    func performSearch(query: String,
+                       searchType: SearchType,
+                       sortOption: PostSortType,
+                       listingType: FeedType,
+                       page: Int?,
+                       limit: Int?
+    ) async throws -> SearchResponse {
+        let request = SearchRequest(
+            session: try session,
+            query: query,
+            searchType: searchType,
+            sortOption: sortOption,
+            listingType: listingType,
+            page: page,
+            communityId: nil,
+            communityName: nil,
+            creatorId: nil,
+            limit: limit
+        )
+        
+        return try await perform(request: request)
+    }
+    // swiftlint:enable function_parameter_count
+    
+    func getCommunityDetails(id: Int) async throws -> GetCommunityResponse {
+        let request = GetCommunityRequest(session: try session, communityId: id)
+        return try await perform(request: request)
+    }
+    
+    func followCommunity(id: Int, shouldSubscribe: Bool) async throws -> CommunityResponse {
+        let request = FollowCommunityRequest(session: try session, communityId: id, follow: shouldSubscribe)
+        return try await perform(request: request)
+    }
+    
+    func blockCommunity(id: Int, shouldBlock: Bool) async throws -> BlockCommunityResponse {
+        let request = BlockCommunityRequest(session: try session, communityId: id, block: shouldBlock)
+        return try await perform(request: request)
+    }
+    
+    func loadCommunityList(sort: PostSortType?, page: Int?, limit: Int?, type: FeedType) async throws -> ListCommunityResponse {
+        let request = ListCommunitiesRequest(
+            session: try session,
+            sort: sort,
+            page: page,
+            limit: limit,
+            type: type
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    func login(
+        instanceURL: URL,
+        username: String,
+        password: String,
+        totpToken: String? = nil
+    ) async throws -> LoginResponse {
+        let request = LoginRequest(
+            instanceURL: instanceURL,
+            username: username,
+            password: password,
+            totpToken: totpToken
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    @discardableResult
+    func reportPrivateMessage(id: Int, reason: String) async throws -> APIPrivateMessageReportView {
+        let request = CreatePrivateMessageReportRequest(session: try session, privateMessageId: id, reason: reason)
+        return try await perform(request: request).privateMessageReportView
+    }
+    
+    @discardableResult
+    func sendPrivateMessage(content: String, recipient: APIPerson) async throws -> PrivateMessageResponse {
+        let request = CreatePrivateMessageRequest(session: try session, content: content, recipient: recipient)
+        return try await perform(request: request)
+    }
+    
+    func markPrivateMessageRead(id: Int, isRead: Bool) async throws -> APIPrivateMessageView {
+        let request = MarkPrivateMessageAsRead(session: try session, privateMessageId: id, read: isRead)
+        return try await perform(request: request).privateMessageView
+    }
+}
+
+// swiftlint:enable file_length
