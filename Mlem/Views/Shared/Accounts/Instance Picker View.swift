@@ -21,7 +21,7 @@ struct InstancePickerView: View {
     
     var body: some View {
         ScrollView {
-            VStack {
+            LazyVStack {
                 Text("Instances")
                     .bold()
                     .padding(.bottom)
@@ -30,7 +30,11 @@ struct InstancePickerView: View {
                     Text("Fetching failed")
                 } else if let instances {
                     ForEach(instances) { instance in
-                        Text(instance.name)
+                        VStack(spacing: 0) {
+                            InstanceSummary(instance: instance)
+                            
+                            Divider()
+                        }
                     }
                 } else {
                     LoadingView(whatIsLoading: .instances)

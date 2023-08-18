@@ -16,6 +16,9 @@ extension InstancePickerView {
         }
     }
     
+    /**
+     Retrieves instance metadata from 
+     */
     private func fetchInstances(callback: @escaping ([InstanceMetadata]) -> Void) {
         if let url = URL(string: AppConstants.instanceMetadataUrl) {
             URLSession.shared.dataTask(with: url) { (data, _, _) in
@@ -28,19 +31,20 @@ extension InstancePickerView {
                     // split by newlines and remove header row
                     var splitData: [Substring] = dataString.split(separator: "\n")
                     
-                    // ensure looks the way we want
+                    // ensure this is the data we think it is
                     guard splitData.removeFirst() == "Instance,NU,NC,Fed,Adult,↓V,Users,BI,BB,UT,Version" else {
                         print("Unexpected header line")
                         fetchFailed = true
                         return
                     }
                     
-                    // map to InstanceMetadata
-                    let ret: [InstanceMetadata] = splitData.compactMap { line in
-                        let ret = parseInstanceMetadata(from: line)
-                        if ret == nil { print("Failed to parse line: \(line)") }
-                        return ret
-                    }
+                    // map lines to InstanceMetadata structs
+                    let ret: [InstanceMetadata] = splitData
+                        .compactMap { line in
+                            let ret = parseInstanceMetadata(from: line)
+                            if ret == nil { print("Failed to parse line: \(line)") }
+                            return ret
+                        }
                     
                     // if found some instances, update state and return
                     if ret.count > 0 {
@@ -57,11 +61,14 @@ extension InstancePickerView {
         }
     }
     
+    /**
+     Parses a CSV line into instance metadata
+     */
     private func parseInstanceMetadata(from line: Substring) -> InstanceMetadata? {
         let fields = line.split(separator: ",")
         guard fields.count == 11 else { return nil }
         
-        guard let urlMatch = fields[0].firstMatch(of: /\[(?'name'[^\]]*)\]\((?'url'[^\)]*)\)/) else { return nil }
+        guard let urlMatch = fields[0].firstMatch(of: /\[(?'name'.*)\]\((?'url'.*)\)/) else { return nil }
 
         let name = String(urlMatch.output.name)
         guard let url = URL(string: String(urlMatch.output.url)) else { return nil }

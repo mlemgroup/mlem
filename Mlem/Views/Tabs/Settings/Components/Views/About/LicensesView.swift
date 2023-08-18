@@ -48,10 +48,6 @@ struct LicensesView: View {
                     NavigationLink("Awesome Lemmy Instances") {
                         DocumentView(text: awesomeLemmyInstancesLicense.body)
                     }
-                    
-//                    NavigationView("CSV Importer") {
-//                        DocumentView(text: csvImporterLicense.body)
-//                    }
                 }
             }
             .fancyTabScrollCompatible()
