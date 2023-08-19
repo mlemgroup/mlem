@@ -14,18 +14,15 @@ struct ReplyToComment: ResponseEditorModel {
     @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { comment.id }
-    let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
     let comment: APICommentView
     let prefillContents: String?
     let commentTracker: CommentTracker?
     
-    init(appState: AppState,
-         comment: APICommentView,
+    init(comment: APICommentView,
          prefillContents: String? = nil,
          commentTracker: CommentTracker? = nil) {
-        self.appState = appState
         self.comment = comment
         self.prefillContents = prefillContents
         self.commentTracker = commentTracker

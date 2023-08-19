@@ -14,12 +14,12 @@ struct LargePost: View {
     enum LayoutMode {
         case minimize, preferredSize, maximize
         
-        var maxHeight: CGFloat {
+        func getMaxHeight(_ limitHeight: Bool = false) -> CGFloat {
             switch self {
             case .maximize:
                 return .infinity
             case .preferredSize:
-                return AppConstants.maxFeedPostHeight
+                return limitHeight ? AppConstants.maxFeedPostHeight : AppConstants.maxFeedPostHeightExpanded
             case .minimize:
                 return 44
             }
@@ -47,6 +47,7 @@ struct LargePost: View {
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
 
     // parameters
     let postView: APIPostView
@@ -201,14 +202,17 @@ struct LargePost: View {
     var postContentView: some View {
         switch postView.postType {
         case .image(let url):
+            let limitHeight = limitImageHeightInFeed && !isExpanded
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
                     CachedImage(url: url,
-                                maxHeight: layoutMode.maxHeight,
-                                dismissCallback: markPostAsRead)
-                    .frame(maxWidth: .infinity, maxHeight: layoutMode.maxHeight, alignment: .top)
+                                maxHeight: layoutMode.getMaxHeight(limitHeight),
+                                dismissCallback: markPostAsRead,
+                                cornerRadius: AppConstants.largeItemCornerRadius)
+                    .frame(maxWidth: .infinity,
+                           maxHeight: layoutMode.getMaxHeight(limitHeight),
+                           alignment: .top)
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
-                    .cornerRadius(AppConstants.largeItemCornerRadius)
                     .clipped()
                 }
                 postBodyView

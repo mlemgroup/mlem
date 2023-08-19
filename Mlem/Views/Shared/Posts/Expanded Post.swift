@@ -14,11 +14,12 @@ internal enum PossibleStyling {
 
 struct ExpandedPost: View {
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
-    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.postRepository) var postRepository
     
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top

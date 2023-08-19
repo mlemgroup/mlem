@@ -22,15 +22,15 @@ struct MarkCommentReplyAsRead: APIPostRequest {
     }
     
     init(
-        account: SavedAccount,
+        session: APISession,
         commentId: Int,
         read: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             comment_reply_id: commentId,
             read: read,
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }
@@ -38,9 +38,3 @@ struct MarkCommentReplyAsRead: APIPostRequest {
 struct CommentReplyResponse: Decodable {
     let commentReplyView: APICommentReplyView
 }
-
-// pub struct MarkCommentReplyAsRead {
-//   pub comment_reply_id: CommentReplyId,
-//   pub read: bool,
-//   pub auth: Sensitive<String>,
-// }

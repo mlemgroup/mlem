@@ -5,8 +5,8 @@
 //  Created by Jake Shirey on 17.06.2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct CommunitySection: Identifiable {
     let id = UUID()
@@ -17,6 +17,10 @@ struct CommunitySection: Identifiable {
 }
 
 struct CommunityListView: View {
+    
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.errorHandler) var errorHandler
+    
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
     @Environment(\.openURL) var openURL
@@ -24,8 +28,6 @@ struct CommunityListView: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @State var subscribedCommunities = [APICommunity]()
-
-    private var hasTestCommunities = false
 
     // swiftlint:disable line_length
     private static let alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
@@ -36,13 +38,7 @@ struct CommunityListView: View {
 
     @Binding var selectedCommunity: CommunityLinkWithContext?
 
-    init(testCommunities: [APICommunity]? = nil,
-         selectedCommunity: Binding<CommunityLinkWithContext?>
-    ) {
-        if testCommunities != nil {
-            self._subscribedCommunities = State(initialValue: testCommunities!)
-            self.hasTestCommunities = true
-        }
+    init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
         self._selectedCommunity = selectedCommunity
     }
 
@@ -104,11 +100,7 @@ struct CommunityListView: View {
         }
         .onAppear {
             Task(priority: .high) {
-                // NOTE: This will not auto request if data is provided
-                // This is normally only during preview
-                if hasTestCommunities == false {
-                    await refreshCommunitiesList()
-                }
+                await refreshCommunitiesList()
             }
             // Set up sections after we body is called
             // so we can use the favorite tracker environment
@@ -159,37 +151,15 @@ struct CommunityListView: View {
     }
 
     private func refreshCommunitiesList() async {
-        let communitiesRequestCount = 50
         do {
-            var moreCommunities = true
-            var refreshedCommunities: [APICommunity] = []
-            var communitiesPage = 1
-            repeat {
-                let request = ListCommunitiesRequest(
-                    account: appState.currentActiveAccount,
-                    sort: nil,
-                    page: communitiesPage,
-                    limit: communitiesRequestCount,
-                    type: FeedType.subscribed
-                )
-
-                let response = try await APIClient().perform(request: request)
-
-                let newSubscribedCommunities = response.communities.map({
-                    return $0.community
-                })
-
-                refreshedCommunities.append(contentsOf: newSubscribedCommunities)
-
-                communitiesPage += 1
-
-                // Go until we get less than the count we ask for
-                moreCommunities = response.communities.count == communitiesRequestCount
-            } while (moreCommunities)
-
-            subscribedCommunities = refreshedCommunities.sorted()
+            subscribedCommunities = try await communityRepository
+                .loadSubscriptions()
+                .map { $0.community }
+                .sorted()
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
 

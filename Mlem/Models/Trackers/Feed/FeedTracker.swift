@@ -6,10 +6,13 @@
 //
 //
 
+import Dependencies
 import Foundation
 
 class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
-
+    
+    @Dependency(\.apiClient) var apiClient
+    
     // isLoading is accessible but does not publish its state because it triggers lots of unexpected view redraws
     private(set) var isLoading: Bool = true
     @Published private(set) var items: [Item]
@@ -153,7 +156,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
         defer { isLoading = false }
         isLoading = true
-        return try await APIClient().perform(request: request)
+        return try await apiClient.perform(request: request)
     }
 
     private func dedupedItems(from newItems: [Item]) -> [Item] {

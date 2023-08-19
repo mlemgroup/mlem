@@ -257,14 +257,10 @@ extension InboxView {
     
     func blockUser(userId: Int) async {
         do {
-            let blocked = try await blockPerson(
-                account: appState.currentActiveAccount,
-                personId: userId,
-                blocked: true
-            )
+            let response = try await apiClient.blockPerson(id: userId, shouldBlock: true)
             
-            // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
-            if blocked {
+            if response.blocked {
+                hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked user"))
                 filterUser(userId: userId)
             }

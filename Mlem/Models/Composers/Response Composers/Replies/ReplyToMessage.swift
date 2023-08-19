@@ -5,12 +5,16 @@
 //  Created by Eric Andrews on 2023-07-15.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct ReplyToMessage: ResponseEditorModel {
+    
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.hapticManager) var hapticManager
+    
     var id: Int { message.id }
-    let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Message"
     let prefillContents: String? = nil
@@ -22,10 +26,12 @@ struct ReplyToMessage: ResponseEditorModel {
     }
     
     func sendResponse(responseContents: String) async throws {
-        try await sendPrivateMessage(
-            content: responseContents,
-            recipient: message.creator,
-            account: appState.currentActiveAccount
-        )
+        do {
+            try await apiClient.sendPrivateMessage(content: responseContents, recipient: message.creator)
+            hapticManager.play(haptic: .success, priority: .high)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            throw error
+        }
     }
 }

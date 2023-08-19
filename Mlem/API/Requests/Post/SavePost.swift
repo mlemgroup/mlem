@@ -19,23 +19,20 @@ struct SavePostRequest: APIPutRequest {
     struct Body: Encodable {
         let post_id: Int
         let save: Bool
-
         let auth: String
     }
 
     init(
-        account: SavedAccount,
-
+        session: APISession,
         postId: Int,
         save: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
 
         self.body = .init(
             post_id: postId,
             save: save,
-
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

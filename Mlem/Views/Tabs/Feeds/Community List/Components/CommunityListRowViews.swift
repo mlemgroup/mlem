@@ -5,8 +5,8 @@
 //  Created by Jake Shirley on 6/19/23.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct HeaderView: View {
     let title: String
@@ -31,12 +31,15 @@ struct FavoriteStarButtonStyle: ButtonStyle {
 }
 
 struct CommuntiyFeedRowView: View {
+    
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.notifier) var notifier
+    
     let community: APICommunity
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
-
-    @Dependency(\.hapticManager) var hapticManager
-    @Dependency(\.notifier) var notifier
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
@@ -133,26 +136,22 @@ struct CommuntiyFeedRowView: View {
         communitySubscriptionChanged(community, shouldSubscribe)
 
         do {
-            let request = FollowCommunityRequest(
-                account: appState.currentActiveAccount,
-                communityId: communityId,
-                follow: shouldSubscribe
-            )
-
-            _ = try await APIClient().perform(request: request)
+            try await communityRepository.updateSubscription(for: communityId, subscribed: shouldSubscribe)
             
-            Task {
-                if shouldSubscribe {
-                    await notifier.add(.success("Subscibed to \(community.name)"))
-                } else {
-                    await notifier.add(.success("Unsubscribed from \(community.name)"))
-                }
+            if shouldSubscribe {
+                await notifier.add(.success("Subscibed to \(community.name)"))
+            } else {
+                await notifier.add(.success("Unsubscribed from \(community.name)"))
             }
-
         } catch {
-            // TODO: If we fail here and want to notify the user we should pass a message
-            // into the contextual error below
-            appState.contextualError = .init(underlyingError: error)
+            let phrase = shouldSubscribe ? "subscribe to" : "unsubscribe from"
+            errorHandler.handle(
+                .init(
+                    title: "Unable to \(phrase) community",
+                    style: .toast,
+                    underlyingError: error
+                )
+            )
             communitySubscriptionChanged(community, !shouldSubscribe)
         }
     }

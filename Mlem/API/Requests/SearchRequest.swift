@@ -26,20 +26,20 @@ struct SearchRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        session: APISession,
         query: String,
         searchType: SearchType,
-        sortOption: PostSortType = .topAll,
-        listingType: FeedType = .all,
-        page: Int? = nil,
-        communityId: Int? = nil,
-        communityName: String? = nil,
-        creatorId: Int? = nil,
-        limit: Int? = nil
+        sortOption: PostSortType,
+        listingType: FeedType,
+        page: Int?,
+        communityId: Int?,
+        communityName: String?,
+        creatorId: Int?,
+        limit: Int?
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: session.token),
             .init(name: "type_", value: searchType.rawValue),
             .init(name: "sort", value: sortOption.rawValue),
             .init(name: "listing_type", value: listingType.rawValue),

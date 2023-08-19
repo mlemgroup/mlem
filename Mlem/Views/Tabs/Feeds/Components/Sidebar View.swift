@@ -5,11 +5,13 @@
 //  Created by David Bureš on 08.05.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct CommunitySidebarView: View {
     
-    @EnvironmentObject var appState: AppState
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.errorHandler) var errorHandler
     
     // parameters
     let community: APICommunity
@@ -21,10 +23,10 @@ struct CommunitySidebarView: View {
 
     var body: some View {
         Section {
-            if let shownError = errorMessage {
-                errorView(errorDetials: shownError)
-            } else if let loadedDetails = communityDetails {
+            if let loadedDetails = communityDetails {
                 view(for: loadedDetails)
+            } else if let shownError = errorMessage {
+                errorView(errorDetails: shownError)
             } else {
                 LoadingView(whatIsLoading: .communityDetails)
             }
@@ -44,16 +46,13 @@ struct CommunitySidebarView: View {
     
     private func loadCommunity() async {
         do {
-            let request = GetCommunityRequest(account: appState.currentActiveAccount, communityId: community.id)
-            communityDetails = try await APIClient().perform(request: request)
-        } catch APIClientError.networking {
-            errorMessage = "Network error occurred, check your internet and retry"
-        } catch APIClientError.response {
-            errorMessage = "API error occurred, try refreshing"
-        } catch APIClientError.cancelled {
-            errorMessage = "Request was cancelled, try refreshing"
+            errorMessage = nil
+            communityDetails = try await communityRepository.loadDetails(for: community.id)
         } catch {
-            errorMessage = "A decoding error occurred, try refreshing."
+            errorMessage = "We were unable to load this communities details, please try again."
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     
@@ -114,13 +113,13 @@ struct CommunitySidebarView: View {
     }
     
     @ViewBuilder
-    func errorView(errorDetials: String) -> some View {
+    func errorView(errorDetails: String) -> some View {
         VStack(spacing: 10) {
             Image(systemName: "exclamationmark.bubble")
                 .font(.title)
             
             Text("Community details loading failed!")
-            Text(errorDetials)
+            Text(errorDetails)
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)

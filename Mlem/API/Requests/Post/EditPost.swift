@@ -28,7 +28,7 @@ struct EditPostRequest: APIPutRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
 
         postId: Int,
         name: String?,
@@ -37,7 +37,7 @@ struct EditPostRequest: APIPutRequest {
         nsfw: Bool?,
         languageId: Int?
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
 
         self.body = .init(
             post_id: postId,
@@ -47,7 +47,7 @@ struct EditPostRequest: APIPutRequest {
             nsfw: nsfw,
             language_id: languageId,
 
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

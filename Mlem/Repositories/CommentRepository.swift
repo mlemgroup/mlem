@@ -171,4 +171,8 @@ class CommentRepository {
             throw error
         }
     }
+    
+    func markCommentReadStatus(id: Int, isRead: Bool) async throws -> CommentReplyResponse {
+        try await apiClient.markCommentReplyRead(id: id, isRead: isRead)
+    }
 }

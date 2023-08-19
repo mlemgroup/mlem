@@ -22,15 +22,15 @@ struct MarkPrivateMessageAsRead: APIPostRequest {
     }
     
     init(
-        account: SavedAccount,
+        session: APISession,
         privateMessageId: Int,
         read: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             private_message_id: privateMessageId,
             read: read,
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

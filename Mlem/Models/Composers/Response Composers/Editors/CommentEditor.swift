@@ -13,7 +13,6 @@ struct CommentEditor: ResponseEditorModel {
 
     @Dependency(\.commentRepository) var commentRepository
 
-    let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "Edit Comment"
     var prefillContents: String? { comment.comment.content }
