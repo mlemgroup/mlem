@@ -10,6 +10,11 @@ import SwiftUI
 extension View {
     func useSettingsNavigationRouter() -> some View {
         modifier(SettingsRouter())
+            .modifier(AppearanceSettingsRouter())
+            .modifier(CommentSettingsRouter())
+            .modifier(PostSettingsRouter())
+            .modifier(AboutSettingsRouter())
+            .modifier(LicensesSettingsRouter())
     }
 }
 
@@ -18,8 +23,6 @@ struct SettingsRouter: ViewModifier {
     @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
 
-    // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: SettingsRoute.self) { route in
@@ -40,6 +43,13 @@ struct SettingsRouter: ViewModifier {
                     AdvancedSettingsView()
                 }
             }
+    }
+}
+
+private struct AppearanceSettingsRouter: ViewModifier {
+
+    func body(content: Content) -> some View {
+        content
             .navigationDestination(for: AppearanceSettingsRoute.self) { route in
                 switch route {
                 case .theme:
@@ -58,6 +68,15 @@ struct SettingsRouter: ViewModifier {
                     TabBarSettingsView()
                 }
             }
+    }
+}
+
+private struct CommentSettingsRouter: ViewModifier {
+    
+    @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
+    
+    func body(content: Content) -> some View {
+        content
             .navigationDestination(for: CommentSettingsRoute.self) { route in
                 switch route {
                 case .layoutWidget:
@@ -67,6 +86,15 @@ struct SettingsRouter: ViewModifier {
                     })
                 }
             }
+    }
+}
+
+private struct PostSettingsRouter: ViewModifier {
+    
+    @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
+
+    func body(content: Content) -> some View {
+        content
             .navigationDestination(for: PostSettingsRoute.self) { route in
                 switch route {
                 case .customizeWidgets:
@@ -77,6 +105,13 @@ struct SettingsRouter: ViewModifier {
                     })
                 }
             }
+    }
+}
+
+private struct AboutSettingsRouter: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        content
             .navigationDestination(for: AboutSettingsRoute.self) { route in
                 switch route {
                 case .contributors:
@@ -89,6 +124,13 @@ struct SettingsRouter: ViewModifier {
                     LicensesView()
                 }
             }
+    }
+}
+
+private struct LicensesSettingsRouter: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        content
             .navigationDestination(for: LicensesSettingsRoute.self) { route in
                 switch route {
                 case .licenseDocument(let doc):
@@ -96,6 +138,4 @@ struct SettingsRouter: ViewModifier {
                 }
             }
     }
-    // swiftlint:enable cyclomatic_complexity
-    // swiftlint:enable function_body_length
 }
