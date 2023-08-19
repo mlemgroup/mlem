@@ -31,6 +31,7 @@ class APIClient {
 
     let urlSession: URLSession
     let decoder: JSONDecoder
+    let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
     
     private var _session: APISession?
     private var session: APISession {
@@ -45,9 +46,14 @@ class APIClient {
     
     // MARK: - Initialisation
     
-    init(session: URLSession = .init(configuration: .default), decoder: JSONDecoder = .defaultDecoder) {
+    init(
+        session: URLSession = .init(configuration: .default),
+        decoder: JSONDecoder = .defaultDecoder,
+        transport: @escaping (URLSession, URLRequest) async throws -> (Data, URLResponse)
+    ) {
         self.urlSession = session
         self.decoder = decoder
+        self.transport = transport
     }
     
     // MARK: - Public methods
@@ -95,7 +101,7 @@ class APIClient {
     
     private func execute(_ urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         do {
-            return try await urlSession.data(for: urlRequest)
+            return try await transport(urlSession, urlRequest)
         } catch {
             if case URLError.cancelled = error as NSError {
                 throw APIClientError.cancelled
