@@ -5,8 +5,6 @@
 //  Created by Nicholas Lawson on 04/06/2023.
 //
 
-// swiftlint:disable file_length
-
 import Foundation
 
 enum HTTPMethod {
@@ -34,7 +32,7 @@ class APIClient {
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
     
     private var _session: APISession?
-    private var session: APISession {
+    var session: APISession {
         get throws {
             guard let _session else {
                 throw APIClientError.invalidSession
@@ -214,108 +212,9 @@ extension APIClient {
     }
 }
 
-// MARK: Comment Requests
+// MARK: Person Requests
 
 extension APIClient {
-    func loadComments(
-        for postId: Int,
-        maxDepth: Int = 15,
-        type: FeedType = .all,
-        sort: CommentSortType? = nil,
-        page: Int? = nil,
-        limit: Int? = nil,
-        communityId: Int? = nil,
-        communityName: String? = nil,
-        parentId: Int? = nil,
-        savedOnly: Bool? = nil
-    ) async throws -> [APICommentView] {
-        let request = GetCommentsRequest(
-            session: try session,
-            postId: postId,
-            maxDepth: maxDepth,
-            type: type,
-            sort: sort,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            communityName: communityName,
-            parentId: parentId,
-            savedOnly: savedOnly
-        )
-        
-        return try await perform(request: request).comments
-    }
-    
-    func loadComment(id: Int) async throws -> CommentResponse {
-        let request = GetCommentRequest(session: try session, id: id)
-        return try await perform(request: request)
-    }
-    
-    func createComment(
-        content: String,
-        languageId: Int? = nil,
-        parentId: Int? = nil,
-        postId: Int
-    ) async throws -> CommentResponse {
-        let request = CreateCommentRequest(
-            session: try session,
-            content: content,
-            languageId: languageId,
-            parentId: parentId,
-            postId: postId
-        )
-        
-        return try await perform(request: request)
-    }
-    
-    func applyCommentScore(id: Int, score: Int) async throws -> CommentResponse {
-        let request = CreateCommentLikeRequest(session: try session, commentId: id, score: score)
-        return try await perform(request: request)
-    }
-    
-    func editComment(
-        id: Int,
-        content: String? = nil,
-        distinguished: Bool? = nil,
-        languageId: Int? = nil,
-        formId: String? = nil
-    ) async throws -> CommentResponse {
-        let request = EditCommentRequest(
-            session: try session,
-            commentId: id,
-            content: content,
-            distinguished: distinguished,
-            languageId: languageId,
-            formId: formId
-        )
-        
-        return try await perform(request: request)
-    }
-    
-    func deleteComment(
-        id: Int,
-        deleted: Bool
-    ) async throws -> CommentResponse {
-        let request = DeleteCommentRequest(session: try session, commentId: id, deleted: deleted)
-        return try await perform(request: request)
-    }
-    
-    func saveComment(id: Int, shouldSave: Bool) async throws -> CommentResponse {
-        let request = SaveCommentRequest(session: try session, commentId: id, save: shouldSave)
-        return try await perform(request: request)
-    }
-    
-    func reportComment(id: Int, reason: String) async throws -> CreateCommentReportResponse {
-        let request = CreateCommentReportRequest(session: try session, commentId: id, reason: reason)
-        return try await perform(request: request)
-    }
-    
-    func markCommentReplyRead(id: Int, isRead: Bool) async throws -> CommentReplyResponse {
-        let request = MarkCommentReplyAsRead(session: try session, commentId: id, read: isRead)
-        return try await perform(request: request)
-    }
-    
-    // MARK: Person Requests
     
     func getUnreadCount() async throws -> APIPersonUnreadCounts {
         let request = GetPersonUnreadCount(session: try session)
@@ -357,6 +256,11 @@ extension APIClient {
     func markPersonMentionAsRead(mentionId: Int, isRead: Bool) async throws -> APIPersonMentionView {
         let request = MarkPersonMentionAsRead(session: try session, personMentionId: mentionId, read: isRead)
         return try await perform(request: request).personMentionView
+    }
+    
+    func markCommentReplyRead(id: Int, isRead: Bool) async throws -> CommentReplyResponse {
+        let request = MarkCommentReplyAsRead(session: try session, commentId: id, read: isRead)
+        return try await perform(request: request)
     }
 }
 
@@ -426,33 +330,6 @@ extension APIClient {
     }
     // swiftlint:enable function_parameter_count
     
-    func getCommunityDetails(id: Int) async throws -> GetCommunityResponse {
-        let request = GetCommunityRequest(session: try session, communityId: id)
-        return try await perform(request: request)
-    }
-    
-    func followCommunity(id: Int, shouldSubscribe: Bool) async throws -> CommunityResponse {
-        let request = FollowCommunityRequest(session: try session, communityId: id, follow: shouldSubscribe)
-        return try await perform(request: request)
-    }
-    
-    func blockCommunity(id: Int, shouldBlock: Bool) async throws -> BlockCommunityResponse {
-        let request = BlockCommunityRequest(session: try session, communityId: id, block: shouldBlock)
-        return try await perform(request: request)
-    }
-    
-    func loadCommunityList(sort: PostSortType?, page: Int?, limit: Int?, type: FeedType) async throws -> ListCommunityResponse {
-        let request = ListCommunitiesRequest(
-            session: try session,
-            sort: sort,
-            page: page,
-            limit: limit,
-            type: type
-        )
-        
-        return try await perform(request: request)
-    }
-    
     func login(
         instanceURL: URL,
         username: String,
@@ -486,5 +363,3 @@ extension APIClient {
         return try await perform(request: request).privateMessageView
     }
 }
-
-// swiftlint:enable file_length

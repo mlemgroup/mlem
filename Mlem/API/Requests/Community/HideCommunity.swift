@@ -26,20 +26,20 @@ struct HideCommunityRequest: APIPutRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
 
         communityId: Int,
         hidden: Bool,
         reason: String?
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
 
         self.body = .init(
             community_id: communityId,
             hidden: hidden,
             reason: reason,
 
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }
