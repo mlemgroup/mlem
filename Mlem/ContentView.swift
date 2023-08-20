@@ -135,9 +135,7 @@ struct ContentView: View {
                 let unreadCounts = try await personRepository.getUnreadCounts()
                 unreadTracker.update(with: unreadCounts)
             } catch {
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
         }
     }

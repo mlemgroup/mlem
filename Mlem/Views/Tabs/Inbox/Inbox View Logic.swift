@@ -45,9 +45,7 @@ extension InboxView {
             errorOccurred = true
             errorMessage = "Request was cancelled, try refreshing"
         } catch APIClientError.invalidSession {
-            errorHandler.handle(
-                .init(underlyingError: APIClientError.invalidSession)
-            )
+            errorHandler.handle(APIClientError.invalidSession)
         } catch let message {
             print(message)
             errorOccurred = true
@@ -97,9 +95,7 @@ extension InboxView {
             try await personRepository.markAllAsRead()
             await refreshFeed()
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
@@ -153,9 +149,7 @@ extension InboxView {
                     aggregateAllTrackers()
                 }
             } catch {
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
         }
     }
@@ -181,9 +175,7 @@ extension InboxView {
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 hapticManager.play(haptic: .failure, priority: .low)
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
         }
     }
@@ -212,7 +204,7 @@ extension InboxView {
                 }
             } catch {
                 hapticManager.play(haptic: .failure, priority: .high)
-                errorHandler.handle(.init(underlyingError: error))
+                errorHandler.handle(error)
             }
         }
     }
@@ -238,9 +230,7 @@ extension InboxView {
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 hapticManager.play(haptic: .failure, priority: .high)
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
         }
     }
@@ -278,9 +268,7 @@ extension InboxView {
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
                 hapticManager.play(haptic: .failure, priority: .low)
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
         }
     }

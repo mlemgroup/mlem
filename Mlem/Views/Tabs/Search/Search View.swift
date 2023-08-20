@@ -195,9 +195,7 @@ struct SearchView: View {
             } catch is CancellationError {
                 print("Search cancelled")
             } catch {
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
         }
     }

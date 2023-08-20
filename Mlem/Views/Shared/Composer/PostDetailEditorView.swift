@@ -96,9 +96,7 @@ struct PostDetailEditorView: View {
             
         } catch {
             isSubmitting = false
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     

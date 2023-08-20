@@ -157,9 +157,7 @@ struct CommunityListView: View {
                 .map { $0.community }
                 .sorted()
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
 

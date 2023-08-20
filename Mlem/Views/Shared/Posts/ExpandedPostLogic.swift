@@ -17,7 +17,7 @@ extension ExpandedPost {
             post = try await postRepository.markRead(for: post.post.id, read: true)
             postTracker.update(with: post)
         } catch {
-            errorHandler.handle(.init(underlyingError: error))
+            errorHandler.handle(error)
         }
     }
     
@@ -86,9 +86,7 @@ extension ExpandedPost {
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
@@ -108,9 +106,7 @@ extension ExpandedPost {
                 self.post = updatedPost
             } catch {
                 hapticManager.play(haptic: .failure, priority: .low)
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
             dirty = false
             return
@@ -124,9 +120,7 @@ extension ExpandedPost {
             postTracker.update(with: response)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
