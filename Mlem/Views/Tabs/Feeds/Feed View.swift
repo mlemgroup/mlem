@@ -27,6 +27,10 @@ struct FeedView: View {
     @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var editorTracker: EditorTracker
     
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+    @Environment(\.tabScrollViewProxy) private var scrollViewProxy
+    @Environment(\.navigationPath) private var navigationPath
+    
     // MARK: Parameters and init
     
     let community: APICommunity?
@@ -54,6 +58,10 @@ struct FeedView: View {
     @State var shouldLoad: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
+    
+    private var scrollToTopId: Int? {
+        postTracker.items.first?.id
+    }
     
     // MARK: - Main Views
     
@@ -98,6 +106,22 @@ struct FeedView: View {
                     print("should load more posts...")
                     Task(priority: .medium) { await loadFeed() }
                     shouldLoad = false
+                }
+            }
+            .onChange(of: selectedNavigationTabHashValue) { newValue in
+                if newValue == TabSelection.feeds.hashValue {
+                    print("re-selected \(TabSelection.feeds) tab")
+#if DEBUG
+                    if navigationPath.wrappedValue.isEmpty {
+                        if let scrollToTopId {
+                            withAnimation {
+                                scrollViewProxy?.scrollTo(scrollToTopId, anchor: .bottom)
+                            }
+                        }
+                    } else {
+                        navigationPath.wrappedValue.goBack()
+                    }
+#endif
                 }
             }
             .refreshable { await refreshFeed() }

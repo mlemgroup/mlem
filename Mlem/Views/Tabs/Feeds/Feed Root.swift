@@ -30,15 +30,18 @@ struct FeedRoot: View {
                 .id(appState.currentActiveAccount.id)
         } detail: {
             if let rootDetails {
-                NavigationStack(path: $navigationPath) {
-                    FeedView(
-                        community: rootDetails.community,
-                        feedType: rootDetails.feedType,
-                        sortType: defaultPostSorting,
-                        showLoading: showLoading
-                    )
-                    .environmentObject(appState)
-                    .handleLemmyViews()
+                ScrollViewReader { proxy in
+                    NavigationStack(path: $navigationPath) {
+                        FeedView(
+                            community: rootDetails.community,
+                            feedType: rootDetails.feedType,
+                            sortType: defaultPostSorting,
+                            showLoading: showLoading
+                        )
+                        .environmentObject(appState)
+                        .environment(\.tabScrollViewProxy, proxy)
+                        .handleLemmyViews()
+                    }
                 }
                 .id(rootDetails.id + appState.currentActiveAccount.id)
             } else {
