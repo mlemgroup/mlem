@@ -19,7 +19,10 @@ struct UserView: View {
     
     // environment
     @EnvironmentObject var appState: AppState
-    
+    @Environment(\.navigationPath) private var navigationPath
+    @Environment(\.tabScrollViewProxy) private var scrollViewProxy
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+
     // parameters
     @State var userID: Int
     @State var userDetails: APIPersonView?
@@ -31,6 +34,8 @@ struct UserView: View {
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
+    
+    @Namespace var scrollToTop
     
     init(userID: Int, userDetails: APIPersonView? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -56,6 +61,20 @@ struct UserView: View {
         contentView
             .sheet(isPresented: $isPresentingAccountSwitcher) {
                 AccountsPage(onboarding: false)
+            }
+            .onChange(of: selectedNavigationTabHashValue) { newValue in
+                if newValue == TabSelection.profile.hashValue {
+                    print("re-selected \(TabSelection.profile) tab")
+#if DEBUG
+                    if navigationPath.wrappedValue.isEmpty {
+                        withAnimation {
+                            scrollViewProxy?.scrollTo(scrollToTop, anchor: .bottom)
+                        }
+                    } else {
+                        navigationPath.wrappedValue.goBack()
+                    }
+#endif
+                }
             }
     }
 
@@ -103,6 +122,7 @@ struct UserView: View {
     private func view(for userDetails: APIPersonView) -> some View {
         ScrollView {
             header(for: userDetails)
+                .id(scrollToTop)
             
             if let bio = userDetails.person.bio {
                 MarkdownView(text: bio, isNsfw: false).padding()

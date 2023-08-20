@@ -24,8 +24,12 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            UserView(userID: userID)
-                .handleLemmyViews()
+            ScrollViewReader { proxy in
+                UserView(userID: userID)
+                    .handleLemmyViews()
+                    .environment(\.tabScrollViewProxy, proxy)
+                    .environment(\.navigationPath, $navigationPath)
+            }
         }
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
         .onChange(of: selectedTagHashValue) { newValue in
