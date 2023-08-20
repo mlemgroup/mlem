@@ -80,28 +80,52 @@ struct InboxView: View {
     // utility
     @State private var navigationPath = NavigationPath()
     
+    private var scrollToTopId: Int? {
+        switch curTab {
+        case .all:
+            return allItems.first?.id
+        case .replies:
+            return repliesTracker.items.first?.id
+        case .mentions:
+            return mentionsTracker.items.first?.id
+        case .messages:
+            return messagesTracker.items.first?.id
+        }
+    }
+    
     var body: some View {
         // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
         NavigationStack(path: $navigationPath) {
-            contentView
-                .navigationTitle("Inbox")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarColor()
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
-                }
-                .listStyle(PlainListStyle())
-                .handleLemmyViews()
-                .onChange(of: selectedTagHashValue) { newValue in
-                    if newValue == TabSelection.inbox.hashValue {
-                        print("switched to inbox tab")
+            ScrollViewReader { proxy in
+                contentView
+                    .navigationTitle("Inbox")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarColor()
+                    .toolbar {
+                        ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
                     }
-                }
-                .onChange(of: selectedNavigationTabHashValue) { newValue in
-                    if newValue == TabSelection.inbox.hashValue {
-                        print("re-selected \(TabSelection.inbox) tab")
+                    .listStyle(PlainListStyle())
+                    .handleLemmyViews()
+                    .onChange(of: selectedTagHashValue) { newValue in
+                        if newValue == TabSelection.inbox.hashValue {
+                            print("switched to inbox tab")
+                        }
                     }
-                }
+                    .onChange(of: selectedNavigationTabHashValue) { newValue in
+                        if newValue == TabSelection.inbox.hashValue {
+                            print("re-selected \(TabSelection.inbox) tab")
+#if DEBUG
+                            if navigationPath.isEmpty, let scrollToTopId {
+                                withAnimation {
+                                    proxy.scrollTo(scrollToTopId, anchor: .bottom)
+                                }
+                            } else {
+                                navigationPath.goBack()
+                            }
+#endif
+                        }
+                    }
+            }
         }
     }
     
