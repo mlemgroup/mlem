@@ -9,7 +9,7 @@
 import Dependencies
 
 extension Notifier: DependencyKey {
-    static let liveValue = Notifier()
+    static let liveValue = Notifier { await NotificationDisplayer.display($0) }
 }
 
 extension DependencyValues {

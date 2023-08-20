@@ -20,10 +20,6 @@ class CommunityListModel: ObservableObject {
     
     @Published private(set) var communities = [APICommunity]()
     
-    // swiftlint:disable line_length
-    private let alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-    // swiftlint:enable line_length
-    
     private let account: SavedAccount
     private var subscriptions = [APICommunity]()
     private var favoriteCommunities = [APICommunity]()
@@ -152,7 +148,8 @@ class CommunityListModel: ObservableObject {
     }
     
     func alphabeticSections() -> [CommunitySection] {
-        alphabet.map { character in
+        let alphabet: [String] = .alphabet
+        return alphabet.map { character in
             withDependencies(from: self) {
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
                 CommunitySection(
