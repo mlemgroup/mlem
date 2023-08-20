@@ -127,9 +127,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                         guard case let APIClientError.response(apiError, _) = error,
                               apiError.error == "couldnt_find_object",
                               url.scheme == "https" else {
-                            await errorHandler.handle(
-                                .init(underlyingError: error)
-                            )
+                            await errorHandler.handle(error)
                             
                             return
                         }

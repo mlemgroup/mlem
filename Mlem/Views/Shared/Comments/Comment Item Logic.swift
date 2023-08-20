@@ -17,9 +17,7 @@ extension CommentItem {
             )
             commentTracker.comments.update(with: updatedComment)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
@@ -33,9 +31,7 @@ extension CommentItem {
             )
             commentTracker.comments.update(with: updatedComment.commentView)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
@@ -130,9 +126,7 @@ extension CommentItem {
             
             commentTracker.comments.update(with: response.commentView)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
 
     }

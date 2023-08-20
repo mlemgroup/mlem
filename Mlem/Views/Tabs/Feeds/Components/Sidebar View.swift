@@ -50,9 +50,7 @@ struct CommunitySidebarView: View {
             communityDetails = try await communityRepository.loadDetails(for: community.id)
         } catch {
             errorMessage = "We were unable to load this communities details, please try again."
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
