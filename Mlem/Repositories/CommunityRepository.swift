@@ -9,20 +9,18 @@
 import Dependencies
 import Foundation
 
-class CommunityRepository {
+struct CommunityRepository {
     
     @Dependency(\.apiClient) private var apiClient
     
-    // MARK: - Public methods
-    
-    func loadSubscriptions() async throws -> [APICommunityView] {
+    var subscriptions: (APIClient) async throws -> [APICommunityView] = { client in
         let limit = 50
         var page = 1
         var hasMorePages = true
         var communities = [APICommunityView]()
         
         repeat {
-            let response = try await loadCommunityList(page: page, limit: limit, type: .subscribed)
+            let response = try await client.loadCommunityList(sort: nil, page: page, limit: limit, type: FeedType.subscribed.rawValue)
             communities.append(contentsOf: response.communities)
             hasMorePages = response.communities.count >= limit
             page += 1
@@ -31,37 +29,59 @@ class CommunityRepository {
         return communities
     }
     
+    var details: (APIClient, Int) async throws -> GetCommunityResponse = { client, id in
+        try await client.loadCommunityDetails(id: id)
+    }
+    
+    var updateSubscription: (APIClient, Int, Bool) async throws -> APICommunityView = { client, id, subscribed in
+        try await client.followCommunity(id: id, shouldFollow: subscribed)
+            .communityView
+    }
+    
+    var hideCommunity: (APIClient, Int, String?) async throws -> CommunityResponse = { client, id, reason in
+        try await client.hideCommunity(id: id, shouldHide: true, reason: reason)
+    }
+    
+    var unhideCommunity: (APIClient, Int) async throws -> CommunityResponse = { client, id in
+        try await client.hideCommunity(id: id, shouldHide: false, reason: nil)
+    }
+    
+    var blockCommunity: (APIClient, Int) async throws -> BlockCommunityResponse = { client, id in
+        try await client.blockCommunity(id: id, shouldBlock: true)
+    }
+    
+    var unblockCommunity: (APIClient, Int) async throws -> BlockCommunityResponse = { client, id in
+        try await client.blockCommunity(id: id, shouldBlock: false)
+    }
+    
+    func loadSubscriptions() async throws -> [APICommunityView] {
+        try await subscriptions(apiClient)
+    }
+    
     func loadDetails(for id: Int) async throws -> GetCommunityResponse {
-        try await apiClient.loadCommunityDetails(id: id)
+        try await details(apiClient, id)
     }
     
     @discardableResult
     func updateSubscription(for communityId: Int, subscribed: Bool) async throws -> APICommunityView {
-        try await apiClient.followCommunity(id: communityId, shouldFollow: subscribed)
-            .communityView
+        try await updateSubscription(apiClient, communityId, subscribed)
     }
     
     func hideCommunity(id: Int, reason: String? = nil) async throws -> CommunityResponse {
-        try await apiClient.hideCommunity(id: id, shouldHide: true, reason: reason)
+        try await hideCommunity(apiClient, id, reason)
     }
     
     func unhideCommunity(id: Int) async throws -> CommunityResponse {
-        try await apiClient.hideCommunity(id: id, shouldHide: false, reason: nil)
+        try await unhideCommunity(apiClient, id)
     }
     
     @discardableResult
     func blockCommunity(id: Int) async throws -> BlockCommunityResponse {
-        try await apiClient.blockCommunity(id: id, shouldBlock: true)
+        try await blockCommunity(apiClient, id)
     }
     
     @discardableResult
     func unblockCommunity(id: Int) async throws -> BlockCommunityResponse {
-        try await apiClient.blockCommunity(id: id, shouldBlock: false)
-    }
-    
-    // MARK: - Private methods
-    
-    private func loadCommunityList(page: Int, limit: Int, type: FeedType) async throws -> ListCommunityResponse {
-        try await apiClient.loadCommunityList(sort: nil, page: page, limit: limit, type: type.rawValue)
+        try await unblockCommunity(apiClient, id)
     }
 }
