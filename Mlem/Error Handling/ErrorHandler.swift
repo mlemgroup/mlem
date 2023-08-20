@@ -22,7 +22,7 @@ class ErrorHandler: ObservableObject {
             return
         }
         
-        handle(.init(underlyingError: error))
+        handle(.init(underlyingError: error), file: file, function: function, line: line)
     }
     
     func handle(_ error: ContextualError?, file: StaticString = #fileID, function: StaticString = #function, line: Int = #line) {
