@@ -37,7 +37,15 @@ struct FeedView: View {
     let showLoading: Bool
     @State var feedType: FeedType
     
-    init(community: APICommunity?, feedType: FeedType, sortType: PostSortType, showLoading: Bool = false) {
+    @Binding var rootDetails: CommunityLinkWithContext?
+    
+    init(
+        community: APICommunity?,
+        feedType: FeedType,
+        sortType: PostSortType,
+        showLoading: Bool = false,
+        rootDetails: Binding<CommunityLinkWithContext?>? = nil
+    ) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         
         self.community = community
@@ -46,6 +54,7 @@ struct FeedView: View {
         self._feedType = State(initialValue: feedType)
         self._postSortType = .init(initialValue: sortType)
         self._postTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
+        self._rootDetails = rootDetails ?? .constant(nil)
     }
     
     // MARK: State
@@ -59,6 +68,8 @@ struct FeedView: View {
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
     private var scrollToTopId: Int? {
         postTracker.items.first?.id
     }
@@ -113,7 +124,12 @@ struct FeedView: View {
                     print("re-selected \(TabSelection.feeds) tab")
 #if DEBUG
                     if navigationPath.wrappedValue.isEmpty {
-                        if let scrollToTopId {
+                        if scrollToTopAppeared {
+                            /// Already scrolled to top: Pop to sidebar.
+                            withAnimation {
+                                rootDetails = nil
+                            }
+                        } else if let scrollToTopId {
                             withAnimation {
                                 scrollViewProxy?.scrollTo(scrollToTopId, anchor: .bottom)
                             }
@@ -134,6 +150,19 @@ struct FeedView: View {
                 noPostsView()
             } else {
                 LazyVStack(spacing: 0) {
+                    VStack(spacing: 0) {
+                        Divider()
+                            .opacity(0)
+                    }
+                    .frame(height: 1)
+                    .id(scrollToTop)
+                    .onAppear {
+                        scrollToTopAppeared = true
+                    }
+                    .onDisappear {
+                        scrollToTopAppeared = false
+                    }
+                    
                     ForEach(postTracker.items) { postView in
                         feedPost(for: postView)
                     }

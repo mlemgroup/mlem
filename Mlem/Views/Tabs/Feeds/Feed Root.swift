@@ -22,9 +22,8 @@ struct FeedRoot: View {
     @State var rootDetails: CommunityLinkWithContext?
     
     let showLoading: Bool
-
+    
     var body: some View {
-
         NavigationSplitView {
             CommunityListView(selectedCommunity: $rootDetails)
                 .id(appState.currentActiveAccount.id)
@@ -36,7 +35,8 @@ struct FeedRoot: View {
                             community: rootDetails.community,
                             feedType: rootDetails.feedType,
                             sortType: defaultPostSorting,
-                            showLoading: showLoading
+                            showLoading: showLoading,
+                            rootDetails: $rootDetails
                         )
                         .environmentObject(appState)
                         .environment(\.tabScrollViewProxy, proxy)
