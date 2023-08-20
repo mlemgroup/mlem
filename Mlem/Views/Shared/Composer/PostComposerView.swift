@@ -84,10 +84,13 @@ struct PostComposerView: View {
 }
 
 struct PostComposerView_Previews: PreviewProvider {
-    static let community = generateFakeCommunity(id: 1,
-                                                 namePrefix: "mlem")
-    
     static var previews: some View {
-        PostComposerView(editModel: PostEditorModel(community: community))
+        NavigationStack {
+            PostComposerView(
+                editModel: PostEditorModel(
+                    community: .mock(id: 1, name: "mlem")
+                )
+            )
+        }
     }
 }
