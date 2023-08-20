@@ -45,7 +45,9 @@ extension InboxView {
             errorOccurred = true
             errorMessage = "Request was cancelled, try refreshing"
         } catch APIClientError.invalidSession {
-            appState.contextualError = .init(underlyingError: APIClientError.invalidSession)
+            errorHandler.handle(
+                .init(underlyingError: APIClientError.invalidSession)
+            )
         } catch let message {
             print(message)
             errorOccurred = true
@@ -95,7 +97,9 @@ extension InboxView {
             try await personRepository.markAllAsRead()
             await refreshFeed()
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(
+                .init(underlyingError: error)
+            )
         }
     }
     
