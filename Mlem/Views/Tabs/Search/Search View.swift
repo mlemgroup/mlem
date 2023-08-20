@@ -30,16 +30,41 @@ struct SearchView: View {
     
     @State private var navigationPath = NavigationPath()
     
+    @Namespace var scrollToTop
+    private var scrollToId: (any Hashable)? {
+        if showRecentSearches {
+            return scrollToTop
+        } else {
+            return communitySearchResultsTracker.foundCommunities.first?.id
+        }
+    }
+    
     // constants
     private let searchPageSize = 50
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            content
-                .handleLemmyViews()
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarColor()
-                .navigationTitle("Search")
+            ScrollViewReader { proxy in
+                content
+                    .handleLemmyViews()
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarColor()
+                    .navigationTitle("Search")
+                    .onChange(of: selectedNavigationTabHashValue) { newValue in
+                        if newValue == TabSelection.search.hashValue {
+                            print("re-selected \(TabSelection.search) tab")
+#if DEBUG
+                            if navigationPath.isEmpty, let scrollToId {
+                                withAnimation {
+                                    proxy.scrollTo(scrollToId, anchor: .bottom)
+                                }
+                            } else {
+                                navigationPath.goBack()
+                            }
+#endif
+                        }
+                    }
+            }
         }
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
@@ -51,11 +76,6 @@ struct SearchView: View {
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.search.hashValue {
                 print("switched to Search tab")
-            }
-        }
-        .onChange(of: selectedNavigationTabHashValue) { newValue in
-            if newValue == TabSelection.search.hashValue {
-                print("re-selected \(TabSelection.search) tab")
             }
         }
     }
@@ -81,6 +101,7 @@ struct SearchView: View {
                 }
             } header: {
                 Text(recentSearchesTracker.recentSearches.isEmpty ? "No recent searches" : "Recent searches")
+                    .id(scrollToTop)
             }
             
             Button(role: .destructive) {
