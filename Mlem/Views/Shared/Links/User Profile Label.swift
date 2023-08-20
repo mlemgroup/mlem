@@ -198,12 +198,6 @@ struct UserProfileLabel: View {
 
 // TODO: darknavi - Move these to a common area for reuse
 struct UserProfileLinkPreview: PreviewProvider {
-    static let previewAccount = SavedAccount(
-        id: 0,
-        instanceLink: URL(string: "lemmy.com")!,
-        accessToken: "abcdefg",
-        username: "Test Account"
-    )
     
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
@@ -264,51 +258,16 @@ struct UserProfileLinkPreview: PreviewProvider {
         )
     }
     
-    static func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
-        APICommunity(
-            id: id,
-            name: "\(namePrefix) Fake Community \(id)",
-            title: "\(namePrefix) Fake Community \(id) Title",
-            description: "This is a fake community (#\(id))",
-            published: Date.now,
-            updated: nil,
-            removed: false,
-            deleted: false,
-            nsfw: false,
-            actorId: URL(string: "https://lemmy.google.com/c/\(id)")!,
-            local: false,
-            icon: nil,
-            banner: nil,
-            hidden: false,
-            postingRestrictedToMods: false,
-            instanceId: 0
-        )
-    }
-    
     static func generatePreviewPost(creator: APIPerson) -> APIPostView {
-        let community = generateFakeCommunity(id: 123, namePrefix: "Test")
-        let post = APIPost(
+        let community: APICommunity = .mock(id: 123, name: "Test Community")
+        let post: APIPost = .mock(
             id: 123,
             name: "Test Post Title",
-            url: nil,
             body: "This is a test post body",
             creatorId: creator.id,
             communityId: 123,
-            deleted: false,
-            embedDescription: "Embeedded Description",
-            embedTitle: "Embedded Title",
-            embedVideoUrl: nil,
-            featuredCommunity: false,
-            featuredLocal: false,
-            languageId: 0,
-            apId: "my.app.id",
-            local: false,
-            locked: false,
-            nsfw: false,
-            published: Date.now,
-            removed: false,
-            thumbnailUrl: nil,
-            updated: nil
+            embedDescription: "Embedded Description",
+            embedTitle: "Embedded Title"
         )
         
         let postVotes = APIPostAggregates(
