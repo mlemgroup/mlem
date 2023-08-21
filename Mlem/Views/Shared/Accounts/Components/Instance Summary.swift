@@ -51,15 +51,15 @@ struct InstanceSummary: View {
                       .task { await fetchInstanceDetails() }
                 }
             }
-            .padding()
             .contentShape(Rectangle())
         }
+        .padding()
         .buttonStyle(.plain)
     }
     
     @ViewBuilder
     private var collapsibleHeader: some View {
-        HStack {
+        HStack(alignment: .center) {
             Text(instance.name)
                 .fontWeight(.semibold)
             

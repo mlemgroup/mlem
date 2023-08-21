@@ -44,42 +44,50 @@ struct OnboardingView: View {
         .tabViewStyle(PageTabViewStyle())
     }
     
+    // MARK: - Onboarding Tab
+    
     @ViewBuilder
     var onboardingTab: some View {
         VStack(spacing: 40) {
             Text("Welcome to Mlem!")
                 .bold()
             
-            Image("logo")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 120)
-                .clipShape(Circle())
+            LogoView()
             
             VStack {
-                Button {
-                    selectedTab = .about
-                } label: {
-                    Text("I'm new here")
-                        .padding(.vertical, 5)
-                        .frame(maxWidth: .infinity)
-                }
-                .padding(.horizontal)
-                .buttonStyle(.borderedProminent)
-                
-                Button {
-                    selectedTab = .addAccount
-                } label: {
-                    Text("I have a Lemmy account")
-                        .padding(.vertical, 5)
-                        .frame(maxWidth: .infinity)
-                }
-                .padding(.horizontal)
-                .buttonStyle(.bordered)
+                newUserButton
+                existingUserButton
             }
         }
+        .padding(.horizontal)
         .frame(maxHeight: .infinity)
     }
+    
+    @ViewBuilder
+    var newUserButton: some View {
+        Button {
+            selectedTab = .about
+        } label: {
+            Text("I'm new here")
+                .padding(.vertical, 5)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+    }
+    
+    @ViewBuilder
+    var existingUserButton: some View {
+        Button {
+            selectedTab = .addAccount
+        } label: {
+            Text("I have a Lemmy account")
+                .padding(.vertical, 5)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.bordered)
+    }
+    
+    // MARK: - About Tab
     
     @ViewBuilder
     var aboutTab: some View {
@@ -124,14 +132,7 @@ struct OnboardingView: View {
                 
                 Spacer()
                 
-                Button {
-                    selectedTab = .instances
-                } label: {
-                    Text("Next")
-                        .padding(5)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
+                onboardingNextButton
                 
                 // add a little space for the tab selection indicator
                 Spacer()
@@ -140,6 +141,20 @@ struct OnboardingView: View {
             .padding()
         }
     }
+    
+    @ViewBuilder
+    var onboardingNextButton: some View {
+        Button {
+            selectedTab = .instances
+        } label: {
+            Text("Next")
+                .padding(5)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+    }
+    
+    // MARK: - Instances Tab
     
     var instancesTab: some View {
         InstancePickerView(selectedInstance: $selectedInstance, onboarding: true)

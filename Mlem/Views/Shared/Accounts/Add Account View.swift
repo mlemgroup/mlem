@@ -236,11 +236,7 @@ struct AddSavedInstanceView: View {
         Group {
             switch viewState {
             case .initial:
-                Image("logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 120)
-                    .clipShape(Circle())
+                LogoView()
             case .error:
                 Text(errorMessage)
             case .onetimecode:

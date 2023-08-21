@@ -19,6 +19,9 @@ struct InstancePickerView: View {
     @State var instances: [InstanceMetadata]?
     @State var fetchFailed: Bool = false
     
+    /**
+     Instances currently accepting new users
+     */
     var filteredInstances: [InstanceMetadata]? {
         instances?
             .filter { instance in
@@ -30,7 +33,7 @@ struct InstancePickerView: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack {
+            LazyVStack(spacing: 0) {
                 Text("Instances")
                     .bold()
                     .padding()
@@ -48,11 +51,11 @@ struct InstancePickerView: View {
                 } else if let filteredInstances {
                     ForEach(filteredInstances) { instance in
                         VStack(spacing: 0) {
+                            Divider()
+                            
                             InstanceSummary(instance: instance,
                                             onboarding: true,
                                             selectedInstance: $selectedInstance)
-                            
-                            Divider()
                         }
                     }
                 } else {
@@ -60,8 +63,6 @@ struct InstancePickerView: View {
                 }
             }
         }
-        .task {
-            loadInstances()
-        }
+        .task { loadInstances() }
     }
 }

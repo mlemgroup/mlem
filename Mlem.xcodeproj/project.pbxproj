@@ -43,12 +43,12 @@
 		508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508845CE2A3641160088E483 /* JSONDecoder+Default.swift */; };
 		50A881242A71A4CD003E3661 /* PersistenceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881232A71A4CD003E3661 /* PersistenceRepository.swift */; };
 		50A881262A71A511003E3661 /* PersistenceRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */; };
-		50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */; };
-		50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */; };
 		50A881282A71D66B003E3661 /* APIClient+Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881272A71D66B003E3661 /* APIClient+Community.swift */; };
 		50A8812A2A72D6BD003E3661 /* CommunityRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881292A72D6BD003E3661 /* CommunityRepository.swift */; };
 		50A8812C2A72D727003E3661 /* CommunityRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A8812B2A72D727003E3661 /* CommunityRepository+Dependency.swift */; };
 		50A8812E2A72D76C003E3661 /* APIClient+Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */; };
+		50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */; };
+		50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
 		50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B582A61D889005D57DD /* APIClient+Dependency.swift */; };
 		50C99B5C2A61F5EB005D57DD /* CommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */; };
@@ -259,6 +259,7 @@
 		CD18DC732A522A7C002C56BC /* CreatePrivateMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */; };
 		CD2BD6782A79F55800ECFF89 /* ImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BD6772A79F55800ECFF89 /* ImageSize.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
+		CD309C462A93FBD300988F95 /* Logo View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD309C452A93FBD300988F95 /* Logo View.swift */; };
 		CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F8A2A53371300E213B5 /* ExpandedPostLogic.swift */; };
 		CD391F942A533B7700E213B5 /* EditorModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F932A533B7700E213B5 /* EditorModelProtocol.swift */; };
 		CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F952A535F5400E213B5 /* ResponseEditorView.swift */; };
@@ -429,12 +430,12 @@
 		508845CE2A3641160088E483 /* JSONDecoder+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Default.swift"; sourceTree = "<group>"; };
 		50A881232A71A4CD003E3661 /* PersistenceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepository.swift; sourceTree = "<group>"; };
 		50A881252A71A511003E3661 /* PersistenceRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistenceRepository+Dependency.swift"; sourceTree = "<group>"; };
-		50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringOperation.swift; sourceTree = "<group>"; };
-		50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepositoryTests.swift; sourceTree = "<group>"; };
 		50A881272A71D66B003E3661 /* APIClient+Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Community.swift"; sourceTree = "<group>"; };
 		50A881292A72D6BD003E3661 /* CommunityRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRepository.swift; sourceTree = "<group>"; };
 		50A8812B2A72D727003E3661 /* CommunityRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityRepository+Dependency.swift"; sourceTree = "<group>"; };
 		50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Comment.swift"; sourceTree = "<group>"; };
+		50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringOperation.swift; sourceTree = "<group>"; };
+		50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepositoryTests.swift; sourceTree = "<group>"; };
 		50C99B582A61D889005D57DD /* APIClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Dependency.swift"; sourceTree = "<group>"; };
 		50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
 		50C99B5F2A6299D8005D57DD /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
@@ -643,6 +644,7 @@
 		CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePrivateMessageRequest.swift; sourceTree = "<group>"; };
 		CD2BD6772A79F55800ECFF89 /* ImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSize.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
+		CD309C452A93FBD300988F95 /* Logo View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logo View.swift"; sourceTree = "<group>"; };
 		CD391F8A2A53371300E213B5 /* ExpandedPostLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostLogic.swift; sourceTree = "<group>"; };
 		CD391F932A533B7700E213B5 /* EditorModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModelProtocol.swift; sourceTree = "<group>"; };
 		CD391F952A535F5400E213B5 /* ResponseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseEditorView.swift; sourceTree = "<group>"; };
@@ -1700,6 +1702,7 @@
 				CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */,
 				CD45BCED2A75CA7200A2899C /* Thumbnail Image View.swift */,
 				CDC1C9422A7AC24600072E3D /* ReadCheck.swift */,
+				CD309C452A93FBD300988F95 /* Logo View.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2357,6 +2360,7 @@
 				B11A1A782A4EFF2B00520DB4 /* Feed Root.swift in Sources */,
 				CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */,
 				50C99B622A629C06005D57DD /* ErrorHandler+Dependency.swift in Sources */,
+				CD309C462A93FBD300988F95 /* Logo View.swift in Sources */,
 				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,

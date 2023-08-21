@@ -11,8 +11,19 @@ extension InstancePickerView {
     func loadInstances() {
         print("loading instances...")
         
-        fetchInstances { _ in
-            print("got instances")
+        let savedInstances = persistenceRepository.loadInstanceMetadata()
+        
+        if savedInstances.isEmpty {
+            print("no saved instances, loading from remote")
+            fetchInstances { fetchedInstances in
+                instances = fetchedInstances
+                Task(priority: .background) {
+                    try await persistenceRepository.saveInstanceMetadata(fetchedInstances)
+                }
+            }
+        } else {
+            print("found saved instances")
+            instances = savedInstances
         }
     }
     
@@ -48,7 +59,6 @@ extension InstancePickerView {
                     
                     // if found some instances, update state and return
                     if ret.count > 0 {
-                        instances = ret
                         callback(ret)
                     } else {
                         print("Found no instances")
