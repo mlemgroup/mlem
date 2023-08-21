@@ -33,8 +33,12 @@ struct OnboardingView: View {
                 .tag(OnboardingTab.instances)
             
             AddSavedInstanceView(onboarding: true,
-                                 currentAccount: $selectedAccount)
+                                 currentAccount: $selectedAccount,
+                                 givenInstance: selectedInstance?.url.description)
             .tag(OnboardingTab.addAccount)
+        }
+        .onChange(of: selectedInstance) { _ in
+            selectedTab = .addAccount
         }
         .animation(.spring(response: 0.5), value: selectedTab)
         .tabViewStyle(PageTabViewStyle())
@@ -109,7 +113,7 @@ struct OnboardingView: View {
                     CollapsibleTextItem(titleText: "About Instances and Federation",
                                         bodyText:
                                         """
-                                        Instances are independently owned and operated servers running the Lemmy software. Anybody can run an instance, which means that if an instance admin starts abusing their power, you can just hop to a new one or even make your own.
+                                        Instances are independently owned and operated servers running the Lemmy software. Anybody can run an instance, which means that if an instance admin starts abusing their power, you can just hop to a new instance or even make your own.
                                         
                                         Instances can choose to federate with other instances, allowing the users of one instance to view and interact with content from any of the federated instances as if it were hosted on their home instance. If this seems strange, just think of it like email: even though alice@abc.com has an email address from one provider and bob@xyz.net has an email from another, they can still send emails to each other because their providers are using a common communication standard.
                                         """)
@@ -138,6 +142,6 @@ struct OnboardingView: View {
     }
     
     var instancesTab: some View {
-        InstancePickerView(selectedInstance: $selectedInstance)
+        InstancePickerView(selectedInstance: $selectedInstance, onboarding: true)
     }
 }

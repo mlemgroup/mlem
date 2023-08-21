@@ -22,6 +22,6 @@ struct InstanceMetadata: Codable {
     let version: String
 }
 
-extension InstanceMetadata: Identifiable {
+extension InstanceMetadata: Identifiable, Equatable {
     var id: String { url.description }
 }

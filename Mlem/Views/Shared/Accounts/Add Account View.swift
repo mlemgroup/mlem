@@ -45,7 +45,7 @@ struct AddSavedInstanceView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) private var openURL
 
-    @State private var instance: String = ""
+    @State private var enteredInstance: String = ""
     @State private var username = ""
     @State private var password = ""
     @State private var twoFactorCode = ""
@@ -58,7 +58,18 @@ struct AddSavedInstanceView: View {
     @FocusState private var focusedField: FocusedField?
     
     let onboarding: Bool
+    let givenInstance: String? // if present, will override manual instance entry
     @Binding var currentAccount: SavedAccount?
+    
+    var instance: String { givenInstance ?? enteredInstance }
+    
+    init(onboarding: Bool,
+         currentAccount: Binding<SavedAccount?>,
+         givenInstance: String? = nil) {
+        self.onboarding = onboarding
+        self._currentAccount = currentAccount
+        self.givenInstance = givenInstance
+    }
     
     var body: some View {
         NavigationStack {
@@ -97,18 +108,27 @@ struct AddSavedInstanceView: View {
                 GridRow {
                     Text("Instance")
                         .foregroundColor(.secondary)
-                    TextField("lemmy.ml", text: $instance)
-                        .textContentType(.URL)
-                        .autocorrectionDisabled()
-                        .focused($focusedField, equals: .instance)
-                        .keyboardType(.URL)
-                        .textInputAutocapitalization(.never)
-                        .onAppear {
-                            focusedField = .instance
-                        }
-                        .onSubmit {
-                            focusedField = .username
-                        }
+                    if let givenInstance {
+                        Text(givenInstance)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.secondary)
+                            .onAppear {
+                                focusedField = .username
+                            }
+                    } else {
+                        TextField("lemmy.ml", text: $enteredInstance)
+                            .textContentType(.URL)
+                            .autocorrectionDisabled()
+                            .focused($focusedField, equals: .instance)
+                            .keyboardType(.URL)
+                            .textInputAutocapitalization(.never)
+                            .onAppear {
+                                focusedField = .instance
+                            }
+                            .onSubmit {
+                                focusedField = .username
+                            }
+                    }
                 }
                 .padding(.horizontal)
                 .onTapGesture {
