@@ -49,12 +49,7 @@ struct PostSettingsView: View {
                     options: PostSize.allCases
                 )
             
-                NavigationLink {
-                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
-                        layoutWidgetTracker.groups.post = widgets
-                        layoutWidgetTracker.saveLayoutWidgets()
-                    })
-                } label: {
+                NavigationLink(value: PostSettingsRoute.customizeWidgets) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
