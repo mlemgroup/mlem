@@ -9,7 +9,10 @@ import Foundation
 import SwiftUI
 import Dependencies
 
+// swiftlint:disable type_body_length
 struct FeedView: View {
+    
+    @State private var scrollToFlag: Int = 0
     
     // MARK: Environment and settings
     
@@ -119,49 +122,18 @@ struct FeedView: View {
                     shouldLoad = false
                 }
             }
-            .onChange(of: selectedNavigationTabHashValue) { newValue in
-                if newValue == TabSelection.feeds.hashValue {
-                    print("re-selected \(TabSelection.feeds) tab")
-#if DEBUG
-                    if navigationPath.wrappedValue.isEmpty {
-                        if scrollToTopAppeared {
-                            /// Already scrolled to top: Pop to sidebar.
-                            withAnimation {
-                                rootDetails = nil
-                            }
-                        } else if let scrollToTopId {
-                            withAnimation {
-                                scrollViewProxy?.scrollTo(scrollToTopId, anchor: .bottom)
-                            }
-                        }
-                    } else {
-                        navigationPath.wrappedValue.goBack()
-                    }
-#endif
-                }
-            }
             .refreshable { await refreshFeed() }
     }
     
     @ViewBuilder
     private var contentView: some View {
-        ScrollView {
-            if postTracker.items.isEmpty {
-                noPostsView()
-            } else {
+        ScrollViewReader { proxy in
+            ScrollView {
+                //            if postTracker.items.isEmpty {
+                //                noPostsView()
+                //            } else {
                 LazyVStack(spacing: 0) {
-                    VStack(spacing: 0) {
-                        Divider()
-                            .opacity(0)
-                    }
-                    .frame(height: 1)
-                    .id(scrollToTop)
-                    .onAppear {
-                        scrollToTopAppeared = true
-                    }
-                    .onDisappear {
-                        scrollToTopAppeared = false
-                    }
+                    scrollToView
                     
                     ForEach(postTracker.items) { postView in
                         feedPost(for: postView)
@@ -169,6 +141,48 @@ struct FeedView: View {
                     
                     EndOfFeedView(isLoading: isLoading)
                 }
+                .onChange(of: scrollToFlag, perform: { _ in
+                    withAnimation {
+                        proxy.scrollTo(scrollToTop, anchor: .top)
+                    }
+                })
+                .onChange(of: selectedNavigationTabHashValue) { newValue in
+                    if newValue == TabSelection.feeds.hashValue {
+                        print("FeedView received Tab re-tap event")
+//                        print("re-selected \(TabSelection.feeds) tab")
+#if DEBUG
+                        if navigationPath.wrappedValue.isEmpty {
+                            if scrollToTopAppeared {
+                                /// Already scrolled to top: Pop to sidebar.
+                                withAnimation {
+                                    rootDetails = nil
+                                }
+                            } else {
+                                print("FeedView performing Tab re-tap action...scroll to top")
+                                scrollToFlag += 1
+//                                DispatchQueue.main.async {
+//                                    withAnimation {
+//                                        proxy.scrollTo(scrollToTop, anchor: .top)
+//                                    }
+//                                }
+                            }
+                        } else {
+                            navigationPath.wrappedValue.goBack()
+                        }
+#endif
+//                    }
+                    }
+                }
+            }
+            .overlay(alignment: .bottom) {
+                Button {
+                    scrollToFlag += 1
+                } label: {
+                    Text("Scroll To Top")
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.pink)
+                .padding(4)
             }
         }
         .fancyTabScrollCompatible()
@@ -303,4 +317,22 @@ struct FeedView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    private var scrollToView: some View {
+        HStack(spacing: 0) {
+            EmptyView()
+//            Divider()
+//                .opacity(0)
+        }
+        .frame(height: 1)
+        .id(scrollToTop)
+        .onAppear {
+            scrollToTopAppeared = true
+        }
+        .onDisappear {
+            scrollToTopAppeared = false
+        }
+    }
 }
+// swiftlint:enable type_body_length

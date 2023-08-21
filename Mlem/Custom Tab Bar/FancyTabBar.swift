@@ -17,6 +17,8 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
     @Binding private var selection: Selection
     @Binding private var navigationSelection: NavigationSelection
+    @State private var __tempNavigationSelection: Int = -1
+    @State private var __tempToggle: Bool = false
     
     private let content: () -> Content
     
@@ -92,15 +94,25 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                                     /// If user tapped on tab that's already selected.
                                     if key.hashValue == selection.hashValue {
                                         navigationSelection = TabSelection._tabBarNavigation
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                            self.navigationSelection = key
-                                        }
+                                        
+                                        __tempNavigationSelection = key.index
+                                        __tempToggle.toggle()
+                                        
+//                                        navigationSelection = TabSelection._tabBarNavigation
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+//                                            self.navigationSelection = key
+//                                        }
                                     }
                                     
                                     selection = key
                                 }
                         )
                 }
+            }
+            .onChange(of: self.__tempToggle) { _ in
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                    self.navigationSelection = TabSelection(index: __tempNavigationSelection)!
+//                }
             }
             .gesture(
                 DragGesture()
