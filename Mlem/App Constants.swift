@@ -143,8 +143,8 @@ struct AppConstants {
     static let connectionSymbolName: String = "antenna.radiowaves.left.and.right"
     static let hapticSymbolName: String = "hand.tap"
     static let transparencySymbolName: String = "square.on.square.intersection.dashed"
-    static let checkSymbolName: String = "circle.fill"
-    static let xSymbolName: String = "circle"
+    static let presentSymbolName: String = "circle.fill"
+    static let absentSymbolName: String = "circle"
     
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]

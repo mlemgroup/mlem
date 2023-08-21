@@ -202,7 +202,7 @@ struct AddSavedInstanceView: View {
     }
     
     @ViewBuilder
-    var title: some View {
+    var title: some View {        
         ZStack {
             Text("Sign In")
                 .bold()

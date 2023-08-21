@@ -57,7 +57,7 @@ extension InstancePickerView {
                             return ret
                         }
                     
-                    // if found some instances, update state and return
+                    // if found some instances, call callback
                     if ret.count > 0 {
                         callback(ret)
                     } else {
@@ -78,6 +78,7 @@ extension InstancePickerView {
         let fields = line.split(separator: ",")
         guard fields.count == 11 else { return nil }
         
+        // matches [instance name](instance url)
         guard let urlMatch = fields[0].firstMatch(of: /\[(?'name'.*)\]\((?'url'.*)\)/) else { return nil }
 
         let name = String(urlMatch.output.name)

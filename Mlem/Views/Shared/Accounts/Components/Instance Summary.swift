@@ -25,8 +25,8 @@ struct InstanceSummary: View {
     
     var rotation: Angle { Angle(degrees: isCollapsed ? 0.0 : 90.0) }
     var isLoading: Bool { siteData == nil && !fetchFailed }
-    var downvotesSymbolName: String { instance.downvotes ? AppConstants.checkSymbolName : AppConstants.xSymbolName }
-    var federatedSymbolName: String { instance.federated ? AppConstants.checkSymbolName : AppConstants.xSymbolName }
+    var downvotesSymbolName: String { instance.downvotes ? AppConstants.presentSymbolName : AppConstants.absentSymbolName }
+    var federatedSymbolName: String { instance.federated ? AppConstants.presentSymbolName : AppConstants.absentSymbolName }
     var signupURL: URL? {
         let signupString = "\(instance.url.description)/signup"
         if let ret = URL(string: signupString) {
