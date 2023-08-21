@@ -5,6 +5,7 @@
 //  Created by Jake Shirey on 23.06.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 /*
@@ -13,7 +14,8 @@ import SwiftUI
  */
 struct LazyLoadExpandedPost: View {
     
-    @EnvironmentObject var appState: AppState
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
     
     @State var post: APIPost
     
@@ -37,15 +39,14 @@ struct LazyLoadExpandedPost: View {
             Text("Loading post details…")
         }
         .task(priority: .background) {
-            let request = GetPostRequest(account: appState.currentActiveAccount, id: post.id, commentId: nil)
             do {
-                let response = try await APIClient().perform(request: request)
-                postTracker.add([response.postView])
-                loadedPostView = response.postView
+                let post = try await apiClient.loadPost(id: post.id)
+                postTracker.add([post])
+                loadedPostView = post
             } catch {
-                print("Get post error: \(error)")
                 // TODO: Some sort of common alert banner?
-                appState.contextualError = .init(underlyingError: error)
+                // we can show a toast here by passing a `message` and `style: .toast` by using a `ContextualError` below...
+                errorHandler.handle(error)
             }
         }
     }

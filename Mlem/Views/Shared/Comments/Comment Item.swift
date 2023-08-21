@@ -14,6 +14,7 @@ struct CommentItem: View {
         case standard, never
     }
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier

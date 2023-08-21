@@ -77,17 +77,14 @@ extension FeedView {
     func fetchCommunityDetails() async {
         if let community {
             do {
-                communityDetails = try await loadCommunityDetails(
-                    community: community,
-                    account: appState.currentActiveAccount
-                )
+                communityDetails = try await communityRepository.loadDetails(for: community.id)
             } catch {
-                print("Failed while fetching community details: \(error)")
-                
-                appState.contextualError = .init(
-                    title: "Could not load community information",
-                    message: "The server might be overloaded.\nTry again later.",
-                    underlyingError: error
+                errorHandler.handle(
+                    .init(
+                        title: "Could not load community information",
+                        message: "The server might be overloaded.\nTry again later.",
+                        underlyingError: error
+                    )
                 )
             }
         }
@@ -152,7 +149,6 @@ extension FeedView {
                                 destructiveActionPrompt: nil,
                                 enabled: true) {
             editorTracker.openEditor(with: PostEditorModel(community: community,
-                                                           appState: appState,
                                                            postTracker: postTracker))
         })
         
@@ -273,10 +269,8 @@ extension FeedView {
             errorMessage = nil
         }
         
-        appState.contextualError = .init(
-            title: title,
-            message: errorMessage,
-            underlyingError: error
+        errorHandler.handle(
+            .init(title: title, message: errorMessage, underlyingError: error)
         )
     }
     
@@ -285,65 +279,53 @@ extension FeedView {
         (showReadPosts || !postView.read)
     }
     
-    // MARK: TODO: MOVE TO REPOSITORY MODEL
-    
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         hapticManager.play(haptic: .success, priority: .high)
         do {
-            let request = FollowCommunityRequest(
-                account: appState.currentActiveAccount,
-                communityId: communityId,
-                follow: shouldSubscribe
-            )
-            
-            _ = try await APIClient().perform(request: request)
+            let response = try await communityRepository.updateSubscription(for: communityId, subscribed: shouldSubscribe)
+            // TODO: we receive the updated `APICommunityView` here to update our local state
+            // so there is no need to make a second call but we still need to address 'faking'
+            // the state while the call is in flight
+            communityDetails?.communityView = response
             
             let communityName = community?.name ?? "community"
-            Task {
-                if shouldSubscribe {
-                    await notifier.add(.success("Subscibed to \(communityName)"))
-                } else {
-                    await notifier.add(.success("Unsubscribed from \(communityName)"))
-                }
+            if shouldSubscribe {
+                await notifier.add(.success("Subscibed to \(communityName)"))
+            } else {
+                await notifier.add(.success("Unsubscribed from \(communityName)"))
             }
-            
-            // re-fetch to get new subscribed status
-            // TODO: do this in middleware model with a state faker to avoid a second API call
-            await fetchCommunityDetails()
         } catch {
-            // TODO: If we fail here and want to notify the user we'd ideally
-            // want to do so from the parent view, I think it would be worth refactoring
-            // this view so that the responsibility for performing the call is removed
-            // and handled by the parent, for now we will fail silently the UI state
-            // will not update so will continue to be accurate
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            let phrase = shouldSubscribe ? "subscribe to" : "unsubscribe from"
+            errorHandler.handle(
+                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
+            )
         }
     }
     
     private func block(communityId: Int, shouldBlock: Bool) async {
         do {
             hapticManager.play(haptic: .violentSuccess, priority: .high)
-            let request = BlockCommunityRequest(
-                account: appState.currentActiveAccount,
-                communityId: communityId,
-                block: shouldBlock
-            )
-            
+
+            let response: BlockCommunityResponse
             let communityName = community?.name ?? "community"
-            Task {
-                if shouldBlock {
-                    await notifier.add(.success("Blocked \(communityName)"))
-                } else {
-                    await notifier.add(.success("Unblocked \(communityName)"))
-                }
+            if shouldBlock {
+                response = try await communityRepository.blockCommunity(id: communityId)
+                await notifier.add(.success("Blocked \(communityName)"))
+            } else {
+                response = try await communityRepository.unblockCommunity(id: communityId)
+                await notifier.add(.success("Unblocked \(communityName)"))
             }
-            
-            _ = try await APIClient().perform(request: request)
-            await fetchCommunityDetails()
+
+            communityDetails?.communityView = response.communityView
+            // refresh the feed after blocking which will show/hide the posts
+            await hardRefreshFeed()
         } catch {
-            // TODO: If we fail here and want to notify the user we should
-            // pass a message into the contextual error below
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            let phrase = shouldBlock ? "block" : "unblock"
+            errorHandler.handle(
+                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
+            )
         }
     }
 }

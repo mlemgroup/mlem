@@ -23,15 +23,15 @@ struct FollowCommunityRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         communityId: Int,
         follow: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             community_id: communityId,
             follow: follow,
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

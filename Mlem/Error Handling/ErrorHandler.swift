@@ -17,6 +17,14 @@ class ErrorHandler: ObservableObject {
     
     private(set) var contextualError: ContextualError?
     
+    func handle(_ error: Error?, file: StaticString = #fileID, function: StaticString = #function, line: Int = #line) {
+        guard let error else {
+            return
+        }
+        
+        handle(.init(underlyingError: error), file: file, function: function, line: line)
+    }
+    
     func handle(_ error: ContextualError?, file: StaticString = #fileID, function: StaticString = #function, line: Int = #line) {
         guard let error else {
             return

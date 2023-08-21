@@ -22,15 +22,15 @@ struct MarkPersonMentionAsRead: APIPostRequest {
     }
     
     init(
-        account: SavedAccount,
+        session: APISession,
         personMentionId: Int,
         read: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             person_mention_id: personMentionId,
             read: read,
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }
@@ -38,9 +38,3 @@ struct MarkPersonMentionAsRead: APIPostRequest {
 struct PersonMentionResponse: Decodable {
     let personMentionView: APIPersonMentionView
 }
-
-// pub struct MarkPersonMentionAsRead {
-//   pub person_mention_id: PersonMentionId,
-//   pub read: bool,
-//   pub auth: Sensitive<String>,
-// }

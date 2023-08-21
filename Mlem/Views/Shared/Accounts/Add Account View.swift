@@ -5,6 +5,7 @@
 //  Created by David Bureš on 05.05.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 enum UserIDRetrievalError: Error {
@@ -18,6 +19,8 @@ enum Field: Hashable {
 
 // swiftlint:disable type_body_length
 struct AddSavedInstanceView: View {
+    
+    @Dependency(\.apiClient) var apiClient
     
     enum ViewState {
         case initial
@@ -270,14 +273,12 @@ struct AddSavedInstanceView: View {
                 return
             }
             
-            let loginRequest = LoginRequest(
+            let response = try await apiClient.login(
                 instanceURL: instanceURL,
                 username: username,
                 password: password,
                 totpToken: twoFactorCode.isEmpty ? nil : twoFactorCode
             )
-            
-            let response = try await APIClient().perform(request: loginRequest)
             
             withAnimation {
                 viewState = .success
@@ -311,14 +312,10 @@ struct AddSavedInstanceView: View {
     }
     
     private func getUserID(authToken: String, instanceURL: URL) async throws -> Int {
+        // create a session to use for this request, since we're in the process of creating the account...
+        let session = APISession(token: authToken, URL: instanceURL)
         do {
-            let request = try GetPersonDetailsRequest(
-                accessToken: authToken,
-                instanceURL: instanceURL,
-                username: username
-            )
-            return try await APIClient()
-                .perform(request: request)
+            return try await apiClient.getPersonDetails(session: session, username: username)
                 .personView
                 .person
                 .id
@@ -385,11 +382,11 @@ struct AddSavedInstanceView: View {
 
 struct AddSavedInstanceView_Previews: PreviewProvider {
     
-    static var savedAccount = Binding<SavedAccount?>.constant(generateFakeAccount())
-    
     static var previews: some View {
-        AddSavedInstanceView(onboarding: true,
-                             currentAccount: AddSavedInstanceView_Previews.savedAccount)
+        AddSavedInstanceView(
+            onboarding: true,
+            currentAccount: .constant(.mock())
+        )
     }
     
 }

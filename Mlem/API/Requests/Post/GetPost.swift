@@ -17,26 +17,14 @@ struct GetPostRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        session: APISession,
         id: Int?,
         commentId: Int?
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
 
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
-            .init(name: "id", value: id?.description),
-            .init(name: "comment_id", value: commentId?.description)
-        ]
-    }
-
-    init(
-        instanceURL: URL,
-        id: Int?,
-        commentId: Int?
-    ) {
-        self.instanceURL = instanceURL
-        self.queryItems = [
+            .init(name: "auth", value: session.token),
             .init(name: "id", value: id?.description),
             .init(name: "comment_id", value: commentId?.description)
         ]

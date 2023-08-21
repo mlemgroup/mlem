@@ -23,12 +23,12 @@ struct CreatePrivateMessageReportRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         privateMessageId: Int,
         reason: String
     ) {
-        self.instanceURL = account.instanceLink
-        self.body = .init(auth: account.accessToken, private_message_id: privateMessageId, reason: reason)
+        self.instanceURL = session.URL
+        self.body = .init(auth: session.token, private_message_id: privateMessageId, reason: reason)
     }
 }
 

@@ -10,9 +10,11 @@ import SwiftUI
 
 struct PostComposerView: View {
     
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.hapticManager) var hapticManager
+    
     @Environment(\.dismiss) var dismiss
     
-    let appState: AppState
     let postTracker: PostTracker
     let editModel: PostEditorModel
     
@@ -22,7 +24,6 @@ struct PostComposerView: View {
     @State var isNSFW: Bool
     
     init(editModel: PostEditorModel) {
-        self.appState = editModel.appState
         self.postTracker = editModel.postTracker
         self.editModel = editModel
         
@@ -41,25 +42,40 @@ struct PostComposerView: View {
             isNSFW: $isNSFW
         ) {
             if let post = editModel.editPost {
-                try await editPost(postId: post.id,
-                                   postTitle: postTitle,
-                                   postBody: postBody,
-                                   postURL: postURL,
-                                   postIsNSFW: isNSFW,
-                                   postTracker: postTracker,
-                                   account: appState.currentActiveAccount,
-                                   responseCallback: editModel.responseCallback)
+                let editedPost = try await apiClient.editPost(
+                    postId: post.id,
+                    name: postTitle,
+                    url: postURL,
+                    body: postBody,
+                    nsfw: isNSFW
+                )
                 
-                print("Edit successful")
+                hapticManager.play(haptic: .success, priority: .high)
+                
+                await MainActor.run {
+                    postTracker.update(with: editedPost.postView)
+                    
+                    if let responseCallback = editModel.responseCallback {
+                        responseCallback(editedPost.postView)
+                    }
+                }
+                
             } else {
-                try await postPost(to: editModel.community,
-                                   postTitle: postTitle.trimmed,
-                                   postBody: postBody.trimmed,
-                                   postURL: postURL.trimmed,
-                                   postIsNSFW: isNSFW,
-                                   postTracker: postTracker,
-                                   account: appState.currentActiveAccount)
-                print("Post Successful")
+                let response = try await apiClient.createPost(
+                    communityId: editModel.community.id,
+                    name: postTitle.trimmed,
+                    nsfw: isNSFW,
+                    body: postBody.trimmed,
+                    url: postURL.trimmed
+                )
+                
+                hapticManager.play(haptic: .success, priority: .high)
+                
+                await MainActor.run {
+                    withAnimation {
+                        postTracker.prepend(response.postView)
+                    }
+                }
             }
             
             dismiss()
@@ -68,12 +84,13 @@ struct PostComposerView: View {
 }
 
 struct PostComposerView_Previews: PreviewProvider {
-    static let community = generateFakeCommunity(id: 1,
-                                                 namePrefix: "mlem")
-    
     static var previews: some View {
-        PostComposerView(editModel: PostEditorModel(community: community,
-                                                    appState: AppState(defaultAccount: generateFakeAccount(),
-                                                                       selectedAccount: Binding.constant(generateFakeAccount()))))
+        NavigationStack {
+            PostComposerView(
+                editModel: PostEditorModel(
+                    community: .mock(id: 1, name: "mlem")
+                )
+            )
+        }
     }
 }
