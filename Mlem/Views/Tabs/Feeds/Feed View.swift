@@ -11,9 +11,7 @@ import Dependencies
 
 // swiftlint:disable type_body_length
 struct FeedView: View {
-    
-    @State private var scrollToFlag: Int = 0
-    
+        
     // MARK: Environment and settings
     
     @Dependency(\.hapticManager) var hapticManager
@@ -127,11 +125,10 @@ struct FeedView: View {
     
     @ViewBuilder
     private var contentView: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                //            if postTracker.items.isEmpty {
-                //                noPostsView()
-                //            } else {
+        ScrollView {
+            if postTracker.items.isEmpty {
+                noPostsView()
+            } else {
                 LazyVStack(spacing: 0) {
                     scrollToView
                     
@@ -141,15 +138,9 @@ struct FeedView: View {
                     
                     EndOfFeedView(isLoading: isLoading)
                 }
-                .onChange(of: scrollToFlag, perform: { _ in
-                    withAnimation {
-                        proxy.scrollTo(scrollToTop, anchor: .top)
-                    }
-                })
                 .onChange(of: selectedNavigationTabHashValue) { newValue in
                     if newValue == TabSelection.feeds.hashValue {
-                        print("FeedView received Tab re-tap event")
-//                        print("re-selected \(TabSelection.feeds) tab")
+                        print("re-selected \(TabSelection.feeds) tab")
 #if DEBUG
                         if navigationPath.wrappedValue.isEmpty {
                             if scrollToTopAppeared {
@@ -158,31 +149,16 @@ struct FeedView: View {
                                     rootDetails = nil
                                 }
                             } else {
-                                print("FeedView performing Tab re-tap action...scroll to top")
-                                scrollToFlag += 1
-//                                DispatchQueue.main.async {
-//                                    withAnimation {
-//                                        proxy.scrollTo(scrollToTop, anchor: .top)
-//                                    }
-//                                }
+                                withAnimation {
+                                    scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)
+                                }
                             }
                         } else {
                             navigationPath.wrappedValue.goBack()
                         }
 #endif
-//                    }
                     }
                 }
-            }
-            .overlay(alignment: .bottom) {
-                Button {
-                    scrollToFlag += 1
-                } label: {
-                    Text("Scroll To Top")
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.pink)
-                .padding(4)
             }
         }
         .fancyTabScrollCompatible()
