@@ -172,7 +172,7 @@ struct InstanceSummary: View {
                 fetchFailed = true
             }   
         } catch {
-            errorHandler.handle(.init(underlyingError: error))
+            errorHandler.handle(error)
         }
     }
 }
