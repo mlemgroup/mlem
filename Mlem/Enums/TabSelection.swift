@@ -29,4 +29,23 @@ enum TabSelection: String, FancyTabBarSelection {
         case ._tabBarNavigation: return .min
         }
     }
+    
+    init?(index: Int) {
+        switch index {
+        case 1:
+            self = .feeds
+        case 2:
+            self = .inbox
+        case 3:
+            self = .profile
+        case 4:
+            self = .search
+        case 5:
+            self = .settings
+        case .min:
+            self = ._tabBarNavigation
+        default:
+            return nil
+        }
+    }
 }
