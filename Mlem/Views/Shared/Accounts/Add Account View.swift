@@ -62,10 +62,17 @@ struct AddSavedInstanceView: View {
     @Binding var currentAccount: SavedAccount?
     
     var instance: String { givenInstance ?? enteredInstance }
+    var badCredentialsMessage: String { onboarding
+        // swiftlint:disable line_length
+        ? "Please check your username and password. If you signed up with an email, make sure you've activated your account from the confirmation email."
+        // swiftlint:enable line_length
+        : "Please check your username and password"
+    }
     
     init(onboarding: Bool,
          currentAccount: Binding<SavedAccount?>,
          givenInstance: String? = nil) {
+        print(onboarding)
         self.onboarding = onboarding
         self._currentAccount = currentAccount
         self.givenInstance = givenInstance
@@ -361,7 +368,7 @@ struct AddSavedInstanceView: View {
             // TODO: we should add better validation
             //  at the UI layer as encoding failures can be caught
             //  at an earlier stage
-            message = "Please check your username and password"
+            message = badCredentialsMessage
         case APIClientError.networking:
             message = "Please check your internet connection and try again"
         case APIClientError.response(let errorResponse, _) where errorResponse.requires2FA:
@@ -373,7 +380,7 @@ struct AddSavedInstanceView: View {
             
             return
         case APIClientError.response(let errorResponse, _) where errorResponse.isIncorrectLogin:
-            message = "Please check your username and password"
+            message = badCredentialsMessage
         default:
             // unhandled error encountered...
             message = "Something went wrong"
