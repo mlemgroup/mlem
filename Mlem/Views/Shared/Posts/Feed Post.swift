@@ -262,9 +262,7 @@ struct FeedPost: View {
             postTracker.update(with: response)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
 
@@ -326,9 +324,7 @@ struct FeedPost: View {
             postTracker.update(with: updatedPost)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
 
@@ -344,9 +340,7 @@ struct FeedPost: View {
                 postTracker.update(with: updatedPost)
             } catch {
                 hapticManager.play(haptic: .failure, priority: .high)
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
             dirty = false
             return

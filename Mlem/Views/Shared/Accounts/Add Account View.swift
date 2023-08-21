@@ -407,11 +407,11 @@ struct AddSavedInstanceView: View {
 
 struct AddSavedInstanceView_Previews: PreviewProvider {
     
-    static var savedAccount = Binding<SavedAccount?>.constant(generateFakeAccount())
-    
     static var previews: some View {
-        AddSavedInstanceView(onboarding: true,
-                             currentAccount: AddSavedInstanceView_Previews.savedAccount)
+        AddSavedInstanceView(
+            onboarding: true,
+            currentAccount: .constant(.mock())
+        )
     }
 }
 // swiftlint:enable file_length

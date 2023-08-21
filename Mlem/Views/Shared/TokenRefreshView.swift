@@ -272,13 +272,8 @@ struct TokenRefreshView: View {
 
 struct TokenRefreshViewPreview: PreviewProvider {
     
-    static let account = SavedAccount(id: 1,
-                                      instanceLink: URL(string: "https://lemmy.world")!,
-                                      accessToken: "dfas",
-                                      username: "kronusdark")
-    
     static var previews: some View {
-        TokenRefreshView(account: account) { _ in
+        TokenRefreshView(account: .mock()) { _ in
             print("Refreshed")
         }
     }

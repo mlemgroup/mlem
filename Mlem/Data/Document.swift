@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Document: Identifiable {
+struct Document: Identifiable, Hashable {
     let body: String
     var id: Int {
         var hasher = Hasher()

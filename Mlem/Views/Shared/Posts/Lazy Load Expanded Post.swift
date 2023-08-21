@@ -45,10 +45,8 @@ struct LazyLoadExpandedPost: View {
                 loadedPostView = post
             } catch {
                 // TODO: Some sort of common alert banner?
-                // we can show a toast here by passing a `message` and `style: .toast` to the below `.init` if we wanted now?
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                // we can show a toast here by passing a `message` and `style: .toast` by using a `ContextualError` below...
+                errorHandler.handle(error)
             }
         }
     }

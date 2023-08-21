@@ -18,8 +18,6 @@ class AppState: ObservableObject {
     @Published private(set) var currentActiveAccount: SavedAccount
     @Published private(set) var currentNickname: String
     
-    @Published var contextualError: ContextualError?
-    
     @Published var enableDownvote: Bool = true
     
     /// Initialises our app state
