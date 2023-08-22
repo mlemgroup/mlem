@@ -22,7 +22,6 @@ struct ExpandedPost: View {
     @Dependency(\.postRepository) var postRepository
     
     // appstorage
-    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
@@ -53,7 +52,7 @@ struct ExpandedPost: View {
     @State var isLoading: Bool = false
 
     @State private var sortSelection = 0
-    @State private var commentSortingType: CommentSortType = .top
+    @State var commentSortingType: CommentSortType = .appStorageValue()
     @State private var postLayoutMode: LargePost.LayoutMode = .maximize
     
     var body: some View {
