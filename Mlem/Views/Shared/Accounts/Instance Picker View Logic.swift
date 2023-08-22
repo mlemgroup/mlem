@@ -8,17 +8,20 @@
 import Foundation
 
 extension InstancePickerView {
-    func loadInstances() {
+    func loadInstances() async {
         print("loading instances...")
         
         let savedInstances = persistenceRepository.loadInstanceMetadata()
         
         if savedInstances.isEmpty {
             print("no saved instances, loading from remote")
-            fetchInstances { fetchedInstances in
-                instances = fetchedInstances
-                Task(priority: .background) {
-                    try await persistenceRepository.saveInstanceMetadata(fetchedInstances)
+            
+            if let newInstances = await fetchInstances() {
+                instances = newInstances
+                do {
+                    try await persistenceRepository.saveInstanceMetadata(newInstances)
+                } catch {
+                    errorHandler.handle(error)
                 }
             }
         } else {
@@ -28,16 +31,12 @@ extension InstancePickerView {
     }
     
     /**
-     Retrieves instance metadata from 
+     Retrieves instance metadata from awesome-lemmy-instances
      */
-    private func fetchInstances(callback: @escaping ([InstanceMetadata]) -> Void) {
-        if let url = URL(string: AppConstants.instanceMetadataUrl) {
-            URLSession.shared.dataTask(with: url) { (data, _, _) in
-                guard let data = data else {
-                    fetchFailed = true
-                    return
-                }
-                
+    private func fetchInstances() async -> [InstanceMetadata]? {
+        if let url = URL(string: "https://raw.githubusercontent.com/maltfield/awesome-lemmy-instances/main/awesome-lemmy-instances.csv") {
+            do {
+                let (data, _) = try await URLSession.shared.data(from: url)
                 if let dataString = String(data: data, encoding: .utf8) {
                     // split by newlines and remove header row
                     var splitData: [Substring] = dataString.split(separator: "\n")
@@ -45,8 +44,7 @@ extension InstancePickerView {
                     // ensure this is the data we think it is
                     guard splitData.removeFirst() == "Instance,NU,NC,Fed,Adult,↓V,Users,BI,BB,UT,Version" else {
                         print("Unexpected header line")
-                        fetchFailed = true
-                        return
+                        return nil
                     }
                     
                     // map lines to InstanceMetadata structs
@@ -57,18 +55,15 @@ extension InstancePickerView {
                             return ret
                         }
                     
-                    // if found some instances, call callback
-                    if ret.count > 0 {
-                        callback(ret)
-                    } else {
-                        print("Found no instances")
-                        fetchFailed = true
-                    }
-                } else {
-                    fetchFailed = true
+                    // if found some instances, return them
+                    return ret.count > 0 ? ret : nil
                 }
-            }.resume()
+            } catch {
+                errorHandler.handle(error)
+            }
         }
+        
+        return nil
     }
     
     /**

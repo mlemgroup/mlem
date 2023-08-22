@@ -38,23 +38,16 @@ struct InstanceSummary: View {
     }
     
     var body: some View {
-        Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 1)) {
-                self.isCollapsed.toggle()
-            }
+        DisclosureGroup {
+            instanceDetails
+                .padding(.vertical)
+                .task { await fetchInstanceDetails() }
         } label: {
-            VStack {
-                collapsibleHeader
-                
-                if !isCollapsed {
-                    instanceDetails
-                      .task { await fetchInstanceDetails() }
-                }
-            }
-            .contentShape(Rectangle())
+            Text(instance.name)
+                .fontWeight(.semibold)
+                .padding(.vertical, 5)
         }
-        .padding()
-        .buttonStyle(.plain)
+        .tint(.primary)
     }
     
     @ViewBuilder
@@ -77,6 +70,7 @@ struct InstanceSummary: View {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
                     instanceIcon(url: siteData.site.icon)
+                        .padding(.leading, 1)
                     
                     Spacer()
                     
@@ -113,6 +107,7 @@ struct InstanceSummary: View {
                             .padding(.vertical, 5)
                             .frame(maxWidth: .infinity)
                     }
+                    .tint(nil) // override DisclosureGroup .primary tint
                     .alert("Redirection Notice",
                            isPresented: $isPresentingRedirectAlert) {
                         Button {
@@ -126,9 +121,11 @@ struct InstanceSummary: View {
                         
                         Button("Cancel", role: .cancel) {}
                     } message: {
-                        // swiftlint:disable line_length
-                        Text("Due to different sign-up procedures across instances, you will be directed to the instance website to sign up. Once that's done, you can navigate back to Mlem to sign in.")
-                        // swiftlint:enable line_length
+                        Text(
+                            """
+                            Due to different sign-up procedures across instances, you will be directed to \
+                            the instance website to sign up. Once that's done, you can navigate back to Mlem to sign in.
+                            """)
                     }
                     .buttonStyle(.bordered)
                 } else {
@@ -153,12 +150,6 @@ struct InstanceSummary: View {
                     .clipShape(Circle())
                     .overlay(Circle()
                         .stroke(.secondary, lineWidth: 2))
-    }
-    
-    func siteNotFoundView() -> AnyView {
-        AnyView(Image(systemName: "server.rack")
-            .resizable()
-            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize))
     }
     
     private func fetchInstanceDetails() async {

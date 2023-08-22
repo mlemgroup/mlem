@@ -72,7 +72,6 @@ struct AddSavedInstanceView: View {
     init(onboarding: Bool,
          currentAccount: Binding<SavedAccount?>,
          givenInstance: String? = nil) {
-        print(onboarding)
         self.onboarding = onboarding
         self._currentAccount = currentAccount
         self.givenInstance = givenInstance

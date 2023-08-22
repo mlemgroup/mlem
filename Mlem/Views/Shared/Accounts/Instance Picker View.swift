@@ -39,11 +39,9 @@ struct InstancePickerView: View {
                     .padding()
                 
                 if onboarding {
-                    // swiftlint:disable line_length
-                    Text("Pick an instance to sign up with. Don't overthink it—the whole point of federation is that you'll see the same content on any federated instance, so just pick one you like and jump right in!")
+                    Text(pickInstance)
                         .frame(maxWidth: .infinity)
                         .padding()
-                    // swiftlint:enable line_length
                 }
                 
                 if fetchFailed {
@@ -56,6 +54,7 @@ struct InstancePickerView: View {
                             InstanceSummary(instance: instance,
                                             onboarding: true,
                                             selectedInstance: $selectedInstance)
+                            .padding(.horizontal)
                         }
                     }
                 } else {
@@ -63,6 +62,6 @@ struct InstancePickerView: View {
                 }
             }
         }
-        .task { loadInstances() }
+        .task { await loadInstances() }
     }
 }
