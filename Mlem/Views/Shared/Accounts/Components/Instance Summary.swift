@@ -18,12 +18,10 @@ struct InstanceSummary: View {
     let onboarding: Bool
     @Binding var selectedInstance: InstanceMetadata?
     
-    @State var isCollapsed: Bool = true
     @State var fetchFailed: Bool = false
     @State var siteData: APISiteView?
     @State var isPresentingRedirectAlert: Bool = false
     
-    var rotation: Angle { Angle(degrees: isCollapsed ? 0.0 : 90.0) }
     var isLoading: Bool { siteData == nil && !fetchFailed }
     var downvotesSymbolName: String { instance.downvotes ? AppConstants.presentSymbolName : AppConstants.absentSymbolName }
     var federatedSymbolName: String { instance.federated ? AppConstants.presentSymbolName : AppConstants.absentSymbolName }
@@ -48,20 +46,6 @@ struct InstanceSummary: View {
                 .padding(.vertical, 5)
         }
         .tint(.primary)
-    }
-    
-    @ViewBuilder
-    private var collapsibleHeader: some View {
-        HStack(alignment: .center) {
-            Text(instance.name)
-                .fontWeight(.semibold)
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .rotationEffect(rotation)
-        }
-        .frame(maxWidth: .infinity)
     }
     
     @ViewBuilder
