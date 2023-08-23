@@ -46,3 +46,11 @@ extension CommentSortType: SettingsOptions {
         self.rawValue.capitalized
     }
 }
+
+extension CommentSortType {
+    
+    static func appStorageValue(store: UserDefaults = .standard) -> Self {
+        let defaultValue = store.string(forKey: "defaultCommentSorting") ?? ""
+        return CommentSortType(rawValue: defaultValue) ?? .top
+    }
+}
