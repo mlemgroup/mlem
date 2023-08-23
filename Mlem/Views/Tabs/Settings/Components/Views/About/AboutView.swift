@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AboutView: View {
-    @EnvironmentObject var appState: AppState
 
     @Binding var navigationPath: NavigationPath
 

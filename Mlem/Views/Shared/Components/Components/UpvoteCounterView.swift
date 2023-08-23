@@ -10,8 +10,6 @@ import SwiftUI
 
 struct UpvoteCounterView: View {
     
-    @EnvironmentObject var appState: AppState
-    
     // parameters
     let vote: ScoringOperation
     let score: Int

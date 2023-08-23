@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct PostSettingsView: View {
-    @EnvironmentObject var appState: AppState
+    
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = PostSize.headline
