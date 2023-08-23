@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SettingsView: View {
 
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @State var navigationPath = NavigationPath()

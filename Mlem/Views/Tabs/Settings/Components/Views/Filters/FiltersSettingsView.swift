@@ -13,7 +13,6 @@ struct FiltersSettingsView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @EnvironmentObject var filtersTracker: FiltersTracker
-    @EnvironmentObject var appState: AppState
 
     @State private var newFilteredKeyword: String = ""
     @State private var isShowingKeywordImporter: Bool = false
