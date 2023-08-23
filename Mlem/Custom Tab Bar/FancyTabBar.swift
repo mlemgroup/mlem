@@ -16,7 +16,11 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
     @Binding private var selection: Selection
+    /// Keeps track of tab "re-selected" state.
     @Binding private var navigationSelection: NavigationSelection
+    @State private var __tempNavigationSelection: Int = -1
+    /// We only toggle this to trigger an `onChange` event.
+    @State private var __navigationSelectionSignal: Bool = false
     
     private let content: () -> Content
     
@@ -89,17 +93,26 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
-                                    /// If user tapped on tab that's already selected.
+                                    /// Emit "re-selected tab" event, if user tapped on tab that's already selected.
                                     if key.hashValue == selection.hashValue {
+                                        /// Set to placeholder value.
+                                        /// Previous implementation used `DispatchQueue.asyncAfter` to set this to its actual value, but that caused bugs when performing UI changes on scroll views. [2023.08]
                                         navigationSelection = TabSelection._tabBarNavigation
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                            self.navigationSelection = key
-                                        }
+                                        /// Keep track of new selection for use in `onChange` handler.
+                                        __tempNavigationSelection = key.index
+                                        /// Trigger `onChange` event.
+                                        __navigationSelectionSignal.toggle()
                                     }
                                     
                                     selection = key
                                 }
                         )
+                }
+            }
+            /// Workaround for issue where setting `navigationSelection` inside a `Dispatch.asyncAfter` block caused issues when performing programmatic scrolling. [2023.08]
+            .onChange(of: __navigationSelectionSignal) { _ in
+                if let newTabSelection = TabSelection(index: __tempNavigationSelection) {
+                    self.navigationSelection = newTabSelection
                 }
             }
             .gesture(
