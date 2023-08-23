@@ -1,0 +1,6 @@
+--wraparguments before-first
+--commas inline
+--disable wrapMultilineStatementBraces
+--trimwhitespace nonblank-lines
+--self init-only
+--stripunusedargs closure-only
