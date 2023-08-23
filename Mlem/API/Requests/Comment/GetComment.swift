@@ -9,7 +9,6 @@ import Foundation
 
 // lemmy_api_common::comment::
 struct GetCommentRequest: APIGetRequest {
-
     typealias Response = CommentResponse
 
     let instanceURL: URL

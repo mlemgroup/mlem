@@ -13,7 +13,6 @@ enum GetPersonMentionsRequestError: Error {
 }
 
 struct GetPersonMentionsRequest: APIGetRequest {
-
     typealias Response = GetPersonMentionsResponse
 
     let instanceURL: URL

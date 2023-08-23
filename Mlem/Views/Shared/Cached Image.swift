@@ -6,14 +6,13 @@
 //
 
 import Foundation
-import SwiftUI
 import MarkdownUI
-import QuickLook
-import NukeUI
 import Nuke
+import NukeUI
+import QuickLook
+import SwiftUI
 
 struct CachedImage: View {
-    
     let url: URL?
     let shouldExpand: Bool
     
@@ -34,14 +33,16 @@ struct CachedImage: View {
      */
     let dismissCallback: (() -> Void)?
     
-    init(url: URL?,
-         shouldExpand: Bool = true,
-         maxHeight: CGFloat = .infinity,
-         fixedSize: CGSize? = nil,
-         imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
-         contentMode: ContentMode = .fit,
-         dismissCallback: (() -> Void)? = nil,
-         cornerRadius: CGFloat? = nil) {
+    init(
+        url: URL?,
+        shouldExpand: Bool = true,
+        maxHeight: CGFloat = .infinity,
+        fixedSize: CGSize? = nil,
+        imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
+        contentMode: ContentMode = .fit,
+        dismissCallback: (() -> Void)? = nil,
+        cornerRadius: CGFloat? = nil
+    ) {
         self.url = url
         self.shouldExpand = shouldExpand
         self.maxHeight = maxHeight
@@ -50,7 +51,7 @@ struct CachedImage: View {
         self.dismissCallback = dismissCallback
         self.cornerRadius = cornerRadius ?? 0
         
-        screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+        self.screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
         
         // determine the size of the image
         if let fixedSize {
@@ -64,8 +65,10 @@ struct CachedImage: View {
         } else if let url, let testImage = ImagePipeline.shared.cache[url] {
             // if we have nothing in the size cache but the image is ready, compute its size, use it, and cache it
             let ratio = screenWidth / testImage.image.size.width
-            self._size = State(initialValue: CGSize(width: screenWidth,
-                                                    height: min(maxHeight, testImage.image.size.height * ratio)))
+            self._size = State(initialValue: CGSize(
+                width: screenWidth,
+                height: min(maxHeight, testImage.image.size.height * ratio)
+            ))
             self._shouldRecomputeSize = State(initialValue: false)
             cacheImageSize()
         } else {
@@ -95,8 +98,10 @@ struct CachedImage: View {
                         // if the image appears and its size isn't cached, compute its size and cache it
                         if shouldRecomputeSize {
                             let ratio = screenWidth / imageContainer.image.size.width
-                            size = CGSize(width: screenWidth,
-                                          height: min(maxHeight, imageContainer.image.size.height * ratio))
+                            size = CGSize(
+                                width: screenWidth,
+                                height: min(maxHeight, imageContainer.image.size.height * ratio)
+                            )
                             shouldRecomputeSize = false
                             cacheImageSize()
                         }

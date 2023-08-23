@@ -1,5 +1,5 @@
 //
-//  Upvote.swift
+//  UpvoteButtonView.swift
 //  Mlem
 //
 //  Created by David Bureš on 25.03.2022.

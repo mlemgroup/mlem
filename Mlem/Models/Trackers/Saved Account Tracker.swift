@@ -12,7 +12,6 @@ import SwiftUI
 
 @MainActor
 class SavedAccountTracker: ObservableObject {
-    
     @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
@@ -32,7 +31,7 @@ class SavedAccountTracker: ObservableObject {
             addAccountToInstanceMap(account: account)
         }
         
-        updateObserver = $savedAccounts.sink { [weak self] value in
+        self.updateObserver = $savedAccounts.sink { [weak self] value in
             Task {
                 try await self?.persistenceRepository.saveAccounts(value)
             }
@@ -123,5 +122,4 @@ class SavedAccountTracker: ObservableObject {
             }
         }
     }
-    
 }

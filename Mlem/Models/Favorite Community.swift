@@ -8,7 +8,7 @@
 import Foundation
 
 struct FavoriteCommunity: Identifiable, Codable, Equatable {
-    var id: UUID = UUID()
+    var id: UUID = .init()
 
     let forAccountID: Int
 
@@ -17,6 +17,6 @@ struct FavoriteCommunity: Identifiable, Codable, Equatable {
 
 extension FavoriteCommunity: Comparable {
     static func < (lhs: FavoriteCommunity, rhs: FavoriteCommunity) -> Bool {
-        return lhs.community < rhs.community
+        lhs.community < rhs.community
     }
 }

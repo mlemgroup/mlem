@@ -1,9 +1,9 @@
-// 
+//
 //  NotificationDisplayer.swift
 //  Mlem
 //
 //  Created by mormaer on 19/07/2023.
-//  
+//
 //
 
 import SwiftUI
@@ -11,7 +11,6 @@ import UIKit
 
 /// A class responsible for displaying important notifications to the user
 class NotificationDisplayer {
-    
     // MARK: - Public methods
     
     /// A method that displays a `Notifiable` object to the user
@@ -27,7 +26,7 @@ class NotificationDisplayer {
         case let message as NotificationMessage:
             await display(message: message)
         case let task as Task<Void, Never>:
-            await(displayLoader(for: task))
+            await (displayLoader(for: task))
         default:
             break
         }
@@ -68,7 +67,8 @@ class NotificationDisplayer {
             await display(toast: .init(
                 title: "New icon!",
                 subtitle: "Unlocked the \"\(iconName)\" icon",
-                style: .reward(iconId.rawValue))
+                style: .reward(iconId.rawValue)
+            )
             )
         }
     }
@@ -214,7 +214,6 @@ class NotificationDisplayer {
 /// A simple toast view
 /// - Note: This view is private as it should only be created via the notification process
 private struct Toast: View {
-    
     enum Style {
         case success
         case error
@@ -242,7 +241,7 @@ private struct Toast: View {
     @ViewBuilder
     var textViews: some View {
         VStack(alignment: subtitle == nil ? .center : .leading, spacing: .zero) {
-                Text(title)
+            Text(title)
                 .font(.body.bold())
             if let subtitle {
                 Text(subtitle)
@@ -280,6 +279,5 @@ private struct Toast: View {
                     .foregroundColor(.pink)
             }
         }
-        
     }
 }

@@ -17,12 +17,13 @@ struct UserProfileLink: View {
     var postContext: APIPost?
     var commentContext: APIComment?
     
-    init(user: APIPerson,
-         serverInstanceLocation: ServerInstanceLocation,
-         overrideShowAvatar: Bool? = nil,
-         postContext: APIPost? = nil,
-         commentContext: APIComment? = nil
-         ) {
+    init(
+        user: APIPerson,
+        serverInstanceLocation: ServerInstanceLocation,
+        overrideShowAvatar: Bool? = nil,
+        postContext: APIPost? = nil,
+        commentContext: APIComment? = nil
+    ) {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
@@ -37,7 +38,8 @@ struct UserProfileLink: View {
                 serverInstanceLocation: serverInstanceLocation,
                 overrideShowAvatar: overrideShowAvatar,
                 postContext: postContext,
-                commentContext: commentContext)
+                commentContext: commentContext
+            )
         }
     }
 }

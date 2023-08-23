@@ -5,12 +5,11 @@
 //  Created by Eric Andrews on 2023-07-03.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 import SwiftUI
 
 struct ReplyToComment: ResponseEditorModel {
-    
     @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { comment.id }
@@ -20,21 +19,25 @@ struct ReplyToComment: ResponseEditorModel {
     let prefillContents: String?
     let commentTracker: CommentTracker?
     
-    init(comment: APICommentView,
-         prefillContents: String? = nil,
-         commentTracker: CommentTracker? = nil) {
+    init(
+        comment: APICommentView,
+        prefillContents: String? = nil,
+        commentTracker: CommentTracker? = nil
+    ) {
         self.comment = comment
         self.prefillContents = prefillContents
         self.commentTracker = commentTracker
     }
     
     func embeddedView() -> AnyView {
-        return AnyView(CommentBodyView(commentView: comment,
-                                       isParentCollapsed: .constant(false),
-                                       isCollapsed: .constant(false),
-                                       showPostContext: true,
-                                       menuFunctions: [])
-            .padding(.horizontal))
+        AnyView(CommentBodyView(
+            commentView: comment,
+            isParentCollapsed: .constant(false),
+            isCollapsed: .constant(false),
+            showPostContext: true,
+            menuFunctions: []
+        )
+        .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {

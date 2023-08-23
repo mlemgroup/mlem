@@ -11,7 +11,6 @@ import Foundation
 
 @MainActor
 class FiltersTracker: ObservableObject {
-    
     @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @Published var filteredKeywords: [String] = .init()
@@ -19,7 +18,7 @@ class FiltersTracker: ObservableObject {
 
     init() {
         _filteredKeywords = .init(initialValue: persistenceRepository.loadFilteredKeywords())
-        updateObserver = $filteredKeywords.sink { [weak self] value in
+        self.updateObserver = $filteredKeywords.sink { [weak self] value in
             Task {
                 try await self?.persistenceRepository.saveFilteredKeywords(value)
             }

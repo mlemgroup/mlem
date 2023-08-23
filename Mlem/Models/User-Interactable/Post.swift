@@ -11,7 +11,7 @@ import SwiftUI
 struct Post: Codable, Identifiable, Equatable, Hashable {
     // This is here to make Post equatable
     static func == (lhs: Post, rhs: Post) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
 
     let id: Int

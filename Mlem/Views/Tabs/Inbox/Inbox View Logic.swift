@@ -8,7 +8,6 @@
 import Foundation
 
 extension InboxView {
-    
     // MARK: Tracker Updates
     
     func refreshFeed(clearBeforeFetch: Bool = false) async {
@@ -26,7 +25,7 @@ extension InboxView {
             async let messagesRefresh: () = refreshMessagesTracker()
             async let unreadRefresh: () = unreadTracker.update(with: personRepository.getUnreadCounts())
             
-            _ = try await [ repliesRefresh, mentionsRefresh, messagesRefresh, unreadRefresh ]
+            _ = try await [repliesRefresh, mentionsRefresh, messagesRefresh, unreadRefresh]
             
             errorOccurred = false
             
@@ -36,7 +35,7 @@ extension InboxView {
         } catch APIClientError.networking {
             errorOccurred = true
             errorMessage = "Network error occurred, check your internet and retry"
-        } catch APIClientError.response(let message, _) {
+        } catch let APIClientError.response(message, _) {
             print(message)
             errorOccurred = true
             errorMessage = "API error occurred, try refreshing"
@@ -111,24 +110,30 @@ extension InboxView {
     
     func aggregateAllTrackers() {
         let mentions = mentionsTracker.items.map { item in
-            InboxItem(published: item.personMention.published,
-                      baseId: item.id,
-                      read: item.personMention.read,
-                      type: .mention(item))
+            InboxItem(
+                published: item.personMention.published,
+                baseId: item.id,
+                read: item.personMention.read,
+                type: .mention(item)
+            )
         }
         
         let messages = messagesTracker.items.map { item in
-            InboxItem(published: item.privateMessage.published,
-                      baseId: item.id,
-                      read: item.privateMessage.read,
-                      type: .message(item))
+            InboxItem(
+                published: item.privateMessage.published,
+                baseId: item.id,
+                read: item.privateMessage.read,
+                type: .message(item)
+            )
         }
         
         let replies = repliesTracker.items.map { item in
-            InboxItem(published: item.commentReply.published,
-                      baseId: item.id,
-                      read: item.commentReply.read,
-                      type: .reply(item))
+            InboxItem(
+                published: item.commentReply.published,
+                baseId: item.id,
+                read: item.commentReply.read,
+                type: .reply(item)
+            )
         }
         
         allItems = merge(arr1: mentions, arr2: messages, compare: wasPostedAfter)
@@ -181,13 +186,17 @@ extension InboxView {
     }
     
     func replyToCommentReply(commentReply: APICommentReplyView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(commentReply: commentReply,
-                                                           operation: InboxItemOperation.replyToInboxItem))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            commentReply: commentReply,
+            operation: InboxItemOperation.replyToInboxItem
+        ))
     }
     
     func reportCommentReply(commentReply: APICommentReplyView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(commentReply: commentReply,
-                                                           operation: InboxItemOperation.reportInboxItem))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            commentReply: commentReply,
+            operation: InboxItemOperation.reportInboxItem
+        ))
     }
     
     // MARK: Mentions
@@ -236,13 +245,17 @@ extension InboxView {
     }
     
     func reportMention(mention: APIPersonMentionView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(mention: mention,
-                                                           operation: InboxItemOperation.reportInboxItem))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            mention: mention,
+            operation: InboxItemOperation.reportInboxItem
+        ))
     }
     
     func replyToMention(mention: APIPersonMentionView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(mention: mention,
-                                                           operation: InboxItemOperation.replyToInboxItem))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            mention: mention,
+            operation: InboxItemOperation.replyToInboxItem
+        ))
     }
     
     // MARK: Messages
@@ -274,13 +287,17 @@ extension InboxView {
     }
     
     func replyToMessage(message: APIPrivateMessageView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(message: message,
-                                                           operation: InboxItemOperation.replyToInboxItem))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            message: message,
+            operation: InboxItemOperation.replyToInboxItem
+        ))
     }
     
     func reportMessage(message: APIPrivateMessageView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(message: message,
-                                                           operation: InboxItemOperation.reportInboxItem))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            message: message,
+            operation: InboxItemOperation.reportInboxItem
+        ))
     }
     
     // MARK: - Helpers
@@ -289,29 +306,33 @@ extension InboxView {
      returns true if lhs was posted after rhs
      */
     func wasPostedAfter(lhs: InboxItem, rhs: InboxItem) -> Bool {
-        return lhs.published > rhs.published
+        lhs.published > rhs.published
     }
     
     func genMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         let (filterReadText, filterReadSymbol) = shouldFilterRead
-        ? ("Show All", AppConstants.filterSymbolNameFill)
-        : ("Show Only Unread", AppConstants.filterSymbolName)
+            ? ("Show All", AppConstants.filterSymbolNameFill)
+            : ("Show Only Unread", AppConstants.filterSymbolName)
         
-        ret.append(MenuFunction(text: filterReadText,
-                                imageName: filterReadSymbol,
-                                destructiveActionPrompt: nil,
-                                enabled: true) {
+        ret.append(MenuFunction(
+            text: filterReadText,
+            imageName: filterReadSymbol,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await filterRead()
             }
         })
         
-        ret.append(MenuFunction(text: "Mark All as Read",
-                                imageName: "envelope.open",
-                               destructiveActionPrompt: nil,
-                                enabled: true) {
+        ret.append(MenuFunction(
+            text: "Mark All as Read",
+            imageName: "envelope.open",
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await markAllAsRead()
             }

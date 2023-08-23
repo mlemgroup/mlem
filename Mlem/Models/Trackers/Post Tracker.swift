@@ -10,10 +10,11 @@ import Nuke
 import SwiftUI
 
 class PostTracker: FeedTracker<APIPostView> {
-
-    private let prefetcher = ImagePrefetcher(pipeline: ImagePipeline.shared,
-                                             destination: .memoryCache,
-                                             maxConcurrentRequestCount: 40)
+    private let prefetcher = ImagePrefetcher(
+        pipeline: ImagePipeline.shared,
+        destination: .memoryCache,
+        maxConcurrentRequestCount: 40
+    )
     
     /// A method to request the tracker loads the next page of posts
     /// - Parameters:
@@ -26,7 +27,7 @@ class PostTracker: FeedTracker<APIPostView> {
         communityId: Int?,
         sort: PostSortType?,
         type: FeedType,
-        filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
+        filtering: @escaping (_: APIPostView) -> Bool = { _ in true }
     ) async throws {
         let currentPage = page
         
@@ -57,7 +58,7 @@ class PostTracker: FeedTracker<APIPostView> {
         // the API doesn't want to tell us - so to avoid the user being confused, we'll fire
         // off an authenticated call in the background and if appropriate show the expired
         // session modal. We should be able to remove this once the API behaves as expected.
-        if currentPage == 1 && responsePosts.isEmpty {
+        if currentPage == 1, responsePosts.isEmpty {
             try await attemptAuthenticatedCall(with: account)
         }
         
@@ -72,7 +73,7 @@ class PostTracker: FeedTracker<APIPostView> {
         sort: PostSortType?,
         type: FeedType,
         clearBeforeFetch: Bool = false,
-        filtering: @escaping (_: APIPostView) -> Bool = { _ in true}
+        filtering: @escaping (_: APIPostView) -> Bool = { _ in true }
     ) async throws {
         let response = try await refresh(
             GetPostsRequest(
@@ -109,37 +110,36 @@ class PostTracker: FeedTracker<APIPostView> {
             }
 
             switch postView.postType {
-            case .image(let url):
+            case let .image(url):
                 // images: only load the image
                 imageRequests.append(ImageRequest(url: url, priority: .high))
-            case .link(let url):
+            case let .link(url):
                 // websites: load image and favicon
                 if let baseURL = postView.post.url?.host,
                    let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
                     imageRequests.append(ImageRequest(url: favIconURL))
                 }
-                if let url = url {
+                if let url {
                     imageRequests.append(ImageRequest(url: url, priority: .high))
                 }
             default:
                 break
             }
-
         }
 
         prefetcher.startPrefetching(with: imageRequests)
     }
     
     func removeUserPosts(from personId: Int) {
-        filter({
-            return $0.creator.id != personId
-        })
+        filter {
+            $0.creator.id != personId
+        }
     }
     
     func removeCommunityPosts(from communityId: Int) {
-        filter({
-            return $0.community.id != communityId
-        })
+        filter {
+            $0.community.id != communityId
+        }
     }
     
     private func attemptAuthenticatedCall(with account: SavedAccount) async throws {

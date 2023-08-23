@@ -1,17 +1,16 @@
-// 
+//
 //  UIViewController.swift
 //  Mlem
 //
 //  Created by mormaer on 19/07/2023.
-//  
+//
 //
 
 import UIKit
 
 extension UIViewController {
     func topMostViewController() -> UIViewController {
-        
-        if let presented = self.presentedViewController {
+        if let presented = presentedViewController {
             return presented.topMostViewController()
         }
         

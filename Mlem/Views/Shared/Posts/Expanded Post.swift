@@ -8,12 +8,11 @@
 import Dependencies
 import SwiftUI
 
-internal enum PossibleStyling {
+enum PossibleStyling {
     case bold, italics
 }
 
 struct ExpandedPost: View {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
@@ -120,7 +119,8 @@ struct ExpandedPost: View {
                 HStack {
                     CommunityLinkView(
                         community: post.community,
-                        serverInstanceLocation: communityServerInstanceLocation)
+                        serverInstanceLocation: communityServerInstanceLocation
+                    )
                     
                     Spacer()
                     
@@ -137,8 +137,10 @@ struct ExpandedPost: View {
                     }
                 }
                 
-                UserProfileLink(user: post.creator,
-                                serverInstanceLocation: userServerInstanceLocation)
+                UserProfileLink(
+                    user: post.creator,
+                    serverInstanceLocation: userServerInstanceLocation
+                )
             }
             .padding(.top, AppConstants.postAndCommentSpacing)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)

@@ -1,16 +1,15 @@
 //
-//  InstancePickerView.swift
+//  Instance Picker View.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-08-16.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
-import Dependencies
 
 struct InstancePickerView: View {
-    
     @Dependency(\.persistenceRepository) var persistenceRepository
     @Dependency(\.errorHandler) var errorHandler
     
@@ -51,9 +50,11 @@ struct InstancePickerView: View {
                         VStack(spacing: 0) {
                             Divider()
                             
-                            InstanceSummary(instance: instance,
-                                            onboarding: true,
-                                            selectedInstance: $selectedInstance)
+                            InstanceSummary(
+                                instance: instance,
+                                onboarding: true,
+                                selectedInstance: $selectedInstance
+                            )
                             .padding(.horizontal)
                         }
                     }

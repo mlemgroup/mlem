@@ -8,7 +8,6 @@
 import Foundation
 
 struct GetRepliesRequest: APIGetRequest {
-
     typealias Response = GetRepliesResponse
 
     let instanceURL: URL

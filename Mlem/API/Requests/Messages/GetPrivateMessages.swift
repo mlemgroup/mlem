@@ -8,7 +8,6 @@
 import Foundation
 
 struct GetPrivateMessagesRequest: APIGetRequest {
-
     typealias Response = GetPrivateMessagesResponse
 
     let instanceURL: URL

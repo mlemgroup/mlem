@@ -1,5 +1,5 @@
 //
-//  ReportComment.swift
+//  ReportMention.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-15.
@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 struct ReportMention: ResponseEditorModel {
-    
     @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { mention.id }
@@ -20,7 +19,7 @@ struct ReportMention: ResponseEditorModel {
     let mention: APIPersonMentionView
     
     func embeddedView() -> AnyView {
-        return AnyView(InboxMentionView(mention: mention, menuFunctions: [])
+        AnyView(InboxMentionView(mention: mention, menuFunctions: [])
             .padding(.horizontal))
     }
     

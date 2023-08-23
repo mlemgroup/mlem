@@ -10,7 +10,7 @@ import Foundation
 enum InternetSpeed: String, SettingsOptions {
     case slow, fast
     
-    var label: String { self.rawValue.capitalized }
+    var label: String { rawValue.capitalized }
     
     var id: Self { self }
     

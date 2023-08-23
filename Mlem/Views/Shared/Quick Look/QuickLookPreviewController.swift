@@ -5,12 +5,11 @@
 //  Created by Bosco Ho on 2023-08-07.
 //
 
-import UIKit
 import QuickLook
+import UIKit
 
 /// QuickLookPreviewController allows us to use UIKit's Quick Look view inside SwiftUI with interactive dismiss gesture, and a transparent background.
 final class QuickLookPreviewController: UIViewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
-    
     let urls: [URL]
     
     init(urls: [URL]) {
@@ -18,6 +17,7 @@ final class QuickLookPreviewController: UIViewController, QLPreviewControllerDat
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -1,9 +1,9 @@
-// 
+//
 //  APICommunity+Mock.swift
 //  MlemTests
 //
 //  Created by mormaer on 07/08/2023.
-//  
+//
 //
 
 @testable import Mlem

@@ -25,7 +25,6 @@ struct CommunitySidebarHeaderLabel: View {
 }
 
 struct CommunitySidebarHeaderLabel_Previews: PreviewProvider {
-    
     static var previews: some View {
         NavigationStack {
             CommunitySidebarHeaderLabel("This is a label")

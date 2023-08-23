@@ -1,9 +1,9 @@
-// 
+//
 //  EquatableError.swift
 //  Mlem
 //
 //  Created by mormaer on 09/07/2023.
-//  
+//
 //
 
 import Foundation
@@ -13,7 +13,7 @@ struct EquatableError: Error, Equatable, CustomStringConvertible {
     let base: Error
     private let equals: (Error) -> Bool
 
-    init<Base: Error>(_ base: Base) {
+    init(_ base: some Error) {
         self.base = base
         self.equals = { String(reflecting: $0) == String(reflecting: base) }
     }
@@ -28,14 +28,14 @@ struct EquatableError: Error, Equatable, CustomStringConvertible {
     }
 
     var description: String {
-        "\(self.base)"
+        "\(base)"
     }
 
     func asError<Base: Error>(type: Base.Type) -> Base? {
-        self.base as? Base
+        base as? Base
     }
 
     var localizedDescription: String {
-        self.base.localizedDescription
+        base.localizedDescription
     }
 }

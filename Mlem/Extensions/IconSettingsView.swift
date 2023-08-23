@@ -5,8 +5,8 @@
 //  Created by tht7 on 28/06/2023.
 //
 
-import SwiftUI
 import RegexBuilder
+import SwiftUI
 
 let iconName = Reference<Substring>()
 let iconAuthor = Reference<Substring>()
@@ -23,7 +23,6 @@ let iconFinder = Regex {
 
 // struct AlternativeIcons: View {
 struct IconSettingsView: View {
-
     @State var currentIcon: String? = UIApplication.shared.alternateIconName
     @EnvironmentObject var easterTracker: EasterFlagsTracker
 
@@ -66,7 +65,6 @@ struct IconSettingsView: View {
         }))
 
         return allIcons
-
     }
 
     // static func getCurrentIcon() -> some View {
@@ -92,7 +90,6 @@ struct IconSettingsView: View {
 }
 
 struct AlternativeIconsPreview: PreviewProvider {
-
     static var previews: some View {
         IconSettingsView()
     }

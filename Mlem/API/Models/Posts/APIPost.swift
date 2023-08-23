@@ -40,8 +40,8 @@ extension APIPost: Equatable {
 
 extension APIPost: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-        hasher.combine(self.local)
-        hasher.combine(self.published)
+        hasher.combine(id)
+        hasher.combine(local)
+        hasher.combine(published)
     }
 }

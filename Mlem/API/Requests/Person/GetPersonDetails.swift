@@ -1,5 +1,5 @@
 //
-//  GetPersonDetailsRequest.swift
+//  GetPersonDetails.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 09/06/2023.
@@ -13,7 +13,6 @@ enum GetPersonDetailsRequestError: Error {
 }
 
 struct GetPersonDetailsRequest: APIGetRequest {
-
     typealias Response = GetPersonDetailsResponse
 
     let instanceURL: URL

@@ -1,5 +1,5 @@
 //
-//  InstancePickerViewLogic.swift
+//  Instance Picker View Logic.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-08-16.
@@ -89,17 +89,19 @@ extension InstancePickerView {
         let uptime = String(fields[9])
         let version = String(fields[10])
         
-        return InstanceMetadata(name: name,
-                                url: url,
-                                newUsers: newUsers,
-                                newCommunities: newCommunities,
-                                federated: federated,
-                                adult: adult,
-                                downvotes: downvotes,
-                                users: users,
-                                blocking: blocking,
-                                blockedBy: blockedBy,
-                                uptime: uptime,
-                                version: version)
+        return InstanceMetadata(
+            name: name,
+            url: url,
+            newUsers: newUsers,
+            newCommunities: newCommunities,
+            federated: federated,
+            adult: adult,
+            downvotes: downvotes,
+            users: users,
+            blocking: blocking,
+            blockedBy: blockedBy,
+            uptime: uptime,
+            version: version
+        )
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 // swiftlint:disable line_length
-let eula: Document = Document(body: """
+let eula: Document = .init(body: """
 # EULA
 
 Welcome to Mlem! Before you proceed, please carefully read the following Terms of Service ("Terms") governing your use of our app. By accessing or using Mlem, you acknowledge that you have read, understood, and agreed to be bound by these Terms. If you do not agree with any part of these Terms, please refrain from using Mlem.

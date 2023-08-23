@@ -8,7 +8,6 @@
 import Foundation
 
 struct SaveCommentRequest: APIPutRequest {
-
     typealias Response = CommentResponse
 
     let instanceURL: URL

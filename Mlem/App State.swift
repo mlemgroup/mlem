@@ -5,12 +5,11 @@
 //  Created by David Bureš on 04.05.2023.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 import SwiftUI
 
 class AppState: ObservableObject {
-    
     @Dependency(\.apiClient) var apiClient
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
@@ -28,14 +27,14 @@ class AppState: ObservableObject {
         _selectedAccount = selectedAccount
         self.currentActiveAccount = defaultAccount
         self.currentNickname = defaultAccount.nickname
-        defaultAccountId = currentActiveAccount.id
+        self.defaultAccountId = currentActiveAccount.id
         accountUpdated()
     }
     
     func setActiveAccount(_ account: SavedAccount) {
         // update our stored token and set the account...
         AppConstants.keychain["\(account.id)_accessToken"] = account.accessToken
-        self.currentActiveAccount = account
+        currentActiveAccount = account
         defaultAccountId = currentActiveAccount.id
 
         // if the account we just set is not the existing one from the session
@@ -43,7 +42,7 @@ class AppState: ObservableObject {
         // `Window` layer which will re-create our `ContentView` and the new
         // account will restart on the feed page with a clean slate
         if account.id != selectedAccount?.id {
-            self.selectedAccount = account
+            selectedAccount = account
             return
         }
         

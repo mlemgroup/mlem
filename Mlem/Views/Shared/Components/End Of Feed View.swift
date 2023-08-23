@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct EndOfFeedView: View {
-    
     let isLoading: Bool
     
     var body: some View {

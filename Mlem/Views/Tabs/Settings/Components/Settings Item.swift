@@ -14,10 +14,12 @@ struct SwitchableSettingsItem: View {
 
     @Binding var isTicked: Bool
     
-    init(settingPictureSystemName: String,
-         settingPictureColor: Color = .pink,
-         settingName: String,
-         isTicked: Binding<Bool>) {
+    init(
+        settingPictureSystemName: String,
+        settingPictureColor: Color = .pink,
+        settingName: String,
+        isTicked: Binding<Bool>
+    ) {
         self.settingPictureSystemName = settingPictureSystemName
         self.settingPictureColor = settingPictureColor
         self.settingName = settingName
@@ -93,9 +95,9 @@ struct SettingsPickerButton<PickerLabel: View>: View {
     let label: PickerLabel
     
     init(isOn: Binding<Bool>, @ViewBuilder _ label: () -> PickerLabel) {
-            self.label = label()
-            _isOn = isOn
-        }
+        self.label = label()
+        _isOn = isOn
+    }
     
     var body: some View {
         Button { isOn.toggle() } label: {

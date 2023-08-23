@@ -1,16 +1,15 @@
-// 
+//
 //  CommunityRepository.swift
 //  Mlem
 //
 //  Created by mormaer on 27/07/2023.
-//  
+//
 //
 
 import Dependencies
 import Foundation
 
 struct CommunityRepository {
-    
     @Dependency(\.apiClient) private var apiClient
     
     var subscriptions: (APIClient) async throws -> [APICommunityView] = { client in

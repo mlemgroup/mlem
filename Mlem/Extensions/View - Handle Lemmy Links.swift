@@ -45,17 +45,18 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: CommunitySidebarLinkWithContext.self) { context in
                 CommunitySidebarView(
                     community: context.community,
-                    communityDetails: context.communityDetails)
+                    communityDetails: context.communityDetails
+                )
                 .environmentObject(filtersTracker)
                 .environmentObject(CommunitySearchResultsTracker())
                 .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APIPostView.self) { post in
                 ExpandedPost(post: post)
-                .environmentObject(
-                    PostTracker(shouldPerformMergeSorting: false, internetSpeed: internetSpeed, initialItems: [post])
-                )
-                .environmentObject(appState)
+                    .environmentObject(
+                        PostTracker(shouldPerformMergeSorting: false, internetSpeed: internetSpeed, initialItems: [post])
+                    )
+                    .environmentObject(appState)
             }
             .navigationDestination(for: APIPost.self) { post in
                 LazyLoadExpandedPost(post: post)
@@ -82,7 +83,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
 }
 
 struct HandleLemmyLinkResolution: ViewModifier {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
@@ -103,10 +103,10 @@ struct HandleLemmyLinkResolution: ViewModifier {
             // this link is sus! let's go
             // but first let's let the user know what's happning!
             Task {
-                await notifier.performWithLoader({
+                await notifier.performWithLoader {
                     var lookup = url.absoluteString
                     lookup = lookup.replacingOccurrences(of: "mlem://", with: "https://")
-                    if lookup.contains("@") && !lookup.contains("!") {
+                    if lookup.contains("@"), !lookup.contains("!") {
                         // SUS I think this might be a community link
                         let processedLookup = lookup
                             .replacing(/.*\/c\//, with: "")
@@ -144,7 +144,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                             OpenURLAction(handler: { _ in .systemAction }).callAsFunction(url)
                         }
                     }
-                })
+                }
             }
 
             // since this is a sus link we need to ask the lemmy servers about it, so for now we ask the system to forget-'bout-itt

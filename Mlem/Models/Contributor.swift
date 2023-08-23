@@ -8,7 +8,7 @@
 import Foundation
 
 struct Contributor: Identifiable {
-    var id: UUID = UUID()
+    var id: UUID = .init()
 
     let name: String
     let avatarLink: URL

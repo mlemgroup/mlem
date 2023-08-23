@@ -88,15 +88,19 @@ extension CommentItem {
     }
     
     func replyToComment() {
-        editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
-                                                           commentTracker: commentTracker,
-                                                           operation: CommentOperation.replyToComment))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            comment: hierarchicalComment.commentView,
+            commentTracker: commentTracker,
+            operation: CommentOperation.replyToComment
+        ))
     }
 
     func editComment() {
-        editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
-                                                           commentTracker: commentTracker,
-                                                           operation: CommentOperation.editComment))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            comment: hierarchicalComment.commentView,
+            commentTracker: commentTracker,
+            operation: CommentOperation.editComment
+        ))
     }
     
     /**
@@ -128,7 +132,6 @@ extension CommentItem {
         } catch {
             errorHandler.handle(error)
         }
-
     }
     
     // MARK: helpers
@@ -139,13 +142,14 @@ extension CommentItem {
         
         // upvote
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
-        ("Undo upvote", "arrow.up.square.fill") :
-        ("Upvote", "arrow.up.square")
+            ("Undo upvote", "arrow.up.square.fill") :
+            ("Upvote", "arrow.up.square")
         ret.append(MenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await upvote()
             }
@@ -153,13 +157,14 @@ extension CommentItem {
         
         // downvote
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-        ("Undo downvote", "arrow.down.square.fill") :
-        ("Downvote", "arrow.down.square")
+            ("Undo downvote", "arrow.down.square.fill") :
+            ("Downvote", "arrow.down.square")
         ret.append(MenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await downvote()
             }
@@ -171,7 +176,8 @@ extension CommentItem {
             text: saveText,
             imageName: saveImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await saveComment()
             }
@@ -182,9 +188,10 @@ extension CommentItem {
             text: "Reply",
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
-            enabled: true) {
-                replyToComment()
-            })
+            enabled: true
+        ) {
+            replyToComment()
+        })
         
         // edit
         if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
@@ -192,9 +199,10 @@ extension CommentItem {
                 text: "Edit",
                 imageName: "pencil",
                 destructiveActionPrompt: nil,
-                enabled: true) {
-                    editComment()
-                })
+                enabled: true
+            ) {
+                editComment()
+            })
         }
         
         // delete
@@ -203,7 +211,8 @@ extension CommentItem {
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
-                enabled: !hierarchicalComment.commentView.comment.deleted) {
+                enabled: !hierarchicalComment.commentView.comment.deleted
+            ) {
                 Task(priority: .userInitiated) {
                     await deleteComment()
                 }
@@ -216,7 +225,8 @@ extension CommentItem {
                 text: "Share",
                 imageName: "square.and.arrow.up",
                 destructiveActionPrompt: nil,
-                enabled: true) {
+                enabled: true
+            ) {
                 showShareSheet(URLtoShare: url)
             })
         }
@@ -226,16 +236,21 @@ extension CommentItem {
             text: "Report",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: "Really report?",
-            enabled: true) {
-                editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
-                                                                   operation: CommentOperation.reportComment))
-            })
+            enabled: true
+        ) {
+            editorTracker.openEditor(with: ConcreteEditorModel(
+                comment: hierarchicalComment.commentView,
+                operation: CommentOperation.reportComment
+            ))
+        })
         
         // block
-        ret.append(MenuFunction(text: "Block User",
-                                imageName: AppConstants.blockUserSymbolName,
-                                destructiveActionPrompt: AppConstants.blockUserPrompt,
-                                enabled: true) {
+        ret.append(MenuFunction(
+            text: "Block User",
+            imageName: AppConstants.blockUserSymbolName,
+            destructiveActionPrompt: AppConstants.blockUserPrompt,
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await blockUser(userId: hierarchicalComment.commentView.creator.id)
             }
@@ -243,6 +258,7 @@ extension CommentItem {
                    
         return ret
     }
+
     // swiftlint:enable function_body_length
     
     func blockUser(userId: Int) async {

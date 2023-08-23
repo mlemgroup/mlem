@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct UserSettingsView: View {
-    
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     

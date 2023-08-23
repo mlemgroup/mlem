@@ -8,7 +8,6 @@
 import Foundation
 
 struct GetCommentsRequest: APIGetRequest {
-
     typealias Response = GetCommentsResponse
 
     let instanceURL: URL
@@ -43,7 +42,6 @@ struct GetCommentsRequest: APIGetRequest {
             .init(name: "parent_id", value: parentId.map(String.init)),
             .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
-
     }
 }
 

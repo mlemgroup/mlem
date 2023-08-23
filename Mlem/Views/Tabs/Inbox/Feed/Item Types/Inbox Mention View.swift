@@ -25,14 +25,14 @@ struct InboxMentionView: View {
         
         switch mention.myVote {
         case .upvote:
-            voteIconName = AppConstants.plainUpvoteSymbolName
-            voteColor = .upvoteColor
+            self.voteIconName = AppConstants.plainUpvoteSymbolName
+            self.voteColor = .upvoteColor
         case .downvote:
-            voteIconName = AppConstants.plainDownvoteSymbolName
-            voteColor = .downvoteColor
+            self.voteIconName = AppConstants.plainDownvoteSymbolName
+            self.voteColor = .downvoteColor
         default:
-            voteIconName = AppConstants.plainUpvoteSymbolName
-            voteColor = .secondary
+            self.voteIconName = AppConstants.plainUpvoteSymbolName
+            self.voteColor = .secondary
         }
     }
     
@@ -42,10 +42,12 @@ struct InboxMentionView: View {
                 .font(.headline)
                 .padding(.bottom, spacing)
             
-            UserProfileLink(user: mention.creator,
-                            serverInstanceLocation: .bottom,
-                            overrideShowAvatar: true)
-                .font(.subheadline)
+            UserProfileLink(
+                user: mention.creator,
+                serverInstanceLocation: .bottom,
+                overrideShowAvatar: true
+            )
+            .font(.subheadline)
             
             HStack(alignment: .top, spacing: spacing) {
                 Image(systemName: iconName)

@@ -8,7 +8,6 @@
 import Foundation
 
 struct EditCommentRequest: APIPutRequest {
-
     typealias Response = CommentResponse
 
     let instanceURL: URL

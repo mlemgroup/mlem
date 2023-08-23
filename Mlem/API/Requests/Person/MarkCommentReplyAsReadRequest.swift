@@ -1,5 +1,5 @@
 //
-//  MarkCommentReplyAsRead.swift
+//  MarkCommentReplyAsReadRequest.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-01.
@@ -8,7 +8,6 @@
 import Foundation
 
 struct MarkCommentReplyAsRead: APIPostRequest {
-    
     typealias Response = CommentReplyResponse
     
     let instanceURL: URL

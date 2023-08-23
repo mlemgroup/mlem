@@ -9,8 +9,7 @@ import Foundation
 import SwiftUI
 
 struct OutlinedWebComplexStyle: GroupBoxStyle {
-
-    var roundedRectangle: RoundedRectangle = RoundedRectangle(cornerRadius: 8, style: .continuous)
+    var roundedRectangle: RoundedRectangle = .init(cornerRadius: 8, style: .continuous)
 
     func makeBody(configuration: Configuration) -> some View {
         VStack(alignment: .leading) {

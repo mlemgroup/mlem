@@ -1,5 +1,5 @@
 //
-//  GetPosts.swift
+//  GetPost.swift
 //  Mlem
 //
 //  Created by Nicholas Lawson on 07/06/2023.
@@ -9,7 +9,6 @@ import Foundation
 
 // lemmy_api_common::post::GetPost
 struct GetPostRequest: APIGetRequest {
-
     typealias Response = GetPostResponse
 
     let instanceURL: URL

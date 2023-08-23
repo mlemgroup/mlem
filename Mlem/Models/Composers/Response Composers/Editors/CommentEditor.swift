@@ -5,12 +5,11 @@
 //  Created by Eric Andrews on 2023-07-24.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 import SwiftUI
 
 struct CommentEditor: ResponseEditorModel {
-
     @Dependency(\.commentRepository) var commentRepository
 
     let canUpload: Bool = true
@@ -23,15 +22,17 @@ struct CommentEditor: ResponseEditorModel {
     var id: Int { comment.id }
 
     func embeddedView() -> AnyView {
-        return AnyView(EmptyView())
+        AnyView(EmptyView())
     }
 
     @MainActor
     func sendResponse(responseContents: String) async throws {
-        let edited = try await commentRepository.editComment(id: comment.id,
-                                                             content: responseContents,
-                                                             distinguished: nil,
-                                                             languageId: nil)
+        let edited = try await commentRepository.editComment(
+            id: comment.id,
+            content: responseContents,
+            distinguished: nil,
+            languageId: nil
+        )
 
         if let commentTracker {
             commentTracker.comments.update(with: edited.commentView)

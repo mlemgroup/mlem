@@ -8,9 +8,9 @@
 import Foundation
 
 // swiftlint:disable line_length
-let privacyPolicy: Document = Document(body: """
+let privacyPolicy: Document = .init(body: """
 # Privacy Policy
-                     
+
 Effective Date: July 15th, 2023
 
 Thank you for using Mlem! This Privacy Policy outlines how your personal information is collected, used, and protected when you use the Mlem mobile application ("App"). Please read this Privacy Policy carefully to understand our practices regarding your personal information. By using the Mlem mobile application, you acknowledge that you have read and understood this Privacy Policy and agree to the collection, use, and disclosure of your information as described herein.

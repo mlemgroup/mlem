@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 struct ReportCommentReply: ResponseEditorModel {
-    
     @Dependency(\.commentRepository) var commentRepository
     
     var id: Int { commentReply.id }
@@ -20,9 +19,11 @@ struct ReportCommentReply: ResponseEditorModel {
     let commentReply: APICommentReplyView
     
     func embeddedView() -> AnyView {
-        return AnyView(InboxReplyView(reply: commentReply,
-                                      menuFunctions: [])
-            .padding(.horizontal))
+        AnyView(InboxReplyView(
+            reply: commentReply,
+            menuFunctions: []
+        )
+        .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {

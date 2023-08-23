@@ -8,14 +8,13 @@
 import Foundation
 
 enum FeedType: String, Encodable, SettingsOptions {
-    
     var id: Self { self }
 
     var label: String {
         switch self {
-        case .all: return self.rawValue
-        case .local: return self.rawValue
-        case .subscribed: return self.rawValue
+        case .all: return rawValue
+        case .local: return rawValue
+        case .subscribed: return rawValue
         }
     }
     

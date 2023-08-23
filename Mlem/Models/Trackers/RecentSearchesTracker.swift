@@ -10,13 +10,12 @@ import Foundation
 
 @MainActor
 class RecentSearchesTracker: ObservableObject {
-    
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Published var recentSearches: [String] = .init()
     
     init() {
-        recentSearches = persistenceRepository.loadRecentSearches()
+        self.recentSearches = persistenceRepository.loadRecentSearches()
     }
     
     func addRecentSearch(_ searchText: String) {

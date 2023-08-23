@@ -16,10 +16,12 @@ struct CommunitySidebarHeaderAvatar: View {
     var body: some View {
         ZStack {
             if let avatarURL = imageUrl {
-                CachedImage(url: avatarURL,
-                            shouldExpand: false,
-                            fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
-                            contentMode: .fill)
+                CachedImage(
+                    url: avatarURL,
+                    shouldExpand: false,
+                    fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
+                    contentMode: .fill
+                )
                 .clipShape(Circle())
                 .overlay(Circle()
                     .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))

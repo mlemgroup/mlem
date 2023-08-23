@@ -16,5 +16,5 @@ extension EnvironmentValues {
     var setEasterFlag: (_ flag: EasterFlag) -> Void {
         get { self[EasterFlagSetter.self] }
         set { self[EasterFlagSetter.self] = newValue }
-      }
+    }
 }

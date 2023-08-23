@@ -1,9 +1,9 @@
-// 
+//
 //  APIClient+Comment.swift
 //  Mlem
 //
 //  Created by mormaer on 27/07/2023.
-//  
+//
 //
 
 import Foundation
@@ -21,8 +21,8 @@ extension APIClient {
         parentId: Int? = nil,
         savedOnly: Bool? = nil
     ) async throws -> [APICommentView] {
-        let request = GetCommentsRequest(
-            session: try session,
+        let request = try GetCommentsRequest(
+            session: session,
             postId: postId,
             maxDepth: maxDepth,
             type: type,
@@ -39,7 +39,7 @@ extension APIClient {
     }
     
     func loadComment(id: Int) async throws -> CommentResponse {
-        let request = GetCommentRequest(session: try session, id: id)
+        let request = try GetCommentRequest(session: session, id: id)
         return try await perform(request: request)
     }
     
@@ -49,8 +49,8 @@ extension APIClient {
         parentId: Int? = nil,
         postId: Int
     ) async throws -> CommentResponse {
-        let request = CreateCommentRequest(
-            session: try session,
+        let request = try CreateCommentRequest(
+            session: session,
             content: content,
             languageId: languageId,
             parentId: parentId,
@@ -61,7 +61,7 @@ extension APIClient {
     }
     
     func applyCommentScore(id: Int, score: Int) async throws -> CommentResponse {
-        let request = CreateCommentLikeRequest(session: try session, commentId: id, score: score)
+        let request = try CreateCommentLikeRequest(session: session, commentId: id, score: score)
         return try await perform(request: request)
     }
     
@@ -72,8 +72,8 @@ extension APIClient {
         languageId: Int? = nil,
         formId: String? = nil
     ) async throws -> CommentResponse {
-        let request = EditCommentRequest(
-            session: try session,
+        let request = try EditCommentRequest(
+            session: session,
             commentId: id,
             content: content,
             distinguished: distinguished,
@@ -88,17 +88,17 @@ extension APIClient {
         id: Int,
         deleted: Bool
     ) async throws -> CommentResponse {
-        let request = DeleteCommentRequest(session: try session, commentId: id, deleted: deleted)
+        let request = try DeleteCommentRequest(session: session, commentId: id, deleted: deleted)
         return try await perform(request: request)
     }
     
     func saveComment(id: Int, shouldSave: Bool) async throws -> CommentResponse {
-        let request = SaveCommentRequest(session: try session, commentId: id, save: shouldSave)
+        let request = try SaveCommentRequest(session: session, commentId: id, save: shouldSave)
         return try await perform(request: request)
     }
     
     func reportComment(id: Int, reason: String) async throws -> CreateCommentReportResponse {
-        let request = CreateCommentReportRequest(session: try session, commentId: id, reason: reason)
+        let request = try CreateCommentReportRequest(session: session, commentId: id, reason: reason)
         return try await perform(request: request)
     }
 }

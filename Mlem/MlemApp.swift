@@ -5,9 +5,9 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
+import Nuke
 import SwiftUI
 import UIKit
-import Nuke
 import XCTestDynamicOverlay
 
 @main
@@ -41,18 +41,18 @@ struct MlemApp: App {
                         // clear out tmp directory
                         let tempDirectory = FileManager.default.enumerator(atPath: FileManager.default.temporaryDirectory.absoluteString
                         )
-                        if let tempDirectory = tempDirectory {
+                        if let tempDirectory {
                             for case let file as URL in tempDirectory {
                                 try? FileManager.default.removeItem(at: file)
                             }
                         }
                         
                         // set app theme to user preference
-                        let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
+                        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                         windowScene?.windows.first?.overrideUserInterfaceStyle = lightOrDarkMode
                         
                         let appearance = UITabBarAppearance()
-                        appearance.backgroundEffect = UIBlurEffect.init(style: .systemThinMaterial)
+                        appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
                         UITabBar.appearance().standardAppearance = appearance
                         UITabBar.appearance().scrollEdgeAppearance = appearance
                         
@@ -67,7 +67,7 @@ struct MlemApp: App {
             }
         }
         .onChange(of: lightOrDarkMode) { value in
-            let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             windowScene?.windows.first?.overrideUserInterfaceStyle = value
         }
     }

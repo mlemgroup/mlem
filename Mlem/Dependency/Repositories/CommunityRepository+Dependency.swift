@@ -1,9 +1,9 @@
-// 
+//
 //  CommunityRepository+Dependency.swift
 //  Mlem
 //
 //  Created by mormaer on 27/07/2023.
-//  
+//
 //
 
 import Dependencies
@@ -18,73 +18,73 @@ extension CommunityRepository: DependencyKey {
             ["Science", "Technology", "World News", "Music", "Memes", "Aww", "Gaming"]
                 .enumerated()
                 .map { index, name -> APICommunityView in
-                        .mock(
-                            community: .mock(
-                                id: index,
-                                name: name
-                            ),
-                            subscribed: .subscribed
-                        )
+                    .mock(
+                        community: .mock(
+                            id: index,
+                            name: name
+                        ),
+                        subscribed: .subscribed
+                    )
                 }
         },
         details: { _, id in
-                .mock(
-                    communityView: .mock(
-                        community: .mock(
-                            id: id
-                        )
-                    )
-                )
-        },
-        updateSubscription: { _, id, subscribed in
-                .mock(
+            .mock(
+                communityView: .mock(
                     community: .mock(
                         id: id
-                    ),
-                    subscribed: subscribed ? .subscribed : .notSubscribed,
-                    blocked: false,
-                    counts: .mock()
+                    )
                 )
+            )
+        },
+        updateSubscription: { _, id, subscribed in
+            .mock(
+                community: .mock(
+                    id: id
+                ),
+                subscribed: subscribed ? .subscribed : .notSubscribed,
+                blocked: false,
+                counts: .mock()
+            )
         },
         hideCommunity: { _, id, _ in
-                .mock(
-                    communityView: .mock(
-                        community: .mock(
-                            id: id,
-                            hidden: true
-                        )
+            .mock(
+                communityView: .mock(
+                    community: .mock(
+                        id: id,
+                        hidden: true
                     )
                 )
+            )
         },
         unhideCommunity: { _, id in
-                .mock(
-                    communityView: .mock(
-                        community: .mock(
-                            id: id,
-                            hidden: false
-                        )
+            .mock(
+                communityView: .mock(
+                    community: .mock(
+                        id: id,
+                        hidden: false
                     )
                 )
+            )
         },
         blockCommunity: { _, id in
-                .mock(
-                    communityView: .mock(
-                        community: .mock(
-                            id: id
-                        )
-                    ),
-                    blocked: true
-                )
+            .mock(
+                communityView: .mock(
+                    community: .mock(
+                        id: id
+                    )
+                ),
+                blocked: true
+            )
         },
         unblockCommunity: { _, id in
-                .mock(
-                    communityView: .mock(
-                        community: .mock(
-                            id: id
-                        )
-                    ),
-                    blocked: false
-                )
+            .mock(
+                communityView: .mock(
+                    community: .mock(
+                        id: id
+                    )
+                ),
+                blocked: false
+            )
         }
     )
     
@@ -100,8 +100,8 @@ extension CommunityRepository: DependencyKey {
 }
 
 extension DependencyValues {
-  var communityRepository: CommunityRepository {
-    get { self[CommunityRepository.self] }
-    set { self[CommunityRepository.self] = newValue }
-  }
+    var communityRepository: CommunityRepository {
+        get { self[CommunityRepository.self] }
+        set { self[CommunityRepository.self] = newValue }
+    }
 }

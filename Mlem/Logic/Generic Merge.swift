@@ -24,7 +24,7 @@ func merge<T>(arr1: [T], arr2: [T], compare: (T, T) -> Bool) -> [T] {
     var bIdx = 0
     
     // merge
-    while aIdx < arr1.count && bIdx < arr2.count {
+    while aIdx < arr1.count, bIdx < arr2.count {
         if compare(arr1[aIdx], arr2[bIdx]) {
             ret.append(arr1[aIdx])
             aIdx += 1
@@ -52,7 +52,7 @@ func merge<T>(arr1: [T], arr2: [T], compare: (T, T) -> Bool) -> [T] {
  */
 func arrayIsSorted<T>(arr: [T], compare: (T, T) -> Bool) -> Bool {
     if arr.count < 2 { return true } // empty or single-item array always sorted
-    for idx in 1..<(arr.count) where !compare(arr[idx-1], arr[idx]) {
+    for idx in 1 ..< (arr.count) where !compare(arr[idx - 1], arr[idx]) {
         return false
     }
     return true

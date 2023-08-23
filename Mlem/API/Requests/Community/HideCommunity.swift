@@ -8,7 +8,6 @@
 import Foundation
 
 struct HideCommunityRequest: APIPutRequest {
-
     typealias Response = CommunityResponse
 
     let instanceURL: URL

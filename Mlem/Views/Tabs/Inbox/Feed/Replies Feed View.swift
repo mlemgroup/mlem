@@ -75,10 +75,12 @@ extension InboxView {
                         }
                     }
                 }
-                .addSwipeyActions(primaryLeadingAction: upvoteCommentReplySwipeAction(commentReply: reply),
-                                  secondaryLeadingAction: downvoteCommentReplySwipeAction(commentReply: reply),
-                                  primaryTrailingAction: toggleCommentReplyReadSwipeAction(commentReply: reply),
-                                  secondaryTrailingAction: replyToCommentReplySwipeAction(commentReply: reply))
+                .addSwipeyActions(
+                    primaryLeadingAction: upvoteCommentReplySwipeAction(commentReply: reply),
+                    secondaryLeadingAction: downvoteCommentReplySwipeAction(commentReply: reply),
+                    primaryTrailingAction: toggleCommentReplyReadSwipeAction(commentReply: reply),
+                    secondaryTrailingAction: replyToCommentReplySwipeAction(commentReply: reply)
+                )
         }
         .buttonStyle(EmptyButtonStyle())
     }

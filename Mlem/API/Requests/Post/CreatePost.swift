@@ -8,7 +8,6 @@
 import Foundation
 
 struct CreatePostRequest: APIPostRequest {
-
     typealias Response = PostResponse
 
     let instanceURL: URL
@@ -33,25 +32,25 @@ struct CreatePostRequest: APIPostRequest {
         name: String,
         nsfw: Bool?,
         body: String?,
-        // TODO change to `URL?`
+        // TODO: change to `URL?`
         url: String?
     ) {
         self.instanceURL = session.URL
         self.body = .init(
-                auth: session.token,
-                community_id: communityId,
-                name: name,
-                nsfw: nsfw,
-                body: body,
-                // TODO add to init params
-                language_id: nil,
-                // TODO: some work is needed here as the current UI implementation
-                // always passes an empty String, which if encoded directly will cause the request to fail
-                // however if user enters a "valid" URL such as `beehaw.org` the request will also fail
-                // as the API wants a fully formed URL. Some discussion is needed to decide how to handle
-                // this, and at what level that handling should occur.
-                url: URL(string: url ?? "")
-            )
+            auth: session.token,
+            community_id: communityId,
+            name: name,
+            nsfw: nsfw,
+            body: body,
+            // TODO: add to init params
+            language_id: nil,
+            // TODO: some work is needed here as the current UI implementation
+            // always passes an empty String, which if encoded directly will cause the request to fail
+            // however if user enters a "valid" URL such as `beehaw.org` the request will also fail
+            // as the API wants a fully formed URL. Some discussion is needed to decide how to handle
+            // this, and at what level that handling should occur.
+            url: URL(string: url ?? "")
+        )
     }
 }
 

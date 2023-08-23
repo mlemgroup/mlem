@@ -22,14 +22,16 @@ struct UserProfileLabel: View {
     @State var communityContext: GetCommunityResponse?
 
     var blurAvatar: Bool { shouldBlurNsfw && (postContext?.nsfw ?? false ||
-                                             communityContext?.communityView.community.nsfw ?? false) }
+            communityContext?.communityView.community.nsfw ?? false) }
     
-    init(user: APIPerson,
-         serverInstanceLocation: ServerInstanceLocation,
-         overrideShowAvatar: Bool? = nil,
-         postContext: APIPost? = nil,
-         commentContext: APIComment? = nil,
-         communityContext: GetCommunityResponse? = nil) {
+    init(
+        user: APIPerson,
+        serverInstanceLocation: ServerInstanceLocation,
+        overrideShowAvatar: Bool? = nil,
+        postContext: APIPost? = nil,
+        commentContext: APIComment? = nil,
+        communityContext: GetCommunityResponse? = nil
+    ) {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
@@ -40,7 +42,7 @@ struct UserProfileLabel: View {
     }
     
     var showAvatar: Bool {
-        if let overrideShowAvatar = overrideShowAvatar {
+        if let overrideShowAvatar {
             return overrideShowAvatar
         } else {
             return shouldShowUserAvatars
@@ -83,11 +85,13 @@ struct UserProfileLabel: View {
     private var userAvatar: some View {
         Group {
             if let userAvatarLink = user.avatar {
-                CachedImage(url: userAvatarLink,
-                            shouldExpand: false,
-                            fixedSize: avatarSize,
-                            imageNotFound: defaultUserAvatar,
-                            contentMode: .fill)
+                CachedImage(
+                    url: userAvatarLink,
+                    shouldExpand: false,
+                    fixedSize: avatarSize,
+                    imageNotFound: defaultUserAvatar,
+                    contentMode: .fill
+                )
             } else {
                 defaultUserAvatar()
             }
@@ -168,10 +172,10 @@ struct UserProfileLabel: View {
     private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
             /*
-            if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
-                return UserProfileLabel.flairMlemOfficial
-            }
-            */
+             if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
+                 return UserProfileLabel.flairMlemOfficial
+             }
+             */
             
             if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLabel.flairDeveloper
@@ -198,15 +202,14 @@ struct UserProfileLabel: View {
 
 // TODO: darknavi - Move these to a common area for reuse
 struct UserProfileLinkPreview: PreviewProvider {
-    
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
     enum PreviewUserType: String, CaseIterable {
-        case normal = "normal"
-        case mod = "mod"
-        case op = "op"
-        case bot = "bot"
-        case admin = "admin"
+        case normal
+        case mod
+        case op
+        case bot
+        case admin
         case dev = "developer"
     }
     
@@ -224,7 +227,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             displayName: displayName,
             avatar: nil,
             banned: false,
-            published: Date.now.advanced(by: -120000),
+            published: Date.now.advanced(by: -120_000),
             updated: nil,
             actorId: actorId,
             bio: nil,

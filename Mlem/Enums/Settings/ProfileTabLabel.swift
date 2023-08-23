@@ -12,7 +12,7 @@ enum ProfileTabLabel: String {
 }
 
 extension ProfileTabLabel: SettingsOptions {
-    var label: String { self.rawValue.capitalized }
+    var label: String { rawValue.capitalized }
     
     var id: Self { self }
 }
@@ -20,5 +20,5 @@ extension ProfileTabLabel: SettingsOptions {
 extension ProfileTabLabel: AssociatedIcon {
     var iconName: String { "person.text.rectangle" }
     
-    var iconNameFill: String { "person.text.rectangle.fill"}
+    var iconNameFill: String { "person.text.rectangle.fill" }
 }

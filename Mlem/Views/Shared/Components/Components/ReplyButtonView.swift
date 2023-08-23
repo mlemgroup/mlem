@@ -1,5 +1,5 @@
 //
-//  Reply.swift
+//  ReplyButtonView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-10.
@@ -10,7 +10,6 @@ import SwiftUI
 import Foundation
 
 struct ReplyButtonView: View {
-
     // MARK: Parameters
 
     let reply: (() -> Void)?
@@ -51,7 +50,7 @@ struct ReplyButtonView: View {
     // MARK: Helpers
     
     func replyCallback() {
-        if let reply = reply {
+        if let reply {
             reply()
         }
     }

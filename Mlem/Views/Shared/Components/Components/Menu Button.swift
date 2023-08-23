@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct MenuButton: View {
-    
     let menuFunction: MenuFunction
     
     var role: ButtonRole? { menuFunction.destructiveActionPrompt != nil ? .destructive : nil }

@@ -1,9 +1,9 @@
-// 
+//
 //  APIClient+Dependency.swift
 //  Mlem
 //
 //  Created by mormaer on 14/07/2023.
-//  
+//
 //
 
 import Dependencies

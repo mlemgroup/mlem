@@ -1,5 +1,5 @@
 //
-//  EditorView.swift
+//  ResponseEditorView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-03.
@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 struct ResponseEditorView: View {
-    
     private enum Field: Hashable {
         case editorBody
     }
@@ -32,7 +31,7 @@ struct ResponseEditorView: View {
     @FocusState private var focusedField: Field?
 
     private var isReadyToReply: Bool {
-        return editorBody.trimmed.isNotEmpty
+        editorBody.trimmed.isNotEmpty
     }
     
     func uploadImage() {
@@ -46,11 +45,12 @@ struct ResponseEditorView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                
                 // Post Text
-                TextField("What do you want to say?",
-                          text: $editorBody,
-                          axis: .vertical)
+                TextField(
+                    "What do you want to say?",
+                    text: $editorBody,
+                    axis: .vertical
+                )
                 .accessibilityLabel("Response Body")
                 .padding(AppConstants.postAndCommentSpacing)
                 .focused($focusedField, equals: .editorBody)

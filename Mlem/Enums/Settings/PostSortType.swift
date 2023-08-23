@@ -25,8 +25,8 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     
     var id: Self { self }
     
-    static var outerTypes: [PostSortType] {[.hot, .active, .new, .old, .newComments, .mostComments]}
-    static var topTypes: [PostSortType] {[.topHour, .topSixHour, .topTwelveHour, .topDay, .topWeek, .topMonth, .topYear, .topAll]}
+    static var outerTypes: [PostSortType] { [.hot, .active, .new, .old, .newComments, .mostComments] }
+    static var topTypes: [PostSortType] { [.topHour, .topSixHour, .topTwelveHour, .topDay, .topWeek, .topMonth, .topYear, .topAll] }
     
     var description: String {
         switch self {
@@ -47,7 +47,7 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         case .topAll:
             return "Top of all time"
         default:
-            return self.label
+            return label
         }
     }
 }
@@ -76,7 +76,7 @@ extension PostSortType: SettingsOptions {
         case .topAll:
             return "All time"
         default:
-            return self.rawValue
+            return rawValue
         }
     }
 }
@@ -86,7 +86,7 @@ extension PostSortType: AssociatedIcon {
         switch self {
         case .active: return AppConstants.activeSortSymbolName
         case .hot: return AppConstants.hotSortSymbolName
-        case.new: return AppConstants.newSortSymbolName
+        case .new: return AppConstants.newSortSymbolName
         case .old: return AppConstants.oldSortSymbolName
         case .newComments: return AppConstants.newCommentsSymbolName
         case .mostComments: return AppConstants.mostCommentsSymbolName
@@ -98,7 +98,7 @@ extension PostSortType: AssociatedIcon {
         switch self {
         case .active: return AppConstants.activeSortSymbolNameFill
         case .hot: return AppConstants.hotSortSymbolNameFill
-        case.new: return AppConstants.newSortSymbolNameFill
+        case .new: return AppConstants.newSortSymbolNameFill
         case .old: return AppConstants.oldSortSymbolNameFill
         case .newComments: return AppConstants.newCommentsSymbolNameFill
         case .mostComments: return AppConstants.mostCommentsSymbolNameFill

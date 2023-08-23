@@ -13,20 +13,20 @@
 // swiftlint:disable type_body_length
 
 import Dependencies
-import SwiftUI
 import QuickLook
+import SwiftUI
 
 /**
  Displays a single post in the feed
  */
 struct FeedPost: View {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     
     // MARK: Environment
+
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
     
     @AppStorage("postSize") var postSize: PostSize = .large
@@ -56,15 +56,18 @@ struct FeedPost: View {
     @State var dirty: Bool = false
     
     // MARK: Parameters
+
     let postView: APIPostView
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
 
-    init(postView: APIPostView,
-         showPostCreator: Bool = true,
-         showCommunity: Bool = true,
-         enableSwipeActions: Bool = true) {
+    init(
+        postView: APIPostView,
+        showPostCreator: Bool = true,
+        showCommunity: Bool = true,
+        enableSwipeActions: Bool = true
+    ) {
         self.postView = postView
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
@@ -83,7 +86,7 @@ struct FeedPost: View {
     
     // MARK: Computed
     
-    var barThickness: CGFloat { !postView.read && diffWithoutColor && readMarkStyle == .bar  ? CGFloat(readBarThickness) : .zero }
+    var barThickness: CGFloat { !postView.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
     var showCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
@@ -130,7 +133,6 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-
         if postSize == .compact {
             UltraCompactPost(
                 postView: postView,
@@ -148,7 +150,8 @@ struct FeedPost: View {
                     HStack {
                         CommunityLinkView(
                             community: postView.community,
-                            serverInstanceLocation: communityServerInstanceLocation)
+                            serverInstanceLocation: communityServerInstanceLocation
+                        )
 
                         Spacer()
 
@@ -170,8 +173,10 @@ struct FeedPost: View {
 
                     // posting user
                     if showPostCreator {
-                        UserProfileLink(user: postView.creator,
-                                        serverInstanceLocation: userServerInstanceLocation)
+                        UserProfileLink(
+                            user: postView.creator,
+                            serverInstanceLocation: userServerInstanceLocation
+                        )
                     }
                 }
                 .padding(.top, AppConstants.postAndCommentSpacing)
@@ -304,14 +309,18 @@ struct FeedPost: View {
     }
 
     func replyToPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(post: postView,
-                                                           operation: PostOperation.replyToPost))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            post: postView,
+            operation: PostOperation.replyToPost
+        ))
     }
     
     func editPost() {
-        editorTracker.openEditor(with: PostEditorModel(community: postView.community,
-                                                       postTracker: postTracker,
-                                                       editPost: postView.post))
+        editorTracker.openEditor(with: PostEditorModel(
+            community: postView.community,
+            postTracker: postTracker,
+            editPost: postView.post
+        ))
     }
 
     /// Votes on a post
@@ -357,13 +366,14 @@ struct FeedPost: View {
 
         // upvote
         let (upvoteText, upvoteImg) = postView.myVote == .upvote ?
-        ("Undo upvote", "arrow.up.square.fill") :
-        ("Upvote", "arrow.up.square")
+            ("Undo upvote", "arrow.up.square.fill") :
+            ("Upvote", "arrow.up.square")
         ret.append(MenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await upvotePost()
             }
@@ -371,13 +381,14 @@ struct FeedPost: View {
 
         // downvote
         let (downvoteText, downvoteImg) = postView.myVote == .downvote ?
-        ("Undo downvote", "arrow.down.square.fill") :
-        ("Downvote", "arrow.down.square")
+            ("Undo downvote", "arrow.down.square.fill") :
+            ("Downvote", "arrow.down.square")
         ret.append(MenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await downvotePost()
             }
@@ -389,7 +400,8 @@ struct FeedPost: View {
             text: saveText,
             imageName: saveImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await savePost()
             }
@@ -400,9 +412,10 @@ struct FeedPost: View {
             text: "Reply",
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
-            enabled: true) {
-                replyToPost()
-            })
+            enabled: true
+        ) {
+            replyToPost()
+        })
 
         if postView.creator.id == appState.currentActiveAccount.id {
             // edit
@@ -410,16 +423,18 @@ struct FeedPost: View {
                 text: "Edit",
                 imageName: "pencil",
                 destructiveActionPrompt: nil,
-                enabled: true) {
-                    editPost()
-                })
+                enabled: true
+            ) {
+                editPost()
+            })
             
             // delete
             ret.append(MenuFunction(
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
-                enabled: !postView.post.deleted) {
+                enabled: !postView.post.deleted
+            ) {
                 Task(priority: .userInitiated) {
                     await deletePost()
                 }
@@ -431,7 +446,8 @@ struct FeedPost: View {
             text: "Share",
             imageName: "square.and.arrow.up",
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             if let url = URL(string: postView.post.apId) {
                 showShareSheet(URLtoShare: url)
             }
@@ -442,31 +458,34 @@ struct FeedPost: View {
             text: "Report Post",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: AppConstants.reportPostPrompt,
-            enabled: true) {
-                reportPost()
-            })
+            enabled: true
+        ) {
+            reportPost()
+        })
 
         // block user
         ret.append(MenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
-            enabled: true) {
-                Task(priority: .userInitiated) {
-                    await blockUser()
-                }
-            })
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await blockUser()
+            }
+        })
         
         // block community
         ret.append(MenuFunction(
             text: "Block Community",
             imageName: AppConstants.blockSymbolName,
             destructiveActionPrompt: nil,
-            enabled: true) {
-                Task(priority: .userInitiated) {
-                    await blockCommunity()
-                }
-            })
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await blockCommunity()
+            }
+        })
 
         return ret
     }
@@ -476,15 +495,14 @@ struct FeedPost: View {
 // MARK: - Swipe Actions
 
 extension FeedPost {
-
     // TODO: if we want to mirror the behaviour in comments here we need the `dirty` operation to be visible from this
     // context, which at present would require some work as it occurs down inside the post interaction bar
     // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
 
     var upvoteSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = postView.myVote == .upvote ?
-        (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-        (AppConstants.emptyUpvoteSymbolName, AppConstants.fullUpvoteSymbolName)
+            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
+            (AppConstants.emptyUpvoteSymbolName, AppConstants.fullUpvoteSymbolName)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .upvoteColor,
@@ -496,8 +514,8 @@ extension FeedPost {
         guard appState.enableDownvote else { return nil }
 
         let (emptySymbolName, fullSymbolName) = postView.myVote == .downvote ?
-        (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-        (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
+            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
+            (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .downvoteColor,
@@ -507,8 +525,8 @@ extension FeedPost {
 
     var saveSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = postView.saved
-        ? (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
-        : (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
+            ? (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
+            : (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,
@@ -517,12 +535,13 @@ extension FeedPost {
     }
 
     var replySwipeAction: SwipeAction? {
-        return SwipeAction(
+        SwipeAction(
             symbol: .init(emptyName: "arrowshape.turn.up.left", fillName: "arrowshape.turn.up.left.fill"),
             color: .accentColor,
             action: replyToPost
         )
     }
 }
+
 // swiftlint:enable type_body_length
 // swiftlint:enable file_length

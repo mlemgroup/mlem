@@ -5,11 +5,10 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
-import XCTest
 @testable import Mlem
+import XCTest
 
 class MlemTests: XCTestCase {
-
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -28,9 +27,8 @@ class MlemTests: XCTestCase {
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }
-
 }

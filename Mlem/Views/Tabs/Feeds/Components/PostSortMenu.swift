@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct PostSortMenu: View {
-    
     @Binding var selectedSortingOption: PostSortType
     var shortLabel: Bool = false
     
     var body: some View {
-        
         Menu {
             ForEach(PostSortType.outerTypes, id: \.self) { type in
                 OptionButton(
@@ -55,7 +53,6 @@ struct PostSortMenu: View {
 }
 
 private struct OptionButton<Option: Equatable>: View {
-    
     let title: String
     let imageName: String
     let option: Option

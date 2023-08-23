@@ -8,7 +8,6 @@
 import Foundation
 
 struct MarkAllAsRead: APIPostRequest {
-    
     // no idea why the Lemmy API returns an empty dictionary, but it does
     typealias Response = [String: [String]]
     

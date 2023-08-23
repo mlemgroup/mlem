@@ -1,16 +1,15 @@
-// 
+//
 //  CommentRepository.swift
 //  Mlem
 //
 //  Created by mormaer on 14/07/2023.
-//  
+//
 //
 
-import Foundation
 import Dependencies
+import Foundation
 
 class CommentRepository {
-    
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) private var hapticManager
     
@@ -70,24 +69,23 @@ class CommentRepository {
         // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
         do {
             let updatedCommentView = try await voteOnComment(id: mention.comment.id, vote: vote)
-                return .init(
-                    personMention: mention.personMention,
-                    comment: updatedCommentView.comment,
-                    creator: mention.creator,
-                    post: updatedCommentView.post,
-                    community: updatedCommentView.community,
-                    recipient: mention.recipient,
-                    counts: updatedCommentView.counts,
-                    creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                    subscribed: updatedCommentView.subscribed,
-                    saved: updatedCommentView.saved,
-                    creatorBlocked: updatedCommentView.creatorBlocked,
-                    myVote: updatedCommentView.myVote
-                )
+            return .init(
+                personMention: mention.personMention,
+                comment: updatedCommentView.comment,
+                creator: mention.creator,
+                post: updatedCommentView.post,
+                community: updatedCommentView.community,
+                recipient: mention.recipient,
+                counts: updatedCommentView.counts,
+                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+                subscribed: updatedCommentView.subscribed,
+                saved: updatedCommentView.saved,
+                creatorBlocked: updatedCommentView.creatorBlocked,
+                myVote: updatedCommentView.myVote
+            )
         } catch {
             throw error
         }
-
     }
     
     @discardableResult

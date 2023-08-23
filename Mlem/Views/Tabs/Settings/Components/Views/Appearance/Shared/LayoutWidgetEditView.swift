@@ -1,12 +1,12 @@
 //
-//  PostLayoutEditView.swift
+//  LayoutWidgetEditView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 29/07/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 private struct WidgetCollectionView: ViewModifier {
     var collection: LayoutWidgetCollection
@@ -28,7 +28,6 @@ private struct WidgetCollectionView: ViewModifier {
 }
 
 struct LayoutWidgetEditView: View {
-    
     @Environment(\.isPresented) var isPresented
     
     var onSave: (_ widgets: [LayoutWidgetType]) -> Void
@@ -41,8 +40,10 @@ struct LayoutWidgetEditView: View {
     
     @StateObject private var widgetModel: LayoutWidgetModel
     
-    init(widgets: [LayoutWidgetType],
-         onSave: @escaping (_ widgets: [LayoutWidgetType]) -> Void) {
+    init(
+        widgets: [LayoutWidgetType],
+        onSave: @escaping (_ widgets: [LayoutWidgetType]) -> Void
+    ) {
         self.onSave = onSave
         
         let barWidgets = widgets.map { LayoutWidget($0) }
@@ -70,9 +71,9 @@ struct LayoutWidgetEditView: View {
                         .zIndex(1)
                         .opacity(
                             (widgetModel.widgetDraggingCollection == trayCollection
-                            && !barCollection.isValidDropLocation(widgetModel.widgetDragging))
-                            ? 0.3
-                            : 1
+                                && !barCollection.isValidDropLocation(widgetModel.widgetDragging))
+                                ? 0.3
+                                : 1
                         )
                     infoText
                     tray(frame)
@@ -111,7 +112,7 @@ struct LayoutWidgetEditView: View {
             if newValue == false {
                 print("SAVING")
                 Task {
-                    self.onSave(self.barCollection.items.compactMap { $0.type })
+                    onSave(barCollection.items.map(\.type))
                 }
             }
         }
@@ -123,8 +124,8 @@ struct LayoutWidgetEditView: View {
         VStack {
             Divider()
             Spacer()
-            if widgetModel.widgetDraggingCollection == trayCollection
-                && !barCollection.isValidDropLocation(widgetModel.widgetDragging) {
+            if widgetModel.widgetDraggingCollection == trayCollection,
+               !barCollection.isValidDropLocation(widgetModel.widgetDragging) {
                 Text("Too many widgets!")
                     .font(.callout)
                     .foregroundStyle(.red)
@@ -144,7 +145,7 @@ struct LayoutWidgetEditView: View {
     func interactionBar(_ outerFrame: CGRect) -> some View {
         HStack(spacing: 10) {
             ForEach(barCollection.itemsToRender, id: \.self) { widget in
-                if let widget = widget {
+                if let widget {
                     placedWidgetView(widget, outerFrame: outerFrame)
                 } else {
                     Color.clear
@@ -186,7 +187,7 @@ struct LayoutWidgetEditView: View {
         .frame(height: 300)
         .modifier(WidgetCollectionView(collection: trayCollection) { rect in
             rect
-                .offsetBy(dx: 0, dy: -outerFrame.origin.y-90)
+                .offsetBy(dx: 0, dy: -outerFrame.origin.y - 90)
         })
     }
     
@@ -201,7 +202,6 @@ struct LayoutWidgetEditView: View {
         }
         .frame(width: widgetType.width == .infinity ? 150 : widgetType.width, height: 40)
         .zIndex(widgetModel.lastDraggedWidget?.type == widgetType ? 1 : 0)
-        
     }
     
     func placedWidgetView(_ widget: LayoutWidget, outerFrame: CGRect) -> some View {

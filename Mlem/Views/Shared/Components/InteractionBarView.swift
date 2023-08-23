@@ -52,10 +52,10 @@ struct InteractionBarView: View {
                 switch widget {
                 case .scoreCounter:
                     ScoreCounterView(
-                                vote: displayedVote,
-                                score: displayedScore,
-                                upvote: upvote,
-                                downvote: downvote
+                        vote: displayedVote,
+                        score: displayedScore,
+                        upvote: upvote,
+                        downvote: downvote
                     )
                 
                 case .upvoteCounter:
@@ -77,11 +77,11 @@ struct InteractionBarView: View {
                     }
                     
                 case .upvote:
-                     UpvoteButtonView(vote: displayedVote, upvote: upvote)
+                    UpvoteButtonView(vote: displayedVote, upvote: upvote)
                     
                 case .downvote:
                     if appState.enableDownvote {
-                       DownvoteButtonView(vote: displayedVote, downvote: downvote)
+                        DownvoteButtonView(vote: displayedVote, downvote: downvote)
                     }
                     
                 case .save:
@@ -98,20 +98,23 @@ struct InteractionBarView: View {
                     ShareButtonView(accessibilityContext: accessibilityContext, share: share)
                     
                 case .infoStack:
-                    InfoStackView(votes: shouldShowScore
-                              ? DetailedVotes(score: displayedScore,
-                                              upvotes: apiView.counts.upvotes,
-                                              downvotes: apiView.counts.downvotes,
-                                              myVote: apiView.myVote ?? .resetVote,
-                                              showDownvotes: showDownvotesSeparately)
-                              : nil,
-                              published: shouldShowTime ? apiView.counts.published : nil,
-                              commentCount: shouldShowReplies ? apiView.counts.comments : nil,
-                              saved: shouldShowSaved ? apiView.saved : nil,
-                              alignment: infoStackAlignment(offset)
-                        )
-                        .padding(AppConstants.postAndCommentSpacing)
-                        .frame(maxWidth: .infinity)
+                    InfoStackView(
+                        votes: shouldShowScore
+                            ? DetailedVotes(
+                                score: displayedScore,
+                                upvotes: apiView.counts.upvotes,
+                                downvotes: apiView.counts.downvotes,
+                                myVote: apiView.myVote ?? .resetVote,
+                                showDownvotes: showDownvotesSeparately
+                            )
+                            : nil,
+                        published: shouldShowTime ? apiView.counts.published : nil,
+                        commentCount: shouldShowReplies ? apiView.counts.comments : nil,
+                        saved: shouldShowSaved ? apiView.saved : nil,
+                        alignment: infoStackAlignment(offset)
+                    )
+                    .padding(AppConstants.postAndCommentSpacing)
+                    .frame(maxWidth: .infinity)
                 }
             }
         }

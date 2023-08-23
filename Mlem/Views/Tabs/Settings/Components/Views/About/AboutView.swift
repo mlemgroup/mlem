@@ -1,5 +1,5 @@
 //
-//  About.swift
+//  AboutView.swift
 //  Mlem
 //
 //  Created by Weston Hanners on 7/12/23.
@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AboutView: View {
-
     @Binding var navigationPath: NavigationPath
 
     var body: some View {

@@ -1,9 +1,9 @@
-// 
-//  FeedItemProviding.swift
+//
+//  FeedTrackerItemProviding.swift
 //  Mlem
 //
 //  Created by mormaer on 28/06/2023.
-//  
+//
 //
 
 import Foundation

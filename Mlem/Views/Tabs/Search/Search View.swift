@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 struct SearchView: View {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
@@ -25,7 +24,7 @@ struct SearchView: View {
     @State private var isSearching: Bool = false
     @State private var lastSearchedText: String = ""
     @State private var showRecentSearches: Bool = true
-    @State private var searchTask: Task<(), Never>?
+    @State private var searchTask: Task<Void, Never>?
     @State private var searchText: String = ""
     
     @State private var searchPage: Int = 1
@@ -101,7 +100,7 @@ struct SearchView: View {
     
     @ViewBuilder
     private var searchedContents: some View {
-        if isSearching && communitySearchResultsTracker.foundCommunities.isEmpty {
+        if isSearching, communitySearchResultsTracker.foundCommunities.isEmpty {
             LoadingView(whatIsLoading: .search)
         } else if communitySearchResultsTracker.foundCommunities.isEmpty {
             Text("No communities found for search")
@@ -112,20 +111,19 @@ struct SearchView: View {
                         community: community.community,
                         extraText: "\(community.counts.subscribers.roundedWithAbbreviations) subscribers"
                     )
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .onAppear {
-                            let communityIndex = communitySearchResultsTracker.foundCommunities.firstIndex(of: community)
-                            if let index = communityIndex {
-                                
-                                // If we are half a page from the end, ask for more
-                                let distanceFromEnd = communitySearchResultsTracker.foundCommunities.count - index
-                                if distanceFromEnd == searchPageSize / 2 {
-                                    if hasMorePages {
-                                        performSearch()
-                                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .onAppear {
+                        let communityIndex = communitySearchResultsTracker.foundCommunities.firstIndex(of: community)
+                        if let index = communityIndex {
+                            // If we are half a page from the end, ask for more
+                            let distanceFromEnd = communitySearchResultsTracker.foundCommunities.count - index
+                            if distanceFromEnd == searchPageSize / 2 {
+                                if hasMorePages {
+                                    performSearch()
                                 }
                             }
                         }
+                    }
                 }
             }
             .fancyTabScrollCompatible()
@@ -133,7 +131,7 @@ struct SearchView: View {
     }
     
     private func getSearchTextBinding() -> Binding<String> {
-        return Binding(get: { searchText }, set: {
+        Binding(get: { searchText }, set: {
             searchText = $0
             
             // Revert to show suggestions if we clear the search

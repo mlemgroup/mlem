@@ -1,5 +1,5 @@
 //
-//  Save.swift
+//  ShareButtonView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-10.
@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ShareButtonView: View {
-
     // ==== PARAMETERS ==== //
 
     let accessibilityContext: String

@@ -1,5 +1,5 @@
 //
-//  MarkMentionAsReadRequest.swift
+//  MarkPersonMentionAsReadRequest.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-02.
@@ -8,7 +8,6 @@
 import Foundation
 
 struct MarkPersonMentionAsRead: APIPostRequest {
-    
     typealias Response = PersonMentionResponse
     
     let instanceURL: URL

@@ -24,10 +24,12 @@ struct CommunitySidebarHeader: View {
             // Banner
             VStack {
                 if let bannerUrl = bannerURL {
-                    CachedImage(url: bannerUrl,
-                                shouldExpand: false,
-                                fixedSize: CGSize(width: UIScreen.main.bounds.width, height: 200),
-                                contentMode: .fill)
+                    CachedImage(
+                        url: bannerUrl,
+                        shouldExpand: false,
+                        fixedSize: CGSize(width: UIScreen.main.bounds.width, height: 200),
+                        contentMode: .fill
+                    )
                 }
             }
             VStack {
@@ -36,8 +38,10 @@ struct CommunitySidebarHeader: View {
                 }
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
-                        CommunitySidebarHeaderAvatar(shouldClipAvatar: shouldClipAvatar(url: avatarUrl),
-                                                     imageUrl: avatarUrl)
+                        CommunitySidebarHeaderAvatar(
+                            shouldClipAvatar: shouldClipAvatar(url: avatarUrl),
+                            imageUrl: avatarUrl
+                        )
                         
                         Button {
                             if let callback = avatarSubtextClicked {
@@ -84,18 +88,24 @@ struct CommunitySidebarHeader: View {
 struct SidebarHeaderPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            CommunitySidebarHeader(title: "TestCommunityWithLongName", subtitle: "@testcommunity@longnamedomain.website",
-                                   avatarSubtext: .constant("Created 3 days ago"),
-                                   bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-                                   label1: "Label 1",
-                                   label2: "Label 2")
-            CommunitySidebarHeader(title: "Test", subtitle: "@test@test.come",
-                                   avatarSubtext: .constant("Created 3 days ago"),
-                                   bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-                                   label1: "Label 1",
-                                   label2: "Label 2")
+            CommunitySidebarHeader(
+                title: "TestCommunityWithLongName",
+                subtitle: "@testcommunity@longnamedomain.website",
+                avatarSubtext: .constant("Created 3 days ago"),
+                bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
+                avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
+                label1: "Label 1",
+                label2: "Label 2"
+            )
+            CommunitySidebarHeader(
+                title: "Test",
+                subtitle: "@test@test.come",
+                avatarSubtext: .constant("Created 3 days ago"),
+                bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
+                avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
+                label1: "Label 1",
+                label2: "Label 2"
+            )
             Spacer()
         }
     }

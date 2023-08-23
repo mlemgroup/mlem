@@ -8,7 +8,6 @@
 import Foundation
 
 struct SavePostRequest: APIPutRequest {
-
     typealias Response = PostResponse
 
     let instanceURL: URL

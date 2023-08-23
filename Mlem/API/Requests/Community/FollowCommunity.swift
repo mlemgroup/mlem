@@ -8,7 +8,6 @@
 import Foundation
 
 struct FollowCommunityRequest: APIPostRequest {
-
     typealias Response = CommunityResponse
 
     let instanceURL: URL
