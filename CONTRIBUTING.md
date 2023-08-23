@@ -4,11 +4,19 @@ If you're reading this, you probably want to contribute to Mlem. Welcome! We're 
 
 ## Prerequesites
 
-This project makes use of [SwiftLint](https://github.com/realm/SwiftLint#swiftlint). This runs as part of the Xcode build phases.
+This project makes use of the following tools:
 
-In order to benefit please ensure you have [Homebrew](https://brew.sh) installed on your system and then run the following command to install Swiftlint:
+[SwiftLint](https://github.com/realm/SwiftLint#swiftlint). This runs as part of the Xcode build phases.
+[Swiftformat](https://github.com/nicklockwood/SwiftFormat#what-is-this). This runs as a pre-commit hook.
 
-`brew install swiftlint`
+In order to benefit please ensure you have [Homebrew](https://brew.sh) installed on your system and then run the following commands inside the project directory:
+
+`cd /path/to/this/repo`
+`brew update`
+`brew bundle`
+`git config --local --add core.hooksPath .git-hooks`
+
+With these steps completed each time you build your code will be linted, and each time you commit your code will be formatted.
 
 ## Getting started
 
