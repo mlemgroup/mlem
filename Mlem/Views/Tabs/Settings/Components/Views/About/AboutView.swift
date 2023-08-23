@@ -83,10 +83,8 @@ struct AboutView: View {
     @ViewBuilder
     private var appHeaderView: some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {
-            Image("logo")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .cornerRadius(20.0)
+            LogoView()
+            
             Text("Mlem \(versionString)")
                 .foregroundStyle(.secondary)
         }

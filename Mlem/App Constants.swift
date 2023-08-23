@@ -30,6 +30,7 @@ struct AppConstants {
     static let maxFeedPostHeight: CGFloat = 400
     static let maxFeedPostHeightExpanded: CGFloat = 3000
     static let thumbnailSize: CGFloat = 60
+    static let hugeAvatarSize: CGFloat = 120
     static let largeAvatarSize: CGFloat = 32
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
@@ -142,6 +143,8 @@ struct AppConstants {
     static let connectionSymbolName: String = "antenna.radiowaves.left.and.right"
     static let hapticSymbolName: String = "hand.tap"
     static let transparencySymbolName: String = "square.on.square.intersection.dashed"
+    static let presentSymbolName: String = "circle.fill"
+    static let absentSymbolName: String = "circle"
     
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]

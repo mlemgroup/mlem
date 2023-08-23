@@ -8,6 +8,7 @@
 import Dependencies
 import SwiftUI
 
+// swiftlint:disable file_length
 enum UserIDRetrievalError: Error {
     case couldNotFetchUserInformation
 }
@@ -44,7 +45,7 @@ struct AddSavedInstanceView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) private var openURL
 
-    @State private var instance: String = ""
+    @State private var enteredInstance: String = ""
     @State private var username = ""
     @State private var password = ""
     @State private var twoFactorCode = ""
@@ -57,12 +58,30 @@ struct AddSavedInstanceView: View {
     @FocusState private var focusedField: FocusedField?
     
     let onboarding: Bool
+    let givenInstance: String? // if present, will override manual instance entry
     @Binding var currentAccount: SavedAccount?
+    
+    var instance: String { givenInstance ?? enteredInstance }
+    var badCredentialsMessage: String { onboarding
+        // swiftlint:disable line_length
+        ? "Please check your username and password. If you signed up with an email, make sure you've activated your account from the confirmation email."
+        // swiftlint:enable line_length
+        : "Please check your username and password"
+    }
+    
+    init(onboarding: Bool,
+         currentAccount: Binding<SavedAccount?>,
+         givenInstance: String? = nil) {
+        self.onboarding = onboarding
+        self._currentAccount = currentAccount
+        self.givenInstance = givenInstance
+    }
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
+                    title
                     headerSection
                 }
                 Grid(alignment: .trailing,
@@ -71,31 +90,6 @@ struct AddSavedInstanceView: View {
                     formSection
                 }.disabled(viewState == .loading)
                 footerView
-            }
-            .navigationBarColor()
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Sign In")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        Task {
-                            await tryToAddAccount()
-                        }
-                    } label: {
-                        Text("Log In")
-                    }
-                    .disabled(!isReadyToSubmit)
-                }
-                
-                if !onboarding {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(role: .destructive) {
-                            dismiss()
-                        } label: {
-                            Text("Cancel")
-                        }
-                    }
-                }
             }
             .transaction { transaction in
                 transaction.disablesAnimations = true
@@ -120,18 +114,27 @@ struct AddSavedInstanceView: View {
                 GridRow {
                     Text("Instance")
                         .foregroundColor(.secondary)
-                    TextField("lemmy.ml", text: $instance)
-                        .textContentType(.URL)
-                        .autocorrectionDisabled()
-                        .focused($focusedField, equals: .instance)
-                        .keyboardType(.URL)
-                        .textInputAutocapitalization(.never)
-                        .onAppear {
-                            focusedField = .instance
-                        }
-                        .onSubmit {
-                            focusedField = .username
-                        }
+                    if let givenInstance {
+                        Text(givenInstance)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.secondary)
+                            .onAppear {
+                                focusedField = .username
+                            }
+                    } else {
+                        TextField("lemmy.ml", text: $enteredInstance)
+                            .textContentType(.URL)
+                            .autocorrectionDisabled()
+                            .focused($focusedField, equals: .instance)
+                            .keyboardType(.URL)
+                            .textInputAutocapitalization(.never)
+                            .onAppear {
+                                focusedField = .instance
+                            }
+                            .onSubmit {
+                                focusedField = .username
+                            }
+                    }
                 }
                 .padding(.horizontal)
                 .onTapGesture {
@@ -164,8 +167,10 @@ struct AddSavedInstanceView: View {
                         .textContentType(.password)
                         .submitLabel(.go)
                         .onSubmit {
-                            Task {
-                                await tryToAddAccount()
+                            if isReadyToSubmit {
+                                Task {
+                                    await tryToAddAccount()
+                                }
                             }
                         }
                 }
@@ -203,15 +208,41 @@ struct AddSavedInstanceView: View {
     }
     
     @ViewBuilder
+    var title: some View {        
+        ZStack {
+            Text("Sign In")
+                .bold()
+            
+            HStack {
+                if !onboarding {
+                    Button(role: .destructive) {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
+                
+                Spacer()
+                
+                Button {
+                    Task {
+                        await tryToAddAccount()
+                    }
+                } label: {
+                    Text("Log In")
+                }
+                .disabled(!isReadyToSubmit)
+            }
+        }
+        .padding()
+    }
+    
+    @ViewBuilder
     var headerSection: some View {
         Group {
             switch viewState {
             case .initial:
-                Image("logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 120)
-                    .clipShape(Circle())
+                LogoView()
             case .error:
                 Text(errorMessage)
             case .onetimecode:
@@ -336,7 +367,7 @@ struct AddSavedInstanceView: View {
             // TODO: we should add better validation
             //  at the UI layer as encoding failures can be caught
             //  at an earlier stage
-            message = "Please check your username and password"
+            message = badCredentialsMessage
         case APIClientError.networking:
             message = "Please check your internet connection and try again"
         case APIClientError.response(let errorResponse, _) where errorResponse.requires2FA:
@@ -348,7 +379,7 @@ struct AddSavedInstanceView: View {
             
             return
         case APIClientError.response(let errorResponse, _) where errorResponse.isIncorrectLogin:
-            message = "Please check your username and password"
+            message = badCredentialsMessage
         default:
             // unhandled error encountered...
             message = "Something went wrong"
@@ -388,5 +419,5 @@ struct AddSavedInstanceView_Previews: PreviewProvider {
             currentAccount: .constant(.mock())
         )
     }
-    
 }
+// swiftlint:enable file_length

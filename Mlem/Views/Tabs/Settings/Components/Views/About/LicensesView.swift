@@ -35,6 +35,8 @@ struct LicensesView: View {
                     NavigationLink("Swift Dependencies", value: LicensesSettingsRoute.licenseDocument(swiftDependenciesLicense))
 
                     NavigationLink("Swift Markdown UI", value: LicensesSettingsRoute.licenseDocument(swiftMarkdownUILIcense))
+
+                    NavigationLink("Awesome Lemmy Instances", value: LicensesSettingsRoute.licenseDocument(awesomeLemmyInstancesLicense))
                 }
             }
             .fancyTabScrollCompatible()
