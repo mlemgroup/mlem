@@ -114,12 +114,6 @@ struct LargePost: View {
                 postContentView
             }
         }
-        // TEMPORARILY DISABLED so we can play with it on the nightly without the icon
-//        .overlay(alignment: .bottomTrailing) {
-//            if layoutMode == .minimize {
-//                minimizedIcon
-//            }
-//        }
     }
 
     // MARK: - Subviews
