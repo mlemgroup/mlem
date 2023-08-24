@@ -29,11 +29,12 @@ enum ComposingTypes {
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
-    @Dependency(\.personRepository) var personRepository
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.personRepository) var personRepository
     
     // MARK: Global
     @EnvironmentObject var appState: AppState
@@ -55,7 +56,7 @@ struct InboxView: View {
     
     // loading handling
     @State var isLoading: Bool = true
-    @State var shouldFilterRead: Bool = false
+    @AppStorage("shouldFilterRead") var shouldFilterRead: Bool = false
     
     // item feeds
     @State var allItems: [InboxItem] = .init()
@@ -86,6 +87,7 @@ struct InboxView: View {
             contentView
                 .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationBarColor()
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
                 }

@@ -17,9 +17,7 @@ extension CommentItem {
             )
             commentTracker.comments.update(with: updatedComment)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
@@ -33,9 +31,7 @@ extension CommentItem {
             )
             commentTracker.comments.update(with: updatedComment.commentView)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
@@ -92,15 +88,13 @@ extension CommentItem {
     }
     
     func replyToComment() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: hierarchicalComment.commentView,
+        editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.replyToComment))
     }
 
     func editComment() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: hierarchicalComment.commentView,
+        editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.editComment))
     }
@@ -132,9 +126,7 @@ extension CommentItem {
             
             commentTracker.comments.update(with: response.commentView)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
 
     }
@@ -233,17 +225,16 @@ extension CommentItem {
         ret.append(MenuFunction(
             text: "Report",
             imageName: AppConstants.reportSymbolName,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: "Really report?",
             enabled: true) {
-                editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                                   comment: hierarchicalComment.commentView,
+                editorTracker.openEditor(with: ConcreteEditorModel(comment: hierarchicalComment.commentView,
                                                                    operation: CommentOperation.reportComment))
             })
         
         // block
         ret.append(MenuFunction(text: "Block User",
                                 imageName: AppConstants.blockUserSymbolName,
-                                destructiveActionPrompt: nil,
+                                destructiveActionPrompt: AppConstants.blockUserPrompt,
                                 enabled: true) {
             Task(priority: .userInitiated) {
                 await blockUser(userId: hierarchicalComment.commentView.creator.id)
@@ -252,17 +243,13 @@ extension CommentItem {
                    
         return ret
     }
+    // swiftlint:enable function_body_length
     
     func blockUser(userId: Int) async {
         do {
-            let blocked = try await blockPerson(
-                account: appState.currentActiveAccount,
-                personId: userId,
-                blocked: true
-            )
+            let response = try await apiClient.blockPerson(id: userId, shouldBlock: true)
             
-            // TODO: remove from feed--requires generic feed tracker support for removing by filter condition
-            if blocked {
+            if response.blocked {
                 await notifier.add(.success("Blocked user"))
                 commentTracker.filter { comment in
                     comment.commentView.creator.id != userId
@@ -278,5 +265,4 @@ extension CommentItem {
             )
         }
     }
-    // swiftlint:enable function_body_length
 }

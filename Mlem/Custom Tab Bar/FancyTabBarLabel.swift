@@ -57,16 +57,16 @@ struct FancyTabBarLabel: View {
     
     var body: some View {
         labelDisplay
-        .accessibilityShowsLargeContentViewer {
-            labelDisplay
-        }
-        .customBadge(badgeCount)
-        .padding(.top, 10)
-        .frame(maxWidth: .infinity)
-        .frame(height: AppConstants.fancyTabBarHeight)
-        .contentShape(Rectangle())
-        .foregroundColor(active ? activeColor : color.opacity(0.4))
-        .animation(.linear(duration: 0.1), value: active)
+            .accessibilityShowsLargeContentViewer {
+                labelDisplay
+            }
+            .customBadge(badgeCount)
+            .padding(.top, 10)
+            .frame(maxWidth: .infinity)
+            .frame(height: AppConstants.fancyTabBarHeight)
+            .contentShape(Rectangle())
+            .foregroundColor(active ? activeColor : color.opacity(0.4))
+            .animation(.linear(duration: 0.1), value: active)
     }
     
     var labelDisplay: some View {

@@ -220,6 +220,30 @@ final class PersistenceRepositoryTests: XCTestCase {
         XCTAssert(loadedKeywords.isEmpty) // assert we were returned an empty set
     }
     
+    func testLoadLayoutWidgetsWithValues() async throws {
+        let postWidgets: [LayoutWidgetType] = [.upvote, .downvote]
+        let commentWidgets: [LayoutWidgetType] = [.reply, .share]
+        let widgets = LayoutWidgetGroups(post: postWidgets, comment: commentWidgets)
+        
+        try await repository.saveLayoutWidgets(widgets) // write the examples to disk
+        let loadedWidgets = repository.loadLayoutWidgets() // read them back
+        
+        // assert we were given the same values back
+        XCTAssertEqual(loadedWidgets.post, postWidgets)
+        XCTAssertEqual(loadedWidgets.comment, commentWidgets)
+    }
+    
+    func testLoadLayoutWidgetsWithoutValues() async throws {
+        XCTAssert(disk.isEmpty) // assert that our mock disk has nothing in it
+        let loadedWidgets = repository.loadLayoutWidgets() // perform a load knowing the disk is empty
+        
+        // expected behaviour is to recieve the `default` state
+        let defaultState = LayoutWidgetGroups()
+        // assert each loaded group matches the default state
+        XCTAssertEqual(loadedWidgets.post, defaultState.post)
+        XCTAssertEqual(loadedWidgets.comment, defaultState.comment)
+    }
+    
     // MARK: Test Helpers
     
     private func load<T: Decodable>(_ model: T.Type) throws -> T {

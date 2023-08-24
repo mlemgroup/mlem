@@ -1,0 +1,28 @@
+#!/bin/bash
+
+export PATH="$PATH:/opt/homebrew/bin"
+
+regex="\(Mlem/.*\).swift$"
+formatter=$(which swiftformat)
+
+check_for_swiftformat() {
+  if [ ! -x "$formatter" ]
+  then
+    1>&2 echo "Unable to find swiftformat - no formatting will take place"
+    exit 0
+  fi
+}
+
+format_staged_files() {
+  git diff --diff-filter=d --staged --name-only | grep -e '\(.*\).swift$' | while read line; do
+    $formatter "${line}"
+    git add "$line"
+  done
+}
+
+main() {
+  check_for_swiftformat
+  format_staged_files
+}
+
+main

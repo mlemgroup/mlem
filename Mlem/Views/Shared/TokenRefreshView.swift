@@ -6,9 +6,12 @@
 //  
 //
 
+import Dependencies
 import SwiftUI
 
 struct TokenRefreshView: View {
+    
+    @Dependency(\.apiClient) var apiClient
     
     enum ViewState {
         case initial
@@ -21,8 +24,6 @@ struct TokenRefreshView: View {
         case password
         case onetimecode
     }
-    
-    @EnvironmentObject var appState: AppState
     
     @Environment(\.dismiss) var dismiss
     
@@ -59,6 +60,7 @@ struct TokenRefreshView: View {
             .edgesIgnoringSafeArea(.horizontal)
             .navigationBarTitleDisplayMode(.inline)
             .interactiveDismissDisabled()
+            .navigationBarColor()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     cancelButton
@@ -196,7 +198,7 @@ struct TokenRefreshView: View {
             updateViewState(.success)
             await didReceive(token)
         } catch {
-            HapticManager.shared.play(haptic: .failure)
+            HapticManager.shared.play(haptic: .failure, priority: .high)
             
             if case let APIClientError.response(apiError, _) = error,
                apiError.isIncorrectLogin {
@@ -217,14 +219,14 @@ struct TokenRefreshView: View {
     }
     
     private func refreshToken(with newPassword: String, twoFactorToken: String? = nil) async throws -> String {
-        let request = LoginRequest(
+        let response = try await apiClient.login(
             instanceURL: account.instanceLink,
             username: account.username,
             password: password,
             totpToken: twoFactorToken
         )
         
-        return try await APIClient().perform(request: request).jwt
+        return response.jwt
     }
     
     private func refreshTokenUsing2FA() {
@@ -242,7 +244,7 @@ struct TokenRefreshView: View {
     
     private func didReceive(_ newToken: String) async {
         // small artifical delay so the user sees confirmation of success
-        HapticManager.shared.play(haptic: .success)
+        HapticManager.shared.play(haptic: .success, priority: .high)
         try? await Task.sleep(for: .seconds(0.5))
         
         await MainActor.run {
@@ -270,13 +272,8 @@ struct TokenRefreshView: View {
 
 struct TokenRefreshViewPreview: PreviewProvider {
     
-    static let account = SavedAccount(id: 1,
-                                      instanceLink: URL(string: "https://lemmy.world")!,
-                                      accessToken: "dfas",
-                                      username: "kronusdark")
-    
     static var previews: some View {
-        TokenRefreshView(account: account) { _ in
+        TokenRefreshView(account: .mock()) { _ in
             print("Refreshed")
         }
     }

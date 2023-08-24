@@ -17,7 +17,7 @@ extension ExpandedPost {
             post = try await postRepository.markRead(for: post.post.id, read: true)
             postTracker.update(with: post)
         } catch {
-            errorHandler.handle(.init(underlyingError: error))
+            errorHandler.handle(error)
         }
     }
     
@@ -77,18 +77,16 @@ extension ExpandedPost {
     /// - Parameter inputOp: The voting operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
-            hapticManager.play(haptic: .gentleSuccess)
+            hapticManager.play(haptic: .gentleSuccess, priority: .low)
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            self.post = try await ratePost(
-                postId: post.post.id,
-                operation: operation,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let updatedPost = try await apiClient.ratePost(id: post.post.id, score: operation)
+            Task { @MainActor in
+                self.post = updatedPost
+                postTracker.update(with: updatedPost)
+            }
         } catch {
-            hapticManager.play(haptic: .failure)
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
         }
     }
     
@@ -100,17 +98,15 @@ extension ExpandedPost {
             // fake save
             dirtySaved.toggle()
             dirty = true
-            hapticManager.play(haptic: .success)
+            hapticManager.play(haptic: .success, priority: .low)
             
             do {
-                self.post = try await sendSavePostRequest(
-                    account: appState.currentActiveAccount,
-                    postId: post.post.id,
-                    save: dirtySaved,
-                    postTracker: postTracker
-                )
+                let updatedPost = try await apiClient.savePost(id: post.post.id, shouldSave: dirtySaved)
+                postTracker.update(with: updatedPost)
+                self.post = updatedPost
             } catch {
-                appState.contextualError = .init(underlyingError: error)
+                hapticManager.play(haptic: .failure, priority: .low)
+                errorHandler.handle(error)
             }
             dirty = false
             return
@@ -119,48 +115,38 @@ extension ExpandedPost {
     
     func deletePost() async {
         do {
-            // TODO: renamed this function and/or move `deleteComment` out of the global scope to avoid
-            // having to refer to our own module
-            _ = try await Mlem.deletePost(
-                postId: post.post.id,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let response = try await apiClient.deletePost(id: post.post.id, shouldDelete: true)
+            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
+            postTracker.update(with: response)
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
         }
     }
     
     func replyToPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           post: post,
+        editorTracker.openEditor(with: ConcreteEditorModel(post: post,
                                                            commentTracker: commentTracker,
                                                            operation: PostOperation.replyToPost))
     }
     
     func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           post: post,
+        editorTracker.openEditor(with: ConcreteEditorModel(post: post,
                                                            operation: PostOperation.reportPost))
     }
     
     func replyToComment(comment: APICommentView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           comment: comment,
+        editorTracker.openEditor(with: ConcreteEditorModel(comment: comment,
                                                            commentTracker: commentTracker,
                                                            operation: CommentOperation.replyToComment))
     }
     
     func blockUser() async {
         do {
-            let blocked = try await blockPerson(
-                account: appState.currentActiveAccount,
-                person: post.creator,
-                blocked: true
-            )
-            if blocked {
-                postTracker.removePosts(from: post.creator.id)
+            let response = try await apiClient.blockPerson(id: post.creator.id, shouldBlock: true)
+            if response.blocked {
+                postTracker.removeUserPosts(from: post.creator.id)
+                hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked \(post.creator.name)"))
             }
         } catch {
@@ -237,7 +223,6 @@ extension ExpandedPost {
                 destructiveActionPrompt: nil,
                 enabled: true) {
                     editorTracker.openEditor(with: PostEditorModel(community: post.community,
-                                                                   appState: appState,
                                                                    postTracker: postTracker,
                                                                    editPost: post.post,
                                                                    responseCallback: updatePost))
@@ -269,7 +254,7 @@ extension ExpandedPost {
         // report
         ret.append(MenuFunction(text: "Report Post",
                                 imageName: AppConstants.reportSymbolName,
-                                destructiveActionPrompt: nil,
+                                destructiveActionPrompt: AppConstants.reportPostPrompt,
                                 enabled: true) {
             reportPost()
         })
@@ -278,7 +263,7 @@ extension ExpandedPost {
         ret.append(MenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true) {
                 Task(priority: .userInitiated) {
                     await blockUser()
@@ -295,7 +280,7 @@ extension ExpandedPost {
         
         do {
             let comments = try await commentRepository.comments(for: post.post.id)
-            let sorted = sortComments(comments, by: defaultCommentSorting)
+            let sorted = sortComments(comments, by: commentSortingType)
             commentTracker.comments = sorted
         } catch {
             errorHandler.handle(
@@ -314,7 +299,7 @@ extension ExpandedPost {
     func refreshComments() async {
         do {
             let comments = try await commentRepository.comments(for: post.post.id)
-            commentTracker.comments = sortComments(comments, by: defaultCommentSorting)
+            commentTracker.comments = sortComments(comments, by: commentSortingType)
         } catch {
             errorHandler.handle(.init(title: "Failed to refresh",
                                       message: "Please try again",

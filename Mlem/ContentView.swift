@@ -77,8 +77,6 @@ struct ContentView: View {
                     }
             }
         }
-        // TODO: remove once all using `.errorHandler` as the `appState` will no longer receive these...
-        .onChange(of: appState.contextualError) { errorHandler.handle($0) }
         .task(id: appState.currentActiveAccount) {
             accountChanged()
         }
@@ -104,10 +102,14 @@ struct ContentView: View {
                 .presentationDetents([.medium, .large])
         }
         .sheet(item: $editorTracker.editResponse) { editing in
-            ResponseEditorView(concreteEditorModel: editing)
+            NavigationStack {
+                ResponseEditorView(concreteEditorModel: editing)
+            }
         }
         .sheet(item: $editorTracker.editPost) { editing in
-            PostComposerView(editModel: editing)
+            NavigationStack {
+                PostComposerView(editModel: editing)
+            }
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(appState)
@@ -133,7 +135,7 @@ struct ContentView: View {
                 let unreadCounts = try await personRepository.getUnreadCounts()
                 unreadTracker.update(with: unreadCounts)
             } catch {
-                appState.contextualError = .init(underlyingError: error)
+                errorHandler.handle(error)
             }
         }
     }
@@ -158,7 +160,7 @@ struct ContentView: View {
             .onEnded { _ in
                 // disable long press in accessibility mode to prevent conflict with HUD
                 if !accessibilityFont {
-                    hapticManager.play(haptic: .rigidInfo)
+                    hapticManager.play(haptic: .rigidInfo, priority: .high)
                     isPresentingAccountSwitcher = true
                 }
             }

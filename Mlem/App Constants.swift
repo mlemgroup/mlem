@@ -28,7 +28,9 @@ struct AppConstants {
     
     // MARK: - Sizes
     static let maxFeedPostHeight: CGFloat = 400
+    static let maxFeedPostHeightExpanded: CGFloat = 3000
     static let thumbnailSize: CGFloat = 60
+    static let hugeAvatarSize: CGFloat = 120
     static let largeAvatarSize: CGFloat = 32
     static let smallAvatarSize: CGFloat = 16
     static let defaultAvatarSize: CGFloat = 24
@@ -105,6 +107,7 @@ struct AppConstants {
     static let localFeedSymbolNameFill: String = "house.circle.fill"
     static let subscribedFeedSymbolName: String = "newspaper.circle"
     static let subscribedFeedSymbolNameFill: String = "newspaper.circle.fill"
+    static let limitImageHeightInFeedSymbolName: String = "rectangle.compress.vertical"
     
     // sort types
     static let activeSortSymbolName: String = "popcorn" // not married to this idea 
@@ -138,8 +141,16 @@ struct AppConstants {
     static let switchUserSymbolName: String = "person.crop.circle.badge.plus"
     static let missingSymbolName: String = "questionmark.square.dashed"
     static let connectionSymbolName: String = "antenna.radiowaves.left.and.right"
+    static let hapticSymbolName: String = "hand.tap"
+    static let transparencySymbolName: String = "square.on.square.intersection.dashed"
+    static let presentSymbolName: String = "circle.fill"
+    static let absentSymbolName: String = "circle"
     
     // MARK: - Other
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
     static let infiniteLoadThresholdOffset: Int = -10
+    
+    // MARK: - Text
+    static let blockUserPrompt: String = "Really block this user?"
+    static let reportPostPrompt: String = "Really report this post?"
 }

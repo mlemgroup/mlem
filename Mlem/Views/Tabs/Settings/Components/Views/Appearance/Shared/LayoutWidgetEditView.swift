@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Dependencies
 
 private struct WidgetCollectionView: ViewModifier {
     var collection: LayoutWidgetCollection
@@ -27,6 +28,7 @@ private struct WidgetCollectionView: ViewModifier {
 }
 
 struct LayoutWidgetEditView: View {
+    
     @Environment(\.isPresented) var isPresented
     
     var onSave: (_ widgets: [LayoutWidgetType]) -> Void
@@ -85,7 +87,6 @@ struct LayoutWidgetEditView: View {
                         widgetModel.setWidgetDragging(value)
                     }
                     .onEnded { _ in
-                        
                         withAnimation(.easeOut(duration: 0.2)) {
                             widgetModel.dropWidget()
                         }
@@ -115,6 +116,7 @@ struct LayoutWidgetEditView: View {
             }
         }
         .navigationTitle("Widgets")
+        .navigationBarColor()
     }
     
     var infoText: some View {

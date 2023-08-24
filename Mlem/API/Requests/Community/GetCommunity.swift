@@ -17,24 +17,13 @@ struct GetCommunityRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        session: APISession,
         communityId: Int
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: session.token),
             .init(name: "id", value: "\(communityId)")
-        ]
-    }
-
-    init(
-        account: SavedAccount,
-        name: String
-    ) {
-        self.instanceURL = account.instanceLink
-        self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
-            .init(name: "name", value: name)
         ]
     }
 }

@@ -23,11 +23,11 @@ struct CreatePostLikeRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         postId: Int,
         score: ScoringOperation
     ) {
-        self.instanceURL = account.instanceLink
-        self.body = .init(auth: account.accessToken, post_id: postId, score: score.rawValue)
+        self.instanceURL = session.URL
+        self.body = .init(auth: session.token, post_id: postId, score: score.rawValue)
     }
 }

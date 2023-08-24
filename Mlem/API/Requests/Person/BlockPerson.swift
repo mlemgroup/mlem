@@ -23,15 +23,15 @@ struct BlockPersonRequest: APIPostRequest {
     }
 
     init(
-        account: SavedAccount,
+        session: APISession,
         personId: Int,
         block: Bool
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.body = .init(
             person_id: personId,
             block: block,
-            auth: account.accessToken
+            auth: session.token
         )
     }
 }

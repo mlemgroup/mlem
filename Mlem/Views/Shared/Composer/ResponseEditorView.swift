@@ -44,62 +44,61 @@ struct ResponseEditorView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: AppConstants.postAndCommentSpacing) {
-                    
-                    // Post Text
-                    TextField("What do you want to say?",
-                              text: $editorBody,
-                              axis: .vertical)
-                    .accessibilityLabel("Response Body")
-                    .padding(AppConstants.postAndCommentSpacing)
-                    .focused($focusedField, equals: .editorBody)
-                    .onAppear {
-                        focusedField = .editorBody
-                    }
-                    
-                    Divider()
-                    
-                    editorModel.embeddedView()
-                }
-                .padding(.bottom, AppConstants.editorOverscroll)
-            }
-            .scrollDismissesKeyboard(.automatic)
-            .overlay {
-                // Loading Indicator
-                if isSubmitting {
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.gray.opacity(0.3))
-                        .accessibilityElement(children: .ignore)
-                        .accessibilityLabel("Submitting Resposne")
-                        .edgesIgnoringSafeArea(.all)
-                        .allowsHitTesting(false)
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel", role: .destructive) {
-                        dismiss()
-                    }
-                    .tint(.red)
+        ScrollView {
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
+                
+                // Post Text
+                TextField("What do you want to say?",
+                          text: $editorBody,
+                          axis: .vertical)
+                .accessibilityLabel("Response Body")
+                .padding(AppConstants.postAndCommentSpacing)
+                .focused($focusedField, equals: .editorBody)
+                .onAppear {
+                    focusedField = .editorBody
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    // Submit Button
-                    Button {
-                        Task(priority: .userInitiated) {
-                            await submit()
-                        }
-                    } label: {
-                        Image(systemName: "paperplane")
-                    }.disabled(isSubmitting || !isReadyToReply)
-                }
+                Divider()
+                
+                editorModel.embeddedView()
             }
-            .navigationTitle(editorModel.modalName)
-            .navigationBarTitleDisplayMode(.inline)
+            .padding(.bottom, AppConstants.editorOverscroll)
         }
+        .scrollDismissesKeyboard(.automatic)
+        .overlay {
+            // Loading Indicator
+            if isSubmitting {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.gray.opacity(0.3))
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Submitting Resposne")
+                    .edgesIgnoringSafeArea(.all)
+                    .allowsHitTesting(false)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel", role: .destructive) {
+                    dismiss()
+                }
+                .tint(.red)
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // Submit Button
+                Button {
+                    Task(priority: .userInitiated) {
+                        await submit()
+                    }
+                } label: {
+                    Image(systemName: "paperplane")
+                }.disabled(isSubmitting || !isReadyToReply)
+            }
+        }
+        .navigationBarColor()
+        .navigationTitle(editorModel.modalName)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     @MainActor

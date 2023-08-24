@@ -14,9 +14,6 @@ struct ProfileView: View {
     
     let userID: Int
     
-    // environment
-    @EnvironmentObject var appState: AppState
-    
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 

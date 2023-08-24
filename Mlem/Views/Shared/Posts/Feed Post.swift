@@ -21,6 +21,7 @@ import QuickLook
  */
 struct FeedPost: View {
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
@@ -163,7 +164,7 @@ struct FeedPost: View {
                     } else {
                         LargePost(
                             postView: postView,
-                            isExpanded: false
+                            layoutMode: .constant(.preferredSize)
                         )
                     }
 
@@ -256,26 +257,21 @@ struct FeedPost: View {
 
     func deletePost() async {
         do {
-            _ = try await Mlem.deletePost(
-                postId: postView.post.id,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let response = try await apiClient.deletePost(id: postView.post.id, shouldDelete: true)
+            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
+            postTracker.update(with: response)
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
         }
     }
 
     func blockUser() async {
         do {
-            let blocked = try await blockPerson(
-                account: appState.currentActiveAccount,
-                person: postView.creator,
-                blocked: true
-            )
-            if blocked {
-                postTracker.removePosts(from: postView.creator.id)
+            let response = try await apiClient.blockPerson(id: postView.creator.id, shouldBlock: true)
+            if response.blocked {
+                postTracker.removeUserPosts(from: postView.creator.id)
+                hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked \(postView.creator.name)"))
             }
         } catch {
@@ -288,16 +284,32 @@ struct FeedPost: View {
             )
         }
     }
+    
+    func blockCommunity() async {
+        do {
+            let response = try await apiClient.blockCommunity(id: postView.community.id, shouldBlock: true)
+            if response.blocked {
+                postTracker.removeCommunityPosts(from: postView.community.id)
+                await notifier.add(.success("Blocked \(postView.community.name)"))
+            }
+        } catch {
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block \(postView.community.name)",
+                    style: .toast,
+                    underlyingError: error
+                )
+            )
+        }
+    }
 
     func replyToPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           post: postView,
+        editorTracker.openEditor(with: ConcreteEditorModel(post: postView,
                                                            operation: PostOperation.replyToPost))
     }
     
     func editPost() {
         editorTracker.openEditor(with: PostEditorModel(community: postView.community,
-                                                       appState: appState,
                                                        postTracker: postTracker,
                                                        editPost: postView.post))
     }
@@ -306,18 +318,13 @@ struct FeedPost: View {
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
-            hapticManager.play(haptic: .gentleSuccess)
+            hapticManager.play(haptic: .gentleSuccess, priority: .low)
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            _ = try await ratePost(
-                postId: postView.post.id,
-                operation: operation,
-                account: appState.currentActiveAccount,
-                postTracker: postTracker,
-                appState: appState
-            )
+            let updatedPost = try await apiClient.ratePost(id: postView.post.id, score: operation)
+            postTracker.update(with: updatedPost)
         } catch {
-            hapticManager.play(haptic: .failure)
-            appState.contextualError = .init(underlyingError: error)
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
         }
     }
 
@@ -326,17 +333,14 @@ struct FeedPost: View {
             // fake save
             dirtySaved.toggle()
             dirty = true
-            hapticManager.play(haptic: .success)
+            hapticManager.play(haptic: .success, priority: .high)
             
             do {
-                _ = try await sendSavePostRequest(
-                    account: appState.currentActiveAccount,
-                    postId: postView.post.id,
-                    save: dirtySaved,
-                    postTracker: postTracker
-                )
+                let updatedPost = try await apiClient.savePost(id: postView.post.id, shouldSave: dirtySaved)
+                postTracker.update(with: updatedPost)
             } catch {
-                appState.contextualError = .init(underlyingError: error)
+                hapticManager.play(haptic: .failure, priority: .high)
+                errorHandler.handle(error)
             }
             dirty = false
             return
@@ -344,7 +348,7 @@ struct FeedPost: View {
     }
     
     func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState, post: postView, operation: PostOperation.reportPost))
+        editorTracker.openEditor(with: ConcreteEditorModel(post: postView, operation: PostOperation.reportPost))
     }
 
     // swiftlint:disable function_body_length
@@ -437,7 +441,7 @@ struct FeedPost: View {
         ret.append(MenuFunction(
             text: "Report Post",
             imageName: AppConstants.reportSymbolName,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: AppConstants.reportPostPrompt,
             enabled: true) {
                 reportPost()
             })
@@ -446,10 +450,21 @@ struct FeedPost: View {
         ret.append(MenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true) {
                 Task(priority: .userInitiated) {
                     await blockUser()
+                }
+            })
+        
+        // block community
+        ret.append(MenuFunction(
+            text: "Block Community",
+            imageName: AppConstants.blockSymbolName,
+            destructiveActionPrompt: nil,
+            enabled: true) {
+                Task(priority: .userInitiated) {
+                    await blockCommunity()
                 }
             })
 

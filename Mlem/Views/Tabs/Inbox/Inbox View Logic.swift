@@ -45,7 +45,7 @@ extension InboxView {
             errorOccurred = true
             errorMessage = "Request was cancelled, try refreshing"
         } catch APIClientError.invalidSession {
-            appState.contextualError = .init(underlyingError: APIClientError.invalidSession)
+            errorHandler.handle(APIClientError.invalidSession)
         } catch let message {
             print(message)
             errorOccurred = true
@@ -95,7 +95,7 @@ extension InboxView {
             try await personRepository.markAllAsRead()
             await refreshFeed()
         } catch {
-            appState.contextualError = .init(underlyingError: error)
+            errorHandler.handle(error)
         }
     }
     
@@ -149,23 +149,23 @@ extension InboxView {
                     aggregateAllTrackers()
                 }
             } catch {
-                errorHandler.handle(
-                    .init(underlyingError: error)
-                )
+                errorHandler.handle(error)
             }
         }
     }
     
     func toggleCommentReplyRead(commentReplyView: APICommentReplyView) {
-        hapticManager.play(haptic: .gentleSuccess)
+        hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             do {
-                try await sendMarkCommentReplyAsReadRequest(commentReply: commentReplyView,
-                                                            read: !commentReplyView.commentReply.read,
-                                                            account: appState.currentActiveAccount,
-                                                            commentReplyTracker: repliesTracker,
-                                                            appState: appState)
+                let response = try await commentRepository.markCommentReadStatus(
+                    id: commentReplyView.id,
+                    isRead: !commentReplyView.commentReply.read
+                )
                 
+                repliesTracker.update(with: response.commentReplyView)
+                
+                // TODO: should this be done _before_ the call, and then reverted in the `catch` if required?
                 if commentReplyView.commentReply.read {
                     unreadTracker.unreadReply()
                 } else {
@@ -174,28 +174,26 @@ extension InboxView {
                 
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
-                hapticManager.play(haptic: .failure)
-                print("failed to mark read!")
+                hapticManager.play(haptic: .failure, priority: .low)
+                errorHandler.handle(error)
             }
         }
     }
     
     func replyToCommentReply(commentReply: APICommentReplyView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           commentReply: commentReply,
+        editorTracker.openEditor(with: ConcreteEditorModel(commentReply: commentReply,
                                                            operation: InboxItemOperation.replyToInboxItem))
     }
     
     func reportCommentReply(commentReply: APICommentReplyView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           commentReply: commentReply,
+        editorTracker.openEditor(with: ConcreteEditorModel(commentReply: commentReply,
                                                            operation: InboxItemOperation.reportInboxItem))
     }
     
     // MARK: Mentions
     
     func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
-        hapticManager.play(haptic: .gentleSuccess)
+        hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             let operation = mention.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             do {
@@ -205,22 +203,24 @@ extension InboxView {
                     aggregateAllTrackers()
                 }
             } catch {
-                hapticManager.play(haptic: .failure)
-                errorHandler.handle(.init(underlyingError: error))
+                hapticManager.play(haptic: .failure, priority: .high)
+                errorHandler.handle(error)
             }
         }
     }
     
     func toggleMentionRead(mention: APIPersonMentionView) {
-        hapticManager.play(haptic: .gentleSuccess)
+        hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             do {
-                try await sendMarkPersonMentionAsReadRequest(personMention: mention,
-                                                             read: !mention.personMention.read,
-                                                             account: appState.currentActiveAccount,
-                                                             mentionTracker: mentionsTracker,
-                                                             appState: appState)
+                let updatedMention = try await apiClient.markPersonMentionAsRead(
+                    mentionId: mention.personMention.id,
+                    isRead: !mention.personMention.read
+                )
                 
+                mentionsTracker.update(with: updatedMention)
+                
+                // TODO: should this be done before the above call and reverted in the catch if necessary?
                 if mention.personMention.read {
                     unreadTracker.unreadMention()
                 } else {
@@ -229,36 +229,36 @@ extension InboxView {
                 
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
-                hapticManager.play(haptic: .failure)
-                print("failed to mark mention as read!")
+                hapticManager.play(haptic: .failure, priority: .high)
+                errorHandler.handle(error)
             }
         }
     }
     
     func reportMention(mention: APIPersonMentionView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           mention: mention,
+        editorTracker.openEditor(with: ConcreteEditorModel(mention: mention,
                                                            operation: InboxItemOperation.reportInboxItem))
     }
     
     func replyToMention(mention: APIPersonMentionView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           mention: mention,
+        editorTracker.openEditor(with: ConcreteEditorModel(mention: mention,
                                                            operation: InboxItemOperation.replyToInboxItem))
     }
     
     // MARK: Messages
     
     func toggleMessageRead(message: APIPrivateMessageView) {
-        hapticManager.play(haptic: .gentleSuccess)
+        hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             do {
-                try await sendMarkPrivateMessageAsReadRequest(messageView: message,
-                                                              read: !message.privateMessage.read,
-                                                              account: appState.currentActiveAccount,
-                                                              messagesTracker: messagesTracker,
-                                                              appState: appState)
+                let updatedMessage = try await apiClient.markPrivateMessageRead(
+                    id: message.id,
+                    isRead: !message.privateMessage.read
+                )
                 
+                messagesTracker.update(with: updatedMessage)
+                
+                // TODO: should this be done before the above call and reverted in the catch if necessary?
                 if message.privateMessage.read {
                     unreadTracker.unreadMessage()
                 } else {
@@ -267,21 +267,19 @@ extension InboxView {
                 
                 if curTab == .all { aggregateAllTrackers() }
             } catch {
-                hapticManager.play(haptic: .failure)
-                print("failed to mark message as read!")
+                hapticManager.play(haptic: .failure, priority: .low)
+                errorHandler.handle(error)
             }
         }
     }
     
     func replyToMessage(message: APIPrivateMessageView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           message: message,
+        editorTracker.openEditor(with: ConcreteEditorModel(message: message,
                                                            operation: InboxItemOperation.replyToInboxItem))
     }
     
     func reportMessage(message: APIPrivateMessageView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(appState: appState,
-                                                           message: message,
+        editorTracker.openEditor(with: ConcreteEditorModel(message: message,
                                                            operation: InboxItemOperation.reportInboxItem))
     }
     

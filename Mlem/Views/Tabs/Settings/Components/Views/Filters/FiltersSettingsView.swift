@@ -13,7 +13,6 @@ struct FiltersSettingsView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @EnvironmentObject var filtersTracker: FiltersTracker
-    @EnvironmentObject var appState: AppState
 
     @State private var newFilteredKeyword: String = ""
     @State private var isShowingKeywordImporter: Bool = false
@@ -92,21 +91,25 @@ struct FiltersSettingsView: View {
                                 filtersTracker.filteredKeywords = keywords
                             }
                         } catch let decodingError {
-                            appState.contextualError = .init(
-                                title: "Couldn't decode blocklist",
-                                message: "Try again. If the problem keeps happening, try reinstalling Mlem.",
-                                underlyingError: decodingError
+                            errorHandler.handle(
+                                .init(
+                                    title: "Couldn't decode blocklist",
+                                    message: "Try again. If the problem keeps happening, try reinstalling Mlem.",
+                                    underlyingError: decodingError
+                                )
                             )
                         }
 
                     } catch let blocklistImportingError {
-                        appState.contextualError = .init(
-                            title: "Couldn't find blocklist",
-                            message: """
-                                     If you are trying to read it from iCloud, make sure your internet is working. \
-                                     Otherwise, try moving the blocklist file to another location.
-                                     """,
-                            underlyingError: blocklistImportingError
+                        errorHandler.handle(
+                            .init(
+                                title: "Couldn't find blocklist",
+                                message: """
+                                         If you are trying to read it from iCloud, make sure your internet is working. \
+                                         Otherwise, try moving the blocklist file to another location.
+                                         """,
+                                underlyingError: blocklistImportingError
+                            )
                         )
                     }
                 }
@@ -153,6 +156,7 @@ struct FiltersSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Filters")
+        .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .automatic) {

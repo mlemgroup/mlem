@@ -13,6 +13,8 @@ struct FeedView: View {
     
     // MARK: Environment and settings
     
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     
@@ -53,18 +55,22 @@ struct FeedView: View {
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
+    @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
+    
     // MARK: - Main Views
     
     var body: some View {
         contentView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.secondarySystemBackground)
+            .background(hasTranslucentInsets ? Color.secondarySystemBackground : Color.systemBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
                 ToolbarItem(placement: .navigationBarTrailing) { sortMenu }
                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
+        /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
+            .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }

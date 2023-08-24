@@ -26,14 +26,14 @@ private struct AnchorsKey: PreferenceKey {
 
 struct ExpandedPost: View {
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
-    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
-    @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.postRepository) var postRepository
     
     // appstorage
-    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
@@ -72,7 +72,8 @@ struct ExpandedPost: View {
     @State var topVisibleCommentId: Int?
 
     @State private var sortSelection = 0
-    @State private var commentSortingType: CommentSortType = .top
+    @State var commentSortingType: CommentSortType = .appStorageValue()
+    @State private var postLayoutMode: LargePost.LayoutMode = .maximize
     
     var body: some View {
         contentView
@@ -174,6 +175,9 @@ struct ExpandedPost: View {
                 }
             }
         }
+        .listStyle(PlainListStyle())
+        .fancyTabScrollCompatible()
+        .navigationBarColor()
     }
     
     var userServerInstanceLocation: ServerInstanceLocation {
@@ -212,8 +216,13 @@ struct ExpandedPost: View {
                 
                 LargePost(
                     postView: post,
-                    isExpanded: true
+                    layoutMode: $postLayoutMode
                 )
+                .onTapGesture {
+                    withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)) {
+                        postLayoutMode = postLayoutMode == .maximize ? .minimize : .maximize
+                    }
+                }
                 
                 UserProfileLink(user: post.creator,
                                 serverInstanceLocation: userServerInstanceLocation)

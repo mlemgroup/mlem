@@ -45,12 +45,7 @@ struct CommentSettingsView: View {
                                        settingName: "Compact Comments",
                                        isTicked: $compactComments)
                 
-                NavigationLink {
-                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
-                        layoutWidgetTracker.groups.comment = widgets
-                        layoutWidgetTracker.saveLayoutWidgets()
-                    })
-                } label: {
+                NavigationLink(value: CommentSettingsRoute.layoutWidget) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
@@ -97,6 +92,7 @@ struct CommentSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Comments")
+        .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
     }
 }

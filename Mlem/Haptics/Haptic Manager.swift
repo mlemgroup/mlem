@@ -13,6 +13,8 @@ class HapticManager {
     
     // MARK: Members and init
     
+    @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
+    
     // generators/engines
     let rigidImpactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
     let notificationGenerator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
@@ -83,8 +85,13 @@ class HapticManager {
         }
     }
     
-    func play(haptic: Haptic) {
-        if let hapticEngine {
+    /**
+     Plays a haptic if the given priority is equal to or lower than the current haptic level
+     */
+    func play(haptic: Haptic, priority: HapticPriority) {
+        assert(priority != .sentinel, "Cannot use .sentinel as a haptic priority")
+        
+        if priority <= hapticLevel, let hapticEngine {
             guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
                 assertionFailure("Invalid haptic file: \(haptic.rawValue)")
                 return

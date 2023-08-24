@@ -130,9 +130,15 @@ class PostTracker: FeedTracker<APIPostView> {
         prefetcher.startPrefetching(with: imageRequests)
     }
     
-    func removePosts(from personId: Int) {
+    func removeUserPosts(from personId: Int) {
         filter({
             return $0.creator.id != personId
+        })
+    }
+    
+    func removeCommunityPosts(from communityId: Int) {
+        filter({
+            return $0.community.id != communityId
         })
     }
     
@@ -144,7 +150,7 @@ class PostTracker: FeedTracker<APIPostView> {
         )
         
         do {
-            try await APIClient().perform(request: request)
+            try await apiClient.perform(request: request)
         } catch {
             // we're only interested in throwing for invalid sessions here...
             if case APIClientError.invalidSession = error {

@@ -18,8 +18,6 @@ class AppState: ObservableObject {
     @Published private(set) var currentActiveAccount: SavedAccount
     @Published private(set) var currentNickname: String
     
-    @Published var contextualError: ContextualError?
-    
     @Published var enableDownvote: Bool = true
     
     /// Initialises our app state
@@ -64,8 +62,7 @@ class AppState: ObservableObject {
         apiClient.configure(for: currentActiveAccount)
         
         Task {
-            let request = GetSiteRequest(account: currentActiveAccount)
-            if let response = try? await APIClient().perform(request: request) {
+            if let response = try? await apiClient.loadSiteInformation() {
                 await MainActor.run {
                     enableDownvote = response.siteView.localSite.enableDownvotes
                 }

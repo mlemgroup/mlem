@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct PostSettingsView: View {
-    @EnvironmentObject var appState: AppState
+    
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = PostSize.headline
@@ -17,6 +17,7 @@ struct PostSettingsView: View {
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
     @AppStorage("thumbnailsOnRight") var shouldShowThumbnailsOnRight: Bool = false
+    @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
     
     // Community
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
@@ -48,12 +49,7 @@ struct PostSettingsView: View {
                     options: PostSize.allCases
                 )
             
-                NavigationLink {
-                    LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
-                        layoutWidgetTracker.groups.post = widgets
-                        layoutWidgetTracker.saveLayoutWidgets()
-                    })
-                } label: {
+                NavigationLink(value: PostSettingsRoute.customizeWidgets) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
@@ -86,6 +82,10 @@ struct PostSettingsView: View {
                 SwitchableSettingsItem(settingPictureSystemName: "photo",
                                        settingName: "Show Post Thumbnails",
                                        isTicked: $shouldShowPostThumbnails)
+                
+                SwitchableSettingsItem(settingPictureSystemName: AppConstants.limitImageHeightInFeedSymbolName,
+                                       settingName: "Limit Image Height In Feed",
+                                       isTicked: $limitImageHeightInFeed)
             }
             
             Section("Interactions and Info") {
@@ -156,9 +156,9 @@ struct PostSettingsView: View {
             }
 
         }
-        
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")
+        .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
     }
 }

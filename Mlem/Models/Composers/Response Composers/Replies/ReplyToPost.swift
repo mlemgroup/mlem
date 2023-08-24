@@ -13,18 +13,15 @@ struct ReplyToPost: ResponseEditorModel {
     
     @Dependency(\.commentRepository) var commentRepository
     
-    let appState: AppState
     let canUpload: Bool = true
     let modalName: String = "New Comment"
     let prefillContents: String?
     let commentTracker: CommentTracker?
     let post: APIPostView
     
-    init(appState: AppState,
-         prefillContents: String? = nil,
+    init(prefillContents: String? = nil,
          commentTracker: CommentTracker? = nil,
          post: APIPostView) {
-        self.appState = appState
         self.prefillContents = prefillContents
         self.commentTracker = commentTracker
         self.post = post
@@ -33,7 +30,7 @@ struct ReplyToPost: ResponseEditorModel {
     var id: Int { post.id }
     
     func embeddedView() -> AnyView {
-        return AnyView(LargePost(postView: post, isExpanded: true)
+        return AnyView(LargePost(postView: post, layoutMode: .constant(.maximize))
             .padding(.horizontal))
     }
     

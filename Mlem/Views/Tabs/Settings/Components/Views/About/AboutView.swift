@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AboutView: View {
-    @EnvironmentObject var appState: AppState
 
     @Binding var navigationPath: NavigationPath
 
@@ -43,27 +42,19 @@ struct AboutView: View {
                     }
                     .buttonStyle(SettingsButtonStyle())
 
-                    NavigationLink {
-                        ContributorsView()
-                    } label: {
+                    NavigationLink(value: AboutSettingsRoute.contributors) {
                         Label("Contributors", systemImage: "person.2.fill").labelStyle(SquircleLabelStyle(color: .teal))
                     }
                 }
 
                 Section {
-                    NavigationLink {
-                        DocumentView(text: privacyPolicy.body)
-                    } label: {
+                    NavigationLink(value: AboutSettingsRoute.privacyPolicy(privacyPolicy)) {
                         Label("Privacy Policy", systemImage: "hand.raised.fill").labelStyle(SquircleLabelStyle(color: .blue))
                     }
-                    NavigationLink {
-                        DocumentView(text: eula.body)
-                    } label: {
+                    NavigationLink(value: AboutSettingsRoute.eula(eula)) {
                         Label("EULA", systemImage: "doc.plaintext.fill").labelStyle(SquircleLabelStyle(color: .purple))
                     }
-                    NavigationLink {
-                        LicensesView()
-                    } label: {
+                    NavigationLink(value: AboutSettingsRoute.licenses) {
                         Label("Licenses", systemImage: "doc.fill").labelStyle(SquircleLabelStyle(color: .orange))
                     }
                 }
@@ -71,6 +62,7 @@ struct AboutView: View {
             .fancyTabScrollCompatible()
         }
         .navigationTitle("About")
+        .navigationBarColor()
     }
 
     var versionString: String {
@@ -90,10 +82,8 @@ struct AboutView: View {
     @ViewBuilder
     private var appHeaderView: some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {
-            Image("logo")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .cornerRadius(20.0)
+            LogoView()
+            
             Text("Mlem \(versionString)")
                 .foregroundStyle(.secondary)
         }

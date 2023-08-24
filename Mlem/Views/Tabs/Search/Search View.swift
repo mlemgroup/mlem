@@ -5,13 +5,16 @@
 //  Created by Jake Shirley on 7/5/23.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct SearchView: View {
     
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
+    
     // environment
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
 
@@ -38,10 +41,13 @@ struct SearchView: View {
             content
                 .handleLemmyViews()
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationBarColor()
                 .navigationTitle("Search")
         }
         .handleLemmyLinkResolution(navigationPath: $navigationPath)
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
+        .autocorrectionDisabled(true)
+        .textInputAutocapitalization(.never)
         .onSubmit(of: .search) {
             performSearch()
         }
@@ -170,8 +176,7 @@ struct SearchView: View {
                 
                 print("Searching for '\(searchText)' on page \(searchPage)")
                 
-                let request = SearchRequest(
-                    account: appState.currentActiveAccount,
+                let response = try await apiClient.performSearch(
                     query: searchText,
                     searchType: .communities,
                     sortOption: .topAll,
@@ -180,7 +185,6 @@ struct SearchView: View {
                     limit: searchPageSize
                 )
                 
-                let response = try await APIClient().perform(request: request)
                 communitySearchResultsTracker.foundCommunities.append(contentsOf: response.communities)
                 
                 // We have more data to load if we get the amount we asked for
@@ -191,7 +195,7 @@ struct SearchView: View {
             } catch is CancellationError {
                 print("Search cancelled")
             } catch {
-                appState.contextualError = .init(underlyingError: error)
+                errorHandler.handle(error)
             }
         }
     }

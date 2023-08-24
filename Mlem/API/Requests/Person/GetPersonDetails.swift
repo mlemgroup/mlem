@@ -22,8 +22,7 @@ struct GetPersonDetailsRequest: APIGetRequest {
 
     // lemmy_api_common::person::GetPersonDetails
     init(
-        accessToken: String,
-        instanceURL: URL,
+        session: APISession,
         sort: PostSortType? = nil,
         page: Int? = nil,
         limit: Int? = nil,
@@ -37,9 +36,9 @@ struct GetPersonDetailsRequest: APIGetRequest {
             throw GetPersonDetailsRequestError.invalidArguments
         }
 
-        self.instanceURL = instanceURL
+        self.instanceURL = session.URL
         var queryItems: [URLQueryItem] = [
-            .init(name: "auth", value: accessToken),
+            .init(name: "auth", value: session.token),
             .init(name: "sort", value: sort?.rawValue),
             .init(name: "page", value: page?.description),
             .init(name: "limit", value: limit?.description),

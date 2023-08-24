@@ -29,6 +29,7 @@ private enum Path {
     static var recentSearches = { root.appendingPathComponent("Recent Searches", conformingTo: .json) }()
     static var easterFlags = { root.appendingPathComponent("Easter eggs flags", conformingTo: .json) }()
     static var layoutWidgets = { root.appendingPathComponent("Layout Widgets", conformingTo: .json) }()
+    static var instanceMetadata = { root.appendingPathComponent("Instance Metadata", conformingTo: .json) }()
 }
 
 private struct DiskAccess {
@@ -119,6 +120,14 @@ class PersistenceRepository {
         try await save(value, to: Path.layoutWidgets)
     }
     
+    func loadInstanceMetadata() -> [InstanceMetadata] {
+        load([InstanceMetadata].self, from: Path.instanceMetadata) ?? []
+    }
+    
+    func saveInstanceMetadata(_ value: [InstanceMetadata]) async throws {
+        try await save(value, to: Path.instanceMetadata)
+    }
+    
     // MARK: Private methods
     
     private func load<T: Decodable>(_ model: T.Type, from path: URL) -> T? {
@@ -131,9 +140,7 @@ class PersistenceRepository {
             
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
             
             return nil
         }
@@ -144,9 +151,7 @@ class PersistenceRepository {
             let data = try JSONEncoder().encode(value)
             try await write(data, path)
         } catch {
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
 }

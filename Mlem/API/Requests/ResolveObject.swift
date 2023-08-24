@@ -17,15 +17,14 @@ struct ResolveObjectRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
-
+        session: APISession,
         query: String
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = session.URL
         self.queryItems = [
             .init(name: "q", value: query),
 
-            .init(name: "auth", value: account.accessToken)
+            .init(name: "auth", value: session.token)
         ]
     }
 }

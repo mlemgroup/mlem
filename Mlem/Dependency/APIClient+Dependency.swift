@@ -7,14 +7,16 @@
 //
 
 import Dependencies
+import Foundation
 
 extension APIClient: DependencyKey {
-  static let liveValue = APIClient()
+    static let liveValue = APIClient { urlSession, urlRequest in try await urlSession.data(for: urlRequest) }
+    static let testValue = APIClient(transport: unimplemented())
 }
 
 extension DependencyValues {
-  var apiClient: APIClient {
-    get { self[APIClient.self] }
-    set { self[APIClient.self] = newValue }
-  }
+    var apiClient: APIClient {
+        get { self[APIClient.self] }
+        set { self[APIClient.self] = newValue }
+    }
 }

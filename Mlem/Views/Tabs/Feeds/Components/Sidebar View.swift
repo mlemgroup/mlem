@@ -5,11 +5,13 @@
 //  Created by David Bureš on 08.05.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct CommunitySidebarView: View {
     
-    @EnvironmentObject var appState: AppState
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.errorHandler) var errorHandler
     
     // parameters
     let community: APICommunity
@@ -21,10 +23,10 @@ struct CommunitySidebarView: View {
 
     var body: some View {
         Section {
-            if let shownError = errorMessage {
-                errorView(errorDetials: shownError)
-            } else if let loadedDetails = communityDetails {
+            if let loadedDetails = communityDetails {
                 view(for: loadedDetails)
+            } else if let shownError = errorMessage {
+                errorView(errorDetails: shownError)
             } else {
                 LoadingView(whatIsLoading: .communityDetails)
             }
@@ -44,16 +46,11 @@ struct CommunitySidebarView: View {
     
     private func loadCommunity() async {
         do {
-            let request = GetCommunityRequest(account: appState.currentActiveAccount, communityId: community.id)
-            communityDetails = try await APIClient().perform(request: request)
-        } catch APIClientError.networking {
-            errorMessage = "Network error occurred, check your internet and retry"
-        } catch APIClientError.response {
-            errorMessage = "API error occurred, try refreshing"
-        } catch APIClientError.cancelled {
-            errorMessage = "Request was cancelled, try refreshing"
+            errorMessage = nil
+            communityDetails = try await communityRepository.loadDetails(for: community.id)
         } catch {
-            errorMessage = "A decoding error occurred, try refreshing."
+            errorMessage = "We were unable to load this communities details, please try again."
+            errorHandler.handle(error)
         }
     }
     
@@ -114,13 +111,13 @@ struct CommunitySidebarView: View {
     }
     
     @ViewBuilder
-    func errorView(errorDetials: String) -> some View {
+    func errorView(errorDetails: String) -> some View {
         VStack(spacing: 10) {
             Image(systemName: "exclamationmark.bubble")
                 .font(.title)
             
             Text("Community details loading failed!")
-            Text(errorDetials)
+            Text(errorDetails)
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)
@@ -137,75 +134,33 @@ struct SidebarPreview: PreviewProvider {
     - I SAID **NO**!
     """
     
-    static let previewCommunity = APICommunity(
-        id: 0,
+    static let previewCommunity: APICommunity = .mock(
         name: "testcommunity",
         title: "Test Community",
         description: previewCommunityDescription,
-        published: Date.now.advanced(by: -2000),
-        updated: nil,
-        removed: false,
-        deleted: false,
-        nsfw: false,
         actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!,
-        local: false,
         icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-        banner: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-        hidden: false,
-        postingRestrictedToMods: false,
-        instanceId: 0
+        banner: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp")
     )
     
-    static let previewUser = APIPerson(
-        id: 0,
+    static let previewUser: APIPerson = .mock(
         name: "ExamplePerson",
         displayName: "Example Person",
-        avatar: nil,
-        banned: false,
-        published: Date.now,
-        updated: nil,
-        actorId: URL(string: "lem.foo.bar/u/exampleperson")!,
-        bio: nil,
-        local: false,
-        banner: nil,
-        deleted: false,
-        sharedInboxUrl: nil,
-        matrixUserId: nil,
-        admin: false,
-        botAccount: false,
-        banExpires: nil,
-        instanceId: 0
+        actorId: URL(string: "lem.foo.bar/u/exampleperson")!
     )
-
+    
     static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
     
     static var previews: some View {
         CommunitySidebarView(
             community: previewCommunity,
-            communityDetails:
-                GetCommunityResponse(
-                    communityView: APICommunityView(
-                        community: previewCommunity,
-                        subscribed: .subscribed,
-                        blocked: false,
-                        counts: APICommunityAggregates(
-                            id: 0,
-                            communityId: 0,
-                            subscribers: 1234,
-                            posts: 0,
-                            comments: 0,
-                            published: Date.now,
-                            usersActiveDay: 0,
-                            usersActiveWeek: 0,
-                            usersActiveMonth: 0,
-                            usersActiveHalfYear: 0
-                        )
-                    ),
-                    site: nil,
-                    moderators: .init(repeating: previewModerator, count: 11),
-                    discussionLanguages: [],
-                    defaultPostLanguage: nil
-                )
+            communityDetails: .mock(
+                communityView: .mock(
+                    community: previewCommunity,
+                    subscribed: .subscribed
+                ),
+                moderators: .init(repeating: previewModerator, count: 11)
+            )
         )
     }
 }

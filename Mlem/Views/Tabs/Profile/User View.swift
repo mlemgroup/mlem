@@ -5,6 +5,7 @@
 //  Created by David Bureš on 02.04.2022.
 //
 
+import Dependencies
 import SwiftUI
 
 // swiftlint:disable file_length
@@ -14,6 +15,10 @@ import SwiftUI
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
 struct UserView: View {
+    
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
+    
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
@@ -42,7 +47,6 @@ struct UserView: View {
     }
     
     // account switching
-    var isSelf: Bool { userID == appState.currentActiveAccount.id }
     @State private var isPresentingAccountSwitcher: Bool = false
     
     struct FeedItem: Identifiable {
@@ -79,7 +83,7 @@ struct UserView: View {
     
     @ViewBuilder
     private var accountSwitcher: some View {
-        if isSelf {
+        if isShowingOwnProfile() {
             Button {
                 isPresentingAccountSwitcher = true
             } label: {
@@ -139,6 +143,7 @@ struct UserView: View {
         .environmentObject(privateCommentTracker)
         .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarColor()
         .headerProminence(.standard)
         .refreshable {
             await tryLoadUser()
@@ -358,22 +363,16 @@ struct UserView: View {
     }
     
     private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
-        let request = try GetPersonDetailsRequest(
-            accessToken: appState.currentActiveAccount.accessToken,
-            instanceURL: appState.currentActiveAccount.instanceLink,
-            limit: 20, // TODO: Stream pages
-            savedOnly: savedItems,
-            personId: userID
-        )
-
-        return try await APIClient().perform(request: request)
+        try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
     }
 
     private func handle(_ error: Error) {
-        appState.contextualError = .init(
-            title: "Couldn't load user info",
-            message: "There was an error while loading user information.\nTry again later.",
-            underlyingError: error
+        errorHandler.handle(
+            .init(
+                title: "Couldn't load user info",
+                message: "There was an error while loading user information.\nTry again later.",
+                underlyingError: error
+            )
         )
     }
     

@@ -96,9 +96,7 @@ struct PostDetailEditorView: View {
             
         } catch {
             isSubmitting = false
-            errorHandler.handle(
-                .init(underlyingError: error)
-            )
+            errorHandler.handle(error)
         }
     }
     
@@ -107,123 +105,122 @@ struct PostDetailEditorView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                VStack(spacing: 15) {
-                    
-                    // Community Row
-                    HStack {
-                        CommunityLabel(community: community,
-                                       serverInstanceLocation: .bottom,
-                                       overrideShowAvatar: true
-                        )
-                        Spacer()
-                        // NSFW Toggle
-                        Toggle(isOn: $isNSFW) {
-                            Text("NSFW")
-                                .foregroundStyle(.secondary)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                        }
-                        .toggleStyle(.switch)
-                        .controlSize(.mini)
-                        .tint(.red)
-                    }
-                    
-                    VStack(alignment: .labelStart) {
-                        // Title Row
-                        HStack {
-                            Text("Title")
-                                .foregroundColor(.secondary)
-                                .dynamicTypeSize(.small ... .accessibility2)
-                                .accessibilityHidden(true)
-                            TextField("Your post title", text: $postTitle)
-                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                                .dynamicTypeSize(.small ... .accessibility2)
-                                .accessibilityLabel("Title")
-                                .focused($focusedField, equals: .title)
-                                .onAppear {
-                                    focusedField = .title
-                                }
-                        }
-                        
-                        // URL Row
-                        HStack {
-                            Text("URL")
-                                .foregroundColor(.secondary)
-                                .dynamicTypeSize(.small ... .accessibility2)
-                                .accessibilityHidden(true)
-                            
-                            TextField("Your post link (Optional)", text: $postURL)
-                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                                .dynamicTypeSize(.small ... .accessibility2)
-                                .keyboardType(.URL)
-                                .autocorrectionDisabled()
-                                .autocapitalization(.none)
-                                .accessibilityLabel("URL")
-                                .focused($focusedField, equals: .url)
-                            
-                            // Upload button, temporarily hidden
-                            //                        Button(action: uploadImage) {
-                            //                            Image(systemName: "paperclip")
-                            //                                .font(.title3)
-                            //                                .dynamicTypeSize(.medium)
-                            //                        }
-                            //                        .accessibilityLabel("Upload Image")
-                        }
-                    }
-
-                    // Post Text
-                    TextField("What do you want to say? (Optional)",
-                              text: $postBody,
-                              axis: .vertical)
-                    .dynamicTypeSize(.small ... .accessibility2)
-                    .accessibilityLabel("Post Body")
-                    .focused($focusedField, equals: .body)
-                    
-                    Spacer()
-                }
-                .padding()
+        ZStack {
+            VStack(spacing: 15) {
                 
-                // Loading Indicator
-                if isSubmitting {
-                    ZStack {
-                        Color.gray.opacity(0.3)
-                        ProgressView()
+                // Community Row
+                HStack {
+                    CommunityLabel(community: community,
+                                   serverInstanceLocation: .bottom,
+                                   overrideShowAvatar: true
+                    )
+                    Spacer()
+                    // NSFW Toggle
+                    Toggle(isOn: $isNSFW) {
+                        Text("NSFW")
+                            .foregroundStyle(.secondary)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .trailing)
                     }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Submitting Post")
-                    .edgesIgnoringSafeArea(.all)
-                    .allowsHitTesting(false)
-                }
-            }
-            .scrollDismissesKeyboard(.automatic)
-            .navigationTitle("New Post")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel", role: .destructive) {
-                        dismiss()
-                    }
+                    .toggleStyle(.switch)
+                    .controlSize(.mini)
                     .tint(.red)
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    // Submit Button
-                    Button {
-                        Task(priority: .userInitiated) {
-                            await submitPost()
-                        }
-                    } label: {
-                        Image(systemName: "paperplane")
-                    }.disabled(isSubmitting || !isReadyToPost)
+                VStack(alignment: .labelStart) {
+                    // Title Row
+                    HStack {
+                        Text("Title")
+                            .foregroundColor(.secondary)
+                            .dynamicTypeSize(.small ... .accessibility2)
+                            .accessibilityHidden(true)
+                        TextField("Your post title", text: $postTitle)
+                            .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                            .dynamicTypeSize(.small ... .accessibility2)
+                            .accessibilityLabel("Title")
+                            .focused($focusedField, equals: .title)
+                            .onAppear {
+                                focusedField = .title
+                            }
+                    }
+                    
+                    // URL Row
+                    HStack {
+                        Text("URL")
+                            .foregroundColor(.secondary)
+                            .dynamicTypeSize(.small ... .accessibility2)
+                            .accessibilityHidden(true)
+                        
+                        TextField("Your post link (Optional)", text: $postURL)
+                            .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                            .dynamicTypeSize(.small ... .accessibility2)
+                            .keyboardType(.URL)
+                            .autocorrectionDisabled()
+                            .autocapitalization(.none)
+                            .accessibilityLabel("URL")
+                            .focused($focusedField, equals: .url)
+                        
+                        // Upload button, temporarily hidden
+                        //                        Button(action: uploadImage) {
+                        //                            Image(systemName: "paperclip")
+                        //                                .font(.title3)
+                        //                                .dynamicTypeSize(.medium)
+                        //                        }
+                        //                        .accessibilityLabel("Upload Image")
+                    }
                 }
+
+                // Post Text
+                TextField("What do you want to say? (Optional)",
+                          text: $postBody,
+                          axis: .vertical)
+                .dynamicTypeSize(.small ... .accessibility2)
+                .accessibilityLabel("Post Body")
+                .focused($focusedField, equals: .body)
+                
+                Spacer()
             }
-            .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(errorDialogMessage)
+            .padding()
+            
+            // Loading Indicator
+            if isSubmitting {
+                ZStack {
+                    Color.gray.opacity(0.3)
+                    ProgressView()
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Submitting Post")
+                .edgesIgnoringSafeArea(.all)
+                .allowsHitTesting(false)
             }
-            .navigationBarTitleDisplayMode(.inline)
         }
+        .scrollDismissesKeyboard(.automatic)
+        .navigationTitle("New Post")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel", role: .destructive) {
+                    dismiss()
+                }
+                .tint(.red)
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // Submit Button
+                Button {
+                    Task(priority: .userInitiated) {
+                        await submitPost()
+                    }
+                } label: {
+                    Image(systemName: "paperplane")
+                }.disabled(isSubmitting || !isReadyToPost)
+            }
+        }
+        .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(errorDialogMessage)
+        }
+        .navigationBarColor()
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

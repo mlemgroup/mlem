@@ -1,22 +1,21 @@
 //
-//  ThumbnailImageView.swift
+//  Thumbnail Image View.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-29.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
-import Dependencies
 
 struct ThumbnailImageView: View {
-    
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @EnvironmentObject var postTracker: PostTracker
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
-    @Environment(\.openURL) private var openURL 
+    @Environment(\.openURL) private var openURL
     
     let postView: APIPostView
     
@@ -27,21 +26,37 @@ struct ThumbnailImageView: View {
     var body: some View {
         Group {
             switch postView.postType {
-            case .image(let url):
+            case let .image(url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
-                CachedImage(url: url,
-                            fixedSize: size,
-                            dismissCallback: markPostAsRead)
-                    .blur(radius: showNsfwFilter ? 8 : 0)
-            case .link(let url):
-                CachedImage(url: url, shouldExpand: false, fixedSize: size)
-                    .onTapGesture {
-                        if let url = postView.post.url {
-                            openURL(url)
-                            markPostAsRead()
-                        }
+                CachedImage(
+                    url: url,
+                    fixedSize: size,
+                    contentMode: .fill,
+                    dismissCallback: markPostAsRead
+                )
+                .blur(radius: showNsfwFilter ? 8 : 0)
+            case let .link(url):
+                CachedImage(
+                    url: url,
+                    shouldExpand: false,
+                    fixedSize: size,
+                    contentMode: .fill
+                )
+                .onTapGesture {
+                    if let url = postView.post.url {
+                        openURL(url)
+                        markPostAsRead()
                     }
-                    .blur(radius: showNsfwFilter ? 8 : 0)
+                }
+                .blur(radius: showNsfwFilter ? 8 : 0)
+                .overlay {
+                    Group {
+                        WebsiteIndicatorView()
+                            .frame(width: 20, height: 20)
+                            .padding(6)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
             case .text:
                 Image(systemName: "text.book.closed")
             case .titleOnly:
@@ -67,7 +82,7 @@ struct ThumbnailImageView: View {
                 let readPost = try await postRepository.markRead(for: postView.post.id, read: true)
                 postTracker.update(with: readPost)
             } catch {
-                errorHandler.handle(.init(underlyingError: error))
+                errorHandler.handle(error)
             }
         }
     }
