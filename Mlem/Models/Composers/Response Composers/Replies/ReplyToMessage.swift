@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 struct ReplyToMessage: ResponseEditorModel {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
@@ -21,7 +20,7 @@ struct ReplyToMessage: ResponseEditorModel {
     let message: APIPrivateMessageView
     
     func embeddedView() -> AnyView {
-        return AnyView(InboxMessageView(message: message, menuFunctions: [])
+        AnyView(InboxMessageView(message: message, menuFunctions: [])
             .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }
     

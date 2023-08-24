@@ -8,7 +8,6 @@
 import Foundation
 
 struct MarkPrivateMessageAsRead: APIPostRequest {
-    
     typealias Response = PrivateMessageResponse
     
     let instanceURL: URL

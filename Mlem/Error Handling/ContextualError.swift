@@ -1,15 +1,14 @@
-// 
+//
 //  ContextualError.swift
 //  Mlem
 //
 //  Created by mormaer on 09/07/2023.
-//  
+//
 //
 
 import Foundation
 
 struct ContextualError: Error, Equatable, Notifiable {
-    
     enum PreferredStyle {
         case alert
         case toast

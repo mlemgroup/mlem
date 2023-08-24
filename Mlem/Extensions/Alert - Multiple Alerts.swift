@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-extension View {
-    public func alert<Value>(
+public extension View {
+    func alert<Value>(
         using value: Binding<Value?>,
         content: (Value) -> Alert
     ) -> some View {

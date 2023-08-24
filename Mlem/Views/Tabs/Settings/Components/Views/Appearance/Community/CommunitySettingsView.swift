@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CommunitySettingsView: View {
-    
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     

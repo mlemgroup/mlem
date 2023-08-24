@@ -13,7 +13,7 @@ enum PostSize: String {
 
 extension PostSize: SettingsOptions {
     var label: String {
-        return self.rawValue.capitalized
+        rawValue.capitalized
     }
     
     var id: Self { self }

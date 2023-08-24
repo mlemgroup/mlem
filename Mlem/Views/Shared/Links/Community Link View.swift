@@ -32,11 +32,12 @@ struct CommunityLinkView: View {
     let extraText: String?
     let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system setting
     
-    init(community: APICommunity,
-         serverInstanceLocation: ServerInstanceLocation = .bottom,
-         overrideShowAvatar: Bool? = nil,
-         extraText: String? = nil
-        ) {
+    init(
+        community: APICommunity,
+        serverInstanceLocation: ServerInstanceLocation = .bottom,
+        overrideShowAvatar: Bool? = nil,
+        extraText: String? = nil
+    ) {
         self.community = community
         self.serverInstanceLocation = serverInstanceLocation
         self.extraText = extraText
@@ -46,9 +47,10 @@ struct CommunityLinkView: View {
     var body: some View {
         NavigationLink(value: community) {
             HStack {
-                CommunityLabel(community: community,
-                               serverInstanceLocation: serverInstanceLocation,
-                               overrideShowAvatar: overrideShowAvatar
+                CommunityLabel(
+                    community: community,
+                    serverInstanceLocation: serverInstanceLocation,
+                    overrideShowAvatar: overrideShowAvatar
                 )
                 Spacer()
                 if let text = extraText {
@@ -77,16 +79,18 @@ struct CommunityLabel: View {
     }
 
     var showAvatar: Bool {
-        if let overrideShowAvatar = overrideShowAvatar {
+        if let overrideShowAvatar {
             return overrideShowAvatar
         } else {
             return shouldShowCommunityIcons
         }
     }
     
-    init(community: APICommunity,
-         serverInstanceLocation: ServerInstanceLocation,
-         overrideShowAvatar: Bool? = nil) {
+    init(
+        community: APICommunity,
+        serverInstanceLocation: ServerInstanceLocation,
+        overrideShowAvatar: Bool? = nil
+    ) {
         self.community = community
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
@@ -100,8 +104,10 @@ struct CommunityLabel: View {
                         .blur(radius: blurAvatar ? 4 : 0)
                         .clipShape(Circle())
                         .overlay(Circle()
-                            .stroke(Color(UIColor.secondarySystemBackground),
-                                    lineWidth: shouldClipAvatar(community: community) ? 1 : 0))
+                            .stroke(
+                                Color(UIColor.secondarySystemBackground),
+                                lineWidth: shouldClipAvatar(community: community) ? 1 : 0
+                            ))
                 }
                 
                 switch serverInstanceLocation {
@@ -119,7 +125,6 @@ struct CommunityLabel: View {
                         communityInstance
                     }
                 }
-                
             }
             .accessibilityElement(children: .combine)
         }
@@ -152,11 +157,13 @@ struct CommunityLabel: View {
     private var communityAvatar: some View {
         Group {
             if let url = community.icon {
-                CachedImage(url: url.withIcon64Parameters,
-                            shouldExpand: false,
-                            fixedSize: avatarSize,
-                            imageNotFound: defaultCommunityAvatar,
-                            contentMode: .fill)
+                CachedImage(
+                    url: url.withIcon64Parameters,
+                    shouldExpand: false,
+                    fixedSize: avatarSize,
+                    imageNotFound: defaultCommunityAvatar,
+                    contentMode: .fill
+                )
             } else {
                 defaultCommunityAvatar()
             }

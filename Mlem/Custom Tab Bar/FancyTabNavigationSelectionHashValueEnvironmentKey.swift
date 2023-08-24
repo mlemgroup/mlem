@@ -12,6 +12,7 @@ import SwiftUI
 struct FancyTabNavigationSelectionHashValueEnvironmentKey: EnvironmentKey {
     static var defaultValue: Int? { nil }
 }
+
 // swiftlint:enable type_name
 
 extension EnvironmentValues {

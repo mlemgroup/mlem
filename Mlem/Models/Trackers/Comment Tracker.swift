@@ -18,7 +18,7 @@ class CommentTracker: ObservableObject {
         get { _comments }
         set {
             _comments = newValue
-            self.commentsView = _comments.flatMap(HierarchicalComment.recursiveFlatMap)
+            commentsView = _comments.flatMap(HierarchicalComment.recursiveFlatMap)
         }
     }
     
@@ -34,7 +34,7 @@ class CommentTracker: ObservableObject {
     @discardableResult func filter(_ callback: (HierarchicalComment) -> Bool) -> Int {
         var removedElements = 0
         
-        comments = comments.filter({
+        comments = comments.filter {
             let filterResult = callback($0)
             
             // Remove the ID from the IDs set as well
@@ -43,15 +43,15 @@ class CommentTracker: ObservableObject {
                 removedElements += 1
             }
             return filterResult
-        })
+        }
         
         return removedElements
     }
 }
 
 // MARK: - Expand/Collapse Comments
+
 extension CommentTracker {
-    
     /// Mark `comment` as collapsed or not, triggering view updates, if necessary.
     func setCollapsed(_ isCollapsed: Bool, comment: HierarchicalComment) {
         comment.setCollapsed(isCollapsed)
@@ -59,14 +59,14 @@ extension CommentTracker {
     
     // swiftlint:disable line_length
     private func debugPrintComments(comment: HierarchicalComment) {
-#if DEBUG
-        func printComment(_ comment: HierarchicalComment) {
-            print("\(comment.commentView.comment.path) \(comment.commentView.comment.content.prefix(30)) - parent: \(comment.isParentCollapsed), self: \(comment.isCollapsed)")
-            comment.children.forEach(printComment)
-        }
-        print("* * *")
-        printComment(comment)
-#endif
+        #if DEBUG
+            func printComment(_ comment: HierarchicalComment) {
+                print("\(comment.commentView.comment.path) \(comment.commentView.comment.content.prefix(30)) - parent: \(comment.isParentCollapsed), self: \(comment.isCollapsed)")
+                comment.children.forEach(printComment)
+            }
+            print("* * *")
+            printComment(comment)
+        #endif
     }
     // swiftlint:enable line_length
 }

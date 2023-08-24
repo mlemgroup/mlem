@@ -1,5 +1,5 @@
 //
-//  AllItemsView.swift
+//  All Items Feed View.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-26.
@@ -12,7 +12,7 @@ extension InboxView {
     @ViewBuilder
     func inboxFeedView() -> some View {
         Group {
-            if allItems.isEmpty && isLoading {
+            if allItems.isEmpty, isLoading {
                 LoadingView(whatIsLoading: .inbox)
             } else if allItems.isEmpty {
                 noItemsView()
@@ -43,11 +43,11 @@ extension InboxView {
             VStack(spacing: 0) {
                 Group {
                     switch item.type {
-                    case .mention(let mention):
+                    case let .mention(mention):
                         inboxMentionViewWithInteraction(mention: mention)
-                    case .message(let message):
+                    case let .message(message):
                         inboxMessageViewWithInteraction(message: message)
-                    case .reply(let reply):
+                    case let .reply(reply):
                         inboxReplyViewWithInteraction(reply: reply)
                     }
                 }

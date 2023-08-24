@@ -18,8 +18,10 @@ struct WebsiteIconComplex: View {
     let post: APIPost
     var onTapActions: (() -> Void)?
     
-    init(post: APIPost,
-         onTapActions: (() -> Void)? = nil) {
+    init(
+        post: APIPost,
+        onTapActions: (() -> Void)? = nil
+    ) {
         self.post = post
         self.onTapActions = onTapActions
     }
@@ -67,10 +69,12 @@ struct WebsiteIconComplex: View {
                 if shouldShowWebsiteHost {
                     HStack {
                         if shouldShowWebsiteIcon {
-                            CachedImage(url: faviconURL,
-                                        shouldExpand: false,
-                                        fixedSize: CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize),
-                                        imageNotFound: { AnyView(Image(systemName: "globe")) })
+                            CachedImage(
+                                url: faviconURL,
+                                shouldExpand: false,
+                                fixedSize: CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize),
+                                imageNotFound: { AnyView(Image(systemName: "globe")) }
+                            )
                         }
                         
                         Text(linkHost)

@@ -1,5 +1,5 @@
 //
-//  Tab.swift
+//  TabSelection.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-18.
@@ -9,7 +9,7 @@ import Foundation
 
 enum TabSelection: String, FancyTabBarSelection {
     static func < (lhs: TabSelection, rhs: TabSelection) -> Bool {
-        return lhs.index < rhs.index
+        lhs.index < rhs.index
     }
     
     case feeds, inbox, profile, search, settings
@@ -17,7 +17,7 @@ enum TabSelection: String, FancyTabBarSelection {
     /// - Warning: Not a real tab: If necessary, use `EmptyView()` to render this "tab".
     case _tabBarNavigation
     
-    var labelText: String? { return self.rawValue.capitalized }
+    var labelText: String? { rawValue.capitalized }
     
     var index: Int {
         switch self {

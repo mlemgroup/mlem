@@ -5,11 +5,10 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct ContentView: View {
-    
     @Environment(\.scenePhase) var scenePhase
     
     @Dependency(\.errorHandler) var errorHandler
@@ -43,37 +42,47 @@ struct ContentView: View {
             Group {
                 FeedRoot(showLoading: showLoading)
                     .fancyTabItem(tag: TabSelection.feeds) {
-                        FancyTabBarLabel(tag: TabSelection.feeds,
-                                         symbolName: "scroll",
-                                         activeSymbolName: "scroll.fill")
+                        FancyTabBarLabel(
+                            tag: TabSelection.feeds,
+                            symbolName: "scroll",
+                            activeSymbolName: "scroll.fill"
+                        )
                     }
                 InboxView()
                     .fancyTabItem(tag: TabSelection.inbox) {
-                        FancyTabBarLabel(tag: TabSelection.inbox,
-                                         symbolName: "mail.stack",
-                                         activeSymbolName: "mail.stack.fill",
-                                         badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0)
+                        FancyTabBarLabel(
+                            tag: TabSelection.inbox,
+                            symbolName: "mail.stack",
+                            activeSymbolName: "mail.stack.fill",
+                            badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
+                        )
                     }
                 
                 ProfileView(userID: appState.currentActiveAccount.id)
                     .fancyTabItem(tag: TabSelection.profile) {
-                        FancyTabBarLabel(tag: TabSelection.profile,
-                                         customText: computeUsername(account: appState.currentActiveAccount),
-                                         symbolName: "person.circle",
-                                         activeSymbolName: "person.circle.fill")
+                        FancyTabBarLabel(
+                            tag: TabSelection.profile,
+                            customText: computeUsername(account: appState.currentActiveAccount),
+                            symbolName: "person.circle",
+                            activeSymbolName: "person.circle.fill"
+                        )
                         .simultaneousGesture(accountSwitchLongPress)
                     }
                 SearchView()
                     .fancyTabItem(tag: TabSelection.search) {
-                        FancyTabBarLabel(tag: TabSelection.search,
-                                         symbolName: "magnifyingglass",
-                                         activeSymbolName: "text.magnifyingglass")
+                        FancyTabBarLabel(
+                            tag: TabSelection.search,
+                            symbolName: "magnifyingglass",
+                            activeSymbolName: "text.magnifyingglass"
+                        )
                     }
                 
                 SettingsView()
                     .fancyTabItem(tag: TabSelection.settings) {
-                        FancyTabBarLabel(tag: TabSelection.settings,
-                                         symbolName: "gear")
+                        FancyTabBarLabel(
+                            tag: TabSelection.settings,
+                            symbolName: "gear"
+                        )
                     }
             }
         }

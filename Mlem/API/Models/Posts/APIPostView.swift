@@ -23,7 +23,7 @@ struct APIPostView: Decodable, APIContentViewProtocol {
 }
 
 extension APIPostView: Identifiable {
-    var id: Int { self.hashValue }
+    var id: Int { hashValue }
 }
 
 extension APIPostView: Equatable {
@@ -34,11 +34,11 @@ extension APIPostView: Equatable {
 
 extension APIPostView: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.post.id)
-        hasher.combine(self.myVote)
-        hasher.combine(self.saved)
-        hasher.combine(self.read)
-        hasher.combine(self.post.updated)
+        hasher.combine(post.id)
+        hasher.combine(myVote)
+        hasher.combine(saved)
+        hasher.combine(read)
+        hasher.combine(post.updated)
     }
 }
 

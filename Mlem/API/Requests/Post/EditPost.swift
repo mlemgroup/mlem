@@ -8,7 +8,6 @@
 import Foundation
 
 struct EditPostRequest: APIPutRequest {
-
     typealias Response = PostResponse
 
     let instanceURL: URL

@@ -5,12 +5,11 @@
 //  Created by Eric Andrews on 2023-07-21.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
-import Dependencies
 
 struct FeedView: View {
-    
     // MARK: Environment and settings
     
     @Dependency(\.communityRepository) var communityRepository
@@ -69,12 +68,12 @@ struct FeedView: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
-        /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
+            /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }
-        // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
+            // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
             .onChange(of: feedType) { _ in
                 Task(priority: .userInitiated) {
                     await hardRefreshFeed()
@@ -148,7 +147,8 @@ struct FeedView: View {
                 FeedPost(
                     postView: postView,
                     showPostCreator: shouldShowPostCreator,
-                    showCommunity: community == nil)
+                    showCommunity: community == nil
+                )
             }
             Divider()
         }
@@ -167,12 +167,12 @@ struct FeedView: View {
             if let community, let communityDetails {
                 // until we find a nice way to put nav stuff in MenuFunction, this'll have to do :(
                 NavigationLink(value:
-                                CommunitySidebarLinkWithContext(
-                                    community: community,
-                                    communityDetails: communityDetails
-                                )) {
-                                    Label("Sidebar", systemImage: "sidebar.right")
-                                }
+                    CommunitySidebarLinkWithContext(
+                        community: community,
+                        communityDetails: communityDetails
+                    )) {
+                        Label("Sidebar", systemImage: "sidebar.right")
+                    }
                 
                 ForEach(genCommunitySpecificMenuFunctions(for: community)) { menuFunction in
                     MenuButton(menuFunction: menuFunction)
@@ -214,24 +214,26 @@ struct FeedView: View {
                 Label("Top...", systemImage: AppConstants.topSymbolName)
             }
         } label: {
-            Label("Selected sorting by \(postSortType.description)",
-                  systemImage: postSortType.iconName)
+            Label(
+                "Selected sorting by \(postSortType.description)",
+                systemImage: postSortType.iconName
+            )
         }
     }
     
     @ViewBuilder
     private var toolbarHeader: some View {
-        if let community = community {
+        if let community {
             NavigationLink(value:
-                            CommunitySidebarLinkWithContext(
-                                community: community,
-                                communityDetails: communityDetails
-                            )) {
-                                Text(community.name)
-                                    .font(.headline)
-                                    .foregroundColor(.primary)
-                                    .accessibilityHint("Activate to view sidebar.")
-                            }
+                CommunitySidebarLinkWithContext(
+                    community: community,
+                    communityDetails: communityDetails
+                )) {
+                    Text(community.name)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .accessibilityHint("Activate to view sidebar.")
+                }
         } else {
             Menu {
                 ForEach(genFeedSwitchingFunctions()) { menuFunction in

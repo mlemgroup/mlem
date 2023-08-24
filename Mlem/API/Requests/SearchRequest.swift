@@ -18,7 +18,6 @@ enum SearchType: String, Codable {
 }
 
 struct SearchRequest: APIGetRequest {
-
     typealias Response = SearchResponse
 
     let instanceURL: URL

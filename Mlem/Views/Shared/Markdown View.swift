@@ -7,8 +7,8 @@
 
 import Foundation
 import MarkdownUI
-import SwiftUI
 import RegexBuilder
+import SwiftUI
 
 extension Theme {
     static let mlem = Theme()
@@ -180,9 +180,7 @@ extension Theme {
             ForegroundColor(.secondary)
             FontSize(16)
         }
-        .code {
-            
-        }
+        .code {}
 }
 
 private extension Color {
@@ -224,7 +222,6 @@ struct MarkdownBlock: Identifiable {
 }
 
 struct MarkdownView: View {
-
     @State var text: String
     let isNsfw: Bool
     let replaceImagesWithEmoji: Bool
@@ -262,7 +259,7 @@ struct MarkdownView: View {
     }
     
     static func prepareInlineMarkdown(text: String) -> String {
-        return text
+        text
             .components(separatedBy: .newlines)
             .joined(separator: " ")
             .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
@@ -279,7 +276,7 @@ struct MarkdownView: View {
         
         var blocks: [MarkdownBlock] = .init()
         var idx: String.Index = .init(utf16Offset: 0, in: text)
-        var blockId: Int = 0
+        var blockId = 0
         while idx < text.endIndex {
             do {
                 if let firstImage = try imageLooker.firstMatch(in: text[idx...]) {
@@ -290,7 +287,7 @@ struct MarkdownView: View {
                         blockId += 1
                     } else {
                         // otherwise, add text in between, then first match
-                        blocks.append(MarkdownBlock(text: text[idx..<firstImage.range.lowerBound], isImage: false, id: blockId))
+                        blocks.append(MarkdownBlock(text: text[idx ..< firstImage.range.lowerBound], isImage: false, id: blockId))
                         blockId += 1
                         blocks.append(MarkdownBlock(text: firstImage.output.url, isImage: true, id: blockId))
                         blockId += 1

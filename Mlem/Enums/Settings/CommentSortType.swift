@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::CommentSortType
-// TODO this is not accurate to the Lemmy enum, active -> hot, and "old" is missing
+// TODO: this is not accurate to the Lemmy enum, active -> hot, and "old" is missing
 enum CommentSortType: String, Codable, CaseIterable, Identifiable {
     case top, hot, new, old
     
@@ -43,12 +43,11 @@ enum CommentSortType: String, Codable, CaseIterable, Identifiable {
 
 extension CommentSortType: SettingsOptions {
     var label: String {
-        self.rawValue.capitalized
+        rawValue.capitalized
     }
 }
 
 extension CommentSortType {
-    
     static func appStorageValue(store: UserDefaults = .standard) -> Self {
         let defaultValue = store.string(forKey: "defaultCommentSorting") ?? ""
         return CommentSortType(rawValue: defaultValue) ?? .top

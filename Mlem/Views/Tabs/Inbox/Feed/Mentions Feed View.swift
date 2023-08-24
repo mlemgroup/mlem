@@ -1,5 +1,5 @@
 //
-//  MentionsFeedView.swift
+//  Mentions Feed View.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-26.
@@ -12,7 +12,7 @@ extension InboxView {
     @ViewBuilder
     func mentionsFeedView() -> some View {
         Group {
-            if mentionsTracker.items.isEmpty && !mentionsTracker.isLoading {
+            if mentionsTracker.items.isEmpty, !mentionsTracker.isLoading {
                 noMentionsView()
             } else {
                 LazyVStack(spacing: 0) {
@@ -70,10 +70,12 @@ extension InboxView {
                         }
                     }
                 }
-                .addSwipeyActions(primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
-                                  secondaryLeadingAction: downvoteMentionSwipeAction(mentionView: mention),
-                                  primaryTrailingAction: toggleMentionReadSwipeAction(mentionView: mention),
-                                  secondaryTrailingAction: replyToMentionSwipeAction(mentionView: mention))
+                .addSwipeyActions(
+                    primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
+                    secondaryLeadingAction: downvoteMentionSwipeAction(mentionView: mention),
+                    primaryTrailingAction: toggleMentionReadSwipeAction(mentionView: mention),
+                    secondaryTrailingAction: replyToMentionSwipeAction(mentionView: mention)
+                )
         }
         .buttonStyle(EmptyButtonStyle())
     }

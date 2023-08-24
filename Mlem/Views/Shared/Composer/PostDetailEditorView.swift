@@ -1,5 +1,5 @@
 //
-//  PostComposerView.swift
+//  PostDetailEditorView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 23/07/23
@@ -19,7 +19,6 @@ extension HorizontalAlignment {
 }
 
 struct PostDetailEditorView: View {
-    
     private enum Field: Hashable {
         case title, url, body
     }
@@ -60,12 +59,12 @@ struct PostDetailEditorView: View {
 
     private var isReadyToPost: Bool {
         // This only requirement to post is a title
-        return postTitle.trimmed.isNotEmpty
+        postTitle.trimmed.isNotEmpty
     }
     
     private var isValidURL: Bool {
         guard postURL.lowercased().hasPrefix("http://") ||
-                postURL.lowercased().hasPrefix("https://") else {
+            postURL.lowercased().hasPrefix("https://") else {
             return false // URL protocol is missing
         }
 
@@ -107,12 +106,12 @@ struct PostDetailEditorView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 15) {
-                
                 // Community Row
                 HStack {
-                    CommunityLabel(community: community,
-                                   serverInstanceLocation: .bottom,
-                                   overrideShowAvatar: true
+                    CommunityLabel(
+                        community: community,
+                        serverInstanceLocation: .bottom,
+                        overrideShowAvatar: true
                     )
                     Spacer()
                     // NSFW Toggle
@@ -171,9 +170,11 @@ struct PostDetailEditorView: View {
                 }
 
                 // Post Text
-                TextField("What do you want to say? (Optional)",
-                          text: $postBody,
-                          axis: .vertical)
+                TextField(
+                    "What do you want to say? (Optional)",
+                    text: $postBody,
+                    axis: .vertical
+                )
                 .dynamicTypeSize(.small ... .accessibility2)
                 .accessibilityLabel("Post Body")
                 .focused($focusedField, equals: .body)
@@ -216,7 +217,7 @@ struct PostDetailEditorView: View {
             }
         }
         .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
-            Button("OK", role: .cancel) { }
+            Button("OK", role: .cancel) {}
         } message: {
             Text(errorDialogMessage)
         }

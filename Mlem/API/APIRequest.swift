@@ -35,8 +35,8 @@ protocol APIGetRequest: APIRequest {
 extension APIGetRequest {
     var endpoint: URL {
         instanceURL
-        .appending(path: path)
-        .appending(queryItems: queryItems.filter { $0.value != nil })
+            .appending(path: path)
+            .appending(queryItems: queryItems.filter { $0.value != nil })
     }
 }
 
@@ -50,7 +50,7 @@ protocol APIRequestBodyProviding: APIRequest {
 extension APIRequestBodyProviding {
     var endpoint: URL {
         instanceURL
-        .appending(path: path)
+            .appending(path: path)
     }
 }
 

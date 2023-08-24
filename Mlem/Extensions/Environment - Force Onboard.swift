@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 private struct ForceOnboardSetter: EnvironmentKey {
-    static let defaultValue: () -> Void = { }
+    static let defaultValue: () -> Void = {}
 }
 
 extension EnvironmentValues {
     var forceOnboard: () -> Void {
         get { self[ForceOnboardSetter.self] }
         set { self[ForceOnboardSetter.self] = newValue }
-      }
+    }
 }

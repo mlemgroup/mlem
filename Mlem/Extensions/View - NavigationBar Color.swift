@@ -27,6 +27,6 @@ struct NavigationBarColorModifier: ViewModifier {
 
 extension View {
     func navigationBarColor(visibility: Visibility = .automatic) -> some View {
-        self.modifier(NavigationBarColorModifier(visibility: visibility))
+        modifier(NavigationBarColorModifier(visibility: visibility))
     }
 }

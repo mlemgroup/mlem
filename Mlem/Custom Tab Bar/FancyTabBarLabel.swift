@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct FancyTabBarLabel: View {
-    
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @AppStorage("showTabNames") var showTabNames: Bool = true
     
@@ -39,13 +38,15 @@ struct FancyTabBarLabel: View {
      - activeColor: overrides the default active color (Color.accentColor)
      - badgeCount: count to display as badge
      */
-    init(tag: any FancyTabBarSelection,
-         customText: String? = nil,
-         symbolName: String? = nil,
-         activeSymbolName: String? = nil,
-         customColor: Color = Color.primary,
-         activeColor: Color = .accentColor,
-         badgeCount: Int? = nil) {
+    init(
+        tag: any FancyTabBarSelection,
+        customText: String? = nil,
+        symbolName: String? = nil,
+        activeSymbolName: String? = nil,
+        customColor: Color = Color.primary,
+        activeColor: Color = .accentColor,
+        badgeCount: Int? = nil
+    ) {
         self.tagHash = tag.hashValue
         self.symbolName = symbolName
         self.activeSymbolName = activeSymbolName
@@ -71,7 +72,7 @@ struct FancyTabBarLabel: View {
     
     var labelDisplay: some View {
         VStack(spacing: 4) {
-            if let symbolName = symbolName {
+            if let symbolName {
                 Image(systemName: active ? activeSymbolName ?? symbolName : symbolName)
                     .resizable()
                     .scaledToFit()

@@ -24,8 +24,10 @@ struct AccountsPage: View {
         
         Group {
             if onboarding || instances.isEmpty || isShowingInstanceAdditionSheet {
-                AddSavedInstanceView(onboarding: onboarding,
-                                     currentAccount: $selectedAccount)
+                AddSavedInstanceView(
+                    onboarding: onboarding,
+                    currentAccount: $selectedAccount
+                )
             } else {
                 List {
                     ForEach(instances, id: \.self) { instance in
@@ -59,7 +61,7 @@ struct AccountsPage: View {
             }
         }
         .onAppear {
-            self.selectedAccount = appState.currentActiveAccount
+            selectedAccount = appState.currentActiveAccount
         }
         .onChange(of: selectedAccount) { account in
             guard let account else { return }

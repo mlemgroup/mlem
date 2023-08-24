@@ -1,9 +1,9 @@
-// 
+//
 //  NotificationMessage.swift
 //  Mlem
 //
 //  Created by mormaer on 26/07/2023.
-//  
+//
 //
 
 import Foundation

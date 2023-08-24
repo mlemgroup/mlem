@@ -20,7 +20,6 @@ enum Field: Hashable {
 
 // swiftlint:disable type_body_length
 struct AddSavedInstanceView: View {
-    
     @Dependency(\.apiClient) var apiClient
     
     enum ViewState {
@@ -69,9 +68,11 @@ struct AddSavedInstanceView: View {
         : "Please check your username and password"
     }
     
-    init(onboarding: Bool,
-         currentAccount: Binding<SavedAccount?>,
-         givenInstance: String? = nil) {
+    init(
+        onboarding: Bool,
+        currentAccount: Binding<SavedAccount?>,
+        givenInstance: String? = nil
+    ) {
         self.onboarding = onboarding
         self._currentAccount = currentAccount
         self.givenInstance = givenInstance
@@ -84,9 +85,11 @@ struct AddSavedInstanceView: View {
                     title
                     headerSection
                 }
-                Grid(alignment: .trailing,
-                     horizontalSpacing: 0,
-                     verticalSpacing: 15) {
+                Grid(
+                    alignment: .trailing,
+                    horizontalSpacing: 0,
+                    verticalSpacing: 15
+                ) {
                     formSection
                 }.disabled(viewState == .loading)
                 footerView
@@ -101,8 +104,8 @@ struct AddSavedInstanceView: View {
     }
     
     var isReadyToSubmit: Bool {
-        return (password.isNotEmpty && username.isNotEmpty && instance.isNotEmpty)
-        && (viewState != .loading || viewState != .success)
+        (password.isNotEmpty && username.isNotEmpty && instance.isNotEmpty)
+            && (viewState != .loading || viewState != .success)
     }
     
     @ViewBuilder
@@ -208,7 +211,7 @@ struct AddSavedInstanceView: View {
     }
     
     @ViewBuilder
-    var title: some View {        
+    var title: some View {
         ZStack {
             Text("Sign In")
                 .bold()
@@ -315,8 +318,8 @@ struct AddSavedInstanceView: View {
                 viewState = .success
             }
             
-            let newAccount = SavedAccount(
-                id: try await getUserID(authToken: response.jwt, instanceURL: instanceURL),
+            let newAccount = try await SavedAccount(
+                id: getUserID(authToken: response.jwt, instanceURL: instanceURL),
                 instanceLink: instanceURL,
                 accessToken: response.jwt,
                 username: username
@@ -370,7 +373,7 @@ struct AddSavedInstanceView: View {
             message = badCredentialsMessage
         case APIClientError.networking:
             message = "Please check your internet connection and try again"
-        case APIClientError.response(let errorResponse, _) where errorResponse.requires2FA:
+        case let APIClientError.response(errorResponse, _) where errorResponse.requires2FA:
             message = ""
             
             withAnimation {
@@ -378,7 +381,7 @@ struct AddSavedInstanceView: View {
             }
             
             return
-        case APIClientError.response(let errorResponse, _) where errorResponse.isIncorrectLogin:
+        case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
             message = badCredentialsMessage
         default:
             // unhandled error encountered...
@@ -402,17 +405,17 @@ struct AddSavedInstanceView: View {
             errorAlert = .init(
                 title: "Unsupported Lemmy Version",
                 message: """
-                         \(instance) uses an outdated version of Lemmy that Mlem doesn't support. \
-                         Contact \(instance) developers for more information.
-                         """
+                \(instance) uses an outdated version of Lemmy that Mlem doesn't support. \
+                Contact \(instance) developers for more information.
+                """
             )
         }
     }
 }
+
 // swiftlint:enable type_body_length
 
 struct AddSavedInstanceView_Previews: PreviewProvider {
-    
     static var previews: some View {
         AddSavedInstanceView(
             onboarding: true,
@@ -420,4 +423,5 @@ struct AddSavedInstanceView_Previews: PreviewProvider {
         )
     }
 }
+
 // swiftlint:enable file_length

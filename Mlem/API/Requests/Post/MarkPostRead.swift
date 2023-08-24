@@ -8,7 +8,6 @@
 import Foundation
 
 struct MarkPostReadRequest: APIPostRequest {
-
     typealias Response = PostResponse
 
     let instanceURL: URL

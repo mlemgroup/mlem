@@ -5,12 +5,11 @@
 //  Created by Eric Andrews on 2023-07-03.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 import SwiftUI
 
 struct ReplyToMention: ResponseEditorModel {
-
     @Dependency(\.commentRepository) var commentRepository
     
     let canUpload: Bool = true
@@ -21,9 +20,11 @@ struct ReplyToMention: ResponseEditorModel {
     var id: Int { mention.id }
     
     func embeddedView() -> AnyView {
-        return AnyView(InboxMentionView(mention: mention,
-                                        menuFunctions: [])
-            .padding(.horizontal))
+        AnyView(InboxMentionView(
+            mention: mention,
+            menuFunctions: []
+        )
+        .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {

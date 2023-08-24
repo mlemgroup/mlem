@@ -1,5 +1,5 @@
 //
-//  EditPost.swift
+//  DeletePost.swift
 //  Mlem
 //
 //  Created by Jonathan de Jong on 13.06.2023.
@@ -8,7 +8,6 @@
 import Foundation
 
 struct DeletePostRequest: APIPostRequest {
-
     typealias Response = PostResponse
 
     let instanceURL: URL

@@ -13,7 +13,6 @@ import SwiftUI
  APIPostView on demand for when we don't already have one
  */
 struct LazyLoadExpandedPost: View {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
@@ -21,7 +20,7 @@ struct LazyLoadExpandedPost: View {
     
     @State private var loadedPostView: APIPostView?
 
-    @StateObject private var postTracker =  PostTracker(internetSpeed: .slow)
+    @StateObject private var postTracker = PostTracker(internetSpeed: .slow)
 
     var body: some View {
         Group {

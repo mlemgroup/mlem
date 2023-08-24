@@ -5,19 +5,18 @@
 //  Created by Eric Andrews on 2023-07-17.
 //
 
+import CoreHaptics
 import Foundation
 import SwiftUI
-import CoreHaptics
 
 class HapticManager {
-    
     // MARK: Members and init
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     
     // generators/engines
-    let rigidImpactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
-    let notificationGenerator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
+    let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)
+    let notificationGenerator: UINotificationFeedbackGenerator = .init()
     var hapticEngine: CHHapticEngine?
     
     // singleton to use in app
@@ -26,7 +25,7 @@ class HapticManager {
     init() {
         // create and start the engine if this device supports haptics
         print("Initialized haptic engine")
-        hapticEngine = initEngine()
+        self.hapticEngine = initEngine()
         
         // if the engine stops, tell us why
         hapticEngine?.stoppedHandler = { reason in

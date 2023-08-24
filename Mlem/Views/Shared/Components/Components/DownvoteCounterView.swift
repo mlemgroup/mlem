@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct DownvoteCounterView: View {
-    
     // parameters
     let vote: ScoringOperation
     let score: Int

@@ -13,10 +13,10 @@ enum UserViewTab: String, CaseIterable, Identifiable {
     var id: Self { self }
     
     var label: String {
-        return self.rawValue.capitalized
+        rawValue.capitalized
     }
     
     var onlyShowInOwnProfile: Bool {
-        return self == UserViewTab.saved
+        self == UserViewTab.saved
     }
 }

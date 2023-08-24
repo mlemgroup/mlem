@@ -42,7 +42,7 @@ extension APIComment {
 
 extension APIComment: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-        hasher.combine(self.updated)
+        hasher.combine(id)
+        hasher.combine(updated)
     }
 }

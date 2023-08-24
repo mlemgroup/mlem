@@ -19,7 +19,6 @@ extension View {
 }
 
 struct SettingsRouter: ViewModifier {
-    
     @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
 
@@ -27,7 +26,7 @@ struct SettingsRouter: ViewModifier {
         content
             .navigationDestination(for: SettingsRoute.self) { route in
                 switch route {
-                case .accountsPage(let onboarding):
+                case let .accountsPage(onboarding):
                     AccountsPage(onboarding: onboarding)
                 case .general:
                     GeneralSettingsView()
@@ -47,7 +46,6 @@ struct SettingsRouter: ViewModifier {
 }
 
 private struct AppearanceSettingsRouter: ViewModifier {
-
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: AppearanceSettingsRoute.self) { route in
@@ -72,7 +70,6 @@ private struct AppearanceSettingsRouter: ViewModifier {
 }
 
 private struct CommentSettingsRouter: ViewModifier {
-    
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     
     func body(content: Content) -> some View {
@@ -90,7 +87,6 @@ private struct CommentSettingsRouter: ViewModifier {
 }
 
 private struct PostSettingsRouter: ViewModifier {
-    
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
 
     func body(content: Content) -> some View {
@@ -109,16 +105,15 @@ private struct PostSettingsRouter: ViewModifier {
 }
 
 private struct AboutSettingsRouter: ViewModifier {
-    
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: AboutSettingsRoute.self) { route in
                 switch route {
                 case .contributors:
                     ContributorsView()
-                case .eula(let doc):
+                case let .eula(doc):
                     DocumentView(text: doc.body)
-                case .privacyPolicy(let doc):
+                case let .privacyPolicy(doc):
                     DocumentView(text: doc.body)
                 case .licenses:
                     LicensesView()
@@ -128,12 +123,11 @@ private struct AboutSettingsRouter: ViewModifier {
 }
 
 private struct LicensesSettingsRouter: ViewModifier {
-    
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: LicensesSettingsRoute.self) { route in
                 switch route {
-                case .licenseDocument(let doc):
+                case let .licenseDocument(doc):
                     DocumentView(text: doc.body)
                 }
             }

@@ -1,5 +1,5 @@
 //
-//  CommunityLinkWithContext.swift
+//  Community Link.swift
 //  Mlem
 //
 //  Created by tht7 on 23/06/2023.
@@ -14,11 +14,11 @@ struct CommunityLinkWithContext: Equatable, Identifiable, Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.community?.id)
-        hasher.combine(self.feedType)
+        hasher.combine(community?.id)
+        hasher.combine(feedType)
     }
     
-    var id: Int { self.hashValue }
+    var id: Int { hashValue }
     
     let community: APICommunity?
     let feedType: FeedType

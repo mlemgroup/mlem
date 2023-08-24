@@ -31,30 +31,43 @@ struct DeveloperView: View {
 }
 
 struct ContributorsView: View {
-    
     var body: some View {
         List {
             Section("Development Team") {
-                DeveloperView(name: "Weston",
-                              link: "https://techhub.social/@weston")
-                DeveloperView(name: "Jake",
-                              link: "https://github.com/JakeShirley")
-                DeveloperView(name: "Eric",
-                              link: "https://github.com/EricBAndrews")
-                DeveloperView(name: "Jonathan",
-                              link: "https://github.com/ShadowJonathan")
+                DeveloperView(
+                    name: "Weston",
+                    link: "https://techhub.social/@weston"
+                )
+                DeveloperView(
+                    name: "Jake",
+                    link: "https://github.com/JakeShirley"
+                )
+                DeveloperView(
+                    name: "Eric",
+                    link: "https://github.com/EricBAndrews"
+                )
+                DeveloperView(
+                    name: "Jonathan",
+                    link: "https://github.com/ShadowJonathan"
+                )
             }
             
             Section("Special Contributors") {
-                DeveloperView(name: "tht7",
-                              link: "https://github.com/tht7",
-                              color: .cyan)
-                DeveloperView(name: "Sjmarf",
-                              link: "https://github.com/Sjmarf",
-                              color: .cyan)
-                DeveloperView(name: "J0hnny007",
-                              link: "https://github.com/J0hnny007",
-                              color: .cyan)
+                DeveloperView(
+                    name: "tht7",
+                    link: "https://github.com/tht7",
+                    color: .cyan
+                )
+                DeveloperView(
+                    name: "Sjmarf",
+                    link: "https://github.com/Sjmarf",
+                    color: .cyan
+                )
+                DeveloperView(
+                    name: "J0hnny007",
+                    link: "https://github.com/J0hnny007",
+                    color: .cyan
+                )
             }
         }
         .fancyTabScrollCompatible()

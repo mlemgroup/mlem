@@ -9,7 +9,6 @@ import Foundation
 
 // lemmy_api_common::post::GetPosts
 struct GetPostsRequest: APIGetRequest {
-
     typealias Response = GetPostsResponse
 
     let instanceURL: URL
@@ -31,7 +30,7 @@ struct GetPostsRequest: APIGetRequest {
             .init(name: "auth", value: account.accessToken),
             .init(name: "page", value: "\(page)"),
             .init(name: "type_", value: type.rawValue),
-            .init(name: "sort", value: sort.map {$0.rawValue}),
+            .init(name: "sort", value: sort.map(\.rawValue)),
             .init(name: "community_id", value: communityId.map(String.init)),
             .init(name: "community_name", value: communityName),
             .init(name: "limit", value: limit.map(String.init)),

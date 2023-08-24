@@ -1,9 +1,9 @@
-// 
+//
 //  PersistenceRepository.swift
 //  Mlem
 //
 //  Created by mormaer on 26/07/2023.
-//  
+//
 //
 
 import Dependencies
@@ -23,16 +23,16 @@ private enum Path {
         return path
     }()
 
-    static var savedAccounts = { root.appendingPathComponent("Saved Accounts", conformingTo: .json) }()
-    static var filteredKeywords = { root.appendingPathComponent("Blocked Keywords", conformingTo: .json) }()
-    static var favoriteCommunities = { root.appendingPathComponent("Favorite Communities", conformingTo: .json) }()
-    static var recentSearches = { root.appendingPathComponent("Recent Searches", conformingTo: .json) }()
-    static var easterFlags = { root.appendingPathComponent("Easter eggs flags", conformingTo: .json) }()
-    static var layoutWidgets = { root.appendingPathComponent("Layout Widgets", conformingTo: .json) }()
-    static var instanceMetadata = { root.appendingPathComponent("Instance Metadata", conformingTo: .json) }()
+    static var savedAccounts = root.appendingPathComponent("Saved Accounts", conformingTo: .json)
+    static var filteredKeywords = root.appendingPathComponent("Blocked Keywords", conformingTo: .json)
+    static var favoriteCommunities = root.appendingPathComponent("Favorite Communities", conformingTo: .json)
+    static var recentSearches = root.appendingPathComponent("Recent Searches", conformingTo: .json)
+    static var easterFlags = root.appendingPathComponent("Easter eggs flags", conformingTo: .json)
+    static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
+    static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
 }
 
-private struct DiskAccess {
+private enum DiskAccess {
     static func load(from path: URL) throws -> Data {
         try Data(contentsOf: path, options: .mappedIfSafe)
     }
@@ -41,12 +41,11 @@ private struct DiskAccess {
         try await Task(priority: .background) {
             try data.write(to: path, options: .atomic)
         }
-            .value
+        .value
     }
 }
 
 class PersistenceRepository {
-    
     @Dependency(\.errorHandler) private var errorHandler
     
     private var keychainAccess: (String) -> String?
@@ -146,7 +145,7 @@ class PersistenceRepository {
         }
     }
     
-    private func save<T: Encodable>(_ value: T, to path: URL) async throws {
+    private func save(_ value: some Encodable, to path: URL) async throws {
         do {
             let data = try JSONEncoder().encode(value)
             try await write(data, path)

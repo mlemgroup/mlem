@@ -1,5 +1,5 @@
 //
-//  CustomBadge.swift
+//  View - CustomBadge.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-25.
@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct CustomBadge: ViewModifier {
-    
     let count: Int?
     
     let padding: CGFloat = 3.5

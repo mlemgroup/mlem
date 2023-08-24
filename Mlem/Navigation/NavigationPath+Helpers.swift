@@ -8,12 +8,11 @@
 import SwiftUI
 
 extension NavigationPath {
-    
     mutating func goBack(popToRoot: Bool = false) {
         guard !isEmpty else {
             return
         }
-        let popDepth = popToRoot ? self.count : 1
-        self.removeLast(popDepth)
+        let popDepth = popToRoot ? count : 1
+        removeLast(popDepth)
     }
 }

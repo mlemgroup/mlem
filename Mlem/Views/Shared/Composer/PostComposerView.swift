@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct PostComposerView: View {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.hapticManager) var hapticManager
     

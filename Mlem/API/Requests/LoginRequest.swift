@@ -8,7 +8,6 @@
 import Foundation
 
 struct LoginRequest: APIPostRequest {
-
     typealias Response = LoginResponse
 
     let instanceURL: URL

@@ -1,5 +1,5 @@
 //
-//  MentionsTracker.swift
+//  Mentions Tracker.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-26.
@@ -10,7 +10,6 @@ import SwiftUI
 
 @MainActor
 class MentionsTracker: FeedTracker<APIPersonMentionView>, InboxTracker {
-    
     func loadNextPage(account: SavedAccount, unreadOnly: Bool = false) async throws {
         try await perform(
             GetPersonMentionsRequest(

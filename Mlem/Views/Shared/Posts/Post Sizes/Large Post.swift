@@ -5,12 +5,11 @@
 //  Created by Eric Andrews on 2023-06-10.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
-import Dependencies
 
 struct LargePost: View {
-    
     enum LayoutMode {
         case minimize, preferredSize, maximize
         
@@ -88,7 +87,7 @@ struct LargePost: View {
         case .minimize:
             let lines = bodyText.components(separatedBy: .newlines)
             let endIndex = lines.index(lines.startIndex, offsetBy: 2, limitedBy: lines.endIndex) ?? lines.endIndex
-            let sublines = lines[0..<endIndex].joined(separator: " ")
+            let sublines = lines[0 ..< endIndex].joined(separator: " ")
             return sublines
         }
     }
@@ -96,7 +95,8 @@ struct LargePost: View {
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         postView: APIPostView,
-        layoutMode: Binding<LayoutMode>) {
+        layoutMode: Binding<LayoutMode>
+    ) {
         self.postView = postView
         self._layoutMode = layoutMode
     }
@@ -137,10 +137,11 @@ struct LargePost: View {
             .shadow(radius: 4)
             .transition(
                 .scale(scale: 1.5, anchor: .leading)
-                .combined(with: .asymmetric(
-                    insertion: .push(from: .bottom),
-                    removal: .push(from: .top)))
-                .combined(with: .opacity)
+                    .combined(with: .asymmetric(
+                        insertion: .push(from: .bottom),
+                        removal: .push(from: .top)
+                    ))
+                    .combined(with: .opacity)
             )
             .accessibilityLabel("Post content is minimized.")
             .accessibilityHint("Expands post content.")
@@ -201,17 +202,21 @@ struct LargePost: View {
     @ViewBuilder
     var postContentView: some View {
         switch postView.postType {
-        case .image(let url):
+        case let .image(url):
             let limitHeight = limitImageHeightInFeed && !isExpanded
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
-                    CachedImage(url: url,
-                                maxHeight: layoutMode.getMaxHeight(limitHeight),
-                                dismissCallback: markPostAsRead,
-                                cornerRadius: AppConstants.largeItemCornerRadius)
-                    .frame(maxWidth: .infinity,
-                           maxHeight: layoutMode.getMaxHeight(limitHeight),
-                           alignment: .top)
+                    CachedImage(
+                        url: url,
+                        maxHeight: layoutMode.getMaxHeight(limitHeight),
+                        dismissCallback: markPostAsRead,
+                        cornerRadius: AppConstants.largeItemCornerRadius
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: layoutMode.getMaxHeight(limitHeight),
+                        alignment: .top
+                    )
                     .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
                     .clipped()
                 }
@@ -224,7 +229,7 @@ struct LargePost: View {
                 }
                 postBodyView
             }
-        case .text(let postBody):
+        case let .text(postBody):
             // text posts need a little less space between title and body to look right, go figure
             postBodyView
                 .padding(.top, postBody.isEmpty ? nil : -2)

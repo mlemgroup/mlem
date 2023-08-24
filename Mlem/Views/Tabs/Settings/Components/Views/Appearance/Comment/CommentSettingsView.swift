@@ -1,5 +1,5 @@
 //
-//  CustomizeCommentView.swift
+//  CommentSettingsView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-11.
@@ -23,9 +23,11 @@ struct CommentSettingsView: View {
     var body: some View {
         Form {
             Section {
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.compactSymbolName,
-                                       settingName: "Compact Comments",
-                                       isTicked: $compactComments)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.compactSymbolName,
+                    settingName: "Compact Comments",
+                    isTicked: $compactComments
+                )
                 
                 NavigationLink(value: CommentSettingsRoute.layoutWidget) {
                     Label {
@@ -40,24 +42,36 @@ struct CommentSettingsView: View {
             }
 
             Section("Interactions and Info") {
-                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
-                                       settingName: "Show User Server Instance",
-                                       isTicked: $shouldShowUserServerInComment)
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
-                                       settingName: "Show Score In Info",
-                                       isTicked: $shouldShowScoreInCommentBar)
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.generalVoteSymbolName,
-                                       settingName: "Show Downvotes Separately",
-                                       isTicked: $showCommentDownvotesSeparately)
-                SwitchableSettingsItem(settingPictureSystemName: "clock",
-                                       settingName: "Show Time Posted In Info",
-                                       isTicked: $shouldShowTimeInCommentBar)
-                SwitchableSettingsItem(settingPictureSystemName: "bookmark",
-                                       settingName: "Show Saved Status In Info",
-                                       isTicked: $shouldShowSavedInCommentBar)
-                SwitchableSettingsItem(settingPictureSystemName: "bubble.right",
-                                       settingName: "Show Replies In Info",
-                                       isTicked: $shouldShowRepliesInCommentBar)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "server.rack",
+                    settingName: "Show User Server Instance",
+                    isTicked: $shouldShowUserServerInComment
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
+                    settingName: "Show Score In Info",
+                    isTicked: $shouldShowScoreInCommentBar
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                    settingName: "Show Downvotes Separately",
+                    isTicked: $showCommentDownvotesSeparately
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "clock",
+                    settingName: "Show Time Posted In Info",
+                    isTicked: $shouldShowTimeInCommentBar
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "bookmark",
+                    settingName: "Show Saved Status In Info",
+                    isTicked: $shouldShowSavedInCommentBar
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "bubble.right",
+                    settingName: "Show Replies In Info",
+                    isTicked: $shouldShowRepliesInCommentBar
+                )
             }
         }
         .fancyTabScrollCompatible()

@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct ReadCheck: View {
-    
     var body: some View {
         Image(systemName: "checkmark")
             .resizable()

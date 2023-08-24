@@ -1,5 +1,5 @@
 //
-//  NSFWOverlay.swift
+//  NSFW Overlay.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-15.
@@ -9,11 +9,10 @@ import Foundation
 import SwiftUI
 
 struct NSFWOverlay: ViewModifier {
-    
     let isNsfw: Bool
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @State var showNsfwFilterToggle: Bool = true
-    var showNsfwFilter: Bool { self.isNsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
+    var showNsfwFilter: Bool { isNsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
     
     func body(content: Content) -> some View {
         content
@@ -38,7 +37,7 @@ struct NSFWOverlay: ViewModifier {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.thinMaterial)
-        } else if isNsfw && shouldBlurNsfw {
+        } else if isNsfw, shouldBlurNsfw {
             Image(systemName: "eye.slash")
                 .foregroundColor(.white)
                 .padding(4)

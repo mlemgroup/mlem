@@ -1,5 +1,5 @@
 //
-//  PostLayoutWidget.swift
+//  LayoutWidget.swift
 //  Mlem
 //
 //  Created by Sjmarf on 02/08/2023.
@@ -21,7 +21,7 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     case scoreCounter
     
     static var allCases: [LayoutWidgetType] {
-        return [.infoStack, .upvote, .downvote, .save, .reply, .share, .upvoteCounter, .downvoteCounter, .scoreCounter]
+        [.infoStack, .upvote, .downvote, .save, .reply, .share, .upvoteCounter, .downvoteCounter, .scoreCounter]
     }
     
     var width: CGFloat {
@@ -63,7 +63,7 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
     }
     
     var canRemove: Bool {
-        return self != .infoStack
+        self != .infoStack
     }
 }
 
@@ -80,6 +80,6 @@ class LayoutWidget: Equatable, Hashable {
     }
     
     static func == (lhs: LayoutWidget, rhs: LayoutWidget) -> Bool {
-        return lhs.type == rhs.type
+        lhs.type == rhs.type
     }
 }

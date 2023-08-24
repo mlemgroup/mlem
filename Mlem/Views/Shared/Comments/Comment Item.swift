@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct CommentItem: View {
-    
     enum IndentBehaviour {
         case standard, never
     }
@@ -28,6 +27,7 @@ struct CommentItem: View {
     @AppStorage("compactComments") var compactComments: Bool = false
 
     // MARK: Temporary
+
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation // = .resetVote
     @State var dirtyScore: Int // = 0
@@ -82,12 +82,13 @@ struct CommentItem: View {
     }
 
     // init needed to get dirty and clean aligned
-    init(hierarchicalComment: HierarchicalComment,
-         postContext: APIPostView?,
-         indentBehaviour: IndentBehaviour = .standard,
-         showPostContext: Bool,
-         showCommentCreator: Bool,
-         enableSwipeActions: Bool = true
+    init(
+        hierarchicalComment: HierarchicalComment,
+        postContext: APIPostView?,
+        indentBehaviour: IndentBehaviour = .standard,
+        showPostContext: Bool,
+        showCommentCreator: Bool,
+        enableSwipeActions: Bool = true
     ) {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
@@ -113,7 +114,7 @@ struct CommentItem: View {
                     EmptyView()
                 } else {
                     Group {
-                        commentBody(hierarchicalComment: self.hierarchicalComment)
+                        commentBody(hierarchicalComment: hierarchicalComment)
                         Divider()
                     }
                     /// Clips any transitions to this view, otherwise comments will animate over other ones.
@@ -124,25 +125,29 @@ struct CommentItem: View {
             }
         }
     }
+
     // swiftlint:enable line_length
 
     // swiftlint:disable function_body_length
+
     // MARK: Subviews
     
     @ViewBuilder
     private func commentBody(hierarchicalComment: HierarchicalComment) -> some View {
         Group {
             VStack(alignment: .leading, spacing: 0) {
-                CommentBodyView(commentView: hierarchicalComment.commentView,
-                                isParentCollapsed: $hierarchicalComment.isParentCollapsed,
-                                isCollapsed: $hierarchicalComment.isCollapsed,
-                                showPostContext: showPostContext,
-                                menuFunctions: genMenuFunctions())
+                CommentBodyView(
+                    commentView: hierarchicalComment.commentView,
+                    isParentCollapsed: $hierarchicalComment.isParentCollapsed,
+                    isCollapsed: $hierarchicalComment.isCollapsed,
+                    showPostContext: showPostContext,
+                    menuFunctions: genMenuFunctions()
+                )
                 // top and bottom spacing uses default even when compact--it's *too* compact otherwise
                 .padding(.top, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
-                if !hierarchicalComment.isCollapsed && !compactComments {
+                if !hierarchicalComment.isCollapsed, !compactComments {
                     InteractionBarView(
                         apiView: hierarchicalComment.commentView,
                         accessibilityContext: "comment",
@@ -190,10 +195,11 @@ struct CommentItem: View {
             }
         }
         .background(Color.systemBackground)
-        .addSwipeyActions(primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
-                          secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
-                          primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
-                          secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
+        .addSwipeyActions(
+            primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
+            secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
+            primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
+            secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
 //        .sheet(isPresented: $isComposingReport) {
@@ -208,7 +214,6 @@ struct CommentItem: View {
 // MARK: - Swipe Actions
 
 extension CommentItem {
-    
     private var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
     private var upvoteSymbolName: String { displayedVote == .upvote ? "minus.square.fill" : "arrow.up.square.fill" }
     private var emptyDownvoteSymbolName: String { displayedVote == .downvote ? "minus.square" : "arrow.down.square" }
@@ -244,7 +249,7 @@ extension CommentItem {
     }
 
     var replySwipeAction: SwipeAction? {
-        return SwipeAction(
+        SwipeAction(
             symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
             color: .accentColor,
             action: replyToCommentAsyncWrapper

@@ -36,10 +36,12 @@ struct InboxMessageView: View {
                     .font(.subheadline)
             }
             
-            UserProfileLink(user: message.creator,
-                            serverInstanceLocation: .bottom,
-                            overrideShowAvatar: true)
-                .font(.subheadline)
+            UserProfileLink(
+                user: message.creator,
+                serverInstanceLocation: .bottom,
+                overrideShowAvatar: true
+            )
+            .font(.subheadline)
             
             HStack {
                 EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)

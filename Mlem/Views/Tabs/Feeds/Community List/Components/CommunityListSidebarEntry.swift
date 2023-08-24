@@ -8,8 +8,8 @@
 import Foundation
 
 protocol SidebarEntry {
-    var sidebarLabel: String? {get set}
-    var sidebarIcon: String? {get set}
+    var sidebarLabel: String? { get set }
+    var sidebarIcon: String? { get set }
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool
 }
 
@@ -19,7 +19,7 @@ struct EmptySidebarEntry: SidebarEntry {
     var sidebarIcon: String?
 
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
-        return false
+        false
     }
 }
 

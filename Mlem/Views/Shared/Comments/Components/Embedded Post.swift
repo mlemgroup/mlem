@@ -48,8 +48,8 @@ struct EmbeddedPost: View {
                 Spacer()
             }
         }.padding(10)
-        .background(RoundedRectangle(cornerRadius: 8)
-        .foregroundColor(Color(UIColor.secondarySystemBackground)))
+            .background(RoundedRectangle(cornerRadius: 8)
+                .foregroundColor(Color(UIColor.secondarySystemBackground)))
     }
 }
 

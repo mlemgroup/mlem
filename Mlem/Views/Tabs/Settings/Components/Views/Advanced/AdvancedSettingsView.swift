@@ -5,11 +5,10 @@
 //  Created by Sam Marfleet on 14/07/2023.
 //
 
-import SwiftUI
 import Nuke
+import SwiftUI
 
 struct AdvancedSettingsView: View {
-    
     @State private var diskUsage: Int64 = 0
     
     var body: some View {

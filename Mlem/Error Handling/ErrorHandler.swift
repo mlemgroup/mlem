@@ -1,16 +1,15 @@
-// 
+//
 //  ErrorHandler.swift
 //  Mlem
 //
 //  Created by mormaer on 15/07/2023.
-//  
+//
 //
 
 import Dependencies
 import Foundation
 
 class ErrorHandler: ObservableObject {
-    
     @Dependency(\.notifier) private var notifier
     
     @Published private(set) var sessionExpired = false
@@ -31,7 +30,7 @@ class ErrorHandler: ObservableObject {
         }
         
         #if DEBUG
-        log(error, file, function, line)
+            log(error, file, function, line)
         #endif
 
         Task { @MainActor in

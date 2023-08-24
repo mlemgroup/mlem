@@ -16,15 +16,15 @@ struct APICommunityView: Decodable {
 }
 
 extension APICommunityView: Hashable, Equatable, Identifiable {
-    var id: Int { return self.hashValue }
+    var id: Int { hashValue }
     
     static func == (lhs: APICommunityView, rhs: APICommunityView) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.community.id)
-        hasher.combine(self.subscribed)
-        hasher.combine(self.blocked)
+        hasher.combine(community.id)
+        hasher.combine(subscribed)
+        hasher.combine(blocked)
     }
 }

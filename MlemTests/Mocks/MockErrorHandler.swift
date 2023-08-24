@@ -1,9 +1,9 @@
-// 
+//
 //  MockErrorHandler.swift
 //  MlemTests
 //
 //  Created by mormaer on 06/08/2023.
-//  
+//
 //
 
 @testable import Mlem
@@ -20,7 +20,6 @@ import Foundation
 ///  }
 ///  ```
 class MockErrorHandler: ErrorHandler {
-    
     var didReceiveError: (Error) -> Void
     
     init(didReceiveError: @escaping (Error) -> Void) {
