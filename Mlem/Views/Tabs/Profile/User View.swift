@@ -58,7 +58,7 @@ struct UserView: View {
     var body: some View {
         contentView
             .sheet(isPresented: $isPresentingAccountSwitcher) {
-                AccountsPage(onboarding: false)
+                AccountsPage()
             }
     }
 

@@ -23,7 +23,7 @@ struct SettingsView: View {
             ScrollViewReader { proxy in
                 List {
                     Section {
-                        NavigationLink(value: SettingsRoute.accountsPage(onboarding: false)) {
+                        NavigationLink(value: SettingsRoute.accountsPage) {
                             Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
                         }
                         .id(scrollToTop)

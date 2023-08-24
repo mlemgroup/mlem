@@ -107,7 +107,7 @@ struct ContentView: View {
             )
         }
         .sheet(isPresented: $isPresentingAccountSwitcher) {
-            AccountsPage(onboarding: false)
+            AccountsPage()
                 .presentationDetents([.medium, .large])
         }
         .sheet(item: $editorTracker.editResponse) { editing in

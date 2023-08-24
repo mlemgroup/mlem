@@ -15,8 +15,6 @@ struct AccountsPage: View {
     @State private var isShowingInstanceAdditionSheet: Bool = false
     @State var selectedAccount: SavedAccount?
     
-    let onboarding: Bool
-    
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
