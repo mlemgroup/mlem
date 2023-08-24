@@ -90,22 +90,24 @@ class HapticManager {
     func play(haptic: Haptic, priority: HapticPriority) {
         assert(priority != .sentinel, "Cannot use .sentinel as a haptic priority")
         
-        if priority <= hapticLevel, let hapticEngine {
-            guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
-                assertionFailure("Invalid haptic file: \(haptic.rawValue)")
-                return
+        Task(priority: .userInitiated) {
+            if priority <= hapticLevel, let hapticEngine {
+                guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
+                    assertionFailure("Invalid haptic file: \(haptic.rawValue)")
+                    return
+                }
+                
+                let file = URL(filePath: path)
+                do {
+                    try hapticEngine.playPattern(from: file)
+                } catch {
+                    // worst-case scenario--tried to play and no engine!
+                    print("Failed to play pattern: \(error.localizedDescription). Attempting to restart engine.")
+                    handleEngineFailure(with: file)
+                }
+            } else {
+                print("no engine")
             }
-            
-            let file = URL(filePath: path)
-            do {
-                try hapticEngine.playPattern(from: file)
-            } catch {
-                // worst-case scenario--tried to play and no engine!
-                print("Failed to play pattern: \(error.localizedDescription). Attempting to restart engine.")
-                handleEngineFailure(with: file)
-            }
-        } else {
-            print("no engine")
         }
     }
 }
