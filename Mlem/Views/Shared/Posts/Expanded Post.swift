@@ -132,7 +132,6 @@ struct ExpandedPost: View {
                         topVisibleCommentId = topCommentRow(of: anchors, in: proxy)
                     }
                 }
-                .listStyle(PlainListStyle())
             }
             if showCommentJumpButton && commentTracker.comments.count > 1 {
                 JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)

@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct JumpButtonView: View {
     @State private var pressed: Bool = false
+    
+    @Dependency(\.hapticManager) var hapticManager
 
     var onShortPress: () -> Void
     var onLongPress: () -> Void
@@ -32,16 +35,16 @@ struct JumpButtonView: View {
                 .padding(10)
                 .scaleEffect(self.pressed ? 1.2 : 1.0)
                 .onTapGesture {
-                    HapticManager.shared.play(haptic: .gentleInfo)
+                    hapticManager.play(haptic: .gentleInfo)
                     onShortPress()
                 }
                 .onLongPressGesture(
                     perform: {
-                        HapticManager.shared.play(haptic: .gentleInfo)
+                        hapticManager.play(haptic: .gentleInfo)
                         onLongPress()
                     },
                     onPressingChanged: { pressing in
-                        withAnimation(.bouncy) {
+                        withAnimation(.spring) {
                             self.pressed = pressing
                         }
                     }
