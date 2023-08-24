@@ -305,7 +305,26 @@ extension InboxView {
             message: message,
             operation: InboxItemOperation.replyToInboxItem
         ))
-        // TODO: messages are auto-marked as read when replied to, but we don't have a nice way to update that here. Once we have middleware in place this should just update the middleware model to indicate read--it won't be entirely truthful if the request fails, but that shouldn't ever even be noticeable as a problem
+        
+        // state fake the read message--replies mark messages as read automatically, but we don't get an object back from the editor to update, so we're doing it locally. This should be _way_ cleaner once we have middleware models for all this.
+        let updatedMessage = APIPrivateMessageView(
+            creator: message.creator,
+            recipient: message.recipient,
+            privateMessage: APIPrivateMessage(
+                id: message.privateMessage.id,
+                content: message.privateMessage.content,
+                creatorId: message.privateMessage.creatorId,
+                recipientId: message.privateMessage.recipientId,
+                local: message.privateMessage.local,
+                read: true,
+                updated: message.privateMessage.updated,
+                published: message.privateMessage.published,
+                deleted: message.privateMessage.deleted
+            )
+        )
+        messagesTracker.update(with: updatedMessage)
+        unreadTracker.readMessage()
+        if curTab == .all { aggregateAllTrackers() }
     }
     
     func reportMessage(message: APIPrivateMessageView) {
