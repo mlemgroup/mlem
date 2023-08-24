@@ -44,7 +44,6 @@ struct Window: View {
         } else {
             NavigationStack {
                 OnboardingView(selectedAccount: $selectedAccount)
-                // AddSavedInstanceView(onboarding: true, currentAccount: $selectedAccount)
             }
         }
     }

@@ -26,8 +26,8 @@ struct SettingsRouter: ViewModifier {
         content
             .navigationDestination(for: SettingsRoute.self) { route in
                 switch route {
-                case let .accountsPage(onboarding):
-                    AccountsPage(onboarding: onboarding)
+                case .accountsPage:
+                    AccountsPage()
                 case .general:
                     GeneralSettingsView()
                 case .accessibility:

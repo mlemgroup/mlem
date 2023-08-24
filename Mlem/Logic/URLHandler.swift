@@ -33,7 +33,7 @@ class URLHandler {
 
         Task { @MainActor in
             let viewController = SFSafariViewController(url: url, configuration: .default)
-            UIApplication.shared.firstKeyWindow?.rootViewController?.present(viewController, animated: true)
+            UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
         }
         
         return .init(result: .handled, action: nil)

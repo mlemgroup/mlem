@@ -8,7 +8,7 @@
 import Foundation
 
 enum SettingsRoute: Hashable, Codable {
-    case accountsPage(onboarding: Bool)
+    case accountsPage
     case general
     case accessibility
     case appearance
