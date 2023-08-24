@@ -143,16 +143,39 @@ extension InboxView {
     
     // MARK: - Replies
     
+    func markCommentReplyRead(commentReplyView: APICommentReplyView, read: Bool) async {
+        do {
+            let response = try await commentRepository.markCommentReadStatus(
+                id: commentReplyView.id,
+                isRead: read
+            )
+            
+            repliesTracker.update(with: response.commentReplyView)
+            
+            // TODO: should this be done _before_ the call, and then reverted in the `catch` if required?
+            // answer: it should be state faked in middleware
+            if commentReplyView.commentReply.read {
+                unreadTracker.unreadReply()
+            } else {
+                unreadTracker.readReply()
+            }
+            
+            if curTab == .all { aggregateAllTrackers() }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .low)
+            errorHandler.handle(error)
+        }
+    }
+    
     func voteOnCommentReply(commentReply: APICommentReplyView, inputOp: ScoringOperation) {
         Task(priority: .userInitiated) {
             let operation = commentReply.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             do {
                 let updatedReply = try await commentRepository.voteOnCommentReply(commentReply, vote: operation)
                 repliesTracker.update(with: updatedReply)
-                if curTab == .all {
-                    // TODO: more granular/less expensive merge options
-                    aggregateAllTrackers()
-                }
+                
+                // note: this call performs tracker aggregation if needed
+                await markCommentReplyRead(commentReplyView: commentReply, read: true)
             } catch {
                 errorHandler.handle(error)
             }
@@ -162,26 +185,7 @@ extension InboxView {
     func toggleCommentReplyRead(commentReplyView: APICommentReplyView) {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
-            do {
-                let response = try await commentRepository.markCommentReadStatus(
-                    id: commentReplyView.id,
-                    isRead: !commentReplyView.commentReply.read
-                )
-                
-                repliesTracker.update(with: response.commentReplyView)
-                
-                // TODO: should this be done _before_ the call, and then reverted in the `catch` if required?
-                if commentReplyView.commentReply.read {
-                    unreadTracker.unreadReply()
-                } else {
-                    unreadTracker.readReply()
-                }
-                
-                if curTab == .all { aggregateAllTrackers() }
-            } catch {
-                hapticManager.play(haptic: .failure, priority: .low)
-                errorHandler.handle(error)
-            }
+            await markCommentReplyRead(commentReplyView: commentReplyView, read: !commentReplyView.commentReply.read)
         }
     }
     
@@ -190,6 +194,9 @@ extension InboxView {
             commentReply: commentReply,
             operation: InboxItemOperation.replyToInboxItem
         ))
+        Task(priority: .background) {
+            await markCommentReplyRead(commentReplyView: commentReply, read: true)
+        }
     }
     
     func reportCommentReply(commentReply: APICommentReplyView) {
@@ -201,6 +208,29 @@ extension InboxView {
     
     // MARK: Mentions
     
+    func markMentionRead(mention: APIPersonMentionView, read: Bool) async {
+        do {
+            let updatedMention = try await apiClient.markPersonMentionAsRead(
+                mentionId: mention.personMention.id,
+                isRead: !mention.personMention.read
+            )
+            
+            mentionsTracker.update(with: updatedMention)
+            
+            // TODO: should this be done before the above call and reverted in the catch if necessary?
+            if mention.personMention.read {
+                unreadTracker.unreadMention()
+            } else {
+                unreadTracker.readMention()
+            }
+            
+            if curTab == .all { aggregateAllTrackers() }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
     func voteOnMention(mention: APIPersonMentionView, inputOp: ScoringOperation) {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
@@ -208,9 +238,9 @@ extension InboxView {
             do {
                 let updatedMention = try await commentRepository.voteOnPersonMention(mention, vote: operation)
                 mentionsTracker.update(with: updatedMention)
-                if curTab == .all {
-                    aggregateAllTrackers()
-                }
+                
+                // note: this call performs tracker aggregation if needed
+                await markMentionRead(mention: mention, read: true)
             } catch {
                 hapticManager.play(haptic: .failure, priority: .high)
                 errorHandler.handle(error)
@@ -221,26 +251,17 @@ extension InboxView {
     func toggleMentionRead(mention: APIPersonMentionView) {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
-            do {
-                let updatedMention = try await apiClient.markPersonMentionAsRead(
-                    mentionId: mention.personMention.id,
-                    isRead: !mention.personMention.read
-                )
-                
-                mentionsTracker.update(with: updatedMention)
-                
-                // TODO: should this be done before the above call and reverted in the catch if necessary?
-                if mention.personMention.read {
-                    unreadTracker.unreadMention()
-                } else {
-                    unreadTracker.readMention()
-                }
-                
-                if curTab == .all { aggregateAllTrackers() }
-            } catch {
-                hapticManager.play(haptic: .failure, priority: .high)
-                errorHandler.handle(error)
-            }
+            await markMentionRead(mention: mention, read: !mention.personMention.read)
+        }
+    }
+    
+    func replyToMention(mention: APIPersonMentionView) {
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            mention: mention,
+            operation: InboxItemOperation.replyToInboxItem
+        ))
+        Task(priority: .background) {
+            await markMentionRead(mention: mention, read: true)
         }
     }
     
@@ -248,13 +269,6 @@ extension InboxView {
         editorTracker.openEditor(with: ConcreteEditorModel(
             mention: mention,
             operation: InboxItemOperation.reportInboxItem
-        ))
-    }
-    
-    func replyToMention(mention: APIPersonMentionView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(
-            mention: mention,
-            operation: InboxItemOperation.replyToInboxItem
         ))
     }
     
@@ -291,6 +305,7 @@ extension InboxView {
             message: message,
             operation: InboxItemOperation.replyToInboxItem
         ))
+        // TODO: messages are auto-marked as read when replied to, but we don't have a nice way to update that here. Once we have middleware in place this should just update the middleware model to indicate read--it won't be entirely truthful if the request fails, but that shouldn't ever even be noticeable as a problem
     }
     
     func reportMessage(message: APIPrivateMessageView) {
