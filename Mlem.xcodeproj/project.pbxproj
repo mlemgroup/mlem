@@ -320,6 +320,7 @@
 		CD82A2552A716C7C00111034 /* APIPersonUnreadCounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2542A716C7C00111034 /* APIPersonUnreadCounts.swift */; };
 		CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */; };
 		CD82A2592A71775E00111034 /* UnreadTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD82A2582A71775E00111034 /* UnreadTracker.swift */; };
+		CD8461662A96F9EB0026A627 /* Website Indicator View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8461652A96F9EB0026A627 /* Website Indicator View.swift */; };
 		CD863FBA2A6AEB5900A31ED9 /* TabSafeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */; };
 		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
 		CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8C55332A95515C0060B75B /* Onboarding Text.swift */; };
@@ -722,6 +723,7 @@
 		CD82A2542A716C7C00111034 /* APIPersonUnreadCounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonUnreadCounts.swift; sourceTree = "<group>"; };
 		CD82A2562A716D7C00111034 /* PersonRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonRepository+Dependency.swift"; sourceTree = "<group>"; };
 		CD82A2582A71775E00111034 /* UnreadTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadTracker.swift; sourceTree = "<group>"; };
+		CD8461652A96F9EB0026A627 /* Website Indicator View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Website Indicator View.swift"; sourceTree = "<group>"; };
 		CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSafeScrollView.swift; sourceTree = "<group>"; };
 		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		CD8C55332A95515C0060B75B /* Onboarding Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboarding Text.swift"; sourceTree = "<group>"; };
@@ -1139,6 +1141,7 @@
 				CDF1EF172A6C40C9003594B6 /* Menu Button.swift */,
 				CD1446172A58FC3B00610EF1 /* InfoStackView.swift */,
 				CDE3BA882A8C64BD00B972E2 /* Collapsible Text Item.swift */,
+				CD8461652A96F9EB0026A627 /* Website Indicator View.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2401,6 +2404,7 @@
 				50A881242A71A4CD003E3661 /* PersistenceRepository.swift in Sources */,
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,
 				63F0C7BB2A058CB700A18C5D /* URLSessionWebSocketTask - Send Ping.swift in Sources */,
+				CD8461662A96F9EB0026A627 /* Website Indicator View.swift in Sources */,
 				038A16E92A7A9C640087987E /* LayoutWidget.swift in Sources */,
 				50811B2E2A92046D006BA3F2 /* URL+Mock.swift in Sources */,
 				CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */,
