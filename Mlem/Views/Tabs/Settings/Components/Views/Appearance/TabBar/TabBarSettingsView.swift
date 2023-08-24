@@ -67,7 +67,7 @@ struct TabBarSettingsView: View {
         .animation(.easeIn, value: profileTabLabel)
         .onChange(of: appState.currentActiveAccount.nickname) { nickname in
             print("new nickname: \(nickname)")
-            textFieldEntry = nickname // appState.currentActiveAccount.nickname
+            textFieldEntry = nickname
         }
     }
 }

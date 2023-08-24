@@ -121,7 +121,6 @@ struct ContentView: View {
             }
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
-        .environmentObject(appState)
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
         .onChange(of: scenePhase) { phase in
