@@ -79,24 +79,22 @@ struct AddSavedInstanceView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack {
-                    title
-                    headerSection
-                }
-                Grid(
-                    alignment: .trailing,
-                    horizontalSpacing: 0,
-                    verticalSpacing: 15
-                ) {
-                    formSection
-                }.disabled(viewState == .loading)
-                footerView
+        ScrollView {
+            VStack {
+                title
+                headerSection
             }
-            .transaction { transaction in
-                transaction.disablesAnimations = true
-            }
+            Grid(
+                alignment: .trailing,
+                horizontalSpacing: 0,
+                verticalSpacing: 15
+            ) {
+                formSection
+            }.disabled(viewState == .loading)
+            footerView
+        }
+        .transaction { transaction in
+            transaction.disablesAnimations = true
         }
         .alert(using: $errorAlert) { content in
             Alert(title: Text(content.title), message: Text(content.message))
