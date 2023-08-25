@@ -8,15 +8,13 @@
 import Dependencies
 import SwiftUI
 
-// swiftlint:disable file_length
-// swiftlint:disable type_body_length
-
 /// View for showing user profiles
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
 struct UserView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
@@ -35,6 +33,7 @@ struct UserView: View {
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
     @State private var selectionSection = UserViewTab.overview
+    @State private var errorDetails: ErrorDetails?
     
     init(userID: Int, userDetails: APIPersonView? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -47,19 +46,17 @@ struct UserView: View {
     
     // account switching
     @State private var isPresentingAccountSwitcher: Bool = false
-    
-    struct FeedItem: Identifiable {
-        let id = UUID()
-        let published: Date
-        let comment: HierarchicalComment?
-        let post: APIPostView?
-    }
 
     var body: some View {
-        contentView
-            .sheet(isPresented: $isPresentingAccountSwitcher) {
-                AccountsPage()
-            }
+        if let errorDetails = errorDetails {
+            ErrorView(errorDetails)
+                .fancyTabScrollCompatible()
+        } else {
+            contentView
+                .sheet(isPresented: $isPresentingAccountSwitcher) {
+                    AccountsPage()
+                }
+        }
     }
 
     @ViewBuilder
@@ -127,16 +124,12 @@ struct UserView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal)
             
-            switch selectionSection {
-            case UserViewTab.overview:
-                mixedFeed
-            case UserViewTab.comments:
-                commentsFeed
-            case UserViewTab.posts:
-                postsFeed
-            case UserViewTab.saved:
-                savedFeed
-            }
+            UserFeedView(
+                userID: userID,
+                privatePostTracker: privatePostTracker,
+                privateCommentTracker: privateCommentTracker,
+                selectedTab: $selectionSection
+            )
         }
         .fancyTabScrollCompatible()
         .environmentObject(privatePostTracker)
@@ -179,145 +172,6 @@ struct UserView: View {
         userID == appState.currentActiveAccount.id
     }
     
-    @ViewBuilder
-    private var emptyFeed: some View {
-        HStack {
-            Spacer()
-            Text("Nothing to see here, get out there and make some stuff!")
-                .padding()
-                .font(.headline)
-                .opacity(0.5)
-            Spacer()
-        }
-        .background()
-    }
-    
-    @ViewBuilder
-    private var commentsFeed: some View {
-        if generateCommentFeed(savedItems: false).isEmpty {
-            emptyFeed
-        } else {
-            LazyVStack(spacing: 0) {
-                ForEach(generateCommentFeed(savedItems: false)) { feedItem in
-                    if let comment = feedItem.comment {
-                        commentEntry(for: comment)
-                    }
-                }
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var postsFeed: some View {
-        if generatePostFeed(savedItems: false).isEmpty {
-            emptyFeed
-        } else {
-            VStack(spacing: 0) {
-                ForEach(generatePostFeed(savedItems: false)) { feedItem in
-                    if let post = feedItem.post {
-                        postEntry(for: post)
-                    }
-                }
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var mixedFeed: some View {
-        if generateMixedFeed(savedItems: false).isEmpty {
-            emptyFeed
-        } else {
-            LazyVStack(spacing: 0) {
-                ForEach(generateMixedFeed(savedItems: false)) { feedItem in
-                    if let comment = feedItem.comment {
-                        commentEntry(for: comment)
-                    } else if let post = feedItem.post {
-                        postEntry(for: post)
-                    }
-                }
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var savedFeed: some View {
-        if generateMixedFeed(savedItems: true).isEmpty {
-            emptyFeed
-        } else {
-            LazyVStack(spacing: 0) {
-                ForEach(generateMixedFeed(savedItems: true)) { feedItem in
-                    if let comment = feedItem.comment {
-                        commentEntry(for: comment)
-                    } else if let post = feedItem.post {
-                        postEntry(for: post)
-                    }
-                }
-            }
-        }
-    }
-    
-    private func generateCommentFeed(savedItems: Bool) -> [FeedItem] {
-        privateCommentTracker.comments
-            // Matched saved state
-            .filter {
-                if savedItems {
-                    return $0.commentView.saved
-                } else {
-                    // If we unfavorited something while
-                    // here we don't want it showing up in our feed
-                    return $0.commentView.creator.id == userID
-                }
-            }
-        
-            // Create Feed Items
-            .map {
-                FeedItem(published: $0.commentView.comment.published, comment: $0, post: nil)
-            }
-        
-            // Newest first
-            .sorted(by: {
-                $0.published > $1.published
-            })
-    }
-    
-    private func generatePostFeed(savedItems: Bool) -> [FeedItem] {
-        privatePostTracker.items
-            // Matched saved state
-            .filter {
-                if savedItems {
-                    return $0.saved
-                } else {
-                    // If we unfavorited something while
-                    // here we don't want it showing up in our feed
-                    return $0.creator.id == userID
-                }
-            }
-        
-            // Create Feed Items
-            .map {
-                FeedItem(published: $0.post.published, comment: nil, post: $0)
-            }
-        
-            // Newest first
-            .sorted(by: {
-                $0.published > $1.published
-            })
-    }
-    
-    private func generateMixedFeed(savedItems: Bool) -> [FeedItem] {
-        var result: [FeedItem] = []
-        
-        result.append(contentsOf: generatePostFeed(savedItems: savedItems))
-        result.append(contentsOf: generateCommentFeed(savedItems: savedItems))
-        
-        // Sort by authored date, newest first
-        result = result.sorted(by: {
-            $0.published > $1.published
-        })
-        
-        return result
-    }
-    
     @MainActor
     private var progressView: some View {
         ProgressView {
@@ -357,8 +211,27 @@ struct UserView: View {
             userDetails = authoredContent.personView
             moderatedCommunities = authoredContent.moderates
             updateAvatarSubtext()
+            
+            errorDetails = nil
         } catch {
-            handle(error)
+            if userDetails == nil {
+                errorDetails = ErrorDetails(error: error, refresh: {
+                    await tryLoadUser()
+                    return userDetails != nil
+                })
+            } else {
+                if !InternetConnectionManager.isConnectedToNetwork() {
+                    await notifier.add(.failure("You're offline"))
+                } else {
+                    errorHandler.handle(
+                        .init(
+                            title: "Couldn't load user info",
+                            message: "There was an error while loading user information.\nTry again later.",
+                            underlyingError: error
+                        )
+                    )
+                }
+            }
         }
     }
     
@@ -366,53 +239,7 @@ struct UserView: View {
         try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
     }
 
-    private func handle(_ error: Error) {
-        errorHandler.handle(
-            .init(
-                title: "Couldn't load user info",
-                message: "There was an error while loading user information.\nTry again later.",
-                underlyingError: error
-            )
-        )
-    }
-    
-    /*
-     User post
-     */
-    private func postEntry(for post: APIPostView) -> some View {
-        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
-            VStack(spacing: 0) {
-                FeedPost(
-                    postView: post,
-                    showPostCreator: false,
-                    showCommunity: true
-                )
-                
-                Divider()
-            }
-        }
-        .buttonStyle(.plain)
-    }
-    
-    /*
-     User comment
-     */
-    private func commentEntry(for comment: HierarchicalComment) -> some View {
-        VStack(spacing: 0) {
-            CommentItem(
-                hierarchicalComment: comment,
-                postContext: nil,
-                indentBehaviour: .never,
-                showPostContext: true,
-                showCommentCreator: false
-            )
-            
-            Divider()
-        }
-    }
 }
-
-// swiftlint:enable type_body_length
 
 // TODO: darknavi - Move these to a common area for reuse
 struct UserViewPreview: PreviewProvider {
@@ -439,25 +266,17 @@ struct UserViewPreview: PreviewProvider {
         displayName: String,
         userType: PreviewUserType
     ) -> APIPerson {
-        APIPerson(
+        .mock(
             id: name.hashValue,
             name: name,
             displayName: displayName,
             avatar: URL(string: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp"),
-            banned: false,
             published: Date.now.advanced(by: -10000),
-            updated: nil,
             actorId: URL(string: "https://google.com")!,
             bio: "Just here for the good vibes!",
-            local: false,
             banner: URL(string: "https://i.imgur.com/wcayaCB.jpeg"),
-            deleted: false,
-            sharedInboxUrl: nil,
-            matrixUserId: nil,
             admin: userType == .admin,
-            botAccount: userType == .bot,
-            banExpires: nil,
-            instanceId: 123
+            botAccount: userType == .bot
         )
     }
     
@@ -480,50 +299,25 @@ struct UserViewPreview: PreviewProvider {
     }
     
     static func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
-        APICommunity(
+        .mock(
             id: id,
             name: "\(namePrefix) Fake Community \(id)",
             title: "\(namePrefix) Fake Community \(id) Title",
             description: "This is a fake community (#\(id))",
             published: Date.now,
-            updated: nil,
-            removed: false,
-            deleted: false,
-            nsfw: false,
-            actorId: URL(string: "https://lemmy.google.com/c/\(id)")!,
-            local: false,
-            icon: nil,
-            banner: nil,
-            hidden: false,
-            postingRestrictedToMods: false,
-            instanceId: 0
+            actorId: URL(string: "https://lemmy.google.com/c/\(id)")!
         )
     }
     
     static func generatePreviewPost(creator: APIPerson) -> APIPostView {
         let community = generateFakeCommunity(id: 123, namePrefix: "Test")
-        let post = APIPost(
-            id: 123,
+        let post: APIPost = .mock(
             name: "Test Post Title",
-            url: nil,
             body: "This is a test post body",
             creatorId: creator.id,
-            communityId: 123,
-            deleted: false,
             embedDescription: "Embeedded Description",
             embedTitle: "Embedded Title",
-            embedVideoUrl: nil,
-            featuredCommunity: false,
-            featuredLocal: false,
-            languageId: 0,
-            apId: "my.app.id",
-            local: false,
-            locked: false,
-            nsfw: false,
-            published: Date.now,
-            removed: false,
-            thumbnailUrl: nil,
-            updated: nil
+            published: Date.now
         )
         
         let postVotes = APIPostAggregates(
@@ -588,5 +382,3 @@ struct UserViewPreview: PreviewProvider {
         )
     }
 }
-
-// swiftlint:enable file_length

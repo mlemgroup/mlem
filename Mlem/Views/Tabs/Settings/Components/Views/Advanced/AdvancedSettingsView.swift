@@ -9,10 +9,20 @@ import Nuke
 import SwiftUI
 
 struct AdvancedSettingsView: View {
+    @AppStorage("developerMode") var developerMode: Bool = false
+    
     @State private var diskUsage: Int64 = 0
     
     var body: some View {
         List {
+            Section {
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "wrench.adjustable.fill",
+                    settingName: "Developer Mode",
+                    isTicked: $developerMode
+                )
+            }
+            
             Section {
                 HStack {
                     Text("Cache")

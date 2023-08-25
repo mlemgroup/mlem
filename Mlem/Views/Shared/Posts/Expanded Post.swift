@@ -39,6 +39,8 @@ struct ExpandedPost: View {
     @EnvironmentObject var postTracker: PostTracker
     @State var post: APIPostView
     
+    @State var commentErrorDetails: ErrorDetails?
+    
     @State var dirtyVote: ScoringOperation = .resetVote
     @State var dirtyScore: Int = 0
     @State var dirtySaved: Bool = false
@@ -175,7 +177,9 @@ struct ExpandedPost: View {
      */
     @ViewBuilder
     private func noCommentsView() -> some View {
-        if isLoading {
+        if let details = commentErrorDetails {
+            ErrorView(details)
+        } else if isLoading {
             LoadingView(whatIsLoading: .comments)
         } else {
             VStack(spacing: 2) {
