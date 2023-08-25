@@ -134,6 +134,7 @@ struct PostDetailEditorView: View {
                             .dynamicTypeSize(.small ... .accessibility2)
                             .accessibilityHidden(true)
                         TextField("Your post title", text: $postTitle)
+                            .lineLimit(AppConstants.textFieldVariableLineLimit)
                             .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
                             .dynamicTypeSize(.small ... .accessibility2)
                             .accessibilityLabel("Title")
