@@ -24,6 +24,8 @@ private struct AnchorsKey: PreferenceKey {
     }
 }
 
+// swiftlint:disable type_body_length
+
 struct ExpandedPost: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
@@ -325,3 +327,5 @@ struct ExpandedPost: View {
         }
     }
 }
+
+// swiftlint:enable type_body_length
