@@ -65,7 +65,6 @@ struct UserView: View {
             .onChange(of: selectedNavigationTabHashValue) { newValue in
                 if newValue == TabSelection.profile.hashValue {
                     print("re-selected \(TabSelection.profile) tab")
-#if DEBUG
                     if navigationPath.wrappedValue.isEmpty {
                         withAnimation {
                             scrollViewProxy?.scrollTo(scrollToTop, anchor: .bottom)
@@ -73,7 +72,6 @@ struct UserView: View {
                     } else {
                         navigationPath.wrappedValue.goBack()
                     }
-#endif
                 }
             }
     }

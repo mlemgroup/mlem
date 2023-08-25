@@ -114,7 +114,6 @@ struct InboxView: View {
                     .onChange(of: selectedNavigationTabHashValue) { newValue in
                         if newValue == TabSelection.inbox.hashValue {
                             print("re-selected \(TabSelection.inbox) tab")
-#if DEBUG
                             if navigationPath.isEmpty, let scrollToTopId {
                                 withAnimation {
                                     proxy.scrollTo(scrollToTopId, anchor: .bottom)
@@ -122,7 +121,6 @@ struct InboxView: View {
                             } else {
                                 navigationPath.goBack()
                             }
-#endif
                         }
                     }
             }

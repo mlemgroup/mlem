@@ -141,7 +141,6 @@ struct FeedView: View {
                 .onChange(of: selectedNavigationTabHashValue) { newValue in
                     if newValue == TabSelection.feeds.hashValue {
                         print("re-selected \(TabSelection.feeds) tab")
-#if DEBUG
                         if navigationPath.wrappedValue.isEmpty {
                             if scrollToTopAppeared {
                                 /// Already scrolled to top: Pop to sidebar.
@@ -156,7 +155,6 @@ struct FeedView: View {
                         } else {
                             navigationPath.wrappedValue.goBack()
                         }
-#endif
                     }
                 }
             }

@@ -65,7 +65,6 @@ struct SettingsView: View {
                 .onChange(of: selectedNavigationTabHashValue) { newValue in
                     if newValue == TabSelection.settings.hashValue {
                         print("re-selected \(TabSelection.settings) tab")
-#if DEBUG
                         if navigationPath.isEmpty {
                             withAnimation {
                                 proxy.scrollTo(scrollToTop, anchor: .bottom)
@@ -73,7 +72,6 @@ struct SettingsView: View {
                         } else {
                             navigationPath.goBack()
                         }
-#endif
                     }
                 }
             }

@@ -53,7 +53,6 @@ struct SearchView: View {
                     .onChange(of: selectedNavigationTabHashValue) { newValue in
                         if newValue == TabSelection.search.hashValue {
                             print("re-selected \(TabSelection.search) tab")
-#if DEBUG
                             if navigationPath.isEmpty, let scrollToId {
                                 withAnimation {
                                     proxy.scrollTo(scrollToId, anchor: .bottom)
@@ -61,7 +60,6 @@ struct SearchView: View {
                             } else {
                                 navigationPath.goBack()
                             }
-#endif
                         }
                     }
             }
