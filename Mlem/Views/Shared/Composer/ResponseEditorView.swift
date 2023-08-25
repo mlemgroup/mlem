@@ -51,6 +51,7 @@ struct ResponseEditorView: View {
                     text: $editorBody,
                     axis: .vertical
                 )
+                .lineLimit(AppConstants.textFieldVariableLineLimit)
                 .accessibilityLabel("Response Body")
                 .padding(AppConstants.postAndCommentSpacing)
                 .focused($focusedField, equals: .editorBody)
