@@ -42,7 +42,7 @@ class ErrorHandler: ObservableObject {
                     return
                 }
                 
-                if !InternetConnectionManager.isConnectedToNetwork() && error.message != nil {
+                if !InternetConnectionManager.isConnectedToNetwork() && error.title != nil {
                     await notifier.add(.noInternet)
                     return
                 }
