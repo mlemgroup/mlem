@@ -12,7 +12,7 @@ extension InboxView {
     @ViewBuilder
     func messagesFeedView() -> some View {
         Group {
-            if messagesTracker.items.isEmpty && !messagesTracker.isLoading {
+            if messagesTracker.items.isEmpty, !messagesTracker.isLoading {
                 noMessagesView()
             } else {
                 LazyVStack(spacing: 0) {
@@ -71,9 +71,11 @@ extension InboxView {
                     }
                 }
             }
-            .addSwipeyActions(primaryLeadingAction: nil,
-                              secondaryLeadingAction: nil,
-                              primaryTrailingAction: toggleMessageReadSwipeAction(message: message),
-                              secondaryTrailingAction: replyToMessageSwipeAction(message: message))
+            .addSwipeyActions(
+                primaryLeadingAction: nil,
+                secondaryLeadingAction: nil,
+                primaryTrailingAction: toggleMessageReadSwipeAction(message: message),
+                secondaryTrailingAction: replyToMessageSwipeAction(message: message)
+            )
     }
 }

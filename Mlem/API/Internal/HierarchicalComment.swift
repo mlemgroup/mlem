@@ -41,30 +41,31 @@ extension HierarchicalComment: Equatable {
 }
 
 extension [HierarchicalComment] {
-
     /// A method to insert an updated `APICommentView` into this array of `HierarchicalComment`
     /// - Parameter commentView: The `APICommentView` you wish to insert
     /// - Returns: An optional `HierarchicalComment` containing the updated comment and it's original chidren if found
     @discardableResult mutating func update(with commentView: APICommentView) -> HierarchicalComment? {
-        return self.insert(commentView: commentView)
+        insert(commentView: commentView)
     }
 
     private mutating func insert(commentView: APICommentView) -> HierarchicalComment? {
         let targetId = commentView.id
 
-        for (index, element) in self.enumerated() {
+        for (index, element) in enumerated() {
             if element.id == targetId {
                 // we've found the comment we're targeting so re-create it and ensure we retain it's children
                 let updatedComment = HierarchicalComment(
                     comment: commentView,
                     children: element.children,
                     parentCollapsed: element.isParentCollapsed,
-                    collapsed: element.isCollapsed)
+                    collapsed: element.isCollapsed
+                )
                 self[index] = .init(
                     comment: commentView,
                     children: element.children,
                     parentCollapsed: element.isParentCollapsed,
-                    collapsed: element.isCollapsed)
+                    collapsed: element.isCollapsed
+                )
                 return updatedComment
             } else if let updatedComment = self[index].children.insert(commentView: commentView) {
                 // if the parent wasn't the target, recursively check the children before moving on...
@@ -81,14 +82,15 @@ extension [HierarchicalComment] {
             return nil
         }
 
-        for (index, element) in self.enumerated() {
+        for (index, element) in enumerated() {
             if element.id == parentId {
                 // we've found the comment we're replying too, so re-create it and append this to it's children
                 let reply = HierarchicalComment(
                     comment: commentView,
                     children: [],
                     parentCollapsed: element.isParentCollapsed,
-                    collapsed: element.isCollapsed)
+                    collapsed: element.isCollapsed
+                )
                 let updatedParent = self[index]
                 updatedParent.children.append(reply)
                 self[index] = updatedParent
@@ -103,8 +105,7 @@ extension [HierarchicalComment] {
     }
 }
 
-internal extension HierarchicalComment {
-    
+extension HierarchicalComment {
     /// Recursively flat maps `comment.children`, preprending `comment` to that array.
     ///
     /// For example: Pass this function into `flatMap()` on array of parent `HierarchicalComment`s in order to construct an array of parent/child `[HierarchicalComment]` in a single array.
@@ -114,12 +115,12 @@ internal extension HierarchicalComment {
 }
 
 // MARK: - Expanded/Collapsed State
-internal extension HierarchicalComment {
-    
+
+extension HierarchicalComment {
     /// Sets this comment's collapsed state, while updating children with closest (and applicable) parent's collapsed state.
     func setCollapsed(_ isCollapsed: Bool) {
         self.isCollapsed = isCollapsed
-        self.children.forEach { child in
+        children.forEach { child in
             child.setParentCollapsed(isCollapsed)
         }
     }
@@ -127,7 +128,7 @@ internal extension HierarchicalComment {
     /// Recursively sets comment's `isParentCollapsed` state using the closest (and applicable) parent's value.
     private func setParentCollapsed(_ isParentCollapsed: Bool) {
         self.isParentCollapsed = isParentCollapsed
-        self.children.forEach { child in
+        children.forEach { child in
             /// If self is collapsed, all children's isParentCollapsed must also be true, since it's the closest parent that matters.
             let closestParentCollapsed = self.isCollapsed ? true : isParentCollapsed
             child.setParentCollapsed(closestParentCollapsed)
@@ -136,7 +137,6 @@ internal extension HierarchicalComment {
 }
 
 extension [APICommentView] {
-
     /// A representation of this array of `APICommentView` in a hierarchy that is suitable for rendering the UI with parent/child relationships
     var hierarchicalRepresentation: [HierarchicalComment] {
         var allComments = self
@@ -159,14 +159,16 @@ extension [APICommentView] {
                     comment: comment,
                     children: [],
                     parentCollapsed: false,
-                    collapsed: false)
+                    collapsed: false
+                )
             }
             
             let commentWithChildren = HierarchicalComment(
                 comment: comment,
                 children: [],
                 parentCollapsed: false,
-                collapsed: false)
+                collapsed: false
+            )
             commentWithChildren.children = childIds
                 .compactMap { id -> HierarchicalComment? in
                     guard let child = identifiedComments[id] else { return nil }

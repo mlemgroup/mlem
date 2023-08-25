@@ -42,6 +42,7 @@ struct ConcreteEditorModel: Identifiable {
 }
 
 // MARK: Convenience Initializers
+
 extension ConcreteEditorModel {
     /**
      Create a ConcreteEditorModel attached to a post.
@@ -49,10 +50,12 @@ extension ConcreteEditorModel {
      - .reportPost: report composer reporting the post. If postTracker present, updates it.
      - .editPost: post composer editing the post.
      */
-    init(post: APIPostView,
-         postTracker: PostTracker? = nil,
-         commentTracker: CommentTracker? = nil,
-         operation: PostOperation) {
+    init(
+        post: APIPostView,
+        postTracker: PostTracker? = nil,
+        commentTracker: CommentTracker? = nil,
+        operation: PostOperation
+    ) {
         switch operation {
         case .replyToPost: self.editorModel = ReplyToPost(post: post)
         case .reportPost: self.editorModel = ReportPost(post: post)
@@ -65,15 +68,21 @@ extension ConcreteEditorModel {
      - .reportComment: report composer reporting the comment.
      - .editComment: comment compser editing the comment. If commentTracker present, updates it.
      */
-    init(comment: APICommentView,
-         commentTracker: CommentTracker? = nil,
-         operation: CommentOperation) {
+    init(
+        comment: APICommentView,
+        commentTracker: CommentTracker? = nil,
+        operation: CommentOperation
+    ) {
         switch operation {
-        case .replyToComment: self.editorModel = ReplyToComment(comment: comment,
-                                                                commentTracker: commentTracker)
+        case .replyToComment: self.editorModel = ReplyToComment(
+                comment: comment,
+                commentTracker: commentTracker
+            )
         case .reportComment: self.editorModel = ReportComment(comment: comment)
-        case .editComment: self.editorModel = CommentEditor(comment: comment,
-                                                            commentTracker: commentTracker)
+        case .editComment: self.editorModel = CommentEditor(
+                comment: comment,
+                commentTracker: commentTracker
+            )
         }
     }
     

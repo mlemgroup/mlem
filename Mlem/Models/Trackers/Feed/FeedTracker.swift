@@ -10,7 +10,6 @@ import Dependencies
 import Foundation
 
 class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
-    
     @Dependency(\.apiClient) var apiClient
     
     // isLoading is accessible but does not publish its state because it triggers lots of unexpected view redraws
@@ -19,16 +18,18 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
 
     private(set) var page: Int = 1
 
-    private var ids: Set<Item.UniqueIdentifier> = .init(minimumCapacity: 1_000)
+    private var ids: Set<Item.UniqueIdentifier> = .init(minimumCapacity: 1000)
     private let shouldPerformMergeSorting: Bool
     let internetSpeed: InternetSpeed
 
-    init(shouldPerformMergeSorting: Bool = true,
-         internetSpeed: InternetSpeed,
-         initialItems: [Item] = .init()) {
+    init(
+        shouldPerformMergeSorting: Bool = true,
+        internetSpeed: InternetSpeed,
+        initialItems: [Item] = .init()
+    ) {
         self.shouldPerformMergeSorting = shouldPerformMergeSorting
         self.internetSpeed = internetSpeed
-        items = initialItems
+        self.items = initialItems
     }
 
     // MARK: - Public methods
@@ -70,7 +71,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     /// - Returns: The `Response` type of the request as a discardable result
     @discardableResult func perform<Request: APIRequest>(
         _ request: Request,
-        filtering: @escaping (_: Request.Response.Item) -> Bool = { _ in true}
+        filtering: @escaping (_: Request.Response.Item) -> Bool = { _ in true }
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
         let response = try await retrieveItems(with: request)
 
@@ -100,7 +101,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     /// A method to add new items into the tracker, duplicate items will be rejected
     /// - Parameter newItems: The array of new `Item`'s you wish to add
     @MainActor
-    func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true}) {
+    func add(_ newItems: [Item], filtering: @escaping (_: Item) -> Bool = { _ in true }) {
         let accepted = dedupedItems(from: newItems.filter(filtering))
         if !shouldPerformMergeSorting {
             RunLoop.main.perform { [self] in
@@ -109,12 +110,10 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
             return
         }
 
-        let merged =  merge(arr1: items, arr2: accepted, compare: { $0.published > $1.published })
+        let merged = merge(arr1: items, arr2: accepted, compare: { $0.published > $1.published })
         RunLoop.main.perform { [self] in
             items = merged
         }
-        
-        return
     }
 
     /// A method to add an item  to the start of the current list of items
@@ -146,7 +145,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
         filteredWith filter: @escaping (_: Item) -> Bool = { _ in true }
     ) {
         page = newItems.isEmpty ? 1 : 2
-        ids = .init(minimumCapacity: 1_000)
+        ids = .init(minimumCapacity: 1000)
         items = dedupedItems(from: newItems.filter(filter))
     }
 
@@ -170,7 +169,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     @discardableResult func filter(_ callback: (Item) -> Bool) -> Int {
         var removedElements = 0
         
-        items = items.filter({
+        items = items.filter {
             let filterResult = callback($0)
             
             // Remove the ID from the IDs set as well
@@ -179,7 +178,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
                 removedElements += 1
             }
             return filterResult
-        })
+        }
         
         return removedElements
     }

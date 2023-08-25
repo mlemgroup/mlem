@@ -11,22 +11,26 @@ import UIKit
 
 struct AppConstants {
     static let cacheSize = 500_000_000 // 500MB in bytes
-    static let urlCache: URLCache = URLCache(memoryCapacity: cacheSize, diskCapacity: cacheSize)
+    static let urlCache: URLCache = .init(memoryCapacity: cacheSize, diskCapacity: cacheSize)
     static let imageSizeCache: NSCache<NSString, ImageSize> = .init()
-    static let webSocketSession: URLSession = URLSession(configuration: .default)
-    static let urlSession: URLSession = URLSession(configuration: .default)
+    static let webSocketSession: URLSession = .init(configuration: .default)
+    static let urlSession: URLSession = .init(configuration: .default)
 
     // MARK: - Date parsing
-    static let dateComponentsFormatter: DateComponentsFormatter = DateComponentsFormatter()
+
+    static let dateComponentsFormatter: DateComponentsFormatter = .init()
 
     // MARK: - Keychain
-    static let keychain: Keychain = Keychain(service: "com.hanners.Mlem-keychain")
+
+    static let keychain: Keychain = .init(service: "com.hanners.Mlem-keychain")
 
     // MARK: - DragGesture thresholds
+
     static let longSwipeDragMin: CGFloat = 150
     static let shortSwipeDragMin: CGFloat = 60
     
     // MARK: - Sizes
+
     static let maxFeedPostHeight: CGFloat = 400
     static let maxFeedPostHeightExpanded: CGFloat = 3000
     static let thumbnailSize: CGFloat = 60
@@ -50,6 +54,7 @@ struct AppConstants {
     static let editorOverscroll: CGFloat = 30
     
     // MARK: - SFSymbols
+
     // votes
     static let generalVoteSymbolName: String = "arrow.up.arrow.down.square"
     
@@ -64,9 +69,8 @@ struct AppConstants {
     static let emptyResetVoteSymbolName: String = "minus.square"
     static let fullResetVoteSymbolName: String = "minus.square.fill"
     static let scoringOpToVoteImage: [ScoringOperation?: String] = [.upvote: "arrow.up.square.fill",
-                                                                   .resetVote: "arrow.up.square",
-                                                                   .downvote: "arrow.down.square.fill"
-    ]
+                                                                    .resetVote: "arrow.up.square",
+                                                                    .downvote: "arrow.down.square.fill"]
     
     // reply/send
     static let emptyReplySymbolName: String = "arrowshape.turn.up.left"
@@ -110,7 +114,7 @@ struct AppConstants {
     static let limitImageHeightInFeedSymbolName: String = "rectangle.compress.vertical"
     
     // sort types
-    static let activeSortSymbolName: String = "popcorn" // not married to this idea 
+    static let activeSortSymbolName: String = "popcorn" // not married to this idea
     static let activeSortSymbolNameFill: String = "popcorn.fill"
     static let hotSortSymbolName: String = "flame"
     static let hotSortSymbolNameFill: String = "flame.fill"
@@ -147,10 +151,12 @@ struct AppConstants {
     static let absentSymbolName: String = "circle"
     
     // MARK: - Other
+
     static let pictureEmoji: [String] = ["🎆", "🎇", "🌠", "🌅", "🌆", "🌁", "🌃", "🌄", "🌉", "🌌", "🌇", "🖼️", "🎑", "🏞️", "🗾", "🏙️"]
     static let infiniteLoadThresholdOffset: Int = -10
     
     // MARK: - Text
+
     static let blockUserPrompt: String = "Really block this user?"
     static let reportPostPrompt: String = "Really report this post?"
 }

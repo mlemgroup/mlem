@@ -5,9 +5,9 @@
 //  Created by Eric Andrews on 2023-07-04.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
-import Dependencies
 
 struct UltraCompactPost: View {
     // app storage
@@ -47,7 +47,7 @@ struct UltraCompactPost: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
-            if shouldShowPostThumbnails && !thumbnailsOnRight {
+            if shouldShowPostThumbnails, !thumbnailsOnRight {
                 ThumbnailImageView(postView: postView)
             }
             
@@ -57,8 +57,10 @@ struct UltraCompactPost: View {
                         if showCommunity {
                             CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                         } else {
-                            UserProfileLink(user: postView.creator,
-                                            serverInstanceLocation: .trailing)
+                            UserProfileLink(
+                                user: postView.creator,
+                                serverInstanceLocation: .trailing
+                            )
                         }
                     }
                     
@@ -78,7 +80,7 @@ struct UltraCompactPost: View {
                 compactInfo
             }
             
-            if shouldShowPostThumbnails && thumbnailsOnRight {
+            if shouldShowPostThumbnails, thumbnailsOnRight {
                 ThumbnailImageView(postView: postView)
             }
         }
@@ -101,15 +103,19 @@ struct UltraCompactPost: View {
                 NSFWTag(compact: true)
             }
             
-            InfoStackView(votes: DetailedVotes(score: postView.counts.score,
-                                           upvotes: postView.counts.upvotes,
-                                           downvotes: postView.counts.downvotes,
-                                           myVote: postView.myVote ?? .resetVote,
-                                           showDownvotes: showDownvotesSeparately),
-                      published: postView.published,
-                      commentCount: postView.counts.comments,
-                      saved: postView.saved,
-                      alignment: .center)
+            InfoStackView(
+                votes: DetailedVotes(
+                    score: postView.counts.score,
+                    upvotes: postView.counts.upvotes,
+                    downvotes: postView.counts.downvotes,
+                    myVote: postView.myVote ?? .resetVote,
+                    showDownvotes: showDownvotesSeparately
+                ),
+                published: postView.published,
+                commentCount: postView.counts.comments,
+                saved: postView.saved,
+                alignment: .center
+            )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .font(.footnote)

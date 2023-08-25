@@ -1,5 +1,5 @@
 //
-//  Post.swift
+//  Post Link.swift
 //  Mlem
 //
 //  Created by tht7 on 23/06/2023.
@@ -14,7 +14,7 @@ struct PostLinkWithContext: Equatable, Identifiable, Hashable {
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
+        hasher.combine(id)
     }
 
     var id: Int { post.id }

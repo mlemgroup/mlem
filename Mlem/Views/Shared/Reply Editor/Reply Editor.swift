@@ -45,7 +45,6 @@ struct ReplyEditor: UIViewRepresentable {
 
             text = textView.text
         }
-
     }
 
     typealias UIViewType = UITextView

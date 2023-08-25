@@ -5,12 +5,11 @@
 //  Created by Eric Andrews on 2023-08-17.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
-import Dependencies
 
 struct InstanceSummary: View {
-    
     @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler: ErrorHandler
     
@@ -92,8 +91,10 @@ struct InstanceSummary: View {
                             .frame(maxWidth: .infinity)
                     }
                     .tint(nil) // override DisclosureGroup .primary tint
-                    .alert("Redirection Notice",
-                           isPresented: $isPresentingRedirectAlert) {
+                    .alert(
+                        "Redirection Notice",
+                        isPresented: $isPresentingRedirectAlert
+                    ) {
                         Button {
                             _ = URLHandler.handle(signupURL)
                             
@@ -123,17 +124,19 @@ struct InstanceSummary: View {
     
     @ViewBuilder
     func instanceIcon(url: URL?) -> some View {
-        CachedImage(url: url,
-                    shouldExpand: false,
-                    fixedSize: CGSize(width: 80, height: 80)) {
+        CachedImage(
+            url: url,
+            shouldExpand: false,
+            fixedSize: CGSize(width: 80, height: 80)
+        ) {
             AnyView(Image(systemName: "server.rack")
                 .resizable()
                 .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize))
         }
-                    .frame(width: 80, height: 80)
-                    .clipShape(Circle())
-                    .overlay(Circle()
-                        .stroke(.secondary, lineWidth: 2))
+        .frame(width: 80, height: 80)
+        .clipShape(Circle())
+        .overlay(Circle()
+            .stroke(.secondary, lineWidth: 2))
     }
     
     private func fetchInstanceDetails() async {
@@ -145,7 +148,7 @@ struct InstanceSummary: View {
                 siteData = siteResponse.siteView
             } else {
                 fetchFailed = true
-            }   
+            }
         } catch {
             errorHandler.handle(error)
         }

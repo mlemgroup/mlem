@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-internal extension Animation {
-    
+extension Animation {
     /// Animation for expanding or collapsing a comment and its child comments.
     static func showHideComment(_ collapse: Bool) -> Animation {
         let standard = (0.4, 1.0, collapse ? 0.25 : 0.3)
@@ -16,12 +15,12 @@ internal extension Animation {
         return .interactiveSpring(
             response: animationValues.0,
             dampingFraction: animationValues.1,
-            blendDuration: animationValues.2)
+            blendDuration: animationValues.2
+        )
     }
 }
 
-internal extension AnyTransition {
-    
+extension AnyTransition {
     static func markdownView() -> AnyTransition {
         .opacity
     }

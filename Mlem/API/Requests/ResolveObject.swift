@@ -9,7 +9,6 @@ import Foundation
 
 // lemmy_api_common::site::ResolveObject
 struct ResolveObjectRequest: APIGetRequest {
-
     typealias Response = ResolveObjectResponse
 
     let instanceURL: URL

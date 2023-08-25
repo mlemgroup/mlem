@@ -5,12 +5,11 @@
 //  Created by Nicholas Lawson on 10/06/2023.
 //
 
-import SwiftUI
 import SafariServices
+import SwiftUI
 
 /// A class that provides handling behaviour for `URL` actions
 class URLHandler {
-
     /// The type of action to perform in response to the URL
     enum Action {
         case error(String)
@@ -34,7 +33,7 @@ class URLHandler {
 
         Task { @MainActor in
             let viewController = SFSafariViewController(url: url, configuration: .default)
-            UIApplication.shared.firstKeyWindow?.rootViewController?.present(viewController, animated: true)
+            UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
         }
         
         return .init(result: .handled, action: nil)
@@ -44,7 +43,7 @@ class URLHandler {
 extension SFSafariViewController.Configuration {
     /// The default settings used in this application
     static var `default`: Self {
-        let configuration = Self.init()
+        let configuration = Self()
         configuration.entersReaderIfAvailable = false
         return configuration
     }

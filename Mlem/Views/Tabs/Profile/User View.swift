@@ -15,7 +15,6 @@ import SwiftUI
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
 struct UserView: View {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
@@ -59,7 +58,7 @@ struct UserView: View {
     var body: some View {
         contentView
             .sheet(isPresented: $isPresentingAccountSwitcher) {
-                AccountsPage(onboarding: false)
+                AccountsPage()
             }
     }
 
@@ -97,11 +96,12 @@ struct UserView: View {
             title: userDetails.person.displayName ?? userDetails.person.name,
             subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
             avatarSubtext: $avatarSubtext,
-            avatarSubtextClicked: self.toggleCakeDayVisible,
+            avatarSubtextClicked: toggleCakeDayVisible,
             bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
             avatarUrl: userDetails.person.avatar,
             label1: "\(userDetails.counts.commentCount) Comments",
-            label2: "\(userDetails.counts.postCount) Posts")
+            label2: "\(userDetails.counts.postCount) Posts"
+        )
     }
     
     private func view(for userDetails: APIPersonView) -> some View {
@@ -176,7 +176,7 @@ struct UserView: View {
     }
     
     private func isShowingOwnProfile() -> Bool {
-        return userID == appState.currentActiveAccount.id
+        userID == appState.currentActiveAccount.id
     }
     
     @ViewBuilder
@@ -257,9 +257,9 @@ struct UserView: View {
     }
     
     private func generateCommentFeed(savedItems: Bool) -> [FeedItem] {
-        return privateCommentTracker.comments
+        privateCommentTracker.comments
             // Matched saved state
-            .filter({
+            .filter {
                 if savedItems {
                     return $0.commentView.saved
                 } else {
@@ -267,23 +267,23 @@ struct UserView: View {
                     // here we don't want it showing up in our feed
                     return $0.commentView.creator.id == userID
                 }
-            })
+            }
         
             // Create Feed Items
-            .map({
-                return FeedItem(published: $0.commentView.comment.published, comment: $0, post: nil)
-            })
+            .map {
+                FeedItem(published: $0.commentView.comment.published, comment: $0, post: nil)
+            }
         
             // Newest first
             .sorted(by: {
-            $0.published > $1.published
-        })
+                $0.published > $1.published
+            })
     }
     
     private func generatePostFeed(savedItems: Bool) -> [FeedItem] {
-        return privatePostTracker.items
+        privatePostTracker.items
             // Matched saved state
-            .filter({
+            .filter {
                 if savedItems {
                     return $0.saved
                 } else {
@@ -291,17 +291,17 @@ struct UserView: View {
                     // here we don't want it showing up in our feed
                     return $0.creator.id == userID
                 }
-            })
+            }
         
             // Create Feed Items
-            .map({
-                return FeedItem(published: $0.post.published, comment: nil, post: $0)
-            })
+            .map {
+                FeedItem(published: $0.post.published, comment: nil, post: $0)
+            }
         
             // Newest first
             .sorted(by: {
-            $0.published > $1.published
-        })
+                $0.published > $1.published
+            })
     }
     
     private func generateMixedFeed(savedItems: Bool) -> [FeedItem] {
@@ -341,15 +341,15 @@ struct UserView: View {
             }
             
             privateCommentTracker.add(authoredContent.comments
-                .sorted(by: { $0.comment.published > $1.comment.published})
-                .map({HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false)}))
+                .sorted(by: { $0.comment.published > $1.comment.published })
+                .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
             
             privatePostTracker.add(authoredContent.posts)
             
             if let savedContent = savedContentData {
                 privateCommentTracker.add(savedContent.comments
-                    .sorted(by: { $0.comment.published > $1.comment.published})
-                    .map({HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false)}))
+                    .sorted(by: { $0.comment.published > $1.comment.published })
+                    .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
                 
                 privatePostTracker.add(savedContent.posts)
             }
@@ -382,9 +382,10 @@ struct UserView: View {
     private func postEntry(for post: APIPostView) -> some View {
         NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
             VStack(spacing: 0) {
-                FeedPost(postView: post,
-                         showPostCreator: false,
-                         showCommunity: true
+                FeedPost(
+                    postView: post,
+                    showPostCreator: false,
+                    showCommunity: true
                 )
                 
                 Divider()
@@ -425,11 +426,11 @@ struct UserViewPreview: PreviewProvider {
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
     enum PreviewUserType: String, CaseIterable {
-        case normal = "normal"
-        case mod = "mod"
-        case op = "op"
-        case bot = "bot"
-        case admin = "admin"
+        case normal
+        case mod
+        case op
+        case bot
+        case admin
         case dev = "developer"
     }
     

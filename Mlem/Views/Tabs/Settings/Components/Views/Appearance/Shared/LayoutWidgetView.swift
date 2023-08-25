@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct LayoutWidgetView: View {
-    
     var widget: LayoutWidget
     var isDragging: Bool = false
     

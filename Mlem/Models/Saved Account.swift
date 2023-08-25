@@ -14,11 +14,13 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let username: String
     let storedNickname: String?
     
-    init(id: Int,
-         instanceLink: URL,
-         accessToken: String,
-         username: String,
-         storedNickname: String? = nil) {
+    init(
+        id: Int,
+        instanceLink: URL,
+        accessToken: String,
+        username: String,
+        storedNickname: String? = nil
+    ) {
         self.id = id
         self.instanceLink = instanceLink
         self.accessToken = accessToken
@@ -29,9 +31,11 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     /**
      Convenience initializer to create an equal copy with different non-identifying properties.
      */
-    init(from account: SavedAccount,
-         accessToken: String? = nil,
-         storedNickname: String? = nil) {
+    init(
+        from account: SavedAccount,
+        accessToken: String? = nil,
+        storedNickname: String? = nil
+    ) {
         self.id = account.id
         self.instanceLink = account.instanceLink
         self.accessToken = accessToken ?? account.accessToken
@@ -50,16 +54,16 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(self.id, forKey: .id)
-        try container.encode(self.instanceLink, forKey: .instanceLink)
+        try container.encode(id, forKey: .id)
+        try container.encode(instanceLink, forKey: .instanceLink)
         try container.encode("redacted", forKey: .accessToken)
-        try container.encode(self.username, forKey: .username)
-        try container.encode(self.storedNickname, forKey: .storedNickname)
+        try container.encode(username, forKey: .username)
+        try container.encode(storedNickname, forKey: .storedNickname)
     }
     
     static func == (lhs: SavedAccount, rhs: SavedAccount) -> Bool {
-        return lhs.id == rhs.id &&
-        lhs.instanceLink == rhs.instanceLink &&
-        lhs.username == rhs.username
+        lhs.id == rhs.id &&
+            lhs.instanceLink == rhs.instanceLink &&
+            lhs.username == rhs.username
     }
 }

@@ -10,7 +10,6 @@ import SwiftUI
 
 @MainActor
 class RepliesTracker: FeedTracker<APICommentReplyView>, InboxTracker {
-    
     func loadNextPage(account: SavedAccount, unreadOnly: Bool = false) async throws {
         try await perform(
             GetRepliesRequest(

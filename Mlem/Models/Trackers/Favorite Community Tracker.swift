@@ -11,7 +11,6 @@ import Foundation
 
 @MainActor
 class FavoriteCommunitiesTracker: ObservableObject {
-    
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Published var favoriteCommunities: [FavoriteCommunity] = .init()
@@ -29,7 +28,7 @@ class FavoriteCommunitiesTracker: ObservableObject {
     func favoriteCommunities(for account: SavedAccount) -> [APICommunity] {
         favoriteCommunities
             .filter { $0.forAccountID == account.id }
-            .map { $0.community }
+            .map(\.community)
             .sorted()
     }
     

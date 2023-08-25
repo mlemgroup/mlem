@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Navigation getter.swift
 //  Mlem
 //
 //  Created by tht7 on 22/06/2023.
@@ -16,5 +16,5 @@ extension EnvironmentValues {
     var navigationPath: Binding<NavigationPath> {
         get { self[NavigationPathGetter.self] }
         set { self[NavigationPathGetter.self] = newValue }
-      }
+    }
 }

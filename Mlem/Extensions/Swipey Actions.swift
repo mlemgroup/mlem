@@ -5,11 +5,10 @@
 //  Created by Eric Andrews on 2023-06-20.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct SwipeAction {
-    
     struct Symbol {
         let emptyName: String
         let fillName: String
@@ -21,7 +20,6 @@ struct SwipeAction {
 }
 
 struct SwipeyView: ViewModifier {
-    
     @Dependency(\.hapticManager) var hapticManager
     
     // state
@@ -37,10 +35,11 @@ struct SwipeyView: ViewModifier {
     let primaryTrailingAction: SwipeAction?
     let secondaryTrailingAction: SwipeAction?
     
-    init(primaryLeadingAction: SwipeAction?,
-         secondaryLeadingAction: SwipeAction?,
-         primaryTrailingAction: SwipeAction?,
-         secondaryTrailingAction: SwipeAction?
+    init(
+        primaryLeadingAction: SwipeAction?,
+        secondaryLeadingAction: SwipeAction?,
+        primaryTrailingAction: SwipeAction?,
+        secondaryTrailingAction: SwipeAction?
     ) {
         // assert that no secondary action exists without a primary action
         // this is logically equivalent to (primaryAction == nil -> secondaryAction == nil)
@@ -68,7 +67,7 @@ struct SwipeyView: ViewModifier {
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
-        // add a little shadow under the edge
+            // add a little shadow under the edge
             .background {
                 GeometryReader { proxy in
                     Rectangle()
@@ -80,7 +79,7 @@ struct SwipeyView: ViewModifier {
                 }
             }
             .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
-        // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
+            // needs to be high priority or else dragging on links leads to navigating to the link at conclusion of drag
             .highPriorityGesture(
                 DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
                     .updating($dragState) { value, state, _ in
@@ -181,11 +180,11 @@ struct SwipeyView: ViewModifier {
                         .accessibilityHidden(true) // prevent these from popping up in VO
                     }
             }
-        // prevents various animation glitches
+            // prevents various animation glitches
             .transaction { transaction in
                 transaction.disablesAnimations = true
             }
-        // disables links from highlighting when tapped
+            // disables links from highlighting when tapped
             .buttonStyle(EmptyButtonStyle())
     }
     
@@ -240,15 +239,17 @@ struct SwipeyView: ViewModifier {
         return true
     }
 }
+
 // swiftlint:enable cyclomatic_complexity
 // swiftlint:enable function_body_length
 
 extension View {
     @ViewBuilder
-    func addSwipeyActions(primaryLeadingAction: SwipeAction?,
-                          secondaryLeadingAction: SwipeAction?,
-                          primaryTrailingAction: SwipeAction?,
-                          secondaryTrailingAction: SwipeAction?
+    func addSwipeyActions(
+        primaryLeadingAction: SwipeAction?,
+        secondaryLeadingAction: SwipeAction?,
+        primaryTrailingAction: SwipeAction?,
+        secondaryTrailingAction: SwipeAction?
     ) -> some View {
         modifier(
             SwipeyView(

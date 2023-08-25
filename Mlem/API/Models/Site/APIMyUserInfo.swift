@@ -9,5 +9,5 @@ import Foundation
 
 // lemmy_api_common::site::MyUserInfo
 struct APIMyUserInfo: Decodable {
-    // TODO
+    // TODO:
 }

@@ -1,5 +1,5 @@
 //
-//  Sidebar.swift
+//  Sidebar View.swift
 //  Mlem
 //
 //  Created by David Bureš on 08.05.2023.
@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct CommunitySidebarView: View {
-    
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.errorHandler) var errorHandler
     
@@ -70,7 +69,8 @@ struct CommunitySidebarView: View {
                 avatarSubtext: .constant("Created \(getRelativeTime(date: communityDetails.communityView.community.published))"),
                 bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.banner : nil,
                 avatarUrl: communityDetails.communityView.community.icon,
-            label1: "\(communityDetails.communityView.counts.subscribers) Subscribers")
+                label1: "\(communityDetails.communityView.counts.subscribers) Subscribers"
+            )
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
                 Text("Description").tag(0)

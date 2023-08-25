@@ -28,7 +28,7 @@ struct ThemeLabel: View {
     
     var body: some View {
         Label {
-           Text(title)
+            Text(title)
         } icon: {
             if color2 != nil {
                 color1

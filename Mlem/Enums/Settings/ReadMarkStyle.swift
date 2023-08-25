@@ -10,7 +10,7 @@ import Foundation
 enum ReadMarkStyle: String, SettingsOptions {
     case bar, check
     
-    var label: String { self.rawValue.capitalized }
+    var label: String { rawValue.capitalized }
     
     var id: Self { self }
 }

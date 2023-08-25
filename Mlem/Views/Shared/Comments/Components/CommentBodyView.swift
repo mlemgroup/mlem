@@ -35,11 +35,13 @@ struct CommentBodyView: View {
     
     var spacing: CGFloat { compactComments ? AppConstants.compactSpacing : AppConstants.postAndCommentSpacing }
     
-    init(commentView: APICommentView,
-         isParentCollapsed: Binding<Bool>,
-         isCollapsed: Binding<Bool>,
-         showPostContext: Bool,
-         menuFunctions: [MenuFunction]) {
+    init(
+        commentView: APICommentView,
+        isParentCollapsed: Binding<Bool>,
+        isCollapsed: Binding<Bool>,
+        showPostContext: Bool,
+        menuFunctions: [MenuFunction]
+    ) {
         self._isParentCollapsed = isParentCollapsed
         self._isCollapsed = isCollapsed
         
@@ -49,7 +51,7 @@ struct CommentBodyView: View {
         
         let commentor = commentView.creator
         let publishedAgo: String = getTimeIntervalFromNow(date: commentView.comment.published)
-        commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
+        self.commentorLabel = "Last updated \(publishedAgo) ago by \(commentor.displayName ?? commentor.name)"
     }
     
     var body: some View {
@@ -127,7 +129,6 @@ struct CommentBodyView: View {
                 .foregroundColor(.secondary)
                 .font(.footnote)
             }
-            
         }
         .foregroundColor(.secondary)
         .font(.footnote)

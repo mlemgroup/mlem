@@ -28,10 +28,10 @@ struct InboxItem: Identifiable {
 
 extension InboxItem: Comparable {
     static func == (lhs: InboxItem, rhs: InboxItem) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id
     }
     
     static func < (lhs: InboxItem, rhs: InboxItem) -> Bool {
-        return lhs.published < rhs.published
+        lhs.published < rhs.published
     }
 }

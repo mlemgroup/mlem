@@ -1,9 +1,9 @@
-// 
+//
 //  PersistenceRepository+Dependency.swift
 //  Mlem
 //
 //  Created by mormaer on 26/07/2023.
-//  
+//
 //
 
 import Dependencies
@@ -14,8 +14,8 @@ extension PersistenceRepository: DependencyKey {
 }
 
 extension DependencyValues {
-  var persistenceRepository: PersistenceRepository {
-    get { self[PersistenceRepository.self] }
-    set { self[PersistenceRepository.self] = newValue }
-  }
+    var persistenceRepository: PersistenceRepository {
+        get { self[PersistenceRepository.self] }
+        set { self[PersistenceRepository.self] = newValue }
+    }
 }

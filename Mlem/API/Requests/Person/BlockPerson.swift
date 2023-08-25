@@ -8,7 +8,6 @@
 import Foundation
 
 struct BlockPersonRequest: APIPostRequest {
-
     typealias Response = BlockPersonResponse
 
     let instanceURL: URL

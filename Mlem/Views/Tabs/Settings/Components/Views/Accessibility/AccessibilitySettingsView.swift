@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct AccessibilitySettingsView: View {
-    
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
@@ -19,10 +18,12 @@ struct AccessibilitySettingsView: View {
     var body: some View {
         List {
             Section {
-                SelectableSettingsItem(settingIconSystemName: "book",
-                                       settingName: "Read Post Indicator",
-                                       currentValue: $readMarkStyle,
-                                       options: ReadMarkStyle.allCases)
+                SelectableSettingsItem(
+                    settingIconSystemName: "book",
+                    settingName: "Read Post Indicator",
+                    currentValue: $readMarkStyle,
+                    options: ReadMarkStyle.allCases
+                )
                 
                 VStack(alignment: .leading) {
                     HStack {
@@ -41,9 +42,11 @@ struct AccessibilitySettingsView: View {
                     }
                     .frame(maxWidth: .infinity)
                     
-                    Slider(value: $readBarThicknessSlider,
-                           in: 1...5,
-                           step: 1) {
+                    Slider(
+                        value: $readBarThicknessSlider,
+                        in: 1 ... 5,
+                        step: 1
+                    ) {
                         Text("Bar Thickness")
                     } minimumValueLabel: {
                         Text("1")
@@ -64,9 +67,11 @@ struct AccessibilitySettingsView: View {
             }
             
             Section {
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.transparencySymbolName,
-                                       settingName: "Translucent Insets",
-                                       isTicked: $hasTranslucentInsets)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.transparencySymbolName,
+                    settingName: "Translucent Insets",
+                    isTicked: $hasTranslucentInsets
+                )
             } header: {
                 Text("Transparency")
             }

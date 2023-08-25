@@ -17,7 +17,6 @@ struct CommunitySection: Identifiable {
 }
 
 struct CommunityListView: View {
-    
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.errorHandler) var errorHandler
     
@@ -43,32 +42,32 @@ struct CommunityListView: View {
     }
 
     var body: some View {
-            ScrollViewReader { scrollProxy in
-                HStack {
-                    List(selection: $selectedCommunity) {
-                        HomepageFeedRowView(
-                            feedType: .subscribed,
-                            iconName: AppConstants.subscribedFeedSymbolNameFill,
-                            iconColor: .red,
-                            description: "Subscribed communities from all servers"
-                        )
-                            .id("top") // For "scroll to top" sidebar item
-                        HomepageFeedRowView(
-                            feedType: .local,
-                            iconName: AppConstants.localFeedSymbolNameFill,
-                            iconColor: .green,
-                            description: "Local communities from your server"
-                        )
-                        HomepageFeedRowView(
-                            feedType: .all,
-                            iconName: AppConstants.federatedFeedSymbolNameFill,
-                            iconColor: .blue,
-                            description: "All communities that federate with your server"
-                        )
+        ScrollViewReader { scrollProxy in
+            HStack {
+                List(selection: $selectedCommunity) {
+                    HomepageFeedRowView(
+                        feedType: .subscribed,
+                        iconName: AppConstants.subscribedFeedSymbolNameFill,
+                        iconColor: .red,
+                        description: "Subscribed communities from all servers"
+                    )
+                    .id("top") // For "scroll to top" sidebar item
+                    HomepageFeedRowView(
+                        feedType: .local,
+                        iconName: AppConstants.localFeedSymbolNameFill,
+                        iconColor: .green,
+                        description: "Local communities from your server"
+                    )
+                    HomepageFeedRowView(
+                        feedType: .all,
+                        iconName: AppConstants.federatedFeedSymbolNameFill,
+                        iconColor: .blue,
+                        description: "All communities that federate with your server"
+                    )
 
-                        ForEach(calculateVisibleCommunitySections()) { communitySection in
-                            Section(header:
-                                        HStack {
+                    ForEach(calculateVisibleCommunitySections()) { communitySection in
+                        Section(header:
+                            HStack {
                                 Text(communitySection.inlineHeaderLabel!).accessibilityLabel(communitySection.accessibilityLabel)
                                 Spacer()
                             }.id(communitySection.viewId)) {
@@ -79,22 +78,21 @@ struct CommunityListView: View {
                                     CommuntiyFeedRowView(
                                         community: listedCommunity,
                                         subscribed: subscribedCommunities.contains(listedCommunity),
-                                        communitySubscriptionChanged: self.hydrateCommunityData
+                                        communitySubscriptionChanged: hydrateCommunityData
                                     )
                                 }
                             }
-                        }
-
                     }
-                    .fancyTabScrollCompatible()
-                    .navigationTitle("Communities")
-                    .navigationBarColor()
-                    .listStyle(PlainListStyle())
-                    .scrollIndicators(.hidden)
-
-                    SectionIndexTitles(proxy: scrollProxy, communitySections: communitySections)
                 }
+                .fancyTabScrollCompatible()
+                .navigationTitle("Communities")
+                .navigationBarColor()
+                .listStyle(PlainListStyle())
+                .scrollIndicators(.hidden)
+
+                SectionIndexTitles(proxy: scrollProxy, communitySections: communitySections)
             }
+        }
         .refreshable {
             await refreshCommunitiesList()
         }
@@ -126,27 +124,29 @@ struct CommunityListView: View {
                     accessibilityLabel: "Favorited Communities"
                 )
             ] +
-            CommunityListView.alphabet.map {
-                // This looks sinister but I didn't know how to string replace in a non-string based regex
-                CommunitySection(
-                    viewId: $0,
+                CommunityListView.alphabet.map {
+                    // This looks sinister but I didn't know how to string replace in a non-string based regex
+                    CommunitySection(
+                        viewId: $0,
+                        sidebarEntry: RegexCommunityNameSidebarEntry(
+                            communityNameRegex: (try? Regex("^[\($0.uppercased())\($0.lowercased())]"))!,
+                            sidebarLabel: $0,
+                            sidebarIcon: nil
+                        ),
+                        inlineHeaderLabel: $0,
+                        accessibilityLabel: "Communities starting with the letter '\($0)'"
+                    )
+                } +
+                [CommunitySection(
+                    viewId: "non_letter_titles",
                     sidebarEntry: RegexCommunityNameSidebarEntry(
-                        communityNameRegex: (try? Regex("^[\($0.uppercased())\($0.lowercased())]"))!,
-                        sidebarLabel: $0,
+                        communityNameRegex: /^[^a-zA-Z]/,
+                        sidebarLabel: "#",
                         sidebarIcon: nil
                     ),
-                    inlineHeaderLabel: $0,
-                    accessibilityLabel: "Communities starting with the letter '\($0)'")} +
-            [CommunitySection(
-                viewId: "non_letter_titles",
-                sidebarEntry: RegexCommunityNameSidebarEntry(
-                    communityNameRegex: /^[^a-zA-Z]/,
-                    sidebarLabel: "#",
-                    sidebarIcon: nil
-                ),
-                inlineHeaderLabel: "#",
-                accessibilityLabel: "Communities starting with a symbol or number"
-            )]
+                    inlineHeaderLabel: "#",
+                    accessibilityLabel: "Communities starting with a symbol or number"
+                )]
         }
     }
 
@@ -154,7 +154,7 @@ struct CommunityListView: View {
         do {
             subscribedCommunities = try await communityRepository
                 .loadSubscriptions()
-                .map { $0.community }
+                .map(\.community)
                 .sorted()
         } catch {
             errorHandler.handle(error)
@@ -163,25 +163,26 @@ struct CommunityListView: View {
 
     private func calculateCommunityListSections(for section: CommunitySection) -> [APICommunity] {
         // Filter down to sidebar entry which wants us
-        return getSubscriptionsAndFavorites()
-            .filter({ (listedCommunity) -> Bool in
+        getSubscriptionsAndFavorites()
+            .filter { listedCommunity -> Bool in
                 section.sidebarEntry.contains(community: listedCommunity, isSubscribed: subscribedCommunities.contains(listedCommunity))
-            })
+            }
     }
 
     private func calculateVisibleCommunitySections() -> [CommunitySection] {
-        return communitySections
+        communitySections
 
-        // Only show letter headers for letters we have in our community list
-            .filter({ communitySection -> Bool in
+            // Only show letter headers for letters we have in our community list
+            .filter { communitySection -> Bool in
                 getSubscriptionsAndFavorites()
                     .contains(where: { communitySection.sidebarEntry
-                        .contains(community: $0, isSubscribed: subscribedCommunities.contains($0)) })
-            })
-        // Only show sections which have labels to show
-            .filter({ (communitySection) -> Bool in
+                            .contains(community: $0, isSubscribed: subscribedCommunities.contains($0))
+                    })
+            }
+            // Only show sections which have labels to show
+            .filter { communitySection -> Bool in
                 communitySection.inlineHeaderLabel != nil
-            })
+            }
     }
 
     private func hydrateCommunityData(community: APICommunity, isSubscribed: Bool) {
@@ -200,7 +201,7 @@ struct CommunityListView: View {
         var result = subscribedCommunities
 
         // Merge in our favorites list too just incase we aren't subscribed to our favorites
-        result.append(contentsOf: favoritedCommunitiesTracker.favoriteCommunities.map({ $0.community }))
+        result.append(contentsOf: favoritedCommunitiesTracker.favoriteCommunities.map(\.community))
 
         // Remove duplicates and sort by name
         result = Array(Set(result)).sorted()
@@ -211,7 +212,6 @@ struct CommunityListView: View {
 
 // Original article here: https://www.fivestars.blog/code/section-title-index-swiftui.html
 struct SectionIndexTitles: View {
-    
     @Dependency(\.hapticManager) var hapticManager
     
     let proxy: ScrollViewProxy
@@ -287,7 +287,6 @@ struct SectionIndexImage: View {
 }
 
 struct CommunityListViewPreview: PreviewProvider {
-    
     static var appState = AppState(
         defaultAccount: .mock(),
         selectedAccount: .constant(nil)

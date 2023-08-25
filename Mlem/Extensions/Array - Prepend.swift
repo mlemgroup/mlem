@@ -9,6 +9,6 @@ import Foundation
 
 extension Array {
     mutating func prepend(_ newElement: Element) {
-        self.insert(newElement, at: 0)
+        insert(newElement, at: 0)
     }
 }

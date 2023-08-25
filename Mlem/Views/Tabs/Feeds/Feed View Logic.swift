@@ -8,7 +8,6 @@
 import Foundation
 
 extension FeedView {
-    
     // MARK: Feed loading
     
     func initFeed() async {
@@ -57,19 +56,20 @@ extension FeedView {
      Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
      */
     func hardRefreshFeed() async {
-            defer { isLoading = false }
-            isLoading = true
-            do {
-                try await postTracker.refresh(
-                    account: appState.currentActiveAccount,
-                    communityId: community?.id,
-                    sort: postSortType,
-                    type: feedType,
-                    clearBeforeFetch: true,
-                    filtering: filter)
-            } catch {
-                handle(error)
-            }
+        defer { isLoading = false }
+        isLoading = true
+        do {
+            try await postTracker.refresh(
+                account: appState.currentActiveAccount,
+                communityId: community?.id,
+                sort: postSortType,
+                type: feedType,
+                clearBeforeFetch: true,
+                filtering: filter
+            )
+        } catch {
+            handle(error)
+        }
     }
     
     // MARK: Community loading
@@ -93,25 +93,29 @@ extension FeedView {
     // MARK: Menus
     
     func genOuterSortMenuFunctions() -> [MenuFunction] {
-        return PostSortType.outerTypes.map { type in
+        PostSortType.outerTypes.map { type in
             let isSelected = postSortType == type
             let imageName = isSelected ? type.iconNameFill : type.iconName
-            return MenuFunction(text: type.description,
-                                imageName: imageName,
-                                destructiveActionPrompt: nil,
-                                enabled: !isSelected) {
+            return MenuFunction(
+                text: type.description,
+                imageName: imageName,
+                destructiveActionPrompt: nil,
+                enabled: !isSelected
+            ) {
                 postSortType = type
             }
         }
     }
     
     func genTopSortMenuFunctions() -> [MenuFunction] {
-        return PostSortType.topTypes.map { type in
+        PostSortType.topTypes.map { type in
             let isSelected = postSortType == type
-            return MenuFunction(text: type.description,
-                                imageName: isSelected ? AppConstants.timeSymbolNameFill : AppConstants.timeSymbolName,
-                                destructiveActionPrompt: nil,
-                                enabled: !isSelected) {
+            return MenuFunction(
+                text: type.description,
+                imageName: isSelected ? AppConstants.timeSymbolNameFill : AppConstants.timeSymbolName,
+                destructiveActionPrompt: nil,
+                enabled: !isSelected
+            ) {
                 postSortType = type
             }
         }
@@ -125,15 +129,18 @@ extension FeedView {
             text: blurNsfwText,
             imageName: AppConstants.blurNsfwSymbolName,
             destructiveActionPrompt: nil,
-            enabled: true) {
-                shouldBlurNsfw.toggle()
-            })
+            enabled: true
+        ) {
+            shouldBlurNsfw.toggle()
+        })
         
         let showReadPostsText = showReadPosts ? "Hide read" : "Show read"
-        ret.append(MenuFunction(text: showReadPostsText,
-                                imageName: "book",
-                                destructiveActionPrompt: nil,
-                                enabled: true) {
+        ret.append(MenuFunction(
+            text: showReadPostsText,
+            imageName: "book",
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             showReadPosts.toggle()
         })
         
@@ -144,24 +151,30 @@ extension FeedView {
     func genCommunitySpecificMenuFunctions(for community: APICommunity) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         // new post
-        ret.append(MenuFunction(text: "New Post",
-                                imageName: AppConstants.sendSymbolNameFill,
-                                destructiveActionPrompt: nil,
-                                enabled: true) {
-            editorTracker.openEditor(with: PostEditorModel(community: community,
-                                                           postTracker: postTracker))
+        ret.append(MenuFunction(
+            text: "New Post",
+            imageName: AppConstants.sendSymbolNameFill,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
+            editorTracker.openEditor(with: PostEditorModel(
+                community: community,
+                postTracker: postTracker
+            ))
         })
         
         // subscribe/unsubscribe
         if let communityDetails {
             let isSubscribed: Bool = communityDetails.communityView.subscribed.rawValue == "Subscribed"
             let (subscribeText, subscribeSymbol, subscribePrompt) = isSubscribed
-            ? ("Unsubscribe", AppConstants.unsubscribeSymbolName, "Really unsubscribe from \(community.name)?")
-            : ("Subscribe", AppConstants.subscribeSymbolName, nil)
-            ret.append(MenuFunction(text: subscribeText,
-                                    imageName: subscribeSymbol,
-                                    destructiveActionPrompt: subscribePrompt,
-                                    enabled: true) {
+                ? ("Unsubscribe", AppConstants.unsubscribeSymbolName, "Really unsubscribe from \(community.name)?")
+                : ("Subscribe", AppConstants.subscribeSymbolName, nil)
+            ret.append(MenuFunction(
+                text: subscribeText,
+                imageName: subscribeSymbol,
+                destructiveActionPrompt: subscribePrompt,
+                enabled: true
+            ) {
                 Task(priority: .userInitiated) {
                     await subscribe(communityId: community.id, shouldSubscribe: !isSubscribed)
                 }
@@ -170,20 +183,24 @@ extension FeedView {
         
         // favorite/unfavorite
         if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community.id }) {
-            ret.append(MenuFunction(text: "Unfavorite",
-                                    imageName: "star.slash",
-                                    destructiveActionPrompt: "Really unfavorite \(community.name)?",
-                                    enabled: true) {
+            ret.append(MenuFunction(
+                text: "Unfavorite",
+                imageName: "star.slash",
+                destructiveActionPrompt: "Really unfavorite \(community.name)?",
+                enabled: true
+            ) {
                 favoriteCommunitiesTracker.unfavorite(community)
                 Task {
                     await notifier.add(.success("Unfavorited \(community.name)"))
                 }
             })
         } else {
-            ret.append(MenuFunction(text: "Favorite",
-                                    imageName: "star",
-                                    destructiveActionPrompt: nil,
-                                    enabled: true) {
+            ret.append(MenuFunction(
+                text: "Favorite",
+                imageName: "star",
+                destructiveActionPrompt: nil,
+                enabled: true
+            ) {
                 favoriteCommunitiesTracker.favorite(community, for: appState.currentActiveAccount)
                 Task {
                     await notifier.add(.success("Favorited \(community.name)"))
@@ -192,10 +209,12 @@ extension FeedView {
         }
         
         // share
-        ret.append(MenuFunction(text: "Share",
-                                imageName: AppConstants.shareSymbolName,
-                                destructiveActionPrompt: nil,
-                                enabled: true) {
+        ret.append(MenuFunction(
+            text: "Share",
+            imageName: AppConstants.shareSymbolName,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             showShareSheet(URLtoShare: community.actorId)
         })
         
@@ -203,12 +222,14 @@ extension FeedView {
         if let communityDetails {
             // block
             let (blockText, blockSymbol, blockPrompt) = communityDetails.communityView.blocked
-            ? ("Unblock", AppConstants.unblockSymbolName, nil)
-            : ("Block", AppConstants.blockSymbolName, "Really block \(community.name)?")
-            ret.append(MenuFunction(text: blockText,
-                                    imageName: blockSymbol,
-                                    destructiveActionPrompt: blockPrompt,
-                                    enabled: true) {
+                ? ("Unblock", AppConstants.unblockSymbolName, nil)
+                : ("Block", AppConstants.blockSymbolName, "Really block \(community.name)?")
+            ret.append(MenuFunction(
+                text: blockText,
+                imageName: blockSymbol,
+                destructiveActionPrompt: blockPrompt,
+                enabled: true
+            ) {
                 Task(priority: .userInitiated) {
                     await block(communityId: community.id, shouldBlock: !communityDetails.communityView.blocked)
                 }
@@ -217,6 +238,7 @@ extension FeedView {
         
         return ret
     }
+
     // swiftlint:enable function_body_length
     
     func genFeedSwitchingFunctions() -> [MenuFunction] {
@@ -224,29 +246,33 @@ extension FeedView {
         
         FeedType.allCases.forEach { type in
             let (imageName, enabled) = type != feedType
-            ? (type.iconName, true)
-            : (type.iconNameFill, false)
-            ret.append(MenuFunction(text: type.label,
-                                    imageName: imageName,
-                                    destructiveActionPrompt: nil,
-                                    enabled: enabled,
-                                    callback: { feedType = type }))
+                ? (type.iconName, true)
+                : (type.iconNameFill, false)
+            ret.append(MenuFunction(
+                text: type.label,
+                imageName: imageName,
+                destructiveActionPrompt: nil,
+                enabled: enabled,
+                callback: { feedType = type }
+            ))
         }
         
         return ret
     }
     
     func genPostSizeSwitchingFunctions() -> [MenuFunction] {
-        return PostSize.allCases.map { size in
+        PostSize.allCases.map { size in
             let (imageName, enabled) = size != postSize
-            ? (size.iconName, true)
-            : (size.iconNameFill, false)
+                ? (size.iconName, true)
+                : (size.iconNameFill, false)
             
-            return MenuFunction(text: size.label,
-                                imageName: imageName,
-                                destructiveActionPrompt: nil,
-                                enabled: enabled,
-                                callback: { postSize = size })
+            return MenuFunction(
+                text: size.label,
+                imageName: imageName,
+                destructiveActionPrompt: nil,
+                enabled: enabled,
+                callback: { postSize = size }
+            )
         }
     }
     
@@ -276,7 +302,7 @@ extension FeedView {
     
     private func filter(postView: APIPostView) -> Bool {
         !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
-        (showReadPosts || !postView.read)
+            (showReadPosts || !postView.read)
     }
     
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {

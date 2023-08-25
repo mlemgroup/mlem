@@ -20,10 +20,12 @@ struct TabBarSettingsView: View {
     var body: some View {
         Form {
             Section {
-                SelectableSettingsItem(settingIconSystemName: "person.text.rectangle",
-                                       settingName: "Profile Tab Label",
-                                       currentValue: $profileTabLabel,
-                                       options: ProfileTabLabel.allCases)
+                SelectableSettingsItem(
+                    settingIconSystemName: "person.text.rectangle",
+                    settingName: "Profile Tab Label",
+                    currentValue: $profileTabLabel,
+                    options: ProfileTabLabel.allCases
+                )
                 
                 if profileTabLabel == .nickname {
                     Label {
@@ -46,13 +48,17 @@ struct TabBarSettingsView: View {
             }
             
             Section {
-                SwitchableSettingsItem(settingPictureSystemName: "tag",
-                                       settingName: "Show Tab Labels",
-                                       isTicked: $showTabNames)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "tag",
+                    settingName: "Show Tab Labels",
+                    isTicked: $showTabNames
+                )
                 
-                SwitchableSettingsItem(settingPictureSystemName: "envelope.badge",
-                                       settingName: "Show Unread Count",
-                                       isTicked: $showInboxUnreadBadge)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "envelope.badge",
+                    settingName: "Show Unread Count",
+                    isTicked: $showInboxUnreadBadge
+                )
             }
         }
         .fancyTabScrollCompatible()

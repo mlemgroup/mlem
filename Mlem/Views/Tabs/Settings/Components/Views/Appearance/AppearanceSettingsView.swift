@@ -1,5 +1,5 @@
 //
-//  Appearance.swift
+//  AppearanceSettingsView.swift
 //  Mlem
 //
 //  Created by David Bureš on 08.05.2023.
@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AppearanceSettingsView: View {
-
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     
     var body: some View {
@@ -26,19 +25,19 @@ struct AppearanceSettingsView: View {
                         ThemeLabel(title: "Theme", color1: .clear)
                     }
                 }
-#if !os(macOS) && !targetEnvironment(macCatalyst)
-                NavigationLink(value: AppearanceSettingsRoute.appIcon) {
-                    Label {
-                        Text("App Icon")
-                    } icon: {
-                        IconSettingsView.getCurrentIcon()
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
-                            .cornerRadius(AppConstants.smallItemCornerRadius)
+                #if !os(macOS) && !targetEnvironment(macCatalyst)
+                    NavigationLink(value: AppearanceSettingsRoute.appIcon) {
+                        Label {
+                            Text("App Icon")
+                        } icon: {
+                            IconSettingsView.getCurrentIcon()
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
+                                .cornerRadius(AppConstants.smallItemCornerRadius)
+                        }
                     }
-                }
-#endif
+                #endif
             }
             
             Section {

@@ -1,5 +1,5 @@
 //
-//  CreatePrivateMessageReport.swift
+//  CreatePrivateMessageReportRequest.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-12.
@@ -8,7 +8,6 @@
 import Foundation
 
 struct CreatePrivateMessageReportRequest: APIPostRequest {
-
     typealias Response = CreatePrivateMessageReportResponse
 
     let instanceURL: URL

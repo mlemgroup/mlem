@@ -9,6 +9,6 @@ import Foundation
 
 extension Dictionary {
     mutating func append(_ key: Key, _ value: Value) {
-        self.updateValue(value, forKey: key)
+        updateValue(value, forKey: key)
     }
 }

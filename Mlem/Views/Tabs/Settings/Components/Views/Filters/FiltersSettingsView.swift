@@ -1,5 +1,5 @@
 //
-//  Filters.swift
+//  FiltersSettingsView.swift
 //  Mlem
 //
 //  Created by David Bureš on 07.05.2023.
@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct FiltersSettingsView: View {
-
     @Dependency(\.errorHandler) var errorHandler
     
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -38,7 +37,6 @@ struct FiltersSettingsView: View {
                         Text("Add")
                     }
                     .disabled(newFilteredKeyword.isEmpty)
-
                 }
             } header: {
                 Text("Filtered Keywords")
@@ -105,15 +103,14 @@ struct FiltersSettingsView: View {
                             .init(
                                 title: "Couldn't find blocklist",
                                 message: """
-                                         If you are trying to read it from iCloud, make sure your internet is working. \
-                                         Otherwise, try moving the blocklist file to another location.
-                                         """,
+                                If you are trying to read it from iCloud, make sure your internet is working. \
+                                Otherwise, try moving the blocklist file to another location.
+                                """,
                                 underlyingError: blocklistImportingError
                             )
                         )
                     }
                 }
-
             }
 
             Section {
@@ -128,30 +125,30 @@ struct FiltersSettingsView: View {
                 .confirmationDialog(
                     "Are you sure you want to delete all filters?",
                     isPresented: $isShowingFilterDeletionConfirmation,
-                    titleVisibility: .visible) {
-                        Button(role: .destructive) {
-                            isShowingFilterDeletionConfirmation = false
-                            withAnimation {
-                                filtersTracker.filteredKeywords = .init()
-                            }
-                        } label: {
-                            Text("Delete \(filtersTracker.filteredKeywords.count) filters")
+                    titleVisibility: .visible
+                ) {
+                    Button(role: .destructive) {
+                        isShowingFilterDeletionConfirmation = false
+                        withAnimation {
+                            filtersTracker.filteredKeywords = .init()
                         }
-
-                        Button(role: .cancel) {
-                            isShowingFilterDeletionConfirmation = false
-                        } label: {
-                            Text("Cancel")
-                        }
-                    } message: {
-                        Text(
-                             """
-                             You are about to delete \(filtersTracker.filteredKeywords.count) filters.
-                             You cannot undo this action.
-                             """
-                        )
+                    } label: {
+                        Text("Delete \(filtersTracker.filteredKeywords.count) filters")
                     }
 
+                    Button(role: .cancel) {
+                        isShowingFilterDeletionConfirmation = false
+                    } label: {
+                        Text("Cancel")
+                    }
+                } message: {
+                    Text(
+                        """
+                        You are about to delete \(filtersTracker.filteredKeywords.count) filters.
+                        You cannot undo this action.
+                        """
+                    )
+                }
             }
         }
         .fancyTabScrollCompatible()
@@ -183,6 +180,7 @@ struct FiltersSettingsView: View {
             newFilteredKeyword = ""
         }
     }
+
     func deleteKeyword(at offsets: IndexSet) {
         filtersTracker.filteredKeywords.remove(atOffsets: offsets)
     }

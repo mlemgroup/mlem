@@ -8,7 +8,6 @@
 import Foundation
 
 extension ExpandedPost {
-    
     // MARK: Interaction callbacks
     
     // TODO: add flag
@@ -103,7 +102,7 @@ extension ExpandedPost {
             do {
                 let updatedPost = try await apiClient.savePost(id: post.post.id, shouldSave: dirtySaved)
                 postTracker.update(with: updatedPost)
-                self.post = updatedPost
+                post = updatedPost
             } catch {
                 hapticManager.play(haptic: .failure, priority: .low)
                 errorHandler.handle(error)
@@ -125,20 +124,26 @@ extension ExpandedPost {
     }
     
     func replyToPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(post: post,
-                                                           commentTracker: commentTracker,
-                                                           operation: PostOperation.replyToPost))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            post: post,
+            commentTracker: commentTracker,
+            operation: PostOperation.replyToPost
+        ))
     }
     
     func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(post: post,
-                                                           operation: PostOperation.reportPost))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            post: post,
+            operation: PostOperation.reportPost
+        ))
     }
     
     func replyToComment(comment: APICommentView) {
-        editorTracker.openEditor(with: ConcreteEditorModel(comment: comment,
-                                                           commentTracker: commentTracker,
-                                                           operation: CommentOperation.replyToComment))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            comment: comment,
+            commentTracker: commentTracker,
+            operation: CommentOperation.replyToComment
+        ))
     }
     
     func blockUser() async {
@@ -168,13 +173,14 @@ extension ExpandedPost {
         
         // upvote
         let (upvoteText, upvoteImg) = post.myVote == .upvote ?
-        ("Undo upvote", "arrow.up.square.fill") :
-        ("Upvote", "arrow.up.square")
+            ("Undo upvote", "arrow.up.square.fill") :
+            ("Upvote", "arrow.up.square")
         ret.append(MenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await voteOnPost(inputOp: .upvote)
             }
@@ -182,13 +188,14 @@ extension ExpandedPost {
         
         // downvote
         let (downvoteText, downvoteImg) = post.myVote == .downvote ?
-        ("Undo downvote", "arrow.down.square.fill") :
-        ("Downvote", "arrow.down.square")
+            ("Undo downvote", "arrow.down.square.fill") :
+            ("Downvote", "arrow.down.square")
         ret.append(MenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await voteOnPost(inputOp: .downvote)
             }
@@ -200,7 +207,8 @@ extension ExpandedPost {
             text: saveText,
             imageName: saveImg,
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             Task(priority: .userInitiated) {
                 await savePost()
             }
@@ -211,9 +219,10 @@ extension ExpandedPost {
             text: "Reply",
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
-            enabled: true) {
-                replyToPost()
-            })
+            enabled: true
+        ) {
+            replyToPost()
+        })
         
         if post.creator.id == appState.currentActiveAccount.id {
             // edit
@@ -221,19 +230,23 @@ extension ExpandedPost {
                 text: "Edit",
                 imageName: "pencil",
                 destructiveActionPrompt: nil,
-                enabled: true) {
-                    editorTracker.openEditor(with: PostEditorModel(community: post.community,
-                                                                   postTracker: postTracker,
-                                                                   editPost: post.post,
-                                                                   responseCallback: updatePost))
-                })
+                enabled: true
+            ) {
+                editorTracker.openEditor(with: PostEditorModel(
+                    community: post.community,
+                    postTracker: postTracker,
+                    editPost: post.post,
+                    responseCallback: updatePost
+                ))
+            })
             
             // delete
             ret.append(MenuFunction(
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
-                enabled: !post.post.deleted) {
+                enabled: !post.post.deleted
+            ) {
                 Task(priority: .userInitiated) {
                     await deletePost()
                 }
@@ -245,17 +258,20 @@ extension ExpandedPost {
             text: "Share",
             imageName: "square.and.arrow.up",
             destructiveActionPrompt: nil,
-            enabled: true) {
+            enabled: true
+        ) {
             if let url = URL(string: post.post.apId) {
                 showShareSheet(URLtoShare: url)
             }
         })
         
         // report
-        ret.append(MenuFunction(text: "Report Post",
-                                imageName: AppConstants.reportSymbolName,
-                                destructiveActionPrompt: AppConstants.reportPostPrompt,
-                                enabled: true) {
+        ret.append(MenuFunction(
+            text: "Report Post",
+            imageName: AppConstants.reportSymbolName,
+            destructiveActionPrompt: AppConstants.reportPostPrompt,
+            enabled: true
+        ) {
             reportPost()
         })
         
@@ -264,14 +280,16 @@ extension ExpandedPost {
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
-            enabled: true) {
-                Task(priority: .userInitiated) {
-                    await blockUser()
-                }
-            })
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await blockUser()
+            }
+        })
         
         return ret
     }
+
     // swiftlint:enable function_body_length
 
     func loadComments() async {
@@ -301,13 +319,15 @@ extension ExpandedPost {
             let comments = try await commentRepository.comments(for: post.post.id)
             commentTracker.comments = sortComments(comments, by: commentSortingType)
         } catch {
-            errorHandler.handle(.init(title: "Failed to refresh",
-                                      message: "Please try again",
-                                      underlyingError: error))
+            errorHandler.handle(.init(
+                title: "Failed to refresh",
+                message: "Please try again",
+                underlyingError: error
+            ))
         }
     }
 
-    internal func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortType) -> [HierarchicalComment] {
+    func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortType) -> [HierarchicalComment] {
         let sortedComments: [HierarchicalComment]
         switch sort {
         case .new:

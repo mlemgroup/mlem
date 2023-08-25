@@ -1,15 +1,14 @@
 //
-//  WidgetModel.swift
+//  LayoutWidgetModel.swift
 //  Mlem
 //
 //  Created by Sjmarf on 29/07/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 class LayoutWidgetModel: ObservableObject {
-    
     @Dependency(\.hapticManager) var hapticManager
     
     private(set) var collections: [LayoutWidgetCollection] = []
@@ -31,38 +30,37 @@ class LayoutWidgetModel: ObservableObject {
     }
     
     func setWidgetDragging(_ value: DragGesture.Value) {
-
-        for collection in self.collections {
+        for collection in collections {
             if let collectionRect = collection.rect, collectionRect.contains(value.location) {
-                self.collectionHovering = collection
+                collectionHovering = collection
                 if widgetDraggingCollection == collection || (
                     (widgetDragging?.type.canRemove ?? true)
-                    && collection.isValidDropLocation(widgetDragging)
+                        && collection.isValidDropLocation(widgetDragging)
                 ) {
-                    self.predictedDropCollection = collection
+                    predictedDropCollection = collection
                 }
                 break
             }
         }
         
-        if let widgetDragging = widgetDragging {
+        if let widgetDragging {
             // if dragging a widget, update its position
             if let rect = widgetDragging.rect {
                 widgetDraggingOffset = CGSize(
                     width: rect.minX
-                    + value.translation.width,
+                        + value.translation.width,
                     height: rect.minY
-                    + value.translation.height
+                        + value.translation.height
                 )
             }
             
-            for collection in self.collections {
-                collection.update(isHovered: collection === self.predictedDropCollection, value: value, widgetDragging: widgetDragging)
+            for collection in collections {
+                collection.update(isHovered: collection === predictedDropCollection, value: value, widgetDragging: widgetDragging)
             }
-        } else if let collectionHovering = self.collectionHovering {
+        } else if let collectionHovering {
             // if not dragging a widget and hovering over a collection, pick up the widget at the drag location
-            self.widgetDragging = collectionHovering.getItemAtLocation(value.location)
-            if self.widgetDragging != nil { hapticManager.play(haptic: .gentleInfo, priority: .low) }
+            widgetDragging = collectionHovering.getItemAtLocation(value.location)
+            if widgetDragging != nil { hapticManager.play(haptic: .gentleInfo, priority: .low) }
             widgetDraggingCollection = collectionHovering
             predictedDropCollection = collectionHovering
         }
@@ -73,7 +71,7 @@ class LayoutWidgetModel: ObservableObject {
         
         widgetDraggingOffset = .zero
         
-        if let widgetDragging = widgetDragging {
+        if let widgetDragging {
             if let index = widgetDraggingCollection!.items.firstIndex(of: widgetDragging) {
                 widgetDraggingCollection!.items.remove(at: index)
             }

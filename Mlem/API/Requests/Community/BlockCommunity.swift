@@ -8,7 +8,6 @@
 import Foundation
 
 struct BlockCommunityRequest: APIPostRequest {
-
     typealias Response = BlockCommunityResponse
 
     let instanceURL: URL

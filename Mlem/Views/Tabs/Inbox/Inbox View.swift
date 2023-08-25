@@ -1,5 +1,5 @@
 //
-//  Inbox.swift
+//  Inbox View.swift
 //  Mlem
 //
 //  Created by Jake Shirley on 6/25/23.
@@ -15,7 +15,7 @@ enum InboxTab: String, CaseIterable, Identifiable {
     var id: Self { self }
     
     var label: String {
-        return self.rawValue.capitalized
+        rawValue.capitalized
     }
 }
 
@@ -28,7 +28,6 @@ enum ComposingTypes {
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
@@ -37,6 +36,7 @@ struct InboxView: View {
     @Dependency(\.personRepository) var personRepository
     
     // MARK: Global
+
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
@@ -47,6 +47,7 @@ struct InboxView: View {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     // MARK: Internal
+
     // id of the last account loaded with
     @State var lastKnownAccountId: Int = 0
     
@@ -144,7 +145,7 @@ struct InboxView: View {
             // if a tracker is empty or the account has changed, refresh
             if mentionsTracker.items.isEmpty ||
                 messagesTracker.items.isEmpty ||
-                repliesTracker.items.isEmpty  ||
+                repliesTracker.items.isEmpty ||
                 lastKnownAccountId != appState.currentActiveAccount.id {
                 print("Inbox tracker is empty")
                 await refreshFeed()

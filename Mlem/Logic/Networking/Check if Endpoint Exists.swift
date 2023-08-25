@@ -8,7 +8,7 @@
 import Foundation
 
 func checkIfEndpointExists(at url: URL) async -> Bool {
-    var request: URLRequest = URLRequest(url: url)
+    var request = URLRequest(url: url)
 
     request.httpMethod = "GET"
 

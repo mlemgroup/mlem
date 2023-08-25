@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 08/08/2023.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 
 struct LayoutWidgetGroups: Codable {
     var post: [LayoutWidgetType]
@@ -22,13 +22,12 @@ extension LayoutWidgetGroups {
 
 @MainActor
 class LayoutWidgetTracker: ObservableObject {
-    
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Published var groups: LayoutWidgetGroups = .init()
     
     init() {
-        groups = persistenceRepository.loadLayoutWidgets()
+        self.groups = persistenceRepository.loadLayoutWidgets()
     }
     
     func saveLayoutWidgets() {

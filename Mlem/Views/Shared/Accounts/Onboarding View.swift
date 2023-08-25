@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct OnboardingView: View {
-    
     enum OnboardingTab {
         case welcome, about, instances, addAccount
     }
@@ -32,9 +31,11 @@ struct OnboardingView: View {
             instancesTab
                 .tag(OnboardingTab.instances)
             
-            AddSavedInstanceView(onboarding: true,
-                                 currentAccount: $selectedAccount,
-                                 givenInstance: selectedInstance?.url.description)
+            AddSavedInstanceView(
+                onboarding: true,
+                currentAccount: $selectedAccount,
+                givenInstance: selectedInstance?.url.description
+            )
             .tag(OnboardingTab.addAccount)
         }
         .onChange(of: selectedInstance) { _ in
@@ -102,17 +103,20 @@ struct OnboardingView: View {
                 .padding()
                 
                 VStack(spacing: 0) {
-                    
                     Divider()
                     
-                    CollapsibleTextItem(titleText: "About Lemmy",
-                                        bodyText: aboutLemmy)
+                    CollapsibleTextItem(
+                        titleText: "About Lemmy",
+                        bodyText: aboutLemmy
+                    )
                     .padding(.horizontal)
                     
                     Divider()
                     
-                    CollapsibleTextItem(titleText: "About Instances and Federation",
-                                        bodyText: aboutInstances)
+                    CollapsibleTextItem(
+                        titleText: "About Instances and Federation",
+                        bodyText: aboutInstances
+                    )
                     .padding(.horizontal)
                     
                     Divider()

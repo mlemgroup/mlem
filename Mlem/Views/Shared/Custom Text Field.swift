@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct CustomTextField: UIViewRepresentable {
-
     @State var placeholder: String
     @Binding var text: String
 
     func makeUIView(context: Context) -> UITextField {
-        let textField: UITextField = UITextField()
+        let textField = UITextField()
         textField.placeholder = placeholder
         textField.borderStyle = .roundedRect
 

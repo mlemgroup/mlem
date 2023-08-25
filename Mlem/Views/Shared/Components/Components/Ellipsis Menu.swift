@@ -19,7 +19,6 @@ struct EllipsisMenu: View {
         Menu {
             ForEach(menuFunctions) { item in
                 Button(role: item.destructiveActionPrompt != nil ? .destructive : nil) {
-                    
                     // If we have destructive prompt, set this state to let the prompt
                     // show and let the user action
                     if item.destructiveActionPrompt != nil {
@@ -40,7 +39,7 @@ struct EllipsisMenu: View {
                     .aspectRatio(1, contentMode: .fit)
                     .foregroundColor(.clear))
         }
-        .onTapGesture { } // allows menu to pop up on first tap
+        .onTapGesture {} // allows menu to pop up on first tap
         .confirmationDialog("Destructive Action Confirmation", isPresented: $isPresentingConfirmDelete) {
             if let destructiveCallback = confirmationMenuFunction?.callback {
                 Button("Yes", role: .destructive) {

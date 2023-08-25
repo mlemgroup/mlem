@@ -1,5 +1,5 @@
 //
-//  CustomizePostView.swift
+//  PostSettingsView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-08.
@@ -9,10 +9,9 @@ import Foundation
 import SwiftUI
 
 struct PostSettingsView: View {
-    
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
-    @AppStorage("postSize") var postSize: PostSize = PostSize.headline
+    @AppStorage("postSize") var postSize: PostSize = .headline
     
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
@@ -63,76 +62,95 @@ struct PostSettingsView: View {
             }
             
             Section("Body") {
-
-                SwitchableSettingsItem(settingPictureSystemName: "photo",
-                                       settingName: "Thumbnails On Right",
-                                       isTicked: $shouldShowThumbnailsOnRight)
-                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
-                                       settingName: "Show User Server Instance",
-                                       isTicked: $shouldShowUserServerInPost)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "photo",
+                    settingName: "Thumbnails On Right",
+                    isTicked: $shouldShowThumbnailsOnRight
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "server.rack",
+                    settingName: "Show User Server Instance",
+                    isTicked: $shouldShowUserServerInPost
+                )
                 
-                SwitchableSettingsItem(settingPictureSystemName: "server.rack",
-                                       settingName: "Show Community Server Instance",
-                                       isTicked: $shouldShowCommunityServerInPost)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "server.rack",
+                    settingName: "Show Community Server Instance",
+                    isTicked: $shouldShowCommunityServerInPost
+                )
                 
-                SwitchableSettingsItem(settingPictureSystemName: "signature",
-                                       settingName: "Show Post Creator",
-                                       isTicked: $shouldShowPostCreator)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "signature",
+                    settingName: "Show Post Creator",
+                    isTicked: $shouldShowPostCreator
+                )
                 
-                SwitchableSettingsItem(settingPictureSystemName: "photo",
-                                       settingName: "Show Post Thumbnails",
-                                       isTicked: $shouldShowPostThumbnails)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "photo",
+                    settingName: "Show Post Thumbnails",
+                    isTicked: $shouldShowPostThumbnails
+                )
                 
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.limitImageHeightInFeedSymbolName,
-                                       settingName: "Limit Image Height In Feed",
-                                       isTicked: $limitImageHeightInFeed)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.limitImageHeightInFeedSymbolName,
+                    settingName: "Limit Image Height In Feed",
+                    isTicked: $limitImageHeightInFeed
+                )
             }
             
             Section("Interactions and Info") {
-
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
-                                       settingName: "Show Score In Info",
-                                       isTicked: $shouldShowScoreInPostBar)
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.generalVoteSymbolName,
-                                       settingName: "Show Downvotes Separately",
-                                       isTicked: $showDownvotesSeparately)
-                SwitchableSettingsItem(settingPictureSystemName: "clock",
-                                       settingName: "Show Time Posted In Info",
-                                       isTicked: $shouldShowTimeInPostBar)
-                SwitchableSettingsItem(settingPictureSystemName: "bookmark",
-                                       settingName: "Show Saved Status In Info",
-                                       isTicked: $shouldShowSavedInPostBar)
-                SwitchableSettingsItem(settingPictureSystemName: "bubble.right",
-                                       settingName: "Show Replies In Info",
-                                       isTicked: $shouldShowRepliesInPostBar)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
+                    settingName: "Show Score In Info",
+                    isTicked: $shouldShowScoreInPostBar
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                    settingName: "Show Downvotes Separately",
+                    isTicked: $showDownvotesSeparately
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "clock",
+                    settingName: "Show Time Posted In Info",
+                    isTicked: $shouldShowTimeInPostBar
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "bookmark",
+                    settingName: "Show Saved Status In Info",
+                    isTicked: $shouldShowSavedInPostBar
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "bubble.right",
+                    settingName: "Show Replies In Info",
+                    isTicked: $shouldShowRepliesInPostBar
+                )
             }
             
             Section("Website Previews") {
-
                 WebsiteIconComplex(post:
-                                    APIPost(
-                                        id: 0,
-                                        name: "",
-                                        url: URL(string: "https://lemmy.ml/post/1011734")!,
-                                        body: "",
-                                        creatorId: 0,
-                                        communityId: 0,
-                                        deleted: false,
-                                        embedDescription: nil,
-                                        embedTitle: "I am an example of a website preview.\nCustomize me!",
-                                        embedVideoUrl: nil,
-                                        featuredCommunity: false,
-                                        featuredLocal: false,
-                                        languageId: 0,
-                                        apId: "https://lemmy.ml/post/1011068",
-                                        local: true,
-                                        locked: false,
-                                        nsfw: false,
-                                        published: .now,
-                                        removed: false,
-                                        thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
-                                        updated: nil
-                                    )
+                    APIPost(
+                        id: 0,
+                        name: "",
+                        url: URL(string: "https://lemmy.ml/post/1011734")!,
+                        body: "",
+                        creatorId: 0,
+                        communityId: 0,
+                        deleted: false,
+                        embedDescription: nil,
+                        embedTitle: "I am an example of a website preview.\nCustomize me!",
+                        embedVideoUrl: nil,
+                        featuredCommunity: false,
+                        featuredLocal: false,
+                        languageId: 0,
+                        apId: "https://lemmy.ml/post/1011068",
+                        local: true,
+                        locked: false,
+                        nsfw: false,
+                        published: .now,
+                        removed: false,
+                        thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
+                        updated: nil
+                    )
                 )
     
                 .padding(.horizontal)
@@ -154,7 +172,6 @@ struct PostSettingsView: View {
                     isTicked: $shouldShowWebsitePreviews
                 )
             }
-
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Posts")

@@ -14,10 +14,10 @@ class UnreadTracker: ObservableObject {
     @Published private(set) var total: Int
     
     init() {
-        replies = 0
-        mentions = 0
-        messages = 0
-        total = 0
+        self.replies = 0
+        self.mentions = 0
+        self.messages = 0
+        self.total = 0
     }
     
     @MainActor

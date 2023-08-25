@@ -1,16 +1,15 @@
-// 
+//
 //  TokenRefreshView.swift
 //  Mlem
 //
 //  Created by mormaer on 10/07/2023.
-//  
+//
 //
 
 import Dependencies
 import SwiftUI
 
 struct TokenRefreshView: View {
-    
     @Dependency(\.apiClient) var apiClient
     
     enum ViewState {
@@ -111,7 +110,7 @@ struct TokenRefreshView: View {
             Text("Please enter the password for")
                 .font(.body)
                 .dynamicTypeSize(.small ... .xxxLarge)
-            Text("\(account.username)@\(account.instanceLink.host ?? "")" )
+            Text("\(account.username)@\(account.instanceLink.host ?? "")")
                 .font(.subheadline)
                 .dynamicTypeSize(.small ... .xxxLarge)
         case .refreshing:
@@ -123,27 +122,27 @@ struct TokenRefreshView: View {
     
     @ViewBuilder
     private var passwordField: some View {
-            GridRow {
-                Text("Password")
-                    .foregroundColor(.secondary)
-                    .accessibilityHidden(true)
-                    .padding(.horizontal)
-                SecureField("", text: $password)
-                    .focused($selectedField, equals: FocusedField.password)
-                    .textContentType(.password)
-                    .submitLabel(.continue)
-                    .dynamicTypeSize(.small ... .accessibility2)
-                    .disabled(shouldDisableControls)
-                    .onSubmit {
-                        updateViewState(.refreshing)
-                        Task {
-                            await refreshTokenFlow()
-                        }
+        GridRow {
+            Text("Password")
+                .foregroundColor(.secondary)
+                .accessibilityHidden(true)
+                .padding(.horizontal)
+            SecureField("", text: $password)
+                .focused($selectedField, equals: FocusedField.password)
+                .textContentType(.password)
+                .submitLabel(.continue)
+                .dynamicTypeSize(.small ... .accessibility2)
+                .disabled(shouldDisableControls)
+                .onSubmit {
+                    updateViewState(.refreshing)
+                    Task {
+                        await refreshTokenFlow()
                     }
-            }
-            .onTapGesture {
-                selectedField = .password
-            }
+                }
+        }
+        .onTapGesture {
+            selectedField = .password
+        }
     }
     
     @ViewBuilder
@@ -168,9 +167,7 @@ struct TokenRefreshView: View {
                 }
                 Divider()
             }
-
         }
-        
     }
     
     private var cancelButton: some View {
@@ -271,11 +268,9 @@ struct TokenRefreshView: View {
 }
 
 struct TokenRefreshViewPreview: PreviewProvider {
-    
     static var previews: some View {
         TokenRefreshView(account: .mock()) { _ in
             print("Refreshed")
         }
     }
-    
 }

@@ -48,7 +48,6 @@ struct AlternativeIconCell: View {
                     .map {
                         Image(uiImage: $0)
                     } ?? Image(systemName: "questionmark.folder")
-
             }
             return Image(uiImage: UIImage(named: id) ?? UIImage(imageLiteralResourceName: id))
         }

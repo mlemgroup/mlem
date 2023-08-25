@@ -9,7 +9,6 @@ import Foundation
 
 // lemmy_api_common::site::GetSite
 struct GetSiteRequest: APIGetRequest {
-
     typealias Response = SiteResponse
 
     let instanceURL: URL

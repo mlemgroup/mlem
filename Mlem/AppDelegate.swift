@@ -12,11 +12,12 @@ import UIKit
 var shortcutItemToProcess: UIApplicationShortcutItem?
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UIWindowSceneDelegate {
-
-    func application(_ application: UIApplication,
-                     configurationForConnecting connectingSceneSession: UISceneSession,
-                     options: UIScene.ConnectionOptions)
-    -> UISceneConfiguration {
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    )
+        -> UISceneConfiguration {
         if let shortcutItem = options.shortcutItem {
             shortcutItemToProcess = shortcutItem
         }
@@ -26,14 +27,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIWindowSceneDelegate {
 
         return sceneConfiguration
     }
-
 }
 
 class CustomSceneDelegate: UIResponder, UIWindowSceneDelegate {
-
-    func windowScene(_ windowScene: UIWindowScene,
-                     performActionFor shortcutItem: UIApplicationShortcutItem,
-                     completionHandler: @escaping (Bool) -> Void
+    func windowScene(
+        _ windowScene: UIWindowScene,
+        performActionFor shortcutItem: UIApplicationShortcutItem,
+        completionHandler: @escaping (Bool) -> Void
     ) {
         shortcutItemToProcess = shortcutItem
     }

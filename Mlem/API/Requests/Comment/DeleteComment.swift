@@ -8,7 +8,6 @@
 import Foundation
 
 struct DeleteCommentRequest: APIPostRequest {
-
     typealias Response = CommentResponse
 
     let instanceURL: URL

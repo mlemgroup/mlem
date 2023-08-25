@@ -1,5 +1,5 @@
 //
-//  InfoStack.swift
+//  InfoStackView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-07.
@@ -20,7 +20,6 @@ struct DetailedVotes {
 }
 
 struct InfoStackView: View {
-  
     let votes: DetailedVotes?
     let published: Date?
     let commentCount: Int?
@@ -87,8 +86,8 @@ struct InfoStackView: View {
     func downvotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
             Image(systemName: votes.myVote == .downvote
-                  ? AppConstants.fullDownvoteSymbolName
-                  : AppConstants.emptyDownvoteSymbolName)
+                ? AppConstants.fullDownvoteSymbolName
+                : AppConstants.emptyDownvoteSymbolName)
             Text(String(votes.downvotes))
         }
         .accessibilityAddTraits(.isStaticText)

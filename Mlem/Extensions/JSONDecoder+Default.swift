@@ -27,7 +27,7 @@ extension JSONDecoder {
             "yyyy-MM-dd"
         ]
 
-        decoder.dateDecodingStrategy = .custom({ decoder in
+        decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let string = try container.decode(String.self)
 
@@ -42,10 +42,12 @@ extension JSONDecoder {
             // does match either of the above, as based on the current API source code
             // it should be one of those
             throw Swift.DecodingError.dataCorrupted(
-                .init(codingPath: container.codingPath,
-                      debugDescription: "Failed to parse date")
+                .init(
+                    codingPath: container.codingPath,
+                    debugDescription: "Failed to parse date"
+                )
             )
-        })
+        }
         return decoder
     }
 }

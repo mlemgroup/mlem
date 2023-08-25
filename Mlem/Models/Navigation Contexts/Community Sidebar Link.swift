@@ -14,7 +14,7 @@ struct CommunitySidebarLinkWithContext: Equatable, Identifiable, Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
+        hasher.combine(id)
     }
     
     var id: String { communityDetails?.communityView.community.id.description ?? UUID().uuidString }

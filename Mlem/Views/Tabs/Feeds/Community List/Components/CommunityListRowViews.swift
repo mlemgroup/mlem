@@ -31,7 +31,6 @@ struct FavoriteStarButtonStyle: ButtonStyle {
 }
 
 struct CommuntiyFeedRowView: View {
-    
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
@@ -81,15 +80,15 @@ struct CommuntiyFeedRowView: View {
         .accessibilityLabel(communityLabel)
     }
 
-	private var communityNameText: Text {
-		Text(community.name)
-	}
+    private var communityNameText: Text {
+        Text(community.name)
+    }
 
     @ViewBuilder
     private var communityNameLabel: some View {
         if let website = community.actorId.host(percentEncoded: false) {
             communityNameText +
-            Text("@\(website)")
+                Text("@\(website)")
                 .font(.footnote)
                 .foregroundColor(.gray.opacity(0.5))
         } else {

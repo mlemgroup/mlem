@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  APIPrivateMessageReportView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-12.

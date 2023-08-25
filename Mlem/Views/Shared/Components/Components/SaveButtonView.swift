@@ -1,5 +1,5 @@
 //
-//  Save.swift
+//  SaveButtonView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-10.
@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SaveButtonView: View {
-
     // ==== PARAMETERS ==== //
 
     let isSaved: Bool

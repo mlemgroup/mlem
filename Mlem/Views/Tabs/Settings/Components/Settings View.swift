@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @State var navigationPath = NavigationPath()
@@ -24,7 +23,7 @@ struct SettingsView: View {
             ScrollViewReader { proxy in
                 List {
                     Section {
-                        NavigationLink(value: SettingsRoute.accountsPage(onboarding: false)) {
+                        NavigationLink(value: SettingsRoute.accountsPage) {
                             Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
                         }
                         .id(scrollToTop)
@@ -64,15 +63,15 @@ struct SettingsView: View {
                 .onChange(of: selectedNavigationTabHashValue) { newValue in
                     if newValue == TabSelection.settings.hashValue {
                         print("re-selected \(TabSelection.settings) tab")
-#if DEBUG
-                        if navigationPath.isEmpty {
-                            withAnimation {
-                                proxy.scrollTo(scrollToTop, anchor: .bottom)
+                        #if DEBUG
+                            if navigationPath.isEmpty {
+                                withAnimation {
+                                    proxy.scrollTo(scrollToTop, anchor: .bottom)
+                                }
+                            } else {
+                                navigationPath.goBack()
                             }
-                        } else {
-                            navigationPath.goBack()
-                        }
-#endif
+                        #endif
                     }
                 }
             }

@@ -9,7 +9,7 @@ import SwiftUI
 
 extension UIUserInterfaceStyle: SettingsOptions {
     public static var allCases: [UIUserInterfaceStyle] {
-        return [.light, .unspecified, .dark]
+        [.light, .unspecified, .dark]
     }
 
     var label: String {

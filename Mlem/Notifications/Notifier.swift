@@ -1,16 +1,15 @@
-// 
+//
 //  Notifier.swift
 //  Mlem
 //
 //  Created by mormaer on 23/07/2023.
-//  
+//
 //
 
 import Foundation
 
 /// An actor to queue notifications which should be presented to the user
 actor Notifier {
-    
     private var queue = [Notifiable]() {
         didSet {
             guard !isNotifying else { return }

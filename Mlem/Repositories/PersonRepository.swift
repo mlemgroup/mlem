@@ -5,8 +5,8 @@
 //  Created by Eric Andrews on 2023-07-26.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 
 class PersonRepository {
     @Dependency(\.apiClient) private var apiClient

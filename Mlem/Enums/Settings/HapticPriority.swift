@@ -1,5 +1,5 @@
 //
-//  HapticLevel.swift
+//  HapticPriority.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-08-10.
@@ -14,7 +14,6 @@ import Foundation
  - low: denotes a haptic that only plays if the user has selected "all" haptic feedback
  */
 enum HapticPriority: String, CaseIterable, Comparable {
-    
     case sentinel, high, low
     
     var intValue: Int {

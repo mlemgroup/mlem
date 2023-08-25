@@ -24,7 +24,6 @@ struct FeedRoot: View {
     let showLoading: Bool
 
     var body: some View {
-
         NavigationSplitView {
             CommunityListView(selectedCommunity: $rootDetails)
                 .id(appState.currentActiveAccount.id)
@@ -42,7 +41,7 @@ struct FeedRoot: View {
                 }
                 .id(rootDetails.id + appState.currentActiveAccount.id)
             } else {
-                Text("Please select a community") 
+                Text("Please select a community")
             }
         }
         .handleLemmyLinkResolution(
@@ -55,7 +54,7 @@ struct FeedRoot: View {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:
                     shortcutItemToProcess?.type ??
-                    "nothing to see here"
+                        "nothing to see here"
                 ) ?? defaultFeed
                 rootDetails = CommunityLinkWithContext(community: nil, feedType: feedType)
                 shortcutItemToProcess = nil
@@ -67,8 +66,9 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
                 
-                _ = HandleLemmyLinkResolution(appState: _appState,
-                                          navigationPath: $navigationPath
+                _ = HandleLemmyLinkResolution(
+                    appState: _appState,
+                    navigationPath: $navigationPath
                 )
                 .didReceiveURL(url)
             }
@@ -76,9 +76,9 @@ struct FeedRoot: View {
         .onChange(of: phase) { newPhase in
             if newPhase == .active {
                 if let shortcutItem = FeedType(rawValue:
-                                                shortcutItemToProcess?.type ??
-                                               "nothing to see here"
-                   ) {
+                    shortcutItemToProcess?.type ??
+                        "nothing to see here"
+                ) {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: shortcutItem)
 
                     shortcutItemToProcess = nil

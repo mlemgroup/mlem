@@ -18,10 +18,10 @@ extension String {
     }
     
     var isNotEmpty: Bool {
-        return !isEmpty
+        !isEmpty
     }
     
     var trimmed: String {
-        return trimmingCharacters(in: .whitespacesAndNewlines)
+        trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TimestampView: View {
-    
     let date: Date
     var spacing: CGFloat = 4
     

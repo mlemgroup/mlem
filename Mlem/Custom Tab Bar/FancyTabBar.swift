@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
-    
     typealias NavigationSelection = any FancyTabBarSelection
 
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
@@ -29,10 +28,12 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
     var dragUpGestureCallback: (() -> Void)?
     
-    init(selection: Binding<Selection>,
-         navigationSelection: Binding<NavigationSelection>,
-         dragUpGestureCallback: (() -> Void)? = nil,
-         @ViewBuilder content: @escaping () -> Content) {
+    init(
+        selection: Binding<Selection>,
+        navigationSelection: Binding<NavigationSelection>,
+        dragUpGestureCallback: (() -> Void)? = nil,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
         self._selection = selection
         self._navigationSelection = navigationSelection
         self.content = content
@@ -54,10 +55,10 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
             .environment(\.tabSelectionHashValue, selection.hashValue)
             .environment(\.tabNavigationSelectionHashValue, navigationSelection.hashValue)
             .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
-                self.tabItemKeys = $0
+                tabItemKeys = $0
             }
             .onPreferenceChange(FancyTabItemLabelBuilderPreferenceKey<Selection>.self) {
-                self.tabItems = $0
+                tabItems = $0
             }
     }
     
@@ -85,11 +86,11 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 ForEach(tabItemKeys, id: \.hashValue) { key in
                     tabItems[key]?.label()
                         .accessibilityElement(children: .combine)
-                    // IDK how to get the "Tab: 1 of 5" VO working natively so here's a janky solution
+                        // IDK how to get the "Tab: 1 of 5" VO working natively so here's a janky solution
                         .accessibilityLabel(getAccessibilityLabel(tab: key))
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
-                    // high priority to prevent conflict with long press/drag
+                        // high priority to prevent conflict with long press/drag
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
@@ -112,7 +113,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
             /// Workaround for issue where setting `navigationSelection` inside a `Dispatch.asyncAfter` block caused issues when performing programmatic scrolling. [2023.08]
             .onChange(of: __navigationSelectionSignal) { _ in
                 if let newTabSelection = TabSelection(index: __tempNavigationSelection) {
-                    self.navigationSelection = newTabSelection
+                    navigationSelection = newTabSelection
                 }
             }
             .gesture(

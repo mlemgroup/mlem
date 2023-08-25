@@ -14,7 +14,7 @@ extension View {
     }
 }
 
-internal struct EdgeBorder: Shape {
+struct EdgeBorder: Shape {
     var width: CGFloat
     var edges: [Edge]
 

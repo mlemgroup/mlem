@@ -26,7 +26,6 @@ struct APISession {
 }
 
 class APIClient {
-
     let urlSession: URLSession
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
@@ -59,12 +58,11 @@ class APIClient {
     /// Configures the clients session based on the passed in account
     /// - Parameter account: a `SavedAccount` to use when configuring the clients session
     func configure(for account: SavedAccount) {
-        self._session = .init(token: account.accessToken, URL: account.instanceLink)
+        _session = .init(token: account.accessToken, URL: account.instanceLink)
     }
     
     @discardableResult
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
-        
         let urlRequest = try urlRequest(from: request)
 
         let (data, response) = try await execute(urlRequest)
@@ -72,7 +70,7 @@ class APIClient {
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 { // Error code for server being offline.
                 throw APIClientError.response(
-                    APIErrorResponse.init(error: "Instance appears to be offline.\nTry again later."),
+                    APIErrorResponse(error: "Instance appears to be offline.\nTry again later."),
                     response.statusCode
                 )
             }
@@ -141,12 +139,12 @@ class APIClient {
 
 extension APIClient {
     func markPostAsRead(for postId: Int, read: Bool) async throws -> PostResponse {
-        let request = MarkPostReadRequest(session: try session, postId: postId, read: read)
+        let request = try MarkPostReadRequest(session: session, postId: postId, read: read)
         return try await perform(request: request)
     }
     
     func loadPost(id: Int, commentId: Int? = nil) async throws -> APIPostView {
-        let request = GetPostRequest(session: try session, id: id, commentId: commentId)
+        let request = try GetPostRequest(session: session, id: id, commentId: commentId)
         return try await perform(request: request).postView
     }
     
@@ -157,8 +155,8 @@ extension APIClient {
         body: String?,
         url: String?
     ) async throws -> PostResponse {
-        let request = CreatePostRequest(
-            session: try session,
+        let request = try CreatePostRequest(
+            session: session,
             communityId: communityId,
             name: name,
             nsfw: nsfw,
@@ -177,8 +175,8 @@ extension APIClient {
         nsfw: Bool?,
         languageId: Int? = nil
     ) async throws -> PostResponse {
-        let request = EditPostRequest(
-            session: try session,
+        let request = try EditPostRequest(
+            session: session,
             postId: postId,
             name: name,
             url: url,
@@ -191,23 +189,23 @@ extension APIClient {
     }
     
     func ratePost(id: Int, score: ScoringOperation) async throws -> APIPostView {
-        let request = CreatePostLikeRequest(session: try session, postId: id, score: score)
+        let request = try CreatePostLikeRequest(session: session, postId: id, score: score)
         return try await perform(request: request).postView
     }
     
     func deletePost(id: Int, shouldDelete: Bool) async throws -> APIPostView {
-        let request = DeletePostRequest(session: try session, postId: id, deleted: shouldDelete)
+        let request = try DeletePostRequest(session: session, postId: id, deleted: shouldDelete)
         return try await perform(request: request).postView
     }
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> APIPostReportView {
-        let request = CreatePostReportRequest(session: try session, postId: id, reason: reason)
+        let request = try CreatePostReportRequest(session: session, postId: id, reason: reason)
         return try await perform(request: request).postReportView
     }
     
     func savePost(id: Int, shouldSave: Bool) async throws -> APIPostView {
-        let request = SavePostRequest(session: try session, postId: id, save: shouldSave)
+        let request = try SavePostRequest(session: session, postId: id, save: shouldSave)
         return try await perform(request: request).postView
     }
 }
@@ -215,9 +213,8 @@ extension APIClient {
 // MARK: Person Requests
 
 extension APIClient {
-    
     func getUnreadCount() async throws -> APIPersonUnreadCounts {
-        let request = GetPersonUnreadCount(session: try session)
+        let request = try GetPersonUnreadCount(session: session)
         return try await perform(request: request)
     }
     
@@ -234,7 +231,7 @@ extension APIClient {
         // TODO: currently only the first page is loaded, with the passed in limit - we should instead be loading on
         // demand as the user scrolls through this feed similar to what we do elsewhere
         let request = try GetPersonDetailsRequest(
-            session: try session,
+            session: session,
             limit: limit,
             savedOnly: savedOnly,
             personId: personId
@@ -244,22 +241,22 @@ extension APIClient {
     }
     
     func markAllAsRead() async throws {
-        let request = MarkAllAsRead(session: try session)
+        let request = try MarkAllAsRead(session: session)
         try await perform(request: request)
     }
     
     func blockPerson(id: Int, shouldBlock: Bool) async throws -> BlockPersonResponse {
-        let request = BlockPersonRequest(session: try session, personId: id, block: shouldBlock)
+        let request = try BlockPersonRequest(session: session, personId: id, block: shouldBlock)
         return try await perform(request: request)
     }
     
     func markPersonMentionAsRead(mentionId: Int, isRead: Bool) async throws -> APIPersonMentionView {
-        let request = MarkPersonMentionAsRead(session: try session, personMentionId: mentionId, read: isRead)
+        let request = try MarkPersonMentionAsRead(session: session, personMentionId: mentionId, read: isRead)
         return try await perform(request: request).personMentionView
     }
     
     func markCommentReplyRead(id: Int, isRead: Bool) async throws -> CommentReplyResponse {
-        let request = MarkCommentReplyAsRead(session: try session, commentId: id, read: isRead)
+        let request = try MarkCommentReplyAsRead(session: session, commentId: id, read: isRead)
         return try await perform(request: request)
     }
 }
@@ -275,7 +272,7 @@ enum ResolvedObject {
 
 extension APIClient {
     func resolve(query: String) async throws -> ResolvedObject? {
-        let request = ResolveObjectRequest(session: try session, query: query)
+        let request = try ResolveObjectRequest(session: session, query: query)
         let response = try await perform(request: request)
         if let post = response.post {
             return .post(post)
@@ -301,20 +298,21 @@ extension APIClient {
 
 extension APIClient {
     func loadSiteInformation() async throws -> SiteResponse {
-        let request = GetSiteRequest(session: try session)
+        let request = try GetSiteRequest(session: session)
         return try await perform(request: request)
     }
     
     // swiftlint:disable function_parameter_count
-    func performSearch(query: String,
-                       searchType: SearchType,
-                       sortOption: PostSortType,
-                       listingType: FeedType,
-                       page: Int?,
-                       limit: Int?
+    func performSearch(
+        query: String,
+        searchType: SearchType,
+        sortOption: PostSortType,
+        listingType: FeedType,
+        page: Int?,
+        limit: Int?
     ) async throws -> SearchResponse {
-        let request = SearchRequest(
-            session: try session,
+        let request = try SearchRequest(
+            session: session,
             query: query,
             searchType: searchType,
             sortOption: sortOption,
@@ -328,6 +326,7 @@ extension APIClient {
         
         return try await perform(request: request)
     }
+
     // swiftlint:enable function_parameter_count
     
     func login(
@@ -348,18 +347,18 @@ extension APIClient {
     
     @discardableResult
     func reportPrivateMessage(id: Int, reason: String) async throws -> APIPrivateMessageReportView {
-        let request = CreatePrivateMessageReportRequest(session: try session, privateMessageId: id, reason: reason)
+        let request = try CreatePrivateMessageReportRequest(session: session, privateMessageId: id, reason: reason)
         return try await perform(request: request).privateMessageReportView
     }
     
     @discardableResult
     func sendPrivateMessage(content: String, recipient: APIPerson) async throws -> PrivateMessageResponse {
-        let request = CreatePrivateMessageRequest(session: try session, content: content, recipient: recipient)
+        let request = try CreatePrivateMessageRequest(session: session, content: content, recipient: recipient)
         return try await perform(request: request)
     }
     
     func markPrivateMessageRead(id: Int, isRead: Bool) async throws -> APIPrivateMessageView {
-        let request = MarkPrivateMessageAsRead(session: try session, privateMessageId: id, read: isRead)
+        let request = try MarkPrivateMessageAsRead(session: session, privateMessageId: id, read: isRead)
         return try await perform(request: request).privateMessageView
     }
 }

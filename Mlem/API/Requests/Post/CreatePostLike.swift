@@ -8,7 +8,6 @@
 import Foundation
 
 struct CreatePostLikeRequest: APIPostRequest {
-
     typealias Response = PostResponse
 
     let instanceURL: URL

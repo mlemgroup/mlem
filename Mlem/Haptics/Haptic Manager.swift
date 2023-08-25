@@ -5,19 +5,18 @@
 //  Created by Eric Andrews on 2023-07-17.
 //
 
+import CoreHaptics
 import Foundation
 import SwiftUI
-import CoreHaptics
 
 class HapticManager {
-    
     // MARK: Members and init
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     
     // generators/engines
-    let rigidImpactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
-    let notificationGenerator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
+    let rigidImpactGenerator: UIImpactFeedbackGenerator = .init(style: .rigid)
+    let notificationGenerator: UINotificationFeedbackGenerator = .init()
     var hapticEngine: CHHapticEngine?
     
     // singleton to use in app
@@ -26,7 +25,7 @@ class HapticManager {
     init() {
         // create and start the engine if this device supports haptics
         print("Initialized haptic engine")
-        hapticEngine = initEngine()
+        self.hapticEngine = initEngine()
         
         // if the engine stops, tell us why
         hapticEngine?.stoppedHandler = { reason in
@@ -91,22 +90,24 @@ class HapticManager {
     func play(haptic: Haptic, priority: HapticPriority) {
         assert(priority != .sentinel, "Cannot use .sentinel as a haptic priority")
         
-        if priority <= hapticLevel, let hapticEngine {
-            guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
-                assertionFailure("Invalid haptic file: \(haptic.rawValue)")
-                return
+        Task(priority: .userInitiated) {
+            if priority <= hapticLevel, let hapticEngine {
+                guard let path = Bundle.main.path(forResource: haptic.rawValue, ofType: "ahap") else {
+                    assertionFailure("Invalid haptic file: \(haptic.rawValue)")
+                    return
+                }
+                
+                let file = URL(filePath: path)
+                do {
+                    try hapticEngine.playPattern(from: file)
+                } catch {
+                    // worst-case scenario--tried to play and no engine!
+                    print("Failed to play pattern: \(error.localizedDescription). Attempting to restart engine.")
+                    handleEngineFailure(with: file)
+                }
+            } else {
+                print("no engine")
             }
-            
-            let file = URL(filePath: path)
-            do {
-                try hapticEngine.playPattern(from: file)
-            } catch {
-                // worst-case scenario--tried to play and no engine!
-                print("Failed to play pattern: \(error.localizedDescription). Attempting to restart engine.")
-                handleEngineFailure(with: file)
-            }
-        } else {
-            print("no engine")
         }
     }
 }

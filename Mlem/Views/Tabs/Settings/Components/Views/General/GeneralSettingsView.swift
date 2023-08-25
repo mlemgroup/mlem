@@ -1,5 +1,5 @@
 //
-//  General.swift
+//  GeneralSettingsView.swift
 //  Mlem
 //
 //  Created by David Bureš on 19.05.2023.
@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -27,16 +26,20 @@ struct GeneralSettingsView: View {
     var body: some View {
         List {
             Section {
-                SelectableSettingsItem(settingIconSystemName: AppConstants.hapticSymbolName,
-                                       settingName: "Haptic Level",
-                                       currentValue: $hapticLevel,
-                                       options: HapticPriority.allCases)
+                SelectableSettingsItem(
+                    settingIconSystemName: AppConstants.hapticSymbolName,
+                    settingName: "Haptic Level",
+                    currentValue: $hapticLevel,
+                    options: HapticPriority.allCases
+                )
             }
             
             Section {
-                SwitchableSettingsItem(settingPictureSystemName: AppConstants.blurNsfwSymbolName,
-                                       settingName: "Blur NSFW Content",
-                                       isTicked: $shouldBlurNsfw)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.blurNsfwSymbolName,
+                    settingName: "Blur NSFW Content",
+                    isTicked: $shouldBlurNsfw
+                )
             } footer: {
                 // swiftlint:disable line_length
                 Text("Blurs content flagged as Not Safe For Work until you click on it. If you want to disable NSFW content from appearing entirely, you can do so from Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
@@ -44,24 +47,30 @@ struct GeneralSettingsView: View {
             }
             
             Section {
-                SelectableSettingsItem(settingIconSystemName: defaultFeed.settingsIconName,
-                                       settingName: "Default Feed",
-                                       currentValue: $defaultFeed,
-                                       options: FeedType.allCases)
+                SelectableSettingsItem(
+                    settingIconSystemName: defaultFeed.settingsIconName,
+                    settingName: "Default Feed",
+                    currentValue: $defaultFeed,
+                    options: FeedType.allCases
+                )
             } footer: {
                 Text("The feed to show by default when you open the app.")
             }
             
             Section {
-                SelectableSettingsItem(settingIconSystemName: defaultPostSorting.iconName,
-                                       settingName: "Posts",
-                                       currentValue: $defaultPostSorting,
-                                       options: PostSortType.allCases)
+                SelectableSettingsItem(
+                    settingIconSystemName: defaultPostSorting.iconName,
+                    settingName: "Posts",
+                    currentValue: $defaultPostSorting,
+                    options: PostSortType.allCases
+                )
                 
-                SelectableSettingsItem(settingIconSystemName: defaultCommentSorting.iconName,
-                                       settingName: "Comments",
-                                       currentValue: $defaultCommentSorting,
-                                       options: CommentSortType.allCases)
+                SelectableSettingsItem(
+                    settingIconSystemName: defaultCommentSorting.iconName,
+                    settingName: "Comments",
+                    currentValue: $defaultCommentSorting,
+                    options: CommentSortType.allCases
+                )
             } header: {
                 Text("Default Sorting")
             } footer: {
@@ -69,10 +78,12 @@ struct GeneralSettingsView: View {
             }
             
             Section {
-                SelectableSettingsItem(settingIconSystemName: AppConstants.connectionSymbolName,
-                                       settingName: "Internet Speed",
-                                       currentValue: $internetSpeed,
-                                       options: InternetSpeed.allCases)
+                SelectableSettingsItem(
+                    settingIconSystemName: AppConstants.connectionSymbolName,
+                    settingName: "Internet Speed",
+                    currentValue: $internetSpeed,
+                    options: InternetSpeed.allCases
+                )
             } header: {
                 Text("Connection Type")
             } footer: {
@@ -91,18 +102,19 @@ struct GeneralSettingsView: View {
                 .confirmationDialog(
                     "Delete community favorites for all accounts?",
                     isPresented: $isShowingFavoritesDeletionConfirmation,
-                    titleVisibility: .visible) {
-                        Button(role: .destructive) {
-                            favoritesTracker.favoriteCommunities = .init()
-                        } label: {
-                            Text("Delete all favorites")
-                        }
+                    titleVisibility: .visible
+                ) {
+                    Button(role: .destructive) {
+                        favoritesTracker.favoriteCommunities = .init()
+                    } label: {
+                        Text("Delete all favorites")
+                    }
                         
-                        Button(role: .cancel) {
-                            isShowingFavoritesDeletionConfirmation.toggle()
-                        } label: {
-                            Text("Cancel")
-                        }
+                    Button(role: .cancel) {
+                        isShowingFavoritesDeletionConfirmation.toggle()
+                    } label: {
+                        Text("Cancel")
+                    }
 
                 } message: {
                     Text("You cannot undo this action.")
@@ -111,7 +123,6 @@ struct GeneralSettingsView: View {
             } footer: {
                 Text("Community favorites are stored on-device and are not tied to your Lemmy account.")
             }
-
         }
         .fancyTabScrollCompatible()
         .navigationTitle("General")

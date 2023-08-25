@@ -1,15 +1,14 @@
-// 
+//
 //  Encodable+Export.swift
 //  Mlem
 //
 //  Created by mormaer on 01/08/2023.
-//  
+//
 //
 
 import Foundation
 
 extension Encodable {
-    
     /// A method to create an exportable representation (JSON) of this object and share it
     /// - Parameters:
     ///   - filename: An optional name to use for the exported file, if none is supplied a unique UUID will be used

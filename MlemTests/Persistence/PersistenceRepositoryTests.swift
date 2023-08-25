@@ -1,9 +1,9 @@
-// 
+//
 //  PersistenceRepositoryTests.swift
 //  MlemTests
 //
 //  Created by mormaer on 05/08/2023.
-//  
+//
 //
 
 @testable import Mlem
@@ -12,7 +12,6 @@ import Dependencies
 import XCTest
 
 final class PersistenceRepositoryTests: XCTestCase {
-
     private enum PersistenceTestError: Error {
         case noDataForURL
     }

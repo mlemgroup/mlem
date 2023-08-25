@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct Window: View {
-    
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
         
@@ -45,7 +44,6 @@ struct Window: View {
         } else {
             NavigationStack {
                 OnboardingView(selectedAccount: $selectedAccount)
-                // AddSavedInstanceView(onboarding: true, currentAccount: $selectedAccount)
             }
         }
     }
