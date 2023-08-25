@@ -316,15 +316,12 @@ extension ExpandedPost {
             let comments = try await commentRepository.comments(for: post.post.id)
             commentTracker.comments = sortComments(comments, by: commentSortingType)
         } catch {
-            if commentErrorDetails == nil {
-                errorHandler.handle(.init(
-                    title: "Failed to refresh",
-                    message: "Please try again",
-                    underlyingError: error
-                ))
-            } else {
-                commentErrorDetails = ErrorDetails(error: error, refresh: loadComments)
-            }
+            errorHandler.handle(.init(
+                title: "Failed to refresh",
+                message: "Please try again",
+                underlyingError: error
+                )
+            )
         }
     }
 
