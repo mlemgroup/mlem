@@ -292,6 +292,7 @@ extension ExpandedPost {
 
     // swiftlint:enable function_body_length
 
+    @discardableResult
     func loadComments() async -> Bool {
         defer { isLoading = false }
         isLoading = true
@@ -315,14 +316,14 @@ extension ExpandedPost {
             let comments = try await commentRepository.comments(for: post.post.id)
             commentTracker.comments = sortComments(comments, by: commentSortingType)
         } catch {
-            if !InternetConnectionManager.isConnectedToNetwork() {
-                await notifier.add(.failure("You're offline"))
-            } else {
+            if commentErrorDetails == nil {
                 errorHandler.handle(.init(
                     title: "Failed to refresh",
                     message: "Please try again",
                     underlyingError: error
                 ))
+            } else {
+                commentErrorDetails = ErrorDetails(error: error, refresh: loadComments)
             }
         }
     }

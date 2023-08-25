@@ -220,17 +220,13 @@ struct UserView: View {
                     return userDetails != nil
                 })
             } else {
-                if !InternetConnectionManager.isConnectedToNetwork() {
-                    await notifier.add(.failure("You're offline"))
-                } else {
-                    errorHandler.handle(
-                        .init(
-                            title: "Couldn't load user info",
-                            message: "There was an error while loading user information.\nTry again later.",
-                            underlyingError: error
-                        )
+                errorHandler.handle(
+                    .init(
+                        title: "Couldn't load user info",
+                        message: "There was an error while loading user information.\nTry again later.",
+                        underlyingError: error
                     )
-                }
+                )
             }
         }
     }
