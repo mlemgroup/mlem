@@ -66,11 +66,8 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
                 
-                _ = HandleLemmyLinkResolution(
-                    appState: _appState,
-                    navigationPath: $navigationPath
-                )
-                .didReceiveURL(url)
+                _ = HandleLemmyLinkResolution(navigationPath: $navigationPath)
+                    .didReceiveURL(url)
             }
         }
         .onChange(of: phase) { newPhase in
