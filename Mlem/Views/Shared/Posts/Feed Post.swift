@@ -24,6 +24,7 @@ struct FeedPost: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.siteInformation) var siteInformation
     
     // MARK: Environment
 
@@ -511,7 +512,7 @@ extension FeedPost {
     }
 
     var downvoteSwipeAction: SwipeAction? {
-        guard appState.enableDownvote else { return nil }
+        guard siteInformation.enableDownvotes else { return nil }
 
         let (emptySymbolName, fullSymbolName) = postView.myVote == .downvote ?
             (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :

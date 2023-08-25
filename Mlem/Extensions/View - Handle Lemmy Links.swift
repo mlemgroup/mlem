@@ -87,7 +87,6 @@ struct HandleLemmyLinkResolution: ViewModifier {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccounts: SavedAccountTracker
     let navigationPath: Binding<NavigationPath>
 

@@ -1,15 +1,16 @@
 //
-//  Symmetric Vote Complex.swift
+//  ScoreCounterView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-13.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct ScoreCounterView: View {
-    @EnvironmentObject var appState: AppState
+    @Dependency(\.siteInformation) var siteInformation
     
     let vote: ScoringOperation
     let score: Int
@@ -35,7 +36,7 @@ struct ScoreCounterView: View {
             Text(String(score))
                 .foregroundColor(scoreColor)
             
-            if appState.enableDownvote {
+            if siteInformation.enableDownvotes {
                 DownvoteButtonView(vote: vote, downvote: downvote)
                     .offset(x: -AppConstants.postAndCommentSpacing)
             }
