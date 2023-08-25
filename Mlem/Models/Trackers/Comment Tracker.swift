@@ -13,11 +13,24 @@ class CommentTracker: ObservableObject {
     private var ids: Set<Int> = .init()
 
     private var _comments: [HierarchicalComment] = []
+    private(set) var topLevelIDs: [Int] = []
+    
+    // Maps comment ID -> top level comment ID
+    private(set) var topLevelIDMap: [Int: Int] = [:]
+    
     var comments: [HierarchicalComment] {
         get { _comments }
         set {
             _comments = newValue
             self.commentsView = _comments.flatMap(HierarchicalComment.recursiveFlatMap)
+            
+            topLevelIDs.removeAll()
+            for comment in self.commentsView {
+                if comment.depth == 0 {
+                    topLevelIDs.append(comment.commentView.comment.id)
+                }
+                topLevelIDMap[comment.id] = topLevelIDs.last
+            }
         }
     }
     

@@ -139,45 +139,40 @@ struct ExpandedPost: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationBarColor()
     }
     
     func scrollToNextComment() {
         if let topVisibleId = topVisibleCommentId {
-            var nextComment: HierarchicalComment?
-            
             if topVisibleId == 0 {
-                nextComment = commentTracker.commentsView.first
-            } else {
-                if let index = commentTracker.commentsView.firstIndex(where: {
-                    $0.commentView.comment.id == topVisibleId
-                }) {
-                    let slice = commentTracker.commentsView[(index+1)...]
-                    nextComment = slice.first(where: { $0.depth == 0 })
-                }
+                scrollTarget = commentTracker.topLevelIDs.first
+                return
             }
-            if let nextComment = nextComment {
-                scrollTarget = nextComment.commentView.comment.id
+            if let topLevelId = commentTracker.topLevelIDMap[topVisibleId] {
+                if let index = commentTracker.topLevelIDs.firstIndex(of: topLevelId) {
+                    if index + 1 < commentTracker.comments.count {
+                        scrollTarget = commentTracker.topLevelIDs[index + 1]
+                    }
+                }
             }
         }
     }
     
     func scrollToPreviousComment() {
-        if topVisibleCommentId == commentTracker.comments.first?.commentView.comment.id {
-            scrollTarget = 0
-        }
-        if let topVisibleCommentId = topVisibleCommentId {
-            if let index = commentTracker.commentsView.firstIndex(where: {
-                $0.commentView.comment.id == topVisibleCommentId
-            }) {
-                let slice = commentTracker.commentsView[..<index]
-                if let previousComment = slice.last(where: { $0.depth == 0 }) {
-                    scrollTarget = previousComment.commentView.comment.id
+        if let topVisibleId = topVisibleCommentId {
+            if topVisibleId == commentTracker.topLevelIDs.first {
+                scrollTarget = 0
+                return
+            }
+            
+            if let topLevelId = commentTracker.topLevelIDMap[topVisibleId] {
+                if let index = commentTracker.topLevelIDs.firstIndex(of: topLevelId) {
+                    if index - 1 >= 0 {
+                        scrollTarget = commentTracker.topLevelIDs[index - 1]
+                    }
                 }
             }
         }
-        .listStyle(PlainListStyle())
-        .fancyTabScrollCompatible()
-        .navigationBarColor()
     }
     
     var userServerInstanceLocation: ServerInstanceLocation {

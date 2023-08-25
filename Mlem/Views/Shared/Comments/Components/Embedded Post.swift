@@ -62,7 +62,8 @@ struct EmbeddedPostPreview: PreviewProvider {
     static var previews: some View {
         EmbeddedPost(
             community: .mock(),
-            post: .mock()
+            post: .mock(),
+            comment: .mock()
         )
     }
 }
