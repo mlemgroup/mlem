@@ -15,8 +15,20 @@ check_for_swiftformat() {
 
 format_staged_files() {
   git diff --diff-filter=d --staged --name-only | grep -e '\(.*\).swift$' | while read line; do
-    $formatter "${line}"
-    git add "$line"
+
+    # format the stages changes in a file
+
+    temporary_file="${line}.tmp.swift"
+    git show ":$line" > "$temporary_file"
+
+    $formatter "$temporary_file"
+    $formatter "$line"
+
+    blob=`git hash-object -w "$temporary_file"`
+
+    git update-index --add --cacheinfo 100644 $blob "$line"
+
+    rm "$temporary_file"
   done
 }
 

@@ -4,3 +4,4 @@
 --trimwhitespace nonblank-lines
 --self init-only
 --stripunusedargs closure-only
+--headers ignore
