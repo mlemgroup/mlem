@@ -26,7 +26,6 @@ struct ContentView: View {
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
-    @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
     @State private var showLoading: Bool = false
     @GestureState private var isDetectingLongPress = false
     
@@ -39,7 +38,7 @@ struct ContentView: View {
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
-        FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
+        FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
                 FeedRoot(showLoading: showLoading)
                     .fancyTabItem(tag: TabSelection.feeds) {

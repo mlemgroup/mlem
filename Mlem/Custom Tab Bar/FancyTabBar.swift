@@ -16,7 +16,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
     @Binding private var selection: Selection
-    @Binding private var navigationSelection: NavigationSelection
+    @State private var navigationSelection: NavigationSelection = TabSelection._tabBarNavigation
     @State private var __tempNavigationSelection: Int = -1
     @State private var __tempToggle: Bool = false
     
@@ -28,11 +28,9 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     var dragUpGestureCallback: (() -> Void)?
     
     init(selection: Binding<Selection>,
-         navigationSelection: Binding<NavigationSelection>,
          dragUpGestureCallback: (() -> Void)? = nil,
          @ViewBuilder content: @escaping () -> Content) {
         self._selection = selection
-        self._navigationSelection = navigationSelection
         self.content = content
         self.dragUpGestureCallback = dragUpGestureCallback
     }
