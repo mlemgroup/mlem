@@ -38,7 +38,7 @@ struct TabBarSettingsView: View {
                             print(textFieldEntry)
                             let newAccount = SavedAccount(from: appState.currentActiveAccount, storedNickname: textFieldEntry)
                             appState.changeDisplayedNickname(to: textFieldEntry)
-                            savedAccountTracker.replaceAccount(account: newAccount)
+                            savedAccountTracker.update(with: newAccount)
                         }
                     } icon: {
                         Image(systemName: "rectangle.and.pencil.and.ellipsis")
