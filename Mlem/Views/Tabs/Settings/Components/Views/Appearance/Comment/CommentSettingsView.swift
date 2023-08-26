@@ -8,6 +8,21 @@
 import Foundation
 import SwiftUI
 
+enum JumpButtonLocation: String, SettingsOptions {
+    case bottomLeading, bottomTrailing
+    
+    var id: Self { self }
+    
+    var label: String {
+        switch self {
+        case .bottomLeading:
+            return "Left"
+        case .bottomTrailing:
+            return "Right"
+        }
+    }
+}
+
 struct CommentSettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
@@ -19,6 +34,9 @@ struct CommentSettingsView: View {
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
+    
+    @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
+    @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
     
     var body: some View {
         Form {
@@ -71,6 +89,18 @@ struct CommentSettingsView: View {
                     settingPictureSystemName: "bubble.right",
                     settingName: "Show Replies In Info",
                     isTicked: $shouldShowRepliesInCommentBar
+                )
+            }
+            
+            Section {
+                SwitchableSettingsItem(settingPictureSystemName: "circle",
+                                       settingName: "Show Jump Button",
+                                       isTicked: $showCommentJumpButton)
+                SelectableSettingsItem(
+                    settingIconSystemName: "arrow.left.arrow.right",
+                    settingName: "Side",
+                    currentValue: $commentJumpButtonSide,
+                    options: JumpButtonLocation.allCases
                 )
             }
         }

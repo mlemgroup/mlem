@@ -17,6 +17,7 @@ struct LazyLoadExpandedPost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @State var post: APIPost
+    @State var scrollTarget: Int?
     
     @State private var loadedPostView: APIPostView?
 
@@ -25,7 +26,7 @@ struct LazyLoadExpandedPost: View {
     var body: some View {
         Group {
             if let loadedPost = loadedPostView {
-                ExpandedPost(post: loadedPost)
+                ExpandedPost(post: loadedPost, scrollTarget: scrollTarget)
                     .environmentObject(postTracker)
             } else {
                 progressView

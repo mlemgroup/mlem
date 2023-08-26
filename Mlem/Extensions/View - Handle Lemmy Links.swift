@@ -57,12 +57,12 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 LazyLoadExpandedPost(post: post)
             }
             .navigationDestination(for: PostLinkWithContext.self) { post in
-                ExpandedPost(post: post.post)
+                ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                     .environmentObject(post.postTracker)
                     .environmentObject(appState)
             }
             .navigationDestination(for: LazyLoadPostLinkWithContext.self) { post in
-                LazyLoadExpandedPost(post: post.post)
+                LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                     .environmentObject(post.postTracker)
             }
             .navigationDestination(for: APIPerson.self) { user in

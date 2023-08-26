@@ -34,6 +34,12 @@ extension HierarchicalComment: Identifiable {
     var id: Int { commentView.id }
 }
 
+extension HierarchicalComment: Equatable {
+    static func == (lhs: HierarchicalComment, rhs: HierarchicalComment) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 extension [HierarchicalComment] {
     /// A method to insert an updated `APICommentView` into this array of `HierarchicalComment`
     /// - Parameter commentView: The `APICommentView` you wish to insert

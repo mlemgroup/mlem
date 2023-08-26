@@ -12,6 +12,20 @@ enum PossibleStyling {
     case bold, italics
 }
 
+private struct AnchorsKey: PreferenceKey {
+    // Each key is a comment id. The corresponding value is the
+    // .center anchor of that row.
+    typealias Value = [Int: Anchor<CGPoint>]
+
+    static var defaultValue: Value { [:] }
+
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value.merge(nextValue()) { $1 }
+    }
+}
+
+// swiftlint:disable type_body_length
+
 struct ExpandedPost: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
@@ -30,6 +44,9 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
+    
+    @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
+    @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
@@ -51,6 +68,11 @@ struct ExpandedPost: View {
     var displayedSaved: Bool { dirty ? dirtySaved : post.saved }
     
     @State var isLoading: Bool = false
+    
+    /// When this is set, the view scrolls to the comment with the given ID, or to the top if set to 0.
+    @State var scrollTarget: Int?
+    /// The id of the top visible comment, or 0 if the post is visible.
+    @State var topVisibleCommentId: Int?
 
     @State private var sortSelection = 0
     @State var commentSortingType: CommentSortType = .appStorageValue()
@@ -74,24 +96,90 @@ struct ExpandedPost: View {
     }
     
     private var contentView: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                postView
-                    .id(post.hashValue)
-                
-                Divider()
-                    .background(.black)
-
-                if commentTracker.comments.isEmpty {
-                    noCommentsView()
-                } else {
-                    commentsView
+        GeometryReader { proxy in
+            ScrollViewReader { (scrollProxy: ScrollViewProxy) in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        postView
+                            .id(0)
+                            .anchorPreference(
+                                key: AnchorsKey.self,
+                                value: .center
+                            ) { [0: $0] }
+                        
+                        Divider()
+                            .background(.black)
+                        
+                        if commentTracker.comments.isEmpty {
+                            noCommentsView()
+                        } else {
+                            commentsView
+                                .onAppear {
+                                    if let target = scrollTarget {
+                                        scrollTarget = nil
+                                        scrollProxy.scrollTo(target, anchor: .top)
+                                    }
+                                }
+                        }
+                    }
+                }
+                .onChange(of: scrollTarget) { target in
+                    if let target = target {
+                        scrollTarget = nil
+                        withAnimation {
+                            scrollProxy.scrollTo(target, anchor: .top)
+                        }
+                    }
+                }
+                .onPreferenceChange(AnchorsKey.self) { anchors in
+                    topVisibleCommentId = topCommentRow(of: anchors, in: proxy)
                 }
             }
         }
-        .listStyle(PlainListStyle())
+        .overlay {
+            if showCommentJumpButton && commentTracker.comments.count > 1 {
+                JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
+                        alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading)
+            }
+        }
         .fancyTabScrollCompatible()
         .navigationBarColor()
+    }
+    
+    func scrollToNextComment() {
+        if let topVisibleId = topVisibleCommentId {
+            if topVisibleId == 0 {
+                scrollTarget = commentTracker.topLevelIDs.first
+                return
+            }
+            if let topLevelId = commentTracker.topLevelIDMap[topVisibleId] {
+                if let index = commentTracker.topLevelIDs.firstIndex(of: topLevelId) {
+                    if index + 1 < commentTracker.comments.count {
+                        scrollTarget = commentTracker.topLevelIDs[index + 1]
+                    }
+                }
+            }
+        }
+    }
+    
+    func scrollToPreviousComment() {
+        if let topVisibleId = topVisibleCommentId {
+            if topVisibleId == commentTracker.topLevelIDs.first {
+                scrollTarget = 0
+                return
+            }
+            
+            if let topLevelId = commentTracker.topLevelIDMap[topVisibleId] {
+                if let index = commentTracker.topLevelIDs.firstIndex(of: topLevelId) {
+                    if index - 1 >= 0 {
+                        scrollTarget = commentTracker.topLevelIDs[index - 1]
+                    }
+                }
+            }
+        }
     }
     
     var userServerInstanceLocation: ServerInstanceLocation {
@@ -200,17 +288,35 @@ struct ExpandedPost: View {
      */
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
-            ForEach(commentTracker.commentsView, id: \.commentView.comment.hashValue) { comment in
+            ForEach(commentTracker.commentsView, id: \.commentView.comment.id) { comment in
                 CommentItem(
                     hierarchicalComment: comment,
                     postContext: post,
                     showPostContext: false,
                     showCommentCreator: true
                 )
+                .anchorPreference(
+                    key: AnchorsKey.self,
+                    value: .center
+                ) { [comment.commentView.comment.id: $0] }
                 /// [2023.08] Manually set zIndex so child comments don't overlap parent comments on collapse/expand animations. `Int.max` doesn't work, which is why this is set to just some big value.
                 .zIndex(.maxZIndex - Double(comment.depth))
+
             }
+            
         }
+    }
+    
+    private func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> Int? {
+        var yBest = CGFloat.infinity
+        var answer: Int?
+        for (row, anchor) in anchors {
+            let y = proxy[anchor].y
+            guard y >= 0, y < yBest else { continue }
+            answer = row
+            yBest = y
+        }
+        return answer
     }
     
     private var toolbarMenu: some View {
@@ -229,3 +335,5 @@ struct ExpandedPost: View {
         }
     }
 }
+
+// swiftlint:enable type_body_length

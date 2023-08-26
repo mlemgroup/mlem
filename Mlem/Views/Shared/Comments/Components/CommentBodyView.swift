@@ -97,7 +97,8 @@ struct CommentBodyView: View {
             if showPostContext {
                 EmbeddedPost(
                     community: commentView.community,
-                    post: commentView.post
+                    post: commentView.post,
+                    comment: commentView.comment
                 )
             }
         }

@@ -21,4 +21,5 @@ struct PostLinkWithContext: Equatable, Identifiable, Hashable {
 
     let post: APIPostView
     let postTracker: PostTracker
+    var scrollTarget: Int?
 }

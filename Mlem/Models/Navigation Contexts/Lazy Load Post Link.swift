@@ -20,4 +20,5 @@ struct LazyLoadPostLinkWithContext: Equatable, Identifiable, Hashable {
 
     let post: APIPost
     let postTracker: PostTracker
+    var scrollTarget: Int?
 }
