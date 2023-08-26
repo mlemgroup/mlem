@@ -20,6 +20,8 @@ enum Field: Hashable {
 
 // swiftlint:disable type_body_length
 struct AddSavedInstanceView: View {
+    
+    @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.apiClient) var apiClient
     
     enum ViewState {
@@ -38,7 +40,6 @@ struct AddSavedInstanceView: View {
         case onetimecode
     }
     
-    @EnvironmentObject var communityTracker: SavedAccountTracker
     @EnvironmentObject var appState: AppState
     
     @Environment(\.dismiss) var dismiss
@@ -326,7 +327,7 @@ struct AddSavedInstanceView: View {
             // MARK: - Save the account's credentials into the keychain
             
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
-            communityTracker.addAccount(account: newAccount)
+            accountsTracker.addAccount(account: newAccount)
             
             dismiss()
             
