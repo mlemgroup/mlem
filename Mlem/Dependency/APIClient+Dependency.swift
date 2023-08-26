@@ -10,7 +10,7 @@ import Dependencies
 import Foundation
 
 extension APIClient: DependencyKey {
-    static let liveValue = APIClient { urlSession, urlRequest in try await urlSession.data(for: urlRequest) }
+    static let liveValue = APIClient(transport: { urlSession, urlRequest in try await urlSession.data(for: urlRequest) })
     static let testValue = APIClient(transport: unimplemented())
 }
 
