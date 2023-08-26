@@ -24,13 +24,10 @@ struct JumpButtonView: View {
                 .aspectRatio(contentMode: .fit)
                 .padding(16)
                 .background(
-                    ZStack {
-                        Circle()
-                            .fill(Material.thinMaterial)
-
-                        Circle()
-                            .strokeBorder(.tertiary.opacity(0.3), lineWidth: 1)
-                    }
+                    Circle()
+                        .stroke(.tertiary.opacity(0.3))
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
                 )
                 .padding(10)
                 .scaleEffect(self.pressed ? 1.2 : 1.0)
@@ -44,7 +41,7 @@ struct JumpButtonView: View {
                         onLongPress()
                     },
                     onPressingChanged: { pressing in
-                        withAnimation(.spring) {
+                        withAnimation(.interactiveSpring()) {
                             self.pressed = pressing
                         }
                     }

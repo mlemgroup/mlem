@@ -94,49 +94,53 @@ struct ExpandedPost: View {
     }
     
     private var contentView: some View {
-        ZStack(alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading) {
-            GeometryReader { proxy in
-                ScrollViewReader { (scrollProxy: ScrollViewProxy) in
-                    ScrollView {
-                        VStack(spacing: 0) {
-                            postView
-                                .id(0)
-                                .anchorPreference(
-                                    key: AnchorsKey.self,
-                                    value: .center
-                                ) { [0: $0] }
-                            
-                            Divider()
-                                .background(.black)
-                            
-                            if commentTracker.comments.isEmpty {
-                                noCommentsView()
-                            } else {
-                                commentsView
-                                    .onAppear {
-                                        if let target = scrollTarget {
-                                            scrollTarget = nil
-                                            scrollProxy.scrollTo(target, anchor: .top)
-                                        }
+        GeometryReader { proxy in
+            ScrollViewReader { (scrollProxy: ScrollViewProxy) in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        postView
+                            .id(0)
+                            .anchorPreference(
+                                key: AnchorsKey.self,
+                                value: .center
+                            ) { [0: $0] }
+                        
+                        Divider()
+                            .background(.black)
+                        
+                        if commentTracker.comments.isEmpty {
+                            noCommentsView()
+                        } else {
+                            commentsView
+                                .onAppear {
+                                    if let target = scrollTarget {
+                                        scrollTarget = nil
+                                        scrollProxy.scrollTo(target, anchor: .top)
                                     }
-                            }
+                                }
                         }
-                    }
-                    .onChange(of: scrollTarget) { target in
-                        if let target = target {
-                            scrollTarget = nil
-                            withAnimation {
-                                scrollProxy.scrollTo(target, anchor: .top)
-                            }
-                        }
-                    }
-                    .onPreferenceChange(AnchorsKey.self) { anchors in
-                        topVisibleCommentId = topCommentRow(of: anchors, in: proxy)
                     }
                 }
+                .onChange(of: scrollTarget) { target in
+                    if let target = target {
+                        scrollTarget = nil
+                        withAnimation {
+                            scrollProxy.scrollTo(target, anchor: .top)
+                        }
+                    }
+                }
+                .onPreferenceChange(AnchorsKey.self) { anchors in
+                    topVisibleCommentId = topCommentRow(of: anchors, in: proxy)
+                }
             }
+        }
+        .overlay {
             if showCommentJumpButton && commentTracker.comments.count > 1 {
                 JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
+                        alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading)
             }
         }
         .fancyTabScrollCompatible()
