@@ -25,7 +25,7 @@ struct FeedRoot: View {
 
     var body: some View {
         NavigationSplitView {
-            CommunityListView(selectedCommunity: $rootDetails)
+            CommunityListView(selectedCommunity: $rootDetails, account: appState.currentActiveAccount)
                 .id(appState.currentActiveAccount.id)
         } detail: {
             if let rootDetails {

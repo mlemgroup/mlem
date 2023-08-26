@@ -5,9 +5,13 @@
 //  Created by David Bureš on 19.05.2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
+    
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -18,7 +22,6 @@ struct GeneralSettingsView: View {
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
 
-    @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
@@ -96,20 +99,20 @@ struct GeneralSettingsView: View {
                 } label: {
                     Label("Delete Community Favorites", systemImage: "trash")
                         .foregroundColor(.red)
-                        .opacity(favoritesTracker.favoriteCommunities.isEmpty ? 0.6 : 1)
+                        .opacity(favoriteCommunitiesTracker.favoriteCommunities.isEmpty ? 0.6 : 1)
                 }
-                .disabled(favoritesTracker.favoriteCommunities.isEmpty)
+                .disabled(favoriteCommunitiesTracker.favoriteCommunities.isEmpty)
                 .confirmationDialog(
                     "Delete community favorites for all accounts?",
                     isPresented: $isShowingFavoritesDeletionConfirmation,
                     titleVisibility: .visible
                 ) {
                     Button(role: .destructive) {
-                        favoritesTracker.favoriteCommunities = .init()
+                        favoriteCommunitiesTracker.favoriteCommunities = .init()
                     } label: {
                         Text("Delete all favorites")
                     }
-                        
+                    
                     Button(role: .cancel) {
                         isShowingFavoritesDeletionConfirmation.toggle()
                     } label: {

@@ -14,6 +14,7 @@ struct FeedView: View {
     
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     
@@ -25,7 +26,6 @@ struct FeedView: View {
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
-    @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var editorTracker: EditorTracker
     
     // MARK: Parameters and init

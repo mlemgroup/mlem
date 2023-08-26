@@ -9,7 +9,6 @@ import Combine
 import Dependencies
 import Foundation
 
-@MainActor
 class FavoriteCommunitiesTracker: ObservableObject {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
@@ -19,9 +18,7 @@ class FavoriteCommunitiesTracker: ObservableObject {
     init() {
         self.favoriteCommunities = persistenceRepository.loadFavoriteCommunities()
         self.updateObserver = $favoriteCommunities.sink { [weak self] value in
-            Task {
-                try await self?.persistenceRepository.saveFavoriteCommunities(value)
-            }
+            self?.save(value)
         }
     }
     
@@ -39,5 +36,11 @@ class FavoriteCommunitiesTracker: ObservableObject {
     
     func unfavorite(_ community: APICommunity) {
         favoriteCommunities.removeAll(where: { $0.community.id == community.id })
+    }
+    
+    private func save(_ value: [FavoriteCommunity]) {
+        Task { [weak self] in
+            try await self?.persistenceRepository.saveFavoriteCommunities(value)
+        }
     }
 }
