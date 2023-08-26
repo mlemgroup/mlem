@@ -85,7 +85,7 @@ struct CachedImage: View {
                     .resizable()
                     .aspectRatio(contentMode: contentMode)
                     .cornerRadius(cornerRadius)
-                    .frame(width: size.width, height: size.height)
+                    .frame(idealWidth: size.width, maxHeight: size.height)
                     .clipped()
                     .allowsHitTesting(false)
                     .overlay(alignment: .top) {
@@ -141,15 +141,19 @@ struct CachedImage: View {
             } else if state.error != nil {
                 // Indicates an error
                 imageNotFound()
-                    .frame(width: size.width, height: size.height)
+                    .frame(idealWidth: size.width, maxHeight: size.height)
                     .background(Color(uiColor: .systemGray4))
             } else {
                 ProgressView() // Acts as a placeholder
-                    .frame(width: size.width, height: size.height)
+                    .frame(idealWidth: size.width, maxHeight: size.height)
             }
         }
-        .processors([.resize(size: size)])
-        .frame(width: size.width, height: size.height)
+        .processors([
+            .resize(
+                size: size,
+                contentMode: contentMode == .fill ? .aspectFill : .aspectFit)
+        ])
+        .frame(idealWidth: size.width, maxHeight: size.height)
     }
     
     static func imageNotFoundDefault() -> AnyView {
