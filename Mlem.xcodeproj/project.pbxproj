@@ -15,6 +15,8 @@
 		038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E42A7A97380087987E /* LayoutWidgetView.swift */; };
 		038A16E72A7A9C430087987E /* LayoutWidgetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E62A7A9C430087987E /* LayoutWidgetCollection.swift */; };
 		038A16E92A7A9C640087987E /* LayoutWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16E82A7A9C640087987E /* LayoutWidget.swift */; };
+		039439912A98FA6100463032 /* UserFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439902A98FA6100463032 /* UserFeedView.swift */; };
+		039439932A99098900463032 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039439922A99098900463032 /* InternetConnectionManager.swift */; };
 		03A1B3F22A83F33900AB0DE0 /* DownvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F12A83F33900AB0DE0 /* DownvoteCounterView.swift */; };
 		03A1B3F42A83F46200AB0DE0 /* ShareButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F32A83F46200AB0DE0 /* ShareButtonView.swift */; };
 		03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */; };
@@ -426,6 +428,8 @@
 		038A16E42A7A97380087987E /* LayoutWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetView.swift; sourceTree = "<group>"; };
 		038A16E62A7A9C430087987E /* LayoutWidgetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetCollection.swift; sourceTree = "<group>"; };
 		038A16E82A7A9C640087987E /* LayoutWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidget.swift; sourceTree = "<group>"; };
+		039439902A98FA6100463032 /* UserFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedView.swift; sourceTree = "<group>"; };
+		039439922A99098900463032 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
 		03A1B3F12A83F33900AB0DE0 /* DownvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownvoteCounterView.swift; sourceTree = "<group>"; };
 		03A1B3F32A83F46200AB0DE0 /* ShareButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButtonView.swift; sourceTree = "<group>"; };
 		03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentAggregatesProtocol.swift; sourceTree = "<group>"; };
@@ -1095,6 +1099,7 @@
 			children = (
 				63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */,
 				63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */,
+				039439922A99098900463032 /* InternetConnectionManager.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1688,6 +1693,7 @@
 				6DE1183B2A4A217400810C7E /* Profile View.swift */,
 				63ABCE0D27F894060047A7D0 /* User View.swift */,
 				6DEB0FFA2A4F87BF007CAB99 /* User Moderator View.swift */,
+				039439902A98FA6100463032 /* UserFeedView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -2290,6 +2296,7 @@
 				63344C6E2A097FA1001BC616 /* View - Hide View.swift in Sources */,
 				5064D0432A6E645D00B22EE3 /* Notifiable.swift in Sources */,
 				6318EDCB27EE4E2200BFCAE8 /* User.swift in Sources */,
+				039439932A99098900463032 /* InternetConnectionManager.swift in Sources */,
 				CD82A2592A71775E00111034 /* UnreadTracker.swift in Sources */,
 				CD3FBCE32A4A844800B2063F /* Replies Feed View.swift in Sources */,
 				637218652A3A2AAD008C4816 /* GetPosts.swift in Sources */,
@@ -2412,6 +2419,7 @@
 				E49F0E762A90395400BC4EE3 /* NavigationPath+Helpers.swift in Sources */,
 				B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */,
 				63D24ED92A169A5F005CCA81 /* UIApplication.swift in Sources */,
+				039439912A98FA6100463032 /* UserFeedView.swift in Sources */,
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
 				637218502A3A2AAD008C4816 /* APIPersonAggregates.swift in Sources */,
 				6D693A422A5114DF009E2D76 /* APIPostReport.swift in Sources */,

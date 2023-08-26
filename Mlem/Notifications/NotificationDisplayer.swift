@@ -84,6 +84,8 @@ class NotificationDisplayer {
             toast = .init(title: title, subtitle: nil, style: .error)
         case let .detailedFailure(title, subtitle):
             toast = .init(title: title, subtitle: subtitle, style: .error)
+        case .noInternet:
+            toast = .init(title: "You're offline", subtitle: nil, style: .noInternet)
         }
         
         await display(toast: toast)
@@ -218,6 +220,7 @@ private struct Toast: View {
         case success
         case error
         case loader
+        case noInternet
         case reward(String?)
     }
     
@@ -266,6 +269,9 @@ private struct Toast: View {
                 .foregroundColor(.green)
         case .error:
             Image(systemName: "xmark")
+                .foregroundColor(.red)
+        case .noInternet:
+            Image(systemName: "wifi.slash")
                 .foregroundColor(.red)
         case .loader:
             ProgressView()
