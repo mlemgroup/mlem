@@ -1,9 +1,9 @@
-// 
+//
 //  CommunityListModelTests.swift
 //  MlemTests
 //
 //  Created by mormaer on 13/08/2023.
-//  
+//
 //
 
 @testable import Mlem
@@ -12,7 +12,6 @@ import Dependencies
 import XCTest
 
 final class CommunityListModelTests: XCTestCase {
-    
     private let account: SavedAccount = .mock()
     
     override func setUpWithError() throws {
@@ -167,7 +166,7 @@ final class CommunityListModelTests: XCTestCase {
         XCTAssert(model.communities.count == 1)
         XCTAssert(model.communities[0].id == 42)
         // allow suspension so the model can make the remote call (stubbed as `.updateSubscription` above)
-        await Task.megaYield(count: 1_000)
+        await Task.megaYield(count: 1000)
         // assert the community remains in our list as the _remote_ call succeeded
         XCTAssert(model.communities.count == 1)
         XCTAssert(model.communities[0].id == 42)
@@ -176,7 +175,7 @@ final class CommunityListModelTests: XCTestCase {
     func testFailedSubscriptionUpdate() async throws {
         let model = withDependencies {
             $0.mainQueue = .immediate
-            $0.errorHandler = MockErrorHandler(didReceiveError: { _ in /* ignore the returned error */})
+            $0.errorHandler = MockErrorHandler(didReceiveError: { _ in /* ignore the returned error */ })
             $0.favoriteCommunitiesTracker = favoritesTracker
             $0.communityRepository.subscriptions = { _ in
                 // return no subscriptions
@@ -200,7 +199,7 @@ final class CommunityListModelTests: XCTestCase {
         XCTAssert(model.communities.count == 1)
         XCTAssert(model.communities[0].id == 42)
         // allow suspension so the model can make the remote call (stubbed as `.updateSubscription` above)
-        await Task.megaYield(count: 1_000)
+        await Task.megaYield(count: 1000)
         // assert the community has been removed from our list as the _remote_ call failed in this test
         XCTAssert(model.communities.isEmpty)
     }
@@ -248,7 +247,6 @@ final class CommunityListModelTests: XCTestCase {
         let model = withDependencies {
             $0.mainQueue = .immediate
             $0.favoriteCommunitiesTracker = favoritesTracker
-            // return an empty array from the the community repository to indicate the user has no subscriptions
             $0.communityRepository.subscriptions = { _ in
                 // return our example communities from above ^
                 communities
@@ -332,6 +330,5 @@ final class CommunityListModelTests: XCTestCase {
         } operation: {
             FavoriteCommunitiesTracker()
         }
-
     }
 }
