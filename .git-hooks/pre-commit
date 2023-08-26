@@ -16,6 +16,8 @@ check_for_swiftformat() {
 format_staged_files() {
   git diff --diff-filter=d --staged --name-only | grep -e '\(.*\).swift$' | while read line; do
 
+    # format the stages changes in a file
+
     temporary_file="${line}.tmp.swift"
     git show ":$line" > "$temporary_file"
 
