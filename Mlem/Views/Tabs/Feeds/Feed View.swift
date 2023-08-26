@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Dependencies
 
-// swiftlint:disable type_body_length
 struct FeedView: View {
         
     // MARK: Environment and settings
@@ -296,8 +295,6 @@ struct FeedView: View {
     private var scrollToView: some View {
         HStack(spacing: 0) {
             EmptyView()
-//            Divider()
-//                .opacity(0)
         }
         .frame(height: 1)
         .id(scrollToTop)
@@ -309,4 +306,3 @@ struct FeedView: View {
         }
     }
 }
-// swiftlint:enable type_body_length

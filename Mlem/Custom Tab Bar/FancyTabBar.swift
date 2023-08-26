@@ -97,11 +97,6 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                                         
                                         __tempNavigationSelection = key.index
                                         __tempToggle.toggle()
-                                        
-//                                        navigationSelection = TabSelection._tabBarNavigation
-//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-//                                            self.navigationSelection = key
-//                                        }
                                     }
                                     
                                     selection = key
@@ -110,9 +105,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 }
             }
             .onChange(of: self.__tempToggle) { _ in
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                    self.navigationSelection = TabSelection(index: __tempNavigationSelection)!
-//                }
+                navigationSelection = TabSelection(index: __tempNavigationSelection)!
             }
             .gesture(
                 DragGesture()
