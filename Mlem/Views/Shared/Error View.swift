@@ -54,34 +54,28 @@ struct ErrorView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 50)
                 }
-                if let body = errorDetails.body {
-                    Text(errorDetails.title ?? "Something went wrong.")
-                        .font(.title3.bold())
-                        .foregroundStyle(.primary)
-                    Text(body)
-                } else {
-                    Text(errorDetails.title ?? "Something went wrong.")
-                        .font(.title3.bold())
-                        .foregroundStyle(.primary)
-                }
-                if let refresh = errorDetails.refresh {
-                    if !errorDetails.autoRefresh {
-                        Button {
-                            Task {
-                                refreshInProgress = true
-                                if await refresh() {
-                                    timer.upstream.connect().cancel()
-                                }
-                                refreshInProgress = false
+                Text(errorDetails.title ?? "Something went wrong.")
+                    .font(.title3.bold())
+                    .foregroundStyle(.primary)
+                
+                if let body = errorDetails.body { Text(body) }
+                
+                if !errorDetails.autoRefresh, let refresh = errorDetails.refresh {
+                    Button {
+                        Task {
+                            refreshInProgress = true
+                            if await refresh() {
+                                timer.upstream.connect().cancel()
                             }
-                        } label: {
-                            HStack(spacing: 10) {
-                                Text(errorDetails.buttonText ?? "Try again")
-                                ProgressView()
-                            }
+                            refreshInProgress = false
                         }
-                        .buttonStyle(.bordered)
+                    } label: {
+                        HStack(spacing: 10) {
+                            Text(errorDetails.buttonText ?? "Try again")
+                            ProgressView()
+                        }
                     }
+                    .buttonStyle(.bordered)
                 }
             }
             
