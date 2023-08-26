@@ -10,6 +10,8 @@ import Foundation
 
 /// An actor to queue notifications which should be presented to the user
 actor Notifier {
+    
+    private var display: (Notifiable) async -> Void
     private var queue = [Notifiable]() {
         didSet {
             guard !isNotifying else { return }
@@ -18,6 +20,10 @@ actor Notifier {
     }
     
     private var isNotifying = false
+    
+    init(display: @escaping (Notifiable) async -> Void) {
+        self.display = display
+    }
     
     func performWithLoader(_ operation: @Sendable @escaping () async -> Void) {
         queue.append(
@@ -51,7 +57,7 @@ actor Notifier {
         }
         
         queue.removeFirst()
-        await NotificationDisplayer.display(first)
+        await display(first)
         await notify()
     }
 }

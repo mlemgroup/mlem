@@ -12,7 +12,6 @@ import SwiftUI
 struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
-    @EnvironmentObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var savedAccounts: SavedAccountTracker
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -26,21 +25,18 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
-                    .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APICommunity.self) { community in
                 FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
-                    .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: CommunityLinkWithContext.self) { context in
                 FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
                     .environmentObject(appState)
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
-                    .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: CommunitySidebarLinkWithContext.self) { context in
                 CommunitySidebarView(
@@ -49,7 +45,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 )
                 .environmentObject(filtersTracker)
                 .environmentObject(CommunitySearchResultsTracker())
-                .environmentObject(favoriteCommunitiesTracker)
             }
             .navigationDestination(for: APIPostView.self) { post in
                 ExpandedPost(post: post)
@@ -87,7 +82,6 @@ struct HandleLemmyLinkResolution: ViewModifier {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var savedAccounts: SavedAccountTracker
     let navigationPath: Binding<NavigationPath>
 

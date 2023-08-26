@@ -8,17 +8,6 @@
 import Dependencies
 import SwiftUI
 
-struct HeaderView: View {
-    let title: String
-
-    var body: some View {
-        HStack {
-            Text(title)
-            Spacer()
-        }
-    }
-}
-
 struct FavoriteStarButtonStyle: ButtonStyle {
     let isFavorited: Bool
 
@@ -31,8 +20,8 @@ struct FavoriteStarButtonStyle: ButtonStyle {
 }
 
 struct CommuntiyFeedRowView: View {
-    @Dependency(\.communityRepository) var communityRepository
-    @Dependency(\.errorHandler) var errorHandler
+
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     
@@ -41,7 +30,6 @@ struct CommuntiyFeedRowView: View {
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
     
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
 
     var body: some View {
         NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {
@@ -112,13 +100,13 @@ struct CommuntiyFeedRowView: View {
 
     private func toggleFavorite() {
         if isFavorited() {
-            favoritesTracker.unfavorite(community)
+            favoriteCommunitiesTracker.unfavorite(community)
             UIAccessibility.post(notification: .announcement, argument: "Unfavorited \(community.name)")
             Task {
                 await notifier.add(.success("Unfavorited \(community.name)"))
             }
         } else {
-            favoritesTracker.favorite(community, for: appState.currentActiveAccount)
+            favoriteCommunitiesTracker.favorite(community, for: appState.currentActiveAccount)
             UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
             Task {
                 await notifier.add(.success("Favorited \(community.name)"))
@@ -127,32 +115,11 @@ struct CommuntiyFeedRowView: View {
     }
 
     private func isFavorited() -> Bool {
-        favoritesTracker.favoriteCommunities(for: appState.currentActiveAccount).contains(community)
+        favoriteCommunitiesTracker.favoriteCommunities(for: appState.currentActiveAccount).contains(community)
     }
 
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
-        // Refresh the list locally immedietly and undo it if we error
         communitySubscriptionChanged(community, shouldSubscribe)
-
-        do {
-            try await communityRepository.updateSubscription(for: communityId, subscribed: shouldSubscribe)
-            
-            if shouldSubscribe {
-                await notifier.add(.success("Subscibed to \(community.name)"))
-            } else {
-                await notifier.add(.success("Unsubscribed from \(community.name)"))
-            }
-        } catch {
-            let phrase = shouldSubscribe ? "subscribe to" : "unsubscribe from"
-            errorHandler.handle(
-                .init(
-                    title: "Unable to \(phrase) community",
-                    style: .toast,
-                    underlyingError: error
-                )
-            )
-            communitySubscriptionChanged(community, !shouldSubscribe)
-        }
     }
 }
 

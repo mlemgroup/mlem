@@ -29,6 +29,9 @@ struct AppConstants {
     static let longSwipeDragMin: CGFloat = 150
     static let shortSwipeDragMin: CGFloat = 60
     
+    // MARK: - Text Fields
+    static let textFieldVariableLineLimit: ClosedRange<Int> = 1...10
+    
     // MARK: - Sizes
 
     static let maxFeedPostHeight: CGFloat = 400

@@ -1,20 +1,21 @@
 //
-//  Comment Interaction Bar.swift
+//  InteractionBarView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-10.
 //
 
-import SwiftUI
-
+import Dependencies
 import Foundation
+import SwiftUI
 
 /**
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
 struct InteractionBarView: View {
+    @Dependency(\.siteInformation) var siteInformation
+    
     // environment
-    @EnvironmentObject var appState: AppState
     @EnvironmentObject var commentTracker: CommentTracker
     
     // parameters
@@ -67,7 +68,7 @@ struct InteractionBarView: View {
                     }
                     
                 case .downvoteCounter:
-                    if appState.enableDownvote {
+                    if siteInformation.enableDownvotes {
                         if offset == widgets.count - 1 {
                             DownvoteCounterView(vote: displayedVote, score: apiView.counts.downvotes, downvote: downvote)
                         } else {
@@ -80,7 +81,7 @@ struct InteractionBarView: View {
                     UpvoteButtonView(vote: displayedVote, upvote: upvote)
                     
                 case .downvote:
-                    if appState.enableDownvote {
+                    if siteInformation.enableDownvotes {
                         DownvoteButtonView(vote: displayedVote, downvote: downvote)
                     }
                     

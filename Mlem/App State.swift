@@ -17,8 +17,6 @@ class AppState: ObservableObject {
     @Published private(set) var currentActiveAccount: SavedAccount
     @Published private(set) var currentNickname: String
     
-    @Published var enableDownvote: Bool = true
-    
     /// Initialises our app state
     /// - Parameters:
     ///   - defaultAccount: The account the application should start with
@@ -59,13 +57,5 @@ class AppState: ObservableObject {
     private func accountUpdated() {
         // ensure our client session is updated
         apiClient.configure(for: currentActiveAccount)
-        
-        Task {
-            if let response = try? await apiClient.loadSiteInformation() {
-                await MainActor.run {
-                    enableDownvote = response.siteView.localSite.enableDownvotes
-                }
-            }
-        }
     }
 }

@@ -17,6 +17,7 @@ struct CommentItem: View {
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.siteInformation) var siteInformation
     
     // appstorage
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = true
@@ -232,7 +233,7 @@ extension CommentItem {
     }
     
     var downvoteSwipeAction: SwipeAction? {
-        guard appState.enableDownvote else { return nil }
+        guard siteInformation.enableDownvotes else { return nil }
         return SwipeAction(
             symbol: .init(emptyName: emptyDownvoteSymbolName, fillName: downvoteSymbolName),
             color: .downvoteColor,

@@ -9,10 +9,11 @@ import Dependencies
 import SwiftUI
 
 struct Window: View {
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
-        
-    @StateObject var favoriteCommunitiesTracker: FavoriteCommunitiesTracker = .init()
+    @Dependency(\.siteInformation) var siteInformation
+
     @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -29,12 +30,17 @@ struct Window: View {
     }
 
     func onLogin() {
-        if let host = selectedAccount?.instanceLink.host(),
+        hapticManager.initEngine()
+        
+        guard let selectedAccount else { return }
+        
+        apiClient.configure(for: selectedAccount)
+        siteInformation.load()
+        
+        if let host = selectedAccount.instanceLink.host(),
            let instance = RecognizedLemmyInstances(rawValue: host) {
             easterFlagsTracker.setEasterFlag(.login(host: instance))
         }
-        
-        hapticManager.initEngine()
     }
     
     @ViewBuilder
@@ -54,7 +60,6 @@ struct Window: View {
             .id(account.id)
             .environmentObject(filtersTracker)
             .environmentObject(AppState(defaultAccount: account, selectedAccount: $selectedAccount))
-            .environmentObject(favoriteCommunitiesTracker)
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)

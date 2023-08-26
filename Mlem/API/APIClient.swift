@@ -44,11 +44,11 @@ class APIClient {
     // MARK: - Initialisation
     
     init(
-        session: URLSession = .init(configuration: .default),
+        urlSession: URLSession = .init(configuration: .default),
         decoder: JSONDecoder = .defaultDecoder,
         transport: @escaping (URLSession, URLRequest) async throws -> (Data, URLResponse)
     ) {
-        self.urlSession = session
+        self.urlSession = urlSession
         self.decoder = decoder
         self.transport = transport
     }

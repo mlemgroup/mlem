@@ -5,11 +5,13 @@
 //  Created by Jake Shirley on 6/19/23.
 //
 
+import Dependencies
 import Foundation
 
 protocol SidebarEntry {
-    var sidebarLabel: String? { get set }
-    var sidebarIcon: String? { get set }
+    var sidebarLabel: String? { get }
+    var sidebarIcon: String? { get }
+    
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool
 }
 
@@ -40,13 +42,15 @@ struct RegexCommunityNameSidebarEntry: SidebarEntry {
 
 // Filters to favorited communities
 struct FavoritesSidebarEntry: SidebarEntry {
+    
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    
     let account: SavedAccount
-    let favoritesTracker: FavoriteCommunitiesTracker
     var sidebarLabel: String?
     var sidebarIcon: String?
 
     @MainActor
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
-        favoritesTracker.favoriteCommunities(for: account).contains(community)
+        favoriteCommunitiesTracker.favoriteCommunities(for: account).contains(community)
     }
 }
