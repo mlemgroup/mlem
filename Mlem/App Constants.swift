@@ -133,7 +133,7 @@ struct AppConstants {
     static let topSymbolName: String = "trophy"
     static let topSymbolNameFill: String = "trophy.fill"
     static let timeSymbolName: String = "calendar.day.timeline.leading"
-    static let timeSymbolNameFill: String = "calendar.day.timeline.leading.fill"
+    static let timeSymbolNameFill: String = "calendar.day.timeline.leading"
     
     // common operations
     static let shareSymbolName: String = "square.and.arrow.up"

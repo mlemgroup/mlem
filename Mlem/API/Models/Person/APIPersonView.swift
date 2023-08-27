@@ -12,3 +12,15 @@ struct APIPersonView: Decodable {
     let person: APIPerson
     let counts: APIPersonAggregates
 }
+
+extension APIPersonView: Hashable, Equatable, Identifiable {
+    var id: Int { hashValue }
+    
+    static func == (lhs: APIPersonView, rhs: APIPersonView) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(person.id)
+    }
+}
