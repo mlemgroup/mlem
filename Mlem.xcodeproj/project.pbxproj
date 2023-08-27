@@ -400,6 +400,7 @@
 		CDEBC32A2A9A580B00518D9D /* Post Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC3292A9A580B00518D9D /* Post Model.swift */; };
 		CDEBC32C2A9A582500518D9D /* Votes Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC32B2A9A582500518D9D /* Votes Model.swift */; };
 		CDEBC32E2A9A583900518D9D /* Post Tracker New.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC32D2A9A583900518D9D /* Post Tracker New.swift */; };
+		CDEBC3392A9ADE6C00518D9D /* APIClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */; };
 		CDF1EF122A6B672C003594B6 /* Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF112A6B672C003594B6 /* Feed View.swift */; };
 		CDF1EF142A6B6D6E003594B6 /* Feed View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF132A6B6D6E003594B6 /* Feed View Logic.swift */; };
 		CDF1EF162A6C3BC2003594B6 /* End Of Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */; };
@@ -831,6 +832,7 @@
 		CDEBC3292A9A580B00518D9D /* Post Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Model.swift"; sourceTree = "<group>"; };
 		CDEBC32B2A9A582500518D9D /* Votes Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Votes Model.swift"; sourceTree = "<group>"; };
 		CDEBC32D2A9A583900518D9D /* Post Tracker New.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Tracker New.swift"; sourceTree = "<group>"; };
+		CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Post.swift"; sourceTree = "<group>"; };
 		CDF1EF112A6B672C003594B6 /* Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed View.swift"; sourceTree = "<group>"; };
 		CDF1EF132A6B6D6E003594B6 /* Feed View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed View Logic.swift"; sourceTree = "<group>"; };
 		CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "End Of Feed View.swift"; sourceTree = "<group>"; };
@@ -2560,6 +2562,7 @@
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */,
 				CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */,
+				CDEBC3392A9ADE6C00518D9D /* APIClient+Post.swift in Sources */,
 				B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
 				CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */,

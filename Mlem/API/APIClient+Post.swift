@@ -1,17 +1,14 @@
 //
-//  PostRepository.swift
+//  APIClient+Post.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2023-07-31.
+//  Created by Eric Andrews on 2023-08-26.
 //
 
-import Dependencies
 import Foundation
 
-class PostRepository {
-    @Dependency(\.apiClient) private var apiClient
-    
-    func loadPage(
+extension APIClient {
+    func loadPosts(
         communityId: Int?,
         page: Int,
         sort: PostSortType?,
@@ -20,7 +17,8 @@ class PostRepository {
         savedOnly: Bool? = nil,
         communityName: String? = nil
     ) async throws -> [PostModel] {
-        return try await apiClient.loadPosts(
+        let request = try GetPostsRequest(
+            session: session,
             communityId: communityId,
             page: page,
             sort: sort,
@@ -29,9 +27,9 @@ class PostRepository {
             savedOnly: savedOnly,
             communityName: communityName
         )
-    }
-    
-    func markRead(for postId: Int, read: Bool) async throws -> APIPostView {
-        return try await apiClient.markPostAsRead(for: postId, read: read).postView
+        
+        return try await perform(request: request)
+            .posts
+            .map { PostModel(from: $0) }
     }
 }

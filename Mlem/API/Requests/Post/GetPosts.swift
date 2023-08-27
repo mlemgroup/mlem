@@ -37,6 +37,29 @@ struct GetPostsRequest: APIGetRequest {
             .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
     }
+    
+    init(
+        session: APISession,
+        communityId: Int?,
+        page: Int,
+        sort: PostSortType?,
+        type: FeedType,
+        limit: Int? = nil,
+        savedOnly: Bool? = nil,
+        communityName: String? = nil
+    ) {
+        self.instanceURL = session.URL
+        self.queryItems = [
+            .init(name: "auth", value: session.token),
+            .init(name: "page", value: "\(page)"),
+            .init(name: "type_", value: type.rawValue),
+            .init(name: "sort", value: sort.map(\.rawValue)),
+            .init(name: "community_id", value: communityId.map(String.init)),
+            .init(name: "community_name", value: communityName),
+            .init(name: "limit", value: limit.map(String.init)),
+            .init(name: "saved_only", value: savedOnly.map(String.init))
+        ]
+    }
 }
 
 // lemmy_api_common::post::GetPostsResponse
