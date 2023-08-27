@@ -11,6 +11,10 @@ import Foundation
 class PostRepository {
     @Dependency(\.apiClient) private var apiClient
     
+    func loadPage(page: Int, size: Int ) {
+        
+    }
+    
     func markRead(for postId: Int, read: Bool) async throws -> APIPostView {
         do {
             let response = try await apiClient.markPostAsRead(for: postId, read: read)

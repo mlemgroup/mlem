@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Nuke
+import SwiftUI
 
 /**
  New post tracker built on top of the PostRepository instead of calling the API directly. Because this thing works fundamentally differently from the old one, it can't conform to FeedTracker--that's going to need a revamp down the line once everything uses nice shiny middleware models, so for now we're going to have to put up with some ugly
@@ -21,6 +23,14 @@ class PostTrackerNew: ObservableObject {
     // utility
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var isLoading: Bool = true // accessible but not published because it causes lots of bad view redraws
+    private(set) var page: Int = 1
+    
+    // prefetching
+    private let prefetcher = ImagePrefetcher(
+        pipeline: ImagePipeline.shared,
+        destination: .memoryCache,
+        maxConcurrentRequestCount: 40
+    )
     
     init(
         shouldPerformMergeSorting: Bool = true,
@@ -48,5 +58,30 @@ class PostTrackerNew: ObservableObject {
         }
 
         return false
+    }
+    
+    @MainActor
+    func add(_ newItems: [PostModel], filtering: @escaping (_: PostModel) -> Bool = { _ in true }) {
+        let accepted = dedupedItems(from: newItems.filter(filtering))
+        if !shouldPerformMergeSorting {
+            RunLoop.main.perform { [self] in
+                items.append(contentsOf: accepted)
+            }
+            return
+        }
+        
+        let merged = merge(arr1: items, arr2: accepted, compare: { $0.published > $1.published })
+        RunLoop.main.perform { [self] in
+            items = merged
+        }
+    }
+    
+    // MARK: - Private methods
+    
+    /**
+     Filters a list of PostModels to only those PostModels not present in ids. Updates ids.
+     */
+    private func dedupedItems(from newItems: [PostModel]) -> [PostModel] {
+        return newItems.filter { ids.insert($0.id).inserted }
     }
 }
