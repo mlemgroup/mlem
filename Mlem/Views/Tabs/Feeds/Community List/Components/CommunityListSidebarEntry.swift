@@ -45,12 +45,13 @@ struct FavoritesSidebarEntry: SidebarEntry {
     
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
-    let account: SavedAccount
     var sidebarLabel: String?
     var sidebarIcon: String?
 
     @MainActor
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
-        favoriteCommunitiesTracker.favoriteCommunities(for: account).contains(community)
+        favoriteCommunitiesTracker.currentFavorites
+            .map { $0.community }
+            .contains(community)
     }
 }

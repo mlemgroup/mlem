@@ -20,15 +20,13 @@ class CommunityListModel: ObservableObject {
     
     @Published private(set) var communities = [APICommunity]()
     
-    private let account: SavedAccount
     private var subscriptions = [APICommunity]()
     private var favoriteCommunities = [APICommunity]()
     private var cancellables = Set<AnyCancellable>()
     
-    init(account: SavedAccount) {
-        self.account = account
+    init() {
         favoriteCommunitiesTracker
-            .$favoriteCommunities
+            .$currentFavorites
             .dropFirst()
             .sink { [weak self] value in
                 self?.updateFavorites(value)
@@ -46,7 +44,7 @@ class CommunityListModel: ObservableObject {
                 .map { $0.community }
             
             // load our favourite communities
-            let favorites = favoriteCommunitiesTracker.favoriteCommunities(for: account)
+            let favorites = favoriteCommunitiesTracker.currentFavorites.map { $0.community }
             
             // combine the two lists
             combine(subscriptions, favorites)
@@ -117,7 +115,6 @@ class CommunityListModel: ObservableObject {
                 CommunitySection(
                     viewId: "favorites",
                     sidebarEntry: FavoritesSidebarEntry(
-                        account: account,
                         sidebarLabel: nil,
                         sidebarIcon: "star.fill"
                     ),
@@ -215,11 +212,7 @@ class CommunityListModel: ObservableObject {
     }
     
     private func updateFavorites(_ favorites: [FavoriteCommunity]) {
-        let filteredFavorites = favorites
-            .filter { $0.forAccountID == account.id }
-            .map { $0.community }
-        
-        combine(subscriptions, filteredFavorites)
+        combine(subscriptions, favorites.map { $0.community })
     }
     
     private func combine(_ subscriptions: [APICommunity], _ favorites: [APICommunity]) {

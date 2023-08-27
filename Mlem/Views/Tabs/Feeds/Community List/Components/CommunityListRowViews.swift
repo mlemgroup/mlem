@@ -29,8 +29,6 @@ struct CommuntiyFeedRowView: View {
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
     
-    @EnvironmentObject var appState: AppState
-
     var body: some View {
         NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {
             HStack {
@@ -106,7 +104,7 @@ struct CommuntiyFeedRowView: View {
                 await notifier.add(.success("Unfavorited \(community.name)"))
             }
         } else {
-            favoriteCommunitiesTracker.favorite(community, for: appState.currentActiveAccount)
+            favoriteCommunitiesTracker.favorite(community)
             UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
             Task {
                 await notifier.add(.success("Favorited \(community.name)"))
@@ -115,7 +113,9 @@ struct CommuntiyFeedRowView: View {
     }
 
     private func isFavorited() -> Bool {
-        favoriteCommunitiesTracker.favoriteCommunities(for: appState.currentActiveAccount).contains(community)
+        favoriteCommunitiesTracker.currentFavorites
+            .map { $0.community }
+            .contains(community)
     }
 
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {

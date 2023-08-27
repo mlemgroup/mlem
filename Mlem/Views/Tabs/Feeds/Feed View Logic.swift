@@ -182,7 +182,7 @@ extension FeedView {
         }
         
         // favorite/unfavorite
-        if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community.id }) {
+        if favoriteCommunitiesTracker.currentFavorites.contains(where: { $0.community.id == community.id }) {
             ret.append(MenuFunction(
                 text: "Unfavorite",
                 imageName: "star.slash",
@@ -201,7 +201,7 @@ extension FeedView {
                 destructiveActionPrompt: nil,
                 enabled: true
             ) {
-                favoriteCommunitiesTracker.favorite(community, for: appState.currentActiveAccount)
+                favoriteCommunitiesTracker.favorite(community)
                 Task {
                     await notifier.add(.success("Favorited \(community.name)"))
                 }

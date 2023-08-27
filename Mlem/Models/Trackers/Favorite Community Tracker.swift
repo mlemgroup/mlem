@@ -12,35 +12,67 @@ import Foundation
 class FavoriteCommunitiesTracker: ObservableObject {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Published var favoriteCommunities: [FavoriteCommunity] = .init()
+    @Published var currentFavorites: [FavoriteCommunity] = .init()
+    
+    @Published private var favoriteCommunities: [FavoriteCommunity] = .init()
+    private var account: SavedAccount?
     private var updateObserver: AnyCancellable?
 
+    // MARK: - Initialisation
+    
     init() {
         self.favoriteCommunities = persistenceRepository.loadFavoriteCommunities()
-        self.updateObserver = $favoriteCommunities.sink { [weak self] value in
-            self?.save(value)
+        self.updateObserver = $favoriteCommunities
+            .sink { [weak self] in
+                self?.favoritesDidChange($0)
+            }
+    }
+    
+    // MARK: - Public Methods
+    
+    func configure(for account: SavedAccount) {
+        self.account = account
+        currentFavorites = favoriteCommunities.filter { $0.forAccountID == account.id }
+    }
+    
+    func favorite(_ community: APICommunity) {
+        guard let account else {
+            assertionFailure("Attempted to favorite community while no account is present")
+            return
         }
-    }
-    
-    func favoriteCommunities(for account: SavedAccount) -> [APICommunity] {
-        favoriteCommunities
-            .filter { $0.forAccountID == account.id }
-            .map(\.community)
-            .sorted()
-    }
-    
-    func favorite(_ community: APICommunity, for account: SavedAccount) {
+        
         let newFavorite = FavoriteCommunity(forAccountID: account.id, community: community)
         favoriteCommunities.append(newFavorite)
     }
     
     func unfavorite(_ community: APICommunity) {
-        favoriteCommunities.removeAll(where: { $0.community.id == community.id })
+        guard let account else {
+            assertionFailure("Attempted to unfavorite community while no account is present")
+            return
+        }
+        
+        favoriteCommunities.removeAll(where: { $0.community.id == community.id && $0.forAccountID == account.id })
     }
     
-    private func save(_ value: [FavoriteCommunity]) {
+    func clearCurrentFavourites() {
+        guard let account else {
+            assertionFailure("Attempted to clear favorites while no account is present")
+            return
+        }
+        
+        let filteredFavorites = favoriteCommunities.filter { $0.forAccountID != account.id  }
+        favoriteCommunities = filteredFavorites
+    }
+    
+    // MARK: - Private Methods
+    
+    private func favoritesDidChange(_ newValue: [FavoriteCommunity]) {
+        if let account {
+            currentFavorites = newValue.filter { $0.forAccountID == account.id }
+        }
+        
         Task { [weak self] in
-            try await self?.persistenceRepository.saveFavoriteCommunities(value)
+            try await self?.persistenceRepository.saveFavoriteCommunities(newValue)
         }
     }
 }
