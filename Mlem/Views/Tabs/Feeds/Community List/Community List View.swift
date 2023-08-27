@@ -99,11 +99,6 @@ struct CommunityListView: View {
 // MARK: - Previews
 
 struct CommunityListViewPreview: PreviewProvider {
-    static var appState = AppState(
-        defaultAccount: .mock(),
-        selectedAccount: .constant(nil)
-    )
-    
     static var previews: some View {
         Group {
             NavigationStack {
@@ -111,10 +106,6 @@ struct CommunityListViewPreview: PreviewProvider {
                     selectedCommunity: .constant(nil),
                     account: .mock()
                 )
-                .environmentObject(
-                    FavoriteCommunitiesTracker()
-                )
-                .environmentObject(appState)
             }
             .previewDisplayName("Populated")
             
@@ -127,10 +118,6 @@ struct CommunityListViewPreview: PreviewProvider {
                         selectedCommunity: .constant(nil),
                         account: .mock()
                     )
-                    .environmentObject(
-                        FavoriteCommunitiesTracker()
-                    )
-                    .environmentObject(appState)
                 }
             }
             .previewDisplayName("Empty")
@@ -146,10 +133,6 @@ struct CommunityListViewPreview: PreviewProvider {
                         selectedCommunity: .constant(nil),
                         account: .mock()
                     )
-                    .environmentObject(
-                        FavoriteCommunitiesTracker()
-                    )
-                    .environmentObject(appState)
                 }
             }
             .previewDisplayName("Error")
