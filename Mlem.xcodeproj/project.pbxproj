@@ -85,6 +85,9 @@
 		50CC4A702A9BD2480074C845 /* instance_metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = 50CC4A6F2A9BD2470074C845 /* instance_metadata.json */; };
 		50CC4A722A9CB07F0074C845 /* TimeInterval+Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC4A712A9CB07F0074C845 /* TimeInterval+Period.swift */; };
 		50CC4A742A9CB10B0074C845 /* TimestampedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC4A732A9CB10B0074C845 /* TimestampedValue.swift */; };
+		50CC4A762A9CB9930074C845 /* instance_metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = 50CC4A752A9CB9930074C845 /* instance_metadata.json */; };
+		50CC4A782A9CBDF70074C845 /* TimestampedValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC4A772A9CBDF60074C845 /* TimestampedValueTests.swift */; };
+		50CC4A7A2A9CC45D0074C845 /* InstanceMetadata+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC4A792A9CC45C0074C845 /* InstanceMetadata+Mock.swift */; };
 		50DBB8E02A805836002870B1 /* MockErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */; };
 		50DBB8E22A80F9E4002870B1 /* APICommunity+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
@@ -508,6 +511,9 @@
 		50CC4A6F2A9BD2470074C845 /* instance_metadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instance_metadata.json; sourceTree = "<group>"; };
 		50CC4A712A9CB07F0074C845 /* TimeInterval+Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Period.swift"; sourceTree = "<group>"; };
 		50CC4A732A9CB10B0074C845 /* TimestampedValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampedValue.swift; sourceTree = "<group>"; };
+		50CC4A752A9CB9930074C845 /* instance_metadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instance_metadata.json; sourceTree = "<group>"; };
+		50CC4A772A9CBDF60074C845 /* TimestampedValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampedValueTests.swift; sourceTree = "<group>"; };
+		50CC4A792A9CC45C0074C845 /* InstanceMetadata+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceMetadata+Mock.swift"; sourceTree = "<group>"; };
 		50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockErrorHandler.swift; sourceTree = "<group>"; };
 		50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APICommunity+Mock.swift"; sourceTree = "<group>"; };
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
@@ -1051,6 +1057,7 @@
 				50811B412A92061E006BA3F2 /* SavedAccount+Mock.swift */,
 				50811B432A920945006BA3F2 /* APIPost+Mock.swift */,
 				0394398E2A98EB2300463032 /* APIComment+Mock.swift */,
+				50CC4A792A9CC45C0074C845 /* InstanceMetadata+Mock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1067,6 +1074,7 @@
 			isa = PBXGroup;
 			children = (
 				50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */,
+				50CC4A772A9CBDF60074C845 /* TimestampedValueTests.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -1103,6 +1111,14 @@
 				50CC4A812AA0D61F0074C845 /* InstanceMetadataParserTests.swift */,
 			);
 			path = Parsers;
+			sourceTree = "<group>";
+		};
+		50CC4A7B2A9CFF840074C845 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				50CC4A752A9CB9930074C845 /* instance_metadata.json */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		50DBB8DE2A805770002870B1 /* Mocks */ = {
@@ -1405,6 +1421,7 @@
 			isa = PBXGroup;
 			children = (
 				50CC4A802AA0D5F90074C845 /* Parsers */,
+				50CC4A7B2A9CFF840074C845 /* Supporting Files */,
 				50BC1AB72A89741000E3C48B /* Community List */,
 				50DBB8DE2A805770002870B1 /* Mocks */,
 				50C86AB82A7E507200277519 /* Persistence */,
@@ -2279,6 +2296,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50CC4A762A9CB9930074C845 /* instance_metadata.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2648,6 +2666,7 @@
 				503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */,
 				63ABCE0E27F894060047A7D0 /* User View.swift in Sources */,
 				CD6483322A38D3A600EE6CA3 /* ScoreCounterView.swift in Sources */,
+				50CC4A7A2A9CC45D0074C845 /* InstanceMetadata+Mock.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,
 				CD7B53B72A5F258B00006E81 /* APIPrivateMessageReportView.swift in Sources */,
 				030AC04F2A6464DA00037155 /* CommunitySettingsView.swift in Sources */,
@@ -2704,6 +2723,7 @@
 				50DBB8E02A805836002870B1 /* MockErrorHandler.swift in Sources */,
 				6363D5DB27EE196A00E34822 /* MlemTests.swift in Sources */,
 				50BC1AB92A89744200E3C48B /* CommunityListModelTests.swift in Sources */,
+				50CC4A782A9CBDF70074C845 /* TimestampedValueTests.swift in Sources */,
 				50DBB8E22A80F9E4002870B1 /* APICommunity+Mock.swift in Sources */,
 				50CC4A822AA0D61F0074C845 /* InstanceMetadataParserTests.swift in Sources */,
 				50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */,
