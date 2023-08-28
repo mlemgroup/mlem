@@ -16,7 +16,6 @@ struct InstancePickerView: View {
     @Binding var selectedInstance: InstanceMetadata?
     
     @State var instances: [InstanceMetadata]?
-    @State var fetchFailed: Bool = false
     
     /**
      Instances currently accepting new users
@@ -43,9 +42,7 @@ struct InstancePickerView: View {
                         .padding()
                 }
                 
-                if fetchFailed {
-                    Text("Fetching failed")
-                } else if let filteredInstances {
+                if let filteredInstances {
                     ForEach(filteredInstances) { instance in
                         VStack(spacing: 0) {
                             Divider()
@@ -63,6 +60,8 @@ struct InstancePickerView: View {
                 }
             }
         }
-        .task { await loadInstances() }
+        .task {
+            instances = await loadInstances()
+        }
     }
 }
