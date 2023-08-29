@@ -125,24 +125,7 @@ struct SwipeyView: ViewModifier {
                     let edgeForActions = self.edgeForActions(at: dragPosition)
                     let actionIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
                     let action = self.action(edge: edgeForActions, index: actionIndex)
-                    
-                    let threshold: CGFloat = {
-                        guard let actionIndex else {
-                            switch edgeForActions {
-                            case .leading:
-                                return AppConstants.shortSwipeDragMin
-                            case .trailing:
-                                return -AppConstants.shortSwipeDragMin
-                            }
-                        }
-                        
-                        switch edgeForActions {
-                        case .leading:
-                            return AppConstants.swipeActionDragThresholds[actionIndex]
-                        case .trailing:
-                            return -AppConstants.swipeActionDragThresholds[actionIndex]
-                        }
-                    }()
+                    let threshold = self.actionThreshold(edge: edgeForActions, index: actionIndex)
                     
                     // update color and symbol. If crossed an edge, play a gentle haptic
                     switch edgeForActions {
@@ -334,6 +317,31 @@ struct SwipeyView: ViewModifier {
 #endif
                 return (.firmerInfo, .high)
             }
+        }
+    }
+    
+    /// Get the threshold (in screen points) required to trigger a particular action.
+    /// - Parameter edge: Show actions on this edge.
+    /// - Parameter index: Index of the action in question.
+    /// - Returns: Negative values for trailing actions along the x-axis.
+    private func actionThreshold(
+        edge edgeForActions: HorizontalEdge,
+        index actionIndex: Array<CGFloat>.Index?
+    ) -> CGFloat {
+        guard let actionIndex else {
+            switch edgeForActions {
+            case .leading:
+                return AppConstants.shortSwipeDragMin
+            case .trailing:
+                return -AppConstants.shortSwipeDragMin
+            }
+        }
+        
+        switch edgeForActions {
+        case .leading:
+            return AppConstants.swipeActionDragThresholds[actionIndex]
+        case .trailing:
+            return -AppConstants.swipeActionDragThresholds[actionIndex]
         }
     }
 }
