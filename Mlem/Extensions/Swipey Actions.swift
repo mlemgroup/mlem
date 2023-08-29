@@ -22,11 +22,11 @@ struct SwipeAction {
 struct SwipeConfiguration {
     let primaryLeading: SwipeAction?
     let secondaryLeading: SwipeAction?
-//    let tertiaryLeading: SwipeAction?
+    let tertiaryLeading: SwipeAction?
     
     let primaryTrailing: SwipeAction?
     let secondaryTrailing: SwipeAction?
-//    let tertiaryTrailing: SwipeAction?
+    let tertiaryTrailing: SwipeAction?
 }
 
 struct SwipeyView: ViewModifier {
@@ -61,6 +61,21 @@ struct SwipeyView: ViewModifier {
         primaryTrailingAction: SwipeAction?,
         secondaryTrailingAction: SwipeAction?
     ) {
+        self.init(
+            configuration: .init(
+                primaryLeading: primaryLeadingAction,
+                secondaryLeading: secondaryLeadingAction,
+                tertiaryLeading: nil,
+                primaryTrailing: primaryTrailingAction,
+                secondaryTrailing: secondaryTrailingAction,
+                tertiaryTrailing: nil
+            )
+        )
+    }
+    
+    init(configuration: SwipeConfiguration) {
+        self.actions = configuration
+
         // assert that no secondary action exists without a primary action
         // this is logically equivalent to (primaryAction == nil -> secondaryAction == nil)
         assert(
@@ -72,12 +87,6 @@ struct SwipeyView: ViewModifier {
             primaryTrailingAction != nil || secondaryTrailingAction == nil,
             "No secondary action should be present without a primary"
         )
-        
-        self.actions = .init(
-            primaryLeading: primaryLeadingAction,
-            secondaryLeading: secondaryLeadingAction,
-            primaryTrailing: primaryTrailingAction,
-            secondaryTrailing: secondaryTrailingAction)
         
         // other init
         _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
@@ -281,5 +290,10 @@ extension View {
                 secondaryTrailingAction: secondaryTrailingAction
             )
         )
+    }
+    
+    @ViewBuilder
+    func addSwipeyActions(configuration: SwipeConfiguration) -> some View {
+        modifier(SwipeyView(configuration: configuration))
     }
 }
