@@ -18,7 +18,7 @@ struct AccountsPage: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        let instances = Array(accountsTracker.accountsByInstance.keys)
+        let instances = Array(accountsTracker.accountsByInstance.keys).sorted()
         
         List {
             ForEach(instances, id: \.self) { instance in
