@@ -122,34 +122,9 @@ struct SwipeyView: ViewModifier {
                     // update position
                     dragPosition = newDragState
                     
-                    let edgeForActions: HorizontalEdge = {
-                        if dragPosition > 0 {
-                            return .leading
-                        } else {
-                            return .trailing
-                        }
-                    }()
-                    
-                    let actionIndex = AppConstants.swipeActionDragThresholds.lastIndex {
-                        switch edgeForActions {
-                        case .leading:
-                            return dragPosition > $0
-                        case .trailing:
-                            return dragPosition < -$0
-                        }
-                    }
-                                        
-                    let action: SwipeAction? = {
-                        guard let actionIndex else {
-                            return nil
-                        }
-                        switch edgeForActions {
-                        case .leading:
-                            return actions.leadingActions[safeIndex: actionIndex]
-                        case .trailing:
-                            return actions.trailingActions[safeIndex: actionIndex]
-                        }
-                    }()
+                    let edgeForActions = self.edgeForActions(at: dragPosition)
+                    let actionIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
+                    let action = self.action(edge: edgeForActions, index: actionIndex)
                     
                     let threshold: CGFloat = {
                         guard let actionIndex else {
@@ -297,16 +272,36 @@ struct SwipeyView: ViewModifier {
     // MARK: -
     
     private func swipeAction(at position: CGFloat) -> SwipeAction? {
-        if position < -1 * AppConstants.longSwipeDragMin {
-            return secondaryTrailingAction ?? primaryTrailingAction
-        } else if position < -1 * AppConstants.shortSwipeDragMin {
-            return primaryTrailingAction
-        } else if position > AppConstants.longSwipeDragMin {
-            return secondaryLeadingAction ?? primaryLeadingAction
-        } else if position > AppConstants.shortSwipeDragMin {
-            return primaryLeadingAction
-        } else {
+        let edge = edgeForActions(at: position)
+        let index = actionIndex(edge: edge, at: position)
+        let action = action(edge: edge, index: index)
+        return action
+    }
+    
+    private func edgeForActions(at dragPosition: CGFloat) -> HorizontalEdge {
+        dragPosition > 0 ? .leading : .trailing
+    }
+    
+    private func actionIndex(edge: HorizontalEdge, at dragPosition: CGFloat) -> Array<CGFloat>.Index? {
+        AppConstants.swipeActionDragThresholds.lastIndex {
+            switch edge {
+            case .leading:
+                return dragPosition > $0
+            case .trailing:
+                return dragPosition < -$0
+            }
+        }
+    }
+    
+    private func action(edge: HorizontalEdge, index actionIndex: Array<CGFloat>.Index?) -> SwipeAction? {
+        guard let actionIndex else {
             return nil
+        }
+        switch edge {
+        case .leading:
+            return actions.leadingActions[safeIndex: actionIndex]
+        case .trailing:
+            return actions.trailingActions[safeIndex: actionIndex]
         }
     }
 }

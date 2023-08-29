@@ -218,8 +218,8 @@ extension CommentItem {
     private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
     private var emptyReplySymbolName: String { "arrowshape.turn.up.left" }
     private var replySymbolName: String { "arrowshape.turn.up.left.fill" }
-    private var emptyCollapseSymbolName: String { "arrow.down.right.and.arrow.up.left.square" }
-    private var collapseSymbolName: String { "arrow.down.right.and.arrow.up.left.square.fill" }
+    private var emptyCollapseSymbolName: String { "arrow.up.left.and.arrow.down.right.circle" }
+    private var collapseSymbolName: String { "arrow.up.left.and.arrow.down.right.circle.fill" }
     
     var upvoteSwipeAction: SwipeAction {
         SwipeAction(
