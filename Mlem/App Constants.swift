@@ -33,7 +33,7 @@ struct AppConstants {
     ]
     static let shortSwipeDragMin: CGFloat = 60
     static let longSwipeDragMin: CGFloat = 150
-    static let tertiarySwipeDragMin: CGFloat = 270
+    static let tertiarySwipeDragMin: CGFloat = 240
     
     // MARK: - Text Fields
     static let textFieldVariableLineLimit: ClosedRange<Int> = 1...10
