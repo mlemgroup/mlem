@@ -20,13 +20,15 @@ struct SwipeAction {
 }
 
 struct SwipeConfiguration {
-    let primaryLeading: SwipeAction?
-    let secondaryLeading: SwipeAction?
-    let tertiaryLeading: SwipeAction?
+    /// In ascending order of appearance.
+    let leadingActions: [SwipeAction]
+    /// In ascending order of appearance.
+    let trailingActions: [SwipeAction]
     
-    let primaryTrailing: SwipeAction?
-    let secondaryTrailing: SwipeAction?
-    let tertiaryTrailing: SwipeAction?
+    init(leadingActions: [SwipeAction?], trailingActions: [SwipeAction?]) {
+        self.leadingActions = leadingActions.compactMap { $0 }
+        self.trailingActions = trailingActions.compactMap { $0 }
+    }
 }
 
 struct SwipeyView: ViewModifier {
@@ -40,18 +42,10 @@ struct SwipeyView: ViewModifier {
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
     
-    private var primaryLeadingAction: SwipeAction? {
-        actions.primaryLeading
-    }
-    private var secondaryLeadingAction: SwipeAction? {
-        actions.secondaryLeading
-    }
-    private var primaryTrailingAction: SwipeAction? {
-        actions.primaryTrailing
-    }
-    private var secondaryTrailingAction: SwipeAction? {
-        actions.secondaryTrailing
-    }
+    private var primaryLeadingAction: SwipeAction? { actions.leadingActions.first }
+    private var secondaryLeadingAction: SwipeAction? { actions.leadingActions[safeIndex: 1] }
+    private var primaryTrailingAction: SwipeAction? { actions.trailingActions.first }
+    private var secondaryTrailingAction: SwipeAction? { actions.trailingActions[safeIndex: 1] }
     
     let actions: SwipeConfiguration
     
@@ -63,12 +57,8 @@ struct SwipeyView: ViewModifier {
     ) {
         self.init(
             configuration: .init(
-                primaryLeading: primaryLeadingAction,
-                secondaryLeading: secondaryLeadingAction,
-                tertiaryLeading: nil,
-                primaryTrailing: primaryTrailingAction,
-                secondaryTrailing: secondaryTrailingAction,
-                tertiaryTrailing: nil
+                leadingActions: [primaryLeadingAction, secondaryLeadingAction].compactMap { $0 },
+                trailingActions: [primaryTrailingAction, secondaryTrailingAction].compactMap { $0 }
             )
         )
     }

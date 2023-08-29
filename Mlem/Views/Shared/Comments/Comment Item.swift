@@ -193,12 +193,8 @@ struct CommentItem: View {
         .background(Color.systemBackground)
         .addSwipeyActions(
             configuration: .init(
-                primaryLeading: enableSwipeActions ? upvoteSwipeAction : nil,
-                secondaryLeading: enableSwipeActions ? downvoteSwipeAction : nil,
-                tertiaryLeading: nil,
-                primaryTrailing: enableSwipeActions ? saveSwipeAction : nil,
-                secondaryTrailing: enableSwipeActions ? replySwipeAction : nil,
-                tertiaryTrailing: enableSwipeActions ? collapseCommentAction : nil
+                leadingActions: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
+                trailingActions: enableSwipeActions ? [saveSwipeAction, replySwipeAction, collapseCommentAction] : []
             )
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])

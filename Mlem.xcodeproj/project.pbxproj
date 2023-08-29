@@ -69,8 +69,8 @@
 		50A8812A2A72D6BD003E3661 /* CommunityRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A881292A72D6BD003E3661 /* CommunityRepository.swift */; };
 		50A8812C2A72D727003E3661 /* CommunityRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A8812B2A72D727003E3661 /* CommunityRepository+Dependency.swift */; };
 		50A8812E2A72D76C003E3661 /* APIClient+Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */; };
-		50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */; };
 		50BC1AB92A89744200E3C48B /* CommunityListModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BC1AB82A89744200E3C48B /* CommunityListModelTests.swift */; };
+		50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */; };
 		50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
 		50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C99B582A61D889005D57DD /* APIClient+Dependency.swift */; };
@@ -394,6 +394,7 @@
 		CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF842672A49FB9000723DA0 /* Inbox View Logic.swift */; };
 		CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */; };
 		CDF8426F2A4A385A00723DA0 /* Inbox Item Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */; };
+		E453477E2A9DE37300D1B46F /* Array+SafeIndexing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E453477D2A9DE37300D1B46F /* Array+SafeIndexing.swift */; };
 		E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */; };
 		E47B2B762A902DE200629AF7 /* SettingsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */; };
 		E4902BAB2A9024BF0054FB36 /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */; };
@@ -484,8 +485,8 @@
 		50A881292A72D6BD003E3661 /* CommunityRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRepository.swift; sourceTree = "<group>"; };
 		50A8812B2A72D727003E3661 /* CommunityRepository+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityRepository+Dependency.swift"; sourceTree = "<group>"; };
 		50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Comment.swift"; sourceTree = "<group>"; };
-		50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringOperation.swift; sourceTree = "<group>"; };
 		50BC1AB82A89744200E3C48B /* CommunityListModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListModelTests.swift; sourceTree = "<group>"; };
+		50BC1ABA2A8D6A5A00E3C48B /* ScoringOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringOperation.swift; sourceTree = "<group>"; };
 		50C86ABB2A7E50E200277519 /* PersistenceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceRepositoryTests.swift; sourceTree = "<group>"; };
 		50C99B582A61D889005D57DD /* APIClient+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Dependency.swift"; sourceTree = "<group>"; };
 		50C99B5B2A61F5EB005D57DD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
@@ -807,6 +808,7 @@
 		CDF842672A49FB9000723DA0 /* Inbox View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View Logic.swift"; sourceTree = "<group>"; };
 		CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item.swift"; sourceTree = "<group>"; };
 		CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item Type.swift"; sourceTree = "<group>"; };
+		E453477D2A9DE37300D1B46F /* Array+SafeIndexing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SafeIndexing.swift"; sourceTree = "<group>"; };
 		E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreviewController.swift; sourceTree = "<group>"; };
 		E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoutes.swift; sourceTree = "<group>"; };
 		E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
@@ -1202,6 +1204,7 @@
 				CDA217F22A63202600BDA173 /* NSFW Overlay.swift */,
 				CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */,
 				CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */,
+				E453477D2A9DE37300D1B46F /* Array+SafeIndexing.swift */,
 				63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */,
 				63344C552A07D81D001BC616 /* Array - Prepend.swift */,
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
@@ -2486,6 +2489,7 @@
 				50A8812C2A72D727003E3661 /* CommunityRepository+Dependency.swift in Sources */,
 				0394398F2A98EB2300463032 /* APIComment+Mock.swift in Sources */,
 				63CE4E732A06F5A100405271 /* Access Token.swift in Sources */,
+				E453477E2A9DE37300D1B46F /* Array+SafeIndexing.swift in Sources */,
 				CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */,
 				CD4E98A32A69BEDC0026C4D9 /* IconSettingsView.swift in Sources */,
 				637218692A3A2AAD008C4816 /* CreateCommentLike.swift in Sources */,
