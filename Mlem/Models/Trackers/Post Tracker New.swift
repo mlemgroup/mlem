@@ -16,6 +16,7 @@ import Dependencies
 class PostTrackerNew: ObservableObject {
     // dependencies
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.apiClient) var apiClient
     
     // behavior governors
     private let shouldPerformMergeSorting: Bool
@@ -69,6 +70,42 @@ class PostTrackerNew: ObservableObject {
             await add(newPosts, filtering: filtering)
             page += 1
         } while !newPosts.isEmpty && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
+        
+        // so although the API kindly returns `400`/"not_logged_in" for expired
+        // sessions _without_ 2FA enabled, currently once you enable 2FA on an account
+        // an expired session for a call with optional authentication such as loading
+        // posts returns a `200` with an empty list of data 😭
+        // if we get back an empty list for page 1, chances are this session is borked and
+        // the API doesn't want to tell us - so to avoid the user being confused, we'll fire
+        // off an authenticated call in the background and if appropriate show the expired
+        // session modal. We should be able to remove this once the API behaves as expected.
+        if currentPage == 1, newPosts.isEmpty {
+            try await apiClient.attemptAuthenticatedCall()
+        }
+        
+        // don't preload filtered images
+        preloadImages(newPosts.filter(filtering))
+    }
+    
+    func refresh(
+        communityId: Int?,
+        sort: PostSortType?,
+        feedType: FeedType,
+        clearBeforeFetch: Bool = false,
+        filtering: @escaping (_: PostModel) -> Bool = { _ in true }
+    ) async throws {
+        if clearBeforeFetch {
+            await reset()
+        }
+        
+        let newPosts = try await postRepository.loadPage(
+            communityId: communityId,
+            page: page,
+            sort: sort,
+            type: feedType
+        )
+        
+        await reset(with: newPosts, filteredWith: filtering)
     }
     
     @MainActor
@@ -85,6 +122,16 @@ class PostTrackerNew: ObservableObject {
         RunLoop.main.perform { [self] in
             items = merged
         }
+    }
+    
+    @MainActor
+    private func reset(
+        with newItems: [PostModel] = .init(),
+        filteredWith filter: @escaping (_: PostModel) -> Bool = { _ in true }
+    ) {
+        page = newItems.isEmpty ? 1 : 2
+        ids = .init(minimumCapacity: 1000)
+        items = dedupedItems(from: newItems.filter(filter))
     }
 
     /**
@@ -106,6 +153,39 @@ class PostTrackerNew: ObservableObject {
     }
     
     // MARK: - Private methods
+    
+    private func preloadImages(_ newPosts: [PostModel]) {
+        URLSession.shared.configuration.urlCache = AppConstants.urlCache
+        var imageRequests: [ImageRequest] = []
+        for postModel in newPosts {
+            // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
+            // so it's probably not an API crime, right?
+            if let communityAvatarLink = postModel.community.icon {
+                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
+            }
+            
+            if let userAvatarLink = postModel.creator.avatar {
+                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
+            }
+            
+            switch postModel.postType {
+            case let .image(url):
+                // images: only load the image
+                imageRequests.append(ImageRequest(url: url, priority: .high))
+            case let .link(url):
+                // websites: load image and favicon
+                if let baseURL = postModel.post.url?.host,
+                   let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
+                    imageRequests.append(ImageRequest(url: favIconURL))
+                }
+                if let url {
+                    imageRequests.append(ImageRequest(url: url, priority: .high))
+                }
+            default:
+                break
+            }
+        }
+    }
     
     /**
      Filters a list of PostModels to only those PostModels not present in ids. Updates ids.

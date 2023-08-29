@@ -47,7 +47,8 @@ struct FeedView: View {
     
     // MARK: State
     
-    @StateObject var postTracker: PostTracker
+    // @StateObject var postTracker: PostTracker
+    @StateObject var postTracker: PostTrackerNew
     
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType
@@ -111,8 +112,8 @@ struct FeedView: View {
                 noPostsView()
             } else {
                 LazyVStack(spacing: 0) {
-                    ForEach(postTracker.items) { postView in
-                        feedPost(for: postView)
+                    ForEach(postTracker.items) { postModel in
+                        feedPost(for: postModel)
                     }
                     
                     EndOfFeedView(isLoading: isLoading)
@@ -141,21 +142,22 @@ struct FeedView: View {
     // MARK: Helper Views
     
     @ViewBuilder
-    private func feedPost(for postView: APIPostView) -> some View {
+    private func feedPost(for postModel: PostModel) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(value: PostLinkWithContext(post: postView, postTracker: postTracker)) {
+            // TODO: reenable nav
+            // NavigationLink(value: PostLinkWithContext(post: postModel, postTracker: postTracker)) {
                 FeedPost(
-                    postView: postView,
+                    postModel: postModel,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: community == nil
                 )
-            }
+            // }
             Divider()
         }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
         .onAppear {
             // on appear, flag whether new content should be loaded. Actual loading is attached to the feed view itself so that it doesn't get cancelled by view derenders
-            if postTracker.shouldLoadContentPrecisely(after: postView) {
+            if postTracker.shouldLoadContentAfter(after: postModel) {
                 shouldLoad = true
             }
         }

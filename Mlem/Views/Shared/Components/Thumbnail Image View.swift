@@ -17,15 +17,15 @@ struct ThumbnailImageView: View {
     @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL
     
-    let postView: APIPostView
+    let postModel: PostModel
     
-    var showNsfwFilter: Bool { (postView.post.nsfw || postView.community.nsfw) && shouldBlurNsfw }
+    var showNsfwFilter: Bool { (postModel.post.nsfw || postModel.community.nsfw) && shouldBlurNsfw }
     
     let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
     
     var body: some View {
         Group {
-            switch postView.postType {
+            switch postModel.postType {
             case let .image(url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
                 CachedImage(
@@ -43,7 +43,7 @@ struct ThumbnailImageView: View {
                     contentMode: .fill
                 )
                 .onTapGesture {
-                    if let url = postView.post.url {
+                    if let url = postModel.post.url {
                         openURL(url)
                         markPostAsRead()
                     }
@@ -79,7 +79,7 @@ struct ThumbnailImageView: View {
     func markPostAsRead() {
         Task(priority: .userInitiated) {
             do {
-                let readPost = try await postRepository.markRead(for: postView.post.id, read: true)
+                let readPost = try await postRepository.markRead(for: postModel.postId, read: true)
                 postTracker.update(with: readPost)
             } catch {
                 errorHandler.handle(error)

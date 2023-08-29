@@ -17,7 +17,7 @@ struct PostModel {
     let post: APIPost
     let creator: APIPerson
     let community: APICommunity
-    let votes: VotesModel
+    var votes: VotesModel
     let numReplies: Int
     let saved: Bool
     let read: Bool
@@ -36,6 +36,21 @@ struct PostModel {
         self.saved = apiPostView.saved
         self.read = apiPostView.read
         self.published = apiPostView.published
+    }
+    
+    var postType: PostType {
+        // post with URL: either image or link
+        if let postUrl = post.url {
+            // if image, return image link, otherwise return thumbnail
+            return postUrl.isImage ? .image(postUrl) : .link(post.thumbnailUrl)
+        }
+
+        // otherwise text, but post.body needs to be present, even if it's an empty string
+        if let postBody = post.body {
+            return .text(postBody)
+        }
+
+        return .titleOnly
     }
 }
 
@@ -56,5 +71,44 @@ extension PostModel: Hashable {
         hasher.combine(saved)
         hasher.combine(read)
         hasher.combine(post.updated)
+    }
+}
+
+// TODO: ERIC deprecate all this
+extension PostModel: APIContentViewProtocol {
+    
+    var counts: BridgeContentAggregatesModel {
+        BridgeContentAggregatesModel(from: self)
+    }
+    
+    var myVote: ScoringOperation? {
+        get {
+            votes.myVote
+        }
+        set {
+            votes.myVote = newValue ?? .resetVote
+        }
+    }
+    
+    typealias AggregatesType = BridgeContentAggregatesModel
+}
+
+struct BridgeContentAggregatesModel: APIContentAggregatesProtocol {
+    var score: Int
+    
+    var upvotes: Int
+    
+    var downvotes: Int
+    
+    var published: Date
+    
+    var comments: Int
+    
+    init(from postModel: PostModel) {
+        score = postModel.votes.total
+        upvotes = postModel.votes.upvotes
+        downvotes = postModel.votes.downvotes
+        published = postModel.published
+        comments = postModel.numReplies
     }
 }

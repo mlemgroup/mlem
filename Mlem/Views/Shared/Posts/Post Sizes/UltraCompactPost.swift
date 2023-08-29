@@ -32,15 +32,22 @@ struct UltraCompactPost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
     
     // arguments
-    let postView: APIPostView
+    let postModel: PostModel
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
     // computed
-    var showReadCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
+    var showReadCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
 
+    @available(*, deprecated, message: "Migrate to PostModel")
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
-        self.postView = postView
+        self.postModel = PostModel(from: postView)
+        self.showCommunity = showCommunity
+        self.menuFunctions = menuFunctions
+    }
+    
+    init(postModel: PostModel, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+        self.postModel = postModel
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
     }
@@ -48,17 +55,17 @@ struct UltraCompactPost: View {
     var body: some View {
         HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
             if shouldShowPostThumbnails, !thumbnailsOnRight {
-                ThumbnailImageView(postView: postView)
+                ThumbnailImageView(postModel: postModel)
             }
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
                     Group {
                         if showCommunity {
-                            CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                            CommunityLinkView(community: postModel.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                         } else {
                             UserProfileLink(
-                                user: postView.creator,
+                                user: postModel.creator,
                                 serverInstanceLocation: .trailing
                             )
                         }
@@ -73,15 +80,15 @@ struct UltraCompactPost: View {
                 }
                 .padding(.bottom, -2)
                 
-                Text(postView.post.name)
+                Text(postModel.post.name)
                     .font(.subheadline)
-                    .foregroundColor(postView.read ? .secondary : .primary)
+                    .foregroundColor(postModel.read ? .secondary : .primary)
     
                 compactInfo
             }
             
             if shouldShowPostThumbnails, thumbnailsOnRight {
-                ThumbnailImageView(postView: postView)
+                ThumbnailImageView(postModel: postModel)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -91,29 +98,29 @@ struct UltraCompactPost: View {
     @ViewBuilder
     private var compactInfo: some View {
         HStack(spacing: 8) {
-            if postView.post.featuredCommunity {
-                if postView.post.featuredLocal {
+            if postModel.post.featuredCommunity {
+                if postModel.post.featuredLocal {
                     StickiedTag(tagType: .local, compact: true)
-                } else if postView.post.featuredCommunity {
+                } else if postModel.post.featuredCommunity {
                     StickiedTag(tagType: .community, compact: true)
                 }
             }
             
-            if postView.post.nsfw || postView.community.nsfw {
+            if postModel.post.nsfw || postModel.community.nsfw {
                 NSFWTag(compact: true)
             }
             
             InfoStackView(
                 votes: DetailedVotes(
-                    score: postView.counts.score,
-                    upvotes: postView.counts.upvotes,
-                    downvotes: postView.counts.downvotes,
-                    myVote: postView.myVote ?? .resetVote,
+                    score: postModel.votes.total,
+                    upvotes: postModel.votes.upvotes,
+                    downvotes: postModel.votes.downvotes,
+                    myVote: postModel.votes.myVote ?? .resetVote,
                     showDownvotes: showDownvotesSeparately
                 ),
-                published: postView.published,
-                commentCount: postView.counts.comments,
-                saved: postView.saved,
+                published: postModel.published,
+                commentCount: postModel.numReplies,
+                saved: postModel.saved,
                 alignment: .center
             )
         }

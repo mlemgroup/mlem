@@ -9,9 +9,9 @@ import Foundation
 
 struct VotesModel: Hashable {
     var total: Int { upvotes - downvotes }
-    let upvotes: Int
-    let downvotes: Int
-    let myVote: ScoringOperation
+    var upvotes: Int
+    var downvotes: Int
+    var myVote: ScoringOperation
 
     // init from API type
     init(from voteCount: any APIContentAggregatesProtocol, myVote: ScoringOperation?) {

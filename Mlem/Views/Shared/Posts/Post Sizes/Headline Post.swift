@@ -20,14 +20,14 @@ struct HeadlinePost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
     // arguments
-    let postView: APIPostView
+    let postModel: PostModel
 
     // computed
     var usernameColor: Color {
-        if postView.creator.admin {
+        if postModel.creator.admin {
             return .red
         }
-        if postView.creator.botAccount {
+        if postModel.creator.botAccount {
             return .indigo
         }
 
@@ -38,31 +38,31 @@ struct HeadlinePost: View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack(alignment: .top, spacing: spacing) {
                 if shouldShowPostThumbnails, !thumbnailsOnRight {
-                    ThumbnailImageView(postView: postView)
+                    ThumbnailImageView(postModel: postModel)
                 }
 
                 VStack(spacing: 2) {
                     HStack(alignment: .top, spacing: 4) {
-                        if postView.post.featuredLocal {
+                        if postModel.post.featuredLocal {
                             StickiedTag(tagType: .local)
-                        } else if postView.post.featuredCommunity {
+                        } else if postModel.post.featuredCommunity {
                             StickiedTag(tagType: .community)
                         }
                         
-                        Text(postView.post.name)
+                        Text(postModel.post.name)
                             .font(.headline)
                             .padding(.trailing)
-                            .foregroundColor(postView.read ? .secondary : .primary)
+                            .foregroundColor(postModel.read ? .secondary : .primary)
                         
                         Spacer()
-                        if postView.post.nsfw {
+                        if postModel.post.nsfw {
                             NSFWTag(compact: true)
                         }
                     }
                 }
                 
                 if shouldShowPostThumbnails, thumbnailsOnRight {
-                    ThumbnailImageView(postView: postView)
+                    ThumbnailImageView(postModel: postModel)
                 }
             }
         }

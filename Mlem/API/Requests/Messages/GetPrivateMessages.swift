@@ -15,6 +15,7 @@ struct GetPrivateMessagesRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     // lemmy_api_common::person::GetPersonDetails
+    @available(*, deprecated, message: "Migrate to PostModel")
     init(
         account: SavedAccount, // TODO: move to session based call, auth required.
         page: Int? = nil,
@@ -24,6 +25,21 @@ struct GetPrivateMessagesRequest: APIGetRequest {
         self.instanceURL = account.instanceLink
         self.queryItems = [
             .init(name: "auth", value: account.accessToken),
+            .init(name: "page", value: page?.description),
+            .init(name: "limit", value: limit?.description),
+            .init(name: "unread_only", value: String(unreadOnly))
+        ]
+    }
+    
+    init(
+        session: APISession,
+        page: Int? = nil,
+        limit: Int? = nil,
+        unreadOnly: Bool = false
+    ) {
+        self.instanceURL = session.URL
+        self.queryItems = [
+            .init(name: "auth", value: session.token),
             .init(name: "page", value: page?.description),
             .init(name: "limit", value: limit?.description),
             .init(name: "unread_only", value: String(unreadOnly))

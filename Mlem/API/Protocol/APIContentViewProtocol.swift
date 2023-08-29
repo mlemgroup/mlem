@@ -16,7 +16,4 @@ protocol APIContentViewProtocol {
     var counts: AggregatesType { get }
     var saved: Bool { get }
     var myVote: ScoringOperation? { get set }
-    var creatorBlocked: Bool { get }
-    var subscribed: APISubscribedStatus { get }
-    var creatorBannedFromCommunity: Bool { get }
 }

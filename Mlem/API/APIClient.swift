@@ -95,6 +95,23 @@ class APIClient {
         return try decode(Request.Response.self, from: data)
     }
     
+    public func attemptAuthenticatedCall() async throws {
+        let request = try GetPrivateMessagesRequest(
+            session: session,
+            page: 1,
+            limit: 1
+        )
+        
+        do {
+            try await perform(request: request)
+        } catch {
+            // we're only interested in throwing for invalid sessions here...
+            if case APIClientError.invalidSession = error {
+                throw error
+            }
+        }
+    }
+    
     // MARK: - Private methods
     
     private func execute(_ urlRequest: URLRequest) async throws -> (Data, URLResponse) {
