@@ -83,7 +83,6 @@ struct SwipeyView: ViewModifier {
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
     }
     
-    // swiftlint:disable cyclomatic_complexity
     // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
@@ -353,8 +352,6 @@ struct SwipeyView: ViewModifier {
         }
     }
 }
-
-// swiftlint:enable cyclomatic_complexity
 // swiftlint:enable function_body_length
 
 extension View {
