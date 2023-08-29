@@ -165,42 +165,10 @@ struct SwipeyView: ViewModifier {
                     }
                     
                     // If crossed an edge, play a gentle haptic
-                    if dragPosition <= -1 * AppConstants.longSwipeDragMin {
-                        if prevDragPosition > -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                            // crossed from short swipe -> long swipe
-                            hapticManager.play(haptic: .firmerInfo, priority: .high)
-                        }
-                    } else if dragPosition <= -1 * AppConstants.shortSwipeDragMin {
-                        if prevDragPosition > -1 * AppConstants.shortSwipeDragMin {
-                            // crossed from no swipe -> short swipe
-                            hapticManager.play(haptic: .gentleInfo, priority: .high)
-                        } else if prevDragPosition <= -1 * AppConstants.longSwipeDragMin {
-                            // crossed from long swipe -> short swipe
-                            hapticManager.play(haptic: .mushyInfo, priority: .low)
-                        }
-                    } else if dragPosition < 0 {
-                        if prevDragPosition <= -1 * AppConstants.shortSwipeDragMin {
-                            // crossed from short swipe -> no swipe
-                            hapticManager.play(haptic: .mushyInfo, priority: .low)
-                        }
-                    } else if dragPosition < AppConstants.shortSwipeDragMin {
-                        if prevDragPosition >= AppConstants.shortSwipeDragMin {
-                            // crossed from short swipe -> no swipe
-                            hapticManager.play(haptic: .mushyInfo, priority: .low)
-                        }
-                    } else if dragPosition < AppConstants.longSwipeDragMin {
-                        if prevDragPosition < AppConstants.shortSwipeDragMin {
-                            // crossed from no swipe -> short swipe
-                            hapticManager.play(haptic: .gentleInfo, priority: .high)
-                        } else if prevDragPosition >= AppConstants.longSwipeDragMin {
-                            // crossed from long swipe -> short swipe
-                            hapticManager.play(haptic: .mushyInfo, priority: .high)
-                        }
-                    } else {
-                        if prevDragPosition < AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
-                            // crossed from short swipe -> long swipe
-                            hapticManager.play(haptic: .firmerInfo, priority: .high)
-                        }
+                    let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
+                    let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
+                    if let hapticInfo = self.hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
+                        hapticManager.play(haptic: hapticInfo.0, priority: hapticInfo.1)
                     }
                                   
                     prevDragPosition = dragPosition
@@ -302,6 +270,48 @@ struct SwipeyView: ViewModifier {
             return actions.leadingActions[safeIndex: actionIndex]
         case .trailing:
             return actions.trailingActions[safeIndex: actionIndex]
+        }
+    }
+    
+    private func hapticInfo(
+        transitioningFrom previousIndex: Array<CGFloat>.Index?,
+        to currentIndex: Array<CGFloat>.Index?
+    ) -> (Haptic, HapticPriority)? {
+        guard previousIndex != currentIndex else {
+            /// Same action, don't play haptic.
+            return nil
+        }
+        
+        // From nil -> 0 -> 1 -> 2, etc, where nil is no action, and 0 is the primary action.
+#if DEBUG
+        print("pIndex \(previousIndex) -> cIndex: \(currentIndex)")
+#endif
+        
+        // Swiping towards to primary action.
+        // Index values are always >= 0 for both leading/trailing edges.
+        // Since nil indicates no action, we use -1 to represent nil instead (lol, yes).
+        if (currentIndex ?? -1) < (previousIndex ?? -1) {
+#if DEBUG
+            print("mushyInfo.low\n")
+#endif
+            return (.mushyInfo, .low)
+        } else {
+            if previousIndex == nil {
+#if DEBUG
+                print("gentleInfo.high\n")
+#endif
+                return (.gentleInfo, .high)
+            } else if previousIndex == 1 {
+#if DEBUG
+                print("firmerInfo.high\n")
+#endif
+                return (.firmerInfo, .high)
+            } else {
+#if DEBUG
+                print("firmerInfo.high\n")
+#endif
+                return (.firmerInfo, .high)
+            }
         }
     }
 }
