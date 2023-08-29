@@ -1,5 +1,5 @@
 //
-//  Saved Community Tracker.swift
+//  SavedAccountTracker.swift
 //  Mlem
 //
 //  Created by David Bureš on 05.05.2023.
@@ -10,66 +10,63 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-@MainActor
+private let defaultInstanceGroupKey = "Other"
+
 class SavedAccountTracker: ObservableObject {
+    
     @Dependency(\.persistenceRepository) private var persistenceRepository
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
     
     @Published var savedAccounts = [SavedAccount]()
     @Published var accountsByInstance = [String: [SavedAccount]]()
-
+    
     var defaultAccount: SavedAccount? {
         savedAccounts.first(where: { $0.id == defaultAccountId })
     }
     
-    private var updateObserver: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Initialisation
     
     init() {
         _savedAccounts = .init(wrappedValue: persistenceRepository.loadAccounts())
-        savedAccounts.forEach { account in
-            addAccountToInstanceMap(account: account)
-        }
-        
-        self.updateObserver = $savedAccounts.sink { [weak self] value in
-            Task {
-                try await self?.persistenceRepository.saveAccounts(value)
-            }
-        }
+        // observe our saved accounts and trigger internal updates when they change
+        $savedAccounts
+            .sink { [weak self] in self?.accountsDidChange($0) }
+            .store(in: &cancellables)
     }
     
+    // MARK: - Public methods
+    
     func addAccount(account: SavedAccount) {
-        print("Adding account: \(account.username) (\(account.nickname))")
-        // prevent dupes
         guard !savedAccounts.contains(account) else {
-            print("dupe!")
+            assertionFailure("Tried to add a duplicate account to the tracker")
             return
         }
         
         savedAccounts.append(account)
-        addAccountToInstanceMap(account: account)
     }
     
-    /**
-     Replaces an account with another equivalent account. Useful for changing non-identifying properties.
-     */
-    func replaceAccount(account: SavedAccount) {
-        // ensure present
-        guard savedAccounts.contains(account) else {
-            assertionFailure("Tried to replace account that does not exist")
+    /// Replaces an account with another equivalent account. Useful for changing non-identifying properties.
+    /// - Parameter account: an updated `SavedAccount`
+    func update(with account: SavedAccount) {
+        guard let index = savedAccounts.firstIndex(of: account) else {
+            assertionFailure("Tried to update an account that does not exist")
             return
         }
         
-        // replace in data structures
-        replaceAccountInArray(account: account)
-        replaceAccountInInstanceMap(account: account)
+        savedAccounts[index] = account
     }
     
     // TODO: pass in AppState using a dependency or something nice like that
     func removeAccount(account: SavedAccount, appState: AppState, forceOnboard: () -> Void) {
-        // remove from data structures
-        removeAccountFromArray(account: account)
-        removeAccountFromInstanceMap(account: account)
+        guard let index = savedAccounts.firstIndex(of: account) else {
+            assertionFailure("Tried to remove an account that does not exist")
+            return
+        }
+        
+        savedAccounts.remove(at: index)
         
         // if another account exists, swap to it; otherwise force onboarding
         if let firstAccount: SavedAccount = savedAccounts.first {
@@ -79,47 +76,15 @@ class SavedAccountTracker: ObservableObject {
         }
     }
     
-    // MARK: Helpers
+    // MARK: - Private methods
     
-    func removeAccountFromArray(account: SavedAccount) {
-        savedAccounts = savedAccounts.filter { savedAccount in
-            savedAccount != account
-        }
-    }
-    
-    func replaceAccountInArray(account: SavedAccount) {
-        if let idx = savedAccounts.firstIndex(of: account) {
-            savedAccounts[idx] = account
-        }
-    }
-    
-    func addAccountToInstanceMap(account: SavedAccount) {
-        let hostName = account.hostName ?? "Other"
-        
-        let instance = accountsByInstance[hostName] ?? []
-        accountsByInstance[hostName] = instance + [account]
-    }
-    
-    func replaceAccountInInstanceMap(account: SavedAccount) {
-        let hostName = account.hostName ?? "Other"
-        if var instance = accountsByInstance[hostName], let idx = instance.firstIndex(of: account) {
-            instance[idx] = account
-        }
-    }
-    
-    func removeAccountFromInstanceMap(account: SavedAccount) {
-        let hostName = account.hostName ?? "Other"
-        if let instance = accountsByInstance[hostName] {
-            let filteredAccounts = instance.filter { savedAccount in
-                savedAccount != account
-            }
-            
-            // delete key if no accounts associated, otherwise just remove accounts
-            if filteredAccounts.isEmpty {
-                accountsByInstance.removeValue(forKey: hostName)
-            } else {
-                accountsByInstance[hostName] = filteredAccounts
-            }
+    private func accountsDidChange(_ newValue: [SavedAccount]) {
+        self.accountsByInstance = Dictionary(
+            grouping: newValue,
+            by: { $0.hostName ?? defaultInstanceGroupKey }
+        )
+        Task {
+            try await self.persistenceRepository.saveAccounts(newValue)
         }
     }
 }

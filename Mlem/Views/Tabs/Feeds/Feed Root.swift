@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var accountsTracker: SavedAccountTracker
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
@@ -49,7 +48,6 @@ struct FeedRoot: View {
         )
         .environment(\.navigationPath, $navigationPath)
         .environmentObject(appState)
-        .environmentObject(accountsTracker)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:

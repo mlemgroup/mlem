@@ -16,7 +16,6 @@ struct ContentView: View {
     @Dependency(\.hapticManager) var hapticManager
     
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var accountsTracker: SavedAccountTracker
     
     @StateObject var editorTracker: EditorTracker = .init()
     @StateObject var unreadTracker: UnreadTracker = .init()
