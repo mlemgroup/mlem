@@ -218,8 +218,23 @@ extension CommentItem {
     private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
     private var emptyReplySymbolName: String { "arrowshape.turn.up.left" }
     private var replySymbolName: String { "arrowshape.turn.up.left.fill" }
-    private var emptyCollapseSymbolName: String { "arrow.up.left.and.arrow.down.right.circle" }
-    private var collapseSymbolName: String { "arrow.up.left.and.arrow.down.right.circle.fill" }
+    
+    private var emptyCollapseSymbolName: String { 
+//        "arrow.up.left.and.arrow.down.right.circle"
+        "arrow.up.and.line.horizontal.and.arrow.down"
+    }
+    private var collapseSymbolName: String {
+//        "arrow.up.left.and.arrow.down.right.circle.fill"
+        "arrow.up.and.line.horizontal.and.arrow.down"
+    }
+    private var emptyExpandSymbolName: String {
+//        "arrow.down.right.and.arrow.up.left.circle"
+        "arrow.down.and.line.horizontal.and.arrow.up"
+    }
+    private var expandSymbolName: String {
+//        "arrow.down.right.and.arrow.up.left.circle.fill"
+        "arrow.down.and.line.horizontal.and.arrow.up"
+    }
     
     var upvoteSwipeAction: SwipeAction {
         SwipeAction(
@@ -256,7 +271,9 @@ extension CommentItem {
     
     var collapseCommentAction: SwipeAction {
         SwipeAction(
-            symbol: .init(emptyName: emptyCollapseSymbolName, fillName: collapseSymbolName),
+            symbol: .init(
+                emptyName: hierarchicalComment.isCollapsed ? emptyCollapseSymbolName : emptyExpandSymbolName,
+                fillName: hierarchicalComment.isCollapsed ? collapseSymbolName : expandSymbolName),
             color: .teal,
             action: toggleCollapsed
         )
