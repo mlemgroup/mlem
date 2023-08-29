@@ -19,6 +19,16 @@ struct SwipeAction {
     let action: () async -> Void
 }
 
+struct SwipeConfiguration {
+    let primaryLeading: SwipeAction?
+    let secondaryLeading: SwipeAction?
+//    let tertiaryLeading: SwipeAction?
+    
+    let primaryTrailing: SwipeAction?
+    let secondaryTrailing: SwipeAction?
+//    let tertiaryTrailing: SwipeAction?
+}
+
 struct SwipeyView: ViewModifier {
     @Dependency(\.hapticManager) var hapticManager
     
@@ -30,10 +40,20 @@ struct SwipeyView: ViewModifier {
     @State var leadingSwipeSymbol: String?
     @State var trailingSwipeSymbol: String?
     
-    let primaryLeadingAction: SwipeAction?
-    let secondaryLeadingAction: SwipeAction?
-    let primaryTrailingAction: SwipeAction?
-    let secondaryTrailingAction: SwipeAction?
+    private var primaryLeadingAction: SwipeAction? {
+        actions.primaryLeading
+    }
+    private var secondaryLeadingAction: SwipeAction? {
+        actions.secondaryLeading
+    }
+    private var primaryTrailingAction: SwipeAction? {
+        actions.primaryTrailing
+    }
+    private var secondaryTrailingAction: SwipeAction? {
+        actions.secondaryTrailing
+    }
+    
+    let actions: SwipeConfiguration
     
     init(
         primaryLeadingAction: SwipeAction?,
@@ -53,10 +73,11 @@ struct SwipeyView: ViewModifier {
             "No secondary action should be present without a primary"
         )
         
-        self.primaryLeadingAction = primaryLeadingAction
-        self.secondaryLeadingAction = secondaryLeadingAction
-        self.primaryTrailingAction = primaryTrailingAction
-        self.secondaryTrailingAction = secondaryTrailingAction
+        self.actions = .init(
+            primaryLeading: primaryLeadingAction,
+            secondaryLeading: secondaryLeadingAction,
+            primaryTrailing: primaryTrailingAction,
+            secondaryTrailing: secondaryTrailingAction)
         
         // other init
         _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
@@ -195,24 +216,9 @@ struct SwipeyView: ViewModifier {
         
         // TEMP: need to delay the call being sent because otherwise the state update cancels the animation. This should be fixed with backend support for fakers, since the vote won't change and so the animation won't stop (hopefully). This delay matches the response field of the reset() animation.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            if finalDragPosition < -1 * AppConstants.longSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    let action = secondaryTrailingAction ?? primaryTrailingAction
-                    await action?.action()
-                }
-            } else if finalDragPosition < -1 * AppConstants.shortSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    await primaryTrailingAction?.action()
-                }
-            } else if finalDragPosition > AppConstants.longSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    let action = secondaryLeadingAction ?? primaryLeadingAction
-                    await action?.action()
-                }
-            } else if finalDragPosition > AppConstants.shortSwipeDragMin {
-                Task(priority: .userInitiated) {
-                    await primaryLeadingAction?.action()
-                }
+            Task(priority: .userInitiated) {
+                let action = swipeAction(at: finalDragPosition)
+                await action?.action()
             }
         }
     }
@@ -237,6 +243,22 @@ struct SwipeyView: ViewModifier {
         }
         
         return true
+    }
+    
+    // MARK: -
+    
+    private func swipeAction(at position: CGFloat) -> SwipeAction? {
+        if position < -1 * AppConstants.longSwipeDragMin {
+            return secondaryTrailingAction ?? primaryTrailingAction
+        } else if position < -1 * AppConstants.shortSwipeDragMin {
+            return primaryTrailingAction
+        } else if position > AppConstants.longSwipeDragMin {
+            return secondaryLeadingAction ?? primaryLeadingAction
+        } else if position > AppConstants.shortSwipeDragMin {
+            return primaryLeadingAction
+        } else {
+            return nil
+        }
     }
 }
 
