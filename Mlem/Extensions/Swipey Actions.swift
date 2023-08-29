@@ -251,13 +251,35 @@ struct SwipeyView: ViewModifier {
     }
     
     private func actionIndex(edge: HorizontalEdge, at dragPosition: CGFloat) -> Array<CGFloat>.Index? {
-        AppConstants.swipeActionDragThresholds.lastIndex {
+        /// Map a `dragPosition` to a `dragThreshold`, which tells us what swipe action to perform, where `nil` is no action, `1` is primary, `2` is secondary, etc.
+        let thresholdIndex = AppConstants.swipeActionDragThresholds.lastIndex {
             switch edge {
             case .leading:
                 return dragPosition > $0
             case .trailing:
                 return dragPosition < -$0
             }
+        }
+        
+        guard let thresholdIndex else {
+            print(#function, "thresholdIndex == nil at this drag position")
+            return nil
+        }
+        
+        /// There may not be an associated action for a threshold.
+        switch edge {
+        case .leading:
+            if thresholdIndex > (actions.leadingActions.endIndex - 1) {
+                print(#function, "leading action not configured for this threshold")
+                return actions.leadingActions.endIndex - 1
+            }
+            return thresholdIndex
+        case .trailing:
+            if thresholdIndex > (actions.trailingActions.endIndex - 1) {
+                print(#function, "trailing action not configured for this threshold")
+                return actions.trailingActions.endIndex - 1
+            }
+            return thresholdIndex
         }
     }
     
