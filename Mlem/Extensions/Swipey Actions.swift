@@ -222,6 +222,8 @@ struct SwipeyView: ViewModifier {
     
     // MARK: -
     
+    /// Get the swipe action a specific drag position.
+    /// - Parameter dragPosition: Along the x-axis.
     private func swipeAction(at dragPosition: CGFloat) -> SwipeAction? {
         let edge = edgeForActions(at: dragPosition)
         let index = actionIndex(edge: edge, at: dragPosition)
@@ -229,10 +231,13 @@ struct SwipeyView: ViewModifier {
         return action
     }
     
+    /// For a particular `dragPosition`, returns the relevant edge for which to show/perform actions.
     private func edgeForActions(at dragPosition: CGFloat) -> HorizontalEdge {
         dragPosition > 0 ? .leading : .trailing
     }
     
+    /// Index of the action along the specified edge at the specified drag position.
+    /// - Returns: A `nil` value denotes the state where swiping has begun, but not enough to trigger any actions.
     private func actionIndex(edge: HorizontalEdge, at dragPosition: CGFloat) -> Array<CGFloat>.Index? {
         /// Map a `dragPosition` to a `dragThreshold`, which tells us what swipe action to perform, where `nil` is no action, `1` is primary, `2` is secondary, etc.
         let thresholdIndex = AppConstants.swipeActionDragThresholds.lastIndex {
@@ -266,6 +271,7 @@ struct SwipeyView: ViewModifier {
         }
     }
     
+    /// Get the action associated with an edge at the specified index.
     private func action(edge: HorizontalEdge, index actionIndex: Array<CGFloat>.Index?) -> SwipeAction? {
         guard let actionIndex else {
             return nil
@@ -278,6 +284,8 @@ struct SwipeyView: ViewModifier {
         }
     }
     
+    /// Maps swipe action transitions into an appropriate haptic info payload for haptic playback purposes.
+    /// - No-op if both indexes are the same (i.e. transition isn't happening).
     private func hapticInfo(
         transitioningFrom previousIndex: Array<CGFloat>.Index?,
         to currentIndex: Array<CGFloat>.Index?
