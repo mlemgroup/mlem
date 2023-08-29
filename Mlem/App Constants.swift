@@ -24,10 +24,16 @@ struct AppConstants {
 
     static let keychain: Keychain = .init(service: "com.hanners.Mlem-keychain")
 
-    // MARK: - DragGesture thresholds
-
-    static let longSwipeDragMin: CGFloat = 150
+    // MARK: - SwipeyView drag action thresholds
+    
+    static let swipeActionDragThresholds: [CGFloat] = [
+        Self.shortSwipeDragMin,
+        Self.longSwipeDragMin,
+        Self.tertiarySwipeDragMin
+    ]
     static let shortSwipeDragMin: CGFloat = 60
+    static let longSwipeDragMin: CGFloat = 150
+    static let tertiarySwipeDragMin: CGFloat = 270
     
     // MARK: - Text Fields
     static let textFieldVariableLineLimit: ClosedRange<Int> = 1...10

@@ -122,19 +122,80 @@ struct SwipeyView: ViewModifier {
                     // update position
                     dragPosition = newDragState
                     
-                    // update color and symbol. If crossed an edge, play a gentle haptic
-                    if dragPosition <= -1 * AppConstants.longSwipeDragMin {
-                        trailingSwipeSymbol = secondaryTrailingAction?.symbol.fillName ?? primaryTrailingAction?.symbol.fillName
-                        dragBackground = secondaryTrailingAction?.color ?? primaryTrailingAction?.color
+                    let edgeForActions: HorizontalEdge = {
+                        if dragPosition > 0 {
+                            return .leading
+                        } else {
+                            return .trailing
+                        }
+                    }()
+                    
+                    let actionIndex = AppConstants.swipeActionDragThresholds.lastIndex {
+                        switch edgeForActions {
+                        case .leading:
+                            return dragPosition > $0
+                        case .trailing:
+                            return dragPosition < -$0
+                        }
+                    }
+                                        
+                    let action: SwipeAction? = {
+                        guard let actionIndex else {
+                            return nil
+                        }
+                        switch edgeForActions {
+                        case .leading:
+                            return actions.leadingActions[safeIndex: actionIndex]
+                        case .trailing:
+                            return actions.trailingActions[safeIndex: actionIndex]
+                        }
+                    }()
+                    
+                    let threshold: CGFloat = {
+                        guard let actionIndex else {
+                            switch edgeForActions {
+                            case .leading:
+                                return AppConstants.shortSwipeDragMin
+                            case .trailing:
+                                return -AppConstants.shortSwipeDragMin
+                            }
+                        }
                         
+                        switch edgeForActions {
+                        case .leading:
+                            return AppConstants.swipeActionDragThresholds[actionIndex]
+                        case .trailing:
+                            return -AppConstants.swipeActionDragThresholds[actionIndex]
+                        }
+                    }()
+                    
+                    // update color and symbol. If crossed an edge, play a gentle haptic
+                    switch edgeForActions {
+                    case .leading:
+                        leadingSwipeSymbol = actionIndex == nil 
+                        ? primaryLeadingAction?.symbol.emptyName
+                        : action?.symbol.fillName
+                        
+                        dragBackground = actionIndex == nil
+                        ? primaryLeadingAction?.color.opacity(dragPosition / threshold)
+                        : action?.color.opacity(dragPosition / threshold)
+                    case .trailing:
+                        trailingSwipeSymbol = actionIndex == nil
+                        ? primaryTrailingAction?.symbol.emptyName
+                        : action?.symbol.fillName
+                        
+                        dragBackground = actionIndex == nil
+                        ? primaryTrailingAction?.color.opacity(dragPosition / threshold)
+                        : action?.color.opacity(dragPosition / threshold)
+                    }
+                    
+                    // If crossed an edge, play a gentle haptic
+                    if dragPosition <= -1 * AppConstants.longSwipeDragMin {
                         if prevDragPosition > -1 * AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                             // crossed from short swipe -> long swipe
                             hapticManager.play(haptic: .firmerInfo, priority: .high)
                         }
                     } else if dragPosition <= -1 * AppConstants.shortSwipeDragMin {
-                        trailingSwipeSymbol = primaryTrailingAction?.symbol.fillName
-                        dragBackground = primaryTrailingAction?.color
-                        
                         if prevDragPosition > -1 * AppConstants.shortSwipeDragMin {
                             // crossed from no swipe -> short swipe
                             hapticManager.play(haptic: .gentleInfo, priority: .high)
@@ -143,25 +204,16 @@ struct SwipeyView: ViewModifier {
                             hapticManager.play(haptic: .mushyInfo, priority: .low)
                         }
                     } else if dragPosition < 0 {
-                        trailingSwipeSymbol = primaryTrailingAction?.symbol.emptyName
-                        dragBackground = primaryTrailingAction?.color.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
-                        
                         if prevDragPosition <= -1 * AppConstants.shortSwipeDragMin {
                             // crossed from short swipe -> no swipe
                             hapticManager.play(haptic: .mushyInfo, priority: .low)
                         }
                     } else if dragPosition < AppConstants.shortSwipeDragMin {
-                        leadingSwipeSymbol = primaryLeadingAction?.symbol.emptyName
-                        dragBackground = primaryLeadingAction?.color.opacity(dragPosition / AppConstants.shortSwipeDragMin)
-                        
                         if prevDragPosition >= AppConstants.shortSwipeDragMin {
                             // crossed from short swipe -> no swipe
                             hapticManager.play(haptic: .mushyInfo, priority: .low)
                         }
                     } else if dragPosition < AppConstants.longSwipeDragMin {
-                        leadingSwipeSymbol = primaryLeadingAction?.symbol.fillName
-                        dragBackground = primaryLeadingAction?.color
-                        
                         if prevDragPosition < AppConstants.shortSwipeDragMin {
                             // crossed from no swipe -> short swipe
                             hapticManager.play(haptic: .gentleInfo, priority: .high)
@@ -170,14 +222,12 @@ struct SwipeyView: ViewModifier {
                             hapticManager.play(haptic: .mushyInfo, priority: .high)
                         }
                     } else {
-                        leadingSwipeSymbol = secondaryLeadingAction?.symbol.fillName ?? primaryLeadingAction?.symbol.fillName
-                        dragBackground = secondaryLeadingAction?.color ?? primaryLeadingAction?.color
-                        
                         if prevDragPosition < AppConstants.longSwipeDragMin, secondaryLeadingAction != nil {
                             // crossed from short swipe -> long swipe
                             hapticManager.play(haptic: .firmerInfo, priority: .high)
                         }
                     }
+                                  
                     prevDragPosition = dragPosition
                 }
             }
