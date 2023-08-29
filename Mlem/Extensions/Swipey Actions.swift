@@ -271,9 +271,9 @@ struct SwipeyView: ViewModifier {
     
     // MARK: -
     
-    private func swipeAction(at position: CGFloat) -> SwipeAction? {
-        let edge = edgeForActions(at: position)
-        let index = actionIndex(edge: edge, at: position)
+    private func swipeAction(at dragPosition: CGFloat) -> SwipeAction? {
+        let edge = edgeForActions(at: dragPosition)
+        let index = actionIndex(edge: edge, at: dragPosition)
         let action = action(edge: edge, index: index)
         return action
     }
