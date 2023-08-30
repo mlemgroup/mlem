@@ -12,8 +12,9 @@ struct UserAvatarView: View {
     
     let user: APIPerson
     let avatarSize: CGFloat
+    var lineColor: Color?
     
-    var blurAvatar: Bool = true
+    var blurAvatar: Bool = false
     
     var body: some View {
         Group {
@@ -35,7 +36,7 @@ struct UserAvatarView: View {
         .clipShape(Circle())
         .overlay(Circle()
             .stroke(
-                Color(UIColor.secondarySystemBackground),
+                lineColor ?? Color(UIColor.secondarySystemBackground),
                 lineWidth: 1
             ))
     }

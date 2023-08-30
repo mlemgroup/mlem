@@ -39,7 +39,7 @@ struct UltraCompactPost: View {
     // computed
     var showReadCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
 
-    init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction] = .init()) {
         self.postView = postView
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
@@ -68,12 +68,15 @@ struct UltraCompactPost: View {
                     
                     if showReadCheck { ReadCheck() }
                     
-                    EllipsisMenu(size: 12, menuFunctions: menuFunctions)
-                        .padding(.trailing, 6)
+                    if !menuFunctions.isEmpty {
+                        EllipsisMenu(size: 12, menuFunctions: menuFunctions)
+                            .padding(.trailing, 6)
+                    }
                 }
                 .padding(.bottom, -2)
                 
                 Text(postView.post.name)
+                    .multilineTextAlignment(.leading)
                     .font(.subheadline)
                     .foregroundColor(postView.read ? .secondary : .primary)
     

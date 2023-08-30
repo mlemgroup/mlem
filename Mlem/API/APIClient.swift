@@ -309,7 +309,9 @@ extension APIClient {
         sortOption: PostSortType,
         listingType: FeedType,
         page: Int?,
-        limit: Int?
+        limit: Int?,
+        community: APICommunity? = nil,
+        user: APIPerson? = nil
     ) async throws -> SearchResponse {
         let request = try SearchRequest(
             session: session,
@@ -318,9 +320,9 @@ extension APIClient {
             sortOption: sortOption,
             listingType: listingType,
             page: page,
-            communityId: nil,
+            communityId: community?.id ?? nil,
             communityName: nil,
-            creatorId: nil,
+            creatorId: user?.id ?? nil,
             limit: limit
         )
         

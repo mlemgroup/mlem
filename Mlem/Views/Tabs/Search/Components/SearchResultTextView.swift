@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HighlightedResultText: View {
+struct SearchResultTextView: View {
     let components: EnumeratedSequence<[String]>
     let highlight: String
     

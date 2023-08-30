@@ -12,6 +12,7 @@ struct CommunityAvatarView: View {
     
     let community: APICommunity
     let avatarSize: CGFloat
+    var lineColor: Color?
     
     var blurAvatar: Bool { shouldBlurNsfw && community.nsfw }
     
@@ -35,7 +36,7 @@ struct CommunityAvatarView: View {
         .clipShape(Circle())
         .overlay(Circle()
             .stroke(
-                Color(UIColor.secondarySystemBackground),
+                lineColor ?? Color(UIColor.secondarySystemBackground),
                 lineWidth: shouldClipAvatar(community: community) ? 1 : 0
             ))
     }

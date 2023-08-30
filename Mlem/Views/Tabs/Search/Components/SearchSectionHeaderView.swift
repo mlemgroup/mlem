@@ -31,7 +31,7 @@ struct SearchSectionHeaderView: View {
                 .foregroundStyle(Color.accentColor)
                 .buttonStyle(.borderless)
         }
-        .padding(.horizontal, 15)
+        .padding(.horizontal, 20)
         .padding(.vertical, 6)
         .background(
             ZStack {

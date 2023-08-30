@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct UserResultView: View {
-    let user: APIPersonView
-    let highlight: String
-    
+    @EnvironmentObject var searchModel: SearchModel
     @Environment(\.navigationPath) private var navigationPath
+    
+    let user: APIPersonView
     
     var body: some View {
         Button {
@@ -20,7 +20,7 @@ struct UserResultView: View {
             HStack(spacing: 15) {
                 UserAvatarView(user: user.person, avatarSize: 36)
                 VStack(alignment: .leading, spacing: 0) {
-                    HighlightedResultText(user.person.name, highlight: highlight)
+                    SearchResultTextView(user.person.name, highlight: searchModel.input)
                         .lineLimit(1)
                     if let host = user.person.actorId.host() {
                         Text("@\(host)")
@@ -36,12 +36,14 @@ struct UserResultView: View {
             .padding(.horizontal, 15)
             .background(
                 RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                    .fill(Color(.secondarySystemBackground))
+                    .fill(Color(UIColor.secondarySystemGroupedBackground))
             )
         }
         .buttonStyle(.plain)
         .contextMenu {
-            Button {} label: {
+            Button {
+                searchModel.addFilter(.user(user))
+            } label: {
                 Label("Add filter", systemImage: "plus")
             }
         }

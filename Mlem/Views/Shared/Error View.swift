@@ -72,8 +72,11 @@ struct ErrorView: View {
                     } label: {
                         HStack(spacing: 10) {
                             Text(errorDetails.buttonText ?? "Try again")
-                            ProgressView()
+                            if refreshInProgress {
+                                ProgressView()
+                            }
                         }
+                        .animation(.default, value: refreshInProgress)
                     }
                     .buttonStyle(.bordered)
                 }

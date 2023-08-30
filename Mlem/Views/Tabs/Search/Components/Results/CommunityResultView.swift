@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CommunityResultView: View {
-    let community: APICommunityView
-    let highlight: String
-    
+    @EnvironmentObject var searchModel: SearchModel
     @Environment(\.navigationPath) private var navigationPath
     
+    let community: APICommunityView
+
     var body: some View {
         Button {
             navigationPath.wrappedValue.append(CommunityLinkWithContext(community: community.community, feedType: .subscribed))
@@ -20,7 +20,7 @@ struct CommunityResultView: View {
             HStack(spacing: 15) {
                 CommunityAvatarView(community: community.community, avatarSize: 36)
                 VStack(alignment: .leading, spacing: 0) {
-                    HighlightedResultText(community.community.name, highlight: highlight)
+                    SearchResultTextView(community.community.name, highlight: searchModel.input)
                         .lineLimit(1)
                     if let host = community.community.actorId.host() {
                         Text("@\(host)")
@@ -41,12 +41,14 @@ struct CommunityResultView: View {
             .padding(.horizontal, 15)
             .background(
                 RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
-                    .fill(Color(.secondarySystemBackground))
+                    .fill(Color(UIColor.secondarySystemGroupedBackground))
             )
         }
         .buttonStyle(.plain)
         .contextMenu {
-            Button {} label: {
+            Button {
+                searchModel.addFilter(.community(community))
+            } label: {
                 Label("Add filter", systemImage: "plus")
             }
         }
