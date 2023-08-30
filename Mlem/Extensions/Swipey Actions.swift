@@ -51,20 +51,7 @@ struct SwipeyView: ViewModifier {
     
     init(configuration: SwipeConfiguration) {
         self.actions = configuration
-
-        // assert that no secondary action exists without a primary action
-        // this is logically equivalent to (primaryAction == nil -> secondaryAction == nil)
-        assert(
-            primaryLeadingAction != nil || secondaryLeadingAction == nil,
-            "No secondary action \(secondaryLeadingAction != nil) should be present without a primary \(primaryLeadingAction == nil)"
-        )
         
-        assert(
-            primaryTrailingAction != nil || secondaryTrailingAction == nil,
-            "No secondary action should be present without a primary"
-        )
-        
-        // other init
         _leadingSwipeSymbol = State(initialValue: primaryLeadingAction?.symbol.fillName)
         _trailingSwipeSymbol = State(initialValue: primaryTrailingAction?.symbol.fillName)
     }
