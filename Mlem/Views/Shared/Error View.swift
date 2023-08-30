@@ -17,6 +17,18 @@ struct ErrorDetails {
     var buttonText: String?
     var refresh: (() async -> Bool)?
     var autoRefresh: Bool = false
+    
+    static func mock() -> ErrorDetails {
+        func callback() async -> Bool {
+            try? await Task.sleep(nanoseconds: UInt64(1 * Double(NSEC_PER_SEC)))
+            return false
+        }
+        
+        enum MockError: Error {
+            case mock
+        }
+        return ErrorDetails(error: MockError.mock, refresh: callback)
+    }
 }
 
 struct ErrorView: View {
@@ -72,10 +84,13 @@ struct ErrorView: View {
                     } label: {
                         HStack(spacing: 10) {
                             Text(errorDetails.buttonText ?? "Try again")
-                            ProgressView()
+                            if refreshInProgress {
+                                ProgressView()
+                            }
                         }
                     }
                     .buttonStyle(.bordered)
+                    .animation(.default, value: refreshInProgress)
                 }
             }
             
