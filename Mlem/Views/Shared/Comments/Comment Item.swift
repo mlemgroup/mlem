@@ -272,7 +272,7 @@ extension CommentItem {
             symbol: .init(
                 emptyName: hierarchicalComment.isCollapsed ? emptyCollapseSymbolName : emptyExpandSymbolName,
                 fillName: hierarchicalComment.isCollapsed ? collapseSymbolName : expandSymbolName),
-            color: .teal,
+            color: .orange,
             action: toggleCollapsed
         )
     }
