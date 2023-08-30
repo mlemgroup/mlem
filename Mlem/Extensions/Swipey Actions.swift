@@ -43,9 +43,7 @@ struct SwipeyView: ViewModifier {
     @State var trailingSwipeSymbol: String?
     
     private var primaryLeadingAction: SwipeAction? { actions.leadingActions.first }
-    private var secondaryLeadingAction: SwipeAction? { actions.leadingActions[safeIndex: 1] }
     private var primaryTrailingAction: SwipeAction? { actions.trailingActions.first }
-    private var secondaryTrailingAction: SwipeAction? { actions.trailingActions[safeIndex: 1] }
     
     let actions: SwipeConfiguration
     
