@@ -194,7 +194,7 @@ struct CommentItem: View {
         .addSwipeyActions(
             configuration: .init(
                 leadingActions: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
-                trailingActions: enableSwipeActions ? [saveSwipeAction, replySwipeAction, collapseCommentAction] : []
+                trailingActions: enableSwipeActions ? [saveSwipeAction, replySwipeAction, expandCollapseCommentAction] : []
             )
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
@@ -269,7 +269,7 @@ extension CommentItem {
         )
     }
     
-    var collapseCommentAction: SwipeAction {
+    var expandCollapseCommentAction: SwipeAction {
         SwipeAction(
             symbol: .init(
                 emptyName: hierarchicalComment.isCollapsed ? emptyCollapseSymbolName : emptyExpandSymbolName,
