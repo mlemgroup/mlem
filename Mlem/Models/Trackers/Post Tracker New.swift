@@ -17,6 +17,8 @@ class PostTrackerNew: ObservableObject {
     // dependencies
     @Dependency(\.postRepository) var postRepository
     @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.hapticManager) var hapticManager
     
     // behavior governors
     private let shouldPerformMergeSorting: Bool
@@ -27,7 +29,7 @@ class PostTrackerNew: ObservableObject {
 
     // utility
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
-    private(set) var isLoading: Bool = true // accessible but not published because it causes lots of bad view redraws
+    private(set) var isLoading: Bool = false // accessible but not published because it causes lots of bad view redraws
     private(set) var page: Int = 1
     
     // prefetching
@@ -48,6 +50,8 @@ class PostTrackerNew: ObservableObject {
     }
     
     // MARK: - Loading Methods
+    
+    // TODO: ERIC handle loading properly
     
     func loadNextPage(
         communityId: Int?,
@@ -152,7 +156,83 @@ class PostTrackerNew: ObservableObject {
         return false
     }
     
-    // MARK: - Private methods
+    // MARK: - Post Management Methods
+    
+    /**
+     If a post with the same id as the given post is present in the tracker, replaces it with the given post; otherwise does nothing and quietly returns.
+     
+     - Parameters:
+        - updatedPost: PostModel representing a post already present in the tracker with a new state
+     */
+    @MainActor
+    func update(with updatedPost: PostModel) {
+        guard let index = items.firstIndex(where: { $0.id == updatedPost.id }) else {
+            return
+        }
+
+        items[index] = updatedPost
+    }
+    
+    // MARK: - Interaction Methods
+  
+    /**
+     Applies the given scoring operation to the given post, provided the post is present in ids. If the given operation has already been applied, it will instead send .resetVote.
+     
+     Performs state faking--posts will updated immediately with the predicted state of the post post-update, then updated to match the source of truth when the call returns.
+     
+     - Parameters:
+        - postModel: PostModel of the post to vote
+        - operation: ScoringOperation to apply to the given post
+     - Returns:
+     */
+    func voteOnPost(postModel: PostModel, inputOp: ScoringOperation) async {
+        guard ids.contains(postModel.id) else {
+            assertionFailure("Upvote called on post not present in tracker")
+            hapticManager.play(haptic: .failure, priority: .high)
+            return
+        }
+        
+        guard !isLoading else {
+            return
+        }
+        
+        defer { isLoading = false }
+        isLoading = true
+        
+        // compute appropriate operation
+        let operation = postModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+        
+        print(operation)
+        
+        // fake state
+        let stateFakedPost = PostModel(from: postModel, votes: postModel.votes.applyScoringOperation(operation: operation))
+        await update(with: stateFakedPost)
+        
+        print("updated")
+        
+        do {
+            let response = try await postRepository.ratePost(postId: postModel.postId, operation: operation)
+            await update(with: response)
+            
+            print("updated again")
+        } catch {
+            errorHandler.handle(error)
+        }
+    }
+    
+    func downvote(postId: ContentModelIdentifier) async {
+        assertionFailure("implement me")
+    }
+    
+    func save(postId: ContentModelIdentifier) async {
+        assertionFailure("implement me")
+    }
+    
+    func delete(postId: ContentModelIdentifier) async {
+        assertionFailure("implement me")
+    }
+    
+    // MARK: - Private Methods
     
     private func preloadImages(_ newPosts: [PostModel]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache

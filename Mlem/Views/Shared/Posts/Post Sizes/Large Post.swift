@@ -262,7 +262,7 @@ struct LargePost: View {
     func markPostAsRead() {
         Task(priority: .userInitiated) {
             do {
-                let readPost = try await postRepository.markRead(for: postModel.post.id, read: true)
+                let readPost = try await postRepository.markRead(postId: postModel.post.id, read: true)
                 postTracker.update(with: readPost)
             } catch {
                 errorHandler.handle(error)

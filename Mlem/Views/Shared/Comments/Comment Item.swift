@@ -150,12 +150,13 @@ struct CommentItem: View {
                 
                 if !hierarchicalComment.isCollapsed, !compactComments {
                     InteractionBarView(
-                        apiView: hierarchicalComment.commentView,
+                        // apiView: hierarchicalComment.commentView,
+                        votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
+                        published: hierarchicalComment.commentView.comment.published,
+                        numReplies: hierarchicalComment.commentView.counts.childCount,
+                        saved: hierarchicalComment.commentView.saved,
                         accessibilityContext: "comment",
                         widgets: layoutWidgetTracker.groups.comment,
-                        displayedScore: displayedScore,
-                        displayedVote: displayedVote,
-                        displayedSaved: displayedSaved,
                         upvote: upvote,
                         downvote: downvote,
                         save: saveComment,

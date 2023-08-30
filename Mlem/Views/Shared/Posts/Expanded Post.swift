@@ -236,12 +236,12 @@ struct ExpandedPost: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             
             InteractionBarView(
-                apiView: post,
+                votes: VotesModel(from: post.counts, myVote: post.myVote),
+                published: post.published,
+                numReplies: post.counts.comments,
+                saved: post.saved,
                 accessibilityContext: "post",
                 widgets: layoutWidgetTracker.groups.post,
-                displayedScore: displayedScore,
-                displayedVote: displayedVote,
-                displayedSaved: displayedSaved,
                 upvote: upvotePost,
                 downvote: downvotePost,
                 save: savePost,

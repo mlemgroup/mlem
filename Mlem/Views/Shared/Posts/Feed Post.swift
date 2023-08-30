@@ -45,7 +45,7 @@ struct FeedPost: View {
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
-    @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var postTracker: PostTrackerNew
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -198,12 +198,12 @@ struct FeedPost: View {
                 
                 // TODO: Eric refactor apiView to model
                 InteractionBarView(
-                    apiView: postModel,
+                    votes: postModel.votes,
+                    published: postModel.published,
+                    numReplies: postModel.numReplies,
+                    saved: postModel.saved,
                     accessibilityContext: "post",
                     widgets: layoutWidgetTracker.groups.post,
-                    displayedScore: postModel.votes.total,
-                    displayedVote: postModel.votes.myVote,
-                    displayedSaved: postModel.saved,
                     upvote: upvotePost,
                     downvote: downvotePost,
                     save: savePost,
@@ -279,55 +279,58 @@ struct FeedPost: View {
     }
 
     func deletePost() async {
-        do {
-            let response = try await apiClient.deletePost(id: postModel.post.id, shouldDelete: true)
-            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
-            postTracker.update(with: response)
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(error)
-        }
+        assertionFailure("implement me")
+//        do {
+//            let response = try await apiClient.deletePost(id: postModel.post.id, shouldDelete: true)
+//            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
+//            postTracker.update(with: response)
+//        } catch {
+//            hapticManager.play(haptic: .failure, priority: .high)
+//            errorHandler.handle(error)
+//        }
     }
 
     func blockUser() async {
-        do {
-            let response = try await apiClient.blockPerson(id: postModel.creator.id, shouldBlock: true)
-            if response.blocked {
-                postTracker.removeUserPosts(from: postModel.creator.id)
-                hapticManager.play(haptic: .violentSuccess, priority: .high)
-                await notifier.add(.success("Blocked \(postModel.creator.name)"))
-            }
-        } catch {
-            errorHandler.handle(
-                .init(
-                    message: "Unable to block \(postModel.creator.name)",
-                    style: .toast,
-                    underlyingError: error
-                )
-            )
-        }
+        assertionFailure("implement me")
+//        do {
+//            let response = try await apiClient.blockPerson(id: postModel.creator.id, shouldBlock: true)
+//            if response.blocked {
+//                postTracker.removeUserPosts(from: postModel.creator.id)
+//                hapticManager.play(haptic: .violentSuccess, priority: .high)
+//                await notifier.add(.success("Blocked \(postModel.creator.name)"))
+//            }
+//        } catch {
+//            errorHandler.handle(
+//                .init(
+//                    message: "Unable to block \(postModel.creator.name)",
+//                    style: .toast,
+//                    underlyingError: error
+//                )
+//            )
+//        }
     }
     
     func blockCommunity() async {
-        do {
-            let response = try await apiClient.blockCommunity(id: postModel.community.id, shouldBlock: true)
-            if response.blocked {
-                postTracker.removeCommunityPosts(from: postModel.community.id)
-                await notifier.add(.success("Blocked \(postModel.community.name)"))
-            }
-        } catch {
-            errorHandler.handle(
-                .init(
-                    message: "Unable to block \(postModel.community.name)",
-                    style: .toast,
-                    underlyingError: error
-                )
-            )
-        }
+        assertionFailure("implement me")
+//        do {
+//            let response = try await apiClient.blockCommunity(id: postModel.community.id, shouldBlock: true)
+//            if response.blocked {
+//                postTracker.removeCommunityPosts(from: postModel.community.id)
+//                await notifier.add(.success("Blocked \(postModel.community.name)"))
+//            }
+//        } catch {
+//            errorHandler.handle(
+//                .init(
+//                    message: "Unable to block \(postModel.community.name)",
+//                    style: .toast,
+//                    underlyingError: error
+//                )
+//            )
+//        }
     }
 
     func replyToPost() {
-        // TODO: ERIC re-enable
+        assertionFailure("implement me")
 //        editorTracker.openEditor(with: ConcreteEditorModel(
 //            post: postModel,
 //            operation: PostOperation.replyToPost
@@ -335,44 +338,48 @@ struct FeedPost: View {
     }
     
     func editPost() {
-        editorTracker.openEditor(with: PostEditorModel(
-            community: postModel.community,
-            postTracker: postTracker,
-            editPost: postModel.post
-        ))
+        assertionFailure("fix me")
+//        editorTracker.openEditor(with: PostEditorModel(
+//            community: postModel.community,
+//            postTracker: postTracker,
+//            editPost: postModel.post
+//        ))
     }
 
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
-        do {
-            hapticManager.play(haptic: .gentleSuccess, priority: .low)
-            let operation = postModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            let updatedPost = try await apiClient.ratePost(id: postModel.post.id, score: operation)
-            postTracker.update(with: updatedPost)
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(error)
-        }
+        print("voting on post")
+        await postTracker.voteOnPost(postModel: postModel, inputOp: inputOp)
+//        do {
+//            hapticManager.play(haptic: .gentleSuccess, priority: .low)
+//            let operation = postModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+//            let updatedPost = try await apiClient.ratePost(id: postModel.post.id, score: operation)
+//            postTracker.update(with: updatedPost)
+//        } catch {
+//            hapticManager.play(haptic: .failure, priority: .high)
+//            errorHandler.handle(error)
+//        }
     }
 
     func savePost() async {
-        guard dirty else {
-            // fake save
-            dirtySaved.toggle()
-            dirty = true
-            hapticManager.play(haptic: .success, priority: .high)
-            
-            do {
-                let updatedPost = try await apiClient.savePost(id: postModel.post.id, shouldSave: dirtySaved)
-                postTracker.update(with: updatedPost)
-            } catch {
-                hapticManager.play(haptic: .failure, priority: .high)
-                errorHandler.handle(error)
-            }
-            dirty = false
-            return
-        }
+        await postTracker.save(postId: postModel.id)
+//        guard dirty else {
+//            // fake save
+//            dirtySaved.toggle()
+//            dirty = true
+//            hapticManager.play(haptic: .success, priority: .high)
+//
+//            do {
+//                let updatedPost = try await apiClient.savePost(id: postModel.post.id, shouldSave: dirtySaved)
+//                postTracker.update(with: updatedPost)
+//            } catch {
+//                hapticManager.play(haptic: .failure, priority: .high)
+//                errorHandler.handle(error)
+//            }
+//            dirty = false
+//            return
+//        }
     }
     
     func reportPost() {

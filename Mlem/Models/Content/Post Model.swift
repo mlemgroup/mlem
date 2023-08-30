@@ -27,7 +27,7 @@ struct PostModel {
      Creates a PostModel from an APIPostView
      */
     init(from apiPostView: APIPostView) {
-        self.postId = apiPostView.id
+        self.postId = apiPostView.post.id
         self.post = apiPostView.post
         self.creator = apiPostView.creator
         self.community = apiPostView.community
@@ -36,6 +36,32 @@ struct PostModel {
         self.saved = apiPostView.saved
         self.read = apiPostView.read
         self.published = apiPostView.published
+    }
+    
+    /**
+     Creates a PostModel from another PostModel. Any provided field values will override values in postModel.
+     */
+    init(
+        from postModel: PostModel,
+        postId: Int? = nil,
+        post: APIPost? = nil,
+        creator: APIPerson? = nil,
+        community: APICommunity? = nil,
+        votes: VotesModel? = nil,
+        numReplies: Int? = nil,
+        saved: Bool? = nil,
+        read: Bool? = nil,
+        published: Date? = nil
+    ) {
+        self.postId = postId ?? postModel.postId
+        self.post = post ?? postModel.post
+        self.creator = creator ?? postModel.creator
+        self.community = community ?? postModel.community
+        self.votes = votes ?? postModel.votes
+        self.numReplies = numReplies ?? postModel.numReplies
+        self.saved = saved ?? postModel.saved
+        self.read = read ?? postModel.read
+        self.published = published ?? postModel.published
     }
     
     var postType: PostType {
