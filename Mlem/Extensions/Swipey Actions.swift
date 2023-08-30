@@ -266,33 +266,23 @@ struct SwipeyView: ViewModifier {
         }
         
         // From nil -> 0 -> 1 -> 2, etc, where nil is no action, and 0 is the primary action.
-#if DEBUG
-        print("pIndex \(previousIndex) -> cIndex: \(currentIndex)")
-#endif
+//        print("pIndex \(previousIndex) -> cIndex: \(currentIndex)")
         
         // Swiping towards to primary action.
         // Index values are always >= 0 for both leading/trailing edges.
         // Since nil indicates no action, we use -1 to represent nil instead (lol, yes).
         if (currentIndex ?? -1) < (previousIndex ?? -1) {
-#if DEBUG
-            print("mushyInfo.low\n")
-#endif
+//            print("mushyInfo.low\n")
             return (.mushyInfo, .low)
         } else {
             if previousIndex == nil {
-#if DEBUG
-                print("gentleInfo.high\n")
-#endif
+//                print("gentleInfo.high\n")
                 return (.gentleInfo, .high)
             } else if previousIndex == 1 {
-#if DEBUG
-                print("firmerInfo.high\n")
-#endif
+//                print("firmerInfo.high\n")
                 return (.firmerInfo, .high)
             } else {
-#if DEBUG
-                print("firmerInfo.high\n")
-#endif
+//                print("firmerInfo.high\n")
                 return (.firmerInfo, .high)
             }
         }
