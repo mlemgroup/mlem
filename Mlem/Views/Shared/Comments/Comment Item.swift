@@ -192,10 +192,8 @@ struct CommentItem: View {
         }
         .background(Color.systemBackground)
         .addSwipeyActions(
-            configuration: .init(
-                leadingActions: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
-                trailingActions: enableSwipeActions ? [saveSwipeAction, replySwipeAction, expandCollapseCommentAction] : []
-            )
+            leading: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
+            trailing: enableSwipeActions ? [saveSwipeAction, replySwipeAction, expandCollapseCommentAction] : []
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
 //        .sheet(isPresented: $isComposingReport) {

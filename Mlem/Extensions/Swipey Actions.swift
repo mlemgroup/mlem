@@ -49,20 +49,6 @@ struct SwipeyView: ViewModifier {
     
     let actions: SwipeConfiguration
     
-    init(
-        primaryLeadingAction: SwipeAction?,
-        secondaryLeadingAction: SwipeAction?,
-        primaryTrailingAction: SwipeAction?,
-        secondaryTrailingAction: SwipeAction?
-    ) {
-        self.init(
-            configuration: .init(
-                leadingActions: [primaryLeadingAction, secondaryLeadingAction].compactMap { $0 },
-                trailingActions: [primaryTrailingAction, secondaryTrailingAction].compactMap { $0 }
-            )
-        )
-    }
-    
     init(configuration: SwipeConfiguration) {
         self.actions = configuration
 
@@ -355,25 +341,16 @@ struct SwipeyView: ViewModifier {
 // swiftlint:enable function_body_length
 
 extension View {
-    @ViewBuilder
-    func addSwipeyActions(
-        primaryLeadingAction: SwipeAction?,
-        secondaryLeadingAction: SwipeAction?,
-        primaryTrailingAction: SwipeAction?,
-        secondaryTrailingAction: SwipeAction?
-    ) -> some View {
-        modifier(
-            SwipeyView(
-                primaryLeadingAction: primaryLeadingAction,
-                secondaryLeadingAction: secondaryLeadingAction,
-                primaryTrailingAction: primaryTrailingAction,
-                secondaryTrailingAction: secondaryTrailingAction
-            )
-        )
-    }
     
     @ViewBuilder
-    func addSwipeyActions(configuration: SwipeConfiguration) -> some View {
-        modifier(SwipeyView(configuration: configuration))
+    func addSwipeyActions(leading: [SwipeAction?], trailing: [SwipeAction?]) -> some View {
+        modifier(
+            SwipeyView(
+                configuration: .init(
+                    leadingActions: leading,
+                    trailingActions: trailing
+                )
+            )
+        )
     }
 }

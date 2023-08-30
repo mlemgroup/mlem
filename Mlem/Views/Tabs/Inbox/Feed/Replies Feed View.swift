@@ -80,10 +80,14 @@ extension InboxView {
                     }
                 }
                 .addSwipeyActions(
-                    primaryLeadingAction: upvoteCommentReplySwipeAction(commentReply: reply),
-                    secondaryLeadingAction: downvoteCommentReplySwipeAction(commentReply: reply),
-                    primaryTrailingAction: toggleCommentReplyReadSwipeAction(commentReply: reply),
-                    secondaryTrailingAction: replyToCommentReplySwipeAction(commentReply: reply)
+                    leading: [
+                        upvoteCommentReplySwipeAction(commentReply: reply),
+                        downvoteCommentReplySwipeAction(commentReply: reply)
+                    ],
+                    trailing: [
+                        toggleCommentReplyReadSwipeAction(commentReply: reply),
+                        replyToCommentReplySwipeAction(commentReply: reply)
+                    ]
                 )
         }
         .buttonStyle(EmptyButtonStyle())
