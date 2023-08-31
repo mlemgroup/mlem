@@ -9,28 +9,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Combine
 
-struct ErrorDetails {
-    var title: String?
-    var body: String?
-    var error: Error?
-    var icon: String?
-    var buttonText: String?
-    var refresh: (() async -> Bool)?
-    var autoRefresh: Bool = false
-    
-    static func mock() -> ErrorDetails {
-        func callback() async -> Bool {
-            try? await Task.sleep(nanoseconds: UInt64(1 * Double(NSEC_PER_SEC)))
-            return false
-        }
-        
-        enum MockError: Error {
-            case mock
-        }
-        return ErrorDetails(error: MockError.mock, refresh: callback)
-    }
-}
-
 struct ErrorView: View {
     @AppStorage("developerMode") var developerMode: Bool = false
     
