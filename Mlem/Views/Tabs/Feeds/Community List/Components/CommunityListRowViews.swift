@@ -113,7 +113,7 @@ struct CommuntiyFeedRowView: View {
     }
 
     private func isFavorited() -> Bool {
-        favoriteCommunitiesTracker.currentFavorites
+        favoriteCommunitiesTracker.favoritesForCurrentAccount
             .map { $0.community }
             .contains(community)
     }

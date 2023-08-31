@@ -99,9 +99,9 @@ struct GeneralSettingsView: View {
                 } label: {
                     Label("Delete Community Favorites", systemImage: "trash")
                         .foregroundColor(.red)
-                        .opacity(favoriteCommunitiesTracker.currentFavorites.isEmpty ? 0.6 : 1)
+                        .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
                 }
-                .disabled(favoriteCommunitiesTracker.currentFavorites.isEmpty)
+                .disabled(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty)
                 .confirmationDialog(
                     "Delete community favorites for this account?",
                     isPresented: $isShowingFavoritesDeletionConfirmation,

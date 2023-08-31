@@ -26,7 +26,7 @@ class CommunityListModel: ObservableObject {
     
     init() {
         favoriteCommunitiesTracker
-            .$currentFavorites
+            .$favoritesForCurrentAccount
             .dropFirst()
             .sink { [weak self] value in
                 self?.updateFavorites(value)
@@ -44,7 +44,7 @@ class CommunityListModel: ObservableObject {
                 .map { $0.community }
             
             // load our favourite communities
-            let favorites = favoriteCommunitiesTracker.currentFavorites.map { $0.community }
+            let favorites = favoriteCommunitiesTracker.favoritesForCurrentAccount.map { $0.community }
             
             // combine the two lists
             combine(subscriptions, favorites)

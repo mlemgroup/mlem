@@ -50,7 +50,7 @@ struct FavoritesSidebarEntry: SidebarEntry {
 
     @MainActor
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
-        favoriteCommunitiesTracker.currentFavorites
+        favoriteCommunitiesTracker.favoritesForCurrentAccount
             .map { $0.community }
             .contains(community)
     }

@@ -182,7 +182,7 @@ extension FeedView {
         }
         
         // favorite/unfavorite
-        if favoriteCommunitiesTracker.currentFavorites.contains(where: { $0.community.id == community.id }) {
+        if favoriteCommunitiesTracker.favoritesForCurrentAccount.contains(where: { $0.community.id == community.id }) {
             ret.append(MenuFunction(
                 text: "Unfavorite",
                 imageName: "star.slash",
