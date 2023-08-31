@@ -68,7 +68,7 @@ struct InstanceMetadataParser {
             throw ParsingError.requiredHeaderMissing
         }
         
-        let metadata = lines.compactMap { try? parse($0, using: indexes) }
+        let metadata = lines.compactMap { try? parseLine($0, using: indexes) }
         
         guard !metadata.isEmpty else {
             throw ParsingError.noInstancesFound
@@ -100,7 +100,7 @@ struct InstanceMetadataParser {
         return Int(index)
     }
     
-    private static func parse(_ line: Substring, using indexes: IndexContainer) throws -> InstanceMetadata? {
+    private static func parseLine(_ line: Substring, using indexes: IndexContainer) throws -> InstanceMetadata? {
         let fields = line.split(separator: ",").map { String($0) }
         
         // matches [instance name](instance url)
