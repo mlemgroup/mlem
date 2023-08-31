@@ -9,16 +9,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Combine
 
-struct ErrorDetails {
-    var title: String?
-    var body: String?
-    var error: Error?
-    var icon: String?
-    var buttonText: String?
-    var refresh: (() async -> Bool)?
-    var autoRefresh: Bool = false
-}
-
 struct ErrorView: View {
     @AppStorage("developerMode") var developerMode: Bool = false
     
@@ -72,10 +62,13 @@ struct ErrorView: View {
                     } label: {
                         HStack(spacing: 10) {
                             Text(errorDetails.buttonText ?? "Try again")
-                            ProgressView()
+                            if refreshInProgress {
+                                ProgressView()
+                            }
                         }
                     }
                     .buttonStyle(.bordered)
+                    .animation(.default, value: refreshInProgress)
                 }
             }
             
