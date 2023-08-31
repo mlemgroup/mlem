@@ -220,7 +220,6 @@ struct SwipeyView: ViewModifier {
         }
         
         guard let thresholdIndex else {
-            print(#function, "thresholdIndex == nil at this drag position")
             return nil
         }
         
@@ -266,23 +265,17 @@ struct SwipeyView: ViewModifier {
         }
         
         // From nil -> 0 -> 1 -> 2, etc, where nil is no action, and 0 is the primary action.
-//        print("pIndex \(previousIndex) -> cIndex: \(currentIndex)")
-        
         // Swiping towards to primary action.
         // Index values are always >= 0 for both leading/trailing edges.
         // Since nil indicates no action, we use -1 to represent nil instead (lol, yes).
         if (currentIndex ?? -1) < (previousIndex ?? -1) {
-//            print("mushyInfo.low\n")
             return (.mushyInfo, .low)
         } else {
             if previousIndex == nil {
-//                print("gentleInfo.high\n")
                 return (.gentleInfo, .high)
             } else if previousIndex == 1 {
-//                print("firmerInfo.high\n")
                 return (.firmerInfo, .high)
             } else {
-//                print("firmerInfo.high\n")
                 return (.firmerInfo, .high)
             }
         }
