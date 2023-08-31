@@ -54,6 +54,10 @@ class FavoriteCommunitiesTracker: ObservableObject {
         favoriteCommunities.removeAll(where: { $0.community.id == community.id && $0.forAccountID == account.id })
     }
     
+    func isFavorited(_ community: APICommunity) -> Bool {
+        return favoritesForCurrentAccount.contains(where: { $0.community == community })
+    }
+    
     func clearCurrentFavourites() {
         guard let account else {
             assertionFailure("Attempted to clear favorites while no account is present")
