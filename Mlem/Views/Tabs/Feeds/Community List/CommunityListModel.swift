@@ -44,7 +44,7 @@ class CommunityListModel: ObservableObject {
                 .map { $0.community }
             
             // load our favourite communities
-            let favorites = favoriteCommunitiesTracker.favoritesForCurrentAccount.map { $0.community }
+            let favorites = favoriteCommunitiesTracker.favoritesForCurrentAccount
             
             // combine the two lists
             combine(subscriptions, favorites)
@@ -211,8 +211,8 @@ class CommunityListModel: ObservableObject {
         }
     }
     
-    private func updateFavorites(_ favorites: [FavoriteCommunity]) {
-        combine(subscriptions, favorites.map { $0.community })
+    private func updateFavorites(_ favorites: [APICommunity]) {
+        combine(subscriptions, favorites)
     }
     
     private func combine(_ subscriptions: [APICommunity], _ favorites: [APICommunity]) {

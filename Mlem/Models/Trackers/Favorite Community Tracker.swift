@@ -12,7 +12,7 @@ import Foundation
 class FavoriteCommunitiesTracker: ObservableObject {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
-    @Published var favoritesForCurrentAccount: [FavoriteCommunity] = .init()
+    @Published var favoritesForCurrentAccount: [APICommunity] = .init()
     
     @Published private var favoriteCommunities: [FavoriteCommunity] = .init()
     private var account: SavedAccount?
@@ -32,7 +32,9 @@ class FavoriteCommunitiesTracker: ObservableObject {
     
     func configure(for account: SavedAccount) {
         self.account = account
-        favoritesForCurrentAccount = favoriteCommunities.filter { $0.forAccountID == account.id }
+        favoritesForCurrentAccount = favoriteCommunities
+            .filter { $0.forAccountID == account.id }
+            .map { $0.community }
     }
     
     func favorite(_ community: APICommunity) {
@@ -55,7 +57,7 @@ class FavoriteCommunitiesTracker: ObservableObject {
     }
     
     func isFavorited(_ community: APICommunity) -> Bool {
-        return favoritesForCurrentAccount.contains(where: { $0.community == community })
+        return favoritesForCurrentAccount.contains(community)
     }
     
     func clearCurrentFavourites() {
@@ -72,7 +74,9 @@ class FavoriteCommunitiesTracker: ObservableObject {
     
     private func favoritesDidChange(_ newValue: [FavoriteCommunity]) {
         if let account {
-            favoritesForCurrentAccount = newValue.filter { $0.forAccountID == account.id }
+            favoritesForCurrentAccount = newValue
+                .filter { $0.forAccountID == account.id }
+                .map { $0.community }
         }
         
         Task { [weak self] in
