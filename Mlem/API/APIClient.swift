@@ -217,7 +217,6 @@ extension APIClient {
     
     func ratePost(id: Int, score: ScoringOperation) async throws -> APIPostView {
         let request = try CreatePostLikeRequest(session: session, postId: id, score: score)
-        print(request)
         return try await perform(request: request).postView
     }
     

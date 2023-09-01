@@ -125,7 +125,7 @@ extension ExpandedPost {
     
     func replyToPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
-            post: post,
+            postModel: PostModel(from: post),
             commentTracker: commentTracker,
             operation: PostOperation.replyToPost
         ))
@@ -133,7 +133,7 @@ extension ExpandedPost {
     
     func reportPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
-            post: post,
+            postModel: PostModel(from: post),
             operation: PostOperation.reportPost
         ))
     }

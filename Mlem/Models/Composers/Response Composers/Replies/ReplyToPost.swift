@@ -16,29 +16,29 @@ struct ReplyToPost: ResponseEditorModel {
     let modalName: String = "New Comment"
     let prefillContents: String?
     let commentTracker: CommentTracker?
-    let post: APIPostView
+    let postModel: PostModel
     
     init(
         prefillContents: String? = nil,
         commentTracker: CommentTracker? = nil,
-        post: APIPostView
+        postModel: PostModel
     ) {
         self.prefillContents = prefillContents
         self.commentTracker = commentTracker
-        self.post = post
+        self.postModel = postModel
     }
     
-    var id: Int { post.id }
+    var id: Int { postModel.postId }
     
     func embeddedView() -> AnyView {
-        AnyView(LargePost(postView: post, layoutMode: .constant(.maximize))
+        AnyView(LargePost(postModel: postModel, layoutMode: .constant(.maximize))
             .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {
         let comment = try await commentRepository.postComment(
             content: responseContents,
-            postId: post.post.id
+            postId: postModel.postId
         )
         
         if let commentTracker {

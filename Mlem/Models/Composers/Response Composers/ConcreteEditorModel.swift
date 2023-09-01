@@ -51,14 +51,14 @@ extension ConcreteEditorModel {
      - .editPost: post composer editing the post.
      */
     init(
-        post: APIPostView,
+        postModel: PostModel,
         postTracker: PostTracker? = nil,
         commentTracker: CommentTracker? = nil,
         operation: PostOperation
     ) {
         switch operation {
-        case .replyToPost: self.editorModel = ReplyToPost(post: post)
-        case .reportPost: self.editorModel = ReportPost(post: post)
+        case .replyToPost: self.editorModel = ReplyToPost(postModel: postModel)
+        case .reportPost: self.editorModel = ReportPost(postModel: postModel)
         }
     }
 

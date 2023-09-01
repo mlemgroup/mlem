@@ -199,12 +199,12 @@ struct SwipeyView: ViewModifier {
         reset()
         
         // TEMP: need to delay the call being sent because otherwise the state update cancels the animation. This should be fixed with backend support for fakers, since the vote won't change and so the animation won't stop (hopefully). This delay matches the response field of the reset() animation.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        // DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             Task(priority: .userInitiated) {
                 let action = swipeAction(at: finalDragPosition)
                 await action?.action()
             }
-        }
+        // }
     }
     
     private func reset() {

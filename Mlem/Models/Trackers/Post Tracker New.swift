@@ -51,7 +51,7 @@ class PostTrackerNew: ObservableObject {
     
     // MARK: - Loading Methods
     
-    // TODO: ERIC handle loading properly
+    // TODO: ERIC handle loading state properly
     
     func loadNextPage(
         communityId: Int?,
@@ -186,46 +186,62 @@ class PostTrackerNew: ObservableObject {
      - Returns:
      */
     func voteOnPost(postModel: PostModel, inputOp: ScoringOperation) async {
+        guard !isLoading else { return }
+        defer { isLoading = false }
+        isLoading = true
+        
+        // ensure this is a valid post to vote on
         guard ids.contains(postModel.id) else {
             assertionFailure("Upvote called on post not present in tracker")
             hapticManager.play(haptic: .failure, priority: .high)
             return
         }
         
-        guard !isLoading else {
-            return
-        }
-        
-        defer { isLoading = false }
-        isLoading = true
-        
         // compute appropriate operation
         let operation = postModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-        
-        print(operation)
         
         // fake state
         let stateFakedPost = PostModel(from: postModel, votes: postModel.votes.applyScoringOperation(operation: operation))
         await update(with: stateFakedPost)
+        hapticManager.play(haptic: .gentleSuccess, priority: .low)
         
-        print("updated")
-        
+        // perform real upvote
         do {
             let response = try await postRepository.ratePost(postId: postModel.postId, operation: operation)
             await update(with: response)
-            
-            print("updated again")
         } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
         }
     }
     
-    func downvote(postId: ContentModelIdentifier) async {
-        assertionFailure("implement me")
-    }
-    
-    func save(postId: ContentModelIdentifier) async {
-        assertionFailure("implement me")
+    func toggleSave(postModel: PostModel) async {
+        guard !isLoading else { return }
+        defer { isLoading = false }
+        isLoading = true
+        
+        // ensure this is a valid post to save
+        guard ids.contains(postModel.id) else {
+            assertionFailure("Save called on post not present in tracker")
+            hapticManager.play(haptic: .failure, priority: .high)
+            return
+        }
+        
+        let shouldSave: Bool = !postModel.saved
+        
+        // fake state
+        let stateFakedPost = PostModel(from: postModel, saved: shouldSave)
+        await update(with: stateFakedPost)
+        hapticManager.play(haptic: .firmerInfo, priority: .high)
+        
+        // perform real save
+        do {
+            let response = try await postRepository.savePost(postId: postModel.postId, shouldSave: shouldSave)
+            await update(with: response)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
     }
     
     func delete(postId: ContentModelIdentifier) async {

@@ -225,57 +225,10 @@ struct FeedPost: View {
 
     func upvotePost() async {
         await voteOnPost(inputOp: .upvote)
-        
-        // don't do anything if currently awaiting a vote response
-//        guard dirty else {
-//            // fake downvote
-//            switch displayedVote {
-//            case .upvote:
-//                dirtyVote = .resetVote
-//                dirtyScore = displayedScore - 1
-//            case .resetVote:
-//                dirtyVote = .upvote
-//                dirtyScore = displayedScore + 1
-//            case .downvote:
-//                dirtyVote = .upvote
-//                dirtyScore = displayedScore + 2
-//            }
-//            dirty = true
-//
-//            // wait for vote
-//            await voteOnPost(inputOp: .upvote)
-//
-//            // unfake downvote
-//            dirty = false
-//            return
-//        }
     }
 
     func downvotePost() async {
         await voteOnPost(inputOp: .downvote)
-        // don't do anything if currently awaiting a vote response
-//        guard dirty else {
-//            // fake upvote
-//            switch displayedVote {
-//            case .upvote:
-//                dirtyVote = .downvote
-//                dirtyScore = displayedScore - 2
-//            case .resetVote:
-//                dirtyVote = .downvote
-//                dirtyScore = displayedScore - 1
-//            case .downvote:
-//                dirtyVote = .resetVote
-//                dirtyScore = displayedScore + 1
-//            }
-//            dirty = true
-//
-//            // wait for vote
-//            await voteOnPost(inputOp: .downvote)
-//
-//            // unfake upvote
-//            dirty = false
-//            return
-//        }
     }
 
     func deletePost() async {
@@ -330,11 +283,10 @@ struct FeedPost: View {
     }
 
     func replyToPost() {
-        assertionFailure("implement me")
-//        editorTracker.openEditor(with: ConcreteEditorModel(
-//            post: postModel,
-//            operation: PostOperation.replyToPost
-//        ))
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            postModel: postModel,
+            operation: PostOperation.replyToPost
+        ))
     }
     
     func editPost() {
@@ -349,37 +301,11 @@ struct FeedPost: View {
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
-        print("voting on post")
         await postTracker.voteOnPost(postModel: postModel, inputOp: inputOp)
-//        do {
-//            hapticManager.play(haptic: .gentleSuccess, priority: .low)
-//            let operation = postModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-//            let updatedPost = try await apiClient.ratePost(id: postModel.post.id, score: operation)
-//            postTracker.update(with: updatedPost)
-//        } catch {
-//            hapticManager.play(haptic: .failure, priority: .high)
-//            errorHandler.handle(error)
-//        }
     }
 
     func savePost() async {
-        await postTracker.save(postId: postModel.id)
-//        guard dirty else {
-//            // fake save
-//            dirtySaved.toggle()
-//            dirty = true
-//            hapticManager.play(haptic: .success, priority: .high)
-//
-//            do {
-//                let updatedPost = try await apiClient.savePost(id: postModel.post.id, shouldSave: dirtySaved)
-//                postTracker.update(with: updatedPost)
-//            } catch {
-//                hapticManager.play(haptic: .failure, priority: .high)
-//                errorHandler.handle(error)
-//            }
-//            dirty = false
-//            return
-//        }
+        await postTracker.toggleSave(postModel: postModel)
     }
     
     func reportPost() {
