@@ -11,21 +11,21 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var postTracker: PostTrackerNew
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL
     
-    let postModel: PostModel
+    let post: PostModel
     
-    var showNsfwFilter: Bool { (postModel.post.nsfw || postModel.community.nsfw) && shouldBlurNsfw }
+    var showNsfwFilter: Bool { (post.post.nsfw || post.community.nsfw) && shouldBlurNsfw }
     
     let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
     
     var body: some View {
         Group {
-            switch postModel.postType {
+            switch post.postType {
             case let .image(url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
                 CachedImage(
@@ -43,7 +43,7 @@ struct ThumbnailImageView: View {
                     contentMode: .fill
                 )
                 .onTapGesture {
-                    if let url = postModel.post.url {
+                    if let url = post.post.url {
                         openURL(url)
                         markPostAsRead()
                     }
@@ -74,16 +74,17 @@ struct ThumbnailImageView: View {
     }
     
     /**
-     Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
+     Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback
      */
     func markPostAsRead() {
         Task(priority: .userInitiated) {
-            do {
-                let readPost = try await postRepository.markRead(postId: postModel.postId, read: true)
-                postTracker.update(with: readPost)
-            } catch {
-                errorHandler.handle(error)
-            }
+            await postTracker.markRead(post: post)
+//            do {
+//                let readPost = try await postRepository.markRead(postId: post.postId, read: true)
+//                postTracker.update(with: readPost)
+//            } catch {
+//                errorHandler.handle(error)
+//            }
         }
     }
 }

@@ -11,15 +11,15 @@ struct PostEditorModel: Identifiable {
     var id: Int { community.id }
     
     let community: APICommunity
-    let postTracker: PostTracker
+    let postTracker: PostTrackerNew
     let editPost: APIPost?
-    var responseCallback: ((APIPostView) -> Void)?
+    var responseCallback: ((PostModel) -> Void)?
     
     init(
         community: APICommunity,
-        postTracker: PostTracker = PostTracker(shouldPerformMergeSorting: false, internetSpeed: .slow),
+        postTracker: PostTrackerNew = PostTrackerNew(shouldPerformMergeSorting: false, internetSpeed: .slow),
         editPost: APIPost? = nil,
-        responseCallback: ((APIPostView) -> Void)? = nil
+        responseCallback: ((PostModel) -> Void)? = nil
     ) {
         self.community = community
         self.postTracker = postTracker

@@ -26,7 +26,7 @@ struct UserView: View {
     @State var userID: Int
     @State var userDetails: APIPersonView?
 
-    @StateObject private var privatePostTracker: PostTracker
+    @StateObject private var privatePostTracker: PostTrackerNew
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
     @State private var showingCakeDay = false
@@ -48,7 +48,7 @@ struct UserView: View {
     @State private var isPresentingAccountSwitcher: Bool = false
 
     var body: some View {
-        if let errorDetails = errorDetails {
+        if let errorDetails {
             ErrorView(errorDetails)
                 .fancyTabScrollCompatible()
         } else {
@@ -198,14 +198,14 @@ struct UserView: View {
                 .sorted(by: { $0.comment.published > $1.comment.published })
                 .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
             
-            privatePostTracker.add(authoredContent.posts)
+            privatePostTracker.add(authoredContent.posts.map { PostModel(from: $0) })
             
             if let savedContent = savedContentData {
                 privateCommentTracker.add(savedContent.comments
                     .sorted(by: { $0.comment.published > $1.comment.published })
                     .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
                 
-                privatePostTracker.add(savedContent.posts)
+                privatePostTracker.add(savedContent.posts.map { PostModel(from: $0) })
             }
             
             userDetails = authoredContent.personView
@@ -234,7 +234,6 @@ struct UserView: View {
     private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
         try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
     }
-
 }
 
 // TODO: darknavi - Move these to a common area for reuse

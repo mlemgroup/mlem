@@ -20,14 +20,14 @@ struct HeadlinePost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
     // arguments
-    let postModel: PostModel
+    let post: PostModel
 
     // computed
     var usernameColor: Color {
-        if postModel.creator.admin {
+        if post.creator.admin {
             return .red
         }
-        if postModel.creator.botAccount {
+        if post.creator.botAccount {
             return .indigo
         }
 
@@ -38,31 +38,31 @@ struct HeadlinePost: View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack(alignment: .top, spacing: spacing) {
                 if shouldShowPostThumbnails, !thumbnailsOnRight {
-                    ThumbnailImageView(postModel: postModel)
+                    ThumbnailImageView(post: post)
                 }
 
                 VStack(spacing: 2) {
                     HStack(alignment: .top, spacing: 4) {
-                        if postModel.post.featuredLocal {
+                        if post.post.featuredLocal {
                             StickiedTag(tagType: .local)
-                        } else if postModel.post.featuredCommunity {
+                        } else if post.post.featuredCommunity {
                             StickiedTag(tagType: .community)
                         }
                         
-                        Text(postModel.post.name)
+                        Text(post.post.name)
                             .font(.headline)
                             .padding(.trailing)
-                            .foregroundColor(postModel.read ? .secondary : .primary)
+                            .foregroundColor(post.read ? .secondary : .primary)
                         
                         Spacer()
-                        if postModel.post.nsfw {
+                        if post.post.nsfw {
                             NSFWTag(compact: true)
                         }
                     }
                 }
                 
                 if shouldShowPostThumbnails, thumbnailsOnRight {
-                    ThumbnailImageView(postModel: postModel)
+                    ThumbnailImageView(post: post)
                 }
             }
         }

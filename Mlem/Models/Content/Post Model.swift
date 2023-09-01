@@ -39,10 +39,10 @@ struct PostModel {
     }
     
     /**
-     Creates a PostModel from another PostModel. Any provided field values will override values in postModel.
+     Creates a PostModel from another PostModel. Any provided field values will override values in post.
      */
     init(
-        from postModel: PostModel,
+        from other: PostModel,
         postId: Int? = nil,
         post: APIPost? = nil,
         creator: APIPerson? = nil,
@@ -53,15 +53,15 @@ struct PostModel {
         read: Bool? = nil,
         published: Date? = nil
     ) {
-        self.postId = postId ?? postModel.postId
-        self.post = post ?? postModel.post
-        self.creator = creator ?? postModel.creator
-        self.community = community ?? postModel.community
-        self.votes = votes ?? postModel.votes
-        self.numReplies = numReplies ?? postModel.numReplies
-        self.saved = saved ?? postModel.saved
-        self.read = read ?? postModel.read
-        self.published = published ?? postModel.published
+        self.postId = postId ?? other.postId
+        self.post = post ?? other.post
+        self.creator = creator ?? other.creator
+        self.community = community ?? other.community
+        self.votes = votes ?? other.votes
+        self.numReplies = numReplies ?? other.numReplies
+        self.saved = saved ?? other.saved
+        self.read = read ?? other.read
+        self.published = published ?? other.published
     }
     
     var postType: PostType {
@@ -102,7 +102,6 @@ extension PostModel: Hashable {
 
 // TODO: ERIC deprecate all this
 extension PostModel: APIContentViewProtocol {
-    
     var counts: BridgeContentAggregatesModel {
         BridgeContentAggregatesModel(from: self)
     }
@@ -130,11 +129,11 @@ struct BridgeContentAggregatesModel: APIContentAggregatesProtocol {
     
     var comments: Int
     
-    init(from postModel: PostModel) {
-        score = postModel.votes.total
-        upvotes = postModel.votes.upvotes
-        downvotes = postModel.votes.downvotes
-        published = postModel.published
-        comments = postModel.numReplies
+    init(from post: PostModel) {
+        self.score = post.votes.total
+        self.upvotes = post.votes.upvotes
+        self.downvotes = post.votes.downvotes
+        self.published = post.published
+        self.comments = post.numReplies
     }
 }

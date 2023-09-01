@@ -26,7 +26,7 @@ struct LazyLoadExpandedPost: View {
     var body: some View {
         Group {
             if let loadedPost = loadedPostView {
-                ExpandedPost(post: loadedPost, scrollTarget: scrollTarget)
+                ExpandedPost(post: PostModel(from: loadedPost), scrollTarget: scrollTarget)
                     .environmentObject(postTracker)
             } else {
                 progressView

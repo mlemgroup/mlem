@@ -20,7 +20,7 @@ class PostRepository {
         savedOnly: Bool? = nil,
         communityName: String? = nil
     ) async throws -> [PostModel] {
-        return try await apiClient.loadPosts(
+        try await apiClient.loadPosts(
             communityId: communityId,
             page: page,
             sort: sort,
@@ -31,8 +31,9 @@ class PostRepository {
         )
     }
     
-    func markRead(postId: Int, read: Bool) async throws -> APIPostView {
-        return try await apiClient.markPostAsRead(for: postId, read: read).postView
+    func markRead(postId: Int, read: Bool) async throws -> PostModel {
+        let response = try await apiClient.markPostAsRead(for: postId, read: read).postView
+        return PostModel(from: response)
     }
     
     /**
@@ -54,6 +55,11 @@ class PostRepository {
      */
     func savePost(postId: Int, shouldSave: Bool) async throws -> PostModel {
         let response = try await apiClient.savePost(id: postId, shouldSave: shouldSave)
+        return PostModel(from: response)
+    }
+    
+    func deletePost(postId: Int, shouldDelete: Bool) async throws -> PostModel {
+        let response = try await apiClient.deletePost(id: postId, shouldDelete: true)
         return PostModel(from: response)
     }
 }

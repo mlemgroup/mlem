@@ -5,10 +5,10 @@
 //  Created by Eric Andrews on 2023-08-26.
 //
 
+import Dependencies
 import Foundation
 import Nuke
 import SwiftUI
-import Dependencies
 
 /**
  New post tracker built on top of the PostRepository instead of calling the API directly. Because this thing works fundamentally differently from the old one, it can't conform to FeedTracker--that's going to need a revamp down the line once everything uses nice shiny middleware models, so for now we're going to have to put up with some ugly
@@ -70,7 +70,8 @@ class PostTrackerNew: ObservableObject {
                 page: page,
                 sort: sort,
                 type: type,
-                limit: internetSpeed.pageSize)
+                limit: internetSpeed.pageSize
+            )
             await add(newPosts, filtering: filtering)
             page += 1
         } while !newPosts.isEmpty && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
@@ -173,6 +174,41 @@ class PostTrackerNew: ObservableObject {
         items[index] = updatedPost
     }
     
+    @MainActor
+    func prepend(_ newPost: PostModel) {
+        guard ids.insert(newPost.id).inserted else { return }
+        items.prepend(newPost)
+    }
+    
+    @MainActor
+    func removeUserPosts(from personId: Int) {
+        filter {
+            $0.creator.id != personId
+        }
+    }
+    
+    /**
+     Takes a callback and filters out any entry that returns false
+     
+     Returns the number of entries removed
+     */
+    @discardableResult func filter(_ callback: (PostModel) -> Bool) -> Int {
+        var removedElements = 0
+        
+        items = items.filter {
+            let filterResult = callback($0)
+            
+            // Remove the ID from the IDs set as well
+            if !filterResult {
+                ids.remove($0.id)
+                removedElements += 1
+            }
+            return filterResult
+        }
+        
+        return removedElements
+    }
+    
     // MARK: - Interaction Methods
   
     /**
@@ -181,33 +217,33 @@ class PostTrackerNew: ObservableObject {
      Performs state faking--posts will updated immediately with the predicted state of the post post-update, then updated to match the source of truth when the call returns.
      
      - Parameters:
-        - postModel: PostModel of the post to vote
+        - post: PostModel of the post to vote
         - operation: ScoringOperation to apply to the given post
      - Returns:
      */
-    func voteOnPost(postModel: PostModel, inputOp: ScoringOperation) async {
+    func voteOnPost(post: PostModel, inputOp: ScoringOperation) async {
         guard !isLoading else { return }
         defer { isLoading = false }
         isLoading = true
         
         // ensure this is a valid post to vote on
-        guard ids.contains(postModel.id) else {
+        guard ids.contains(post.id) else {
             assertionFailure("Upvote called on post not present in tracker")
             hapticManager.play(haptic: .failure, priority: .high)
             return
         }
         
         // compute appropriate operation
-        let operation = postModel.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+        let operation = post.votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
         
         // fake state
-        let stateFakedPost = PostModel(from: postModel, votes: postModel.votes.applyScoringOperation(operation: operation))
+        let stateFakedPost = PostModel(from: post, votes: post.votes.applyScoringOperation(operation: operation))
         await update(with: stateFakedPost)
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         
         // perform real upvote
         do {
-            let response = try await postRepository.ratePost(postId: postModel.postId, operation: operation)
+            let response = try await postRepository.ratePost(postId: post.postId, operation: operation)
             await update(with: response)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -215,28 +251,28 @@ class PostTrackerNew: ObservableObject {
         }
     }
     
-    func toggleSave(postModel: PostModel) async {
+    func toggleSave(post: PostModel) async {
         guard !isLoading else { return }
         defer { isLoading = false }
         isLoading = true
         
         // ensure this is a valid post to save
-        guard ids.contains(postModel.id) else {
+        guard ids.contains(post.id) else {
             assertionFailure("Save called on post not present in tracker")
             hapticManager.play(haptic: .failure, priority: .high)
             return
         }
         
-        let shouldSave: Bool = !postModel.saved
+        let shouldSave: Bool = !post.saved
         
         // fake state
-        let stateFakedPost = PostModel(from: postModel, saved: shouldSave)
+        let stateFakedPost = PostModel(from: post, saved: shouldSave)
         await update(with: stateFakedPost)
         hapticManager.play(haptic: .firmerInfo, priority: .high)
         
         // perform real save
         do {
-            let response = try await postRepository.savePost(postId: postModel.postId, shouldSave: shouldSave)
+            let response = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
             await update(with: response)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -244,8 +280,57 @@ class PostTrackerNew: ObservableObject {
         }
     }
     
-    func delete(postId: ContentModelIdentifier) async {
-        assertionFailure("implement me")
+    /**
+     Marks the given post as read (does not toggle)
+     */
+    func markRead(post: PostModel) async {
+        guard !isLoading else { return }
+        defer { isLoading = false }
+        isLoading = true
+        
+        // ensure this is a valid post to mark read
+        guard ids.contains(post.id) else {
+            assertionFailure("markRead called on post not present in tracker")
+            hapticManager.play(haptic: .failure, priority: .high)
+            return
+        }
+        
+        // fake state
+        let stateFakedPost = PostModel(from: post, read: true)
+        await update(with: stateFakedPost)
+        
+        // perform real read
+        do {
+            let response = try await postRepository.markRead(postId: post.postId, read: true)
+            await update(with: response)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
+    func delete(post: PostModel) async {
+        guard !isLoading else { return }
+        defer { isLoading = false }
+        isLoading = true
+        
+        // ensure this is a valid post to delete
+        guard ids.contains(post.id) else {
+            assertionFailure("delete called on post not present in tracker")
+            hapticManager.play(haptic: .failure, priority: .high)
+            return
+        }
+        
+        // TODO: state faking (should wait until APIPost is replaced with PostContentModel)
+        
+        do {
+            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
+            let response = try await postRepository.deletePost(postId: post.postId, shouldDelete: true)
+            await update(with: response)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
     }
     
     // MARK: - Private Methods
@@ -253,24 +338,24 @@ class PostTrackerNew: ObservableObject {
     private func preloadImages(_ newPosts: [PostModel]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         var imageRequests: [ImageRequest] = []
-        for postModel in newPosts {
+        for post in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
-            if let communityAvatarLink = postModel.community.icon {
+            if let communityAvatarLink = post.community.icon {
                 imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
             
-            if let userAvatarLink = postModel.creator.avatar {
+            if let userAvatarLink = post.creator.avatar {
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
             }
             
-            switch postModel.postType {
+            switch post.postType {
             case let .image(url):
                 // images: only load the image
                 imageRequests.append(ImageRequest(url: url, priority: .high))
             case let .link(url):
                 // websites: load image and favicon
-                if let baseURL = postModel.post.url?.host,
+                if let baseURL = post.post.url?.host,
                    let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
                     imageRequests.append(ImageRequest(url: favIconURL))
                 }
@@ -287,6 +372,6 @@ class PostTrackerNew: ObservableObject {
      Filters a list of PostModels to only those PostModels not present in ids. Updates ids.
      */
     private func dedupedItems(from newItems: [PostModel]) -> [PostModel] {
-        return newItems.filter { ids.insert($0.id).inserted }
+        newItems.filter { ids.insert($0.id).inserted }
     }
 }

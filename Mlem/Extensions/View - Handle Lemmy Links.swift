@@ -46,7 +46,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 .environmentObject(CommunitySearchResultsTracker())
             }
             .navigationDestination(for: APIPostView.self) { post in
-                ExpandedPost(post: post)
+                ExpandedPost(post: PostModel(from: post))
                     .environmentObject(
                         PostTracker(shouldPerformMergeSorting: false, internetSpeed: internetSpeed, initialItems: [post])
                     )
@@ -56,7 +56,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 LazyLoadExpandedPost(post: post)
             }
             .navigationDestination(for: PostLinkWithContext.self) { post in
-                ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
+                ExpandedPost(post: PostModel(from: post.post), scrollTarget: post.scrollTarget)
                     .environmentObject(post.postTracker)
                     .environmentObject(appState)
             }

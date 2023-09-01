@@ -112,8 +112,8 @@ struct FeedView: View {
                 noPostsView()
             } else {
                 LazyVStack(spacing: 0) {
-                    ForEach(postTracker.items) { postModel in
-                        feedPost(for: postModel)
+                    ForEach(postTracker.items) { post in
+                        feedPost(for: post)
                     }
                     
                     EndOfFeedView(isLoading: isLoading)
@@ -142,22 +142,22 @@ struct FeedView: View {
     // MARK: Helper Views
     
     @ViewBuilder
-    private func feedPost(for postModel: PostModel) -> some View {
+    private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
             // TODO: reenable nav
-            // NavigationLink(value: PostLinkWithContext(post: postModel, postTracker: postTracker)) {
+            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
                 FeedPost(
-                    postModel: postModel,
+                    post: post,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: community == nil
                 )
-            // }
+            }
             Divider()
         }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
         .onAppear {
             // on appear, flag whether new content should be loaded. Actual loading is attached to the feed view itself so that it doesn't get cancelled by view derenders
-            if postTracker.shouldLoadContentAfter(after: postModel) {
+            if postTracker.shouldLoadContentAfter(after: post) {
                 shouldLoad = true
             }
         }

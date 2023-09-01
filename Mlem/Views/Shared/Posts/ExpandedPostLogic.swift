@@ -10,122 +10,22 @@ import Foundation
 extension ExpandedPost {
     // MARK: Interaction callbacks
     
-    // TODO: add flag
-    func markPostAsRead() async {
-        do {
-            post = try await postRepository.markRead(postId: post.post.id, read: true)
-            postTracker.update(with: post)
-        } catch {
-            errorHandler.handle(error)
-        }
-    }
-    
     func upvotePost() async {
-        // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake downvote
-            switch displayedVote {
-            case .upvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore - 1
-            case .resetVote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 1
-            case .downvote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 2
-            }
-            dirty = true
-
-            // wait for vote
-            await voteOnPost(inputOp: .upvote)
-
-            // unfake downvote
-            dirty = false
-            return
-        }
+        await postTracker.voteOnPost(post: post, inputOp: .upvote)
     }
 
     func downvotePost() async {
-        // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake upvote
-            switch displayedVote {
-            case .upvote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 2
-            case .resetVote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 1
-            case .downvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore + 1
-            }
-            dirty = true
-
-            // wait for vote
-            await voteOnPost(inputOp: .downvote)
-
-            // unfake upvote
-            dirty = false
-            return
-        }
+        await postTracker.voteOnPost(post: post, inputOp: .downvote)
     }
     
-    /// Votes on a post
-    /// - Parameter inputOp: The voting operation to perform
-    func voteOnPost(inputOp: ScoringOperation) async {
-        do {
-            hapticManager.play(haptic: .gentleSuccess, priority: .low)
-            let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            let updatedPost = try await apiClient.ratePost(id: post.post.id, score: operation)
-            Task { @MainActor in
-                self.post = updatedPost
-                postTracker.update(with: updatedPost)
-            }
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(error)
-        }
-    }
-    
-    /**
-     Sends a save request for the current post
-     */
     func savePost() async {
-        guard dirty else {
-            // fake save
-            dirtySaved.toggle()
-            dirty = true
-            hapticManager.play(haptic: .success, priority: .low)
-            
-            do {
-                let updatedPost = try await apiClient.savePost(id: post.post.id, shouldSave: dirtySaved)
-                postTracker.update(with: updatedPost)
-                post = updatedPost
-            } catch {
-                hapticManager.play(haptic: .failure, priority: .low)
-                errorHandler.handle(error)
-            }
-            dirty = false
-            return
-        }
-    }
-    
-    func deletePost() async {
-        do {
-            let response = try await apiClient.deletePost(id: post.post.id, shouldDelete: true)
-            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
-            postTracker.update(with: response)
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(error)
-        }
+        // TODO: Eric figure out how to propagate state fake into here
+        await postTracker.toggleSave(post: post)
     }
     
     func replyToPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
-            postModel: PostModel(from: post),
+            post: PostModel(from: post),
             commentTracker: commentTracker,
             operation: PostOperation.replyToPost
         ))
@@ -133,7 +33,7 @@ extension ExpandedPost {
     
     func reportPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
-            postModel: PostModel(from: post),
+            post: PostModel(from: post),
             operation: PostOperation.reportPost
         ))
     }
@@ -182,7 +82,7 @@ extension ExpandedPost {
             enabled: true
         ) {
             Task(priority: .userInitiated) {
-                await voteOnPost(inputOp: .upvote)
+                await upvotePost()
             }
         })
         
@@ -197,7 +97,7 @@ extension ExpandedPost {
             enabled: true
         ) {
             Task(priority: .userInitiated) {
-                await voteOnPost(inputOp: .downvote)
+                await downvotePost()
             }
         })
         
@@ -248,7 +148,7 @@ extension ExpandedPost {
                 enabled: !post.post.deleted
             ) {
                 Task(priority: .userInitiated) {
-                    await deletePost()
+                    await postTracker.delete(post: post)
                 }
             })
         }
@@ -320,7 +220,7 @@ extension ExpandedPost {
                 title: "Failed to refresh",
                 message: "Please try again",
                 underlyingError: error
-                )
+            )
             )
         }
     }
@@ -345,7 +245,7 @@ extension ExpandedPost {
         }
     }
     
-    func updatePost(newPost: APIPostView) {
+    func updatePost(newPost: PostModel) {
         post = newPost
     }
 }

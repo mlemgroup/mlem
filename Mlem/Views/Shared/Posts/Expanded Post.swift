@@ -53,8 +53,8 @@ struct ExpandedPost: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
-    @EnvironmentObject var postTracker: PostTracker
-    @State var post: APIPostView
+    @EnvironmentObject var postTracker: PostTrackerNew
+    @State var post: PostModel
     
     @State var commentErrorDetails: ErrorDetails?
     
@@ -86,7 +86,7 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
             .task { await loadComments() }
-            .task { await markPostAsRead() }
+            .task { await postTracker.markRead(post: post) }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {
@@ -124,7 +124,7 @@ struct ExpandedPost: View {
                     }
                 }
                 .onChange(of: scrollTarget) { target in
-                    if let target = target {
+                    if let target {
                         scrollTarget = nil
                         withAnimation {
                             scrollProxy.scrollTo(target, anchor: .top)
@@ -137,12 +137,13 @@ struct ExpandedPost: View {
             }
         }
         .overlay {
-            if showCommentJumpButton && commentTracker.comments.count > 1 {
+            if showCommentJumpButton, commentTracker.comments.count > 1 {
                 JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
                     .frame(
                         maxWidth: .infinity,
                         maxHeight: .infinity,
-                        alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading)
+                        alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading
+                    )
             }
         }
         .fancyTabScrollCompatible()
@@ -218,7 +219,7 @@ struct ExpandedPost: View {
                 }
                 
                 LargePost(
-                    postView: post,
+                    post: post,
                     layoutMode: $postLayoutMode
                 )
                 .onTapGesture {
@@ -301,9 +302,7 @@ struct ExpandedPost: View {
                 ) { [comment.commentView.comment.id: $0] }
                 /// [2023.08] Manually set zIndex so child comments don't overlap parent comments on collapse/expand animations. `Int.max` doesn't work, which is why this is set to just some big value.
                 .zIndex(.maxZIndex - Double(comment.depth))
-
             }
-            
         }
     }
     

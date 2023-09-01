@@ -14,7 +14,7 @@ struct PostComposerView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let postTracker: PostTracker
+    let postTracker: PostTrackerNew
     let editModel: PostEditorModel
     
     @State var postTitle: String
@@ -52,10 +52,10 @@ struct PostComposerView: View {
                 hapticManager.play(haptic: .success, priority: .high)
                 
                 await MainActor.run {
-                    postTracker.update(with: editedPost.postView)
+                    postTracker.update(with: PostModel(from: editedPost.postView))
                     
                     if let responseCallback = editModel.responseCallback {
-                        responseCallback(editedPost.postView)
+                        responseCallback(PostModel(from: editedPost.postView))
                     }
                 }
                 
@@ -72,7 +72,7 @@ struct PostComposerView: View {
                 
                 await MainActor.run {
                     withAnimation {
-                        postTracker.prepend(response.postView)
+                        postTracker.prepend(PostModel(from: response.postView))
                     }
                 }
             }

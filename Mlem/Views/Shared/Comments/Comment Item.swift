@@ -57,7 +57,7 @@ struct CommentItem: View {
     // MARK: Parameters
 
     @ObservedObject var hierarchicalComment: HierarchicalComment
-    let postContext: APIPostView? // TODO: redundant with comment.post?
+    let postContext: PostModel? // TODO: redundant with comment.post?
     let indentBehaviour: IndentBehaviour
     var depth: Int { hierarchicalComment.depth < 0 ? 0 : hierarchicalComment.depth }
     let showPostContext: Bool
@@ -85,7 +85,7 @@ struct CommentItem: View {
     // init needed to get dirty and clean aligned
     init(
         hierarchicalComment: HierarchicalComment,
-        postContext: APIPostView?,
+        postContext: PostModel?,
         indentBehaviour: IndentBehaviour = .standard,
         showPostContext: Bool,
         showCommentCreator: Bool,

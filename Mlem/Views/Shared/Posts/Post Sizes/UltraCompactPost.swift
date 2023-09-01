@@ -32,22 +32,22 @@ struct UltraCompactPost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
     
     // arguments
-    let postModel: PostModel
+    let post: PostModel
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
     // computed
-    var showReadCheck: Bool { postModel.read && diffWithoutColor && readMarkStyle == .check }
+    var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
 
     @available(*, deprecated, message: "Migrate to PostModel")
     init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
-        self.postModel = PostModel(from: postView)
+        self.post = PostModel(from: postView)
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
     }
     
-    init(postModel: PostModel, showCommunity: Bool, menuFunctions: [MenuFunction]) {
-        self.postModel = postModel
+    init(post: PostModel, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+        self.post = post
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
     }
@@ -55,17 +55,17 @@ struct UltraCompactPost: View {
     var body: some View {
         HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
             if shouldShowPostThumbnails, !thumbnailsOnRight {
-                ThumbnailImageView(postModel: postModel)
+                ThumbnailImageView(post: post)
             }
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
                     Group {
                         if showCommunity {
-                            CommunityLinkView(community: postModel.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                            CommunityLinkView(community: post.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                         } else {
                             UserProfileLink(
-                                user: postModel.creator,
+                                user: post.creator,
                                 serverInstanceLocation: .trailing
                             )
                         }
@@ -80,15 +80,15 @@ struct UltraCompactPost: View {
                 }
                 .padding(.bottom, -2)
                 
-                Text(postModel.post.name)
+                Text(post.post.name)
                     .font(.subheadline)
-                    .foregroundColor(postModel.read ? .secondary : .primary)
+                    .foregroundColor(post.read ? .secondary : .primary)
     
                 compactInfo
             }
             
             if shouldShowPostThumbnails, thumbnailsOnRight {
-                ThumbnailImageView(postModel: postModel)
+                ThumbnailImageView(post: post)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -98,29 +98,29 @@ struct UltraCompactPost: View {
     @ViewBuilder
     private var compactInfo: some View {
         HStack(spacing: 8) {
-            if postModel.post.featuredCommunity {
-                if postModel.post.featuredLocal {
+            if post.post.featuredCommunity {
+                if post.post.featuredLocal {
                     StickiedTag(tagType: .local, compact: true)
-                } else if postModel.post.featuredCommunity {
+                } else if post.post.featuredCommunity {
                     StickiedTag(tagType: .community, compact: true)
                 }
             }
             
-            if postModel.post.nsfw || postModel.community.nsfw {
+            if post.post.nsfw || post.community.nsfw {
                 NSFWTag(compact: true)
             }
             
             InfoStackView(
                 votes: DetailedVotes(
-                    score: postModel.votes.total,
-                    upvotes: postModel.votes.upvotes,
-                    downvotes: postModel.votes.downvotes,
-                    myVote: postModel.votes.myVote ?? .resetVote,
+                    score: post.votes.total,
+                    upvotes: post.votes.upvotes,
+                    downvotes: post.votes.downvotes,
+                    myVote: post.votes.myVote,
                     showDownvotes: showDownvotesSeparately
                 ),
-                published: postModel.published,
-                commentCount: postModel.numReplies,
-                saved: postModel.saved,
+                published: post.published,
+                commentCount: post.numReplies,
+                saved: post.saved,
                 alignment: .center
             )
         }
