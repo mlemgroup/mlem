@@ -32,6 +32,12 @@ struct ScrubberSlider: View {
     }
 }
 
-#Preview {
-    ScrubberSlider(mediaState: MediaState())
+#if DEBUG
+struct ScrubberSliderPreview: PreviewProvider {
+    @StateObject static var mediaState = MediaState()
+    
+    static var previews: some View {
+        ScrubberSlider(mediaState: MediaState())
+    }
 }
+#endif

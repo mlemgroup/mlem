@@ -24,6 +24,11 @@ Try scrabbing in this label
     }
 }
 
-#Preview {
-    ScrubberHint()
+#if DEBUG
+struct ScrubberHintPreview: PreviewProvider {
+    
+    static var previews: some View {
+        ScrubberHint()
+    }
 }
+#endif
