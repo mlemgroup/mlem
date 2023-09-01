@@ -17,7 +17,7 @@ struct WebsiteIconComplex: View {
 
     let post: APIPost
     var onTapActions: (() -> Void)?
-    
+
     init(
         post: APIPost,
         onTapActions: (() -> Void)? = nil
@@ -40,7 +40,7 @@ struct WebsiteIconComplex: View {
 
         return imageURL
     }
-    
+
     var linkLabel: String {
         if let embedTitle = post.embedTitle {
             return embedTitle
@@ -48,7 +48,7 @@ struct WebsiteIconComplex: View {
             return post.name
         }
     }
-    
+
     var linkHost: String {
         if let url = post.url {
             return url.host ?? "some website"
@@ -56,15 +56,22 @@ struct WebsiteIconComplex: View {
         return "some website"
     }
 
+    func getPreviewURL() -> URL? {
+        if let thumbnailURL = post.thumbnailUrl { return thumbnailURL }
+        if let video = post.embedVideoUrl, let videoURL = URL(string: video) { return videoURL }
+        if let url = post.url, url.isImage { return url }
+        return nil
+    }
+
     var body: some View {
         VStack(spacing: 0) {
-            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
-                CachedImage(url: thumbnailURL, shouldExpand: false)
-                    .frame(maxHeight: 400)
-                    .applyNsfwOverlay(post.nsfw)
-                    .clipped()
+            if shouldShowWebsitePreviews, let thumbnailURL = getPreviewURL() {
+                CachedImage(url: thumbnailURL)
+                     .frame(maxHeight: 400)
+                     .applyNsfwOverlay(post.nsfw)
+                     .clipped()
             }
-            
+
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
                 if shouldShowWebsiteHost {
                     HStack {
@@ -73,17 +80,17 @@ struct WebsiteIconComplex: View {
                                 url: faviconURL,
                                 shouldExpand: false,
                                 fixedSize: CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize),
-                                imageNotFound: { AnyView(Image(systemName: "globe")) }
+                                imageNotFound: { _ in AnyView(Image(systemName: "globe")) }
                             )
                         }
-                        
+
                         Text(linkHost)
                             .lineLimit(1)
                             .font(.caption)
                             .foregroundColor(.blue)
                     }
                 }
-                
+
                 Text(linkLabel)
                     .font(.subheadline)
                     .fontWeight(.semibold)

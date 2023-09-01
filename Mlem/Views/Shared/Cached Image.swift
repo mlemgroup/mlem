@@ -8,35 +8,34 @@
 import Foundation
 import MarkdownUI
 import Nuke
-import NukeUI
-import QuickLook
 import SwiftUI
 
-struct CachedImage: View {
+struct CachedImage: View, FullScreenActualContent {
+
     let url: URL?
     let shouldExpand: Bool
-    
+
     // state vars to track the current image size and whether that size needs to be recomputed when the image actually loads. Combined with the image size cache, this produces good scrolling behavior except in the case where we scroll past an image and it derenders before it ever gets a chance to load, in which case that image will cause a slight hiccup on the way back up. That's kind of an unsolvable problem, since we can't know the size before we load the image at all, but that's fine because it shouldn't really happen during normal use. If we really want to guarantee smooth feed scrolling we can squish any image with no cached size into a square, but that feels like squishing a lot of images for the sake of a fringe case.
     @State var size: CGSize
     @State var shouldRecomputeSize: Bool
     @State private var quickLookUrl: URL?
-    
+
     var imageNotFound: () -> AnyView
-    
+
     let maxHeight: CGFloat
     let screenWidth: CGFloat
     let contentMode: ContentMode
     let cornerRadius: CGFloat
-    
+
     // Optional callback triggered when the quicklook preview is dismissed
     let dismissCallback: (() -> Void)?
-    
+
     init(
         url: URL?,
         shouldExpand: Bool = true,
         maxHeight: CGFloat = .infinity,
         fixedSize: CGSize? = nil,
-        imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
+        imageNotFound: @escaping (_: Error?) -> AnyView = imageNotFoundDefault,
         contentMode: ContentMode = .fit,
         dismissCallback: (() -> Void)? = nil,
         cornerRadius: CGFloat? = nil
@@ -48,9 +47,9 @@ struct CachedImage: View {
         self.contentMode = contentMode
         self.dismissCallback = dismissCallback
         self.cornerRadius = cornerRadius ?? 0
-        
+
         self.screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
-        
+
         // determine the size of the image
         if let fixedSize {
             // if we're given a size, just use it and to hell with the cache
@@ -75,101 +74,74 @@ struct CachedImage: View {
             self._shouldRecomputeSize = State(initialValue: true)
         }
     }
-    
+
+    var fullscreenContent: URL? { url }
+
     var body: some View {
-        LazyImage(url: url) { state in
-            if let imageContainer = state.imageContainer {
-                let imageView = Image(uiImage: imageContainer.image)
-                    .resizable()
-                    .aspectRatio(contentMode: contentMode)
-                    .cornerRadius(cornerRadius)
-                    .frame(idealWidth: size.width, maxHeight: size.height)
-                    .clipped()
-                    .allowsHitTesting(false)
-                    .overlay(alignment: .top) {
-                        // weeps in janky hack but this lets us tap the image only in the area we want
-                        Rectangle()
-                            .frame(maxHeight: size.height)
-                            .opacity(0.00000000001)
-                    }
-                    .onAppear {
-                        // if the image appears and its size isn't cached, compute its size and cache it
-                        if shouldRecomputeSize {
-                            let ratio = screenWidth / imageContainer.image.size.width
-                            size = CGSize(
-                                width: screenWidth,
-                                height: min(maxHeight, imageContainer.image.size.height * ratio)
-                            )
-                            shouldRecomputeSize = false
-                            cacheImageSize()
-                        }
-                    }
-                if shouldExpand {
-                    imageView
-                        .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                do {
-                                    let (data, _) = try await ImagePipeline.shared.data(for: url!)
-                                    let fileType = url?.pathExtension ?? "png"
-                                    let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
-                                    if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
-                                        print("file exsists")
-                                        try FileManager.default.removeItem(at: quicklook)
-                                    }
-                                    try data.write(to: quicklook)
-                                    await MainActor.run {
-                                        quickLookUrl = quicklook
-                                    }
-                                } catch {
-                                    print(String(describing: error))
-                                }
-                            }
-                        }
-                        .onChange(of: quickLookUrl) { url in
-                            if url == nil, let dismissCallback {
-                                dismissCallback()
-                            }
-                        }
-                        .fullScreenCover(item: $quickLookUrl) { url in
-                            QuickLookView(urls: [url])
-                        }
-                } else {
-                    imageView
-                }
-            } else if state.error != nil {
-                // Indicates an error
-                imageNotFound()
-                    .frame(idealWidth: size.width, maxHeight: size.height)
-                    .background(Color(uiColor: .systemGray4))
-            } else {
-                ProgressView() // Acts as a placeholder
-                    .frame(idealWidth: size.width, maxHeight: size.height)
+        CoreMediaViewer(url: url) { error in
+            // Indicates an error
+            imageNotFound(error)
+                .frame(width: size.width, height: size.height)
+                .background(Color(uiColor: .systemGray4))
+        } onImageLoad: { _, imageSize in
+            // if the image appears and its size isn't cached, compute its size and cache it
+            //            shareableImage = imageContainer.image
+            if shouldRecomputeSize {
+                let ratio = screenWidth / imageSize.width
+                size = CGSize(width: screenWidth,
+                              height: imageSize.height * ratio)
+                shouldRecomputeSize = false
+                cacheImageSize()
             }
         }
-        .processors([
-            .resize(
-                size: size,
-                contentMode: contentMode == .fill ? .aspectFill : .aspectFit
-            )
-        ])
-        .frame(idealWidth: size.width, maxHeight: size.height)
+        .cornerRadius(cornerRadius)
+        .frame(width: size.width, height: size.height)
+        .fixedSize()
+        .clipped()
+        .allowsHitTesting(false)
+        .overlay(alignment: .top) {
+            // weeps in janky hack but this lets us tap the image only in the area we want
+            Rectangle()
+                .frame(maxHeight: size.height)
+                .opacity(0.00000000001)
+        }
     }
-    
-    static func imageNotFoundDefault() -> AnyView {
-        AnyView(Image(systemName: "questionmark.square.dashed")
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: AppConstants.thumbnailSize, maxHeight: AppConstants.thumbnailSize)
-            .padding(AppConstants.postAndCommentSpacing)
-            .background(Color(uiColor: .systemGray4))
-            .foregroundColor(.secondary)
-        )
-    }
-    
-    /// Caches the current value of size
-    private func cacheImageSize() {
-        if let url {
-            AppConstants.imageSizeCache.setObject(ImageSize(size: size), forKey: NSString(string: url.description))
+    static func imageNotFoundDefault(_ err: Error? = nil) -> AnyView {
+     AnyView(
+        VStack {
+            Image(systemName: "questionmark.square.dashed")
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: AppConstants.thumbnailSize, maxHeight: AppConstants.thumbnailSize)
+            if let err = err {
+                Text(err.localizedDescription)
+            }
+        }
+
+         .padding(AppConstants.postAndCommentSpacing)
+         .background(Color(uiColor: .systemGray4))
+         .foregroundColor(.secondary)
+     )
+   }
+
+   /**
+    Caches the current value of size
+    */
+   private func cacheImageSize() {
+     if let url {
+       AppConstants.imageSizeCache.setObject(ImageSize(size: size), forKey: NSString(string: url.description))
+     }
+   }
+}
+
+#if DEBUG
+struct CachedImagePreview: PreviewProvider {
+
+    static var previews: some View {
+        ForEach(testImageURLs) { testImageUrl in
+            CachedImage(url: testImageUrl)
+                .previewDisplayName(testImageUrl.pathExtension.capitalized)
         }
     }
 }
+#endif

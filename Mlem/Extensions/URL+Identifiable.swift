@@ -11,6 +11,6 @@ extension URL: Identifiable {
     public var id: URL { absoluteURL }
 
     var isImage: Bool {
-        pathExtension.lowercased().contains(["jpg", "jpeg", "png", "webp"])
+        pathExtension.lowercased().contains(["jpg", "jpeg", "png", "webp", "gif", "mp4"])
     }
 }

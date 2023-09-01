@@ -33,18 +33,18 @@ struct ExpandedPost: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     @Dependency(\.postRepository) var postRepository
-    
+
     // appstorage
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
-    
+
     @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
     @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
-    
+
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
 
@@ -55,11 +55,11 @@ struct ExpandedPost: View {
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: PostTracker
     @State var post: PostModel
-    
+
     @State var commentErrorDetails: ErrorDetails?
-    
+
     @State var isLoading: Bool = false
-    
+
     /// When this is set, the view scrolls to the comment with the given ID, or to the top if set to 0.
     @State var scrollTarget: Int?
     /// The id of the top visible comment, or 0 if the post is visible.
@@ -68,7 +68,7 @@ struct ExpandedPost: View {
     @State private var sortSelection = 0
     @State var commentSortingType: CommentSortType = .appStorageValue()
     @State private var postLayoutMode: LargePost.LayoutMode = .maximize
-    
+
     var body: some View {
         contentView
             .environmentObject(commentTracker)
@@ -85,7 +85,7 @@ struct ExpandedPost: View {
                 }
             }
     }
-    
+
     private var contentView: some View {
         GeometryReader { proxy in
             ScrollViewReader { (scrollProxy: ScrollViewProxy) in
@@ -97,10 +97,10 @@ struct ExpandedPost: View {
                                 key: AnchorsKey.self,
                                 value: .center
                             ) { [0: $0] }
-                        
+
                         Divider()
                             .background(.black)
-                        
+
                         if commentTracker.comments.isEmpty {
                             noCommentsView()
                         } else {
@@ -140,7 +140,7 @@ struct ExpandedPost: View {
         .fancyTabScrollCompatible()
         .navigationBarColor()
     }
-    
+
     func scrollToNextComment() {
         if let topVisibleId = topVisibleCommentId {
             if topVisibleId == 0 {
@@ -156,14 +156,14 @@ struct ExpandedPost: View {
             }
         }
     }
-    
+
     func scrollToPreviousComment() {
         if let topVisibleId = topVisibleCommentId {
             if topVisibleId == commentTracker.topLevelIDs.first {
                 scrollTarget = 0
                 return
             }
-            
+
             if let topLevelId = commentTracker.topLevelIDMap[topVisibleId] {
                 if let index = commentTracker.topLevelIDs.firstIndex(of: topLevelId) {
                     if index - 1 >= 0 {
@@ -173,7 +173,7 @@ struct ExpandedPost: View {
             }
         }
     }
-    
+
     var userServerInstanceLocation: ServerInstanceLocation {
         if !shouldShowUserServerInPost {
             return .disabled
@@ -181,7 +181,7 @@ struct ExpandedPost: View {
             return .bottom
         }
     }
-    
+
     var communityServerInstanceLocation: ServerInstanceLocation {
         if !shouldShowCommunityServerInPost {
             return .disabled
@@ -189,7 +189,7 @@ struct ExpandedPost: View {
             return .bottom
         }
     }
-    
+
     // MARK: Subviews
 
     /// Displays the post itself, plus a little divider to keep it visually distinct from comments
@@ -201,12 +201,12 @@ struct ExpandedPost: View {
                         community: post.community,
                         serverInstanceLocation: communityServerInstanceLocation
                     )
-                    
+
                     Spacer()
-                    
+
                     EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                 }
-                
+
                 LargePost(
                     post: post,
                     layoutMode: $postLayoutMode
@@ -216,7 +216,7 @@ struct ExpandedPost: View {
                         postLayoutMode = postLayoutMode == .maximize ? .minimize : .maximize
                     }
                 }
-                
+
                 UserProfileLink(
                     user: post.creator,
                     serverInstanceLocation: userServerInstanceLocation
@@ -224,30 +224,50 @@ struct ExpandedPost: View {
             }
             .padding(.top, AppConstants.postAndCommentSpacing)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            
-            InteractionBarView(
-                votes: post.votes,
-                published: post.published,
-                numReplies: post.numReplies,
-                saved: post.saved,
-                accessibilityContext: "post",
-                widgets: layoutWidgetTracker.groups.post,
-                upvote: upvotePost,
-                downvote: downvotePost,
-                save: savePost,
-                reply: replyToPost,
-                share: {
-                    if let url = URL(string: post.post.apId) {
-                        showShareSheet(URLtoShare: url)
-                    }
-                },
-                shouldShowScore: shouldShowScoreInPostBar,
-                showDownvotesSeparately: showPostDownvotesSeparately,
-                shouldShowTime: shouldShowTimeInPostBar,
-                shouldShowSaved: shouldShowSavedInPostBar,
-                shouldShowReplies: shouldShowRepliesInPostBar
+
+            interactionBar
+        }.fullScreenLabel {
+            VStack(alignment: .leading) {
+                Text(post.post.name)
+                    .font(.headline)
+                interactionBar
+            }
+        }
+        .onFullScreenDoubleTap {
+            UpvoteView(
+                upvoteFuncion: upvotePost,
+                completedImage:
+                    post.myVote == .upvote ?
+                        Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left.slash") :
+                        Image(systemName: "arrow.up")
             )
         }
+    }
+
+    @ViewBuilder
+    var interactionBar: some View {
+        InteractionBarView(
+            votes: post.votes,
+            published: post.published,
+            numReplies: post.numReplies,
+            saved: post.saved,
+            accessibilityContext: "post",
+            widgets: layoutWidgetTracker.groups.post,
+            upvote: upvotePost,
+            downvote: downvotePost,
+            save: savePost,
+            reply: replyToPost,
+            share: {
+                if let url = URL(string: post.post.apId) {
+                    showShareSheet(URLtoShare: url)
+                }
+            },
+            shouldShowScore: shouldShowScoreInPostBar,
+            showDownvotesSeparately: showPostDownvotesSeparately,
+            shouldShowTime: shouldShowTimeInPostBar,
+            shouldShowSaved: shouldShowSavedInPostBar,
+            shouldShowReplies: shouldShowRepliesInPostBar
+        )
     }
 
     /// Displays a "no comments" message
@@ -290,7 +310,7 @@ struct ExpandedPost: View {
             }
         }
     }
-    
+
     private func topCommentRow(of anchors: AnchorsKey.Value, in proxy: GeometryProxy) -> Int? {
         var yBest = CGFloat.infinity
         var answer: Int?
@@ -302,7 +322,7 @@ struct ExpandedPost: View {
         }
         return answer
     }
-    
+
     private var toolbarMenu: some View {
         Menu {
             ForEach(CommentSortType.allCases, id: \.self) { type in

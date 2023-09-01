@@ -12,7 +12,7 @@ import SwiftUI
 struct LargePost: View {
     enum LayoutMode {
         case minimize, preferredSize, maximize
-        
+
         func getMaxHeight(_ limitHeight: Bool = false) -> CGFloat {
             switch self {
             case .maximize:
@@ -23,7 +23,7 @@ struct LargePost: View {
                 return 44
             }
         }
-        
+
         var lineLimit: Int? {
             switch self {
             case .maximize:
@@ -35,30 +35,29 @@ struct LargePost: View {
             }
         }
     }
-    
+
     // constants
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
     @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
-    
+
     // global state
     @EnvironmentObject var postTracker: PostTracker
-    @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
 
     // parameters
     let post: PostModel
-    
+
     @Binding var layoutMode: LayoutMode
     private var isExpanded: Bool {
         layoutMode == .maximize
     }
-    
+
     // computed
     var titleColor: Color { !isExpanded && post.read ? .secondary : .primary }
-    
+
     @ViewBuilder
     private var postBodyBackground: some View {
         if layoutMode == .minimize {
@@ -67,7 +66,7 @@ struct LargePost: View {
             Color.clear
         }
     }
-    
+
     private var postBodyInsets: EdgeInsets {
         if layoutMode == .minimize {
             return .init(top: 12, leading: 12, bottom: 12, trailing: 12)
@@ -75,7 +74,7 @@ struct LargePost: View {
             return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
     }
-    
+
     private func postBodyText(_ bodyText: String, layoutMode: LayoutMode) -> String {
         switch layoutMode {
         case .maximize:
@@ -91,7 +90,7 @@ struct LargePost: View {
             return sublines
         }
     }
-    
+
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         post: PostModel,
@@ -103,7 +102,7 @@ struct LargePost: View {
 
     @State private var scaleX: CGFloat = 1
     @State private var scaleY: CGFloat = 1
-        
+
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
             postHeaderView
@@ -117,7 +116,7 @@ struct LargePost: View {
     }
 
     // MARK: - Subviews
-    
+
     @ViewBuilder
     private var minimizedIcon: some View {
         Image(systemName: "rectangle.expand.vertical")
@@ -140,7 +139,7 @@ struct LargePost: View {
             .accessibilityLabel("Post content is minimized.")
             .accessibilityHint("Expands post content.")
     }
-    
+
     private var postHeaderInsets: EdgeInsets {
         if layoutMode == .minimize {
             /// - Warning: Keep leading/trailing = 0, otherwise you'll trigger system animations for Text, which moves whole words around...unless that's what you want =) [2023.08]
@@ -149,7 +148,7 @@ struct LargePost: View {
             return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
     }
-    
+
     @ViewBuilder
     private var postHeaderBackground: some View {
         if layoutMode == .minimize {
@@ -158,7 +157,7 @@ struct LargePost: View {
             Color.clear
         }
     }
-    
+
     @ViewBuilder
     private var postHeaderView: some View {
         HStack {
@@ -167,13 +166,13 @@ struct LargePost: View {
             } else if post.post.featuredCommunity {
                 StickiedTag(tagType: .community)
             }
-            
+
             Text("\(post.post.name)\(post.post.deleted ? " (Deleted)" : "")")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .italic(post.post.deleted)
                 .foregroundColor(titleColor)
-            
+
             Spacer()
             if post.post.nsfw {
                 NSFWTag(compact: false)
@@ -192,7 +191,7 @@ struct LargePost: View {
             }
         }
     }
-    
+
     @ViewBuilder
     var postContentView: some View {
         switch post.postType {
@@ -200,12 +199,13 @@ struct LargePost: View {
             let limitHeight = limitImageHeightInFeed && !isExpanded
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
-                    CachedImage(
-                        url: url,
-                        maxHeight: layoutMode.getMaxHeight(limitHeight),
-                        dismissCallback: markPostAsRead,
-                        cornerRadius: AppConstants.largeItemCornerRadius
-                    )
+                    ExpandableView(dismissCallback: markPostAsRead) {
+                        CachedImage(
+                            url: url,
+                            maxHeight: layoutMode.getMaxHeight(limitHeight),
+                            dismissCallback: markPostAsRead,
+                            cornerRadius: AppConstants.largeItemCornerRadius)
+                    }
                     .frame(
                         maxWidth: .infinity,
                         maxHeight: layoutMode.getMaxHeight(limitHeight),
@@ -231,7 +231,7 @@ struct LargePost: View {
             EmptyView()
         }
     }
-    
+
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = post.post.body, !bodyText.isEmpty {
@@ -246,7 +246,7 @@ struct LargePost: View {
             .lineLimit(layoutMode.lineLimit)
         }
     }
-    
+
     /// Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {

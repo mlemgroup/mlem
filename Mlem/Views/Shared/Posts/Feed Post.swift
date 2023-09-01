@@ -23,23 +23,23 @@ struct FeedPost: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
-    
+
     // MARK: Environment
 
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
-    
+
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
-    
+
     @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
     @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
     @AppStorage("shouldShowRepliesInPostBar") var shouldShowRepliesInPostBar: Bool = true
-    
+
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
@@ -48,19 +48,19 @@ struct FeedPost: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
+
     @State var dirtyVote: ScoringOperation = .resetVote
     @State var dirtyScore: Int = 0
     @State var dirtySaved: Bool = false
     @State var dirty: Bool = false
-    
+
     // MARK: Parameters
 
     let post: PostModel
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
-    
+
     init(
         post: PostModel,
         showPostCreator: Bool = true,
@@ -78,9 +78,9 @@ struct FeedPost: View {
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
-    
+
     // MARK: Computed
-    
+
     var barThickness: CGFloat { !post.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
     var showCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
 
@@ -112,6 +112,22 @@ struct FeedPost: View {
                     ]
                 )
         }
+        .fullScreenLabel {
+            VStack(alignment: .leading) {
+                Text(postView.post.name)
+                    .font(.headline)
+                interactionBar
+            }
+        }
+        .onFullScreenDoubleTap {
+            UpvoteView(
+                upvoteFuncion: upvotePost,
+                completedImage:
+                    postView.myVote == .upvote ?
+                        Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left.slash") :
+                        Image(systemName: "arrow.up")
+            )
+        }
     }
 
     var userServerInstanceLocation: ServerInstanceLocation {
@@ -121,7 +137,7 @@ struct FeedPost: View {
             return .bottom
         }
     }
-    
+
     var communityServerInstanceLocation: ServerInstanceLocation {
         if !shouldShowCommunityServerInPost {
             return .disabled
@@ -157,7 +173,7 @@ struct FeedPost: View {
                         if showCheck {
                             ReadCheck()
                         }
-                        
+
                         EllipsisMenu(size: 24, menuFunctions: genMenuFunctions())
                     }
 
@@ -180,31 +196,36 @@ struct FeedPost: View {
                 }
                 .padding(.top, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                
-                InteractionBarView(
-                    votes: post.votes,
-                    published: post.published,
-                    numReplies: post.numReplies,
-                    saved: post.saved,
-                    accessibilityContext: "post",
-                    widgets: layoutWidgetTracker.groups.post,
-                    upvote: upvotePost,
-                    downvote: downvotePost,
-                    save: savePost,
-                    reply: replyToPost,
-                    share: {
-                        if let url = URL(string: post.post.apId) {
-                            showShareSheet(URLtoShare: url)
-                        }
-                    },
-                    shouldShowScore: shouldShowScoreInPostBar,
-                    showDownvotesSeparately: showPostDownvotesSeparately,
-                    shouldShowTime: shouldShowTimeInPostBar,
-                    shouldShowSaved: shouldShowSavedInPostBar,
-                    shouldShowReplies: shouldShowRepliesInPostBar
-                )
+
+                interactionBar
             }
         }
+    }
+
+    @ViewBuilder
+    var interactionBar: some View {
+        InteractionBarView(
+            votes: post.votes,
+            published: post.published,
+            numReplies: post.numReplies,
+            saved: post.saved,
+            accessibilityContext: "post",
+            widgets: layoutWidgetTracker.groups.post,
+            upvote: upvotePost,
+            downvote: downvotePost,
+            save: savePost,
+            reply: replyToPost,
+            share: {
+                if let url = URL(string: post.post.apId) {
+                    showShareSheet(URLtoShare: url)
+                }
+            },
+            shouldShowScore: shouldShowScoreInPostBar,
+            showDownvotesSeparately: showPostDownvotesSeparately,
+            shouldShowTime: shouldShowTimeInPostBar,
+            shouldShowSaved: shouldShowSavedInPostBar,
+            shouldShowReplies: shouldShowRepliesInPostBar
+        )
     }
 
     func upvotePost() async {
@@ -238,7 +259,7 @@ struct FeedPost: View {
             )
         }
     }
-    
+
     func blockCommunity() async {
         // TODO: migrate to communityRepository
         do {
@@ -264,7 +285,7 @@ struct FeedPost: View {
             operation: PostOperation.replyToPost
         ))
     }
-    
+
     func editPost() {
         editorTracker.openEditor(with: PostEditorModel(
             community: post.community,
@@ -282,7 +303,7 @@ struct FeedPost: View {
     func savePost() async {
         await postTracker.toggleSave(post: post)
     }
-    
+
     func reportPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(post: post, operation: PostOperation.reportPost))
     }
@@ -354,7 +375,7 @@ struct FeedPost: View {
             ) {
                 editPost()
             })
-            
+
             // delete
             ret.append(MenuFunction(
                 text: "Delete",
@@ -401,7 +422,7 @@ struct FeedPost: View {
                 await blockUser()
             }
         })
-        
+
         // block community
         ret.append(MenuFunction(
             text: "Block Community",

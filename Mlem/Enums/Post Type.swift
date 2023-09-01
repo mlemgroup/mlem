@@ -7,7 +7,9 @@
 
 import Foundation
 
-enum PostType: Equatable {
+enum PostType: Equatable, Hashable, Identifiable {
+    var id: Int { self.hashValue }
+    
     case text(String)
     case image(URL)
     case link(URL?)

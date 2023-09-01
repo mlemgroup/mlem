@@ -172,10 +172,11 @@ struct CommunityLabel: View {
         .accessibilityHidden(true)
     }
     
-    private func defaultCommunityAvatar() -> AnyView {
-        AnyView(Image(systemName: "building.2.crop.circle.fill")
-            .resizable()
-            .scaledToFit()
+    private func defaultCommunityAvatar(_ err: Error? = nil) -> AnyView {
+        AnyView(
+                Image(systemName: "building.2.crop.circle.fill")
+                    .resizable()
+                    .scaledToFit()
             .frame(width: avatarSize.width, height: avatarSize.height)
             .foregroundColor(.secondary)
         )

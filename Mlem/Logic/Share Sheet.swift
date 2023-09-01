@@ -11,5 +11,23 @@ import SwiftUI
 func showShareSheet(URLtoShare: URL, completion: UIActivityViewController.CompletionWithItemsHandler? = nil) {
     let activityVC = UIActivityViewController(activityItems: [URLtoShare], applicationActivities: nil)
     activityVC.completionWithItemsHandler = completion
-    UIApplication.shared.firstKeyWindow?.rootViewController?.present(activityVC, animated: true, completion: nil)
+    if var topController = UIApplication.shared.firstKeyWindow?.rootViewController {
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+        topController.present(activityVC, animated: true, completion: nil)
+    }
+}
+
+func showShareSheet(items: [Any], completion: UIActivityViewController.CompletionWithItemsHandler? = nil) {
+    let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+    activityVC.completionWithItemsHandler = completion
+    if var topController = UIApplication.shared.firstKeyWindow?.rootViewController {
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+        topController.present(activityVC, animated: true, completion: nil)
+        // topController should now be your topmost view controller
+    }
+    
 }

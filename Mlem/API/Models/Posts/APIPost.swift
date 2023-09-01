@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::post::Post
-struct APIPost: Decodable {
+struct APIPost: Decodable, Identifiable {
     let id: Int
     let name: String
     let url: URL?

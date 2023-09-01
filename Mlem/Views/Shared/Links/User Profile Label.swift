@@ -104,7 +104,7 @@ struct UserProfileLabel: View {
         .accessibilityHidden(true)
     }
     
-    private func defaultUserAvatar() -> AnyView {
+    private func defaultUserAvatar(_ err: Error? = nil) -> AnyView {
         AnyView(Image(systemName: "person.circle")
             .resizable()
             .scaledToFill()
