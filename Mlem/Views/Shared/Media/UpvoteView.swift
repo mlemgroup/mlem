@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 struct UpvoteView: View {
+    static let roundedRectangle: RoundedRectangle = .init(cornerRadius: 8, style: .continuous)
+    
     @Environment(\.fullscreenDismiss) var dismiss
     @Namespace var animation
     
@@ -35,7 +37,7 @@ struct UpvoteView: View {
             .font(.largeTitle)
             .padding()
             .background(.ultraThinMaterial)
-            .clipShape(.rect(cornerRadius: 8))
+            .clipShape(UpvoteView.roundedRectangle)
             .task {
                 await upvoteFuncion()
                 if completedImage != nil {
