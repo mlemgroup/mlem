@@ -8,7 +8,8 @@
 import Dependencies
 import SwiftUI
 
-struct SwipeAction {
+// MARK: -
+public struct SwipeAction {
     struct Symbol {
         let emptyName: String
         let fillName: String
@@ -19,7 +20,8 @@ struct SwipeAction {
     let action: () async -> Void
 }
 
-struct SwipeConfiguration {
+// MARK: -
+public struct SwipeConfiguration {
     /// In ascending order of appearance.
     let leadingActions: [SwipeAction]
     /// In ascending order of appearance.
@@ -31,6 +33,39 @@ struct SwipeConfiguration {
     }
 }
 
+// MARK: - Drag Action Thresholds
+public extension SwipeConfiguration {
+    
+    /// Users and programmers can declare a custom set of drag thresholds in order of appearance (see `defaults`).
+    /// - Thresholds are magnitude-only along a given axis: Consumers should use negative values for leading actions.
+    struct DragThresholds {
+        
+        /// User's preferred set of drag thresholds.
+        static var userPreferred: [CGFloat] {
+            /// - NOTE: Currently not yet user customizable. [2023.08]
+            defaults
+        }
+        
+        /// Convenience.
+        static var shortSwipe: CGFloat {
+            userPreferred.first ?? Self.shortSwipeDragMin
+        }
+        
+        /// Mlem defaults.
+        /// - To support more actions, simply add more drag thresholds.
+        private static let defaults: [CGFloat] = [
+            Self.shortSwipeDragMin,
+            Self.longSwipeDragMin,
+            Self.tertiarySwipeDragMin
+        ]
+        
+        private static let shortSwipeDragMin: CGFloat = 60
+        private static let longSwipeDragMin: CGFloat = 150
+        private static let tertiarySwipeDragMin: CGFloat = 240
+    }
+}
+
+// MARK: -
 struct SwipeyView: ViewModifier {
     @Dependency(\.hapticManager) var hapticManager
     
@@ -210,7 +245,7 @@ struct SwipeyView: ViewModifier {
     /// - Returns: A `nil` value denotes the state where swiping has begun, but not enough to trigger any actions.
     private func actionIndex(edge: HorizontalEdge, at dragPosition: CGFloat) -> Array<CGFloat>.Index? {
         /// Map a `dragPosition` to a `dragThreshold`, which tells us what swipe action to perform, where `nil` is no action, `1` is primary, `2` is secondary, etc.
-        let thresholdIndex = AppConstants.swipeActionDragThresholds.lastIndex {
+        let thresholdIndex = SwipeConfiguration.DragThresholds.userPreferred.lastIndex {
             switch edge {
             case .leading:
                 return dragPosition > $0
@@ -292,17 +327,17 @@ struct SwipeyView: ViewModifier {
         guard let actionIndex else {
             switch edgeForActions {
             case .leading:
-                return AppConstants.shortSwipeDragMin
+                return SwipeConfiguration.DragThresholds.shortSwipe
             case .trailing:
-                return -AppConstants.shortSwipeDragMin
+                return -SwipeConfiguration.DragThresholds.shortSwipe
             }
         }
         
         switch edgeForActions {
         case .leading:
-            return AppConstants.swipeActionDragThresholds[actionIndex]
+            return SwipeConfiguration.DragThresholds.userPreferred[actionIndex]
         case .trailing:
-            return -AppConstants.swipeActionDragThresholds[actionIndex]
+            return -SwipeConfiguration.DragThresholds.userPreferred[actionIndex]
         }
     }
 }
