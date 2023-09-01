@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Window: View {
     @Dependency(\.apiClient) var apiClient
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
@@ -35,6 +36,7 @@ struct Window: View {
         guard let selectedAccount else { return }
         
         apiClient.configure(for: selectedAccount)
+        favoriteCommunitiesTracker.configure(for: selectedAccount)
         siteInformation.load()
         
         if let host = selectedAccount.instanceLink.host(),
