@@ -28,6 +28,10 @@ public struct SwipeConfiguration {
     let trailingActions: [SwipeAction]
     
     init(leadingActions: [SwipeAction?], trailingActions: [SwipeAction?]) {
+        assert(
+            leadingActions.count <= 3 && trailingActions.count <= 3,
+            "Getting a little swipey aren't we? Ask your fellow Mlem'ers if you really need more than 3 swipe actions =)"
+        )
         self.leadingActions = leadingActions.compactMap { $0 }
         self.trailingActions = trailingActions.compactMap { $0 }
     }
