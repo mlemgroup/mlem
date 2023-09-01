@@ -20,7 +20,7 @@ struct CachedImage: View, FullScreenActualContent {
     @State var shouldRecomputeSize: Bool
     @State private var quickLookUrl: URL?
 
-    var imageNotFound: () -> AnyView
+    var imageNotFound: (_ error: Error?) -> AnyView
 
     let maxHeight: CGFloat
     let screenWidth: CGFloat

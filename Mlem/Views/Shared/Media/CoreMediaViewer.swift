@@ -110,7 +110,6 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
         guard 
         let imageSize = getImageSize(imageView: uiView, context: context)
         else {
-            print("no image size loaded")
             return nil
         }
         

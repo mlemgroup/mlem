@@ -128,7 +128,7 @@ struct InstanceSummary: View {
             url: url,
             shouldExpand: false,
             fixedSize: CGSize(width: 80, height: 80)
-        ) {
+        ) { _ in
             AnyView(Image(systemName: "server.rack")
                 .resizable()
                 .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize))
