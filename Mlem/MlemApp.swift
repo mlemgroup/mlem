@@ -32,6 +32,7 @@ struct MlemApp: App {
                         imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 8)
 
                         ImageDecoderRegistry.shared.register { context in ImageDecoders.Video(context: context) }
+                        ImageDecoderRegistry.shared.register { context in ImageDecoders.Gif(context: context) }
 
                         // I'm leaving that here for mormaer, once I get a handle on rate limites that's where we put em!
                         // imageConfig.isRateLimiterEnabled

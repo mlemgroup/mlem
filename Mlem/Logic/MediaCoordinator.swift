@@ -259,12 +259,11 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         return videoPlayerView!
     }
     // swiftlint:enable function_body_length
-    // swiftlint:disable force_try
     func initializeGIF(container: ImageContainer, data: Data) -> _PlatformBaseView {
-        gifView = UIImageView(gifImage: try! UIImage(gifData: data))
+        gifView = UIImageView(gifImage: container.image)
         // TODO: move this line into Nuke so decoding can happen in a different thread
-        self.mediaSize = container.image.size
-
+        self.mediaSize = (container.userInfo["size"] as? CGSize) ?? container.image.size
+        
         gifView!.contentMode = .scaleAspectFit
         gifView!.translatesAutoresizingMaskIntoConstraints = true
         
@@ -311,7 +310,6 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
 
         return gifView!
     }
-    // swiftlint:enable force_try
 }
 
 extension AVAsset {

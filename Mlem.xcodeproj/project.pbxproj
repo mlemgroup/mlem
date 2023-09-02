@@ -266,6 +266,7 @@
 		B14E93C02A45CA3400D6DA93 /* Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93BF2A45CA3400D6DA93 /* Post Link.swift */; };
 		B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14E93C12A45D3B300D6DA93 /* Community Link.swift */; };
 		B157E0C42A507B8000B02C8B /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157E0C32A507B8000B02C8B /* Window.swift */; };
+		B185719D2AA353E60037E8C1 /* ImageDecoders+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = B185719C2AA353E60037E8C1 /* ImageDecoders+GIF.swift */; };
 		B1955A1D2A606B950056CF99 /* Easter Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A1C2A606B950056CF99 /* Easter Rewards.swift */; };
 		B1955A1F2A606F010056CF99 /* EasterFlagsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */; };
 		B1955A212A6145C00056CF99 /* Environment - EasterFlagSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */; };
@@ -707,6 +708,7 @@
 		B14E93BF2A45CA3400D6DA93 /* Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Link.swift"; sourceTree = "<group>"; };
 		B14E93C12A45D3B300D6DA93 /* Community Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link.swift"; sourceTree = "<group>"; };
 		B157E0C32A507B8000B02C8B /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
+		B185719C2AA353E60037E8C1 /* ImageDecoders+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageDecoders+GIF.swift"; sourceTree = "<group>"; };
 		B1955A1C2A606B950056CF99 /* Easter Rewards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Easter Rewards.swift"; sourceTree = "<group>"; };
 		B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasterFlagsTracker.swift; sourceTree = "<group>"; };
 		B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment - EasterFlagSetter.swift"; sourceTree = "<group>"; };
@@ -1321,7 +1323,7 @@
 				50CC4A712A9CB07F0074C845 /* TimeInterval+Period.swift */,
 				B1A3BDE82A8FBA0000010428 /* View - ExpandableView.swift */,
 				B1B8510D2A9504EE003684A4 /* Environment - FullScreen Helper.swift */,
-				B12C610F2A961832001477DA /* View - Proper Share.swift */,
+				B185719C2AA353E60037E8C1 /* ImageDecoders+GIF.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2555,6 +2557,7 @@
 				637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */,
 				B1A26FE12A44AAB200B91A32 /* Navigation getter.swift in Sources */,
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
+				B185719D2AA353E60037E8C1 /* ImageDecoders+GIF.swift in Sources */,
 				CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */,
 				50C99B602A6299D8005D57DD /* ErrorHandler.swift in Sources */,
 				50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */,
