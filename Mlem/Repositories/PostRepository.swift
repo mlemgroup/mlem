@@ -31,6 +31,14 @@ class PostRepository {
         )
     }
     
+    /**
+     Loads a single post
+     */
+    func loadPost(postId: Int) async throws -> PostModel {
+        let post = try await apiClient.loadPost(id: postId)
+        return PostModel(from: post)
+    }
+    
     func markRead(postId: Int, read: Bool) async throws -> PostModel {
         let response = try await apiClient.markPostAsRead(for: postId, read: read).postView
         return PostModel(from: response)

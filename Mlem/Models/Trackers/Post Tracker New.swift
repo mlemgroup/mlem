@@ -10,6 +10,8 @@ import Foundation
 import Nuke
 import SwiftUI
 
+// swiftlint:disable type_body_length
+// swiftlint:disable file_length
 /**
  New post tracker built on top of the PostRepository instead of calling the API directly. Because this thing works fundamentally differently from the old one, it can't conform to FeedTracker--that's going to need a revamp down the line once everything uses nice shiny middleware models, so for now we're going to have to put up with some ugly
  */
@@ -92,6 +94,21 @@ class PostTrackerNew: ObservableObject {
         preloadImages(newPosts.filter(filtering))
     }
     
+    /**
+     Loads a single post and adds it to the tracker
+     
+     - Parameters:
+        - postId: id of the post to load
+     - Returns:
+        - PostModel of the newly loaded post
+     */
+    @discardableResult
+    func loadPost(postId: Int) async throws -> PostModel {
+        let newPost = try await postRepository.loadPost(postId: postId)
+        await add([newPost], preload: true)
+        return newPost
+    }
+    
     func refresh(
         communityId: Int?,
         sort: PostSortType?,
@@ -113,9 +130,24 @@ class PostTrackerNew: ObservableObject {
         await reset(with: newPosts, filteredWith: filtering)
     }
     
+    /**
+     Adds a given list of posts to items. Can be configured to perform filtering and preloading.
+     
+     - Parameters:
+        - _: list of PostModels to add
+        - filtering: filter to apply before adding items
+        - preload: true if the new post's image should be preloaded
+     */
     @MainActor
-    func add(_ newItems: [PostModel], filtering: @escaping (_: PostModel) -> Bool = { _ in true }) {
+    func add(
+        _ newItems: [PostModel],
+        filtering: @escaping (_: PostModel) -> Bool = { _ in true },
+        preload: Bool = false
+    ) {
         let accepted = dedupedItems(from: newItems.filter(filtering))
+        
+        if preload { preloadImages(newItems) }
+        
         if !shouldPerformMergeSorting {
             RunLoop.main.perform { [self] in
                 items.append(contentsOf: accepted)
@@ -220,9 +252,11 @@ class PostTrackerNew: ObservableObject {
         - post: PostModel of the post to vote
         - operation: ScoringOperation to apply to the given post
      - Returns:
+        - PostModel with the updated post state (if the call fails, returns the original post model)
      */
-    func voteOnPost(post: PostModel, inputOp: ScoringOperation) async {
-        guard !isLoading else { return }
+    @discardableResult
+    func voteOnPost(post: PostModel, inputOp: ScoringOperation) async -> PostModel {
+        guard !isLoading else { return post }
         defer { isLoading = false }
         isLoading = true
         
@@ -230,7 +264,7 @@ class PostTrackerNew: ObservableObject {
         guard ids.contains(post.id) else {
             assertionFailure("Upvote called on post not present in tracker")
             hapticManager.play(haptic: .failure, priority: .high)
-            return
+            return post
         }
         
         // compute appropriate operation
@@ -245,14 +279,25 @@ class PostTrackerNew: ObservableObject {
         do {
             let response = try await postRepository.ratePost(postId: post.postId, operation: operation)
             await update(with: response)
+            return response
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
+            return post
         }
     }
     
-    func toggleSave(post: PostModel) async {
-        guard !isLoading else { return }
+    /**
+     Toggles the save state of the given post. Performs state faking.
+     
+     - Parameters:
+        - post: PostModel of the post to save
+     - Returns:
+        - PostModel with the updated post state (if the call fails, returns the original post model)
+     */
+    @discardableResult
+    func toggleSave(post: PostModel) async -> PostModel {
+        guard !isLoading else { return post }
         defer { isLoading = false }
         isLoading = true
         
@@ -260,7 +305,7 @@ class PostTrackerNew: ObservableObject {
         guard ids.contains(post.id) else {
             assertionFailure("Save called on post not present in tracker")
             hapticManager.play(haptic: .failure, priority: .high)
-            return
+            return post
         }
         
         let shouldSave: Bool = !post.saved
@@ -274,9 +319,11 @@ class PostTrackerNew: ObservableObject {
         do {
             let response = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
             await update(with: response)
+            return response
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
+            return post
         }
     }
     
@@ -375,3 +422,6 @@ class PostTrackerNew: ObservableObject {
         newItems.filter { ids.insert($0.id).inserted }
     }
 }
+
+// swiftlint:enable type_body_length
+// swiftlint:enable file_length

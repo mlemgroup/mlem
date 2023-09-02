@@ -304,7 +304,7 @@ struct UserViewPreview: PreviewProvider {
         )
     }
     
-    static func generatePreviewPost(creator: APIPerson) -> APIPostView {
+    static func generatePreviewPost(creator: APIPerson) -> PostModel {
         let community = generateFakeCommunity(id: 123, namePrefix: "Test")
         let post: APIPost = .mock(
             name: "Test Post Title",
@@ -329,7 +329,7 @@ struct UserViewPreview: PreviewProvider {
             featuredLocal: false
         )
         
-        return APIPostView(
+        return PostModel(from: APIPostView(
             post: post,
             creator: creator,
             community: community,
@@ -340,13 +340,13 @@ struct UserViewPreview: PreviewProvider {
             read: false,
             creatorBlocked: false,
             unreadComments: 0
-        )
+        ))
     }
     
     static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
-        var postContext: APIPostView?
+        var postContext: PostModel?
         var commentContext: APIComment?
         
         if userType == .mod {

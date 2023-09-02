@@ -62,19 +62,6 @@ struct FeedPost: View {
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
-
-    @available(*, deprecated, message: "Migrate to PostModel")
-    init(
-        postView: APIPostView,
-        showPostCreator: Bool = true,
-        showCommunity: Bool = true,
-        enableSwipeActions: Bool = true
-    ) {
-        self.post = PostModel(from: postView)
-        self.showPostCreator = showPostCreator
-        self.showCommunity = showCommunity
-        self.enableSwipeActions = enableSwipeActions
-    }
     
     init(
         post: PostModel,

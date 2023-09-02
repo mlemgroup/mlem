@@ -108,23 +108,23 @@ class PostTracker: FeedTracker<APIPostView> {
             if let userAvatarLink = postView.creator.avatar {
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
             }
-
-            switch postView.postType {
-            case let .image(url):
-                // images: only load the image
-                imageRequests.append(ImageRequest(url: url, priority: .high))
-            case let .link(url):
-                // websites: load image and favicon
-                if let baseURL = postView.post.url?.host,
-                   let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
-                    imageRequests.append(ImageRequest(url: favIconURL))
-                }
-                if let url {
-                    imageRequests.append(ImageRequest(url: url, priority: .high))
-                }
-            default:
-                break
-            }
+//
+//            switch postView.postType {
+//            case let .image(url):
+//                // images: only load the image
+//                imageRequests.append(ImageRequest(url: url, priority: .high))
+//            case let .link(url):
+//                // websites: load image and favicon
+//                if let baseURL = postView.post.url?.host,
+//                   let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
+//                    imageRequests.append(ImageRequest(url: favIconURL))
+//                }
+//                if let url {
+//                    imageRequests.append(ImageRequest(url: url, priority: .high))
+//                }
+//            default:
+//                break
+//            }
         }
 
         prefetcher.startPrefetching(with: imageRequests)

@@ -16,7 +16,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     
-    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: APICommunityView.self) { context in
@@ -45,24 +44,16 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 .environmentObject(filtersTracker)
                 .environmentObject(CommunitySearchResultsTracker())
             }
-            .navigationDestination(for: APIPostView.self) { post in
-                ExpandedPost(post: PostModel(from: post))
-                    .environmentObject(
-                        PostTracker(shouldPerformMergeSorting: false, internetSpeed: internetSpeed, initialItems: [post])
-                    )
-                    .environmentObject(appState)
-            }
             .navigationDestination(for: APIPost.self) { post in
                 LazyLoadExpandedPost(post: post)
             }
             .navigationDestination(for: PostLinkWithContext.self) { post in
-                ExpandedPost(post: PostModel(from: post.post), scrollTarget: post.scrollTarget)
+                ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                     .environmentObject(post.postTracker)
                     .environmentObject(appState)
             }
             .navigationDestination(for: LazyLoadPostLinkWithContext.self) { post in
                 LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
-                    .environmentObject(post.postTracker)
             }
             .navigationDestination(for: APIPerson.self) { user in
                 UserView(userID: user.id)
@@ -73,7 +64,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     .environmentObject(appState)
             }
     }
-    // swiftlint:enable function_body_length
 }
 
 struct HandleLemmyLinkResolution: ViewModifier {

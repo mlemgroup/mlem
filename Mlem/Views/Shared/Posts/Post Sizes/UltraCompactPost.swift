@@ -38,13 +38,6 @@ struct UltraCompactPost: View {
     
     // computed
     var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
-
-    @available(*, deprecated, message: "Migrate to PostModel")
-    init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction]) {
-        self.post = PostModel(from: postView)
-        self.showCommunity = showCommunity
-        self.menuFunctions = menuFunctions
-    }
     
     init(post: PostModel, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.post = post

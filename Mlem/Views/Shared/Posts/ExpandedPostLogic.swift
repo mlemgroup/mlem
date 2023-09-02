@@ -11,21 +11,40 @@ extension ExpandedPost {
     // MARK: Interaction callbacks
     
     func upvotePost() async {
-        await postTracker.voteOnPost(post: post, inputOp: .upvote)
+        // ensure post tracker isn't loading--avoids state faking causing flickering when post tracker doesn't upvote
+        guard !postTracker.isLoading else { return }
+        
+        // fake state
+        let oldPost = post // save this to pass to postTracker
+        let operation = post.votes.myVote == .upvote ? ScoringOperation.resetVote : .upvote
+        post = PostModel(from: post, votes: post.votes.applyScoringOperation(operation: operation))
+        
+        // perform upvote--passing in oldPost so that the state-faked upvote of post doesn't result in the opposite vote being passed in
+        post = await postTracker.voteOnPost(post: oldPost, inputOp: .upvote)
     }
 
     func downvotePost() async {
-        await postTracker.voteOnPost(post: post, inputOp: .downvote)
+        // fake state
+        let oldPost = post
+        let operation = post.votes.myVote == .downvote ? ScoringOperation.resetVote : .downvote
+        post = PostModel(from: post, votes: post.votes.applyScoringOperation(operation: operation))
+        
+        // perform downvote
+        post = await postTracker.voteOnPost(post: oldPost, inputOp: .downvote)
     }
     
     func savePost() async {
-        // TODO: Eric figure out how to propagate state fake into here
-        await postTracker.toggleSave(post: post)
+        // fake state
+        let oldPost = post
+        post = PostModel(from: post, saved: !post.saved)
+        
+        // perform save
+        post = await postTracker.toggleSave(post: oldPost)
     }
     
     func replyToPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
-            post: PostModel(from: post),
+            post: post,
             commentTracker: commentTracker,
             operation: PostOperation.replyToPost
         ))
@@ -33,7 +52,7 @@ extension ExpandedPost {
     
     func reportPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
-            post: PostModel(from: post),
+            post: post,
             operation: PostOperation.reportPost
         ))
     }

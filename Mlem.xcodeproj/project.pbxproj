@@ -319,7 +319,6 @@
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
 		CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */; };
 		CD6483322A38D3A600EE6CA3 /* ScoreCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */; };
-		CD6483342A39F1C100EE6CA3 /* API Post View - Post Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */; };
 		CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483352A39F20800EE6CA3 /* Post Type.swift */; };
 		CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */; };
 		CD6483A62A82FAF200A5AE84 /* ProfileTabLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483A52A82FAF200A5AE84 /* ProfileTabLabel.swift */; };
@@ -751,7 +750,6 @@
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteCounterView.swift; sourceTree = "<group>"; };
 		CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCounterView.swift; sourceTree = "<group>"; };
-		CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API Post View - Post Type.swift"; sourceTree = "<group>"; };
 		CD6483352A39F20800EE6CA3 /* Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Type.swift"; sourceTree = "<group>"; };
 		CD6483372A3A0F2200EE6CA3 /* NSFW Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFW Tag.swift"; sourceTree = "<group>"; };
 		CD6483A52A82FAF200A5AE84 /* ProfileTabLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabLabel.swift; sourceTree = "<group>"; };
@@ -1271,7 +1269,6 @@
 				6354F3092A2E20040074C08D /* Alert - Multiple Alerts.swift */,
 				CDA217F22A63202600BDA173 /* NSFW Overlay.swift */,
 				CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */,
-				CD6483332A39F1C100EE6CA3 /* API Post View - Post Type.swift */,
 				E453477D2A9DE37300D1B46F /* Array+SafeIndexing.swift */,
 				63344C572A07DB9A001BC616 /* Array - Move Elements Around.swift */,
 				63344C552A07D81D001BC616 /* Array - Prepend.swift */,
@@ -2434,7 +2431,6 @@
 				CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */,
-				CD6483342A39F1C100EE6CA3 /* API Post View - Post Type.swift in Sources */,
 				038A16E52A7A97380087987E /* LayoutWidgetView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
 				CDEBC32C2A9A582500518D9D /* Votes Model.swift in Sources */,

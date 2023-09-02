@@ -64,7 +64,7 @@ struct InboxView: View {
     @StateObject var mentionsTracker: MentionsTracker // = .init(internetSpeed: internetSpeed)
     @StateObject var messagesTracker: MessagesTracker // = .init(internetSpeed: internetSpeed)
     @StateObject var repliesTracker: RepliesTracker // = .init(internetSpeed: internetSpeed)
-    @StateObject var dummyPostTracker: PostTracker // = .init(internetSpeed: internetSpeed) // used for nav
+    @StateObject var dummyPostTracker: PostTrackerNew // = .init(internetSpeed: internetSpeed) // used for nav
     
     init() {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
