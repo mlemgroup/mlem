@@ -38,6 +38,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
     var onImageLoad: ((_: ImageContainer, _ size: CGSize) -> Void)?
 
     var parent: CoreMediaViewer<ErrorView>
+    var imageView = LazyImageView()
     var wasReady: Bool = false
 
     var shareableImage: UIImage?
@@ -72,6 +73,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
     @MainActor
     func resetValues() {
         // NSKeyValueObservation will be invaildated automaticlly when de-init
+        gifObserver?.invalidate()
         gifObserver = nil
         gifView = nil
         videoPlayerView = nil
@@ -159,15 +161,16 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
     func makeImage(container: ImageContainer) -> _PlatformBaseView {
         defer {
             Task { @MainActor in
-                parent.imageView.invalidateIntrinsicContentSize()
-                parent.imageView.setNeedsLayout()
+                imageView.invalidateIntrinsicContentSize()
+                imageView.setNeedsLayout()
 
-                if let type = container.type {
+                if let type = container.type, parent.needsMediaSync {
                     self.parent.mediaStateSyncObject.type = type
                 }
                 self.imageContainer = container
-                self.parent.shareableImage = container.image
-                self.parent.mediaStateSyncObject.isReady = true
+                if parent.needsMediaSync {
+                    self.parent.mediaStateSyncObject.isReady = true
+                }
                 if !(container.type?.isVideo ?? false) {
                     if let onImageLoad = onImageLoad {
                         onImageLoad(container, self.mediaSize)
@@ -190,6 +193,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         }
     }
 
+    // swiftlint:disable function_body_length
     @MainActor
     func initializePlayer(container: ImageContainer, asset: AVAsset) -> _PlatformBaseView {
         videoPlayerView = VideoPlayerView()
@@ -202,98 +206,108 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         statusObserver = videoPlayerView?.playerLayer.player?.observe(\.status, options: [.new, .initial]) { player, _ in
             if player.status == .readyToPlay {
                 Task { @MainActor in
-
-                    // Invoke callback every second
-                    let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-
-                    // Keep the reference to remove
-                    self.timeObserver = player.addPeriodicTimeObserver(forInterval: interval,
-                                                                       queue: DispatchQueue.main) { time in
-                        self.parent.mediaStateSyncObject.currentTime =  time.seconds
-                    }
                     let (size, duration) = await asset.getTrackDetails() ?? (.zero, .zero)
+                    if self.parent.needsMediaSync {
+                        // Invoke callback every second
+                        let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+                        
+                        // Keep the reference to remove
+                        self.timeObserver = player.addPeriodicTimeObserver(forInterval: interval,
+                                                                           queue: DispatchQueue.main) { time in
+                            self.parent.mediaStateSyncObject.currentTime =  time.seconds
+                        }
+                        self.parent.mediaStateSyncObject.duration = duration.seconds
+                        self.parent.mediaStateSyncObject.player = player
+                        self.parent.mediaStateSyncObject.isReady = true
+                    }
+                    
                     self.mediaSize = size
-                    self.parent.mediaStateSyncObject.duration = duration.seconds
-                    self.parent.mediaStateSyncObject.player = player
-                    self.parent.mediaStateSyncObject.isReady = true
                     if let onImageLoad = self.onImageLoad {
-                        onImageLoad(container, self.mediaSize)
+                        onImageLoad(container, size)
                     }
                 }
             }
         }
-
-        self.parent.mediaStateSyncObject.$isPlaying.sink { newVal in
-            Task(priority: .userInitiated) {
-                if let videoPlayerView = self.videoPlayerView {
-                    if newVal {
-                        videoPlayerView.playerLayer.player?.play()
-                    } else {
-                        videoPlayerView.playerLayer.player?.pause()
+        
+        if self.parent.needsMediaSync {
+            self.parent.mediaStateSyncObject.$isPlaying.sink { newVal in
+                Task(priority: .userInitiated) {
+                    if let videoPlayerView = self.videoPlayerView {
+                        if newVal {
+                            videoPlayerView.playerLayer.player?.play()
+                        } else {
+                            videoPlayerView.playerLayer.player?.pause()
+                        }
                     }
                 }
-            }
-        }.store(in: &listeners)
-
-        self.parent.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
-            if editMode {
-                // now entering edit mode!
-                self.editingListener = self.parent.mediaStateSyncObject.$currentTime.sink { newTime in
-                    let time = CMTime(seconds: newTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-                    self.videoPlayerView?.playerLayer.player?.seek(to: time)
+            }.store(in: &listeners)
+            
+            self.parent.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
+                if editMode {
+                    // now entering edit mode!
+                    self.editingListener = self.parent.mediaStateSyncObject.$currentTime.sink { newTime in
+                        let time = CMTime(seconds: newTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+                        self.videoPlayerView?.playerLayer.player?.seek(to: time)
+                    }
+                } else {
+                    // now leaving edit mode!
+                    self.editingListener.cancel()
                 }
-            } else {
-                // now leaving edit mode!
-                self.editingListener.cancel()
-            }
-        }.store(in: &listeners)
+            }.store(in: &listeners)
+        }
 
         return videoPlayerView!
     }
+    // swiftlint:enable function_body_length
     // swiftlint:disable force_try
     func initializeGIF(container: ImageContainer, data: Data) -> _PlatformBaseView {
         gifView = UIImageView(gifImage: try! UIImage(gifData: data))
         // TODO: move this line into Nuke so decoding can happen in a different thread
         self.mediaSize = container.image.size
 
-        gifObserver = Timer.scheduledTimer(
-            withTimeInterval: 1 / 100,
-            repeats: true
-        ) { _ in
-                let currentFrame = self.gifView!.currentFrameIndex()
-                if currentFrame != self.evilFrame && !self.parent.mediaStateSyncObject.isEditingCurrentTime {
-                    self.parent.mediaStateSyncObject.currentTime = Double(currentFrame)
-                }
-        }
         gifView!.contentMode = .scaleAspectFit
         gifView!.translatesAutoresizingMaskIntoConstraints = true
-
-        self.parent.mediaStateSyncObject.duration = Double(gifView!.gifImage!.framesCount())
-
-        self.parent.mediaStateSyncObject.$isPlaying.sink { newVal in
-            Task(priority: .userInitiated) {
-                if let gifView = self.gifView {
+        
+        if parent.needsMediaSync {
+            self.mediaSize = container.image.size
+            
+            gifObserver = Timer.scheduledTimer(
+                withTimeInterval: 1 / 100,
+                repeats: true
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                let currentFrame = self.gifView!.currentFrameIndex()
+                if currentFrame != self.evilFrame && !self.parent.mediaStateSyncObject.isEditingCurrentTime && self.parent.needsMediaSync {
+                    self.parent.mediaStateSyncObject.currentTime = Double(currentFrame)
+                }
+            }
+                
+            self.parent.mediaStateSyncObject.duration = Double(gifView!.gifImage!.framesCount())
+            
+            self.parent.mediaStateSyncObject.$isPlaying.sink { [weak self] newVal in
+                if let gifView = self?.gifView {
                     if newVal {
-                        await gifView.startAnimatingGif()
+                        gifView.startAnimatingGif()
                     } else {
-                        await gifView.stopAnimatingGif()
+                        gifView.stopAnimatingGif()
                     }
                 }
             }
-        }.store(in: &listeners)
-
-        self.parent.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
-            if editMode {
-                // now entering edit mode!
-                self.editingListener = self.parent.mediaStateSyncObject.$currentTime.sink { newTime in
-                    self.evilFrame = max(0, Int(newTime) % self.gifView!.gifImage!.framesCount())
-                    self.gifView!.showFrameAtIndex(self.evilFrame)
+            .store(in: &listeners)
+            
+            self.parent.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
+                if editMode {
+                    // now entering edit mode!
+                    self.editingListener = self.parent.mediaStateSyncObject.$currentTime.sink { newTime in
+                        self.evilFrame = max(0, Int(newTime) % self.gifView!.gifImage!.framesCount())
+                        self.gifView!.showFrameAtIndex(self.evilFrame)
+                    }
+                } else {
+                    // now leaving edit mode!
+                    self.editingListener.cancel()
                 }
-            } else {
-                // now leaving edit mode!
-                self.editingListener.cancel()
-            }
-        }.store(in: &listeners)
+            }.store(in: &listeners)
+        }
 
         return gifView!
     }

@@ -24,47 +24,43 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
     
     @ObservedObject
     var mediaStateSyncObject: MediaState
+    let needsMediaSync: Bool
     
     @ViewBuilder
     let errorView: (_ error: Error) -> ErrorView
     
     let onImageLoad: ((_ container: Nuke.ImageContainer, _ size: CGSize) -> Void)?
     
-    @State var shareableImage: UIImage?
-    @State var imageView = LazyImageView()
-    
     @State var mediaSize: CGSize = .zero
     
     init(
         url: URL? = nil,
-        mediaStateSyncObject: MediaState,
+        mediaStateSyncObject: MediaState? = nil,
         @ViewBuilder errorView: @escaping (_: Error?) -> ErrorView,
         onImageLoad: ((_: Nuke.ImageContainer, _ size: CGSize) -> Void)? = nil
     ) {
-        _mediaStateSyncObject = .init(wrappedValue: mediaStateSyncObject)
+        _mediaStateSyncObject = .init(wrappedValue: mediaStateSyncObject ?? .init())
+        self.needsMediaSync = mediaStateSyncObject != nil
+        
         self.url = url
         self.errorView = errorView
         self.onImageLoad = onImageLoad
     }
 
     @MainActor func makeUIView(context: Context) -> LazyImageView {
-        imageView.placeholderView = UIActivityIndicatorView()
-        imageView.failureView = context.coordinator.errorView.view
-        imageView.onFailure = { error in
+        context.coordinator.imageView.placeholderView = UIActivityIndicatorView()
+        context.coordinator.imageView.failureView = context.coordinator.errorView.view
+        context.coordinator.imageView.onFailure = { error in
             context.coordinator.errorView.rootView = AnyView(errorView(error))
         }
         
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = true
-        imageView.makeImageView = context.coordinator.makeImage
-        imageView.setNeedsLayout()
-        imageView.invalidateIntrinsicContentSize()
-        imageView.url = url
-        return imageView
-    }
-    
-    func getShareableImage() -> UIImage? {
-        shareableImage
+        context.coordinator.imageView.clipsToBounds = true
+        context.coordinator.imageView.translatesAutoresizingMaskIntoConstraints = true
+        context.coordinator.imageView.makeImageView = context.coordinator.makeImage
+        context.coordinator.imageView.setNeedsLayout()
+        context.coordinator.imageView.invalidateIntrinsicContentSize()
+        context.coordinator.imageView.url = url
+        return context.coordinator.imageView
     }
     
     func updateUIView(_ uiView: LazyImageView, context: Context) {
@@ -74,7 +70,7 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
             uiView.setNeedsLayout()
             uiView.invalidateIntrinsicContentSize()
         }
-        if !context.coordinator.wasReady && mediaStateSyncObject.isReady {
+        if needsMediaSync && !context.coordinator.wasReady && mediaStateSyncObject.isReady {
             let menu = context.coordinator.generateContextMenu()
             context.environment.fullscreenContextMenuDonationCollector(menu)
             context.coordinator.wasReady = true
@@ -86,10 +82,10 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
         if context.coordinator.mediaSize != .zero {
             return context.coordinator.mediaSize
         }
-        if let image = self.shareableImage,
-           image.size != .zero {
-            return image.size
-        }
+//        if let image = self.shareableImage,
+//           image.size != .zero {
+//            return image.size
+//        }
         
         if let view = imageView.subviews.last {
             let viewSize = view.bounds.size
@@ -133,6 +129,12 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
             parent: self,
             onImageLoad: onImageLoad
         )
+    }
+    
+    @MainActor
+    static func dismantleUIView(_ uiView: LazyImageView, coordinator: MediaCoordinator<ErrorView>) {
+        uiView.reset()
+        coordinator.resetValues()
     }
 }
 
