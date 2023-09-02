@@ -178,7 +178,7 @@ struct FeedPost: View {
 
                     // posting user
                     if showPostCreator {
-                        UserProfileLink(
+                        UserLinkView(
                             user: postView.creator,
                             serverInstanceLocation: userServerInstanceLocation
                         )

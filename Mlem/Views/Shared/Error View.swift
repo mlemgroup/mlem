@@ -66,6 +66,7 @@ struct ErrorView: View {
                                 ProgressView()
                             }
                         }
+                        .animation(.default, value: refreshInProgress)
                     }
                     .buttonStyle(.bordered)
                     .animation(.default, value: refreshInProgress)

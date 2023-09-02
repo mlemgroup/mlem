@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-struct UserProfileLabel: View {
+struct UserLabelView: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
@@ -21,8 +20,8 @@ struct UserProfileLabel: View {
     @State var commentContext: APIComment?
     @State var communityContext: GetCommunityResponse?
 
-    var blurAvatar: Bool { shouldBlurNsfw && (postContext?.nsfw ?? false ||
-            communityContext?.communityView.community.nsfw ?? false) }
+    var blurAvatar: Bool { postContext?.nsfw ?? false ||
+            communityContext?.communityView.community.nsfw ?? false }
     
     init(
         user: APIPerson,
@@ -49,9 +48,8 @@ struct UserProfileLabel: View {
         }
     }
     
-    var avatarSize: CGSize { serverInstanceLocation == .bottom
-        ? CGSize(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-        : CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
+    var avatarSize: CGFloat {
+        serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize
     }
     
     static let developerNames = [
@@ -75,42 +73,10 @@ struct UserProfileLabel: View {
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if showAvatar {
-                userAvatar
+                UserAvatarView(user: user, avatarSize: avatarSize, blurAvatar: blurAvatar)
             }
             userName
         }
-    }
-    
-    @ViewBuilder
-    private var userAvatar: some View {
-        Group {
-            if let userAvatarLink = user.avatar {
-                CachedImage(
-                    url: userAvatarLink,
-                    shouldExpand: false,
-                    fixedSize: avatarSize,
-                    imageNotFound: defaultUserAvatar,
-                    contentMode: .fill
-                )
-            } else {
-                defaultUserAvatar()
-            }
-        }
-        .frame(width: avatarSize.width, height: avatarSize.height)
-        .blur(radius: blurAvatar ? 4 : 0)
-        .clipShape(Circle())
-        .overlay(Circle()
-            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-        .accessibilityHidden(true)
-    }
-    
-    private func defaultUserAvatar() -> AnyView {
-        AnyView(Image(systemName: "person.circle")
-            .resizable()
-            .scaledToFill()
-            .frame(width: avatarSize.width, height: avatarSize.height)
-            .foregroundColor(.secondary)
-        )
     }
     
     @ViewBuilder
@@ -177,26 +143,26 @@ struct UserProfileLabel: View {
              }
              */
             
-            if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
-                return UserProfileLabel.flairDeveloper
+            if UserLabelView.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
+                return UserLabelView.flairDeveloper
             }
         }
         if user.admin {
-            return UserProfileLabel.flairAdmin
+            return UserLabelView.flairAdmin
         }
         if user.botAccount {
-            return UserProfileLabel.flairBot
+            return UserLabelView.flairBot
         }
         if let comment = commentContext, comment.distinguished {
-            return UserProfileLabel.flairMod
+            return UserLabelView.flairMod
         }
         if let community = communityContext, community.moderators.contains(where: { $0.moderator == user }) {
-            return UserProfileLabel.flairMod
+            return UserLabelView.flairMod
         }
         if let post = postContext, post.creatorId == user.id {
-            return UserProfileLabel.flairOP
+            return UserLabelView.flairOP
         }
-        return UserProfileLabel.flairRegular
+        return UserLabelView.flairRegular
     }
 }
 
@@ -216,7 +182,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
         let actorId: URL
         if userType == .dev {
-            actorId = URL(string: "http://\(UserProfileLabel.developerNames[0])")!
+            actorId = URL(string: "http://\(UserLabelView.developerNames[0])")!
         } else {
             actorId = URL(string: "http://lemmy.ml/u/ericbandrews")!
         }
@@ -305,7 +271,7 @@ struct UserProfileLinkPreview: PreviewProvider {
         name: String,
         userType: PreviewUserType,
         serverInstanceLocation: ServerInstanceLocation
-    ) -> UserProfileLink {
+    ) -> UserLinkView {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
         var postContext: APIPost?
@@ -320,7 +286,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             postContext = generatePreviewPost(creator: previewUser).post
         }
         
-        return UserProfileLink(
+        return UserLinkView(
             user: previewUser,
             serverInstanceLocation: serverInstanceLocation,
             postContext: postContext,

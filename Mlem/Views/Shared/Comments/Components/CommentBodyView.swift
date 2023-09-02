@@ -57,7 +57,7 @@ struct CommentBodyView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: spacing) {
             HStack(spacing: AppConstants.compactSpacing) {
-                UserProfileLink(
+                UserLinkView(
                     user: commentView.creator,
                     serverInstanceLocation: serverInstanceLocation,
                     postContext: commentView.post,
