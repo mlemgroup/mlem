@@ -268,7 +268,6 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         gifView!.translatesAutoresizingMaskIntoConstraints = true
         
         if parent.needsMediaSync {
-            self.mediaSize = container.image.size
             
             gifObserver = Timer.scheduledTimer(
                 withTimeInterval: 1 / 100,
