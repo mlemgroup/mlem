@@ -18,6 +18,22 @@ enum APIClientError: Error {
     case response(APIErrorResponse, Int?)
     case cancelled
     case invalidSession
+    case decoding(Data)
+}
+
+extension APIClientError: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case let .decoding(data):
+            guard let string = String(data: data, encoding: .utf8) else {
+                return localizedDescription
+            }
+            
+            return "Unable to decode: \(string)"
+        default:
+            return localizedDescription
+        }
+    }
 }
 
 struct APISession {
@@ -90,7 +106,7 @@ class APIClient {
             throw APIClientError.response(apiError, statusCode)
         }
         
-        return try decoder.decode(Request.Response.self, from: data)
+        return try decode(Request.Response.self, from: data)
     }
     
     // MARK: - Private methods
@@ -131,6 +147,14 @@ class APIClient {
             return try JSONEncoder().encode(defintion.body)
         } catch {
             throw APIClientError.encoding(error)
+        }
+    }
+    
+    private func decode<T: Decodable>(_ model: T.Type, from data: Data) throws -> T {
+        do {
+            return try decoder.decode(model, from: data)
+        } catch {
+            throw APIClientError.decoding(data)
         }
     }
 }
