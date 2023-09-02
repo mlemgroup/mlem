@@ -16,7 +16,7 @@ struct GetPostsRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        account: SavedAccount, // TODO: needs to move to a session based call...
         communityId: Int?,
         page: Int,
         sort: PostSortType?,

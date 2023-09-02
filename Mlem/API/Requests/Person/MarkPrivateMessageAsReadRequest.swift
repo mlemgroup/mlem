@@ -24,9 +24,9 @@ struct MarkPrivateMessageAsRead: APIPostRequest {
         session: APISession,
         privateMessageId: Int,
         read: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             private_message_id: privateMessageId,
             read: read,
             auth: session.token

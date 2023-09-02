@@ -24,9 +24,9 @@ struct MarkCommentReplyAsRead: APIPostRequest {
         session: APISession,
         commentId: Int,
         read: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             comment_reply_id: commentId,
             read: read,
             auth: session.token

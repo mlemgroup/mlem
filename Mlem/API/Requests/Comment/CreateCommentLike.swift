@@ -25,9 +25,9 @@ struct CreateCommentLikeRequest: APIPostRequest {
         session: APISession,
         commentId: Int,
         score: Int
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             comment_id: commentId,
             score: score,
             auth: session.token

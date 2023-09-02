@@ -16,7 +16,7 @@ struct GetPrivateMessagesRequest: APIGetRequest {
 
     // lemmy_api_common::person::GetPersonDetails
     init(
-        account: SavedAccount,
+        account: SavedAccount, // TODO: move to session based call, auth required.
         page: Int? = nil,
         limit: Int? = nil,
         unreadOnly: Bool = false

@@ -9,6 +9,11 @@ import Foundation
 
 // MARK: - APIRequest
 
+enum APIRequestError: Error {
+    case authenticationRequired
+    case undefinedSession
+}
+
 protocol APIRequest {
     associatedtype Response: Decodable
 

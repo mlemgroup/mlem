@@ -36,26 +36,12 @@ extension APIClientError: CustomStringConvertible {
     }
 }
 
-struct APISession {
-    let token: String
-    let URL: URL
-}
-
 class APIClient {
     let urlSession: URLSession
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
     
-    private var _session: APISession?
-    var session: APISession {
-        get throws {
-            guard let _session else {
-                throw APIClientError.invalidSession
-            }
-            
-            return _session
-        }
-    }
+    private(set) var session: APISession = .undefined
     
     // MARK: - Initialisation
     
@@ -74,7 +60,7 @@ class APIClient {
     /// Configures the clients session based on the passed in account
     /// - Parameter account: a `SavedAccount` to use when configuring the clients session
     func configure(for account: SavedAccount) {
-        _session = .init(token: account.accessToken, URL: account.instanceLink)
+        session = .authenticated(account.instanceLink, account.accessToken)
     }
     
     @discardableResult

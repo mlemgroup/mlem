@@ -17,27 +17,23 @@ struct HideCommunityRequest: APIPutRequest {
     // lemmy_api_common::community::HideCommunity
     struct Body: Encodable {
         let community_id: Int
-
         let hidden: Bool
         let reason: String?
-
         let auth: String
     }
 
     init(
         session: APISession,
-
         communityId: Int,
         hidden: Bool,
         reason: String?
-    ) {
-        self.instanceURL = session.URL
+    ) throws {
+        self.instanceURL = try session.instanceUrl
 
-        self.body = .init(
+        self.body = try .init(
             community_id: communityId,
             hidden: hidden,
             reason: reason,
-
             auth: session.token
         )
     }
