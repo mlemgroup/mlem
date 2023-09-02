@@ -5,6 +5,7 @@
 //  Created by Nicholas Lawson on 04/06/2023.
 //
 
+// swiftlint:disable file_length
 import Foundation
 
 enum HTTPMethod {
@@ -389,3 +390,5 @@ extension APIClient {
         return try await perform(request: request).privateMessageView
     }
 }
+
+// swiftlint:enable file_length
