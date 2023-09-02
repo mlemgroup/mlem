@@ -40,6 +40,7 @@
 		03E0B9CC2A62CD5800FED265 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */; };
 		03E5219F2A9BD532006690D2 /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E5219E2A9BD532006690D2 /* SearchFilterView.swift */; };
 		03E521A12A9BD84A006690D2 /* SearchFilterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E521A02A9BD84A006690D2 /* SearchFilterListView.swift */; };
+		03F113462AA12DFE00F3742C /* PostResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F113452AA12DFE00F3742C /* PostResultView.swift */; };
 		500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */; };
 		5016A2B12A67EB8600B257E8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B02A67EB8600B257E8 /* UIViewController.swift */; };
 		5016A2B32A67EC0700B257E8 /* NotificationDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B22A67EC0700B257E8 /* NotificationDisplayer.swift */; };
@@ -466,6 +467,7 @@
 		03E0B9CB2A62CD5800FED265 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		03E5219E2A9BD532006690D2 /* SearchFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
 		03E521A02A9BD84A006690D2 /* SearchFilterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterListView.swift; sourceTree = "<group>"; };
+		03F113452AA12DFE00F3742C /* PostResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResultView.swift; sourceTree = "<group>"; };
 		500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+Dependency.swift"; sourceTree = "<group>"; };
 		5016A2B02A67EB8600B257E8 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		5016A2B22A67EC0700B257E8 /* NotificationDisplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDisplayer.swift; sourceTree = "<group>"; };
@@ -1002,6 +1004,7 @@
 		039439C02A9B915E00463032 /* Results */ = {
 			isa = PBXGroup;
 			children = (
+				03F113452AA12DFE00F3742C /* PostResultView.swift */,
 				039439B32A9AAD0B00463032 /* CommunityResultView.swift */,
 				039439B92A9B907000463032 /* UserResultView.swift */,
 			);
@@ -2428,6 +2431,7 @@
 				CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */,
 				CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */,
 				6386E02C2A03D1EC006B3C1D /* App State.swift in Sources */,
+				03F113462AA12DFE00F3742C /* PostResultView.swift in Sources */,
 				504106CD2A744D7F000AAEF8 /* CommentRepository+Dependency.swift in Sources */,
 				6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */,
 				CD05E7812A4F7A4B0081D102 /* Inbox Tracker.swift in Sources */,

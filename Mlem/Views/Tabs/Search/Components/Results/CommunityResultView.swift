@@ -20,8 +20,13 @@ struct CommunityResultView: View {
             HStack(spacing: 15) {
                 CommunityAvatarView(community: community.community, avatarSize: 36)
                 VStack(alignment: .leading, spacing: 0) {
-                    SearchResultTextView(community.community.name, highlight: searchModel.input)
-                        .lineLimit(1)
+                    if searchModel.input.isEmpty {
+                        Text(community.community.name)
+                            .lineLimit(1)
+                    } else {
+                        SearchResultTextView(community.community.name, highlight: searchModel.input)
+                            .lineLimit(1)
+                    }
                     if let host = community.community.actorId.host() {
                         Text("@\(host)")
                             .foregroundStyle(.tertiary)
@@ -49,7 +54,7 @@ struct CommunityResultView: View {
             Button {
                 searchModel.addFilter(.community(community))
             } label: {
-                Label("Add filter", systemImage: "plus")
+                Label("Add Filter", systemImage: "plus")
             }
         }
     }

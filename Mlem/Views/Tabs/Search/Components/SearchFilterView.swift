@@ -21,6 +21,7 @@ struct SearchFilterView: View {
             
         } else {
             searchModel.addFilter(filter)
+            searchModel.input = ""
         }
     }
     
@@ -41,14 +42,24 @@ struct SearchFilterView: View {
                             lineColor: active ? Color.white : Color.secondary
                         )
                     }
-                    if case .user(let user) = filter {
+                    else if case .user(let user) = filter {
                         UserAvatarView(
                             user: user.person,
                             avatarSize: 16,
                             lineColor: active ? Color.white : Color.secondary
                         )
+                    } else {
+                        Image(systemName: filter.icon)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 16)
+                            .foregroundStyle(active ? .white : .primary)
                     }
-                    Text(filter.label)
+                    if active {
+                        Text(filter.label)
+                    } else {
+                        SearchResultTextView(filter.label, highlight: searchModel.input)
+                    }
                 }
                 .padding(.vertical, 6)
                 .padding(.horizontal, 14)

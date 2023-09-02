@@ -11,6 +11,9 @@ enum SearchFilter {
     case community(APICommunityView)
     case user(APIPersonView)
     case subscribed
+    case users
+    case posts
+    case communities
     
     var label: String {
         switch self {
@@ -20,17 +23,25 @@ enum SearchFilter {
             return personView.person.name
         case .subscribed:
             return "Subscribed"
+        case .users:
+            return "Users"
+        case .posts:
+            return "Posts"
+        case .communities:
+            return "Communities"
         }
     }
     
     var icon: String {
         switch self {
-        case .community:
-            return "house.fill"
-        case .user:
-            return "person.fill"
         case .subscribed:
             return "newspaper.fill"
+        case .community, .communities:
+            return "house.fill"
+        case .user, .users:
+            return "person.fill"
+        case .posts:
+            return "scroll.fill"
         }
     }
 }

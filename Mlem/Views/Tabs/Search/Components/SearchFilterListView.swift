@@ -27,8 +27,7 @@ struct SearchFilterListView: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 15)
         }
         .scrollIndicators(.hidden)
     }

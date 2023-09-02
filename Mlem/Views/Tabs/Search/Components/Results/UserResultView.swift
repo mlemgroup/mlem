@@ -44,7 +44,7 @@ struct UserResultView: View {
             Button {
                 searchModel.addFilter(.user(user))
             } label: {
-                Label("Add filter", systemImage: "plus")
+                Label("Add Filter", systemImage: "plus")
             }
         }
     }
