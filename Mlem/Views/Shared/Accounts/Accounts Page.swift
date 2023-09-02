@@ -5,11 +5,15 @@
 //  Created by David Bureš on 27.03.2022.
 //
 
+import Dependencies
 import SwiftUI
 
 struct AccountsPage: View {
+    
+    @Dependency(\.accountsTracker) var accountsTracker
+    
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var accountsTracker: SavedAccountTracker
+
     @Environment(\.forceOnboard) var forceOnboard
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
@@ -18,7 +22,7 @@ struct AccountsPage: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        let instances = Array(accountsTracker.accountsByInstance.keys)
+        let instances = Array(accountsTracker.accountsByInstance.keys).sorted()
         
         List {
             ForEach(instances, id: \.self) { instance in

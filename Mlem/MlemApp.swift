@@ -5,6 +5,7 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
+import Dependencies
 import Nuke
 import SwiftUI
 import UIKit
@@ -12,18 +13,18 @@ import XCTestDynamicOverlay
 
 @main
 struct MlemApp: App {
+    
+    @Dependency(\.accountsTracker) var accountsTracker
+    
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-
-    @StateObject var accountsTracker: SavedAccountTracker = .init()
-
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {
             if !_XCTIsTesting {
                 Window(selectedAccount: accountsTracker.defaultAccount)
-                    .environmentObject(accountsTracker)
                     .onAppear {
                         var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)
                         imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)

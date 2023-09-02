@@ -108,10 +108,14 @@ struct FeedPost: View {
                     }
                 }
                 .addSwipeyActions(
-                    primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
-                    secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
-                    primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
-                    secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
+                    leading: [
+                        enableSwipeActions ? upvoteSwipeAction : nil,
+                        enableSwipeActions ? downvoteSwipeAction : nil
+                    ],
+                    trailing: [
+                        enableSwipeActions ? saveSwipeAction : nil,
+                        enableSwipeActions ? replySwipeAction : nil
+                    ]
                 )
         }
     }

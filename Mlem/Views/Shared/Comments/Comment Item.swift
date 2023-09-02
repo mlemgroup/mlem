@@ -179,12 +179,7 @@ struct CommentItem: View {
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
         .onTapGesture {
-            withAnimation(.showHideComment(!hierarchicalComment.isCollapsed)) {
-                // Perhaps we want an explict flag for this in the future?
-                if !showPostContext {
-                    commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
-                }
-            }
+            toggleCollapsed()
         }
         .contextMenu {
             ForEach(genMenuFunctions()) { item in
@@ -197,10 +192,8 @@ struct CommentItem: View {
         }
         .background(Color.systemBackground)
         .addSwipeyActions(
-            primaryLeadingAction: enableSwipeActions ? upvoteSwipeAction : nil,
-            secondaryLeadingAction: enableSwipeActions ? downvoteSwipeAction : nil,
-            primaryTrailingAction: enableSwipeActions ? saveSwipeAction : nil,
-            secondaryTrailingAction: enableSwipeActions ? replySwipeAction : nil
+            leading: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
+            trailing: enableSwipeActions ? [saveSwipeAction, replySwipeAction, expandCollapseCommentAction] : []
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
 //        .sheet(isPresented: $isComposingReport) {
@@ -223,6 +216,10 @@ extension CommentItem {
     private var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
     private var emptyReplySymbolName: String { "arrowshape.turn.up.left" }
     private var replySymbolName: String { "arrowshape.turn.up.left.fill" }
+    private var emptyCollapseSymbolName: String { "arrow.up.and.line.horizontal.and.arrow.down" }
+    private var collapseSymbolName: String { "arrow.up.and.line.horizontal.and.arrow.down" }
+    private var emptyExpandSymbolName: String { "arrow.down.and.line.horizontal.and.arrow.up" }
+    private var expandSymbolName: String { "arrow.down.and.line.horizontal.and.arrow.up" }
     
     var upvoteSwipeAction: SwipeAction {
         SwipeAction(
@@ -254,6 +251,16 @@ extension CommentItem {
             symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
             color: .accentColor,
             action: replyToCommentAsyncWrapper
+        )
+    }
+    
+    var expandCollapseCommentAction: SwipeAction {
+        SwipeAction(
+            symbol: .init(
+                emptyName: hierarchicalComment.isCollapsed ? emptyCollapseSymbolName : emptyExpandSymbolName,
+                fillName: hierarchicalComment.isCollapsed ? collapseSymbolName : expandSymbolName),
+            color: .orange,
+            action: toggleCollapsed
         )
     }
 }

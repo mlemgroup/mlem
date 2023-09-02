@@ -33,7 +33,7 @@ final class CommunityListModelTests: XCTestCase {
                 [.mock(community: .mock(id: 0), subscribed: .subscribed)]
             }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // assert that even though a subscription and favorite are available nothing is present without `load()` being called
@@ -47,7 +47,7 @@ final class CommunityListModelTests: XCTestCase {
             // return an empty array from the the community repository to indicate the user has no subscriptions
             $0.communityRepository.subscriptions = { _ in [] }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // ask the model to load
@@ -72,7 +72,7 @@ final class CommunityListModelTests: XCTestCase {
                 [subscription]
             }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // ask the modek to load
@@ -103,7 +103,7 @@ final class CommunityListModelTests: XCTestCase {
                 [subscription]
             }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // ask the model to load
@@ -126,7 +126,7 @@ final class CommunityListModelTests: XCTestCase {
             // return a single community under subscriptions for this test
             $0.communityRepository.subscriptions = { _ in [communityView] }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // ask the model to load
@@ -153,7 +153,7 @@ final class CommunityListModelTests: XCTestCase {
                 APICommunityView.mock(community: .mock(id: communityId), subscribed: subscribed ? .subscribed : .notSubscribed)
             }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // load the model
@@ -186,7 +186,7 @@ final class CommunityListModelTests: XCTestCase {
                 throw APIClientError.cancelled
             }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // load the model
@@ -214,7 +214,7 @@ final class CommunityListModelTests: XCTestCase {
             // return an empty array from the the community repository to indicate the user has no subscriptions
             $0.communityRepository.subscriptions = { _ in [] }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
 
         // ask the model to load
@@ -223,7 +223,7 @@ final class CommunityListModelTests: XCTestCase {
         XCTAssertFalse(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
         // add a favorite to the tracker, expectation is the model will observe this change and update itself
         let favoriteCommunity = APICommunity.mock(id: 42)
-        tracker.favorite(favoriteCommunity, for: account)
+        tracker.favorite(favoriteCommunity)
         // assert that adding this favorite resulted in the model updating, it should now display a favorites section
         XCTAssert(model.visibleSections.contains(where: { $0.viewId == "favorites" }))
         XCTAssert(model.communities.first! == favoriteCommunity)
@@ -252,7 +252,7 @@ final class CommunityListModelTests: XCTestCase {
                 communities
             }
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // ask the model to load
@@ -293,7 +293,7 @@ final class CommunityListModelTests: XCTestCase {
         let model = withDependencies {
             $0.favoriteCommunitiesTracker = favoritesTracker
         } operation: {
-            CommunityListModel(account: account)
+            CommunityListModel()
         }
         
         // expectation is the all sections are made up of:
@@ -328,7 +328,9 @@ final class CommunityListModelTests: XCTestCase {
                 write: { data, _ in self.favoritesData = data }
             )
         } operation: {
-            FavoriteCommunitiesTracker()
+            let tracker = FavoriteCommunitiesTracker()
+            tracker.configure(for: account)
+            return tracker
         }
     }
 }

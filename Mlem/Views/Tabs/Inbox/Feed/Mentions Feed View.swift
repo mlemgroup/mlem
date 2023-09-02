@@ -75,12 +75,15 @@ extension InboxView {
                     }
                 }
                 .addSwipeyActions(
-                    primaryLeadingAction: upvoteMentionSwipeAction(mentionView: mention),
-                    secondaryLeadingAction: downvoteMentionSwipeAction(mentionView: mention),
-                    primaryTrailingAction: toggleMentionReadSwipeAction(mentionView: mention),
-                    secondaryTrailingAction: replyToMentionSwipeAction(mentionView: mention)
-                )
-        }
+                    leading: [
+                        upvoteMentionSwipeAction(mentionView: mention),
+                        downvoteMentionSwipeAction(mentionView: mention)
+                    ],
+                    trailing: [
+                        toggleMentionReadSwipeAction(mentionView: mention),
+                        replyToMentionSwipeAction(mentionView: mention)
+                    ]
+                )        }
         .buttonStyle(EmptyButtonStyle())
     }
 }

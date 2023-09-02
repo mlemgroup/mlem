@@ -134,6 +134,15 @@ extension CommentItem {
         }
     }
     
+    func toggleCollapsed() {
+        withAnimation(.showHideComment(!hierarchicalComment.isCollapsed)) {
+            // Perhaps we want an explict flag for this in the future?
+            if !showPostContext {
+                commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
+            }
+        }
+    }
+    
     // MARK: helpers
     
     // swiftlint:disable function_body_length

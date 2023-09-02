@@ -9,16 +9,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Combine
 
-struct ErrorDetails {
-    var title: String?
-    var body: String?
-    var error: Error?
-    var icon: String?
-    var buttonText: String?
-    var refresh: (() async -> Bool)?
-    var autoRefresh: Bool = false
-}
-
 struct ErrorView: View {
     @AppStorage("developerMode") var developerMode: Bool = false
     
@@ -79,6 +69,7 @@ struct ErrorView: View {
                         .animation(.default, value: refreshInProgress)
                     }
                     .buttonStyle(.bordered)
+                    .animation(.default, value: refreshInProgress)
                 }
             }
             

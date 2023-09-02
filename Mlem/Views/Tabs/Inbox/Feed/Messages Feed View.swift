@@ -72,10 +72,11 @@ extension InboxView {
                 }
             }
             .addSwipeyActions(
-                primaryLeadingAction: nil,
-                secondaryLeadingAction: nil,
-                primaryTrailingAction: toggleMessageReadSwipeAction(message: message),
-                secondaryTrailingAction: replyToMessageSwipeAction(message: message)
+                leading: [],
+                trailing: [
+                    toggleMessageReadSwipeAction(message: message),
+                    replyToMessageSwipeAction(message: message)
+                ]
             )
     }
 }

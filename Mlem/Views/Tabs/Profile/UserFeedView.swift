@@ -55,16 +55,19 @@ struct UserFeedView: View {
     }
     
     func generateFeed() -> [FeedItem] {
+        let feed: [FeedItem]
         switch selectedTab {
         case .overview:
-            generateMixedFeed(savedItems: false)
+            feed = generateMixedFeed(savedItems: false)
         case .saved:
-            generateMixedFeed(savedItems: true)
+            feed = generateMixedFeed(savedItems: true)
         case .comments:
-            generateCommentFeed()
+            feed = generateCommentFeed()
         case .posts:
-            generatePostFeed()
+            feed = generatePostFeed()
         }
+        
+        return feed
     }
     
     private func postEntry(for post: APIPostView) -> some View {

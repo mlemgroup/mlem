@@ -99,16 +99,16 @@ struct GeneralSettingsView: View {
                 } label: {
                     Label("Delete Community Favorites", systemImage: "trash")
                         .foregroundColor(.red)
-                        .opacity(favoriteCommunitiesTracker.favoriteCommunities.isEmpty ? 0.6 : 1)
+                        .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
                 }
-                .disabled(favoriteCommunitiesTracker.favoriteCommunities.isEmpty)
+                .disabled(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty)
                 .confirmationDialog(
-                    "Delete community favorites for all accounts?",
+                    "Delete community favorites for this account?",
                     isPresented: $isShowingFavoritesDeletionConfirmation,
                     titleVisibility: .visible
                 ) {
                     Button(role: .destructive) {
-                        favoriteCommunitiesTracker.favoriteCommunities = .init()
+                        favoriteCommunitiesTracker.clearCurrentFavourites()
                     } label: {
                         Text("Delete all favorites")
                     }

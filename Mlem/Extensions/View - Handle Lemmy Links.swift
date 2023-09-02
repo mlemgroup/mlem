@@ -12,7 +12,6 @@ import SwiftUI
 struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
-    @EnvironmentObject var savedAccounts: SavedAccountTracker
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -82,7 +81,6 @@ struct HandleLemmyLinkResolution: ViewModifier {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
-    @EnvironmentObject var savedAccounts: SavedAccountTracker
     let navigationPath: Binding<NavigationPath>
 
     func body(content: Content) -> some View {
@@ -121,7 +119,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
                         guard case let APIClientError.response(apiError, _) = error,
                               apiError.error == "couldnt_find_object",
                               url.scheme == "https" else {
-                            await errorHandler.handle(error)
+                            errorHandler.handle(error)
                             
                             return
                         }

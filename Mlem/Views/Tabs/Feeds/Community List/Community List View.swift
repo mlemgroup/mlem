@@ -18,13 +18,12 @@ struct CommunitySection: Identifiable {
 
 struct CommunityListView: View {
     
-    @StateObject private var model: CommunityListModel
+    @StateObject private var model: CommunityListModel = .init()
     
     @Binding var selectedCommunity: CommunityLinkWithContext?
 
-    init(selectedCommunity: Binding<CommunityLinkWithContext?>, account: SavedAccount) {
+    init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
         self._selectedCommunity = selectedCommunity
-        self._model = StateObject(wrappedValue: CommunityListModel(account: account))
     }
 
     // MARK: - Body
@@ -99,22 +98,10 @@ struct CommunityListView: View {
 // MARK: - Previews
 
 struct CommunityListViewPreview: PreviewProvider {
-    static var appState = AppState(
-        defaultAccount: .mock(),
-        selectedAccount: .constant(nil)
-    )
-    
     static var previews: some View {
         Group {
             NavigationStack {
-                CommunityListView(
-                    selectedCommunity: .constant(nil),
-                    account: .mock()
-                )
-                .environmentObject(
-                    FavoriteCommunitiesTracker()
-                )
-                .environmentObject(appState)
+                CommunityListView(selectedCommunity: .constant(nil))
             }
             .previewDisplayName("Populated")
             
@@ -123,14 +110,7 @@ struct CommunityListViewPreview: PreviewProvider {
                     // return no subscriptions...
                     $0.communityRepository.subscriptions = { _ in [] }
                 } operation: {
-                    CommunityListView(
-                        selectedCommunity: .constant(nil),
-                        account: .mock()
-                    )
-                    .environmentObject(
-                        FavoriteCommunitiesTracker()
-                    )
-                    .environmentObject(appState)
+                    CommunityListView(selectedCommunity: .constant(nil))
                 }
             }
             .previewDisplayName("Empty")
@@ -142,14 +122,7 @@ struct CommunityListViewPreview: PreviewProvider {
                         throw APIClientError.response(.init(error: "Borked"), nil)
                     }
                 } operation: {
-                    CommunityListView(
-                        selectedCommunity: .constant(nil),
-                        account: .mock()
-                    )
-                    .environmentObject(
-                        FavoriteCommunitiesTracker()
-                    )
-                    .environmentObject(appState)
+                    CommunityListView(selectedCommunity: .constant(nil))
                 }
             }
             .previewDisplayName("Error")
