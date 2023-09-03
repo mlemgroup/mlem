@@ -154,12 +154,10 @@ extension FeedView {
             destructiveActionPrompt: nil,
             enabled: true
         ) {
-            // TODO: ERIC re-implement
-            print("not working yet!")
-//            editorTracker.openEditor(with: PostEditorModel(
-//                community: community,
-//                postTracker: postTracker
-//            ))
+            editorTracker.openEditor(with: PostEditorModel(
+                community: community,
+                postTracker: postTracker
+            ))
         })
         
         // subscribe/unsubscribe
