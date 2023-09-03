@@ -269,7 +269,6 @@ struct FeedPost: View {
     }
     
     func editPost() {
-        assertionFailure("fix me")
         editorTracker.openEditor(with: PostEditorModel(
             community: post.community,
             postTracker: postTracker,

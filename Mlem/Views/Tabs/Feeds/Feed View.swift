@@ -47,7 +47,6 @@ struct FeedView: View {
     
     // MARK: State
     
-    // @StateObject var postTracker: PostTracker
     @StateObject var postTracker: PostTrackerNew
     
     @State var communityDetails: GetCommunityResponse?

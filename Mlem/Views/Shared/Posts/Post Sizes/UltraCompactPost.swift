@@ -25,7 +25,7 @@ struct UltraCompactPost: View {
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
     
-    @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var postTracker: PostTrackerNew
 
     // constants
     let thumbnailSize: CGFloat = 60

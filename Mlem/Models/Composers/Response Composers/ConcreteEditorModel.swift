@@ -52,12 +52,12 @@ extension ConcreteEditorModel {
      */
     init(
         post: PostModel,
-        postTracker: PostTracker? = nil,
         commentTracker: CommentTracker? = nil,
         operation: PostOperation
     ) {
+        // TODO: take take in optional post tracker to remove reported posts
         switch operation {
-        case .replyToPost: self.editorModel = ReplyToPost(post: post)
+        case .replyToPost: self.editorModel = ReplyToPost(commentTracker: commentTracker, post: post)
         case .reportPost: self.editorModel = ReportPost(post: post)
         }
     }
