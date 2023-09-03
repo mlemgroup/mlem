@@ -381,6 +381,45 @@ class PostTrackerNew: ObservableObject {
         }
     }
     
+    /**
+     Edits the given post and updates the tracker. Only non-nil fields will be updated.
+     
+     - Returns:
+        - PostModel representing the new state of the post (current state of tracker)
+     */
+    @discardableResult
+    func edit(
+        post: PostModel,
+        name: String?,
+        url: String?,
+        body: String?,
+        nsfw: Bool?
+    ) async -> PostModel {
+        guard !isLoading else { return post }
+        defer { isLoading = false }
+        isLoading = true
+        
+        // ensure this is a valid post to delete
+        guard ids.contains(post.id) else {
+            assertionFailure("edit called on post not present in tracker")
+            hapticManager.play(haptic: .failure, priority: .high)
+            return post
+        }
+        
+        // TODO: state faking (should wait until APIPost is replaced with PostContentModel)
+        
+        do {
+            hapticManager.play(haptic: .success, priority: .high)
+            let response = try await postRepository.editPost(postId: post.postId, name: name, url: url, body: body, nsfw: nsfw)
+            await update(with: response)
+            return response
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            return post
+        }
+    }
+    
     // MARK: - Private Methods
     
     private func preloadImages(_ newPosts: [PostModel]) {

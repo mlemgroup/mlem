@@ -183,7 +183,6 @@ struct FeedPost: View {
                 .padding(.top, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
-                // TODO: Eric refactor apiView to model
                 InteractionBarView(
                     votes: post.votes,
                     published: post.published,
@@ -272,7 +271,7 @@ struct FeedPost: View {
         editorTracker.openEditor(with: PostEditorModel(
             community: post.community,
             postTracker: postTracker,
-            editPost: post.post
+            editPost: post
         ))
     }
 
@@ -287,8 +286,7 @@ struct FeedPost: View {
     }
     
     func reportPost() {
-        // TODO: ERIC re-enable
-        // editorTracker.openEditor(with: ConcreteEditorModel(post: post, operation: PostOperation.reportPost))
+        editorTracker.openEditor(with: ConcreteEditorModel(post: post, operation: PostOperation.reportPost))
     }
 
     // swiftlint:disable function_body_length

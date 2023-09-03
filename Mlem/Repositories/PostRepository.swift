@@ -70,4 +70,27 @@ class PostRepository {
         let response = try await apiClient.deletePost(id: postId, shouldDelete: true)
         return PostModel(from: response)
     }
+    
+    /**
+     Edits a post. Any non-nil parameters will be updated
+     
+     - Returns:
+        - PostModel with the edited state of the post
+     */
+    func editPost(
+        postId: Int,
+        name: String?,
+        url: String?,
+        body: String?,
+        nsfw: Bool?
+    ) async throws -> PostModel {
+        let response = try await apiClient.editPost(
+            postId: postId,
+            name: name,
+            url: url,
+            body: body,
+            nsfw: nsfw
+        )
+        return PostModel(from: response.postView)
+    }
 }

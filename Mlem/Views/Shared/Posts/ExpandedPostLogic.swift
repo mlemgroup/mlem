@@ -154,7 +154,7 @@ extension ExpandedPost {
                 editorTracker.openEditor(with: PostEditorModel(
                     community: post.community,
                     postTracker: postTracker,
-                    editPost: post.post,
+                    editPost: post,
                     responseCallback: updatePost
                 ))
             })
