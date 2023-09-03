@@ -52,6 +52,10 @@ extension InboxView {
         }
     }
     
+    // TODO: I think the refresh methods below need to account for when the show/hide unread value has changed
+    // as changing it while on another tab and then switching back does not refresh without the user doing
+    // pull down to refresh.
+    
     func refreshRepliesTracker() async throws {
         if curTab == .all || curTab == .replies {
             try await repliesTracker.refresh()
