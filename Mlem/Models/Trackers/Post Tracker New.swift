@@ -256,6 +256,7 @@ class PostTrackerNew: ObservableObject {
      */
     @discardableResult
     func voteOnPost(post: PostModel, inputOp: ScoringOperation) async -> PostModel {
+        // TODO: returning the post does sometimes cause weird unwanted state flickers when spamming interactions
         guard !isLoading else { return post }
         defer { isLoading = false }
         isLoading = true

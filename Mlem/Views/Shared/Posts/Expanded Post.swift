@@ -58,15 +58,6 @@ struct ExpandedPost: View {
     
     @State var commentErrorDetails: ErrorDetails?
     
-    @State var dirtyVote: ScoringOperation = .resetVote
-    @State var dirtyScore: Int = 0
-    @State var dirtySaved: Bool = false
-    @State var dirty: Bool = false
-    
-    var displayedVote: ScoringOperation { dirty ? dirtyVote : post.myVote ?? .resetVote }
-    var displayedScore: Int { dirty ? dirtyScore : post.counts.score }
-    var displayedSaved: Bool { dirty ? dirtySaved : post.saved }
-    
     @State var isLoading: Bool = false
     
     /// When this is set, the view scrolls to the comment with the given ID, or to the top if set to 0.
@@ -237,9 +228,9 @@ struct ExpandedPost: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             
             InteractionBarView(
-                votes: VotesModel(from: post.counts, myVote: post.myVote),
+                votes: post.votes,
                 published: post.published,
-                numReplies: post.counts.comments,
+                numReplies: post.numReplies,
                 saved: post.saved,
                 accessibilityContext: "post",
                 widgets: layoutWidgetTracker.groups.post,

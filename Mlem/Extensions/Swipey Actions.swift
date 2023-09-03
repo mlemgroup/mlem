@@ -9,6 +9,7 @@ import Dependencies
 import SwiftUI
 
 // MARK: -
+
 public struct SwipeAction {
     struct Symbol {
         let emptyName: String
@@ -21,6 +22,7 @@ public struct SwipeAction {
 }
 
 // MARK: -
+
 public struct SwipeConfiguration {
     /// In ascending order of appearance.
     let leadingActions: [SwipeAction]
@@ -38,12 +40,11 @@ public struct SwipeConfiguration {
 }
 
 // MARK: - Drag Action Thresholds
+
 public extension SwipeConfiguration {
-    
     /// Users and programmers can declare a custom set of drag thresholds in order of appearance (see `defaults`).
     /// - Thresholds are magnitude-only along a given axis: Consumers should use negative values for leading actions.
-    struct DragThresholds {
-        
+    enum DragThresholds {
         /// User's preferred set of drag thresholds.
         static var userPreferred: [CGFloat] {
             /// - NOTE: Currently not yet user customizable. [2023.08]
@@ -52,7 +53,7 @@ public extension SwipeConfiguration {
         
         /// Convenience.
         static var shortSwipe: CGFloat {
-            userPreferred.first ?? Self.shortSwipeDragMin
+            userPreferred.first ?? shortSwipeDragMin
         }
         
         /// Mlem defaults.
@@ -70,6 +71,7 @@ public extension SwipeConfiguration {
 }
 
 // MARK: -
+
 struct SwipeyView: ViewModifier {
     @Dependency(\.hapticManager) var hapticManager
     
@@ -131,35 +133,35 @@ struct SwipeyView: ViewModifier {
                     // update position
                     dragPosition = newDragState
                     
-                    let edgeForActions = self.edgeForActions(at: dragPosition)
-                    let actionIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
-                    let action = self.action(edge: edgeForActions, index: actionIndex)
-                    let threshold = self.actionThreshold(edge: edgeForActions, index: actionIndex)
+                    let edgeForActions = edgeForActions(at: dragPosition)
+                    let actionIndex = actionIndex(edge: edgeForActions, at: dragPosition)
+                    let action = action(edge: edgeForActions, index: actionIndex)
+                    let threshold = actionThreshold(edge: edgeForActions, index: actionIndex)
                     
                     // update color and symbol. If crossed an edge, play a gentle haptic
                     switch edgeForActions {
                     case .leading:
-                        leadingSwipeSymbol = actionIndex == nil 
-                        ? primaryLeadingAction?.symbol.emptyName
-                        : action?.symbol.fillName
+                        leadingSwipeSymbol = actionIndex == nil
+                            ? primaryLeadingAction?.symbol.emptyName
+                            : action?.symbol.fillName
                         
                         dragBackground = actionIndex == nil
-                        ? primaryLeadingAction?.color.opacity(dragPosition / threshold)
-                        : action?.color.opacity(dragPosition / threshold)
+                            ? primaryLeadingAction?.color.opacity(dragPosition / threshold)
+                            : action?.color.opacity(dragPosition / threshold)
                     case .trailing:
                         trailingSwipeSymbol = actionIndex == nil
-                        ? primaryTrailingAction?.symbol.emptyName
-                        : action?.symbol.fillName
+                            ? primaryTrailingAction?.symbol.emptyName
+                            : action?.symbol.fillName
                         
                         dragBackground = actionIndex == nil
-                        ? primaryTrailingAction?.color.opacity(dragPosition / threshold)
-                        : action?.color.opacity(dragPosition / threshold)
+                            ? primaryTrailingAction?.color.opacity(dragPosition / threshold)
+                            : action?.color.opacity(dragPosition / threshold)
                     }
                     
                     // If crossed an edge, play a gentle haptic
                     let previousIndex = self.actionIndex(edge: edgeForActions, at: prevDragPosition)
                     let currentIndex = self.actionIndex(edge: edgeForActions, at: dragPosition)
-                    if let hapticInfo = self.hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
+                    if let hapticInfo = hapticInfo(transitioningFrom: previousIndex, to: currentIndex) {
                         hapticManager.play(haptic: hapticInfo.0, priority: hapticInfo.1)
                     }
                                   
@@ -198,13 +200,9 @@ struct SwipeyView: ViewModifier {
         
         reset()
         
-        // TEMP: need to delay the call being sent because otherwise the state update cancels the animation. This should be fixed with backend support for fakers, since the vote won't change and so the animation won't stop (hopefully). This delay matches the response field of the reset() animation.
-        // DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            Task(priority: .userInitiated) {
-                let action = swipeAction(at: finalDragPosition)
-                await action?.action()
-            }
-        // }
+        Task(priority: .userInitiated) {
+            await swipeAction(at: finalDragPosition)?.action()
+        }
     }
     
     private func reset() {
@@ -345,10 +343,10 @@ struct SwipeyView: ViewModifier {
         }
     }
 }
+
 // swiftlint:enable function_body_length
 
 extension View {
-    
     @ViewBuilder
     func addSwipeyActions(leading: [SwipeAction?], trailing: [SwipeAction?]) -> some View {
         modifier(
