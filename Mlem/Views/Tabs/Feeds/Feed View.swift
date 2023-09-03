@@ -111,7 +111,8 @@ struct FeedView: View {
                 noPostsView()
             } else {
                 LazyVStack(spacing: 0) {
-                    ForEach(postTracker.items) { post in
+                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                    ForEach(postTracker.items, id: \.uid) { post in
                         feedPost(for: post)
                     }
                     

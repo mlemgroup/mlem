@@ -7,11 +7,8 @@
 
 import Foundation
 
-/**
- Internal model to represent a post
- 
- Note: this is just the first pass at decoupling the internal models from the API models--to avoid massive merge conflicts and an unreviewably large PR, I've kept the structure practically identical, and will slowly morph it over the course of several PRs. Eventually all of the API types that this model uses will go away and everything downstream of the repositories won't ever know there's an API at all :)
- */
+/// Internal model to represent a post
+/// Note: this is just the first pass at decoupling the internal models from the API models--to avoid massive merge conflicts and an unreviewably large PR, I've kept the structure practically identical, and will slowly morph it over the course of several PRs. Eventually all of the API types that this model uses will go away and everything downstream of the repositories won't ever know there's an API at all :)
 struct PostModel {
     let postId: Int
     let post: APIPost
@@ -22,10 +19,11 @@ struct PostModel {
     let saved: Bool
     let read: Bool
     let published: Date
-
-    /**
-     Creates a PostModel from an APIPostView
-     */
+    
+    var uid: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
+    
+    /// Creates a PostModel from an APIPostView
+    /// - Parameter apiPostView: APIPostView to create a PostModel representation of
     init(from apiPostView: APIPostView) {
         self.postId = apiPostView.post.id
         self.post = apiPostView.post
@@ -38,9 +36,18 @@ struct PostModel {
         self.published = apiPostView.published
     }
     
-    /**
-     Creates a PostModel from another PostModel. Any provided field values will override values in post.
-     */
+    /// Creates a PostModel from another PostModel. Any provided field values will override values in post.
+    /// - Parameters:
+    ///   - other: PostModel to copy
+    ///   - postId: overriden post id
+    ///   - post: overriden post content
+    ///   - creator: overriden post creator
+    ///   - community: overriden post community
+    ///   - votes: overriden votes
+    ///   - numReplies: overriden number of replies
+    ///   - saved: overriden saved status
+    ///   - read: overriden read status
+    ///   - published: overriden published time
     init(
         from other: PostModel,
         postId: Int? = nil,
@@ -81,16 +88,12 @@ struct PostModel {
 }
 
 extension PostModel: Identifiable {
-    /**
-     Identifies this post as a distinct Lemmy identity. This will consider two PostModels with the same postId as identical, so if you need to trigger view updates when things like votes or save status changes, explicitly use the hash value as defined below
-     */
-    var id: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
+    /// Identifies this post as a distinct Lemmy identity. This will consider two PostModels with the same postId as identical, so if you need to trigger view updates when things like votes or save status changes, explicitly use the hash value as defined below
+    var id: Int { hashValue }
 }
 
 extension PostModel: Hashable {
-    /**
-     Hashes all fields for which state changes should trigger view updates.
-     */
+    /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
         hasher.combine(post.id)
         hasher.combine(votes)

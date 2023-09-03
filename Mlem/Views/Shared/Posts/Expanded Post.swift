@@ -192,9 +192,7 @@ struct ExpandedPost: View {
     
     // MARK: Subviews
 
-    /**
-     Displays the post itself, plus a little divider to keep it visually distinct from comments
-     */
+    /// Displays the post itself, plus a little divider to keep it visually distinct from comments
     private var postView: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
@@ -252,9 +250,7 @@ struct ExpandedPost: View {
         }
     }
 
-    /**
-     Displays a "no comments" message
-     */
+    /// Displays a "no comments" message
     @ViewBuilder
     private func noCommentsView() -> some View {
         if let details = commentErrorDetails {
@@ -275,9 +271,7 @@ struct ExpandedPost: View {
         }
     }
 
-    /**
-     Displays the comments
-     */
+    /// Displays the comments
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.commentsView, id: \.commentView.comment.id) { comment in

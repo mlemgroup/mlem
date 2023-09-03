@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-/**
- Style to disable navigation highlighting
- */
+/// Style to disable navigation highlighting
 struct EmptyButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label

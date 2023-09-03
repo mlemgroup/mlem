@@ -17,9 +17,7 @@ struct InstancePickerView: View {
     
     @State var instances: [InstanceMetadata]?
     
-    /**
-     Instances currently accepting new users
-     */
+    /// Instances currently accepting new users
     var filteredInstances: [InstanceMetadata]? {
         instances?
             .filter { instance in

@@ -247,9 +247,7 @@ struct LargePost: View {
         }
     }
     
-    /**
-     Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
-     */
+    /// Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
             await postTracker.markRead(post: post)

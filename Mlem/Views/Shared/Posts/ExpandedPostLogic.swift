@@ -227,9 +227,7 @@ extension ExpandedPost {
         }
     }
     
-    /**
-     Refreshes the comment feed. Does not touch the isLoading bool, since that status cue is handled implicitly by .refreshable
-     */
+    /// Refreshes the comment feed. Does not touch the isLoading bool, since that status cue is handled implicitly by .refreshable
     func refreshComments() async {
         do {
             let comments = try await commentRepository.comments(for: post.post.id)

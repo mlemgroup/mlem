@@ -99,7 +99,8 @@ class APIClient {
         let request = try GetPrivateMessagesRequest(
             session: session,
             page: 1,
-            limit: 1
+            limit: 1,
+            unreadOnly: false
         )
         
         do {

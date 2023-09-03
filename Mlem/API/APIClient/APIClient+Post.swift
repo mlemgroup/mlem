@@ -16,7 +16,7 @@ extension APIClient {
         limit: Int? = nil,
         savedOnly: Bool? = nil,
         communityName: String? = nil
-    ) async throws -> [PostModel] {
+    ) async throws -> [APIPostView] {
         let request = try GetPostsRequest(
             session: session,
             communityId: communityId,
@@ -28,9 +28,7 @@ extension APIClient {
             communityName: communityName
         )
         
-        return try await perform(request: request)
-            .posts
-            .map { PostModel(from: $0) }
+        return try await perform(request: request).posts
     }
     
     func markPostAsRead(for postId: Int, read: Bool) async throws -> PostResponse {

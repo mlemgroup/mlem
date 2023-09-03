@@ -50,9 +50,7 @@ extension FeedView {
         }
     }
     
-    /**
-     Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
-     */
+    /// Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
     func hardRefreshFeed() async {
         defer { isLoading = false }
         isLoading = true

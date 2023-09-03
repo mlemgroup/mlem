@@ -73,9 +73,7 @@ struct ThumbnailImageView: View {
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
     }
     
-    /**
-     Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback
-     */
+    /// Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
             await postTracker.markRead(post: post)

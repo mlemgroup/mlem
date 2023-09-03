@@ -12,7 +12,6 @@ import SwiftUI
  A simple wrapper around ExpandedPost which loads the PostModel on demand for when we don't already have one
  */
 struct LazyLoadExpandedPost: View {
-    @Dependency(\.postRepository) var postRepository
     @Dependency(\.errorHandler) var errorHandler
     
     @State var post: APIPost

@@ -132,9 +132,7 @@ struct ContentView: View {
     
     // MARK: Helpers
     
-    /**
-     Function that executes whenever the account changes to handle any state updates that need to happen
-     */
+    /// Function that executes whenever the account changes to handle any state updates that need to happen
     func accountChanged() {
         // refresh unread count
         Task(priority: .background) {

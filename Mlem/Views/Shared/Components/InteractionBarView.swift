@@ -9,9 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-/**
- View grouping post interactions--upvote, downvote, save, reply, plus post info
- */
+/// View grouping post interactions--upvote, downvote, save, reply, plus post info
 struct InteractionBarView: View {
     @Dependency(\.siteInformation) var siteInformation
     

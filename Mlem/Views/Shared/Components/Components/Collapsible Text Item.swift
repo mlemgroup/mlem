@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-/**
- A little bit of custom styling wrapped around a DisclosureGroup
- */
+/// A little bit of custom styling wrapped around a DisclosureGroup
 struct CollapsibleTextItem: View {
     let titleText: String
     let bodyText: String

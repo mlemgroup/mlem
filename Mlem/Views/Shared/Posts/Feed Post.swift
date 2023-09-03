@@ -16,9 +16,7 @@ import Dependencies
 import QuickLook
 import SwiftUI
 
-/**
- Displays a single post in the feed
- */
+/// Displays a single post in the feed
 struct FeedPost: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler

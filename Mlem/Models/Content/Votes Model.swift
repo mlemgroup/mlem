@@ -35,9 +35,9 @@ struct VotesModel: Hashable {
 }
 
 extension VotesModel {
-    /**
-     Returns the result of applying the given scoring operation. Assumes that it is a valid operation (i.e., not upvoting an upvoted post or downvoting a downvoted one)
-     */
+    /// Returns the result of applying the given scoring operation. Assumes that it is a valid operation (i.e., not upvoting an upvoted post or downvoting a downvoted one)
+    /// - Parameter operation: operation to apply
+    /// - Returns: VotesModel representing the result of applying the given operation
     func applyScoringOperation(operation: ScoringOperation) -> VotesModel {
         assert(!(operation == .upvote && myVote == .upvote), "Cannot apply upvote to upvoted score")
         assert(!(operation == .downvote && myVote == .downvote), "Cannot apply downvote to downvoted score")

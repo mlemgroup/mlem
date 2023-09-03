@@ -212,9 +212,7 @@ private extension Color {
     static let checkboxBackground = Color(rgba: 0xEEEE_EFFF)
 }
 
-/**
- Little helper struct to help with the fact that we need to handle images specially
- */
+/// Little helper struct to help with the fact that we need to handle images specially
 struct MarkdownBlock: Identifiable {
     let text: Substring
     let isImage: Bool
