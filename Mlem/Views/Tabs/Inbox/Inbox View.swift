@@ -61,20 +61,15 @@ struct InboxView: View {
     
     // item feeds
     @State var allItems: [InboxItem] = .init()
-    @StateObject var mentionsTracker: MentionsTracker
-    @StateObject var messagesTracker: MessagesTracker
-    @StateObject var repliesTracker: RepliesTracker
-    @StateObject var dummyPostTracker: PostTracker // = .init(internetSpeed: internetSpeed) // used for nav
+    @StateObject var mentionsTracker: MentionsTracker = .init()
+    @StateObject var messagesTracker: MessagesTracker = .init()
+    @StateObject var repliesTracker: RepliesTracker = .init()
+    @StateObject var dummyPostTracker: PostTracker // used for navigation
     
     init() {
-        // TODO: we should probably be passing these in to the initialiser of `InboxView` itself
+        // TODO: once the post tracker is changed we won't need this here...
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        @AppStorage("shouldFilterRead") var shouldFilterRead = false
-        
-        self._mentionsTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, unreadOnly: shouldFilterRead))
-        self._messagesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, unreadOnly: shouldFilterRead))
-        self._repliesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, unreadOnly: shouldFilterRead))
         self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, upvoteOnSave: upvoteOnSave))
     }
     
@@ -106,11 +101,6 @@ struct InboxView: View {
                     if newValue == TabSelection.inbox.hashValue {
                         print("re-selected \(TabSelection.inbox) tab")
                     }
-                }
-                .onChange(of: shouldFilterRead) { newValue in
-                    mentionsTracker.unreadOnly = newValue
-                    messagesTracker.unreadOnly = newValue
-                    repliesTracker.unreadOnly = newValue
                 }
         }
     }

@@ -10,6 +10,9 @@ import Foundation
 import SwiftUI
 
 class RepliesTracker: InboxTracker {
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("shouldFilterRead") var unreadOnly = false
+    
     @Dependency(\.apiClient) var apiClient
     
     var isLoading: Bool = false
@@ -21,15 +24,6 @@ class RepliesTracker: InboxTracker {
     var page: Int = 0
     
     var shouldPerformMergeSorting: Bool = true
-    
-    var internetSpeed: InternetSpeed
-    
-    var unreadOnly: Bool
-    
-    init(internetSpeed: InternetSpeed, unreadOnly: Bool) {
-        self.internetSpeed = internetSpeed
-        self.unreadOnly = unreadOnly
-    }
     
     func retrieveItems(for page: Int) async throws -> [APICommentReplyView] {
         try await apiClient.getReplies(sort: .new, page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)

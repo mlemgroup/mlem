@@ -10,6 +10,9 @@ import Foundation
 import SwiftUI
 
 class MentionsTracker: InboxTracker {
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("shouldFilterRead") var unreadOnly = false
+    
     @Dependency(\.apiClient) var apiClient
     
     @Published var items: [APIPersonMentionView] = []
@@ -21,15 +24,6 @@ class MentionsTracker: InboxTracker {
     var page: Int = 0
     
     var shouldPerformMergeSorting: Bool = true
-    
-    var internetSpeed: InternetSpeed
-    
-    var unreadOnly: Bool
-    
-    init(internetSpeed: InternetSpeed, unreadOnly: Bool) {
-        self.internetSpeed = internetSpeed
-        self.unreadOnly = unreadOnly
-    }
     
     func retrieveItems(for page: Int) async throws -> [APIPersonMentionView] {
         try await apiClient.getPersonMentions(
