@@ -219,6 +219,13 @@ class PostTrackerNew: ObservableObject {
         }
     }
     
+    @MainActor
+    func removeCommunityPosts(from communityId: Int) {
+        filter {
+            $0.community.id != communityId
+        }
+    }
+    
     /**
      Takes a callback and filters out any entry that returns false
      

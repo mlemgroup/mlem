@@ -46,25 +46,6 @@ struct PostComposerView: View {
                 if let responseCallback = editModel.responseCallback {
                     responseCallback(editedPost)
                 }
-                // TODO: Eric migrate this to post repository and post tracker
-//            if let post = editModel.editPost {
-//                let editedPost = try await apiClient.editPost(
-//                    postId: post.id,
-//                    name: postTitle,
-//                    url: postURL,
-//                    body: postBody,
-//                    nsfw: isNSFW
-//                )
-//
-//                hapticManager.play(haptic: .success, priority: .high)
-//
-//                await MainActor.run {
-//                    postTracker.update(with: PostModel(from: editedPost.postView))
-//
-//                    if let responseCallback = editModel.responseCallback {
-//                        responseCallback(PostModel(from: editedPost.postView))
-//                    }
-//                }
                 
             } else {
                 let response = try await apiClient.createPost(

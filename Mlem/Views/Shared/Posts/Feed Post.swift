@@ -222,42 +222,42 @@ struct FeedPost: View {
     }
 
     func blockUser() async {
-        assertionFailure("implement me")
-//        do {
-//            let response = try await apiClient.blockPerson(id: post.creator.id, shouldBlock: true)
-//            if response.blocked {
-//                postTracker.removeUserPosts(from: post.creator.id)
-//                hapticManager.play(haptic: .violentSuccess, priority: .high)
-//                await notifier.add(.success("Blocked \(post.creator.name)"))
-//            }
-//        } catch {
-//            errorHandler.handle(
-//                .init(
-//                    message: "Unable to block \(post.creator.name)",
-//                    style: .toast,
-//                    underlyingError: error
-//                )
-//            )
-//        }
+        // TODO: migrate to personRepository
+        do {
+            let response = try await apiClient.blockPerson(id: post.creator.id, shouldBlock: true)
+            if response.blocked {
+                postTracker.removeUserPosts(from: post.creator.id)
+                hapticManager.play(haptic: .violentSuccess, priority: .high)
+                await notifier.add(.success("Blocked \(post.creator.name)"))
+            }
+        } catch {
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block \(post.creator.name)",
+                    style: .toast,
+                    underlyingError: error
+                )
+            )
+        }
     }
     
     func blockCommunity() async {
-        assertionFailure("implement me")
-//        do {
-//            let response = try await apiClient.blockCommunity(id: post.community.id, shouldBlock: true)
-//            if response.blocked {
-//                postTracker.removeCommunityPosts(from: post.community.id)
-//                await notifier.add(.success("Blocked \(post.community.name)"))
-//            }
-//        } catch {
-//            errorHandler.handle(
-//                .init(
-//                    message: "Unable to block \(post.community.name)",
-//                    style: .toast,
-//                    underlyingError: error
-//                )
-//            )
-//        }
+        // TODO: migrate to communityRepository
+        do {
+            let response = try await apiClient.blockCommunity(id: post.community.id, shouldBlock: true)
+            if response.blocked {
+                postTracker.removeCommunityPosts(from: post.community.id)
+                await notifier.add(.success("Blocked \(post.community.name)"))
+            }
+        } catch {
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block \(post.community.name)",
+                    style: .toast,
+                    underlyingError: error
+                )
+            )
+        }
     }
 
     func replyToPost() {
