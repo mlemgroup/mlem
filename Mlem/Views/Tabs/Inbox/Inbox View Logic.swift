@@ -54,19 +54,19 @@ extension InboxView {
     
     func refreshRepliesTracker() async throws {
         if curTab == .all || curTab == .replies {
-            try await repliesTracker.refresh(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
+            try await repliesTracker.refresh()
         }
     }
     
     func refreshMentionsTracker() async throws {
         if curTab == .all || curTab == .mentions {
-            try await mentionsTracker.refresh(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
+            try await mentionsTracker.refresh()
         }
     }
     
     func refreshMessagesTracker() async throws {
         if curTab == .all || curTab == .messages {
-            try await messagesTracker.refresh(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
+            try await messagesTracker.refresh()
         }
     }
     
@@ -98,13 +98,13 @@ extension InboxView {
         }
     }
     
-    func loadTrackerPage(tracker: InboxTracker) async {
+    func loadTrackerPage(tracker: any InboxTracker) async {
         do {
-            try await tracker.loadNextPage(account: appState.currentActiveAccount, unreadOnly: shouldFilterRead)
+            try await tracker.loadNextPage()
             aggregateAllTrackers()
             // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-merge the whole damn array
-        } catch let message {
-            print(message)
+        } catch {
+            errorHandler.handle(error)
         }
     }
     
