@@ -26,12 +26,16 @@ struct SectionIndexTitles: View {
         VStack {
             ForEach(communitySections) { communitySection in
                 HStack {
-                    if communitySection.sidebarEntry.sidebarIcon != nil {
-                        SectionIndexImage(image: communitySection.sidebarEntry.sidebarIcon!)
-                            .padding(.trailing)
-                    } else if communitySection.sidebarEntry.sidebarLabel != nil {
-                        SectionIndexText(label: communitySection.sidebarEntry.sidebarLabel!)
-                            .padding(.trailing)
+                    if let image = communitySection.sidebarEntry.sidebarIcon {
+                        Image(systemName: image)
+                            .resizable()
+                            .frame(width: 8, height: 8)
+                            .padding(.trailing, 4)
+                    } else if let label = communitySection.sidebarEntry.sidebarLabel {
+                        Text(label)
+                            .font(.system(size: 11))
+                            .bold()
+                            .padding(.trailing, 4)
                     } else {
                         EmptyView()
                     }
@@ -39,6 +43,7 @@ struct SectionIndexTitles: View {
                 .background(dragObserver(viewId: communitySection.viewId))
             }
         }
+        .foregroundStyle(.blue)
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .global)
                 .updating($dragLocation) { value, state, _ in
@@ -67,21 +72,5 @@ struct SectionIndexTitles: View {
             }
         }
         return Rectangle().fill(Color.clear)
-    }
-}
-
-// Sidebar Label Views
-struct SectionIndexText: View {
-    let label: String
-    var body: some View {
-        Text(label).font(.system(size: 12)).bold()
-    }
-}
-
-struct SectionIndexImage: View {
-    let image: String
-    var body: some View {
-        Image(systemName: image).resizable()
-            .frame(width: 8, height: 8)
     }
 }

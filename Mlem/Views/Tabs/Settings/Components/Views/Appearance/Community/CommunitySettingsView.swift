@@ -13,17 +13,12 @@ struct CommunitySettingsView: View {
     
     var body: some View {
         Form {
-            SwitchableSettingsItem(
-                settingPictureSystemName: "person.2.circle.fill",
-                settingName: "Show Community Avatars",
-                isTicked: $shouldShowCommunityIcons
-            )
-
-            SwitchableSettingsItem(
-                settingPictureSystemName: "rectangle.grid.1x2",
-                settingName: "Show Community Banners",
-                isTicked: $shouldShowCommunityHeaders
-            )
+            Toggle("Show Avatars", isOn: $shouldShowCommunityIcons)
+            Toggle("Show Banner in sidebar", isOn: $shouldShowCommunityHeaders)
+            
+            Section("Show Community list in...") {
+                
+            }
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Communities")

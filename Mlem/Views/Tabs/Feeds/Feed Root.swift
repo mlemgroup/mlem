@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+class NavigationRouter: ObservableObject {
+    @Published var navigationPath = NavigationPath()
+}
+
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.scenePhase) var phase
@@ -16,8 +20,7 @@ struct FeedRoot: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
-    @State var navigationPath = NavigationPath()
-
+    @State var router = NavigationRouter()
     @State var rootDetails: CommunityLinkWithContext?
     
     let showLoading: Bool
@@ -26,9 +29,10 @@ struct FeedRoot: View {
         NavigationSplitView {
             CommunityListView(selectedCommunity: $rootDetails)
                 .id(appState.currentActiveAccount.id)
+                .handleLemmyViews()
         } detail: {
             if let rootDetails {
-                NavigationStack(path: $navigationPath) {
+                NavigationStack(path: $router.navigationPath) {
                     FeedView(
                         community: rootDetails.community,
                         feedType: rootDetails.feedType,
@@ -44,9 +48,9 @@ struct FeedRoot: View {
             }
         }
         .handleLemmyLinkResolution(
-            navigationPath: $navigationPath
+            navigationPath: $router.navigationPath
         )
-        .environment(\.navigationPath, $navigationPath)
+        .environmentObject(router)
         .environmentObject(appState)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
@@ -64,7 +68,7 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
                 
-                _ = HandleLemmyLinkResolution(navigationPath: $navigationPath)
+                _ = HandleLemmyLinkResolution(navigationPath: $router.navigationPath)
                     .didReceiveURL(url)
             }
         }
