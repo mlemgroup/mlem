@@ -120,7 +120,6 @@ struct InteractionBarView: View {
                 }
             }
         }
-        // .animation(.linear(duration: 0.3), value: votes)
         .foregroundStyle(.primary)
         .font(.callout)
     }

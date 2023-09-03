@@ -150,7 +150,6 @@ struct CommentItem: View {
                 
                 if !hierarchicalComment.isCollapsed, !compactComments {
                     InteractionBarView(
-                        // apiView: hierarchicalComment.commentView,
                         votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
                         published: hierarchicalComment.commentView.comment.published,
                         numReplies: hierarchicalComment.commentView.counts.childCount,
@@ -259,7 +258,8 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(
                 emptyName: hierarchicalComment.isCollapsed ? emptyCollapseSymbolName : emptyExpandSymbolName,
-                fillName: hierarchicalComment.isCollapsed ? collapseSymbolName : expandSymbolName),
+                fillName: hierarchicalComment.isCollapsed ? collapseSymbolName : expandSymbolName
+            ),
             color: .orange,
             action: toggleCollapsed
         )

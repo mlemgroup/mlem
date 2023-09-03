@@ -79,12 +79,6 @@ struct ThumbnailImageView: View {
     func markPostAsRead() {
         Task(priority: .userInitiated) {
             await postTracker.markRead(post: post)
-//            do {
-//                let readPost = try await postRepository.markRead(postId: post.postId, read: true)
-//                postTracker.update(with: readPost)
-//            } catch {
-//                errorHandler.handle(error)
-//            }
         }
     }
 }
