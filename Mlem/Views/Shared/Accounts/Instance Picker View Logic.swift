@@ -8,41 +8,42 @@
 import Foundation
 
 extension InstancePickerView {
-    func loadInstances() async {
-        print("loading instances...")
-        
+    func loadInstances() async -> [InstanceMetadata] {
         let savedInstances = persistenceRepository.loadInstanceMetadata()
         
-        if savedInstances.isEmpty {
-            print("no saved instances, loading from remote")
-            
-            if let newInstances = await fetchInstances() {
-                instances = newInstances
-                do {
-                    try await persistenceRepository.saveInstanceMetadata(newInstances)
-                } catch {
-                    errorHandler.handle(error)
-                }
+        if savedInstances.isStale {
+            // the saved values we have are stale, so update from remote if we can
+            do {
+                let instances = try await fetchInstances()
+                save(instances)
+                return instances
+            } catch {
+                // as we failed to retrieve/parse from remote, fallback to saved regardless of it's age
+                errorHandler.handle(error)
+                return savedInstances.value
             }
         } else {
-            print("found saved instances")
-            instances = savedInstances
+            // the value we have saved is recent enough to use
+            return savedInstances.value
         }
     }
     
-    /**
-     Retrieves instance metadata from awesome-lemmy-instances
-     */
-    private func fetchInstances() async -> [InstanceMetadata]? {
-        if let url = URL(string: "https://raw.githubusercontent.com/maltfield/awesome-lemmy-instances/main/awesome-lemmy-instances.csv") {
-            do {
-                let (data, _) = try await URLSession.shared.data(from: url)
-                return try InstanceMetadataParser.parse(from: data)
-            } catch {
-                errorHandler.handle(error)
-            }
+    private func save(_ instances: [InstanceMetadata]) {
+        Task {
+            try await persistenceRepository.saveInstanceMetadata(instances)
         }
-        
-        return nil
+    }
+    
+    /// Retrieves instance metadata from awesome-lemmy-instances
+    /// - Returns: A list of `InstanceMetadata` from the remote source
+    private func fetchInstances() async throws -> [InstanceMetadata] {
+        let url = URL(string: "https://raw.githubusercontent.com/maltfield/awesome-lemmy-instances/main/awesome-lemmy-instances.csv")!
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return try InstanceMetadataParser.parse(from: data)
+        } catch {
+            errorHandler.handle(error)
+            throw error
+        }
     }
 }
