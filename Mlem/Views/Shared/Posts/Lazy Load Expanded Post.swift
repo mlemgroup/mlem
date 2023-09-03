@@ -39,11 +39,7 @@ struct LazyLoadExpandedPost: View {
         }
         .task(priority: .background) {
             do {
-                // let post = try await apiClient.loadPost(id: post.id)
                 loadedPostView = try await postTracker.loadPost(postId: post.id)
-//                let postModel = try await postRepository.loadPost(postId: post.id) // PostModel(from: post)
-//                postTracker.add([postModel])
-//                loadedPostView = postModel
             } catch {
                 // TODO: Some sort of common alert banner?
                 // we can show a toast here by passing a `message` and `style: .toast` by using a `ContextualError` below...

@@ -1481,10 +1481,8 @@
 		637218002A3A2AAD008C4816 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				637218012A3A2AAD008C4816 /* APIClient.swift */,
+				CD006D732AA5061A00D5C3CD /* APIClient */,
 				03A1B3F52A83FFDA00AB0DE0 /* Protocol */,
-				50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */,
-				50A881272A71D66B003E3661 /* APIClient+Community.swift */,
 				637218022A3A2AAD008C4816 /* Internal */,
 				637218042A3A2AAD008C4816 /* Models */,
 				637218242A3A2AAD008C4816 /* Requests */,
@@ -1814,6 +1812,17 @@
 				B1DD00BC2A62DDEC002A7B39 /* RecognizedLemmyInstances.swift */,
 			);
 			path = Easter;
+			sourceTree = "<group>";
+		};
+		CD006D732AA5061A00D5C3CD /* APIClient */ = {
+			isa = PBXGroup;
+			children = (
+				637218012A3A2AAD008C4816 /* APIClient.swift */,
+				50A881272A71D66B003E3661 /* APIClient+Community.swift */,
+				50A8812D2A72D76C003E3661 /* APIClient+Comment.swift */,
+				CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */,
+			);
+			path = APIClient;
 			sourceTree = "<group>";
 		};
 		CD14461F2A5B328600610EF1 /* Data */ = {

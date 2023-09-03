@@ -15,7 +15,6 @@ struct GetPrivateMessagesRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     // lemmy_api_common::person::GetPersonDetails
-    @available(*, deprecated, message: "Migrate to PostModel")
     init(
         account: SavedAccount, // TODO: move to session based call, auth required.
         page: Int? = nil,

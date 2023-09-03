@@ -109,7 +109,6 @@ struct LargePost: View {
             postHeaderView
                 .padding(postHeaderInsets)
                 .background(postHeaderBackground)
-                .cornerRadius(8)
             if layoutMode != .minimize {
                 postContentView
             }
