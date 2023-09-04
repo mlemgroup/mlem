@@ -15,7 +15,7 @@ struct EmbeddedPost: View {
     let post: APIPost
     let comment: APIComment
 
-    @State var loadedPostDetails: APIPostView?
+    @State var loadedPostDetails: PostModel?
 
     // TODO:
     // - beautify
@@ -24,7 +24,6 @@ struct EmbeddedPost: View {
     var body: some View {
         NavigationLink(value: LazyLoadPostLinkWithContext(
             post: post,
-            postTracker: postTracker,
             scrollTarget: comment.id
         )) {
             postLinkButton()

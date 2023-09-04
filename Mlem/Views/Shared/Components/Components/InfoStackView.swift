@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-/**
- This struct addresses the two-phase logic of "show votes at all? -> show downvotes separately?" while maintaining the InfoStack approach of "take in optional parameters and render all the non-nil ones." The showDownvotes toggle needs to be passed in because it's maintained separately for posts and for comments, so InfoStack either needs to know whether it's a post or a comment or it just needs to be told which way to display, the latter of which options seems much nicer given that this is a very "dumb" struct
- */
+/// This struct addresses the two-phase logic of "show votes at all? -> show downvotes separately?" while maintaining the InfoStack approach of "take in optional parameters and render all the non-nil ones." The showDownvotes toggle needs to be passed in because it's maintained separately for posts and for comments, so InfoStack either needs to know whether it's a post or a comment or it just needs to be told which way to display, the latter of which options seems much nicer given that this is a very "dumb" struct
 struct DetailedVotes {
     let score: Int
     let upvotes: Int

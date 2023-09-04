@@ -9,22 +9,21 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-/**
- View grouping post interactions--upvote, downvote, save, reply, plus post info
- */
+/// View grouping post interactions--upvote, downvote, save, reply, plus post info
 struct InteractionBarView: View {
     @Dependency(\.siteInformation) var siteInformation
     
     // environment
     @EnvironmentObject var commentTracker: CommentTracker
     
-    // parameters
-    let apiView: any APIContentViewProtocol
+    // metadata
+    let votes: VotesModel
+    let published: Date
+    let numReplies: Int
+    let saved: Bool
+    
     let accessibilityContext: String
     let widgets: [LayoutWidgetType]
-    let displayedScore: Int
-    let displayedVote: ScoringOperation
-    let displayedSaved: Bool
 
     let upvote: () async -> Void
     let downvote: () async -> Void
@@ -53,40 +52,40 @@ struct InteractionBarView: View {
                 switch widget {
                 case .scoreCounter:
                     ScoreCounterView(
-                        vote: displayedVote,
-                        score: displayedScore,
+                        vote: votes.myVote,
+                        score: votes.total,
                         upvote: upvote,
                         downvote: downvote
                     )
                 
                 case .upvoteCounter:
                     if offset == widgets.count - 1 {
-                        UpvoteCounterView(vote: displayedVote, score: apiView.counts.upvotes, upvote: upvote)
+                        UpvoteCounterView(vote: votes.myVote, score: votes.upvotes, upvote: upvote)
                     } else {
-                        UpvoteCounterView(vote: displayedVote, score: apiView.counts.upvotes, upvote: upvote)
+                        UpvoteCounterView(vote: votes.myVote, score: votes.upvotes, upvote: upvote)
                             .padding(.trailing, -AppConstants.postAndCommentSpacing)
                     }
                     
                 case .downvoteCounter:
                     if siteInformation.enableDownvotes {
                         if offset == widgets.count - 1 {
-                            DownvoteCounterView(vote: displayedVote, score: apiView.counts.downvotes, downvote: downvote)
+                            DownvoteCounterView(vote: votes.myVote, score: votes.downvotes, downvote: downvote)
                         } else {
-                            DownvoteCounterView(vote: displayedVote, score: apiView.counts.downvotes, downvote: downvote)
+                            DownvoteCounterView(vote: votes.myVote, score: votes.downvotes, downvote: downvote)
                                 .padding(.trailing, -AppConstants.postAndCommentSpacing)
                         }
                     }
                     
                 case .upvote:
-                    UpvoteButtonView(vote: displayedVote, upvote: upvote)
+                    UpvoteButtonView(vote: votes.myVote, upvote: upvote)
                     
                 case .downvote:
                     if siteInformation.enableDownvotes {
-                        DownvoteButtonView(vote: displayedVote, downvote: downvote)
+                        DownvoteButtonView(vote: votes.myVote, downvote: downvote)
                     }
                     
                 case .save:
-                    SaveButtonView(isSaved: displayedSaved, accessibilityContext: accessibilityContext, save: {
+                    SaveButtonView(isSaved: saved, accessibilityContext: accessibilityContext, save: {
                         Task(priority: .userInitiated) {
                             await save()
                         }
@@ -102,16 +101,16 @@ struct InteractionBarView: View {
                     InfoStackView(
                         votes: shouldShowScore
                             ? DetailedVotes(
-                                score: displayedScore,
-                                upvotes: apiView.counts.upvotes,
-                                downvotes: apiView.counts.downvotes,
-                                myVote: apiView.myVote ?? .resetVote,
+                                score: votes.total,
+                                upvotes: votes.upvotes,
+                                downvotes: votes.downvotes,
+                                myVote: votes.myVote,
                                 showDownvotes: showDownvotesSeparately
                             )
                             : nil,
-                        published: shouldShowTime ? apiView.counts.published : nil,
-                        commentCount: shouldShowReplies ? apiView.counts.comments : nil,
-                        saved: shouldShowSaved ? apiView.saved : nil,
+                        published: shouldShowTime ? published : nil,
+                        commentCount: shouldShowReplies ? numReplies : nil,
+                        saved: shouldShowSaved ? saved : nil,
                         alignment: infoStackAlignment(offset)
                     )
                     .padding(AppConstants.postAndCommentSpacing)

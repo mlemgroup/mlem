@@ -7,12 +7,10 @@
 
 import Foundation
 
-/**
- Enum to denote priority of haptic feedback. The levels denote:
- - sentinel: denotes that the user has selected no haptics. Should never be used as a haptic priority!
- - high: denotes a haptic that always plays if the user has selected any degree of haptic feedback
- - low: denotes a haptic that only plays if the user has selected "all" haptic feedback
- */
+/// Enum to denote priority of haptic feedback. The levels denote:
+/// - sentinel: denotes that the user has selected no haptics. Should never be used as a haptic priority!
+/// - high: denotes a haptic that always plays if the user has selected any degree of haptic feedback
+/// - low: denotes a haptic that only plays if the user has selected "all" haptic feedback
 enum HapticPriority: String, CaseIterable, Comparable {
     case sentinel, high, low
     

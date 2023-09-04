@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-/**
- Wrapper for items in the inbox to allow a unified, sorted feed
- */
+/// Wrapper for items in the inbox to allow a unified, sorted feed
 struct InboxItem: Identifiable {
     let published: Date
     let baseId: Int

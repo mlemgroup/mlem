@@ -38,10 +38,8 @@ class HapticManager {
             self?.handleEngineFailure()
         }
     }
-    
-    /**
-     If this device supports haptics, creates and returns a CHHaptic engine; otherwise returns nil
-     */
+
+    /// If this device supports haptics, creates and returns a CHHaptic engine; otherwise returns nil
     @discardableResult func initEngine() -> CHHapticEngine? {
         if CHHapticEngine.capabilitiesForHardware().supportsHaptics {
             do {
@@ -56,9 +54,7 @@ class HapticManager {
         return nil
     }
     
-    /**
-     Restarts the engine if it is present, creates it if not. Can be passed a pattern to play on start.
-     */
+    /// Restarts the engine if it is present, creates it if not. Can be passed a pattern to play on start.
     func handleEngineFailure(with file: URL? = nil) {
         if let hapticEngine {
             start(engine: hapticEngine)
@@ -84,9 +80,7 @@ class HapticManager {
         }
     }
     
-    /**
-     Plays a haptic if the given priority is equal to or lower than the current haptic level
-     */
+    /// Plays a haptic if the given priority is equal to or lower than the current haptic level
     func play(haptic: Haptic, priority: HapticPriority) {
         assert(priority != .sentinel, "Cannot use .sentinel as a haptic priority")
         

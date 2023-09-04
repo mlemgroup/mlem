@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-/**
- Displays a document
- */
+/// Displays a document
 struct DocumentView: View {
     let text: String
     

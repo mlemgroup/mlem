@@ -41,5 +41,9 @@ struct SaveButtonView: View {
         }
         .accessibilityLabel(saveButtonText)
         .accessibilityAction(.default) { save() }
+        .buttonStyle(.plain)
+        .transaction { transaction in
+            transaction.disablesAnimations = true
+        }
     }
 }
