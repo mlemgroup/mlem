@@ -16,7 +16,7 @@ struct GetRepliesRequest: APIGetRequest {
 
     // lemmy_api_common::person::GetPersonMentions
     init(
-        account: SavedAccount,
+        account: SavedAccount, // TODO: needs to move to session based call... auth needed.
         sort: PostSortType? = nil,
         page: Int? = nil,
         limit: Int? = nil,

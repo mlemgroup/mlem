@@ -25,9 +25,9 @@ struct CreateCommentReportRequest: APIPostRequest {
         session: APISession,
         commentId: Int,
         reason: String
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(auth: session.token, comment_id: commentId, reason: reason)
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(auth: session.token, comment_id: commentId, reason: reason)
     }
 }
 

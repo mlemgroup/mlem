@@ -25,9 +25,9 @@ struct FollowCommunityRequest: APIPostRequest {
         session: APISession,
         communityId: Int,
         follow: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             community_id: communityId,
             follow: follow,
             auth: session.token

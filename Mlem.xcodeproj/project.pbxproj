@@ -88,6 +88,7 @@
 		50CC4A762A9CB9930074C845 /* instance_metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = 50CC4A752A9CB9930074C845 /* instance_metadata.json */; };
 		50CC4A782A9CBDF70074C845 /* TimestampedValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC4A772A9CBDF60074C845 /* TimestampedValueTests.swift */; };
 		50CC4A7A2A9CC45D0074C845 /* InstanceMetadata+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CC4A792A9CC45C0074C845 /* InstanceMetadata+Mock.swift */; };
+		50D61E5B2AA32B9400A926EC /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D61E5A2AA32B9400A926EC /* APISession.swift */; };
 		50DBB8E02A805836002870B1 /* MockErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */; };
 		50DBB8E22A80F9E4002870B1 /* APICommunity+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
@@ -514,6 +515,7 @@
 		50CC4A752A9CB9930074C845 /* instance_metadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = instance_metadata.json; sourceTree = "<group>"; };
 		50CC4A772A9CBDF60074C845 /* TimestampedValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampedValueTests.swift; sourceTree = "<group>"; };
 		50CC4A792A9CC45C0074C845 /* InstanceMetadata+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceMetadata+Mock.swift"; sourceTree = "<group>"; };
+		50D61E5A2AA32B9400A926EC /* APISession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISession.swift; sourceTree = "<group>"; };
 		50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockErrorHandler.swift; sourceTree = "<group>"; };
 		50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APICommunity+Mock.swift"; sourceTree = "<group>"; };
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
@@ -1479,6 +1481,7 @@
 				637218042A3A2AAD008C4816 /* Models */,
 				637218242A3A2AAD008C4816 /* Requests */,
 				637218422A3A2AAD008C4816 /* APIRequest.swift */,
+				50D61E5A2AA32B9400A926EC /* APISession.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -2577,6 +2580,7 @@
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */,
+				50D61E5B2AA32B9400A926EC /* APISession.swift in Sources */,
 				CDCBD72B2A8EC0A800387A2C /* Instance Summary.swift in Sources */,
 				CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */,
 				6372186D2A3A2AAD008C4816 /* EditComment.swift in Sources */,

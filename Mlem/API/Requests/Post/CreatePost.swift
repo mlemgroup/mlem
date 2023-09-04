@@ -34,9 +34,9 @@ struct CreatePostRequest: APIPostRequest {
         body: String?,
         // TODO: change to `URL?`
         url: String?
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             auth: session.token,
             community_id: communityId,
             name: name,

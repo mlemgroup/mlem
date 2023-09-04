@@ -25,9 +25,9 @@ struct BlockPersonRequest: APIPostRequest {
         session: APISession,
         personId: Int,
         block: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             person_id: personId,
             block: block,
             auth: session.token

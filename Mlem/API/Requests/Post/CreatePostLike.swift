@@ -25,8 +25,8 @@ struct CreatePostLikeRequest: APIPostRequest {
         session: APISession,
         postId: Int,
         score: ScoringOperation
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(auth: session.token, post_id: postId, score: score.rawValue)
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(auth: session.token, post_id: postId, score: score.rawValue)
     }
 }

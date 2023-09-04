@@ -25,9 +25,9 @@ struct CreatePostReportRequest: APIPostRequest {
         session: APISession,
         postId: Int,
         reason: String
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(auth: session.token, post_id: postId, reason: reason)
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(auth: session.token, post_id: postId, reason: reason)
     }
 }
 

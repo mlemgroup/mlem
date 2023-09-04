@@ -20,7 +20,6 @@ enum Field: Hashable {
 
 // swiftlint:disable type_body_length
 struct AddSavedInstanceView: View {
-    
     @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.apiClient) var apiClient
     
@@ -346,7 +345,7 @@ struct AddSavedInstanceView: View {
     
     private func getUserID(authToken: String, instanceURL: URL) async throws -> Int {
         // create a session to use for this request, since we're in the process of creating the account...
-        let session = APISession(token: authToken, URL: instanceURL)
+        let session = APISession.authenticated(instanceURL, authToken)
         do {
             return try await apiClient.getPersonDetails(session: session, username: username)
                 .personView

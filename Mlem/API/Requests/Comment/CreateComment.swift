@@ -30,9 +30,9 @@ struct CreateCommentRequest: APIPostRequest {
         languageId: Int?,
         parentId: Int?,
         postId: Int
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             content: content,
             post_id: postId,
             parent_id: parentId,

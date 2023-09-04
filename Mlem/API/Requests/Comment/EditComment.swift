@@ -33,16 +33,15 @@ struct EditCommentRequest: APIPutRequest {
         distinguished: Bool?,
         languageId: Int?,
         formId: String?
-    ) {
-        self.instanceURL = session.URL
+    ) throws {
+        self.instanceURL = try session.instanceUrl
 
-        self.body = .init(
+        self.body = try .init(
             comment_id: commentId,
             content: content,
             distinguished: distinguished,
             language_id: languageId,
             form_id: formId,
-
             auth: session.token
         )
     }
