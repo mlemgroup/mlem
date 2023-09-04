@@ -12,6 +12,8 @@ struct FeedButtonView: View {
     
     @State var feedType: FeedType
     
+    @EnvironmentObject var router: NavigationRouter
+    
     let title: String
     let iconName: String
     let iconColor: Color
@@ -25,7 +27,10 @@ struct FeedButtonView: View {
     }
     
     var body: some View {
-        NavigationLink(value: CommunityLinkWithContext(community: nil, feedType: feedType)) {
+        NavigationLink(destination:
+            FeedDetailRoot(rootDetails: CommunityLinkWithContext(community: nil, feedType: feedType))
+            .id(UUID())
+        ) {
             HStack(spacing: 12) {
                 Image(systemName: iconName)
                     .resizable()

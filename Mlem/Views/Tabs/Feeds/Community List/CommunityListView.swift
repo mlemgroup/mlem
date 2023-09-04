@@ -19,13 +19,7 @@ struct CommunitySection: Identifiable {
 struct CommunityListView: View {
     
     @StateObject private var model: CommunityListModel = .init()
-    
-    @Binding var selectedCommunity: CommunityLinkWithContext?
 
-    init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
-        self._selectedCommunity = selectedCommunity
-    }
-    
     let headerBodySpacing: CGFloat = 4
 
     // MARK: - Body
@@ -148,7 +142,7 @@ struct CommunityListViewPreview: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationStack {
-                CommunityListView(selectedCommunity: .constant(nil))
+                CommunityListView()
             }
             .previewDisplayName("Populated")
             
@@ -157,7 +151,7 @@ struct CommunityListViewPreview: PreviewProvider {
                     // return no subscriptions...
                     $0.communityRepository.subscriptions = { _ in [] }
                 } operation: {
-                    CommunityListView(selectedCommunity: .constant(nil))
+                    CommunityListView()
                 }
             }
             .previewDisplayName("Empty")
@@ -169,7 +163,7 @@ struct CommunityListViewPreview: PreviewProvider {
                         throw APIClientError.response(.init(error: "Borked"), nil)
                     }
                 } operation: {
-                    CommunityListView(selectedCommunity: .constant(nil))
+                    CommunityListView()
                 }
             }
             .previewDisplayName("Error")

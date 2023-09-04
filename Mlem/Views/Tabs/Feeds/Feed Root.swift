@@ -16,40 +16,24 @@ struct FeedRoot: View {
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
-    
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
-
-    @State var router = NavigationRouter()
-    @State var rootDetails: CommunityLinkWithContext? = .init(community: nil, feedType: .subscribed)
     
     let showLoading: Bool
+    
+    @State var rootDetails: CommunityLinkWithContext? = .init(community: nil, feedType: .subscribed)
 
     var body: some View {
         NavigationSplitView {
-            CommunityListView(selectedCommunity: $rootDetails)
+            CommunityListView()
                 .id(appState.currentActiveAccount.id)
         } detail: {
-            if let rootDetails {
-                NavigationStack(path: $router.navigationPath) {
-                    FeedView(
-                        community: rootDetails.community,
-                        feedType: rootDetails.feedType,
-                        sortType: defaultPostSorting,
-                        showLoading: showLoading
-                    )
-                    .environmentObject(appState)
-                    .handleLemmyViews()
-                }
-                .id(rootDetails.id + appState.currentActiveAccount.id)
+            if let rootDetails = rootDetails {
+                FeedDetailRoot(rootDetails: rootDetails)
             } else {
                 Text("Please select a community")
             }
         }
-        .handleLemmyLinkResolution(
-            navigationPath: $router.navigationPath
-        )
-        .environmentObject(router)
+
         .environmentObject(appState)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
@@ -59,16 +43,6 @@ struct FeedRoot: View {
                 ) ?? defaultFeed
                 rootDetails = CommunityLinkWithContext(community: nil, feedType: feedType)
                 shortcutItemToProcess = nil
-            }
-        }
-        .onOpenURL { url in
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                if rootDetails == nil {
-                    rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
-                }
-                
-                _ = HandleLemmyLinkResolution(navigationPath: $router.navigationPath)
-                    .didReceiveURL(url)
             }
         }
         .onChange(of: phase) { newPhase in

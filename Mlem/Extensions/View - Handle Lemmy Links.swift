@@ -90,6 +90,7 @@ struct HandleLemmyLinkResolution: ViewModifier {
 
     @MainActor
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
+        print("RECIEVED URL")
         // let's try keep peps in the app!
         if url.absoluteString.contains(["lem", "/c/", "/u/", "/post/", "@"]) {
             // this link is sus! let's go
