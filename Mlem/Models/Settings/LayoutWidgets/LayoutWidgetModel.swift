@@ -72,10 +72,12 @@ class LayoutWidgetModel: ObservableObject {
         widgetDraggingOffset = .zero
         
         if let widgetDragging {
-            if let index = widgetDraggingCollection!.items.firstIndex(of: widgetDragging) {
-                widgetDraggingCollection!.items.remove(at: index)
+            if let collection = widgetDraggingCollection {
+                collection.removeFrom(widgetDragging)
             }
-            predictedDropCollection!.drop(widgetDragging)
+            if let collection = predictedDropCollection {
+                collection.addTo(widgetDragging)
+            }
             
             lastDraggedWidget = widgetDragging
             self.widgetDragging = nil

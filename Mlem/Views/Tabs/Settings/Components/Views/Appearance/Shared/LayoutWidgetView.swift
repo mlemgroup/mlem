@@ -51,6 +51,5 @@ struct LayoutWidgetView: View {
         .background(Color(UIColor.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 5))
         .matchedGeometryEffect(id: "Widget\(widget.hashValue)", in: animation)
-        .transition(.scale(scale: 1))
     }
 }

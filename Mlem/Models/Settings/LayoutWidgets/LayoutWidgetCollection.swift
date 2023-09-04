@@ -9,36 +9,26 @@ import SwiftUI
 
 class LayoutWidgetCollection: ObservableObject, Equatable {
     var id = UUID()
+    
     @Published var items: [LayoutWidget] = .init()
     var itemsToRender: [LayoutWidget?] { items }
     var rect: CGRect?
-    var costLimit: Float
     
-    init(_ items: [LayoutWidget], costLimit: Float = .infinity) {
+    init(_ items: [LayoutWidget]) {
         _items = Published(wrappedValue: items)
-        self.costLimit = costLimit
     }
     
     func update(isHovered: Bool, value: DragGesture.Value, widgetDragging: LayoutWidget) {}
     
-    func drop(_ widget: LayoutWidget) {
-        items.append(widget)
-    }
+    func removeFrom(_ widget: LayoutWidget) { }
+    
+    func addTo(_ widget: LayoutWidget) { }
     
     func getItemAtLocation(_ location: CGPoint) -> LayoutWidget? {
         items.first { $0.rect?.contains(location) ?? false }
     }
     
-    func isValidDropLocation(_ widgetDragging: LayoutWidget? = nil) -> Bool {
-        // costLimit == .infinity is for optimisation
-        costLimit == .infinity || totalCost(widgetDragging) <= costLimit
-    }
-    
-    func totalCost(_ widgetDragging: LayoutWidget? = nil) -> Float {
-        items.reduce(0) { accumulator, element in
-            accumulator + element.type.cost
-        } + (widgetDragging?.type.cost ?? 0)
-    }
+    func isValidDropLocation(_ widgetDragging: LayoutWidget? = nil) -> Bool { true }
     
     func getItemDictionary() -> [LayoutWidgetType: LayoutWidget] {
         itemsToRender.reduce(into: [LayoutWidgetType: LayoutWidget]()) { dict, widget in
@@ -53,9 +43,49 @@ class LayoutWidgetCollection: ObservableObject, Equatable {
     }
 }
 
-class UnorderedWidgetCollection: LayoutWidgetCollection {}
+class InfiniteWidgetCollection: LayoutWidgetCollection {
+    override func getItemAtLocation(_ location: CGPoint) -> LayoutWidget? {
+        if let widget = items.first(where: { $0.rect?.contains(location) ?? false }) {
+            return LayoutWidget(widget.type, rect: widget.rect)
+        } else {
+            return nil
+        }
+    }
+}
 
-class OrderedWidgetCollection: LayoutWidgetCollection {
+class FiniteWidgetCollection: LayoutWidgetCollection {
+    var costLimit: Float
+    
+    init(_ items: [LayoutWidget], costLimit: Float = .infinity) {
+        self.costLimit = costLimit
+        super.init(items)
+    }
+    
+    override func addTo(_ widget: LayoutWidget) {
+        items.append(widget)
+    }
+    
+    override func removeFrom(_ widget: LayoutWidget) {
+        if let index = items.firstIndex(of: widget) {
+            items.remove(at: index)
+        }
+    }
+    
+    override func isValidDropLocation(_ widgetDragging: LayoutWidget? = nil) -> Bool {
+        // costLimit == .infinity is for optimisation
+        costLimit == .infinity || totalCost(widgetDragging) <= costLimit
+    }
+    
+    func totalCost(_ widgetDragging: LayoutWidget? = nil) -> Float {
+        items.reduce(0) { accumulator, element in
+            accumulator + element.type.cost
+        } + (widgetDragging?.type.cost ?? 0)
+    }
+}
+
+class UnorderedWidgetCollection: FiniteWidgetCollection {}
+
+class OrderedWidgetCollection: FiniteWidgetCollection {
     @Published var itemsWithPlaceholder: [LayoutWidget?] = .init()
     override var itemsToRender: [LayoutWidget?] { itemsWithPlaceholder }
     var predictedDropIndex: Int?
@@ -80,7 +110,7 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
         }
     }
     
-    override func drop(_ widget: LayoutWidget) {
+    override func addTo(_ widget: LayoutWidget) {
         items.insert(widget, at: predictedDropIndex!)
         itemsWithPlaceholder = items
     }
@@ -121,13 +151,17 @@ class OrderedWidgetCollection: LayoutWidgetCollection {
             nodes.append(Float(lastRect.maxX) + 5)
         }
         
-        let comparisonX = Float(widgetDragging.rect!.origin.x + value.translation.width)
+        if let rect = widgetDragging.rect {
+            let comparisonX = Float(rect.origin.x + value.translation.width)
             + Float(widgetDragging.rect!.width) / 2.0
-
-        if let closest = nodes.enumerated().min(by: {
-            abs($0.element - comparisonX) < abs($1.element - comparisonX)
-        }) {
-            return closest.offset
+            
+            if let closest = nodes.enumerated().min(by: {
+                abs($0.element - comparisonX) < abs($1.element - comparisonX)
+            }) {
+                return closest.offset
+            }
+        } else {
+            print("Widget computeDropIndex failure")
         }
         return nil
     }
