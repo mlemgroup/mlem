@@ -36,7 +36,7 @@ struct LayoutWidgetEditView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @StateObject var barCollection: OrderedWidgetCollection
-    @StateObject var trayCollection: UnorderedWidgetCollection
+    @StateObject var trayCollection: InfiniteWidgetCollection
     
     @StateObject private var widgetModel: LayoutWidgetModel
     
@@ -47,13 +47,21 @@ struct LayoutWidgetEditView: View {
         self.onSave = onSave
         
         let barWidgets = widgets.map { LayoutWidget($0) }
-        let trayWidgets = LayoutWidgetType.allCases
-            .filter { !widgets.contains($0) }
-            .map { LayoutWidget($0) }
         
         let bar = OrderedWidgetCollection(barWidgets, costLimit: 7)
         
-        let tray = UnorderedWidgetCollection(trayWidgets)
+        let tray = InfiniteWidgetCollection(
+            [
+            .upvote,
+            .downvote,
+            .save,
+            .reply,
+            .share,
+            .upvoteCounter,
+            .downvoteCounter,
+            .scoreCounter
+            ].map { LayoutWidget($0) }
+        )
         
         _barCollection = StateObject(wrappedValue: bar)
         _trayCollection = StateObject(wrappedValue: tray)
@@ -150,7 +158,6 @@ struct LayoutWidgetEditView: View {
                 } else {
                     Color.clear
                         .frame(maxWidth: widgetModel.widgetDragging?.type.width ?? 0, maxHeight: .infinity)
-                        .padding(10)
                 }
             }
         }
@@ -195,9 +202,6 @@ struct LayoutWidgetEditView: View {
         Group {
             if let widget = widgets[widgetType] {
                 placedWidgetView(widget, outerFrame: outerFrame)
-            } else {
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(Color(UIColor.secondarySystemGroupedBackground), lineWidth: 1.5)
             }
         }
         .frame(width: widgetType.width == .infinity ? 150 : widgetType.width, height: 40)
