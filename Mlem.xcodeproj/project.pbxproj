@@ -14,6 +14,7 @@
 		0321093D2AA61E0C00912DFC /* CommunityAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321093C2AA61E0C00912DFC /* CommunityAvatarView.swift */; };
 		0321093F2AA61E1A00912DFC /* CommunityLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321093E2AA61E1A00912DFC /* CommunityLabelView.swift */; };
 		032109412AA61F7400912DFC /* IconType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109402AA61F7400912DFC /* IconType.swift */; };
+		032109432AA63A3900912DFC /* FeedDetailRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109422AA63A3900912DFC /* FeedDetailRoot.swift */; };
 		034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */; };
 		0357A9132AA3CA21000F64F5 /* FeedButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0357A9122AA3CA21000F64F5 /* FeedButtonView.swift */; };
 		035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EB0C92A8687C200227859 /* JumpButtonView.swift */; };
@@ -439,6 +440,7 @@
 		0321093C2AA61E0C00912DFC /* CommunityAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAvatarView.swift; sourceTree = "<group>"; };
 		0321093E2AA61E1A00912DFC /* CommunityLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLabelView.swift; sourceTree = "<group>"; };
 		032109402AA61F7400912DFC /* IconType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconType.swift; sourceTree = "<group>"; };
+		032109422AA63A3900912DFC /* FeedDetailRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailRoot.swift; sourceTree = "<group>"; };
 		034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetTracker.swift; sourceTree = "<group>"; };
 		0357A9122AA3CA21000F64F5 /* FeedButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedButtonView.swift; sourceTree = "<group>"; };
 		035EB0C92A8687C200227859 /* JumpButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButtonView.swift; sourceTree = "<group>"; };
@@ -1816,6 +1818,7 @@
 				CDF1EF112A6B672C003594B6 /* Feed View.swift */,
 				CDF1EF132A6B6D6E003594B6 /* Feed View Logic.swift */,
 				B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */,
+				032109422AA63A3900912DFC /* FeedDetailRoot.swift */,
 				6332FDD427F080FA0009A98A /* Community List */,
 				63344C6F2A098054001BC616 /* Components */,
 			);
@@ -2552,6 +2555,7 @@
 				CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */,
 				CD4E98A32A69BEDC0026C4D9 /* IconSettingsView.swift in Sources */,
 				637218692A3A2AAD008C4816 /* CreateCommentLike.swift in Sources */,
+				032109432AA63A3900912DFC /* FeedDetailRoot.swift in Sources */,
 				03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* Window.swift in Sources */,
 				6372185A2A3A2AAD008C4816 /* APISubscribedStatus.swift in Sources */,
