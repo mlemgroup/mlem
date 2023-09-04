@@ -88,7 +88,6 @@ struct PostModel {
 }
 
 extension PostModel: Identifiable {
-    /// Identifies this post as a distinct Lemmy identity. This will consider two PostModels with the same postId as identical, so if you need to trigger view updates when things like votes or save status changes, explicitly use the hash value as defined below
     var id: Int { hashValue }
 }
 
