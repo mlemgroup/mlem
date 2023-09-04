@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct FeedButtonView: View {
+    @AppStorage("communityIconShape") var communityIconShape: IconShape = .circle
+    
     @State var feedType: FeedType
     
     let title: String
     let iconName: String
     let iconColor: Color
+    
+    var shape: AnyShape {
+        if communityIconShape == .circle {
+            AnyShape(Circle())
+        } else {
+            AnyShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+        }
+    }
     
     var body: some View {
         NavigationLink(value: CommunityLinkWithContext(community: nil, feedType: feedType)) {
@@ -24,13 +34,14 @@ struct FeedButtonView: View {
                     .padding(8)
                     .frame(width: 36, height: 36)
                     .background(iconColor)
-                    .clipShape(Circle())
+                    .clipShape(shape)
                 Text(title)
+                    .padding(.trailing, -30)
                 Spacer()
             }
             .contentShape(Rectangle())
         }
-        .padding(.leading, 15)
+        .padding(.leading, 12)
         .frame(maxWidth: .infinity)
         .frame(height: 60)
         .background(

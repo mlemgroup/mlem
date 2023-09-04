@@ -58,7 +58,7 @@ struct CommuntiyFeedRowView: View {
                     .fontWeight(.semibold)
             }
             .padding(.vertical, 7)
-            .padding(.horizontal, 15)
+            .padding(.horizontal, 12)
             .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
         }
@@ -75,26 +75,7 @@ struct CommuntiyFeedRowView: View {
     
     private var content: some View {
         HStack(spacing: 15) {
-            Group {
-                if let url = community.icon {
-                    CachedImage(
-                        url: url.withIcon64Parameters,
-                        shouldExpand: false,
-                        fixedSize: CGSize(width: 36, height: 36),
-                        imageNotFound: defaultCommunityAvatar,
-                        contentMode: .fill
-                    )
-                } else {
-                    defaultCommunityAvatar()
-                }
-            }
-            .clipShape(Circle())
-            .overlay(Circle()
-                .stroke(
-                    Color(UIColor.secondarySystemBackground),
-                    lineWidth: shouldClipAvatar(community: community) ? 1 : 0
-                ))
-            .frame(width: 36, height: 36)
+            CommunityAvatarView(community: community, avatarSize: 36)
             .accessibilityHidden(true)
             
             VStack(alignment: .leading, spacing: 0) {
@@ -108,28 +89,6 @@ struct CommuntiyFeedRowView: View {
                 }
             }
         }
-    }
-    
-    private func defaultCommunityAvatar() -> AnyView {
-        AnyView(
-            ZStack {
-                VStack {
-                    Spacer()
-                    Image(systemName: "building.2.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 24)
-                        .foregroundStyle(.white)
-                }
-                .scaledToFit()
-                .mask(
-                    Circle()
-                        .frame(width: 30, height: 30)
-                )
-            }
-            .frame(maxWidth: .infinity)
-            .background(.gray)
-        )
     }
 
     private var communityLabel: String {

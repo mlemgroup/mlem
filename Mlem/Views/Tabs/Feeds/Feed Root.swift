@@ -21,7 +21,7 @@ struct FeedRoot: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @State var router = NavigationRouter()
-    @State var rootDetails: CommunityLinkWithContext?
+    @State var rootDetails: CommunityLinkWithContext? = .init(community: nil, feedType: .subscribed)
     
     let showLoading: Bool
 
@@ -29,7 +29,6 @@ struct FeedRoot: View {
         NavigationSplitView {
             CommunityListView(selectedCommunity: $rootDetails)
                 .id(appState.currentActiveAccount.id)
-                .handleLemmyViews()
         } detail: {
             if let rootDetails {
                 NavigationStack(path: $router.navigationPath) {
