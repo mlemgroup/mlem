@@ -35,14 +35,21 @@ struct GetPrivateMessagesRequest: APIGetRequest {
         page: Int?,
         limit: Int?,
         unreadOnly: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
-            .init(name: "auth", value: session.token),
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        var queryItems: [URLQueryItem] = [
             .init(name: "page", value: page?.description),
             .init(name: "limit", value: limit?.description),
             .init(name: "unread_only", value: String(unreadOnly))
         ]
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 }
 

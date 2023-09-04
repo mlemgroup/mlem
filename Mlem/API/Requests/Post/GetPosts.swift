@@ -47,10 +47,9 @@ struct GetPostsRequest: APIGetRequest {
         limit: Int? = nil,
         savedOnly: Bool? = nil,
         communityName: String? = nil
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
-            .init(name: "auth", value: session.token),
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        var queryItems: [URLQueryItem] = [
             .init(name: "page", value: "\(page)"),
             .init(name: "type_", value: type.rawValue),
             .init(name: "sort", value: sort.map(\.rawValue)),
@@ -59,6 +58,14 @@ struct GetPostsRequest: APIGetRequest {
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 }
 
