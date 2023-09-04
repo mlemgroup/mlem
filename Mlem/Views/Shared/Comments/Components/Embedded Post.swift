@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EmbeddedPost: View {
     // used to handle the lazy load embedded post--speed doesn't matter because it's not a "real" post tracker
-    @StateObject var postTracker: PostTrackerNew = .init(internetSpeed: .slow)
+    @StateObject var postTracker: PostTracker = .init(internetSpeed: .slow)
     
     let community: APICommunity
     let post: APIPost

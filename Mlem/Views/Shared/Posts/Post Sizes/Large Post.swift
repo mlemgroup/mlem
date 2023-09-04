@@ -43,7 +43,7 @@ struct LargePost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     // global state
-    @EnvironmentObject var postTracker: PostTrackerNew
+    @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    @EnvironmentObject var postTracker: PostTrackerNew
+    @EnvironmentObject var postTracker: PostTracker
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository

@@ -53,7 +53,7 @@ struct ExpandedPost: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject var commentTracker: CommentTracker = .init()
-    @EnvironmentObject var postTracker: PostTrackerNew
+    @EnvironmentObject var postTracker: PostTracker
     @State var post: PostModel
     
     @State var commentErrorDetails: ErrorDetails?

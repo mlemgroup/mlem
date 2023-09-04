@@ -19,7 +19,7 @@ struct LazyLoadExpandedPost: View {
     
     @State private var loadedPostView: PostModel?
 
-    @StateObject private var postTracker = PostTrackerNew(internetSpeed: .slow)
+    @StateObject private var postTracker = PostTracker(internetSpeed: .slow)
 
     var body: some View {
         Group {

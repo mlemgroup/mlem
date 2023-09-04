@@ -1,5 +1,5 @@
 //
-//  UltraCompactPost.swift
+//  Compact Post.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-04.
@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct UltraCompactPost: View {
+struct CompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
@@ -25,7 +25,7 @@ struct UltraCompactPost: View {
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
     
-    @EnvironmentObject var postTracker: PostTrackerNew
+    @EnvironmentObject var postTracker: PostTracker
 
     // constants
     let thumbnailSize: CGFloat = 60

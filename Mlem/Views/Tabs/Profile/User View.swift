@@ -26,7 +26,7 @@ struct UserView: View {
     @State var userID: Int
     @State var userDetails: APIPersonView?
 
-    @StateObject private var privatePostTracker: PostTrackerNew
+    @StateObject private var privatePostTracker: PostTracker
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
     @State private var showingCakeDay = false

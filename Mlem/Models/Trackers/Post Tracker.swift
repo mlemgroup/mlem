@@ -1,5 +1,5 @@
 //
-//  Post Tracker New.swift
+//  Post Tracker.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-08-26.
@@ -13,7 +13,7 @@ import SwiftUI
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
 /// New post tracker built on top of the PostRepository instead of calling the API directly. Because this thing works fundamentally differently from the old one, it can't conform to FeedTracker--that's going to need a revamp down the line once everything uses nice shiny middleware models, so for now we're going to have to put up with some ugly
-class PostTrackerNew: ObservableObject {
+class PostTracker: ObservableObject {
     // dependencies
     @Dependency(\.postRepository) var postRepository
     @Dependency(\.apiClient) var apiClient

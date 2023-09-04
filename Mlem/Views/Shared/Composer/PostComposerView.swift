@@ -14,7 +14,7 @@ struct PostComposerView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let postTracker: PostTrackerNew
+    let postTracker: PostTracker
     let editModel: PostEditorModel
     
     @State var postTitle: String

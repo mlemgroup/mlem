@@ -43,7 +43,7 @@ struct FeedPost: View {
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
 
-    @EnvironmentObject var postTracker: PostTrackerNew
+    @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -133,7 +133,7 @@ struct FeedPost: View {
     @ViewBuilder
     var postItem: some View {
         if postSize == .compact {
-            UltraCompactPost(
+            CompactPost(
                 post: post,
                 showCommunity: showCommunity,
                 menuFunctions: genMenuFunctions()

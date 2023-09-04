@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserFeedView: View {
     var userID: Int
-    @StateObject var privatePostTracker: PostTrackerNew
+    @StateObject var privatePostTracker: PostTracker
     @StateObject var privateCommentTracker: CommentTracker
     
     @Binding var selectedTab: UserViewTab
