@@ -9,6 +9,11 @@ import SwiftUI
 
 class NavigationRouter: ObservableObject {
     @Published var navigationPath = NavigationPath()
+    
+    init(navigationPath: NavigationPath = NavigationPath()) {
+        print("INIT", navigationPath.count)
+        self.navigationPath = navigationPath
+    }
 }
 
 struct FeedRoot: View {
@@ -16,7 +21,9 @@ struct FeedRoot: View {
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+    
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
+    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
     
     let showLoading: Bool
     
@@ -28,12 +35,12 @@ struct FeedRoot: View {
                 .id(appState.currentActiveAccount.id)
         } detail: {
             if let rootDetails = rootDetails {
-                FeedDetailRoot(rootDetails: rootDetails)
+                FeedDetailRoot(destination: rootDetails)
             } else {
                 Text("Please select a community")
             }
         }
-
+        // .environmentObject(router)
         .environmentObject(appState)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {

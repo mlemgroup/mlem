@@ -28,7 +28,7 @@ struct FeedButtonView: View {
     
     var body: some View {
         NavigationLink(destination:
-            FeedDetailRoot(rootDetails: CommunityLinkWithContext(community: nil, feedType: feedType))
+            FeedDetailRoot(destination: CommunityLinkWithContext(community: nil, feedType: feedType))
             .id(UUID())
         ) {
             HStack(spacing: 12) {
