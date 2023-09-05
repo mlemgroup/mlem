@@ -27,10 +27,9 @@ struct GetCommentsRequest: APIGetRequest {
         communityName: String?,
         parentId: Int?,
         savedOnly: Bool?
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
-            .init(name: "auth", value: session.token),
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        var queryItems: [URLQueryItem] = [
             .init(name: "post_id", value: "\(postId)"),
             .init(name: "max_depth", value: "\(maxDepth)"),
             .init(name: "type_", value: type.rawValue),
@@ -42,6 +41,14 @@ struct GetCommentsRequest: APIGetRequest {
             .init(name: "parent_id", value: parentId.map(String.init)),
             .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 }
 

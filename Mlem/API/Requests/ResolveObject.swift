@@ -18,11 +18,10 @@ struct ResolveObjectRequest: APIGetRequest {
     init(
         session: APISession,
         query: String
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.queryItems = try [
             .init(name: "q", value: query),
-
             .init(name: "auth", value: session.token)
         ]
     }

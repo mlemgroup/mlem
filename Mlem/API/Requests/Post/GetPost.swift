@@ -19,14 +19,21 @@ struct GetPostRequest: APIGetRequest {
         session: APISession,
         id: Int?,
         commentId: Int?
-    ) {
-        self.instanceURL = session.URL
+    ) throws {
+        self.instanceURL = try session.instanceUrl
 
-        self.queryItems = [
-            .init(name: "auth", value: session.token),
+        var queryItems: [URLQueryItem] = [
             .init(name: "id", value: id?.description),
             .init(name: "comment_id", value: commentId?.description)
         ]
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 }
 

@@ -57,7 +57,7 @@ struct CommentItem: View {
     // MARK: Parameters
 
     @ObservedObject var hierarchicalComment: HierarchicalComment
-    let postContext: APIPostView? // TODO: redundant with comment.post?
+    let postContext: PostModel? // TODO: redundant with comment.post?
     let indentBehaviour: IndentBehaviour
     var depth: Int { hierarchicalComment.depth < 0 ? 0 : hierarchicalComment.depth }
     let showPostContext: Bool
@@ -85,7 +85,7 @@ struct CommentItem: View {
     // init needed to get dirty and clean aligned
     init(
         hierarchicalComment: HierarchicalComment,
-        postContext: APIPostView?,
+        postContext: PostModel?,
         indentBehaviour: IndentBehaviour = .standard,
         showPostContext: Bool,
         showCommentCreator: Bool,
@@ -150,12 +150,12 @@ struct CommentItem: View {
                 
                 if !hierarchicalComment.isCollapsed, !compactComments {
                     InteractionBarView(
-                        apiView: hierarchicalComment.commentView,
+                        votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
+                        published: hierarchicalComment.commentView.comment.published,
+                        numReplies: hierarchicalComment.commentView.counts.childCount,
+                        saved: hierarchicalComment.commentView.saved,
                         accessibilityContext: "comment",
                         widgets: layoutWidgetTracker.groups.comment,
-                        displayedScore: displayedScore,
-                        displayedVote: displayedVote,
-                        displayedSaved: displayedSaved,
                         upvote: upvote,
                         downvote: downvote,
                         save: saveComment,
@@ -258,7 +258,8 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(
                 emptyName: hierarchicalComment.isCollapsed ? emptyCollapseSymbolName : emptyExpandSymbolName,
-                fillName: hierarchicalComment.isCollapsed ? collapseSymbolName : expandSymbolName),
+                fillName: hierarchicalComment.isCollapsed ? collapseSymbolName : expandSymbolName
+            ),
             color: .orange,
             action: toggleCollapsed
         )

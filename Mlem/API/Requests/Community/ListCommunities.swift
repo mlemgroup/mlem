@@ -17,22 +17,26 @@ struct ListCommunitiesRequest: APIGetRequest {
 
     init(
         session: APISession,
-
         sort: String?,
         page: Int?,
         limit: Int?,
-
         type: String
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        var queryItems: [URLQueryItem] = [
             .init(name: "sort", value: sort),
             .init(name: "limit", value: limit?.description),
             .init(name: "page", value: page?.description),
-            .init(name: "type_", value: type),
-
-            .init(name: "auth", value: session.token)
+            .init(name: "type_", value: type)
         ]
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 }
 

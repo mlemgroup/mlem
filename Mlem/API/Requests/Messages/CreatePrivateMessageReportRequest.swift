@@ -25,9 +25,9 @@ struct CreatePrivateMessageReportRequest: APIPostRequest {
         session: APISession,
         privateMessageId: Int,
         reason: String
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(auth: session.token, private_message_id: privateMessageId, reason: reason)
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(auth: session.token, private_message_id: privateMessageId, reason: reason)
     }
 }
 

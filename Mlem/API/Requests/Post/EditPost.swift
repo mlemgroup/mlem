@@ -35,17 +35,16 @@ struct EditPostRequest: APIPutRequest {
         body: String?,
         nsfw: Bool?,
         languageId: Int?
-    ) {
-        self.instanceURL = session.URL
+    ) throws {
+        self.instanceURL = try session.instanceUrl
 
-        self.body = .init(
+        self.body = try .init(
             post_id: postId,
             name: name,
             url: URL(string: url ?? ""),
             body: body,
             nsfw: nsfw,
             language_id: languageId,
-
             auth: session.token
         )
     }

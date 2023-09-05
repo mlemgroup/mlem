@@ -24,15 +24,13 @@ struct BlockCommunityRequest: APIPostRequest {
 
     init(
         session: APISession,
-
         communityId: Int,
         block: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             community_id: communityId,
             block: block,
-
             auth: session.token
         )
     }

@@ -54,18 +54,9 @@ struct ExpandedPost: View {
 
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: PostTracker
-    @State var post: APIPostView
+    @State var post: PostModel
     
     @State var commentErrorDetails: ErrorDetails?
-    
-    @State var dirtyVote: ScoringOperation = .resetVote
-    @State var dirtyScore: Int = 0
-    @State var dirtySaved: Bool = false
-    @State var dirty: Bool = false
-    
-    var displayedVote: ScoringOperation { dirty ? dirtyVote : post.myVote ?? .resetVote }
-    var displayedScore: Int { dirty ? dirtyScore : post.counts.score }
-    var displayedSaved: Bool { dirty ? dirtySaved : post.saved }
     
     @State var isLoading: Bool = false
     
@@ -86,7 +77,7 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
             .task { await loadComments() }
-            .task { await markPostAsRead() }
+            .task { await postTracker.markRead(post: post) }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {
@@ -124,7 +115,7 @@ struct ExpandedPost: View {
                     }
                 }
                 .onChange(of: scrollTarget) { target in
-                    if let target = target {
+                    if let target {
                         scrollTarget = nil
                         withAnimation {
                             scrollProxy.scrollTo(target, anchor: .top)
@@ -137,12 +128,13 @@ struct ExpandedPost: View {
             }
         }
         .overlay {
-            if showCommentJumpButton && commentTracker.comments.count > 1 {
+            if showCommentJumpButton, commentTracker.comments.count > 1 {
                 JumpButtonView(onShortPress: scrollToNextComment, onLongPress: scrollToPreviousComment)
                     .frame(
                         maxWidth: .infinity,
                         maxHeight: .infinity,
-                        alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading)
+                        alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading
+                    )
             }
         }
         .fancyTabScrollCompatible()
@@ -200,9 +192,7 @@ struct ExpandedPost: View {
     
     // MARK: Subviews
 
-    /**
-     Displays the post itself, plus a little divider to keep it visually distinct from comments
-     */
+    /// Displays the post itself, plus a little divider to keep it visually distinct from comments
     private var postView: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
@@ -218,7 +208,7 @@ struct ExpandedPost: View {
                 }
                 
                 LargePost(
-                    postView: post,
+                    post: post,
                     layoutMode: $postLayoutMode
                 )
                 .onTapGesture {
@@ -236,12 +226,12 @@ struct ExpandedPost: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             
             InteractionBarView(
-                apiView: post,
+                votes: post.votes,
+                published: post.published,
+                numReplies: post.numReplies,
+                saved: post.saved,
                 accessibilityContext: "post",
                 widgets: layoutWidgetTracker.groups.post,
-                displayedScore: displayedScore,
-                displayedVote: displayedVote,
-                displayedSaved: displayedSaved,
                 upvote: upvotePost,
                 downvote: downvotePost,
                 save: savePost,
@@ -260,9 +250,7 @@ struct ExpandedPost: View {
         }
     }
 
-    /**
-     Displays a "no comments" message
-     */
+    /// Displays a "no comments" message
     @ViewBuilder
     private func noCommentsView() -> some View {
         if let details = commentErrorDetails {
@@ -283,9 +271,7 @@ struct ExpandedPost: View {
         }
     }
 
-    /**
-     Displays the comments
-     */
+    /// Displays the comments
     private var commentsView: some View {
         LazyVStack(alignment: .leading, spacing: 0) {
             ForEach(commentTracker.commentsView, id: \.commentView.comment.id) { comment in
@@ -301,9 +287,7 @@ struct ExpandedPost: View {
                 ) { [comment.commentView.comment.id: $0] }
                 /// [2023.08] Manually set zIndex so child comments don't overlap parent comments on collapse/expand animations. `Int.max` doesn't work, which is why this is set to just some big value.
                 .zIndex(.maxZIndex - Double(comment.depth))
-
             }
-            
         }
     }
     

@@ -7,9 +7,7 @@
 
 import Foundation
 
-/**
- All the info needed to populate a menu
- */
+/// All the info needed to populate a menu
 struct MenuFunction: Identifiable {
     var id: String { text }
     

@@ -12,7 +12,6 @@ class HierarchicalComment: ObservableObject {
     let commentView: APICommentView
     var children: [HierarchicalComment]
     /// Indicates comment's position in a post's parent/child comment thread.
-    ///
     /// Values range from `0...Int.max`, where 0 indicates the parent comment.
     let depth: Int
     
@@ -107,7 +106,6 @@ extension [HierarchicalComment] {
 
 extension HierarchicalComment {
     /// Recursively flat maps `comment.children`, preprending `comment` to that array.
-    ///
     /// For example: Pass this function into `flatMap()` on array of parent `HierarchicalComment`s in order to construct an array of parent/child `[HierarchicalComment]` in a single array.
     static func recursiveFlatMap(_ comment: HierarchicalComment) -> [HierarchicalComment] {
         [comment] + comment.children.flatMap(recursiveFlatMap)

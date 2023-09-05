@@ -40,9 +40,7 @@ extension FeedType: AssociatedIcon {
         }
     }
     
-    /**
-     Icon to use in system settings. This should be removed when the "unified symbol handling" is closed
-     */
+    /// Icon to use in system settings. This should be removed when the "unified symbol handling" is closed
     var settingsIconName: String {
         switch self {
         case .all: return "circle.hexagongrid"

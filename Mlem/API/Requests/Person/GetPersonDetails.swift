@@ -35,9 +35,8 @@ struct GetPersonDetailsRequest: APIGetRequest {
             throw GetPersonDetailsRequestError.invalidArguments
         }
 
-        self.instanceURL = session.URL
+        self.instanceURL = try session.instanceUrl
         var queryItems: [URLQueryItem] = [
-            .init(name: "auth", value: session.token),
             .init(name: "sort", value: sort?.rawValue),
             .init(name: "page", value: page?.description),
             .init(name: "limit", value: limit?.description),
@@ -56,6 +55,12 @@ struct GetPersonDetailsRequest: APIGetRequest {
             queryItems.append(.init(name: "username", value: username))
         } else if let personId {
             queryItems.append(.init(name: "person_id", value: "\(personId)"))
+        }
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
         }
 
         self.queryItems = queryItems

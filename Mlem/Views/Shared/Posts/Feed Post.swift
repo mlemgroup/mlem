@@ -16,9 +16,7 @@ import Dependencies
 import QuickLook
 import SwiftUI
 
-/**
- Displays a single post in the feed
- */
+/// Displays a single post in the feed
 struct FeedPost: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
@@ -58,26 +56,22 @@ struct FeedPost: View {
     
     // MARK: Parameters
 
-    let postView: APIPostView
+    let post: PostModel
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
-
+    
     init(
-        postView: APIPostView,
+        post: PostModel,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
-        self.postView = postView
+        self.post = post
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.enableSwipeActions = enableSwipeActions
     }
-
-    var displayedVote: ScoringOperation { dirty ? dirtyVote : postView.myVote ?? .resetVote }
-    var displayedScore: Int { dirty ? dirtyScore : postView.counts.score }
-    var displayedSaved: Bool { dirty ? dirtySaved : postView.saved }
 
     // MARK: State
 
@@ -87,8 +81,8 @@ struct FeedPost: View {
     
     // MARK: Computed
     
-    var barThickness: CGFloat { !postView.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
-    var showCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
+    var barThickness: CGFloat { !post.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
+    var showCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -139,8 +133,8 @@ struct FeedPost: View {
     @ViewBuilder
     var postItem: some View {
         if postSize == .compact {
-            UltraCompactPost(
-                postView: postView,
+            CompactPost(
+                post: post,
                 showCommunity: showCommunity,
                 menuFunctions: genMenuFunctions()
             )
@@ -154,7 +148,7 @@ struct FeedPost: View {
                     // }
                     HStack {
                         CommunityLinkView(
-                            community: postView.community,
+                            community: post.community,
                             serverInstanceLocation: communityServerInstanceLocation
                         )
 
@@ -168,10 +162,10 @@ struct FeedPost: View {
                     }
 
                     if postSize == .headline {
-                        HeadlinePost(postView: postView)
+                        HeadlinePost(post: post)
                     } else {
                         LargePost(
-                            postView: postView,
+                            post: post,
                             layoutMode: .constant(.preferredSize)
                         )
                     }
@@ -179,7 +173,7 @@ struct FeedPost: View {
                     // posting user
                     if showPostCreator {
                         UserProfileLink(
-                            user: postView.creator,
+                            user: post.creator,
                             serverInstanceLocation: userServerInstanceLocation
                         )
                     }
@@ -188,18 +182,18 @@ struct FeedPost: View {
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 
                 InteractionBarView(
-                    apiView: postView,
+                    votes: post.votes,
+                    published: post.published,
+                    numReplies: post.numReplies,
+                    saved: post.saved,
                     accessibilityContext: "post",
                     widgets: layoutWidgetTracker.groups.post,
-                    displayedScore: displayedScore,
-                    displayedVote: displayedVote,
-                    displayedSaved: displayedSaved,
                     upvote: upvotePost,
                     downvote: downvotePost,
                     save: savePost,
                     reply: replyToPost,
                     share: {
-                        if let url = URL(string: postView.post.apId) {
+                        if let url = URL(string: post.post.apId) {
                             showShareSheet(URLtoShare: url)
                         }
                     },
@@ -214,80 +208,30 @@ struct FeedPost: View {
     }
 
     func upvotePost() async {
-        // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake downvote
-            switch displayedVote {
-            case .upvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore - 1
-            case .resetVote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 1
-            case .downvote:
-                dirtyVote = .upvote
-                dirtyScore = displayedScore + 2
-            }
-            dirty = true
-
-            // wait for vote
-            await voteOnPost(inputOp: .upvote)
-
-            // unfake downvote
-            dirty = false
-            return
-        }
+        await voteOnPost(inputOp: .upvote)
     }
 
     func downvotePost() async {
-        // don't do anything if currently awaiting a vote response
-        guard dirty else {
-            // fake upvote
-            switch displayedVote {
-            case .upvote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 2
-            case .resetVote:
-                dirtyVote = .downvote
-                dirtyScore = displayedScore - 1
-            case .downvote:
-                dirtyVote = .resetVote
-                dirtyScore = displayedScore + 1
-            }
-            dirty = true
-
-            // wait for vote
-            await voteOnPost(inputOp: .downvote)
-
-            // unfake upvote
-            dirty = false
-            return
-        }
+        await voteOnPost(inputOp: .downvote)
     }
 
     func deletePost() async {
-        do {
-            let response = try await apiClient.deletePost(id: postView.post.id, shouldDelete: true)
-            hapticManager.play(haptic: .destructiveSuccess, priority: .high)
-            postTracker.update(with: response)
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(error)
-        }
+        await postTracker.delete(post: post)
     }
 
     func blockUser() async {
+        // TODO: migrate to personRepository
         do {
-            let response = try await apiClient.blockPerson(id: postView.creator.id, shouldBlock: true)
+            let response = try await apiClient.blockPerson(id: post.creator.id, shouldBlock: true)
             if response.blocked {
-                postTracker.removeUserPosts(from: postView.creator.id)
+                postTracker.removeUserPosts(from: post.creator.id)
                 hapticManager.play(haptic: .violentSuccess, priority: .high)
-                await notifier.add(.success("Blocked \(postView.creator.name)"))
+                await notifier.add(.success("Blocked \(post.creator.name)"))
             }
         } catch {
             errorHandler.handle(
                 .init(
-                    message: "Unable to block \(postView.creator.name)",
+                    message: "Unable to block \(post.creator.name)",
                     style: .toast,
                     underlyingError: error
                 )
@@ -296,16 +240,17 @@ struct FeedPost: View {
     }
     
     func blockCommunity() async {
+        // TODO: migrate to communityRepository
         do {
-            let response = try await apiClient.blockCommunity(id: postView.community.id, shouldBlock: true)
+            let response = try await apiClient.blockCommunity(id: post.community.id, shouldBlock: true)
             if response.blocked {
-                postTracker.removeCommunityPosts(from: postView.community.id)
-                await notifier.add(.success("Blocked \(postView.community.name)"))
+                postTracker.removeCommunityPosts(from: post.community.id)
+                await notifier.add(.success("Blocked \(post.community.name)"))
             }
         } catch {
             errorHandler.handle(
                 .init(
-                    message: "Unable to block \(postView.community.name)",
+                    message: "Unable to block \(post.community.name)",
                     style: .toast,
                     underlyingError: error
                 )
@@ -315,54 +260,31 @@ struct FeedPost: View {
 
     func replyToPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
-            post: postView,
+            post: post,
             operation: PostOperation.replyToPost
         ))
     }
     
     func editPost() {
         editorTracker.openEditor(with: PostEditorModel(
-            community: postView.community,
+            community: post.community,
             postTracker: postTracker,
-            editPost: postView.post
+            editPost: post
         ))
     }
 
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
-        do {
-            hapticManager.play(haptic: .gentleSuccess, priority: .low)
-            let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            let updatedPost = try await apiClient.ratePost(id: postView.post.id, score: operation)
-            postTracker.update(with: updatedPost)
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            errorHandler.handle(error)
-        }
+        await postTracker.voteOnPost(post: post, inputOp: inputOp)
     }
 
     func savePost() async {
-        guard dirty else {
-            // fake save
-            dirtySaved.toggle()
-            dirty = true
-            hapticManager.play(haptic: .success, priority: .high)
-            
-            do {
-                let updatedPost = try await apiClient.savePost(id: postView.post.id, shouldSave: dirtySaved)
-                postTracker.update(with: updatedPost)
-            } catch {
-                hapticManager.play(haptic: .failure, priority: .high)
-                errorHandler.handle(error)
-            }
-            dirty = false
-            return
-        }
+        await postTracker.toggleSave(post: post)
     }
     
     func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(post: postView, operation: PostOperation.reportPost))
+        editorTracker.openEditor(with: ConcreteEditorModel(post: post, operation: PostOperation.reportPost))
     }
 
     // swiftlint:disable function_body_length
@@ -370,7 +292,7 @@ struct FeedPost: View {
         var ret: [MenuFunction] = .init()
 
         // upvote
-        let (upvoteText, upvoteImg) = postView.myVote == .upvote ?
+        let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
             ("Undo upvote", "arrow.up.square.fill") :
             ("Upvote", "arrow.up.square")
         ret.append(MenuFunction(
@@ -385,7 +307,7 @@ struct FeedPost: View {
         })
 
         // downvote
-        let (downvoteText, downvoteImg) = postView.myVote == .downvote ?
+        let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
             ("Undo downvote", "arrow.down.square.fill") :
             ("Downvote", "arrow.down.square")
         ret.append(MenuFunction(
@@ -400,7 +322,7 @@ struct FeedPost: View {
         })
 
         // save
-        let (saveText, saveImg) = postView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        let (saveText, saveImg) = post.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
         ret.append(MenuFunction(
             text: saveText,
             imageName: saveImg,
@@ -422,7 +344,7 @@ struct FeedPost: View {
             replyToPost()
         })
 
-        if postView.creator.id == appState.currentActiveAccount.id {
+        if post.creator.id == appState.currentActiveAccount.id {
             // edit
             ret.append(MenuFunction(
                 text: "Edit",
@@ -438,7 +360,7 @@ struct FeedPost: View {
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
-                enabled: !postView.post.deleted
+                enabled: !post.post.deleted
             ) {
                 Task(priority: .userInitiated) {
                     await deletePost()
@@ -453,7 +375,7 @@ struct FeedPost: View {
             destructiveActionPrompt: nil,
             enabled: true
         ) {
-            if let url = URL(string: postView.post.apId) {
+            if let url = URL(string: post.post.apId) {
                 showShareSheet(URLtoShare: url)
             }
         })
@@ -505,7 +427,7 @@ extension FeedPost {
     // this may need to wait until we complete https://github.com/mormaer/Mlem/issues/117
 
     var upvoteSwipeAction: SwipeAction {
-        let (emptySymbolName, fullSymbolName) = postView.myVote == .upvote ?
+        let (emptySymbolName, fullSymbolName) = post.votes.myVote == .upvote ?
             (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
             (AppConstants.emptyUpvoteSymbolName, AppConstants.fullUpvoteSymbolName)
         return SwipeAction(
@@ -518,7 +440,7 @@ extension FeedPost {
     var downvoteSwipeAction: SwipeAction? {
         guard siteInformation.enableDownvotes else { return nil }
 
-        let (emptySymbolName, fullSymbolName) = postView.myVote == .downvote ?
+        let (emptySymbolName, fullSymbolName) = post.votes.myVote == .downvote ?
             (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
             (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
         return SwipeAction(
@@ -529,7 +451,7 @@ extension FeedPost {
     }
 
     var saveSwipeAction: SwipeAction {
-        let (emptySymbolName, fullSymbolName) = postView.saved
+        let (emptySymbolName, fullSymbolName) = post.saved
             ? (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
             : (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
         return SwipeAction(

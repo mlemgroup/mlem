@@ -336,9 +336,7 @@ extension InboxView {
     
     // MARK: - Helpers
     
-    /**
-     returns true if lhs was posted after rhs
-     */
+    /// returns true if lhs was posted after rhs
     func wasPostedAfter(lhs: InboxItem, rhs: InboxItem) -> Bool {
         lhs.published > rhs.published
     }

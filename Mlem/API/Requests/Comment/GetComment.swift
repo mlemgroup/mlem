@@ -18,9 +18,9 @@ struct GetCommentRequest: APIGetRequest {
     init(
         session: APISession,
         id: Int
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.queryItems = try [
             .init(name: "id", value: id.description),
             .init(name: "auth", value: session.token)
         ]

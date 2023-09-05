@@ -46,20 +46,24 @@ private enum DiskAccess {
 }
 
 class PersistenceRepository {
+    @Dependency(\.date) private var date
     @Dependency(\.errorHandler) private var errorHandler
     
     private var keychainAccess: (String) -> String?
     private var read: (URL) throws -> Data
     private var write: (Data, URL) async throws -> Void
+    private let bundle: Bundle
     
     init(
         keychainAccess: @escaping (String) -> String?,
         read: @escaping (URL) throws -> Data = { try DiskAccess.load(from: $0) },
-        write: @escaping (Data, URL) async throws -> Void = { try await DiskAccess.save($0, to: $1) }
+        write: @escaping (Data, URL) async throws -> Void = { try await DiskAccess.save($0, to: $1) },
+        bundle: Bundle = Bundle.main
     ) {
         self.keychainAccess = keychainAccess
         self.read = read
         self.write = write
+        self.bundle = bundle
     }
     
     // MARK: - Public methods
@@ -119,12 +123,20 @@ class PersistenceRepository {
         try await save(value, to: Path.layoutWidgets)
     }
     
-    func loadInstanceMetadata() -> [InstanceMetadata] {
-        load([InstanceMetadata].self, from: Path.instanceMetadata) ?? []
+    func loadInstanceMetadata() -> TimestampedValue<[InstanceMetadata]> {
+        let localFile = load(TimestampedValue<[InstanceMetadata]>.self, from: Path.instanceMetadata)
+        let bundledFile = loadFromBundle(TimestampedValue<[InstanceMetadata]>.self, filename: "instance_metadata")
+        
+        if let localFile, localFile.timestamp > bundledFile.timestamp {
+            return localFile
+        }
+        
+        return bundledFile
     }
     
     func saveInstanceMetadata(_ value: [InstanceMetadata]) async throws {
-        try await save(value, to: Path.instanceMetadata)
+        let timestamped = TimestampedValue(value: value, timestamp: date.now, lifespan: .days(1))
+        try await save(timestamped, to: Path.instanceMetadata)
     }
     
     // MARK: Private methods
@@ -142,6 +154,17 @@ class PersistenceRepository {
             errorHandler.handle(error)
             
             return nil
+        }
+    }
+    
+    private func loadFromBundle<T: Decodable>(_ model: T.Type, filename: String, type: String = "json") -> T {
+        do {
+            let path = bundle.path(forResource: filename, ofType: type)!
+            let stringValue = try String(contentsOfFile: path)
+            let data = stringValue.data(using: .utf8)!
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            fatalError("☠️ failed to load \(filename).\(type) from the application bundle.")
         }
     }
     

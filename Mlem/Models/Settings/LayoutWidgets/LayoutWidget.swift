@@ -68,18 +68,20 @@ indirect enum LayoutWidgetType: String, Hashable, Codable, CaseIterable {
 }
 
 class LayoutWidget: Equatable, Hashable {
+    var id = UUID()
     var type: LayoutWidgetType
     var rect: CGRect?
     
-    init(_ type: LayoutWidgetType) {
+    init(_ type: LayoutWidgetType, rect: CGRect? = nil) {
         self.type = type
+        self.rect = rect
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(type)
+        hasher.combine(id)
     }
     
     static func == (lhs: LayoutWidget, rhs: LayoutWidget) -> Bool {
-        lhs.type == rhs.type
+        lhs.id == rhs.id
     }
 }

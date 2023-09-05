@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-/**
- Protocol for things that can be responded to--e.g., with a comment or a report
- */
+/// Protocol for things that can be responded to--e.g., with a comment or a report
 protocol ResponseEditorModel: Identifiable {
     var id: Int { get }
     

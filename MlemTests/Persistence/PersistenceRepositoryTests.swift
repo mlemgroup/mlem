@@ -23,6 +23,7 @@ final class PersistenceRepositoryTests: XCTestCase {
     
     override func setUpWithError() throws {
         repository = withDependencies {
+            $0.date.now = .now
             $0.errorHandler = MockErrorHandler { self.errors.append($0) }
         } operation: {
             PersistenceRepository(
@@ -34,7 +35,8 @@ final class PersistenceRepositoryTests: XCTestCase {
                     
                     return data
                 },
-                write: { self.disk[$1] = $0 }
+                write: { self.disk[$1] = $0 },
+                bundle: Bundle(for: type(of: self))
             )
         }
 
@@ -243,11 +245,81 @@ final class PersistenceRepositoryTests: XCTestCase {
         XCTAssertEqual(loadedWidgets.comment, defaultState.comment)
     }
     
+    func testLoadInstanceMetadataWithValues() async throws {
+        let metadata: [InstanceMetadata] = [
+            .mock(url: .mock.appending(path: "/example1")),
+            .mock(url: .mock.appending(path: "/example2"))
+        ]
+        
+        try await repository.saveInstanceMetadata(metadata) // write the examples to disk
+        let loadedMetadata = repository.loadInstanceMetadata() // read them back
+        
+        // assert we were given the same values back
+        XCTAssertEqual(loadedMetadata.value, metadata)
+    }
+    
+    func testLoadInstanceMetadataWithoutValues() async throws {
+        let bundledFile = try bundledMetadata
+        // assert that our mock disk has nothing in it
+        XCTAssert(disk.isEmpty)
+        // expectation is the repository should load from the bundle in the absence of a stored file
+        let loadedMetadata = repository.loadInstanceMetadata()
+        
+        // assert we were given the values from the bundle
+        XCTAssertEqual(loadedMetadata.value, bundledFile.value)
+    }
+    
+    func testLatestInstanceMetaDataIsPreferred() async throws {
+        // create a repository with a stubbed '.now' date of Fri Feb 13 2009 23:30:00 GMT+0000
+        let repository = withDependencies {
+            $0.date.now = .init(timeIntervalSince1970: 1_234_567_890)
+            $0.errorHandler = MockErrorHandler { self.errors.append($0) }
+        } operation: {
+            PersistenceRepository(
+                keychainAccess: { self.keychain[$0] },
+                read: { url in
+                    guard let data = self.disk[url] else {
+                        throw PersistenceTestError.noDataForURL
+                    }
+                    
+                    return data
+                },
+                write: { self.disk[$1] = $0 },
+                bundle: Bundle(for: type(of: self))
+            )
+        }
+        
+        // assert the disk is empty
+        XCTAssert(disk.isEmpty)
+        
+        let metadata: [InstanceMetadata] = [
+            .mock(url: .mock.appending(path: "/outdated_example1")),
+            .mock(url: .mock.appending(path: "/outdated_example2"))
+        ]
+        
+        // write the examples to disk, as the date is stubbed above the file will be stamped as Fri Feb 13 2009 23:30:00 GMT+0000
+        try await repository.saveInstanceMetadata(metadata)
+        
+        // now ask the repository for the metadata, expectation is that although we have something on disk...
+        // the bundled file is more recent, so we'll ignore the locally saved file and return the more recent bundled copy
+        let loadedMetadata = repository.loadInstanceMetadata()
+        XCTAssertEqual(loadedMetadata.value, try bundledMetadata.value)
+    }
+    
     // MARK: Test Helpers
     
     private func load<T: Decodable>(_ model: T.Type) throws -> T {
         let key = disk.keys.first
         let dataFromDisk = disk[key!]
         return try JSONDecoder().decode(T.self, from: dataFromDisk!)
+    }
+    
+    var bundledMetadata: TimestampedValue<[InstanceMetadata]> {
+        get throws {
+            let path = Bundle(for: type(of: self)).path(forResource: "instance_metadata", ofType: "json")!
+            let stringValue = try String(contentsOfFile: path)
+            let data = stringValue.data(using: .utf8)!
+            return try JSONDecoder().decode(TimestampedValue<[InstanceMetadata]>.self, from: data)
+        }
     }
 }

@@ -24,20 +24,16 @@ struct FancyTabBarLabel: View {
     
     var active: Bool { tagHash == selectedTagHashValue }
     
-    /**
-     Initializer. Most of these are optional or have default values--the logic on those is as follows:
-     
-     REQUIRED
-     - tag: FancyTabBarSelection. By default, the label will display its labelText.
-     
-     OPTIONAL
-     - customText: overrides the default labelText from tag
-     - symbolName: if present, label will display this symbol
-     - activeSymbolName: if present and symbolName is present, label will display this symbol when active
-     - customColor: overrides the default color (UIColor.darkGray)
-     - activeColor: overrides the default active color (Color.accentColor)
-     - badgeCount: count to display as badge
-     */
+    /// Initializer. Most of these are optional or have default values--the logic on those is as follows:
+    /// REQUIRED
+    ///  - tag: FancyTabBarSelection. By default, the label will display its labelText.
+    /// OPTIONAL
+    /// - customText: overrides the default labelText from tag
+    /// - symbolName: if present, label will display this symbol
+    /// - activeSymbolName: if present and symbolName is present, label will display this symbol when active
+    /// - customColor: overrides the default color (UIColor.darkGray)
+    /// - activeColor: overrides the default active color (Color.accentColor)
+    /// - badgeCount: count to display as badge
     init(
         tag: any FancyTabBarSelection,
         customText: String? = nil,

@@ -17,9 +17,9 @@ struct PostLinkWithContext: Equatable, Identifiable, Hashable {
         hasher.combine(id)
     }
 
-    var id: Int { post.id }
+    var id: Int { post.postId }
 
-    let post: APIPostView
+    let post: PostModel
     let postTracker: PostTracker
     var scrollTarget: Int?
 }

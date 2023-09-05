@@ -16,7 +16,7 @@ struct GetPostsRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        account: SavedAccount, // TODO: needs to move to a session based call...
         communityId: Int?,
         page: Int,
         sort: PostSortType?,
@@ -36,6 +36,36 @@ struct GetPostsRequest: APIGetRequest {
             .init(name: "limit", value: limit.map(String.init)),
             .init(name: "saved_only", value: savedOnly.map(String.init))
         ]
+    }
+    
+    init(
+        session: APISession,
+        communityId: Int?,
+        page: Int,
+        sort: PostSortType?,
+        type: FeedType,
+        limit: Int? = nil,
+        savedOnly: Bool? = nil,
+        communityName: String? = nil
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        var queryItems: [URLQueryItem] = [
+            .init(name: "page", value: "\(page)"),
+            .init(name: "type_", value: type.rawValue),
+            .init(name: "sort", value: sort.map(\.rawValue)),
+            .init(name: "community_id", value: communityId.map(String.init)),
+            .init(name: "community_name", value: communityName),
+            .init(name: "limit", value: limit.map(String.init)),
+            .init(name: "saved_only", value: savedOnly.map(String.init))
+        ]
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 }
 

@@ -28,9 +28,7 @@ struct CachedImage: View {
     let contentMode: ContentMode
     let cornerRadius: CGFloat
     
-    /**
-     Optional callback triggered when the quicklook preview is dismissed
-     */
+    // Optional callback triggered when the quicklook preview is dismissed
     let dismissCallback: (() -> Void)?
     
     init(
@@ -151,7 +149,8 @@ struct CachedImage: View {
         .processors([
             .resize(
                 size: size,
-                contentMode: contentMode == .fill ? .aspectFill : .aspectFit)
+                contentMode: contentMode == .fill ? .aspectFill : .aspectFit
+            )
         ])
         .frame(idealWidth: size.width, maxHeight: size.height)
     }
@@ -167,9 +166,7 @@ struct CachedImage: View {
         )
     }
     
-    /**
-     Caches the current value of size
-     */
+    /// Caches the current value of size
     private func cacheImageSize() {
         if let url {
             AppConstants.imageSizeCache.setObject(ImageSize(size: size), forKey: NSString(string: url.description))

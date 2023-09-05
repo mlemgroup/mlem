@@ -28,9 +28,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.storedNickname = storedNickname
     }
     
-    /**
-     Convenience initializer to create an equal copy with different non-identifying properties.
-     */
+    // Convenience initializer to create an equal copy with different non-identifying properties.
     init(
         from account: SavedAccount,
         accessToken: String? = nil,
@@ -46,9 +44,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     // convenience
     var hostName: String? { instanceLink.host?.description }
     
-    /**
-     If there is a nickname stored, returns that; otherwise returns the username
-     */
+    /// If there is a nickname stored, returns that; otherwise returns the username
     var nickname: String { storedNickname ?? username }
     
     func encode(to encoder: Encoder) throws {

@@ -14,10 +14,10 @@ public struct GetPersonUnreadCount: APIGetRequest {
     let instanceURL: URL
     let queryItems: [URLQueryItem]
 
-    init(session: APISession) {
-        self.instanceURL = session.URL
+    init(session: APISession) throws {
+        self.instanceURL = try session.instanceUrl
         
-        let queryItems: [URLQueryItem] = [
+        let queryItems: [URLQueryItem] = try [
             .init(name: "auth", value: session.token)
         ]
         self.queryItems = queryItems

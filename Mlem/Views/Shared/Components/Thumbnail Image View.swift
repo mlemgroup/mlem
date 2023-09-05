@@ -17,15 +17,15 @@ struct ThumbnailImageView: View {
     @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL
     
-    let postView: APIPostView
+    let post: PostModel
     
-    var showNsfwFilter: Bool { (postView.post.nsfw || postView.community.nsfw) && shouldBlurNsfw }
+    var showNsfwFilter: Bool { (post.post.nsfw || post.community.nsfw) && shouldBlurNsfw }
     
     let size = CGSize(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
     
     var body: some View {
         Group {
-            switch postView.postType {
+            switch post.postType {
             case let .image(url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
                 CachedImage(
@@ -43,7 +43,7 @@ struct ThumbnailImageView: View {
                     contentMode: .fill
                 )
                 .onTapGesture {
-                    if let url = postView.post.url {
+                    if let url = post.post.url {
                         openURL(url)
                         markPostAsRead()
                     }
@@ -73,17 +73,10 @@ struct ThumbnailImageView: View {
             .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
     }
     
-    /**
-     Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
-     */
+    /// Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
-            do {
-                let readPost = try await postRepository.markRead(for: postView.post.id, read: true)
-                postTracker.update(with: readPost)
-            } catch {
-                errorHandler.handle(error)
-            }
+            await postTracker.markRead(post: post)
         }
     }
 }

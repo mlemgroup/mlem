@@ -19,9 +19,7 @@ struct TabSafeScrollView: ViewModifier {
 }
 
 extension View {
-    /**
-     Attach this modifier to a ScrollView to prevent it from not respecting the FancyTabBar's safeAreaInset
-     */
+    /// Attach this modifier to a ScrollView to prevent it from not respecting the FancyTabBar's safeAreaInset
     @ViewBuilder
     func fancyTabScrollCompatible() -> some View {
         modifier(TabSafeScrollView())

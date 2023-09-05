@@ -26,9 +26,9 @@ struct DeletePostRequest: APIPostRequest {
         session: APISession,
         postId: Int,
         deleted: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             post_id: postId,
             deleted: deleted,
             auth: session.token

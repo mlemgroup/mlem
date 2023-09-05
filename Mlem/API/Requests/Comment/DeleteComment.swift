@@ -25,9 +25,9 @@ struct DeleteCommentRequest: APIPostRequest {
         session: APISession,
         commentId: Int,
         deleted: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             comment_id: commentId,
             deleted: deleted,
             auth: session.token
