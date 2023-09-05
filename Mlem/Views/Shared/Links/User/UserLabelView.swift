@@ -69,7 +69,7 @@ struct UserLabelView: View {
     static let flairRegular = UserLinkViewFlair(color: Color.gray)
     
     var body: some View {
-        HStack(alignment: .center, spacing: 5) {
+        HStack(alignment: .center, spacing: AppConstants.largeAvatarSpacing) {
             if showAvatar {
                 UserAvatarView(user: user, avatarSize: avatarSize, blurAvatar: blurAvatar)
                     .accessibilityHidden(true)

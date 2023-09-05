@@ -18,9 +18,9 @@ struct UserAvatarView: View {
 
     var shape: AnyShape {
         if iconShape == .circle {
-            AnyShape(Circle())
+            return AnyShape(Circle())
         } else {
-            AnyShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+            return AnyShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         }
     }
 
@@ -57,7 +57,7 @@ struct UserAvatarView: View {
                     Image(systemName: "person.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(height: avatarSize * 0.66)
+                        .frame(height: avatarSize * 0.75)
                         .foregroundStyle(.white)
                 }
                 .scaledToFit()

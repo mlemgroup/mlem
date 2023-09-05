@@ -36,9 +36,9 @@ struct CommunityAvatarView: View {
 
     var shape: AnyShape {
         if iconShape == .circle {
-            AnyShape(Circle())
+            return AnyShape(Circle())
         } else {
-            AnyShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
+            return AnyShape(RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius))
         }
     }
 
