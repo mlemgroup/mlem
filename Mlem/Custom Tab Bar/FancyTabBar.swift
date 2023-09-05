@@ -98,8 +98,8 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                                 .onEnded {
                                     print("uhhh, user hit max tap count, this is really not supposed to happen.")
                                 }
-                                .exclusively(
-                                    before: tapOnceToNavigate
+                                .simultaneously(
+                                    with: tapOnceToNavigate
                                         .onEnded {
                                             print("tapped once")
                                             /// If user tapped on tab that's already selected.
