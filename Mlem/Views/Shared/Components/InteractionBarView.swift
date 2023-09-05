@@ -48,7 +48,7 @@ struct InteractionBarView: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(Array(widgets.enumerated()), id: \.element) { offset, widget in
+            ForEach(Array(widgets.enumerated()), id: \.offset) { offset, widget in
                 switch widget {
                 case .scoreCounter:
                     ScoreCounterView(
@@ -114,7 +114,8 @@ struct InteractionBarView: View {
                         alignment: infoStackAlignment(offset)
                     )
                     .padding(AppConstants.postAndCommentSpacing)
-                    .frame(maxWidth: .infinity)
+                    .fixedSize()
+                    .frame(minWidth: 0, maxWidth: .infinity)
                 }
             }
         }
