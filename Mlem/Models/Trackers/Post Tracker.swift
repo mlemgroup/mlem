@@ -296,9 +296,16 @@ class PostTracker: ObservableObject {
         
         // perform real save
         do {
-            let response = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
-            await update(with: response)
-            return response
+            let saveResponse = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
+            await update(with: saveResponse)
+
+            if shouldSave {
+              //FIXME: setting `isLoading` forcefully to false doesn't feel very good.
+              isLoading = false
+              return await voteOnPost(post: saveResponse, inputOp: .upvote)
+            } else {
+              return saveResponse
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
