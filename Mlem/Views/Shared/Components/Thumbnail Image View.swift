@@ -55,7 +55,7 @@ struct ThumbnailImageView: View {
                             .frame(width: 20, height: 20)
                             .padding(6)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .frame(width: size.width, height: size.height, alignment: .topLeading)
                 }
             case .text:
                 Image(systemName: "text.book.closed")
