@@ -237,7 +237,17 @@ struct UserView: View {
     }
     
     private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
-        try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
+        let response = try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
+        
+        if isShowingOwnProfile() {
+            // take this opportunity to update the users avatar url to catch changes
+            // we should be able to shift this down to the repository layer in the future so that we
+            // catch anytime the app loads the signed in users details from any location in the app 🤞
+            let url = response.personView.person.avatar
+            appState.updateUserAvatarUrl(url)
+        }
+        
+        return response
     }
 }
 
