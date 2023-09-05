@@ -214,6 +214,13 @@ extension APIClient {
         let request = try MarkCommentReplyAsRead(session: session, commentId: id, read: isRead)
         return try await perform(request: request)
     }
+    
+    // MARK: - User requests
+
+    func deleteUser(user: SavedAccount, password: String) async throws {
+        let request = DeleteAccountRequest(account: user, password: password)
+        try await perform(request: request)
+    }
 }
 
 // MARK: - Object Resolving methods
