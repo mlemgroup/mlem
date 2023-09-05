@@ -143,9 +143,7 @@ struct FeedView: View {
                         if navigationPath.wrappedValue.isEmpty {
                             if scrollToTopAppeared {
                                 /// Already scrolled to top: Pop to sidebar.
-                                withAnimation {
-                                    rootDetails = nil
-                                }
+                                rootDetails = nil
                             } else {
                                 withAnimation {
                                     scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)

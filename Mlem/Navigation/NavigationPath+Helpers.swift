@@ -9,11 +9,14 @@ import SwiftUI
 
 extension NavigationPath {
     
-    mutating func goBack(popToRoot: Bool = false) {
+    /// - Returns: Items count on navigation path after performing go back action.
+    @discardableResult
+    mutating func goBack(popToRoot: Bool = false) -> Int {
         guard !isEmpty else {
-            return
+            return 0
         }
         let popDepth = popToRoot ? self.count : 1
         self.removeLast(popDepth)
+        return self.count
     }
 }

@@ -73,6 +73,13 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
         return label
     }
     
+    /// This gesture drives the tab bar navigation behaviour (e.g. tap to go back).
+    private let tapOnceToNavigate = TapGesture(count: 1)
+    /// This gesture ensures that `tapOnceToNavigate` gesture only ever fires once, no matter the tap count. For example, user may accidentally tap more than once, in which case we only ever want to register that as a single "tapped once" event, after tapping ends.
+    ///
+    /// Since the `count` for this gesture is ridiculously high, it is *guaranteed* (famous last words) to fail. On failure, `tapOnceToNavigate` will succeed.
+    private let tapToNavigateMaxCount = TapGesture(count: 999999)
+        
     private var tabBar: some View {
         VStack(spacing: 0) {
             Divider()
@@ -87,18 +94,25 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         .contentShape(Rectangle())
                     // high priority to prevent conflict with long press/drag
                         .highPriorityGesture(
-                            TapGesture()
+                            tapToNavigateMaxCount
                                 .onEnded {
-                                    /// If user tapped on tab that's already selected.
-                                    if key.hashValue == selection.hashValue {
-                                        navigationSelection = TabSelection._tabBarNavigation
-                                        
-                                        __tempNavigationSelection = key.index
-                                        __tempToggle.toggle()
-                                    }
-                                    
-                                    selection = key
+                                    print("uhhh, user hit max tap count, this is really not supposed to happen.")
                                 }
+                                .exclusively(
+                                    before: tapOnceToNavigate
+                                        .onEnded {
+                                            print("tapped once")
+                                            /// If user tapped on tab that's already selected.
+                                            if key.hashValue == selection.hashValue {
+                                                navigationSelection = TabSelection._tabBarNavigation
+                                                
+                                                __tempNavigationSelection = key.index
+                                                __tempToggle.toggle()
+                                            }
+                                            
+                                            selection = key
+                                        }
+                                )
                         )
                 }
             }
