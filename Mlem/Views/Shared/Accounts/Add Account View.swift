@@ -314,11 +314,13 @@ struct AddSavedInstanceView: View {
                 viewState = .success
             }
             
-            let newAccount = try await SavedAccount(
-                id: getUserID(authToken: response.jwt, instanceURL: instanceURL),
+            let user = try await loadUser(authToken: response.jwt, instanceURL: instanceURL)
+            let newAccount = SavedAccount(
+                id: user.id,
                 instanceLink: instanceURL,
                 accessToken: response.jwt,
-                username: username
+                username: username,
+                avatarUrl: user.avatar
             )
             
             // MARK: - Save the account's credentials into the keychain
@@ -336,14 +338,13 @@ struct AddSavedInstanceView: View {
         }
     }
     
-    private func getUserID(authToken: String, instanceURL: URL) async throws -> Int {
+    private func loadUser(authToken: String, instanceURL: URL) async throws -> APIPerson {
         // create a session to use for this request, since we're in the process of creating the account...
         let session = APISession.authenticated(instanceURL, authToken)
         do {
             return try await apiClient.getPersonDetails(session: session, username: username)
                 .personView
                 .person
-                .id
         } catch {
             print("getUserId Error info: \(error)")
             throw UserIDRetrievalError.couldNotFetchUserInformation
