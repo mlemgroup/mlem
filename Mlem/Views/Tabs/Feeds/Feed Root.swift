@@ -18,6 +18,7 @@ struct FeedRoot: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @State var navigationPath = NavigationPath()
+    @State private var customNavigationPath: [MlemRoutes] = []
 
     @State var rootDetails: CommunityLinkWithContext?
     
@@ -30,7 +31,7 @@ struct FeedRoot: View {
         } detail: {
             if let rootDetails {
                 ScrollViewReader { proxy in
-                    NavigationStack(path: $navigationPath) {
+                    NavigationStack(path: $customNavigationPath) {
                         FeedView(
                             community: rootDetails.community,
                             feedType: rootDetails.feedType,
@@ -52,6 +53,7 @@ struct FeedRoot: View {
             navigationPath: $navigationPath
         )
         .environment(\.navigationPath, $navigationPath)
+        .environment(\.customNavigationPath, $customNavigationPath)
         .environmentObject(appState)
         .environmentObject(accountsTracker)
         .onAppear {
@@ -93,10 +95,17 @@ struct FeedRoot: View {
                 print("switched to Feed tab")
             }
         }
-        .onChange(of: selectedNavigationTabHashValue) { newValue in
-            if newValue == TabSelection.feeds.hashValue {
-                print("re-selected \(TabSelection.feeds) tab")
+//        .onChange(of: selectedNavigationTabHashValue) { newValue in
+//            if newValue == TabSelection.feeds.hashValue {
+//                print("re-selected \(TabSelection.feeds) tab")
+//            }
+//        }
+        .overlay(alignment: .center) {
+            #if DEBUG
+            GroupBox {
+                Text("NavigationPath.count: \(navigationPath.count)")
             }
+            #endif
         }
     }
 }

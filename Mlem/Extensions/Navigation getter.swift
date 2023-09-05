@@ -18,3 +18,14 @@ extension EnvironmentValues {
         set { self[NavigationPathGetter.self] = newValue }
       }
 }
+
+private struct CustomNavigationPath: EnvironmentKey {
+    static let defaultValue: Binding<[MlemRoutes]> = .constant([])
+}
+
+extension EnvironmentValues {
+    var customNavigationPath: Binding<[MlemRoutes]> {
+        get { self[CustomNavigationPath.self] }
+        set { self[CustomNavigationPath.self] = newValue }
+    }
+}

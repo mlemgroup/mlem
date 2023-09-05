@@ -44,7 +44,7 @@ struct CommunityLinkView: View {
     }
     
     var body: some View {
-        NavigationLink(value: community) {
+        NavigationLink(value: MlemRoutes.apiCommunity(community)) {
             HStack {
                 CommunityLabel(community: community,
                                serverInstanceLocation: serverInstanceLocation,

@@ -29,7 +29,8 @@ struct FeedView: View {
     
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     @Environment(\.tabScrollViewProxy) private var scrollViewProxy
-    @Environment(\.navigationPath) private var navigationPath
+//    @Environment(\.navigationPath) private var navigationPath
+    @Environment(\.customNavigationPath) private var navigationPath
     
     // MARK: Parameters and init
     
@@ -139,6 +140,7 @@ struct FeedView: View {
                 }
                 .onChange(of: selectedNavigationTabHashValue) { newValue in
                     if newValue == TabSelection.feeds.hashValue {
+                        /// Go back in subviews, check if navigato
                         print("re-selected \(TabSelection.feeds) tab")
                         if navigationPath.wrappedValue.isEmpty {
                             if scrollToTopAppeared {
@@ -150,7 +152,8 @@ struct FeedView: View {
                                 }
                             }
                         } else {
-                            navigationPath.wrappedValue.goBack()
+                            let count = navigationPath.wrappedValue.popLast()
+                            print("navigate go back -> \(count)")
                         }
                     }
                 }
@@ -180,7 +183,7 @@ struct FeedView: View {
     @ViewBuilder
     private func feedPost(for postView: APIPostView) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(value: PostLinkWithContext(post: postView, postTracker: postTracker)) {
+            NavigationLink(value: MlemRoutes.postLinkWithContext(PostLinkWithContext(post: postView, postTracker: postTracker))) {
                 FeedPost(
                     postView: postView,
                     showPostCreator: shouldShowPostCreator,

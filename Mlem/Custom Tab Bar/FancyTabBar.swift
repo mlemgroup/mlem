@@ -94,6 +94,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         .contentShape(Rectangle())
                     // high priority to prevent conflict with long press/drag
                         .highPriorityGesture(
+                            /// If tab already selected, only have gesture for navigation?
                             tapToNavigateMaxCount
                                 .onEnded {
                                     print("uhhh, user hit max tap count, this is really not supposed to happen.")
@@ -117,7 +118,8 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 }
             }
             .onChange(of: self.__tempToggle) { _ in
-                navigationSelection = TabSelection(index: __tempNavigationSelection)!
+                print("set tab nav selection to -> \(TabSelection(index: __tempNavigationSelection)!.labelText ?? "_")")
+                self.navigationSelection = TabSelection(index: __tempNavigationSelection)!
             }
             .gesture(
                 DragGesture()
