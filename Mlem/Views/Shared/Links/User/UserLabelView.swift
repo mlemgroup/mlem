@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-struct UserProfileLabel: View {
+struct UserLabelView: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
@@ -21,8 +20,8 @@ struct UserProfileLabel: View {
     @State var commentContext: APIComment?
     @State var communityContext: GetCommunityResponse?
 
-    var blurAvatar: Bool { shouldBlurNsfw && (postContext?.nsfw ?? false ||
-            communityContext?.communityView.community.nsfw ?? false) }
+    var blurAvatar: Bool { postContext?.nsfw ?? false ||
+            communityContext?.communityView.community.nsfw ?? false }
     
     init(
         user: APIPerson,
@@ -49,10 +48,7 @@ struct UserProfileLabel: View {
         }
     }
     
-    var avatarSize: CGSize { serverInstanceLocation == .bottom
-        ? CGSize(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
-        : CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize)
-    }
+    var avatarSize: CGFloat { serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize }
     
     static let developerNames = [
         "lemmy.tespia.org/u/navi",
@@ -64,53 +60,22 @@ struct UserProfileLabel: View {
     
     static let mlemOfficial = "vlemmy.net/u/MlemOfficial"
     
-    static let flairMlemOfficial = UserProfileLinkFlair(color: Color.purple, image: Image("mlem"))
-    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
-    static let flairMod = UserProfileLinkFlair(color: Color.green, image: Image(systemName: "shield.fill"))
-    static let flairBot = UserProfileLinkFlair(color: Color.indigo, image: Image(systemName: "server.rack"))
-    static let flairOP = UserProfileLinkFlair(color: Color.orange, image: Image(systemName: "person.fill"))
-    static let flairAdmin = UserProfileLinkFlair(color: Color.red, image: Image(systemName: "crown.fill"))
-    static let flairRegular = UserProfileLinkFlair(color: Color.gray)
+    static let flairMlemOfficial = UserLinkViewFlair(color: Color.purple, image: Image("mlem"))
+    static let flairDeveloper = UserLinkViewFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
+    static let flairMod = UserLinkViewFlair(color: Color.green, image: Image(systemName: "shield.fill"))
+    static let flairBot = UserLinkViewFlair(color: Color.indigo, image: Image(systemName: "server.rack"))
+    static let flairOP = UserLinkViewFlair(color: Color.orange, image: Image(systemName: "person.fill"))
+    static let flairAdmin = UserLinkViewFlair(color: Color.red, image: Image(systemName: "crown.fill"))
+    static let flairRegular = UserLinkViewFlair(color: Color.gray)
     
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if showAvatar {
-                userAvatar
+                UserAvatarView(user: user, avatarSize: avatarSize, blurAvatar: blurAvatar)
+                    .accessibilityHidden(true)
             }
             userName
         }
-    }
-    
-    @ViewBuilder
-    private var userAvatar: some View {
-        Group {
-            if let userAvatarLink = user.avatar {
-                CachedImage(
-                    url: userAvatarLink,
-                    shouldExpand: false,
-                    fixedSize: avatarSize,
-                    imageNotFound: defaultUserAvatar,
-                    contentMode: .fill
-                )
-            } else {
-                defaultUserAvatar()
-            }
-        }
-        .frame(width: avatarSize.width, height: avatarSize.height)
-        .blur(radius: blurAvatar ? 4 : 0)
-        .clipShape(Circle())
-        .overlay(Circle()
-            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
-        .accessibilityHidden(true)
-    }
-    
-    private func defaultUserAvatar() -> AnyView {
-        AnyView(Image(systemName: "person.circle")
-            .resizable()
-            .scaledToFill()
-            .frame(width: avatarSize.width, height: avatarSize.height)
-            .foregroundColor(.secondary)
-        )
     }
     
     @ViewBuilder
@@ -143,7 +108,7 @@ struct UserProfileLabel: View {
     }
     
     @ViewBuilder
-    private func userName(with flair: UserProfileLinkFlair) -> some View {
+    private func userName(with flair: UserLinkViewFlair) -> some View {
         Text(user.displayName ?? user.name)
             .bold()
             .font(.footnote)
@@ -164,44 +129,44 @@ struct UserProfileLabel: View {
         }
     }
     
-    struct UserProfileLinkFlair {
+    struct UserLinkViewFlair {
         var color: Color
         var image: Image?
     }
     
-    private func calculateLinkFlair() -> UserProfileLinkFlair {
+    private func calculateLinkFlair() -> UserLinkViewFlair {
         if let userServer = user.actorId.host() {
             /*
-             if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
-                 return UserProfileLabel.flairMlemOfficial
+             if UserLabelView.mlemOfficial == "\(userServer)\(user.actorId.path())" {
+                 return UserLabelView.flairMlemOfficial
              }
              */
             
-            if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
-                return UserProfileLabel.flairDeveloper
+            if UserLabelView.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
+                return UserLabelView.flairDeveloper
             }
         }
         if user.admin {
-            return UserProfileLabel.flairAdmin
+            return UserLabelView.flairAdmin
         }
         if user.botAccount {
-            return UserProfileLabel.flairBot
+            return UserLabelView.flairBot
         }
         if let comment = commentContext, comment.distinguished {
-            return UserProfileLabel.flairMod
+            return UserLabelView.flairMod
         }
         if let community = communityContext, community.moderators.contains(where: { $0.moderator == user }) {
-            return UserProfileLabel.flairMod
+            return UserLabelView.flairMod
         }
         if let post = postContext, post.creatorId == user.id {
-            return UserProfileLabel.flairOP
+            return UserLabelView.flairOP
         }
-        return UserProfileLabel.flairRegular
+        return UserLabelView.flairRegular
     }
 }
 
 // TODO: darknavi - Move these to a common area for reuse
-struct UserProfileLinkPreview: PreviewProvider {
+struct UserLinkViewPreview: PreviewProvider {
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
     enum PreviewUserType: String, CaseIterable {
@@ -216,7 +181,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
         let actorId: URL
         if userType == .dev {
-            actorId = URL(string: "http://\(UserProfileLabel.developerNames[0])")!
+            actorId = URL(string: "http://\(UserLabelView.developerNames[0])")!
         } else {
             actorId = URL(string: "http://lemmy.ml/u/ericbandrews")!
         }
@@ -301,11 +266,11 @@ struct UserProfileLinkPreview: PreviewProvider {
         ))
     }
     
-    static func generateUserProfileLink(
+    static func generateUserLinkView(
         name: String,
         userType: PreviewUserType,
         serverInstanceLocation: ServerInstanceLocation
-    ) -> UserProfileLink {
+    ) -> UserLinkView {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
         var postContext: APIPost?
@@ -320,7 +285,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             postContext = generatePreviewPost(creator: previewUser).post
         }
         
-        return UserProfileLink(
+        return UserLinkView(
             user: previewUser,
             serverInstanceLocation: serverInstanceLocation,
             postContext: postContext,
@@ -333,7 +298,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             ForEach(ServerInstanceLocation.allCases, id: \.rawValue) { serverInstanceLocation in
                 Spacer()
                 ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
-                    generateUserProfileLink(name: "\(userType)User", userType: userType, serverInstanceLocation: serverInstanceLocation)
+                    generateUserLinkView(name: "\(userType)User", userType: userType, serverInstanceLocation: serverInstanceLocation)
                 }
             }
         }

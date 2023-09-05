@@ -217,7 +217,7 @@ struct ExpandedPost: View {
                     }
                 }
                 
-                UserProfileLink(
+                UserLinkView(
                     user: post.creator,
                     serverInstanceLocation: userServerInstanceLocation
                 )
