@@ -11,9 +11,6 @@ import SwiftUI
 struct MenuButton: View {
     let menuFunction: MenuFunction
     let confirmDestructive: ((StandardMenuFunction) -> Void)?
-    
-//    @Binding private var isPresentingConfirmDelete: Bool = false
-//    @Binding private var confirmationMenuFunction: StandardMenuFunction?
 
     var body: some View {
         switch menuFunction {
@@ -27,13 +24,6 @@ struct MenuButton: View {
                 } else {
                     standardMenuFunction.callback()
                 }
-//                if standardMenuFunction.destructiveActionPrompt != nil {
-//                    print("confirming delete...")
-//                    confirmationMenuFunction = standardMenuFunction
-//                    isPresentingConfirmDelete = true
-//                } else {
-//                    standardMenuFunction.callback()
-//                }
             } label: {
                 Label(standardMenuFunction.text, systemImage: standardMenuFunction.imageName)
             }

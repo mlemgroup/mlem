@@ -44,13 +44,14 @@ extension MenuFunction {
     }
 }
 
+/// MenuFunction to open a ShareLink
 struct ShareMenuFunction: Identifiable {
     var id: String { url.description }
     
     let url: URL
 }
 
-/// All the info needed to populate a menu
+/// MenuFunction to perform a generic menu action
 struct StandardMenuFunction: Identifiable {
     var id: String { text }
     
