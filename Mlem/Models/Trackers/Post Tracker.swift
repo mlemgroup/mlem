@@ -290,7 +290,7 @@ class PostTracker: ObservableObject {
         let shouldSave: Bool = !post.saved
         
         // fake state
-        let stateFakedPost = PostModel(from: post, saved: shouldSave)
+        let stateFakedPost = PostModel(from: post, votes: post.votes, saved: shouldSave)
         await update(with: stateFakedPost)
         hapticManager.play(haptic: .firmerInfo, priority: .high)
         
@@ -300,9 +300,9 @@ class PostTracker: ObservableObject {
             await update(with: saveResponse)
 
             if shouldSave {
-              //FIXME: setting `isLoading` forcefully to false doesn't feel very good.
-              isLoading = false
-              return await voteOnPost(post: saveResponse, inputOp: .upvote)
+              let voteResponse = try await postRepository.ratePost(postId: saveResponse.postId, operation: .upvote)
+              await update(with: voteResponse)
+              return voteResponse
             } else {
               return saveResponse
             }
