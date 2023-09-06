@@ -11,14 +11,32 @@ import SwiftUI
 struct MenuButton: View {
     let menuFunction: MenuFunction
     
-    var role: ButtonRole? { menuFunction.destructiveActionPrompt != nil ? .destructive : nil }
+    // var role: ButtonRole? { menuFunction.destructiveActionPrompt != nil ? .destructive : nil }
     
     var body: some View {
-        Button(role: role) {
-            menuFunction.callback()
-        } label: {
-            Label(menuFunction.text, systemImage: menuFunction.imageName)
+        switch menuFunction {
+        case let .share(shareMenuFunction):
+            ShareLink(item: shareMenuFunction.url)
+        case let .standard(standardMenuFunction):
+            let role: ButtonRole? = standardMenuFunction.destructiveActionPrompt != nil ? .destructive : nil
+            Button(role: role) {
+                standardMenuFunction.callback()
+            } label: {
+                Label(standardMenuFunction.text, systemImage: standardMenuFunction.imageName)
+            }
+            .disabled(!standardMenuFunction.enabled)
         }
-        .disabled(!menuFunction.enabled)
+        
+//        if let shareURL = menuFunction.shareURL {
+//            ShareLink(item: shareURL)
+//        } else {
+//            Button(role: role) {
+//                menuFunction.callback()
+//            } label: {
+//                Label(menuFunction.text, systemImage: menuFunction.imageName)
+//            }
+//            .disabled(!menuFunction.enabled)
+//            .onAppear { print(menuFunction) }
+//        }
     }
 }

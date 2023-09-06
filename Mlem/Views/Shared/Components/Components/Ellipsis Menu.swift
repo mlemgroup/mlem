@@ -18,18 +18,20 @@ struct EllipsisMenu: View {
     var body: some View {
         Menu {
             ForEach(menuFunctions) { item in
-                Button(role: item.destructiveActionPrompt != nil ? .destructive : nil) {
-                    // If we have destructive prompt, set this state to let the prompt
-                    // show and let the user action
-                    if item.destructiveActionPrompt != nil {
-                        confirmationMenuFunction = item
-                        isPresentingConfirmDelete = true
-                    } else {
-                        item.callback()
-                    }
-                } label: {
-                    Label(item.text, systemImage: item.imageName)
-                }.disabled(!item.enabled)
+                MenuButton(menuFunction: item)
+                // TODO: Eric make this work with new menu function
+//                Button(role: item.destructiveActionPrompt != nil ? .destructive : nil) {
+//                    // If we have destructive prompt, set this state to let the prompt
+//                    // show and let the user action
+//                    if item.destructiveActionPrompt != nil {
+//                        confirmationMenuFunction = item
+//                        isPresentingConfirmDelete = true
+//                    } else {
+//                        item.callback()
+//                    }
+//                } label: {
+//                    Label(item.text, systemImage: item.imageName)
+//                }.disabled(!item.enabled)
             }
         } label: {
             Image(systemName: "ellipsis")
@@ -40,18 +42,19 @@ struct EllipsisMenu: View {
                     .foregroundColor(.clear))
         }
         .onTapGesture {} // allows menu to pop up on first tap
-        .confirmationDialog("Destructive Action Confirmation", isPresented: $isPresentingConfirmDelete) {
-            if let destructiveCallback = confirmationMenuFunction?.callback {
-                Button("Yes", role: .destructive) {
-                    Task {
-                        destructiveCallback()
-                    }
-                }
-            }
-        } message: {
-            if let destructivePrompt = confirmationMenuFunction?.destructiveActionPrompt {
-                Text(destructivePrompt)
-            }
-        }
+        // TODO: Eric make this work with new menu function
+//        .confirmationDialog("Destructive Action Confirmation", isPresented: $isPresentingConfirmDelete) {
+//            if let destructiveCallback = confirmationMenuFunction?.callback {
+//                Button("Yes", role: .destructive) {
+//                    Task {
+//                        destructiveCallback()
+//                    }
+//                }
+//            }
+//        } message: {
+//            if let destructivePrompt = confirmationMenuFunction?.destructiveActionPrompt {
+//                Text(destructivePrompt)
+//            }
+//        }
     }
 }

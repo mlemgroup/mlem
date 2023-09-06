@@ -71,11 +71,7 @@ extension InboxView {
                 }
                 .contextMenu {
                     ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
-                        Button {
-                            item.callback()
-                        } label: {
-                            Label(item.text, systemImage: item.imageName)
-                        }
+                        MenuButton(menuFunction: item)
                     }
                 }
                 .addSwipeyActions(

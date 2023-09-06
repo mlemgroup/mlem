@@ -98,7 +98,7 @@ extension ExpandedPost {
         let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
             ("Undo upvote", "arrow.up.square.fill") :
             ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
             destructiveActionPrompt: nil,
@@ -113,7 +113,7 @@ extension ExpandedPost {
         let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
             ("Undo downvote", "arrow.down.square.fill") :
             ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
             destructiveActionPrompt: nil,
@@ -126,7 +126,7 @@ extension ExpandedPost {
         
         // save
         let (saveText, saveImg) = post.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg,
             destructiveActionPrompt: nil,
@@ -138,7 +138,7 @@ extension ExpandedPost {
         })
         
         // reply
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
@@ -149,7 +149,7 @@ extension ExpandedPost {
         
         if post.creator.id == appState.currentActiveAccount.id {
             // edit
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: "pencil",
                 destructiveActionPrompt: nil,
@@ -164,7 +164,7 @@ extension ExpandedPost {
             })
             
             // delete
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
@@ -177,19 +177,22 @@ extension ExpandedPost {
         }
         
         // share
-        ret.append(MenuFunction(
-            text: "Share",
-            imageName: "square.and.arrow.up",
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            if let url = URL(string: post.post.apId) {
-                showShareSheet(URLtoShare: url)
-            }
-        })
+        if let url = URL(string: post.post.apId) {
+            ret.append(MenuFunction.shareMenuFunction(url: url))
+        }
+//        ret.append(MenuFunction(
+//            text: "Share",
+//            imageName: "square.and.arrow.up",
+//            destructiveActionPrompt: nil,
+//            enabled: true
+//        ) {
+//            if let url = URL(string: post.post.apId) {
+//                showShareSheet(URLtoShare: url)
+//            }
+//        })
         
         // report
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Report Post",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: AppConstants.reportPostPrompt,
@@ -199,7 +202,7 @@ extension ExpandedPost {
         })
         
         // block user
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,

@@ -64,11 +64,12 @@ extension InboxView {
             }
             .contextMenu {
                 ForEach(genMessageMenuGroup(message: message)) { item in
-                    Button {
-                        item.callback()
-                    } label: {
-                        Label(item.text, systemImage: item.imageName)
-                    }
+                    MenuButton(menuFunction: item)
+//                    Button {
+//                        item.callback()
+//                    } label: {
+//                        Label(item.text, systemImage: item.imageName)
+//                    }
                 }
             }
             .addSwipeyActions(
