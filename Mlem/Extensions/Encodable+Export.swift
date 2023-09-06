@@ -23,6 +23,7 @@ extension Encodable {
         let temporaryLocation = fileManager.temporaryDirectory.appendingPathComponent(filename, conformingTo: .json)
         try data.write(to: temporaryLocation)
         
+        // TODO: purge showShareSheet
         showShareSheet(URLtoShare: temporaryLocation) { _, _, _, _ in
             // TODO: when we're not calling out to a global function
             // for sharing we should consider handling any errors we see

@@ -46,6 +46,7 @@ extension MenuFunction {
 
 struct ShareMenuFunction: Identifiable {
     var id: String { url.description }
+    
     let url: URL
 }
 
@@ -57,25 +58,5 @@ struct StandardMenuFunction: Identifiable {
     let imageName: String
     let destructiveActionPrompt: String?
     let enabled: Bool
-    
-    // this is a special one--if it exists, then we make a ShareLink instead of a regular menu button
-    let shareURL: URL?
-    
     let callback: () -> Void
-    
-    init(
-        text: String,
-        imageName: String,
-        destructiveActionPrompt: String?,
-        enabled: Bool,
-        shareURL: URL? = nil,
-        callback: @escaping () -> Void
-    ) {
-        self.text = text
-        self.imageName = imageName
-        self.destructiveActionPrompt = destructiveActionPrompt
-        self.enabled = enabled
-        self.shareURL = shareURL
-        self.callback = callback
-    }
 }

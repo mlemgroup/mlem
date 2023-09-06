@@ -180,16 +180,6 @@ extension ExpandedPost {
         if let url = URL(string: post.post.apId) {
             ret.append(MenuFunction.shareMenuFunction(url: url))
         }
-//        ret.append(MenuFunction(
-//            text: "Share",
-//            imageName: "square.and.arrow.up",
-//            destructiveActionPrompt: nil,
-//            enabled: true
-//        ) {
-//            if let url = URL(string: post.post.apId) {
-//                showShareSheet(URLtoShare: url)
-//            }
-//        })
         
         // report
         ret.append(MenuFunction.standardMenuFunction(

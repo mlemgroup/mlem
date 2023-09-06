@@ -170,11 +170,7 @@ struct CommentItem: View {
                         downvote: downvote,
                         save: saveComment,
                         reply: replyToComment,
-                        share: {
-                            if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
-                                showShareSheet(URLtoShare: url)
-                            }
-                        },
+                        shareURL: URL(string: hierarchicalComment.commentView.comment.apId),
                         shouldShowScore: shouldShowScoreInCommentBar,
                         showDownvotesSeparately: showCommentDownvotesSeparately,
                         shouldShowTime: shouldShowTimeInCommentBar,

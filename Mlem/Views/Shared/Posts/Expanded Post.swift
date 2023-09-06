@@ -24,8 +24,6 @@ private struct AnchorsKey: PreferenceKey {
     }
 }
 
-// swiftlint:disable type_body_length
-
 struct ExpandedPost: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
@@ -238,11 +236,7 @@ struct ExpandedPost: View {
                 downvote: downvotePost,
                 save: savePost,
                 reply: replyToPost,
-                share: {
-                    if let url = URL(string: post.post.apId) {
-                        showShareSheet(URLtoShare: url)
-                    }
-                },
+                shareURL: URL(string: post.post.apId),
                 shouldShowScore: shouldShowScoreInPostBar,
                 showDownvotesSeparately: showPostDownvotesSeparately,
                 shouldShowTime: shouldShowTimeInPostBar,
@@ -321,5 +315,3 @@ struct ExpandedPost: View {
         }
     }
 }
-
-// swiftlint:enable type_body_length

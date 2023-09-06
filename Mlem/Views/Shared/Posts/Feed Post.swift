@@ -202,11 +202,7 @@ struct FeedPost: View {
                     downvote: downvotePost,
                     save: savePost,
                     reply: replyToPost,
-                    share: {
-                        if let url = URL(string: post.post.apId) {
-                            showShareSheet(URLtoShare: url)
-                        }
-                    },
+                    shareURL: URL(string: post.post.apId),
                     shouldShowScore: shouldShowScoreInPostBar,
                     showDownvotesSeparately: showPostDownvotesSeparately,
                     shouldShowTime: shouldShowTimeInPostBar,
@@ -382,17 +378,6 @@ struct FeedPost: View {
         if let url = URL(string: post.post.apId) {
             ret.append(MenuFunction.shareMenuFunction(url: url))
         }
-//        ret.append(MenuFunction(
-//            text: "BAD BAD BAD",
-//            imageName: "square.and.arrow.up",
-//            destructiveActionPrompt: nil,
-//            enabled: true,
-//            shareURL: URL(string: post.post.apId)!
-//        ) {
-//            if let url = URL(string: post.post.apId) {
-//                showShareSheet(URLtoShare: url)
-//            }
-//        })
 
         // report
         ret.append(MenuFunction.standardMenuFunction(

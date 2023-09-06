@@ -205,14 +205,6 @@ extension FeedView {
         
         // share
         ret.append(MenuFunction.shareMenuFunction(url: community.actorId))
-//        ret.append(MenuFunction(
-//            text: "Share",
-//            imageName: AppConstants.shareSymbolName,
-//            destructiveActionPrompt: nil,
-//            enabled: true
-//        ) {
-//            showShareSheet(URLtoShare: community.actorId)
-//        })
         
         // block/unblock
         if let communityDetails {

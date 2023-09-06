@@ -227,14 +227,6 @@ extension CommentItem {
         // share
         if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
             ret.append(MenuFunction.shareMenuFunction(url: url))
-//            ret.append(MenuFunction(
-//                text: "Share",
-//                imageName: "square.and.arrow.up",
-//                destructiveActionPrompt: nil,
-//                enabled: true
-//            ) {
-//                showShareSheet(URLtoShare: url)
-//            })
         }
         
         // report

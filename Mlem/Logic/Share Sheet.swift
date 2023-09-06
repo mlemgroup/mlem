@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// TODO: let's stop with the global functions? 😬
+@available(*, deprecated, message: "Migrate to ShareLink")
 func showShareSheet(URLtoShare: URL, completion: UIActivityViewController.CompletionWithItemsHandler? = nil) {
     let activityVC = UIActivityViewController(activityItems: [URLtoShare], applicationActivities: nil)
     activityVC.completionWithItemsHandler = completion
