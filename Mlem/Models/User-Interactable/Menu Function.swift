@@ -21,7 +21,7 @@ enum MenuFunction: Identifiable {
     case share(ShareMenuFunction)
 }
 
-// some convenience initializers
+// some convenience initializers because MenuFunction.standard(StandardMenuFunction...) is ugly
 extension MenuFunction {
     static func standardMenuFunction(
         text: String,

@@ -10,9 +10,11 @@ import SwiftUI
 
 struct MenuButton: View {
     let menuFunction: MenuFunction
+    let confirmDestructive: ((StandardMenuFunction) -> Void)?
     
-    // var role: ButtonRole? { menuFunction.destructiveActionPrompt != nil ? .destructive : nil }
-    
+//    @Binding private var isPresentingConfirmDelete: Bool = false
+//    @Binding private var confirmationMenuFunction: StandardMenuFunction?
+
     var body: some View {
         switch menuFunction {
         case let .share(shareMenuFunction):
@@ -20,23 +22,22 @@ struct MenuButton: View {
         case let .standard(standardMenuFunction):
             let role: ButtonRole? = standardMenuFunction.destructiveActionPrompt != nil ? .destructive : nil
             Button(role: role) {
-                standardMenuFunction.callback()
+                if standardMenuFunction.destructiveActionPrompt != nil, let confirmDestructive {
+                    confirmDestructive(standardMenuFunction)
+                } else {
+                    standardMenuFunction.callback()
+                }
+//                if standardMenuFunction.destructiveActionPrompt != nil {
+//                    print("confirming delete...")
+//                    confirmationMenuFunction = standardMenuFunction
+//                    isPresentingConfirmDelete = true
+//                } else {
+//                    standardMenuFunction.callback()
+//                }
             } label: {
                 Label(standardMenuFunction.text, systemImage: standardMenuFunction.imageName)
             }
             .disabled(!standardMenuFunction.enabled)
         }
-        
-//        if let shareURL = menuFunction.shareURL {
-//            ShareLink(item: shareURL)
-//        } else {
-//            Button(role: role) {
-//                menuFunction.callback()
-//            } label: {
-//                Label(menuFunction.text, systemImage: menuFunction.imageName)
-//            }
-//            .disabled(!menuFunction.enabled)
-//            .onAppear { print(menuFunction) }
-//        }
     }
 }

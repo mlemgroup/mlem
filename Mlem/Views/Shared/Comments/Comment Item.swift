@@ -64,6 +64,16 @@ struct CommentItem: View {
     let showCommentCreator: Bool
     let enableSwipeActions: Bool
     
+    // MARK: Destructive confirmation
+    
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
     // MARK: Computed
     
     private var indentValue: CGFloat {
@@ -183,25 +193,19 @@ struct CommentItem: View {
         }
         .contextMenu {
             ForEach(genMenuFunctions()) { item in
-                MenuButton(menuFunction: item)
-//                Button {
-//                    item.callback()
-//                } label: {
-//                    Label(item.text, systemImage: item.imageName)
-//                }
+                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
         }
+        .destructiveConfirmation(
+            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+            confirmationMenuFunction: confirmationMenuFunction
+        )
         .background(Color.systemBackground)
         .addSwipeyActions(
             leading: enableSwipeActions ? [upvoteSwipeAction, downvoteSwipeAction] : [],
             trailing: enableSwipeActions ? [saveSwipeAction, replySwipeAction, expandCollapseCommentAction] : []
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
-//        .sheet(isPresented: $isComposingReport) {
-//            ResponseComposerView(concreteRespondable: ConcreteRespondable(appState: appState,
-//                                                                          comment: hierarchicalComment.commentView,
-//                                                                          report: true))
-//        }
     }
     // swiftlint:enable function_body_length
 }

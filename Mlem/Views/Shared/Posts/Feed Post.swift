@@ -79,6 +79,16 @@ struct FeedPost: View {
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
     
+    // MARK: Destructive confirmation
+    
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
     // MARK: Computed
     
     var barThickness: CGFloat { !post.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
@@ -94,14 +104,13 @@ struct FeedPost: View {
 //                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
-                        MenuButton(menuFunction: item)
-//                        Button {
-//                            item.callback()
-//                        } label: {
-//                            Label(item.text, systemImage: item.imageName)
-//                        }
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                     }
                 }
+                .destructiveConfirmation(
+                    isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                    confirmationMenuFunction: confirmationMenuFunction
+                )
                 .addSwipeyActions(
                     leading: [
                         enableSwipeActions ? upvoteSwipeAction : nil,

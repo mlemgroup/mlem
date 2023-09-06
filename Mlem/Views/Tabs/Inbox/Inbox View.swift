@@ -47,6 +47,15 @@ struct InboxView: View {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     // MARK: Internal
+    
+    // destructive confirmation
+    @State var isPresentingConfirmDestructive: Bool = false
+    @State var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
 
     // id of the last account loaded with
     @State var lastKnownAccountId: Int = 0
@@ -172,7 +181,7 @@ struct InboxView: View {
     private var ellipsisMenu: some View {
         Menu {
             ForEach(genMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
+                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive functions
             }
         } label: {
             Label("More", systemImage: "ellipsis")
