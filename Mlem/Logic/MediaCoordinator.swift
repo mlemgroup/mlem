@@ -16,10 +16,11 @@ import AVKit
 import Combine
 import LinkPresentation
 import VisionKit
+import Photos
 
 let analyzer = ImageAnalyzer()
 
-/// swiftlint:disable type_body_length
+// swiftlint:disable type_body_length
 class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
@@ -114,7 +115,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         menuItems.append(shareLink)
 
         if let container = imageContainer {
-            if container.image.size != .zero {
+            if container.image.size != .zero || self.gifView != nil {
                 let regualarShare = MenuFunction(
                     text: "Share Image",
                     imageName: "photo",
@@ -136,9 +137,16 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
                     imageName: "square.and.arrow.down",
                     destructiveActionPrompt: nil,
                     enabled: true) {
-//                        if let data = container.data {
-                            UIImageWriteToSavedPhotosAlbum(container.image, nil, nil, nil)
-//                        }
+                        if self.gifView != nil, let data = self.imageContainer?.data {
+                            PHPhotoLibrary.shared().performChanges {
+                                let request: PHAssetCreationRequest = .forAsset()
+                                request.addResource(with: .photo, data: data, options: PHAssetResourceCreationOptions())
+                                
+                            } completionHandler: { _, _ in
+                            }
+                        } else {
+                        UIImageWriteToSavedPhotosAlbum(container.image, nil, nil, nil)
+                        }
                     }
                 menuItems.append(saveImage)
             }
@@ -328,7 +336,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         return gifView!
     }
 }
-/// swiftlint:enable type_body_length
+// swiftlint:enable type_body_length
 extension AVAsset {
     func getTrackDetails() async -> (CGSize, CMTime)? {
         guard let tracks = try? await loadTracks(withMediaType: .video) else { return nil }
