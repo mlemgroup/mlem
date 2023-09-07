@@ -61,18 +61,15 @@ struct InboxView: View {
     
     // item feeds
     @State var allItems: [InboxItem] = .init()
-    @StateObject var mentionsTracker: MentionsTracker // = .init(internetSpeed: internetSpeed)
-    @StateObject var messagesTracker: MessagesTracker // = .init(internetSpeed: internetSpeed)
-    @StateObject var repliesTracker: RepliesTracker // = .init(internetSpeed: internetSpeed)
-    @StateObject var dummyPostTracker: PostTracker // = .init(internetSpeed: internetSpeed) // used for nav
+    @StateObject var mentionsTracker: MentionsTracker = .init()
+    @StateObject var messagesTracker: MessagesTracker = .init()
+    @StateObject var repliesTracker: RepliesTracker = .init()
+    @StateObject var dummyPostTracker: PostTracker // used for navigation
     
     init() {
+        // TODO: once the post tracker is changed we won't need this here...
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        
-        self._mentionsTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
-        self._messagesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
-        self._repliesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
         self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, upvoteOnSave: upvoteOnSave))
     }
     

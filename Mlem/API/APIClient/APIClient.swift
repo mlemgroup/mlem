@@ -215,6 +215,35 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    func getPersonMentions(
+        sort: PostSortType?,
+        page: Int?,
+        limit: Int?,
+        unreadOnly: Bool
+    ) async throws -> [APIPersonMentionView] {
+        let request = try GetPersonMentionsRequest(session: session, sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
+        return try await perform(request: request).mentions
+    }
+    
+    func getPrivateMessages(
+        page: Int?,
+        limit: Int?,
+        unreadOnly: Bool
+    ) async throws -> [APIPrivateMessageView] {
+        let request = try GetPrivateMessagesRequest(session: session, page: page, limit: limit, unreadOnly: unreadOnly)
+        return try await perform(request: request).privateMessages
+    }
+    
+    func getReplies(
+        sort: PostSortType?,
+        page: Int?,
+        limit: Int?,
+        unreadOnly: Bool
+    ) async throws -> [APICommentReplyView] {
+        let request = try GetRepliesRequest(session: session, sort: sort, page: page, limit: limit, unreadOnly: unreadOnly)
+        return try await perform(request: request).replies
+    }
+    
     // MARK: - User requests
 
     func deleteUser(user: SavedAccount, password: String) async throws {
