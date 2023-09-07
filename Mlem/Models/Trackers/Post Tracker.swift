@@ -290,15 +290,22 @@ class PostTracker: ObservableObject {
         let shouldSave: Bool = !post.saved
         
         // fake state
-        let stateFakedPost = PostModel(from: post, saved: shouldSave)
+        let stateFakedPost = PostModel(from: post, votes: post.votes, saved: shouldSave)
         await update(with: stateFakedPost)
         hapticManager.play(haptic: .firmerInfo, priority: .high)
         
         // perform real save
         do {
-            let response = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
-            await update(with: response)
-            return response
+            let saveResponse = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
+            await update(with: saveResponse)
+
+            if shouldSave {
+              let voteResponse = try await postRepository.ratePost(postId: saveResponse.postId, operation: .upvote)
+              await update(with: voteResponse)
+              return voteResponse
+            } else {
+              return saveResponse
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)

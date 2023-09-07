@@ -8,25 +8,6 @@
 import Dependencies
 import SwiftUI
 
-private struct WidgetCollectionView: ViewModifier {
-    var collection: LayoutWidgetCollection
-    var rectTransformation: (_ rect: CGRect) -> CGRect
-    
-    func wrappedContent(content: Content, geometry: GeometryProxy) -> some View {
-        let rect = geometry.frame(in: .global)
-        collection.rect = rectTransformation(rect)
-        return content
-    }
-    
-    func body(content: Content) -> some View {
-        Group {
-            GeometryReader { geometry in
-                wrappedContent(content: content, geometry: geometry)
-            }
-        }
-    }
-}
-
 struct LayoutWidgetEditView: View {
     @Environment(\.isPresented) var isPresented
     
@@ -52,14 +33,14 @@ struct LayoutWidgetEditView: View {
         
         let tray = InfiniteWidgetCollection(
             [
-            .upvote,
-            .downvote,
-            .save,
-            .reply,
-            .share,
-            .upvoteCounter,
-            .downvoteCounter,
-            .scoreCounter
+                .upvote,
+                .downvote,
+                .save,
+                .reply,
+                .share,
+                .upvoteCounter,
+                .downvoteCounter,
+                .scoreCounter
             ].map { LayoutWidget($0) }
         )
         
@@ -164,13 +145,20 @@ struct LayoutWidgetEditView: View {
         .animation(.default, value: barCollection.itemsToRender)
         .zIndex(1)
         .transition(.scale(scale: 1))
-        .modifier(WidgetCollectionView(collection: barCollection) { rect in
-            rect
-                .offsetBy(dx: 0, dy: -outerFrame.origin.y)
-                .insetBy(dx: -20, dy: -60)
-        })
         .frame(maxWidth: .infinity)
         .frame(height: 40)
+        .overlay {
+            // little hack to determine the frame after rendering and update the collection
+            GeometryReader { geo in
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear {
+                        barCollection.rect = geo.frame(in: .global)
+                            .offsetBy(dx: 0, dy: -outerFrame.origin.y)
+                            .insetBy(dx: -20, dy: -60)
+                    }
+            }
+        }
     }
     
     func tray(_ outerFrame: CGRect) -> some View {
@@ -192,10 +180,17 @@ struct LayoutWidgetEditView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 300)
-        .modifier(WidgetCollectionView(collection: trayCollection) { rect in
-            rect
-                .offsetBy(dx: 0, dy: -outerFrame.origin.y - 90)
-        })
+        .overlay {
+            // little hack to determine the frame after rendering and update the collection
+            GeometryReader { geo in
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear {
+                        trayCollection.rect = geo.frame(in: .global)
+                            .offsetBy(dx: 0, dy: -outerFrame.origin.y - 90)
+                    }
+            }
+        }
     }
     
     func trayWidgetView(_ widgetType: LayoutWidgetType, widgets: [LayoutWidgetType: LayoutWidget], outerFrame: CGRect) -> some View {
