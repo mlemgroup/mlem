@@ -21,12 +21,10 @@ struct GestureView<Content: View>: UIViewRepresentable {
     @Binding public var closiness: Double
     @Binding public var animating: Bool
     
-    var namespace: Namespace.ID
     init(
         closiness: Binding<Double>,
         animating: Binding<Bool>,
         scale: Binding<CGFloat>,
-        namespace: Namespace.ID,
         tapLocation: Binding<CGPoint>,
         contentOffset: Binding<CGPoint>,
         @ViewBuilder content: () -> Content
@@ -36,7 +34,6 @@ struct GestureView<Content: View>: UIViewRepresentable {
         _currentScale = scale
         _tapLocation = tapLocation
         _contentOffset = contentOffset
-        self.namespace = namespace
         self.content = content()
     }
 
@@ -70,8 +67,8 @@ struct GestureView<Content: View>: UIViewRepresentable {
         
         context.coordinator.setParent(scrollView)
         
-        hostedView.invalidateIntrinsicContentSize()
-        scrollView.setNeedsLayout()
+//        hostedView.invalidateIntrinsicContentSize()
+//        scrollView.setNeedsLayout()
         
         scrollView.backgroundColor = .clear
         DispatchQueue.main.async {
@@ -155,12 +152,12 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
     @Binding private var closiness: Double
     public var dragClosiness: CGFloat = 0
     public var zoomingClosiness: CGFloat = 0
-
+    
     public var isAnimating: Bool {
         isZooming || isDragging
     }
     
-    /*** tht7 note: 
+    /*** tht7 note:
      * we can't use UIScrollView.isDragging/.isZooming since they report "true" until the *animations* are done
      * by that time the scroll scale and position have already been bounced back, so we can't use them to detect if the user finied the action in a position that would dismiss the view
      */
@@ -173,20 +170,20 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
         parent.panGestureRecognizer.state == .began ||
         parent.panGestureRecognizer.state == .changed
     }
-
+    
     func setParent(_ parent: CenteringScrollView) {
         self.parent = parent
-
+        
         parent.pinchGestureRecognizer?.addTarget(self, action: #selector(self.handleZooming))
         parent.panGestureRecognizer.addTarget(self, action: #selector(self.handlePanning))
     }
-
+    
     func getBounds() -> (Double, Double) {
         let contentSizeHeight = hostingController.view!.bounds.size.height * parent.zoomScale
         let topOffest = max(
-                (((parent.bounds.size.height)/2.0)) - (contentSizeHeight/2.0),
-                parent.safeAreaInsets.top
-            )
+            (((parent.bounds.size.height)/2.0)) - (contentSizeHeight/2.0),
+            parent.safeAreaInsets.top
+        )
         let topDiffY = parent.contentOffset.y + topOffest
         let scrollViewHeight = parent.bounds.height
         let bottomInset = max(scrollViewHeight - contentSizeHeight - topOffest, parent.safeAreaInsets.bottom)
@@ -194,10 +191,10 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
         //  (so like the images was already panned all the way to the bottom but we're dragging more in the up direction)
         //  (imagine this action like the one in the photos library, when dragging more then the bottom it brings the image info up)
         let scrollViewBottomOffset =  (contentSizeHeight - scrollViewHeight + bottomInset) - parent.contentOffset.y
-
+        
         return (topDiffY, scrollViewBottomOffset)
     }
-
+    
     init(
         hostingController: UIHostingController<Content>,
         animating: Binding<Bool>,
@@ -213,7 +210,7 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
         _currentScale = scale
         _contentOffset = contentOffset
     }
-
+    
     @objc
     func handleZooming() {
         if parent.pinchGestureRecognizer?.state != .ended {
@@ -225,7 +222,7 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
             animating = isDragging
         }
     }
-
+    
     @objc
     func handlePanning() {
         if isZooming { return }
@@ -238,11 +235,11 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
             closiness = max(zoomingClosiness, dragClosiness)
         }
     }
-
+    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return hostingController.view
     }
-
+    
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         // if someone wants to animate the clossiness/location of the view based on the velocity
         animating = isDragging
@@ -250,9 +247,7 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
         zoomingClosiness = 0
         if !isAnimating {
             DispatchQueue.main.async {
-//                withAnimation(.easeInOut(duration: 1)) {
-                    self.closiness = max(self.zoomingClosiness, self.dragClosiness)
-//                }
+                self.closiness = max(self.zoomingClosiness, self.dragClosiness)
             }
         }
     }
@@ -264,7 +259,7 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         animating = true
     }
-
+    
     func scrollViewWillEndDragging(_ scrollView: UIScrollView,
                                    withVelocity velocity: CGPoint,
                                    targetContentOffset: UnsafeMutablePointer<CGPoint>
@@ -273,10 +268,8 @@ class GestureCoordinator<Content: View>: NSObject, UIScrollViewDelegate {
         animating = isZooming
         contentOffset = scrollView.contentOffset
         dragClosiness = 0
-            DispatchQueue.main.async {
-                withAnimation(.interactiveSpring(response: 2, dampingFraction: 1, blendDuration: 1)) {
-                    self.closiness = max(self.zoomingClosiness, self.dragClosiness)
-                }
-            }
+        DispatchQueue.main.async {
+            self.closiness = max(self.zoomingClosiness, self.dragClosiness)
+        }
     }
 }

@@ -230,6 +230,7 @@ struct ExpandedPost: View {
             VStack(alignment: .leading) {
                 Text(post.post.name)
                     .font(.headline)
+                    .padding()
                 interactionBar
             }
         }
@@ -237,7 +238,7 @@ struct ExpandedPost: View {
             UpvoteView(
                 upvoteFuncion: upvotePost,
                 completedImage:
-                    post.myVote == .upvote ?
+                    post.votes.myVote == .upvote ?
                         Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left.slash") :
                         Image(systemName: "arrow.up")
             )

@@ -27,8 +27,6 @@ struct FullScreenViewer<Content: View>: View {
 
     @StateObject var mediaState: MediaState = .init()
 
-    var namespace: Namespace.ID
-
     let media: Content
 
     @State var momentryView: AnyView?
@@ -37,12 +35,10 @@ struct FullScreenViewer<Content: View>: View {
 
     init(
         isOpen: Binding<Bool>,
-        animationNS: Namespace.ID,
         @ViewBuilder media: @escaping() -> Content
     ) {
         _mediaState = .init(wrappedValue: .init())
         _isOpen = isOpen
-        self.namespace = animationNS
         self.media = media()
     }
 
@@ -64,13 +60,10 @@ struct FullScreenViewer<Content: View>: View {
     var body: some View {
         let actualContent = getContent()
         ZStack {
-            Color.black.opacity((100 - closiness)/100)
-
             GestureView(
                 closiness: $closiness,
                 animating: $animating,
                 scale: $zoomScale,
-                namespace: namespace,
                 tapLocation: $doubleTapLocation,
                 contentOffset: $contentOffset,
                 content: {
@@ -94,7 +87,7 @@ struct FullScreenViewer<Content: View>: View {
                             }
                     }
                 }
-            ).onTapGesture(count: 2) { location in
+            ).onTapGesture(count: 2) { _ in
                 // Double tep to zoom
                 if let doubleTapHandler = doubleTapHandler {
                     momentryView = AnyView(EmptyView())
@@ -103,20 +96,23 @@ struct FullScreenViewer<Content: View>: View {
                             momentryView = doubleTapHandler()
                         }
                     }
-                } else {
-                    doubleTapLocation = location
-                }
+                } 
+                // unused buggy double-tap-to-zoom
+//                else {
+//                    doubleTapLocation = $0
+//                }
             }.onTapGesture {
-                withAnimation(.easeInOut(duration: 1)) {
+                withAnimation(.easeInOut(duration: 0.2)) {
                     showUI.toggle()
                 }
-
             }
             VStack(alignment: .leading) {
                 if showUI {
                     HStack {
                         Button {
-                            withAnimation(.easeInOut(duration: 1)) {
+                            var transaction = Transaction()
+                            transaction.disablesAnimations = true
+                            withTransaction(transaction) {
                                 isOpen.toggle()
                             }
                         } label: {
@@ -142,7 +138,7 @@ struct FullScreenViewer<Content: View>: View {
                             }
                             if !scrubbingHint {
                                 (label?() ?? AnyView(EmptyView()))
-                                    .padding()
+//                                    .padding()
                             } else {
                                 ScrubberHint()
                                     .padding()
@@ -197,14 +193,16 @@ struct FullScreenViewer<Content: View>: View {
             }
         }
         .onChange(of: zoomScale) { newScale in
-            withAnimation(.easeInOut(duration: 1)) {
+            withAnimation(.easeInOut(duration: 0.2)) {
                 showUI = newScale <= 1
             }
         }
         .onChange(of: animating) { isAnimating in
             if !isAnimating {
                 if closiness > 20 {
-                    withAnimation(.easeInOut(duration: 1)) {
+                    var transaction = Transaction()
+                    transaction.disablesAnimations = true
+                    withTransaction(transaction) {
                         isOpen.toggle()
                     }
                 }
@@ -222,7 +220,9 @@ struct FullScreenViewer<Content: View>: View {
                 }
             }
         }
-        .ignoresSafeArea()
+        .background {
+            Color.black.opacity((100 - closiness)/100).ignoresSafeArea()
+        }
     }
 }
 
@@ -231,7 +231,7 @@ struct FullScreenViewerPreview: PreviewProvider {
     @Namespace static var testing
     static var previews: some View {
         ForEach(testImageURLs) { testURL in
-            FullScreenViewer(isOpen: .constant(true), animationNS: testing) {
+            FullScreenViewer(isOpen: .constant(true)) {
                 CachedImage(url: testURL, shouldExpand: false)
             }.fullScreenLabel {
                 AnyView(

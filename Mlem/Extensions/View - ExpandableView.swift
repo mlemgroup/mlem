@@ -18,12 +18,11 @@ protocol FullScreenActualContent {
  */
 struct ExpandableView<Content: View>: View {
     @State public var isFullScreen: Bool = false
-    @Namespace var animationNS
-    
+
     let content: Content
-    
+
     let dismissCallback: (() -> Void)?
-    
+
     init(
         isFullScreen: Bool = false,
         dismissCallback: (() -> Void)? = nil,
@@ -33,7 +32,7 @@ struct ExpandableView<Content: View>: View {
         self.dismissCallback = dismissCallback
         self._isFullScreen = .init(initialValue: isFullScreen)
     }
-    
+
     init(
         isFullScreen: Bool = false,
         dismissCallback: (() -> Void)? = nil,
@@ -43,21 +42,19 @@ struct ExpandableView<Content: View>: View {
         self.dismissCallback = dismissCallback
         self._isFullScreen = .init(initialValue: isFullScreen)
     }
-    
+
     @ViewBuilder
     var body: some View {
-// #if DEBUG
-//        let _ = Self._printChanges()
-// #endif
         content
             .onTapGesture {
-                withAnimation(.easeInOut(duration: 1)) {
+                var transaction = Transaction()
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
                     isFullScreen = true
                 }
-            }.fullScreenCover(isPresented: $isFullScreen, onDismiss: dismissCallback) {
+            }.fullScreenCover(isPresented: $isFullScreen, onDismiss: dismissCallback) { [isFullScreen] in
                 FullScreenViewer(
-                    isOpen: $isFullScreen,
-                    animationNS: animationNS
+                    isOpen: $isFullScreen
                 ) {
                     content
                 }

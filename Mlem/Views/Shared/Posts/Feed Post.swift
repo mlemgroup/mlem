@@ -114,8 +114,9 @@ struct FeedPost: View {
         }
         .fullScreenLabel {
             VStack(alignment: .leading) {
-                Text(postView.post.name)
+                Text(post.post.name)
                     .font(.headline)
+                    .padding()
                 interactionBar
             }
         }
@@ -123,7 +124,7 @@ struct FeedPost: View {
             UpvoteView(
                 upvoteFuncion: upvotePost,
                 completedImage:
-                    postView.myVote == .upvote ?
+                    post.votes.myVote == .upvote ?
                         Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left.slash") :
                         Image(systemName: "arrow.up")
             )
