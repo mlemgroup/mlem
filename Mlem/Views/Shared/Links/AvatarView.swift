@@ -6,26 +6,9 @@
 //
 import SwiftUI
 
-// Don't clip the avatars of communities from these instances
-private let unclippedInstances = ["beehaw.org"]
-
-func shouldClipAvatar(community: APICommunity) -> Bool {
-    guard let hostString = community.actorId.host else {
-        return true
-    }
-
-    return !unclippedInstances.contains(hostString)
-}
-
-func shouldClipAvatar(url: URL?) -> Bool {
-    guard let hostString = url?.host else {
-        return true
-    }
-
-    return !unclippedInstances.contains(hostString)
-}
-
 struct AvatarView: View {
+    // Don't clip the avatars of communities from these instances
+    static let unclippedInstances = ["beehaw.org"]
     
     enum AvatarType { case community, user }
     
@@ -43,7 +26,7 @@ struct AvatarView: View {
         self.url = community.icon
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
-        self.clipAvatar = shouldClipAvatar(community: community)
+        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.icon)
         self.blurAvatar = shouldBlurNsfw && community.nsfw
     }
     
@@ -56,6 +39,14 @@ struct AvatarView: View {
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
         self.clipAvatar = false
         self.blurAvatar = shouldBlurNsfw && blurAvatar
+    }
+    
+    static func shouldClipCommunityAvatar(url: URL?) -> Bool {
+        guard let hostString = url?.host else {
+            return true
+        }
+
+        return !unclippedInstances.contains(hostString)
     }
 
     var body: some View {
