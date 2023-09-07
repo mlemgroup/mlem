@@ -15,7 +15,11 @@ import SwiftyGif
 import AVKit
 import Combine
 import LinkPresentation
+import VisionKit
 
+let analyzer = ImageAnalyzer()
+
+/// swiftlint:disable type_body_length
 class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
@@ -163,7 +167,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             Task { @MainActor in
                 imageView.invalidateIntrinsicContentSize()
                 imageView.setNeedsLayout()
-
+                
                 if let type = container.type, parent.needsMediaSync {
                     self.parent.mediaStateSyncObject.type = type
                 }
@@ -178,7 +182,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
                 }
             }
         }
-//        mediaStateSyncObject.type = container.type ?? .jpeg
+        //        mediaStateSyncObject.type = container.type ?? .jpeg
         if container.type == .gif, let data = container.data {
             return initializeGIF(container: container, data: data)
         } else if
@@ -188,7 +192,21 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             self.mediaSize = container.image.size
             let uiimageView = UIImageView(image: container.image)
             uiimageView.contentMode = .scaleAspectFit
-
+            if parent.needsMediaSync {
+                let interaction = ImageAnalysisInteraction()
+                uiimageView.addInteraction(interaction)
+                interaction.preferredInteractionTypes = .automatic
+                interaction.allowLongPressForDataDetectorsInTextMode = true
+                interaction.setSupplementaryInterfaceHidden(false, animated: true)
+                Task { @MainActor in
+                    let analysis = try? await analyzer.analyze(
+                        container.image,
+                        configuration: ImageAnalyzer.Configuration([.text, .machineReadableCode, .visualLookUp])
+                    )
+                    interaction.analysis = analysis
+                }
+            }
+            
             return uiimageView
         }
     }
@@ -310,7 +328,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         return gifView!
     }
 }
-
+/// swiftlint:enable type_body_length
 extension AVAsset {
     func getTrackDetails() async -> (CGSize, CMTime)? {
         guard let tracks = try? await loadTracks(withMediaType: .video) else { return nil }
