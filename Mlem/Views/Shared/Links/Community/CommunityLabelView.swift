@@ -42,7 +42,7 @@ struct CommunityLabelView: View {
         Group {
             HStack(alignment: .bottom, spacing: AppConstants.largeAvatarSpacing) {
                 if showAvatar {
-                    CommunityAvatarView(community: community, avatarSize: avatarSize)
+                    AvatarView(community: community, avatarSize: avatarSize)
                         .accessibilityHidden(true)
                 }
 
