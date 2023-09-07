@@ -10,6 +10,7 @@ import Nuke
 import SwiftUI
 import UIKit
 import XCTestDynamicOverlay
+import AVKit
 
 @main
 struct MlemApp: App {
@@ -26,6 +27,8 @@ struct MlemApp: App {
             if !_XCTIsTesting {
                 Window(selectedAccount: accountsTracker.defaultAccount)
                     .onAppear {
+                        setupAudio()
+                        
                         var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)
                         imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)
                         imageConfig.imageDecodingQueue = OperationQueue(maxConcurrentCount: 8) // Let's use those CORES
@@ -73,6 +76,22 @@ struct MlemApp: App {
         .onChange(of: lightOrDarkMode) { value in
             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             windowScene?.windows.first?.overrideUserInterfaceStyle = value
+        }
+    }
+    
+    func setupAudio() {
+        do {
+            try AVAudioSession.sharedInstance()
+                .setCategory(.playback, options: .mixWithOthers)
+            print("AVAudioSession Category Playback OK")
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+                print("AVAudioSession is Active")
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
         }
     }
 
