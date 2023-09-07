@@ -68,11 +68,12 @@ struct InboxView: View {
     
     init() {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self._mentionsTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
         self._messagesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
         self._repliesTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
-        self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
+        self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, upvoteOnSave: upvoteOnSave))
     }
     
     // input state handling

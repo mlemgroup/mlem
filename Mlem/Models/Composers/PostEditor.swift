@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PostEditorModel: Identifiable {
     var id: Int { community.id }
@@ -17,13 +18,19 @@ struct PostEditorModel: Identifiable {
     
     init(
         community: APICommunity,
-        postTracker: PostTracker = PostTracker(shouldPerformMergeSorting: false, internetSpeed: .slow),
+        postTracker: PostTracker? = nil,
         editPost: PostModel? = nil,
         responseCallback: ((PostModel) -> Void)? = nil
     ) {
         self.community = community
-        self.postTracker = postTracker
         self.editPost = editPost
         self.responseCallback = responseCallback
+        
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        if let postTracker {
+            self.postTracker = postTracker
+        } else {
+            self.postTracker = .init(shouldPerformMergeSorting: false, internetSpeed: .slow, upvoteOnSave: upvoteOnSave)
+        }
     }
 }
