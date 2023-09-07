@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -21,6 +20,7 @@ struct GeneralSettingsView: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
+    @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
 
     @EnvironmentObject var appState: AppState
 
@@ -35,6 +35,16 @@ struct GeneralSettingsView: View {
                     currentValue: $hapticLevel,
                     options: HapticPriority.allCases
                 )
+                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "arrow.up.heart",
+                    settingName: "Upvote On Save",
+                    isTicked: $upvoteOnSave
+                )
+            } header: {
+                Text("Behavior")
+            } footer: {
+                Text("You may need to restart the app for upvote-on-save changes to take effect.")
             }
             
             Section {
@@ -45,7 +55,7 @@ struct GeneralSettingsView: View {
                 )
             } footer: {
                 // swiftlint:disable line_length
-                Text("Blurs content flagged as Not Safe For Work until you click on it. If you want to disable NSFW content from appearing entirely, you can do so from Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
+                Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
                 // swiftlint:enable line_length
             }
             
