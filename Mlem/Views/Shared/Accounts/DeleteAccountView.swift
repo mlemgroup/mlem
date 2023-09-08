@@ -10,8 +10,9 @@ import Foundation
 import SwiftUI
 
 struct DeleteAccountView: View {
+    @Dependency(\.accountsTracker) var accountsTracker
+    
     @EnvironmentObject var appState: AppState
-    @EnvironmentObject var accountsTracker: SavedAccountTracker
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.forceOnboard) var forceOnboard
