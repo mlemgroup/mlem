@@ -1,4 +1,4 @@
-name: CI Build
+name: CI - Build
 
 on:
     push:
@@ -21,7 +21,7 @@ jobs:
     - name: "Test SDK versions"
       run: |
         xcodebuild -showsdks
-    - name: Xcodebuild Action
+    - name: Build with xcodebuild
       run: |
         xcodebuild -project ./Mlem.xcodeproj -scheme "Mlem" -sdk "iphonesimulator16.2" -quiet -resultBundlePath "build_results.xcresult"
     - uses: kishikawakatsumi/xcresulttool@v1
