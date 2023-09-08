@@ -61,10 +61,11 @@ struct CachedImage: View, FullScreenActualContent {
             self._shouldRecomputeSize = State(initialValue: false)
         } else if let url, let testImage = ImagePipeline.shared.cache[url] {
             // if we have nothing in the size cache but the image is ready, compute its size, use it, and cache it
-            let ratio = screenWidth / testImage.image.size.width
+            let imageSize = (testImage.userInfo["size"] as? CGSize) ?? testImage.image.size
+            let ratio = screenWidth / imageSize.width
             self._size = State(initialValue: CGSize(
                 width: screenWidth,
-                height: min(maxHeight, testImage.image.size.height * ratio)
+                height: min(maxHeight, imageSize.height * ratio)
             ))
             self._shouldRecomputeSize = State(initialValue: false)
             cacheImageSize()

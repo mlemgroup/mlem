@@ -144,7 +144,8 @@ let testImageURLs = [
     "https://user-images.githubusercontent.com/1567433/114792417-57c1d080-9d56-11eb-8035-dc07cfd7557f.png",
     "https://media4.giphy.com/media/cawXwjEwhuFfXafQw2/giphy.gif",
     "https://www.w3schools.com/html/mov_bbb.mp4",
-    "https://kean.github.io/videos/cat_video.mp4"
+    "https://kean.github.io/videos/cat_video.mp4",
+    "https://www.youtube.com/embed/Zbkil4kutwI"
 ].map { str in URL(string: str)! }
 struct CoreMediaViewerPreview: PreviewProvider {
     @StateObject static var mediaState = MediaState()
