@@ -27,7 +27,7 @@ jobs:
       with:
         project: Mlem.xcodeproj
         scheme: Mlem
-        destination: platform=Simulator,name=iPhone 14,OS=16.4'
+        destination: platform=Simulator,name=iPhone 14,OS=16.2'
         action: test
 
     #- name: Build with xcodebuild
