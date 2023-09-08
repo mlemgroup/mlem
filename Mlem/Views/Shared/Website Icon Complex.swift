@@ -37,13 +37,10 @@ struct WebsiteIconComplex: UIViewRepresentable {
         context.coordinator.view = LPLinkView(url: post.url!)
         Task {
             if let meta = try? await context.coordinator.metadataProvider.startFetchingMetadata(for: post.url!) {
-                if meta.remoteVideoURL == nil {
-                    var str: String = (meta.url?.absoluteString ?? "")
-                    str.replace(/https:\/\//, with: "http://")
-                    str.replace(/http:\/\//, with: "mlem://")
-                    meta.url = URL(string: str)
-                    meta.originalURL = nil // URL(string: str)
-                }
+//                if meta.remoteVideoURL == nil {
+                meta.url = getLink(oldLink: meta.url)
+                    meta.originalURL = meta.url // URL(string: str)
+//                }
                 context.coordinator.view.metadata = meta
 //                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 //                    context.coordinator.fuckUpLPView()
@@ -59,6 +56,29 @@ struct WebsiteIconComplex: UIViewRepresentable {
         print(view.subviews.count)
         return view
     }
+    func getLink(oldLink: URL?) -> URL? {
+        if var host = oldLink?.host() {
+            host.replace(/www\./, with: "")
+            host.replace(/old\./, with: "")
+            host.replace(/\.com/, with: "")
+            print(host)
+            // if there's for sure an app to handle this! let the app open!
+            if openApp(host) { return oldLink }
+        }
+        
+        var str: String = (oldLink?.absoluteString ?? "")
+        str.replace(/https:\/\//, with: "http://")
+        str.replace(/http:\/\//, with: "mlem://")
+        return URL(string: str)
+    }
+    
+    func openApp(_ appName: String) -> Bool {
+        let appScheme = "\(appName)://app"
+        guard let appUrl = URL(string: appScheme) else { return false }
+
+        return UIApplication.shared.canOpenURL(appUrl)
+
+    }
     
     @MainActor func updateUIView(_ uiView: Self.UIViewType, context: Self.Context) {
         if post.url != context.coordinator.url {
@@ -66,6 +86,10 @@ struct WebsiteIconComplex: UIViewRepresentable {
             context.coordinator.url = post.url
             Task {
                 if let meta = try? await context.coordinator.metadataProvider.startFetchingMetadata(for: post.url!) {
+//                    if meta.remoteVideoURL == nil {
+                        meta.url = getLink(oldLink: meta.url)
+                        meta.originalURL = meta.url // URL(string: str)
+//                    }
                     uiView.metadata = meta
 //                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         context.coordinator.fuckUpLPView()

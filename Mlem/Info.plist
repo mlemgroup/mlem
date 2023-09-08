@@ -19,6 +19,16 @@
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>reddit</string>
+		<string>instagram</string>
+		<string>tiktok</string>
+		<string>twitter</string>
+		<string>youtube</string>
+		<string>facebook</string>
+		<string>threads</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
