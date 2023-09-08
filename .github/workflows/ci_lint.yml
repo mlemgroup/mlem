@@ -5,6 +5,7 @@ on:
     push:
         branches:
         - master
+        
     # Run when we tweak Swift or supporting files
     pull_request:
         paths:

@@ -1,13 +1,15 @@
 name: CI Build
 
 on:
-    # Run in master as CI
     push:
         branches:
         - master
+        - dev
+
     pull_request:
         branches:
         - master
+        - dev
 
 jobs:
   xcode-build:
