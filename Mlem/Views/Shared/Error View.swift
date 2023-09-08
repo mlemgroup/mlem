@@ -35,8 +35,14 @@ struct ErrorView: View {
 
     var body: some View {
         VStack(spacing: 15) {
-            if showingFullError, let errorText = errorDetails.error?.localizedDescription {
-                errorDetails(errorText)
+            if showingFullError {
+                if let error = errorDetails.error {
+                    if let error = error as? APIClientError {
+                        errorDetails(error.description)
+                    } else {
+                        errorDetails(error.localizedDescription)
+                    }
+                }
             } else {
                 if let icon = errorDetails.icon {
                     Image(systemName: icon)
