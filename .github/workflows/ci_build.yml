@@ -14,7 +14,7 @@ on:
 jobs:
   Build:
     permissions: write-all
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - name: Checkout
       uses: actions/checkout@v3
