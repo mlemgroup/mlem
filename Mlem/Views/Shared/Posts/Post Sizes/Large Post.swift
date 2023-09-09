@@ -220,6 +220,10 @@ struct LargePost: View {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
                     WebsiteIconComplex(post: post.post, onTapActions: markPostAsRead)
+                        .highPriorityGesture(
+                            TapGesture().onEnded(markPostAsRead)
+                        )
+                        .applyNsfwOverlay(post.post.nsfw || post.community.nsfw, cornerRadius: AppConstants.largeItemCornerRadius)
                 }
                 postBodyView
             }
