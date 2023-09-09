@@ -26,6 +26,8 @@ struct SettingsRouter: ViewModifier {
         content
             .navigationDestination(for: SettingsRoute.self) { route in
                 switch route {
+                case .account:
+                    AccountSettingsView()
                 case .accountsPage:
                     AccountsPage()
                 case .general:

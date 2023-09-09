@@ -8,6 +8,7 @@
 import Foundation
 
 enum SettingsRoute: Hashable, Codable {
+    case account
     case accountsPage
     case general
     case accessibility

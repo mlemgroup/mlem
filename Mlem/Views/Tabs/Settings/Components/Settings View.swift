@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
+    @EnvironmentObject var appState: AppState
 
     @State var navigationPath = NavigationPath()
 
@@ -23,10 +24,25 @@ struct SettingsView: View {
             ScrollViewReader { proxy in
                 List {
                     Section {
+                        NavigationLink(value: SettingsRoute.account) {
+                            HStack(spacing: 15) {
+                                Circle()
+                                    .fill(.tertiary)
+                                    .frame(width: 50, height: 50)
+                                VStack(alignment: .leading) {
+                                    Text(appState.currentActiveAccount.username)
+                                        .font(.title2)
+                                    Text("@\(appState.currentActiveAccount.instanceLink.host() ?? "Unknown")")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                    // CachedImage(url: appState.currentActiveAccount.id)
+                                }
+                            }
+                        }
+                        .id(scrollToTop)
                         NavigationLink(value: SettingsRoute.accountsPage) {
                             Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
                         }
-                        .id(scrollToTop)
                     }
                     Section {
                         NavigationLink(value: SettingsRoute.general) {

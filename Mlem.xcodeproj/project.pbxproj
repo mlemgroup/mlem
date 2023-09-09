@@ -11,6 +11,7 @@
 		030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC0512A64666C00037155 /* UserSettingsView.swift */; };
 		030D4AE62AA1273200A3393D /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D4AE52AA1273200A3393D /* ErrorDetails.swift */; };
 		030D4AE82AA1278400A3393D /* ErrorDetails+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D4AE72AA1278400A3393D /* ErrorDetails+Mock.swift */; };
+		032109502AAC90AA00912DFC /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0321094F2AAC90AA00912DFC /* AccountSettingsView.swift */; };
 		034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */; };
 		035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EB0C92A8687C200227859 /* JumpButtonView.swift */; };
 		038A16DF2A75172C0087987E /* LayoutWidgetEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16DE2A75172C0087987E /* LayoutWidgetEditView.swift */; };
@@ -446,6 +447,7 @@
 		030AC0512A64666C00037155 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
 		030D4AE52AA1273200A3393D /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		030D4AE72AA1278400A3393D /* ErrorDetails+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorDetails+Mock.swift"; sourceTree = "<group>"; };
+		0321094F2AAC90AA00912DFC /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetTracker.swift; sourceTree = "<group>"; };
 		035EB0C92A8687C200227859 /* JumpButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButtonView.swift; sourceTree = "<group>"; };
 		038A16DE2A75172C0087987E /* LayoutWidgetEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetEditView.swift; sourceTree = "<group>"; };
@@ -988,6 +990,14 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		0321094E2AAC909D00912DFC /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				0321094F2AAC90AA00912DFC /* AccountSettingsView.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		032CC9C52A844D8200322E2A /* LayoutWidgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -1333,6 +1343,7 @@
 		63344C522A07D189001BC616 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0321094E2AAC909D00912DFC /* Account */,
 				030AC0432A62F82B00037155 /* General */,
 				CDC1C93D2A7AB8B400072E3D /* Accessibility */,
 				030AC0402A62F7E700037155 /* Appearance */,
@@ -2513,6 +2524,7 @@
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */,
 				50C99B602A6299D8005D57DD /* ErrorHandler.swift in Sources */,
+				032109502AAC90AA00912DFC /* AccountSettingsView.swift in Sources */,
 				50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */,
 				030D4AE62AA1273200A3393D /* ErrorDetails.swift in Sources */,
 				63A200532A2DDD38005CDDE3 /* Dictionary - Append.swift in Sources */,
