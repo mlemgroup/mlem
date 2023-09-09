@@ -26,10 +26,10 @@ struct PostComposerView: View {
         self.postTracker = editModel.postTracker
         self.editModel = editModel
         
-        self._postTitle = State(initialValue: editModel.editPost?.name ?? "")
-        self._postURL = State(initialValue: editModel.editPost?.url?.description ?? "")
-        self._postBody = State(initialValue: editModel.editPost?.body ?? "")
-        self._isNSFW = State(initialValue: editModel.editPost?.nsfw ?? false)
+        self._postTitle = State(initialValue: editModel.editPost?.post.name ?? "")
+        self._postURL = State(initialValue: editModel.editPost?.post.url?.description ?? "")
+        self._postBody = State(initialValue: editModel.editPost?.post.body ?? "")
+        self._isNSFW = State(initialValue: editModel.editPost?.post.nsfw ?? false)
     }
 
     var body: some View {
@@ -41,22 +41,10 @@ struct PostComposerView: View {
             isNSFW: $isNSFW
         ) {
             if let post = editModel.editPost {
-                let editedPost = try await apiClient.editPost(
-                    postId: post.id,
-                    name: postTitle,
-                    url: postURL,
-                    body: postBody,
-                    nsfw: isNSFW
-                )
+                let editedPost = await postTracker.edit(post: post, name: postTitle, url: postURL, body: postBody, nsfw: isNSFW)
                 
-                hapticManager.play(haptic: .success, priority: .high)
-                
-                await MainActor.run {
-                    postTracker.update(with: editedPost.postView)
-                    
-                    if let responseCallback = editModel.responseCallback {
-                        responseCallback(editedPost.postView)
-                    }
+                if let responseCallback = editModel.responseCallback {
+                    responseCallback(editedPost)
                 }
                 
             } else {
@@ -72,7 +60,7 @@ struct PostComposerView: View {
                 
                 await MainActor.run {
                     withAnimation {
-                        postTracker.prepend(response.postView)
+                        postTracker.prepend(PostModel(from: response.postView))
                     }
                 }
             }

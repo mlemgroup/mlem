@@ -34,15 +34,26 @@ struct FeedView: View {
     let showLoading: Bool
     @State var feedType: FeedType
     
-    init(community: APICommunity?, feedType: FeedType, sortType: PostSortType, showLoading: Bool = false) {
+    init(
+        community: APICommunity?,
+        feedType: FeedType,
+        sortType: PostSortType,
+        showLoading: Bool = false
+    ) {
+        // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self.community = community
         self.showLoading = showLoading
         
         self._feedType = State(initialValue: feedType)
         self._postSortType = .init(initialValue: sortType)
-        self._postTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
+        self._postTracker = StateObject(wrappedValue: .init(
+            shouldPerformMergeSorting: false,
+            internetSpeed: internetSpeed,
+            upvoteOnSave: upvoteOnSave
+        ))
     }
     
     // MARK: State
@@ -111,8 +122,9 @@ struct FeedView: View {
                 noPostsView()
             } else {
                 LazyVStack(spacing: 0) {
-                    ForEach(postTracker.items) { postView in
-                        feedPost(for: postView)
+                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                    ForEach(postTracker.items, id: \.uid) { post in
+                        feedPost(for: post)
                     }
                     
                     EndOfFeedView(isLoading: isLoading)
@@ -141,11 +153,12 @@ struct FeedView: View {
     // MARK: Helper Views
     
     @ViewBuilder
-    private func feedPost(for postView: APIPostView) -> some View {
+    private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
-            NavigationLink(value: PostLinkWithContext(post: postView, postTracker: postTracker)) {
+            // TODO: reenable nav
+            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
                 FeedPost(
-                    postView: postView,
+                    post: post,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: community == nil
                 )
@@ -155,7 +168,7 @@ struct FeedView: View {
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
         .onAppear {
             // on appear, flag whether new content should be loaded. Actual loading is attached to the feed view itself so that it doesn't get cancelled by view derenders
-            if postTracker.shouldLoadContentPrecisely(after: postView) {
+            if postTracker.shouldLoadContentAfter(after: post) {
                 shouldLoad = true
             }
         }

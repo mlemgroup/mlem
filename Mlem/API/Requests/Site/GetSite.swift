@@ -17,11 +17,17 @@ struct GetSiteRequest: APIGetRequest {
 
     init(
         session: APISession
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
-            .init(name: "auth", value: session.token)
-        ]
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        var queryItems: [URLQueryItem] = []
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 
     init(

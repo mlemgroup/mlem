@@ -5,32 +5,32 @@
 //  Created by Eric Andrews on 2023-06-26.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
-@MainActor
-class MentionsTracker: FeedTracker<APIPersonMentionView>, InboxTracker {
-    func loadNextPage(account: SavedAccount, unreadOnly: Bool = false) async throws {
-        try await perform(
-            GetPersonMentionsRequest(
-                account: account,
-                sort: .new,
-                page: page,
-                limit: internetSpeed.pageSize,
-                unreadOnly: unreadOnly
-            )
-        )
-    }
+class MentionsTracker: InboxTracker {
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("shouldFilterRead") var unreadOnly = false
     
-    func refresh(account: SavedAccount, unreadOnly: Bool = false) async throws {
-        try await refresh(
-            GetPersonMentionsRequest(
-                account: account,
-                sort: .new,
-                page: 1,
-                limit: internetSpeed.pageSize,
-                unreadOnly: unreadOnly
-            )
+    @Dependency(\.apiClient) var apiClient
+    
+    @Published var items: [APIPersonMentionView] = []
+    
+    var ids: Set<APIPersonMentionView.UniqueIdentifier> = .init(minimumCapacity: 1000)
+    
+    var isLoading: Bool = false
+    
+    var page: Int = 0
+    
+    var shouldPerformMergeSorting: Bool = true
+    
+    func retrieveItems(for page: Int) async throws -> [APIPersonMentionView] {
+        try await apiClient.getPersonMentions(
+            sort: .new,
+            page: page,
+            limit: internetSpeed.pageSize,
+            unreadOnly: unreadOnly
         )
     }
 }

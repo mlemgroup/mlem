@@ -27,13 +27,12 @@ struct SaveCommentRequest: APIPutRequest {
 
         commentId: Int,
         save: Bool
-    ) {
-        self.instanceURL = session.URL
+    ) throws {
+        self.instanceURL = try session.instanceUrl
 
-        self.body = .init(
+        self.body = try .init(
             comment_id: commentId,
             save: save,
-
             auth: session.token
         )
     }

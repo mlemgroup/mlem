@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct UserFeedView: View {
-    
     var userID: Int
     @StateObject var privatePostTracker: PostTracker
     @StateObject var privateCommentTracker: CommentTracker
@@ -19,7 +18,7 @@ struct UserFeedView: View {
         let id = UUID()
         let published: Date
         let comment: HierarchicalComment?
-        let post: APIPostView?
+        let post: PostModel?
     }
     
     var body: some View {
@@ -70,11 +69,11 @@ struct UserFeedView: View {
         return feed
     }
     
-    private func postEntry(for post: APIPostView) -> some View {
+    private func postEntry(for post: PostModel) -> some View {
         NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
             VStack(spacing: 0) {
                 FeedPost(
-                    postView: post,
+                    post: post,
                     showPostCreator: false,
                     showCommunity: true
                 )

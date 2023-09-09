@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol InboxTracker {
-    func loadNextPage(account: SavedAccount, unreadOnly: Bool) async throws
+protocol InboxTracker: FeedTracking {
+    var unreadOnly: Bool { get set }
 }

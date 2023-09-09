@@ -7,11 +7,6 @@
 
 import Foundation
 
-enum GetPersonMentionsRequestError: Error {
-    case invalidArguments
-    case unableToDetermineInstanceHost
-}
-
 struct GetPersonMentionsRequest: APIGetRequest {
     typealias Response = GetPersonMentionsResponse
 
@@ -21,23 +16,21 @@ struct GetPersonMentionsRequest: APIGetRequest {
 
     // lemmy_api_common::person::GetPersonMentions
     init(
-        account: SavedAccount,
+        session: APISession,
         sort: PostSortType? = nil,
         page: Int? = nil,
         limit: Int? = nil,
         unreadOnly: Bool = false
-    ) {
-        self.instanceURL = account.instanceLink
+    ) throws {
+        self.instanceURL = try session.instanceUrl
         
-        let queryItems: [URLQueryItem] = [
-            .init(name: "auth", value: account.accessToken),
+        self.queryItems = try [
+            .init(name: "auth", value: session.token),
             .init(name: "sort", value: sort?.rawValue),
             .init(name: "page", value: page?.description),
             .init(name: "limit", value: limit?.description),
             .init(name: "unread_only", value: String(unreadOnly))
         ]
-
-        self.queryItems = queryItems
     }
 }
 

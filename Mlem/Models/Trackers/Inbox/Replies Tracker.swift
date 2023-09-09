@@ -5,32 +5,27 @@
 //  Created by Eric Andrews on 2023-06-26.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
-@MainActor
-class RepliesTracker: FeedTracker<APICommentReplyView>, InboxTracker {
-    func loadNextPage(account: SavedAccount, unreadOnly: Bool = false) async throws {
-        try await perform(
-            GetRepliesRequest(
-                account: account,
-                sort: .new,
-                page: page,
-                limit: internetSpeed.pageSize,
-                unreadOnly: unreadOnly
-            )
-        )
-    }
+class RepliesTracker: InboxTracker {
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("shouldFilterRead") var unreadOnly = false
     
-    func refresh(account: SavedAccount, unreadOnly: Bool = false) async throws {
-        try await refresh(
-            GetRepliesRequest(
-                account: account,
-                sort: .new,
-                page: 1,
-                limit: internetSpeed.pageSize,
-                unreadOnly: unreadOnly
-            )
-        )
+    @Dependency(\.apiClient) var apiClient
+    
+    var isLoading: Bool = false
+    
+    var items: [APICommentReplyView] = []
+    
+    var ids: Set<APICommentReplyView.UniqueIdentifier> = .init(minimumCapacity: 1000)
+    
+    var page: Int = 0
+    
+    var shouldPerformMergeSorting: Bool = true
+    
+    func retrieveItems(for page: Int) async throws -> [APICommentReplyView] {
+        try await apiClient.getReplies(sort: .new, page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
     }
 }

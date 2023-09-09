@@ -26,7 +26,6 @@ extension FeedView {
         isLoading = true
         do {
             try await postTracker.loadNextPage(
-                account: appState.currentActiveAccount,
                 communityId: community?.id,
                 sort: postSortType,
                 type: feedType,
@@ -41,10 +40,9 @@ extension FeedView {
         // NOTE: refresh doesn't need to touch isLoading because that visual cue is handled by .refreshable
         do {
             try await postTracker.refresh(
-                account: appState.currentActiveAccount,
                 communityId: community?.id,
                 sort: postSortType,
-                type: feedType,
+                feedType: feedType,
                 filtering: filter
             )
         } catch {
@@ -52,18 +50,15 @@ extension FeedView {
         }
     }
     
-    /**
-     Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
-     */
+    /// Function to reset the feed, used as a callback to switcher options. Clears the items and displays a loading view.
     func hardRefreshFeed() async {
         defer { isLoading = false }
         isLoading = true
         do {
             try await postTracker.refresh(
-                account: appState.currentActiveAccount,
                 communityId: community?.id,
                 sort: postSortType,
-                type: feedType,
+                feedType: feedType,
                 clearBeforeFetch: true,
                 filtering: filter
             )
@@ -300,7 +295,7 @@ extension FeedView {
         )
     }
     
-    private func filter(postView: APIPostView) -> Bool {
+    private func filter(postView: PostModel) -> Bool {
         !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
             (showReadPosts || !postView.read)
     }

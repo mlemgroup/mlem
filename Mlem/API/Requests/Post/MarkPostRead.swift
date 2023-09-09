@@ -24,10 +24,10 @@ struct MarkPostReadRequest: APIPostRequest {
         session: APISession,
         postId: Int,
         read: Bool
-    ) {
-        self.instanceURL = session.URL
+    ) throws {
+        self.instanceURL = try session.instanceUrl
 
-        self.body = .init(
+        self.body = try .init(
             post_id: postId,
             read: read,
             auth: session.token

@@ -9,24 +9,30 @@ import Dependencies
 import SwiftUI
 
 /*
- A simple wrapper around ExpandedPost which loads the
- APIPostView on demand for when we don't already have one
+ A simple wrapper around ExpandedPost which loads the PostModel on demand for when we don't already have one
  */
 struct LazyLoadExpandedPost: View {
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
-    @State var post: APIPost
-    @State var scrollTarget: Int?
+    let post: APIPost
+    let scrollTarget: Int?
     
-    @State private var loadedPostView: APIPostView?
+    @State private var loadedPostView: PostModel?
 
-    @StateObject private var postTracker = PostTracker(internetSpeed: .slow)
+    @StateObject private var postTracker: PostTracker // = PostTracker(internetSpeed: .slow)
+    
+    init(post: APIPost, scrollTarget: Int? = nil) {
+        self.post = post
+        self.scrollTarget = scrollTarget
+        
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        self._postTracker = StateObject(wrappedValue: .init(internetSpeed: .slow, upvoteOnSave: upvoteOnSave))
+    }
 
     var body: some View {
         Group {
             if let loadedPost = loadedPostView {
-                ExpandedPost(post: loadedPost, scrollTarget: scrollTarget)
+                ExpandedPost(post: PostModel(from: loadedPost), scrollTarget: scrollTarget)
                     .environmentObject(postTracker)
             } else {
                 progressView
@@ -40,9 +46,7 @@ struct LazyLoadExpandedPost: View {
         }
         .task(priority: .background) {
             do {
-                let post = try await apiClient.loadPost(id: post.id)
-                postTracker.add([post])
-                loadedPostView = post
+                loadedPostView = try await postTracker.loadPost(postId: post.id)
             } catch {
                 // TODO: Some sort of common alert banner?
                 // we can show a toast here by passing a `message` and `style: .toast` by using a `ContextualError` below...

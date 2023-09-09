@@ -25,10 +25,10 @@ struct SavePostRequest: APIPutRequest {
         session: APISession,
         postId: Int,
         save: Bool
-    ) {
-        self.instanceURL = session.URL
+    ) throws {
+        self.instanceURL = try session.instanceUrl
 
-        self.body = .init(
+        self.body = try .init(
             post_id: postId,
             save: save,
             auth: session.token

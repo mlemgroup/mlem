@@ -49,7 +49,7 @@ struct LargePost: View {
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
 
     // parameters
-    let postView: APIPostView
+    let post: PostModel
     
     @Binding var layoutMode: LayoutMode
     private var isExpanded: Bool {
@@ -57,7 +57,7 @@ struct LargePost: View {
     }
     
     // computed
-    var titleColor: Color { !isExpanded && postView.read ? .secondary : .primary }
+    var titleColor: Color { !isExpanded && post.read ? .secondary : .primary }
     
     @ViewBuilder
     private var postBodyBackground: some View {
@@ -94,10 +94,10 @@ struct LargePost: View {
     
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
-        postView: APIPostView,
+        post: PostModel,
         layoutMode: Binding<LayoutMode>
     ) {
-        self.postView = postView
+        self.post = post
         self._layoutMode = layoutMode
     }
 
@@ -109,17 +109,11 @@ struct LargePost: View {
             postHeaderView
                 .padding(postHeaderInsets)
                 .background(postHeaderBackground)
-                .cornerRadius(8)
+                .cornerRadius(layoutMode == .minimize ? 8 : 0)
             if layoutMode != .minimize {
                 postContentView
             }
         }
-        // TEMPORARILY DISABLED so we can play with it on the nightly without the icon
-//        .overlay(alignment: .bottomTrailing) {
-//            if layoutMode == .minimize {
-//                minimizedIcon
-//            }
-//        }
     }
 
     // MARK: - Subviews
@@ -168,20 +162,20 @@ struct LargePost: View {
     @ViewBuilder
     private var postHeaderView: some View {
         HStack {
-            if postView.post.featuredLocal {
+            if post.post.featuredLocal {
                 StickiedTag(tagType: .local)
-            } else if postView.post.featuredCommunity {
+            } else if post.post.featuredCommunity {
                 StickiedTag(tagType: .community)
             }
             
-            Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
+            Text("\(post.post.name)\(post.post.deleted ? " (Deleted)" : "")")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .italic(postView.post.deleted)
+                .italic(post.post.deleted)
                 .foregroundColor(titleColor)
             
             Spacer()
-            if postView.post.nsfw {
+            if post.post.nsfw {
                 NSFWTag(compact: false)
             }
         }
@@ -201,7 +195,7 @@ struct LargePost: View {
     
     @ViewBuilder
     var postContentView: some View {
-        switch postView.postType {
+        switch post.postType {
         case let .image(url):
             let limitHeight = limitImageHeightInFeed && !isExpanded
             VStack(spacing: AppConstants.postAndCommentSpacing) {
@@ -217,7 +211,7 @@ struct LargePost: View {
                         maxHeight: layoutMode.getMaxHeight(limitHeight),
                         alignment: .top
                     )
-                    .applyNsfwOverlay(postView.post.nsfw || postView.community.nsfw)
+                    .applyNsfwOverlay(post.post.nsfw || post.community.nsfw)
                     .clipped()
                 }
                 postBodyView
@@ -225,7 +219,7 @@ struct LargePost: View {
         case .link:
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
-                    WebsiteIconComplex(post: postView.post, onTapActions: markPostAsRead)
+                    WebsiteIconComplex(post: post.post, onTapActions: markPostAsRead)
                 }
                 postBodyView
             }
@@ -240,30 +234,23 @@ struct LargePost: View {
     
     @ViewBuilder
     var postBodyView: some View {
-        if let bodyText = postView.post.body, !bodyText.isEmpty {
+        if let bodyText = post.post.body, !bodyText.isEmpty {
             MarkdownView(
                 text: postBodyText(bodyText, layoutMode: layoutMode),
-                isNsfw: postView.post.nsfw,
+                isNsfw: post.post.nsfw,
                 replaceImagesWithEmoji: isExpanded ? false : true,
                 isInline: isExpanded ? false : true
             )
-            .id(postView.id)
+            .id(post.id)
             .font(.subheadline)
             .lineLimit(layoutMode.lineLimit)
         }
     }
     
-    /**
-     Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
-     */
+    /// Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
-            do {
-                let readPost = try await postRepository.markRead(for: postView.post.id, read: true)
-                postTracker.update(with: readPost)
-            } catch {
-                errorHandler.handle(error)
-            }
+            await postTracker.markRead(post: post)
         }
     }
 }

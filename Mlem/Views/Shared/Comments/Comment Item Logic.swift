@@ -103,16 +103,12 @@ extension CommentItem {
         ))
     }
     
-    /**
-     Asynchronous wrapper around replyToComment so that it can be used in swipey actions
-     */
+    /// Asynchronous wrapper around replyToComment so that it can be used in swipey actions
     func replyToCommentAsyncWrapper() async {
         replyToComment()
     }
 
-    /**
-     Sends a save request for the current post
-     */
+    /// Sends a save request for the current post
     func saveComment() async {
         guard !dirty else {
             return

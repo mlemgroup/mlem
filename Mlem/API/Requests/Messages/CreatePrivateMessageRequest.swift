@@ -25,8 +25,8 @@ struct CreatePrivateMessageRequest: APIPostRequest {
         session: APISession,
         content: String,
         recipient: APIPerson
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(auth: session.token, content: content, recipient_id: recipient.id)
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(auth: session.token, content: content, recipient_id: recipient.id)
     }
 }

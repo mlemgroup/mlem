@@ -18,12 +18,19 @@ struct GetCommunityRequest: APIGetRequest {
     init(
         session: APISession,
         communityId: Int
-    ) {
-        self.instanceURL = session.URL
-        self.queryItems = [
-            .init(name: "auth", value: session.token),
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        var queryItems: [URLQueryItem] = [
             .init(name: "id", value: "\(communityId)")
         ]
+        
+        if let token = try? session.token {
+            queryItems.append(
+                .init(name: "auth", value: token)
+            )
+        }
+        
+        self.queryItems = queryItems
     }
 }
 

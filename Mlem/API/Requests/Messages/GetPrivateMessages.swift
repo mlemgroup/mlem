@@ -16,14 +16,14 @@ struct GetPrivateMessagesRequest: APIGetRequest {
 
     // lemmy_api_common::person::GetPersonDetails
     init(
-        account: SavedAccount,
-        page: Int? = nil,
-        limit: Int? = nil,
-        unreadOnly: Bool = false
-    ) {
-        self.instanceURL = account.instanceLink
+        session: APISession,
+        page: Int?,
+        limit: Int?,
+        unreadOnly: Bool
+    ) throws {
+        self.instanceURL = try session.instanceUrl
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: try session.token),
             .init(name: "page", value: page?.description),
             .init(name: "limit", value: limit?.description),
             .init(name: "unread_only", value: String(unreadOnly))

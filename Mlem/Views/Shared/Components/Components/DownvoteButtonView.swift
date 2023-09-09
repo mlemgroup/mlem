@@ -29,5 +29,9 @@ struct DownvoteButtonView: View {
                 .padding(AppConstants.postAndCommentSpacing)
                 .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
+        .transaction { transaction in
+            transaction.disablesAnimations = true
+        }
     }
 }

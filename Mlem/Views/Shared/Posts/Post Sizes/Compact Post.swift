@@ -1,5 +1,5 @@
 //
-//  UltraCompactPost.swift
+//  Compact Post.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-04.
@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct UltraCompactPost: View {
+struct CompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
@@ -32,7 +32,7 @@ struct UltraCompactPost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
     
     // arguments
-    let postView: APIPostView
+    let post: PostModel
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
@@ -48,14 +48,14 @@ struct UltraCompactPost: View {
     var body: some View {
         HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
             if shouldShowPostThumbnails, !thumbnailsOnRight {
-                ThumbnailImageView(postView: postView)
+                ThumbnailImageView(post: post)
             }
             
             VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
                 HStack {
                     Group {
                         if showCommunity {
-                            CommunityLinkView(community: postView.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
+                            CommunityLinkView(community: post.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                         } else {
                             UserLinkView(
                                 user: postView.creator,
@@ -78,13 +78,13 @@ struct UltraCompactPost: View {
                 Text(postView.post.name)
                     .multilineTextAlignment(.leading)
                     .font(.subheadline)
-                    .foregroundColor(postView.read ? .secondary : .primary)
+                    .foregroundColor(post.read ? .secondary : .primary)
     
                 compactInfo
             }
             
             if shouldShowPostThumbnails, thumbnailsOnRight {
-                ThumbnailImageView(postView: postView)
+                ThumbnailImageView(post: post)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -94,29 +94,29 @@ struct UltraCompactPost: View {
     @ViewBuilder
     private var compactInfo: some View {
         HStack(spacing: 8) {
-            if postView.post.featuredCommunity {
-                if postView.post.featuredLocal {
+            if post.post.featuredCommunity {
+                if post.post.featuredLocal {
                     StickiedTag(tagType: .local, compact: true)
-                } else if postView.post.featuredCommunity {
+                } else if post.post.featuredCommunity {
                     StickiedTag(tagType: .community, compact: true)
                 }
             }
             
-            if postView.post.nsfw || postView.community.nsfw {
+            if post.post.nsfw || post.community.nsfw {
                 NSFWTag(compact: true)
             }
             
             InfoStackView(
                 votes: DetailedVotes(
-                    score: postView.counts.score,
-                    upvotes: postView.counts.upvotes,
-                    downvotes: postView.counts.downvotes,
-                    myVote: postView.myVote ?? .resetVote,
+                    score: post.votes.total,
+                    upvotes: post.votes.upvotes,
+                    downvotes: post.votes.downvotes,
+                    myVote: post.votes.myVote,
                     showDownvotes: showDownvotesSeparately
                 ),
-                published: postView.published,
-                commentCount: postView.counts.comments,
-                saved: postView.saved,
+                published: post.published,
+                commentCount: post.numReplies,
+                saved: post.saved,
                 alignment: .center
             )
         }

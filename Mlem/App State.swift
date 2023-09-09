@@ -47,9 +47,7 @@ class AppState: ObservableObject {
         accountUpdated()
     }
     
-    /**
-     Update the nickname. This is needed to quickly propagate changes from settings over to the tab bar, since nickname doesn't affect account identity and so changing it doesn't always prompt redraws
-     */
+    /// Update the nickname. This is needed to quickly propagate changes from settings over to the tab bar, since nickname doesn't affect account identity and so changing it doesn't always prompt redraws
     func changeDisplayedNickname(to nickname: String) {
         currentNickname = nickname
     }

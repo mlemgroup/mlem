@@ -24,9 +24,9 @@ struct MarkPersonMentionAsRead: APIPostRequest {
         session: APISession,
         personMentionId: Int,
         read: Bool
-    ) {
-        self.instanceURL = session.URL
-        self.body = .init(
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(
             person_mention_id: personMentionId,
             read: read,
             auth: session.token
