@@ -31,6 +31,8 @@ struct CommuntiyFeedRowView: View {
     
     var body: some View {
         NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {
+            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
+//        NavigationLink(.communityLinkWithContext(.init(community: community, feedType: .subscribed))) {
             HStack {
                 // NavigationLink with invisible array
                 communityNameLabel
@@ -129,6 +131,8 @@ struct HomepageFeedRowView: View {
 
     var body: some View {
         NavigationLink(value: CommunityLinkWithContext(community: nil, feedType: feedType)) {
+            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
+//        NavigationLink(.communityLinkWithContext(.init(community: nil, feedType: feedType))) {
             HStack {
                 Image(systemName: iconName).resizable()
                     .frame(width: 36, height: 36).foregroundColor(iconColor)

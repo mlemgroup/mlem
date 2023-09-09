@@ -91,7 +91,7 @@ struct CommunitySidebarView: View {
                     Divider()
                     ForEach(communityDetails.moderators) { moderatorView in
 
-                        NavigationLink(value: moderatorView.moderator) {
+                        NavigationLink(.apiPerson(moderatorView.moderator)) {
                             HStack {
                                 UserProfileLabel(
                                     user: moderatorView.moderator,

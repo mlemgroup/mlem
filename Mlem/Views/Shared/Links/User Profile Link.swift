@@ -32,7 +32,7 @@ struct UserProfileLink: View {
     }
 
     var body: some View {
-        NavigationLink(value: user) {
+        NavigationLink(.apiPerson(user)) {
             UserProfileLabel(
                 user: user,
                 serverInstanceLocation: serverInstanceLocation,
