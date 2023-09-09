@@ -27,8 +27,7 @@ struct SortMenuButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .fontWeight(.semibold)
-            .padding(.vertical, 15)
+            .padding(.vertical, 14)
             .frame(maxWidth: .infinity)
             .background(background)
             .foregroundStyle((isSelected && isEnabled) ? .white : .primary)
