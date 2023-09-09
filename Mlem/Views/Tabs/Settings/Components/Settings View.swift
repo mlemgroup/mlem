@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
-    @State var navigationPath = NavigationPath()
+    @StateObject private var settingsRouter: NavigationRouter<SettingsRoute> = .init()
 
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
@@ -19,7 +19,7 @@ struct SettingsView: View {
     @Namespace var scrollToTop
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $settingsRouter.path) {
             ScrollViewReader { proxy in
                 List {
                     Section {
@@ -63,19 +63,10 @@ struct SettingsView: View {
                 .onChange(of: selectedNavigationTabHashValue) { newValue in
                     if newValue == TabSelection.settings.hashValue {
                         print("re-selected \(TabSelection.settings) tab")
-                        #if DEBUG
-                            if navigationPath.isEmpty {
-                                withAnimation {
-                                    proxy.scrollTo(scrollToTop, anchor: .bottom)
-                                }
-                            } else {
-                                navigationPath.goBack()
-                            }
-                        #endif
                     }
                 }
             }
-            .environment(\.navigationPath, $navigationPath)
+            .environmentObject(settingsRouter)
             .fancyTabScrollCompatible()
             .handleLemmyViews()
             .navigationTitle("Settings")
@@ -83,7 +74,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .useSettingsNavigationRouter()
         }
-        .handleLemmyLinkResolution(navigationPath: $navigationPath)
+        .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.settings.hashValue {
                 print("switched to Settings tab")

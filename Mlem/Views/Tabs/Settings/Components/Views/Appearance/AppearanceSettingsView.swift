@@ -13,7 +13,7 @@ struct AppearanceSettingsView: View {
     var body: some View {
         List {
             Section {
-                NavigationLink(value: AppearanceSettingsRoute.theme) {
+                NavigationLink(value: SettingsRoute.appearancePage(.theme)) {
                     switch lightOrDarkMode {
                     case .unspecified:
                         ThemeLabel(title: "Theme", color1: .white, color2: .black)
@@ -26,7 +26,7 @@ struct AppearanceSettingsView: View {
                     }
                 }
                 #if !os(macOS) && !targetEnvironment(macCatalyst)
-                    NavigationLink(value: AppearanceSettingsRoute.appIcon) {
+                NavigationLink(value: SettingsRoute.appearancePage(.appIcon)) {
                         Label {
                             Text("App Icon")
                         } icon: {
@@ -41,24 +41,24 @@ struct AppearanceSettingsView: View {
             }
             
             Section {
-                NavigationLink(value: AppearanceSettingsRoute.posts) {
+                NavigationLink(value: SettingsRoute.appearancePage(.posts)) {
                     Label("Posts", systemImage: "doc.plaintext.fill").labelStyle(SquircleLabelStyle(color: .pink))
                 }
                 
-                NavigationLink(value: AppearanceSettingsRoute.comments) {
+                NavigationLink(value: SettingsRoute.appearancePage(.comments)) {
                     Label("Comments", systemImage: "bubble.left.fill").labelStyle(SquircleLabelStyle(color: .orange))
                 }
                 
-                NavigationLink(value: AppearanceSettingsRoute.communities) {
+                NavigationLink(value: SettingsRoute.appearancePage(.communities)) {
                     Label("Communities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .green, fontSize: 15))
                 }
                 
-                NavigationLink(value: AppearanceSettingsRoute.users) {
+                NavigationLink(value: SettingsRoute.appearancePage(.users)) {
                     Label("Users", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .blue))
                 }
             }
             Section {
-                NavigationLink(value: AppearanceSettingsRoute.tabBar) {
+                NavigationLink(value: SettingsRoute.appearancePage(.tabBar)) {
                     Label("Tab Bar", systemImage: "square").labelStyle(SquircleLabelStyle(color: .purple))
                 }
             }

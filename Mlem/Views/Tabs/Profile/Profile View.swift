@@ -17,7 +17,7 @@ struct ProfileView: View {
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
-    @StateObject private var profileRouter: NavigationRouter = .init()
+    @StateObject private var profileRouter: NavigationRouter<NavigationRoute> = .init()
     
     var body: some View {
         NavigationStack(path: $profileRouter.path) {

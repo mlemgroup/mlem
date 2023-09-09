@@ -47,7 +47,7 @@ struct CommentSettingsView: View {
                     isTicked: $compactComments
                 )
                 
-                NavigationLink(value: CommentSettingsRoute.layoutWidget) {
+                NavigationLink(value: SettingsRoute.commentPage(.layoutWidget)) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
