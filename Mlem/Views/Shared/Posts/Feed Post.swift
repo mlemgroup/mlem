@@ -173,7 +173,7 @@ struct FeedPost: View {
                     // posting user
                     if showPostCreator {
                         UserLinkView(
-                            user: postView.creator,
+                            user: post.creator,
                             serverInstanceLocation: userServerInstanceLocation
                         )
                     }

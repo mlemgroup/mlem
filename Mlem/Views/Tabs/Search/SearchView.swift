@@ -36,7 +36,7 @@ struct SearchView: View {
 
     init() {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-        self._postTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
+        self._postTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, upvoteOnSave: false))
     }
 
     var body: some View {
@@ -230,10 +230,12 @@ struct SearchView: View {
             VStack(spacing: 10) {
                 ForEach(searchModel.posts, id: \.self) { post in
                     Group {
-                        NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
-                            PostResultView(postView: post, showCommunity: searchModel.activeCommunityFilter == nil, searchModel: searchModel)
-                                .padding(.horizontal, horizontalPadding)
-                        }
+                        PostResultView(postView: post, showCommunity: searchModel.activeCommunityFilter == nil, searchModel: searchModel)
+                            .padding(.horizontal, horizontalPadding)
+//                        NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
+//                            PostResultView(postView: post, showCommunity: searchModel.activeCommunityFilter == nil, searchModel: searchModel)
+//                                .padding(.horizontal, horizontalPadding)
+//                        }
                     }
                 }
             }

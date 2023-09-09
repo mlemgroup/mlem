@@ -37,10 +37,10 @@ struct CompactPost: View {
     let menuFunctions: [MenuFunction]
     
     // computed
-    var showReadCheck: Bool { postView.read && diffWithoutColor && readMarkStyle == .check }
+    var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
 
-    init(postView: APIPostView, showCommunity: Bool, menuFunctions: [MenuFunction] = .init()) {
-        self.postView = postView
+    init(post: PostModel, showCommunity: Bool, menuFunctions: [MenuFunction] = .init()) {
+        self.post = post
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
     }
@@ -58,7 +58,7 @@ struct CompactPost: View {
                             CommunityLinkView(community: post.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                         } else {
                             UserLinkView(
-                                user: postView.creator,
+                                user: post.creator,
                                 serverInstanceLocation: .trailing
                             )
                         }
@@ -75,7 +75,7 @@ struct CompactPost: View {
                 }
                 .padding(.bottom, -2)
                 
-                Text(postView.post.name)
+                Text(post.post.name)
                     .multilineTextAlignment(.leading)
                     .font(.subheadline)
                     .foregroundColor(post.read ? .secondary : .primary)

@@ -311,9 +311,9 @@ class SearchModel: ObservableObject {
             sortOption: .topAll,
             listingType: .all,
             page: page,
-            limit: self.sections == [.posts] ? 50 : 5,
-            community: activeCommunityFilter?.community ?? nil,
-            user: activeUserFilter?.person ?? nil
+            limit: self.sections == [.posts] ? 50 : 5
+//            community: activeCommunityFilter?.community ?? nil,
+//            user: activeUserFilter?.person ?? nil
         )
         return response.posts
     }

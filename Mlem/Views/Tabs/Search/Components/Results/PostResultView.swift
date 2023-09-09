@@ -77,7 +77,7 @@ struct PostResultView: View {
         VStack {
             HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
                 if shouldShowPostThumbnails, !thumbnailsOnRight {
-                    ThumbnailImageView(postView: postView)
+//                    ThumbnailImageView(post: post)
                 }
                 
                 VStack(alignment: .leading, spacing: AppConstants.compactSpacing) {
@@ -112,9 +112,9 @@ struct PostResultView: View {
                     
                 }
                 
-                if shouldShowPostThumbnails, thumbnailsOnRight {
-                    ThumbnailImageView(postView: postView)
-                }
+//                if shouldShowPostThumbnails, thumbnailsOnRight {
+//                    ThumbnailImageView(postView: postView)
+//                }
             }
             .padding(.horizontal, 14)
             if let postContent = postContent {
