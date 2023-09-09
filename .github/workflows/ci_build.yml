@@ -33,7 +33,7 @@ jobs:
       with:
         project: Mlem.xcodeproj
         scheme: Mlem
-        destination: platform=iOS Simulator,name=iPhone 14,OS=16.2
+        destination: platform=iOS Simulator,name=iPhone 14,OS=16.4
         action: build
         result-bundle-path: build_results.xcresult
 
@@ -68,7 +68,7 @@ jobs:
       with:
         project: Mlem.xcodeproj
         scheme: Mlem
-        destination: platform=iOS Simulator,name=iPhone 14,OS=16.2
+        destination: platform=iOS Simulator,name=iPhone 14,OS=16.4
         action: test
         result-bundle-path: test_results.xcresult
 
