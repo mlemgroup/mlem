@@ -1,4 +1,4 @@
-name: CI
+name: CI - Build & Test
 
 env:
   XCODE_VERSION: 14.3.1

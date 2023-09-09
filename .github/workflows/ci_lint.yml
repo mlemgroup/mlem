@@ -1,4 +1,4 @@
-name: CI
+name: CI - Lint
 
 on:
     # Run in master as CI
