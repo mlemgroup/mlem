@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class NavigationRouter: ObservableObject {
-    @Published var path: [NavigationRoute] = []
+final class NavigationRouter<Route: Hashable>: ObservableObject {
+    @Published var path: [Route] = []
 }
 
 extension NavigationRouter: AnyNavigationPath {
@@ -21,8 +21,8 @@ extension NavigationRouter: AnyNavigationPath {
     }
     
     func append<V>(_ value: V) where V: Hashable {
-        assert(value is NavigationRoute)
-        guard let route = value as? NavigationRoute else {
+        assert(value is Route)
+        guard let route = value as? Route else {
             return
         }
         path.append(route)
