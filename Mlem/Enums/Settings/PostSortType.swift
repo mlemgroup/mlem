@@ -14,12 +14,16 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     case old = "Old"
     case newComments = "NewComments"
     case mostComments = "MostComments"
+    
     case topHour = "TopHour"
     case topSixHour = "TopSixHour"
     case topTwelveHour = "TopTwelveHour"
     case topDay = "TopDay"
     case topWeek = "TopWeek"
     case topMonth = "TopMonth"
+    case topThreeMonth = "TopThreeMonth"
+    case topSixMonth = "TopSixMonth"
+    case topNineMonth = "TopNineMonth"
     case topYear = "TopYear"
     case topAll = "TopAll"
     
@@ -30,6 +34,10 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     
     var description: String {
         switch self {
+        case .newComments:
+            return "New comments"
+        case .mostComments:
+            return "Most comments"
         case .topHour:
             return "Top of the last hour"
         case .topSixHour:
@@ -42,6 +50,12 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return "Top of the week"
         case .topMonth:
             return "Top of the month"
+        case .topThreeMonth:
+            return "Top of the last three months"
+        case .topSixMonth:
+            return "Top of the last six months"
+        case .topNineMonth:
+            return "Top of the last nine months"
         case .topYear:
             return "Top of the year"
         case .topAll:
@@ -50,31 +64,46 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return label
         }
     }
+    
+    var minimumVersion: APISiteVersion {
+        switch self {
+        case .topThreeMonth, .topSixMonth, .topNineMonth:
+            return APISiteVersion(major: 0, minor: 18, patch: 1)
+        default:
+            return .zero
+        }
+    }
 }
 
 extension PostSortType: SettingsOptions {
     var label: String {
         switch self {
         case .newComments:
-            return "New comments"
+            return "New"
         case .mostComments:
-            return "Most comments"
+            return "Most"
         case .topHour:
             return "Hour"
         case .topSixHour:
-            return "Six hours"
+            return "6 Hours"
         case .topTwelveHour:
-            return "Twelve hours"
+            return "12 Hours"
         case .topDay:
             return "Day"
         case .topWeek:
             return "Week"
         case .topMonth:
             return "Month"
+        case .topThreeMonth:
+            return "3 Months"
+        case .topSixMonth:
+            return "6 Months"
+        case .topNineMonth:
+            return "9 Months"
         case .topYear:
             return "Year"
         case .topAll:
-            return "All time"
+            return "All Time"
         default:
             return rawValue
         }
@@ -90,7 +119,7 @@ extension PostSortType: AssociatedIcon {
         case .old: return AppConstants.oldSortSymbolName
         case .newComments: return AppConstants.newCommentsSymbolName
         case .mostComments: return AppConstants.mostCommentsSymbolName
-        default: return AppConstants.timeSymbolName
+        default: return AppConstants.topSymbolName
         }
     }
     
@@ -102,7 +131,7 @@ extension PostSortType: AssociatedIcon {
         case .old: return AppConstants.oldSortSymbolNameFill
         case .newComments: return AppConstants.newCommentsSymbolNameFill
         case .mostComments: return AppConstants.mostCommentsSymbolNameFill
-        default: return AppConstants.timeSymbolNameFill
+        default: return AppConstants.topSymbolNameFill
         }
     }
 }

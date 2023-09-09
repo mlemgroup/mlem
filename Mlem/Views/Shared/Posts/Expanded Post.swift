@@ -71,6 +71,8 @@ struct ExpandedPost: View {
     @State var commentSortingType: CommentSortType = .appStorageValue()
     @State private var postLayoutMode: LargePost.LayoutMode = .maximize
     
+    @State var showingSortMenu: Bool = false
+    
     var body: some View {
         contentView
             .environmentObject(commentTracker)
@@ -85,6 +87,9 @@ struct ExpandedPost: View {
                 withAnimation(.easeIn(duration: 0.4)) {
                     commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
                 }
+            }
+            .sheet(isPresented: $showingSortMenu) {
+                CommentSortMenu(isPresented: $showingSortMenu, selected: $commentSortingType)
             }
     }
     
@@ -306,16 +311,8 @@ struct ExpandedPost: View {
     }
     
     private var toolbarMenu: some View {
-        Menu {
-            ForEach(CommentSortType.allCases, id: \.self) { type in
-                Button {
-                    commentSortingType = type
-                } label: {
-                    Label(type.description, systemImage: type.iconName)
-                }
-                .disabled(type == commentSortingType)
-            }
-
+        Button {
+            showingSortMenu = true
         } label: {
             Label(commentSortingType.description, systemImage: commentSortingType.iconName)
         }

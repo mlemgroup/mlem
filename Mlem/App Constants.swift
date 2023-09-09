@@ -127,8 +127,6 @@ struct AppConstants {
     static let mostCommentsSymbolNameFill: String = "bubble.left.and.bubble.right.fill"
     static let topSymbolName: String = "trophy"
     static let topSymbolNameFill: String = "trophy.fill"
-    static let timeSymbolName: String = "calendar.day.timeline.leading"
-    static let timeSymbolNameFill: String = "calendar.day.timeline.leading.fill"
     
     // common operations
     static let shareSymbolName: String = "square.and.arrow.up"

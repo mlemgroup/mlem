@@ -87,35 +87,6 @@ extension FeedView {
     
     // MARK: Menus
     
-    func genOuterSortMenuFunctions() -> [MenuFunction] {
-        PostSortType.outerTypes.map { type in
-            let isSelected = postSortType == type
-            let imageName = isSelected ? type.iconNameFill : type.iconName
-            return MenuFunction(
-                text: type.description,
-                imageName: imageName,
-                destructiveActionPrompt: nil,
-                enabled: !isSelected
-            ) {
-                postSortType = type
-            }
-        }
-    }
-    
-    func genTopSortMenuFunctions() -> [MenuFunction] {
-        PostSortType.topTypes.map { type in
-            let isSelected = postSortType == type
-            return MenuFunction(
-                text: type.description,
-                imageName: isSelected ? AppConstants.timeSymbolNameFill : AppConstants.timeSymbolName,
-                destructiveActionPrompt: nil,
-                enabled: !isSelected
-            ) {
-                postSortType = type
-            }
-        }
-    }
-    
     func genEllipsisMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         

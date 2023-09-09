@@ -65,6 +65,8 @@ struct FeedView: View {
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
+    @State var showingSortMenu: Bool = false
+    
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
     // MARK: - Main Views
@@ -113,6 +115,9 @@ struct FeedView: View {
                 }
             }
             .refreshable { await refreshFeed() }
+            .sheet(isPresented: $showingSortMenu) {
+                PostSortMenu(isPresented: $showingSortMenu, selected: $postSortType)
+            }
     }
     
     @ViewBuilder
@@ -214,18 +219,19 @@ struct FeedView: View {
     
     @ViewBuilder
     private var sortMenu: some View {
-        Menu {
-            ForEach(genOuterSortMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
-            }
-            
-            Menu {
-                ForEach(genTopSortMenuFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
-                }
-            } label: {
-                Label("Top...", systemImage: AppConstants.topSymbolName)
-            }
+        Button {
+            showingSortMenu = true
+//            ForEach(genOuterSortMenuFunctions()) { menuFunction in
+//                MenuButton(menuFunction: menuFunction)
+//            }
+//            
+//            Menu {
+//                ForEach(genTopSortMenuFunctions()) { menuFunction in
+//                    MenuButton(menuFunction: menuFunction)
+//                }
+//            } label: {
+//                Label("Top...", systemImage: AppConstants.topSymbolName)
+//            }
         } label: {
             Label(
                 "Selected sorting by \(postSortType.description)",
