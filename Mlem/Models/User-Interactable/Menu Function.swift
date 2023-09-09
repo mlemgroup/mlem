@@ -46,7 +46,7 @@ extension MenuFunction {
 
 /// MenuFunction to open a ShareLink
 struct ShareMenuFunction: Identifiable {
-    var id: String { url.description }
+    var id: String { url.absoluteString }
     
     let url: URL
 }
