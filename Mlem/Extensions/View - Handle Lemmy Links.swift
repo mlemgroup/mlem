@@ -66,12 +66,12 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     }
 }
 
-struct HandleLemmyLinkResolution: ViewModifier {
+struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
-    let navigationPath: Binding<NavigationPath>
+    let navigationPath: Binding<Path>
 
     func body(content: Content) -> some View {
         content
@@ -165,7 +165,7 @@ extension View {
         modifier(HandleLemmyLinksDisplay())
     }
 
-    func handleLemmyLinkResolution(navigationPath: Binding<NavigationPath>) -> some View {
+    func handleLemmyLinkResolution<P: AnyNavigationPath>(navigationPath: Binding<P>) -> some View {
         modifier(HandleLemmyLinkResolution(navigationPath: navigationPath))
     }
 }
