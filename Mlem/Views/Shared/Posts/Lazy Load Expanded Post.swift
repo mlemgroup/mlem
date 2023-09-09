@@ -14,12 +14,20 @@ import SwiftUI
 struct LazyLoadExpandedPost: View {
     @Dependency(\.errorHandler) var errorHandler
     
-    @State var post: APIPost
-    @State var scrollTarget: Int?
+    let post: APIPost
+    let scrollTarget: Int?
     
     @State private var loadedPostView: PostModel?
 
-    @StateObject private var postTracker = PostTracker(internetSpeed: .slow)
+    @StateObject private var postTracker: PostTracker // = PostTracker(internetSpeed: .slow)
+    
+    init(post: APIPost, scrollTarget: Int? = nil) {
+        self.post = post
+        self.scrollTarget = scrollTarget
+        
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        self._postTracker = StateObject(wrappedValue: .init(internetSpeed: .slow, upvoteOnSave: upvoteOnSave))
+    }
 
     var body: some View {
         Group {

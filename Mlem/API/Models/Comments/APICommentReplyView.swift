@@ -30,6 +30,6 @@ extension APICommentReplyView: Identifiable {
 // MARK: - FeedTrackerItem
 
 extension APICommentReplyView: FeedTrackerItem {
-    var uniqueIdentifier: some Hashable { id }
+    var uniqueIdentifier: Int { id }
     var published: Date { commentReply.published }
 }

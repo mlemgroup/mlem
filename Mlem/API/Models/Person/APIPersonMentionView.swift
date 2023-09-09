@@ -31,6 +31,6 @@ extension APIPersonMentionView: Identifiable {
 // MARK: - FeedTrackerItem
 
 extension APIPersonMentionView: FeedTrackerItem {
-    var uniqueIdentifier: some Hashable { id }
+    var uniqueIdentifier: Int { id }
     var published: Date { personMention.published }
 }

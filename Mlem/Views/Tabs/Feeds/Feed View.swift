@@ -34,15 +34,26 @@ struct FeedView: View {
     let showLoading: Bool
     @State var feedType: FeedType
     
-    init(community: APICommunity?, feedType: FeedType, sortType: PostSortType, showLoading: Bool = false) {
+    init(
+        community: APICommunity?,
+        feedType: FeedType,
+        sortType: PostSortType,
+        showLoading: Bool = false
+    ) {
+        // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self.community = community
         self.showLoading = showLoading
         
         self._feedType = State(initialValue: feedType)
         self._postSortType = .init(initialValue: sortType)
-        self._postTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
+        self._postTracker = StateObject(wrappedValue: .init(
+            shouldPerformMergeSorting: false,
+            internetSpeed: internetSpeed,
+            upvoteOnSave: upvoteOnSave
+        ))
     }
     
     // MARK: State

@@ -35,8 +35,12 @@ extension ExpandedPost {
     
     func savePost() async {
         // fake state
+        var stateFakedPost = PostModel(from: post, saved: !post.saved)
+        if upvoteOnSave, !post.saved, stateFakedPost.votes.myVote != .upvote {
+            stateFakedPost.votes = stateFakedPost.votes.applyScoringOperation(operation: .upvote)
+        }
         let oldPost = post
-        post = PostModel(from: post, saved: !post.saved)
+        post = stateFakedPost
         
         // perform save
         post = await postTracker.toggleSave(post: oldPost)

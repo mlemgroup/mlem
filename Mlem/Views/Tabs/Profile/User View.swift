@@ -37,11 +37,16 @@ struct UserView: View {
     
     init(userID: Int, userDetails: APIPersonView? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self._userID = State(initialValue: userID)
         self._userDetails = State(initialValue: userDetails)
         
-        self._privatePostTracker = StateObject(wrappedValue: .init(shouldPerformMergeSorting: false, internetSpeed: internetSpeed))
+        self._privatePostTracker = StateObject(wrappedValue: .init(
+            shouldPerformMergeSorting: false,
+            internetSpeed: internetSpeed,
+            upvoteOnSave: upvoteOnSave
+        ))
     }
     
     // account switching

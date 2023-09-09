@@ -23,6 +23,7 @@ class PostTracker: ObservableObject {
     // behavior governors
     private let shouldPerformMergeSorting: Bool
     private let internetSpeed: InternetSpeed
+    private let upvoteOnSave: Bool
 
     // state drivers
     @Published var items: [PostModel]
@@ -42,11 +43,13 @@ class PostTracker: ObservableObject {
     init(
         shouldPerformMergeSorting: Bool = true,
         internetSpeed: InternetSpeed,
-        initialItems: [PostModel] = .init()
+        initialItems: [PostModel] = .init(),
+        upvoteOnSave: Bool
     ) {
         self.shouldPerformMergeSorting = shouldPerformMergeSorting
         self.internetSpeed = internetSpeed
         self.items = initialItems
+        self.upvoteOnSave = upvoteOnSave
     }
     
     // MARK: - Loading Methods
@@ -290,15 +293,25 @@ class PostTracker: ObservableObject {
         let shouldSave: Bool = !post.saved
         
         // fake state
-        let stateFakedPost = PostModel(from: post, saved: shouldSave)
+        var stateFakedPost = PostModel(from: post, saved: shouldSave)
+        if upvoteOnSave, stateFakedPost.votes.myVote != .upvote {
+            stateFakedPost.votes = stateFakedPost.votes.applyScoringOperation(operation: .upvote)
+        }
         await update(with: stateFakedPost)
         hapticManager.play(haptic: .firmerInfo, priority: .high)
         
         // perform real save
         do {
-            let response = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
-            await update(with: response)
-            return response
+            let saveResponse = try await postRepository.savePost(postId: post.postId, shouldSave: shouldSave)
+
+            if shouldSave, upvoteOnSave {
+                let voteResponse = try await postRepository.ratePost(postId: saveResponse.postId, operation: .upvote)
+                await update(with: voteResponse)
+                return voteResponse
+            } else {
+                await update(with: saveResponse)
+                return saveResponse
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
