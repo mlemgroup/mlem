@@ -8,13 +8,6 @@
 import Dependencies
 import SwiftUI
 
-enum NavigationContext {
-    /// When presented inside a `NavigationSplitView` sidebar.
-    case sidebar
-    /// When presented in any view.
-    case view
-}
-
 struct FavoriteStarButtonStyle: ButtonStyle {
     let isFavorited: Bool
 
