@@ -76,6 +76,7 @@ struct AccountsPage: View {
                 }
             }
         }
+        .hoistNavigation(dismiss: dismiss)
         .onAppear {
             selectedAccount = appState.currentActiveAccount
         }

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct LicensesView: View {
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack(alignment: .labelStart) {
             List {
@@ -45,5 +46,6 @@ struct LicensesView: View {
         }
         .navigationTitle("Licenses")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

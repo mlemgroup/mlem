@@ -10,6 +10,8 @@ import SwiftUI
 
 /// Displays a document
 struct DocumentView: View {
+    
+    @Environment(\.dismiss) private var dismiss
     let text: String
     
     var body: some View {
@@ -18,5 +20,6 @@ struct DocumentView: View {
                 .padding()
         }
         .fancyTabScrollCompatible()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

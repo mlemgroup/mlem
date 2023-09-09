@@ -11,6 +11,7 @@ struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject private var settingsRouter: NavigationRouter<SettingsRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
 
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
@@ -20,7 +21,7 @@ struct SettingsView: View {
     
     var body: some View {
         NavigationStack(path: $settingsRouter.path) {
-            ScrollViewReader { proxy in
+            ScrollViewReader { _ in
                 List {
                     Section {
                         NavigationLink(value: SettingsRoute.accountsPage) {
@@ -63,6 +64,7 @@ struct SettingsView: View {
                 .onChange(of: selectedNavigationTabHashValue) { newValue in
                     if newValue == TabSelection.settings.hashValue {
                         print("re-selected \(TabSelection.settings) tab")
+                        navigation.dismiss?()
                     }
                 }
             }
@@ -74,6 +76,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .useSettingsNavigationRouter()
         }
+        .environmentObject(navigation)
         .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.settings.hashValue {
