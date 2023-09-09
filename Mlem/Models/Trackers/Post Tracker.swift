@@ -116,6 +116,8 @@ class PostTracker: ObservableObject {
             await reset()
         }
         
+        page = 1
+        
         let newPosts = try await postRepository.loadPage(
             communityId: communityId,
             page: page,
