@@ -25,7 +25,6 @@ struct FeedRoot: View {
     var body: some View {
         NavigationSplitView {
             CommunityListView(selectedCommunity: $rootDetails)
-                .id(appState.currentActiveAccount.id)
         } detail: {
             if let rootDetails {
                 NavigationStack(path: $navigationPath) {
@@ -38,7 +37,7 @@ struct FeedRoot: View {
                     .environmentObject(appState)
                     .handleLemmyViews()
                 }
-                .id(rootDetails.id + appState.currentActiveAccount.id)
+                .id(rootDetails.id)
             } else {
                 Text("Please select a community")
             }

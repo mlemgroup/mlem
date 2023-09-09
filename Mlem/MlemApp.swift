@@ -13,7 +13,6 @@ import XCTestDynamicOverlay
 
 @main
 struct MlemApp: App {
-    
     @Dependency(\.accountsTracker) var accountsTracker
     
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
@@ -24,7 +23,7 @@ struct MlemApp: App {
     var body: some Scene {
         WindowGroup {
             if !_XCTIsTesting {
-                Window(selectedAccount: accountsTracker.defaultAccount)
+                Window(flow: initialFlow)
                     .onAppear {
                         var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: AppConstants.cacheSize)
                         imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)
@@ -73,7 +72,7 @@ struct MlemApp: App {
         }
     }
 
-    func setupAppShortcuts() {
+    private func setupAppShortcuts() {
         guard accountsTracker.savedAccounts.first != nil else { return }
 
         // Subscribed Feed
@@ -111,5 +110,14 @@ struct MlemApp: App {
             localFeedItem,
             allFeedItem
         ]
+    }
+    
+    /// A variable describing the initial flow the application should run after start-up
+    private var initialFlow: AppFlow {
+        guard let account = accountsTracker.defaultAccount else {
+            return .onboarding
+        }
+        
+        return .account(account)
     }
 }

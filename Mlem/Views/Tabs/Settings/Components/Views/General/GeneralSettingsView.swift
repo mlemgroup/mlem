@@ -55,7 +55,7 @@ struct GeneralSettingsView: View {
                 )
             } footer: {
                 // swiftlint:disable line_length
-                Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
+                Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings on \(appState.currentActiveAccount?.instanceLink.host ?? "your instance's webpage").")
                 // swiftlint:enable line_length
             }
             

@@ -30,11 +30,18 @@ class FavoriteCommunitiesTracker: ObservableObject {
     
     // MARK: - Public Methods
     
+    /// A method to associate an account with the favorites tracker, once an account has been set calling it's methods will store/remove/return communities relating to the account
+    /// - Parameter account: The `SavedAccount` to associate with the tracker
     func configure(for account: SavedAccount) {
         self.account = account
         favoritesForCurrentAccount = favoriteCommunities
             .filter { $0.forAccountID == account.id }
-            .map { $0.community }
+            .map(\.community)
+    }
+    
+    /// A method to clear the account that is currently associated with the favorites tracker
+    func clearStoredAccount() {
+        account = nil
     }
     
     func favorite(_ community: APICommunity) {
@@ -57,7 +64,7 @@ class FavoriteCommunitiesTracker: ObservableObject {
     }
     
     func isFavorited(_ community: APICommunity) -> Bool {
-        return favoritesForCurrentAccount.contains(community)
+        favoritesForCurrentAccount.contains(community)
     }
     
     func clearCurrentFavourites() {
@@ -66,7 +73,7 @@ class FavoriteCommunitiesTracker: ObservableObject {
             return
         }
         
-        let filteredFavorites = favoriteCommunities.filter { $0.forAccountID != account.id  }
+        let filteredFavorites = favoriteCommunities.filter { $0.forAccountID != account.id }
         favoriteCommunities = filteredFavorites
     }
     
@@ -76,7 +83,7 @@ class FavoriteCommunitiesTracker: ObservableObject {
         if let account {
             favoritesForCurrentAccount = newValue
                 .filter { $0.forAccountID == account.id }
-                .map { $0.community }
+                .map(\.community)
         }
         
         Task { [weak self] in

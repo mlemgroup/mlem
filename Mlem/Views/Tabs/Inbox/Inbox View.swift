@@ -56,9 +56,6 @@ struct InboxView: View {
         confirmationMenuFunction = destructiveFunction
         isPresentingConfirmDestructive = true
     }
-
-    // id of the last account loaded with
-    @State var lastKnownAccountId: Int = 0
     
     // error  handling
     @State var errorOccurred: Bool = false
@@ -152,14 +149,12 @@ struct InboxView: View {
             // if a tracker is empty or the account has changed, refresh
             if mentionsTracker.items.isEmpty ||
                 messagesTracker.items.isEmpty ||
-                repliesTracker.items.isEmpty ||
-                lastKnownAccountId != appState.currentActiveAccount.id {
+                repliesTracker.items.isEmpty {
                 print("Inbox tracker is empty")
                 await refreshFeed()
             } else {
                 print("Inbox tracker is not empty")
             }
-            lastKnownAccountId = appState.currentActiveAccount.id
         }
     }
     

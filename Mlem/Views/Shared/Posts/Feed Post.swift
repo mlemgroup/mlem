@@ -350,7 +350,7 @@ struct FeedPost: View {
             replyToPost()
         })
 
-        if post.creator.id == appState.currentActiveAccount.id {
+        if appState.isCurrentAccountId(post.creator.id) {
             // edit
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
