@@ -8,16 +8,16 @@
 import Foundation
 
 final class NavigationRouter: ObservableObject {
-    @Published var routes: [NavigationRoute] = []
+    @Published var path: [NavigationRoute] = []
 }
 
 extension NavigationRouter: AnyNavigationPath {
     var count: Int {
-        routes.count
+        path.count
     }
     
     var isEmpty: Bool {
-        routes.isEmpty
+        path.isEmpty
     }
     
     func append<V>(_ value: V) where V: Hashable {
@@ -25,12 +25,12 @@ extension NavigationRouter: AnyNavigationPath {
         guard let route = value as? NavigationRoute else {
             return
         }
-        routes.append(route)
+        path.append(route)
     }
     
     // swiftlint:disable identifier_name
     func removeLast(_ k: Int = 1) {
-        routes.removeLast(k)
+        path.removeLast(k)
     }
     // swiftlint:enable identifier_name
 }
