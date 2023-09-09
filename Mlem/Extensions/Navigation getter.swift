@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// MARK: - SwiftUI.NavigationPath
+
 private struct NavigationPathGetter: EnvironmentKey {
     static let defaultValue: Binding<NavigationPath> = .constant(NavigationPath())
 }
@@ -16,5 +18,18 @@ extension EnvironmentValues {
     var navigationPath: Binding<NavigationPath> {
         get { self[NavigationPathGetter.self] }
         set { self[NavigationPathGetter.self] = newValue }
+    }
+}
+
+// MARK: - Mlem NavigationRoute
+
+private struct NavigationPathWithRoutes: EnvironmentKey {
+    static let defaultValue: Binding<[NavigationRoute]> = .constant([])
+}
+
+extension EnvironmentValues {
+    var navigationPathWithRoutes: Binding<[NavigationRoute]> {
+        get { self[NavigationPathWithRoutes.self] }
+        set { self[NavigationPathWithRoutes.self] = newValue }
     }
 }
