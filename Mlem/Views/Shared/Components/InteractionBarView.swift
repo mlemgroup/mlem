@@ -29,7 +29,6 @@ struct InteractionBarView: View {
     let downvote: () async -> Void
     let save: () async -> Void
     let reply: () -> Void
-    // let share: () -> Void
     let shareURL: URL?
     
     var shouldShowScore: Bool = true
