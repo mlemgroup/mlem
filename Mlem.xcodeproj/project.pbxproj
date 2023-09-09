@@ -2626,6 +2626,7 @@
 				03B7AAF52ABEFA7A00068B23 /* UserResultView.swift in Sources */,
 				E47478152AAC3C19001CB1AC /* NavigationContext.swift in Sources */,
 				03C898012AC04EF9005F3403 /* SearchResultsView.swift in Sources */,
+				E47478152AAC3C19001CB1AC /* NavigationContext.swift in Sources */,
 				CD04D5DB2A36154F008EF95B /* SaveButtonView.swift in Sources */,
 				CDE6A80D2A45EAB30062D161 /* Embedded Post.swift in Sources */,
 				B1955A212A6145C00056CF99 /* Environment - EasterFlagSetter.swift in Sources */,
