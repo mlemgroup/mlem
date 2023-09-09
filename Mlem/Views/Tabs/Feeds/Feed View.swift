@@ -221,17 +221,6 @@ struct FeedView: View {
     private var sortMenu: some View {
         Button {
             showingSortMenu = true
-//            ForEach(genOuterSortMenuFunctions()) { menuFunction in
-//                MenuButton(menuFunction: menuFunction)
-//            }
-//            
-//            Menu {
-//                ForEach(genTopSortMenuFunctions()) { menuFunction in
-//                    MenuButton(menuFunction: menuFunction)
-//                }
-//            } label: {
-//                Label("Top...", systemImage: AppConstants.topSymbolName)
-//            }
         } label: {
             Label(
                 "Selected sorting by \(postSortType.description)",
