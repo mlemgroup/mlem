@@ -93,8 +93,8 @@ struct SidebarHeaderPreview: PreviewProvider {
                     title: "TestCommunityWithLongName",
                     subtitle: "@testcommunity@longnamedomain.website",
                     avatarSubtext: .constant("Created 3 days ago"),
-                    bannerURL: URL(string: "https://picsum.photos/200/300"),
-                    avatarUrl: URL(string: "https://picsum.photos/200"),
+                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
+                    avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
                     label1: "Label 1",
                     label2: "Label 2"
                 )
@@ -103,8 +103,8 @@ struct SidebarHeaderPreview: PreviewProvider {
                     title: "Test",
                     subtitle: "@test@test.come",
                     avatarSubtext: .constant("Created 3 days ago"),
-                    bannerURL: URL(string: "https://picsum.photos/200/300"),
-                    avatarUrl: URL(string: "https://picsum.photos/200"),
+                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
+                    avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
                     label1: "Label 1",
                     label2: "Label 2"
                 )
@@ -113,7 +113,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     title: "Test With No Avatar",
                     subtitle: "@test@test.come",
                     avatarSubtext: .constant("Created 3 days ago"),
-                    bannerURL: URL(string: "https://picsum.photos/200/300"),
+                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
                     avatarUrl: nil,
                     label1: "Label 1",
                     label2: "Label 2"
@@ -124,7 +124,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     subtitle: "@test@test.come",
                     avatarSubtext: .constant("Created 3 days ago"),
                     bannerURL: nil,
-                    avatarUrl: URL(string: "https://picsum.photos/200"),
+                    avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
                     label1: "Label 1",
                     label2: "Label 2"
                 )
