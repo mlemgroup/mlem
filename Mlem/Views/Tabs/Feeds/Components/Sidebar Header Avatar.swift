@@ -14,13 +14,11 @@ struct CommunitySidebarHeaderAvatar: View {
     @State var imageUrl: URL?
 
     var body: some View {
-        ZStack {
-            avatar
-        }
+        avatar
+            .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
             .clipShape(Circle())
             .overlay(Circle()
-            .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
-            .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
+                .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
             .shadow(radius: 10)
             .background(shouldClipAvatar ? Circle()
                 .foregroundColor(.systemBackground) : nil)
@@ -36,9 +34,13 @@ struct CommunitySidebarHeaderAvatar: View {
                 contentMode: .fill
             )
         } else {
-            Image(systemName: "person.fill")
-                .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
-                .foregroundColor(.secondary)
+            VStack(alignment: .center) {
+                Spacer()
+                    .frame(height: 20)
+                Image(systemName: "person.fill")
+                    .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
+                    .foregroundColor(.secondary)
+            }
         }
         
     }
