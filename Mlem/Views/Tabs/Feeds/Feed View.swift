@@ -96,6 +96,16 @@ struct FeedView: View {
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
+    // MARK: Destructive confirmation
+    
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
     // MARK: - Main Views
     
     var body: some View {
