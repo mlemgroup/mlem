@@ -10,14 +10,33 @@ import Foundation
 import SwiftUI
 
 class AppState: ObservableObject {
+    @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.apiClient) var apiClient
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     
     @Published private(set) var currentActiveAccount: SavedAccount?
-    @Published private(set) var currentNickname: String?
     
-    /// A method to set the current active account
+    /// A variable representing how the current account should be displayed in the tab bar
+    var tabDisplayName: String {
+        guard let currentActiveAccount else {
+            return "Profile"
+        }
+        
+        switch profileTabLabel {
+        case .username:
+            return currentActiveAccount.username
+        case .instance:
+            return currentActiveAccount.hostName ?? "Instance"
+        case .nickname:
+            return currentActiveAccount.nickname
+        case .anonymous:
+            return "Profile"
+        }
+    }
+    
+    /// A method to set the current active account, any changes to the account will be propogated to the persistence layer
     /// - Important: If you wish to _clear_ the current active account please use the `\.setAppFlow` method available via the environment to reset to our `.onboarding` flow
     /// - Parameter account: The `SavedAccount` which should become the active account
     func setActiveAccount(_ account: SavedAccount) {
@@ -25,15 +44,14 @@ class AppState: ObservableObject {
         // we configure the client here to ensure any updated session tokens are updated
         apiClient.configure(for: .account(account))
         currentActiveAccount = account
-        currentNickname = account.nickname
         defaultAccountId = account.id
+        accountsTracker.update(with: account)
     }
     
     /// A method to clear the currentlly active account
     /// - Important: It is unlikely you will want to call this method directly but instead use the `\.setAppFlow` method available via the environment
     func clearActiveAccount() {
         currentActiveAccount = nil
-        currentNickname = nil
     }
     
     func isCurrentAccountId(_ id: Int) -> Bool {

@@ -75,7 +75,7 @@ class PersistenceRepository {
                 return nil
             }
             
-            return SavedAccount(from: account, accessToken: token)
+            return SavedAccount(from: account, accessToken: token, avatarUrl: account.avatarUrl)
         }
     }
     

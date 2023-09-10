@@ -9,8 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct TabBarSettingsView: View {
-    @Dependency(\.accountsTracker) var accountsTracker
-    
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
@@ -33,7 +31,7 @@ struct TabBarSettingsView: View {
                 
                 if profileTabLabel == .nickname {
                     Label {
-                        TextField(text: $textFieldEntry, prompt: Text(appState.currentNickname ?? "")) {
+                        TextField(text: $textFieldEntry, prompt: Text(appState.currentActiveAccount?.nickname ?? "")) {
                             Text("Nickname")
                         }
                         .autocorrectionDisabled(true)
@@ -44,9 +42,15 @@ struct TabBarSettingsView: View {
                                 return
                             }
                             
-                            let newAccount = SavedAccount(from: existingAccount, storedNickname: textFieldEntry)
+                            // disallow blank nicknames
+                            let acceptedNickname = textFieldEntry.trimmed.isEmpty ? existingAccount.username : textFieldEntry
+                            
+                            let newAccount = SavedAccount(
+                                from: existingAccount,
+                                storedNickname: acceptedNickname,
+                                avatarUrl: existingAccount.avatarUrl
+                            )
                             appState.setActiveAccount(newAccount)
-                            accountsTracker.update(with: newAccount)
                         }
                     } icon: {
                         Image(systemName: "rectangle.and.pencil.and.ellipsis")

@@ -36,7 +36,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         from account: SavedAccount,
         accessToken: String? = nil,
         storedNickname: String? = nil,
-        avatarUrl: URL? = nil
+        avatarUrl: URL?
     ) {
         self.id = account.id
         self.instanceLink = account.instanceLink

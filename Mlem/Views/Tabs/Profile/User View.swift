@@ -8,6 +8,8 @@
 import Dependencies
 import SwiftUI
 
+// swiftlint:disable file_length
+
 /// View for showing user profiles
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
@@ -239,12 +241,20 @@ struct UserView: View {
     private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
         let response = try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
         
-        if isShowingOwnProfile() {
+        if isShowingOwnProfile(), let currentAccount = appState.currentActiveAccount {
             // take this opportunity to update the users avatar url to catch changes
             // we should be able to shift this down to the repository layer in the future so that we
             // catch anytime the app loads the signed in users details from any location in the app 🤞
             let url = response.personView.person.avatar
-            appState.updateUserAvatarUrl(url)
+            let updatedAccount = SavedAccount(
+                id: currentAccount.id,
+                instanceLink: currentAccount.instanceLink,
+                accessToken: currentAccount.accessToken,
+                username: currentAccount.username,
+                storedNickname: currentAccount.storedNickname,
+                avatarUrl: url
+            )
+            appState.setActiveAccount(updatedAccount)
         }
         
         return response
@@ -392,3 +402,5 @@ struct UserViewPreview: PreviewProvider {
         ).environmentObject(AppState())
     }
 }
+
+// swiftlint:enable file_length
