@@ -379,6 +379,10 @@ struct UserViewPreview: PreviewProvider {
                 person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .normal),
                 counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)
             )
-        )
+        ).environmentObject(AppState(defaultAccount: SavedAccount(
+            id: 0,
+            instanceLink: URL(string: "https://google.com")!,
+            accessToken: "",
+            username: "Preview User"), selectedAccount: Binding.constant(nil)))
     }
 }
