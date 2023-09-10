@@ -10,8 +10,6 @@
 import Dependencies
 import SwiftUI
 
-// swiftlint:disable file_length
-
 /// View for showing user profiles
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
@@ -19,13 +17,11 @@ struct UserView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
-    @Dependency(\.personRepository) var personRepository
 
     @Namespace var scrollToTop
 
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
-    let internetSpeed: InternetSpeed
     
     // environment
     @Environment(\.navigationPathWithRoutes) private var navigationPath
@@ -51,8 +47,6 @@ struct UserView: View {
     init(userID: Int, userDetails: APIPersonView? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        
-        self.internetSpeed = internetSpeed
         
         self._userID = State(initialValue: userID)
         self._userDetails = State(initialValue: userDetails)
@@ -106,7 +100,7 @@ struct UserView: View {
     private var moderatorButton: some View {
         if let user = userDetails, !moderatedCommunities.isEmpty {
             NavigationLink(.userModeratorLink(.init(user: user, moderatedCommunities: moderatedCommunities))) {
-                Image(systemName: Icons.moderation)
+                Image(systemName: "shield")
             }
         }
     }
@@ -117,7 +111,7 @@ struct UserView: View {
             Button {
                 isPresentingAccountSwitcher = true
             } label: {
-                Image(systemName: Icons.switchUser)
+                Image(systemName: AppConstants.switchUserSymbolName)
             }
         }
     }
@@ -128,11 +122,10 @@ struct UserView: View {
             subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
             avatarSubtext: $avatarSubtext,
             avatarSubtextClicked: toggleCakeDayVisible,
-            bannerURL: shouldShowUserHeaders ? userDetails.person.bannerUrl : nil,
-            avatarUrl: userDetails.person.avatarUrl,
+            bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
+            avatarUrl: userDetails.person.avatar,
             label1: "\(userDetails.counts.commentCount) Comments",
-            label2: "\(userDetails.counts.postCount) Posts",
-            avatarType: .user
+            label2: "\(userDetails.counts.postCount) Posts"
         )
     }
     
@@ -177,7 +170,7 @@ struct UserView: View {
         .navigationBarColor()
         .headerProminence(.standard)
         .refreshable {
-            await tryReloadUser()
+            await tryLoadUser()
         }.toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 accountSwitcher
@@ -207,7 +200,7 @@ struct UserView: View {
     }
     
     private func isShowingOwnProfile() -> Bool {
-        appState.isCurrentAccountId(userID)
+        userID == appState.currentActiveAccount.id
     }
     
     @MainActor
@@ -220,59 +213,31 @@ struct UserView: View {
             }
         }
         .task(priority: .userInitiated) {
-            await tryReloadUser()
+            await tryLoadUser()
         }
     }
     
-    // swiftlint:disable function_body_length
-    private func tryReloadUser() async {
+    private func tryLoadUser() async {
         do {
-            let authoredContent = try await personRepository.loadUserDetails(for: userID, limit: internetSpeed.pageSize)
+            let authoredContent = try await loadUser(savedItems: false)
             var savedContentData: GetPersonDetailsResponse?
             if isShowingOwnProfile() {
-                savedContentData = try await personRepository.loadUserDetails(
-                    for: userID,
-                    limit: internetSpeed.pageSize,
-                    savedOnly: true
-                )
+                savedContentData = try await loadUser(savedItems: true)
             }
             
-            if isShowingOwnProfile(), let currentAccount = appState.currentActiveAccount {
-                // take this opportunity to update the users avatar url to catch changes
-                // we should be able to shift this down to the repository layer in the future so that we
-                // catch anytime the app loads the signed in users details from any location in the app 🤞
-                // -> we'll need to find a way to stop the state changes this creates from cancelling other in-flight requests
-                let url = authoredContent.personView.person.avatarUrl
-                let updatedAccount = SavedAccount(
-                    id: currentAccount.id,
-                    instanceLink: currentAccount.instanceLink,
-                    accessToken: currentAccount.accessToken,
-                    username: currentAccount.username,
-                    storedNickname: currentAccount.storedNickname,
-                    avatarUrl: url
-                )
-                appState.setActiveAccount(updatedAccount)
-            }
-            
-            // accumulate comments and posts so we don't update state more than we need to
-            var newComments = authoredContent.comments
+            privateCommentTracker.add(authoredContent.comments
                 .sorted(by: { $0.comment.published > $1.comment.published })
-                .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) }
+                .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
             
-            var newPosts = authoredContent.posts.map { PostModel(from: $0) }
+            privatePostTracker.add(authoredContent.posts.map { PostModel(from: $0) })
             
-            // add saved content, if present
             if let savedContent = savedContentData {
-                newComments.append(contentsOf:
-                    savedContent.comments
-                        .sorted(by: { $0.comment.published > $1.comment.published })
-                        .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
+                privateCommentTracker.add(savedContent.comments
+                    .sorted(by: { $0.comment.published > $1.comment.published })
+                    .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
                 
-                newPosts.append(contentsOf: savedContent.posts.map { PostModel(from: $0) })
+                privatePostTracker.add(savedContent.posts.map { PostModel(from: $0) })
             }
-            
-            privateCommentTracker.comments = newComments
-            privatePostTracker.reset(with: newPosts)
             
             userDetails = authoredContent.personView
             moderatedCommunities = authoredContent.moderates
@@ -282,7 +247,7 @@ struct UserView: View {
         } catch {
             if userDetails == nil {
                 errorDetails = ErrorDetails(error: error, refresh: {
-                    await tryReloadUser()
+                    await tryLoadUser()
                     return userDetails != nil
                 })
             } else {
@@ -296,7 +261,10 @@ struct UserView: View {
             }
         }
     }
-    // swiftlint:enable function_body_length
+    
+    private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
+        try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
+    }
 }
 
 // TODO: darknavi - Move these to a common area for reuse
@@ -328,11 +296,11 @@ struct UserViewPreview: PreviewProvider {
             id: name.hashValue,
             name: name,
             displayName: displayName,
-            avatar: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp",
+            avatar: URL(string: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp"),
             published: Date.now.advanced(by: -10000),
             actorId: URL(string: "https://google.com")!,
             bio: "Just here for the good vibes!",
-            banner: "https://i.imgur.com/wcayaCB.jpeg",
+            banner: URL(string: "https://i.imgur.com/wcayaCB.jpeg"),
             admin: userType == .admin,
             botAccount: userType == .bot
         )
@@ -406,7 +374,7 @@ struct UserViewPreview: PreviewProvider {
         ))
     }
     
-    static func generateUserLinkView(name: String, userType: PreviewUserType) -> UserLinkView {
+    static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
         var postContext: PostModel?
@@ -421,7 +389,7 @@ struct UserViewPreview: PreviewProvider {
             postContext = generatePreviewPost(creator: previewUser)
         }
         
-        return UserLinkView(
+        return UserProfileLink(
             user: previewUser,
             serverInstanceLocation: .bottom,
             overrideShowAvatar: true,
@@ -437,7 +405,11 @@ struct UserViewPreview: PreviewProvider {
                 person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .normal),
                 counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)
             )
-        ).environmentObject(AppState())
+        ).environmentObject(AppState(defaultAccount: SavedAccount(
+            id: 0,
+            instanceLink: URL(string: "https://google.com")!,
+            accessToken: "",
+            username: "Preview User"), selectedAccount: Binding.constant(nil)))
     }
 }
 
