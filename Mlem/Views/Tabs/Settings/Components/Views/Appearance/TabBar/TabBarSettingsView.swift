@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct TabBarSettingsView: View {
-    
     @Dependency(\.accountsTracker) var accountsTracker
     
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
@@ -22,6 +21,8 @@ struct TabBarSettingsView: View {
     
     var body: some View {
         Form {
+            // TODO: options like this will need to be updated to only show when there is an active account
+            // present once guest mode is fully implemented
             Section {
                 SelectableSettingsItem(
                     settingIconSystemName: "person.text.rectangle",
@@ -32,15 +33,19 @@ struct TabBarSettingsView: View {
                 
                 if profileTabLabel == .nickname {
                     Label {
-                        TextField(text: $textFieldEntry, prompt: Text(appState.currentNickname)) {
+                        TextField(text: $textFieldEntry, prompt: Text(appState.currentNickname ?? "")) {
                             Text("Nickname")
                         }
                         .autocorrectionDisabled(true)
                         .textInputAutocapitalization(.never)
                         .onSubmit {
                             print(textFieldEntry)
-                            let newAccount = SavedAccount(from: appState.currentActiveAccount, storedNickname: textFieldEntry)
-                            appState.changeDisplayedNickname(to: textFieldEntry)
+                            guard let existingAccount = appState.currentActiveAccount else {
+                                return
+                            }
+                            
+                            let newAccount = SavedAccount(from: existingAccount, storedNickname: textFieldEntry)
+                            appState.setActiveAccount(newAccount)
                             accountsTracker.update(with: newAccount)
                         }
                     } icon: {
@@ -68,7 +73,8 @@ struct TabBarSettingsView: View {
         .navigationTitle("Tab Bar")
         .navigationBarColor()
         .animation(.easeIn, value: profileTabLabel)
-        .onChange(of: appState.currentActiveAccount.nickname) { nickname in
+        .onChange(of: appState.currentActiveAccount?.nickname) { nickname in
+            guard let nickname else { return }
             print("new nickname: \(nickname)")
             textFieldEntry = nickname
         }

@@ -199,7 +199,7 @@ extension CommentItem {
         })
         
         // edit
-        if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
+        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: "pencil",
@@ -211,7 +211,7 @@ extension CommentItem {
         }
         
         // delete
-        if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
+        if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: "trash",

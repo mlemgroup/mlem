@@ -43,6 +43,7 @@ struct AddSavedInstanceView: View {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) private var openURL
+    @Environment(\.setAppFlow) private var setFlow
 
     @State private var enteredInstance: String = ""
     @State private var username = ""
@@ -58,7 +59,6 @@ struct AddSavedInstanceView: View {
     
     let onboarding: Bool
     let givenInstance: String? // if present, will override manual instance entry
-    @Binding var currentAccount: SavedAccount?
     
     var instance: String { givenInstance ?? enteredInstance }
     var badCredentialsMessage: String { onboarding
@@ -70,11 +70,9 @@ struct AddSavedInstanceView: View {
     
     init(
         onboarding: Bool,
-        currentAccount: Binding<SavedAccount?>,
         givenInstance: String? = nil
     ) {
         self.onboarding = onboarding
-        self._currentAccount = currentAccount
         self.givenInstance = givenInstance
     }
     
@@ -331,12 +329,7 @@ struct AddSavedInstanceView: View {
             dismiss()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                currentAccount = newAccount
-                
-                // appState is not present on onboarding screen
-                if !onboarding {
-                    appState.setActiveAccount(newAccount)
-                }
+                setFlow(.account(newAccount))
             }
         } catch {
             handle(error)
@@ -415,10 +408,7 @@ struct AddSavedInstanceView: View {
 
 struct AddSavedInstanceView_Previews: PreviewProvider {
     static var previews: some View {
-        AddSavedInstanceView(
-            onboarding: true,
-            currentAccount: .constant(.mock())
-        )
+        AddSavedInstanceView(onboarding: true)
     }
 }
 
