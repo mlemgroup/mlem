@@ -93,7 +93,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     title: "TestCommunityWithLongName",
                     subtitle: "@testcommunity@longnamedomain.website",
                     avatarSubtext: .constant("Created 3 days ago"),
-                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/2000/300"),
+                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/2001/300"),
                     avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
                     label1: "Label 1",
                     label2: "Label 2"
