@@ -1,5 +1,5 @@
 //
-//  Instance and Community List View.swift
+//  AccountsPage.swift
 //  Mlem
 //
 //  Created by David Bureš on 27.03.2022.
@@ -11,20 +11,13 @@ import SwiftUI
 struct AccountsPage: View {
     @Dependency(\.accountsTracker) var accountsTracker
     
+    @Environment(\.setAppFlow) private var setFlow
+    
     @EnvironmentObject var appState: AppState
-
-    @Environment(\.forceOnboard) var forceOnboard
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
-    @State var selectedAccount: SavedAccount?
     
-    @State var isShowingDeleteConfirm: Bool = false
-    
-    let onboarding: Bool
-    
-    init(onboarding: Bool = false) {
-        self.onboarding = onboarding
-    }
+    @State var accountForDeletion: SavedAccount?
     
     @Environment(\.dismiss) var dismiss
     
@@ -32,11 +25,8 @@ struct AccountsPage: View {
         let instances = Array(accountsTracker.accountsByInstance.keys).sorted()
         
         Group {
-            if onboarding || instances.isEmpty || isShowingInstanceAdditionSheet {
-                AddSavedInstanceView(
-                    onboarding: onboarding,
-                    currentAccount: $selectedAccount
-                )
+            if instances.isEmpty || isShowingInstanceAdditionSheet {
+                AddSavedInstanceView(onboarding: false)
             } else {
                 List {
                     ForEach(instances, id: \.self) { instance in
@@ -44,18 +34,30 @@ struct AccountsPage: View {
                             ForEach(accountsTracker.accountsByInstance[instance] ?? []) { account in
                                 Button(account.username) {
                                     dismiss()
-                                    
-                                    // this tiny delay prevents the modal dismiss animation from being cancelled
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                        appState.setActiveAccount(account)
-                                    }
+                                    setFlow(using: account)
                                 }
                                 .swipeActions {
                                     Button("Remove", role: .destructive) {
-                                        accountsTracker.removeAccount(account: account, appState: appState, forceOnboard: forceOnboard)
+                                        dismiss()
+                                        accountsTracker.removeAccount(account: account)
+                                        if account == appState.currentActiveAccount {
+                                            // if we just deleted the current account we (currently!) have a decision to make
+                                            if let first = accountsTracker.savedAccounts.first {
+                                                // if we have another account available, go to that...
+                                                
+                                                // TODO: once onboarding is updated to support showing a user's
+                                                // current accounts, we can scrap this and always go to onboarding.
+                                                // This leaves the decision of which account to enter in the
+                                                // user's hands, as opposed to us picking the first account with `.first`.
+                                                setFlow(using: first)
+                                            } else {
+                                                // no accounts, so go to onboarding
+                                                setFlow(using: nil)
+                                            }
+                                        }
                                     }
                                 }
-                                .foregroundColor(appState.currentActiveAccount == account ? .secondary : .primary)
+                                .foregroundColor(color(for: account))
                             }
                         }
                     }
@@ -63,32 +65,44 @@ struct AccountsPage: View {
                     Button {
                         isShowingInstanceAdditionSheet = true
                     } label: {
-                        Text("Add Account")
+                        Label("Add Account", systemImage: AppConstants.switchUserSymbolName)
                     }
                     .accessibilityLabel("Add a new account.")
 
-                    Button(role: .destructive) {
-                        isShowingDeleteConfirm = true
-                    } label: {
-                        Label("Delete Current Account", systemImage: "trash")
-                            .foregroundColor(.red)
+                    if let account = appState.currentActiveAccount {
+                        Button(role: .destructive) {
+                            accountForDeletion = account
+                        } label: {
+                            Label("Delete Current Account", systemImage: "trash")
+                                .foregroundColor(.red)
+                        }
                     }
                 }
             }
         }
         .hoistNavigation(dismiss: dismiss)
-        .onAppear {
-            selectedAccount = appState.currentActiveAccount
-        }
-        .onChange(of: selectedAccount) { account in
-            guard let account else { return }
-            appState.setActiveAccount(account)
-        }
         .sheet(isPresented: $isShowingInstanceAdditionSheet) {
-            AddSavedInstanceView(onboarding: false, currentAccount: $selectedAccount)
+            AddSavedInstanceView(onboarding: false)
         }
-        .sheet(isPresented: $isShowingDeleteConfirm) {
-            DeleteAccountView()
+        .sheet(item: $accountForDeletion) { account in
+            DeleteAccountView(account: account)
+        }
+    }
+    
+    private func color(for account: SavedAccount) -> Color {
+        guard let currentAccount = appState.currentActiveAccount else { return .primary }
+        return account == currentAccount ? .secondary : .primary
+    }
+    
+    private func setFlow(using account: SavedAccount?) {
+        // this tiny delay prevents the modal dismiss animation from being cancelled
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            if let account {
+                setFlow(.account(account))
+                return
+            }
+            
+            setFlow(.onboarding)
         }
     }
 }

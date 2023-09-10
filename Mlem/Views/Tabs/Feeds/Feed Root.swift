@@ -35,7 +35,6 @@ struct FeedRoot: View {
         ScrollViewReader { proxy in
             NavigationSplitView(columnVisibility: $columnVisibility) {
                 CommunityListView(selectedCommunity: $rootDetails)
-                    .id(appState.currentActiveAccount.id)
             } detail: {
                 NavigationStack(path: $feedRouter.path) {
                     if let rootDetails {
@@ -54,7 +53,7 @@ struct FeedRoot: View {
                         Text("Please select a community")
                     }
                 }
-                .id((rootDetails?.id ?? 0) + appState.currentActiveAccount.id)
+                .id(rootDetails?.id ?? 0)
             }
             .environment(\.scrollViewProxy, proxy)
         }
