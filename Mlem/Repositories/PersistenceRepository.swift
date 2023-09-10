@@ -115,6 +115,10 @@ class PersistenceRepository {
         try await save(value, to: Path.filteredKeywords)
     }
     
+    func getFilteredKeywordsPath() -> URL {
+        Path.filteredKeywords
+    }
+    
     func loadLayoutWidgets() -> LayoutWidgetGroups {
         load(LayoutWidgetGroups.self, from: Path.layoutWidgets) ?? .init()
     }

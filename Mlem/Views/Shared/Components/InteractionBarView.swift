@@ -29,7 +29,7 @@ struct InteractionBarView: View {
     let downvote: () async -> Void
     let save: () async -> Void
     let reply: () -> Void
-    let share: () -> Void
+    let shareURL: URL?
     
     var shouldShowScore: Bool = true
     var showDownvotesSeparately: Bool = false
@@ -95,7 +95,7 @@ struct InteractionBarView: View {
                     ReplyButtonView(accessibilityContext: accessibilityContext, reply: reply)
                     
                 case .share:
-                    ShareButtonView(accessibilityContext: accessibilityContext, share: share)
+                    ShareButtonView(accessibilityContext: accessibilityContext, url: shareURL)
                     
                 case .infoStack:
                     InfoStackView(

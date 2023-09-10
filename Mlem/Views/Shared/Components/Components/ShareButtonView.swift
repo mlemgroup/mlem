@@ -12,25 +12,28 @@ struct ShareButtonView: View {
 
     let accessibilityContext: String
 
-    let share: () -> Void
+    let url: URL?
 
     // ==== BODY ==== //
 
     var body: some View {
-        Button {
-            share()
-        } label: {
-            Image(systemName: AppConstants.shareSymbolName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
-                .padding(AppConstants.barIconPadding)
-                .foregroundStyle(.primary)
-                .padding(AppConstants.postAndCommentSpacing)
-                .contentShape(Rectangle())
-                .fontWeight(.medium) // makes it look a little nicer
+        if let url {
+            ShareLink(item: url) {
+                label.foregroundColor(.primary)
+            }
+        } else {
+            label.foregroundColor(.secondary)
         }
-        .accessibilityLabel("Share \(accessibilityContext)")
-        .accessibilityAction(.default) { share() }
+    }
+    
+    var label: some View {
+        Image(systemName: AppConstants.shareSymbolName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)
+            .padding(AppConstants.barIconPadding)
+            .padding(AppConstants.postAndCommentSpacing)
+            .contentShape(Rectangle())
+            .fontWeight(.medium) // makes it look a little nicer
     }
 }

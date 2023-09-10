@@ -10,6 +10,7 @@ import SwiftUI
 
 struct FiltersSettingsView: View {
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.persistenceRepository) var persistenceRepository
     
     @EnvironmentObject var filtersTracker: FiltersTracker
 
@@ -45,28 +46,9 @@ struct FiltersSettingsView: View {
             }
 
             Section {
-                Button {
-                    do {
-                        try filtersTracker.filteredKeywords.export(filename: "filtered_keywords")
-                    } catch {
-                        errorHandler.handle(
-                            .init(
-                                title: "Unable to export filters, please try again.",
-                                style: .toast,
-                                underlyingError: error
-                            )
-                        )
-                    }
-                    
-                } label: {
-                    Label {
-                        Text("Export Filters")
-                    } icon: {
-                        Image(systemName: "square.and.arrow.up")
-                            .opacity(filtersTracker.filteredKeywords.isEmpty ? 0.6 : 1)
-                    }
+                if !filtersTracker.filteredKeywords.isEmpty {
+                    ShareLink(item: persistenceRepository.getFilteredKeywordsPath())
                 }
-                .disabled(filtersTracker.filteredKeywords.isEmpty)
 
                 Button {
                     isShowingKeywordImporter = true

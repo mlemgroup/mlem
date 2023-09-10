@@ -149,7 +149,7 @@ extension CommentItem {
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
             ("Undo upvote", "arrow.up.square.fill") :
             ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
             destructiveActionPrompt: nil,
@@ -164,7 +164,7 @@ extension CommentItem {
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
             ("Undo downvote", "arrow.down.square.fill") :
             ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
             destructiveActionPrompt: nil,
@@ -177,7 +177,7 @@ extension CommentItem {
         
         // save
         let (saveText, saveImg) = hierarchicalComment.commentView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg,
             destructiveActionPrompt: nil,
@@ -189,7 +189,7 @@ extension CommentItem {
         })
         
         // reply
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
@@ -200,7 +200,7 @@ extension CommentItem {
         
         // edit
         if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: "pencil",
                 destructiveActionPrompt: nil,
@@ -212,7 +212,7 @@ extension CommentItem {
         
         // delete
         if hierarchicalComment.commentView.creator.id == appState.currentActiveAccount.id {
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
@@ -226,18 +226,11 @@ extension CommentItem {
         
         // share
         if let url = URL(string: hierarchicalComment.commentView.comment.apId) {
-            ret.append(MenuFunction(
-                text: "Share",
-                imageName: "square.and.arrow.up",
-                destructiveActionPrompt: nil,
-                enabled: true
-            ) {
-                showShareSheet(URLtoShare: url)
-            })
+            ret.append(MenuFunction.shareMenuFunction(url: url))
         }
         
         // report
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: "Really report?",
@@ -250,7 +243,7 @@ extension CommentItem {
         })
         
         // block
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
