@@ -67,7 +67,7 @@ struct ContentView: View {
                                 symbolConfiguration: .init(
                                     symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
                                     activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                    remoteSymbolUrl: appState.currentActiveAccount?.avatarUrl
+                                    remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
                                 )
                             )
                             .simultaneousGesture(accountSwitchLongPress)

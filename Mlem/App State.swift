@@ -15,6 +15,7 @@ class AppState: ObservableObject {
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
+    @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
     
     @Published private(set) var currentActiveAccount: SavedAccount?
     
@@ -34,6 +35,15 @@ class AppState: ObservableObject {
         case .anonymous:
             return "Profile"
         }
+    }
+    
+    /// A variable representing the remote location to load the user profile avatar from if applicable
+    var profileTabRemoteSymbolUrl: URL? {
+        guard profileTabLabel != .anonymous, showUserAvatar else {
+            return nil
+        }
+        
+        return currentActiveAccount?.avatarUrl
     }
     
     /// A method to set the current active account, any changes to the account will be propogated to the persistence layer

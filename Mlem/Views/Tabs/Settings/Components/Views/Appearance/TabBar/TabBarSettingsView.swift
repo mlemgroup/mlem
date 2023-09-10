@@ -12,6 +12,7 @@ struct TabBarSettingsView: View {
     @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
+    @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
         
     @EnvironmentObject var appState: AppState
     
@@ -71,6 +72,14 @@ struct TabBarSettingsView: View {
                     settingName: "Show Unread Count",
                     isTicked: $showInboxUnreadBadge
                 )
+                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "person.fill.questionmark",
+                    settingName: "Show User Avatar",
+                    // if `.anonymous` is selected the toggle here should always be false
+                    isTicked: profileTabLabel == .anonymous ? .constant(false) : $showUserAvatar
+                )
+                .disabled(profileTabLabel == .anonymous)
             }
         }
         .fancyTabScrollCompatible()
