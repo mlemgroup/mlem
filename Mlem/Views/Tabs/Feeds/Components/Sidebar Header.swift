@@ -87,26 +87,59 @@ struct CommunitySidebarHeader: View {
 
 struct SidebarHeaderPreview: PreviewProvider {
     static var previews: some View {
-        VStack {
-            CommunitySidebarHeader(
-                title: "TestCommunityWithLongName",
-                subtitle: "@testcommunity@longnamedomain.website",
-                avatarSubtext: .constant("Created 3 days ago"),
-                bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-                label1: "Label 1",
-                label2: "Label 2"
-            )
-            CommunitySidebarHeader(
-                title: "Test",
-                subtitle: "@test@test.come",
-                avatarSubtext: .constant("Created 3 days ago"),
-                bannerURL: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-                label1: "Label 1",
-                label2: "Label 2"
-            )
-            Spacer()
+        ScrollView {
+            VStack {
+                CommunitySidebarHeader(
+                    title: "TestCommunityWithLongName",
+                    subtitle: "@testcommunity@longnamedomain.website",
+                    avatarSubtext: .constant("Created 3 days ago"),
+                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
+                    avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
+                    label1: "Label 1",
+                    label2: "Label 2"
+                )
+                Divider()
+                CommunitySidebarHeader(
+                    title: "Test",
+                    subtitle: "@test@test.come",
+                    avatarSubtext: .constant("Created 3 days ago"),
+                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
+                    avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
+                    label1: "Label 1",
+                    label2: "Label 2"
+                )
+                Divider()
+                CommunitySidebarHeader(
+                    title: "Test With No Avatar",
+                    subtitle: "@test@test.come",
+                    avatarSubtext: .constant("Created 3 days ago"),
+                    bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
+                    avatarUrl: nil,
+                    label1: "Label 1",
+                    label2: "Label 2"
+                )
+                Divider()
+                CommunitySidebarHeader(
+                    title: "Test With No Banner",
+                    subtitle: "@test@test.come",
+                    avatarSubtext: .constant("Created 3 days ago"),
+                    bannerURL: nil,
+                    avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
+                    label1: "Label 1",
+                    label2: "Label 2"
+                )
+                Divider()
+                CommunitySidebarHeader(
+                    title: "Test With No Banner or Avatar",
+                    subtitle: "@test@test.come",
+                    avatarSubtext: .constant("Created 3 days ago"),
+                    bannerURL: nil,
+                    avatarUrl: nil,
+                    label1: "Label 1",
+                    label2: "Label 2"
+                )
+                Spacer()
+            }
         }
     }
 }
