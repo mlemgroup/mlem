@@ -11,7 +11,7 @@ import UIKit
 
 // TODO: we need to do a bit of work to ensure we also switch tab when responding to these
 // as currently it launches you into the app, but if the app was already running you're left
-// on the tab/screen you were on - despite the shortcuts being design to take you to the feeds
+// on the tab/screen you were on - despite the shortcuts being designed to take you to the "Feeds" tab
 var shortcutItemToProcess: UIApplicationShortcutItem?
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UIWindowSceneDelegate {

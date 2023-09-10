@@ -43,12 +43,12 @@ struct AccountsPage: View {
                                         if account == appState.currentActiveAccount {
                                             // if we just deleted the current account we (currently!) have a decision to make
                                             if let first = accountsTracker.savedAccounts.first {
-                                                // if we have another account to go to that...
+                                                // if we have another account available, go to that...
                                                 
-                                                // TODO: once onboarding is updated to support showing a users
-                                                // current accounts we can scrap this and always go to onboarding
-                                                // which leaves the decision of which account to re-enter as in the
-                                                // users hands as opposed to us picking one at random with `.first`.
+                                                // TODO: once onboarding is updated to support showing a user's
+                                                // current accounts, we can scrap this and always go to onboarding.
+                                                // This leaves the decision of which account to enter in the
+                                                // user's hands, as opposed to us picking the first account with `.first`.
                                                 setFlow(using: first)
                                             } else {
                                                 // no accounts, so go to onboarding

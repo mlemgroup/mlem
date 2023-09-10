@@ -30,7 +30,7 @@ class FavoriteCommunitiesTracker: ObservableObject {
     
     // MARK: - Public Methods
     
-    /// A method to associate an account with the favorites tracker, once an account has been set calling it's methods will store/remove/return communities relating to the account
+    /// A method to associate an account with the favorites tracker. Once an account has been set, calling it's methods will store/remove/return communities relating to the account
     /// - Parameter account: The `SavedAccount` to associate with the tracker
     func configure(for account: SavedAccount) {
         self.account = account
