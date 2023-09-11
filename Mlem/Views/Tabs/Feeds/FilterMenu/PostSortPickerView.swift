@@ -1,8 +1,8 @@
 //
-//  PostSortMenu.swift
+//  PostSortPickerView.swift
 //  Mlem
 //
-//  Created by Sjmarf on 09/09/2023
+//  Created by Sjmarf on 10/09/2023.
 //
 
 import SwiftUI
@@ -52,14 +52,21 @@ private enum PostSortSection: String {
     }
 }
 
-struct PostSortMenu: View {
+struct PostSortPickerView: View {
     @Dependency(\.siteInformation) var siteInformation
+    
+    @State private var selectionStage: PostSortSection = .root
+    @State private var tempSelected: PostSortType
     
     @Binding var isPresented: Bool
     @Binding var selected: PostSortType
     
-    @State private var selectionStage: PostSortSection = .root
-
+    init(isPresented: Binding<Bool>, selected: Binding<PostSortType>) {
+        _isPresented = isPresented
+        _selected = selected
+        _tempSelected = State(initialValue: selected.wrappedValue)
+    }
+    
     var body: some View {
         VStack {
             if selectionStage != .top {
@@ -113,35 +120,36 @@ struct PostSortMenu: View {
                 .background(Color(UIColor.systemGroupedBackground))
                 .transition(.scale(scale: 0.8).combined(with: .opacity))
             }
-            Spacer()
         }
         .animation(
             .spring(duration: 0.5, bounce: 0.3),
             value: selectionStage
         )
-        .padding(20)
-        .background(Color(UIColor.systemGroupedBackground))
-        .presentationDetents([.height(300)])
+        .onDisappear {
+            selected = tempSelected
+        }
         .onTapGesture {
             selectionStage = .root
         }
     }
     
+    @ViewBuilder
     private func sortOption(_ sortType: PostSortType, stage: PostSortSection = .root, showIcon: Bool = true) -> some View {
         let isDisabled = (stage == .root && (selectionStage != .root)) || siteInformation.version ?? .infinity < sortType.minimumVersion
-        return Button {
-            isPresented = false
-            selected = sortType
+        Button {
+            tempSelected = sortType
+            selectionStage = .root
         } label: {
             if showIcon {
-                Label(sortType.label, systemImage: sortType.iconName)
+                Label(sortType.switcherLabel, systemImage: sortType.iconName)
             } else {
-                Text(sortType.label)
+                Text(sortType.switcherLabel)
             }
         }
-        .buttonStyle(SortMenuButtonStyle(isSelected: sortType == selected))
+        .buttonStyle(SortMenuButtonStyle(isSelected: sortType == tempSelected))
         .disabled(isDisabled)
         .shadow(color: (stage != .root) && (stage == selectionStage) ? .black.opacity(0.05) : .clear, radius: 5, x: 5, y: 5)
+        .animation(.easeOut(duration: 0.2), value: tempSelected)
         .animation(.easeOut(duration: 0.2), value: selectionStage)
         .accessibilityHint("Double-tap to select")
         .accessibilityHidden(isDisabled)
@@ -149,16 +157,17 @@ struct PostSortMenu: View {
     
     @ViewBuilder
     private func sortSubmenu(_ stage: PostSortSection) -> some View {
-        let isSelected = stage.children.contains(self.selected)
+        let isSelected = stage.children.contains(tempSelected)
         Button {
             selectionStage = stage
         } label: {
-            let text = isSelected ? "\(stage.rawValue) (\(self.selected.label))" : "\(stage.rawValue)..."
+            let text = isSelected ? "\(stage.rawValue) (\(tempSelected.switcherLabel))" : "\(stage.rawValue)..."
             Label(text, systemImage: stage.iconName)
         }
         .buttonStyle(SortMenuButtonStyle(isSelected: isSelected))
         .transition(.scale.combined(with: .opacity))
         .disabled(selectionStage != .root)
+        .animation(.easeOut(duration: 0.2), value: tempSelected)
         .animation(.easeOut(duration: 0.2), value: selectionStage)
         .accessibilityHint("Double-tap to expand")
         .accessibilityHidden(selectionStage != .root)

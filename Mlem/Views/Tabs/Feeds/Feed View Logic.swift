@@ -5,7 +5,7 @@
 //  Created by Eric Andrews on 2023-07-21.
 //
 
-import Foundation
+import SwiftUI
 
 extension FeedView {
     // MARK: Feed loading
@@ -86,6 +86,21 @@ extension FeedView {
     }
     
     // MARK: Menus
+    
+    func genSortMenuFunctions() -> [MenuFunction] {
+        let types: [PostSortType] = [.hot, .new, .topDay, .topWeek, .topMonth, .topYear, .topAll]
+        return types.map { type in
+            let isSelected = postSortType == type
+            return MenuFunction(
+                text: type.label,
+                imageName: isSelected ? type.iconNameFill : type.iconName,
+                destructiveActionPrompt: nil,
+                enabled: !isSelected
+            ) {
+                postSortType = type
+            }
+        }
+    }
     
     func genEllipsisMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()

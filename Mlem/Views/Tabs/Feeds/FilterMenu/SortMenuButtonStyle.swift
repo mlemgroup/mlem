@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SortMenuButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled: Bool
-    @State var isSelected: Bool
+    var isSelected: Bool
     
     var background: AnyView {
         if isSelected && isEnabled {
@@ -27,7 +27,8 @@ struct SortMenuButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(.vertical, 14)
+            .imageScale(.medium)
+            .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .background(background)
             .foregroundStyle((isSelected && isEnabled) ? .white : .primary)

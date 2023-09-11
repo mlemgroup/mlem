@@ -88,9 +88,6 @@ struct ExpandedPost: View {
                     commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
                 }
             }
-            .sheet(isPresented: $showingSortMenu) {
-                CommentSortMenu(isPresented: $showingSortMenu, selected: $commentSortingType)
-            }
     }
     
     private var contentView: some View {
@@ -311,8 +308,15 @@ struct ExpandedPost: View {
     }
     
     private var toolbarMenu: some View {
-        Button {
-            showingSortMenu = true
+        Menu {
+            ForEach(CommentSortType.allCases, id: \.self) { type in
+                Button {
+                    commentSortingType = type
+                } label: {
+                    Label(type.description, systemImage: type.iconName)
+                }
+                .disabled(type == commentSortingType)
+            }
         } label: {
             Label(commentSortingType.description, systemImage: commentSortingType.iconName)
         }

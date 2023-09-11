@@ -61,10 +61,11 @@ struct FeedView: View {
     @StateObject var postTracker: PostTracker
     
     @State var communityDetails: GetCommunityResponse?
-    @State var postSortType: PostSortType
+    
     @State var isLoading: Bool = false
     @State var shouldLoad: Bool = false
     
+    @State var postSortType: PostSortType
     @State var showingSortMenu: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
@@ -115,9 +116,6 @@ struct FeedView: View {
                 }
             }
             .refreshable { await refreshFeed() }
-            .sheet(isPresented: $showingSortMenu) {
-                PostSortMenu(isPresented: $showingSortMenu, selected: $postSortType)
-            }
     }
     
     @ViewBuilder
@@ -219,12 +217,29 @@ struct FeedView: View {
     
     @ViewBuilder
     private var sortMenu: some View {
-        Button {
-            showingSortMenu = true
+        Menu {
+            ForEach(genSortMenuFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction)
+            }
+            Divider()
+            Button {
+                showingSortMenu = true
+            } label: {
+                Label("Show All", systemImage: "line.horizontal.3.decrease.circle")
+            }
         } label: {
             Label(
                 "Selected sorting by \(postSortType.description)",
                 systemImage: postSortType.iconName
+            )
+        }
+        .sheet(isPresented: $showingSortMenu) {
+            PostSortView(
+                isPresented: $showingSortMenu,
+                selected: $postSortType,
+                showReadPosts: $showReadPosts,
+                presentationDetent: .large,
+                detents: [.large]
             )
         }
     }

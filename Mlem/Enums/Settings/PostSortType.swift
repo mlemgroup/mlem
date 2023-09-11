@@ -65,6 +65,39 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         }
     }
     
+    var switcherLabel: String {
+        switch self {
+        case .newComments:
+            return "New"
+        case .mostComments:
+            return "Most"
+        case .topHour:
+            return "Hour"
+        case .topSixHour:
+            return "Hours"
+        case .topTwelveHour:
+            return "12 Hours"
+        case .topDay:
+            return "Day"
+        case .topWeek:
+            return "Week"
+        case .topMonth:
+            return "Month"
+        case .topThreeMonth:
+            return "Months"
+        case .topSixMonth:
+            return "Months"
+        case .topNineMonth:
+            return "Months"
+        case .topYear:
+            return "Year"
+        case .topAll:
+            return "All Time"
+        default:
+            return rawValue
+        }
+    }
+    
     var minimumVersion: APISiteVersion {
         switch self {
         case .topThreeMonth, .topSixMonth, .topNineMonth:
@@ -83,27 +116,27 @@ extension PostSortType: SettingsOptions {
         case .mostComments:
             return "Most"
         case .topHour:
-            return "Hour"
+            return "Top • Hour"
         case .topSixHour:
-            return "6 Hours"
+            return "Top • 6 Hours"
         case .topTwelveHour:
-            return "12 Hours"
+            return "Top • 12 Hours"
         case .topDay:
-            return "Day"
+            return "Top • Day"
         case .topWeek:
-            return "Week"
+            return "Top • Week"
         case .topMonth:
-            return "Month"
+            return "Top • Month"
         case .topThreeMonth:
-            return "3 Months"
+            return "Top • 3 Months"
         case .topSixMonth:
-            return "6 Months"
+            return "Top • 6 Months"
         case .topNineMonth:
-            return "9 Months"
+            return "Top • 9 Months"
         case .topYear:
-            return "Year"
+            return "Top • Year"
         case .topAll:
-            return "All Time"
+            return "Top • All Time"
         default:
             return rawValue
         }

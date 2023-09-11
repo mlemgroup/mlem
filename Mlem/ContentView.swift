@@ -46,6 +46,7 @@ struct ContentView: View {
                             symbolName: "scroll",
                             activeSymbolName: "scroll.fill"
                         )
+                        .simultaneousGesture(feedLongPress)
                     }
                 InboxView()
                     .fancyTabItem(tag: TabSelection.inbox) {
@@ -158,6 +159,17 @@ struct ContentView: View {
         if !homeButtonExists {
             isPresentingAccountSwitcher = true
         }
+    }
+    
+    var feedLongPress: some Gesture {
+        LongPressGesture()
+            .onEnded { _ in
+                // disable long press in accessibility mode to prevent conflict with HUD
+                if !accessibilityFont {
+                    hapticManager.play(haptic: .rigidInfo, priority: .high)
+                    isPresentingAccountSwitcher = true
+                }
+            }
     }
     
     var accountSwitchLongPress: some Gesture {
