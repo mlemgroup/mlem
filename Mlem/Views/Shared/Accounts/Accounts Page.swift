@@ -25,14 +25,14 @@ struct AccountsPage: View {
         let instances = Array(accountsTracker.accountsByInstance.keys).sorted()
         
         Group {
-            if instances.isEmpty || isShowingInstanceAdditionSheet {
+            if instances.isEmpty {
                 AddSavedInstanceView(onboarding: false)
             } else {
                 List {
                     ForEach(instances, id: \.self) { instance in
                         Section(header: Text(instance)) {
                             ForEach(accountsTracker.accountsByInstance[instance] ?? []) { account in
-                                Button(account.username) {
+                                Button(account.nickname) {
                                     dismiss()
                                     setFlow(using: account)
                                 }
@@ -95,7 +95,7 @@ struct AccountsPage: View {
     
     private func setFlow(using account: SavedAccount?) {
         // this tiny delay prevents the modal dismiss animation from being cancelled
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
             if let account {
                 setFlow(.account(account))
                 return

@@ -30,9 +30,9 @@ struct InstancePickerView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                Text("Instances")
-                    .bold()
-                    .padding()
+                // Text("Instances")
+                // .bold()
+                // .padding()
                 
                 if onboarding {
                     Text(pickInstance)
@@ -58,6 +58,7 @@ struct InstancePickerView: View {
                 }
             }
         }
+        .navigationTitle("Instances")
         .task {
             instances = await loadInstances()
         }

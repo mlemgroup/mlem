@@ -56,9 +56,7 @@ struct Window: View {
     private var content: some View {
         switch flow {
         case .onboarding:
-            NavigationStack {
-                OnboardingView(flow: $flow)
-            }
+            LandingPage()
         case let .account(account):
             view(for: account)
         }
