@@ -32,7 +32,6 @@ struct ContentView: View {
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
@@ -43,8 +42,7 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
                             tag: TabSelection.feeds,
-                            symbolName: "scroll",
-                            activeSymbolName: "scroll.fill"
+                            symbolConfiguration: .feed
                         )
                     }
                 
@@ -56,8 +54,7 @@ struct ContentView: View {
                         .fancyTabItem(tag: TabSelection.inbox) {
                             FancyTabBarLabel(
                                 tag: TabSelection.inbox,
-                                symbolName: "mail.stack",
-                                activeSymbolName: "mail.stack.fill",
+                                symbolConfiguration: .inbox,
                                 badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
                             )
                         }
@@ -66,9 +63,12 @@ struct ContentView: View {
                         .fancyTabItem(tag: TabSelection.profile) {
                             FancyTabBarLabel(
                                 tag: TabSelection.profile,
-                                customText: computeUsername(account: account),
-                                symbolName: "person.circle",
-                                activeSymbolName: "person.circle.fill"
+                                customText: appState.tabDisplayName,
+                                symbolConfiguration: .init(
+                                    symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                                    activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                                    remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                                )
                             )
                             .simultaneousGesture(accountSwitchLongPress)
                         }
@@ -78,8 +78,7 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.search) {
                         FancyTabBarLabel(
                             tag: TabSelection.search,
-                            symbolName: "magnifyingglass",
-                            activeSymbolName: "text.magnifyingglass"
+                            symbolConfiguration: .search
                         )
                     }
                 
@@ -87,7 +86,7 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.settings) {
                         FancyTabBarLabel(
                             tag: TabSelection.settings,
-                            symbolName: "gear"
+                            symbolConfiguration: .settings
                         )
                     }
             }
@@ -149,15 +148,6 @@ struct ContentView: View {
             } catch {
                 errorHandler.handle(error)
             }
-        }
-    }
-    
-    func computeUsername(account: SavedAccount) -> String {
-        switch profileTabLabel {
-        case .username: return account.username
-        case .instance: return account.hostName ?? account.username
-        case .nickname: return appState.currentNickname ?? account.username
-        case .anonymous: return "Profile"
         }
     }
     

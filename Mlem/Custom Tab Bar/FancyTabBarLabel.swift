@@ -9,14 +9,25 @@ import Foundation
 import SwiftUI
 
 struct FancyTabBarLabel: View {
+    struct SymbolConfiguration {
+        let symbol: String
+        let activeSymbol: String
+        let remoteSymbolUrl: URL?
+        
+        static var feed: Self { .init(symbol: "scroll", activeSymbol: "scroll.fill", remoteSymbolUrl: nil) }
+        static var inbox: Self { .init(symbol: "mail.stack", activeSymbol: "mail.stack.fill", remoteSymbolUrl: nil) }
+        static var profile: Self { .init(symbol: "person.circle", activeSymbol: "person.circle.fill", remoteSymbolUrl: nil) }
+        static var search: Self { .init(symbol: "magnifyingglass", activeSymbol: "text.magnifyingglass", remoteSymbolUrl: nil) }
+        static var settings: Self { .init(symbol: "gear", activeSymbol: "gear", remoteSymbolUrl: nil) }
+    }
+    
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @AppStorage("showTabNames") var showTabNames: Bool = true
     
     let tabIconSize: CGFloat = 24
     
     let tagHash: Int
-    let symbolName: String?
-    let activeSymbolName: String?
+    let symbolConfiguration: SymbolConfiguration
     let labelText: String?
     let color: Color
     let activeColor: Color
@@ -37,15 +48,13 @@ struct FancyTabBarLabel: View {
     init(
         tag: any FancyTabBarSelection,
         customText: String? = nil,
-        symbolName: String? = nil,
-        activeSymbolName: String? = nil,
+        symbolConfiguration: SymbolConfiguration,
         customColor: Color = Color.primary,
         activeColor: Color = .accentColor,
         badgeCount: Int? = nil
     ) {
         self.tagHash = tag.hashValue
-        self.symbolName = symbolName
-        self.activeSymbolName = activeSymbolName
+        self.symbolConfiguration = symbolConfiguration
         self.labelText = customText ?? tag.labelText
         self.color = customColor
         self.activeColor = activeColor
@@ -66,10 +75,26 @@ struct FancyTabBarLabel: View {
             .animation(.linear(duration: 0.1), value: active)
     }
     
+    @ViewBuilder
     var labelDisplay: some View {
         VStack(spacing: 4) {
-            if let symbolName {
-                Image(systemName: active ? activeSymbolName ?? symbolName : symbolName)
+            if let remoteSymbolUrl = symbolConfiguration.remoteSymbolUrl {
+                CachedImage(
+                    url: remoteSymbolUrl,
+                    shouldExpand: false,
+                    fixedSize: .init(width: tabIconSize, height: tabIconSize),
+                    imageNotFound: { defaultTabIcon(for: symbolConfiguration) },
+                    errorBackgroundColor: .clear,
+                    contentMode: .fill
+                )
+                .frame(width: tabIconSize, height: tabIconSize)
+                .clipShape(Circle())
+                .overlay(Circle()
+                    .stroke(.gray.opacity(0.3), lineWidth: 1))
+                .opacity(active ? 1 : 0.7)
+                .accessibilityHidden(true)
+            } else {
+                Image(systemName: active ? symbolConfiguration.activeSymbol : symbolConfiguration.symbol)
                     .resizable()
                     .scaledToFit()
                     .frame(width: tabIconSize, height: tabIconSize)
@@ -80,5 +105,13 @@ struct FancyTabBarLabel: View {
                     .font(.system(size: 10))
             }
         }
+    }
+    
+    private func defaultTabIcon(for configuration: SymbolConfiguration) -> AnyView {
+        AnyView(Image(systemName: active ? configuration.activeSymbol : configuration.symbol)
+            .resizable()
+            .scaledToFill()
+            .frame(width: tabIconSize, height: tabIconSize)
+        )
     }
 }
