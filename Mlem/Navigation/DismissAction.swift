@@ -8,10 +8,12 @@
 import Foundation
 import SwiftUI
 
+// MARK: - Navigation
 final class Navigation: ObservableObject {
     var dismiss: DismissAction?
 }
 
+// MARK: - Hoist dismiss action
 extension View {
     
     func hoistNavigation(dismiss: DismissAction) -> some View {
@@ -30,6 +32,32 @@ struct NavigationDismissHoisting: ViewModifier {
         content.onAppear {
             print("onAppear: navigate dismiss")
             navigation.dismiss = dismiss
+        }
+    }
+}
+
+// MARK: - Enable tab bar navigation
+extension View {
+    
+    /// Unconditionally enable tab bar navigation.
+    func tabBarNavigationEnabled(_ tab: TabSelection, _ navigator: Navigation) -> some View {
+        modifier(PerformTabBarNavigation(tab: tab, navigator: navigator))
+    }
+}
+
+struct PerformTabBarNavigation: ViewModifier {
+    
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+
+    let tab: TabSelection
+    let navigator: Navigation
+    
+    func body(content: Content) -> some View {
+        content.onChange(of: selectedNavigationTabHashValue) { newValue in
+            if newValue == tab.hashValue {
+                print("perform tab navigation on \(tab) tab")
+                navigator.dismiss?()
+            }
         }
     }
 }
