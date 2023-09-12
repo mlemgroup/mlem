@@ -25,6 +25,7 @@ struct FeedView: View {
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     @EnvironmentObject var appState: AppState
@@ -106,7 +107,7 @@ struct FeedView: View {
             .hoistNavigation(
                 dismiss: dismiss,
                 auxiliaryAction: {
-                    if scrollToTopAppeared == false {
+                    if navigationPath.isEmpty, scrollToTopAppeared == false {
                         print("scroll to top")
                         withAnimation {
                             scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)

@@ -65,6 +65,7 @@ struct FeedRoot: View {
             }
             .environment(\.scrollViewProxy, proxy)
         }
+        .environment(\.navigationPathWithRoutes, $feedRouter.path)
         .environmentObject(navigation)
         .handleLemmyLinkResolution(
             navigationPath: .constant(feedRouter)
