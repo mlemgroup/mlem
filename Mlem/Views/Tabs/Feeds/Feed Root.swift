@@ -7,17 +7,6 @@
 
 import SwiftUI
 
-private struct ScrollViewReaderProxy: EnvironmentKey {
-    static let defaultValue: ScrollViewProxy? = nil
-}
-
-extension EnvironmentValues {
-    var scrollViewProxy: ScrollViewProxy? {
-        get { self[ScrollViewReaderProxy.self] }
-        set { self[ScrollViewReaderProxy.self] = newValue }
-    }
-}
-
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.scenePhase) var phase
