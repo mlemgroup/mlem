@@ -17,6 +17,7 @@ struct FeedRoot: View {
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @StateObject private var feedRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
     
@@ -25,9 +26,10 @@ struct FeedRoot: View {
     var body: some View {
         NavigationSplitView {
             CommunityListView(selectedCommunity: $rootDetails)
+                .id(appState.currentActiveAccount.id)
         } detail: {
-            if let rootDetails {
-                NavigationStack(path: $feedRouter.path) {
+            NavigationStack(path: $feedRouter.path) {
+                if let rootDetails {
                     FeedView(
                         community: rootDetails.community,
                         feedType: rootDetails.feedType,
@@ -35,13 +37,15 @@ struct FeedRoot: View {
                         showLoading: showLoading
                     )
                     .environmentObject(appState)
+                    .tabBarNavigationEnabled(.feeds, navigation)
                     .handleLemmyViews()
+                } else {
+                    Text("Please select a community")
                 }
-                .id(rootDetails.id)
-            } else {
-                Text("Please select a community")
             }
+            .id((rootDetails?.id ?? 0) + appState.currentActiveAccount.id)
         }
+        .environmentObject(navigation)
         .handleLemmyLinkResolution(
             navigationPath: .constant(feedRouter)
         )
