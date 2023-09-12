@@ -49,6 +49,8 @@ struct ExpandedPost: View {
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
 
+    @Environment(\.dismiss) private var dismiss
+
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -74,6 +76,7 @@ struct ExpandedPost: View {
         contentView
             .environmentObject(commentTracker)
             .navigationBarTitle(post.community.name, displayMode: .inline)
+            .hoistNavigation(dismiss: dismiss)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }

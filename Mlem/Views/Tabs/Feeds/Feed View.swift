@@ -24,6 +24,8 @@ struct FeedView: View {
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
+    @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var editorTracker: EditorTracker
@@ -91,6 +93,7 @@ struct FeedView: View {
             .navigationBarTitleDisplayMode(.inline)
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
+            .hoistNavigation(dismiss: dismiss)
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }

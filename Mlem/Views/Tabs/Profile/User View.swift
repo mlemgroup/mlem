@@ -24,6 +24,7 @@ struct UserView: View {
     let internetSpeed: InternetSpeed
     
     // environment
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var appState: AppState
     
     // parameters
@@ -62,8 +63,10 @@ struct UserView: View {
         if let errorDetails {
             ErrorView(errorDetails)
                 .fancyTabScrollCompatible()
+                .hoistNavigation(dismiss: dismiss)
         } else {
             contentView
+                .hoistNavigation(dismiss: dismiss)
                 .sheet(isPresented: $isPresentingAccountSwitcher) {
                     AccountsPage()
                 }

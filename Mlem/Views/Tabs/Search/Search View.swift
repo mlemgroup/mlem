@@ -31,18 +31,21 @@ struct SearchView: View {
     @State private var hasMorePages: Bool = true
     
     @StateObject private var searchRouter: NavigationRouter<NavigationRoute> = .init()
-    
+    @StateObject private var navigation: Navigation = .init()
+
     // constants
     private let searchPageSize = 50
 
     var body: some View {
         NavigationStack(path: $searchRouter.path) {
             content
+                .tabBarNavigationEnabled(.search, navigation)
                 .handleLemmyViews()
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarColor()
                 .navigationTitle("Search")
         }
+        .environmentObject(navigation)
         .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
         .autocorrectionDisabled(true)

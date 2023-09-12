@@ -18,12 +18,15 @@ struct ProfileView: View {
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
     @StateObject private var profileRouter: NavigationRouter<NavigationRoute> = .init()
-    
+    @StateObject private var navigation: Navigation = .init()
+
     var body: some View {
         NavigationStack(path: $profileRouter.path) {
             UserView(userID: userID)
                 .handleLemmyViews()
+                .tabBarNavigationEnabled(.profile, navigation)
         }
+        .environmentObject(navigation)
         .handleLemmyLinkResolution(navigationPath: .constant(profileRouter))
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.profile.hashValue {
