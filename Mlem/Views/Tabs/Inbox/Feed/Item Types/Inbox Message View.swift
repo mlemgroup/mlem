@@ -36,7 +36,7 @@ struct InboxMessageView: View {
                     .font(.subheadline)
             }
             
-            UserProfileLink(
+            UserLinkView(
                 user: message.creator,
                 serverInstanceLocation: .bottom,
                 overrideShowAvatar: true

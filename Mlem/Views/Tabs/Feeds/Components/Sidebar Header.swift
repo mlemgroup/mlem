@@ -39,7 +39,7 @@ struct CommunitySidebarHeader: View {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         CommunitySidebarHeaderAvatar(
-                            shouldClipAvatar: shouldClipAvatar(url: avatarUrl),
+                            shouldClipAvatar: AvatarView.shouldClipCommunityAvatar(url: avatarUrl),
                             imageUrl: avatarUrl
                         )
                         
