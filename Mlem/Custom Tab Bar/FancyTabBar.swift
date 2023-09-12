@@ -16,7 +16,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
     @Binding private var selection: Selection
     /// Keeps track of tab "re-selected" state.
-    @Binding private var navigationSelection: NavigationSelection
+    @State private var navigationSelection: NavigationSelection
     @State private var __tempNavigationSelection: Int = -1
     /// We only toggle this to trigger an `onChange` event.
     @State private var __navigationSelectionSignal: Bool = false
@@ -30,12 +30,11 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     
     init(
         selection: Binding<Selection>,
-        navigationSelection: Binding<NavigationSelection>,
         dragUpGestureCallback: (() -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._selection = selection
-        self._navigationSelection = navigationSelection
+        self._navigationSelection = .init(wrappedValue: selection.wrappedValue)
         self.content = content
         self.dragUpGestureCallback = dragUpGestureCallback
     }
