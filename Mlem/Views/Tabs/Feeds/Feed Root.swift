@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+private struct ScrollViewReaderProxy: EnvironmentKey {
+    static let defaultValue: ScrollViewProxy? = nil
+}
+
+extension EnvironmentValues {
+    var scrollViewProxy: ScrollViewProxy? {
+        get { self[ScrollViewReaderProxy.self] }
+        set { self[ScrollViewReaderProxy.self] = newValue }
+    }
+}
+
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.scenePhase) var phase
@@ -64,6 +75,7 @@ struct FeedRoot: View {
         )
         .environmentObject(feedRouter)
         .environmentObject(appState)
+        .environment(\.navigationPathWithRoutes, $feedRouter.path)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:

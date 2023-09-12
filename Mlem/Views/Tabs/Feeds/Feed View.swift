@@ -105,6 +105,12 @@ struct FeedView: View {
         confirmationMenuFunction = destructiveFunction
         isPresentingConfirmDestructive = true
     }
+
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+    private var scrollToTopId: Int? {
+        postTracker.items.first?.id
+    }
     
     // MARK: - Main Views
     
@@ -344,6 +350,21 @@ struct FeedView: View {
                 // this disables the implicit animation on the header view...
                 .transaction { $0.animation = nil }
             }
+        }
+    }
+    
+    @ViewBuilder
+    private var scrollToView: some View {
+        HStack(spacing: 0) {
+            EmptyView()
+        }
+        .frame(height: 1)
+        .id(scrollToTop)
+        .onAppear {
+            scrollToTopAppeared = true
+        }
+        .onDisappear {
+            scrollToTopAppeared = false
         }
     }
 }
