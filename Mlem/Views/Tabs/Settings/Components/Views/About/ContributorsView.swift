@@ -31,6 +31,7 @@ struct DeveloperView: View {
 }
 
 struct ContributorsView: View {
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         List {
             Section("Development Team") {
@@ -73,5 +74,6 @@ struct ContributorsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Contributors")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

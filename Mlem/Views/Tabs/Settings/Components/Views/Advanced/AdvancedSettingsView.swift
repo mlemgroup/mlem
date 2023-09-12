@@ -11,6 +11,8 @@ import SwiftUI
 struct AdvancedSettingsView: View {
     @AppStorage("developerMode") var developerMode: Bool = false
     
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var diskUsage: Int64 = 0
     
     var body: some View {
@@ -53,5 +55,6 @@ struct AdvancedSettingsView: View {
         }
         .navigationTitle("Advanced")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

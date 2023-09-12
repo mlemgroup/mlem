@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 struct PostSettingsView: View {
+    
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = .headline
@@ -180,5 +182,6 @@ struct PostSettingsView: View {
         .navigationTitle("Posts")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation(dismiss: dismiss)
     }
 }

@@ -25,6 +25,7 @@ struct GeneralSettingsView: View {
     @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = false
 
     @EnvironmentObject var appState: AppState
+    @Environment(\.dismiss) private var dismiss
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
 
@@ -158,5 +159,6 @@ struct GeneralSettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("General")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

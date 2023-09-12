@@ -24,6 +24,8 @@ let iconFinder = Regex {
 // struct AlternativeIcons: View {
 struct IconSettingsView: View {
     @State var currentIcon: String? = UIApplication.shared.alternateIconName
+    
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var easterTracker: EasterFlagsTracker
 
     var body: some View {
@@ -33,6 +35,7 @@ struct IconSettingsView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .hoistNavigation(dismiss: dismiss)
     }
 
     func getAllIcons() -> [AlternativeIcon] {

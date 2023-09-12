@@ -10,6 +10,8 @@ import SwiftUI
 struct AppearanceSettingsView: View {
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         List {
             Section {
@@ -71,5 +73,6 @@ struct AppearanceSettingsView: View {
         .navigationTitle("Appearance")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation(dismiss: dismiss)
     }
 }

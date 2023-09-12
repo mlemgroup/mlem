@@ -8,23 +8,31 @@
 import SwiftUI
 
 struct UserSettingsView: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
     var body: some View {
         Form {
-            SwitchableSettingsItem(
-                settingPictureSystemName: Icons.user,
-                settingName: "Show Avatars",
-                isTicked: $shouldShowUserAvatars
-            )
-            SwitchableSettingsItem(
-                settingPictureSystemName: Icons.banner,
-                settingName: "Show Banners",
-                isTicked: $shouldShowUserHeaders
-            )
+            Section {
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "person.circle.fill",
+                    settingName: "Show User Avatars",
+                    isTicked: $shouldShowUserAvatars
+                )
+
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "rectangle.grid.1x2",
+                    settingName: "Show User Banners",
+                    isTicked: $shouldShowUserHeaders
+                )
+            }
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Users")
+        .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

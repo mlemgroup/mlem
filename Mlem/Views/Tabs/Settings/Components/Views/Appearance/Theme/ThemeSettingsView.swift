@@ -56,6 +56,8 @@ struct ThemeLabel: View {
 struct ThemeSettingsView: View {
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         List {
             Picker("Appearance", selection: $lightOrDarkMode) {
@@ -72,5 +74,6 @@ struct ThemeSettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Theme")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

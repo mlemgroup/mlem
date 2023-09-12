@@ -14,6 +14,8 @@ struct AccessibilitySettingsView: View {
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
     
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var readBarThicknessSlider: CGFloat = 3.0
     
     var body: some View {
@@ -92,5 +94,6 @@ struct AccessibilitySettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Accessibility")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

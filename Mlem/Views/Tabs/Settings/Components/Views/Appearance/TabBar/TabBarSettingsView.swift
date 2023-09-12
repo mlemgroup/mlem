@@ -16,6 +16,8 @@ struct TabBarSettingsView: View {
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
         
+    @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var appState: AppState
     
     @State var textFieldEntry: String = ""
@@ -102,5 +104,6 @@ struct TabBarSettingsView: View {
             print("new nickname: \(nickname)")
             textFieldEntry = nickname
         }
+        .hoistNavigation(dismiss: dismiss)
     }
 }
