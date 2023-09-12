@@ -17,22 +17,16 @@ struct UserSettingsView: View {
     var body: some View {
         Form {
             Section {
-                SwitchableSettingsItem(
-                    settingPictureSystemName: "person.circle.fill",
-                    settingName: "Show User Avatars",
-                    isTicked: $shouldShowUserAvatars
-                )
-
-                SwitchableSettingsItem(
-                    settingPictureSystemName: "rectangle.grid.1x2",
-                    settingName: "Show User Banners",
-                    isTicked: $shouldShowUserHeaders
-                )
+                Toggle("Show Avatars", isOn: $shouldShowUserAvatars)
+            }
+            Section {
+                Toggle("Show Banners", isOn: $shouldShowUserHeaders)
+            } footer: {
+                Text("Show a user's banner on their profile.")
             }
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Users")
-        .navigationBarColor()
         .hoistNavigation(dismiss: dismiss)
     }
 }

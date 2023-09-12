@@ -394,7 +394,7 @@ struct UserViewPreview: PreviewProvider {
         ))
     }
     
-    static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
+    static func generateUserLinkView(name: String, userType: PreviewUserType) -> UserLinkView {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
         var postContext: PostModel?
@@ -409,7 +409,7 @@ struct UserViewPreview: PreviewProvider {
             postContext = generatePreviewPost(creator: previewUser)
         }
         
-        return UserProfileLink(
+        return UserLinkView(
             user: previewUser,
             serverInstanceLocation: .bottom,
             overrideShowAvatar: true,
