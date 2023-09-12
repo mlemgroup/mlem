@@ -9,6 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+// swiftlint:disable type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -24,8 +25,9 @@ struct FeedView: View {
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.scrollViewProxy) private var scrollViewProxy
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var editorTracker: EditorTracker
@@ -35,12 +37,14 @@ struct FeedView: View {
     let community: APICommunity?
     let showLoading: Bool
     @State var feedType: FeedType
+    @Binding var rootDetails: CommunityLinkWithContext?
     
     init(
         community: APICommunity?,
         feedType: FeedType,
         sortType: PostSortType,
-        showLoading: Bool = false
+        showLoading: Bool = false,
+        rootDetails: Binding<CommunityLinkWithContext?>? = nil
     ) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -56,6 +60,8 @@ struct FeedView: View {
             internetSpeed: internetSpeed,
             upvoteOnSave: upvoteOnSave
         ))
+        
+        self._rootDetails = rootDetails ?? .constant(nil)
     }
     
     // MARK: State
@@ -69,6 +75,12 @@ struct FeedView: View {
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+    private var scrollToTopId: Int? {
+        postTracker.items.first?.id
+    }
+    
     // MARK: - Main Views
     
     var body: some View {
@@ -81,13 +93,27 @@ struct FeedView: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
-            /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
+        /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
-            .hoistNavigation(dismiss: dismiss)
+            .hoistNavigation(
+                dismiss: dismiss,
+                auxiliaryAction: {
+                    if scrollToTopAppeared == false {
+                        print("scroll to top")
+                        withAnimation {
+                            scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)
+                        }
+                        return true
+                    } else {
+                        print("exhausted auxiliary actions")
+                        return false
+                    }
+                }
+            )
             .environmentObject(postTracker)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }
-            // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
+        // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
             .onChange(of: feedType) { _ in
                 Task(priority: .userInitiated) {
                     await hardRefreshFeed()
@@ -125,6 +151,8 @@ struct FeedView: View {
                 noPostsView()
             } else {
                 LazyVStack(spacing: 0) {
+                    scrollToView
+                    
                     // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
                     ForEach(postTracker.items, id: \.uid) { post in
                         feedPost(for: post)
@@ -270,4 +298,20 @@ struct FeedView: View {
             }
         }
     }
+    
+    @ViewBuilder
+    private var scrollToView: some View {
+        HStack(spacing: 0) {
+            EmptyView()
+        }
+        .frame(height: 1)
+        .id(scrollToTop)
+        .onAppear {
+            scrollToTopAppeared = true
+        }
+        .onDisappear {
+            scrollToTopAppeared = false
+        }
+    }
 }
+// swiftlint:enable type_body_length
