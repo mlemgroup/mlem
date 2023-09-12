@@ -30,7 +30,7 @@ struct NavigationDismissHoisting: ViewModifier {
     
     func body(content: Content) -> some View {
         content.onAppear {
-            print("onAppear: navigate dismiss")
+            print("hoist navigation dismiss action")
             navigation.dismiss = dismiss
         }
     }

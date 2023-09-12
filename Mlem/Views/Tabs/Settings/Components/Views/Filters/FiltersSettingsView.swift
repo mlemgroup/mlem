@@ -12,6 +12,7 @@ struct FiltersSettingsView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @EnvironmentObject var filtersTracker: FiltersTracker
+    @Environment(\.dismiss) private var dismiss
 
     @State private var newFilteredKeyword: String = ""
     @State private var isShowingKeywordImporter: Bool = false
@@ -155,6 +156,7 @@ struct FiltersSettingsView: View {
         .navigationTitle("Filters")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation(dismiss: dismiss)
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 EditButton()

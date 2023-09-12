@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LayoutWidgetEditView: View {
     @Environment(\.isPresented) var isPresented
+    @Environment(\.dismiss) private var dismiss
     
     var onSave: (_ widgets: [LayoutWidgetType]) -> Void
     
@@ -107,6 +108,7 @@ struct LayoutWidgetEditView: View {
         }
         .navigationTitle("Widgets")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
     
     var infoText: some View {

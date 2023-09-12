@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct UserSettingsView: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
@@ -30,5 +33,6 @@ struct UserSettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Users")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

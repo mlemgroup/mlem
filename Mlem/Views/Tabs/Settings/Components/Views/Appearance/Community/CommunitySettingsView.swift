@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct CommunitySettingsView: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
@@ -28,5 +31,6 @@ struct CommunitySettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Communities")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }

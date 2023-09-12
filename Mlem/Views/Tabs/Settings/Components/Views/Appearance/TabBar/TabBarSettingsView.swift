@@ -16,6 +16,8 @@ struct TabBarSettingsView: View {
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
         
+    @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var appState: AppState
     
     @State var textFieldEntry: String = ""
@@ -72,5 +74,6 @@ struct TabBarSettingsView: View {
             print("new nickname: \(nickname)")
             textFieldEntry = nickname
         }
+        .hoistNavigation(dismiss: dismiss)
     }
 }

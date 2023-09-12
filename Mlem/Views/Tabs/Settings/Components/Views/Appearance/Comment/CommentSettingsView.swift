@@ -24,6 +24,9 @@ enum JumpButtonLocation: String, SettingsOptions {
 }
 
 struct CommentSettingsView: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("compactComments") var compactComments: Bool = false
@@ -108,5 +111,6 @@ struct CommentSettingsView: View {
         .navigationTitle("Comments")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation(dismiss: dismiss)
     }
 }
