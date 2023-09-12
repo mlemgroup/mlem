@@ -37,13 +37,17 @@ struct InboxView: View {
     
     // MARK: Global
 
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
     
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
-
+    @Environment(\.dismiss) private var dismiss
+    
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     // MARK: Internal
@@ -118,27 +122,41 @@ struct InboxView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal)
             
-            ScrollView(showsIndicators: false) {
-                if errorOccurred {
-                    errorView()
-                } else {
-                    switch curTab {
-                    case .all:
-                        inboxFeedView()
-                    case .replies:
-                        repliesFeedView()
-                    case .mentions:
-                        mentionsFeedView()
-                    case .messages:
-                        messagesFeedView()
+            ScrollViewReader { proxy in
+                ScrollView(showsIndicators: false) {
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    
+                    if errorOccurred {
+                        errorView()
+                    } else {
+                        switch curTab {
+                        case .all:
+                            inboxFeedView()
+                        case .replies:
+                            repliesFeedView()
+                        case .mentions:
+                            mentionsFeedView()
+                        case .messages:
+                            messagesFeedView()
+                        }
                     }
                 }
-            }
-            .fancyTabScrollCompatible()
-            .refreshable {
-                Task(priority: .userInitiated) {
-                    await refreshFeed()
+                .fancyTabScrollCompatible()
+                .refreshable {
+                    Task(priority: .userInitiated) {
+                        await refreshFeed()
+                    }
                 }
+                .hoistNavigation(
+                    dismiss: dismiss,
+                    auxiliaryAction: {
+                        withAnimation {
+                            proxy.scrollTo(scrollToTop)
+                        }
+                        return true
+                    }
+                )
             }
         }
         // load view if empty or account has changed
