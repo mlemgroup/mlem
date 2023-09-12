@@ -9,7 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-// swiftlint:disable type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -151,7 +150,8 @@ struct FeedView: View {
                 noPostsView()
             } else {
                 LazyVStack(spacing: 0) {
-                    scrollToView
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
                     
                     // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
                     ForEach(postTracker.items, id: \.uid) { post in
@@ -298,20 +298,4 @@ struct FeedView: View {
             }
         }
     }
-    
-    @ViewBuilder
-    private var scrollToView: some View {
-        HStack(spacing: 0) {
-            EmptyView()
-        }
-        .frame(height: 1)
-        .id(scrollToTop)
-        .onAppear {
-            scrollToTopAppeared = true
-        }
-        .onDisappear {
-            scrollToTopAppeared = false
-        }
-    }
 }
-// swiftlint:enable type_body_length
