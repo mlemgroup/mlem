@@ -28,24 +28,22 @@ struct FeedRoot: View {
             CommunityListView(selectedCommunity: $rootDetails)
                 .id(appState.currentActiveAccount.id)
         } detail: {
-            if let rootDetails {
-                NavigationStack(path: $feedRouter.path) {
+            NavigationStack(path: $feedRouter.path) {
+                if let rootDetails {
                     FeedView(
                         community: rootDetails.community,
                         feedType: rootDetails.feedType,
                         sortType: defaultPostSorting,
                         showLoading: showLoading
                     )
-                    .environmentObject(navigation)
                     .environmentObject(appState)
                     .tabBarNavigationEnabled(.feeds, navigation)
                     .handleLemmyViews()
+                } else {
+                    Text("Please select a community")
                 }
-                .environmentObject(navigation)
-                .id(rootDetails.id + appState.currentActiveAccount.id)
-            } else {
-                Text("Please select a community")
             }
+            .id((rootDetails?.id ?? 0) + appState.currentActiveAccount.id)
         }
         .environmentObject(navigation)
         .handleLemmyLinkResolution(

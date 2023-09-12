@@ -55,8 +55,12 @@ struct PerformTabBarNavigation: ViewModifier {
     func body(content: Content) -> some View {
         content.onChange(of: selectedNavigationTabHashValue) { newValue in
             if newValue == tab.hashValue {
-                print("perform tab navigation on \(tab) tab")
-                navigator.dismiss?()
+                if let dismiss = navigator.dismiss {
+                    print("perform tab navigation on \(tab) tab")
+                    dismiss()
+                } else {
+                    print("attempted tab navigation -> dismiss action not found")
+                }
             }
         }
     }
