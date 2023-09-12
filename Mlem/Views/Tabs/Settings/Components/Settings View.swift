@@ -61,12 +61,7 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .onChange(of: selectedNavigationTabHashValue) { newValue in
-                    if newValue == TabSelection.settings.hashValue {
-                        print("re-selected \(TabSelection.settings) tab")
-                        navigation.dismiss?()
-                    }
-                }
+                .tabBarNavigationEnabled(.settings, navigation)
             }
             .environmentObject(settingsRouter)
             .fancyTabScrollCompatible()
