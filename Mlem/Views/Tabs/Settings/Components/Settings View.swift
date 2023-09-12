@@ -20,7 +20,7 @@ struct SettingsView: View {
     
     var body: some View {
         NavigationStack(path: $settingsRouter.path) {
-            ScrollViewReader { proxy in
+            ScrollViewReader { _ in
                 List {
                     Section {
                         NavigationLink(value: SettingsRoute.accountsPage) {
