@@ -10,14 +10,28 @@ import SwiftUI
 
 // MARK: - Navigation
 final class Navigation: ObservableObject {
+    
+    /// Return `true` to indicate that an auxiliary action was performed.
+    typealias AuxiliaryAction = () -> Bool
+    
+    /// Navigation always performs dismiss action (if available), but may perform an auxiliary action first.
     var dismiss: DismissAction?
+    var auxiliaryAction: AuxiliaryAction?
 }
 
 // MARK: - Hoist dismiss action
 extension View {
     
-    func hoistNavigation(dismiss: DismissAction) -> some View {
-        modifier(NavigationDismissHoisting(dismiss: dismiss))
+    func hoistNavigation(
+        dismiss: DismissAction,
+        auxiliaryAction: Navigation.AuxiliaryAction? = nil
+    ) -> some View {
+        modifier(
+            NavigationDismissHoisting(
+                dismiss: dismiss,
+                auxiliaryAction: auxiliaryAction
+            )
+        )
     }
 }
 
@@ -27,11 +41,13 @@ struct NavigationDismissHoisting: ViewModifier {
     
     /// - Note: Unfortunately, we can't access the dismiss action via View.environment...doing so causes SwiftUI to enter into infinite loop. [2023.09]
     let dismiss: DismissAction
+    let auxiliaryAction: Navigation.AuxiliaryAction?
     
     func body(content: Content) -> some View {
         content.onAppear {
             print("hoist navigation dismiss action")
             navigation.dismiss = dismiss
+            navigation.auxiliaryAction = auxiliaryAction
         }
     }
 }
@@ -55,11 +71,20 @@ struct PerformTabBarNavigation: ViewModifier {
     func body(content: Content) -> some View {
         content.onChange(of: selectedNavigationTabHashValue) { newValue in
             if newValue == tab.hashValue {
-                if let dismiss = navigator.dismiss {
+                if let auxiliaryAction = navigator.auxiliaryAction {
+                    let performed = auxiliaryAction()
+                    if !performed, let dismiss = navigator.dismiss {
+                        print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
+                        print("perform tab navigation on \(tab) tab")
+                        dismiss()
+                    } else {
+                        print("performed auxiliary action")
+                    }
+                } else if let dismiss = navigator.dismiss {
                     print("perform tab navigation on \(tab) tab")
                     dismiss()
                 } else {
-                    print("attempted tab navigation -> dismiss action not found")
+                    print("attempted tab navigation -> action(s) not found")
                 }
             }
         }

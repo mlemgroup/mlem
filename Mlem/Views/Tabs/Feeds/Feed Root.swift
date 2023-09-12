@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+private struct ScrollViewReaderProxy: EnvironmentKey {
+    static let defaultValue: ScrollViewProxy? = nil
+}
+
+extension EnvironmentValues {
+    var scrollViewProxy: ScrollViewProxy? {
+        get { self[ScrollViewReaderProxy.self] }
+        set { self[ScrollViewReaderProxy.self] = newValue }
+    }
+}
+
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.scenePhase) var phase
@@ -24,26 +35,30 @@ struct FeedRoot: View {
     let showLoading: Bool
 
     var body: some View {
-        NavigationSplitView {
-            CommunityListView(selectedCommunity: $rootDetails)
-                .id(appState.currentActiveAccount.id)
-        } detail: {
-            NavigationStack(path: $feedRouter.path) {
-                if let rootDetails {
-                    FeedView(
-                        community: rootDetails.community,
-                        feedType: rootDetails.feedType,
-                        sortType: defaultPostSorting,
-                        showLoading: showLoading
-                    )
-                    .environmentObject(appState)
-                    .tabBarNavigationEnabled(.feeds, navigation)
-                    .handleLemmyViews()
-                } else {
-                    Text("Please select a community")
+        ScrollViewReader { proxy in
+            NavigationSplitView {
+                CommunityListView(selectedCommunity: $rootDetails)
+                    .id(appState.currentActiveAccount.id)
+            } detail: {
+                NavigationStack(path: $feedRouter.path) {
+                    if let rootDetails {
+                        FeedView(
+                            community: rootDetails.community,
+                            feedType: rootDetails.feedType,
+                            sortType: defaultPostSorting,
+                            showLoading: showLoading,
+                            rootDetails: $rootDetails
+                        )
+                        .environmentObject(appState)
+                        .tabBarNavigationEnabled(.feeds, navigation)
+                        .handleLemmyViews()
+                    } else {
+                        Text("Please select a community")
+                    }
                 }
+                .id((rootDetails?.id ?? 0) + appState.currentActiveAccount.id)
+                .environment(\.scrollViewProxy, proxy)
             }
-            .id((rootDetails?.id ?? 0) + appState.currentActiveAccount.id)
         }
         .environmentObject(navigation)
         .handleLemmyLinkResolution(
@@ -51,6 +66,7 @@ struct FeedRoot: View {
         )
         .environmentObject(feedRouter)
         .environmentObject(appState)
+        .environment(\.navigationPathWithRoutes, $feedRouter.path)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:
