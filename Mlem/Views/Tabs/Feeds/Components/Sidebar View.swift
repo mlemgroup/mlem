@@ -12,6 +12,8 @@ struct CommunitySidebarView: View {
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.errorHandler) var errorHandler
     
+    @Environment(\.dismiss) private var dismiss
+    
     // parameters
     let community: APICommunity
     @State var communityDetails: GetCommunityResponse?
@@ -32,6 +34,7 @@ struct CommunitySidebarView: View {
         }
         .navigationTitle("Sidebar")
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation(dismiss: dismiss)
         .task(priority: .userInitiated) {
             // Load community details if they weren't provided
             // when we loaded

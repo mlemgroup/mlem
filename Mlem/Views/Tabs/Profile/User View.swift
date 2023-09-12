@@ -20,6 +20,7 @@ struct UserView: View {
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
     // environment
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var appState: AppState
     
     // parameters
@@ -56,8 +57,10 @@ struct UserView: View {
         if let errorDetails {
             ErrorView(errorDetails)
                 .fancyTabScrollCompatible()
+                .hoistNavigation(dismiss: dismiss)
         } else {
             contentView
+                .hoistNavigation(dismiss: dismiss)
                 .sheet(isPresented: $isPresentingAccountSwitcher) {
                     AccountsPage()
                 }

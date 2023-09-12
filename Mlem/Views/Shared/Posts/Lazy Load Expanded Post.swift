@@ -14,6 +14,8 @@ import SwiftUI
 struct LazyLoadExpandedPost: View {
     @Dependency(\.errorHandler) var errorHandler
     
+    @Environment(\.dismiss) private var dismiss
+    
     let post: APIPost
     let scrollTarget: Int?
     
@@ -38,6 +40,7 @@ struct LazyLoadExpandedPost: View {
                 progressView
             }
         }
+        .hoistNavigation(dismiss: dismiss)
     }
     
     private var progressView: some View {

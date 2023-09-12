@@ -11,6 +11,8 @@ import SwiftUI
  A view that displays the list of communities a user moderates
  */
 struct UserModeratorView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     // parameters
     var userDetails: APIPersonView
     var moderatedCommunities: [APICommunityModeratorView]
@@ -25,6 +27,7 @@ struct UserModeratorView: View {
         .navigationTitle("Moderator Details")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation(dismiss: dismiss)
         .headerProminence(.standard)
         .listStyle(.plain)
     }
