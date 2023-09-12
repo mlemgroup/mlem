@@ -25,7 +25,6 @@ struct FeedView: View {
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
-    @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     @EnvironmentObject var appState: AppState

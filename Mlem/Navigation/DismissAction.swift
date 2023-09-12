@@ -14,8 +14,13 @@ final class Navigation: ObservableObject {
     /// Return `true` to indicate that an auxiliary action was performed.
     typealias AuxiliaryAction = () -> Bool
     
-    /// Navigation always performs dismiss action (if available), but may perform an auxiliary action first.
+    /// Navigation always performs dismiss action (if available), but may choose to perform an auxiliary action first.
+    ///
+    /// This action includes support for popping back to sidebar view in a `NavigationSplitView`.
     var dismiss: DismissAction?
+    /// An auxiliary action may consist of multiple sub-actions: To do so, simply configure this action to return false once all sub-actions have been (or can no longer be) performed.
+    ///
+    /// - Warning: Navigation may skip this action, depending on user preference or other factors. Do not perform critical logic in this action.
     var auxiliaryAction: AuxiliaryAction?
 }
 
