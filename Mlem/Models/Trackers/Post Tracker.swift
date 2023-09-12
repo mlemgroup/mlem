@@ -118,12 +118,16 @@ class PostTracker: ObservableObject {
         
         page = 1
         
+        print("loading page \(page)")
+        
         let newPosts = try await postRepository.loadPage(
             communityId: communityId,
             page: page,
             sort: sort,
             type: feedType
         )
+        
+        print("found \(newPosts.count) posts")
         
         await reset(with: newPosts, filteredWith: filtering)
     }

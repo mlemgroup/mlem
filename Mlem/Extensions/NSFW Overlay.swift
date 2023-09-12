@@ -37,6 +37,7 @@ struct NSFWOverlay: ViewModifier {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.thinMaterial)
+            .cornerRadius(AppConstants.largeItemCornerRadius)
         } else if isNsfw, shouldBlurNsfw {
             Image(systemName: "eye.slash")
                 .foregroundColor(.white)
