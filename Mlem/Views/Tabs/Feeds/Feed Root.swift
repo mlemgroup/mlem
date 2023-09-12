@@ -35,6 +35,11 @@ struct FeedRoot: View {
     let showLoading: Bool
 
     var body: some View {
+        /*
+         Implementation Note:
+         - The conditional content in `detail` column must be inside the `NavigationStack`. To be clear, the root view for `detail` column must be `NavigationStack`, otherwise navigation may break in odd ways. [2023.09]
+         - For tab bar navigation (scroll to top) to work, ScrollViewReader must wrap the entire `NavigationSplitView`. Furthermore, the proxy must be passed into the environment on the split view. Attempting to do so on a column view doesn't work. [2023.09]
+         */
         ScrollViewReader { proxy in
             NavigationSplitView {
                 CommunityListView(selectedCommunity: $rootDetails)
@@ -57,8 +62,8 @@ struct FeedRoot: View {
                     }
                 }
                 .id((rootDetails?.id ?? 0) + appState.currentActiveAccount.id)
-                .environment(\.scrollViewProxy, proxy)
             }
+            .environment(\.scrollViewProxy, proxy)
         }
         .environmentObject(navigation)
         .handleLemmyLinkResolution(
@@ -66,7 +71,6 @@ struct FeedRoot: View {
         )
         .environmentObject(feedRouter)
         .environmentObject(appState)
-        .environment(\.navigationPathWithRoutes, $feedRouter.path)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:
