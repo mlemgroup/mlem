@@ -9,6 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+// swiftlint:disable type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -37,13 +38,16 @@ struct FeedView: View {
     let showLoading: Bool
     @State var feedType: FeedType
     @Binding var rootDetails: CommunityLinkWithContext?
+    /// Applicable when presented as root view in a column of NavigationSplitView.
+    @Binding var splitViewColumnVisibility: NavigationSplitViewVisibility
     
     init(
         community: APICommunity?,
         feedType: FeedType,
         sortType: PostSortType,
         showLoading: Bool = false,
-        rootDetails: Binding<CommunityLinkWithContext?>? = nil
+        rootDetails: Binding<CommunityLinkWithContext?>? = nil,
+        splitViewColumnVisibility: Binding<NavigationSplitViewVisibility>? = nil
     ) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -61,6 +65,7 @@ struct FeedView: View {
         ))
         
         self._rootDetails = rootDetails ?? .constant(nil)
+        self._splitViewColumnVisibility = splitViewColumnVisibility ?? .constant(.automatic)
     }
     
     // MARK: State
@@ -79,6 +84,8 @@ struct FeedView: View {
     private var scrollToTopId: Int? {
         postTracker.items.first?.id
     }
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     // MARK: - Main Views
     
@@ -105,8 +112,20 @@ struct FeedView: View {
                         }
                         return true
                     } else {
-                        print("exhausted auxiliary actions")
-                        return false
+                        if horizontalSizeClass == .regular {
+                            print("show/hide sidebar in regular size class")
+                            splitViewColumnVisibility = {
+                                if splitViewColumnVisibility == .all {
+                                    return .automatic
+                                } else {
+                                    return .all
+                                }
+                            }()
+                            return true
+                        } else {
+                            print("exhausted auxiliary actions")
+                            return false
+                        }
                     }
                 }
             )
@@ -300,3 +319,4 @@ struct FeedView: View {
         }
     }
 }
+// swiftlint:enable type_body_length
