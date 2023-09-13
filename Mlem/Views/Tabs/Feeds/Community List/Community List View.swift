@@ -17,23 +17,36 @@ struct CommunitySection: Identifiable {
 }
 
 struct CommunityListView: View {
+    
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+
+    @Namespace var scrollToTop
+    
     @StateObject private var model: CommunityListModel = .init()
+
+    /// Set to `false` on disappear.
+    @State private var appeared: Bool = false
+    
+    @State private var scrollToTopAppeared: Bool = false
     
     @Binding var selectedCommunity: CommunityLinkWithContext?
-    
+
     init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
         self._selectedCommunity = selectedCommunity
     }
-    
+
     // MARK: - Body
     
     var body: some View {
         ScrollViewReader { scrollProxy in
             HStack {
                 List(selection: $selectedCommunity) {
+                    ListScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    
                     HomepageFeedRowView(
                         feedType: .subscribed,
-                        iconName: Icons.subscribedFeedFill,
+                        iconName: AppConstants.subscribedFeedSymbolNameFill,
                         iconColor: .red,
                         description: "Subscribed communities from all servers",
                         navigationContext: .sidebar
@@ -41,39 +54,55 @@ struct CommunityListView: View {
                     .id("top") // For "scroll to top" sidebar item
                     HomepageFeedRowView(
                         feedType: .local,
-                        iconName: Icons.localFeedFill,
+                        iconName: AppConstants.localFeedSymbolNameFill,
                         iconColor: .green,
                         description: "Local communities from your server",
                         navigationContext: .sidebar
                     )
                     HomepageFeedRowView(
                         feedType: .all,
-                        iconName: Icons.federatedFeedFill,
+                        iconName: AppConstants.federatedFeedSymbolNameFill,
                         iconColor: .blue,
                         description: "All communities that federate with your server",
                         navigationContext: .sidebar
                     )
                     
-                    ForEach(model.visibleSections) { section in
-                        Section(header: headerView(for: section)) {
-                            ForEach(model.communities(for: section)) { community in
-                                CommuntiyFeedRowView(
-                                    community: community,
-                                    subscribed: model.isSubscribed(to: community),
-                                    communitySubscriptionChanged: model.updateSubscriptionStatus,
-                                    navigationContext: .sidebar
-                                )
+                        ForEach(model.visibleSections) { section in
+                            Section(header: headerView(for: section)) {
+                                ForEach(model.communities(for: section)) { community in
+                                    CommuntiyFeedRowView(
+                                        community: community,
+                                        subscribed: model.isSubscribed(to: community),
+                                        communitySubscriptionChanged: model.updateSubscriptionStatus,
+                                        navigationContext: .sidebar
+                                    )
+                                }
                             }
                         }
                     }
-                }
                 .fancyTabScrollCompatible()
                 .navigationTitle("Communities")
                 .navigationBarColor()
                 .listStyle(PlainListStyle())
                 .scrollIndicators(.hidden)
+                .onAppear {
+                    appeared = true
+                }
+                .onDisappear {
+                    appeared = false
+                }
                 
                 SectionIndexTitles(proxy: scrollProxy, communitySections: model.allSections())
+            }
+            .onChange(of: selectedNavigationTabHashValue) { newValue in
+                guard appeared else {
+                    return
+                }
+                if newValue == TabSelection.feeds.hashValue {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop, anchor: .bottom)
+                    }
+                }
             }
         }
         .refreshable {
