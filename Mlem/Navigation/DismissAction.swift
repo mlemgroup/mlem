@@ -76,22 +76,31 @@ struct PerformTabBarNavigation: ViewModifier {
     func body(content: Content) -> some View {
         content.onChange(of: selectedNavigationTabHashValue) { newValue in
             if newValue == tab.hashValue {
-                if let auxiliaryAction = navigator.auxiliaryAction {
-                    let performed = auxiliaryAction()
-                    if !performed, let dismiss = navigator.dismiss {
-                        print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
-                        print("perform tab navigation on \(tab) tab")
-                        dismiss()
-                    } else {
-                        print("performed auxiliary action")
-                    }
-                } else if let dismiss = navigator.dismiss {
-                    print("perform tab navigation on \(tab) tab")
-                    dismiss()
-                } else {
-                    print("attempted tab navigation -> action(s) not found")
-                }
+                /// Customization based  on user preference should occur here, for example:
+                // performSystemPopToRootBehaviour()
+                // noOp()
+                // performDimsissOnly()
+                performDismissAfterAuxiliary()
             }
+        }
+    }
+    
+    /// Runs all auxiliary actions before calling system dismiss action.
+    private func performDismissAfterAuxiliary() {
+        if let auxiliaryAction = navigator.auxiliaryAction {
+            let performed = auxiliaryAction()
+            if !performed, let dismiss = navigator.dismiss {
+                print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
+                print("perform tab navigation on \(tab) tab")
+                dismiss()
+            } else {
+                print("performed auxiliary action")
+            }
+        } else if let dismiss = navigator.dismiss {
+            print("perform tab navigation on \(tab) tab")
+            dismiss()
+        } else {
+            print("attempted tab navigation -> action(s) not found")
         }
     }
 }
