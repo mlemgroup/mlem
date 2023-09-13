@@ -26,9 +26,7 @@ struct CommunityListView: View {
 
     /// Set to `false` on disappear.
     @State private var appeared: Bool = false
-    
-    @State private var scrollToTopAppeared: Bool = false
-    
+        
     @Binding var selectedCommunity: CommunityLinkWithContext?
 
     init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
@@ -41,9 +39,6 @@ struct CommunityListView: View {
         ScrollViewReader { scrollProxy in
             HStack {
                 List(selection: $selectedCommunity) {
-                    ListScrollToView(appeared: $scrollToTopAppeared)
-                        .id(scrollToTop)
-                    
                     HomepageFeedRowView(
                         feedType: .subscribed,
                         iconName: AppConstants.subscribedFeedSymbolNameFill,
@@ -100,7 +95,7 @@ struct CommunityListView: View {
                 }
                 if newValue == TabSelection.feeds.hashValue {
                     withAnimation {
-                        scrollProxy.scrollTo(scrollToTop, anchor: .bottom)
+                        scrollProxy.scrollTo("top", anchor: .bottom)
                     }
                 }
             }
