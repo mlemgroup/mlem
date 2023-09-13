@@ -106,6 +106,7 @@ struct FeedView: View {
             .hoistNavigation(
                 dismiss: dismiss,
                 auxiliaryAction: {
+                    /// Need to check `scrollToTopAppeared` because we want to scroll to top before popping back to sidebar. [2023.09]
                     if navigationPath.isEmpty, scrollToTopAppeared == false {
                         print("scroll to top")
                         withAnimation {
