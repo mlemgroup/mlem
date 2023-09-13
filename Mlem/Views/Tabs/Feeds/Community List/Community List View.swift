@@ -18,7 +18,16 @@ struct CommunitySection: Identifiable {
 
 struct CommunityListView: View {
     
+    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+
+    @Namespace var scrollToTop
+    
     @StateObject private var model: CommunityListModel = .init()
+
+    /// Set to `false` on disappear.
+    @State private var appeared: Bool = false
+    
+    @State private var scrollToTopAppeared: Bool = false
     
     @Binding var selectedCommunity: CommunityLinkWithContext?
 
@@ -32,6 +41,9 @@ struct CommunityListView: View {
         ScrollViewReader { scrollProxy in
             HStack {
                 List(selection: $selectedCommunity) {
+                    ListScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    
                     HomepageFeedRowView(
                         feedType: .subscribed,
                         iconName: AppConstants.subscribedFeedSymbolNameFill,
@@ -73,8 +85,24 @@ struct CommunityListView: View {
                 .navigationBarColor()
                 .listStyle(PlainListStyle())
                 .scrollIndicators(.hidden)
-
+                .onAppear {
+                    appeared = true
+                }
+                .onDisappear {
+                    appeared = false
+                }
+                
                 SectionIndexTitles(proxy: scrollProxy, communitySections: model.allSections())
+            }
+            .onChange(of: selectedNavigationTabHashValue) { newValue in
+                guard appeared else {
+                    return
+                }
+                if newValue == TabSelection.feeds.hashValue {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop, anchor: .bottom)
+                    }
+                }
             }
         }
         .refreshable {
