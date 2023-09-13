@@ -16,12 +16,13 @@ struct SettingsView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
-
+    @Environment(\.dismiss) private var dismiss
+    
     @Namespace var scrollToTop
     
     var body: some View {
-        NavigationStack(path: $settingsRouter.path) {
-            ScrollViewReader { _ in
+        ScrollViewReader { proxy in
+            NavigationStack(path: $settingsRouter.path) {
                 List {
                     Section {
                         NavigationLink(value: SettingsRoute.accountsPage) {
@@ -62,20 +63,29 @@ struct SettingsView: View {
                     }
                 }
                 .tabBarNavigationEnabled(.settings, navigation)
+                .environmentObject(settingsRouter)
+                .fancyTabScrollCompatible()
+                .handleLemmyViews()
+                .navigationTitle("Settings")
+                .navigationBarColor()
+                .navigationBarTitleDisplayMode(.inline)
+                .useSettingsNavigationRouter()
+                .hoistNavigation(
+                    dismiss: dismiss,
+                    auxiliaryAction: {
+                        withAnimation {
+                            proxy.scrollTo(scrollToTop, anchor: .bottom)
+                        }
+                        return true
+                    }
+                )
             }
-            .environmentObject(settingsRouter)
-            .fancyTabScrollCompatible()
-            .handleLemmyViews()
-            .navigationTitle("Settings")
-            .navigationBarColor()
-            .navigationBarTitleDisplayMode(.inline)
-            .useSettingsNavigationRouter()
-        }
-        .environmentObject(navigation)
-        .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.settings.hashValue {
-                print("switched to Settings tab")
+            .environmentObject(navigation)
+            .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
+            .onChange(of: selectedTagHashValue) { newValue in
+                if newValue == TabSelection.settings.hashValue {
+                    print("switched to Settings tab")
+                }
             }
         }
     }
