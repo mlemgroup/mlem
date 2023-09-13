@@ -13,12 +13,15 @@ struct SearchView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
+    @Namespace var scrollToTop
+    
     // environment
     @EnvironmentObject var communitySearchResultsTracker: CommunitySearchResultsTracker
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
 
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+    @Environment(\.dismiss) private var dismiss
     
     // private state
     @State private var isSearching: Bool = false
@@ -29,6 +32,8 @@ struct SearchView: View {
     
     @State private var searchPage: Int = 1
     @State private var hasMorePages: Bool = true
+    
+    @State private var scrollToTopAppeared = false
     
     @StateObject private var searchRouter: NavigationRouter<NavigationRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
@@ -76,29 +81,44 @@ struct SearchView: View {
     
     @ViewBuilder
     private var recentSearches: some View {
-        List {
-            Section {
-                ForEach(recentSearchesTracker.recentSearches, id: \.self) { recentlySearchedText in
-                    Button(recentlySearchedText) {
-                        searchText = recentlySearchedText
-                        performSearch()
+        ScrollViewReader { proxy in
+            List {
+                ListScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+                
+                Section {
+                    ForEach(recentSearchesTracker.recentSearches, id: \.self) { recentlySearchedText in
+                        Button(recentlySearchedText) {
+                            searchText = recentlySearchedText
+                            performSearch()
+                        }
+                    }
+                } header: {
+                    Text(recentSearchesTracker.recentSearches.isEmpty ? "No recent searches" : "Recent searches")
+                }
+                
+                Button(role: .destructive) {
+                    recentSearchesTracker.clearRecentSearches()
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("Clear recent searches")
+                            .foregroundColor(.red)
+                        Spacer()
                     }
                 }
-            } header: {
-                Text(recentSearchesTracker.recentSearches.isEmpty ? "No recent searches" : "Recent searches")
             }
-            
-            Button(role: .destructive) {
-                recentSearchesTracker.clearRecentSearches()
-            } label: {
-                HStack {
-                    Spacer()
-                    Text("Clear recent searches")
-                        .foregroundColor(.red)
-                    Spacer()
+            .listStyle(.insetGrouped)
+            .hoistNavigation(
+                dismiss: dismiss,
+                auxiliaryAction: {
+                    withAnimation {
+                        proxy.scrollTo(scrollToTop, anchor: .bottom)
+                    }
+                    return true
                 }
-            }
-        }.listStyle(.insetGrouped)
+            )
+        }
     }
     
     @ViewBuilder
@@ -108,28 +128,42 @@ struct SearchView: View {
         } else if communitySearchResultsTracker.foundCommunities.isEmpty {
             Text("No communities found for search")
         } else {
-            List {
-                ForEach(communitySearchResultsTracker.foundCommunities) { community in
-                    CommunityLinkView(
-                        community: community.community,
-                        extraText: "\(community.counts.subscribers.roundedWithAbbreviations) subscribers"
-                    )
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .onAppear {
-                        let communityIndex = communitySearchResultsTracker.foundCommunities.firstIndex(of: community)
-                        if let index = communityIndex {
-                            // If we are half a page from the end, ask for more
-                            let distanceFromEnd = communitySearchResultsTracker.foundCommunities.count - index
-                            if distanceFromEnd == searchPageSize / 2 {
-                                if hasMorePages {
-                                    performSearch()
+            ScrollViewReader { proxy in
+                List {
+                    ListScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    
+                    ForEach(communitySearchResultsTracker.foundCommunities) { community in
+                        CommunityLinkView(
+                            community: community.community,
+                            extraText: "\(community.counts.subscribers.roundedWithAbbreviations) subscribers"
+                        )
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .onAppear {
+                            let communityIndex = communitySearchResultsTracker.foundCommunities.firstIndex(of: community)
+                            if let index = communityIndex {
+                                // If we are half a page from the end, ask for more
+                                let distanceFromEnd = communitySearchResultsTracker.foundCommunities.count - index
+                                if distanceFromEnd == searchPageSize / 2 {
+                                    if hasMorePages {
+                                        performSearch()
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                .fancyTabScrollCompatible()
+                .hoistNavigation(
+                    dismiss: dismiss,
+                    auxiliaryAction: {
+                        withAnimation {
+                            proxy.scrollTo(scrollToTop, anchor: .bottom)
+                        }
+                        return true
+                    }
+                )
             }
-            .fancyTabScrollCompatible()
         }
     }
     
