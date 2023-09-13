@@ -20,9 +20,9 @@ struct Window: View {
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
-    @StateObject var appState: AppState = .init()
     /// This is only here so that sheet views that double as navigation views don't crash when they expect a navigation object. [2023.09]
     @StateObject private var navigation: Navigation = .init()
+    @StateObject var appState: AppState = .init()
 
     @State var flow: AppFlow
 
