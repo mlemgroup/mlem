@@ -151,7 +151,6 @@ struct PostSortPickerView: View {
         .shadow(color: (stage != .root) && (stage == selectionStage) ? .black.opacity(0.05) : .clear, radius: 5, x: 5, y: 5)
         .animation(.easeOut(duration: 0.2), value: tempSelected)
         .animation(.easeOut(duration: 0.2), value: selectionStage)
-        .accessibilityHint("Double-tap to select")
         .accessibilityHidden(isDisabled)
     }
     
@@ -169,7 +168,6 @@ struct PostSortPickerView: View {
         .disabled(selectionStage != .root)
         .animation(.easeOut(duration: 0.2), value: tempSelected)
         .animation(.easeOut(duration: 0.2), value: selectionStage)
-        .accessibilityHint("Double-tap to expand")
         .accessibilityHidden(selectionStage != .root)
     }
 }
