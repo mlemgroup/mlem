@@ -11,14 +11,16 @@ struct CommunitySettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Toggle("Show Avatars", isOn: $shouldShowCommunityIcons)
-            }
-            Section {
-                Toggle("Show Banners", isOn: $shouldShowCommunityHeaders)
-            } footer: {
-                Text("The community banner is shown in the community sidebar menu.")
-            }
+            SwitchableSettingsItem(
+                settingPictureSystemName: AppConstants.communitySymbolName,
+                settingName: "Show Avatars",
+                isTicked: $shouldShowCommunityIcons
+            )
+            SwitchableSettingsItem(
+                settingPictureSystemName: AppConstants.bannerSymbolName,
+                settingName: "Show Banners",
+                isTicked: $shouldShowCommunityHeaders
+            )
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Communities")

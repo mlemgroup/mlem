@@ -13,14 +13,16 @@ struct UserSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Toggle("Show Avatars", isOn: $shouldShowUserAvatars)
-            }
-            Section {
-                Toggle("Show Banners", isOn: $shouldShowUserHeaders)
-            } footer: {
-                Text("Show a user's banner on their profile.")
-            }
+            SwitchableSettingsItem(
+                settingPictureSystemName: AppConstants.userSymbolName,
+                settingName: "Show Avatars",
+                isTicked: $shouldShowUserAvatars
+            )
+            SwitchableSettingsItem(
+                settingPictureSystemName: AppConstants.bannerSymbolName,
+                settingName: "Show Banners",
+                isTicked: $shouldShowUserHeaders
+            )
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Users")

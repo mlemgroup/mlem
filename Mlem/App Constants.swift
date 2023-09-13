@@ -25,7 +25,8 @@ struct AppConstants {
     static let keychain: Keychain = .init(service: "com.hanners.Mlem-keychain")
     
     // MARK: - Text Fields
-    static let textFieldVariableLineLimit: ClosedRange<Int> = 1...10
+
+    static let textFieldVariableLineLimit: ClosedRange<Int> = 1 ... 10
     
     // MARK: - Sizes
 
@@ -147,6 +148,10 @@ struct AppConstants {
     static let transparencySymbolName: String = "square.on.square.intersection.dashed"
     static let presentSymbolName: String = "circle.fill"
     static let absentSymbolName: String = "circle"
+    static let iconSymbolName: String = "fleuron"
+    static let userSymbolName: String = "person.circle"
+    static let bannerSymbolName: String = "flag"
+    static let communitySymbolName: String = "building.2.crop.circle"
     
     // MARK: - Other
 
