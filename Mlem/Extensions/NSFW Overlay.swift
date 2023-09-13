@@ -12,7 +12,7 @@ struct NSFWOverlay: ViewModifier {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     
     let isNsfw: Bool
-    let canTapFullImage: Bool
+    let tapAnywhereToReveal: Bool
     
     @State var showNsfwFilterToggle: Bool = true
     
@@ -21,7 +21,7 @@ struct NSFWOverlay: ViewModifier {
     func body(content: Content) -> some View {
         content
             .overlay {
-                if canTapFullImage {
+                if tapAnywhereToReveal {
                     nsfwOverlay
                         .onTapGesture { showNsfwFilterToggle.toggle() }
                 } else {
@@ -66,6 +66,6 @@ struct NSFWOverlay: ViewModifier {
 
 extension View {
     func applyNsfwOverlay(_ isNsfw: Bool, canTapFullImage: Bool = false) -> some View {
-        modifier(NSFWOverlay(isNsfw: isNsfw, canTapFullImage: canTapFullImage))
+        modifier(NSFWOverlay(isNsfw: isNsfw, tapAnywhereToReveal: canTapFullImage))
     }
 }
