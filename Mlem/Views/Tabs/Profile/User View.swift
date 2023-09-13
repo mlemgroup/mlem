@@ -5,6 +5,8 @@
 //  Created by David Bureš on 02.04.2022.
 //
 
+// swiftlint:disable file_length
+
 import Dependencies
 import SwiftUI
 
@@ -18,7 +20,9 @@ struct UserView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.personRepository) var personRepository
-    
+
+    @Namespace var scrollToTop
+
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     let internetSpeed: InternetSpeed
@@ -39,6 +43,8 @@ struct UserView: View {
     
     @State private var selectionSection = UserViewTab.overview
     @State private var errorDetails: ErrorDetails?
+    
+    @State private var scrollToTopAppeared = false
     
     init(userID: Int, userDetails: APIPersonView? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -65,11 +71,21 @@ struct UserView: View {
                 .fancyTabScrollCompatible()
                 .hoistNavigation(dismiss: dismiss)
         } else {
-            contentView
-                .hoistNavigation(dismiss: dismiss)
-                .sheet(isPresented: $isPresentingAccountSwitcher) {
-                    AccountsPage()
-                }
+            ScrollViewReader { proxy in
+                contentView
+                    .hoistNavigation(
+                        dismiss: dismiss,
+                        auxiliaryAction: {
+                            withAnimation {
+                                proxy.scrollTo(scrollToTop)
+                            }
+                            return true
+                        }
+                    )
+                    .sheet(isPresented: $isPresentingAccountSwitcher) {
+                        AccountsPage()
+                    }
+            }
         }
     }
 
@@ -118,6 +134,9 @@ struct UserView: View {
     
     private func view(for userDetails: APIPersonView) -> some View {
         ScrollView {
+            ScrollToView(appeared: $scrollToTopAppeared)
+                .id(scrollToTop)
+            
             header(for: userDetails)
             
             if let bio = userDetails.person.bio {
