@@ -20,6 +20,8 @@ struct Window: View {
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
+    /// This is only here so that sheet views that double as navigation views don't crash when they expect a navigation object. [2023.09]
+    @StateObject private var navigation: Navigation = .init()
 
     @State var selectedAccount: SavedAccount?
 
@@ -66,6 +68,8 @@ struct Window: View {
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
             .environmentObject(layoutWidgetTracker)
+        /// Some views that participate in tab bar navigation may also be presented as sheets. This is purely a dummy, unused object passed to these sheets so that they don't crash. [2023.09]
+            .environmentObject(navigation)
     }
     
     func forceOnboard() {
