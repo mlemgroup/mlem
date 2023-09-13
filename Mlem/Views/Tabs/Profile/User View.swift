@@ -24,7 +24,9 @@ struct UserView: View {
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
     // environment
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scrollViewProxy) private var scrollViewProxy
     @EnvironmentObject var appState: AppState
     
     // parameters
@@ -65,21 +67,23 @@ struct UserView: View {
                 .fancyTabScrollCompatible()
                 .hoistNavigation(dismiss: dismiss)
         } else {
-            ScrollViewReader { proxy in
-                contentView
-                    .hoistNavigation(
-                        dismiss: dismiss,
-                        auxiliaryAction: {
+            contentView
+                .hoistNavigation(
+                    dismiss: dismiss,
+                    auxiliaryAction: {
+                        if navigationPath.isEmpty {
                             withAnimation {
-                                proxy.scrollTo(scrollToTop)
+                                scrollViewProxy?.scrollTo(scrollToTop)
                             }
                             return true
+                        } else {
+                            return false
                         }
-                    )
-                    .sheet(isPresented: $isPresentingAccountSwitcher) {
-                        AccountsPage()
                     }
-            }
+                )
+                .sheet(isPresented: $isPresentingAccountSwitcher) {
+                    AccountsPage()
+                }
         }
     }
 

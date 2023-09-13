@@ -21,21 +21,25 @@ struct ProfileView: View {
     @StateObject private var navigation: Navigation = .init()
 
     var body: some View {
-        NavigationStack(path: $profileRouter.path) {
-            UserView(userID: userID)
-                .handleLemmyViews()
-                .tabBarNavigationEnabled(.profile, navigation)
-        }
-        .environmentObject(navigation)
-        .handleLemmyLinkResolution(navigationPath: .constant(profileRouter))
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.profile.hashValue {
-                print("switched to Profile tab")
+        ScrollViewReader { proxy in
+            NavigationStack(path: $profileRouter.path) {
+                UserView(userID: userID)
+                    .handleLemmyViews()
+                    .tabBarNavigationEnabled(.profile, navigation)
             }
-        }
-        .onChange(of: selectedNavigationTabHashValue) { newValue in
-            if newValue == TabSelection.profile.hashValue {
-                print("re-selected \(TabSelection.profile) tab")
+            .environment(\.navigationPathWithRoutes, $profileRouter.path)
+            .environment(\.scrollViewProxy, proxy)
+            .environmentObject(navigation)
+            .handleLemmyLinkResolution(navigationPath: .constant(profileRouter))
+            .onChange(of: selectedTagHashValue) { newValue in
+                if newValue == TabSelection.profile.hashValue {
+                    print("switched to Profile tab")
+                }
+            }
+            .onChange(of: selectedNavigationTabHashValue) { newValue in
+                if newValue == TabSelection.profile.hashValue {
+                    print("re-selected \(TabSelection.profile) tab")
+                }
             }
         }
     }
