@@ -21,7 +21,8 @@ struct UserLabelView: View {
     @State var communityContext: GetCommunityResponse?
 
     var blurAvatar: Bool { postContext?.nsfw ?? false ||
-            communityContext?.communityView.community.nsfw ?? false }
+        communityContext?.communityView.community.nsfw ?? false
+    }
     
     init(
         user: APIPerson,
@@ -146,7 +147,7 @@ struct UserLabelView: View {
                 return UserLabelView.flairDeveloper
             }
         }
-        if user.admin {
+        if user.admin == true {
             return UserLabelView.flairAdmin
         }
         if user.botAccount {
