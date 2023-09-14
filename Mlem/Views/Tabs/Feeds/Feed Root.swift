@@ -103,11 +103,6 @@ struct FeedRoot: View {
                 print("re-selected \(TabSelection.feeds) tab")
             }
         }
-        .overlay(alignment: .trailing) {
-            GroupBox {
-                Text("NavigationPath.count: \(feedRouter.path.count)")
-            }
-        }
     }
 }
 
