@@ -51,15 +51,23 @@ struct NavigationDismissHoisting: ViewModifier {
     let dismiss: DismissAction
     let auxiliaryAction: Navigation.AuxiliaryAction?
     
+    @State private var didAppear = false
+    
     func body(content: Content) -> some View {
         content
             .onAppear {
-                print("hoist navigation dismiss action")
-                navigation.dismiss = dismiss
-                navigation.auxiliaryAction = auxiliaryAction
-                let pathIndex = max(0, navigationPath.count)
-                print("adding path action at index -> \(pathIndex)")
-                navigation.pathActions[pathIndex] = (dismiss, auxiliaryAction)
+                defer { didAppear = true }
+                
+                /// This must only be called once:
+                /// For example, user may wish to drag to peek at the previous view, but then cancel that drag action. During this, the previous view's .onAppear will get called. If we run this logic for that view again, the actual top view's dismiss action will get lost. [2023.09]
+                if didAppear == false {
+                    print("hoist navigation dismiss action")
+                    navigation.dismiss = dismiss
+                    navigation.auxiliaryAction = auxiliaryAction
+                    let pathIndex = max(0, navigationPath.count)
+                    print("adding path action at index -> \(pathIndex)")
+                    navigation.pathActions[pathIndex] = (dismiss, auxiliaryAction)
+                }
             }
             .onDisappear {
                 print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
