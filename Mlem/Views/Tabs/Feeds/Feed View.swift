@@ -151,6 +151,12 @@ struct FeedView: View {
                 }
             }
             .refreshable { await refreshFeed() }
+            .onAppear {
+                print("FeedView appeared")
+            }
+            .onDisappear {
+                print("FeedView disappeared")
+            }
     }
     
     @ViewBuilder

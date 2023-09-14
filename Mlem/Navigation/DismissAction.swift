@@ -14,6 +14,8 @@ final class Navigation: ObservableObject {
     /// Return `true` to indicate that an auxiliary action was performed.
     typealias AuxiliaryAction = () -> Bool
     
+    var pathActions: [Int: (dismiss: DismissAction?, auxiliaryAction: AuxiliaryAction?)] = [:]
+    
     /// Navigation always performs dismiss action (if available), but may choose to perform an auxiliary action first.
     ///
     /// This action includes support for popping back to sidebar view in a `NavigationSplitView`.
@@ -43,17 +45,27 @@ extension View {
 struct NavigationDismissHoisting: ViewModifier {
     
     @EnvironmentObject private var navigation: Navigation
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
     
     /// - Note: Unfortunately, we can't access the dismiss action via View.environment...doing so causes SwiftUI to enter into infinite loop. [2023.09]
     let dismiss: DismissAction
     let auxiliaryAction: Navigation.AuxiliaryAction?
     
     func body(content: Content) -> some View {
-        content.onAppear {
-            print("hoist navigation dismiss action")
-            navigation.dismiss = dismiss
-            navigation.auxiliaryAction = auxiliaryAction
-        }
+        content
+            .onAppear {
+                print("hoist navigation dismiss action")
+                navigation.dismiss = dismiss
+                navigation.auxiliaryAction = auxiliaryAction
+                let pathIndex = max(0, navigationPath.count)
+                print("adding path action at index -> \(pathIndex)")
+                navigation.pathActions[pathIndex] = (dismiss, auxiliaryAction)
+            }
+            .onDisappear {
+                print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
+                print("removing path action at index -> \(navigationPath.count + 1)")
+                navigation.pathActions.removeValue(forKey: navigationPath.count + 1)
+            }
     }
 }
 
@@ -68,6 +80,7 @@ extension View {
 
 struct PerformTabBarNavigation: ViewModifier {
     
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
     let tab: TabSelection
@@ -87,17 +100,23 @@ struct PerformTabBarNavigation: ViewModifier {
     
     /// Runs all auxiliary actions before calling system dismiss action.
     private func performDismissAfterAuxiliary() {
-        if let auxiliaryAction = navigator.auxiliaryAction {
+        print("perform action on path index -> \(navigationPath.count)")
+        guard let pathAction = navigator.pathActions.removeValue(forKey: navigationPath.count) else {
+            print("path action not found at index -> \(navigationPath.count)")
+            return
+        }
+        
+        if let auxiliaryAction = pathAction.auxiliaryAction {
             let performed = auxiliaryAction()
-            if !performed, let dismiss = navigator.dismiss {
+            if !performed, let dismiss = pathAction.dismiss {
                 print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
                 print("perform tab navigation on \(tab) tab")
                 dismiss()
             } else {
                 print("performed auxiliary action")
             }
-        } else if let dismiss = navigator.dismiss {
-            print("perform tab navigation on \(tab) tab")
+        } else if let dismiss = pathAction.dismiss {
+            print("perform dismiss action via tab navigation on \(tab) tab")
             dismiss()
         } else {
             print("attempted tab navigation -> action(s) not found")

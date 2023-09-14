@@ -88,6 +88,12 @@ struct ExpandedPost: View {
                     commentTracker.comments = sortComments(commentTracker.comments, by: newSortingType)
                 }
             }
+            .onAppear {
+                print("ExpandedPost appeared")
+            }
+            .onDisappear {
+                print("ExpandedPost disappeared")
+            }
     }
     
     private var contentView: some View {
