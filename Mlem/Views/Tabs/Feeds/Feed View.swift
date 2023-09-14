@@ -213,7 +213,7 @@ struct FeedView: View {
                     MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
             } label: {
-                Label("Post Size", systemImage: AppConstants.postSizeSettingsSymbolName)
+                Label("Post Size", systemImage: Icons.postSizeSettingsSymbolName)
             }
         } label: {
             Label("More", systemImage: "ellipsis")
@@ -238,7 +238,7 @@ struct FeedView: View {
                     MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
                 }
             } label: {
-                Label("Top...", systemImage: AppConstants.topSymbolName)
+                Label("Top...", systemImage: Icons.topSymbolName)
             }
         } label: {
             Label(

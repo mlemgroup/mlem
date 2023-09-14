@@ -95,7 +95,7 @@ struct PostSettingsView: View {
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.limitImageHeightInFeedSymbolName,
+                    settingPictureSystemName: Icons.limitImageHeightInFeedSymbolName,
                     settingName: "Limit Image Height In Feed",
                     isTicked: $limitImageHeightInFeed
                 )
@@ -103,12 +103,12 @@ struct PostSettingsView: View {
             
             Section("Interactions and Info") {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
+                    settingPictureSystemName: Icons.emptyUpvoteSymbolName,
                     settingName: "Show Score In Info",
                     isTicked: $shouldShowScoreInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                    settingPictureSystemName: Icons.generalVoteSymbolName,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showDownvotesSeparately
                 )

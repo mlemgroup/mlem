@@ -14,12 +14,12 @@ struct UserSettingsView: View {
     var body: some View {
         Form {
             SwitchableSettingsItem(
-                settingPictureSystemName: AppConstants.userSymbolName,
+                settingPictureSystemName: Icons.userSymbolName,
                 settingName: "Show Avatars",
                 isTicked: $shouldShowUserAvatars
             )
             SwitchableSettingsItem(
-                settingPictureSystemName: AppConstants.bannerSymbolName,
+                settingPictureSystemName: Icons.bannerSymbolName,
                 settingName: "Show Banners",
                 isTicked: $shouldShowUserHeaders
             )

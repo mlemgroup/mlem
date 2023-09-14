@@ -232,7 +232,7 @@ extension CommentItem {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
-            imageName: AppConstants.reportSymbolName,
+            imageName: Icons.reportSymbolName,
             destructiveActionPrompt: "Really report?",
             enabled: true
         ) {
@@ -245,7 +245,7 @@ extension CommentItem {
         // block
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
-            imageName: AppConstants.blockUserSymbolName,
+            imageName: Icons.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true
         ) {

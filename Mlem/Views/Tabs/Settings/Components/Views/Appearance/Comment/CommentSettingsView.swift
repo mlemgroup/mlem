@@ -44,7 +44,7 @@ struct CommentSettingsView: View {
         Form {
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.compactSymbolName,
+                    settingPictureSystemName: Icons.compactSymbolName,
                     settingName: "Compact Comments",
                     isTicked: $compactComments
                 )
@@ -70,12 +70,12 @@ struct CommentSettingsView: View {
                     isTicked: $shouldShowUserServerInComment
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
+                    settingPictureSystemName: Icons.emptyUpvoteSymbolName,
                     settingName: "Show Score In Info",
                     isTicked: $shouldShowScoreInCommentBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                    settingPictureSystemName: Icons.generalVoteSymbolName,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showCommentDownvotesSeparately
                 )

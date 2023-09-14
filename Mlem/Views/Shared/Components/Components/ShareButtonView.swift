@@ -27,7 +27,7 @@ struct ShareButtonView: View {
     }
     
     var label: some View {
-        Image(systemName: AppConstants.shareSymbolName)
+        Image(systemName: Icons.shareSymbolName)
             .resizable()
             .scaledToFit()
             .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)

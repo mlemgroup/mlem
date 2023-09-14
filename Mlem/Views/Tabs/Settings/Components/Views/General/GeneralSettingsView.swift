@@ -32,7 +32,7 @@ struct GeneralSettingsView: View {
         List {
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: AppConstants.hapticSymbolName,
+                    settingIconSystemName: Icons.hapticSymbolName,
                     settingName: "Haptic Level",
                     currentValue: $hapticLevel,
                     options: HapticPriority.allCases
@@ -51,7 +51,7 @@ struct GeneralSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.blurNsfwSymbolName,
+                    settingPictureSystemName: Icons.blurNsfwSymbolName,
                     settingName: "Blur NSFW Content",
                     isTicked: $shouldBlurNsfw
                 )
@@ -94,7 +94,7 @@ struct GeneralSettingsView: View {
             
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: AppConstants.connectionSymbolName,
+                    settingIconSystemName: Icons.connectionSymbolName,
                     settingName: "Internet Speed",
                     currentValue: $internetSpeed,
                     options: InternetSpeed.allCases

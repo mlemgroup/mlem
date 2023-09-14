@@ -17,7 +17,6 @@ struct CommunitySection: Identifiable {
 }
 
 struct CommunityListView: View {
-    
     @StateObject private var model: CommunityListModel = .init()
     
     @Binding var selectedCommunity: CommunityLinkWithContext?
@@ -34,7 +33,7 @@ struct CommunityListView: View {
                 List(selection: $selectedCommunity) {
                     HomepageFeedRowView(
                         feedType: .subscribed,
-                        iconName: AppConstants.subscribedFeedSymbolNameFill,
+                        iconName: Icons.subscribedFeedSymbolNameFill,
                         iconColor: .red,
                         description: "Subscribed communities from all servers",
                         navigationContext: .sidebar
@@ -42,14 +41,14 @@ struct CommunityListView: View {
                     .id("top") // For "scroll to top" sidebar item
                     HomepageFeedRowView(
                         feedType: .local,
-                        iconName: AppConstants.localFeedSymbolNameFill,
+                        iconName: Icons.localFeedSymbolNameFill,
                         iconColor: .green,
                         description: "Local communities from your server",
                         navigationContext: .sidebar
                     )
                     HomepageFeedRowView(
                         feedType: .all,
-                        iconName: AppConstants.federatedFeedSymbolNameFill,
+                        iconName: Icons.federatedFeedSymbolNameFill,
                         iconColor: .blue,
                         description: "All communities that federate with your server",
                         navigationContext: .sidebar
@@ -68,6 +67,7 @@ struct CommunityListView: View {
                             }
                         }
                     }
+                }
                 .fancyTabScrollCompatible()
                 .navigationTitle("Communities")
                 .navigationBarColor()

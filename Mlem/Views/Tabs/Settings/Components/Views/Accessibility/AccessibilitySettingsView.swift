@@ -71,7 +71,7 @@ struct AccessibilitySettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.transparencySymbolName,
+                    settingPictureSystemName: Icons.transparencySymbolName,
                     settingName: "Translucent Insets",
                     isTicked: $hasTranslucentInsets
                 )
@@ -81,7 +81,7 @@ struct AccessibilitySettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.iconSymbolName,
+                    settingPictureSystemName: Icons.iconSymbolName,
                     settingName: "Show Settings Icons",
                     isTicked: $showSettingsIcons
                 )

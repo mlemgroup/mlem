@@ -61,7 +61,7 @@ struct InfoStackView: View {
     @ViewBuilder
     func netVotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
-            Image(systemName: AppConstants.scoringOpToVoteImage[votes.myVote]!)
+            Image(systemName: Icons.scoringOpToVoteImage[votes.myVote]!)
             Text(String(votes.score))
         }
         .accessibilityAddTraits(.isStaticText)
@@ -72,7 +72,7 @@ struct InfoStackView: View {
     @ViewBuilder
     func upvotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
-            Image(systemName: votes.myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
+            Image(systemName: votes.myVote == .upvote ? Icons.fullUpvoteSymbolName : Icons.emptyUpvoteSymbolName)
             Text(String(votes.upvotes))
         }
         .accessibilityAddTraits(.isStaticText)
@@ -84,8 +84,8 @@ struct InfoStackView: View {
     func downvotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
             Image(systemName: votes.myVote == .downvote
-                ? AppConstants.fullDownvoteSymbolName
-                : AppConstants.emptyDownvoteSymbolName)
+                ? Icons.fullDownvoteSymbolName
+                : Icons.emptyDownvoteSymbolName)
             Text(String(votes.downvotes))
         }
         .accessibilityAddTraits(.isStaticText)
@@ -95,7 +95,7 @@ struct InfoStackView: View {
     
     @ViewBuilder
     func savedView(isSaved: Bool) -> some View {
-        Image(systemName: isSaved ? AppConstants.fullSaveSymbolName : AppConstants.emptySaveSymbolName)
+        Image(systemName: isSaved ? Icons.fullSaveSymbolName : Icons.emptySaveSymbolName)
             .accessibilityAddTraits(.isStaticText)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(isSaved ? "saved" : "")

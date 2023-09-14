@@ -382,7 +382,7 @@ struct FeedPost: View {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report Post",
-            imageName: AppConstants.reportSymbolName,
+            imageName: Icons.reportSymbolName,
             destructiveActionPrompt: AppConstants.reportPostPrompt,
             enabled: true
         ) {
@@ -392,7 +392,7 @@ struct FeedPost: View {
         // block user
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
-            imageName: AppConstants.blockUserSymbolName,
+            imageName: Icons.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true
         ) {
@@ -404,7 +404,7 @@ struct FeedPost: View {
         // block community
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block Community",
-            imageName: AppConstants.blockSymbolName,
+            imageName: Icons.blockSymbolName,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -427,8 +427,8 @@ extension FeedPost {
 
     var upvoteSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = post.votes.myVote == .upvote ?
-            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-            (AppConstants.emptyUpvoteSymbolName, AppConstants.fullUpvoteSymbolName)
+            (Icons.emptyResetVoteSymbolName, Icons.fullResetVoteSymbolName) :
+            (Icons.emptyUpvoteSymbolName, Icons.fullUpvoteSymbolName)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .upvoteColor,
@@ -440,8 +440,8 @@ extension FeedPost {
         guard siteInformation.enableDownvotes else { return nil }
 
         let (emptySymbolName, fullSymbolName) = post.votes.myVote == .downvote ?
-            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-            (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
+            (Icons.emptyResetVoteSymbolName, Icons.fullResetVoteSymbolName) :
+            (Icons.emptyDownvoteSymbolName, Icons.fullDownvoteSymbolName)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .downvoteColor,
@@ -451,8 +451,8 @@ extension FeedPost {
 
     var saveSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = post.saved
-            ? (AppConstants.emptyUndoSaveSymbolName, AppConstants.fullUndoSaveSymbolName)
-            : (AppConstants.emptySaveSymbolName, AppConstants.fullSaveSymbolName)
+            ? (Icons.emptyUndoSaveSymbolName, Icons.fullUndoSaveSymbolName)
+            : (Icons.emptySaveSymbolName, Icons.fullSaveSymbolName)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,

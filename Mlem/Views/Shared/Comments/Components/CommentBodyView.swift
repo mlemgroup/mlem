@@ -113,17 +113,17 @@ struct CommentBodyView: View {
             // votes
             if showCommentDownvotesSeparately {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
+                    Image(systemName: myVote == .upvote ? Icons.fullUpvoteSymbolName : Icons.emptyUpvoteSymbolName)
                     Text(String(commentView.counts.upvotes))
                 }
                 
                 HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: myVote == .downvote ? AppConstants.fullDownvoteSymbolName : AppConstants.emptyDownvoteSymbolName)
+                    Image(systemName: myVote == .downvote ? Icons.fullDownvoteSymbolName : Icons.emptyDownvoteSymbolName)
                     Text(String(commentView.counts.downvotes))
                 }
             } else {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: AppConstants.scoringOpToVoteImage[myVote]!)
+                    Image(systemName: Icons.scoringOpToVoteImage[myVote]!)
                     Text(String(commentView.counts.score))
                 }
                 .foregroundColor(.secondary)

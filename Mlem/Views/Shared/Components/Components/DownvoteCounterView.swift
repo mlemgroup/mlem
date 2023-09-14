@@ -22,7 +22,7 @@ struct DownvoteCounterView: View {
                 }
             } label: {
                 HStack(spacing: 8) {
-                    Image(systemName: AppConstants.plainDownvoteSymbolName)
+                    Image(systemName: Icons.plainDownvoteSymbolName)
                     Text(String(score))
                         .monospacedDigit()
                 }

@@ -349,8 +349,8 @@ extension InboxView {
         var ret: [MenuFunction] = .init()
         
         let (filterReadText, filterReadSymbol) = shouldFilterRead
-            ? ("Show All", AppConstants.filterSymbolNameFill)
-            : ("Show Only Unread", AppConstants.filterSymbolName)
+            ? ("Show All", Icons.filterSymbolNameFill)
+            : ("Show Only Unread", Icons.filterSymbolName)
         
         ret.append(MenuFunction.standardMenuFunction(
             text: filterReadText,

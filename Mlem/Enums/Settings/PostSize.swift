@@ -22,17 +22,17 @@ extension PostSize: SettingsOptions {
 extension PostSize: AssociatedIcon {
     var iconName: String {
         switch self {
-        case .compact: return AppConstants.compactSymbolName
-        case .headline: return AppConstants.headlineSymbolName
-        case .large: return AppConstants.largeSymbolName
+        case .compact: return Icons.compactSymbolName
+        case .headline: return Icons.headlineSymbolName
+        case .large: return Icons.largeSymbolName
         }
     }
     
     var iconNameFill: String {
         switch self {
-        case .compact: return AppConstants.compactSymbolNameFill
-        case .headline: return AppConstants.headlineSymbolNameFill
-        case .large: return AppConstants.largeSymbolNameFill
+        case .compact: return Icons.compactSymbolNameFill
+        case .headline: return Icons.headlineSymbolNameFill
+        case .large: return Icons.largeSymbolNameFill
         }
     }
 }
