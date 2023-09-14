@@ -11,36 +11,35 @@ extension JSONDecoder {
     static var defaultDecoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-
+        
+        // swiftlint:disable opening_brace
+        let pattern = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
         let formatter = DateFormatter()
-
         formatter.timeZone = .gmt
         formatter.locale = Locale(identifier: "en_US_POSIX")
-
-        let formats = [
-            "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSSZ",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSS",
-            "yyyy-MM-dd'T'HH:mm:ss",
-            "yyyy-MM-dd HH:mm:ss.SSSSSS",
-            "yyyy-MM-dd HH:mm:ss",
-            "yyyy-MM-dd"
-        ]
-
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
+        let alternate = /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/
+        let alternateFormatter = DateFormatter()
+        alternateFormatter.timeZone = .gmt
+        alternateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        alternateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        // swiftlint:enable opening_brace
+        
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
-            let string = try container.decode(String.self)
-
-            for format in formats {
-                formatter.dateFormat = format
-                if let date = formatter.date(from: string) {
-                    return date
-                }
+            var string = try container.decode(String.self)
+            
+            if let match = string.firstMatch(of: pattern),
+               let date = formatter.date(from: String(match.output)) {
+                return date
             }
-
-            // after some discussion we've agreed to fail the modelling if the date
-            // does match either of the above, as based on the current API source code
-            // it should be one of those
+            
+            if let match = string.firstMatch(of: alternate),
+               let date = alternateFormatter.date(from: String(match.output)) {
+                return date
+            }
+            
             throw Swift.DecodingError.dataCorrupted(
                 .init(
                     codingPath: container.codingPath,
@@ -48,6 +47,7 @@ extension JSONDecoder {
                 )
             )
         }
+        
         return decoder
     }
 }
