@@ -160,10 +160,10 @@ extension SiteVersion: Comparable {
             return lhs.parts! < rhs.parts!
             
         case (.zero, _), (_, .infinity):
-            return false
+            return true
             
         case (_, .zero), (.infinity, _):
-            return true
+            return false
             
         case (
             .suffixed(_, _, _, let suffix1),

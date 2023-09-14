@@ -113,6 +113,26 @@ final class SiteVersionTests: XCTestCase {
             SiteVersion.suffixed(major: 0, minor: 18, patch: 2, suffix: .other("abc", 1))
             < SiteVersion.suffixed(major: 0, minor: 18, patch: 2, suffix: .other("test", 2))
         )
+        XCTAssertTrue(
+            SiteVersion.release(major: 0, minor: 18, patch: 2)
+            < SiteVersion.infinity
+        )
+        XCTAssertFalse(
+            SiteVersion.infinity
+            < SiteVersion.release(major: 0, minor: 18, patch: 2)
+        )
+        XCTAssertFalse(
+            SiteVersion.release(major: 0, minor: 18, patch: 2)
+            < SiteVersion.zero
+        )
+        XCTAssertTrue(
+            SiteVersion.zero
+            < SiteVersion.release(major: 0, minor: 18, patch: 2)
+        )
+        XCTAssertTrue(
+            SiteVersion.zero
+            < SiteVersion.infinity
+        )
     }
     // swiftlint:enable function_body_length
 }
