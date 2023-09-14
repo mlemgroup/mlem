@@ -101,7 +101,7 @@ struct PerformTabBarNavigation: ViewModifier {
     /// Runs all auxiliary actions before calling system dismiss action.
     private func performDismissAfterAuxiliary() {
         print("perform action on path index -> \(navigationPath.count)")
-        guard let pathAction = navigator.pathActions.removeValue(forKey: navigationPath.count) else {
+        guard let pathAction = navigator.pathActions[navigationPath.count] else {
             print("path action not found at index -> \(navigationPath.count)")
             return
         }
