@@ -12,7 +12,8 @@ struct FeedRoot: View {
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
-    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
@@ -22,6 +23,8 @@ struct FeedRoot: View {
     @State var rootDetails: CommunityLinkWithContext?
     
     let showLoading: Bool
+    
+    @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
 
     var body: some View {
         /*
@@ -30,7 +33,7 @@ struct FeedRoot: View {
          - For tab bar navigation (scroll to top) to work, ScrollViewReader must wrap the entire `NavigationSplitView`. Furthermore, the proxy must be passed into the environment on the split view. Attempting to do so on a column view doesn't work. [2023.09]
          */
         ScrollViewReader { proxy in
-            NavigationSplitView {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
                 CommunityListView(selectedCommunity: $rootDetails)
                     .id(appState.currentActiveAccount.id)
             } detail: {
@@ -41,7 +44,8 @@ struct FeedRoot: View {
                             feedType: rootDetails.feedType,
                             sortType: defaultPostSorting,
                             showLoading: showLoading,
-                            rootDetails: $rootDetails
+                            rootDetails: $rootDetails,
+                            splitViewColumnVisibility: $columnVisibility
                         )
                         .environmentObject(appState)
                         .tabBarNavigationEnabled(.feeds, navigation)
