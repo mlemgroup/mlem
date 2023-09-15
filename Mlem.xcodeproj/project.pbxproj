@@ -96,7 +96,6 @@
 		50D61E5B2AA32B9400A926EC /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D61E5A2AA32B9400A926EC /* APISession.swift */; };
 		50D61E5D2AA4904F00A926EC /* FeedTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D61E5C2AA4904F00A926EC /* FeedTracking.swift */; };
 		50DBB8E02A805836002870B1 /* MockErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */; };
-		50DBB8E22A80F9E4002870B1 /* APICommunity+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */; };
 		50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EC39B12A346DDC00E014C2 /* URLHandler.swift */; };
 		50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */; };
 		50F830F82A4C92BF00D67099 /* FeedTrackerItemProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */; };
@@ -534,7 +533,6 @@
 		50D61E5A2AA32B9400A926EC /* APISession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISession.swift; sourceTree = "<group>"; };
 		50D61E5C2AA4904F00A926EC /* FeedTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTracking.swift; sourceTree = "<group>"; };
 		50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockErrorHandler.swift; sourceTree = "<group>"; };
-		50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APICommunity+Mock.swift"; sourceTree = "<group>"; };
 		50EC39B12A346DDC00E014C2 /* URLHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
 		50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshView.swift; sourceTree = "<group>"; };
 		50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTrackerItemProviding.swift; sourceTree = "<group>"; };
@@ -1175,7 +1173,6 @@
 			isa = PBXGroup;
 			children = (
 				50DBB8DF2A805836002870B1 /* MockErrorHandler.swift */,
-				50DBB8E12A80F9E4002870B1 /* APICommunity+Mock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -2828,7 +2825,6 @@
 				6363D5DB27EE196A00E34822 /* MlemTests.swift in Sources */,
 				50BC1AB92A89744200E3C48B /* CommunityListModelTests.swift in Sources */,
 				50CC4A782A9CBDF70074C845 /* TimestampedValueTests.swift in Sources */,
-				50DBB8E22A80F9E4002870B1 /* APICommunity+Mock.swift in Sources */,
 				50CC4A822AA0D61F0074C845 /* InstanceMetadataParserTests.swift in Sources */,
 				50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */,
 			);
