@@ -40,6 +40,7 @@
 		503422582AAB798600EFE88D /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503422572AAB798600EFE88D /* AppFlow.swift */; };
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		504106CD2A744D7F000AAEF8 /* CommentRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */; };
+		504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */; };
 		505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */; };
 		505240E52A86E32700EA4558 /* CommunityListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E42A86E32700EA4558 /* CommunityListModel.swift */; };
 		505240E72A88D36D00EA4558 /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */; };
@@ -477,6 +478,7 @@
 		503422572AAB798600EFE88D /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentRepository+Dependency.swift"; sourceTree = "<group>"; };
+		504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURL.swift; sourceTree = "<group>"; };
 		505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteCommunitiesTracker+Dependency.swift"; sourceTree = "<group>"; };
 		505240E42A86E32700EA4558 /* CommunityListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListModel.swift; sourceTree = "<group>"; };
 		505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
@@ -1526,6 +1528,7 @@
 			isa = PBXGroup;
 			children = (
 				637218032A3A2AAD008C4816 /* HierarchicalComment.swift */,
+				504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -2534,6 +2537,7 @@
 				6D405B032A43E7DB00C65F9C /* Sidebar Header Label.swift in Sources */,
 				50785F762A9A684300117245 /* SavedAccountTracker+Dependency.swift in Sources */,
 				632578182A29F83C00446A66 /* PostSortMenu.swift in Sources */,
+				504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */,
 				CDA217EA2A63093E00BDA173 /* ReportComment.swift in Sources */,
 				CDA217E82A63029B00BDA173 /* ReportMention.swift in Sources */,
 				508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */,
