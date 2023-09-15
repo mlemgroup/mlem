@@ -5,6 +5,7 @@
 //  Created by Bosco Ho on 2023-09-08.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
@@ -88,6 +89,7 @@ extension View {
 
 struct PerformTabBarNavigation: ViewModifier {
     
+    @Dependency(\.hapticManager) private var hapticManager
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
@@ -97,6 +99,7 @@ struct PerformTabBarNavigation: ViewModifier {
     func body(content: Content) -> some View {
         content.onChange(of: selectedNavigationTabHashValue) { newValue in
             if newValue == tab.hashValue {
+                hapticManager.play(haptic: .gentleInfo, priority: .high)
                 // Customization based  on user preference should occur here, for example:
                 // performSystemPopToRootBehaviour()
                 // noOp()
