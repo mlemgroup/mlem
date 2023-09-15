@@ -18,8 +18,13 @@ private let possibleCredentialErrors = [
     "couldnt_find_that_username_or_email"
 ]
 
+private let possible2FAErrors = [
+    "missing_totp_token",
+    "incorrect_totp_token"
+]
+
 extension APIErrorResponse {
     var isIncorrectLogin: Bool { possibleCredentialErrors.contains(error) }
-    var requires2FA: Bool { error == "missing_totp_token" }
+    var requires2FA: Bool { possible2FAErrors.contains(error) }
     var isNotLoggedIn: Bool { error == "not_logged_in" }
 }

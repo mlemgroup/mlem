@@ -51,6 +51,7 @@ struct AppConstants {
     static let settingsIconSize: CGFloat = 28
     static let fancyTabBarHeight: CGFloat = 48 // total height of the fancy tab bar
     static let editorOverscroll: CGFloat = 30
+    static let expandedPostOverscroll: CGFloat = 80
     
     // MARK: - SFSymbols
 
