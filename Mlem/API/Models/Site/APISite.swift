@@ -13,12 +13,17 @@ struct APISite: Decodable {
     let name: String
     let sidebar: String?
     let published: Date
-    let icon: URL?
-    let banner: URL?
+    let icon: String?
+    let banner: String?
     let description: String?
     let actorId: String?
     let lastRefreshedAt: Date
     let inboxUrl: String
     let publicKey: String
     let instanceId: Int
+}
+
+extension APISite {
+    var iconUrl: URL? { LemmyURL(string: icon)?.url }
+    var bannerUrl: URL? { LemmyURL(string: banner)?.url }
 }
