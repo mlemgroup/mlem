@@ -42,7 +42,7 @@ struct InboxMentionView: View {
                 .font(.headline)
                 .padding(.bottom, spacing)
             
-            UserProfileLink(
+            UserLinkView(
                 user: mention.creator,
                 serverInstanceLocation: .bottom,
                 overrideShowAvatar: true

@@ -14,27 +14,34 @@ struct CommunitySidebarHeaderAvatar: View {
     @State var imageUrl: URL?
 
     var body: some View {
-        ZStack {
-            if let avatarURL = imageUrl {
-                CachedImage(
-                    url: avatarURL,
-                    shouldExpand: false,
-                    fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
-                    contentMode: .fill
-                )
-                .clipShape(Circle())
-                .overlay(Circle()
-                    .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
-            } else {
-                // TODO: Default avatar?
-                // TIL you cannot fill and stroke at the same time
-                Circle().strokeBorder(.background, lineWidth: 2)
-                    .background(Circle().fill(.secondary))
+        avatar
+            .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
+            .clipShape(Circle())
+            .overlay(Circle()
+                .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
+            .shadow(radius: 10)
+            .background(shouldClipAvatar ? Circle()
+                .foregroundColor(.systemBackground) : nil)
+    }
+    
+    @ViewBuilder
+    var avatar: some View {
+        if let avatarURL = imageUrl {
+            CachedImage(
+                url: avatarURL,
+                shouldExpand: false,
+                fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
+                contentMode: .fill
+            )
+        } else {
+            VStack(alignment: .center) {
+                Spacer()
+                    .frame(height: 20)
+                Image(systemName: "person.fill")
+                    .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
+                    .foregroundColor(.secondary)
             }
         }
-        .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
-        .shadow(radius: 10)
-        .background(shouldClipAvatar ? Circle()
-            .foregroundColor(.systemBackground) : nil)
+        
     }
 }

@@ -87,6 +87,16 @@ struct FeedView: View {
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
+    // MARK: Destructive confirmation
+    
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
     // MARK: - Main Views
     
     var body: some View {
@@ -246,19 +256,19 @@ struct FeedView: View {
                 }
                 
                 ForEach(genCommunitySpecificMenuFunctions(for: community)) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
+                    MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
             }
             
             Divider()
             
             ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
+                MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
             }
             
             Menu {
                 ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
+                    MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
             } label: {
                 Label("Post Size", systemImage: AppConstants.postSizeSettingsSymbolName)
@@ -268,18 +278,22 @@ struct FeedView: View {
                 .frame(height: AppConstants.barIconHitbox)
                 .contentShape(Rectangle())
         }
+        .destructiveConfirmation(
+            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+            confirmationMenuFunction: confirmationMenuFunction
+        )
     }
     
     @ViewBuilder
     private var sortMenu: some View {
         Menu {
             ForEach(genOuterSortMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
+                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
             }
             
             Menu {
                 ForEach(genTopSortMenuFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
+                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
                 }
             } label: {
                 Label("Top...", systemImage: AppConstants.topSymbolName)
@@ -307,7 +321,7 @@ struct FeedView: View {
         } else {
             Menu {
                 ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
+                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive feed switches
                 }
             } label: {
                 HStack(alignment: .center, spacing: 0) {

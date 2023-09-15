@@ -51,9 +51,15 @@ struct InboxView: View {
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     // MARK: Internal
-
-    // id of the last account loaded with
-    @State var lastKnownAccountId: Int = 0
+    
+    // destructive confirmation
+    @State var isPresentingConfirmDestructive: Bool = false
+    @State var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
     
     // error  handling
     @State var errorOccurred: Bool = false
@@ -164,14 +170,12 @@ struct InboxView: View {
             // if a tracker is empty or the account has changed, refresh
             if mentionsTracker.items.isEmpty ||
                 messagesTracker.items.isEmpty ||
-                repliesTracker.items.isEmpty ||
-                lastKnownAccountId != appState.currentActiveAccount.id {
+                repliesTracker.items.isEmpty {
                 print("Inbox tracker is empty")
                 await refreshFeed()
             } else {
                 print("Inbox tracker is not empty")
             }
-            lastKnownAccountId = appState.currentActiveAccount.id
         }
     }
     
@@ -193,7 +197,7 @@ struct InboxView: View {
     private var ellipsisMenu: some View {
         Menu {
             ForEach(genMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
+                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive functions
             }
         } label: {
             Label("More", systemImage: "ellipsis")

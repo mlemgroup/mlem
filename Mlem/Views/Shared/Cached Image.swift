@@ -27,6 +27,7 @@ struct CachedImage: View {
     let screenWidth: CGFloat
     let contentMode: ContentMode
     let cornerRadius: CGFloat
+    let errorBackgroundColor: Color
     
     // Optional callback triggered when the quicklook preview is dismissed
     let dismissCallback: (() -> Void)?
@@ -37,6 +38,7 @@ struct CachedImage: View {
         maxHeight: CGFloat = .infinity,
         fixedSize: CGSize? = nil,
         imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
+        errorBackgroundColor: Color = Color(uiColor: .systemGray4),
         contentMode: ContentMode = .fit,
         dismissCallback: (() -> Void)? = nil,
         cornerRadius: CGFloat? = nil
@@ -45,6 +47,7 @@ struct CachedImage: View {
         self.shouldExpand = shouldExpand
         self.maxHeight = maxHeight
         self.imageNotFound = imageNotFound
+        self.errorBackgroundColor = errorBackgroundColor
         self.contentMode = contentMode
         self.dismissCallback = dismissCallback
         self.cornerRadius = cornerRadius ?? 0
@@ -140,7 +143,7 @@ struct CachedImage: View {
                 // Indicates an error
                 imageNotFound()
                     .frame(idealWidth: size.width, maxHeight: size.height)
-                    .background(Color(uiColor: .systemGray4))
+                    .background(errorBackgroundColor)
             } else {
                 ProgressView() // Acts as a placeholder
                     .frame(idealWidth: size.width, maxHeight: size.height)

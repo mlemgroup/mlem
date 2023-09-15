@@ -57,7 +57,7 @@ struct CompactPost: View {
                         if showCommunity {
                             CommunityLinkView(community: post.community, serverInstanceLocation: .trailing, overrideShowAvatar: false)
                         } else {
-                            UserProfileLink(
+                            UserLinkView(
                                 user: post.creator,
                                 serverInstanceLocation: .trailing
                             )

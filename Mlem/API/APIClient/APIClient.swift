@@ -57,10 +57,19 @@ class APIClient {
     
     // MARK: - Public methods
     
-    /// Configures the clients session based on the passed in account
-    /// - Parameter account: a `SavedAccount` to use when configuring the clients session
-    func configure(for account: SavedAccount) {
-        session = .authenticated(account.instanceLink, account.accessToken)
+    /// Configures the clients session based on the passed in flow
+    /// - Parameter flow: The application flow which the client should be configured for
+    func configure(for flow: AppFlow) {
+        switch flow {
+        case let .account(account):
+            session = .authenticated(account.instanceLink, account.accessToken)
+        case .onboarding:
+            // no calls to our `APIClient` should be made during onboarding
+            // excluding a _login_ call which requires an explicit session to be provided
+            // setting to `.undefined` here ensures that errors will be throw should a call
+            // be attempted
+            session = .undefined
+        }
     }
     
     @discardableResult

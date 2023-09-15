@@ -14,6 +14,7 @@ struct PostSettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = .headline
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
     
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
@@ -54,8 +55,10 @@ struct PostSettingsView: View {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
-                        Image(systemName: "wand.and.stars")
-                            .foregroundColor(.pink)
+                        if showSettingsIcons {
+                            Image(systemName: "wand.and.stars")
+                                .foregroundColor(.pink)
+                        }
                     }
                 }
                 
@@ -158,7 +161,7 @@ struct PostSettingsView: View {
                 .padding(.horizontal)
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "network",
+                    settingPictureSystemName: "link",
                     settingName: "Show Website Address",
                     isTicked: $shouldShowWebsiteHost
                 )

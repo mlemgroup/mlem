@@ -22,48 +22,55 @@ struct Window: View {
     @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
     /// This is only here so that sheet views that double as navigation views don't crash when they expect a navigation object. [2023.09]
     @StateObject private var navigation: Navigation = .init()
+    @StateObject var appState: AppState = .init()
 
-    @State var selectedAccount: SavedAccount?
+    @State var flow: AppFlow
 
     var body: some View {
         content
-            .onChange(of: selectedAccount) { _ in onLogin() }
-            .onAppear(perform: onLogin)
-            .environment(\.forceOnboard, forceOnboard)
+            .id(appState.currentActiveAccount?.id ?? 0)
+            .onChange(of: flow) { _ in flowDidChange() }
+            .onAppear(perform: flowDidChange)
+            .environment(\.setAppFlow, setFlow)
     }
 
-    func onLogin() {
+    func flowDidChange() {
         hapticManager.initEngine()
+        apiClient.configure(for: flow)
         
-        guard let selectedAccount else { return }
-        
-        apiClient.configure(for: selectedAccount)
-        favoriteCommunitiesTracker.configure(for: selectedAccount)
-        siteInformation.load()
-        
-        if let host = selectedAccount.instanceLink.host(),
-           let instance = RecognizedLemmyInstances(rawValue: host) {
-            easterFlagsTracker.setEasterFlag(.login(host: instance))
+        switch flow {
+        case .onboarding:
+            appState.clearActiveAccount()
+            favoriteCommunitiesTracker.clearStoredAccount()
+        case let .account(account):
+            appState.setActiveAccount(account)
+            favoriteCommunitiesTracker.configure(for: account)
+            siteInformation.load()
+            
+            if let host = account.instanceLink.host(),
+               let instance = RecognizedLemmyInstances(rawValue: host) {
+                easterFlagsTracker.setEasterFlag(.login(host: instance))
+            }
         }
     }
     
     @ViewBuilder
     private var content: some View {
-        if let selectedAccount {
-            view(for: selectedAccount)
-        } else {
+        switch flow {
+        case .onboarding:
             NavigationStack {
-                OnboardingView(selectedAccount: $selectedAccount)
+                OnboardingView(flow: $flow)
             }
+        case let .account(account):
+            view(for: account)
         }
     }
     
     @ViewBuilder
     private func view(for account: SavedAccount) -> some View {
         ContentView()
-            .id(account.id)
             .environmentObject(filtersTracker)
-            .environmentObject(AppState(defaultAccount: account, selectedAccount: $selectedAccount))
+            .environmentObject(appState)
             .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
@@ -72,7 +79,7 @@ struct Window: View {
             .environmentObject(navigation)
     }
     
-    func forceOnboard() {
-        selectedAccount = nil
+    private func setFlow(_ flow: AppFlow) {
+        self.flow = flow
     }
 }

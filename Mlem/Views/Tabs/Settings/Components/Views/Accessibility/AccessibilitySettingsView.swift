@@ -12,6 +12,7 @@ struct AccessibilitySettingsView: View {
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
     
     @Environment(\.dismiss) private var dismiss
     
@@ -32,9 +33,11 @@ struct AccessibilitySettingsView: View {
                         Label {
                             Text("Bar Thickness")
                         } icon: {
-                            Image(systemName: "rectangle.leftthird.inset.filled")
-                                .foregroundColor(.pink)
-                                .opacity(readMarkStyle == .bar ? 1 : 0.4)
+                            if showSettingsIcons {
+                                Image(systemName: "rectangle.leftthird.inset.filled")
+                                    .foregroundColor(.pink)
+                                    .opacity(readMarkStyle == .bar ? 1 : 0.4)
+                            }
                         }
                         
                         Spacer()
@@ -76,6 +79,16 @@ struct AccessibilitySettingsView: View {
                 )
             } header: {
                 Text("Transparency")
+            }
+            
+            Section {
+                SwitchableSettingsItem(
+                    settingPictureSystemName: AppConstants.iconSymbolName,
+                    settingName: "Show Settings Icons",
+                    isTicked: $showSettingsIcons
+                )
+            } header: {
+                Text("Icons")
             }
         }
         .fancyTabScrollCompatible()

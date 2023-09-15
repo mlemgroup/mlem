@@ -66,11 +66,7 @@ extension InboxView {
                 }
                 .contextMenu {
                     ForEach(genMentionMenuGroup(mention: mention)) { item in
-                        Button {
-                            item.callback()
-                        } label: {
-                            Label(item.text, systemImage: item.imageName)
-                        }
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                     }
                 }
                 .addSwipeyActions(

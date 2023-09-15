@@ -71,13 +71,13 @@ extension InboxView {
                 }
                 .contextMenu {
                     ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
-                        Button {
-                            item.callback()
-                        } label: {
-                            Label(item.text, systemImage: item.imageName)
-                        }
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                     }
                 }
+                .destructiveConfirmation(
+                    isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                    confirmationMenuFunction: confirmationMenuFunction
+                )
                 .addSwipeyActions(
                     leading: [
                         upvoteCommentReplySwipeAction(commentReply: reply),

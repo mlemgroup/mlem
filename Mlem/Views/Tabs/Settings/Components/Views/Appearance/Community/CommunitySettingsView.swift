@@ -4,9 +4,7 @@
 //
 //  Created by Sam Marfleet on 16/07/2023.
 //
-
 import SwiftUI
-
 struct CommunitySettingsView: View {
     
     @Environment(\.dismiss) private var dismiss
@@ -17,14 +15,13 @@ struct CommunitySettingsView: View {
     var body: some View {
         Form {
             SwitchableSettingsItem(
-                settingPictureSystemName: "person.2.circle.fill",
-                settingName: "Show Community Avatars",
+                settingPictureSystemName: AppConstants.communitySymbolName,
+                settingName: "Show Avatars",
                 isTicked: $shouldShowCommunityIcons
             )
-
             SwitchableSettingsItem(
-                settingPictureSystemName: "rectangle.grid.1x2",
-                settingName: "Show Community Banners",
+                settingPictureSystemName: AppConstants.bannerSymbolName,
+                settingName: "Show Banners",
                 isTicked: $shouldShowCommunityHeaders
             )
         }

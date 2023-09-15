@@ -10,50 +10,67 @@ import Foundation
 import SwiftUI
 
 class AppState: ObservableObject {
+    @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.apiClient) var apiClient
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
-    @Binding private var selectedAccount: SavedAccount?
-    @Published private(set) var currentActiveAccount: SavedAccount
-    @Published private(set) var currentNickname: String
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
+    @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
     
-    /// Initialises our app state
-    /// - Parameters:
-    ///   - defaultAccount: The account the application should start with
-    ///   - selectedAccount: A `Binding` to the selected account at the `Window` level
-    init(defaultAccount: SavedAccount, selectedAccount: Binding<SavedAccount?>) {
-        _selectedAccount = selectedAccount
-        self.currentActiveAccount = defaultAccount
-        self.currentNickname = defaultAccount.nickname
-        self.defaultAccountId = currentActiveAccount.id
-        accountUpdated()
-    }
+    @Published private(set) var currentActiveAccount: SavedAccount?
     
-    func setActiveAccount(_ account: SavedAccount) {
-        // update our stored token and set the account...
-        AppConstants.keychain["\(account.id)_accessToken"] = account.accessToken
-        currentActiveAccount = account
-        defaultAccountId = currentActiveAccount.id
-
-        // if the account we just set is not the existing one from the session
-        // then the user is switching accounts, so we pass the value up to the
-        // `Window` layer which will re-create our `ContentView` and the new
-        // account will restart on the feed page with a clean slate
-        if account.id != selectedAccount?.id {
-            selectedAccount = account
-            return
+    /// A variable representing how the current account should be displayed in the tab bar
+    var tabDisplayName: String {
+        guard let currentActiveAccount else {
+            return "Profile"
         }
         
-        accountUpdated()
+        switch profileTabLabel {
+        case .username:
+            return currentActiveAccount.username
+        case .instance:
+            return currentActiveAccount.hostName ?? "Instance"
+        case .nickname:
+            return currentActiveAccount.nickname
+        case .anonymous:
+            return "Profile"
+        }
     }
     
-    /// Update the nickname. This is needed to quickly propagate changes from settings over to the tab bar, since nickname doesn't affect account identity and so changing it doesn't always prompt redraws
-    func changeDisplayedNickname(to nickname: String) {
-        currentNickname = nickname
+    /// A variable representing the remote location to load the user profile avatar from if applicable
+    var profileTabRemoteSymbolUrl: URL? {
+        guard profileTabLabel != .anonymous, showUserAvatar else {
+            return nil
+        }
+        
+        return currentActiveAccount?.avatarUrl
     }
     
-    private func accountUpdated() {
-        // ensure our client session is updated
-        apiClient.configure(for: currentActiveAccount)
+    /// A method to set the current active account, any changes to the account will be propogated to the persistence layer
+    /// - Important: If you wish to _clear_ the current active account please use the `\.setAppFlow` method available via the environment to reset to our `.onboarding` flow
+    /// - Parameter account: The `SavedAccount` which should become the active account
+    func setActiveAccount(_ account: SavedAccount) {
+        AppConstants.keychain["\(account.id)_accessToken"] = account.accessToken
+        // we configure the client here to ensure any updated session tokens are updated
+        apiClient.configure(for: .account(account))
+        currentActiveAccount = account
+        defaultAccountId = account.id
+        accountsTracker.update(with: account)
+    }
+    
+    /// A method to clear the currentlly active account
+    /// - Important: It is unlikely you will want to call this method directly but instead use the `\.setAppFlow` method available via the environment
+    func clearActiveAccount() {
+        currentActiveAccount = nil
+    }
+    
+    func isCurrentAccountId(_ id: Int) -> Bool {
+        guard let currentActiveAccount else { return false }
+        // TODO: we likely need to improve this check as comparing just the id might not be enough (same id, different instances)
+        // I'm going to leave this for now as if we wanted to move to using a value like `.actorId` then we'll need to
+        // to start storing it in the `SavedAccount` object first etc, which is getting well outside the scope of this PR...
+        // although the _check_ has moved in this PR, it's performing the same check that was being done elsewhere so there
+        // should be no regression introduced by only checking the `.id`
+        return currentActiveAccount.id == id
     }
 }

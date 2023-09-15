@@ -16,19 +16,16 @@ struct UserSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                SwitchableSettingsItem(
-                    settingPictureSystemName: "person.circle.fill",
-                    settingName: "Show User Avatars",
-                    isTicked: $shouldShowUserAvatars
-                )
-
-                SwitchableSettingsItem(
-                    settingPictureSystemName: "rectangle.grid.1x2",
-                    settingName: "Show User Banners",
-                    isTicked: $shouldShowUserHeaders
-                )
-            }
+            SwitchableSettingsItem(
+                settingPictureSystemName: AppConstants.userSymbolName,
+                settingName: "Show Avatars",
+                isTicked: $shouldShowUserAvatars
+            )
+            SwitchableSettingsItem(
+                settingPictureSystemName: AppConstants.bannerSymbolName,
+                settingName: "Show Banners",
+                isTicked: $shouldShowUserHeaders
+            )
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Users")

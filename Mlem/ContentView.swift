@@ -31,7 +31,6 @@ struct ContentView: View {
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
@@ -42,36 +41,43 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
                             tag: TabSelection.feeds,
-                            symbolName: "scroll",
-                            activeSymbolName: "scroll.fill"
-                        )
-                    }
-                InboxView()
-                    .fancyTabItem(tag: TabSelection.inbox) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.inbox,
-                            symbolName: "mail.stack",
-                            activeSymbolName: "mail.stack.fill",
-                            badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
+                            symbolConfiguration: .feed
                         )
                     }
                 
-                ProfileView(userID: appState.currentActiveAccount.id)
-                    .fancyTabItem(tag: TabSelection.profile) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.profile,
-                            customText: computeUsername(account: appState.currentActiveAccount),
-                            symbolName: "person.circle",
-                            activeSymbolName: "person.circle.fill"
-                        )
-                        .simultaneousGesture(accountSwitchLongPress)
-                    }
+                // wrapping these two behind a check for an active user, as of now we'll always have one
+                // but when guest mode arrives we'll either omit these entirely, or replace them with a
+                // guest mode specific tab for sign in / change instance screen.
+                if let account = appState.currentActiveAccount {
+                    InboxView()
+                        .fancyTabItem(tag: TabSelection.inbox) {
+                            FancyTabBarLabel(
+                                tag: TabSelection.inbox,
+                                symbolConfiguration: .inbox,
+                                badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
+                            )
+                        }
+                    
+                    ProfileView(userID: account.id)
+                        .fancyTabItem(tag: TabSelection.profile) {
+                            FancyTabBarLabel(
+                                tag: TabSelection.profile,
+                                customText: appState.tabDisplayName,
+                                symbolConfiguration: .init(
+                                    symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                                    activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                                    remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                                )
+                            )
+                            .simultaneousGesture(accountSwitchLongPress)
+                        }
+                }
+                
                 SearchView()
                     .fancyTabItem(tag: TabSelection.search) {
                         FancyTabBarLabel(
                             tag: TabSelection.search,
-                            symbolName: "magnifyingglass",
-                            activeSymbolName: "text.magnifyingglass"
+                            symbolConfiguration: .search
                         )
                     }
                 
@@ -79,7 +85,7 @@ struct ContentView: View {
                     .fancyTabItem(tag: TabSelection.settings) {
                         FancyTabBarLabel(
                             tag: TabSelection.settings,
-                            symbolName: "gear"
+                            symbolConfiguration: .settings
                         )
                     }
             }
@@ -88,8 +94,8 @@ struct ContentView: View {
             accountChanged()
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired {
-                NotificationDisplayer.presentTokenRefreshFlow(for: appState.currentActiveAccount) { updatedAccount in
+            if expired, let account = appState.currentActiveAccount {
+                NotificationDisplayer.presentTokenRefreshFlow(for: account) { updatedAccount in
                     appState.setActiveAccount(updatedAccount)
                 }
             }
@@ -141,15 +147,6 @@ struct ContentView: View {
             } catch {
                 errorHandler.handle(error)
             }
-        }
-    }
-    
-    func computeUsername(account: SavedAccount) -> String {
-        switch profileTabLabel {
-        case .username: return account.username
-        case .instance: return account.hostName ?? account.username
-        case .nickname: return appState.currentNickname
-        case .anonymous: return "Profile"
         }
     }
     

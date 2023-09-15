@@ -30,6 +30,8 @@ struct CommentSettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("compactComments") var compactComments: Bool = false
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
+    
     // interactions and info
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
@@ -54,8 +56,10 @@ struct CommentSettingsView: View {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
-                        Image(systemName: "wand.and.stars")
-                            .foregroundColor(.pink)
+                        if showSettingsIcons {
+                            Image(systemName: "wand.and.stars")
+                                .foregroundColor(.pink)
+                        }
                     }
                 }
             } footer: {
@@ -96,9 +100,11 @@ struct CommentSettingsView: View {
             }
             
             Section {
-                SwitchableSettingsItem(settingPictureSystemName: "circle",
-                                       settingName: "Show Jump Button",
-                                       isTicked: $showCommentJumpButton)
+                SwitchableSettingsItem(
+                    settingPictureSystemName: "chevron.down.circle",
+                    settingName: "Show Jump Button",
+                    isTicked: $showCommentJumpButton
+                )
                 SelectableSettingsItem(
                     settingIconSystemName: "arrow.left.arrow.right",
                     settingName: "Side",
