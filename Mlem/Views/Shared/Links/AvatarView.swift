@@ -20,21 +20,21 @@ struct AvatarView: View {
     let blurAvatar: Bool
     
     init(community: APICommunity, avatarSize: CGFloat, lineColor: Color? = nil) {
-        @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+        @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
         
         self.type = .community
-        self.url = community.icon
+        self.url = community.iconUrl
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
-        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.icon)
+        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.iconUrl)
         self.blurAvatar = shouldBlurNsfw && community.nsfw
     }
     
     init(user: APIPerson, avatarSize: CGFloat, blurAvatar: Bool = false, lineColor: Color? = nil) {
-        @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+        @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
         
         self.type = .user
-        self.url = user.avatar
+        self.url = user.avatarUrl
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
         self.clipAvatar = false
@@ -51,7 +51,7 @@ struct AvatarView: View {
 
     var body: some View {
         Group {
-            if let url = url {
+            if let url {
                 CachedImage(
                     url: url.withIcon64Parameters,
                     shouldExpand: false,
@@ -93,8 +93,8 @@ struct AvatarView: View {
                             .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
                     )
                 }
-                    .frame(maxWidth: .infinity)
-                    .background(.gray)
+                .frame(maxWidth: .infinity)
+                .background(.gray)
             )
         case .user:
             return AnyView(

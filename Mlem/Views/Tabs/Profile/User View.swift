@@ -101,8 +101,8 @@ struct UserView: View {
             subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
             avatarSubtext: $avatarSubtext,
             avatarSubtextClicked: toggleCakeDayVisible,
-            bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
-            avatarUrl: userDetails.person.avatar,
+            bannerURL: shouldShowUserHeaders ? userDetails.person.bannerUrl : nil,
+            avatarUrl: userDetails.person.avatarUrl,
             label1: "\(userDetails.counts.commentCount) Comments",
             label2: "\(userDetails.counts.postCount) Posts"
         )
@@ -245,7 +245,7 @@ struct UserView: View {
             // take this opportunity to update the users avatar url to catch changes
             // we should be able to shift this down to the repository layer in the future so that we
             // catch anytime the app loads the signed in users details from any location in the app 🤞
-            let url = response.personView.person.avatar
+            let url = response.personView.person.avatarUrl
             let updatedAccount = SavedAccount(
                 id: currentAccount.id,
                 instanceLink: currentAccount.instanceLink,
@@ -290,11 +290,11 @@ struct UserViewPreview: PreviewProvider {
             id: name.hashValue,
             name: name,
             displayName: displayName,
-            avatar: URL(string: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp"),
+            avatar: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp",
             published: Date.now.advanced(by: -10000),
             actorId: URL(string: "https://google.com")!,
             bio: "Just here for the good vibes!",
-            banner: URL(string: "https://i.imgur.com/wcayaCB.jpeg"),
+            banner: "https://i.imgur.com/wcayaCB.jpeg",
             admin: userType == .admin,
             botAccount: userType == .bot
         )

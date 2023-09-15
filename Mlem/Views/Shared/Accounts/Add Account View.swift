@@ -320,7 +320,7 @@ struct AddSavedInstanceView: View {
                 instanceLink: instanceURL,
                 accessToken: response.jwt,
                 username: username,
-                avatarUrl: user.avatar
+                avatarUrl: user.avatarUrl
             )
             
             // MARK: - Save the account's credentials into the keychain

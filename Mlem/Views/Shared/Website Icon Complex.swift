@@ -32,7 +32,7 @@ struct WebsiteIconComplex: View {
 
     var faviconURL: URL? {
         guard
-            let baseURL = post.url?.host,
+            let baseURL = post.linkUrl?.host,
             let imageURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")
         else {
             return nil
@@ -50,7 +50,7 @@ struct WebsiteIconComplex: View {
     }
     
     var linkHost: String {
-        if let url = post.url {
+        if let url = post.linkUrl {
             return url.host ?? "some website"
         }
         return "some website"
@@ -58,7 +58,7 @@ struct WebsiteIconComplex: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
+            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailImageUrl {
                 CachedImage(url: thumbnailURL, shouldExpand: false)
                     .frame(maxHeight: 400)
                     .applyNsfwOverlay(post.nsfw)
@@ -101,7 +101,7 @@ struct WebsiteIconComplex: View {
         )
         .contentShape(Rectangle())
         .onTapGesture {
-            if let url = post.url {
+            if let url = post.linkUrl {
                 openURL(url)
                 if let onTapActions {
                     onTapActions()
