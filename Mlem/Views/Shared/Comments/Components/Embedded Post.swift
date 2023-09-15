@@ -31,10 +31,10 @@ struct EmbeddedPost: View {
     // - enrich info
     // - navigation link to post
     var body: some View {
-        NavigationLink(value: LazyLoadPostLinkWithContext(
+        NavigationLink(.lazyLoadPostLinkWithContext(.init(
             post: post,
             scrollTarget: comment.id
-        )) {
+        ))) {
             postLinkButton()
         }
     }

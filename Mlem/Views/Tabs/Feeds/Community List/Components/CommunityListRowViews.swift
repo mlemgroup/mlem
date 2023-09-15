@@ -28,9 +28,10 @@ struct CommuntiyFeedRowView: View {
     let community: APICommunity
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
+    let navigationContext: NavigationContext
     
     var body: some View {
-        NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {
+        NavigationLink(value: pathValue) {
             HStack {
                 // NavigationLink with invisible array
                 communityNameLabel
@@ -66,6 +67,15 @@ struct CommuntiyFeedRowView: View {
         .accessibilityLabel(communityLabel)
     }
 
+    private var pathValue: AnyHashable {
+        if navigationContext == .sidebar {
+            return CommunityLinkWithContext(community: community, feedType: .subscribed)
+        } else {
+            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
+            return NavigationRoute.communityLinkWithContext(.init(community: community, feedType: .subscribed))
+        }
+    }
+    
     private var communityNameText: Text {
         Text(community.name)
     }
@@ -126,9 +136,10 @@ struct HomepageFeedRowView: View {
     let iconName: String
     let iconColor: Color
     let description: String
+    let navigationContext: NavigationContext
 
     var body: some View {
-        NavigationLink(value: CommunityLinkWithContext(community: nil, feedType: feedType)) {
+        NavigationLink(value: pathValue) {
             HStack {
                 Image(systemName: iconName).resizable()
                     .frame(width: 36, height: 36).foregroundColor(iconColor)
@@ -139,6 +150,15 @@ struct HomepageFeedRowView: View {
             }
             .padding(.bottom, 1)
             .accessibilityElement(children: .combine)
+        }
+    }
+    
+    private var pathValue: AnyHashable {
+        if navigationContext == .sidebar {
+            return CommunityLinkWithContext(community: nil, feedType: feedType)
+        } else {
+            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
+            return NavigationRoute.communityLinkWithContext(.init(community: nil, feedType: feedType))
         }
     }
 }

@@ -70,7 +70,7 @@ struct UserFeedView: View {
     }
     
     private func postEntry(for post: PostModel) -> some View {
-        NavigationLink(value: PostLinkWithContext(post: post, postTracker: privatePostTracker)) {
+        NavigationLink(.postLinkWithContext(.init(post: post, postTracker: privatePostTracker))) {
             VStack(spacing: 0) {
                 FeedPost(
                     post: post,
