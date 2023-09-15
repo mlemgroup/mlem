@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SettingsRoute: Hashable, Codable {
+enum SettingsRoute: Hashable {
     case accountsPage
     case general
     case accessibility
@@ -15,6 +15,12 @@ enum SettingsRoute: Hashable, Codable {
     case contentFilters
     case about
     case advanced
+
+    case aboutPage(AboutSettingsRoute)
+    case appearancePage(AppearanceSettingsRoute)
+    case commentPage(CommentSettingsRoute)
+    case postPage(PostSettingsRoute)
+    case licensesPage(LicensesSettingsRoute)
 }
 
 enum AppearanceSettingsRoute: Hashable, Codable {

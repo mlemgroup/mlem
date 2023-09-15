@@ -78,7 +78,7 @@ struct UserView: View {
     @ViewBuilder
     private var moderatorButton: some View {
         if let user = userDetails, !moderatedCommunities.isEmpty {
-            NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
+            NavigationLink(.userModeratorLink(.init(user: user, moderatedCommunities: moderatedCommunities))) {
                 Image(systemName: "shield")
             }
         }

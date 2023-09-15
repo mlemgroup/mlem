@@ -84,11 +84,11 @@ struct InboxView: View {
     @State var curTab: InboxTab = .all
     
     // utility
-    @State private var navigationPath = NavigationPath()
+    @StateObject private var inboxRouter: NavigationRouter<NavigationRoute> = .init()
     
     var body: some View {
         // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $inboxRouter.path) {
             contentView
                 .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)

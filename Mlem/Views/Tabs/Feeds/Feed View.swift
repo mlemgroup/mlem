@@ -166,7 +166,7 @@ struct FeedView: View {
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
             // TODO: reenable nav
-            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
+            NavigationLink(.postLinkWithContext(.init(post: post, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
                     showPostCreator: shouldShowPostCreator,
@@ -189,13 +189,14 @@ struct FeedView: View {
         Menu {
             if let community, let communityDetails {
                 // until we find a nice way to put nav stuff in MenuFunction, this'll have to do :(
-                NavigationLink(value:
-                    CommunitySidebarLinkWithContext(
+                NavigationLink(.communitySidebarLinkWithContext(
+                    .init(
                         community: community,
                         communityDetails: communityDetails
-                    )) {
-                        Label("Sidebar", systemImage: "sidebar.right")
-                    }
+                    )
+                )) {
+                    Label("Sidebar", systemImage: "sidebar.right")
+                }
                 
                 ForEach(genCommunitySpecificMenuFunctions(for: community)) { menuFunction in
                     MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
@@ -251,16 +252,15 @@ struct FeedView: View {
     @ViewBuilder
     private var toolbarHeader: some View {
         if let community {
-            NavigationLink(value:
-                CommunitySidebarLinkWithContext(
-                    community: community,
-                    communityDetails: communityDetails
-                )) {
-                    Text(community.name)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                        .accessibilityHint("Activate to view sidebar.")
-                }
+            NavigationLink(.communitySidebarLinkWithContext(.init(
+                community: community,
+                communityDetails: communityDetails
+            ))) {
+                Text(community.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .accessibilityHint("Activate to view sidebar.")
+            }
         } else {
             Menu {
                 ForEach(genFeedSwitchingFunctions()) { menuFunction in
