@@ -52,7 +52,7 @@ struct InstanceSummary: View {
         if let siteData {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
-                    instanceIcon(url: siteData.site.icon)
+                    instanceIcon(url: siteData.site.iconUrl)
                         .padding(.leading, 1)
                     
                     Spacer()

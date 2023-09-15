@@ -134,7 +134,7 @@ struct PostSettingsView: View {
                     APIPost(
                         id: 0,
                         name: "",
-                        url: URL(string: "https://lemmy.ml/post/1011734")!,
+                        url: "https://lemmy.ml/post/1011734",
                         body: "",
                         creatorId: 0,
                         communityId: 0,
@@ -151,7 +151,7 @@ struct PostSettingsView: View {
                         nsfw: false,
                         published: .now,
                         removed: false,
-                        thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
+                        thumbnailUrl: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png",
                         updated: nil
                     )
                 )
