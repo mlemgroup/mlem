@@ -36,6 +36,7 @@ struct AccountsPage: View {
                                     dismiss()
                                     setFlow(using: account)
                                 }
+                                .disabled(isActiveAccount(account))
                                 .swipeActions {
                                     Button("Remove", role: .destructive) {
                                         dismiss()
@@ -91,6 +92,11 @@ struct AccountsPage: View {
     private func color(for account: SavedAccount) -> Color {
         guard let currentAccount = appState.currentActiveAccount else { return .primary }
         return account == currentAccount ? .secondary : .primary
+    }
+    
+    private func isActiveAccount(_ account: SavedAccount) -> Bool {
+        guard let currentAccount = appState.currentActiveAccount else { return false }
+        return account == currentAccount
     }
     
     private func setFlow(using account: SavedAccount?) {
