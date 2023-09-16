@@ -87,8 +87,23 @@ extension FeedView {
     
     // MARK: Menus
     
-    func genSortMenuFunctions() -> [MenuFunction] {
-        let types: [PostSortType] = [.hot, .new, .topDay, .topWeek, .topMonth, .topYear, .topAll]
+    func genOuterSortMenuFunctions() -> [MenuFunction] {
+        let types: [PostSortType] = [.hot, .new]
+        return types.map { type in
+            let isSelected = postSortType == type
+            return MenuFunction(
+                text: type.label,
+                imageName: isSelected ? type.iconNameFill : type.iconName,
+                destructiveActionPrompt: nil,
+                enabled: !isSelected
+            ) {
+                postSortType = type
+            }
+        }
+    }
+    
+    func genTopSortMenuFunctions() -> [MenuFunction] {
+        let types: [PostSortType] = [.topDay, .topWeek, .topMonth, .topYear, .topAll]
         return types.map { type in
             let isSelected = postSortType == type
             return MenuFunction(

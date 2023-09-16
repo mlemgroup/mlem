@@ -84,11 +84,11 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         case .topMonth:
             return "Month"
         case .topThreeMonth:
-            return "Months"
+            return "3 Months"
         case .topSixMonth:
-            return "Months"
+            return "6 Months"
         case .topNineMonth:
-            return "Months"
+            return "9 Months"
         case .topYear:
             return "Year"
         case .topAll:
@@ -112,33 +112,11 @@ extension PostSortType: SettingsOptions {
     var label: String {
         switch self {
         case .newComments:
-            return "New"
+            return "New Comments"
         case .mostComments:
-            return "Most"
-        case .topHour:
-            return "Top • Hour"
-        case .topSixHour:
-            return "Top • 6 Hours"
-        case .topTwelveHour:
-            return "Top • 12 Hours"
-        case .topDay:
-            return "Top • Day"
-        case .topWeek:
-            return "Top • Week"
-        case .topMonth:
-            return "Top • Month"
-        case .topThreeMonth:
-            return "Top • 3 Months"
-        case .topSixMonth:
-            return "Top • 6 Months"
-        case .topNineMonth:
-            return "Top • 9 Months"
-        case .topYear:
-            return "Top • Year"
-        case .topAll:
-            return "Top • All Time"
+            return "Most Comments"
         default:
-            return rawValue
+            return switcherLabel
         }
     }
 }

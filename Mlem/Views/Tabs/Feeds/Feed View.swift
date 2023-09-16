@@ -79,7 +79,9 @@ struct FeedView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
                 ToolbarItem(placement: .navigationBarTrailing) { sortMenu }
-                ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
+//                if community != nil {
+//                    ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
+//                }
             }
             .navigationBarTitleDisplayMode(.inline)
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
@@ -180,34 +182,7 @@ struct FeedView: View {
     @ViewBuilder
     private var ellipsisMenu: some View {
         Menu {
-            if let community, let communityDetails {
-                // until we find a nice way to put nav stuff in MenuFunction, this'll have to do :(
-                NavigationLink(value:
-                    CommunitySidebarLinkWithContext(
-                        community: community,
-                        communityDetails: communityDetails
-                    )) {
-                        Label("Sidebar", systemImage: "sidebar.right")
-                    }
-                
-                ForEach(genCommunitySpecificMenuFunctions(for: community)) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
-                }
-            }
-            
-            Divider()
-            
-            ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
-            }
-            
-            Menu {
-                ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
-                }
-            } label: {
-                Label("Post Size", systemImage: AppConstants.postSizeSettingsSymbolName)
-            }
+            communityHeader
         } label: {
             Label("More", systemImage: "ellipsis")
                 .frame(height: AppConstants.barIconHitbox)
@@ -218,14 +193,45 @@ struct FeedView: View {
     @ViewBuilder
     private var sortMenu: some View {
         Menu {
-            ForEach(genSortMenuFunctions()) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
+            Picker("Sort mode", selection: $postSortType) {
+                let sortTypes: [PostSortType] = [.hot, .new]
+                ForEach(sortTypes, id: \.self) { type in
+                    Label(type.label, systemImage: type.iconName)
+                }
+                let topSortTypes: [PostSortType] = [.topDay, .topWeek, .topMonth, .topYear, .topAll]
+                Menu {
+                    Picker("Sort mode", selection: $postSortType) {
+                        ForEach(topSortTypes, id: \.self) { type in
+                            Label(type.label, systemImage: type.iconName)
+                        }
+                    }
+                } label: {
+                    Label("Top...", systemImage: AppConstants.topSymbolName)
+                }
+            }
+            Divider()
+            Toggle(isOn: $shouldBlurNsfw) {
+                Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                
+            }
+            Toggle(isOn: $showReadPosts) {
+                Label("Show Read", systemImage: "book")
+                
+            }
+            Menu {
+                Picker("Post Size", selection: $postSize) {
+                    ForEach(PostSize.allCases, id: \.self) { postSize in
+                        Label(postSize.label, systemImage: postSize.iconName)
+                    }
+                }
+            } label: {
+                Label("Post Size", systemImage: AppConstants.postSizeSettingsSymbolName)
             }
             Divider()
             Button {
                 showingSortMenu = true
             } label: {
-                Label("Show All", systemImage: "line.horizontal.3.decrease.circle")
+                Label("Show All Filters", systemImage: "line.horizontal.3.decrease.circle")
             }
         } label: {
             Label(
@@ -246,34 +252,45 @@ struct FeedView: View {
     
     @ViewBuilder
     private var toolbarHeader: some View {
-        if let community {
-            NavigationLink(value:
-                CommunitySidebarLinkWithContext(
-                    community: community,
-                    communityDetails: communityDetails
-                )) {
-                    Text(community.name)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                        .accessibilityHint("Activate to view sidebar.")
-                }
-        } else {
-            Menu {
+        Menu {
+            if community == nil {
                 ForEach(genFeedSwitchingFunctions()) { menuFunction in
                     MenuButton(menuFunction: menuFunction)
                 }
-            } label: {
-                HStack(alignment: .center, spacing: 0) {
-                    Text(feedType.label)
-                        .font(.headline)
-                    Image(systemName: "chevron.down")
-                        .scaleEffect(0.7)
-                }
-                .foregroundColor(.primary)
-                .accessibilityElement(children: .combine)
-                .accessibilityHint("Activate to change feeds.")
-                // this disables the implicit animation on the header view...
-                .transaction { $0.animation = nil }
+            } else {
+                communityHeader
+            }
+        } label: {
+            HStack(alignment: .center, spacing: 2) {
+                Text(community?.name ?? feedType.label)
+                    .font(.headline)
+                Image(systemName: "chevron.down")
+                    .fontWeight(.semibold)
+                    .scaleEffect(0.7)
+            }
+            .foregroundColor(.primary)
+            .accessibilityElement(children: .combine)
+            .accessibilityHint("Activate to change feeds.")
+            // this disables the implicit animation on the header view...
+            .transaction { $0.animation = nil }
+        }
+    }
+    
+    @ViewBuilder
+    private var communityHeader: some View {
+        Group {
+            if let communityDetails = communityDetails {
+                NavigationLink(value:
+                                CommunitySidebarLinkWithContext(
+                                    community: community!,
+                                    communityDetails: communityDetails
+                                )) {
+                                    Label("Sidebar", systemImage: "sidebar.right")
+                                }
+            }
+            
+            ForEach(genCommunitySpecificMenuFunctions(for: community!)) { menuFunction in
+                MenuButton(menuFunction: menuFunction)
             }
         }
     }
