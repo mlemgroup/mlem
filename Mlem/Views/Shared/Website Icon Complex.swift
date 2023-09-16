@@ -55,14 +55,26 @@ struct WebsiteIconComplex: View {
         }
         return "some website"
     }
+    
+    // REMOVEME: needed for TF hack
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    var screenWidth: CGFloat = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+    var imageWidth: CGFloat { horizontalSizeClass == .regular ? screenWidth * 0.8 : screenWidth }
+    var imageHeight: CGFloat { horizontalSizeClass == .regular ? 400 : screenWidth * 0.66 }
 
     var body: some View {
         VStack(spacing: 0) {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailImageUrl {
-                CachedImage(url: thumbnailURL, shouldExpand: false)
-                    .frame(maxHeight: 400)
-                    .applyNsfwOverlay(post.nsfw)
-                    .clipped()
+                CachedImage(
+                    url: thumbnailURL,
+                    shouldExpand: false,
+                    // CHANGEME: hack for TF release
+                    fixedSize: CGSize(width: imageWidth, height: imageHeight)
+                )
+                // .frame(maxHeight: 400)
+                .frame(width: imageWidth, height: imageHeight)
+                .applyNsfwOverlay(post.nsfw)
+                .clipped()
             }
             
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
