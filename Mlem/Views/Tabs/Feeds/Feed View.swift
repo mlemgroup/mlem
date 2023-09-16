@@ -123,28 +123,36 @@ struct FeedView: View {
             .hoistNavigation(
                 dismiss: dismiss,
                 auxiliaryAction: {
-                    /// Need to check `scrollToTopAppeared` because we want to scroll to top before popping back to sidebar. [2023.09]
-                    if navigationPath.isEmpty, scrollToTopAppeared == false {
-                        print("scroll to top")
-                        withAnimation {
-                            scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)
-                        }
-                        return true
-                    } else {
-                        if horizontalSizeClass == .regular {
-                            print("show/hide sidebar in regular size class")
-                            splitViewColumnVisibility = {
-                                if splitViewColumnVisibility == .all {
-                                    return .automatic
-                                } else {
-                                    return .all
-                                }
-                            }()
-                            return true
+                    if navigationPath.isEmpty {
+                        /// Need to check `scrollToTopAppeared` because we want to scroll to top before popping back to sidebar. [2023.09]
+                        if scrollToTopAppeared {
+                            if horizontalSizeClass == .regular {
+                                print("show/hide sidebar in regular size class")
+                                splitViewColumnVisibility = {
+                                    if splitViewColumnVisibility == .all {
+                                        return .automatic
+                                    } else {
+                                        return .all
+                                    }
+                                }()
+                                return true
+                            } else {
+                                print("show/hide sidebar in compact size class")
+                                //                                rootDetails = nil
+                                //                                return true
+                                // Return `false` to use dismiss action to go back to sidebar. Not sure
+                                return false
+                            }
                         } else {
-                            print("exhausted auxiliary actions")
-                            return false
+                            print("scroll to top")
+                            withAnimation {
+                                scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)
+                            }
+                            return true
                         }
+                    } else {
+                        print("exhausted auxiliary actions, perform dismiss action instead...")
+                        return false
                     }
                 }
             )
