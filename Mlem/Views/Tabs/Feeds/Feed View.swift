@@ -138,10 +138,11 @@ struct FeedView: View {
                                 return true
                             } else {
                                 print("show/hide sidebar in compact size class")
-                                //                                rootDetails = nil
-                                //                                return true
-                                // Return `false` to use dismiss action to go back to sidebar. Not sure
-                                return false
+                                // This seems a lot more reliable than dismiss action for some reason. [2023.09]
+                                rootDetails = nil
+                                return true
+//                                // Return `false` to use dismiss action to go back to sidebar. Not sure
+//                                return false
                             }
                         } else {
                             print("scroll to top")
