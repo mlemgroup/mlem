@@ -105,12 +105,6 @@ struct FeedView: View {
         confirmationMenuFunction = destructiveFunction
         isPresentingConfirmDestructive = true
     }
-
-    @Namespace var scrollToTop
-    @State private var scrollToTopAppeared = false
-    private var scrollToTopId: Int? {
-        postTracker.items.first?.id
-    }
     
     // MARK: - Main Views
     
