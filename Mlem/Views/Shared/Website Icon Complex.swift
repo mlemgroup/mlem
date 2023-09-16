@@ -57,7 +57,10 @@ struct WebsiteIconComplex: View {
     }
     
     // REMOVEME: needed for TF hack
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     var screenWidth: CGFloat = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+    var imageWidth: CGFloat { horizontalSizeClass == .regular ? screenWidth * 0.8 : screenWidth }
+    var imageHeight: CGFloat { horizontalSizeClass == .regular ? 400 : screenWidth * 0.66 }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -66,10 +69,10 @@ struct WebsiteIconComplex: View {
                     url: thumbnailURL,
                     shouldExpand: false,
                     // CHANGEME: hack for TF release
-                    fixedSize: CGSize(width: screenWidth, height: screenWidth * 0.66)
+                    fixedSize: CGSize(width: imageWidth, height: imageHeight)
                 )
                 // .frame(maxHeight: 400)
-                .frame(width: screenWidth, height: screenWidth * 0.66)
+                .frame(width: imageWidth, height: imageHeight)
                 .applyNsfwOverlay(post.nsfw)
                 .clipped()
             }

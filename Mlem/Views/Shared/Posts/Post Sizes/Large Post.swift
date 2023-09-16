@@ -93,7 +93,10 @@ struct LargePost: View {
     }
     
     // REMOVEME: needed for TF hack
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     var screenWidth: CGFloat = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+    var imageWidth: CGFloat { horizontalSizeClass == .regular ? screenWidth * 0.8 : screenWidth }
+    var imageHeight: CGFloat { horizontalSizeClass == .regular ? 600 : screenWidth }
     
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
@@ -207,18 +210,18 @@ struct LargePost: View {
                         url: url,
                         // maxHeight: layoutMode.getMaxHeight(limitHeight),
                         // CHANGEME: hack for TF release
-                        fixedSize: CGSize(width: screenWidth, height: screenWidth),
+                        fixedSize: CGSize(width: imageWidth, height: imageHeight),
                         dismissCallback: markPostAsRead,
                         cornerRadius: AppConstants.largeItemCornerRadius
                     )
-                    .frame(
-                        // CHANGEME: hack for TF release
-                        width: screenWidth,
-                        height: screenWidth,
-                        // maxWidth: .infinity,
-                        // maxHeight: layoutMode.getMaxHeight(limitHeight),
-                        alignment: .top
-                    )
+                    // CHANGEME: hack for TF release
+                    .frame(height: imageHeight)
+                    .frame(maxWidth: .infinity, alignment: .center)
+//                    .frame(
+//                        maxWidth: .infinity,
+//                        maxHeight: layoutMode.getMaxHeight(limitHeight),
+//                        alignment: .top
+//                    )
                     .applyNsfwOverlay(post.post.nsfw || post.community.nsfw, canTapFullImage: isExpanded)
                     .clipped()
                 }
