@@ -92,6 +92,9 @@ struct LargePost: View {
         }
     }
     
+    // REMOVEME: needed for TF hack
+    var screenWidth: CGFloat = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+    
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
     init(
         post: PostModel,
@@ -202,13 +205,18 @@ struct LargePost: View {
                 if layoutMode != .minimize {
                     CachedImage(
                         url: url,
-                        maxHeight: layoutMode.getMaxHeight(limitHeight),
+                        // maxHeight: layoutMode.getMaxHeight(limitHeight),
+                        // CHANGEME: hack for TF release
+                        fixedSize: CGSize(width: screenWidth, height: screenWidth),
                         dismissCallback: markPostAsRead,
                         cornerRadius: AppConstants.largeItemCornerRadius
                     )
                     .frame(
-                        maxWidth: .infinity,
-                        maxHeight: layoutMode.getMaxHeight(limitHeight),
+                        // CHANGEME: hack for TF release
+                        width: screenWidth,
+                        height: screenWidth,
+                        // maxWidth: .infinity,
+                        // maxHeight: layoutMode.getMaxHeight(limitHeight),
                         alignment: .top
                     )
                     .applyNsfwOverlay(post.post.nsfw || post.community.nsfw, canTapFullImage: isExpanded)
