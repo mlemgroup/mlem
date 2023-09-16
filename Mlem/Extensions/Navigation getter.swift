@@ -33,3 +33,16 @@ extension EnvironmentValues {
         set { self[NavigationPathWithRoutes.self] = newValue }
     }
 }
+
+// MARK: - Mlem SettingsRoute
+
+struct NavigationPathWithSettingsRoutes: EnvironmentKey {
+    static let defaultValue: Binding<[SettingsRoute]> = .constant([])
+}
+
+extension EnvironmentValues {
+    var settingsRoutesNavigationPath: Binding<[SettingsRoute]> {
+        get { self[NavigationPathWithSettingsRoutes.self] }
+        set { self[NavigationPathWithSettingsRoutes.self] = newValue }
+    }
+}

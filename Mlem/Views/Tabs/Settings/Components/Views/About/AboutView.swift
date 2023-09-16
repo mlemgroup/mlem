@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AboutView: View {
-    @Binding var navigationPath: NavigationPath
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {

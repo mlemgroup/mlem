@@ -14,7 +14,6 @@ extension View {
 }
 
 struct SettingsRouter: ViewModifier {
-    @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
 
     // swiftlint:disable cyclomatic_complexity
@@ -33,7 +32,7 @@ struct SettingsRouter: ViewModifier {
                 case .contentFilters:
                     FiltersSettingsView()
                 case .about:
-                    AboutView(navigationPath: navigationPath)
+                    AboutView()
                 case .advanced:
                     AdvancedSettingsView()
                 case .aboutPage(let path):

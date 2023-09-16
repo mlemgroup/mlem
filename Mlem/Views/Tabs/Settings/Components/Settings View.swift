@@ -80,6 +80,7 @@ struct SettingsView: View {
                     }
                 )
             }
+            .environment(\.settingsRoutesNavigationPath, $settingsRouter.path)
             .environmentObject(navigation)
             .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
             .onChange(of: selectedTagHashValue) { newValue in

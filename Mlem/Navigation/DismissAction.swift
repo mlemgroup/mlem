@@ -45,8 +45,29 @@ extension View {
 
 struct NavigationDismissHoisting: ViewModifier {
     
+    private typealias AnyRoute = any Hashable
+    
     @EnvironmentObject private var navigation: Navigation
-    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    
+    @Environment(\.navigationPathWithRoutes) private var routesNavigationPath
+    @Environment(\.settingsRoutesNavigationPath) private var settingsNavigationPath
+    
+    @Environment(\.tabSelectionHashValue) private var selectedTabHashValue
+    
+    private var navigationPath: [AnyRoute] {
+        guard let selectedTabHashValue else {
+            return []
+        }
+        guard selectedTabHashValue.hashValue != TabSelection._tabBarNavigation.hashValue else {
+            assertionFailure()
+            return []
+        }
+        if selectedTabHashValue == TabSelection.settings.hashValue {
+            return settingsNavigationPath.wrappedValue
+        } else {
+            return routesNavigationPath.wrappedValue
+        }
+    }
     
     /// - Note: Unfortunately, we can't access the dismiss action via View.environment...doing so causes SwiftUI to enter into infinite loop. [2023.09]
     let dismiss: DismissAction
@@ -62,18 +83,26 @@ struct NavigationDismissHoisting: ViewModifier {
                 /// This must only be called once:
                 /// For example, user may wish to drag to peek at the previous view, but then cancel that drag action. During this, the previous view's .onAppear will get called. If we run this logic for that view again, the actual top view's dismiss action will get lost. [2023.09]
                 if didAppear == false {
-                    print("hoist navigation dismiss action")
+                    print("onAppear: hoist navigation dismiss action")
                     navigation.dismiss = dismiss
                     navigation.auxiliaryAction = auxiliaryAction
                     let pathIndex = max(0, navigationPath.count)
-                    print("adding path action at index -> \(pathIndex)")
+                    print("     adding path action at index -> \(pathIndex)")
                     navigation.pathActions[pathIndex] = (dismiss, auxiliaryAction)
+                    print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
                 }
             }
             .onDisappear {
                 print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
-                print("removing path action at index -> \(navigationPath.count + 1)")
-                navigation.pathActions.removeValue(forKey: navigationPath.count + 1)
+                print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
+                let removeIndex = navigationPath.count + 1
+                // swiftlint:disable unused_optional_binding
+                if let _ = navigation.pathActions.removeValue(forKey: removeIndex) {
+                    // swiftlint:enable unused_optional_binding
+                    print("     removed path action at index -> \(removeIndex)")
+                } else {
+                    print("     no path action to remove at index -> \(removeIndex)")
+                }
             }
     }
 }
@@ -89,10 +118,31 @@ extension View {
 
 struct PerformTabBarNavigation: ViewModifier {
     
+    private typealias AnyRoute = any Hashable
+    
     @Dependency(\.hapticManager) private var hapticManager
-    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    
+    @Environment(\.navigationPathWithRoutes) private var routesNavigationPath
+    @Environment(\.settingsRoutesNavigationPath) private var settingsNavigationPath
+    
+    @Environment(\.tabSelectionHashValue) private var selectedTabHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
+    private var navigationPath: [AnyRoute] {
+        guard let selectedTabHashValue else {
+            return []
+        }
+        guard selectedTabHashValue.hashValue != TabSelection._tabBarNavigation.hashValue else {
+            assertionFailure()
+            return []
+        }
+        if selectedTabHashValue == TabSelection.settings.hashValue {
+            return settingsNavigationPath.wrappedValue
+        } else {
+            return routesNavigationPath.wrappedValue
+        }
+    }
+    
     let tab: TabSelection
     let navigator: Navigation
     
