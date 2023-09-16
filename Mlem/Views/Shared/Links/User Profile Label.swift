@@ -175,7 +175,7 @@ struct UserProfileLabel: View {
                 return UserProfileLabel.flairDeveloper
             }
         }
-        if user.admin {
+        if user.admin ?? false {
             return UserProfileLabel.flairAdmin
         }
         if user.botAccount {

@@ -24,7 +24,7 @@ struct HeadlinePost: View {
 
     // computed
     var usernameColor: Color {
-        if postView.creator.admin {
+        if postView.creator.admin ?? false {
             return .red
         }
         if postView.creator.botAccount {
