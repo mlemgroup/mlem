@@ -15,13 +15,15 @@ struct InstancePickerView: View {
     
     @Binding var selectedInstance: InstanceMetadata?
     
-    @State var instances: [InstanceMetadata]?
+    @State private var query: String = ""
+    @State private var instances: [InstanceMetadata]?
     
     /// Instances currently accepting new users
     var filteredInstances: ArraySlice<InstanceMetadata>? {
         instances?
             .sorted(by: { $0.users > $1.users }) // remote source is already sorted by user count but that may change...
             .filter(\.newUsers) // restrict the list to instances who are accepting new users
+            .filter { query.isEmpty || $0.name.lowercased().hasPrefix(query.lowercased()) }
             .prefix(30) // limit to a maximum of 30
     }
     
@@ -36,17 +38,41 @@ struct InstancePickerView: View {
                         .padding()
                 }
                 
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.secondary)
+                    TextField("Search", text: $query, prompt: Text("Looking for a specific instance?"))
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .textFieldStyle(.roundedBorder)
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 16)
+                
                 if let filteredInstances {
-                    ForEach(filteredInstances) { instance in
-                        VStack(spacing: .zero) {
-                            Divider()
-                            
-                            InstanceSummary(
-                                instance: instance,
-                                onboarding: true,
-                                selectedInstance: $selectedInstance
-                            )
-                            .padding(.horizontal)
+                    if filteredInstances.isEmpty {
+                        VStack(spacing: 16) {
+                            Spacer()
+                            Text("There are no results for \(query)")
+                            Button {
+                                query = ""
+                            } label: {
+                                Text("Clear")
+                            }
+                            Spacer()
+                        }
+                    } else {
+                        ForEach(filteredInstances) { instance in
+                            VStack(spacing: .zero) {
+                                Divider()
+                                
+                                InstanceSummary(
+                                    instance: instance,
+                                    onboarding: true,
+                                    selectedInstance: $selectedInstance
+                                )
+                                .padding(.horizontal)
+                            }
                         }
                     }
                 } else {
@@ -54,6 +80,7 @@ struct InstancePickerView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.immediately)
         .navigationTitle("Instances")
         .task {
             instances = await loadInstances()
