@@ -112,6 +112,7 @@ struct AddSavedInstanceView: View {
             }
         }
         .navigationTitle(Text(onboarding ? "Log in" : ""))
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     var isReadyToSubmit: Bool {
@@ -331,12 +332,10 @@ struct AddSavedInstanceView: View {
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
             accountsTracker.addAccount(account: newAccount)
             
+            setFlow(.account(newAccount))
+            
             if !onboarding {
                 dismiss()
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                setFlow(.account(newAccount))
             }
         } catch {
             handle(error)

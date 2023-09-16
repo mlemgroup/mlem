@@ -33,15 +33,14 @@ struct AccountsPage: View {
                         Section(header: Text(instance)) {
                             ForEach(accountsTracker.accountsByInstance[instance] ?? []) { account in
                                 Button(account.nickname) {
-                                    dismiss()
                                     setFlow(using: account)
+                                    dismiss()
                                 }
                                 .disabled(isActiveAccount(account))
                                 .swipeActions {
                                     Button("Remove", role: .destructive) {
-                                        dismiss()
                                         accountsTracker.removeAccount(account: account)
-                                        if account == appState.currentActiveAccount {
+                                        if isActiveAccount(account) {
                                             // if we just deleted the current account we (currently!) have a decision to make
                                             if let first = accountsTracker.savedAccounts.first {
                                                 // if we have another account available, go to that...
@@ -55,6 +54,8 @@ struct AccountsPage: View {
                                                 // no accounts, so go to onboarding
                                                 setFlow(using: nil)
                                             }
+                                            
+                                            dismiss()
                                         }
                                     }
                                 }
@@ -100,14 +101,11 @@ struct AccountsPage: View {
     }
     
     private func setFlow(using account: SavedAccount?) {
-        // this tiny delay prevents the modal dismiss animation from being cancelled
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
-            if let account {
-                setFlow(.account(account))
-                return
-            }
-            
-            setFlow(.onboarding)
+        if let account {
+            setFlow(.account(account))
+            return
         }
+        
+        setFlow(.onboarding)
     }
 }
