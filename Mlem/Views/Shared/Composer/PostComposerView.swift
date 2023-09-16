@@ -27,7 +27,7 @@ struct PostComposerView: View {
         self.editModel = editModel
         
         self._postTitle = State(initialValue: editModel.editPost?.post.name ?? "")
-        self._postURL = State(initialValue: editModel.editPost?.post.url?.description ?? "")
+        self._postURL = State(initialValue: editModel.editPost?.post.linkUrl?.description ?? "")
         self._postBody = State(initialValue: editModel.editPost?.post.body ?? "")
         self._isNSFW = State(initialValue: editModel.editPost?.post.nsfw ?? false)
     }

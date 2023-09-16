@@ -21,8 +21,8 @@ extension APICommunity {
         nsfw: Bool = false,
         actorId: URL = .mock,
         local: Bool = false,
-        icon: URL? = nil,
-        banner: URL? = nil,
+        icon: String? = nil,
+        banner: String? = nil,
         hidden: Bool = false,
         postingRestrictedToMods: Bool = false,
         instanceId: Int = 0

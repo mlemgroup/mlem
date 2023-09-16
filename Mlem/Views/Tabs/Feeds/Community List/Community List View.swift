@@ -36,20 +36,23 @@ struct CommunityListView: View {
                         feedType: .subscribed,
                         iconName: AppConstants.subscribedFeedSymbolNameFill,
                         iconColor: .red,
-                        description: "Subscribed communities from all servers"
+                        description: "Subscribed communities from all servers",
+                        navigationContext: .sidebar
                     )
                     .id("top") // For "scroll to top" sidebar item
                     HomepageFeedRowView(
                         feedType: .local,
                         iconName: AppConstants.localFeedSymbolNameFill,
                         iconColor: .green,
-                        description: "Local communities from your server"
+                        description: "Local communities from your server",
+                        navigationContext: .sidebar
                     )
                     HomepageFeedRowView(
                         feedType: .all,
                         iconName: AppConstants.federatedFeedSymbolNameFill,
                         iconColor: .blue,
-                        description: "All communities that federate with your server"
+                        description: "All communities that federate with your server",
+                        navigationContext: .sidebar
                     )
                     
                         ForEach(model.visibleSections) { section in
@@ -58,7 +61,8 @@ struct CommunityListView: View {
                                     CommuntiyFeedRowView(
                                         community: community,
                                         subscribed: model.isSubscribed(to: community),
-                                        communitySubscriptionChanged: model.updateSubscriptionStatus
+                                        communitySubscriptionChanged: model.updateSubscriptionStatus,
+                                        navigationContext: .sidebar
                                     )
                                 }
                             }

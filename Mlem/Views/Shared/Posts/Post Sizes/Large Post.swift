@@ -211,7 +211,7 @@ struct LargePost: View {
                         maxHeight: layoutMode.getMaxHeight(limitHeight),
                         alignment: .top
                     )
-                    .applyNsfwOverlay(post.post.nsfw || post.community.nsfw)
+                    .applyNsfwOverlay(post.post.nsfw || post.community.nsfw, canTapFullImage: isExpanded)
                     .clipped()
                 }
                 postBodyView

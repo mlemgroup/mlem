@@ -24,6 +24,7 @@ private struct AnchorsKey: PreferenceKey {
     }
 }
 
+// swiftlint:disable type_body_length
 struct ExpandedPost: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
@@ -113,6 +114,7 @@ struct ExpandedPost: View {
                                 }
                         }
                     }
+                    .padding(.bottom, AppConstants.expandedPostOverscroll)
                 }
                 .onChange(of: scrollTarget) { target in
                     if let target {
@@ -315,3 +317,4 @@ struct ExpandedPost: View {
         }
     }
 }
+// swiftlint:enable type_body_length

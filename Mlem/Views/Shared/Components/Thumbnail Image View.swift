@@ -43,7 +43,7 @@ struct ThumbnailImageView: View {
                     contentMode: .fill
                 )
                 .onTapGesture {
-                    if let url = post.post.url {
+                    if let url = post.post.linkUrl {
                         openURL(url)
                         markPostAsRead()
                     }

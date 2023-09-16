@@ -9,14 +9,25 @@ import Foundation
 import SwiftUI
 
 struct NSFWOverlay: ViewModifier {
-    let isNsfw: Bool
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    
+    let isNsfw: Bool
+    let tapAnywhereToReveal: Bool
+    
     @State var showNsfwFilterToggle: Bool = true
+    
     var showNsfwFilter: Bool { isNsfw ? shouldBlurNsfw && showNsfwFilterToggle : false }
     
     func body(content: Content) -> some View {
         content
-            .overlay(nsfwOverlay)
+            .overlay {
+                if tapAnywhereToReveal {
+                    nsfwOverlay
+                        .onTapGesture { showNsfwFilterToggle.toggle() }
+                } else {
+                    nsfwOverlay
+                }
+            }
     }
     
     @ViewBuilder
@@ -37,6 +48,7 @@ struct NSFWOverlay: ViewModifier {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.thinMaterial)
+            .cornerRadius(AppConstants.largeItemCornerRadius)
         } else if isNsfw, shouldBlurNsfw {
             Image(systemName: "eye.slash")
                 .foregroundColor(.white)
@@ -53,7 +65,7 @@ struct NSFWOverlay: ViewModifier {
 }
 
 extension View {
-    func applyNsfwOverlay(_ isNsfw: Bool) -> some View {
-        modifier(NSFWOverlay(isNsfw: isNsfw))
+    func applyNsfwOverlay(_ isNsfw: Bool, canTapFullImage: Bool = false) -> some View {
+        modifier(NSFWOverlay(isNsfw: isNsfw, tapAnywhereToReveal: canTapFullImage))
     }
 }
