@@ -18,18 +18,18 @@ struct InstancePickerView: View {
     @State var instances: [InstanceMetadata]?
     
     /// Instances currently accepting new users
-    var filteredInstances: [InstanceMetadata]? {
+    var filteredInstances: ArraySlice<InstanceMetadata>? {
         instances?
-            .filter { instance in
-                instance.newUsers
-            }
+            .sorted(by: { $0.users > $1.users }) // remote source is already sorted by user count but that may change...
+            .filter(\.newUsers) // restrict the list to instances who are accepting new users
+            .prefix(30) // limit to a maximum of 30
     }
     
     let onboarding: Bool
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 0) {
+            VStack(spacing: .zero) {
                 if onboarding {
                     Text(pickInstance)
                         .frame(maxWidth: .infinity)
@@ -38,7 +38,7 @@ struct InstancePickerView: View {
                 
                 if let filteredInstances {
                     ForEach(filteredInstances) { instance in
-                        VStack(spacing: 0) {
+                        VStack(spacing: .zero) {
                             Divider()
                             
                             InstanceSummary(
