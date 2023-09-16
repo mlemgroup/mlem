@@ -11,7 +11,6 @@
 		030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030AC0512A64666C00037155 /* UserSettingsView.swift */; };
 		030D4AE62AA1273200A3393D /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D4AE52AA1273200A3393D /* ErrorDetails.swift */; };
 		030D4AE82AA1278400A3393D /* ErrorDetails+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D4AE72AA1278400A3393D /* ErrorDetails+Mock.swift */; };
-		032109522AACEFCF00912DFC /* APISiteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109512AACEFCF00912DFC /* APISiteVersion.swift */; };
 		032109562AAD17B900912DFC /* SortMenuButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109552AAD17B900912DFC /* SortMenuButtonStyle.swift */; };
 		034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */; };
 		035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EB0C92A8687C200227859 /* JumpButtonView.swift */; };
@@ -449,7 +448,6 @@
 		030AC0512A64666C00037155 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
 		030D4AE52AA1273200A3393D /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		030D4AE72AA1278400A3393D /* ErrorDetails+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorDetails+Mock.swift"; sourceTree = "<group>"; };
-		032109512AACEFCF00912DFC /* APISiteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISiteVersion.swift; sourceTree = "<group>"; };
 		032109552AAD17B900912DFC /* SortMenuButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortMenuButtonStyle.swift; sourceTree = "<group>"; };
 		034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetTracker.swift; sourceTree = "<group>"; };
 		035EB0C92A8687C200227859 /* JumpButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButtonView.swift; sourceTree = "<group>"; };
@@ -1583,7 +1581,6 @@
 				637218152A3A2AAD008C4816 /* APILocalSiteRateLimit.swift */,
 				637218162A3A2AAD008C4816 /* APIFederatedInstances.swift */,
 				637218172A3A2AAD008C4816 /* APIMyUserInfo.swift */,
-				032109512AACEFCF00912DFC /* APISiteVersion.swift */,
 				637218182A3A2AAD008C4816 /* APILanguage.swift */,
 				637218192A3A2AAD008C4816 /* APITagline.swift */,
 				6372181A2A3A2AAD008C4816 /* APILocalSite.swift */,
@@ -2750,7 +2747,6 @@
 				637218462A3A2AAD008C4816 /* APIComment.swift in Sources */,
 				CDCBD7282A8D6B7700387A2C /* Instance Picker View Logic.swift in Sources */,
 				637457102A18CB6600B69C03 /* Custom Text Field.swift in Sources */,
-				032109522AACEFCF00912DFC /* APISiteVersion.swift in Sources */,
 				038A16E12A75AA880087987E /* LayoutWidgetModel.swift in Sources */,
 				63344C4F2A07BD2A001BC616 /* Filters Tracker.swift in Sources */,
 				50811B2C2A920443006BA3F2 /* Date+Mock.swift in Sources */,

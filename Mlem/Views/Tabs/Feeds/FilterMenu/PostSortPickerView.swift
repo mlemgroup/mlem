@@ -135,7 +135,8 @@ struct PostSortPickerView: View {
     
     @ViewBuilder
     private func sortOption(_ sortType: PostSortType, stage: PostSortSection = .root, showIcon: Bool = true) -> some View {
-        let isDisabled = (stage == .root && (selectionStage != .root)) || siteInformation.version ?? .infinity < sortType.minimumVersion
+        let isDisabled = false
+        // let isDisabled = (stage == .root && (selectionStage != .root)) || siteInformation.version ?? .infinity < sortType.minimumVersion
         Button {
             tempSelected = sortType
             selectionStage = .root
