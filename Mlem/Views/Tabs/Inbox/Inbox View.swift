@@ -115,6 +115,7 @@ struct InboxView: View {
                     }
                 }
         }
+        .environment(\.navigationPathWithRoutes, $inboxRouter.path)
         .environmentObject(navigation)
     }
     

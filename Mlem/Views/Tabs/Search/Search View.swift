@@ -50,6 +50,7 @@ struct SearchView: View {
                 .navigationBarColor()
                 .navigationTitle("Search")
         }
+        .environment(\.navigationPathWithRoutes, $searchRouter.path)
         .environmentObject(navigation)
         .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
