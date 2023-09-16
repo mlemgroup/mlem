@@ -151,7 +151,7 @@ struct FeedView: View {
         } else {
             VStack(alignment: .center, spacing: 5) {
                 Image(systemName: "text.bubble")
-                
+                Text(String(describing: SiteVersion("0.18.2")))
                 Text("No posts to be found")
             }
             .padding()
