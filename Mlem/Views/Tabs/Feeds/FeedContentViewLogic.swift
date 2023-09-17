@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension FeedView {
+extension FeedContentView {
     // MARK: Feed loading
     
     func initFeed() async {

@@ -74,7 +74,7 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         case .topHour:
             return "Hour"
         case .topSixHour:
-            return "Hours"
+            return "6 Hours"
         case .topTwelveHour:
             return "12 Hours"
         case .topDay:
@@ -115,6 +115,8 @@ extension PostSortType: SettingsOptions {
             return "New Comments"
         case .mostComments:
             return "Most Comments"
+        case _ where PostSortType.topTypes.contains(self):
+            return "Top • \(self.switcherLabel)"
         default:
             return switcherLabel
         }

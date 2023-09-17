@@ -122,13 +122,13 @@ struct PostSortView: View {
     var settingsOptions: some View {
         VStack(spacing: 0) {
             FormNavigationLink {
-                EmptyView()
+                PostSortDefaultPickerView()
             } label: {
                 FormLabel(title: "Default Sort Mode", iconName: "text.line.first.and.arrowtriangle.forward")
             }
             Divider()
             FormNavigationLink {
-                EmptyView()
+                PostSortPinnedOptionsView()
             } label: {
                 FormLabel(title: "Pinned Options", iconName: "pin")
             }
@@ -137,65 +137,5 @@ struct PostSortView: View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
         )
-    }
-}
-
- private struct FormToggle: View {
-    let title: String
-    let iconName: String
-    @Binding var isOn: Bool
-    
-    var body: some View {
-        Toggle(isOn: $isOn) {
-            FormLabel(title: title, iconName: iconName)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 6)
-    }
- }
-
-private struct FormLabel: View {
-    let title: String
-    let iconName: String
-    
-    var body: some View {
-        Label {
-            Text(title)
-                .padding(.vertical, 8)
-        } icon: {
-            Image(systemName: iconName)
-                .imageScale(.large)
-                .foregroundStyle(.blue)
-                .frame(width: 30)
-                .padding(.trailing, 5)
-        }
-    }
-}
-
-private struct FormNavigationLink<Destination: View, Label: View>: View {
-    
-    let destination: Destination
-    let label: Label
-    
-    init(@ViewBuilder _ destination: () -> Destination, @ViewBuilder label: () -> Label) {
-        self.destination = destination()
-        self.label = label()
-    }
-    
-    var body: some View {
-        NavigationLink(destination: destination) {
-            HStack {
-                label
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.secondary)
-                    .fontWeight(.semibold)
-                    .imageScale(.small)
-            }
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 6)
     }
 }
