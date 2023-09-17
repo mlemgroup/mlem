@@ -30,7 +30,19 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     var id: Self { self }
     
     static var outerTypes: [PostSortType] { [.hot, .active, .new, .old, .newComments, .mostComments] }
-    static var topTypes: [PostSortType] { [.topHour, .topSixHour, .topTwelveHour, .topDay, .topWeek, .topMonth, .topThreeMonth, .topSixMonth, .topNineMonth, .topYear, .topAll] }
+    static var topTypes: [PostSortType] { [
+        .topHour,
+        .topSixHour,
+        .topTwelveHour,
+        .topDay,
+        .topWeek,
+        .topMonth,
+        .topThreeMonth,
+        .topSixMonth,
+        .topNineMonth,
+        .topYear,
+        .topAll
+    ] }
     
     var description: String {
         switch self {
