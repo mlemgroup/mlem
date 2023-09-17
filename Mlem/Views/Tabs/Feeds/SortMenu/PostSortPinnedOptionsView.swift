@@ -72,9 +72,9 @@ struct PostSortPinnedOptionsView: View {
                     .imageScale(.medium)
                     .foregroundStyle(.blue)
                     .fontWeight(.semibold)
-                    .transition(.identity)
             }
         }
+        .animation(.easeOut(duration: 0.1), value: isSelected)
         .contentShape(Rectangle())
     }
 }

@@ -157,17 +157,6 @@ struct ContentView: View {
         }
     }
     
-    var feedLongPress: some Gesture {
-        LongPressGesture()
-            .onEnded { _ in
-                // disable long press in accessibility mode to prevent conflict with HUD
-                if !accessibilityFont {
-                    hapticManager.play(haptic: .rigidInfo, priority: .high)
-                    isPresentingAccountSwitcher = true
-                }
-            }
-    }
-    
     var accountSwitchLongPress: some Gesture {
         LongPressGesture()
             .onEnded { _ in
