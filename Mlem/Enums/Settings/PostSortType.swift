@@ -97,15 +97,6 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return rawValue
         }
     }
-    
-//    var minimumVersion: APISiteVersion {
-//        switch self {
-//        case .topThreeMonth, .topSixMonth, .topNineMonth:
-//            return APISiteVersion(major: 0, minor: 18, patch: 1)
-//        default:
-//            return .zero
-//        }
-//    }
 }
 
 extension PostSortType: SettingsOptions {
