@@ -71,9 +71,10 @@ struct CommunitySidebarView: View {
                 title: communityDetails.communityView.community.name,
                 subtitle: "@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)",
                 avatarSubtext: .constant("Created \(getRelativeTime(date: communityDetails.communityView.community.published))"),
-                bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.banner : nil,
-                avatarUrl: communityDetails.communityView.community.icon,
-            label1: "\(communityDetails.communityView.counts.subscribers) Subscribers")
+                bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.bannerUrl : nil,
+                avatarUrl: communityDetails.communityView.community.iconUrl,
+                label1: "\(communityDetails.communityView.counts.subscribers) Subscribers"
+            )
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
                 Text("Description").tag(0)
@@ -149,8 +150,8 @@ struct SidebarPreview: PreviewProvider {
         nsfw: false,
         actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!,
         local: false,
-        icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-        banner: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
+        icon: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp",
+        banner: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp",
         hidden: false,
         postingRestrictedToMods: false,
         instanceId: 0
