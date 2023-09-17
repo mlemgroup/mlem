@@ -8,7 +8,7 @@
 import Foundation
 
 enum PostSize: String {
-    case compact, headline, large
+    case large, headline, compact
 }
 
 extension PostSize: SettingsOptions {

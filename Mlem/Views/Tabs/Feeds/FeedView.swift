@@ -66,23 +66,18 @@ struct FeedView: View {
     @State var shouldLoad: Bool = false
     
     @State var postSortType: PostSortType
-    @State var showingSortMenu: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
     // MARK: - Main Views
-    
     var body: some View {
         contentView
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(hasTranslucentInsets ? Color.secondarySystemBackground : Color.systemBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
-                ToolbarItem(placement: .navigationBarTrailing) { sortMenu }
-//                if community != nil {
-//                    ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
-//                }
+                ToolbarItem(placement: .navigationBarTrailing) { PostSortOptionsView(postSortType: $postSortType) }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(hasTranslucentInsets ? Color.secondarySystemBackground : Color.systemBackground)
             .navigationBarTitleDisplayMode(.inline)
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
@@ -146,7 +141,6 @@ struct FeedView: View {
         } else {
             VStack(alignment: .center, spacing: 5) {
                 Image(systemName: "text.bubble")
-                
                 Text("No posts to be found")
             }
             .padding()
@@ -160,6 +154,7 @@ struct FeedView: View {
     @ViewBuilder
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
+
             // TODO: reenable nav
             NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
                 FeedPost(
@@ -176,77 +171,6 @@ struct FeedView: View {
             if postTracker.shouldLoadContentAfter(after: post) {
                 shouldLoad = true
             }
-        }
-    }
-    
-    @ViewBuilder
-    private var ellipsisMenu: some View {
-        Menu {
-            communityHeader
-        } label: {
-            Label("More", systemImage: "ellipsis")
-                .frame(height: AppConstants.barIconHitbox)
-                .contentShape(Rectangle())
-        }
-    }
-    
-    @ViewBuilder
-    private var sortMenu: some View {
-        Menu {
-            Picker("Sort mode", selection: $postSortType) {
-                let sortTypes: [PostSortType] = [.hot, .new]
-                ForEach(sortTypes, id: \.self) { type in
-                    Label(type.label, systemImage: type.iconName)
-                }
-                let topSortTypes: [PostSortType] = [.topDay, .topWeek, .topMonth, .topYear, .topAll]
-                Menu {
-                    Picker("Sort mode", selection: $postSortType) {
-                        ForEach(topSortTypes, id: \.self) { type in
-                            Label(type.label, systemImage: type.iconName)
-                        }
-                    }
-                } label: {
-                    Label("Top...", systemImage: AppConstants.topSymbolName)
-                }
-            }
-            Divider()
-            Toggle(isOn: $shouldBlurNsfw) {
-                Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
-                
-            }
-            Toggle(isOn: $showReadPosts) {
-                Label("Show Read", systemImage: "book")
-                
-            }
-            Menu {
-                Picker("Post Size", selection: $postSize) {
-                    ForEach(PostSize.allCases, id: \.self) { postSize in
-                        Label(postSize.label, systemImage: postSize.iconName)
-                    }
-                }
-            } label: {
-                Label("Post Size", systemImage: AppConstants.postSizeSettingsSymbolName)
-            }
-            Divider()
-            Button {
-                showingSortMenu = true
-            } label: {
-                Label("Show All Filters", systemImage: "line.horizontal.3.decrease.circle")
-            }
-        } label: {
-            Label(
-                "Selected sorting by \(postSortType.description)",
-                systemImage: postSortType.iconName
-            )
-        }
-        .sheet(isPresented: $showingSortMenu) {
-            PostSortView(
-                isPresented: $showingSortMenu,
-                selected: $postSortType,
-                showReadPosts: $showReadPosts,
-                presentationDetent: .large,
-                detents: [.large]
-            )
         }
     }
     
