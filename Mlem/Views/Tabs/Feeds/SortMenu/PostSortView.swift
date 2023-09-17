@@ -32,7 +32,7 @@ struct PostSortView: View {
             .environment((\EnvironmentValues.refresh as? WritableKeyPath<EnvironmentValues, RefreshAction?>)!, nil)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         isPresented = false
                     }
