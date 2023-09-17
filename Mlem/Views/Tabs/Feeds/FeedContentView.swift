@@ -213,17 +213,16 @@ struct FeedContentView: View {
     private var communityHeader: some View {
         Group {
             if let communityDetails = communityDetails {
-                NavigationLink(value:
-                                CommunitySidebarLinkWithContext(
-                                    community: community!,
-                                    communityDetails: communityDetails
-                                )) {
-                                    Label("Sidebar", systemImage: "sidebar.right")
-                                }
+                NavigationLink(.communitySidebarLinkWithContext(.init(
+                    community: community!,
+                    communityDetails: communityDetails
+                ))) {
+                    Label("Sidebar", systemImage: "sidebar.right")
+                }
             }
-            
+
             ForEach(genCommunitySpecificMenuFunctions(for: community!)) { menuFunction in
-                MenuButton(menuFunction: menuFunction)
+                MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
             }
         }
     }
