@@ -151,7 +151,7 @@ struct CommunityLabel: View {
     @ViewBuilder
     private var communityAvatar: some View {
         Group {
-            if let url = community.icon {
+            if let url = community.iconUrl {
                 CachedImage(url: url.withIcon64Parameters,
                             shouldExpand: false,
                             fixedSize: avatarSize,

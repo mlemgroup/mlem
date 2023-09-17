@@ -82,7 +82,7 @@ struct UserProfileLabel: View {
     @ViewBuilder
     private var userAvatar: some View {
         Group {
-            if let userAvatarLink = user.avatar {
+            if let userAvatarLink = user.avatarUrl {
                 CachedImage(url: userAvatarLink,
                             shouldExpand: false,
                             fixedSize: avatarSize,

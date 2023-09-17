@@ -11,7 +11,7 @@ import Foundation
 struct APIPost: Decodable {
     let id: Int
     let name: String
-    let url: URL?
+    let url: String?
     let body: String?
     let creatorId: Int
     let communityId: Int
@@ -28,8 +28,13 @@ struct APIPost: Decodable {
     let nsfw: Bool
     let published: Date
     let removed: Bool
-    let thumbnailUrl: URL?
+    let thumbnailUrl: String?
     let updated: Date?
+}
+
+extension APIPost {
+    var linkUrl: URL? { LemmyURL(string: url)?.url }
+    var thumbnailImageUrl: URL? { LemmyURL(string: thumbnailUrl)?.url }
 }
 
 extension APIPost: Equatable {

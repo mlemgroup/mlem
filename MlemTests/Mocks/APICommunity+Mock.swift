@@ -23,8 +23,8 @@ extension APICommunity {
         nsfw: Bool = false,
         actorId: URL = URL(string: "https://mlem.group")!,
         local: Bool = true,
-        icon: URL? = nil,
-        banner: URL? = nil,
+        icon: String? = nil,
+        banner: String? = nil,
         hidden: Bool = false,
         postingRestrictedToMods: Bool = false,
         instanceId: Int = 0

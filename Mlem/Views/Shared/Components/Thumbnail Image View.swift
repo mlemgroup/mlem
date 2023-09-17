@@ -36,7 +36,7 @@ struct ThumbnailImageView: View {
             case .link(let url):
                 CachedImage(url: url, shouldExpand: false, fixedSize: size)
                     .onTapGesture {
-                        if let url = postView.post.url {
+                        if let url = postView.post.linkUrl {
                             openURL(url)
                             markPostAsRead()
                         }
