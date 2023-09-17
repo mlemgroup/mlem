@@ -67,8 +67,8 @@ struct CommunitySidebarView: View {
                 title: communityDetails.communityView.community.name,
                 subtitle: "@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)",
                 avatarSubtext: .constant("Created \(getRelativeTime(date: communityDetails.communityView.community.published))"),
-                bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.banner : nil,
-                avatarUrl: communityDetails.communityView.community.icon,
+                bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.bannerUrl : nil,
+                avatarUrl: communityDetails.communityView.community.iconUrl,
                 label1: "\(communityDetails.communityView.counts.subscribers) Subscribers"
             )
             
@@ -91,9 +91,9 @@ struct CommunitySidebarView: View {
                     Divider()
                     ForEach(communityDetails.moderators) { moderatorView in
 
-                        NavigationLink(value: moderatorView.moderator) {
+                        NavigationLink(.apiPerson(moderatorView.moderator)) {
                             HStack {
-                                UserProfileLabel(
+                                UserLabelView(
                                     user: moderatorView.moderator,
                                     serverInstanceLocation: .bottom,
                                     overrideShowAvatar: true,
@@ -139,8 +139,8 @@ struct SidebarPreview: PreviewProvider {
         title: "Test Community",
         description: previewCommunityDescription,
         actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!,
-        icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-        banner: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp")
+        icon: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp",
+        banner: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"
     )
     
     static let previewUser: APIPerson = .mock(

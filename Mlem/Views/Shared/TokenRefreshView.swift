@@ -245,7 +245,7 @@ struct TokenRefreshView: View {
         try? await Task.sleep(for: .seconds(0.5))
         
         await MainActor.run {
-            refreshedAccount(.init(from: account, accessToken: newToken))
+            refreshedAccount(.init(from: account, accessToken: newToken, avatarUrl: account.avatarUrl))
             dismiss()
         }
     }

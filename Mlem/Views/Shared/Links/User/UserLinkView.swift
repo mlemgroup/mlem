@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct UserProfileLink: View {
+struct UserLinkView: View {
     var user: APIPerson
     let serverInstanceLocation: ServerInstanceLocation
     var overrideShowAvatar: Bool? // shows or hides the avatar according to value. If not set, uses system setting.
@@ -32,8 +32,8 @@ struct UserProfileLink: View {
     }
 
     var body: some View {
-        NavigationLink(value: user) {
-            UserProfileLabel(
+        NavigationLink(.apiPerson(user)) {
+            UserLabelView(
                 user: user,
                 serverInstanceLocation: serverInstanceLocation,
                 overrideShowAvatar: overrideShowAvatar,

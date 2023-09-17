@@ -20,8 +20,8 @@ struct APICommunity: Codable, Identifiable {
     let nsfw: Bool
     let actorId: URL
     let local: Bool
-    let icon: URL?
-    let banner: URL?
+    let icon: String?
+    let banner: String?
     let hidden: Bool
     let postingRestrictedToMods: Bool
     let instanceId: Int
@@ -43,4 +43,9 @@ extension APICommunity: Comparable {
         let rhsFullCommunity = rhs.name + (rhs.actorId.host ?? "")
         return lhsFullCommunity < rhsFullCommunity
     }
+}
+
+extension APICommunity {
+    var iconUrl: URL? { LemmyURL(string: icon)?.url }
+    var bannerUrl: URL? { LemmyURL(string: banner)?.url }
 }

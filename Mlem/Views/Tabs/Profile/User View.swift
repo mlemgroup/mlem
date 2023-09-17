@@ -8,6 +8,8 @@
 import Dependencies
 import SwiftUI
 
+// swiftlint:disable file_length
+
 /// View for showing user profiles
 /// Accepts the following parameters:
 /// - **userID**: Non-optional ID of the user
@@ -76,7 +78,7 @@ struct UserView: View {
     @ViewBuilder
     private var moderatorButton: some View {
         if let user = userDetails, !moderatedCommunities.isEmpty {
-            NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
+            NavigationLink(.userModeratorLink(.init(user: user, moderatedCommunities: moderatedCommunities))) {
                 Image(systemName: "shield")
             }
         }
@@ -99,8 +101,8 @@ struct UserView: View {
             subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
             avatarSubtext: $avatarSubtext,
             avatarSubtextClicked: toggleCakeDayVisible,
-            bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
-            avatarUrl: userDetails.person.avatar,
+            bannerURL: shouldShowUserHeaders ? userDetails.person.bannerUrl : nil,
+            avatarUrl: userDetails.person.avatarUrl,
             label1: "\(userDetails.counts.commentCount) Comments",
             label2: "\(userDetails.counts.postCount) Posts"
         )
@@ -174,7 +176,7 @@ struct UserView: View {
     }
     
     private func isShowingOwnProfile() -> Bool {
-        userID == appState.currentActiveAccount.id
+        appState.isCurrentAccountId(userID)
     }
     
     @MainActor
@@ -237,7 +239,25 @@ struct UserView: View {
     }
     
     private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
-        try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
+        let response = try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
+        
+        if isShowingOwnProfile(), let currentAccount = appState.currentActiveAccount {
+            // take this opportunity to update the users avatar url to catch changes
+            // we should be able to shift this down to the repository layer in the future so that we
+            // catch anytime the app loads the signed in users details from any location in the app 🤞
+            let url = response.personView.person.avatarUrl
+            let updatedAccount = SavedAccount(
+                id: currentAccount.id,
+                instanceLink: currentAccount.instanceLink,
+                accessToken: currentAccount.accessToken,
+                username: currentAccount.username,
+                storedNickname: currentAccount.storedNickname,
+                avatarUrl: url
+            )
+            appState.setActiveAccount(updatedAccount)
+        }
+        
+        return response
     }
 }
 
@@ -270,11 +290,11 @@ struct UserViewPreview: PreviewProvider {
             id: name.hashValue,
             name: name,
             displayName: displayName,
-            avatar: URL(string: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp"),
+            avatar: "https://lemmy.ml/pictrs/image/df86c06d-341c-4e79-9c80-d7c7eb64967a.jpeg?format=webp",
             published: Date.now.advanced(by: -10000),
             actorId: URL(string: "https://google.com")!,
             bio: "Just here for the good vibes!",
-            banner: URL(string: "https://i.imgur.com/wcayaCB.jpeg"),
+            banner: "https://i.imgur.com/wcayaCB.jpeg",
             admin: userType == .admin,
             botAccount: userType == .bot
         )
@@ -348,7 +368,7 @@ struct UserViewPreview: PreviewProvider {
         ))
     }
     
-    static func generateUserProfileLink(name: String, userType: PreviewUserType) -> UserProfileLink {
+    static func generateUserLinkView(name: String, userType: PreviewUserType) -> UserLinkView {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
         var postContext: PostModel?
@@ -363,7 +383,7 @@ struct UserViewPreview: PreviewProvider {
             postContext = generatePreviewPost(creator: previewUser)
         }
         
-        return UserProfileLink(
+        return UserLinkView(
             user: previewUser,
             serverInstanceLocation: .bottom,
             overrideShowAvatar: true,
@@ -379,6 +399,8 @@ struct UserViewPreview: PreviewProvider {
                 person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .normal),
                 counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)
             )
-        )
+        ).environmentObject(AppState())
     }
 }
+
+// swiftlint:enable file_length

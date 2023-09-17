@@ -86,42 +86,11 @@ extension FeedContentView {
     }
     
     // MARK: Menus
-    
-    func genOuterSortMenuFunctions() -> [MenuFunction] {
-        let types: [PostSortType] = [.hot, .new]
-        return types.map { type in
-            let isSelected = postSortType == type
-            return MenuFunction(
-                text: type.label,
-                imageName: isSelected ? type.iconNameFill : type.iconName,
-                destructiveActionPrompt: nil,
-                enabled: !isSelected
-            ) {
-                postSortType = type
-            }
-        }
-    }
-    
-    func genTopSortMenuFunctions() -> [MenuFunction] {
-        let types: [PostSortType] = [.topDay, .topWeek, .topMonth, .topYear, .topAll]
-        return types.map { type in
-            let isSelected = postSortType == type
-            return MenuFunction(
-                text: type.label,
-                imageName: isSelected ? type.iconNameFill : type.iconName,
-                destructiveActionPrompt: nil,
-                enabled: !isSelected
-            ) {
-                postSortType = type
-            }
-        }
-    }
-    
     func genEllipsisMenuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         let blurNsfwText = shouldBlurNsfw ? "Unblur NSFW" : "Blur NSFW"
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: blurNsfwText,
             imageName: AppConstants.blurNsfwSymbolName,
             destructiveActionPrompt: nil,
@@ -131,7 +100,7 @@ extension FeedContentView {
         })
         
         let showReadPostsText = showReadPosts ? "Hide read" : "Show read"
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: showReadPostsText,
             imageName: "book",
             destructiveActionPrompt: nil,
@@ -147,7 +116,7 @@ extension FeedContentView {
     func genCommunitySpecificMenuFunctions(for community: APICommunity) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         // new post
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "New Post",
             imageName: AppConstants.sendSymbolNameFill,
             destructiveActionPrompt: nil,
@@ -165,7 +134,7 @@ extension FeedContentView {
             let (subscribeText, subscribeSymbol, subscribePrompt) = isSubscribed
                 ? ("Unsubscribe", AppConstants.unsubscribeSymbolName, "Really unsubscribe from \(community.name)?")
                 : ("Subscribe", AppConstants.subscribeSymbolName, nil)
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: subscribeText,
                 imageName: subscribeSymbol,
                 destructiveActionPrompt: subscribePrompt,
@@ -179,7 +148,7 @@ extension FeedContentView {
         
         // favorite/unfavorite
         if favoriteCommunitiesTracker.isFavorited(community) {
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Unfavorite",
                 imageName: "star.slash",
                 destructiveActionPrompt: "Really unfavorite \(community.name)?",
@@ -191,7 +160,7 @@ extension FeedContentView {
                 }
             })
         } else {
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Favorite",
                 imageName: "star",
                 destructiveActionPrompt: nil,
@@ -205,14 +174,7 @@ extension FeedContentView {
         }
         
         // share
-        ret.append(MenuFunction(
-            text: "Share",
-            imageName: AppConstants.shareSymbolName,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            showShareSheet(URLtoShare: community.actorId)
-        })
+        ret.append(MenuFunction.shareMenuFunction(url: community.actorId))
         
         // block/unblock
         if let communityDetails {
@@ -220,7 +182,7 @@ extension FeedContentView {
             let (blockText, blockSymbol, blockPrompt) = communityDetails.communityView.blocked
                 ? ("Unblock", AppConstants.unblockSymbolName, nil)
                 : ("Block", AppConstants.blockSymbolName, "Really block \(community.name)?")
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: blockText,
                 imageName: blockSymbol,
                 destructiveActionPrompt: blockPrompt,
@@ -244,7 +206,7 @@ extension FeedContentView {
             let (imageName, enabled) = type != feedType
                 ? (type.iconName, true)
                 : (type.iconNameFill, false)
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: imageName,
                 destructiveActionPrompt: nil,
@@ -262,7 +224,7 @@ extension FeedContentView {
                 ? (size.iconName, true)
                 : (size.iconNameFill, false)
             
-            return MenuFunction(
+            return MenuFunction.standardMenuFunction(
                 text: size.label,
                 imageName: imageName,
                 destructiveActionPrompt: nil,

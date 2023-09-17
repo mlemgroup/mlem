@@ -13,8 +13,9 @@ import SwiftUI
 private let defaultInstanceGroupKey = "Other"
 
 class SavedAccountTracker: ObservableObject {
-    
     @Dependency(\.persistenceRepository) private var persistenceRepository
+    
+    @Environment(\.setAppFlow) private var setFlow
     
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
     
@@ -59,27 +60,19 @@ class SavedAccountTracker: ObservableObject {
         savedAccounts[index] = account
     }
     
-    // TODO: pass in AppState using a dependency or something nice like that
-    func removeAccount(account: SavedAccount, appState: AppState, forceOnboard: () -> Void) {
+    func removeAccount(account: SavedAccount) {
         guard let index = savedAccounts.firstIndex(of: account) else {
             assertionFailure("Tried to remove an account that does not exist")
             return
         }
         
         savedAccounts.remove(at: index)
-        
-        // if another account exists, swap to it; otherwise force onboarding
-        if let firstAccount: SavedAccount = savedAccounts.first {
-            appState.setActiveAccount(firstAccount)
-        } else {
-            forceOnboard()
-        }
     }
     
     // MARK: - Private methods
     
     private func accountsDidChange(_ newValue: [SavedAccount]) {
-        self.accountsByInstance = Dictionary(
+        accountsByInstance = Dictionary(
             grouping: newValue,
             by: { $0.hostName ?? defaultInstanceGroupKey }
         )

@@ -352,7 +352,7 @@ extension InboxView {
             ? ("Show All", AppConstants.filterSymbolNameFill)
             : ("Show Only Unread", AppConstants.filterSymbolName)
         
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: filterReadText,
             imageName: filterReadSymbol,
             destructiveActionPrompt: nil,
@@ -363,7 +363,7 @@ extension InboxView {
             }
         })
         
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Mark All as Read",
             imageName: "envelope.open",
             destructiveActionPrompt: nil,

@@ -69,6 +69,16 @@ struct FeedContentView: View {
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
+    // MARK: Destructive confirmation
+    
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
     // MARK: - Main Views
     var body: some View {
         contentView
@@ -155,7 +165,7 @@ struct FeedContentView: View {
         VStack(spacing: 0) {
 
             // TODO: reenable nav
-            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker)) {
+            NavigationLink(.postLinkWithContext(.init(post: post, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
                     showPostCreator: shouldShowPostCreator,
@@ -178,7 +188,7 @@ struct FeedContentView: View {
         Menu {
             if community == nil {
                 ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction)
+                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive feed switches
                 }
             } else {
                 communityHeader

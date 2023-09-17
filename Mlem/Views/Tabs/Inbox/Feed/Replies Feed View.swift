@@ -56,10 +56,10 @@ extension InboxView {
     }
     
     func inboxReplyViewWithInteraction(reply: APICommentReplyView) -> some View {
-        NavigationLink(value: LazyLoadPostLinkWithContext(
+        NavigationLink(.lazyLoadPostLinkWithContext(.init(
             post: reply.post,
             scrollTarget: reply.comment.id
-        )) {
+        ))) {
             InboxReplyView(reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
                 .padding(.vertical, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal)
@@ -71,13 +71,13 @@ extension InboxView {
                 }
                 .contextMenu {
                     ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
-                        Button {
-                            item.callback()
-                        } label: {
-                            Label(item.text, systemImage: item.imageName)
-                        }
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                     }
                 }
+                .destructiveConfirmation(
+                    isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                    confirmationMenuFunction: confirmationMenuFunction
+                )
                 .addSwipeyActions(
                     leading: [
                         upvoteCommentReplySwipeAction(commentReply: reply),

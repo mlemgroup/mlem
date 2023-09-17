@@ -13,7 +13,7 @@ struct OnboardingView: View {
         case welcome, about, instances, addAccount
     }
     
-    @Binding var selectedAccount: SavedAccount?
+    @Binding var flow: AppFlow
     
     @State var selectedTab: OnboardingTab = .welcome
     @State var hideNav: Bool = true
@@ -31,12 +31,8 @@ struct OnboardingView: View {
             instancesTab
                 .tag(OnboardingTab.instances)
             
-            AddSavedInstanceView(
-                onboarding: true,
-                currentAccount: $selectedAccount,
-                givenInstance: selectedInstance?.url.description
-            )
-            .tag(OnboardingTab.addAccount)
+            AddSavedInstanceView(onboarding: true, givenInstance: selectedInstance?.url.absoluteString)
+                .tag(OnboardingTab.addAccount)
         }
         .onChange(of: selectedInstance) { _ in
             selectedTab = .addAccount

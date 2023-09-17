@@ -12,6 +12,7 @@ struct PostSettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @AppStorage("postSize") var postSize: PostSize = .headline
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
     
     // Thumbnails
     @AppStorage("shouldShowPostThumbnails") var shouldShowPostThumbnails: Bool = true
@@ -48,12 +49,14 @@ struct PostSettingsView: View {
                     options: PostSize.allCases
                 )
             
-                NavigationLink(value: PostSettingsRoute.customizeWidgets) {
+                NavigationLink(value: SettingsRoute.postPage(.customizeWidgets)) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {
-                        Image(systemName: "wand.and.stars")
-                            .foregroundColor(.pink)
+                        if showSettingsIcons {
+                            Image(systemName: "wand.and.stars")
+                                .foregroundColor(.pink)
+                        }
                     }
                 }
                 
@@ -131,7 +134,7 @@ struct PostSettingsView: View {
                     APIPost(
                         id: 0,
                         name: "",
-                        url: URL(string: "https://lemmy.ml/post/1011734")!,
+                        url: "https://lemmy.ml/post/1011734",
                         body: "",
                         creatorId: 0,
                         communityId: 0,
@@ -148,7 +151,7 @@ struct PostSettingsView: View {
                         nsfw: false,
                         published: .now,
                         removed: false,
-                        thumbnailUrl: URL(string: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png"),
+                        thumbnailUrl: "https://lemmy.ml/pictrs/image/1b759945-6651-497c-bee0-9bdb68f4a829.png",
                         updated: nil
                     )
                 )
@@ -156,7 +159,7 @@ struct PostSettingsView: View {
                 .padding(.horizontal)
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "network",
+                    settingPictureSystemName: "link",
                     settingName: "Show Website Address",
                     isTicked: $shouldShowWebsiteHost
                 )

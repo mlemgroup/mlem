@@ -21,6 +21,8 @@ struct GeneralSettingsView: View {
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
+    
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = false
 
     @EnvironmentObject var appState: AppState
 
@@ -55,7 +57,7 @@ struct GeneralSettingsView: View {
                 )
             } footer: {
                 // swiftlint:disable line_length
-                Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings on \(appState.currentActiveAccount.instanceLink.host ?? "your instance's webpage").")
+                Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings on \(appState.currentActiveAccount?.instanceLink.host ?? "your instance's webpage").")
                 // swiftlint:enable line_length
             }
             
@@ -107,9 +109,15 @@ struct GeneralSettingsView: View {
                 Button(role: .destructive) {
                     isShowingFavoritesDeletionConfirmation.toggle()
                 } label: {
-                    Label("Delete Community Favorites", systemImage: "trash")
-                        .foregroundColor(.red)
-                        .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
+                    Label {
+                        Text("Delete Community Favorites")
+                    } icon: {
+                        if showSettingsIcons {
+                            Image(systemName: "trash")
+                        }
+                    }
+                    .foregroundColor(.red)
+                    .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
                 }
                 .disabled(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty)
                 .confirmationDialog(

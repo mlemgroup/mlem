@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SwitchableSettingsItem: View {
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
+    
     let settingPictureSystemName: String
     let settingPictureColor: Color
     let settingName: String
@@ -32,14 +34,18 @@ struct SwitchableSettingsItem: View {
             Label {
                 Text(settingName)
             } icon: {
-                Image(systemName: settingPictureSystemName)
-                    .foregroundColor(settingPictureColor)
+                if showSettingsIcons {
+                    Image(systemName: settingPictureSystemName)
+                        .foregroundColor(settingPictureColor)
+                }
             }
         }
     }
 }
 
 struct SelectableSettingsItem<T: SettingsOptions>: View {
+    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = true
+    
     let settingIconSystemName: String
     let settingName: String
     @Binding var currentValue: T
@@ -56,8 +62,10 @@ struct SelectableSettingsItem<T: SettingsOptions>: View {
             Label {
                 Text(settingName)
             } icon: {
-                Image(systemName: settingIconSystemName)
-                    .foregroundColor(.pink)
+                if showSettingsIcons {
+                    Image(systemName: settingIconSystemName)
+                        .foregroundColor(.pink)
+                }
             }
         }
     }

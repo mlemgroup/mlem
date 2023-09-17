@@ -108,7 +108,7 @@ struct PostDetailEditorView: View {
             VStack(spacing: 15) {
                 // Community Row
                 HStack {
-                    CommunityLabel(
+                    CommunityLabelView(
                         community: community,
                         serverInstanceLocation: .bottom,
                         overrideShowAvatar: true

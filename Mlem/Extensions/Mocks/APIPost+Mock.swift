@@ -12,7 +12,7 @@ extension APIPost {
     static func mock(
         id: Int = 0,
         name: String = "Mock Post",
-        url: URL? = nil,
+        url: String? = nil,
         body: String? = nil,
         creatorId: Int = 0,
         communityId: Int = 0,
@@ -29,7 +29,7 @@ extension APIPost {
         nsfw: Bool = false,
         published: Date = .mock,
         removed: Bool = false,
-        thumbnailUrl: URL? = nil,
+        thumbnailUrl: String? = nil,
         updated: Date? = nil
     ) -> APIPost {
         .init(

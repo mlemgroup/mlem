@@ -55,6 +55,7 @@ extension InboxView {
         }
     }
     
+    // swiftlint:disable function_body_length
     func genCommentReplyMenuGroup(commentReply: APICommentReplyView) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
@@ -62,7 +63,7 @@ extension InboxView {
         let (upvoteText, upvoteImg) = commentReply.myVote == .upvote ?
             ("Undo upvote", "arrow.up.square.fill") :
             ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg, destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(text: upvoteText, imageName: upvoteImg, destructiveActionPrompt: nil, enabled: true) {
             voteOnCommentReply(commentReply: commentReply, inputOp: .upvote)
         })
         
@@ -70,7 +71,12 @@ extension InboxView {
         let (downvoteText, downvoteImg) = commentReply.myVote == .downvote ?
             ("Undo downvote", "arrow.down.square.fill") :
             ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg, destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(
+            text: downvoteText,
+            imageName: downvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             voteOnCommentReply(commentReply: commentReply, inputOp: .downvote)
         })
         
@@ -78,17 +84,27 @@ extension InboxView {
         let (markReadText, markReadImg) = commentReply.commentReply.read ?
             ("Mark unread", "envelope.fill") :
             ("Mark read", "envelope.open")
-        ret.append(MenuFunction(text: markReadText, imageName: markReadImg, destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(
+            text: markReadText,
+            imageName: markReadImg,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             toggleCommentReplyRead(commentReplyView: commentReply)
         })
         
         // reply
-        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             replyToCommentReply(commentReply: commentReply)
         })
         
         // report
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Report Comment",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
@@ -98,7 +114,7 @@ extension InboxView {
         })
         
         // block
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
@@ -111,6 +127,8 @@ extension InboxView {
         
         return ret
     }
+
+    // swiftlint:enable function_body_length
     
     // MARK: Mentions -
     
@@ -159,6 +177,7 @@ extension InboxView {
         }
     }
     
+    // swiftlint:disable function_body_length
     func genMentionMenuGroup(mention: APIPersonMentionView) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
@@ -166,7 +185,7 @@ extension InboxView {
         let (upvoteText, upvoteImg) = mention.myVote == .upvote ?
             ("Undo upvote", "arrow.up.square.fill") :
             ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(text: upvoteText, imageName: upvoteImg, destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(text: upvoteText, imageName: upvoteImg, destructiveActionPrompt: nil, enabled: true) {
             voteOnMention(mention: mention, inputOp: .upvote)
         })
         
@@ -174,7 +193,12 @@ extension InboxView {
         let (downvoteText, downvoteImg) = mention.myVote == .downvote ?
             ("Undo downvote", "arrow.down.square.fill") :
             ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(text: downvoteText, imageName: downvoteImg, destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(
+            text: downvoteText,
+            imageName: downvoteImg,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             voteOnMention(mention: mention, inputOp: .downvote)
         })
         
@@ -182,17 +206,27 @@ extension InboxView {
         let (markReadText, markReadImg) = mention.personMention.read ?
             ("Mark unread", "envelope.fill") :
             ("Mark read", "envelope.open")
-        ret.append(MenuFunction(text: markReadText, imageName: markReadImg, destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(
+            text: markReadText,
+            imageName: markReadImg,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             toggleMentionRead(mention: mention)
         })
         
         // reply
-        ret.append(MenuFunction(text: "Reply", imageName: "arrowshape.turn.up.left", destructiveActionPrompt: nil, enabled: true) {
+        ret.append(MenuFunction.standardMenuFunction(
+            text: "Reply",
+            imageName: "arrowshape.turn.up.left",
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
             replyToMention(mention: mention)
         })
         
         // report
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Report Comment",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
@@ -202,7 +236,7 @@ extension InboxView {
         })
 
         // block
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
@@ -215,6 +249,8 @@ extension InboxView {
         
         return ret
     }
+
+    // swiftlint:enable function_body_length
     
     // MARK: Messages -
     
@@ -246,7 +282,7 @@ extension InboxView {
         let (markReadText, markReadImg) = message.privateMessage.read ?
             ("Mark unread", "envelope.fill") :
             ("Mark read", "envelope.open")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: markReadText,
             imageName: markReadImg,
             destructiveActionPrompt: nil,
@@ -256,7 +292,7 @@ extension InboxView {
         })
         
         // reply
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
@@ -266,7 +302,7 @@ extension InboxView {
         })
         
         // report
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Report Message",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: nil,
@@ -276,7 +312,7 @@ extension InboxView {
         })
         
         // block
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,

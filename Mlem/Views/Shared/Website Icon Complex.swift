@@ -32,7 +32,7 @@ struct WebsiteIconComplex: View {
 
     var faviconURL: URL? {
         guard
-            let baseURL = post.url?.host,
+            let baseURL = post.linkUrl?.host,
             let imageURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)")
         else {
             return nil
@@ -50,19 +50,31 @@ struct WebsiteIconComplex: View {
     }
     
     var linkHost: String {
-        if let url = post.url {
+        if let url = post.linkUrl {
             return url.host ?? "some website"
         }
         return "some website"
     }
+    
+    // REMOVEME: needed for TF hack
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    var screenWidth: CGFloat = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
+    var imageWidth: CGFloat { horizontalSizeClass == .regular ? screenWidth * 0.8 : screenWidth }
+    var imageHeight: CGFloat { horizontalSizeClass == .regular ? 400 : screenWidth * 0.66 }
 
     var body: some View {
         VStack(spacing: 0) {
-            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailUrl {
-                CachedImage(url: thumbnailURL, shouldExpand: false)
-                    .frame(maxHeight: 400)
-                    .applyNsfwOverlay(post.nsfw)
-                    .clipped()
+            if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailImageUrl {
+                CachedImage(
+                    url: thumbnailURL,
+                    shouldExpand: false,
+                    // CHANGEME: hack for TF release
+                    fixedSize: CGSize(width: imageWidth, height: imageHeight)
+                )
+                // .frame(maxHeight: 400)
+                .frame(width: imageWidth, height: imageHeight)
+                .applyNsfwOverlay(post.nsfw)
+                .clipped()
             }
             
             VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
@@ -101,7 +113,7 @@ struct WebsiteIconComplex: View {
         )
         .contentShape(Rectangle())
         .onTapGesture {
-            if let url = post.url {
+            if let url = post.linkUrl {
                 openURL(url)
                 if let onTapActions {
                     onTapActions()

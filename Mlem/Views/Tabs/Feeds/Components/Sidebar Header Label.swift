@@ -17,7 +17,7 @@ struct CommunitySidebarHeaderLabel: View {
     var body: some View {
         Text(text)
             .padding(.horizontal, 6)
-            .foregroundColor(.white)
+            .foregroundColor(.primary)
             .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 6))
             .font(.callout)
             .lineLimit(1)

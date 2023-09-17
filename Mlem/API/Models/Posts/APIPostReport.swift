@@ -13,11 +13,15 @@ struct APIPostReport: Decodable {
     let creatorId: Int
     let postId: Int
     let originalPostName: String
-    let originalPostUrl: URL?
+    let originalPostUrl: String?
     let originalPostBody: String?
     let reason: String
     let resolved: Bool
     let resolverId: Int?
     let published: Date
     let updated: Date?
+}
+
+extension APIPostReport {
+    var originalUrl: URL? { LemmyURL(string: originalPostUrl)?.url }
 }

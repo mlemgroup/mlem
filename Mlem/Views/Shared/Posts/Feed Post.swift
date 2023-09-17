@@ -79,6 +79,16 @@ struct FeedPost: View {
     @State private var isShowingEnlargedImage: Bool = false
     @State private var isComposingReport: Bool = false
     
+    // MARK: Destructive confirmation
+    
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
     // MARK: Computed
     
     var barThickness: CGFloat { !post.read && diffWithoutColor && readMarkStyle == .bar ? CGFloat(readBarThickness) : .zero }
@@ -94,13 +104,13 @@ struct FeedPost: View {
 //                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
                 .contextMenu {
                     ForEach(genMenuFunctions()) { item in
-                        Button {
-                            item.callback()
-                        } label: {
-                            Label(item.text, systemImage: item.imageName)
-                        }
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                     }
                 }
+                .destructiveConfirmation(
+                    isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                    confirmationMenuFunction: confirmationMenuFunction
+                )
                 .addSwipeyActions(
                     leading: [
                         enableSwipeActions ? upvoteSwipeAction : nil,
@@ -172,7 +182,7 @@ struct FeedPost: View {
 
                     // posting user
                     if showPostCreator {
-                        UserProfileLink(
+                        UserLinkView(
                             user: post.creator,
                             serverInstanceLocation: userServerInstanceLocation
                         )
@@ -192,11 +202,7 @@ struct FeedPost: View {
                     downvote: downvotePost,
                     save: savePost,
                     reply: replyToPost,
-                    share: {
-                        if let url = URL(string: post.post.apId) {
-                            showShareSheet(URLtoShare: url)
-                        }
-                    },
+                    shareURL: URL(string: post.post.apId),
                     shouldShowScore: shouldShowScoreInPostBar,
                     showDownvotesSeparately: showPostDownvotesSeparately,
                     shouldShowTime: shouldShowTimeInPostBar,
@@ -295,7 +301,7 @@ struct FeedPost: View {
         let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
             ("Undo upvote", "arrow.up.square.fill") :
             ("Upvote", "arrow.up.square")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
             destructiveActionPrompt: nil,
@@ -310,7 +316,7 @@ struct FeedPost: View {
         let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
             ("Undo downvote", "arrow.down.square.fill") :
             ("Downvote", "arrow.down.square")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
             destructiveActionPrompt: nil,
@@ -323,7 +329,7 @@ struct FeedPost: View {
 
         // save
         let (saveText, saveImg) = post.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg,
             destructiveActionPrompt: nil,
@@ -335,7 +341,7 @@ struct FeedPost: View {
         })
 
         // reply
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
@@ -344,9 +350,9 @@ struct FeedPost: View {
             replyToPost()
         })
 
-        if post.creator.id == appState.currentActiveAccount.id {
+        if appState.isCurrentAccountId(post.creator.id) {
             // edit
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: "pencil",
                 destructiveActionPrompt: nil,
@@ -356,7 +362,7 @@ struct FeedPost: View {
             })
             
             // delete
-            ret.append(MenuFunction(
+            ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
@@ -369,19 +375,12 @@ struct FeedPost: View {
         }
 
         // share
-        ret.append(MenuFunction(
-            text: "Share",
-            imageName: "square.and.arrow.up",
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            if let url = URL(string: post.post.apId) {
-                showShareSheet(URLtoShare: url)
-            }
-        })
+        if let url = URL(string: post.post.apId) {
+            ret.append(MenuFunction.shareMenuFunction(url: url))
+        }
 
         // report
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Report Post",
             imageName: AppConstants.reportSymbolName,
             destructiveActionPrompt: AppConstants.reportPostPrompt,
@@ -391,7 +390,7 @@ struct FeedPost: View {
         })
 
         // block user
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: AppConstants.blockUserSymbolName,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
@@ -403,7 +402,7 @@ struct FeedPost: View {
         })
         
         // block community
-        ret.append(MenuFunction(
+        ret.append(MenuFunction.standardMenuFunction(
             text: "Block Community",
             imageName: AppConstants.blockSymbolName,
             destructiveActionPrompt: nil,

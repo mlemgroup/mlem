@@ -4,9 +4,7 @@
 //
 //  Created by Sam Marfleet on 16/07/2023.
 //
-
 import SwiftUI
-
 struct CommunitySettingsView: View {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
@@ -14,19 +12,17 @@ struct CommunitySettingsView: View {
     var body: some View {
         Form {
             SwitchableSettingsItem(
-                settingPictureSystemName: "person.2.circle.fill",
-                settingName: "Show Community Avatars",
+                settingPictureSystemName: AppConstants.communitySymbolName,
+                settingName: "Show Avatars",
                 isTicked: $shouldShowCommunityIcons
             )
-
             SwitchableSettingsItem(
-                settingPictureSystemName: "rectangle.grid.1x2",
-                settingName: "Show Community Banners",
+                settingPictureSystemName: AppConstants.bannerSymbolName,
+                settingName: "Show Banners",
                 isTicked: $shouldShowCommunityHeaders
             )
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Communities")
-        .navigationBarColor()
     }
 }

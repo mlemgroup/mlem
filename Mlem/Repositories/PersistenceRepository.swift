@@ -76,7 +76,7 @@ class PersistenceRepository {
                 return nil
             }
             
-            return SavedAccount(from: account, accessToken: token)
+            return SavedAccount(from: account, accessToken: token, avatarUrl: account.avatarUrl)
         }
     }
     
@@ -114,6 +114,10 @@ class PersistenceRepository {
     
     func saveFilteredKeywords(_ value: [String]) async throws {
         try await save(value, to: Path.filteredKeywords)
+    }
+    
+    func getFilteredKeywordsPath() -> URL {
+        Path.filteredKeywords
     }
     
     func loadLayoutWidgets() -> LayoutWidgetGroups {

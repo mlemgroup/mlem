@@ -41,19 +41,19 @@ struct AboutView: View {
                     }
                     .buttonStyle(SettingsButtonStyle())
 
-                    NavigationLink(value: AboutSettingsRoute.contributors) {
+                    NavigationLink(value: SettingsRoute.aboutPage(.contributors)) {
                         Label("Contributors", systemImage: "person.2.fill").labelStyle(SquircleLabelStyle(color: .teal))
                     }
                 }
 
                 Section {
-                    NavigationLink(value: AboutSettingsRoute.privacyPolicy(privacyPolicy)) {
+                    NavigationLink(value: SettingsRoute.aboutPage(.privacyPolicy(privacyPolicy))) {
                         Label("Privacy Policy", systemImage: "hand.raised.fill").labelStyle(SquircleLabelStyle(color: .blue))
                     }
-                    NavigationLink(value: AboutSettingsRoute.eula(eula)) {
+                    NavigationLink(value: SettingsRoute.aboutPage(.eula(eula))) {
                         Label("EULA", systemImage: "doc.plaintext.fill").labelStyle(SquircleLabelStyle(color: .purple))
                     }
-                    NavigationLink(value: AboutSettingsRoute.licenses) {
+                    NavigationLink(value: SettingsRoute.aboutPage(.licenses)) {
                         Label("Licenses", systemImage: "doc.fill").labelStyle(SquircleLabelStyle(color: .orange))
                     }
                 }

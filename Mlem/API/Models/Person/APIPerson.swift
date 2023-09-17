@@ -12,18 +12,18 @@ struct APIPerson: Decodable, Identifiable, Hashable {
     let id: Int
     let name: String
     let displayName: String?
-    let avatar: URL?
+    let avatar: String?
     let banned: Bool
     let published: Date
     let updated: Date?
     let actorId: URL
     let bio: String?
     let local: Bool
-    let banner: URL?
+    let banner: String?
     let deleted: Bool
-    let sharedInboxUrl: URL?
+    let sharedInboxUrl: String?
     let matrixUserId: String?
-    let admin: Bool
+    let admin: Bool? // this is no longer returned on beehaw...
     let botAccount: Bool
     let banExpires: Date?
     let instanceId: Int
@@ -33,4 +33,10 @@ extension APIPerson: Equatable {
     static func == (lhs: APIPerson, rhs: APIPerson) -> Bool {
         lhs.actorId == rhs.actorId
     }
+}
+
+extension APIPerson {
+    var avatarUrl: URL? { LemmyURL(string: avatar)?.url }
+    var bannerUrl: URL? { LemmyURL(string: banner)?.url }
+    var sharedInboxLink: URL? { LemmyURL(string: sharedInboxUrl)?.url }
 }

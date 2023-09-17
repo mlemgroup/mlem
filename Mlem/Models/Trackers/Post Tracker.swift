@@ -116,6 +116,8 @@ class PostTracker: ObservableObject {
             await reset()
         }
         
+        page = 1
+        
         let newPosts = try await postRepository.loadPage(
             communityId: communityId,
             page: page,
@@ -414,11 +416,11 @@ class PostTracker: ObservableObject {
         for post in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
-            if let communityAvatarLink = post.community.icon {
+            if let communityAvatarLink = post.community.iconUrl {
                 imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
             
-            if let userAvatarLink = post.creator.avatar {
+            if let userAvatarLink = post.creator.avatarUrl {
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
             }
             
@@ -428,7 +430,7 @@ class PostTracker: ObservableObject {
                 imageRequests.append(ImageRequest(url: url, priority: .high))
             case let .link(url):
                 // websites: load image and favicon
-                if let baseURL = post.post.url?.host,
+                if let baseURL = post.post.linkUrl?.host,
                    let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
                     imageRequests.append(ImageRequest(url: favIconURL))
                 }

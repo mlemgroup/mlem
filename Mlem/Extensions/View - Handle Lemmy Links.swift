@@ -15,63 +15,73 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
-    
+    @AppStorage("upvoteOnSave") var upvoteOnSave = false
+
+    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         content
-            .navigationDestination(for: APICommunityView.self) { context in
-                FeedView(community: context.community, feedType: .all, sortType: defaultPostSorting)
-                    .environmentObject(appState)
+            .navigationDestination(for: NavigationRoute.self) { route in
+                switch route {
+                case .apiCommunity(let community):
+                    FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
+                        .environmentObject(appState)
+                        .environmentObject(filtersTracker)
+                        .environmentObject(CommunitySearchResultsTracker())
+                case .apiCommunityView(let context):
+                    FeedView(community: context.community, feedType: .all, sortType: defaultPostSorting)
+                        .environmentObject(appState)
+                        .environmentObject(filtersTracker)
+                        .environmentObject(CommunitySearchResultsTracker())
+                case .communityLinkWithContext(let context):
+                    FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
+                        .environmentObject(appState)
+                        .environmentObject(filtersTracker)
+                        .environmentObject(CommunitySearchResultsTracker())
+                case .communitySidebarLinkWithContext(let context):
+                    CommunitySidebarView(
+                        community: context.community,
+                        communityDetails: context.communityDetails
+                    )
                     .environmentObject(filtersTracker)
                     .environmentObject(CommunitySearchResultsTracker())
-            }
-            .navigationDestination(for: APICommunity.self) { community in
-                FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
-                    .environmentObject(appState)
-                    .environmentObject(filtersTracker)
-                    .environmentObject(CommunitySearchResultsTracker())
-            }
-            .navigationDestination(for: CommunityLinkWithContext.self) { context in
-                FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
-                    .environmentObject(appState)
-                    .environmentObject(filtersTracker)
-                    .environmentObject(CommunitySearchResultsTracker())
-            }
-            .navigationDestination(for: CommunitySidebarLinkWithContext.self) { context in
-                CommunitySidebarView(
-                    community: context.community,
-                    communityDetails: context.communityDetails
-                )
-                .environmentObject(filtersTracker)
-                .environmentObject(CommunitySearchResultsTracker())
-            }
-            .navigationDestination(for: APIPost.self) { post in
-                LazyLoadExpandedPost(post: post)
-            }
-            .navigationDestination(for: PostLinkWithContext.self) { post in
-                ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
-                    .environmentObject(post.postTracker)
-                    .environmentObject(appState)
-            }
-            .navigationDestination(for: LazyLoadPostLinkWithContext.self) { post in
-                LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
-            }
-            .navigationDestination(for: APIPerson.self) { user in
-                UserView(userID: user.id)
-                    .environmentObject(appState)
-            }
-            .navigationDestination(for: UserModeratorLink.self) { user in
-                UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
-                    .environmentObject(appState)
+                case .apiPostView(let post):
+                    let postModel = PostModel(from: post)
+                    ExpandedPost(post: postModel)
+                        .environmentObject(
+                            PostTracker(
+                                shouldPerformMergeSorting: false,
+                                internetSpeed: internetSpeed,
+                                initialItems: [postModel],
+                                upvoteOnSave: upvoteOnSave
+                            )
+                        )
+                        .environmentObject(appState)
+                case .apiPost(let post):
+                    LazyLoadExpandedPost(post: post)
+                case .apiPerson(let user):
+                    UserView(userID: user.id)
+                        .environmentObject(appState)
+                case .postLinkWithContext(let post):
+                    ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
+                        .environmentObject(post.postTracker)
+                        .environmentObject(appState)
+                case .lazyLoadPostLinkWithContext(let post):
+                    LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
+                case .userModeratorLink(let user):
+                    UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
+                        .environmentObject(appState)
+                }
             }
     }
+    // swiftlint:enable function_body_length
 }
 
-struct HandleLemmyLinkResolution: ViewModifier {
+struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     
-    let navigationPath: Binding<NavigationPath>
+    let navigationPath: Binding<Path>
 
     func body(content: Content) -> some View {
         content
@@ -165,7 +175,7 @@ extension View {
         modifier(HandleLemmyLinksDisplay())
     }
 
-    func handleLemmyLinkResolution(navigationPath: Binding<NavigationPath>) -> some View {
+    func handleLemmyLinkResolution<P: AnyNavigationPath>(navigationPath: Binding<P>) -> some View {
         modifier(HandleLemmyLinkResolution(navigationPath: navigationPath))
     }
 }

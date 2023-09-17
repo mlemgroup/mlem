@@ -51,10 +51,10 @@ extension InboxView {
     }
     
     func inboxMentionViewWithInteraction(mention: APIPersonMentionView) -> some View {
-        NavigationLink(value: LazyLoadPostLinkWithContext(
+        NavigationLink(.lazyLoadPostLinkWithContext(.init(
             post: mention.post,
             scrollTarget: mention.comment.id
-        )) {
+        ))) {
             InboxMentionView(mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
                 .padding(.vertical, AppConstants.postAndCommentSpacing)
                 .padding(.horizontal)
@@ -66,11 +66,7 @@ extension InboxView {
                 }
                 .contextMenu {
                     ForEach(genMentionMenuGroup(mention: mention)) { item in
-                        Button {
-                            item.callback()
-                        } label: {
-                            Label(item.text, systemImage: item.imageName)
-                        }
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                     }
                 }
                 .addSwipeyActions(
