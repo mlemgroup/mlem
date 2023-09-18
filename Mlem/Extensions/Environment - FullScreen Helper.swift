@@ -67,7 +67,7 @@ extension View {
         environment(\.fullscreenLabel) { AnyView(label()) }
     }
     
-    func onFullscreenContextMenue(
+    func onFullscreenContextMenu(
         _ menuBuilder: @escaping () -> [MenuFunction]
     ) -> some View {
         environment(\.fullscreenContextMenu, menuBuilder)

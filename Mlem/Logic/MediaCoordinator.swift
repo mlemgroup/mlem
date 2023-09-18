@@ -352,10 +352,6 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
 
         return gifView!
     }
-    
-    deinit {
-        print("MediaCoo DEINIT")
-    }
 }
 // swiftlint:enable type_body_length
 extension AVAsset {
