@@ -1,4 +1,4 @@
-name: CI - Build & Test - Xcode 15
+name: CI - Build & Test - Xcode 14
 
 on:
     push:
