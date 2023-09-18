@@ -63,7 +63,7 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
         return context.coordinator.imageView
     }
     
-    func updateUIView(_ uiView: LazyImageView, context: Context) {
+    @MainActor func updateUIView(_ uiView: LazyImageView, context: Context) {
         if uiView.url != url {
             context.coordinator.resetValues()
             uiView.url = url
