@@ -1,0 +1,40 @@
+name: xcodebuild
+
+inputs:
+  xcode_version: 
+    required: true
+  xcodebuild_destination:
+    required: true
+  xcodebuild_action:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+  - uses: maxim-lobanov/setup-xcode@v1
+    name: Set Xcode Version
+    with:
+      xcode-version: "${{ inputs.xcode_version }}"
+
+  - name: "Test SDK versions"
+    run: |
+      xcodebuild -showsdks
+
+  - name: "Xcode Build"
+    uses: sersoft-gmbh/xcodebuild-action@v2
+    with:
+      project: Mlem.xcodeproj
+      scheme: Mlem
+      destination: "${{ inputs.xcodebuild_destination }}"
+      action: "${{ inputs.xcodebuild_action }}"
+      result-bundle-path: build_results.xcresult
+
+  - uses: kishikawakatsumi/xcresulttool@v1
+    name: Publish build results
+    with:
+      path: build_results.xcresult
+      upload-bundles: never # Permission issues with uploading
+      show-passed-tests: false
+    if: success() || failure()
+    # ^ This is important because the action will be run
+    # even if the test fails in the previous step.
