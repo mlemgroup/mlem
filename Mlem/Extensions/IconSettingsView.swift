@@ -61,7 +61,7 @@ struct IconSettingsView: View {
             }
             return true
         }.sorted(by: { lhs, rhs in
-            lhs.name > rhs.name
+            lhs.name < rhs.name
         }))
 
         return allIcons
