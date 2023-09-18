@@ -17,6 +17,7 @@ runs:
       xcode-version: "${{ inputs.xcode_version }}"
 
   - name: "Test SDK versions"
+    shell: bash
     run: |
       xcodebuild -showsdks
 
