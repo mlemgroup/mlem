@@ -98,7 +98,10 @@ struct InstanceSummary: View {
                         Button {
                             _ = URLHandler.handle(signupURL)
                             
-                            selectedInstance = instance
+                            Task { @MainActor in
+                                try await Task.sleep(for: .seconds(0.5))
+                                selectedInstance = instance
+                            }
                         } label: {
                             Text("Got it, let's go!")
                         }

@@ -56,9 +56,7 @@ struct Window: View {
     private var content: some View {
         switch flow {
         case .onboarding:
-            NavigationStack {
-                OnboardingView(flow: $flow)
-            }
+            LandingPage()
         case let .account(account):
             view(for: account)
         }
@@ -76,6 +74,61 @@ struct Window: View {
     }
     
     private func setFlow(_ flow: AppFlow) {
-        self.flow = flow
+        transition(flow)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.flow = flow
+        }
+    }
+    
+    /// This method changes the current application flow and places a _transition_ view across the active window while
+    /// - Parameter newFlow: The `AppFlow` that the application should transition into
+    private func transition(_ newFlow: AppFlow) {
+        struct TransitionView: View {
+            let text: String
+            
+            var body: some View {
+                VStack(spacing: 24) {
+                    ProgressView()
+                        .controlSize(.large)
+                    Text(text)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
+        
+        let transitionText: String
+        switch newFlow {
+        case .onboarding:
+            transitionText = "See you soon 👋"
+        case let .account(account):
+            transitionText = "Welcome \(account.nickname) 🚀"
+        }
+        
+        Task { @MainActor in
+            
+            let transition = TransitionView(text: transitionText)
+            guard let transitionView = UIHostingController(rootView: transition).view,
+                  let window = UIApplication.shared.firstKeyWindow else {
+                return
+            }
+            
+            transitionView.alpha = 0
+            window.addSubview(transitionView)
+            UIView.animate(withDuration: 0.15) {
+                transitionView.alpha = 1
+            }
+            
+            transitionView.translatesAutoresizingMaskIntoConstraints = false
+            transitionView.heightAnchor.constraint(equalTo: window.heightAnchor).isActive = true
+            transitionView.widthAnchor.constraint(equalTo: window.widthAnchor).isActive = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                UIView.animate(withDuration: 0.3) {
+                    transitionView.alpha = 0
+                } completion: { _ in
+                    transitionView.removeFromSuperview()
+                }
+            }
+        }
     }
 }

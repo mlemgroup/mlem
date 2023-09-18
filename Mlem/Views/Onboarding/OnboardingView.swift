@@ -1,5 +1,5 @@
 //
-//  Onboarding View.swift
+//  OnboardingView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-08-15.
@@ -10,93 +10,41 @@ import SwiftUI
 
 struct OnboardingView: View {
     enum OnboardingTab {
-        case welcome, about, instances, addAccount
+        case about, instances
     }
     
-    @Binding var flow: AppFlow
+    @Binding var navigationPath: NavigationPath
     
-    @State var selectedTab: OnboardingTab = .welcome
+    @State var selectedTab: OnboardingTab = .about
     @State var hideNav: Bool = true
     
     @State var selectedInstance: InstanceMetadata?
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            onboardingTab
-                .tag(OnboardingTab.welcome)
-            
             aboutTab
                 .tag(OnboardingTab.about)
             
             instancesTab
                 .tag(OnboardingTab.instances)
-            
-            AddSavedInstanceView(onboarding: true, givenInstance: selectedInstance?.url.absoluteString)
-                .tag(OnboardingTab.addAccount)
         }
-        .onChange(of: selectedInstance) { _ in
-            selectedTab = .addAccount
+        .onChange(of: selectedInstance) { instance in
+            guard let instanceUrl = instance?.url else { return }
+            navigationPath.append(OnboardingRoute.login(instanceUrl))
         }
         .animation(.spring(response: 0.5), value: selectedTab)
-        .tabViewStyle(PageTabViewStyle())
+        .tabViewStyle(.page(indexDisplayMode: .always))
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
-    
-    // MARK: - Onboarding Tab
-    
-    @ViewBuilder
-    var onboardingTab: some View {
-        VStack(spacing: 40) {
-            Text("Welcome to Mlem!")
-                .bold()
-            
-            LogoView()
-            
-            VStack {
-                newUserButton
-                existingUserButton
-            }
-        }
-        .padding(.horizontal)
-        .frame(maxHeight: .infinity)
-    }
-    
-    @ViewBuilder
-    var newUserButton: some View {
-        Button {
-            selectedTab = .about
-        } label: {
-            Text("I'm new here")
-                .padding(.vertical, 5)
-                .frame(maxWidth: .infinity)
-        }
-        .buttonStyle(.borderedProminent)
-    }
-    
-    @ViewBuilder
-    var existingUserButton: some View {
-        Button {
-            selectedTab = .addAccount
-        } label: {
-            Text("I have a Lemmy account")
-                .padding(.vertical, 5)
-                .frame(maxWidth: .infinity)
-        }
-        .buttonStyle(.bordered)
-    }
-    
+
     // MARK: - About Tab
     
     @ViewBuilder
     var aboutTab: some View {
         ScrollView {
             VStack(spacing: 40) {
-                Group {
-                    Text("What is Lemmy?")
-                        .bold()
-                    
-                    Text(.init(whatIsLemmy))
-                }
-                .padding()
+                Text(.init(whatIsLemmy))
+                    .padding()
                 
                 VStack(spacing: 0) {
                     Divider()
@@ -125,9 +73,10 @@ struct OnboardingView: View {
                 
                 // add a little space for the tab selection indicator
                 Spacer()
-                    .frame(height: 20)
+                    .frame(height: 36)
             }
         }
+        .navigationTitle("What is Lemmy?")
     }
     
     @ViewBuilder
@@ -146,5 +95,6 @@ struct OnboardingView: View {
     
     var instancesTab: some View {
         InstancePickerView(selectedInstance: $selectedInstance, onboarding: true)
+            .padding(.bottom, 36)
     }
 }
