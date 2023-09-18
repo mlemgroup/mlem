@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build
-      uses: "./.github/workflow-templates/ci_xcodebuild.yml"
+      uses: "./.github/workflow-templates/ci_xcodebuild"
       with:
         xcode_version: "15.0.0"
         xcodebuild_destination: "platform=iOS Simulator,name=iPhone 14,OS=17.0"
@@ -34,7 +34,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build
-      uses: "./.github/workflow-templates/ci_xcodebuild.yml"
+      uses: "./.github/workflow-templates/ci_xcodebuild"
       with:
         xcode_version: "15.0.0"
         xcodebuild_destination: "platform=iOS Simulator,name=iPhone 14,OS=17.0"
