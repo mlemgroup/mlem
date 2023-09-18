@@ -42,7 +42,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
     var imageContainer: ImageContainer?
     var onImageLoad: ((_: ImageContainer, _ size: CGSize) -> Void)?
 
-    var parent: CoreMediaViewer<ErrorView>
+    var parent: CoreMediaViewer<ErrorView>?
     var imageView = LazyImageView()
     var wasReady: Bool = false
 
@@ -77,23 +77,38 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
 
     @MainActor
     func resetValues() {
+        errorView = UIHostingController(rootView: AnyView(EmptyView()))
+        imageContainer = nil
+        onImageLoad = nil
+        
+        imageView.failureView = nil
+        imageView.makeImageView = nil
+        imageView.onFailure = nil
+        
+        parent = nil
+        wasReady = false
+        
+        shareableImage = nil
+        linkMeta = nil
+        
         // NSKeyValueObservation will be invaildated automaticlly when de-init
         gifObserver?.invalidate()
         gifObserver = nil
+        
         gifView = nil
         videoPlayerView = nil
-        timeObserver = nil
-        imageContainer = nil
-        mediaSize = .zero
+        
+        listeners.removeAll()
         editingListener.cancel()
+        editingListener = .init({})
+        
+        mediaSize = .zero
+        
         evilFrame = 0
         lastFrame = 0
+        
         timeObserver = nil
         statusObserver = nil
-        wasReady = false
-        listeners.removeAll()
-//        mediaStateSyncObject.player = nil
-        // TODO: rest everything!
     }
 
     // swiftlint:disable function_body_length
@@ -109,8 +124,8 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
                 if let placeholder = self.imageContainer?.image {
                     self.linkMeta?.imageProvider = NSItemProvider(object: placeholder)
                 }
-                self.linkMeta?.url = self.parent.url
-                showShareSheet(items: [self.parent.url as Any, self])
+                self.linkMeta?.url = self.parent?.url
+                showShareSheet(items: [self.parent?.url as Any, self])
             }
         menuItems.append(shareLink)
 
@@ -123,7 +138,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
                     enabled: true) {
                         self.linkMeta = LPLinkMetadata()
                         self.linkMeta?.imageProvider = NSItemProvider(object: container.image)
-                        self.linkMeta?.url = self.parent.url
+                        self.linkMeta?.url = self.parent?.url
                         if let data = container.data {
                             showShareSheet(items: [data, self])
                         } else {
@@ -159,7 +174,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
                     enabled: true) {
                         self.linkMeta = LPLinkMetadata()
                         self.linkMeta?.imageProvider = NSItemProvider(object: gifImage.currentImage!)
-                        self.linkMeta?.url = self.parent.url
+                        self.linkMeta?.url = self.parent?.url
                         showShareSheet(items: [gifImage.currentImage as Any, self])
                     }
                 menuItems.append(shareCurrntFrameGif)
@@ -175,13 +190,13 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             Task { @MainActor in
                 imageView.invalidateIntrinsicContentSize()
                 imageView.setNeedsLayout()
-                
-                if let type = container.type, parent.needsMediaSync {
-                    self.parent.mediaStateSyncObject.type = type
+                let needsMediaSync = (parent?.needsMediaSync ?? false)
+                if let type = container.type, needsMediaSync {
+                    self.parent?.mediaStateSyncObject.type = type
                 }
                 self.imageContainer = container
-                if parent.needsMediaSync {
-                    self.parent.mediaStateSyncObject.isReady = true
+                if needsMediaSync {
+                    self.parent?.mediaStateSyncObject.isReady = true
                 }
                 if !(container.type?.isVideo ?? false) {
                     if let onImageLoad = onImageLoad {
@@ -200,7 +215,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             self.mediaSize = container.image.size
             let uiimageView = UIImageView(image: container.image)
             uiimageView.contentMode = .scaleAspectFit
-            if parent.needsMediaSync {
+            if parent?.needsMediaSync ?? false {
                 let interaction = ImageAnalysisInteraction()
                 uiimageView.addInteraction(interaction)
                 interaction.preferredInteractionTypes = .automatic
@@ -233,18 +248,18 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             if player.status == .readyToPlay {
                 Task { @MainActor in
                     let (size, duration) = await asset.getTrackDetails() ?? (.zero, .zero)
-                    if self.parent.needsMediaSync {
+                    if self.parent?.needsMediaSync ?? false {
                         // Invoke callback every second
                         let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
                         
                         // Keep the reference to remove
                         self.timeObserver = player.addPeriodicTimeObserver(forInterval: interval,
                                                                            queue: DispatchQueue.main) { time in
-                            self.parent.mediaStateSyncObject.currentTime =  time.seconds
+                            self.parent?.mediaStateSyncObject.currentTime =  time.seconds
                         }
-                        self.parent.mediaStateSyncObject.duration = duration.seconds
-                        self.parent.mediaStateSyncObject.player = player
-                        self.parent.mediaStateSyncObject.isReady = true
+                        self.parent?.mediaStateSyncObject.duration = duration.seconds
+                        self.parent?.mediaStateSyncObject.player = player
+                        self.parent?.mediaStateSyncObject.isReady = true
                     }
                     
                     self.mediaSize = size
@@ -255,8 +270,8 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             }
         }
         
-        if self.parent.needsMediaSync {
-            self.parent.mediaStateSyncObject.$isPlaying.sink { newVal in
+        if self.parent?.needsMediaSync ?? false {
+            self.parent?.mediaStateSyncObject.$isPlaying.sink { newVal in
                 Task(priority: .userInitiated) {
                     if let videoPlayerView = self.videoPlayerView {
                         if newVal {
@@ -268,13 +283,13 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
                 }
             }.store(in: &listeners)
             
-            self.parent.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
+            self.parent?.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
                 if editMode {
                     // now entering edit mode!
-                    self.editingListener = self.parent.mediaStateSyncObject.$currentTime.sink { newTime in
+                    self.editingListener = self.parent?.mediaStateSyncObject.$currentTime.sink { newTime in
                         let time = CMTime(seconds: newTime, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
                         self.videoPlayerView?.playerLayer.player?.seek(to: time)
-                    }
+                    } ?? .init({})
                 } else {
                     // now leaving edit mode!
                     self.editingListener.cancel()
@@ -293,7 +308,7 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         gifView!.contentMode = .scaleAspectFit
         gifView!.translatesAutoresizingMaskIntoConstraints = true
         
-        if parent.needsMediaSync {
+        if parent?.needsMediaSync ?? false {
             
             gifObserver = Timer.scheduledTimer(
                 withTimeInterval: 1 / 100,
@@ -301,14 +316,16 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             ) { [weak self] _ in
                 guard let self = self else { return }
                 let currentFrame = self.gifView!.currentFrameIndex()
-                if currentFrame != self.evilFrame && !self.parent.mediaStateSyncObject.isEditingCurrentTime && self.parent.needsMediaSync {
-                    self.parent.mediaStateSyncObject.currentTime = Double(currentFrame)
+                if currentFrame != self.evilFrame && 
+                    !(self.parent?.mediaStateSyncObject.isEditingCurrentTime ?? false) &&
+                    (self.parent?.needsMediaSync ?? false) {
+                    self.parent?.mediaStateSyncObject.currentTime = Double(currentFrame)
                 }
             }
                 
-            self.parent.mediaStateSyncObject.duration = Double(gifView!.gifImage!.framesCount())
+            self.parent?.mediaStateSyncObject.duration = Double(gifView!.gifImage!.framesCount())
             
-            self.parent.mediaStateSyncObject.$isPlaying.sink { [weak self] newVal in
+            self.parent?.mediaStateSyncObject.$isPlaying.sink { [weak self] newVal in
                 if let gifView = self?.gifView {
                     if newVal {
                         gifView.startAnimatingGif()
@@ -319,13 +336,13 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
             }
             .store(in: &listeners)
             
-            self.parent.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
+            self.parent?.mediaStateSyncObject.$isEditingCurrentTime.sink { editMode in
                 if editMode {
                     // now entering edit mode!
-                    self.editingListener = self.parent.mediaStateSyncObject.$currentTime.sink { newTime in
+                    self.editingListener = self.parent?.mediaStateSyncObject.$currentTime.sink { newTime in
                         self.evilFrame = max(0, Int(newTime) % self.gifView!.gifImage!.framesCount())
                         self.gifView!.showFrameAtIndex(self.evilFrame)
-                    }
+                    } ?? .init({})
                 } else {
                     // now leaving edit mode!
                     self.editingListener.cancel()
@@ -334,6 +351,10 @@ class MediaCoordinator<ErrorView: View>: NSObject, UIActivityItemSource {
         }
 
         return gifView!
+    }
+    
+    deinit {
+        print("MediaCoo DEINIT")
     }
 }
 // swiftlint:enable type_body_length

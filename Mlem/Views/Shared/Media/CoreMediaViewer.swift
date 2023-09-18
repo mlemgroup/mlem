@@ -48,6 +48,14 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
     }
 
     @MainActor func makeUIView(context: Context) -> LazyImageView {
+        setupContext(context)
+        context.coordinator.imageView.url = url
+        return context.coordinator.imageView
+    }
+    
+    @MainActor func setupContext(_ context: Context) {
+        context.coordinator.parent = self
+        context.coordinator.onImageLoad = onImageLoad
         context.coordinator.imageView.placeholderView = UIActivityIndicatorView()
         context.coordinator.imageView.failureView = context.coordinator.errorView.view
         context.coordinator.imageView.onFailure = { error in
@@ -59,16 +67,14 @@ struct CoreMediaViewer<ErrorView: View>: UIViewRepresentable, Identifiable {
         context.coordinator.imageView.makeImageView = context.coordinator.makeImage
         context.coordinator.imageView.setNeedsLayout()
         context.coordinator.imageView.invalidateIntrinsicContentSize()
-        context.coordinator.imageView.url = url
-        return context.coordinator.imageView
     }
     
     @MainActor func updateUIView(_ uiView: LazyImageView, context: Context) {
         if uiView.url != url {
             context.coordinator.resetValues()
+            context.coordinator.parent = self
+            setupContext(context)
             uiView.url = url
-            uiView.setNeedsLayout()
-            uiView.invalidateIntrinsicContentSize()
         }
         if needsMediaSync && !context.coordinator.wasReady && mediaStateSyncObject.isReady {
             let menu = context.coordinator.generateContextMenu()
