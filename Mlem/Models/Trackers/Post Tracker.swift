@@ -37,7 +37,7 @@ class PostTracker: ObservableObject {
     private let prefetcher = ImagePrefetcher(
         pipeline: ImagePipeline.shared,
         destination: .memoryCache,
-        maxConcurrentRequestCount: 40
+        maxConcurrentRequestCount: 2
     )
     
     init(
@@ -141,7 +141,7 @@ class PostTracker: ObservableObject {
     ) {
         let accepted = dedupedItems(from: newItems.filter(filtering))
         
-        if preload { preloadImages(newItems) }
+        if preload { preloadImages(accepted) }
         
         if !shouldPerformMergeSorting {
             RunLoop.main.perform { [self] in
@@ -409,39 +409,62 @@ class PostTracker: ObservableObject {
     }
     
     // MARK: - Private Methods
-    
+
+    // swiftlint:disable cyclomatic_complexity
     private func preloadImages(_ newPosts: [PostModel]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
-        var imageRequests: [ImageRequest] = []
+        var imageRequests: [ImageRequest] = .init()
+        imageRequests.reserveCapacity(newPosts.count)
         for post in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
-            if let communityAvatarLink = post.community.iconUrl {
-                imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
+
+            if let communityAvatarLink = post.community.icon {
+                let imgRec = ImageRequest(url: communityAvatarLink.withIcon64Parameters)
+                if !ImagePipeline.shared.cache.containsData(for: imgRec) {
+                    imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
+                }
             }
-            
-            if let userAvatarLink = post.creator.avatarUrl {
-                imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
+
+            if let userAvatarLink = post.creator.avatar {
+                let imgRec = ImageRequest(url: userAvatarLink.withIcon64Parameters)
+                if !ImagePipeline.shared.cache.containsData(for: imgRec) {
+                    imageRequests.append(imgRec)
+                }
             }
             
             switch post.postType {
             case let .image(url):
                 // images: only load the image
-                imageRequests.append(ImageRequest(url: url, priority: .high))
+                let imgRec = ImageRequest(url: url, priority: .high)
+                if !ImagePipeline.shared.cache.containsData(for: imgRec) {
+                    imageRequests.append(imgRec)
+                }
             case let .link(url):
                 // websites: load image and favicon
                 if let baseURL = post.post.linkUrl?.host,
                    let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
-                    imageRequests.append(ImageRequest(url: favIconURL))
+                    let imgRec = ImageRequest(url: favIconURL)
+                    if !ImagePipeline.shared.cache.containsData(for: imgRec) {
+                        imageRequests.append(imgRec)
+                    }
                 }
                 if let url {
-                    imageRequests.append(ImageRequest(url: url, priority: .high))
+                    LPMetadataTracker.shared.fetchForLater(url)
+                    if url.isImage {
+                        let imgRec = ImageRequest(url: url, priority: .high)
+                        if !ImagePipeline.shared.cache.containsData(for: imgRec) {
+                            imageRequests.append(imgRec)
+                        }
+                    }
                 }
             default:
                 break
             }
         }
+        prefetcher.startPrefetching(with: imageRequests)
     }
+    // swiftlint:enable cyclomatic_complexity
     
     /// Filters a list of PostModels to only those PostModels not present in ids. Updates ids.
     private func dedupedItems(from newItems: [PostModel]) -> [PostModel] {

@@ -31,29 +31,25 @@ struct WebsiteIconComplex: UIViewRepresentable {
         self.post = post
         self.onTapActions = onTapActions
     }
-    @MainActor func makeUIView(context: Self.Context) -> Self.UIViewType {
+    
+    @MainActor func setURL(_ uiView: Self.UIViewType? = nil, context: Self.Context, url: URL) {
         metadataProvider.shouldFetchSubresources = true
-        context.coordinator.url = post.url
-        context.coordinator.view = LPLinkView(url: post.url!)
+        let testURL: URL? = nil
+        context.coordinator.url = testURL ?? url
+        context.coordinator.view = uiView ?? LPLinkView(url: testURL ?? url)
         Task {
-            if let meta = try? await context.coordinator.metadataProvider.startFetchingMetadata(for: post.url!) {
-//                if meta.remoteVideoURL == nil {
-                meta.url = getLink(oldLink: meta.url)
-                    meta.originalURL = meta.url // URL(string: str)
-//                }
+            if let meta = await LPMetadataTracker.shared.fetch(testURL ?? url) {
+                meta.originalURL = getLink(oldLink: meta.url)
                 context.coordinator.view.metadata = meta
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                    context.coordinator.fuckUpLPView()
-//                }
-//                DispatchQueue..asyncAfter(deadline: .now() + 2) {
-//                    let view = context.coordinator.view
-//                    view.subviews[0].subviews[0].subviews[0].gestureRecognizers?[1].isEnabled = false
-//                    print(view.subviews.count)
-//                }
             }
         }
+    }
+    
+    @MainActor func makeUIView(context: Self.Context) -> Self.UIViewType {
+        if let url = post.url {
+            self.setURL(nil, context: context, url: url)
+        }
         let view = context.coordinator.view
-        print(view.subviews.count)
         return view
     }
     func getLink(oldLink: URL?) -> URL? {
@@ -81,21 +77,8 @@ struct WebsiteIconComplex: UIViewRepresentable {
     }
     
     @MainActor func updateUIView(_ uiView: Self.UIViewType, context: Self.Context) {
-        if post.url != context.coordinator.url {
-            context.coordinator.metadataProvider = LPMetadataProvider()
-            context.coordinator.url = post.url
-            Task {
-                if let meta = try? await context.coordinator.metadataProvider.startFetchingMetadata(for: post.url!) {
-//                    if meta.remoteVideoURL == nil {
-                        meta.url = getLink(oldLink: meta.url)
-                        meta.originalURL = meta.url // URL(string: str)
-//                    }
-                    uiView.metadata = meta
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        context.coordinator.fuckUpLPView()
-//                    }
-                }
-            }
+        if let url = post.url, post.url != context.coordinator.url {
+            self.setURL(uiView, context: context, url: url)
         }
     }
     
