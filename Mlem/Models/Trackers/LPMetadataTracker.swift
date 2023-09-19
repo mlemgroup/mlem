@@ -17,6 +17,7 @@ class LPMetadataTracker {
     
     func fetchForLater(_ url: URL?) {
         cache.evictsObjectsWithDiscardedContent = true
+        cache.countLimit = 64
         guard let url else { return }
         if cache.object(forKey: NSString(string: url.absoluteString)) != nil {
             return
