@@ -116,25 +116,28 @@ struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
                             return
                         }
                     } catch {
-                        guard case let APIClientError.response(apiError, _) = error,
-                              apiError.error == "couldnt_find_object",
-                              url.scheme == "https" else {
-                            errorHandler.handle(error)
-                            
-                            return
-                        }
+//                        guard case let APIClientError.response(apiError, _) = error,
+//                              apiError.error == "couldnt_find_object",
+//                              url.scheme == "https" else {
+//                            errorHandler.handle(error)
+//                            
+//                            return
+//                        }
                     }
-                    
+                    var newURLString = url.absoluteString
+                    newURLString.replace(/mlem:\/\//, with: "https://")
+                    let newURL = URL(string: newURLString)
                     // if all else fails fallback!
-                    let outcome = URLHandler.handle(url)
+                    let outcome = URLHandler.handle(newURL ?? url)
                     if outcome.action != nil {
-                        if url.scheme == "mlem" {
-                            // if we got here then someone intentionally wanted to open this in mlem but now we need to tell him we have no idea how to open it
-                            await notifier.add(.failure("Couldn't resolve link"))
-                        } else {
-                            // if we failed to open it let the system try!
-                            OpenURLAction(handler: { _ in .systemAction }).callAsFunction(url)
-                        }
+                        //                        if url.scheme == "mlem" {
+                        // if we got here then someone intentionally wanted to open this in mlem but now we need to tell him we have no idea how to open it
+                        //                            await notifier.add(.failure("Couldn't resolve link"))
+                        //                        } else {
+                        // if we failed to open it let the system try!
+                        
+                        OpenURLAction(handler: { _ in .systemAction }).callAsFunction(newURL ?? url)
+                        //                        }
                     }
                 }
             }

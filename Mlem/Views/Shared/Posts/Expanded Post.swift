@@ -213,12 +213,15 @@ struct ExpandedPost: View {
                     post: post,
                     layoutMode: $postLayoutMode
                 )
-                .onTapGesture {
-                    withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)) {
-                        postLayoutMode = postLayoutMode == .maximize ? .minimize : .maximize
-                    }
-                }
-                
+                .highPriorityGesture(
+                    TapGesture().onEnded {
+                        withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.25)) {
+                            postLayoutMode = postLayoutMode == .maximize ? .minimize : .maximize
+                        }
+                    },
+                    including: .subviews
+                )
+
                 UserLinkView(
                     user: post.creator,
                     serverInstanceLocation: userServerInstanceLocation
