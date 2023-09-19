@@ -152,8 +152,15 @@ struct FeedView: View {
                             return true
                         }
                     } else {
-                        print("exhausted auxiliary actions, perform dismiss action instead...")
-                        return false
+                        if scrollToTopAppeared {
+                            print("exhausted auxiliary actions, perform dismiss action instead...")
+                            return false
+                        } else {
+                            withAnimation {
+                                scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)
+                            }
+                            return true
+                        }
                     }
                 }
             )

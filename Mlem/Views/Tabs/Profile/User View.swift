@@ -77,7 +77,14 @@ struct UserView: View {
                             }
                             return true
                         } else {
-                            return false
+                            if scrollToTopAppeared {
+                                return false
+                            } else {
+                                withAnimation {
+                                    scrollViewProxy?.scrollTo(scrollToTop)
+                                }
+                                return true
+                            }
                         }
                     }
                 )
