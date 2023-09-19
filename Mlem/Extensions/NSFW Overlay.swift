@@ -73,7 +73,7 @@ struct NSFWOverlay: ViewModifier {
 }
 
 extension View {
-    func applyNsfwOverlay(_ isNsfw: Bool, cornerRadius: CGFloat = 0) -> some View {
-        modifier(NSFWOverlay(isNsfw: isNsfw, cornerRadius: cornerRadius))
+    func applyNsfwOverlay(_ isNsfw: Bool, canTapFullImage: Bool = false, cornerRadius: CGFloat = 0) -> some View {
+        modifier(NSFWOverlay(isNsfw: isNsfw, tapAnywhereToReveal: canTapFullImage, cornerRadius: cornerRadius))
     }
 }

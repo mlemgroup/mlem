@@ -40,7 +40,7 @@ struct WebsiteIconComplex: UIViewRepresentable {
     }
     
     @MainActor func makeUIView(context: Self.Context) -> Self.UIViewType {
-        if let url = post.url {
+        if let url = post.linkUrl {
             self.setURL(nil, context: context, url: url)
         }
         let view = context.coordinator.view
@@ -72,7 +72,7 @@ struct WebsiteIconComplex: UIViewRepresentable {
     }
     
     @MainActor func updateUIView(_ uiView: Self.UIViewType, context: Self.Context) {
-        if let url = post.url, post.url != context.coordinator.url {
+        if let url = post.linkUrl, url != context.coordinator.url {
             self.setURL(uiView, context: context, url: url)
         }
     }

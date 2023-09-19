@@ -419,14 +419,14 @@ class PostTracker: ObservableObject {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
 
-            if let communityAvatarLink = post.community.icon {
+            if let communityAvatarLink = post.community.iconUrl {
                 let imgRec = ImageRequest(url: communityAvatarLink.withIcon64Parameters)
                 if !ImagePipeline.shared.cache.containsData(for: imgRec) {
                     imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
                 }
             }
 
-            if let userAvatarLink = post.creator.avatar {
+            if let userAvatarLink = post.creator.avatarUrl {
                 let imgRec = ImageRequest(url: userAvatarLink.withIcon64Parameters)
                 if !ImagePipeline.shared.cache.containsData(for: imgRec) {
                     imageRequests.append(imgRec)

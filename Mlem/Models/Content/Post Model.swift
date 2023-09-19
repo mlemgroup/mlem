@@ -75,7 +75,7 @@ struct PostModel {
         // post with URL: either image or link
         if let postUrl = post.linkUrl {
             // if image, return image link, otherwise return thumbnail
-            return postUrl.isImage ? .image(postUrl) : .link(post.url)
+            return postUrl.isImage ? .image(postUrl) : .link(post.linkUrl)
         }
 
         // otherwise text, but post.body needs to be present, even if it's an empty string
