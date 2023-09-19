@@ -17,15 +17,18 @@ struct ScrollToView: View {
     @Binding var appeared: Bool
     
     var body: some View {
-        HStack(spacing: 0) {
-            EmptyView()
-        }
-        .frame(height: 1)
-        .onAppear {
-            appeared = true
-        }
-        .onDisappear {
-            appeared = false
+        /// We don't have any horizontal scroll views yet, but this may need to be a LazyHStack if we do. [2023.09]
+        LazyVStack(spacing: 0) {
+            HStack(spacing: 0) {
+                EmptyView()
+            }
+            .frame(height: 1)
+            .onAppear {
+                appeared = true
+            }
+            .onDisappear {
+                appeared = false
+            }
         }
     }
 }
@@ -38,13 +41,16 @@ struct ListScrollToView: View {
     @Binding var appeared: Bool
     
     var body: some View {
-        EmptyView()
-            .frame(height: 1)
-            .onAppear {
-                appeared = true
-            }
-            .onDisappear {
-                appeared = false
-            }
+        /// We don't have any horizontal scroll views yet, but this may need to be a LazyHStack if we do. [2023.09]
+        LazyVStack(spacing: 0) {
+            EmptyView()
+                .frame(height: 1)
+                .onAppear {
+                    appeared = true
+                }
+                .onDisappear {
+                    appeared = false
+                }
+        }
     }
 }
