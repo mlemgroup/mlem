@@ -21,8 +21,6 @@ struct InstancePickerView: View {
     /// Instances currently accepting new users
     var filteredInstances: ArraySlice<InstanceMetadata>? {
         instances?
-            .sorted(by: { $0.users > $1.users }) // remote source is already sorted by user count but that may change...
-            .filter(\.newUsers) // restrict the list to instances who are accepting new users
             .filter { query.isEmpty || $0.name.lowercased().hasPrefix(query.lowercased()) }
             .prefix(30) // limit to a maximum of 30
     }
@@ -84,6 +82,11 @@ struct InstancePickerView: View {
         .navigationTitle("Instances")
         .task {
             instances = await loadInstances()
+                // remote source is already sorted by user count but that may change...
+                .sorted(by: { $0.users > $1.users })
+                // restrict the list to instances who are currently ccepting new users
+                // also filter on the presence of `nsfw` in the version string
+                .filter { $0.newUsers && !$0.version.contains("nsfw") }
         }
     }
 }
