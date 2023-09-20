@@ -228,7 +228,7 @@ struct LargePost: View {
                 postBodyView
             }
         case .link:
-            LazyVStack(spacing: AppConstants.postAndCommentSpacing) {
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
                 if layoutMode != .minimize {
                     WebsiteIconComplex(post: post.post, onTapActions: markPostAsRead)
                 }
