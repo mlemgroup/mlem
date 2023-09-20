@@ -41,7 +41,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     }
     
     var body: some View {
-        ZStack(content: content)
+        TabView(selection: $selection, content: content)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, alignment: .center) {
                 // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up

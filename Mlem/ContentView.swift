@@ -37,59 +37,57 @@ struct ContentView: View {
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
-            Group {
-                FeedRoot()
-                    .fancyTabItem(tag: TabSelection.feeds) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.feeds,
-                            symbolConfiguration: .feed
-                        )
-                    }
-                
-                // wrapping these two behind a check for an active user, as of now we'll always have one
-                // but when guest mode arrives we'll either omit these entirely, or replace them with a
-                // guest mode specific tab for sign in / change instance screen.
-                if let account = appState.currentActiveAccount {
-                    InboxView()
-                        .fancyTabItem(tag: TabSelection.inbox) {
-                            FancyTabBarLabel(
-                                tag: TabSelection.inbox,
-                                symbolConfiguration: .inbox,
-                                badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
-                            )
-                        }
-                    
-                    ProfileView(userID: account.id)
-                        .fancyTabItem(tag: TabSelection.profile) {
-                            FancyTabBarLabel(
-                                tag: TabSelection.profile,
-                                customText: appState.tabDisplayName,
-                                symbolConfiguration: .init(
-                                    symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                                    activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                    remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
-                                )
-                            )
-                            .simultaneousGesture(accountSwitchLongPress)
-                        }
+            FeedRoot()
+                .fancyTabItem(tag: TabSelection.feeds) {
+                    FancyTabBarLabel(
+                        tag: TabSelection.feeds,
+                        symbolConfiguration: .feed
+                    )
                 }
-                
-                SearchRoot()
-                    .fancyTabItem(tag: TabSelection.search) {
+            
+            // wrapping these two behind a check for an active user, as of now we'll always have one
+            // but when guest mode arrives we'll either omit these entirely, or replace them with a
+            // guest mode specific tab for sign in / change instance screen.
+            if let account = appState.currentActiveAccount {
+                InboxView()
+                    .fancyTabItem(tag: TabSelection.inbox) {
                         FancyTabBarLabel(
-                            tag: TabSelection.search,
-                            symbolConfiguration: .search
+                            tag: TabSelection.inbox,
+                            symbolConfiguration: .inbox,
+                            badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
                         )
                     }
                 
-                SettingsView()
-                    .fancyTabItem(tag: TabSelection.settings) {
+                ProfileView(userID: account.id)
+                    .fancyTabItem(tag: TabSelection.profile) {
                         FancyTabBarLabel(
-                            tag: TabSelection.settings,
-                            symbolConfiguration: .settings
+                            tag: TabSelection.profile,
+                            customText: appState.tabDisplayName,
+                            symbolConfiguration: .init(
+                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                                remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                            )
                         )
+                        .simultaneousGesture(accountSwitchLongPress)
                     }
             }
+            
+            SearchRoot()
+                .fancyTabItem(tag: TabSelection.search) {
+                    FancyTabBarLabel(
+                        tag: TabSelection.search,
+                        symbolConfiguration: .search
+                    )
+                }
+            
+            SettingsView()
+                .fancyTabItem(tag: TabSelection.settings) {
+                    FancyTabBarLabel(
+                        tag: TabSelection.settings,
+                        symbolConfiguration: .settings
+                    )
+                }
         }
         .task(id: appState.currentActiveAccount) {
             accountChanged()

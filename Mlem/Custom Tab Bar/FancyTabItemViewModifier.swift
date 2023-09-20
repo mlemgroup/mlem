@@ -22,6 +22,7 @@ struct FancyTabItem<Selection: FancyTabBarSelection, V: View>: ViewModifier {
     
     func body(content: Content) -> some View {
         content
+            .tag(tag)
             .zIndex(selectedTagHashValue == tagHashValue ? 1 : 0)
             // this little preference tells the parent bar that this tab item exists
             .preference(key: FancyTabItemPreferenceKey<Selection>.self, value: [tag])
