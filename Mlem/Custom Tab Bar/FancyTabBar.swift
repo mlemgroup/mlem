@@ -32,10 +32,14 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
         selection: Binding<Selection>,
         navigationSelection: Binding<NavigationSelection>,
         dragUpGestureCallback: (() -> Void)? = nil,
+        tabItemKeys: [Selection],
+        tabItems: [Selection: FancyTabItemLabelBuilder<Selection>],
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._selection = selection
         self._navigationSelection = navigationSelection
+        self._tabItemKeys = .init(initialValue: tabItemKeys)
+        self._tabItems = .init(initialValue: tabItems)
         self.content = content
         self.dragUpGestureCallback = dragUpGestureCallback
     }
@@ -54,12 +58,6 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
             }
             .environment(\.tabSelectionHashValue, selection.hashValue)
             .environment(\.tabNavigationSelectionHashValue, navigationSelection.hashValue)
-            .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
-                tabItemKeys = $0
-            }
-            .onPreferenceChange(FancyTabItemLabelBuilderPreferenceKey<Selection>.self) {
-                tabItems = $0
-            }
     }
     
     private func getAccessibilityLabel(tab: Selection) -> String {
