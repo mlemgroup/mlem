@@ -43,7 +43,7 @@ struct PostSettingsView: View {
         Form {
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: Icons.limitImageHeightInFeedSymbolName,
+                    settingIconSystemName: Icons.postSizeSettingsSymbolName,
                     settingName: "Post Size",
                     currentValue: $postSize,
                     options: PostSize.allCases

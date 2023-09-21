@@ -74,10 +74,9 @@ struct Icons {
     static let subscribedFeedSymbolName: String = "newspaper.circle"
     static let subscribedFeedSymbolNameFill: String = "newspaper.circle.fill"
     static let limitImageHeightInFeedSymbolName: String = "rectangle.compress.vertical"
-    // TODO: don't duplicate this one in PostSettingsView
     
     // sort types
-    static let activeSortSymbolName: String = "popcorn" // not married to this idea
+    static let activeSortSymbolName: String = "popcorn"
     static let activeSortSymbolNameFill: String = "popcorn.fill"
     static let hotSortSymbolName: String = "flame"
     static let hotSortSymbolNameFill: String = "flame.fill"
@@ -140,7 +139,6 @@ struct Icons {
     static let filterSymbolName: String = "line.3.horizontal.decrease.circle"
     static let filterSymbolNameFill: String = "line.3.horizontal.decrease.circle.fill"
     static let menuSymbolName: String = "ellipsis"
-    static let send: String = "paperplane" // TODO: deprecate
     static let importSymbol: String = "square.and.arrow.down"
     
     // settings
@@ -168,7 +166,6 @@ struct Icons {
     static let presentSymbolName: String = "circle.fill"
     static let absentSymbolName: String = "circle"
     static let iconSymbolName: String = "fleuron"
-    static let userSymbolName: String = "person.circle" // TODO: Deprecate
     static let bannerSymbolName: String = "flag"
     static let communitySymbolName: String = "building.2.crop.circle"
     static let noWifi: String = "wifi.slash"

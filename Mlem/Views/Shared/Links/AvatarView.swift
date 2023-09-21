@@ -79,43 +79,49 @@ struct AvatarView: View {
         case .community:
             // TODO: make good
             return AnyView(
-                ZStack {
-                    VStack {
-                        Spacer()
-                        Image(systemName: "building.2.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: avatarSize * 0.66)
-                            .foregroundStyle(.white)
-                    }
-                    .scaledToFit()
-                    .mask(
-                        Circle()
-                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
-                    )
-                }
-                .frame(maxWidth: .infinity)
-                .background(.gray)
+                Image(systemName: Icons.communitySymbolName)
+                    .resizable()
+                    .scaledToFill()
+//                ZStack {
+//                    VStack {
+//                        Spacer()
+//                        Image(systemName: "building.2.fill")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(height: avatarSize * 0.66)
+//                            .foregroundStyle(.white)
+//                    }
+//                    .scaledToFit()
+//                    .mask(
+//                        Circle()
+//                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
+//                    )
+//                }
+//                .frame(maxWidth: .infinity)
+//                .background(.gray)
             )
         case .user:
             return AnyView(
-                ZStack {
-                    VStack {
-                        Spacer()
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: avatarSize * 0.75)
-                            .foregroundStyle(.white)
-                    }
-                    .scaledToFit()
-                    .mask(
-                        Circle()
-                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
-                    )
-                }
-                .frame(maxWidth: .infinity)
-                .background(.gray)
+                Image(systemName: Icons.userFill)
+                    .resizable()
+                    .scaledToFill()
+//                ZStack {
+//                    VStack {
+//                        Spacer()
+//                        Image(systemName: "person.fill")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(height: avatarSize * 0.75)
+//                            .foregroundStyle(.white)
+//                    }
+//                    .scaledToFit()
+//                    .mask(
+//                        Circle()
+//                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
+//                    )
+//                }
+//                .frame(maxWidth: .infinity)
+//                .background(.gray)
             )
         }
     }

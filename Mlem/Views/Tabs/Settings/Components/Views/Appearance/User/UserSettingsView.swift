@@ -14,7 +14,7 @@ struct UserSettingsView: View {
     var body: some View {
         Form {
             SwitchableSettingsItem(
-                settingPictureSystemName: Icons.userSymbolName,
+                settingPictureSystemName: Icons.user,
                 settingName: "Show Avatars",
                 isTicked: $shouldShowUserAvatars
             )
