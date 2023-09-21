@@ -22,6 +22,10 @@ struct PostComposerView: View {
     @State var postBody: String
     @State var isNSFW: Bool
     
+    private var hasPostContent: Bool {
+        !postTitle.isEmpty || !postURL.isEmpty || !postBody.isEmpty
+    }
+    
     init(editModel: PostEditorModel) {
         self.postTracker = editModel.postTracker
         self.editModel = editModel
@@ -67,6 +71,7 @@ struct PostComposerView: View {
             
             dismiss()
         }
+        .interactiveDismissDisabled(hasPostContent)
     }
 }
 

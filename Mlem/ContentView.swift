@@ -120,12 +120,14 @@ struct ContentView: View {
                 ResponseEditorView(concreteEditorModel: editing)
             }
             .presentationDetents([.medium, .large])
+            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .sheet(item: $editorTracker.editPost) { editing in
             NavigationStack {
                 PostComposerView(editModel: editing)
             }
             .presentationDetents([.medium, .large])
+            ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
