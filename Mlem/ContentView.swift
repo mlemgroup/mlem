@@ -119,11 +119,13 @@ struct ContentView: View {
             NavigationStack {
                 ResponseEditorView(concreteEditorModel: editing)
             }
+            .presentationDetents([.medium, .large])
         }
         .sheet(item: $editorTracker.editPost) { editing in
             NavigationStack {
                 PostComposerView(editModel: editing)
             }
+            .presentationDetents([.medium, .large])
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
