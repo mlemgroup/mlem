@@ -23,7 +23,7 @@ struct ContentView: View {
     @State private var errorAlert: ErrorAlert?
     
     // tabs
-    @State private var tabSelection: TabSelection = .feeds
+//    @State private var tabSelection: (TabSelection, Int) = (.feeds, .min)
     @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
     @State private var showLoading: Bool = false
     @GestureState private var isDetectingLongPress = false
@@ -37,15 +37,15 @@ struct ContentView: View {
     
     var body: some View {
         FancyTabBar(
-            selection: $tabSelection,
+//            selection: $tabSelection,
             navigationSelection: $tabNavigation,
             dragUpGestureCallback: showAccountSwitcherDragCallback,
             tabItemKeys: [
-                .feeds,
-                .inbox,
-                .profile,
-                .search,
-                .settings
+                TabSelection.feeds,
+                TabSelection.inbox,
+                TabSelection.profile,
+                TabSelection.search,
+                TabSelection.settings
             ],
             tabItems: [
                 .feeds: .init(tag: .feeds, label: {

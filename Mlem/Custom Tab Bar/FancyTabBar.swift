@@ -14,7 +14,11 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
-    @Binding private var selection: Selection
+//    @Binding private var selection: (Selection, Int)
+    
+    // swiftlint:disable force_cast
+    @State private var selection: (Selection, Int) = (TabSelection.feeds as! Selection, .min)
+    // swiftlint:enable force_cast
     
     private let content: () -> Content
     
@@ -24,14 +28,14 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     var dragUpGestureCallback: (() -> Void)?
     
     init(
-        selection: Binding<Selection>,
+//        selection: Binding<(Selection, Int)>,
         navigationSelection: Binding<NavigationSelection>,
         dragUpGestureCallback: (() -> Void)? = nil,
         tabItemKeys: [Selection],
         tabItems: [Selection: FancyTabItemLabelBuilder<Selection>],
         @ViewBuilder content: @escaping () -> Content
     ) {
-        self._selection = selection
+//        self._selection = selection
         self._tabItemKeys = .init(initialValue: tabItemKeys)
         self._tabItems = .init(initialValue: tabItems)
         self.content = content
@@ -39,7 +43,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
     }
     
     var body: some View {
-        TabView(selection: $selection, content: content)
+        TabView(selection: $selection.0, content: content)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, alignment: .center) {
                 // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up
@@ -50,13 +54,13 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 .accessibilitySortPriority(-1)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-            .environment(\.tabSelectionHashValue, selection.hashValue)
+            .environment(\.tabSelectionHashValue, selection.0.hashValue)
     }
     
     private func getAccessibilityLabel(tab: Selection) -> String {
         var label = String()
         
-        if selection == tab {
+        if selection.0.hashValue == tab.hashValue {
             label += "Selected, "
         }
         
@@ -85,8 +89,11 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
-                                    
-                                    selection = key
+                                    if key.hashValue == selection.0.hashValue {
+                                        selection = (selection.0, selection.1 + 1)
+                                    } else {
+                                        selection = (key, .min)
+                                    }
                                 }
                         )
                 }
