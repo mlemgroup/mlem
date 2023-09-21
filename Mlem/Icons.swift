@@ -49,6 +49,13 @@ struct Icons {
     static let reportSymbolName: String = "exclamationmark.shield"
     static let blockUserSymbolName: String = "person.fill.xmark"
     
+    // misc post
+    static let replies: String = "bubble.right"
+    static let textPost: String = "text.book.closed"
+    static let titleOnlyPost: String = "character.bubble"
+    static let pinned: String = "pin.fill"
+    static let websiteIcon: String = "globe"
+    
     // post sizes
     static let postSizeSettingsSymbolName: String = "rectangle.expand.vertical"
     static let compactSymbolName: String = "rectangle.grid.1x2"
@@ -60,20 +67,20 @@ struct Icons {
     static let blurNsfwSymbolName: String = "eye.trianglebadge.exclamationmark"
     
     // feeds
-    static let federatedFeedSymbolName: String = "circle.hexagongrid.circle" // "arrow.left.arrow.right.circle"
-    static let federatedFeedSymbolNameFill: String = "circle.hexagongrid.circle.fill" // "arrow.left.arrow.right.circle.fill"
+    static let federatedFeedSymbolName: String = "circle.hexagongrid.circle"
+    static let federatedFeedSymbolNameFill: String = "circle.hexagongrid.circle.fill"
     static let localFeedSymbolName: String = "house.circle"
     static let localFeedSymbolNameFill: String = "house.circle.fill"
     static let subscribedFeedSymbolName: String = "newspaper.circle"
     static let subscribedFeedSymbolNameFill: String = "newspaper.circle.fill"
     static let limitImageHeightInFeedSymbolName: String = "rectangle.compress.vertical"
+    // TODO: don't duplicate this one in PostSettingsView
     
     // sort types
     static let activeSortSymbolName: String = "popcorn" // not married to this idea
     static let activeSortSymbolNameFill: String = "popcorn.fill"
     static let hotSortSymbolName: String = "flame"
     static let hotSortSymbolNameFill: String = "flame.fill"
-    // we can workshop new/old--books is already used for documentation and there's an issue open saying that "new" needs a better symbol. I thought these two were funny together.
     static let newSortSymbolName: String = "hare"
     static let newSortSymbolNameFill: String = "hare.fill"
     static let oldSortSymbolName: String = "tortoise"
@@ -82,10 +89,47 @@ struct Icons {
     static let newCommentsSymbolNameFill: String = "exclamationmark.bubble.fill"
     static let mostCommentsSymbolName: String = "bubble.left.and.bubble.right"
     static let mostCommentsSymbolNameFill: String = "bubble.left.and.bubble.right.fill"
+    static let topMenu: String = "text.line.first.and.arrowtriangle.forward"
     static let topSymbolName: String = "trophy"
     static let topSymbolNameFill: String = "trophy.fill"
     static let timeSymbolName: String = "calendar.day.timeline.leading"
     static let timeSymbolNameFill: String = "calendar.day.timeline.leading.fill"
+    
+    // user flairs
+    static let developerFlair: String = "hammer.fill"
+    static let adminFlair: String = "crown.fill"
+    static let botFlair: String = "terminal.fill"
+    static let opFlair: String = "person.fill"
+    
+    // entities/general Lemmy concepts
+    static let moderation: String = "shield"
+    static let moderationFill: String = "shield.fill"
+    static let instance: String = "server.rack"
+    static let user: String = "person.circle"
+    static let userFill: String = "person.circle.fill"
+    
+    // tabs
+    static let feeds: String = "scroll"
+    static let feedsFill: String = "scroll.fill"
+    static let inbox: String = "mail.stack"
+    static let inboxFill: String = "mail.stack.fill"
+    static let search: String = "magnifyingglass"
+    static let searchActive: String = "text.magnifyingglass"
+    static let settings: String = "gear"
+    
+    // information/status
+    static let success: String = "checkmark"
+    static let successCircle: String = "checkmark.circle"
+    static let successSquareFill: String = "checkmark.square.fill"
+    static let failure: String = "xmark"
+    static let warning: String = "exclamationmark.triangle"
+    static let nsfw: String = "eye.slash"
+    static let endOfFeed: String = "figure.climbing"
+    static let noContent: String = "binoculars"
+    static let noPosts: String = "text.bubble"
+    static let time: String = "clock"
+    static let favorite: String = "star"
+    static let favoriteFill: String = "star.fill"
     
     // common operations
     static let shareSymbolName: String = "square.and.arrow.up"
@@ -95,6 +139,25 @@ struct Icons {
     static let unblockSymbolName: String = "eye"
     static let filterSymbolName: String = "line.3.horizontal.decrease.circle"
     static let filterSymbolNameFill: String = "line.3.horizontal.decrease.circle.fill"
+    static let menuSymbolName: String = "ellipsis"
+    static let send: String = "paperplane" // TODO: deprecate
+    static let importSymbol: String = "square.and.arrow.down"
+    
+    // settings
+    static let upvoteOnSave: String = "arrow.up.heart"
+    static let readIndicatorSetting: String = "book"
+    static let readIndicatorBarSetting: String = "rectangle.leftthird.inset.filled"
+    static let profileTabSettings: String = "person.text.rectangle"
+    static let nicknameField: String = "rectangle.and.pencil.and.ellipsis"
+    static let label: String = "tag"
+    static let unreadBadge: String = "envelope.badge"
+    static let showAvatar: String = "person.fill.questionmark"
+    static let widgetWizard: String = "wand.and.stars"
+    static let thumbnail: String = "photo"
+    static let author: String = "signature"
+    static let websiteAddress: String = "link"
+    static let leftRight: String = "arrow.left.arrow.right"
+    static let developerMode: String = "wrench.adjustable.fill"
     
     // misc
     static let switchUserSymbolName: String = "person.crop.circle.badge.plus"
@@ -105,7 +168,16 @@ struct Icons {
     static let presentSymbolName: String = "circle.fill"
     static let absentSymbolName: String = "circle"
     static let iconSymbolName: String = "fleuron"
-    static let userSymbolName: String = "person.circle"
+    static let userSymbolName: String = "person.circle" // TODO: Deprecate
     static let bannerSymbolName: String = "flag"
     static let communitySymbolName: String = "building.2.crop.circle"
+    static let noWifi: String = "wifi.slash"
+    static let easterEgg: String = "gift.fill"
+    static let jumpButton: String = "chevron.down.circle"
+    static let browser: String = "safari"
+    static let emptySquare: String = "square"
+    static let dropdown: String = "chevron.down"
+    static let noFile: String = "questionmark.folder"
+    static let delete: String = "trash"
+    static let forward: String = "chevron.right"
 }

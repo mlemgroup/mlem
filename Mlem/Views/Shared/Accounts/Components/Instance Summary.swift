@@ -132,7 +132,7 @@ struct InstanceSummary: View {
             shouldExpand: false,
             fixedSize: CGSize(width: 80, height: 80)
         ) {
-            AnyView(Image(systemName: "server.rack")
+            AnyView(Image(systemName: Icons.instance)
                 .resizable()
                 .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize))
         }

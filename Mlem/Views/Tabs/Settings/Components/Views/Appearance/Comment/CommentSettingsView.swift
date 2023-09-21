@@ -54,7 +54,7 @@ struct CommentSettingsView: View {
                         Text("Customize Widgets")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: "wand.and.stars")
+                            Image(systemName: Icons.widgetWizard)
                                 .foregroundColor(.pink)
                         }
                     }
@@ -65,7 +65,7 @@ struct CommentSettingsView: View {
 
             Section("Interactions and Info") {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "server.rack",
+                    settingPictureSystemName: Icons.instance,
                     settingName: "Show User Server Instance",
                     isTicked: $shouldShowUserServerInComment
                 )
@@ -80,17 +80,17 @@ struct CommentSettingsView: View {
                     isTicked: $showCommentDownvotesSeparately
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "clock",
+                    settingPictureSystemName: Icons.time,
                     settingName: "Show Time Posted In Info",
                     isTicked: $shouldShowTimeInCommentBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "bookmark",
+                    settingPictureSystemName: Icons.emptySaveSymbolName,
                     settingName: "Show Saved Status In Info",
                     isTicked: $shouldShowSavedInCommentBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "bubble.right",
+                    settingPictureSystemName: Icons.replies,
                     settingName: "Show Replies In Info",
                     isTicked: $shouldShowRepliesInCommentBar
                 )
@@ -98,12 +98,12 @@ struct CommentSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "chevron.down.circle",
+                    settingPictureSystemName: Icons.jumpButton,
                     settingName: "Show Jump Button",
                     isTicked: $showCommentJumpButton
                 )
                 SelectableSettingsItem(
-                    settingIconSystemName: "arrow.left.arrow.right",
+                    settingIconSystemName: Icons.leftRight,
                     settingName: "Side",
                     currentValue: $commentJumpButtonSide,
                     options: JumpButtonLocation.allCases

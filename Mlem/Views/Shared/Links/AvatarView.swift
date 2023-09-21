@@ -77,6 +77,7 @@ struct AvatarView: View {
     private func defaultAvatar() -> AnyView {
         switch type {
         case .community:
+            // TODO: make good
             return AnyView(
                 ZStack {
                     VStack {

@@ -39,7 +39,7 @@ struct GeneralSettingsView: View {
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "arrow.up.heart",
+                    settingPictureSystemName: Icons.upvoteOnSave,
                     settingName: "Upvote On Save",
                     isTicked: $upvoteOnSave
                 )
@@ -113,7 +113,7 @@ struct GeneralSettingsView: View {
                         Text("Delete Community Favorites")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: "trash")
+                            Image(systemName: Icons.delete)
                         }
                     }
                     .foregroundColor(.red)

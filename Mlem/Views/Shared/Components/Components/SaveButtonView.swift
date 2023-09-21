@@ -26,7 +26,7 @@ struct SaveButtonView: View {
         Button {
             save()
         } label: {
-            Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+            Image(systemName: isSaved ? Icons.fullSaveSymbolName : Icons.emptySaveSymbolName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)

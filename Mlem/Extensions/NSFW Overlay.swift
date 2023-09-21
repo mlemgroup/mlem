@@ -34,7 +34,7 @@ struct NSFWOverlay: ViewModifier {
     var nsfwOverlay: some View {
         if showNsfwFilter {
             VStack {
-                Image(systemName: "exclamationmark.triangle")
+                Image(systemName: Icons.warning)
                     .font(.largeTitle)
                 Text("NSFW")
                     .fontWeight(.black)
@@ -50,7 +50,7 @@ struct NSFWOverlay: ViewModifier {
             .background(.thinMaterial)
             .cornerRadius(AppConstants.largeItemCornerRadius)
         } else if isNsfw, shouldBlurNsfw {
-            Image(systemName: "eye.slash")
+            Image(systemName: Icons.nsfw)
                 .foregroundColor(.white)
                 .padding(4)
                 .background(.thinMaterial)

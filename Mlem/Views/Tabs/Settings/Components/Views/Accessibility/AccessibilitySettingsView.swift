@@ -20,7 +20,7 @@ struct AccessibilitySettingsView: View {
         List {
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: "book",
+                    settingIconSystemName: Icons.readIndicatorSetting,
                     settingName: "Read Post Indicator",
                     currentValue: $readMarkStyle,
                     options: ReadMarkStyle.allCases
@@ -32,7 +32,7 @@ struct AccessibilitySettingsView: View {
                             Text("Bar Thickness")
                         } icon: {
                             if showSettingsIcons {
-                                Image(systemName: "rectangle.leftthird.inset.filled")
+                                Image(systemName: Icons.readIndicatorBarSetting)
                                     .foregroundColor(.pink)
                                     .opacity(readMarkStyle == .bar ? 1 : 0.4)
                             }

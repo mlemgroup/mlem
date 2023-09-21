@@ -113,7 +113,7 @@ struct CommunitySidebarView: View {
     @ViewBuilder
     func errorView(errorDetails: String) -> some View {
         VStack(spacing: 10) {
-            Image(systemName: "exclamationmark.bubble")
+            Image(systemName: Icons.warning)
                 .font(.title)
             
             Text("Community details loading failed!")

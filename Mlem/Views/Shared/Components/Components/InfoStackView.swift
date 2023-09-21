@@ -104,7 +104,7 @@ struct InfoStackView: View {
     @ViewBuilder
     func repliesView(numReplies: Int) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
-            Image(systemName: "bubble.right")
+            Image(systemName: Icons.replies)
             Text(numReplies.description)
         }
         .accessibilityAddTraits(.isStaticText)

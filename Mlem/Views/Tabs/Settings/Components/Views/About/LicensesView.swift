@@ -22,7 +22,7 @@ struct LicensesView: View {
                                     .font(.subheadline)
                             }
                             Spacer()
-                            Image(systemName: "chevron.right")
+                            Image(systemName: Icons.forward)
                         }
                     }
                 }

@@ -82,7 +82,7 @@ struct TokenRefreshView: View {
                     .controlSize(.large)
                     .frame(height: 60)
             case .success:
-                Image(systemName: "checkmark.circle")
+                Image(systemName: Icons.successCircle)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 60)

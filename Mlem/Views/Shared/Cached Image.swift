@@ -159,7 +159,7 @@ struct CachedImage: View {
     }
     
     static func imageNotFoundDefault() -> AnyView {
-        AnyView(Image(systemName: "questionmark.square.dashed")
+        AnyView(Image(systemName: Icons.missingSymbolName)
             .resizable()
             .scaledToFit()
             .frame(maxWidth: AppConstants.thumbnailSize, maxHeight: AppConstants.thumbnailSize)

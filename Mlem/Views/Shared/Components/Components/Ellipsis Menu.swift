@@ -25,7 +25,7 @@ struct EllipsisMenu: View {
                 MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
             }
         } label: {
-            Image(systemName: "ellipsis")
+            Image(systemName: Icons.menuSymbolName)
                 .frame(width: size, height: size)
                 .foregroundColor(.primary)
                 .background(RoundedRectangle(cornerRadius: AppConstants.tinyItemCornerRadius)
