@@ -43,7 +43,7 @@ struct PostSettingsView: View {
         Form {
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: Icons.postSizeSettingsSymbolName,
+                    settingIconSystemName: Icons.postSizeSetting,
                     settingName: "Post Size",
                     currentValue: $postSize,
                     options: PostSize.allCases
@@ -95,7 +95,7 @@ struct PostSettingsView: View {
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.limitImageHeightInFeedSymbolName,
+                    settingPictureSystemName: Icons.limitImageHeightSetting,
                     settingName: "Limit Image Height In Feed",
                     isTicked: $limitImageHeightInFeed
                 )
@@ -103,12 +103,12 @@ struct PostSettingsView: View {
             
             Section("Interactions and Info") {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.emptyUpvoteSymbolName,
+                    settingPictureSystemName: Icons.upvoteSquare,
                     settingName: "Show Score In Info",
                     isTicked: $shouldShowScoreInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.generalVoteSymbolName,
+                    settingPictureSystemName: Icons.votes,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showDownvotesSeparately
                 )
@@ -118,7 +118,7 @@ struct PostSettingsView: View {
                     isTicked: $shouldShowTimeInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.emptySaveSymbolName,
+                    settingPictureSystemName: Icons.save,
                     settingName: "Show Saved Status In Info",
                     isTicked: $shouldShowSavedInPostBar
                 )

@@ -79,49 +79,17 @@ struct AvatarView: View {
         case .community:
             // TODO: make good
             return AnyView(
-                Image(systemName: Icons.communitySymbolName)
+                Image(systemName: Icons.community)
                     .resizable()
                     .scaledToFill()
-//                ZStack {
-//                    VStack {
-//                        Spacer()
-//                        Image(systemName: "building.2.fill")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(height: avatarSize * 0.66)
-//                            .foregroundStyle(.white)
-//                    }
-//                    .scaledToFit()
-//                    .mask(
-//                        Circle()
-//                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
-//                    )
-//                }
-//                .frame(maxWidth: .infinity)
-//                .background(.gray)
+                    .foregroundColor(.secondary)
             )
         case .user:
             return AnyView(
-                Image(systemName: Icons.userFill)
+                Image(systemName: Icons.user)
                     .resizable()
                     .scaledToFill()
-//                ZStack {
-//                    VStack {
-//                        Spacer()
-//                        Image(systemName: "person.fill")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(height: avatarSize * 0.75)
-//                            .foregroundStyle(.white)
-//                    }
-//                    .scaledToFit()
-//                    .mask(
-//                        Circle()
-//                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
-//                    )
-//                }
-//                .frame(maxWidth: .infinity)
-//                .background(.gray)
+                    .foregroundColor(.secondary)
             )
         }
     }

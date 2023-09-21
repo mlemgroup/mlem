@@ -84,25 +84,25 @@ extension PostSortType: SettingsOptions {
 extension PostSortType: AssociatedIcon {
     var iconName: String {
         switch self {
-        case .active: return Icons.activeSortSymbolName
-        case .hot: return Icons.hotSortSymbolName
-        case .new: return Icons.newSortSymbolName
-        case .old: return Icons.oldSortSymbolName
-        case .newComments: return Icons.newCommentsSymbolName
-        case .mostComments: return Icons.mostCommentsSymbolName
-        default: return Icons.timeSymbolName
+        case .active: return Icons.activeSort
+        case .hot: return Icons.hotSort
+        case .new: return Icons.newSort
+        case .old: return Icons.oldSort
+        case .newComments: return Icons.newCommentsSort
+        case .mostComments: return Icons.mostCommentsSort
+        default: return Icons.timeSort
         }
     }
     
     var iconNameFill: String {
         switch self {
-        case .active: return Icons.activeSortSymbolNameFill
-        case .hot: return Icons.hotSortSymbolNameFill
-        case .new: return Icons.newSortSymbolNameFill
-        case .old: return Icons.oldSortSymbolNameFill
-        case .newComments: return Icons.newCommentsSymbolNameFill
-        case .mostComments: return Icons.mostCommentsSymbolNameFill
-        default: return Icons.timeSymbolNameFill
+        case .active: return Icons.activeSortFill
+        case .hot: return Icons.hotSortFill
+        case .new: return Icons.newSortFill
+        case .old: return Icons.oldSortFill
+        case .newComments: return Icons.newCommentsSortFill
+        case .mostComments: return Icons.mostCommentsSortFill
+        default: return Icons.timeSortFill
         }
     }
 }

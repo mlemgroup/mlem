@@ -126,7 +126,7 @@ struct LargePost: View {
     
     @ViewBuilder
     private var minimizedIcon: some View {
-        Image(systemName: Icons.postSizeSettingsSymbolName)
+        Image(systemName: Icons.postSizeSetting)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding(6)

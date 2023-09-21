@@ -11,43 +11,38 @@ import SwiftUI
 /// SFSymbol names for icons
 struct Icons {
     // votes
-    static let generalVoteSymbolName: String = "arrow.up.arrow.down.square"
-    
-    static let plainUpvoteSymbolName: String = "arrow.up"
-    static let emptyUpvoteSymbolName: String = "arrow.up.square"
-    static let fullUpvoteSymbolName: String = "arrow.up.square.fill"
-    
-    static let plainDownvoteSymbolName: String = "arrow.down"
-    static let emptyDownvoteSymbolName: String = "arrow.down.square"
-    static let fullDownvoteSymbolName: String = "arrow.down.square.fill"
-    
-    static let emptyResetVoteSymbolName: String = "minus.square"
-    static let fullResetVoteSymbolName: String = "minus.square.fill"
-    static let scoringOpToVoteImage: [ScoringOperation?: String] = [.upvote: "arrow.up.square.fill",
-                                                                    .resetVote: "arrow.up.square",
-                                                                    .downvote: "arrow.down.square.fill"]
+    static let votes: String = "arrow.up.arrow.down.square"
+    static let upvote: String = "arrow.up"
+    static let upvoteSquare: String = "arrow.up.square"
+    static let upvoteSquareFill: String = "arrow.up.square.fill"
+    static let downvote: String = "arrow.down"
+    static let downvoteSquare: String = "arrow.down.square"
+    static let downvoteSquareFill: String = "arrow.down.square.fill"
+    static let resetVoteSquare: String = "minus.square"
+    static let resetVoteSquareFill: String = "minus.square.fill"
     
     // reply/send
-    static let emptyReplySymbolName: String = "arrowshape.turn.up.left"
-    static let fullReplySymbolName: String = "arrowshape.turn.up.left.fill"
-    static let sendSymbolName: String = "paperplane"
-    static let sendSymbolNameFill: String = "paperplane.fill"
+    static let reply: String = "arrowshape.turn.up.left"
+    static let replyFill: String = "arrowshape.turn.up.left.fill"
+    static let send: String = "paperplane"
+    static let sendFill: String = "paperplane.fill"
     
     // save
-    static let emptySaveSymbolName: String = "bookmark"
-    static let fullSaveSymbolName: String = "bookmark.fill"
-    static let emptyUndoSaveSymbolName: String = "bookmark.slash"
-    static let fullUndoSaveSymbolName: String = "bookmark.slash.fill"
+    static let save: String = "bookmark"
+    static let saveFill: String = "bookmark.fill"
+    static let unsave: String = "bookmark.slash"
+    static let unsaveFill: String = "bookmark.slash.fill"
     
     // mark read
-    static let emptyMarkReadSymbolName: String = "envelope"
-    static let fullMarkReadSymbolName: String = "envelope.open.fill"
-    static let emptyMarkUnreadSymbolName: String = "envelope.open"
-    static let fullMarkUnreadSymbolName: String = "envelope.fill"
+    static let markRead: String = "envelope"
+    static let markReadFill: String = "envelope.open.fill"
+    static let markUnread: String = "envelope.open"
+    static let markUnreadFill: String = "envelope.fill"
     
-    // report/block
-    static let reportSymbolName: String = "exclamationmark.shield"
-    static let blockUserSymbolName: String = "person.fill.xmark"
+    // moderation
+    static let moderation: String = "shield"
+    static let moderationFill: String = "shield.fill"
+    static let moderationReport: String = "exclamationmark.shield"
     
     // misc post
     static let replies: String = "bubble.right"
@@ -57,42 +52,40 @@ struct Icons {
     static let websiteIcon: String = "globe"
     
     // post sizes
-    static let postSizeSettingsSymbolName: String = "rectangle.expand.vertical"
-    static let compactSymbolName: String = "rectangle.grid.1x2"
-    static let compactSymbolNameFill: String = "rectangle.grid.1x2.fill"
-    static let headlineSymbolName: String = "rectangle"
-    static let headlineSymbolNameFill: String = "rectangle.fill"
-    static let largeSymbolName: String = "text.below.photo"
-    static let largeSymbolNameFill: String = "text.below.photo.fill"
-    static let blurNsfwSymbolName: String = "eye.trianglebadge.exclamationmark"
+    static let postSizeSetting: String = "rectangle.expand.vertical"
+    static let compactPost: String = "rectangle.grid.1x2"
+    static let compactPostFill: String = "rectangle.grid.1x2.fill"
+    static let headlinePost: String = "rectangle"
+    static let headlinePostFill: String = "rectangle.fill"
+    static let largePost: String = "text.below.photo"
+    static let largePostFill: String = "text.below.photo.fill"
     
     // feeds
-    static let federatedFeedSymbolName: String = "circle.hexagongrid.circle"
-    static let federatedFeedSymbolNameFill: String = "circle.hexagongrid.circle.fill"
-    static let localFeedSymbolName: String = "house.circle"
-    static let localFeedSymbolNameFill: String = "house.circle.fill"
-    static let subscribedFeedSymbolName: String = "newspaper.circle"
-    static let subscribedFeedSymbolNameFill: String = "newspaper.circle.fill"
-    static let limitImageHeightInFeedSymbolName: String = "rectangle.compress.vertical"
+    static let federatedFeed: String = "circle.hexagongrid.circle"
+    static let federatedFeedFill: String = "circle.hexagongrid.circle.fill"
+    static let localFeed: String = "house.circle"
+    static let localFeedFill: String = "house.circle.fill"
+    static let subscribedFeed: String = "newspaper.circle"
+    static let subscribedFeedFill: String = "newspaper.circle.fill"
     
     // sort types
-    static let activeSortSymbolName: String = "popcorn"
-    static let activeSortSymbolNameFill: String = "popcorn.fill"
-    static let hotSortSymbolName: String = "flame"
-    static let hotSortSymbolNameFill: String = "flame.fill"
-    static let newSortSymbolName: String = "hare"
-    static let newSortSymbolNameFill: String = "hare.fill"
-    static let oldSortSymbolName: String = "tortoise"
-    static let oldSortSymbolNameFill: String = "tortoise.fill"
-    static let newCommentsSymbolName: String = "exclamationmark.bubble"
-    static let newCommentsSymbolNameFill: String = "exclamationmark.bubble.fill"
-    static let mostCommentsSymbolName: String = "bubble.left.and.bubble.right"
-    static let mostCommentsSymbolNameFill: String = "bubble.left.and.bubble.right.fill"
-    static let topMenu: String = "text.line.first.and.arrowtriangle.forward"
-    static let topSymbolName: String = "trophy"
-    static let topSymbolNameFill: String = "trophy.fill"
-    static let timeSymbolName: String = "calendar.day.timeline.leading"
-    static let timeSymbolNameFill: String = "calendar.day.timeline.leading.fill"
+    static let activeSort: String = "popcorn"
+    static let activeSortFill: String = "popcorn.fill"
+    static let hotSort: String = "flame"
+    static let hotSortFill: String = "flame.fill"
+    static let newSort: String = "hare"
+    static let newSortFill: String = "hare.fill"
+    static let oldSort: String = "tortoise"
+    static let oldSortFill: String = "tortoise.fill"
+    static let newCommentsSort: String = "exclamationmark.bubble"
+    static let newCommentsSortFill: String = "exclamationmark.bubble.fill"
+    static let mostCommentsSort: String = "bubble.left.and.bubble.right"
+    static let mostCommentsSortFill: String = "bubble.left.and.bubble.right.fill"
+    static let topSortMenu: String = "text.line.first.and.arrowtriangle.forward"
+    static let topSort: String = "trophy"
+    static let topSortFill: String = "trophy.fill"
+    static let timeSort: String = "calendar.day.timeline.leading"
+    static let timeSortFill: String = "calendar.day.timeline.leading.fill"
     
     // user flairs
     static let developerFlair: String = "hammer.fill"
@@ -101,11 +94,11 @@ struct Icons {
     static let opFlair: String = "person.fill"
     
     // entities/general Lemmy concepts
-    static let moderation: String = "shield"
-    static let moderationFill: String = "shield.fill"
     static let instance: String = "server.rack"
     static let user: String = "person.circle"
     static let userFill: String = "person.circle.fill"
+    static let userBlock: String = "person.fill.xmark"
+    static let community: String = "building.2.crop.circle"
     
     // tabs
     static let feeds: String = "scroll"
@@ -121,8 +114,12 @@ struct Icons {
     static let successCircle: String = "checkmark.circle"
     static let successSquareFill: String = "checkmark.square.fill"
     static let failure: String = "xmark"
+    static let present: String = "circle.fill" // that's present as in "here," not as in "gift"
+    static let absent: String = "circle"
     static let warning: String = "exclamationmark.triangle"
-    static let nsfw: String = "eye.slash"
+    static let hide: String = "eye.slash"
+    static let show: String = "eye"
+    static let blurNsfw: String = "eye.trianglebadge.exclamationmark"
     static let endOfFeed: String = "figure.climbing"
     static let noContent: String = "binoculars"
     static let noPosts: String = "text.bubble"
@@ -131,15 +128,13 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     
     // common operations
-    static let shareSymbolName: String = "square.and.arrow.up"
-    static let subscribeSymbolName: String = "plus.circle"
-    static let unsubscribeSymbolName: String = "multiply.circle"
-    static let blockSymbolName: String = "eye.slash"
-    static let unblockSymbolName: String = "eye"
-    static let filterSymbolName: String = "line.3.horizontal.decrease.circle"
-    static let filterSymbolNameFill: String = "line.3.horizontal.decrease.circle.fill"
-    static let menuSymbolName: String = "ellipsis"
-    static let importSymbol: String = "square.and.arrow.down"
+    static let share: String = "square.and.arrow.up"
+    static let subscribe: String = "plus.circle"
+    static let unsubscribe: String = "multiply.circle"
+    static let filter: String = "line.3.horizontal.decrease.circle"
+    static let filterFill: String = "line.3.horizontal.decrease.circle.fill"
+    static let menu: String = "ellipsis"
+    static let importSymbol: String = "square.and.arrow.down" // Just "import" can't be used :(
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"
@@ -156,18 +151,16 @@ struct Icons {
     static let websiteAddress: String = "link"
     static let leftRight: String = "arrow.left.arrow.right"
     static let developerMode: String = "wrench.adjustable.fill"
+    static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     
     // misc
-    static let switchUserSymbolName: String = "person.crop.circle.badge.plus"
-    static let missingSymbolName: String = "questionmark.square.dashed"
-    static let connectionSymbolName: String = "antenna.radiowaves.left.and.right"
-    static let hapticSymbolName: String = "hand.tap"
-    static let transparencySymbolName: String = "square.on.square.intersection.dashed"
-    static let presentSymbolName: String = "circle.fill"
-    static let absentSymbolName: String = "circle"
-    static let iconSymbolName: String = "fleuron"
-    static let bannerSymbolName: String = "flag"
-    static let communitySymbolName: String = "building.2.crop.circle"
+    static let switchUser: String = "person.crop.circle.badge.plus"
+    static let missing: String = "questionmark.square.dashed"
+    static let connection: String = "antenna.radiowaves.left.and.right"
+    static let haptics: String = "hand.tap"
+    static let transparency: String = "square.on.square.intersection.dashed"
+    static let icon: String = "fleuron"
+    static let banner: String = "flag"
     static let noWifi: String = "wifi.slash"
     static let easterEgg: String = "gift.fill"
     static let jumpButton: String = "chevron.down.circle"

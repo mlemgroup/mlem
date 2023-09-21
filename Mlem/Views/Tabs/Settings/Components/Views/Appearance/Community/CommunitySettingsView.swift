@@ -12,12 +12,12 @@ struct CommunitySettingsView: View {
     var body: some View {
         Form {
             SwitchableSettingsItem(
-                settingPictureSystemName: Icons.communitySymbolName,
+                settingPictureSystemName: Icons.community,
                 settingName: "Show Avatars",
                 isTicked: $shouldShowCommunityIcons
             )
             SwitchableSettingsItem(
-                settingPictureSystemName: Icons.bannerSymbolName,
+                settingPictureSystemName: Icons.banner,
                 settingName: "Show Banners",
                 isTicked: $shouldShowCommunityHeaders
             )

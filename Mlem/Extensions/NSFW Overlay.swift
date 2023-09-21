@@ -50,7 +50,7 @@ struct NSFWOverlay: ViewModifier {
             .background(.thinMaterial)
             .cornerRadius(AppConstants.largeItemCornerRadius)
         } else if isNsfw, shouldBlurNsfw {
-            Image(systemName: Icons.nsfw)
+            Image(systemName: Icons.hide)
                 .foregroundColor(.white)
                 .padding(4)
                 .background(.thinMaterial)

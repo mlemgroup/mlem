@@ -19,7 +19,7 @@ struct UserSettingsView: View {
                 isTicked: $shouldShowUserAvatars
             )
             SwitchableSettingsItem(
-                settingPictureSystemName: Icons.bannerSymbolName,
+                settingPictureSystemName: Icons.banner,
                 settingName: "Show Banners",
                 isTicked: $shouldShowUserHeaders
             )

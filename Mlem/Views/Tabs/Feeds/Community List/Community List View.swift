@@ -20,11 +20,11 @@ struct CommunityListView: View {
     @StateObject private var model: CommunityListModel = .init()
     
     @Binding var selectedCommunity: CommunityLinkWithContext?
-
+    
     init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
         self._selectedCommunity = selectedCommunity
     }
-
+    
     // MARK: - Body
     
     var body: some View {
@@ -33,7 +33,7 @@ struct CommunityListView: View {
                 List(selection: $selectedCommunity) {
                     HomepageFeedRowView(
                         feedType: .subscribed,
-                        iconName: Icons.subscribedFeedSymbolNameFill,
+                        iconName: Icons.subscribedFeedFill,
                         iconColor: .red,
                         description: "Subscribed communities from all servers",
                         navigationContext: .sidebar
@@ -41,41 +41,40 @@ struct CommunityListView: View {
                     .id("top") // For "scroll to top" sidebar item
                     HomepageFeedRowView(
                         feedType: .local,
-                        iconName: Icons.localFeedSymbolNameFill,
+                        iconName: Icons.localFeedFill,
                         iconColor: .green,
                         description: "Local communities from your server",
                         navigationContext: .sidebar
                     )
                     HomepageFeedRowView(
                         feedType: .all,
-                        iconName: Icons.federatedFeedSymbolNameFill,
+                        iconName: Icons.federatedFeedFill,
                         iconColor: .blue,
                         description: "All communities that federate with your server",
                         navigationContext: .sidebar
                     )
                     
-                        ForEach(model.visibleSections) { section in
-                            Section(header: headerView(for: section)) {
-                                ForEach(model.communities(for: section)) { community in
-                                    CommuntiyFeedRowView(
-                                        community: community,
-                                        subscribed: model.isSubscribed(to: community),
-                                        communitySubscriptionChanged: model.updateSubscriptionStatus,
-                                        navigationContext: .sidebar
-                                    )
-                                }
+                    ForEach(model.visibleSections) { section in
+                        Section(header: headerView(for: section)) {
+                            ForEach(model.communities(for: section)) { community in
+                                CommuntiyFeedRowView(
+                                    community: community,
+                                    subscribed: model.isSubscribed(to: community),
+                                    communitySubscriptionChanged: model.updateSubscriptionStatus,
+                                    navigationContext: .sidebar
+                                )
                             }
                         }
                     }
                 }
-                .fancyTabScrollCompatible()
-                .navigationTitle("Communities")
-                .navigationBarColor()
-                .listStyle(PlainListStyle())
-                .scrollIndicators(.hidden)
-
-                SectionIndexTitles(proxy: scrollProxy, communitySections: model.allSections())
             }
+            .fancyTabScrollCompatible()
+            .navigationTitle("Communities")
+            .navigationBarColor()
+            .listStyle(PlainListStyle())
+            .scrollIndicators(.hidden)
+            
+            SectionIndexTitles(proxy: scrollProxy, communitySections: model.allSections())
         }
         .refreshable {
             await model.load()

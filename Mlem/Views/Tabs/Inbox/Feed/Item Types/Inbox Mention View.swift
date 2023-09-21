@@ -25,13 +25,13 @@ struct InboxMentionView: View {
         
         switch mention.myVote {
         case .upvote:
-            self.voteIconName = Icons.plainUpvoteSymbolName
+            self.voteIconName = Icons.upvote
             self.voteColor = .upvoteColor
         case .downvote:
-            self.voteIconName = Icons.plainDownvoteSymbolName
+            self.voteIconName = Icons.downvote
             self.voteColor = .downvoteColor
         default:
-            self.voteIconName = Icons.plainUpvoteSymbolName
+            self.voteIconName = Icons.upvote
             self.voteColor = .secondary
         }
     }

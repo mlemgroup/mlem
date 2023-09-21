@@ -17,7 +17,7 @@ struct DownvoteButtonView: View {
                 await downvote()
             }
         } label: {
-            Image(systemName: Icons.plainDownvoteSymbolName)
+            Image(systemName: Icons.downvote)
                 .resizable()
                 .scaledToFit()
                 .frame(width: AppConstants.barIconSize, height: AppConstants.barIconSize)

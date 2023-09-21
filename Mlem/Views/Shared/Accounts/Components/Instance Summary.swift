@@ -22,8 +22,8 @@ struct InstanceSummary: View {
     @State var isPresentingRedirectAlert: Bool = false
     
     var isLoading: Bool { siteData == nil && !fetchFailed }
-    var downvotesSymbolName: String { instance.downvotes ? Icons.presentSymbolName : Icons.absentSymbolName }
-    var federatedSymbolName: String { instance.federated ? Icons.presentSymbolName : Icons.absentSymbolName }
+    var downvotesSymbolName: String { instance.downvotes ? Icons.present : Icons.absent }
+    var federatedSymbolName: String { instance.federated ? Icons.present : Icons.absent }
     var signupURL: URL? {
         let signupString = "\(instance.url.description)/signup"
         if let ret = URL(string: signupString) {

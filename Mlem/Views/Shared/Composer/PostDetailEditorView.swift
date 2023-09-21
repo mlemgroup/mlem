@@ -213,7 +213,7 @@ struct PostDetailEditorView: View {
                         await submitPost()
                     }
                 } label: {
-                    Image(systemName: Icons.sendSymbolName)
+                    Image(systemName: Icons.send)
                 }.disabled(isSubmitting || !isReadyToPost)
             }
         }

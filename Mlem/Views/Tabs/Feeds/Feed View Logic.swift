@@ -107,7 +107,7 @@ extension FeedView {
             let isSelected = postSortType == type
             return MenuFunction.standardMenuFunction(
                 text: type.description,
-                imageName: isSelected ? Icons.timeSymbolNameFill : Icons.timeSymbolName,
+                imageName: isSelected ? Icons.timeSortFill : Icons.timeSort,
                 destructiveActionPrompt: nil,
                 enabled: !isSelected
             ) {
@@ -122,7 +122,7 @@ extension FeedView {
         let blurNsfwText = shouldBlurNsfw ? "Unblur NSFW" : "Blur NSFW"
         ret.append(MenuFunction.standardMenuFunction(
             text: blurNsfwText,
-            imageName: Icons.blurNsfwSymbolName,
+            imageName: Icons.blurNsfw,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -148,7 +148,7 @@ extension FeedView {
         // new post
         ret.append(MenuFunction.standardMenuFunction(
             text: "New Post",
-            imageName: Icons.sendSymbolNameFill,
+            imageName: Icons.sendFill,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -162,8 +162,8 @@ extension FeedView {
         if let communityDetails {
             let isSubscribed: Bool = communityDetails.communityView.subscribed.rawValue == "Subscribed"
             let (subscribeText, subscribeSymbol, subscribePrompt) = isSubscribed
-                ? ("Unsubscribe", Icons.unsubscribeSymbolName, "Really unsubscribe from \(community.name)?")
-                : ("Subscribe", Icons.subscribeSymbolName, nil)
+                ? ("Unsubscribe", Icons.unsubscribe, "Really unsubscribe from \(community.name)?")
+                : ("Subscribe", Icons.subscribe, nil)
             ret.append(MenuFunction.standardMenuFunction(
                 text: subscribeText,
                 imageName: subscribeSymbol,
@@ -210,8 +210,8 @@ extension FeedView {
         if let communityDetails {
             // block
             let (blockText, blockSymbol, blockPrompt) = communityDetails.communityView.blocked
-                ? ("Unblock", Icons.unblockSymbolName, nil)
-                : ("Block", Icons.blockSymbolName, "Really block \(community.name)?")
+                ? ("Unblock", Icons.show, nil)
+                : ("Block", Icons.hide, "Really block \(community.name)?")
             ret.append(MenuFunction.standardMenuFunction(
                 text: blockText,
                 imageName: blockSymbol,

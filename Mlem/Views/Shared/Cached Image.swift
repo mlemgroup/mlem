@@ -159,7 +159,7 @@ struct CachedImage: View {
     }
     
     static func imageNotFoundDefault() -> AnyView {
-        AnyView(Image(systemName: Icons.missingSymbolName)
+        AnyView(Image(systemName: Icons.missing)
             .resizable()
             .scaledToFit()
             .frame(maxWidth: AppConstants.thumbnailSize, maxHeight: AppConstants.thumbnailSize)

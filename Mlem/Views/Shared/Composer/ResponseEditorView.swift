@@ -93,7 +93,7 @@ struct ResponseEditorView: View {
                         await submit()
                     }
                 } label: {
-                    Image(systemName: Icons.sendSymbolName)
+                    Image(systemName: Icons.send)
                 }.disabled(isSubmitting || !isReadyToReply)
             }
         }
