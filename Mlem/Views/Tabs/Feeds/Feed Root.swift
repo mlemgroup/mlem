@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct FeedRoot: View {
-    @EnvironmentObject var appState: AppState
+//    @EnvironmentObject var appState: AppState
     @Environment(\.scenePhase) var phase
-    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+//    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
+//    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -34,7 +34,7 @@ struct FeedRoot: View {
                         sortType: defaultPostSorting,
                         showLoading: showLoading
                     )
-                    .environmentObject(appState)
+//                    .environmentObject(appState)
                     .handleLemmyViews()
                 }
                 .id(rootDetails.id)
@@ -46,7 +46,7 @@ struct FeedRoot: View {
             navigationPath: .constant(feedRouter)
         )
         .environmentObject(feedRouter)
-        .environmentObject(appState)
+//        .environmentObject(appState)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:
@@ -79,16 +79,16 @@ struct FeedRoot: View {
                 }
             }
         }
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.feeds.hashValue {
-                print("switched to Feed tab")
-            }
-        }
-        .onChange(of: selectedNavigationTabHashValue) { newValue in
-            if newValue == TabSelection.feeds.hashValue {
-                print("re-selected \(TabSelection.feeds) tab")
-            }
-        }
+//        .onChange(of: selectedTagHashValue) { newValue in
+//            if newValue == TabSelection.feeds.hashValue {
+//                print("switched to Feed tab")
+//            }
+//        }
+//        .onChange(of: selectedNavigationTabHashValue) { newValue in
+//            if newValue == TabSelection.feeds.hashValue {
+//                print("re-selected \(TabSelection.feeds) tab")
+//            }
+//        }
     }
 }
 

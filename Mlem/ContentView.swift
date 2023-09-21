@@ -97,25 +97,28 @@ struct ContentView: View {
                 })
             ]
         ) {
-            FeedRoot(showLoading: showLoading)
-                .tag(TabSelection.feeds)
-            
-            // wrapping these two behind a check for an active user, as of now we'll always have one
-            // but when guest mode arrives we'll either omit these entirely, or replace them with a
-            // guest mode specific tab for sign in / change instance screen.
-            if let account = appState.currentActiveAccount {
-                InboxView()
-                    .tag(TabSelection.inbox)
+//            Group {
+                FeedRoot(showLoading: showLoading)
+                    .tag(TabSelection.feeds)
                 
-                ProfileView(userID: account.id)
-                    .tag(TabSelection.profile)
-            }
-            
-            SearchView()
-                .tag(TabSelection.search)
-            
-            SettingsView()
-                .tag(TabSelection.settings)
+                // wrapping these two behind a check for an active user, as of now we'll always have one
+                // but when guest mode arrives we'll either omit these entirely, or replace them with a
+                // guest mode specific tab for sign in / change instance screen.
+                if let account = appState.currentActiveAccount {
+                    InboxView()
+                        .tag(TabSelection.inbox)
+                    
+                    ProfileView(userID: account.id)
+                        .tag(TabSelection.profile)
+                }
+                
+                SearchView()
+                    .tag(TabSelection.search)
+                
+                SettingsView()
+                    .tag(TabSelection.settings)
+//            }
+//            .environment(\.tabSelectionHashValue, tabSelection.hashValue)
         }
         .task(id: appState.currentActiveAccount) {
             accountChanged()
