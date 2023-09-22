@@ -67,14 +67,14 @@ struct CommunityListView: View {
                         }
                     }
                 }
+                .fancyTabScrollCompatible()
+                .navigationTitle("Communities")
+                .navigationBarColor()
+                .listStyle(PlainListStyle())
+                .scrollIndicators(.hidden)
+                
+                SectionIndexTitles(proxy: scrollProxy, communitySections: model.allSections())
             }
-            .fancyTabScrollCompatible()
-            .navigationTitle("Communities")
-            .navigationBarColor()
-            .listStyle(PlainListStyle())
-            .scrollIndicators(.hidden)
-            
-            SectionIndexTitles(proxy: scrollProxy, communitySections: model.allSections())
         }
         .refreshable {
             await model.load()
