@@ -29,7 +29,7 @@ public struct SwipeConfiguration {
     /// In ascending order of appearance.
     let trailingActions: [SwipeAction]
     
-    init(leadingActions: [SwipeAction?], trailingActions: [SwipeAction?]) {
+    init(leadingActions: [SwipeAction?] = [], trailingActions: [SwipeAction?] = []) {
         assert(
             leadingActions.count <= 3 && trailingActions.count <= 3,
             "Getting a little swipey aren't we? Ask your fellow Mlem'ers if you really need more than 3 swipe actions =)"
@@ -348,7 +348,7 @@ struct SwipeyView: ViewModifier {
 
 extension View {
     @ViewBuilder
-    func addSwipeyActions(leading: [SwipeAction?], trailing: [SwipeAction?]) -> some View {
+    func addSwipeyActions(leading: [SwipeAction?] = [], trailing: [SwipeAction?] = []) -> some View {
         modifier(
             SwipeyView(
                 configuration: .init(
