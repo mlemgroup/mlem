@@ -450,6 +450,8 @@ class PostTracker: ObservableObject {
                 break
             }
         }
+        
+        prefetcher.startPrefetching(with: imageRequests)
     }
     
     /// Filters a list of PostModels to only those PostModels not present in ids. Updates ids.
