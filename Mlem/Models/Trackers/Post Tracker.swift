@@ -33,6 +33,8 @@ class PostTracker: ObservableObject {
     private(set) var isLoading: Bool = false // accessible but not published because it causes lots of bad view redraws
     private(set) var page: Int = 1
     
+    private var hasReachedEnd: Bool = false
+    
     // prefetching
     private let prefetcher = ImagePrefetcher(
         pipeline: ImagePipeline.shared,
@@ -75,9 +77,14 @@ class PostTracker: ObservableObject {
                 type: type,
                 limit: internetSpeed.pageSize
             )
-            await add(newPosts, filtering: filtering)
-            page += 1
-        } while !newPosts.isEmpty && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
+            
+            if newPosts.isEmpty {
+                hasReachedEnd = true
+            } else {
+                await add(newPosts, filtering: filtering)
+                page += 1
+            }
+        } while !hasReachedEnd && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
         
         // so although the API kindly returns `400`/"not_logged_in" for expired
         // sessions _without_ 2FA enabled, currently once you enable 2FA on an account
@@ -162,6 +169,7 @@ class PostTracker: ObservableObject {
         with newItems: [PostModel] = .init(),
         filteredWith filter: @escaping (_: PostModel) -> Bool = { _ in true }
     ) {
+        hasReachedEnd = false
         page = newItems.isEmpty ? 1 : 2
         ids = .init(minimumCapacity: 1000)
         items = dedupedItems(from: newItems.filter(filter))
@@ -171,7 +179,7 @@ class PostTracker: ObservableObject {
     /// NOTE: this is equivalent to the old shouldLoadContentPreciselyAfter
     @MainActor
     func shouldLoadContentAfter(after item: PostModel) -> Bool {
-        guard !isLoading else { return false }
+        guard !isLoading, !hasReachedEnd else { return false }
 
         let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset))
         if thresholdIndex >= 0,
