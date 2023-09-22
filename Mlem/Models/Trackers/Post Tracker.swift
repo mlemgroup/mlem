@@ -122,7 +122,8 @@ class PostTracker: ObservableObject {
             communityId: communityId,
             page: page,
             sort: sort,
-            type: feedType
+            type: feedType,
+            limit: internetSpeed.pageSize
         )
         
         await reset(with: newPosts, filteredWith: filtering)
