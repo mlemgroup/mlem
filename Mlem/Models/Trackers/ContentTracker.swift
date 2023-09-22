@@ -23,6 +23,7 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     @Published var items: [Content]
     
     // utility
+    private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var page: Int = 1
     private(set) var isLoading: Bool = false
     private var currentTask: Task<Void, Never>?
@@ -54,8 +55,8 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
             do {
                 let items = try await self.loadItems(page)
                 RunLoop.main.perform { [self] in
-                    self.items = items
-                    preloadImages(for: items)
+                    self.ids.removeAll()
+                    self.items = self.loadItems(items)
                 }
             } catch is CancellationError {
                 print("Search cancelled")
@@ -74,8 +75,7 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
             do {
                 let items = try await self.loadItems(page)
                 RunLoop.main.perform { [self] in
-                    self.items.append(contentsOf: items)
-                    preloadImages(for: items)
+                    self.items.append(contentsOf: loadItems(items))
                 }
             } catch is CancellationError {
                 print("Search cancelled")
@@ -105,12 +105,15 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
         return false
     }
     
-    private func preloadImages(for newItems: [Content]) {
+    /// Prepares items by preloading images and removing duplicates
+    func loadItems(_ newItems: [Content]) -> [Content] {
+        let newItems = newItems.filter { ids.insert($0.uid).inserted }
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         for item in newItems {
             for url in item.imageUrls {
                 ImageRequest(url: url)
             }
         }
+        return newItems
     }
 }

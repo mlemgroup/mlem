@@ -29,9 +29,6 @@ struct SearchView: View {
     @StateObject private var searchRouter: NavigationRouter<NavigationRoute> = .init()
     @State private var selectedColorIndex = 0
     
-    // constants
-    private let searchPageSize = 50
-    
     func performSearch(page: Int) async throws -> [CommunityModel] {
         let response = try await apiClient.performSearch(
             query: searchModel.searchText,
@@ -103,6 +100,7 @@ struct SearchView: View {
         .environmentObject(contentTracker)
         .onChange(of: shouldLoad) { value in
             if value && !contentTracker.isLoading {
+                print("Loading page \(contentTracker.page)...")
                 Task(priority: .medium) { try await contentTracker.loadNextPage() }
             }
             shouldLoad = false
