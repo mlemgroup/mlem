@@ -16,7 +16,7 @@ class PostRepository {
         page: Int,
         sort: PostSortType?,
         type: FeedType,
-        limit: Int? = nil,
+        limit: Int,
         savedOnly: Bool? = nil,
         communityName: String? = nil
     ) async throws -> [PostModel] {
@@ -77,20 +77,23 @@ class PostRepository {
     ///   - url: new post url
     ///   - body: new post body
     ///   - nsfw: new post nsfw status
+    ///   - languageId: the language id for the post if available
     /// - Returns: PostModel with the new state of the post
     func editPost(
         postId: Int,
         name: String?,
         url: String?,
         body: String?,
-        nsfw: Bool?
+        nsfw: Bool?,
+        languageId: Int? = nil
     ) async throws -> PostModel {
         let response = try await apiClient.editPost(
             postId: postId,
             name: name,
             url: url,
             body: body,
-            nsfw: nsfw
+            nsfw: nsfw,
+            languageId: languageId
         )
         return PostModel(from: response.postView)
     }
