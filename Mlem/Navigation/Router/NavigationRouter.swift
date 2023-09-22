@@ -9,6 +9,7 @@ import Foundation
 
 final class NavigationRouter<RouteValue: Routable>: ObservableObject {
     
+    /// - Avoid directly manipulating this value, if alternate methods are provided.
     @Published var path: [RouteValue] = []
     
 }

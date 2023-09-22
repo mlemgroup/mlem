@@ -42,10 +42,10 @@
 		503422582AAB798600EFE88D /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503422572AAB798600EFE88D /* AppFlow.swift */; };
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		504106CD2A744D7F000AAEF8 /* CommentRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */; };
-		504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */; };
-		504ECBB12AB4B101006C0B96 /* LemmyURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */; };
 		504ECBAA2AB27C73006C0B96 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBA92AB27C73006C0B96 /* LandingPage.swift */; };
 		504ECBAC2AB27CB1006C0B96 /* OnboardingRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */; };
+		504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */; };
+		504ECBB12AB4B101006C0B96 /* LemmyURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */; };
 		505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */; };
 		505240E52A86E32700EA4558 /* CommunityListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E42A86E32700EA4558 /* CommunityListModel.swift */; };
 		505240E72A88D36D00EA4558 /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */; };
@@ -429,6 +429,7 @@
 		E47478152AAC3C19001CB1AC /* NavigationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47478142AAC3C19001CB1AC /* NavigationContext.swift */; };
 		E47B2B762A902DE200629AF7 /* SettingsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */; };
 		E4902BAB2A9024BF0054FB36 /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */; };
+		E49E01F42ABD99D300E42BB3 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49E01F32ABD99D300E42BB3 /* Routable.swift */; };
 		E49F0E762A90395400BC4EE3 /* NavigationPath+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */; };
 		E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */; };
 		E4D4DBA22A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */; };
@@ -489,10 +490,10 @@
 		503422572AAB798600EFE88D /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentRepository+Dependency.swift"; sourceTree = "<group>"; };
-		504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURL.swift; sourceTree = "<group>"; };
-		504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURLTests.swift; sourceTree = "<group>"; };
 		504ECBA92AB27C73006C0B96 /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRoute.swift; sourceTree = "<group>"; };
+		504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURL.swift; sourceTree = "<group>"; };
+		504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURLTests.swift; sourceTree = "<group>"; };
 		505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteCommunitiesTracker+Dependency.swift"; sourceTree = "<group>"; };
 		505240E42A86E32700EA4558 /* CommunityListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListModel.swift; sourceTree = "<group>"; };
 		505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
@@ -874,6 +875,7 @@
 		E47478142AAC3C19001CB1AC /* NavigationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContext.swift; sourceTree = "<group>"; };
 		E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoutes.swift; sourceTree = "<group>"; };
 		E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
+		E49E01F32ABD99D300E42BB3 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPath+Helpers.swift"; sourceTree = "<group>"; };
 		E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabNavigationSelectionHashValueEnvironmentKey.swift; sourceTree = "<group>"; };
@@ -1074,14 +1076,6 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		504ECBAF2AB4B0DF006C0B96 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		504ECBA82AB27C4C006C0B96 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -1090,6 +1084,14 @@
 				504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		504ECBAF2AB4B0DF006C0B96 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		5064D03B2A6DE05000B22EE3 /* Notifications */ = {
@@ -2274,6 +2276,7 @@
 				E47478142AAC3C19001CB1AC /* NavigationContext.swift */,
 				E47478122AAC350E001CB1AC /* NavigationLink+Helpers.swift */,
 				E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */,
+				E49E01F32ABD99D300E42BB3 /* Routable.swift */,
 				E47B2B772A902E3C00629AF7 /* Router */,
 				E47B2B742A902DB400629AF7 /* Route */,
 			);
@@ -2851,6 +2854,7 @@
 				CDE6A8182A490AF20062D161 /* Inbox Mention View.swift in Sources */,
 				CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */,
 				6332FDCF27EFDD2E0009A98A /* Accounts Page.swift in Sources */,
+				E49E01F42ABD99D300E42BB3 /* Routable.swift in Sources */,
 				CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */,
 				6D15D74C2A44DC240061B5CB /* Date.swift in Sources */,
 				CDF1EF122A6B672C003594B6 /* Feed View.swift in Sources */,

@@ -7,29 +7,6 @@
 
 import Foundation
 
-protocol Routable: Hashable {
-        
-    static func makeRoute<V>(_ value: V) -> Self where V: Hashable
-    
-    static var makeRouteErrorString: String { get }
-}
-
-extension Routable {
-    
-    static func makeRoute<V>(_ value: V) -> Self where V: Hashable {
-        switch value {
-        case let value as Self:
-            return value
-        default:
-            fatalError(Self.makeRouteErrorString)
-        }
-    }
-    
-    static var makeRouteErrorString: String {
-        "`makeRoute(...) implementation must return a valid route for all values."
-    }
-}
-
 /// Possible routes for navigation links in `Mlem.app`.
 ///
 /// See `SettingsRoutes` for settings-related routes.
