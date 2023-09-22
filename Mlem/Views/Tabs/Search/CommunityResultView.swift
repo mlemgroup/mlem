@@ -64,6 +64,14 @@ struct CommunityResultView: View {
         .padding(.vertical, 8)
         .background(.background)
         .addSwipeyActions(trailing: [subscribeSwipeAction])
+        .draggable(community.community.actorId) {
+            HStack {
+                AvatarView(community: community.community, avatarSize: 24)
+                Text(community.community.name)
+            }
+            .background(.background)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
         .contextMenu {
             Button(
                 community.subscribed ? "Unsubscribe" : "Subscribe",

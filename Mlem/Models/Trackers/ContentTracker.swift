@@ -26,6 +26,7 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var page: Int = 1
     private(set) var isLoading: Bool = false
+    private(set) var hasReachedEnd: Bool = false
     private var currentTask: Task<Void, Never>?
     
     init(
@@ -56,6 +57,8 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
                 let items = try await self.loadItems(page)
                 RunLoop.main.perform { [self] in
                     self.ids.removeAll()
+                    self.isLoading = false
+                    self.hasReachedEnd = false
                     self.items = self.loadItems(items)
                 }
             } catch is CancellationError {
@@ -67,15 +70,16 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     }
     
     func loadNextPage() async throws {
-        guard !isLoading else { return }
-        isLoading = true
-        defer { isLoading = false }
         page += 1
         currentTask = Task(priority: .userInitiated) { [self] in
             do {
-                let items = try await self.loadItems(page)
+                let newItems = try await self.loadItems(page)
                 RunLoop.main.perform { [self] in
-                    self.items.append(contentsOf: loadItems(items))
+                    self.items.append(contentsOf: loadItems(newItems))
+                    self.isLoading = false
+                    if newItems.isEmpty {
+                        hasReachedEnd = true
+                    }
                 }
             } catch is CancellationError {
                 print("Search cancelled")
@@ -95,11 +99,12 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     
     @MainActor
     func shouldLoadContentAfter(after item: Content) -> Bool {
-        guard !isLoading else { return false }
-        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset))
+        guard !isLoading, !hasReachedEnd else { return false }
+        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: -15))
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uid == item.uid }),
            itemIndex >= thresholdIndex {
+            isLoading = true
             return true
         }
         return false

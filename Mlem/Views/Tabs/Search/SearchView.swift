@@ -36,7 +36,7 @@ struct SearchView: View {
             sortOption: .topAll,
             listingType: .all,
             page: page,
-            limit: 15
+            limit: 30
         )
         return response.communities.map { CommunityModel(from: $0) }
     }
@@ -93,14 +93,27 @@ struct SearchView: View {
                             }
                         Divider()
                     }
+                    VStack {
+                        if contentTracker.isLoading {
+                            ProgressView()
+                        } else if contentTracker.hasReachedEnd {
+                            HStack {
+                                Image(systemName: "figure.climbing")
+                                Text("I think I've found the bottom!")
+                            }
+                            .foregroundColor(.secondary)
+                        }
+                    }
+                    .frame(height: 100)
                 }
+
             }
         }
         .fancyTabScrollCompatible()
         .environmentObject(contentTracker)
         .onChange(of: shouldLoad) { value in
-            if value && !contentTracker.isLoading {
-                print("Loading page \(contentTracker.page)...")
+            if value {
+                print("Loading page \(contentTracker.page + 1)...")
                 Task(priority: .medium) { try await contentTracker.loadNextPage() }
             }
             shouldLoad = false

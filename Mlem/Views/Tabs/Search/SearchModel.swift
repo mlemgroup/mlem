@@ -9,10 +9,16 @@ import SwiftUI
 import Dependencies
 
 enum SearchTab: String, CaseIterable {
-    case communities, users, posts, comments, instances
+    case communities, users
     
     var label: String {
         return rawValue.capitalized
+//        switch self {
+//        case .topResults:
+//            return "Top Results"
+//        default:
+//            return rawValue.capitalized
+//        }
     }
 }
 
