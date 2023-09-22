@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SettingsRoute: Hashable {
+enum SettingsRoute: Routable {
     case accountsPage
     case general
     case accessibility
@@ -21,9 +21,28 @@ enum SettingsRoute: Hashable {
     case commentPage(CommentSettingsRoute)
     case postPage(PostSettingsRoute)
     case licensesPage(LicensesSettingsRoute)
+    
+    static func makeRoute<V>(_ value: V) -> SettingsRoute where V: Hashable {
+        switch value {
+        case let value as Self:
+            return value
+        case let value as AboutSettingsRoute:
+            return .aboutPage(AboutSettingsRoute.makeRoute(value))
+        case let value as AppearanceSettingsRoute:
+            return .appearancePage(AppearanceSettingsRoute.makeRoute(value))
+        case let value as CommentSettingsRoute:
+            return .commentPage(CommentSettingsRoute.makeRoute(value))
+        case let value as PostSettingsRoute:
+            return .postPage(PostSettingsRoute.makeRoute(value))
+        case let value as LicensesSettingsRoute:
+            return .licensesPage(LicensesSettingsRoute.makeRoute(value))
+        default:
+            fatalError(Self.makeRouteErrorString)
+        }
+    }
 }
 
-enum AppearanceSettingsRoute: Hashable, Codable {
+enum AppearanceSettingsRoute: Routable, Codable {
     case theme
     case appIcon
     case posts
@@ -33,21 +52,42 @@ enum AppearanceSettingsRoute: Hashable, Codable {
     case tabBar
 }
 
-enum CommentSettingsRoute: Hashable, Codable {
+enum CommentSettingsRoute: Routable, Codable {
     case layoutWidget
 }
 
-enum PostSettingsRoute: Hashable, Codable {
+enum PostSettingsRoute: Routable, Codable {
     case customizeWidgets
 }
 
-enum AboutSettingsRoute: Hashable {
+enum AboutSettingsRoute: Routable {
     case contributors
     case privacyPolicy(Document)
     case eula(Document)
     case licenses
+    
+    static func makeRoute<V>(_ value: V) -> AboutSettingsRoute where V: Hashable {
+        switch value {
+        case let value as Self:
+            return value
+        case let value as Document:
+            //            return .privacyPolicy(value)
+            return .eula(value)
+        default:
+            fatalError(Self.makeRouteErrorString)
+        }
+    }
 }
 
-enum LicensesSettingsRoute: Hashable {
+enum LicensesSettingsRoute: Routable {
     case licenseDocument(Document)
+    
+    static func makeRoute<V>(_ value: V) -> LicensesSettingsRoute where V: Hashable {
+        switch value {
+        case let value as Document:
+            return .licenseDocument(value)
+        default:
+            fatalError(Self.makeRouteErrorString)
+        }
+    }
 }

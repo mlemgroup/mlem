@@ -7,11 +7,20 @@
 
 import Foundation
 
-final class NavigationRouter<Route: Hashable>: ObservableObject {
-    @Published var path: [Route] = []
+final class NavigationRouter<RouteValue: Routable>: ObservableObject {
+    
+    @Published var path: [RouteValue] = []
+    
 }
-
+ 
 extension NavigationRouter: AnyNavigationPath {
+
+    typealias Route = RouteValue
+    
+    static func makeRoute<V>(_ value: V) -> Route where V: Hashable {
+        RouteValue.makeRoute(value)
+    }
+    
     var count: Int {
         path.count
     }
@@ -20,9 +29,9 @@ extension NavigationRouter: AnyNavigationPath {
         path.isEmpty
     }
     
-    func append<V>(_ value: V) where V: Hashable {
-        assert(value is Route)
+    func append<V>(_ value: V) where V: Routable {
         guard let route = value as? Route else {
+            assert(value is Route)
             return
         }
         path.append(route)
