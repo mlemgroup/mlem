@@ -73,16 +73,17 @@ struct SelectableSettingsItem<T: SettingsOptions>: View {
 
 struct SquircleLabelStyle: LabelStyle {
     var color: Color
-    var fontSize: CGFloat = 0 // see adjustedFontSize comment
+    var fontSize: CGFloat = 14
+    let ios16FontSize: CGFloat = 17
     
     /**
-     This computed property handles the fact that on iOS 17, the font size of 17 makes the icons too large. The code will not compile if fontSize itself is either absent or computed, so we just define it, ignore it, and use this one instead
+     This computed property handles the fact that on iOS 17, the font size of 17 makes the icons too large. The code will not compile if fontSize itself is either absent or computed, so we define it above, compute an adjusted value here, and use the computed value.
      */
     var adjustedFontSize: CGFloat {
         if #available(iOS 17.0, *) {
-            return 14
+            return fontSize
         } else {
-            return 17
+            return ios16FontSize
         }
     }
     
