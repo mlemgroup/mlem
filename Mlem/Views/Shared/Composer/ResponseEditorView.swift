@@ -100,6 +100,7 @@ struct ResponseEditorView: View {
         .navigationBarColor()
         .navigationTitle(editorModel.modalName)
         .navigationBarTitleDisplayMode(.inline)
+        .interactiveDismissDisabled(isReadyToReply)
     }
     
     @MainActor
