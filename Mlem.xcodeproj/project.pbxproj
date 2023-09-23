@@ -31,6 +31,7 @@
 		03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
 		03B7AAEF2ABCB9DC00068B23 /* ContentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */; };
+		03B7AAF12ABE404300068B23 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAF02ABE404300068B23 /* ContentModel.swift */; };
 		03BAA23A2A57DC1400D48252 /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAA2392A57DC1400D48252 /* TimestampView.swift */; };
 		03CB329E2A6D8E910021EF27 /* PostDetailEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB329D2A6D8E910021EF27 /* PostDetailEditorView.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
@@ -483,6 +484,7 @@
 		03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentViewProtocol.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTracker.swift; sourceTree = "<group>"; };
+		03B7AAF02ABE404300068B23 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 		03BAA2392A57DC1400D48252 /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostDetailEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailEditorView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
@@ -2216,6 +2218,7 @@
 				CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */,
 				CDEBC3292A9A580B00518D9D /* Post Model.swift */,
 				03EEEAF82ABB985D0087F8D8 /* CommunityModel.swift */,
+				03B7AAF02ABE404300068B23 /* ContentModel.swift */,
 				CDEBC32B2A9A582500518D9D /* Votes Model.swift */,
 			);
 			path = Content;
@@ -2782,6 +2785,7 @@
 				CD69F5712A422EDD0028D4F7 /* InteractionBarView.swift in Sources */,
 				50C99B5C2A61F5EB005D57DD /* CommentRepository.swift in Sources */,
 				637218732A3A2AAD008C4816 /* FollowCommunity.swift in Sources */,
+				03B7AAF12ABE404300068B23 /* ContentModel.swift in Sources */,
 				637218742A3A2AAD008C4816 /* ListCommunities.swift in Sources */,
 				CD1446182A58FC3B00610EF1 /* InfoStackView.swift in Sources */,
 				CDE9CE4F2A7B0B1B002B97DD /* Haptic.swift in Sources */,

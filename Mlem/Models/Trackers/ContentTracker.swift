@@ -29,6 +29,12 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     private(set) var hasReachedEnd: Bool = false
     private var currentTask: Task<Void, Never>?
     
+    private let prefetcher = ImagePrefetcher(
+        pipeline: ImagePipeline.shared,
+        destination: .memoryCache,
+        maxConcurrentRequestCount: 40
+    )
+    
     init(
         _ loadItems: @escaping (_ page: Int) async throws -> [Content] = {_ in []},
         internetSpeed: InternetSpeed = .fast,
@@ -113,12 +119,14 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     /// Prepares items by preloading images and removing duplicates
     func loadItems(_ newItems: [Content]) -> [Content] {
         let newItems = newItems.filter { ids.insert($0.uid).inserted }
+        var imageRequests: [ImageRequest] = []
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         for item in newItems {
             for url in item.imageUrls {
-                ImageRequest(url: url)
+                imageRequests.append(ImageRequest(url: url))
             }
         }
+        prefetcher.startPrefetching(with: imageRequests)
         return newItems
     }
 }

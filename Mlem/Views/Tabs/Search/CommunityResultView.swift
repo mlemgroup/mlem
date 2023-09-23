@@ -12,7 +12,7 @@ struct CommunityResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
-    @EnvironmentObject var contentTracker: ContentTracker<CommunityModel>
+    @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
     let community: CommunityModel
     
     var subscribeSwipeAction: SwipeAction {
@@ -29,7 +29,7 @@ struct CommunityResultView: View {
     func subscribe() async {
         var community = community
         await community.toggleSubscribe {
-            contentTracker.update(with: $0)
+            contentTracker.update(with: AnyContentModel($0))
         }
     }
     
@@ -69,8 +69,9 @@ struct CommunityResultView: View {
                 AvatarView(community: community.community, avatarSize: 24)
                 Text(community.community.name)
             }
+            .padding(8)
             .background(.background)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .contextMenu {
             Button(

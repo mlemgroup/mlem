@@ -8,11 +8,6 @@
 import Dependencies
 import Foundation
 
-protocol ContentModel {
-    var uid: ContentModelIdentifier { get }
-    var imageUrls: [URL] { get }
-}
-
 struct CommunityModel: ContentModel {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler

@@ -9,7 +9,11 @@ import SwiftUI
 import Dependencies
 
 struct SearchTabPicker: View {
+    @Dependency(\.hapticManager) var hapticManager
+    
     @Binding var selected: SearchTab
+    
+    // This ensures that the bubble is layered below the text at all times. There may be cleaner way to do this?
     
     @Namespace var animation
     
@@ -18,6 +22,7 @@ struct SearchTabPicker: View {
             ForEach(SearchTab.allCases, id: \.self) { type in
                 Button {
                     selected = type
+                    hapticManager.play(haptic: .gentleInfo, priority: .low)
                 } label: {
                     Text(type.label)
                         .padding(.vertical, 6)
@@ -25,15 +30,14 @@ struct SearchTabPicker: View {
                         .foregroundStyle(selected == type ? .white : .primary)
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .zIndex(2)
                         .background(
                             Group {
                                 if selected == type {
                                     Capsule()
                                         .fill(.blue)
-                                        .matchedGeometryEffect(id: "bubble", in: animation)
+                                        // .matchedGeometryEffect(id: "bubble", in: animation)
                                         // This prevents matchedGeometryEffect from changing the opacity
-                                        .transition(.scale(scale: 1))
+                                        .transition(.scale.combined(with: .opacity))
                                 }
                             }
                         )
@@ -41,6 +45,6 @@ struct SearchTabPicker: View {
                     .buttonStyle(EmptyButtonStyle())
             }
         }
-        .animation(.easeOut(duration: 0.15), value: selected)
+        .animation(.spring(duration: 0.2, bounce: 0.4), value: selected)
     }
 }

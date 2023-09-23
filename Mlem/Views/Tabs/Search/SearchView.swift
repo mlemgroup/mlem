@@ -16,7 +16,7 @@ struct SearchView: View {
     @Dependency(\.hapticManager) var hapticManager
     
     @StateObject var searchModel: SearchModel = .init()
-    @StateObject var contentTracker: ContentTracker<CommunityModel> = .init()
+    @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     
     // environment
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
@@ -29,7 +29,7 @@ struct SearchView: View {
     @StateObject private var searchRouter: NavigationRouter<NavigationRoute> = .init()
     @State private var selectedColorIndex = 0
     
-    func performSearch(page: Int) async throws -> [CommunityModel] {
+    func performSearch(page: Int) async throws -> [AnyContentModel] {
         let response = try await apiClient.performSearch(
             query: searchModel.searchText,
             searchType: .communities,
@@ -38,7 +38,7 @@ struct SearchView: View {
             page: page,
             limit: 30
         )
-        return response.communities.map { CommunityModel(from: $0) }
+        return response.communities.map { AnyContentModel(CommunityModel(from: $0)) }
     }
 
     var body: some View {
@@ -82,21 +82,23 @@ struct SearchView: View {
                 .scrollIndicators(.hidden)
                 .padding(.vertical, 4)
                 Divider()
-                    .padding(.top, 18)
+                    .padding(.top, 8)
                 LazyVStack(spacing: 0) {
-                    ForEach(contentTracker.items, id: \.communityId) { community in
-                        CommunityResultView(community: community)
-                            .onAppear {
-                                if contentTracker.shouldLoadContentAfter(after: community) {
-                                    shouldLoad = true
+                    ForEach(contentTracker.items, id: \.uid) { contentModel in
+                        if let community = contentModel.wrappedValue as? CommunityModel {
+                            CommunityResultView(community: community)
+                                .onAppear {
+                                    if contentTracker.shouldLoadContentAfter(after: contentModel) {
+                                        shouldLoad = true
+                                    }
                                 }
-                            }
+                        }
                         Divider()
                     }
                     VStack {
                         if contentTracker.isLoading {
                             ProgressView()
-                        } else if contentTracker.hasReachedEnd {
+                        } else if contentTracker.hasReachedEnd && contentTracker.items.count > 10 {
                             HStack {
                                 Image(systemName: "figure.climbing")
                                 Text("I think I've found the bottom!")
