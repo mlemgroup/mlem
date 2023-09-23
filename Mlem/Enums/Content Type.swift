@@ -8,5 +8,5 @@
 import Foundation
 
 enum ContentType: Int {
-    case post
+    case post, message, mention, reply
 }

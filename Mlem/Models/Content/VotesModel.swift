@@ -1,5 +1,5 @@
 //
-//  Votes Model.swift
+//  VotesModel.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-08-26.

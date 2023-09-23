@@ -11,7 +11,7 @@ import Foundation
 class PostRepository {
     @Dependency(\.apiClient) private var apiClient
     
-    func loadPage(
+    func loadPosts(
         communityId: Int?,
         page: Int,
         sort: PostSortType?,

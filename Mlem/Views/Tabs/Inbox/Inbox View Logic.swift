@@ -282,6 +282,7 @@ extension InboxView {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         Task(priority: .userInitiated) {
             do {
+                // TODO: remove
                 let updatedMessage = try await apiClient.markPrivateMessageRead(
                     id: message.id,
                     isRead: !message.privateMessage.read

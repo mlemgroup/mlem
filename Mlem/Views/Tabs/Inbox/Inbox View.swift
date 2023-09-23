@@ -30,6 +30,7 @@ enum ComposingTypes {
 struct InboxView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
+    @Dependency(\.privateMessageRepository) var privateMessageRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier

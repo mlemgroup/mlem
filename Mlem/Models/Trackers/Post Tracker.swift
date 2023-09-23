@@ -70,7 +70,7 @@ class PostTracker: ObservableObject {
         var newPosts: [PostModel] = .init()
         let numItems = items.count
         repeat {
-            newPosts = try await postRepository.loadPage(
+            newPosts = try await postRepository.loadPosts(
                 communityId: communityId,
                 page: page,
                 sort: sort,
@@ -125,7 +125,7 @@ class PostTracker: ObservableObject {
         
         page = 1
         
-        let newPosts = try await postRepository.loadPage(
+        let newPosts = try await postRepository.loadPosts(
             communityId: communityId,
             page: page,
             sort: sort,

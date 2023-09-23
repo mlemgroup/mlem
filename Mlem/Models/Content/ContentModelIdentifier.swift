@@ -1,5 +1,5 @@
 //
-//  Content Model Identifier.swift
+//  ContentModelIdentifier.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-08-26.
