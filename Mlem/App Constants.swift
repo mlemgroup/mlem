@@ -32,6 +32,7 @@ struct AppConstants {
 
     static let maxFeedPostHeight: CGFloat = 400
     static let maxFeedPostHeightExpanded: CGFloat = 3000
+    static let appIconSize: CGFloat = 60
     static let thumbnailSize: CGFloat = 60
     static let hugeAvatarSize: CGFloat = 120
     static let largeAvatarSize: CGFloat = 32
@@ -40,6 +41,7 @@ struct AppConstants {
     static let largeAvatarSpacing: CGFloat = 10
     static let postAndCommentSpacing: CGFloat = 10 // standard spacing for the app
     static let compactSpacing: CGFloat = 6 // standard spacing for compact things
+    static let appIconCornerRadius: CGFloat = 10
     static let largeItemCornerRadius: CGFloat = 8 // posts, website previews, etc
     static let smallItemCornerRadius: CGFloat = 6 // settings items, compact thumbnails
     static let tinyItemCornerRadius: CGFloat = 4 // buttons

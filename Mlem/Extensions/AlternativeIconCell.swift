@@ -21,9 +21,13 @@ struct AlternativeIconCell: View {
                 getImage()
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 60, height: 60)
+                    .frame(width: AppConstants.appIconSize, height: AppConstants.appIconSize)
                     .foregroundColor(Color.white)
-                    .cornerRadius(10.0)
+                    .cornerRadius(AppConstants.appIconCornerRadius)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: AppConstants.appIconCornerRadius)
+                            .stroke(Color(.secondarySystemBackground), lineWidth: 1)
+                    }
                 VStack(alignment: .leading) {
                     Text(icon.name)
                     if let author = icon.author {
