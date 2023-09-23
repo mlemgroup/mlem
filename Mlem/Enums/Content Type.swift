@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum ContentType: Int {
-    case post, community
+enum ContentType: Int, Codable {
+    case post, community, user
 }

@@ -8,6 +8,19 @@
 import SwiftUI
 import Dependencies
 
+enum SearchTab: String, CaseIterable {
+    case topResults, communities, users
+    
+    var label: String {
+        switch self {
+        case .topResults:
+            return "Top Results"
+        default:
+            return rawValue.capitalized
+        }
+    }
+}
+
 struct SearchTabPicker: View {
     @Dependency(\.hapticManager) var hapticManager
     
@@ -41,10 +54,10 @@ struct SearchTabPicker: View {
                                 }
                             }
                         )
+                        .animation(.spring(duration: 0.15, bounce: 0.3), value: selected)
                 }
                     .buttonStyle(EmptyButtonStyle())
             }
         }
-        .animation(.spring(duration: 0.2, bounce: 0.4), value: selected)
     }
 }

@@ -14,6 +14,7 @@ struct CommunityResultView: View {
     
     @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
     let community: CommunityModel
+    let showTypeLabel: Bool
     
     var subscribeSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = community.subscribed
@@ -33,22 +34,36 @@ struct CommunityResultView: View {
         }
     }
     
+    var caption: String {
+        if let host = community.community.actorId.host {
+            if showTypeLabel {
+                return "Community ∙ @\(host)"
+            } else {
+                return "@\(host)"
+            }
+        }
+        return "Unknown instance"
+    }
+    
     var body: some View {
         NavigationLink(value: NavigationRoute.apiCommunity(community.community)) {
             HStack(spacing: 10) {
                 AvatarView(community: community.community, avatarSize: 48)
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(community.community.name)
-                    if let host = community.community.actorId.host() {
-                        Text("@\(host)")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
+                VStack(alignment: .leading, spacing: 4) {
+                    if community.community.nsfw {
+                        Text("\(community.community.name) - NSFW")
+                            .foregroundStyle(.red)
+                    } else {
+                        Text(community.community.name)
                     }
+                    Text(caption)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
                 }
                 Spacer()
-                HStack {
-                    Text("\(community.subscriberCount)")
+                HStack(spacing: 5) {
+                    Text(abbreviateNumber(community.subscriberCount))
                         .monospacedDigit()
                     Image(systemName: community.subscribed ? "checkmark.circle" : "person.fill")
                 }

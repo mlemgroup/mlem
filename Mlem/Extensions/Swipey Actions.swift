@@ -185,6 +185,7 @@ struct SwipeyView: ViewModifier {
                                 .padding(.horizontal, 20)
                         }
                         .accessibilityHidden(true) // prevent these from popping up in VO
+                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
                     }
             }
             // prevents various animation glitches

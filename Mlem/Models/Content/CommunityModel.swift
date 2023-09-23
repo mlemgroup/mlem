@@ -8,7 +8,7 @@
 import Dependencies
 import Foundation
 
-struct CommunityModel: ContentModel {
+struct CommunityModel {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
@@ -17,14 +17,6 @@ struct CommunityModel: ContentModel {
     var community: APICommunity
     var subscribed: Bool
     var subscriberCount: Int
-    
-    var uid: ContentModelIdentifier { .init(contentType: .community, contentId: communityId) }
-    var imageUrls: [URL] {
-        if let url = community.iconUrl {
-            return [url.withIcon64Parameters]
-        }
-        return []
-    }
     
     /// Creates a CommunityModel from an APICommunityView
     /// - Parameter apiCommunityView: APICommunityView to create a CommunityModel representation of
@@ -68,4 +60,15 @@ extension CommunityModel: Hashable {
         hasher.combine(community.id)
         hasher.combine(subscribed)
     }
+}
+
+extension CommunityModel: ContentModel {
+    var uid: ContentModelIdentifier { .init(contentType: .community, contentId: communityId) }
+    var imageUrls: [URL] {
+        if let url = community.iconUrl {
+            return [url.withIcon64Parameters]
+        }
+        return []
+    }
+    var searchResultScore: Int { self.subscriberCount }
 }

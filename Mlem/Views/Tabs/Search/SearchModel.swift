@@ -1,66 +1,86 @@
 //
-//  SearchModel.swift
+//  SearchView+Logic.swift
 //  Mlem
 //
-//  Created by Sjmarf on 18/09/2023.
+//  Created by Sjmarf on 23/09/2023.
 //
 
-import SwiftUI
 import Dependencies
-
-enum SearchTab: String, CaseIterable {
-    case communities, users
-    
-    var label: String {
-        return rawValue.capitalized
-//        switch self {
-//        case .topResults:
-//            return "Top Results"
-//        default:
-//            return rawValue.capitalized
-//        }
-    }
-}
+import SwiftUI
 
 class SearchModel: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.hapticManager) var hapticManager
     
+    @Published var searchTab: SearchTab = .topResults
     @Published var searchText: String = ""
-    @Published var searchTab: SearchTab = .communities
-    private var searchTask: Task<Void, Never>?
     
-    @Published var communityViews: [APICommunityView] = .init()
+    // constants
+    let pageSize: Int = 20
     
-    func performSearch() {
-        // If we are searching, cancel the task
-        if let task = searchTask {
-            if !task.isCancelled {
-                task.cancel()
-                searchTask = nil
+    // Used to switch tabs without refetching from API
+    var previousSearchText: String = ""
+    var firstPageCommunities: [AnyContentModel]?
+    var firstPageUsers: [AnyContentModel]?
+    
+    func performSearch(page: Int) async throws -> [AnyContentModel] {
+        defer { previousSearchText = searchText }
+        switch self.searchTab {
+        case .topResults:
+            async let communities = try await searchCommunities(page: page)
+            async let users = try await searchUsers(page: page)
+            return try await combineResults(communities: communities, users: users)
+        case .communities:
+            if searchText != previousSearchText {
+                firstPageUsers = nil
             }
-        }
-        
-        searchTask = Task(priority: .userInitiated) { [searchText] in
-            do {
-                let response = try await apiClient.performSearch(
-                    query: searchText,
-                    searchType: .communities,
-                    sortOption: .topAll,
-                    listingType: .all,
-                    page: 1,
-                    limit: 10
-                )
-                
-                DispatchQueue.main.async {
-                    self.communityViews = response.communities
-                }
-                
-            } catch is CancellationError {
-                print("Search cancelled")
-            } catch {
-                errorHandler.handle(error)
+            return try await searchCommunities(page: page)
+        case .users:
+            if searchText != previousSearchText {
+                firstPageCommunities = nil
             }
+            return try await searchUsers(page: page)
         }
     }
+    
+    @discardableResult
+    func searchCommunities(page: Int) async throws -> [AnyContentModel] {
+        let communities = try await apiClient.performSearch(
+            query: searchText,
+            searchType: .communities,
+            sortOption: .topAll,
+            listingType: .all,
+            page: page,
+            limit: pageSize
+        ).communities.map { AnyContentModel(CommunityModel(from: $0)) }
+        if page == 1 {
+            self.firstPageCommunities = communities
+        }
+        return communities
+    }
+    
+    @discardableResult
+    func searchUsers(page: Int) async throws -> [AnyContentModel] {
+        let users = try await apiClient.performSearch(
+            query: searchText,
+            searchType: .users,
+            sortOption: .topAll,
+            listingType: .all,
+            page: page,
+            limit: pageSize
+        ).users.map { AnyContentModel(UserModel(from: $0)) }
+        if page == 1 {
+            self.firstPageUsers = users
+        }
+        return users
+    }
+    
+    func combineResults(communities: [AnyContentModel], users: [AnyContentModel]) -> [AnyContentModel] {
+        var results: [AnyContentModel] = .init()
+        results.append(contentsOf: communities)
+        results.append(contentsOf: users)
+        return results.sorted { $0.searchResultScore > $1.searchResultScore }
+    }
+    
 }

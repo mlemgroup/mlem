@@ -74,7 +74,7 @@ struct ContentView: View {
                         }
                 }
                 
-                SearchView()
+                SearchRoot()
                     .fancyTabItem(tag: TabSelection.search) {
                         FancyTabBarLabel(
                             tag: TabSelection.search,

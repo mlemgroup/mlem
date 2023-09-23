@@ -7,12 +7,19 @@
 
 import Foundation
 
-protocol ContentModel {
+protocol ContentModel: Equatable {
     var uid: ContentModelIdentifier { get }
     var imageUrls: [URL] { get }
+    var searchResultScore: Int { get }
 }
 
-public struct AnyContentModel: ContentModel {
+extension ContentModel where Self: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.uid == rhs.uid
+    }
+}
+
+struct AnyContentModel: ContentModel {
     let wrappedValue: any ContentModel
     init(_ wrappedValue: any ContentModel) {
         self.wrappedValue = wrappedValue
@@ -20,4 +27,5 @@ public struct AnyContentModel: ContentModel {
     
     var uid: ContentModelIdentifier { self.wrappedValue.uid }
     var imageUrls: [URL] { self.wrappedValue.imageUrls }
+    var searchResultScore: Int { self.wrappedValue.searchResultScore }
 }
