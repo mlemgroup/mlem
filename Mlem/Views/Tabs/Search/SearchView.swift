@@ -45,8 +45,8 @@ struct SearchView: View {
                 SearchBar("Search for communities & users", text: $searchModel.searchText, isEditing: $isSearching)
                     .showsCancelButton(page != .home)
                     .onCancel {
-                        searchModel.searchText = ""
                         page = .home
+                        searchModel.searchText = ""
                     }
                     
                 }
@@ -88,10 +88,12 @@ struct SearchView: View {
             }
         }
         .onChange(of: searchModel.searchText) { newValue in
-            if newValue.isEmpty {
-                page = .recents
-            } else {
-                page = .results
+            if page != .home {
+                if newValue.isEmpty {
+                    page = .recents
+                } else {
+                    page = .results
+                }
             }
         }
         .fancyTabScrollCompatible()
