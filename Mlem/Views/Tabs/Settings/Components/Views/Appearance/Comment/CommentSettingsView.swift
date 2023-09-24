@@ -98,7 +98,7 @@ struct CommentSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.jumpButton,
+                    settingPictureSystemName: Icons.jumpButtonCircle,
                     settingName: "Show Jump Button",
                     isTicked: $showCommentJumpButton
                 )
