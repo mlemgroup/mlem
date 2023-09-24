@@ -82,6 +82,7 @@ struct SearchView: View {
             }
             .animation(.default, value: page)
         }
+        .scrollDismissesKeyboard(.immediately)
         .onChange(of: isSearching) { newValue in
             if newValue && searchModel.searchText.isEmpty {
                 page =  .recents
