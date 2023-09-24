@@ -81,6 +81,7 @@ struct AvatarView: View {
                 Image(systemName: Icons.communityFill)
                     .resizable()
                     .scaledToFill()
+                    .background(.white)
                     .foregroundStyle(Color.gray.gradient)
             )
         case .user:
@@ -88,6 +89,7 @@ struct AvatarView: View {
                 Image(systemName: Icons.userFill)
                     .resizable()
                     .scaledToFill()
+                    .background(.white)
                     .foregroundStyle(Color.gray.gradient)
             )
         }
