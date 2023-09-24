@@ -17,7 +17,7 @@ extension APIClient {
         limit: Int?,
         savedOnly: Bool?,
         communityName: String?
-    ) async throws -> [APIPostView] {
+    ) async throws -> GetPostsResponse {
         let request = try GetPostsRequest(
             session: session,
             communityId: communityId,
@@ -29,7 +29,7 @@ extension APIClient {
             communityName: communityName
         )
         
-        return try await perform(request: request).posts
+        return try await perform(request: request)
     }
 
     // swiftlint:enable function_parameter_count

@@ -19,8 +19,8 @@ class PostRepository {
         limit: Int,
         savedOnly: Bool? = nil,
         communityName: String? = nil
-    ) async throws -> [PostModel] {
-        try await apiClient.loadPosts(
+    ) async throws -> (posts: [PostModel], cursor: String?) {
+        let response = try await apiClient.loadPosts(
             communityId: communityId,
             page: page,
             sort: sort,
@@ -29,7 +29,9 @@ class PostRepository {
             savedOnly: savedOnly,
             communityName: communityName
         )
-        .map { PostModel(from: $0) }
+        
+        let posts = response.posts.map { PostModel(from: $0) }
+        return (posts, response.nextPage)
     }
     
     /// Loads a single post

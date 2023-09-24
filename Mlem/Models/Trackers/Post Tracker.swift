@@ -32,6 +32,7 @@ class PostTracker: ObservableObject {
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var isLoading: Bool = false // accessible but not published because it causes lots of bad view redraws
     private(set) var page: Int = 1
+    private(set) var currentCursor: String?
     
     private var hasReachedEnd: Bool = false
     
@@ -70,7 +71,7 @@ class PostTracker: ObservableObject {
         var newPosts: [PostModel] = .init()
         let numItems = items.count
         repeat {
-            newPosts = try await postRepository.loadPage(
+            let (posts, cursor) = try await postRepository.loadPage(
                 communityId: communityId,
                 page: page,
                 sort: sort,
@@ -78,11 +79,14 @@ class PostTracker: ObservableObject {
                 limit: internetSpeed.pageSize
             )
             
+            newPosts = posts
+            
             if newPosts.isEmpty {
                 hasReachedEnd = true
             } else {
                 await add(newPosts, filtering: filtering)
                 page += 1
+                currentCursor = cursor
             }
         } while !hasReachedEnd && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
         
@@ -125,7 +129,7 @@ class PostTracker: ObservableObject {
         
         page = 1
         
-        let newPosts = try await postRepository.loadPage(
+        let (newPosts, cursor) = try await postRepository.loadPage(
             communityId: communityId,
             page: page,
             sort: sort,
@@ -133,7 +137,8 @@ class PostTracker: ObservableObject {
             limit: internetSpeed.pageSize
         )
         
-        await reset(with: newPosts, filteredWith: filtering)
+        currentCursor = cursor
+        await reset(with: newPosts, cursor: cursor, filteredWith: filtering)
     }
     
     @MainActor
@@ -167,10 +172,12 @@ class PostTracker: ObservableObject {
     @MainActor
     private func reset(
         with newItems: [PostModel] = .init(),
+        cursor: String? = nil,
         filteredWith filter: @escaping (_: PostModel) -> Bool = { _ in true }
     ) {
         hasReachedEnd = false
         page = newItems.isEmpty ? 1 : 2
+        currentCursor = cursor
         ids = .init(minimumCapacity: 1000)
         items = dedupedItems(from: newItems.filter(filter))
     }
