@@ -19,20 +19,19 @@ enum SearchTab: String, CaseIterable {
             return rawValue.capitalized
         }
     }
+    
+    static var homePageCases: [SearchTab] = [.communities, .users]
 }
 
 struct SearchTabPicker: View {
     @Dependency(\.hapticManager) var hapticManager
     
     @Binding var selected: SearchTab
-    
-    // This ensures that the bubble is layered below the text at all times. There may be cleaner way to do this?
-    
-    @Namespace var animation
+    var tabs: [SearchTab] = SearchTab.allCases
     
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(SearchTab.allCases, id: \.self) { type in
+            ForEach(tabs, id: \.self) { type in
                 Button {
                     selected = type
                     hapticManager.play(haptic: .gentleInfo, priority: .low)
@@ -48,8 +47,6 @@ struct SearchTabPicker: View {
                                 if selected == type {
                                     Capsule()
                                         .fill(.blue)
-                                        // .matchedGeometryEffect(id: "bubble", in: animation)
-                                        // This prevents matchedGeometryEffect from changing the opacity
                                         .transition(.scale.combined(with: .opacity))
                                 }
                             }

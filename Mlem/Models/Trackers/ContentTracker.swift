@@ -22,10 +22,10 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     // state drivers
     @Published var items: [Content]
     @Published private(set) var isLoading: Bool = false
+    @Published private(set) var page: Int = 1
     
     // utility
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
-    private(set) var page: Int = 1
     private(set) var hasReachedEnd: Bool = false
     private var currentTask: Task<Void, Never>?
     
@@ -50,7 +50,10 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     /// - Parameter clearImmediately: When true, clears the `items` array before performing the request. When false,
     /// replaces the `items` array when the new set of items is ready.
     func refresh(using loadItems: ((_ page: Int) async throws -> [Content])?, clearImmediately: Bool = false) {
-        isLoading = true
+        RunLoop.main.perform { [self] in
+            page = 1
+            isLoading = true
+        }
         if clearImmediately {
             self.items.removeAll()
         }
@@ -64,8 +67,6 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
                 currentTask = nil
             }
         }
-        page = 1
-        
         currentTask = Task(priority: .userInitiated) { [self] in
             do {
                 let items = try await self.loadItems(page)
@@ -90,7 +91,10 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     
     /// Load the next page of results. Calls the `loadItems` attribute of the tracker, which returns an array of ContentType items.
     func loadNextPage() async throws {
-        page += 1
+        RunLoop.main.perform { [self] in
+            isLoading = true
+            page += 1
+        }
         currentTask = Task(priority: .userInitiated) { [self] in
             do {
                 let newItems = try await self.loadItems(page)
@@ -102,7 +106,7 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
                     }
                 }
             } catch is CancellationError {
-                print("Search cancelled")
+                print("Page loading cancelled")
             } catch {
                 errorHandler.handle(error)
             }

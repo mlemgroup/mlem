@@ -24,6 +24,31 @@ class SearchModel: ObservableObject {
     var firstPageCommunities: [AnyContentModel]?
     var firstPageUsers: [AnyContentModel]?
     
+    init(searchTab: SearchTab = .topResults) {
+        self.searchTab = searchTab
+    }
+    
+    func tabSwitchRefresh(contentTracker: ContentTracker<AnyContentModel>) {
+        switch searchTab {
+        case .topResults:
+            if let communities = firstPageCommunities, let users = firstPageUsers {
+                contentTracker.replaceAll(with: combineResults(communities: communities, users: users))
+                return
+            }
+        case .communities:
+            if let communities = firstPageCommunities {
+                contentTracker.replaceAll(with: communities)
+                return
+            }
+        case .users:
+            if let users = firstPageUsers {
+                contentTracker.replaceAll(with: users)
+                return
+            }
+        }
+        contentTracker.refresh(using: performSearch)
+    }
+    
     func performSearch(page: Int) async throws -> [AnyContentModel] {
         defer { previousSearchText = searchText }
         switch self.searchTab {
