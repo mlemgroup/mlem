@@ -187,11 +187,6 @@ struct CommentItem: View {
         .onTapGesture {
             toggleCollapsed()
         }
-        .contextMenu {
-            ForEach(genMenuFunctions()) { item in
-                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-            }
-        }
         .destructiveConfirmation(
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
             confirmationMenuFunction: confirmationMenuFunction
@@ -202,6 +197,11 @@ struct CommentItem: View {
             trailing: enableSwipeActions ? [saveSwipeAction, replySwipeAction, expandCollapseCommentAction] : []
         )
         .border(width: borderWidth, edges: [.leading], color: threadingColors[depth % threadingColors.count])
+        .contextMenu {
+            ForEach(genMenuFunctions()) { item in
+                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            }
+        }
     }
     // swiftlint:enable function_body_length
 }
