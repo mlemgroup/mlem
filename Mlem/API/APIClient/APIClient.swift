@@ -141,6 +141,10 @@ class APIClient {
         defintion.headers.forEach { header in
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
+        
+        if case let .authenticated(_, token) = session {
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
 
         if defintion as? any APIGetRequest != nil {
             urlRequest.httpMethod = "GET"
