@@ -7,6 +7,7 @@
 
 import Dependencies
 import SwiftUI
+import PhotosUI
 
 extension HorizontalAlignment {
     enum LabelStart: AlignmentID {
@@ -23,6 +24,7 @@ struct PostDetailEditorView: View {
         case title, url, body
     }
     
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.dismiss) var dismiss
@@ -34,6 +36,8 @@ struct PostDetailEditorView: View {
     @Binding var postURL: String
     @Binding var postBody: String
     @Binding var isNSFW: Bool
+    
+    @State var imageSelection: PhotosPickerItem?
     
     @State var isSubmitting: Bool = false
     @State var isShowingErrorDialog: Bool = false
@@ -57,52 +61,6 @@ struct PostDetailEditorView: View {
         self.onSubmit = onSubmit
     }
 
-    private var isReadyToPost: Bool {
-        // This only requirement to post is a title
-        postTitle.trimmed.isNotEmpty
-    }
-    
-    private var isValidURL: Bool {
-        guard postURL.lowercased().hasPrefix("http://") ||
-            postURL.lowercased().hasPrefix("https://") else {
-            return false // URL protocol is missing
-        }
-
-        guard URL(string: postURL) != nil else {
-            return false // Not Parsable
-        }
-        
-        return true
-    }
-    
-    func submitPost() async {
-        do {
-            guard postTitle.trimmed.isNotEmpty else {
-                errorDialogMessage = "You need to enter a title for your post."
-                isShowingErrorDialog = true
-                return
-            }
-            
-            guard postURL.lowercased().isEmpty || isValidURL else {
-                errorDialogMessage = "You seem to have entered an invalid URL, please check it again."
-                isShowingErrorDialog = true
-                return
-            }
-            
-            isSubmitting = true
-            
-            try await onSubmit()
-            
-        } catch {
-            isSubmitting = false
-            errorHandler.handle(error)
-        }
-    }
-    
-    func uploadImage() {
-        print("Uploading")
-    }
-    
     var body: some View {
         ZStack {
             VStack(spacing: 15) {
@@ -160,13 +118,15 @@ struct PostDetailEditorView: View {
                             .accessibilityLabel("URL")
                             .focused($focusedField, equals: .url)
                         
-                        // Upload button, temporarily hidden
-                        //                        Button(action: uploadImage) {
-                        //                            Image(systemName: "paperclip")
-                        //                                .font(.title3)
-                        //                                .dynamicTypeSize(.medium)
-                        //                        }
-                        //                        .accessibilityLabel("Upload Image")
+                        PhotosPicker(selection: $imageSelection,
+                                     matching: .images,
+                                     photoLibrary: .shared()) {
+                            Image(systemName: "paperclip")
+                                .font(.title3)
+                                .dynamicTypeSize(.medium)
+                        }
+                        // .accessibilityLabel("Upload Image")
+                        // .onChange(of: imageSelection) { _ in uploadImage() }
                     }
                 }
 

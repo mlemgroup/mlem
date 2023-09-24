@@ -12,7 +12,8 @@ extension APIClient {
         
         let delegate = ImageUploadDelegate(callback: callback)
         
-        // Modify the instance URL to remove "api/v3" and add "pictrs/image". M
+        // Modify the instance URL to remove "api/v3" and add "pictrs/image".
+        print("URL", try self.session.instanceUrl)
         var components = URLComponents()
         components.scheme = try self.session.instanceUrl.scheme
         components.host = try self.session.instanceUrl.host
