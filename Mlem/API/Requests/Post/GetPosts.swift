@@ -49,6 +49,7 @@ struct GetPostsRequest: APIGetRequest {
 // lemmy_api_common::post::GetPostsResponse
 struct GetPostsResponse: Decodable {
     let posts: [APIPostView]
+    let nextPage: String?
 }
 
 // MARK: - FeedTrackerItemProviding
