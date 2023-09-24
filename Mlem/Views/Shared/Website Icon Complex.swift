@@ -63,7 +63,7 @@ struct WebsiteIconComplex: View {
     var imageHeight: CGFloat { horizontalSizeClass == .regular ? 400 : screenWidth * 0.66 }
 
     var body: some View {
-        VStack(spacing: 0) {
+        LazyVStack(spacing: 0) {
             if shouldShowWebsitePreviews, let thumbnailURL = post.thumbnailImageUrl {
                 CachedImage(
                     url: thumbnailURL,

@@ -49,7 +49,9 @@ struct GetPersonDetailsRequest: APIGetRequest {
                 guard let host = instanceURL.host() else {
                     throw GetPersonDetailsRequestError.unableToDetermineInstanceHost
                 }
-                username = "\(username)@\(host)"
+                
+                // when logging into a locally running instance, we don't want to pass `user@localhost`
+                username = host == "localhost" ? username : "\(username)@\(host)"
             }
 
             queryItems.append(.init(name: "username", value: username))
