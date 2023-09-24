@@ -18,8 +18,8 @@ extension NavigationRouter: AnyNavigationPath {
 
     typealias Route = RouteValue
     
-    static func makeRoute<V>(_ value: V) -> Route where V: Hashable {
-        RouteValue.makeRoute(value)
+    static func makeRoute<V>(_ value: V) -> Route? where V: Hashable {
+        RouteValue.makeRoute(value) ?? nil
     }
     
     var count: Int {

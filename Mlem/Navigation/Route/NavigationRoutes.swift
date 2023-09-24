@@ -27,7 +27,7 @@ enum NavigationRoute: Routable {
     case userModeratorLink(UserModeratorLink)
     
     // swiftlint:disable cyclomatic_complexity
-    static func makeRoute<V>(_ value: V) -> NavigationRoute where V: Hashable {
+    static func makeRoute<V>(_ value: V) -> NavigationRoute? where V: Hashable {
         switch value {
         case let value as APICommunityView:
             return .apiCommunityView(value)
@@ -50,7 +50,8 @@ enum NavigationRoute: Routable {
         case let value as UserModeratorLink:
             return .userModeratorLink(value)
         default:
-            fatalError(Self.makeRouteErrorString)
+            print(Self.makeRouteErrorString)
+            return nil
         }
     }
     // swiftlint:enable cyclomatic_complexity
