@@ -77,19 +77,20 @@ struct AvatarView: View {
     private func defaultAvatar() -> AnyView {
         switch type {
         case .community:
-            // TODO: make good
             return AnyView(
-                Image(systemName: Icons.community)
+                Image(systemName: Icons.communityFill)
                     .resizable()
                     .scaledToFill()
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(Color.secondary)
+                    .background(.white)
             )
         case .user:
             return AnyView(
-                Image(systemName: Icons.user)
+                Image(systemName: Icons.userFill)
                     .resizable()
                     .scaledToFill()
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(Color.secondary)
+                    .background(.white)
             )
         }
     }

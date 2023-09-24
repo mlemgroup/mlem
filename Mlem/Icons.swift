@@ -95,10 +95,11 @@ struct Icons {
     
     // entities/general Lemmy concepts
     static let instance: String = "server.rack"
-    static let user: String = "person.circle"
-    static let userFill: String = "person.circle.fill"
+    static let user: String = "person.crop.circle"
+    static let userFill: String = "person.crop.circle.fill"
     static let userBlock: String = "person.fill.xmark"
     static let community: String = "building.2.crop.circle"
+    static let communityFill: String = "building.2.crop.circle.fill"
     
     // tabs
     static let feeds: String = "scroll"
