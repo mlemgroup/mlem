@@ -52,21 +52,22 @@ extension PostDetailEditorView {
     }
     
     func uploadImage() {
-//        Task {
-//            if let data = try? await imageSelection?.loadTransferable(type: Data.self) {
-//                do {
-//                    let res = try await apiClient.uploadImage(data, callback: { print("Upload \($0)") })
-//                    if let firstFile = res.files.first {
-//                        var components = URLComponents()
-//                        components.scheme = try apiClient.session.instanceUrl.scheme
-//                        components.host = try apiClient.session.instanceUrl.host
-//                        components.path = "pictrs/image/\(firstFile.file)"
-//                        postURL = components.url?.absoluteString ?? ""
-//                    }
-//                } catch {
-//                    errorHandler.handle(error)
-//                }
-//            }
-//        }
+        Task {
+            if let data = try? await imageSelection?.loadTransferable(type: Data.self) {
+                do {
+                    let res = try await apiClient.uploadImage(data, callback: { uploadingProgress = $0 })
+                    if let firstFile = res.files.first {
+                        var components = URLComponents()
+                        components.scheme = try apiClient.session.instanceUrl.scheme
+                        components.host = try apiClient.session.instanceUrl.host
+                        components.path = "/pictrs/image/\(firstFile.file)"
+                        postURL = components.url?.absoluteString ?? ""
+                        uploadingProgress = nil
+                    }
+                } catch {
+                    errorHandler.handle(error)
+                }
+            }
+        }
     }
 }

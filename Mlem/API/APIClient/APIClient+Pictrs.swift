@@ -17,7 +17,7 @@ extension APIClient {
         var components = URLComponents()
         components.scheme = try self.session.instanceUrl.scheme
         components.host = try self.session.instanceUrl.host
-        components.path = "pictrs/image"
+        components.path = "/pictrs/image"
         
         var request = URLRequest(url: components.url!)
         request.httpMethod = "POST"

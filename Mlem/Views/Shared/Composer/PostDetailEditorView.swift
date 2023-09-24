@@ -43,6 +43,7 @@ struct PostDetailEditorView: View {
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
     
+    @State var uploadingProgress: Double?
     @FocusState private var focusedField: Field?
     
     init(
@@ -109,24 +110,32 @@ struct PostDetailEditorView: View {
                             .dynamicTypeSize(.small ... .accessibility2)
                             .accessibilityHidden(true)
                         
-                        TextField("Your post link (Optional)", text: $postURL)
-                            .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                            .dynamicTypeSize(.small ... .accessibility2)
-                            .keyboardType(.URL)
-                            .autocorrectionDisabled()
-                            .autocapitalization(.none)
-                            .accessibilityLabel("URL")
-                            .focused($focusedField, equals: .url)
-                        
-                        PhotosPicker(selection: $imageSelection,
-                                     matching: .images,
-                                     photoLibrary: .shared()) {
-                            Image(systemName: "paperclip")
-                                .font(.title3)
-                                .dynamicTypeSize(.medium)
+                        if uploadingProgress != nil {
+                            ProgressView(value: uploadingProgress)
+                                .progressViewStyle(LinearProgressViewStyle())
+                                .frame(width: 100, height: 10)
+                                .padding(.horizontal)
+                            Spacer()
+                        } else {
+                            TextField("Your post link (Optional)", text: $postURL)
+                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                                .dynamicTypeSize(.small ... .accessibility2)
+                                .keyboardType(.URL)
+                                .autocorrectionDisabled()
+                                .autocapitalization(.none)
+                                .accessibilityLabel("URL")
+                                .focused($focusedField, equals: .url)
+                            
+                            PhotosPicker(selection: $imageSelection,
+                                         matching: .images,
+                                         photoLibrary: .shared()) {
+                                Image(systemName: "paperclip")
+                                    .font(.title3)
+                                    .dynamicTypeSize(.medium)
+                            }
+                             .accessibilityLabel("Upload Image")
+                             .onChange(of: imageSelection) { _ in uploadImage() }
                         }
-                        // .accessibilityLabel("Upload Image")
-                        // .onChange(of: imageSelection) { _ in uploadImage() }
                     }
                 }
 
