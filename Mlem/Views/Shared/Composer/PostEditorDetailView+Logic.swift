@@ -6,12 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
 import PhotosUI
 
 extension PostDetailEditorView {
     var isReadyToPost: Bool {
-        // This only requirement to post is a title
-        postTitle.trimmed.isNotEmpty
+        switch uploadProgress {
+        case .noImage, .uploaded:
+            return postTitle.trimmed.isNotEmpty
+        default:
+            return false
+        }
     }
     
     var isValidURL: Bool {
@@ -52,21 +57,28 @@ extension PostDetailEditorView {
     }
     
     func uploadImage() {
+        uploadProgress = .uploading(0)
         Task {
-            if let data = try? await imageSelection?.loadTransferable(type: Data.self) {
-                do {
-                    let res = try await apiClient.uploadImage(data, callback: { uploadingProgress = $0 })
+            do {
+                let data = try await imageSelection?.loadTransferable(type: Data.self)
+                
+                if let data = data {
+                    if let uiImage = UIImage(data: data) {
+                        self.uploadedImage = Image(uiImage: uiImage)
+                    }
+                    let res = try await apiClient.uploadImage(data, callback: { uploadProgress = .uploading($0) })
                     if let firstFile = res.files.first {
                         var components = URLComponents()
                         components.scheme = try apiClient.session.instanceUrl.scheme
                         components.host = try apiClient.session.instanceUrl.host
                         components.path = "/pictrs/image/\(firstFile.file)"
                         postURL = components.url?.absoluteString ?? ""
-                        uploadingProgress = nil
+                        uploadProgress = .uploaded
                     }
-                } catch {
-                    errorHandler.handle(error)
                 }
+            } catch {
+                uploadProgress = .failed(error)
+                return
             }
         }
     }

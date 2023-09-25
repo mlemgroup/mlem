@@ -13,7 +13,6 @@ extension APIClient {
         let delegate = ImageUploadDelegate(callback: callback)
         
         // Modify the instance URL to remove "api/v3" and add "pictrs/image".
-        print("URL", try self.session.instanceUrl)
         var components = URLComponents()
         components.scheme = try self.session.instanceUrl.scheme
         components.host = try self.session.instanceUrl.host
@@ -29,10 +28,8 @@ extension APIClient {
         
         let multiPartForm: MultiPartForm = try .init(
             mimeType: "image/png",
-            fileName: "test.png",
-            fileExtension: "png",
+            fileName: "image.png",
             imageData: imageData,
-            fieldName: "images[]",
             auth: session.token
         )
         
@@ -65,15 +62,13 @@ struct ImageUploadResponse: Codable {
 private struct MultiPartForm: Codable {
     var mimeType: String
     var fileName: String
-    var fileExtension: String
     var imageData: Data
-    var fieldName: String
     var auth: String
     
     func createField(boundary: String) -> Data {
         var data = Data()
         data.append(Data("--\(boundary)\r\n".utf8))
-        data.append(Data("Content-Disposition: form-data; name=\"images[]\"; filename=\"test.png\"\r\n".utf8))
+        data.append(Data("Content-Disposition: form-data; name=\"images[]\"; filename=\"\(fileName)\"\r\n".utf8))
         data.append(Data("Content-Type: \(mimeType)\r\n".utf8))
         data.append(Data("\r\n".utf8))
         data.append(imageData)

@@ -24,6 +24,13 @@ struct PostDetailEditorView: View {
         case title, url, body
     }
     
+    enum ImageUploadProgress {
+        case noImage
+        case uploading(Double)
+        case uploaded
+        case failed(Error)
+    }
+    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
@@ -37,13 +44,15 @@ struct PostDetailEditorView: View {
     @Binding var postBody: String
     @Binding var isNSFW: Bool
     
-    @State var imageSelection: PhotosPickerItem?
-    
     @State var isSubmitting: Bool = false
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
     
-    @State var uploadingProgress: Double?
+    @State var showingPhotosPicker: Bool = false
+    @State var imageSelection: PhotosPickerItem?
+    @State var uploadedImage: Image?
+    @State var uploadProgress: ImageUploadProgress = .noImage
+    
     @FocusState private var focusedField: Field?
     
     init(
@@ -102,21 +111,19 @@ struct PostDetailEditorView: View {
                                 focusedField = .title
                             }
                     }
+                }
                     
-                    // URL Row
-                    HStack {
-                        Text("URL")
-                            .foregroundColor(.secondary)
-                            .dynamicTypeSize(.small ... .accessibility2)
-                            .accessibilityHidden(true)
-                        
-                        if uploadingProgress != nil {
-                            ProgressView(value: uploadingProgress)
-                                .progressViewStyle(LinearProgressViewStyle())
-                                .frame(width: 100, height: 10)
-                                .padding(.horizontal)
-                            Spacer()
-                        } else {
+                // URL Row
+                if imageSelection != nil {
+                    imageWidget
+                } else {
+                    VStack(alignment: .labelStart) {
+                        HStack {
+                            Text("URL")
+                                .foregroundColor(.secondary)
+                                .dynamicTypeSize(.small ... .accessibility2)
+                                .accessibilityHidden(true)
+                            
                             TextField("Your post link (Optional)", text: $postURL)
                                 .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
                                 .dynamicTypeSize(.small ... .accessibility2)
@@ -126,15 +133,14 @@ struct PostDetailEditorView: View {
                                 .accessibilityLabel("URL")
                                 .focused($focusedField, equals: .url)
                             
-                            PhotosPicker(selection: $imageSelection,
-                                         matching: .images,
-                                         photoLibrary: .shared()) {
+                            Button {
+                                showingPhotosPicker = true
+                            } label: {
                                 Image(systemName: "paperclip")
                                     .font(.title3)
                                     .dynamicTypeSize(.medium)
                             }
                              .accessibilityLabel("Upload Image")
-                             .onChange(of: imageSelection) { _ in uploadImage() }
                         }
                     }
                 }
@@ -193,5 +199,74 @@ struct PostDetailEditorView: View {
         }
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .photosPicker(isPresented: $showingPhotosPicker, selection: $imageSelection, matching: .images)
+        .onChange(of: imageSelection) { newValue in
+            if newValue != nil {
+                uploadImage()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var imageWidget: some View {
+        VStack {
+            HStack(spacing: 10) {
+                if let uploadedImage = uploadedImage {
+                    uploadedImage
+                        .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 60, height: 60, alignment: .center)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .clipped()
+                } else {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(.secondary)
+                        .frame(width: 60, height: 60)
+                }
+                VStack(alignment: .leading) {
+                    Text("Attached image")
+                    Spacer()
+                    HStack {
+                        switch uploadProgress {
+                        case .uploading(let progress):
+                            Text("Uploading...")
+                            ProgressView(value: progress)
+                                .progressViewStyle(LinearProgressViewStyle())
+                                .frame(width: 100, height: 10)
+                        case .uploaded:
+                            Text("Uploaded")
+                        case .failed:
+                            Text("Failed")
+                                .foregroundStyle(.red)
+                        default:
+                            EmptyView()
+                        }
+                    }
+                    .foregroundStyle(.secondary)
+                }
+                .frame(height: 40)
+                Spacer()
+            }
+            .padding(10)
+        }
+        .frame(maxWidth: .infinity)
+        .background {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color(UIColor.secondarySystemBackground))
+        }
+        .overlay(alignment: .topTrailing) {
+            Button {
+                imageSelection = nil
+                uploadedImage = nil
+                postURL = ""
+            } label: {
+                Image(systemName: "multiply")
+                    .fontWeight(.semibold)
+                    .tint(.secondary)
+                    .padding(5)
+                    .background(Circle().fill(.background))
+            }
+            .padding(5)
+        }
     }
 }
