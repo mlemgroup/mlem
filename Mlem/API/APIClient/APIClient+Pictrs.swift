@@ -18,7 +18,10 @@ extension APIClient {
         components.host = try self.session.instanceUrl.host
         components.path = "/pictrs/image"
         
-        var request = URLRequest(url: components.url!)
+        guard let url = components.url else {
+            throw APIClientError.response(.init(error: "Failed to modify instance URL to add pictrs."), nil)
+        }
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
         let boundary = UUID().uuidString
