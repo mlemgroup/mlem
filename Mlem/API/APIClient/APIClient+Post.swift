@@ -12,6 +12,7 @@ extension APIClient {
     func loadPosts(
         communityId: Int?,
         page: Int,
+        cursor: String?,
         sort: PostSortType?,
         type: FeedType,
         limit: Int?,
@@ -22,6 +23,7 @@ extension APIClient {
             session: session,
             communityId: communityId,
             page: page,
+            cursor: cursor,
             sort: sort,
             type: type,
             limit: limit,
