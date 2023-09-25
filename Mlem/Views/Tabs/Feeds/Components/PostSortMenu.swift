@@ -33,7 +33,7 @@ struct PostSortMenu: View {
                 }
                 
             } label: {
-                Label("Top…", systemImage: "text.line.first.and.arrowtriangle.forward")
+                Label("Top…", systemImage: Icons.topSortMenu)
             }
         } label: {
             if shortLabel {

@@ -184,7 +184,7 @@ extension ExpandedPost {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report Post",
-            imageName: AppConstants.reportSymbolName,
+            imageName: Icons.moderationReport,
             destructiveActionPrompt: AppConstants.reportPostPrompt,
             enabled: true
         ) {
@@ -194,7 +194,7 @@ extension ExpandedPost {
         // block user
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
-            imageName: AppConstants.blockUserSymbolName,
+            imageName: Icons.userBlock,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true
         ) {

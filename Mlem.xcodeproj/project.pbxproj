@@ -420,6 +420,7 @@
 		CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF842672A49FB9000723DA0 /* Inbox View Logic.swift */; };
 		CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */; };
 		CDF8426F2A4A385A00723DA0 /* Inbox Item Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */; };
+		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 		E40E018C2AABF85500410B2C /* NavigationRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40E018B2AABF85500410B2C /* NavigationRoutes.swift */; };
 		E40E018E2AABFBDE00410B2C /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40E018D2AABFBDE00410B2C /* NavigationRouter.swift */; };
 		E40E01902AABFC9300410B2C /* AnyNavigationPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40E018F2AABFC9300410B2C /* AnyNavigationPath.swift */; };
@@ -866,6 +867,7 @@
 		CDF842672A49FB9000723DA0 /* Inbox View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox View Logic.swift"; sourceTree = "<group>"; };
 		CDF8426A2A4A2AB600723DA0 /* Inbox Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item.swift"; sourceTree = "<group>"; };
 		CDF8426E2A4A385A00723DA0 /* Inbox Item Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item Type.swift"; sourceTree = "<group>"; };
+		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		E40E018B2AABF85500410B2C /* NavigationRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRoutes.swift; sourceTree = "<group>"; };
 		E40E018D2AABFBDE00410B2C /* NavigationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
 		E40E018F2AABFC9300410B2C /* AnyNavigationPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNavigationPath.swift; sourceTree = "<group>"; };
@@ -1488,6 +1490,7 @@
 				503422572AAB798600EFE88D /* AppFlow.swift */,
 				6386E02B2A03D1EC006B3C1D /* App State.swift */,
 				63DF71F02A02999C002AC14E /* App Constants.swift */,
+				CDF9EF322AB2845C003F885B /* Icons.swift */,
 				B1B78D632A51D53900F72485 /* AppDelegate.swift */,
 				6363D5C827EE196A00E34822 /* Assets.xcassets */,
 				6363D5CA27EE196A00E34822 /* Preview Content */,
@@ -2680,6 +2683,7 @@
 				CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */,
 				CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */,
 				CDEBC3392A9ADE6C00518D9D /* APIClient+Post.swift in Sources */,
+				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
 				CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */,

@@ -58,9 +58,9 @@ struct ThumbnailImageView: View {
                     .frame(width: size.width, height: size.height, alignment: .topLeading)
                 }
             case .text:
-                Image(systemName: "text.book.closed")
+                Image(systemName: Icons.textPost)
             case .titleOnly:
-                Image(systemName: "character.bubble")
+                Image(systemName: Icons.titleOnlyPost)
             }
         }
         .foregroundColor(.secondary)
