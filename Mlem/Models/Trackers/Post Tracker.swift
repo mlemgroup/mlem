@@ -79,6 +79,7 @@ class PostTracker: ObservableObject {
             let (posts, cursor) = try await postRepository.loadPage(
                 communityId: communityId,
                 page: page,
+                cursor: currentCursor,
                 sort: sort,
                 type: type,
                 limit: internetSpeed.pageSize
@@ -87,6 +88,8 @@ class PostTracker: ObservableObject {
             newPosts = posts
             
             if newPosts.isEmpty {
+                hasReachedEnd = true
+            } else if let currentCursor, cursor == currentCursor {
                 hasReachedEnd = true
             } else {
                 await add(newPosts, filtering: filtering)
@@ -137,6 +140,7 @@ class PostTracker: ObservableObject {
         let (newPosts, cursor) = try await postRepository.loadPage(
             communityId: communityId,
             page: page,
+            cursor: currentCursor,
             sort: sort,
             type: feedType,
             limit: internetSpeed.pageSize
