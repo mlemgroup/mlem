@@ -91,19 +91,20 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     
     /// Load the next page of results. Calls the `loadItems` attribute of the tracker, which returns an array of ContentType items.
     func loadNextPage() async throws {
+        let newPage = self.page + 1
         RunLoop.main.perform { [self] in
             isLoading = true
-            page += 1
         }
         currentTask = Task(priority: .userInitiated) { [self] in
             do {
-                let newItems = try await self.loadItems(page)
+                let newItems = try await self.loadItems(newPage)
                 RunLoop.main.perform { [self] in
                     self.items.append(contentsOf: loadItems(newItems))
                     self.isLoading = false
                     if newItems.isEmpty {
                         hasReachedEnd = true
                     }
+                    self.page = newPage
                 }
             } catch is CancellationError {
                 print("Page loading cancelled")
@@ -135,8 +136,8 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     }
     
     /// Prepares items to be added to the tracker by preloading images and removing duplicates
-    func loadItems(_ newItems: [Content]) -> [Content] {
-        let newItems = newItems.filter { ids.insert($0.uid).inserted }
+    func loadItems(_ items: [Content]) -> [Content] {
+        let newItems = items.filter { ids.insert($0.uid).inserted }
         var imageRequests: [ImageRequest] = []
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         for item in newItems {
