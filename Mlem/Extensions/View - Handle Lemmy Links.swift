@@ -153,29 +153,21 @@ struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
         }
         
         return await MainActor.run {
-            switch resolution {
-            case let .post(object):
-                if let route = Path.makeRoute(object) {
-                    navigationPath.wrappedValue.append(route)
+            do {
+                switch resolution {
+                case let .post(object):
+                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
                     return true
-                } else {
+                case let .person(object):
+                    navigationPath.wrappedValue.append(try Path.makeRoute(object.person))
+                    return true
+                case let .community(object):
+                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
+                    return true
+                case .comment:
                     return false
                 }
-            case let .person(object):
-                if let route = Path.makeRoute(object.person) {
-                    navigationPath.wrappedValue.append(route)
-                    return true
-                } else {
-                    return false
-                }
-            case let .community(object):
-                if let route = Path.makeRoute(object) {
-                    navigationPath.wrappedValue.append(route)
-                    return true
-                } else {
-                    return false
-                }
-            case .comment:
+            } catch {
                 return false
             }
         }

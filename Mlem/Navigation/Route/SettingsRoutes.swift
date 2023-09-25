@@ -22,47 +22,24 @@ enum SettingsRoute: Routable {
     case postPage(PostSettingsRoute)
     case licensesPage(LicensesSettingsRoute)
     
-    // swiftlint:disable cyclomatic_complexity
-    static func makeRoute<V>(_ value: V) -> SettingsRoute? where V: Hashable {
+    static func makeRoute<V>(_ value: V) throws -> SettingsRoute where V: Hashable {
         switch value {
         case let value as Self:
             return value
         case let value as AboutSettingsRoute:
-            if let route = AboutSettingsRoute.makeRoute(value) {
-                return .aboutPage(route)
-            } else {
-                return nil
-            }
+            return try .aboutPage(AboutSettingsRoute.makeRoute(value))
         case let value as AppearanceSettingsRoute:
-            if let route = AppearanceSettingsRoute.makeRoute(value) {
-                return .appearancePage(route)
-            } else {
-                return nil
-            }
+            return try .appearancePage(AppearanceSettingsRoute.makeRoute(value))
         case let value as CommentSettingsRoute:
-            if let route = CommentSettingsRoute.makeRoute(value) {
-                return .commentPage(route)
-            } else {
-                return nil
-            }
+            return try .commentPage(CommentSettingsRoute.makeRoute(value))
         case let value as PostSettingsRoute:
-            if let route = PostSettingsRoute.makeRoute(value) {
-                return .postPage(route)
-            } else {
-                return nil
-            }
+            return try .postPage(PostSettingsRoute.makeRoute(value))
         case let value as LicensesSettingsRoute:
-            if let route = LicensesSettingsRoute.makeRoute(value) {
-                return .licensesPage(route)
-            } else {
-                return nil
-            }
+            return try .licensesPage(LicensesSettingsRoute.makeRoute(value))
         default:
-            print(Self.makeRouteErrorString)
-            return nil
+            throw RoutableError.routeNotConfigured(value: value)
         }
     }
-    // swiftlint:enable cyclomatic_complexity
 }
 
 enum AppearanceSettingsRoute: Routable, Codable {
@@ -89,7 +66,7 @@ enum AboutSettingsRoute: Routable {
     case eula(Document)
     case licenses
     
-    static func makeRoute<V>(_ value: V) -> AboutSettingsRoute? where V: Hashable {
+    static func makeRoute<V>(_ value: V) throws -> AboutSettingsRoute where V: Hashable {
         switch value {
         case let value as Self:
             return value
@@ -97,8 +74,7 @@ enum AboutSettingsRoute: Routable {
             //            return .privacyPolicy(value)
             return .eula(value)
         default:
-            print(Self.makeRouteErrorString)
-            return nil
+            throw RoutableError.routeNotConfigured(value: value)
         }
     }
 }
@@ -106,13 +82,12 @@ enum AboutSettingsRoute: Routable {
 enum LicensesSettingsRoute: Routable {
     case licenseDocument(Document)
     
-    static func makeRoute<V>(_ value: V) -> LicensesSettingsRoute? where V: Hashable {
+    static func makeRoute<V>(_ value: V) throws -> LicensesSettingsRoute where V: Hashable {
         switch value {
         case let value as Document:
             return .licenseDocument(value)
         default:
-            print(Self.makeRouteErrorString)
-            return nil
+            throw RoutableError.routeNotConfigured(value: value)
         }
     }
 }

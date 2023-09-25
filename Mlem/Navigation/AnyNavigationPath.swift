@@ -13,7 +13,7 @@ protocol AnyNavigationPath {
     associatedtype Route: Routable
     
     /// Implementation should make a route that makes sense for the passed-in data value and can be appended to the navigation path.
-    static func makeRoute<V>(_ value: V) -> Route? where V: Hashable
+    static func makeRoute<V>(_ value: V) throws -> Route where V: Hashable
     
     /// The number of elements in this path.
     var count: Int { get }
