@@ -23,7 +23,7 @@ struct StickiedTag: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "pin.fill")
+            Image(systemName: Icons.pinned)
                 .foregroundColor(calculateColor())
                 .accessibilityLabel(tagType == .local ? "Post stickied to your local instance" : "Post stickied to your current community")
         }

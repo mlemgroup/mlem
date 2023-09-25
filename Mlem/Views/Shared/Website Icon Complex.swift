@@ -85,7 +85,7 @@ struct WebsiteIconComplex: View {
                                 url: faviconURL,
                                 shouldExpand: false,
                                 fixedSize: CGSize(width: AppConstants.smallAvatarSize, height: AppConstants.smallAvatarSize),
-                                imageNotFound: { AnyView(Image(systemName: "globe")) }
+                                imageNotFound: { AnyView(Image(systemName: Icons.websiteIcon)) }
                             )
                         }
                         

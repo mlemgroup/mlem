@@ -266,7 +266,7 @@ struct AddSavedInstanceView: View {
                 Text("Logging In")
             case .success:
                 Spacer()
-                Image(systemName: "checkmark.circle")
+                Image(systemName: Icons.successCircle)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 120)

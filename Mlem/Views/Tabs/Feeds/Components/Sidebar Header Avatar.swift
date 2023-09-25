@@ -37,11 +37,10 @@ struct CommunitySidebarHeaderAvatar: View {
             VStack(alignment: .center) {
                 Spacer()
                     .frame(height: 20)
-                Image(systemName: "person.fill")
+                Image(systemName: Icons.user)
                     .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
                     .foregroundColor(.secondary)
             }
         }
-        
     }
 }

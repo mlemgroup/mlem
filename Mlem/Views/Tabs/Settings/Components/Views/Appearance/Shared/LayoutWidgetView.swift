@@ -24,25 +24,25 @@ struct LayoutWidgetView: View {
         HStack(spacing: 12) {
             switch widget.type {
             case .upvote:
-                icon(AppConstants.plainUpvoteSymbolName)
+                icon(Icons.upvote)
             case .downvote:
-                icon(AppConstants.plainDownvoteSymbolName)
+                icon(Icons.downvote)
             case .save:
-                icon(AppConstants.emptySaveSymbolName)
+                icon(Icons.save)
             case .reply:
-                icon(AppConstants.emptyReplySymbolName)
+                icon(Icons.reply)
             case .share:
-                icon(AppConstants.shareSymbolName)
+                icon(Icons.share)
             case .upvoteCounter:
-                icon(AppConstants.plainUpvoteSymbolName)
+                icon(Icons.upvote)
                 Text("9")
             case .downvoteCounter:
-                icon(AppConstants.plainDownvoteSymbolName)
+                icon(Icons.downvote)
                 Text("2")
             case .scoreCounter:
-                icon(AppConstants.plainUpvoteSymbolName)
+                icon(Icons.upvote)
                 Text("7")
-                icon(AppConstants.plainDownvoteSymbolName)
+                icon(Icons.downvote)
             default:
                 EmptyView()
             }

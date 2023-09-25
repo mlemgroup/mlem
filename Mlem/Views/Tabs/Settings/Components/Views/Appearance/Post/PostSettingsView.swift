@@ -43,7 +43,7 @@ struct PostSettingsView: View {
         Form {
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: "rectangle.compress.vertical",
+                    settingIconSystemName: Icons.postSizeSetting,
                     settingName: "Post Size",
                     currentValue: $postSize,
                     options: PostSize.allCases
@@ -54,7 +54,7 @@ struct PostSettingsView: View {
                         Text("Customize Widgets")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: "wand.and.stars")
+                            Image(systemName: Icons.widgetWizard)
                                 .foregroundColor(.pink)
                         }
                     }
@@ -66,36 +66,36 @@ struct PostSettingsView: View {
             
             Section("Body") {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "photo",
+                    settingPictureSystemName: Icons.thumbnail,
                     settingName: "Thumbnails On Right",
                     isTicked: $shouldShowThumbnailsOnRight
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "server.rack",
+                    settingPictureSystemName: Icons.instance,
                     settingName: "Show User Server Instance",
                     isTicked: $shouldShowUserServerInPost
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "server.rack",
+                    settingPictureSystemName: Icons.instance,
                     settingName: "Show Community Server Instance",
                     isTicked: $shouldShowCommunityServerInPost
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "signature",
+                    settingPictureSystemName: Icons.author,
                     settingName: "Show Post Creator",
                     isTicked: $shouldShowPostCreator
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "photo",
+                    settingPictureSystemName: Icons.thumbnail,
                     settingName: "Show Post Thumbnails",
                     isTicked: $shouldShowPostThumbnails
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.limitImageHeightInFeedSymbolName,
+                    settingPictureSystemName: Icons.limitImageHeightSetting,
                     settingName: "Limit Image Height In Feed",
                     isTicked: $limitImageHeightInFeed
                 )
@@ -103,27 +103,27 @@ struct PostSettingsView: View {
             
             Section("Interactions and Info") {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
+                    settingPictureSystemName: Icons.upvoteSquare,
                     settingName: "Show Score In Info",
                     isTicked: $shouldShowScoreInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                    settingPictureSystemName: Icons.votes,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showDownvotesSeparately
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "clock",
+                    settingPictureSystemName: Icons.time,
                     settingName: "Show Time Posted In Info",
                     isTicked: $shouldShowTimeInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "bookmark",
+                    settingPictureSystemName: Icons.save,
                     settingName: "Show Saved Status In Info",
                     isTicked: $shouldShowSavedInPostBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "bubble.right",
+                    settingPictureSystemName: Icons.replies,
                     settingName: "Show Replies In Info",
                     isTicked: $shouldShowRepliesInPostBar
                 )
@@ -159,18 +159,18 @@ struct PostSettingsView: View {
                 .padding(.horizontal)
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "link",
+                    settingPictureSystemName: Icons.websiteAddress,
                     settingName: "Show Website Address",
                     isTicked: $shouldShowWebsiteHost
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "globe",
+                    settingPictureSystemName: Icons.websiteIcon,
                     settingName: "Show Website Icon",
                     isTicked: $shouldShowWebsiteIcon
                 )
                 .disabled(!shouldShowWebsiteHost)
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "photo.circle.fill",
+                    settingPictureSystemName: Icons.thumbnail,
                     settingName: "Show Website Preview",
                     isTicked: $shouldShowWebsitePreviews
                 )
