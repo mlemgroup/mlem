@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 11/08/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct JumpButtonView: View {
     @State private var pressed: Bool = false
@@ -18,7 +18,7 @@ struct JumpButtonView: View {
     
     var body: some View {
         Button {} label: {
-            Image(systemName: "chevron.down")
+            Image(systemName: Icons.jumpButton)
                 .fontWeight(.semibold)
                 .foregroundStyle(.secondary)
                 .aspectRatio(contentMode: .fit)
@@ -30,7 +30,7 @@ struct JumpButtonView: View {
                         .clipShape(Circle())
                 )
                 .padding(10)
-                .scaleEffect(self.pressed ? 1.2 : 1.0)
+                .scaleEffect(pressed ? 1.2 : 1.0)
                 .onTapGesture {
                     hapticManager.play(haptic: .gentleInfo, priority: .high)
                     onShortPress()
@@ -42,7 +42,7 @@ struct JumpButtonView: View {
                     },
                     onPressingChanged: { pressing in
                         withAnimation(.interactiveSpring()) {
-                            self.pressed = pressing
+                            pressed = pressing
                         }
                     }
                 )

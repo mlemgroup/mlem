@@ -265,13 +265,13 @@ private struct Toast: View {
     var icon: some View {
         switch style {
         case .success:
-            Image(systemName: "checkmark")
+            Image(systemName: Icons.success)
                 .foregroundColor(.green)
         case .error:
-            Image(systemName: "xmark")
+            Image(systemName: Icons.failure)
                 .foregroundColor(.red)
         case .noInternet:
-            Image(systemName: "wifi.slash")
+            Image(systemName: Icons.noWifi)
                 .foregroundColor(.red)
         case .loader:
             ProgressView()
@@ -281,7 +281,7 @@ private struct Toast: View {
                     .resizable()
                     .frame(width: 30, height: 30) // limit the size of the asset since it's _huge_
             } else {
-                Image(systemName: "gift.fill")
+                Image(systemName: Icons.easterEgg)
                     .foregroundColor(.pink)
             }
         }

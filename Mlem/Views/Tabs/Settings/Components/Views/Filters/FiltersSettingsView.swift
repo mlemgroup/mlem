@@ -59,7 +59,7 @@ struct FiltersSettingsView: View {
                         Text("Import Filters")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: "square.and.arrow.down")
+                            Image(systemName: Icons.importSymbol)
                         }
                     }
                 }
@@ -111,7 +111,7 @@ struct FiltersSettingsView: View {
                         Text("Delete All Filters")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: "trash")
+                            Image(systemName: Icons.delete)
                         }
                     }
                     .foregroundColor(.red)

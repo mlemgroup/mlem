@@ -15,7 +15,7 @@ struct WebsiteIndicatorView: View {
             .clipShape(Circle())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay {
-                Image(systemName: "safari")
+                Image(systemName: Icons.browser)
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(.white)

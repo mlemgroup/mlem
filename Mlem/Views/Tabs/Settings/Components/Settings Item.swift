@@ -125,7 +125,7 @@ struct SettingsPickerButton<PickerLabel: View>: View {
                 label
                 Spacer()
                 if isOn {
-                    Image(systemName: "checkmark")
+                    Image(systemName: Icons.success)
                         .foregroundStyle(.blue)
                         .transition(.opacity)
                 }

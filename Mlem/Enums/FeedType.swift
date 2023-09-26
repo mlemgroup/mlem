@@ -26,17 +26,17 @@ enum FeedType: String, Encodable, SettingsOptions {
 extension FeedType: AssociatedIcon {
     var iconName: String {
         switch self {
-        case .all: return AppConstants.federatedFeedSymbolName
-        case .local: return AppConstants.localFeedSymbolName
-        case .subscribed: return AppConstants.subscribedFeedSymbolName
+        case .all: return Icons.federatedFeed
+        case .local: return Icons.localFeed
+        case .subscribed: return Icons.subscribedFeed
         }
     }
     
     var iconNameFill: String {
         switch self {
-        case .all: return AppConstants.federatedFeedSymbolName
-        case .local: return AppConstants.localFeedSymbolNameFill
-        case .subscribed: return AppConstants.subscribedFeedSymbolNameFill
+        case .all: return Icons.federatedFeed
+        case .local: return Icons.localFeedFill
+        case .subscribed: return Icons.subscribedFeedFill
         }
     }
     
