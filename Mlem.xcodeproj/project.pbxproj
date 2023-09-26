@@ -435,6 +435,7 @@
 		E4D4DBA22A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */; };
 		E4DDB4322A81819300B3A7E0 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4312A81819300B3A7E0 /* Double.swift */; };
 		E4DDB4342A819C8000B3A7E0 /* QuickLookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */; };
+		E4F0B5722AC2581800BC3E4A /* RoutableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -881,6 +882,7 @@
 		E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabNavigationSelectionHashValueEnvironmentKey.swift; sourceTree = "<group>"; };
 		E4DDB4312A81819300B3A7E0 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookView.swift; sourceTree = "<group>"; };
+		E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutableTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1507,6 +1509,7 @@
 			isa = PBXGroup;
 			children = (
 				504ECBAF2AB4B0DF006C0B96 /* Model */,
+				E4F0B5702AC257FD00BC3E4A /* Navigation */,
 				50CC4A802AA0D5F90074C845 /* Parsers */,
 				50CC4A7B2A9CFF840074C845 /* Supporting Files */,
 				50BC1AB72A89741000E3C48B /* Community List */,
@@ -2291,6 +2294,14 @@
 			path = Animations;
 			sourceTree = "<group>";
 		};
+		E4F0B5702AC257FD00BC3E4A /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2882,6 +2893,7 @@
 				031BF9552AB25AFB00F4517F /* SiteVersionTests.swift in Sources */,
 				50CC4A782A9CBDF70074C845 /* TimestampedValueTests.swift in Sources */,
 				50CC4A822AA0D61F0074C845 /* InstanceMetadataParserTests.swift in Sources */,
+				E4F0B5722AC2581800BC3E4A /* RoutableTests.swift in Sources */,
 				50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

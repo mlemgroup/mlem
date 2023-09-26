@@ -27,7 +27,7 @@ enum NavigationRoute: Routable {
     case userModeratorLink(UserModeratorLink)
     
     // swiftlint:disable cyclomatic_complexity
-    static func makeRoute<V>(_ value: V) -> NavigationRoute? where V: Hashable {
+    static func makeRoute<V>(_ value: V) throws -> NavigationRoute where V: Hashable {
         switch value {
         case let value as APICommunityView:
             return .apiCommunityView(value)
@@ -49,9 +49,11 @@ enum NavigationRoute: Routable {
             return .lazyLoadPostLinkWithContext(value)
         case let value as UserModeratorLink:
             return .userModeratorLink(value)
+        case let value as Self:
+            /// Value is an enum case of type `Self` with either no associated value or pre-populated associated value.
+            return value
         default:
-            print(Self.makeRouteErrorString)
-            return nil
+            throw RoutableError.routeNotConfigured(value: value)
         }
     }
     // swiftlint:enable cyclomatic_complexity

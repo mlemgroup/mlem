@@ -24,8 +24,6 @@ enum SettingsRoute: Routable {
     
     static func makeRoute<V>(_ value: V) throws -> SettingsRoute where V: Hashable {
         switch value {
-        case let value as Self:
-            return value
         case let value as AboutSettingsRoute:
             return try .aboutPage(AboutSettingsRoute.makeRoute(value))
         case let value as AppearanceSettingsRoute:
@@ -36,6 +34,9 @@ enum SettingsRoute: Routable {
             return try .postPage(PostSettingsRoute.makeRoute(value))
         case let value as LicensesSettingsRoute:
             return try .licensesPage(LicensesSettingsRoute.makeRoute(value))
+        case let value as Self:
+            /// Value is an enum case of type `Self` with either no associated value or pre-populated associated value.
+            return value
         default:
             throw RoutableError.routeNotConfigured(value: value)
         }
@@ -68,11 +69,12 @@ enum AboutSettingsRoute: Routable {
     
     static func makeRoute<V>(_ value: V) throws -> AboutSettingsRoute where V: Hashable {
         switch value {
-        case let value as Self:
-            return value
         case let value as Document:
             //            return .privacyPolicy(value)
             return .eula(value)
+        case let value as Self:
+            /// Value is an enum case of type `Self` with either no associated value or pre-populated associated value.
+            return value
         default:
             throw RoutableError.routeNotConfigured(value: value)
         }
