@@ -168,6 +168,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
                     return false
                 }
             } catch {
+                errorHandler.handle(error)
                 return false
             }
         }
