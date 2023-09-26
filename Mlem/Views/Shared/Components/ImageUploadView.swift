@@ -65,7 +65,7 @@ struct ImageUploadView: View {
         }
         .overlay(alignment: .topTrailing) {
             Button(action: onCancel, label: {
-                Image(systemName: "multiply")
+                Image(systemName: Icons.close)
                     .fontWeight(.semibold)
                     .tint(.secondary)
                     .padding(5)

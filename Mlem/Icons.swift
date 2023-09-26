@@ -127,6 +127,7 @@ struct Icons {
     static let time: String = "clock"
     static let favorite: String = "star"
     static let favoriteFill: String = "star.fill"
+    static let close: String = "multiply"
     
     // common operations
     static let share: String = "square.and.arrow.up"
