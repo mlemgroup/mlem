@@ -36,7 +36,7 @@ extension InboxView {
     @ViewBuilder
     func noRepliesView() -> some View {
         VStack(alignment: .center, spacing: 5) {
-            Image(systemName: "text.bubble")
+            Image(systemName: Icons.noPosts)
             
             Text("No replies to be found")
         }

@@ -8,14 +8,15 @@
 import Foundation
 
 extension APIClient {
+    // swiftlint:disable function_parameter_count
     func loadPosts(
         communityId: Int?,
         page: Int,
         sort: PostSortType?,
         type: FeedType,
-        limit: Int? = nil,
-        savedOnly: Bool? = nil,
-        communityName: String? = nil
+        limit: Int?,
+        savedOnly: Bool?,
+        communityName: String?
     ) async throws -> [APIPostView] {
         let request = try GetPostsRequest(
             session: session,
@@ -30,6 +31,8 @@ extension APIClient {
         
         return try await perform(request: request).posts
     }
+
+    // swiftlint:enable function_parameter_count
     
     func markPostAsRead(for postId: Int, read: Bool) async throws -> PostResponse {
         let request = try MarkPostReadRequest(session: session, postId: postId, read: read)
@@ -60,13 +63,14 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    // swiftlint:disable function_parameter_count
     func editPost(
         postId: Int,
         name: String?,
         url: String?,
         body: String?,
         nsfw: Bool?,
-        languageId: Int? = nil
+        languageId: Int?
     ) async throws -> PostResponse {
         let request = try EditPostRequest(
             session: session,
@@ -80,6 +84,8 @@ extension APIClient {
         
         return try await perform(request: request)
     }
+
+    // swiftlint:enable function_parameter_count
     
     func ratePost(id: Int, score: ScoringOperation) async throws -> APIPostView {
         let request = try CreatePostLikeRequest(session: session, postId: id, score: score)

@@ -22,7 +22,7 @@ struct UpvoteCounterView: View {
                 }
             } label: {
                 HStack(spacing: 8) {
-                    Image(systemName: AppConstants.plainUpvoteSymbolName)
+                    Image(systemName: Icons.upvote)
                     Text(String(score))
                         .monospacedDigit()
                 }

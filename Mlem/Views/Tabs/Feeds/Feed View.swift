@@ -150,7 +150,7 @@ struct FeedView: View {
             LoadingView(whatIsLoading: .posts)
         } else {
             VStack(alignment: .center, spacing: 5) {
-                Image(systemName: "text.bubble")
+                Image(systemName: Icons.noPosts)
                 Text("No posts to be found")
             }
             .padding()
@@ -213,7 +213,7 @@ struct FeedView: View {
                     MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
             } label: {
-                Label("Post Size", systemImage: AppConstants.postSizeSettingsSymbolName)
+                Label("Post Size", systemImage: Icons.postSizeSetting)
             }
         } label: {
             Label("More", systemImage: "ellipsis")
@@ -238,7 +238,7 @@ struct FeedView: View {
                     MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
                 }
             } label: {
-                Label("Top...", systemImage: AppConstants.topSymbolName)
+                Label("Top...", systemImage: Icons.topSort)
             }
         } label: {
             Label(
@@ -269,7 +269,7 @@ struct FeedView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Text(feedType.label)
                         .font(.headline)
-                    Image(systemName: "chevron.down")
+                    Image(systemName: Icons.dropdown)
                         .scaleEffect(0.7)
                 }
                 .foregroundColor(.primary)

@@ -21,9 +21,13 @@ struct AlternativeIconCell: View {
                 getImage()
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 60, height: 60)
+                    .frame(width: AppConstants.appIconSize, height: AppConstants.appIconSize)
                     .foregroundColor(Color.white)
-                    .cornerRadius(10.0)
+                    .cornerRadius(AppConstants.appIconCornerRadius)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: AppConstants.appIconCornerRadius)
+                            .stroke(Color(.secondarySystemBackground), lineWidth: 1)
+                    }
                 VStack(alignment: .leading) {
                     Text(icon.name)
                     if let author = icon.author {
@@ -34,7 +38,7 @@ struct AlternativeIconCell: View {
                 }
                 Spacer()
                 if icon.selected {
-                    Image(systemName: "checkmark")
+                    Image(systemName: Icons.success)
                 }
             }
         }.accessibilityElement(children: .combine)
@@ -47,7 +51,7 @@ struct AlternativeIconCell: View {
                     .flatMap { UIImage(named: $0) }
                     .map {
                         Image(uiImage: $0)
-                    } ?? Image(systemName: "questionmark.folder")
+                    } ?? Image(systemName: Icons.noFile)
             }
             return Image(uiImage: UIImage(named: id) ?? UIImage(imageLiteralResourceName: id))
         }

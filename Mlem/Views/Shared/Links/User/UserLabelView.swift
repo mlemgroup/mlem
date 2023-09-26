@@ -62,11 +62,11 @@ struct UserLabelView: View {
     static let mlemOfficial = "vlemmy.net/u/MlemOfficial"
     
     static let flairMlemOfficial = UserLinkViewFlair(color: Color.purple, image: Image("mlem"))
-    static let flairDeveloper = UserLinkViewFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
-    static let flairMod = UserLinkViewFlair(color: Color.green, image: Image(systemName: "shield.fill"))
-    static let flairBot = UserLinkViewFlair(color: Color.indigo, image: Image(systemName: "server.rack"))
-    static let flairOP = UserLinkViewFlair(color: Color.orange, image: Image(systemName: "person.fill"))
-    static let flairAdmin = UserLinkViewFlair(color: Color.red, image: Image(systemName: "crown.fill"))
+    static let flairDeveloper = UserLinkViewFlair(color: Color.purple, image: Image(systemName: Icons.developerFlair))
+    static let flairMod = UserLinkViewFlair(color: Color.green, image: Image(systemName: Icons.moderationFill))
+    static let flairBot = UserLinkViewFlair(color: Color.indigo, image: Image(systemName: Icons.botFlair))
+    static let flairOP = UserLinkViewFlair(color: Color.orange, image: Image(systemName: Icons.opFlair))
+    static let flairAdmin = UserLinkViewFlair(color: Color.red, image: Image(systemName: Icons.adminFlair))
     static let flairRegular = UserLinkViewFlair(color: Color.gray)
     
     var body: some View {

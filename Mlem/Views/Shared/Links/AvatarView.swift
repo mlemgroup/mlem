@@ -78,43 +78,19 @@ struct AvatarView: View {
         switch type {
         case .community:
             return AnyView(
-                ZStack {
-                    VStack {
-                        Spacer()
-                        Image(systemName: "building.2.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: avatarSize * 0.66)
-                            .foregroundStyle(.white)
-                    }
-                    .scaledToFit()
-                    .mask(
-                        Circle()
-                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
-                    )
-                }
-                .frame(maxWidth: .infinity)
-                .background(.gray)
+                Image(systemName: Icons.communityFill)
+                    .resizable()
+                    .scaledToFill()
+                    .background(.white)
+                    .foregroundStyle(Color.gray.gradient)
             )
         case .user:
             return AnyView(
-                ZStack {
-                    VStack {
-                        Spacer()
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: avatarSize * 0.75)
-                            .foregroundStyle(.white)
-                    }
-                    .scaledToFit()
-                    .mask(
-                        Circle()
-                            .frame(width: avatarSize * 0.83, height: avatarSize * 0.83)
-                    )
-                }
-                .frame(maxWidth: .infinity)
-                .background(.gray)
+                Image(systemName: Icons.userFill)
+                    .resizable()
+                    .scaledToFill()
+                    .background(.white)
+                    .foregroundStyle(Color.gray.gradient)
             )
         }
     }

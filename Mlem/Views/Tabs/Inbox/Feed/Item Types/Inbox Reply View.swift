@@ -27,13 +27,13 @@ struct InboxReplyView: View {
         
         switch reply.myVote {
         case .upvote:
-            self.voteIconName = AppConstants.plainUpvoteSymbolName
+            self.voteIconName = Icons.upvote
             self.voteColor = .upvoteColor
         case .downvote:
-            self.voteIconName = AppConstants.plainDownvoteSymbolName
+            self.voteIconName = Icons.downvote
             self.voteColor = .downvoteColor
         default:
-            self.voteIconName = AppConstants.plainUpvoteSymbolName
+            self.voteIconName = Icons.upvote
             self.voteColor = .secondary
         }
     }

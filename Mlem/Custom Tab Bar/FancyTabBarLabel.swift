@@ -14,11 +14,11 @@ struct FancyTabBarLabel: View {
         let activeSymbol: String
         let remoteSymbolUrl: URL?
         
-        static var feed: Self { .init(symbol: "scroll", activeSymbol: "scroll.fill", remoteSymbolUrl: nil) }
-        static var inbox: Self { .init(symbol: "mail.stack", activeSymbol: "mail.stack.fill", remoteSymbolUrl: nil) }
-        static var profile: Self { .init(symbol: "person.circle", activeSymbol: "person.circle.fill", remoteSymbolUrl: nil) }
-        static var search: Self { .init(symbol: "magnifyingglass", activeSymbol: "text.magnifyingglass", remoteSymbolUrl: nil) }
-        static var settings: Self { .init(symbol: "gear", activeSymbol: "gear", remoteSymbolUrl: nil) }
+        static var feed: Self { .init(symbol: Icons.feeds, activeSymbol: Icons.feedsFill, remoteSymbolUrl: nil) }
+        static var inbox: Self { .init(symbol: Icons.inbox, activeSymbol: Icons.inboxFill, remoteSymbolUrl: nil) }
+        static var profile: Self { .init(symbol: Icons.user, activeSymbol: Icons.userFill, remoteSymbolUrl: nil) }
+        static var search: Self { .init(symbol: Icons.search, activeSymbol: Icons.searchActive, remoteSymbolUrl: nil) }
+        static var settings: Self { .init(symbol: Icons.settings, activeSymbol: Icons.settings, remoteSymbolUrl: nil) }
     }
     
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue

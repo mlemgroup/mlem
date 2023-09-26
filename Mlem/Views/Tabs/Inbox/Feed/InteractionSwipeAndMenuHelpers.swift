@@ -12,8 +12,8 @@ extension InboxView {
     
     func upvoteCommentReplySwipeAction(commentReply: APICommentReplyView) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = commentReply.myVote == .upvote ?
-            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-            (AppConstants.emptyUpvoteSymbolName, AppConstants.fullUpvoteSymbolName)
+            (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :
+            (Icons.upvoteSquare, Icons.upvoteSquareFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .upvoteColor
@@ -24,8 +24,8 @@ extension InboxView {
     
     func downvoteCommentReplySwipeAction(commentReply: APICommentReplyView) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = commentReply.myVote == .downvote ?
-            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-            (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
+            (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :
+            (Icons.downvoteSquare, Icons.downvoteSquareFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .downvoteColor
@@ -36,8 +36,8 @@ extension InboxView {
     
     func toggleCommentReplyReadSwipeAction(commentReply: APICommentReplyView) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = commentReply.commentReply.read ?
-            (AppConstants.emptyMarkUnreadSymbolName, AppConstants.fullMarkUnreadSymbolName) :
-            (AppConstants.emptyMarkReadSymbolName, AppConstants.fullMarkReadSymbolName)
+            (Icons.markUnread, Icons.markUnreadFill) :
+            (Icons.markRead, Icons.markReadFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .purple
@@ -48,7 +48,7 @@ extension InboxView {
     
     func replyToCommentReplySwipeAction(commentReply: APICommentReplyView) -> SwipeAction? {
         SwipeAction(
-            symbol: .init(emptyName: AppConstants.emptyReplySymbolName, fillName: AppConstants.fullReplySymbolName),
+            symbol: .init(emptyName: Icons.reply, fillName: Icons.replyFill),
             color: .accentColor
         ) {
             replyToCommentReply(commentReply: commentReply)
@@ -106,7 +106,7 @@ extension InboxView {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report Comment",
-            imageName: AppConstants.reportSymbolName,
+            imageName: Icons.moderationReport,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -116,7 +116,7 @@ extension InboxView {
         // block
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
-            imageName: AppConstants.blockUserSymbolName,
+            imageName: Icons.userBlock,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true
         ) {
@@ -134,8 +134,8 @@ extension InboxView {
     
     func upvoteMentionSwipeAction(mentionView: APIPersonMentionView) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = mentionView.myVote == .upvote ?
-            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-            (AppConstants.emptyUpvoteSymbolName, AppConstants.fullUpvoteSymbolName)
+            (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :
+            (Icons.upvoteSquare, Icons.upvoteSquareFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .upvoteColor
@@ -146,8 +146,8 @@ extension InboxView {
     
     func downvoteMentionSwipeAction(mentionView: APIPersonMentionView) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = mentionView.myVote == .downvote ?
-            (AppConstants.emptyResetVoteSymbolName, AppConstants.fullResetVoteSymbolName) :
-            (AppConstants.emptyDownvoteSymbolName, AppConstants.fullDownvoteSymbolName)
+            (Icons.resetVoteSquare, Icons.resetVoteSquareFill) :
+            (Icons.downvoteSquare, Icons.downvoteSquareFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .downvoteColor
@@ -158,8 +158,8 @@ extension InboxView {
     
     func toggleMentionReadSwipeAction(mentionView: APIPersonMentionView) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = mentionView.personMention.read ?
-            (AppConstants.emptyMarkUnreadSymbolName, AppConstants.fullMarkUnreadSymbolName) :
-            (AppConstants.emptyMarkReadSymbolName, AppConstants.fullMarkReadSymbolName)
+            (Icons.markUnread, Icons.markUnreadFill) :
+            (Icons.markRead, Icons.markReadFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .purple
@@ -170,7 +170,7 @@ extension InboxView {
     
     func replyToMentionSwipeAction(mentionView: APIPersonMentionView) -> SwipeAction? {
         SwipeAction(
-            symbol: .init(emptyName: AppConstants.emptyReplySymbolName, fillName: AppConstants.fullReplySymbolName),
+            symbol: .init(emptyName: Icons.reply, fillName: Icons.replyFill),
             color: .accentColor
         ) {
             replyToMention(mention: mentionView)
@@ -228,7 +228,7 @@ extension InboxView {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report Comment",
-            imageName: AppConstants.reportSymbolName,
+            imageName: Icons.moderationReport,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -238,7 +238,7 @@ extension InboxView {
         // block
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
-            imageName: AppConstants.blockUserSymbolName,
+            imageName: Icons.userBlock,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true
         ) {
@@ -256,8 +256,8 @@ extension InboxView {
     
     func toggleMessageReadSwipeAction(message: APIPrivateMessageView) -> SwipeAction {
         let (emptySymbolName, fullSymbolName) = message.privateMessage.read ?
-            (AppConstants.emptyMarkUnreadSymbolName, AppConstants.fullMarkUnreadSymbolName) :
-            (AppConstants.emptyMarkReadSymbolName, AppConstants.fullMarkReadSymbolName)
+            (Icons.markUnread, Icons.markUnreadFill) :
+            (Icons.markRead, Icons.markReadFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .purple
@@ -268,7 +268,7 @@ extension InboxView {
     
     func replyToMessageSwipeAction(message: APIPrivateMessageView) -> SwipeAction {
         SwipeAction(
-            symbol: .init(emptyName: AppConstants.emptyReplySymbolName, fillName: AppConstants.fullReplySymbolName),
+            symbol: .init(emptyName: Icons.reply, fillName: Icons.replyFill),
             color: .accentColor
         ) {
             replyToMessage(message: message)
@@ -304,7 +304,7 @@ extension InboxView {
         // report
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report Message",
-            imageName: AppConstants.reportSymbolName,
+            imageName: Icons.moderationReport,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -314,7 +314,7 @@ extension InboxView {
         // block
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
-            imageName: AppConstants.blockUserSymbolName,
+            imageName: Icons.userBlock,
             destructiveActionPrompt: AppConstants.blockUserPrompt,
             enabled: true
         ) {
