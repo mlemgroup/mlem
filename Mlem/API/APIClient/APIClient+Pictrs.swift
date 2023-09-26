@@ -54,12 +54,12 @@ extension APIClient {
 
 struct ImageUploadResponse: Codable {
     public let msg: String
-    public let files: [File]
-    
-    struct File: Codable, Equatable {
-        public let file: String
-        public let deleteToken: String
-    }
+    public let files: [PictrsFile]
+}
+
+struct PictrsFile: Codable, Equatable {
+    public let file: String
+    public let deleteToken: String
 }
 
 private struct MultiPartForm: Codable {

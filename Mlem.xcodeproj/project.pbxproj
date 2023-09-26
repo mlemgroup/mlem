@@ -15,6 +15,7 @@
 		031BF9552AB25AFB00F4517F /* SiteVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9542AB25AFB00F4517F /* SiteVersionTests.swift */; };
 		032109472AA7C3FC00912DFC /* CommunityLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109462AA7C3FC00912DFC /* CommunityLabelView.swift */; };
 		032109492AA7C41800912DFC /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109482AA7C41800912DFC /* AvatarView.swift */; };
+		032DD2FD2AC3594B00F1B33D /* ImageUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032DD2FC2AC3594B00F1B33D /* ImageUploadView.swift */; };
 		034C724F2A82B61200B8A4B8 /* LayoutWidgetTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */; };
 		035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EB0C92A8687C200227859 /* JumpButtonView.swift */; };
 		038A16DF2A75172C0087987E /* LayoutWidgetEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038A16DE2A75172C0087987E /* LayoutWidgetEditView.swift */; };
@@ -465,6 +466,7 @@
 		031BF9542AB25AFB00F4517F /* SiteVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersionTests.swift; sourceTree = "<group>"; };
 		032109462AA7C3FC00912DFC /* CommunityLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLabelView.swift; sourceTree = "<group>"; };
 		032109482AA7C41800912DFC /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		032DD2FC2AC3594B00F1B33D /* ImageUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadView.swift; sourceTree = "<group>"; };
 		034C724E2A82B61200B8A4B8 /* LayoutWidgetTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetTracker.swift; sourceTree = "<group>"; };
 		035EB0C92A8687C200227859 /* JumpButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButtonView.swift; sourceTree = "<group>"; };
 		038A16DE2A75172C0087987E /* LayoutWidgetEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutWidgetEditView.swift; sourceTree = "<group>"; };
@@ -1975,6 +1977,7 @@
 				CD69F5702A422EDD0028D4F7 /* InteractionBarView.swift */,
 				632E8EE427EE63BD007E8D75 /* Components */,
 				CDF1EF152A6C3BC2003594B6 /* End Of Feed View.swift */,
+				032DD2FC2AC3594B00F1B33D /* ImageUploadView.swift */,
 				CD45BCED2A75CA7200A2899C /* Thumbnail Image View.swift */,
 				CDC1C9422A7AC24600072E3D /* ReadCheck.swift */,
 				CD309C452A93FBD300988F95 /* Logo View.swift */,
@@ -2816,6 +2819,7 @@
 				03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */,
 				CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */,
 				CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */,
+				032DD2FD2AC3594B00F1B33D /* ImageUploadView.swift in Sources */,
 				88B165B82A8643F4007C9115 /* View - NavigationBar Color.swift in Sources */,
 				030AC0522A64666C00037155 /* UserSettingsView.swift in Sources */,
 				CDA2C5262A705D6000649D5A /* PostEditor.swift in Sources */,

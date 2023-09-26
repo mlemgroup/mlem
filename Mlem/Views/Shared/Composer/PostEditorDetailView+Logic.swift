@@ -11,8 +11,8 @@ import PhotosUI
 
 extension PostDetailEditorView {
     var isReadyToPost: Bool {
-        switch uploadProgress {
-        case .noImage, .uploaded:
+        switch imageModel?.state {
+        case nil, .uploaded:
             return postTitle.trimmed.isNotEmpty
         default:
             return false
@@ -57,27 +57,28 @@ extension PostDetailEditorView {
     }
     
     func uploadImage() {
-        uploadProgress = .uploading(0)
+        imageModel = .init()
         Task {
             do {
                 let data = try await imageSelection?.loadTransferable(type: Data.self)
                 
                 if let data = data {
+                    print("DONE")
                     if let uiImage = UIImage(data: data) {
-                        self.uploadedImage = Image(uiImage: uiImage)
+                        imageModel?.image = Image(uiImage: uiImage)
                     }
-                    let res = try await apiClient.uploadImage(data, callback: { uploadProgress = .uploading($0) })
+                    let res = try await apiClient.uploadImage(data, callback: { imageModel?.state = .uploading(progress: $0) })
                     if let firstFile = res.files.first {
                         var components = URLComponents()
                         components.scheme = try apiClient.session.instanceUrl.scheme
                         components.host = try apiClient.session.instanceUrl.host
                         components.path = "/pictrs/image/\(firstFile.file)"
                         postURL = components.url?.absoluteString ?? ""
-                        uploadProgress = .uploaded
+                        imageModel?.state = .uploaded(file: firstFile)
                     }
                 }
             } catch {
-                uploadProgress = .failed(error)
+                imageModel?.state = .failed(error)
                 return
             }
         }

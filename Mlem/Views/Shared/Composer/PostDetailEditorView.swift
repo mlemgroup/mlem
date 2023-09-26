@@ -24,13 +24,6 @@ struct PostDetailEditorView: View {
         case title, url, body
     }
     
-    enum ImageUploadProgress {
-        case noImage
-        case uploading(Double)
-        case uploaded
-        case failed(Error)
-    }
-    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     
@@ -50,8 +43,7 @@ struct PostDetailEditorView: View {
     
     @State var showingPhotosPicker: Bool = false
     @State var imageSelection: PhotosPickerItem?
-    @State var uploadedImage: Image?
-    @State var uploadProgress: ImageUploadProgress = .noImage
+    @State var imageModel: PictrsImageModel?
     
     @FocusState private var focusedField: Field?
     
@@ -114,8 +106,12 @@ struct PostDetailEditorView: View {
                 }
                     
                 // URL Row
-                if imageSelection != nil {
-                    imageWidget
+                if let imageModel = imageModel {
+                    ImageUploadView(imageModel: imageModel, onCancel: {
+                        imageSelection = nil
+                        self.imageModel = nil
+                        postURL = ""
+                    })
                 } else {
                     VStack(alignment: .labelStart) {
                         HStack {
@@ -204,69 +200,6 @@ struct PostDetailEditorView: View {
             if newValue != nil {
                 uploadImage()
             }
-        }
-    }
-    
-    @ViewBuilder
-    var imageWidget: some View {
-        VStack {
-            HStack(spacing: 10) {
-                if let uploadedImage = uploadedImage {
-                    uploadedImage
-                        .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 60, height: 60, alignment: .center)
-                            .clipShape(RoundedRectangle(cornerRadius: 5))
-                            .clipped()
-                } else {
-                    RoundedRectangle(cornerRadius: 5)
-                        .fill(.secondary)
-                        .frame(width: 60, height: 60)
-                }
-                VStack(alignment: .leading) {
-                    Text("Attached image")
-                    Spacer()
-                    HStack {
-                        switch uploadProgress {
-                        case .uploading(let progress):
-                            Text("Uploading...")
-                            ProgressView(value: progress)
-                                .progressViewStyle(LinearProgressViewStyle())
-                                .frame(width: 100, height: 10)
-                        case .uploaded:
-                            Text("Uploaded")
-                        case .failed:
-                            Text("Failed")
-                                .foregroundStyle(.red)
-                        default:
-                            EmptyView()
-                        }
-                    }
-                    .foregroundStyle(.secondary)
-                }
-                .frame(height: 40)
-                Spacer()
-            }
-            .padding(10)
-        }
-        .frame(maxWidth: .infinity)
-        .background {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color(UIColor.secondarySystemBackground))
-        }
-        .overlay(alignment: .topTrailing) {
-            Button {
-                imageSelection = nil
-                uploadedImage = nil
-                postURL = ""
-            } label: {
-                Image(systemName: "multiply")
-                    .fontWeight(.semibold)
-                    .tint(.secondary)
-                    .padding(5)
-                    .background(Circle().fill(.background))
-            }
-            .padding(5)
         }
     }
 }
