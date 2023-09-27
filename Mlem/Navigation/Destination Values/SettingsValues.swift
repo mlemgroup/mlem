@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SettingsPage: Hashable {
+enum SettingsPage: DestinationValue {
     case accounts
     case general
     case accessibility
@@ -17,14 +17,14 @@ enum SettingsPage: Hashable {
     case advanced
 }
 
-enum AboutSettingsPage: Hashable {
+enum AboutSettingsPage: DestinationValue {
     case contributors
     /// e.g. `Privacy Policy` or `EULA`.
     case document(Document)
     case licenses
 }
 
-enum AppearanceSettingsPage: Hashable {
+enum AppearanceSettingsPage: DestinationValue {
     case theme
     case appIcon
     case posts
@@ -34,14 +34,14 @@ enum AppearanceSettingsPage: Hashable {
     case tabBar
 }
 
-enum CommentSettingsPage: Hashable {
+enum CommentSettingsPage: DestinationValue {
     case layoutWidget
 }
 
-enum PostSettingsPage: Hashable {
+enum PostSettingsPage: DestinationValue {
     case customizeWidgets
 }
 
-enum LicensesSettingsPage: Hashable {
+enum LicensesSettingsPage: DestinationValue {
     case licenseDocument(Document)
 }

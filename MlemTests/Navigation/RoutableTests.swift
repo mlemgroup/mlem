@@ -52,7 +52,7 @@ final class RoutableTests: XCTestCase {
         XCTAssertThrowsError(try MockRoute.routeC(.makeRoute(data)))
     }
     
-    // MARK: - NavigationRoutes
+    // MARK: - AppRoutes
     
     /// Passing in raw data value should return a valid route.
     /// Assert `(Data) –> Route`.
@@ -67,30 +67,6 @@ final class RoutableTests: XCTestCase {
         let data = CommunityLinkWithContext(community: nil, feedType: .all)
         let value = AppRoute.communityLinkWithContext(data)
         let route = try AppRoute.makeRoute(value)
-        XCTAssert(route == value)
-    }
-    
-    // MARK: - SettingsRoutes
-    
-    /// Passing in a route enum with no associated value should return the passed in value.
-    func testSettingsRouteHandlesNoAssociatedValueEnumCase() throws {
-        let value = SettingsRoute.general
-        let route = try SettingsRoute.makeRoute(value)
-        XCTAssert(route == value)
-    }
-    
-    /// Passing in a route enum with an associated value should return the passed in value.
-    func testSettingsRouteHandlesNonNestedAssociatedValueEnumCase() throws {
-        let value = SettingsRoute.aboutPage(.contributors)
-        let route = try SettingsRoute.makeRoute(value)
-        XCTAssert(route == value)
-    }
-    
-    /// Passing in a route enum with an associated value that also has an associated value should return the passed in value.
-    func testSettingsRouteHandlesNestedAssociatedValueEnumCase() throws {
-        let nestedValue = Document(body: "Mock EULA")
-        let value = SettingsRoute.aboutPage(.eula(nestedValue))
-        let route = try SettingsRoute.makeRoute(value)
         XCTAssert(route == value)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  NavigationRoutes.swift
+//  AppRoutes.swift
 //  Mlem
 //
 //  Created by Bosco Ho on 2023-09-08.
