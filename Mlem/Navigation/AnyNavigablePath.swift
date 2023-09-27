@@ -1,5 +1,5 @@
 //
-//  AnyNavigationPath.swift
+//  AnyNavigablePath.swift
 //  Mlem
 //
 //  Created by Bosco Ho on 2023-09-08.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-protocol AnyNavigationPath {
+protocol AnyNavigablePath {
     
     associatedtype Route: Routable
     

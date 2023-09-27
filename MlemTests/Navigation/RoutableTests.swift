@@ -58,15 +58,15 @@ final class RoutableTests: XCTestCase {
     /// Assert `(Data) –> Route`.
     func testNavigationRouteHandlesDataValue() throws {
         let value = CommunityLinkWithContext(community: nil, feedType: .all)
-        let route = try NavigationRoute.makeRoute(value)
+        let route = try AppRoute.makeRoute(value)
         XCTAssert(route == .communityLinkWithContext(value))
     }
     
     /// Passing in a route enum with an associated value should return the passed in value.
     func testNavigationRouteHandlesNonNestedAssociatedValueEnumCase() throws {
         let data = CommunityLinkWithContext(community: nil, feedType: .all)
-        let value = NavigationRoute.communityLinkWithContext(data)
-        let route = try NavigationRoute.makeRoute(value)
+        let value = AppRoute.communityLinkWithContext(data)
+        let route = try AppRoute.makeRoute(value)
         XCTAssert(route == value)
     }
     

@@ -8,9 +8,7 @@
 import Foundation
 
 /// Possible routes for navigation links in `Mlem.app`.
-///
-/// See `SettingsRoutes` for settings-related routes.
-enum NavigationRoute: Routable {
+enum AppRoute: Routable {
     case apiCommunityView(APICommunityView)
     case apiCommunity(APICommunity)
     
@@ -34,7 +32,7 @@ enum NavigationRoute: Routable {
     case licenseSettings(LicensesSettingsPage)
     
     // swiftlint:disable cyclomatic_complexity
-    static func makeRoute<V>(_ value: V) throws -> NavigationRoute where V: Hashable {
+    static func makeRoute<V>(_ value: V) throws -> AppRoute where V: Hashable {
         switch value {
         case let value as APICommunityView:
             return .apiCommunityView(value)

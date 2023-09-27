@@ -1,5 +1,5 @@
 //
-//  NavigationRouter.swift
+//  AnyNavigationPath.swift
 //  Mlem
 //
 //  Created by Bosco Ho on 2023-09-08.
@@ -7,14 +7,14 @@
 
 import Foundation
 
-final class NavigationRouter<RouteValue: Routable>: ObservableObject {
+final class AnyNavigationPath<RouteValue: Routable>: ObservableObject {
     
     /// - Avoid directly manipulating this value, if alternate methods are provided.
     @Published var path: [RouteValue] = []
     
 }
  
-extension NavigationRouter: AnyNavigationPath {
+extension AnyNavigationPath: AnyNavigablePath {
 
     typealias Route = RouteValue
     

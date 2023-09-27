@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
-    @StateObject private var settingsRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var settingsRouter: AnyNavigationPath<AppRoute> = .init()
 
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue

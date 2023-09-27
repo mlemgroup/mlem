@@ -30,7 +30,7 @@ struct SearchView: View {
     @State private var searchPage: Int = 1
     @State private var hasMorePages: Bool = true
     
-    @StateObject private var searchRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var searchRouter: AnyNavigationPath<AppRoute> = .init()
     
     // constants
     private let searchPageSize = 50

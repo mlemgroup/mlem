@@ -10,7 +10,7 @@ import SwiftUI
 extension NavigationLink where Destination == Never {
     
     /// Convenience initializer.
-    init(_ route: NavigationRoute, @ViewBuilder label: () -> Label) {
+    init(_ route: AppRoute, @ViewBuilder label: () -> Label) {
         self = .init(value: route, label: label)
     }
 }

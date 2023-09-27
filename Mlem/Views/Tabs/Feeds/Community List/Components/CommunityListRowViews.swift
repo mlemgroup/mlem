@@ -71,7 +71,7 @@ struct CommuntiyFeedRowView: View {
             return CommunityLinkWithContext(community: community, feedType: .subscribed)
         } else {
             // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
-            return NavigationRoute.communityLinkWithContext(.init(community: community, feedType: .subscribed))
+            return AppRoute.communityLinkWithContext(.init(community: community, feedType: .subscribed))
         }
     }
     
@@ -157,7 +157,7 @@ struct HomepageFeedRowView: View {
             return CommunityLinkWithContext(community: nil, feedType: feedType)
         } else {
             // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
-            return NavigationRoute.communityLinkWithContext(.init(community: nil, feedType: feedType))
+            return AppRoute.communityLinkWithContext(.init(community: nil, feedType: feedType))
         }
     }
 }

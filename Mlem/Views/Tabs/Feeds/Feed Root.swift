@@ -16,7 +16,7 @@ struct FeedRoot: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
-    @StateObject private var feedRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var feedRouter: AnyNavigationPath<AppRoute> = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
     
