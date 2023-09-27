@@ -28,17 +28,17 @@ struct LicensesView: View {
                 }
                 
                 Section("Open Source Licenses") {
-                    NavigationLink("KeychainAccess", value: SettingsRoute.licensesPage(.licenseDocument(keychainAccessLicense)))
+                    NavigationLink("KeychainAccess", value: NavigationRoute.licenseSettings(.licenseDocument(keychainAccessLicense)))
                     
-                    NavigationLink("Nuke", value: SettingsRoute.licensesPage(.licenseDocument(nukeLicense)))
+                    NavigationLink("Nuke", value: NavigationRoute.licenseSettings(.licenseDocument(nukeLicense)))
 
-                    NavigationLink("Swift Dependencies", value: SettingsRoute.licensesPage(.licenseDocument(swiftDependenciesLicense)))
+                    NavigationLink("Swift Dependencies", value: NavigationRoute.licenseSettings(.licenseDocument(swiftDependenciesLicense)))
 
-                    NavigationLink("Swift Markdown UI", value: SettingsRoute.licensesPage(.licenseDocument(swiftMarkdownUILIcense)))
+                    NavigationLink("Swift Markdown UI", value: NavigationRoute.licenseSettings(.licenseDocument(swiftMarkdownUILIcense)))
 
                     NavigationLink(
                         "Awesome Lemmy Instances",
-                        value: SettingsRoute.licensesPage(.licenseDocument(awesomeLemmyInstancesLicense)))
+                        value: NavigationRoute.licenseSettings(.licenseDocument(awesomeLemmyInstancesLicense)))
                 }
             }
             .fancyTabScrollCompatible()

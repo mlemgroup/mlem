@@ -26,6 +26,13 @@ enum NavigationRoute: Routable {
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
     case userModeratorLink(UserModeratorLink)
     
+    case settings(SettingsPage)
+    case aboutSettings(AboutSettingsPage)
+    case appearanceSettings(AppearanceSettingsPage)
+    case commentSettings(CommentSettingsPage)
+    case postSettings(PostSettingsPage)
+    case licenseSettings(LicensesSettingsPage)
+    
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute<V>(_ value: V) throws -> NavigationRoute where V: Hashable {
         switch value {
@@ -49,6 +56,18 @@ enum NavigationRoute: Routable {
             return .lazyLoadPostLinkWithContext(value)
         case let value as UserModeratorLink:
             return .userModeratorLink(value)
+        case let value as SettingsPage:
+            return .settings(value)
+        case let value as AboutSettingsPage:
+            return .aboutSettings(value)
+        case let value as AppearanceSettingsPage:
+            return .appearanceSettings(value)
+        case let value as CommentSettingsPage:
+            return .commentSettings(value)
+        case let value as PostSettingsPage:
+            return .postSettings(value)
+        case let value as LicensesSettingsPage:
+            return .licenseSettings(value)
         case let value as Self:
             /// Value is an enum case of type `Self` with either no associated value or pre-populated associated value.
             return value

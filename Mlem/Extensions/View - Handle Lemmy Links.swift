@@ -73,47 +73,77 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 case .userModeratorLink(let user):
                     UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
                         .environmentObject(appState)
+                case .settings(let page):
+                    settingsDestination(for: page)
+                case .aboutSettings(let page):
+                    aboutSettingsDestination(for: page)
+                case .appearanceSettings(let page):
+                    appearanceSettingsDestination(for: page)
+                case .commentSettings(let page):
+                    commentSettingsDestination(for: page)
+                case .postSettings(let page):
+                    postSettingsDestination(for: page)
+                case .licenseSettings(let page):
+                    licensesSettingsDestination(for: page)
                 }
             }
-            .navigationDestination(for: SettingsRoute.self) { route in
-                switch route {
-                case .accountsPage:
-                    AccountsPage()
-                case .general:
-                    GeneralSettingsView()
-                case .accessibility:
-                    AccessibilitySettingsView()
-                case .appearance:
-                    AppearanceSettingsView()
-                case .contentFilters:
-                    FiltersSettingsView()
-                case .about:
-                    AboutView(navigationPath: navigationPath)
-                case .advanced:
-                    AdvancedSettingsView()
-                case .aboutPage(let path):
-                    aboutPageDestination(for: path)
-                case .appearancePage(let path):
-                    appearancePageDestination(for: path)
-                case .commentPage(let path):
-                    commentPageDestination(for: path)
-                case .postPage(let path):
-                    postPageDestination(for: path)
-                case .licensesPage(let path):
-                    licensesPageDestination(for: path)
-                }
-            }
+//            .navigationDestination(for: SettingsRoute.self) { route in
+//                switch route {
+//                case .accountsPage:
+//                    AccountsPage()
+//                case .general:
+//                    GeneralSettingsView()
+//                case .accessibility:
+//                    AccessibilitySettingsView()
+//                case .appearance:
+//                    AppearanceSettingsView()
+//                case .contentFilters:
+//                    FiltersSettingsView()
+//                case .about:
+//                    AboutView(navigationPath: navigationPath)
+//                case .advanced:
+//                    AdvancedSettingsView()
+//                case .aboutPage(let path):
+//                    aboutPageDestination(for: path)
+//                case .appearancePage(let path):
+//                    appearancePageDestination(for: path)
+//                case .commentPage(let path):
+//                    commentPageDestination(for: path)
+//                case .postPage(let path):
+//                    postPageDestination(for: path)
+//                case .licensesPage(let path):
+//                    licensesPageDestination(for: path)
+//                }
+//            }
     }
     // swiftlint:enable function_body_length
     
     @ViewBuilder
-    private func aboutPageDestination(for path: AboutSettingsRoute) -> some View {
-        switch path {
+    private func settingsDestination(for page: SettingsPage) -> some View {
+        switch page {
+        case .accounts:
+            AccountsPage()
+        case .general:
+            GeneralSettingsView()
+        case .accessibility:
+            AccessibilitySettingsView()
+        case .appearance:
+            AppearanceSettingsView()
+        case .contentFilters:
+            FiltersSettingsView()
+        case .about:
+            AboutView(navigationPath: navigationPath)
+        case .advanced:
+            AdvancedSettingsView()
+        }
+    }
+    
+    @ViewBuilder
+    private func aboutSettingsDestination(for page: AboutSettingsPage) -> some View {
+        switch page {
         case .contributors:
             ContributorsView()
-        case let .eula(doc):
-            DocumentView(text: doc.body)
-        case let .privacyPolicy(doc):
+        case let .document(doc):
             DocumentView(text: doc.body)
         case .licenses:
             LicensesView()
@@ -121,8 +151,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     }
     
     @ViewBuilder
-    private func appearancePageDestination(for path: AppearanceSettingsRoute) -> some View {
-        switch path {
+    private func appearanceSettingsDestination(for page: AppearanceSettingsPage) -> some View {
+        switch page {
         case .theme:
             ThemeSettingsView()
         case .appIcon:
@@ -141,8 +171,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     }
     
     @ViewBuilder
-    private func commentPageDestination(for path: CommentSettingsRoute) -> some View {
-        switch path {
+    private func commentSettingsDestination(for page: CommentSettingsPage) -> some View {
+        switch page {
         case .layoutWidget:
             LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
                 layoutWidgetTracker.groups.comment = widgets
@@ -152,8 +182,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     }
     
     @ViewBuilder
-    private func postPageDestination(for path: PostSettingsRoute) -> some View {
-        switch path {
+    private func postSettingsDestination(for page: PostSettingsPage) -> some View {
+        switch page {
         case .customizeWidgets:
             /// We really should be passing in the layout widget through the route enum value, but that would involve making layout widget tracker hashable and codable.
             LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
@@ -164,12 +194,79 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     }
     
     @ViewBuilder
-    private func licensesPageDestination(for path: LicensesSettingsRoute) -> some View {
-        switch path {
+    private func licensesSettingsDestination(for page: LicensesSettingsPage) -> some View {
+        switch page {
         case let .licenseDocument(doc):
             DocumentView(text: doc.body)
         }
     }
+    
+    // MARK: -
+    
+//    @ViewBuilder
+//    private func aboutPageDestination(for path: AboutSettingsRoute) -> some View {
+//        switch path {
+//        case .contributors:
+//            ContributorsView()
+//        case let .eula(doc):
+//            DocumentView(text: doc.body)
+//        case let .privacyPolicy(doc):
+//            DocumentView(text: doc.body)
+//        case .licenses:
+//            LicensesView()
+//        }
+//    }
+//    
+//    @ViewBuilder
+//    private func appearancePageDestination(for path: AppearanceSettingsRoute) -> some View {
+//        switch path {
+//        case .theme:
+//            ThemeSettingsView()
+//        case .appIcon:
+//            IconSettingsView()
+//        case .posts:
+//            PostSettingsView()
+//        case .comments:
+//            CommentSettingsView()
+//        case .communities:
+//            CommunitySettingsView()
+//        case .users:
+//            UserSettingsView()
+//        case .tabBar:
+//            TabBarSettingsView()
+//        }
+//    }
+//    
+//    @ViewBuilder
+//    private func commentPageDestination(for path: CommentSettingsRoute) -> some View {
+//        switch path {
+//        case .layoutWidget:
+//            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+//                layoutWidgetTracker.groups.comment = widgets
+//                layoutWidgetTracker.saveLayoutWidgets()
+//            })
+//        }
+//    }
+//    
+//    @ViewBuilder
+//    private func postPageDestination(for path: PostSettingsRoute) -> some View {
+//        switch path {
+//        case .customizeWidgets:
+//            /// We really should be passing in the layout widget through the route enum value, but that would involve making layout widget tracker hashable and codable.
+//            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+//                layoutWidgetTracker.groups.post = widgets
+//                layoutWidgetTracker.saveLayoutWidgets()
+//            })
+//        }
+//    }
+//    
+//    @ViewBuilder
+//    private func licensesPageDestination(for path: LicensesSettingsRoute) -> some View {
+//        switch path {
+//        case let .licenseDocument(doc):
+//            DocumentView(text: doc.body)
+//        }
+//    }
 }
 
 struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {

@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
-    @StateObject private var settingsRouter: NavigationRouter<SettingsRoute> = .init()
+    @StateObject private var settingsRouter: NavigationRouter<NavigationRoute> = .init()
 
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
@@ -23,39 +23,39 @@ struct SettingsView: View {
             ScrollViewReader { _ in
                 List {
                     Section {
-                        NavigationLink(value: SettingsRoute.accountsPage) {
+                        NavigationLink(.settings(.accounts)) {
                             Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
                         }
                         .id(scrollToTop)
                     }
                     Section {
-                        NavigationLink(value: SettingsRoute.general) {
+                        NavigationLink(.settings(.general)) {
                             Label("General", systemImage: "gear").labelStyle(SquircleLabelStyle(color: .gray))
                         }
                         
-                        NavigationLink(value: SettingsRoute.accessibility) {
+                        NavigationLink(.settings(.accessibility)) {
                             // apparently the Apple a11y symbol isn't an SFSymbol
                             Label("Accessibility", systemImage: "hand.point.up.braille.fill").labelStyle(SquircleLabelStyle(color: .blue))
                         }
                         
-                        NavigationLink(value: SettingsRoute.appearance) {
+                        NavigationLink(.settings(.appearance)) {
                             Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .pink))
                         }
                         
-                        NavigationLink(value: SettingsRoute.contentFilters) {
+                        NavigationLink(.settings(.contentFilters)) {
                             Label("Content Filters", systemImage: "line.3.horizontal.decrease")
                                 .labelStyle(SquircleLabelStyle(color: .orange))
                         }
                     }
                     
                     Section {
-                        NavigationLink(value: SettingsRoute.about) {
+                        NavigationLink(.settings(.about)) {
                             Label("About Mlem", systemImage: "info").labelStyle(SquircleLabelStyle(color: .blue))
                         }
                     }
                     
                     Section {
-                        NavigationLink(value: SettingsRoute.advanced) {
+                        NavigationLink(.settings(.advanced)) {
                             Label("Advanced", systemImage: "gearshape.2.fill").labelStyle(SquircleLabelStyle(color: .gray))
                         }
                     }
