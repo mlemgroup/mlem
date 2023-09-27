@@ -11,30 +11,31 @@ import Foundation
 ///
 /// Technical Note:
 /// - [2023.09] Initially, enum-based navigation routes were added during the development of tab-bar navigation. When using the system `NavigationPath`, the UI would exhibit a bug where views would randomly push onto view without any animations, after which the navigation path became corrupt, making programmatic navigation unreliable. Using enum-based navigation routes with custom navigation paths resulted in this issue disappearing on both iOS 16/17.
-final class AnyNavigationPath<RouteValue: Routable>: ObservableObject {
+public final class AnyNavigationPath<RouteValue: Routable>: ObservableObject {
     
     /// - Avoid directly manipulating this value, if alternate methods are provided.
-    @Published var path: [RouteValue] = []
+    @Published public var path: [RouteValue] = []
     
+    public init() {}
 }
  
 extension AnyNavigationPath: AnyNavigablePath {
 
-    typealias Route = RouteValue
+    public typealias Route = RouteValue
     
-    static func makeRoute<V>(_ value: V) throws -> Route where V: Hashable {
+    public static func makeRoute<V>(_ value: V) throws -> Route where V: Hashable {
         try RouteValue.makeRoute(value)
     }
     
-    var count: Int {
+    public var count: Int {
         path.count
     }
     
-    var isEmpty: Bool {
+    public var isEmpty: Bool {
         path.isEmpty
     }
     
-    func append<V>(_ value: V) where V: Routable {
+    public func append<V>(_ value: V) where V: Routable {
         guard let route = value as? Route else {
             assert(value is Route)
             return
@@ -43,7 +44,7 @@ extension AnyNavigationPath: AnyNavigablePath {
     }
     
     // swiftlint:disable identifier_name
-    func removeLast(_ k: Int = 1) {
+    public func removeLast(_ k: Int = 1) {
         path.removeLast(k)
     }
     // swiftlint:enable identifier_name

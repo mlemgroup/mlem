@@ -5,6 +5,7 @@
 //  Created by Jake Shirley on 6/26/23.
 //
 
+import Navigation
 import SwiftUI
 
 // Profile tab view

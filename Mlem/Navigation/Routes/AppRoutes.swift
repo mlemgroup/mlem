@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Navigation
 
 /// Possible routes for navigation links in `Mlem.app`.
 ///

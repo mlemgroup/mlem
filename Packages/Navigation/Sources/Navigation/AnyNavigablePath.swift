@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-protocol AnyNavigablePath {
+public protocol AnyNavigablePath {
     
     associatedtype Route: Routable
     

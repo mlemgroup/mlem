@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import Navigation
 import SwiftUI
 
 enum InboxTab: String, CaseIterable, Identifiable {

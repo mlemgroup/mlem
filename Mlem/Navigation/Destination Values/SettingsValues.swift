@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Navigation
 
 enum SettingsPage: DestinationValue {
     case accounts

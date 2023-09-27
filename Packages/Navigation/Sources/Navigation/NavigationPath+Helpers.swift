@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension NavigationPath {
+public extension NavigationPath {
     mutating func goBack(popToRoot: Bool = false) {
         guard !isEmpty else {
             return

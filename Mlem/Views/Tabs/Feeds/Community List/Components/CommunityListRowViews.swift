@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import Navigation
 import SwiftUI
 
 struct FavoriteStarButtonStyle: ButtonStyle {

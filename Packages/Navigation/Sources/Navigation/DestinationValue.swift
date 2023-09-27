@@ -17,4 +17,4 @@ import Foundation
 /// - See `AppRoute` settings routes for an example implementation.
 ///
 /// - Warning: Avoid directly adding `DestinationValue` to a navigation path or using them as data to define `navigationDestination(...)`.
-protocol DestinationValue: Hashable {}
+public protocol DestinationValue: Hashable {}

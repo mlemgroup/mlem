@@ -5,6 +5,7 @@
 //  Created by tht7 on 30/06/2023.
 //
 
+import Navigation
 import SwiftUI
 
 struct FeedRoot: View {
