@@ -16,7 +16,7 @@ struct FeedRoot: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
-    @StateObject private var feedRouter: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
     
@@ -27,7 +27,7 @@ struct FeedRoot: View {
             CommunityListView(selectedCommunity: $rootDetails)
         } detail: {
             if let rootDetails {
-                NavigationStack(path: $feedRouter.path) {
+                NavigationStack(path: $feedTabNavigation.path) {
                     FeedView(
                         community: rootDetails.community,
                         feedType: rootDetails.feedType,
@@ -43,9 +43,9 @@ struct FeedRoot: View {
             }
         }
         .handleLemmyLinkResolution(
-            navigationPath: .constant(feedRouter)
+            navigationPath: .constant(feedTabNavigation)
         )
-        .environmentObject(feedRouter)
+        .environmentObject(feedTabNavigation)
         .environmentObject(appState)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
@@ -63,7 +63,7 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
                 
-                _ = HandleLemmyLinkResolution(navigationPath: .constant(feedRouter))
+                _ = HandleLemmyLinkResolution(navigationPath: .constant(feedTabNavigation))
                     .didReceiveURL(url)
             }
         }

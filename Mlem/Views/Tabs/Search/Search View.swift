@@ -30,20 +30,20 @@ struct SearchView: View {
     @State private var searchPage: Int = 1
     @State private var hasMorePages: Bool = true
     
-    @StateObject private var searchRouter: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var searchTabNavigation: AnyNavigationPath<AppRoute> = .init()
     
     // constants
     private let searchPageSize = 50
 
     var body: some View {
-        NavigationStack(path: $searchRouter.path) {
+        NavigationStack(path: $searchTabNavigation.path) {
             content
                 .handleLemmyViews()
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarColor()
                 .navigationTitle("Search")
         }
-        .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
+        .handleLemmyLinkResolution(navigationPath: .constant(searchTabNavigation))
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
         .autocorrectionDisabled(true)
         .textInputAutocapitalization(.never)

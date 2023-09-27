@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
-    @StateObject private var settingsRouter: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
@@ -19,7 +19,7 @@ struct SettingsView: View {
     @Namespace var scrollToTop
     
     var body: some View {
-        NavigationStack(path: $settingsRouter.path) {
+        NavigationStack(path: $settingsTabNavigation.path) {
             ScrollViewReader { _ in
                 List {
                     Section {
@@ -66,14 +66,14 @@ struct SettingsView: View {
                     }
                 }
             }
-            .environmentObject(settingsRouter)
+            .environmentObject(settingsTabNavigation)
             .fancyTabScrollCompatible()
             .handleLemmyViews()
             .navigationTitle("Settings")
             .navigationBarColor()
             .navigationBarTitleDisplayMode(.inline)
         }
-        .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
+        .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.settings.hashValue {
                 print("switched to Settings tab")
