@@ -72,7 +72,6 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarColor()
             .navigationBarTitleDisplayMode(.inline)
-            .useSettingsNavigationRouter()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
         .onChange(of: selectedTagHashValue) { newValue in
