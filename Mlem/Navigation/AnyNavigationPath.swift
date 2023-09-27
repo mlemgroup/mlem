@@ -10,6 +10,11 @@ import SwiftUI
 
 protocol AnyNavigationPath {
     
+    associatedtype Route: Routable
+    
+    /// Implementation should make a route that makes sense for the passed-in data value and can be appended to the navigation path.
+    static func makeRoute<V>(_ value: V) throws -> Route where V: Hashable
+    
     /// The number of elements in this path.
     var count: Int { get }
     
@@ -17,12 +22,10 @@ protocol AnyNavigationPath {
     var isEmpty: Bool { get }
     
     /// Appends a new value to the end of this path.
-    mutating func append<V>(_ value: V) where V: Hashable
+    mutating func append<V>(_ value: V) where V: Routable
     
     // swiftlint:disable identifier_name
     /// Removes values from the end of this path.
     mutating func removeLast(_ k: Int)
     // swiftlint:enable identifier_name
 }
-
-extension NavigationPath: AnyNavigationPath {}

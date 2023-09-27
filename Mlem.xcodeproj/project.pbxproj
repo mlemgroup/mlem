@@ -430,11 +430,13 @@
 		E47478152AAC3C19001CB1AC /* NavigationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47478142AAC3C19001CB1AC /* NavigationContext.swift */; };
 		E47B2B762A902DE200629AF7 /* SettingsRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */; };
 		E4902BAB2A9024BF0054FB36 /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */; };
+		E49E01F42ABD99D300E42BB3 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49E01F32ABD99D300E42BB3 /* Routable.swift */; };
 		E49F0E762A90395400BC4EE3 /* NavigationPath+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */; };
 		E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */; };
 		E4D4DBA22A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */; };
 		E4DDB4322A81819300B3A7E0 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4312A81819300B3A7E0 /* Double.swift */; };
 		E4DDB4342A819C8000B3A7E0 /* QuickLookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */; };
+		E4F0B5722AC2581800BC3E4A /* RoutableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */; };
 		E4F0B56F2ABD00A000BC3E4A /* PresentationBackgroundInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0B56E2ABD00A000BC3E4A /* PresentationBackgroundInteraction.swift */; };
 /* End PBXBuildFile section */
 
@@ -877,11 +879,13 @@
 		E47478142AAC3C19001CB1AC /* NavigationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContext.swift; sourceTree = "<group>"; };
 		E47B2B752A902DE200629AF7 /* SettingsRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoutes.swift; sourceTree = "<group>"; };
 		E4902BAA2A9024BF0054FB36 /* SettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
+		E49E01F32ABD99D300E42BB3 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPath+Helpers.swift"; sourceTree = "<group>"; };
 		E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabNavigationSelectionHashValueEnvironmentKey.swift; sourceTree = "<group>"; };
 		E4DDB4312A81819300B3A7E0 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookView.swift; sourceTree = "<group>"; };
+		E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutableTests.swift; sourceTree = "<group>"; };
 		E4F0B56E2ABD00A000BC3E4A /* PresentationBackgroundInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationBackgroundInteraction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1511,6 +1515,7 @@
 			isa = PBXGroup;
 			children = (
 				504ECBAF2AB4B0DF006C0B96 /* Model */,
+				E4F0B5702AC257FD00BC3E4A /* Navigation */,
 				50CC4A802AA0D5F90074C845 /* Parsers */,
 				50CC4A7B2A9CFF840074C845 /* Supporting Files */,
 				50BC1AB72A89741000E3C48B /* Community List */,
@@ -2280,6 +2285,7 @@
 				E47478142AAC3C19001CB1AC /* NavigationContext.swift */,
 				E47478122AAC350E001CB1AC /* NavigationLink+Helpers.swift */,
 				E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */,
+				E49E01F32ABD99D300E42BB3 /* Routable.swift */,
 				E47B2B772A902E3C00629AF7 /* Router */,
 				E47B2B742A902DB400629AF7 /* Route */,
 			);
@@ -2292,6 +2298,14 @@
 				E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */,
 			);
 			path = Animations;
+			sourceTree = "<group>";
+		};
+		E4F0B5702AC257FD00BC3E4A /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2859,6 +2873,7 @@
 				CDE6A8182A490AF20062D161 /* Inbox Mention View.swift in Sources */,
 				CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */,
 				6332FDCF27EFDD2E0009A98A /* Accounts Page.swift in Sources */,
+				E49E01F42ABD99D300E42BB3 /* Routable.swift in Sources */,
 				CDF842682A49FB9000723DA0 /* Inbox View Logic.swift in Sources */,
 				6D15D74C2A44DC240061B5CB /* Date.swift in Sources */,
 				CDF1EF122A6B672C003594B6 /* Feed View.swift in Sources */,
@@ -2886,6 +2901,7 @@
 				031BF9552AB25AFB00F4517F /* SiteVersionTests.swift in Sources */,
 				50CC4A782A9CBDF70074C845 /* TimestampedValueTests.swift in Sources */,
 				50CC4A822AA0D61F0074C845 /* InstanceMetadataParserTests.swift in Sources */,
+				E4F0B5722AC2581800BC3E4A /* RoutableTests.swift in Sources */,
 				50C86ABC2A7E50E200277519 /* PersistenceRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
