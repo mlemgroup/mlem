@@ -43,7 +43,7 @@
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		504106CD2A744D7F000AAEF8 /* CommentRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */; };
 		504ECBAA2AB27C73006C0B96 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBA92AB27C73006C0B96 /* LandingPage.swift */; };
-		504ECBAC2AB27CB1006C0B96 /* OnboardingRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */; };
+		504ECBAC2AB27CB1006C0B96 /* OnboardingRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAB2AB27CB1006C0B96 /* OnboardingRoutes.swift */; };
 		504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */; };
 		504ECBB12AB4B101006C0B96 /* LemmyURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */; };
 		505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */; };
@@ -494,7 +494,7 @@
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentRepository+Dependency.swift"; sourceTree = "<group>"; };
 		504ECBA92AB27C73006C0B96 /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
-		504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRoute.swift; sourceTree = "<group>"; };
+		504ECBAB2AB27CB1006C0B96 /* OnboardingRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRoutes.swift; sourceTree = "<group>"; };
 		504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURL.swift; sourceTree = "<group>"; };
 		504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURLTests.swift; sourceTree = "<group>"; };
 		505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteCommunitiesTracker+Dependency.swift"; sourceTree = "<group>"; };
@@ -1087,7 +1087,6 @@
 			children = (
 				504ECBA92AB27C73006C0B96 /* LandingPage.swift */,
 				CDE3BA862A8C25B000B972E2 /* OnboardingView.swift */,
-				504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2265,6 +2264,7 @@
 			children = (
 				E49E01F32ABD99D300E42BB3 /* Routable.swift */,
 				E40E018B2AABF85500410B2C /* AppRoutes.swift */,
+				504ECBAB2AB27CB1006C0B96 /* OnboardingRoutes.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -2759,7 +2759,7 @@
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
-				504ECBAC2AB27CB1006C0B96 /* OnboardingRoute.swift in Sources */,
+				504ECBAC2AB27CB1006C0B96 /* OnboardingRoutes.swift in Sources */,
 				CD82A2532A716B8100111034 /* PersonRepository.swift in Sources */,
 				CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */,
 				638535712A1779BC00815781 /* GeneralSettingsView.swift in Sources */,

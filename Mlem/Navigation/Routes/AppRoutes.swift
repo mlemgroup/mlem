@@ -8,6 +8,8 @@
 import Foundation
 
 /// Possible routes for navigation links in `Mlem.app`.
+///
+/// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
 enum AppRoute: Routable {
     case apiCommunityView(APICommunityView)
     case apiCommunity(APICommunity)
@@ -24,6 +26,7 @@ enum AppRoute: Routable {
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
     case userModeratorLink(UserModeratorLink)
     
+    // MARK: - Settings
     case settings(SettingsPage)
     case aboutSettings(AboutSettingsPage)
     case appearanceSettings(AppearanceSettingsPage)
