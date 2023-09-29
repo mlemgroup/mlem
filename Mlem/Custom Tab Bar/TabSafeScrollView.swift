@@ -11,10 +11,10 @@ import SwiftUI
 struct TabSafeScrollView: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .safeAreaInset(edge: .bottom) {
-                Spacer()
-                    .frame(height: AppConstants.fancyTabBarHeight)
-            }
+//            .safeAreaInset(edge: .bottom) {
+//                Spacer()
+//                    .frame(height: AppConstants.fancyTabBarHeight)
+//            }
     }
 }
 
