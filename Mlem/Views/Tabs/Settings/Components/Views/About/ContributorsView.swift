@@ -23,7 +23,7 @@ struct DeveloperView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
-                Image(systemName: "chevron.right")
+                Image(systemName: Icons.forward)
             }
         }
         .tint(color)

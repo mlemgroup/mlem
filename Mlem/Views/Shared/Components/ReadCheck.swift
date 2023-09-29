@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ReadCheck: View {
     var body: some View {
-        Image(systemName: "checkmark")
+        Image(systemName: Icons.success)
             .resizable()
             .scaledToFit()
             .frame(width: 10, height: 10)

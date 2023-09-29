@@ -32,14 +32,14 @@ struct GeneralSettingsView: View {
         List {
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: AppConstants.hapticSymbolName,
+                    settingIconSystemName: Icons.haptics,
                     settingName: "Haptic Level",
                     currentValue: $hapticLevel,
                     options: HapticPriority.allCases
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "arrow.up.heart",
+                    settingPictureSystemName: Icons.upvoteOnSave,
                     settingName: "Upvote On Save",
                     isTicked: $upvoteOnSave
                 )
@@ -51,7 +51,7 @@ struct GeneralSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.blurNsfwSymbolName,
+                    settingPictureSystemName: Icons.blurNsfw,
                     settingName: "Blur NSFW Content",
                     isTicked: $shouldBlurNsfw
                 )
@@ -94,7 +94,7 @@ struct GeneralSettingsView: View {
             
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: AppConstants.connectionSymbolName,
+                    settingIconSystemName: Icons.connection,
                     settingName: "Internet Speed",
                     currentValue: $internetSpeed,
                     options: InternetSpeed.allCases
@@ -113,7 +113,7 @@ struct GeneralSettingsView: View {
                         Text("Delete Community Favorites")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: "trash")
+                            Image(systemName: Icons.delete)
                         }
                     }
                     .foregroundColor(.red)

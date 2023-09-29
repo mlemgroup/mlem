@@ -12,7 +12,7 @@ struct FavoriteStarButtonStyle: ButtonStyle {
     let isFavorited: Bool
 
     func makeBody(configuration: Configuration) -> some View {
-        Image(systemName: isFavorited ? "star.fill" : "star")
+        Image(systemName: isFavorited ? Icons.favoriteFill : Icons.favorite)
             .foregroundColor(.blue)
             .opacity(isFavorited ? 1.0 : 0.2)
             .accessibilityRepresentation { configuration.label }
@@ -20,7 +20,6 @@ struct FavoriteStarButtonStyle: ButtonStyle {
 }
 
 struct CommuntiyFeedRowView: View {
-
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier

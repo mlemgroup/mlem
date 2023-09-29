@@ -44,7 +44,7 @@ struct CommentSettingsView: View {
         Form {
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.compactSymbolName,
+                    settingPictureSystemName: Icons.compactPost,
                     settingName: "Compact Comments",
                     isTicked: $compactComments
                 )
@@ -54,7 +54,7 @@ struct CommentSettingsView: View {
                         Text("Customize Widgets")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: "wand.and.stars")
+                            Image(systemName: Icons.widgetWizard)
                                 .foregroundColor(.pink)
                         }
                     }
@@ -65,32 +65,32 @@ struct CommentSettingsView: View {
 
             Section("Interactions and Info") {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "server.rack",
+                    settingPictureSystemName: Icons.instance,
                     settingName: "Show User Server Instance",
                     isTicked: $shouldShowUserServerInComment
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.emptyUpvoteSymbolName,
+                    settingPictureSystemName: Icons.upvoteSquare,
                     settingName: "Show Score In Info",
                     isTicked: $shouldShowScoreInCommentBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: AppConstants.generalVoteSymbolName,
+                    settingPictureSystemName: Icons.votes,
                     settingName: "Show Downvotes Separately",
                     isTicked: $showCommentDownvotesSeparately
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "clock",
+                    settingPictureSystemName: Icons.time,
                     settingName: "Show Time Posted In Info",
                     isTicked: $shouldShowTimeInCommentBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "bookmark",
+                    settingPictureSystemName: Icons.save,
                     settingName: "Show Saved Status In Info",
                     isTicked: $shouldShowSavedInCommentBar
                 )
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "bubble.right",
+                    settingPictureSystemName: Icons.replies,
                     settingName: "Show Replies In Info",
                     isTicked: $shouldShowRepliesInCommentBar
                 )
@@ -98,12 +98,12 @@ struct CommentSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "chevron.down.circle",
+                    settingPictureSystemName: Icons.jumpButtonCircle,
                     settingName: "Show Jump Button",
                     isTicked: $showCommentJumpButton
                 )
                 SelectableSettingsItem(
-                    settingIconSystemName: "arrow.left.arrow.right",
+                    settingIconSystemName: Icons.leftRight,
                     settingName: "Side",
                     currentValue: $commentJumpButtonSide,
                     options: JumpButtonLocation.allCases

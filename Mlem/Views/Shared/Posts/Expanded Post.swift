@@ -260,7 +260,7 @@ struct ExpandedPost: View {
         } else {
             VStack(spacing: 2) {
                 VStack(spacing: 5) {
-                    Image(systemName: "binoculars")
+                    Image(systemName: Icons.noContent)
                     Text("No comments to be found")
                 }
                 Text("Why not post the first one?")

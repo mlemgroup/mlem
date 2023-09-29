@@ -161,7 +161,7 @@ struct InboxView: View {
     @ViewBuilder
     func errorView() -> some View {
         VStack(spacing: 10) {
-            Image(systemName: "exclamationmark.bubble")
+            Image(systemName: Icons.noPosts)
                 .font(.title)
             
             Text("Inbox loading failed!")

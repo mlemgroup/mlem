@@ -26,7 +26,7 @@ struct AppearanceSettingsView: View {
                     }
                 }
                 #if !os(macOS) && !targetEnvironment(macCatalyst)
-                NavigationLink(value: SettingsRoute.appearancePage(.appIcon)) {
+                    NavigationLink(value: SettingsRoute.appearancePage(.appIcon)) {
                         Label {
                             Text("App Icon")
                         } icon: {
@@ -35,6 +35,10 @@ struct AppearanceSettingsView: View {
                                 .scaledToFit()
                                 .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
                                 .cornerRadius(AppConstants.smallItemCornerRadius)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: AppConstants.smallItemCornerRadius)
+                                        .stroke(Color(.secondarySystemBackground), lineWidth: 1)
+                                }
                         }
                     }
                 #endif

@@ -149,7 +149,7 @@ struct FeedContentView: View {
             LoadingView(whatIsLoading: .posts)
         } else {
             VStack(alignment: .center, spacing: 5) {
-                Image(systemName: "text.bubble")
+                Image(systemName: Icons.noPosts)
                 Text("No posts to be found")
             }
             .padding()
@@ -197,7 +197,7 @@ struct FeedContentView: View {
             HStack(alignment: .center, spacing: 2) {
                 Text(community?.name ?? feedType.label)
                     .font(.headline)
-                Image(systemName: "chevron.down")
+                Image(systemName: Icons.dropdown)
                     .fontWeight(.semibold)
                     .scaleEffect(0.7)
             }

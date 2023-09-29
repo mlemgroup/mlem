@@ -24,7 +24,7 @@ struct TabBarSettingsView: View {
             // present once guest mode is fully implemented
             Section {
                 SelectableSettingsItem(
-                    settingIconSystemName: "person.text.rectangle",
+                    settingIconSystemName: Icons.profileTabSettings,
                     settingName: "Profile Tab Label",
                     currentValue: $profileTabLabel,
                     options: ProfileTabLabel.allCases
@@ -54,7 +54,7 @@ struct TabBarSettingsView: View {
                             appState.setActiveAccount(newAccount)
                         }
                     } icon: {
-                        Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                        Image(systemName: Icons.nicknameField)
                             .foregroundColor(.pink)
                     }
                 }
@@ -62,19 +62,19 @@ struct TabBarSettingsView: View {
             
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "tag",
+                    settingPictureSystemName: Icons.label,
                     settingName: "Show Tab Labels",
                     isTicked: $showTabNames
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "envelope.badge",
+                    settingPictureSystemName: Icons.unreadBadge,
                     settingName: "Show Unread Count",
                     isTicked: $showInboxUnreadBadge
                 )
                 
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "person.fill.questionmark",
+                    settingPictureSystemName: Icons.showAvatar,
                     settingName: "Show User Avatar",
                     // if `.anonymous` is selected the toggle here should always be false
                     isTicked: profileTabLabel == .anonymous ? .constant(false) : $showUserAvatar

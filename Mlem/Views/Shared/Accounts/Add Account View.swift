@@ -68,6 +68,8 @@ struct AddSavedInstanceView: View {
         : "Please check your username and password"
     }
     
+    var registrationError = "Please verify your email and try again."
+    
     init(
         onboarding: Bool,
         givenInstance: String? = nil
@@ -79,7 +81,9 @@ struct AddSavedInstanceView: View {
     var body: some View {
         ScrollView {
             VStack {
-                title
+                if !onboarding {
+                    title
+                }
                 headerSection
             }
             Grid(
@@ -89,7 +93,6 @@ struct AddSavedInstanceView: View {
             ) {
                 formSection
             }.disabled(viewState == .loading)
-            footerView
         }
         .transaction { transaction in
             transaction.disablesAnimations = true
@@ -97,6 +100,21 @@ struct AddSavedInstanceView: View {
         .alert(using: $errorAlert) { content in
             Alert(title: Text(content.title), message: Text(content.message))
         }
+        .toolbar {
+            if onboarding {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        Task(priority: .userInitiated) {
+                            await tryToAddAccount()
+                        }
+                    } label: {
+                        Text("Submit")
+                    }.disabled(!isReadyToSubmit)
+                }
+            }
+        }
+        .navigationTitle(Text(onboarding ? "Log in" : ""))
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     var isReadyToSubmit: Bool {
@@ -250,7 +268,7 @@ struct AddSavedInstanceView: View {
                 Text("Logging In")
             case .success:
                 Spacer()
-                Image(systemName: "checkmark.circle")
+                Image(systemName: Icons.successCircle)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 120)
@@ -265,18 +283,6 @@ struct AddSavedInstanceView: View {
         .padding()
         .multilineTextAlignment(.center)
         .dynamicTypeSize(.small ... .accessibility1)
-    }
-    
-    @ViewBuilder
-    var footerView: some View {
-        Text("What is Lemmy?")
-            .font(.footnote)
-            .foregroundColor(.blue)
-            .accessibilityAddTraits(.isLink)
-            .padding()
-            .onTapGesture {
-                openURL(URL(string: "https://join-lemmy.org")!)
-            }
     }
     
     func tryToAddAccount() async {
@@ -328,10 +334,10 @@ struct AddSavedInstanceView: View {
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
             accountsTracker.addAccount(account: newAccount)
             
-            dismiss()
+            setFlow(.account(newAccount))
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                setFlow(.account(newAccount))
+            if !onboarding {
+                dismiss()
             }
         } catch {
             handle(error)
@@ -375,6 +381,13 @@ struct AddSavedInstanceView: View {
             return
         case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
             message = badCredentialsMessage
+            
+        case let APIClientError.response(errorResponse, _) where errorResponse.emailNotVerified:
+            message = registrationError
+            
+        case let APIClientError.response(errorResponse, _) where errorResponse.userRegistrationPending:
+            message = registrationError
+            
         default:
             // unhandled error encountered...
             message = "Something went wrong"

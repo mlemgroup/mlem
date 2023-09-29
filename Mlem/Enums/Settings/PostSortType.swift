@@ -129,25 +129,25 @@ extension PostSortType: SettingsOptions {
 extension PostSortType: AssociatedIcon {
     var iconName: String {
         switch self {
-        case .active: return AppConstants.activeSortSymbolName
-        case .hot: return AppConstants.hotSortSymbolName
-        case .new: return AppConstants.newSortSymbolName
-        case .old: return AppConstants.oldSortSymbolName
-        case .newComments: return AppConstants.newCommentsSymbolName
-        case .mostComments: return AppConstants.mostCommentsSymbolName
-        default: return AppConstants.topSymbolName
+        case .active: return Icons.activeSort
+        case .hot: return Icons.hotSort
+        case .new: return Icons.newSort
+        case .old: return Icons.oldSort
+        case .newComments: return Icons.newCommentsSort
+        case .mostComments: return Icons.mostCommentsSort
+        default: return Icons.timeSort
         }
     }
     
     var iconNameFill: String {
         switch self {
-        case .active: return AppConstants.activeSortSymbolNameFill
-        case .hot: return AppConstants.hotSortSymbolNameFill
-        case .new: return AppConstants.newSortSymbolNameFill
-        case .old: return AppConstants.oldSortSymbolNameFill
-        case .newComments: return AppConstants.newCommentsSymbolNameFill
-        case .mostComments: return AppConstants.mostCommentsSymbolNameFill
-        default: return AppConstants.topSymbolNameFill
+        case .active: return Icons.activeSortFill
+        case .hot: return Icons.hotSortFill
+        case .new: return Icons.newSortFill
+        case .old: return Icons.oldSortFill
+        case .newComments: return Icons.newCommentsSortFill
+        case .mostComments: return Icons.mostCommentsSortFill
+        default: return Icons.timeSortFill
         }
     }
 }

@@ -73,14 +73,26 @@ struct SelectableSettingsItem<T: SettingsOptions>: View {
 
 struct SquircleLabelStyle: LabelStyle {
     var color: Color
-    var fontSize: CGFloat = 17
+    var fontSize: CGFloat = 14
+    let ios16FontSize: CGFloat = 17
+    
+    /**
+     This computed property handles the fact that on iOS 17, the font size of 17 makes the icons too large. The code will not compile if fontSize itself is either absent or computed, so we define it above, compute an adjusted value here, and use the computed value.
+     */
+    var adjustedFontSize: CGFloat {
+        if #available(iOS 17.0, *) {
+            return fontSize
+        } else {
+            return ios16FontSize
+        }
+    }
     
     func makeBody(configuration: Configuration) -> some View {
         Label {
             configuration.title
         } icon: {
             configuration.icon
-                .font(.system(size: fontSize))
+                .font(.system(size: adjustedFontSize))
                 .foregroundColor(.white)
                 .frame(width: AppConstants.settingsIconSize, height: AppConstants.settingsIconSize)
                 .background(color)
@@ -113,7 +125,7 @@ struct SettingsPickerButton<PickerLabel: View>: View {
                 label
                 Spacer()
                 if isOn {
-                    Image(systemName: "checkmark")
+                    Image(systemName: Icons.success)
                         .foregroundStyle(.blue)
                         .transition(.opacity)
                 }

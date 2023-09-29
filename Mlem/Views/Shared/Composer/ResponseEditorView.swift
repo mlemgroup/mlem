@@ -93,13 +93,14 @@ struct ResponseEditorView: View {
                         await submit()
                     }
                 } label: {
-                    Image(systemName: "paperplane")
+                    Image(systemName: Icons.send)
                 }.disabled(isSubmitting || !isReadyToReply)
             }
         }
         .navigationBarColor()
         .navigationTitle(editorModel.modalName)
         .navigationBarTitleDisplayMode(.inline)
+        .interactiveDismissDisabled(isReadyToReply)
     }
     
     @MainActor

@@ -92,7 +92,7 @@ extension FeedContentView {
         let blurNsfwText = shouldBlurNsfw ? "Unblur NSFW" : "Blur NSFW"
         ret.append(MenuFunction.standardMenuFunction(
             text: blurNsfwText,
-            imageName: AppConstants.blurNsfwSymbolName,
+            imageName: Icons.blurNsfw,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -118,7 +118,7 @@ extension FeedContentView {
         // new post
         ret.append(MenuFunction.standardMenuFunction(
             text: "New Post",
-            imageName: AppConstants.sendSymbolNameFill,
+            imageName: Icons.sendFill,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -132,8 +132,8 @@ extension FeedContentView {
         if let communityDetails {
             let isSubscribed: Bool = communityDetails.communityView.subscribed.rawValue == "Subscribed"
             let (subscribeText, subscribeSymbol, subscribePrompt) = isSubscribed
-                ? ("Unsubscribe", AppConstants.unsubscribeSymbolName, "Really unsubscribe from \(community.name)?")
-                : ("Subscribe", AppConstants.subscribeSymbolName, nil)
+                ? ("Unsubscribe", Icons.unsubscribe, "Really unsubscribe from \(community.name)?")
+                : ("Subscribe", Icons.subscribe, nil)
             ret.append(MenuFunction.standardMenuFunction(
                 text: subscribeText,
                 imageName: subscribeSymbol,
@@ -180,8 +180,8 @@ extension FeedContentView {
         if let communityDetails {
             // block
             let (blockText, blockSymbol, blockPrompt) = communityDetails.communityView.blocked
-                ? ("Unblock", AppConstants.unblockSymbolName, nil)
-                : ("Block", AppConstants.blockSymbolName, "Really block \(community.name)?")
+                ? ("Unblock", Icons.show, nil)
+                : ("Block", Icons.hide, "Really block \(community.name)?")
             ret.append(MenuFunction.standardMenuFunction(
                 text: blockText,
                 imageName: blockSymbol,

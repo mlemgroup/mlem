@@ -22,8 +22,8 @@ struct InstanceSummary: View {
     @State var isPresentingRedirectAlert: Bool = false
     
     var isLoading: Bool { siteData == nil && !fetchFailed }
-    var downvotesSymbolName: String { instance.downvotes ? AppConstants.presentSymbolName : AppConstants.absentSymbolName }
-    var federatedSymbolName: String { instance.federated ? AppConstants.presentSymbolName : AppConstants.absentSymbolName }
+    var downvotesSymbolName: String { instance.downvotes ? Icons.present : Icons.absent }
+    var federatedSymbolName: String { instance.federated ? Icons.present : Icons.absent }
     var signupURL: URL? {
         let signupString = "\(instance.url.description)/signup"
         if let ret = URL(string: signupString) {
@@ -98,7 +98,10 @@ struct InstanceSummary: View {
                         Button {
                             _ = URLHandler.handle(signupURL)
                             
-                            selectedInstance = instance
+                            Task { @MainActor in
+                                try await Task.sleep(for: .seconds(0.5))
+                                selectedInstance = instance
+                            }
                         } label: {
                             Text("Got it, let's go!")
                         }
@@ -129,7 +132,7 @@ struct InstanceSummary: View {
             shouldExpand: false,
             fixedSize: CGSize(width: 80, height: 80)
         ) {
-            AnyView(Image(systemName: "server.rack")
+            AnyView(Image(systemName: Icons.instance)
                 .resizable()
                 .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize))
         }

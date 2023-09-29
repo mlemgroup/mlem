@@ -79,7 +79,7 @@ struct UserView: View {
     private var moderatorButton: some View {
         if let user = userDetails, !moderatedCommunities.isEmpty {
             NavigationLink(.userModeratorLink(.init(user: user, moderatedCommunities: moderatedCommunities))) {
-                Image(systemName: "shield")
+                Image(systemName: Icons.moderation)
             }
         }
     }
@@ -90,7 +90,7 @@ struct UserView: View {
             Button {
                 isPresentingAccountSwitcher = true
             } label: {
-                Image(systemName: AppConstants.switchUserSymbolName)
+                Image(systemName: Icons.switchUser)
             }
         }
     }

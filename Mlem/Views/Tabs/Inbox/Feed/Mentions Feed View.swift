@@ -32,7 +32,7 @@ extension InboxView {
     @ViewBuilder
     func noMentionsView() -> some View {
         VStack(alignment: .center, spacing: 5) {
-            Image(systemName: "text.bubble")
+            Image(systemName: Icons.noPosts)
             
             Text("No mentions to be found")
         }

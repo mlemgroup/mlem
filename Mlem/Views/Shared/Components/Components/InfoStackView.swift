@@ -61,7 +61,7 @@ struct InfoStackView: View {
     @ViewBuilder
     func netVotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
-            Image(systemName: AppConstants.scoringOpToVoteImage[votes.myVote]!)
+            Image(systemName: votes.myVote == .resetVote ? Icons.upvoteSquare : votes.myVote.iconNameFill)
             Text(String(votes.score))
         }
         .accessibilityAddTraits(.isStaticText)
@@ -72,7 +72,7 @@ struct InfoStackView: View {
     @ViewBuilder
     func upvotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
-            Image(systemName: votes.myVote == .upvote ? AppConstants.fullUpvoteSymbolName : AppConstants.emptyUpvoteSymbolName)
+            Image(systemName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare)
             Text(String(votes.upvotes))
         }
         .accessibilityAddTraits(.isStaticText)
@@ -84,8 +84,8 @@ struct InfoStackView: View {
     func downvotesView(votes: DetailedVotes) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
             Image(systemName: votes.myVote == .downvote
-                ? AppConstants.fullDownvoteSymbolName
-                : AppConstants.emptyDownvoteSymbolName)
+                ? Icons.downvoteSquareFill
+                : Icons.downvoteSquare)
             Text(String(votes.downvotes))
         }
         .accessibilityAddTraits(.isStaticText)
@@ -95,7 +95,7 @@ struct InfoStackView: View {
     
     @ViewBuilder
     func savedView(isSaved: Bool) -> some View {
-        Image(systemName: isSaved ? AppConstants.fullSaveSymbolName : AppConstants.emptySaveSymbolName)
+        Image(systemName: isSaved ? Icons.saveFill : Icons.save)
             .accessibilityAddTraits(.isStaticText)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(isSaved ? "saved" : "")
@@ -104,7 +104,7 @@ struct InfoStackView: View {
     @ViewBuilder
     func repliesView(numReplies: Int) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
-            Image(systemName: "bubble.right")
+            Image(systemName: Icons.replies)
             Text(numReplies.description)
         }
         .accessibilityAddTraits(.isStaticText)
