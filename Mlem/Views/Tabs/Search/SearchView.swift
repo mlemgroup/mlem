@@ -20,6 +20,7 @@ private struct ViewOffsetKey: PreferenceKey {
 }
 
 struct SearchView: View {
+    @Dependency(\.errorHandler) var errorHandler
     
     enum Page {
         case home, recents, results
@@ -55,7 +56,12 @@ struct SearchView: View {
             .onAppear {
                 Task(priority: .background) {
                     if !recentSearchesTracker.hasLoaded {
-                        try await recentSearchesTracker.loadRecentSearches()
+                        do {
+                            try await recentSearchesTracker.loadRecentSearches()
+                        } catch {
+                            print("Error while loading recent searches: \(error.localizedDescription)")
+                            errorHandler.handle(error)
+                        }
                     }
                 }
             }

@@ -47,9 +47,7 @@ struct RecentSearchesView: View {
             Spacer()
             
             Button {
-                Task {
-                    recentSearchesTracker.clearRecentSearches()
-                }
+                recentSearchesTracker.clearRecentSearches()
             } label: {
                 Text("Clear")
                     .font(.subheadline)

@@ -20,6 +20,7 @@ class RecentSearchesTracker: ObservableObject {
         hasLoaded = true
         let identifiers = persistenceRepository.loadRecentSearches()
         for id in identifiers {
+            print(id.contentType, id.contentId)
             switch id.contentType {
             case .post:
                 break
@@ -27,7 +28,7 @@ class RecentSearchesTracker: ObservableObject {
                 let response = try await apiClient.loadCommunityDetails(id: id.contentId)
                 recentSearches.append(AnyContentModel(CommunityModel(from: response.communityView)))
             case .user:
-                let response = try await apiClient.getPersonDetails(for: id.contentId, limit: 0, savedOnly: false)
+                let response = try await apiClient.getPersonDetails(for: id.contentId, limit: 1, savedOnly: false)
                 recentSearches.append(AnyContentModel(UserModel(from: response.personView))
                 )
             }
