@@ -27,11 +27,11 @@ enum PostViewOption: Codable {
     var iconName: String {
         switch self {
         case .showRead:
-            return "book"
+            return Icons.readIndicatorSetting
         case .blurNSFW:
-            return "eye.trianglebadge.exclamationmark"
+            return Icons.blurNsfw
         case .postSize:
-            return  AppConstants.postSizeSettingsSymbolName
+            return  Icons.postSizeSetting
         }
     }
 }
@@ -40,6 +40,10 @@ struct PinnedViewOptions: Codable {
     var sortTypes: Set<PostSortType>
     var topSortTypes: Set<PostSortType>
     var options: Set<PostViewOption>
+    
+    var isEmpty: Bool {
+        sortTypes.isEmpty && topSortTypes.isEmpty && options.isEmpty
+    }
 }
 
 extension PinnedViewOptions {

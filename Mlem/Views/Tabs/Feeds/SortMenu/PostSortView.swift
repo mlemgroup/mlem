@@ -82,7 +82,7 @@ struct PostSortView: View {
     var viewOptions: some View {
         VStack(spacing: 0) {
             HStack {
-                FormLabel(title: "Post Size", iconName: AppConstants.postSizeSettingsSymbolName)
+                FormLabel(title: "Post Size", iconName: Icons.postSizeSetting)
                 Spacer()
                 Picker("Post Size", selection: $postSize) {
                     ForEach(PostSize.allCases, id: \.self) { type in

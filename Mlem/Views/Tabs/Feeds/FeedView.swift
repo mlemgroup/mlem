@@ -13,10 +13,14 @@ struct FeedView: View {
     @State var sortType: PostSortType
     var showLoading: Bool = false
     
+    @EnvironmentObject var pinnedViewOptions: PinnedViewOptionsTracker
+    
     var body: some View {
         FeedContentView(community: community, feedType: feedType, sortType: $sortType, showLoading: showLoading)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) { PostViewOptionsMenu(postSortType: $sortType) }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    PostViewOptionsMenu(postSortType: $sortType)
+                }
             }
     }
 }
