@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIX
 
 struct SearchResultListView: View {
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
@@ -28,7 +27,7 @@ struct SearchResultListView: View {
                 }
                 .simultaneousGesture(TapGesture().onEnded {
                     recentSearchesTracker.addRecentSearch(contentModel)
-                    Keyboard.dismiss()
+                    // Keyboard.dismiss()
                 })
                 Divider()
                     .onAppear {

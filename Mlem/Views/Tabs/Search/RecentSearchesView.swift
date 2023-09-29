@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIX
 
 struct RecentSearchesView: View {
     
@@ -72,7 +71,7 @@ struct RecentSearchesView: View {
             }
             .simultaneousGesture(TapGesture().onEnded {
                 recentSearchesTracker.addRecentSearch(contentModel)
-                Keyboard.dismiss()
+                // Keyboard.dismiss()
             })
             Divider()
         }

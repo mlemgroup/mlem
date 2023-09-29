@@ -91,7 +91,7 @@ struct CommunityResultView: View {
         .contextMenu {
             Button(
                 community.subscribed ? "Unsubscribe" : "Subscribe",
-                systemImage: community.subscribed ? AppConstants.unsubscribeSymbolName : AppConstants.subscribeSymbolName,
+                systemImage: community.subscribed ? Icons.unsubscribe : Icons.subscribe,
                 role: community.subscribed ? .destructive : nil
             ) {
                 Task(priority: .userInitiated) { await subscribe() }

@@ -10,7 +10,6 @@ import Combine
 import Foundation
 import UIKit
 import SwiftUI
-import SwiftUIX
 
 private struct ViewOffsetKey: PreferenceKey {
     typealias Value = CGFloat
@@ -50,7 +49,7 @@ struct SearchView: View {
                     }
                     
                 }
-            .navigationSearchBarHiddenWhenScrolling(true)
+            // .navigationSearchBarHiddenWhenScrolling(true)
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
             .onAppear {
@@ -82,7 +81,6 @@ struct SearchView: View {
             }
             .animation(.default, value: page)
         }
-        .scrollDismissesKeyboard(.immediately)
         .onChange(of: isSearching) { newValue in
             if newValue && searchModel.searchText.isEmpty {
                 page =  .recents
@@ -99,5 +97,6 @@ struct SearchView: View {
         }
         .fancyTabScrollCompatible()
         .environmentObject(searchModel)
+        .scrollDismissesKeyboard(.immediately)
     }
 }
