@@ -26,7 +26,7 @@ class PostTracker: ObservableObject {
     private let upvoteOnSave: Bool
 
     // state drivers
-    @Published var items: [PostModel]
+    @Published private(set) var items: [PostModel]
 
     // utility
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
