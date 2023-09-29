@@ -13,7 +13,7 @@ struct TimestampView: View {
     
     var body: some View {
         HStack(spacing: spacing) {
-            Image(systemName: "clock")
+            Image(systemName: Icons.time)
             Text(getTimeIntervalFromNow(date: date))
         }
         .foregroundColor(.secondary)

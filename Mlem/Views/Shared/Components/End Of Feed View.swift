@@ -17,7 +17,7 @@ struct EndOfFeedView: View {
                 LoadingView(whatIsLoading: .posts)
             } else {
                 HStack {
-                    Image(systemName: "figure.climbing")
+                    Image(systemName: Icons.endOfFeed)
                     
                     Text("I think I've found the bottom!")
                 }

@@ -126,7 +126,7 @@ extension Theme {
                 .markdownMargin(top: .em(0.25))
         }
         .taskListMarker { configuration in
-            Image(systemName: configuration.isCompleted ? "checkmark.square.fill" : "square")
+            Image(systemName: configuration.isCompleted ? Icons.successSquareFill : Icons.emptySquare)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color.checkbox, Color.checkboxBackground)
                 .imageScale(.small)

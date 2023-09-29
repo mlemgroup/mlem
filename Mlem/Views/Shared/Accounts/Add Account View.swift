@@ -68,6 +68,8 @@ struct AddSavedInstanceView: View {
         : "Please check your username and password"
     }
     
+    var registrationError = "Please verify your email and try again."
+    
     init(
         onboarding: Bool,
         givenInstance: String? = nil
@@ -266,7 +268,7 @@ struct AddSavedInstanceView: View {
                 Text("Logging In")
             case .success:
                 Spacer()
-                Image(systemName: "checkmark.circle")
+                Image(systemName: Icons.successCircle)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 120)
@@ -379,6 +381,13 @@ struct AddSavedInstanceView: View {
             return
         case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
             message = badCredentialsMessage
+            
+        case let APIClientError.response(errorResponse, _) where errorResponse.emailNotVerified:
+            message = registrationError
+            
+        case let APIClientError.response(errorResponse, _) where errorResponse.userRegistrationPending:
+            message = registrationError
+            
         default:
             // unhandled error encountered...
             message = "Something went wrong"

@@ -38,7 +38,7 @@ struct AlternativeIconCell: View {
                 }
                 Spacer()
                 if icon.selected {
-                    Image(systemName: "checkmark")
+                    Image(systemName: Icons.success)
                 }
             }
         }.accessibilityElement(children: .combine)
@@ -51,7 +51,7 @@ struct AlternativeIconCell: View {
                     .flatMap { UIImage(named: $0) }
                     .map {
                         Image(uiImage: $0)
-                    } ?? Image(systemName: "questionmark.folder")
+                    } ?? Image(systemName: Icons.noFile)
             }
             return Image(uiImage: UIImage(named: id) ?? UIImage(imageLiteralResourceName: id))
         }

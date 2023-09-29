@@ -17,7 +17,7 @@ struct AdvancedSettingsView: View {
         List {
             Section {
                 SwitchableSettingsItem(
-                    settingPictureSystemName: "wrench.adjustable.fill",
+                    settingPictureSystemName: Icons.developerMode,
                     settingName: "Developer Mode",
                     isTicked: $developerMode
                 )
