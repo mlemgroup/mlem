@@ -6,19 +6,12 @@
 //
 
 import SwiftUI
-
-struct PictrsImageModel {
-    enum UploadState {
-        case uploading(progress: Double)
-        case uploaded(file: PictrsFile?)
-        case failed(Error)
-    }
-    var image: Image?
-    var file: PictrsFile?
-    var state: UploadState = .uploading(progress: 0)
-}
+import PhotosUI
+import Dependencies
 
 struct ImageUploadView: View {
+    @Dependency(\.apiClient) var apiClient
+    
     var imageModel: PictrsImageModel
     let onCancel: () -> Void
     

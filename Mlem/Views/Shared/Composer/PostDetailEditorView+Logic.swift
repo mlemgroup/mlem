@@ -55,32 +55,4 @@ extension PostDetailEditorView {
             errorHandler.handle(error)
         }
     }
-    
-    func uploadImage() {
-        imageModel = .init()
-        Task {
-            do {
-                let data = try await imageSelection?.loadTransferable(type: Data.self)
-                
-                if let data = data {
-                    print("DONE")
-                    if let uiImage = UIImage(data: data) {
-                        imageModel?.image = Image(uiImage: uiImage)
-                    }
-                    let res = try await apiClient.uploadImage(data, callback: { imageModel?.state = .uploading(progress: $0) })
-                    if let firstFile = res.files.first {
-                        var components = URLComponents()
-                        components.scheme = try apiClient.session.instanceUrl.scheme
-                        components.host = try apiClient.session.instanceUrl.host
-                        components.path = "/pictrs/image/\(firstFile.file)"
-                        postURL = components.url?.absoluteString ?? ""
-                        imageModel?.state = .uploaded(file: firstFile)
-                    }
-                }
-            } catch {
-                imageModel?.state = .failed(error)
-                return
-            }
-        }
-    }
 }

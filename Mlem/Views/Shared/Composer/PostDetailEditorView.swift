@@ -25,6 +25,7 @@ struct PostDetailEditorView: View {
     }
     
     @Dependency(\.apiClient) var apiClient
+    @Dependency(\.pictrsRepository) var pictrsRepository
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.dismiss) var dismiss
@@ -44,6 +45,8 @@ struct PostDetailEditorView: View {
     @State var showingPhotosPicker: Bool = false
     @State var imageSelection: PhotosPickerItem?
     @State var imageModel: PictrsImageModel?
+    
+    @State var uploadTask: URLSessionUploadTask?
     
     @FocusState private var focusedField: Field?
     
@@ -108,6 +111,19 @@ struct PostDetailEditorView: View {
                 // URL Row
                 if let imageModel = imageModel {
                     ImageUploadView(imageModel: imageModel, onCancel: {
+                        if let task = self.uploadTask {
+                            task.cancel()
+                        }
+                        switch imageModel.state {
+                        case .uploaded(file: let file):
+                            if let file = file {
+                                Task {
+                                    try await apiClient.deleteImage(file: file)
+                                }
+                            }
+                        default:
+                            break
+                        }
                         imageSelection = nil
                         self.imageModel = nil
                         postURL = ""
@@ -197,8 +213,35 @@ struct PostDetailEditorView: View {
         .navigationBarTitleDisplayMode(.inline)
         .photosPicker(isPresented: $showingPhotosPicker, selection: $imageSelection, matching: .images)
         .onChange(of: imageSelection) { newValue in
-            if newValue != nil {
-                uploadImage()
+            if let selection = newValue {
+                self.imageModel = .init()
+                Task {
+                    self.uploadTask = try await pictrsRepository.uploadImage(
+                        imageModel: .init(),
+                        imageSelection: selection,
+                        onUpdate: { newValue in
+                            self.imageModel = newValue
+                            switch newValue.state {
+                            case .uploaded(let file):
+                                if let file = file {
+                                    do {
+                                        var components = URLComponents()
+                                        components.scheme = try apiClient.session.instanceUrl.scheme
+                                        components.host = try apiClient.session.instanceUrl.host
+                                        components.path = "/pictrs/image/\(file.file)"
+                                        postURL = components.url?.absoluteString ?? ""
+                                    } catch {
+                                        self.imageModel?.state = .failed(nil)
+                                    }
+                                } else {
+                                    
+                                }
+                            default:
+                                postURL = ""
+                            }
+                        }
+                    )
+                }
             }
         }
     }

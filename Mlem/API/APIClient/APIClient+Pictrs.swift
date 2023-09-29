@@ -8,9 +8,19 @@
 import Foundation
 
 extension APIClient {
-    func uploadImage(_ imageData: Data, callback: @escaping (_ progress: Double) -> Void) async throws -> ImageUploadResponse {
+    @discardableResult
+    func deleteImage(file: PictrsFile) async throws -> ImageDeleteResponse {
+        let request = try ImageDeleteRequest(session: session, file: file.file, deleteToken: file.deleteToken)
+        return try await perform(request: request)
+    }
+    
+    func uploadImage(
+        _ imageData: Data,
+        onProgress progressCallback: @escaping (_ progress: Double) -> Void,
+        onCompletion completionCallback: @escaping(_ response: ImageUploadResponse?) -> Void
+    ) async throws -> URLSessionUploadTask {
         
-        let delegate = ImageUploadDelegate(callback: callback)
+        let delegate = ImageUploadDelegate(callback: progressCallback)
         
         // Modify the instance URL to remove "api/v3" and add "pictrs/image".
         var components = URLComponents()
@@ -36,19 +46,21 @@ extension APIClient {
             auth: session.token
         )
         
-        let (data, _) = try await self.urlSession.upload(
-            for: request,
+        let task = self.urlSession.uploadTask(
+            with: request,
             from: multiPartForm.createField(boundary: boundary),
-            delegate: delegate
-        )
+            completionHandler: { data, response, _ in
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            if let data = data {
+                let response = try? decoder.decode(ImageUploadResponse.self, from: data)
+                completionCallback(response)
+            }
+        })
         
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        do {
-            return try decoder.decode(ImageUploadResponse.self, from: data)
-        } catch {
-            throw APIClientError.decoding(data)
-        }
+        task.delegate = delegate
+        task.resume()
+        return task
     }
 }
 
