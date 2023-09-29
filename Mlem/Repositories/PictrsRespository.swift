@@ -26,23 +26,29 @@ class PictrsRespository {
                     imageModel.image = Image(uiImage: uiImage)
                 }
                 return try await apiClient.uploadImage(data, onProgress: {
+                    print("Uploading: \(round($0*100))%")
                     imageModel.state = .uploading(progress: $0)
                     updateCallback(imageModel)
                 }, onCompletion: { response in
                     if let response = response {
-                        if let firstFile = response.files.first {
+                        if let firstFile = response.files?.first {
                             imageModel.state = .uploaded(file: firstFile)
+                            updateCallback(imageModel)
+                        } else {
+                            print("Upload failed: \(response.msg)")
+                            imageModel.state = .failed(response.msg)
                             updateCallback(imageModel)
                         }
                     } else {
+                        print("Upload failed: Response is nil")
                         imageModel.state = .failed(nil)
                         updateCallback(imageModel)
                     }
                 })
-                
             }
         } catch {
-            imageModel.state = .failed(error)
+            print("Upload failed: \(error)")
+            imageModel.state = .failed(nil)
             updateCallback(imageModel)
         }
         return nil

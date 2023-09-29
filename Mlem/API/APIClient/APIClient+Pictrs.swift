@@ -53,8 +53,13 @@ extension APIClient {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             if let data = data {
-                let response = try? decoder.decode(ImageUploadResponse.self, from: data)
-                completionCallback(response)
+                do {
+                    let response = try decoder.decode(ImageUploadResponse.self, from: data)
+                    completionCallback(response)
+                } catch {
+                    print("Upload failed: \(String(data: data, encoding: .utf8))")
+                    completionCallback(nil)
+                }
             }
         })
         
@@ -66,7 +71,7 @@ extension APIClient {
 
 struct ImageUploadResponse: Codable {
     public let msg: String
-    public let files: [PictrsFile]
+    public let files: [PictrsFile]?
 }
 
 struct PictrsFile: Codable, Equatable {

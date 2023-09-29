@@ -39,8 +39,8 @@ struct ImageUploadView: View {
                                 .frame(width: 100, height: 10)
                         case .uploaded:
                             Text("Uploaded")
-                        case .failed:
-                            Text("Failed")
+                        case .failed(let msg):
+                            Text(msg ?? "Failed")
                                 .foregroundStyle(.red)
                         }
                     }

@@ -11,7 +11,7 @@ struct PictrsImageModel {
     enum UploadState {
         case uploading(progress: Double)
         case uploaded(file: PictrsFile?)
-        case failed(Error?)
+        case failed(String?)
     }
     var image: Image?
     var state: UploadState = .uploading(progress: 0)
