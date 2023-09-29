@@ -23,10 +23,7 @@ struct PostViewOptionsMenu: View {
                 Button {
                     showingSortMenu = true
                 } label: {
-                    Label(
-                        "Selected sorting by \(postSortType.description)",
-                        systemImage: postSortType.iconName
-                    )
+                    label
                 }
             } else {
                 Menu {
@@ -90,10 +87,7 @@ struct PostViewOptionsMenu: View {
                         Label("Show All Options", systemImage: "line.horizontal.3.decrease.circle")
                     }
                 } label: {
-                    Label(
-                        "Selected sorting by \(postSortType.description)",
-                        systemImage: postSortType.iconName
-                    )
+                    label
                 }
             }
         }
@@ -105,5 +99,12 @@ struct PostViewOptionsMenu: View {
                 detents: [.large]
             )
         }
+    }
+    
+    var label: some View {
+        Label(
+            "Selected sorting by \(postSortType.description)",
+            systemImage: postSortType.iconName
+        )
     }
 }
