@@ -111,8 +111,10 @@ class OrderedWidgetCollection: FiniteWidgetCollection {
     }
     
     override func addTo(_ widget: LayoutWidget) {
-        items.insert(widget, at: predictedDropIndex!)
-        itemsWithPlaceholder = items
+        if let index = predictedDropIndex {
+            items.insert(widget, at: index)
+            itemsWithPlaceholder = items
+        }
     }
     
     func updatePlaceholderPosition(widgetDragging: LayoutWidget, index: Int) {
