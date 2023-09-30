@@ -20,7 +20,7 @@ class PersonRepository {
     ) async throws -> [UserModel] {
         let users = try await apiClient.performSearch(
             query: query,
-            searchType: .communities,
+            searchType: .users,
             sortOption: .topAll,
             listingType: .all,
             page: page,
