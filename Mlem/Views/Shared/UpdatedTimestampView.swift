@@ -1,24 +1,24 @@
 //
-//  TimestampView.swift
+//  UpdatedTimestampView.swift
 //  Mlem
 //
-//  Created by Sjmarf on 07/07/2023.
+//  Created by Eric Andrews on 2023-09-30.
 //
 
 import SwiftUI
 
-struct TimestampView: View {
+struct UpdatedTimestampView: View {
     let date: Date
     var spacing: CGFloat = 4
     
     var body: some View {
         HStack(spacing: spacing) {
-            Image(systemName: Icons.time)
+            Image(systemName: Icons.updated)
             Text(getTimeIntervalFromNow(date: date))
         }
         .foregroundColor(.secondary)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Published \(getTimeIntervalFromNow(date: date, unitsStyle: .full)) ago")
+        .accessibilityLabel("Updated \(getTimeIntervalFromNow(date: date, unitsStyle: .full)) ago")
     }
 }
