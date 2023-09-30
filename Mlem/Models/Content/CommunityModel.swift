@@ -57,7 +57,7 @@ extension CommunityModel: Hashable {
     
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
-        hasher.combine(community.id)
+        hasher.combine(uid)
         hasher.combine(subscribed)
     }
 }

@@ -125,7 +125,7 @@ class ContentTracker<Content: ContentModel>: ObservableObject {
     @MainActor
     func shouldLoadContentAfter(after item: Content) -> Bool {
         guard !isLoading, !hasReachedEnd else { return false }
-        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: -5))
+        let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: -15))
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uid == item.uid }),
            itemIndex >= thresholdIndex {

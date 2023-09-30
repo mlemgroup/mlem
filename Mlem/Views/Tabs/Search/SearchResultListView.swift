@@ -27,7 +27,6 @@ struct SearchResultListView: View {
                 }
                 .simultaneousGesture(TapGesture().onEnded {
                     recentSearchesTracker.addRecentSearch(contentModel)
-                    // Keyboard.dismiss()
                 })
                 Divider()
                     .onAppear {

@@ -45,7 +45,7 @@ struct UserResultView: View {
                     HStack(spacing: 5) {
                         Text(abbreviateNumber(user.commentCount))
                             .monospacedDigit()
-                        Image(systemName: "bubble.left")
+                        Image(systemName: Icons.replies)
                     }
                     .foregroundStyle(.secondary)
                 } else {
@@ -60,15 +60,15 @@ struct UserResultView: View {
                         }
                         .foregroundStyle(.secondary)
                         VStack(spacing: 10) {
-                            Image(systemName: "doc.plaintext")
+                            Image(systemName: Icons.posts)
                                 .imageScale(.small)
-                            Image(systemName: "bubble.left")
+                            Image(systemName: Icons.replies)
                                 .imageScale(.small)
                         }
                     }
                     .foregroundStyle(.secondary)
                 }
-                Image(systemName: "chevron.right")
+                Image(systemName: Icons.forward)
                     .imageScale(.small)
                     .foregroundStyle(.tertiary)
             }

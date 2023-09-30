@@ -12,20 +12,22 @@ class SearchModel: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.personRepository) var personRepository
     
     @Published var searchTab: SearchTab = .topResults
     @Published var searchText: String = ""
     
-    // constants
-    let pageSize: Int = 20
+    private var internetSpeed: InternetSpeed
     
     // Used to switch tabs without refetching from API
     var previousSearchText: String = ""
     var firstPageCommunities: [AnyContentModel]?
     var firstPageUsers: [AnyContentModel]?
     
-    init(searchTab: SearchTab = .topResults) {
+    init(searchTab: SearchTab = .topResults, internetSpeed: InternetSpeed = .fast) {
         self.searchTab = searchTab
+        self.internetSpeed = internetSpeed
     }
     
     func tabSwitchRefresh(contentTracker: ContentTracker<AnyContentModel>) {
@@ -71,14 +73,11 @@ class SearchModel: ObservableObject {
     
     @discardableResult
     func searchCommunities(page: Int) async throws -> [AnyContentModel] {
-        let communities = try await apiClient.performSearch(
+        let communities = try await communityRepository.search(
             query: searchText,
-            searchType: .communities,
-            sortOption: .topAll,
-            listingType: .all,
             page: page,
-            limit: pageSize
-        ).communities.map { AnyContentModel(CommunityModel(from: $0)) }
+            limit: internetSpeed.pageSize
+        ).map { AnyContentModel($0) }
         if page == 1 {
             self.firstPageCommunities = communities
         }
@@ -87,14 +86,11 @@ class SearchModel: ObservableObject {
     
     @discardableResult
     func searchUsers(page: Int) async throws -> [AnyContentModel] {
-        let users = try await apiClient.performSearch(
+        let users = try await personRepository.search(
             query: searchText,
-            searchType: .users,
-            sortOption: .topAll,
-            listingType: .all,
             page: page,
-            limit: pageSize
-        ).users.map { AnyContentModel(UserModel(from: $0)) }
+            limit: internetSpeed.pageSize
+        ).map { AnyContentModel($0) }
         if page == 1 {
             self.firstPageUsers = users
         }

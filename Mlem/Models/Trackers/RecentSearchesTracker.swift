@@ -11,6 +11,8 @@ import Foundation
 @MainActor
 class RecentSearchesTracker: ObservableObject {
     @Dependency(\.persistenceRepository) var persistenceRepository
+    @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.personRepository) var personRepository
     @Dependency(\.apiClient) var apiClient
     
     var hasLoaded: Bool = false
@@ -25,12 +27,11 @@ class RecentSearchesTracker: ObservableObject {
             case .post:
                 break
             case .community:
-                let response = try await apiClient.loadCommunityDetails(id: id.contentId)
-                recentSearches.append(AnyContentModel(CommunityModel(from: response.communityView)))
+                let community: CommunityModel = try await communityRepository.loadDetails(for: id.contentId)
+                recentSearches.append(AnyContentModel(community))
             case .user:
-                let response = try await apiClient.getPersonDetails(for: id.contentId, limit: 1, savedOnly: false)
-                recentSearches.append(AnyContentModel(UserModel(from: response.personView))
-                )
+                let user = try await personRepository.loadDetails(for: id.contentId)
+                recentSearches.append(AnyContentModel(user))
             }
         }
     }

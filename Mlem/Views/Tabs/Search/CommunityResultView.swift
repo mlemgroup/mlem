@@ -18,8 +18,8 @@ struct CommunityResultView: View {
     
     var subscribeSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = community.subscribed
-            ? ("person.crop.circle.badge.xmark", "person.crop.circle.badge.xmark.fill")
-            : ("person.crop.circle.badge.plus", "person.crop.circle.badge.plus.fill")
+        ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
+        : (Icons.subscribePerson, Icons.subscribePersonFill)
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: community.subscribed ? .red : .green,
@@ -65,10 +65,10 @@ struct CommunityResultView: View {
                 HStack(spacing: 5) {
                     Text(abbreviateNumber(community.subscriberCount))
                         .monospacedDigit()
-                    Image(systemName: community.subscribed ? "checkmark.circle" : "person.fill")
+                    Image(systemName: community.subscribed ? Icons.subscribed : Icons.personFill)
                 }
                 .foregroundStyle(community.subscribed ? .green : .secondary)
-                Image(systemName: "chevron.right")
+                Image(systemName: Icons.forward)
                     .imageScale(.small)
                     .foregroundStyle(.tertiary)
             }

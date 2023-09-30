@@ -35,7 +35,7 @@ extension UserModel: Hashable {
     
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
-        hasher.combine(user.id)
+        hasher.combine(uid)
     }
 }
 

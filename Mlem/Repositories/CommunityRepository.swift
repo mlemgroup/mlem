@@ -12,6 +12,22 @@ import Foundation
 struct CommunityRepository {
     @Dependency(\.apiClient) private var apiClient
     
+    func search(
+        query: String,
+        page: Int,
+        limit: Int
+    ) async throws -> [CommunityModel] {
+        let communities = try await apiClient.performSearch(
+            query: query,
+            searchType: .communities,
+            sortOption: .topAll,
+            listingType: .all,
+            page: page,
+            limit: limit
+        ).communities.map { CommunityModel(from: $0) }
+        return communities
+    }
+    
     var subscriptions: (APIClient) async throws -> [APICommunityView] = { client in
         let limit = 50
         var page = 1
@@ -59,6 +75,10 @@ struct CommunityRepository {
     
     func loadDetails(for id: Int) async throws -> GetCommunityResponse {
         try await details(apiClient, id)
+    }
+    
+    func loadDetails(for id: Int) async throws -> CommunityModel {
+        CommunityModel(from: try await details(apiClient, id).communityView)
     }
     
     @discardableResult

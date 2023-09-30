@@ -28,13 +28,19 @@ struct SearchView: View {
     
     // environment
     @EnvironmentObject private var recentSearchesTracker: RecentSearchesTracker
-    @StateObject var searchModel: SearchModel = .init()
+    @StateObject var searchModel: SearchModel
     
-    @StateObject var homeSearchModel: SearchModel = .init(searchTab: .communities)
+    @StateObject var homeSearchModel: SearchModel
     @StateObject var homeContentTracker: ContentTracker<AnyContentModel> = .init()
     
     @State var isSearching: Bool = false
     @State var page: Page = .home
+    
+    init() {
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        _searchModel = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
+        _homeSearchModel = StateObject(wrappedValue: .init(searchTab: .communities, internetSpeed: internetSpeed))
+    }
     
     var body: some View {
         content
@@ -50,7 +56,6 @@ struct SearchView: View {
                     }
                     
                 }
-            // .navigationSearchBarHiddenWhenScrolling(true)
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
             .onAppear {

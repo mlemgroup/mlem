@@ -45,6 +45,7 @@ struct Icons {
     static let moderationReport: String = "exclamationmark.shield"
     
     // misc post
+    static let posts: String = "doc.plaintext"
     static let replies: String = "bubble.right"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
@@ -127,11 +128,17 @@ struct Icons {
     static let time: String = "clock"
     static let favorite: String = "star"
     static let favoriteFill: String = "star.fill"
+    static let personFill: String = "person.fill"
     
     // common operations
     static let share: String = "square.and.arrow.up"
     static let subscribe: String = "plus.circle"
+    static let subscribed: String = "checkmark.circle"
+    static let subscribePerson: String = "person.crop.circle.badge.plus"
+    static let subscribePersonFill: String = "person.crop.circle.badge.plus.fill"
     static let unsubscribe: String = "multiply.circle"
+    static let unsubscribePerson: String = "person.crop.circle.badge.xmark"
+    static let unsubscribePersonFill: String = "person.crop.circle.badge.xmark.fill"
     static let filter: String = "line.3.horizontal.decrease.circle"
     static let filterFill: String = "line.3.horizontal.decrease.circle.fill"
     static let menu: String = "ellipsis"
