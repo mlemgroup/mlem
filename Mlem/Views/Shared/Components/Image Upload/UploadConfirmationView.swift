@@ -11,7 +11,7 @@ import Dependencies
 
 struct UploadConfirmationView: View {
     @Dependency(\.apiClient) var apiClient
-    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
+    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     
     @Binding var isPresented: Bool
     let onUpload: () -> Void

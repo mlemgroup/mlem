@@ -11,7 +11,7 @@ import SwiftUI
 struct GeneralSettingsView: View {
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
-    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
+    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     

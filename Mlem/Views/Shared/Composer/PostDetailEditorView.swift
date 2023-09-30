@@ -28,7 +28,7 @@ struct PostDetailEditorView: View {
     @Dependency(\.pictrsRepository) var pictrsRepository
     @Dependency(\.errorHandler) var errorHandler
     
-    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
+    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     
     @Environment(\.dismiss) var dismiss
         
