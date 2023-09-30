@@ -142,11 +142,13 @@ struct CachedImage: View {
             } else if state.error != nil {
                 // Indicates an error
                 imageNotFound()
-                    .frame(idealWidth: size.width, maxHeight: size.height)
+                    .frame(idealWidth: size.width)
+                    .frame(height: size.height)
                     .background(errorBackgroundColor)
             } else {
                 ProgressView() // Acts as a placeholder
-                    .frame(idealWidth: size.width, maxHeight: size.height)
+                    .frame(idealWidth: size.width)
+                    .frame(height: size.height)
             }
         }
         .processors([
@@ -155,7 +157,8 @@ struct CachedImage: View {
                 contentMode: contentMode == .fill ? .aspectFill : .aspectFit
             )
         ])
-        .frame(idealWidth: size.width, maxHeight: size.height)
+        .frame(idealWidth: size.width)
+        .frame(height: size.height)
     }
     
     static func imageNotFoundDefault() -> AnyView {
