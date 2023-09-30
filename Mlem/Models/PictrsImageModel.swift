@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+struct ImageUploadResponse: Codable {
+    public let msg: String
+    public let files: [PictrsFile]?
+}
+
+struct PictrsFile: Codable, Equatable {
+    public let file: String
+    public let deleteToken: String
+}
+
 struct PictrsImageModel {
     enum UploadState {
         case uploading(progress: Double)

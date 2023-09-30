@@ -17,11 +17,11 @@ extension APIClient {
     func uploadImage(
         _ imageData: Data,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void,
-        onCompletion completionCallback: @escaping(_ response: ImageUploadResponse?) -> Void
-    ) async throws -> URLSessionUploadTask {
+        onCompletion completionCallback: @escaping(_ response: ImageUploadResponse?) -> Void,
+        `catch`: @escaping (Error) -> Void
+    ) async throws -> Task<(), any Error> {
         
         let delegate = ImageUploadDelegate(callback: progressCallback)
-        
         // Modify the instance URL to remove "api/v3" and add "pictrs/image".
         var components = URLComponents()
         components.scheme = try self.session.instanceUrl.scheme
@@ -46,37 +46,25 @@ extension APIClient {
             auth: session.token
         )
         
-        let task = self.urlSession.uploadTask(
-            with: request,
-            from: multiPartForm.createField(boundary: boundary),
-            completionHandler: { data, response, _ in
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            if let data = data {
+        return Task { [request] in
+            do {
+                let (data, _) = try await self.urlSession.upload(
+                    for: request,
+                    from: multiPartForm.createField(boundary: boundary),
+                    delegate: delegate)
                 do {
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let response = try decoder.decode(ImageUploadResponse.self, from: data)
                     completionCallback(response)
-                } catch {
-                    print("Upload failed: \(String(data: data, encoding: .utf8))")
-                    completionCallback(nil)
+                } catch DecodingError.dataCorrupted {
+                    throw APIClientError.decoding(data)
                 }
+            } catch {
+                `catch`(error)
             }
-        })
-        
-        task.delegate = delegate
-        task.resume()
-        return task
+        }
     }
-}
-
-struct ImageUploadResponse: Codable {
-    public let msg: String
-    public let files: [PictrsFile]?
-}
-
-struct PictrsFile: Codable, Equatable {
-    public let file: String
-    public let deleteToken: String
 }
 
 private struct MultiPartForm: Codable {

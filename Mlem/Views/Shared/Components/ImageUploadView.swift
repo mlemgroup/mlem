@@ -10,8 +10,6 @@ import PhotosUI
 import Dependencies
 
 struct ImageUploadView: View {
-    @Dependency(\.apiClient) var apiClient
-    
     var imageModel: PictrsImageModel
     let onCancel: () -> Void
     
@@ -33,10 +31,17 @@ struct ImageUploadView: View {
                     HStack {
                         switch imageModel.state {
                         case .uploading(let progress):
-                            Text("Uploading...")
-                            ProgressView(value: progress)
-                                .progressViewStyle(LinearProgressViewStyle())
-                                .frame(width: 100, height: 10)
+                            if progress == 1 {
+                                Text("Processing...")
+                                ProgressView()
+                                    .controlSize(.small)
+                                    .padding(.horizontal, 6)
+                            } else {
+                                Text("Uploading...")
+                                ProgressView(value: progress)
+                                    .progressViewStyle(LinearProgressViewStyle())
+                                    .frame(width: 100, height: 10)
+                            }
                         case .uploaded:
                             Text("Uploaded")
                         case .failed(let msg):

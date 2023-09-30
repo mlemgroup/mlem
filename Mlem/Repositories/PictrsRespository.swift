@@ -16,7 +16,7 @@ class PictrsRespository {
         imageModel: PictrsImageModel,
         imageSelection: PhotosPickerItem,
         onUpdate updateCallback: @escaping (_ imageModel: PictrsImageModel) -> Void
-    ) async throws -> URLSessionUploadTask? {
+    ) async throws -> Task<(), any Error>? {
         var imageModel = imageModel
         do {
             let data = try await imageSelection.loadTransferable(type: Data.self)
@@ -44,13 +44,35 @@ class PictrsRespository {
                         imageModel.state = .failed(nil)
                         updateCallback(imageModel)
                     }
+                }, catch: { error in
+                    print("Upload failed: \(error)")
+                    switch error {
+                    case APIClientError.decoding(let data):
+                        imageModel.state = .failed(String(data: data, encoding: .utf8))
+                    default:
+                        imageModel.state = .failed(String(describing: error))
+                    }
+                    
+                    updateCallback(imageModel)
                 })
+            } else {
+                imageModel.state = .failed("No data to upload")
+                updateCallback(imageModel)
             }
         } catch {
             print("Upload failed: \(error)")
-            imageModel.state = .failed(nil)
+            imageModel.state = .failed(String(describing: error))
             updateCallback(imageModel)
         }
         return nil
+    }
+    
+    func deleteImage(file: PictrsFile) async throws {
+        // A decoding error will always be throws because the delete request has no response... there's
+        // certainly a better way to handle this by making ImageDeleteRequest itself have no response
+        // object, possibly via an intermediate APIRequestWithResponse protocol
+        do {
+            try await apiClient.deleteImage(file: file)
+        } catch APIClientError.decoding(_) { }
     }
 }
