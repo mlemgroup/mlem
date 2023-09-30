@@ -19,6 +19,7 @@ struct InteractionBarView: View {
     // metadata
     let votes: VotesModel
     let published: Date
+    let updated: Date?
     let numReplies: Int
     let saved: Bool
     
@@ -109,6 +110,7 @@ struct InteractionBarView: View {
                             )
                             : nil,
                         published: shouldShowTime ? published : nil,
+                        updated: shouldShowTime ? updated : nil,
                         commentCount: shouldShowReplies ? numReplies : nil,
                         saved: shouldShowSaved ? saved : nil,
                         alignment: infoStackAlignment(offset)

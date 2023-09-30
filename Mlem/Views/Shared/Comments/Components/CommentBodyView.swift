@@ -108,7 +108,7 @@ struct CommentBodyView: View {
     func compactScoreDisplay() -> some View {
         Group {
             // time
-            TimestampView(date: commentView.comment.published)
+            PublishedTimestampView(date: commentView.comment.published)
             
             // votes
             if showCommentDownvotesSeparately {
