@@ -27,51 +27,67 @@ struct UploadConfirmationView: View {
     }
     
     var body: some View {
-        switch imageModel?.state {
-        case .readyToUpload:
-            VStack(spacing: 16) {
-                Spacer()
+        VStack(spacing: 0) {
+            ScrollView {
                 if let image = imageModel?.image {
                     image
                         .resizable()
+                        .scaledToFill()
                         .aspectRatio(1, contentMode: .fit)
                         .clipShape(
                             RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
                         )
-                        .padding(.top)
                 }
                 Spacer()
-                Text("Upload this image to \(instanceName)?")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                Spacer()
-                Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
-                    .controlSize(.mini)
-                    .padding(.horizontal)
-                Spacer()
-                Button {
-                    onUpload()
-                    isPresented = false
-                } label: {
-                    Text("Upload")
-                        .frame(maxWidth: .infinity)
-                }
-                .controlSize(.large)
-                .buttonStyle(.borderedProminent)
-                Button {
-                    onCancel()
-                    isPresented = false
-                } label: {
-                    Text("Cancel")
-                        .frame(maxWidth: .infinity)
-                }
-                .controlSize(.large)
-                .buttonStyle(.bordered)
+                    .frame(height: 100)
             }
-            .padding(.horizontal)
+            .scrollIndicators(.hidden)
+            .overlay(alignment: .bottom) {
+                LinearGradient(
+                    colors: [Color.systemBackground, Color.clear],
+                    startPoint: .bottom,
+                    endPoint: .top
+                )
+                .frame(height: 100)
+            }
+            switch imageModel?.state {
+            case .readyToUpload:
+                VStack(spacing: 0) {
+                    VStack(spacing: 16) {
+                        Text("Upload this image to \(instanceName)?")
+                            .font(.largeTitle)
+                            .multilineTextAlignment(.center)
+                        Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
+                            .controlSize(.mini)
+                            .padding(.horizontal)
+                        Button {
+                            onUpload()
+                            isPresented = false
+                        } label: {
+                            Text("Upload")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .controlSize(.large)
+                        .buttonStyle(.borderedProminent)
+                        Button {
+                            onCancel()
+                            isPresented = false
+                        } label: {
+                            Text("Cancel")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .controlSize(.large)
+                        .buttonStyle(.bordered)
+                    }
+                    .padding(.top, 15)
+                    .padding(.bottom, 20)
+                    .background(Color.systemBackground)
+                }
             
-        default:
-            Text("Something went wrong.")
+            default:
+                Text("Something went wrong.")
+            }
         }
+        .padding()
     }
 }
