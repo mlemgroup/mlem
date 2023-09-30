@@ -209,6 +209,7 @@ struct PostDetailEditorView: View {
                 onCancel: cancelUpload,
                 imageModel: imageModel
             )
+            .interactiveDismissDisabled()
         }
     }
 }
