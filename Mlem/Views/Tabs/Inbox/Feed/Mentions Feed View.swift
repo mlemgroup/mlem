@@ -64,11 +64,6 @@ extension InboxView {
                         await loadTrackerPage(tracker: mentionsTracker)
                     }
                 }
-                .contextMenu {
-                    ForEach(genMentionMenuGroup(mention: mention)) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                    }
-                }
                 .addSwipeyActions(
                     leading: [
                         upvoteMentionSwipeAction(mentionView: mention),
@@ -79,6 +74,11 @@ extension InboxView {
                         replyToMentionSwipeAction(mentionView: mention)
                     ]
                 )
+                .contextMenu {
+                    ForEach(genMentionMenuGroup(mention: mention)) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                    }
+                }
         }
         .buttonStyle(EmptyButtonStyle())
     }
