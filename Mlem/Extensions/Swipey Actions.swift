@@ -348,6 +348,12 @@ struct SwipeyView: ViewModifier {
 // swiftlint:enable function_body_length
 
 extension View {
+    /// Adds swipey actions to a view.
+    ///
+    /// NOTE: if the view you are attaching this to also has a context menu, add the context menu view modifier AFTER the swipey actions modifier! This will prevent the swipey action from triggering and appearing bugged on an aborted context menu pop if the context menu animation initiates.
+    /// - Parameters:
+    ///   - leading: leading edge swipey actions, ordered by ascending swipe distance from leading edge
+    ///   - trailing: trailing edge swipey actions, ordered by ascending swipe distance from leading edge
     @ViewBuilder
     func addSwipeyActions(leading: [SwipeAction?] = [], trailing: [SwipeAction?] = []) -> some View {
         modifier(
