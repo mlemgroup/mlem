@@ -32,7 +32,7 @@ struct UploadConfirmationView: View {
                 if let image = imageModel?.image {
                     image
                         .resizable()
-                        .aspectRatio(1, contentMode: .fit)
+                        .aspectRatio(contentMode: .fit)
                         .clipShape(
                             RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
                         )
