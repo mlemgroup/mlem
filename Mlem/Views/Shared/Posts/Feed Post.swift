@@ -102,11 +102,6 @@ struct FeedPost: View {
 //                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
 //                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
 //                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
-                .contextMenu {
-                    ForEach(genMenuFunctions()) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                    }
-                }
                 .destructiveConfirmation(
                     isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
                     confirmationMenuFunction: confirmationMenuFunction
@@ -121,6 +116,11 @@ struct FeedPost: View {
                         enableSwipeActions ? replySwipeAction : nil
                     ]
                 )
+                .contextMenu {
+                    ForEach(genMenuFunctions()) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                    }
+                }
         }
     }
 
