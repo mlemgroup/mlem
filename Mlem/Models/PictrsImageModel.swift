@@ -19,10 +19,12 @@ struct PictrsFile: Codable, Equatable {
 
 struct PictrsImageModel {
     enum UploadState {
+        case waiting
+        case readyToUpload(data: Data)
         case uploading(progress: Double)
         case uploaded(file: PictrsFile?)
         case failed(String?)
     }
     var image: Image?
-    var state: UploadState = .uploading(progress: 0)
+    var state: UploadState = .waiting
 }

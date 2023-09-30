@@ -28,6 +28,8 @@ struct PostDetailEditorView: View {
     @Dependency(\.pictrsRepository) var pictrsRepository
     @Dependency(\.errorHandler) var errorHandler
     
+    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
+    
     @Environment(\.dismiss) var dismiss
         
     var community: APICommunity
@@ -42,10 +44,10 @@ struct PostDetailEditorView: View {
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
     
+    @State var showingUploadConfirmation: Bool = false
     @State var showingPhotosPicker: Bool = false
     @State var imageSelection: PhotosPickerItem?
     @State var imageModel: PictrsImageModel?
-    
     @State var uploadTask: Task<(), any Error>?
     
     @FocusState private var focusedField: Field?
@@ -110,12 +112,7 @@ struct PostDetailEditorView: View {
                     
                 // URL Row
                 if let imageModel = imageModel {
-                    ImageUploadView(imageModel: imageModel, onCancel: {
-                        cancelUpload()
-                        imageSelection = nil
-                        self.imageModel = nil
-                        postURL = ""
-                    })
+                    ImageUploadView(imageModel: imageModel, onCancel: cancelUpload)
                 } else {
                     VStack(alignment: .labelStart) {
                         HStack {
@@ -136,7 +133,7 @@ struct PostDetailEditorView: View {
                             Button {
                                 showingPhotosPicker = true
                             } label: {
-                                Image(systemName: "paperclip")
+                                Image(systemName: Icons.attachment)
                                     .font(.title3)
                                     .dynamicTypeSize(.medium)
                             }
@@ -202,10 +199,16 @@ struct PostDetailEditorView: View {
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
         .photosPicker(isPresented: $showingPhotosPicker, selection: $imageSelection, matching: .images)
-        .onChange(of: imageSelection) { newValue in
-            if let selection = newValue {
-                uploadImage(imageSelection: selection)
-            }
+        .onChange(of: imageSelection) { _ in
+            loadImage()
+        }
+        .sheet(isPresented: $showingUploadConfirmation) {
+            UploadConfirmationView(
+                isPresented: $showingUploadConfirmation,
+                onUpload: uploadImage,
+                onCancel: cancelUpload,
+                imageModel: imageModel
+            )
         }
     }
 }

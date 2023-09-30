@@ -47,6 +47,8 @@ struct ImageUploadView: View {
                         case .failed(let msg):
                             Text(msg ?? "Failed")
                                 .foregroundStyle(.red)
+                        default:
+                            Text("Waiting...")
                         }
                     }
                     .foregroundStyle(.secondary)

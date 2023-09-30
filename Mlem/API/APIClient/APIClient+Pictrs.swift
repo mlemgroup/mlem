@@ -61,7 +61,9 @@ extension APIClient {
                     throw APIClientError.decoding(data)
                 }
             } catch {
-                `catch`(error)
+                if !Task.isCancelled {
+                    `catch`(error)
+                }
             }
         }
     }

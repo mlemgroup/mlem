@@ -136,7 +136,8 @@ struct Icons {
     static let filter: String = "line.3.horizontal.decrease.circle"
     static let filterFill: String = "line.3.horizontal.decrease.circle.fill"
     static let menu: String = "ellipsis"
-    static let importSymbol: String = "square.and.arrow.down" // Just "import" can't be used :(
+    static let `import`: String = "square.and.arrow.down"
+    static let attachment: String = "paperclip"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

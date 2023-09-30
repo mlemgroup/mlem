@@ -60,12 +60,40 @@ extension PostDetailEditorView {
         }
     }
     
-    func uploadImage(imageSelection: PhotosPickerItem) {
+    func loadImage() {
+        guard let selection = imageSelection else { return }
         self.imageModel = .init()
         Task {
+            do {
+                let data = try await selection.loadTransferable(type: Data.self)
+                DispatchQueue.main.async {
+                    if let data = data {
+                        self.imageModel?.state = .readyToUpload(data: data)
+                        if let uiImage = UIImage(data: data) {
+                            imageModel?.image = Image(uiImage: uiImage)
+                        }
+                        if confirmImageUploads {
+                            showingUploadConfirmation = true
+                        } else {
+                            uploadImage()
+                        }
+                    } else {
+                        self.imageModel?.state = .failed("Invalid format")
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.imageModel?.state = .failed(String(describing: error))
+                }
+            }
+        }
+    }
+    
+    func uploadImage() {
+        guard let imageModel = imageModel else { return }
+        Task(priority: .userInitiated) {
             self.uploadTask = try await pictrsRepository.uploadImage(
-                imageModel: .init(),
-                imageSelection: imageSelection,
+                imageModel: imageModel,
                 onUpdate: { newValue in
                     self.imageModel = newValue
                     switch newValue.state {
@@ -110,5 +138,8 @@ extension PostDetailEditorView {
         default:
             break
         }
+        imageSelection = nil
+        imageModel = nil
+        postURL = ""
     }
 }
