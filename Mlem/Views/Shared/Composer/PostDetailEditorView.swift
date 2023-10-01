@@ -7,6 +7,7 @@
 
 import Dependencies
 import SwiftUI
+import PhotosUI
 
 extension HorizontalAlignment {
     enum LabelStart: AlignmentID {
@@ -23,7 +24,12 @@ struct PostDetailEditorView: View {
         case title, url, body
     }
     
+    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.pictrsRepository) var pictrsRepository
     @Dependency(\.errorHandler) var errorHandler
+    
+    @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
+    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
     
     @Environment(\.dismiss) var dismiss
         
@@ -38,6 +44,12 @@ struct PostDetailEditorView: View {
     @State var isSubmitting: Bool = false
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
+    
+    @State var showingUploadConfirmation: Bool = false
+    @State var showingPhotosPicker: Bool = false
+    @State var imageSelection: PhotosPickerItem?
+    @State var imageModel: PictrsImageModel?
+    @State var uploadTask: Task<(), any Error>?
     
     @FocusState private var focusedField: Field?
     
@@ -57,52 +69,6 @@ struct PostDetailEditorView: View {
         self.onSubmit = onSubmit
     }
 
-    private var isReadyToPost: Bool {
-        // This only requirement to post is a title
-        postTitle.trimmed.isNotEmpty
-    }
-    
-    private var isValidURL: Bool {
-        guard postURL.lowercased().hasPrefix("http://") ||
-            postURL.lowercased().hasPrefix("https://") else {
-            return false // URL protocol is missing
-        }
-
-        guard URL(string: postURL) != nil else {
-            return false // Not Parsable
-        }
-        
-        return true
-    }
-    
-    func submitPost() async {
-        do {
-            guard postTitle.trimmed.isNotEmpty else {
-                errorDialogMessage = "You need to enter a title for your post."
-                isShowingErrorDialog = true
-                return
-            }
-            
-            guard postURL.lowercased().isEmpty || isValidURL else {
-                errorDialogMessage = "You seem to have entered an invalid URL, please check it again."
-                isShowingErrorDialog = true
-                return
-            }
-            
-            isSubmitting = true
-            
-            try await onSubmit()
-            
-        } catch {
-            isSubmitting = false
-            errorHandler.handle(error)
-        }
-    }
-    
-    func uploadImage() {
-        print("Uploading")
-    }
-    
     var body: some View {
         ZStack {
             VStack(spacing: 15) {
@@ -143,30 +109,37 @@ struct PostDetailEditorView: View {
                                 focusedField = .title
                             }
                     }
+                }
                     
-                    // URL Row
-                    HStack {
-                        Text("URL")
-                            .foregroundColor(.secondary)
-                            .dynamicTypeSize(.small ... .accessibility2)
-                            .accessibilityHidden(true)
-                        
-                        TextField("Your post link (Optional)", text: $postURL)
-                            .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
-                            .dynamicTypeSize(.small ... .accessibility2)
-                            .keyboardType(.URL)
-                            .autocorrectionDisabled()
-                            .autocapitalization(.none)
-                            .accessibilityLabel("URL")
-                            .focused($focusedField, equals: .url)
-                        
-                        // Upload button, temporarily hidden
-                        //                        Button(action: uploadImage) {
-                        //                            Image(systemName: "paperclip")
-                        //                                .font(.title3)
-                        //                                .dynamicTypeSize(.medium)
-                        //                        }
-                        //                        .accessibilityLabel("Upload Image")
+                // URL Row
+                if let imageModel = imageModel {
+                    ImageUploadView(imageModel: imageModel, onCancel: cancelUpload)
+                } else {
+                    VStack(alignment: .labelStart) {
+                        HStack {
+                            Text("URL")
+                                .foregroundColor(.secondary)
+                                .dynamicTypeSize(.small ... .accessibility2)
+                                .accessibilityHidden(true)
+                            
+                            TextField("Your post link (Optional)", text: $postURL)
+                                .alignmentGuide(.labelStart) { $0[HorizontalAlignment.leading] }
+                                .dynamicTypeSize(.small ... .accessibility2)
+                                .keyboardType(.URL)
+                                .autocorrectionDisabled()
+                                .autocapitalization(.none)
+                                .accessibilityLabel("URL")
+                                .focused($focusedField, equals: .url)
+                            
+                            Button {
+                                showingPhotosPicker = true
+                            } label: {
+                                Image(systemName: Icons.attachment)
+                                    .font(.title3)
+                                    .dynamicTypeSize(.medium)
+                            }
+                             .accessibilityLabel("Upload Image")
+                        }
                     }
                 }
 
@@ -201,6 +174,7 @@ struct PostDetailEditorView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Cancel", role: .destructive) {
+                    cancelUpload()
                     dismiss()
                 }
                 .tint(.red)
@@ -217,6 +191,7 @@ struct PostDetailEditorView: View {
                 }.disabled(isSubmitting || !isReadyToPost)
             }
         }
+        .interactiveDismissDisabled(hasPostContent)
         .alert("Submit Failed", isPresented: $isShowingErrorDialog) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -224,5 +199,21 @@ struct PostDetailEditorView: View {
         }
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .photosPicker(isPresented: $showingPhotosPicker, selection: $imageSelection, matching: .images)
+        .onChange(of: imageSelection) { _ in
+            loadImage()
+        }
+        .sheet(isPresented: $showingUploadConfirmation) {
+            UploadConfirmationView(
+                isPresented: $showingUploadConfirmation,
+                onUpload: uploadImage,
+                onCancel: cancelUpload,
+                imageModel: imageModel
+            )
+            .interactiveDismissDisabled()
+            .onAppear {
+                askedForPermissionToUploadImages = true
+            }
+        }
     }
 }

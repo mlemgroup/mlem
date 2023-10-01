@@ -194,6 +194,7 @@ struct FeedPost: View {
                 InteractionBarView(
                     votes: post.votes,
                     published: post.published,
+                    updated: post.updated,
                     numReplies: post.numReplies,
                     saved: post.saved,
                     accessibilityContext: "post",
@@ -299,8 +300,8 @@ struct FeedPost: View {
 
         // upvote
         let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
-            ("Undo upvote", "arrow.up.square.fill") :
-            ("Upvote", "arrow.up.square")
+            ("Undo upvote", Icons.upvoteSquareFill) :
+            ("Upvote", Icons.upvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
@@ -314,8 +315,8 @@ struct FeedPost: View {
 
         // downvote
         let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
-            ("Undo downvote", "arrow.down.square.fill") :
-            ("Downvote", "arrow.down.square")
+            ("Undo downvote", Icons.downvoteSquareFill) :
+            ("Downvote", Icons.downvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
@@ -343,7 +344,7 @@ struct FeedPost: View {
         // reply
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
-            imageName: "arrowshape.turn.up.left",
+            imageName: Icons.reply,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -354,7 +355,7 @@ struct FeedPost: View {
             // edit
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
-                imageName: "pencil",
+                imageName: Icons.edit,
                 destructiveActionPrompt: nil,
                 enabled: true
             ) {
@@ -364,7 +365,7 @@ struct FeedPost: View {
             // delete
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
-                imageName: "trash",
+                imageName: Icons.delete,
                 destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
                 enabled: !post.post.deleted
             ) {
