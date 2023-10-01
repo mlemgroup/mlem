@@ -11,6 +11,7 @@ import SwiftUI
 // swiftlint:disable file_length
 enum UserIDRetrievalError: Error {
     case couldNotFetchUserInformation
+    case instanceIsPrivate
 }
 
 enum Field: Hashable {
@@ -353,7 +354,12 @@ struct AddSavedInstanceView: View {
                 .person
         } catch {
             print("getUserId Error info: \(error)")
-            throw UserIDRetrievalError.couldNotFetchUserInformation
+            switch error {
+            case let APIClientError.response(errorResponse, _) where errorResponse.instanceIsPrivate:
+                throw UserIDRetrievalError.instanceIsPrivate
+            default:
+                throw UserIDRetrievalError.couldNotFetchUserInformation
+            }
         }
     }
     
@@ -364,6 +370,8 @@ struct AddSavedInstanceView: View {
             message = "Could not connect to \(instance)"
         case UserIDRetrievalError.couldNotFetchUserInformation:
             message = "Mlem couldn't fetch you account's information.\nFile a bug report."
+        case UserIDRetrievalError.instanceIsPrivate:
+            message = "\(instance) is a private instance."
         case APIClientError.encoding:
             // TODO: we should add better validation
             //  at the UI layer as encoding failures can be caught
