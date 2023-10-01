@@ -18,20 +18,26 @@ class RecentSearchesTracker: ObservableObject {
     var hasLoaded: Bool = false
     @Published var recentSearches: [AnyContentModel] = .init()
     
-    func loadRecentSearches() async throws {
-        hasLoaded = true
-        let identifiers = persistenceRepository.loadRecentSearches()
-        for id in identifiers {
-            print(id.contentType, id.contentId)
-            switch id.contentType {
-            case .post:
-                break
-            case .community:
-                let community: CommunityModel = try await communityRepository.loadDetails(for: id.contentId)
-                recentSearches.append(AnyContentModel(community))
-            case .user:
-                let user = try await personRepository.loadDetails(for: id.contentId)
-                recentSearches.append(AnyContentModel(user))
+    /// clears recentSearches and loads new values based on the current account
+    func reloadRecentSearches() async throws {
+        defer { hasLoaded = true }
+        
+        recentSearches = .init()
+        if let accountHash = apiClient.accountHash {
+            let identifiers = persistenceRepository.loadRecentSearches(accountHash: accountHash)
+            
+            for id in identifiers {
+                print(id.contentType, id.contentId)
+                switch id.contentType {
+                case .post:
+                    break
+                case .community:
+                    let community: CommunityModel = try await communityRepository.loadDetails(for: id.contentId)
+                    recentSearches.append(AnyContentModel(community))
+                case .user:
+                    let user = try await personRepository.loadDetails(for: id.contentId)
+                    recentSearches.append(AnyContentModel(user))
+                }
             }
         }
     }
@@ -58,8 +64,10 @@ class RecentSearchesTracker: ObservableObject {
     }
     
     private func saveRecentSearches() {
-        Task(priority: .background) {
-            try await persistenceRepository.saveRecentSearches(recentSearches.map { $0.uid })
+        if let accountHash = apiClient.accountHash {
+            Task(priority: .background) {
+                try await persistenceRepository.saveRecentSearches(for: accountHash, with: recentSearches.map(\.uid))
+            }
         }
     }
 }

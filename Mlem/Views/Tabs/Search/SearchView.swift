@@ -5,11 +5,11 @@
 //  Created by Jake Shirley on 7/5/23.
 //
 
-import Dependencies
 import Combine
+import Dependencies
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 private struct ViewOffsetKey: PreferenceKey {
     typealias Value = CGFloat
@@ -54,20 +54,19 @@ struct SearchView: View {
                         page = .home
                         searchModel.searchText = ""
                     }
-                    
-                }
+            }
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
             .onAppear {
                 Task(priority: .background) {
-                    if !recentSearchesTracker.hasLoaded {
-                        do {
-                            try await recentSearchesTracker.loadRecentSearches()
-                        } catch {
-                            print("Error while loading recent searches: \(error.localizedDescription)")
-                            errorHandler.handle(error)
-                        }
+                    // if !recentSearchesTracker.hasLoaded {
+                    do {
+                        try await recentSearchesTracker.reloadRecentSearches()
+                    } catch {
+                        print("Error while loading recent searches: \(error.localizedDescription)")
+                        errorHandler.handle(error)
                     }
+                    // }
                 }
             }
     }
@@ -93,8 +92,8 @@ struct SearchView: View {
             .animation(.default, value: page)
         }
         .onChange(of: isSearching) { newValue in
-            if newValue && searchModel.searchText.isEmpty {
-                page =  .recents
+            if newValue, searchModel.searchText.isEmpty {
+                page = .recents
             }
         }
         .onChange(of: searchModel.searchText) { newValue in
