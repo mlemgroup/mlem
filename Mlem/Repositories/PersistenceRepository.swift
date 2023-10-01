@@ -89,7 +89,6 @@ class PersistenceRepository {
     }
     
     func saveRecentSearches(for accountHash: Int, with searches: [ContentModelIdentifier]) async throws {
-        // get recent searches
         var extant = load([Int: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
         extant[accountHash] = searches
         try await save(extant, to: Path.recentSearches)

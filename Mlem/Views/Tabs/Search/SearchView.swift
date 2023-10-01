@@ -59,14 +59,12 @@ struct SearchView: View {
             .textInputAutocapitalization(.never)
             .onAppear {
                 Task(priority: .background) {
-                    // if !recentSearchesTracker.hasLoaded {
                     do {
                         try await recentSearchesTracker.reloadRecentSearches()
                     } catch {
                         print("Error while loading recent searches: \(error.localizedDescription)")
                         errorHandler.handle(error)
                     }
-                    // }
                 }
             }
     }
