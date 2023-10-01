@@ -27,6 +27,7 @@ struct SearchView: View {
     }
     
     // environment
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject private var recentSearchesTracker: RecentSearchesTracker
     @StateObject var searchModel: SearchModel
     
@@ -60,7 +61,7 @@ struct SearchView: View {
             .onAppear {
                 Task(priority: .background) {
                     do {
-                        try await recentSearchesTracker.reloadRecentSearches()
+                        try await recentSearchesTracker.reloadRecentSearches(accountHash: appState.currentActiveAccount?.hashValue)
                     } catch {
                         print("Error while loading recent searches: \(error.localizedDescription)")
                         errorHandler.handle(error)

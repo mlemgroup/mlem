@@ -19,11 +19,11 @@ class RecentSearchesTracker: ObservableObject {
     @Published var recentSearches: [AnyContentModel] = .init()
     
     /// clears recentSearches and loads new values based on the current account
-    func reloadRecentSearches() async throws {
+    func reloadRecentSearches(accountHash: Int?) async throws {
         defer { hasLoaded = true }
         
         recentSearches = .init()
-        if let accountHash = apiClient.accountHash {
+        if let accountHash {
             let identifiers = persistenceRepository.loadRecentSearches(for: accountHash)
             
             for id in identifiers {
@@ -42,7 +42,7 @@ class RecentSearchesTracker: ObservableObject {
         }
     }
     
-    func addRecentSearch(_ item: AnyContentModel) {
+    func addRecentSearch(_ item: AnyContentModel, accountHash: Int?) {
         // if the item is already in the recent list, move it to the top
         if let index = recentSearches.firstIndex(of: item) {
             recentSearches.remove(at: index)
@@ -55,16 +55,16 @@ class RecentSearchesTracker: ObservableObject {
                 recentSearches = recentSearches.dropLast(1)
             }
         }
-        saveRecentSearches()
+        saveRecentSearches(accountHash: accountHash)
     }
     
-    func clearRecentSearches() {
+    func clearRecentSearches(accountHash: Int?) {
         recentSearches.removeAll()
-        saveRecentSearches()
+        saveRecentSearches(accountHash: accountHash)
     }
     
-    private func saveRecentSearches() {
-        if let accountHash = apiClient.accountHash {
+    private func saveRecentSearches(accountHash: Int?) {
+        if let accountHash {
             Task(priority: .background) {
                 try await persistenceRepository.saveRecentSearches(for: accountHash, with: recentSearches.map(\.uid))
             }

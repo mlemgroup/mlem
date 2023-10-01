@@ -136,8 +136,8 @@ final class PersistenceRepositoryTests: XCTestCase {
         try await repository.saveRecentSearches(for: 1, with: searches1)
         try await repository.saveRecentSearches(for: 2, with: searches2)
         
-        let loadedSearches1 = repository.loadRecentSearches(accountHash: 1) // read them back
-        let loadedSearches2 = repository.loadRecentSearches(accountHash: 2)
+        let loadedSearches1 = repository.loadRecentSearches(for: 1) // read them back
+        let loadedSearches2 = repository.loadRecentSearches(for: 2)
         
         XCTAssertEqual(loadedSearches1, searches1) // assert we were given the same values back
         XCTAssertEqual(loadedSearches2, searches2)
@@ -145,7 +145,7 @@ final class PersistenceRepositoryTests: XCTestCase {
     
     func testLoadRecentSearchesWithoutValues() async throws {
         XCTAssert(disk.isEmpty) // assert that our mock disk has nothing in it
-        let loadedSearches = repository.loadRecentSearches(accountHash: 1) // perform a load knowing the disk is empty
+        let loadedSearches = repository.loadRecentSearches(for: 1) // perform a load knowing the disk is empty
         XCTAssert(loadedSearches.isEmpty) // assert we were returned an empty list
     }
     

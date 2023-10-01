@@ -41,8 +41,6 @@ class APIClient {
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
     
-    /// Stores the hash value of the current account
-    private(set) var accountHash: Int?
     private(set) var session: APISession = .undefined
     
     // MARK: - Initialisation
@@ -50,13 +48,11 @@ class APIClient {
     init(
         urlSession: URLSession = .init(configuration: .default),
         decoder: JSONDecoder = .defaultDecoder,
-        accountHash: Int? = nil,
         transport: @escaping (URLSession, URLRequest) async throws -> (Data, URLResponse)
     ) {
         self.urlSession = urlSession
         self.decoder = decoder
         self.transport = transport
-        self.accountHash = accountHash
     }
     
     // MARK: - Public methods
@@ -66,7 +62,6 @@ class APIClient {
     func configure(for flow: AppFlow) {
         switch flow {
         case let .account(account):
-            accountHash = account.hashValue
             session = .authenticated(account.instanceLink, account.accessToken)
         case .onboarding:
             // no calls to our `APIClient` should be made during onboarding
