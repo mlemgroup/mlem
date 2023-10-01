@@ -72,7 +72,7 @@ extension PostDetailEditorView {
                         if let uiImage = UIImage(data: data) {
                             imageModel?.image = Image(uiImage: uiImage)
                         }
-                        if confirmImageUploads {
+                        if askedForPermissionToUploadImages == false || confirmImageUploads {
                             showingUploadConfirmation = true
                         } else {
                             uploadImage()
