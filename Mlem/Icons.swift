@@ -128,6 +128,7 @@ struct Icons {
     static let updated: String = "clock.arrow.2.circlepath"
     static let favorite: String = "star"
     static let favoriteFill: String = "star.fill"
+    static let close: String = "multiply"
     
     // common operations
     static let share: String = "square.and.arrow.up"
@@ -136,7 +137,8 @@ struct Icons {
     static let filter: String = "line.3.horizontal.decrease.circle"
     static let filterFill: String = "line.3.horizontal.decrease.circle.fill"
     static let menu: String = "ellipsis"
-    static let importSymbol: String = "square.and.arrow.down" // Just "import" can't be used :(
+    static let `import`: String = "square.and.arrow.down"
+    static let attachment: String = "paperclip"
     static let edit: String = "pencil"
     static let delete: String = "trash"
     
