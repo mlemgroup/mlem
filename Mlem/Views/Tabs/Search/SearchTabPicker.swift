@@ -51,7 +51,7 @@ struct SearchTabPicker: View {
                                 }
                             }
                         )
-                        .animation(.spring(duration: 0.15, bounce: 0.3), value: selected)
+                        .animation(.spring(response: 0.15, dampingFraction: 0.825), value: selected)
                 }
                     .buttonStyle(EmptyButtonStyle())
             }
