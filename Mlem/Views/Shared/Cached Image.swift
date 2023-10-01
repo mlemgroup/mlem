@@ -103,8 +103,8 @@ struct CachedImage: View {
                                 width: screenWidth,
                                 height: min(maxHeight, imageContainer.image.size.height * ratio)
                             )
-                            shouldRecomputeSize = false
                             cacheImageSize()
+                            shouldRecomputeSize = false
                         }
                     }
                 if shouldExpand {
@@ -159,6 +159,13 @@ struct CachedImage: View {
         ])
         .frame(idealWidth: size.width)
         .frame(height: size.height)
+        .onDisappear {
+            // if the post disappears and the size still isn't computed, just cache it as-is
+            if shouldRecomputeSize {
+                cacheImageSize()
+                shouldRecomputeSize = false
+            }
+        }
     }
     
     static func imageNotFoundDefault() -> AnyView {
