@@ -34,4 +34,5 @@ extension APIErrorResponse {
     var isNotLoggedIn: Bool { error == "not_logged_in" }
     var userRegistrationPending: Bool { registrationErrors.contains(error) }
     var emailNotVerified: Bool { registrationErrors.contains(error) }
+    var instanceIsPrivate: Bool { error == "instance_is_private" }
 }
