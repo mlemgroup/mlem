@@ -28,7 +28,8 @@ struct PostDetailEditorView: View {
     @Dependency(\.pictrsRepository) var pictrsRepository
     @Dependency(\.errorHandler) var errorHandler
     
-    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
+    @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
+    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
     
     @Environment(\.dismiss) var dismiss
         
@@ -209,6 +210,9 @@ struct PostDetailEditorView: View {
                 onCancel: cancelUpload,
                 imageModel: imageModel
             )
+            .onAppear {
+                askedForPermissionToUploadImages = true
+            }
         }
     }
 }
