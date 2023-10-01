@@ -24,7 +24,7 @@ class RecentSearchesTracker: ObservableObject {
         
         recentSearches = .init()
         if let accountHash = apiClient.accountHash {
-            let identifiers = persistenceRepository.loadRecentSearches(accountHash: accountHash)
+            let identifiers = persistenceRepository.loadRecentSearches(for: accountHash)
             
             for id in identifiers {
                 print(id.contentType, id.contentId)
