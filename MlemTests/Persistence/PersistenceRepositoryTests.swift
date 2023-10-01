@@ -120,16 +120,16 @@ final class PersistenceRepositoryTests: XCTestCase {
     // MARK: - Recent Searches
     
     func testSaveRecentSearches() async throws {
-        let searches = ["these", "are", "some", "terms"]
+        let searches: [ContentModelIdentifier] = [.init(contentType: .user, contentId: 1), .init(contentType: .community, contentId: 2)]
         
         try await repository.saveRecentSearches(searches) // write the examples to disk
-        let searchesFromDisk = try load([String].self) // load them from the disk _without_ using the repository
+        let searchesFromDisk = try load([ContentModelIdentifier].self) // load them from the disk _without_ using the repository
         
         XCTAssertEqual(searches, searchesFromDisk) // confirm what was written to disk matches what we sent in
     }
     
     func testLoadRecentSearchesWithValues() async throws {
-        let searches = ["these", "are", "some", "terms"]
+        let searches: [ContentModelIdentifier] = [.init(contentType: .user, contentId: 1), .init(contentType: .community, contentId: 2)]
         
         try await repository.saveRecentSearches(searches) // write the example terms to the disk
         let loadedSearches = repository.loadRecentSearches() // read them back

@@ -29,7 +29,7 @@ public struct SwipeConfiguration {
     /// In ascending order of appearance.
     let trailingActions: [SwipeAction]
     
-    init(leadingActions: [SwipeAction?], trailingActions: [SwipeAction?]) {
+    init(leadingActions: [SwipeAction?] = [], trailingActions: [SwipeAction?] = []) {
         assert(
             leadingActions.count <= 3 && trailingActions.count <= 3,
             "Getting a little swipey aren't we? Ask your fellow Mlem'ers if you really need more than 3 swipe actions =)"
@@ -185,6 +185,7 @@ struct SwipeyView: ViewModifier {
                                 .padding(.horizontal, 20)
                         }
                         .accessibilityHidden(true) // prevent these from popping up in VO
+                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
                     }
             }
             // prevents various animation glitches
@@ -348,7 +349,7 @@ struct SwipeyView: ViewModifier {
 
 extension View {
     @ViewBuilder
-    func addSwipeyActions(leading: [SwipeAction?], trailing: [SwipeAction?]) -> some View {
+    func addSwipeyActions(leading: [SwipeAction?] = [], trailing: [SwipeAction?] = []) -> some View {
         modifier(
             SwipeyView(
                 configuration: .init(
