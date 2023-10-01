@@ -46,15 +46,16 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     .environmentObject(CommunitySearchResultsTracker())
                 case .apiPostView(let post):
                     let postModel = PostModel(from: post)
+                    let postTracker = PostTracker(
+                        shouldPerformMergeSorting: false,
+                        internetSpeed: internetSpeed,
+                        initialItems: [postModel],
+                        upvoteOnSave: upvoteOnSave
+                    )
+                    // swiftlint:disable:next redundant_discardable_let
+                    let _ = postTracker.add([postModel])
                     ExpandedPost(post: postModel)
-                        .environmentObject(
-                            PostTracker(
-                                shouldPerformMergeSorting: false,
-                                internetSpeed: internetSpeed,
-                                initialItems: [postModel],
-                                upvoteOnSave: upvoteOnSave
-                            )
-                        )
+                        .environmentObject(postTracker)
                         .environmentObject(appState)
                 case .apiPost(let post):
                     LazyLoadExpandedPost(post: post)
@@ -153,17 +154,22 @@ struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
         }
         
         return await MainActor.run {
-            switch resolution {
-            case let .post(object):
-                navigationPath.wrappedValue.append(object)
-                return true
-            case let .person(object):
-                navigationPath.wrappedValue.append(object.person)
-                return true
-            case let .community(object):
-                navigationPath.wrappedValue.append(object)
-                return true
-            case .comment:
+            do {
+                switch resolution {
+                case let .post(object):
+                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
+                    return true
+                case let .person(object):
+                    navigationPath.wrappedValue.append(try Path.makeRoute(object.person))
+                    return true
+                case let .community(object):
+                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
+                    return true
+                case .comment:
+                    return false
+                }
+            } catch {
+                errorHandler.handle(error)
                 return false
             }
         }

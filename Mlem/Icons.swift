@@ -125,6 +125,7 @@ struct Icons {
     static let noContent: String = "binoculars"
     static let noPosts: String = "text.bubble"
     static let time: String = "clock"
+    static let updated: String = "clock.arrow.2.circlepath"
     static let favorite: String = "star"
     static let favoriteFill: String = "star.fill"
     static let close: String = "multiply"
@@ -138,6 +139,8 @@ struct Icons {
     static let menu: String = "ellipsis"
     static let `import`: String = "square.and.arrow.down"
     static let attachment: String = "paperclip"
+    static let edit: String = "pencil"
+    static let delete: String = "trash"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"
@@ -172,6 +175,5 @@ struct Icons {
     static let emptySquare: String = "square"
     static let dropdown: String = "chevron.down"
     static let noFile: String = "questionmark.folder"
-    static let delete: String = "trash"
     static let forward: String = "chevron.right"
 }
