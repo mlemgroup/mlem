@@ -160,7 +160,7 @@ struct CachedImage: View {
         .frame(idealWidth: size.width)
         .frame(height: size.height)
         .onDisappear {
-            // if the post disappears and the size still isn't computed, just cache it as-is
+            // if the post disappears and the size still isn't computed, cache the fallback size. This ensures that the view doesn't resize while scrolling back up.
             if shouldRecomputeSize {
                 cacheImageSize()
                 shouldRecomputeSize = false
