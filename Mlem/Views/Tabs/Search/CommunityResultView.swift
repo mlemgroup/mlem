@@ -89,13 +89,15 @@ struct CommunityResultView: View {
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .contextMenu {
-            Button(
-                community.subscribed ? "Unsubscribe" : "Subscribe",
-                systemImage: community.subscribed ? Icons.unsubscribe : Icons.subscribe,
-                role: community.subscribed ? .destructive : nil
-            ) {
+            Button {
                 Task(priority: .userInitiated) { await subscribe() }
+            } label: {
+                Label(
+                    community.subscribed ? "Unsubscribe" : "Subscribe",
+                    systemImage: community.subscribed ? Icons.unsubscribe : Icons.subscribe
+                )
             }
+            .toolbarRole(community.subscribed ? .destructive : nil)
         }
     }
 }
