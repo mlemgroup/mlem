@@ -371,7 +371,7 @@ struct AddSavedInstanceView: View {
         case UserIDRetrievalError.couldNotFetchUserInformation:
             message = "Mlem couldn't fetch you account's information.\nFile a bug report."
         case UserIDRetrievalError.instanceIsPrivate:
-            message = "\(instance) is private."
+            message = "\(instance) is a private instance."
         case APIClientError.encoding:
             // TODO: we should add better validation
             //  at the UI layer as encoding failures can be caught
