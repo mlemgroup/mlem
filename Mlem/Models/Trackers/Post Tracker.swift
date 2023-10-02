@@ -165,7 +165,7 @@ class PostTracker: ObservableObject {
     }
     
     @MainActor
-    private func reset(
+    func reset(
         with newItems: [PostModel] = .init(),
         filteredWith filter: @escaping (_: PostModel) -> Bool = { _ in true }
     ) {

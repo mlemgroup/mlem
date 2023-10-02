@@ -17,9 +17,11 @@ struct UserView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.personRepository) var personRepository
     
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
+    let internetSpeed: InternetSpeed
     
     // environment
     @EnvironmentObject var appState: AppState
@@ -40,6 +42,8 @@ struct UserView: View {
     init(userID: Int, userDetails: APIPersonView? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        
+        self.internetSpeed = internetSpeed
         
         self._userID = State(initialValue: userID)
         self._userDetails = State(initialValue: userDetails)
@@ -147,7 +151,7 @@ struct UserView: View {
         .navigationBarColor()
         .headerProminence(.standard)
         .refreshable {
-            await tryLoadUser()
+            await tryReloadUser()
         }.toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 accountSwitcher
@@ -190,28 +194,50 @@ struct UserView: View {
             }
         }
         .task(priority: .userInitiated) {
-            await tryLoadUser()
+            await tryReloadUser()
         }
     }
     
-    private func tryLoadUser() async {
+    // swiftlint:disable function_body_length
+    private func tryReloadUser() async {
         do {
-            let authoredContent = try await loadUser(savedItems: false)
+            let authoredContent = try await personRepository.getUserDetails(for: userID, limit: internetSpeed.pageSize)
             var savedContentData: GetPersonDetailsResponse?
             if isShowingOwnProfile() {
-                savedContentData = try await loadUser(savedItems: true)
+                savedContentData = try await personRepository.getUserDetails(
+                    for: userID,
+                    limit: internetSpeed.pageSize,
+                    savedOnly: true
+                )
             }
             
-            privateCommentTracker.add(authoredContent.comments
-                .sorted(by: { $0.comment.published > $1.comment.published })
-                .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
+            if isShowingOwnProfile(), let currentAccount = appState.currentActiveAccount {
+                // take this opportunity to update the users avatar url to catch changes
+                // we should be able to shift this down to the repository layer in the future so that we
+                // catch anytime the app loads the signed in users details from any location in the app 🤞
+                // -> we'll need to find a way to stop the state changes this creates from cancelling other in-flight requests
+                let url = authoredContent.personView.person.avatarUrl
+                let updatedAccount = SavedAccount(
+                    id: currentAccount.id,
+                    instanceLink: currentAccount.instanceLink,
+                    accessToken: currentAccount.accessToken,
+                    username: currentAccount.username,
+                    storedNickname: currentAccount.storedNickname,
+                    avatarUrl: url
+                )
+                appState.setActiveAccount(updatedAccount)
+            }
             
-            privatePostTracker.add(authoredContent.posts.map { PostModel(from: $0) })
+            privateCommentTracker.comments = authoredContent.comments
+                .sorted(by: { $0.comment.published > $1.comment.published })
+                .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) }
+            
+            privatePostTracker.reset(with: authoredContent.posts.map { PostModel(from: $0) })
             
             if let savedContent = savedContentData {
-                privateCommentTracker.add(savedContent.comments
+                privateCommentTracker.comments = savedContent.comments
                     .sorted(by: { $0.comment.published > $1.comment.published })
-                    .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
+                    .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) }
                 
                 privatePostTracker.add(savedContent.posts.map { PostModel(from: $0) })
             }
@@ -224,7 +250,7 @@ struct UserView: View {
         } catch {
             if userDetails == nil {
                 errorDetails = ErrorDetails(error: error, refresh: {
-                    await tryLoadUser()
+                    await tryReloadUser()
                     return userDetails != nil
                 })
             } else {
@@ -238,28 +264,7 @@ struct UserView: View {
             }
         }
     }
-    
-    private func loadUser(savedItems: Bool) async throws -> GetPersonDetailsResponse {
-        let response = try await apiClient.getPersonDetails(for: userID, limit: 20, savedOnly: savedItems)
-        
-        if isShowingOwnProfile(), let currentAccount = appState.currentActiveAccount {
-            // take this opportunity to update the users avatar url to catch changes
-            // we should be able to shift this down to the repository layer in the future so that we
-            // catch anytime the app loads the signed in users details from any location in the app 🤞
-            let url = response.personView.person.avatarUrl
-            let updatedAccount = SavedAccount(
-                id: currentAccount.id,
-                instanceLink: currentAccount.instanceLink,
-                accessToken: currentAccount.accessToken,
-                username: currentAccount.username,
-                storedNickname: currentAccount.storedNickname,
-                avatarUrl: url
-            )
-            appState.setActiveAccount(updatedAccount)
-        }
-        
-        return response
-    }
+    // swiftlint:enable function_body_length
 }
 
 // TODO: darknavi - Move these to a common area for reuse

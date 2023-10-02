@@ -29,9 +29,22 @@ class PersonRepository {
         return users
     }
     
-    func loadDetails(for id: Int) async throws -> UserModel {
+    /// Gets the UserModel for a given user
+    /// - Parameter id: id of the user to get
+    /// - Returns: UserModel for the given user
+    func getUser(for id: Int) async throws -> UserModel {
         let response = try await apiClient.getPersonDetails(for: id, limit: 1, savedOnly: false)
         return UserModel(from: response.personView)
+    }
+    
+    /// Gets full user details for the given user
+    /// - Parameters:
+    ///   - id: user id to get for
+    ///   - limit: max number of content items to fetch
+    ///   - savedOnly: if present, whether to fetch saved items; calling user must be the requested user
+    /// - Returns: GetPersonDetailsResponse for the given user
+    func getUserDetails(for id: Int, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {
+        try await apiClient.getPersonDetails(for: id, limit: limit, savedOnly: savedOnly)
     }
     
     func getUnreadCounts() async throws -> APIPersonUnreadCounts {
