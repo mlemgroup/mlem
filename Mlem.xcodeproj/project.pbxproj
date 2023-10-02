@@ -330,6 +330,7 @@
 		CD2053102AC878B50000AA38 /* UpdatedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */; };
 		CD2053142ACBAF150000AA38 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053132ACBAF150000AA38 /* AvatarType.swift */; };
 		CD2053172ACBBB5A0000AA38 /* DefaultAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053162ACBBB5A0000AA38 /* DefaultAvatarView.swift */; };
+		CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053112ACB72190000AA38 /* AccountTransitionView.swift */; };
 		CD2BD6782A79F55800ECFF89 /* ImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BD6772A79F55800ECFF89 /* ImageSize.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
 		CD309C462A93FBD300988F95 /* Logo View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD309C452A93FBD300988F95 /* Logo View.swift */; };
@@ -809,6 +810,7 @@
 		CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedTimestampView.swift; sourceTree = "<group>"; };
 		CD2053132ACBAF150000AA38 /* AvatarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarType.swift; sourceTree = "<group>"; };
 		CD2053162ACBBB5A0000AA38 /* DefaultAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAvatarView.swift; sourceTree = "<group>"; };
+		CD2053112ACB72190000AA38 /* AccountTransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransitionView.swift; sourceTree = "<group>"; };
 		CD2BD6772A79F55800ECFF89 /* ImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSize.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
 		CD309C452A93FBD300988F95 /* Logo View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logo View.swift"; sourceTree = "<group>"; };
@@ -1169,6 +1171,7 @@
 				504ECBA92AB27C73006C0B96 /* LandingPage.swift */,
 				CDE3BA862A8C25B000B972E2 /* OnboardingView.swift */,
 				504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */,
+				CD2053112ACB72190000AA38 /* AccountTransitionView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -2627,6 +2630,7 @@
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
 				E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */,
 				B104A6E02A59C19400B3E725 /* OperationQueue - Easy init.swift in Sources */,
+				CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */,
 				03B7AAF32ABEF85300068B23 /* UserModel.swift in Sources */,
 				CDC1C9432A7AC24600072E3D /* ReadCheck.swift in Sources */,
 				63F0C7A22A0519BA00A18C5D /* PostSortType.swift in Sources */,
