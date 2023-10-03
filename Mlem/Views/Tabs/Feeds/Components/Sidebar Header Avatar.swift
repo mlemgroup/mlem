@@ -17,9 +17,9 @@ struct SidebarHeaderAvatar: View {
     var imageName: String {
         switch avatarType {
         case .user:
-            Icons.user
+            return Icons.user
         case .community:
-            Icons.community
+            return Icons.community
         }
     }
     
