@@ -61,7 +61,7 @@ struct SearchView: View {
             .onAppear {
                 Task(priority: .background) {
                     do {
-                        try await recentSearchesTracker.reloadRecentSearches(accountHash: appState.currentActiveAccount?.hashValue)
+                        try await recentSearchesTracker.reloadRecentSearches(accountId: appState.currentActiveAccount?.stableIdString)
                     } catch {
                         print("Error while loading recent searches: \(error.localizedDescription)")
                         errorHandler.handle(error)

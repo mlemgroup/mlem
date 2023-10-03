@@ -47,7 +47,7 @@ struct RecentSearchesView: View {
             Spacer()
             
             Button {
-                recentSearchesTracker.clearRecentSearches(accountHash: appState.currentActiveAccount?.hashValue)
+                recentSearchesTracker.clearRecentSearches(accountId: appState.currentActiveAccount?.stableIdString)
             } label: {
                 Text("Clear")
                     .font(.subheadline)
@@ -68,7 +68,7 @@ struct RecentSearchesView: View {
                 }
             }
             .simultaneousGesture(TapGesture().onEnded {
-                recentSearchesTracker.addRecentSearch(contentModel, accountHash: appState.currentActiveAccount?.hashValue)
+                recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
             })
             Divider()
         }

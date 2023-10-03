@@ -83,14 +83,14 @@ class PersistenceRepository {
         try await save(value, to: Path.savedAccounts)
     }
     
-    func loadRecentSearches(for accountHash: Int) -> [ContentModelIdentifier] {
-        let searches = load([Int: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
-        return searches[accountHash] ?? []
+    func loadRecentSearches(for accountId: String) -> [ContentModelIdentifier] {
+        let searches = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
+        return searches[accountId] ?? []
     }
     
-    func saveRecentSearches(for accountHash: Int, with searches: [ContentModelIdentifier]) async throws {
-        var extant = load([Int: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
-        extant[accountHash] = searches
+    func saveRecentSearches(for accountId: String, with searches: [ContentModelIdentifier]) async throws {
+        var extant = load([String: [ContentModelIdentifier]].self, from: Path.recentSearches) ?? [:]
+        extant[accountId] = searches
         try await save(extant, to: Path.recentSearches)
     }
     

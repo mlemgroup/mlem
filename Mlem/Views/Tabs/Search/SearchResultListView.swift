@@ -27,7 +27,7 @@ struct SearchResultListView: View {
                     }
                 }
                 .simultaneousGesture(TapGesture().onEnded {
-                    recentSearchesTracker.addRecentSearch(contentModel, accountHash: appState.currentActiveAccount?.hashValue)
+                    recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
                 })
                 Divider()
                     .onAppear {

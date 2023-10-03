@@ -19,12 +19,12 @@ class RecentSearchesTracker: ObservableObject {
     @Published var recentSearches: [AnyContentModel] = .init()
     
     /// clears recentSearches and loads new values based on the current account
-    func reloadRecentSearches(accountHash: Int?) async throws {
+    func reloadRecentSearches(accountId: String?) async throws {
         defer { hasLoaded = true }
         
         recentSearches = .init()
-        if let accountHash {
-            let identifiers = persistenceRepository.loadRecentSearches(for: accountHash)
+        if let accountId {
+            let identifiers = persistenceRepository.loadRecentSearches(for: accountId)
             
             for id in identifiers {
                 print(id.contentType, id.contentId)
@@ -42,7 +42,7 @@ class RecentSearchesTracker: ObservableObject {
         }
     }
     
-    func addRecentSearch(_ item: AnyContentModel, accountHash: Int?) {
+    func addRecentSearch(_ item: AnyContentModel, accountId: String?) {
         // if the item is already in the recent list, move it to the top
         if let index = recentSearches.firstIndex(of: item) {
             recentSearches.remove(at: index)
@@ -55,18 +55,19 @@ class RecentSearchesTracker: ObservableObject {
                 recentSearches = recentSearches.dropLast(1)
             }
         }
-        saveRecentSearches(accountHash: accountHash)
+        saveRecentSearches(accountId: accountId)
     }
     
-    func clearRecentSearches(accountHash: Int?) {
+    func clearRecentSearches(accountId: String?) {
         recentSearches.removeAll()
-        saveRecentSearches(accountHash: accountHash)
+        saveRecentSearches(accountId: accountId)
     }
     
-    private func saveRecentSearches(accountHash: Int?) {
-        if let accountHash {
+    private func saveRecentSearches(accountId: String?) {
+        if let accountId {
+            print("saving searches for \(accountId)")
             Task(priority: .background) {
-                try await persistenceRepository.saveRecentSearches(for: accountHash, with: recentSearches.map(\.uid))
+                try await persistenceRepository.saveRecentSearches(for: accountId, with: recentSearches.map(\.uid))
             }
         }
     }
