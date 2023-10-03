@@ -19,7 +19,7 @@ struct SidebarHeaderAvatar: View {
             url: imageUrl,
             shouldExpand: false,
             fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
-            imageNotFound: { AnyView(DefaultAvatar(avatarType: avatarType)) },
+            imageNotFound: { AnyView(DefaultAvatarView(avatarType: avatarType)) },
             contentMode: .fill
         )
         .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)

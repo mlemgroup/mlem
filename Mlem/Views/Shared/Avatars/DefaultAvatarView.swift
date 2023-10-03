@@ -1,5 +1,5 @@
 //
-//  DefaultAvatar.swift
+//  DefaultAvatarView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-10-02.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct DefaultAvatar: View {
+struct DefaultAvatarView: View {
     let avatarType: AvatarType
     
     var body: some View {

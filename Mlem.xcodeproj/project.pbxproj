@@ -329,7 +329,7 @@
 		CD18DC732A522A7C002C56BC /* CreatePrivateMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */; };
 		CD2053102AC878B50000AA38 /* UpdatedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */; };
 		CD2053142ACBAF150000AA38 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053132ACBAF150000AA38 /* AvatarType.swift */; };
-		CD2053172ACBBB5A0000AA38 /* DefaultAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053162ACBBB5A0000AA38 /* DefaultAvatar.swift */; };
+		CD2053172ACBBB5A0000AA38 /* DefaultAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053162ACBBB5A0000AA38 /* DefaultAvatarView.swift */; };
 		CD2BD6782A79F55800ECFF89 /* ImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BD6772A79F55800ECFF89 /* ImageSize.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
 		CD309C462A93FBD300988F95 /* Logo View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD309C452A93FBD300988F95 /* Logo View.swift */; };
@@ -808,7 +808,7 @@
 		CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePrivateMessageRequest.swift; sourceTree = "<group>"; };
 		CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedTimestampView.swift; sourceTree = "<group>"; };
 		CD2053132ACBAF150000AA38 /* AvatarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarType.swift; sourceTree = "<group>"; };
-		CD2053162ACBBB5A0000AA38 /* DefaultAvatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAvatar.swift; sourceTree = "<group>"; };
+		CD2053162ACBBB5A0000AA38 /* DefaultAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAvatarView.swift; sourceTree = "<group>"; };
 		CD2BD6772A79F55800ECFF89 /* ImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSize.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
 		CD309C452A93FBD300988F95 /* Logo View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logo View.swift"; sourceTree = "<group>"; };
@@ -2040,7 +2040,7 @@
 		CD2053152ACBBB490000AA38 /* Avatars */ = {
 			isa = PBXGroup;
 			children = (
-				CD2053162ACBBB5A0000AA38 /* DefaultAvatar.swift */,
+				CD2053162ACBBB5A0000AA38 /* DefaultAvatarView.swift */,
 			);
 			path = Avatars;
 			sourceTree = "<group>";
@@ -2655,7 +2655,7 @@
 				CD863FBA2A6AEB5900A31ED9 /* TabSafeScrollView.swift in Sources */,
 				637218772A3A2AAD008C4816 /* APIRequest.swift in Sources */,
 				63A09B69285F53E9004F0032 /* Error View.swift in Sources */,
-				CD2053172ACBBB5A0000AA38 /* DefaultAvatar.swift in Sources */,
+				CD2053172ACBBB5A0000AA38 /* DefaultAvatarView.swift in Sources */,
 				CD3FBCE72A4A8CE300B2063F /* Messages Feed View.swift in Sources */,
 				63344C582A07DB9A001BC616 /* Array - Move Elements Around.swift in Sources */,
 				03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */,

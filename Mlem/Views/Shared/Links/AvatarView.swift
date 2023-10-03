@@ -52,7 +52,7 @@ struct AvatarView: View {
             url: url?.withIcon64Parameters,
             shouldExpand: false,
             fixedSize: CGSize(width: avatarSize, height: avatarSize),
-            imageNotFound: { AnyView(DefaultAvatar(avatarType: type)) },
+            imageNotFound: { AnyView(DefaultAvatarView(avatarType: type)) },
             contentMode: .fill
         )
         .frame(width: avatarSize, height: avatarSize)
