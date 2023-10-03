@@ -15,33 +15,19 @@ struct SidebarHeaderAvatar: View {
     let avatarType: AvatarType
     
     var body: some View {
-        avatar
-            .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
-            .clipShape(Circle())
-            .overlay(Circle()
-                .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
-            .shadow(radius: 10)
-            .background(shouldClipAvatar ? Circle()
-                .foregroundColor(.systemBackground) : nil)
-    }
-    
-    @ViewBuilder
-    var avatar: some View {
         CachedImage(
             url: imageUrl,
             shouldExpand: false,
             fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
-            imageNotFound: fallbackAvatar,
+            imageNotFound: { AnyView(DefaultAvatar(avatarType: avatarType)) },
             contentMode: .fill
         )
-    }
-    
-    func fallbackAvatar() -> AnyView {
-        AnyView(
-            Image(systemName: avatarType.iconNameFill)
-                .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
-                .background(.white)
-                .foregroundStyle(Color.gray.gradient)
-        )
+        .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
+        .clipShape(Circle())
+        .overlay(Circle()
+            .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
+        .shadow(radius: 10)
+        .background(shouldClipAvatar ? Circle()
+            .foregroundColor(.systemBackground) : nil)
     }
 }
