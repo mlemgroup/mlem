@@ -14,7 +14,11 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let username: String
     let storedNickname: String?
     let avatarUrl: URL?
-    let stableIdString: String
+    
+    var stableIdString: String {
+        assert(instanceLink.host() != nil, "nil instance link host!")
+        return "\(username)@\(instanceLink.host() ?? "unknown")"
+    }
     
     init(
         id: Int,
@@ -30,9 +34,6 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = username
         self.storedNickname = storedNickname
         self.avatarUrl = avatarUrl
-        
-        assert(instanceLink.host() != nil, "nil instance link host!")
-        self.stableIdString = "\(username)@\(instanceLink.host() ?? "unknown")"
     }
     
     // Convenience initializer to create an equal copy with different non-identifying properties.
@@ -48,7 +49,6 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = account.username
         self.storedNickname = storedNickname ?? account.storedNickname
         self.avatarUrl = avatarUrl
-        self.stableIdString = account.stableIdString
     }
   
     // convenience
