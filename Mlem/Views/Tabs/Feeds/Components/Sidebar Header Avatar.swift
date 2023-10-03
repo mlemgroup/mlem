@@ -9,10 +9,20 @@ import Foundation
 
 import SwiftUI
 
-struct CommunitySidebarHeaderAvatar: View {
+struct SidebarHeaderAvatar: View {
     @State var shouldClipAvatar: Bool = false
     @State var imageUrl: URL?
+    let avatarType: AvatarType
 
+    var imageName: String {
+        switch avatarType {
+        case .user:
+            Icons.user
+        case .community:
+            Icons.community
+        }
+    }
+    
     var body: some View {
         avatar
             .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
@@ -35,11 +45,9 @@ struct CommunitySidebarHeaderAvatar: View {
             )
         } else {
             VStack(alignment: .center) {
-                Spacer()
-                    .frame(height: 20)
-                Image(systemName: Icons.user)
+                Image(systemName: imageName)
                     .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(Color.gray.gradient)
             }
         }
     }
