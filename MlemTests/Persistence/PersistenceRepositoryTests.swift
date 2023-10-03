@@ -123,9 +123,9 @@ final class PersistenceRepositoryTests: XCTestCase {
         let searches: [ContentModelIdentifier] = [.init(contentType: .user, contentId: 1), .init(contentType: .community, contentId: 2)]
         
         try await repository.saveRecentSearches(for: "one@test", with: searches) // write the examples to disk
-        let searchesFromDisk = try load([Int: [ContentModelIdentifier]].self) // load them from the disk _without_ using the repository
+        let searchesFromDisk = try load([String: [ContentModelIdentifier]].self) // load them from the disk _without_ using the repository
         
-        let expected: [Int: [ContentModelIdentifier]] = [1: searches]
+        let expected: [String: [ContentModelIdentifier]] = ["one@test": searches]
         XCTAssertEqual(expected, searchesFromDisk) // confirm what was written to disk matches what we sent in
     }
     
