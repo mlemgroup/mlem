@@ -13,15 +13,6 @@ struct SidebarHeaderAvatar: View {
     @State var shouldClipAvatar: Bool = false
     @State var imageUrl: URL?
     let avatarType: AvatarType
-
-    var imageName: String {
-        switch avatarType {
-        case .user:
-            return Icons.user
-        case .community:
-            return Icons.community
-        }
-    }
     
     var body: some View {
         avatar
@@ -47,8 +38,9 @@ struct SidebarHeaderAvatar: View {
     
     func fallbackAvatar() -> AnyView {
         AnyView(
-            Image(systemName: imageName)
+            Image(systemName: avatarType.iconNameFill)
                 .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
+                .background(.white)
                 .foregroundStyle(Color.gray.gradient)
         )
     }
