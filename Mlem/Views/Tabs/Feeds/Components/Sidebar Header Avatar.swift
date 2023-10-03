@@ -36,19 +36,20 @@ struct SidebarHeaderAvatar: View {
     
     @ViewBuilder
     var avatar: some View {
-        if let avatarURL = imageUrl {
-            CachedImage(
-                url: avatarURL,
-                shouldExpand: false,
-                fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
-                contentMode: .fill
-            )
-        } else {
-            VStack(alignment: .center) {
-                Image(systemName: imageName)
-                    .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
-                    .foregroundStyle(Color.gray.gradient)
-            }
-        }
+        CachedImage(
+            url: imageUrl,
+            shouldExpand: false,
+            fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
+            imageNotFound: fallbackAvatar,
+            contentMode: .fill
+        )
+    }
+    
+    func fallbackAvatar() -> AnyView {
+        AnyView(
+            Image(systemName: imageName)
+                .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
+                .foregroundStyle(Color.gray.gradient)
+        )
     }
 }
