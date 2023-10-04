@@ -433,7 +433,11 @@ extension FeedPost {
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .upvoteColor,
-            action: upvotePost
+            action: {
+                Task {
+                    await upvotePost()
+                }
+            }
         )
     }
 
@@ -446,7 +450,11 @@ extension FeedPost {
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .downvoteColor,
-            action: downvotePost
+            action: {
+                Task {
+                    await downvotePost()
+                }
+            }
         )
     }
 
@@ -457,7 +465,11 @@ extension FeedPost {
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: .saveColor,
-            action: savePost
+            action: {
+                Task {
+                    await savePost()
+                }
+            }
         )
     }
 
