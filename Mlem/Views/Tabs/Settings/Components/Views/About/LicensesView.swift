@@ -34,7 +34,9 @@ struct LicensesView: View {
 
                     NavigationLink("Swift Dependencies", value: AppRoute.licenseSettings(.licenseDocument(swiftDependenciesLicense)))
 
-                    NavigationLink("Swift Markdown UI", value: AppRoute.licenseSettings(.licenseDocument(swiftMarkdownUILIcense)))
+                    NavigationLink("Swift Markdown UI", value: AppRoute.licenseSettings(.licenseDocument(swiftMarkdownUILicense)))
+
+                    NavigationLink("SwiftUIX", value: AppRoute.licenseSettings(.licenseDocument(swiftUIXLicense)))
 
                     NavigationLink(
                         "Awesome Lemmy Instances",

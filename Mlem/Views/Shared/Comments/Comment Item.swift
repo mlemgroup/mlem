@@ -162,6 +162,7 @@ struct CommentItem: View {
                     InteractionBarView(
                         votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
                         published: hierarchicalComment.commentView.comment.published,
+                        updated: hierarchicalComment.commentView.comment.updated,
                         numReplies: hierarchicalComment.commentView.counts.childCount,
                         saved: hierarchicalComment.commentView.saved,
                         accessibilityContext: "comment",
@@ -226,7 +227,11 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptyVoteSymbolName, fillName: upvoteSymbolName),
             color: .upvoteColor,
-            action: upvote
+            action: {
+                Task {
+                    await upvote()
+                }
+            }
         )
     }
     
@@ -235,7 +240,11 @@ extension CommentItem {
         return SwipeAction(
             symbol: .init(emptyName: emptyDownvoteSymbolName, fillName: downvoteSymbolName),
             color: .downvoteColor,
-            action: downvote
+            action: {
+                Task {
+                    await downvote()
+                }
+            }
         )
     }
     
@@ -243,7 +252,11 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptySaveSymbolName, fillName: saveSymbolName),
             color: .saveColor,
-            action: saveComment
+            action: {
+                Task {
+                    await saveComment()
+                }
+            }
         )
     }
 
@@ -251,7 +264,11 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
             color: .accentColor,
-            action: replyToCommentAsyncWrapper
+            action: {
+                Task {
+                    await replyToCommentAsyncWrapper()
+                }
+            }
         )
     }
     
