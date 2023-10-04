@@ -70,7 +70,6 @@
 		503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BA26E2A2C94540052516C /* URL+Identifiable.swift */; };
 		504106CD2A744D7F000AAEF8 /* CommentRepository+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */; };
 		504ECBAA2AB27C73006C0B96 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBA92AB27C73006C0B96 /* LandingPage.swift */; };
-		504ECBAC2AB27CB1006C0B96 /* OnboardingRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAB2AB27CB1006C0B96 /* OnboardingRoutes.swift */; };
 		504ECBAE2AB45B2A006C0B96 /* LemmyURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */; };
 		504ECBB12AB4B101006C0B96 /* LemmyURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */; };
 		505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */; };
@@ -328,9 +327,9 @@
 		CD18DC6F2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC6E2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift */; };
 		CD18DC732A522A7C002C56BC /* CreatePrivateMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */; };
 		CD2053102AC878B50000AA38 /* UpdatedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */; };
+		CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053112ACB72190000AA38 /* AccountTransitionView.swift */; };
 		CD2053142ACBAF150000AA38 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053132ACBAF150000AA38 /* AvatarType.swift */; };
 		CD2053172ACBBB5A0000AA38 /* DefaultAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053162ACBBB5A0000AA38 /* DefaultAvatarView.swift */; };
-		CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053112ACB72190000AA38 /* AccountTransitionView.swift */; };
 		CD2BD6782A79F55800ECFF89 /* ImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BD6772A79F55800ECFF89 /* ImageSize.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
 		CD309C462A93FBD300988F95 /* Logo View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD309C452A93FBD300988F95 /* Logo View.swift */; };
@@ -467,6 +466,7 @@
 		E4D4DBA22A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */; };
 		E4DDB4322A81819300B3A7E0 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4312A81819300B3A7E0 /* Double.swift */; };
 		E4DDB4342A819C8000B3A7E0 /* QuickLookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */; };
+		E4E0937A2ACD523800370F12 /* OnboardingRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E093792ACD523800370F12 /* OnboardingRoutes.swift */; };
 		E4F0B56F2ABD00A000BC3E4A /* PresentationBackgroundInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0B56E2ABD00A000BC3E4A /* PresentationBackgroundInteraction.swift */; };
 		E4F0B5722AC2581800BC3E4A /* RoutableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */; };
 /* End PBXBuildFile section */
@@ -552,7 +552,6 @@
 		503BA26E2A2C94540052516C /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		504106CC2A744D7F000AAEF8 /* CommentRepository+Dependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentRepository+Dependency.swift"; sourceTree = "<group>"; };
 		504ECBA92AB27C73006C0B96 /* LandingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
-		504ECBAB2AB27CB1006C0B96 /* OnboardingRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRoutes.swift; sourceTree = "<group>"; };
 		504ECBAD2AB45B2A006C0B96 /* LemmyURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURL.swift; sourceTree = "<group>"; };
 		504ECBB02AB4B101006C0B96 /* LemmyURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemmyURLTests.swift; sourceTree = "<group>"; };
 		505240E22A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteCommunitiesTracker+Dependency.swift"; sourceTree = "<group>"; };
@@ -808,9 +807,9 @@
 		CD18DC6E2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkPrivateMessageAsReadRequest.swift; sourceTree = "<group>"; };
 		CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePrivateMessageRequest.swift; sourceTree = "<group>"; };
 		CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedTimestampView.swift; sourceTree = "<group>"; };
+		CD2053112ACB72190000AA38 /* AccountTransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransitionView.swift; sourceTree = "<group>"; };
 		CD2053132ACBAF150000AA38 /* AvatarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarType.swift; sourceTree = "<group>"; };
 		CD2053162ACBBB5A0000AA38 /* DefaultAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAvatarView.swift; sourceTree = "<group>"; };
-		CD2053112ACB72190000AA38 /* AccountTransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTransitionView.swift; sourceTree = "<group>"; };
 		CD2BD6772A79F55800ECFF89 /* ImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSize.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
 		CD309C452A93FBD300988F95 /* Logo View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logo View.swift"; sourceTree = "<group>"; };
@@ -947,6 +946,7 @@
 		E4D4DBA12A7F233200C4F3DE /* FancyTabNavigationSelectionHashValueEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabNavigationSelectionHashValueEnvironmentKey.swift; sourceTree = "<group>"; };
 		E4DDB4312A81819300B3A7E0 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookView.swift; sourceTree = "<group>"; };
+		E4E093792ACD523800370F12 /* OnboardingRoutes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingRoutes.swift; sourceTree = "<group>"; };
 		E4F0B56E2ABD00A000BC3E4A /* PresentationBackgroundInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationBackgroundInteraction.swift; sourceTree = "<group>"; };
 		E4F0B5712AC2581800BC3E4A /* RoutableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutableTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1170,7 +1170,6 @@
 			children = (
 				504ECBA92AB27C73006C0B96 /* LandingPage.swift */,
 				CDE3BA862A8C25B000B972E2 /* OnboardingView.swift */,
-				504ECBAB2AB27CB1006C0B96 /* OnboardingRoute.swift */,
 				CD2053112ACB72190000AA38 /* AccountTransitionView.swift */,
 			);
 			path = Onboarding;
@@ -2382,7 +2381,7 @@
 			children = (
 				E49E01F32ABD99D300E42BB3 /* Routable.swift */,
 				E40E018B2AABF85500410B2C /* AppRoutes.swift */,
-				504ECBAB2AB27CB1006C0B96 /* OnboardingRoutes.swift */,
+				E4E093792ACD523800370F12 /* OnboardingRoutes.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -2827,6 +2826,7 @@
 				CDCBD7242A8D62FF00387A2C /* InstanceMetadata.swift in Sources */,
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
 				CD1824402AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift in Sources */,
+				E4E0937A2ACD523800370F12 /* OnboardingRoutes.swift in Sources */,
 				CD82A2502A7162D400111034 /* GetPersonUnreadCount.swift in Sources */,
 				CD82A24C2A70A26900111034 /* View - CustomBadge.swift in Sources */,
 				B1CB6E752A4C729D00DA9675 /* Bundle - Current App Icon.swift in Sources */,
@@ -2900,7 +2900,6 @@
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
-				504ECBAC2AB27CB1006C0B96 /* OnboardingRoutes.swift in Sources */,
 				CD82A2532A716B8100111034 /* PersonRepository.swift in Sources */,
 				CD69F55F2A40121D0028D4F7 /* Ellipsis Menu.swift in Sources */,
 				638535712A1779BC00815781 /* GeneralSettingsView.swift in Sources */,
