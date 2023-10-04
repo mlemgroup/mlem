@@ -22,23 +22,24 @@ class RecentSearchesTracker: ObservableObject {
     func reloadRecentSearches(accountId: String?) async throws {
         defer { hasLoaded = true }
         
-        recentSearches = .init()
         if let accountId {
             let identifiers = persistenceRepository.loadRecentSearches(for: accountId)
+            var newSearches: [AnyContentModel] = .init()
             
             for id in identifiers {
-                print(id.contentType, id.contentId)
                 switch id.contentType {
                 case .post:
                     break
                 case .community:
                     let community: CommunityModel = try await communityRepository.loadDetails(for: id.contentId)
-                    recentSearches.append(AnyContentModel(community))
+                    newSearches.append(AnyContentModel(community))
                 case .user:
                     let user = try await personRepository.loadDetails(for: id.contentId)
-                    recentSearches.append(AnyContentModel(user))
+                    newSearches.append(AnyContentModel(user))
                 }
             }
+            
+            recentSearches = newSearches
         }
     }
     
