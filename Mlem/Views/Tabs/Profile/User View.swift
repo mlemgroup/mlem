@@ -228,19 +228,25 @@ struct UserView: View {
                 appState.setActiveAccount(updatedAccount)
             }
             
-            privateCommentTracker.comments = authoredContent.comments
+            // accumulate comments and posts so we don't update state more than we need to
+            var newComments = authoredContent.comments
                 .sorted(by: { $0.comment.published > $1.comment.published })
                 .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) }
             
-            privatePostTracker.reset(with: authoredContent.posts.map { PostModel(from: $0) })
+            var newPosts = authoredContent.posts.map { PostModel(from: $0) }
             
+            // add saved content, if present
             if let savedContent = savedContentData {
-                privateCommentTracker.comments = savedContent.comments
-                    .sorted(by: { $0.comment.published > $1.comment.published })
-                    .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) }
+                newComments.append(contentsOf:
+                    savedContent.comments
+                        .sorted(by: { $0.comment.published > $1.comment.published })
+                        .map { HierarchicalComment(comment: $0, children: [], parentCollapsed: false, collapsed: false) })
                 
-                privatePostTracker.add(savedContent.posts.map { PostModel(from: $0) })
+                newPosts.append(contentsOf: savedContent.posts.map { PostModel(from: $0) })
             }
+            
+            privateCommentTracker.comments = newComments
+            privatePostTracker.reset(with: newPosts)
             
             userDetails = authoredContent.personView
             moderatedCommunities = authoredContent.moderates
