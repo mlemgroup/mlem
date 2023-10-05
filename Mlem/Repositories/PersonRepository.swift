@@ -29,11 +29,10 @@ class PersonRepository {
         return users
     }
     
-    // TODO: rename to loadUser
     /// Gets the UserModel for a given user
     /// - Parameter id: id of the user to get
     /// - Returns: UserModel for the given user
-    func loadDetails(for id: Int) async throws -> UserModel {
+    func loadUser(for id: Int) async throws -> UserModel {
         let response = try await apiClient.getPersonDetails(for: id, limit: 1, savedOnly: false)
         return UserModel(from: response.personView)
     }
@@ -44,7 +43,7 @@ class PersonRepository {
     ///   - limit: max number of content items to fetch
     ///   - savedOnly: if present, whether to fetch saved items; calling user must be the requested user
     /// - Returns: GetPersonDetailsResponse for the given user
-    func getUserDetails(for id: Int, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {
+    func loadUserDetails(for id: Int, limit: Int, savedOnly: Bool = false) async throws -> GetPersonDetailsResponse {
         try await apiClient.getPersonDetails(for: id, limit: limit, savedOnly: savedOnly)
     }
     

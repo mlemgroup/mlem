@@ -201,10 +201,10 @@ struct UserView: View {
     // swiftlint:disable function_body_length
     private func tryReloadUser() async {
         do {
-            let authoredContent = try await personRepository.getUserDetails(for: userID, limit: internetSpeed.pageSize)
+            let authoredContent = try await personRepository.loadUserDetails(for: userID, limit: internetSpeed.pageSize)
             var savedContentData: GetPersonDetailsResponse?
             if isShowingOwnProfile() {
-                savedContentData = try await personRepository.getUserDetails(
+                savedContentData = try await personRepository.loadUserDetails(
                     for: userID,
                     limit: internetSpeed.pageSize,
                     savedOnly: true

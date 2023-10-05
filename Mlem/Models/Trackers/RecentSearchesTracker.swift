@@ -34,8 +34,10 @@ class RecentSearchesTracker: ObservableObject {
                     let community: CommunityModel = try await communityRepository.loadDetails(for: id.contentId)
                     newSearches.append(AnyContentModel(community))
                 case .user:
-                    let user = try await personRepository.loadDetails(for: id.contentId)
+                    let user = try await personRepository.loadUser(for: id.contentId)
                     newSearches.append(AnyContentModel(user))
+                case .comment:
+                    break
                 }
             }
             
