@@ -29,10 +29,11 @@ class PersonRepository {
         return users
     }
     
+    // TODO: rename to loadUser
     /// Gets the UserModel for a given user
     /// - Parameter id: id of the user to get
     /// - Returns: UserModel for the given user
-    func getUser(for id: Int) async throws -> UserModel {
+    func loadDetails(for id: Int) async throws -> UserModel {
         let response = try await apiClient.getPersonDetails(for: id, limit: 1, savedOnly: false)
         return UserModel(from: response.personView)
     }
