@@ -16,6 +16,8 @@ struct CommunityResultView: View {
     let community: CommunityModel
     let showTypeLabel: Bool
     
+    var hasSwipeActions: Bool = true
+    
     var subscribeSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = community.subscribed
         ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
@@ -50,6 +52,14 @@ struct CommunityResultView: View {
     }
     
     var body: some View {
+        if hasSwipeActions {
+            content
+                .addSwipeyActions(trailing: [subscribeSwipeAction])
+        } else {
+            content
+        }
+    }
+    var content: some View {
         NavigationLink(value: NavigationRoute.apiCommunity(community.community)) {
             HStack(spacing: 10) {
                 AvatarView(community: community.community, avatarSize: 48)
@@ -82,7 +92,6 @@ struct CommunityResultView: View {
         .buttonStyle(.plain)
         .padding(.vertical, 8)
         .background(.background)
-        .addSwipeyActions(trailing: [subscribeSwipeAction])
         .draggable(community.community.actorId) {
             HStack {
                 AvatarView(community: community.community, avatarSize: 24)

@@ -59,6 +59,13 @@ class RecentSearchesTracker: ObservableObject {
         saveRecentSearches(accountId: accountId)
     }
     
+    func removeRecentSearch(_ item: AnyContentModel, accountId: String?) {
+        if let index = recentSearches.firstIndex(of: item) {
+            recentSearches.remove(at: index)
+        }
+        saveRecentSearches(accountId: accountId)
+    }
+    
     func clearRecentSearches(accountId: String?) {
         recentSearches.removeAll()
         saveRecentSearches(accountId: accountId)

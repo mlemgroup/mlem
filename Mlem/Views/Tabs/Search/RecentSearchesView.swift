@@ -12,6 +12,16 @@ struct RecentSearchesView: View {
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     
+    func deleteSwipeAction(_ item: AnyContentModel) -> SwipeAction {
+        return SwipeAction(
+            symbol: .init(emptyName: Icons.close, fillName: Icons.close),
+            color: .red,
+            action: {
+                recentSearchesTracker.removeRecentSearch(item, accountId: appState.currentActiveAccount?.stableIdString)
+            }
+        )
+    }
+    
     var body: some View {
         Group {
             if !recentSearchesTracker.recentSearches.isEmpty {
@@ -62,11 +72,16 @@ struct RecentSearchesView: View {
         ForEach(contentTracker.items, id: \.uid) { contentModel in
             Group {
                 if let community = contentModel.wrappedValue as? CommunityModel {
-                    CommunityResultView(community: community, showTypeLabel: true)
+                    CommunityResultView(
+                        community: community,
+                        showTypeLabel: true,
+                        hasSwipeActions: false
+                    )
                 } else if let user = contentModel.wrappedValue as? UserModel {
                     UserResultView(user: user, showTypeLabel: true)
                 }
             }
+            .addSwipeyActions(trailing: [deleteSwipeAction(contentModel)])
             .simultaneousGesture(TapGesture().onEnded {
                 recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
             })
