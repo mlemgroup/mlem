@@ -26,32 +26,35 @@ struct InfoStackView: View {
     let alignment: HorizontalAlignment
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack {
             if alignment == .trailing {
                 Spacer()
             }
-            if let votes {
-                if votes.showDownvotes {
-                    upvotesView(votes: votes)
-                    downvotesView(votes: votes)
-                } else {
-                    netVotesView(votes: votes)
+            HStack(spacing: 12) {
+                if let votes {
+                    if votes.showDownvotes {
+                        upvotesView(votes: votes)
+                        downvotesView(votes: votes)
+                    } else {
+                        netVotesView(votes: votes)
+                    }
+                }
+                
+                if let updated {
+                    UpdatedTimestampView(date: updated, spacing: AppConstants.iconToTextSpacing)
+                } else if let published {
+                    PublishedTimestampView(date: published, spacing: AppConstants.iconToTextSpacing)
+                }
+                
+                if let saved {
+                    savedView(isSaved: saved)
+                }
+                
+                if let commentCount {
+                    repliesView(numReplies: commentCount)
                 }
             }
-            
-            if let updated {
-                UpdatedTimestampView(date: updated, spacing: AppConstants.iconToTextSpacing)
-            } else if let published {
-                PublishedTimestampView(date: published, spacing: AppConstants.iconToTextSpacing)
-            }
-            
-            if let saved {
-                savedView(isSaved: saved)
-            }
-            
-            if let commentCount {
-                repliesView(numReplies: commentCount)
-            }
+            .fixedSize()
             if alignment == .leading {
                 Spacer()
             }

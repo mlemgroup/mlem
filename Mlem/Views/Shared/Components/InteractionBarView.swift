@@ -116,7 +116,6 @@ struct InteractionBarView: View {
                         alignment: infoStackAlignment(offset)
                     )
                     .padding(AppConstants.postAndCommentSpacing)
-                    .fixedSize()
                     .frame(minWidth: 0, maxWidth: .infinity)
                 }
             }
