@@ -22,7 +22,10 @@ struct SearchResultsView: View {
                 .padding(.top, 8)
             SearchResultListView(showTypeLabel: searchModel.searchTab == .topResults)
         }
-        .onChange(of: searchModel.searchText) { newValue in
+        .onReceive(
+            searchModel.$searchText
+                .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+        ) { newValue in
             if searchModel.previousSearchText != newValue {
                 if !newValue.isEmpty {
                     contentTracker.refresh(using: searchModel.performSearch)
