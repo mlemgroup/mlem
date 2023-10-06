@@ -13,6 +13,8 @@ struct TabBarSettingsView: View {
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
+    @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
+    @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
         
     @EnvironmentObject var appState: AppState
     
@@ -80,6 +82,15 @@ struct TabBarSettingsView: View {
                     isTicked: profileTabLabel == .anonymous ? .constant(false) : $showUserAvatar
                 )
                 .disabled(profileTabLabel == .anonymous)
+            }
+            if !homeButtonExists {
+                Section {
+                    SwitchableSettingsItem(
+                        settingPictureSystemName: Icons.swipeUpGestureSetting,
+                        settingName: "Swipe Up For Account Switcher",
+                        isTicked: $allowTabBarSwipeUpGesture
+                    )
+                }
             }
         }
         .fancyTabScrollCompatible()
