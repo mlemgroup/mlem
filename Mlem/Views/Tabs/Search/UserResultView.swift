@@ -33,16 +33,17 @@ struct UserResultView: View {
         NavigationLink(value: NavigationRoute.userProfile(user)) {
             HStack(spacing: 10) {
                 AvatarView(user: user, avatarSize: 48)
-                let flair = user.getFlair()
+                let flairs = user.getFlairs()
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
-                        if let flair = flair {
+                        ForEach(flairs, id: \.self) { flair in
                             Image(systemName: flair.icon)
                                 .imageScale(.small)
+                                .foregroundStyle(flair.color)
                         }
                         Text(user.name)
+                            .foregroundStyle(flairs.count == 1 ? flairs.first!.color : .primary)
                     }
-                    .foregroundStyle(flair?.color ?? .primary)
                     Text(caption)
                         .font(.footnote)
                         .foregroundStyle(.secondary)

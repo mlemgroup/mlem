@@ -97,33 +97,33 @@ struct UserModel {
     }
     
     // Once we've done other model types we should stop this from relying on API types
-    func getFlair(
+    func getFlairs(
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
         communityContext: GetCommunityResponse? = nil
-    ) -> UserFlair? {
-        if isAdmin {
-            return .admin
-        }
-        if isBot {
-            return .bot
-        }
-        if let comment = commentContext, comment.distinguished {
-            return .moderator
-        }
-        if let community = communityContext, community.moderators.contains(where: { $0.moderator.id == person.id }) {
-            return .moderator
-        }
+    ) -> [UserFlair] {
+        var ret: [UserFlair] = .init()
         if let post = postContext, post.creatorId == self.userId {
-            return .op
+            ret.append(.op)
         }
-        if banned {
-            return .banned
+        if isAdmin {
+            ret.append(.admin)
         }
         if UserModel.developerNames.contains(profileUrl.absoluteString) {
-            return .developer
+            ret.append(.developer)
         }
-        return nil
+        if let comment = commentContext, comment.distinguished {
+            ret.append(.moderator)
+        } else if let community = communityContext, community.moderators.contains(where: { $0.moderator.id == userId }) {
+            ret.append(.moderator)
+        }
+        if isBot {
+            ret.append(.bot)
+        }
+        if banned {
+            ret.append(.banned)
+        }
+        return ret
     }
 }
 

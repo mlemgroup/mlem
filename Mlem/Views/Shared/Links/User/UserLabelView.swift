@@ -82,31 +82,58 @@ struct UserLabelView: View {
     
     @ViewBuilder
     private var userName: some View {
-        let flair = user.getFlair(
+        let flairs = user.getFlairs(
             postContext: postContext,
             commentContext: commentContext,
             communityContext: communityContext
         )
         
         HStack(spacing: 4) {
-            if let flair = flair {
-                Image(systemName: flair.icon)
-                    .font(.footnote)
-                    .imageScale(serverInstanceLocation == .bottom ? .large : .small)
-                    .foregroundColor(flair.color)
+            if serverInstanceLocation == .bottom {
+                if flairs.count == 1, let first = flairs.first {
+                    userFlairIcon(with: first)
+                        .imageScale(.large)
+                } else if !flairs.isEmpty {
+                    HStack(spacing: 2) {
+                        LazyHGrid(rows: [GridItem(), GridItem()], alignment: .center) {
+                            ForEach(flairs.dropLast(flairs.count % 2), id: \.self) { flair in
+                                userFlairIcon(with: flair)
+                                    .imageScale(.medium)
+                            }
+                        }
+                        if flairs.count % 2 != 0 {
+                            userFlairIcon(with: flairs.last!)
+                                .imageScale(.medium)
+                        }
+                    }
+                    .padding(2)
+                    .padding(.trailing, 4)
+                }
+        
+            } else {
+                if flairs.count == 1, let first = flairs.first {
+                    userFlairIcon(with: first)
+                        .imageScale(.small)
+                } else if !flairs.isEmpty {
+                    ForEach(flairs, id: \.self) { flair in
+                        userFlairIcon(with: flair)
+                            .imageScale(.small)
+                    }
+                    .padding(.trailing, 4)
+                }
             }
             
             switch serverInstanceLocation {
             case .disabled:
-                userName(with: flair)
+                userName(with: flairs)
             case .bottom:
                 VStack(alignment: .leading) {
-                    userName(with: flair)
+                    userName(with: flairs)
                     userInstance
                 }
             case .trailing:
                 HStack(spacing: 0) {
-                    userName(with: flair)
+                    userName(with: flairs)
                     userInstance
                 }
             }
@@ -114,11 +141,19 @@ struct UserLabelView: View {
     }
     
     @ViewBuilder
-    private func userName(with flair: UserFlair?) -> some View {
+    private func userFlairIcon(with flair: UserFlair) -> some View {
+        Image(systemName: flair.icon)
+            .bold()
+            .font(.footnote)
+            .foregroundColor(flair.color)
+    }
+    
+    @ViewBuilder
+    private func userName(with flairs: [UserFlair]) -> some View {
         Text(user.displayName)
             .bold()
             .font(.footnote)
-            .foregroundColor(flair?.color ?? .gray)
+            .foregroundColor(flairs.count == 1 ? flairs.first!.color : .gray)
     }
     
     @ViewBuilder

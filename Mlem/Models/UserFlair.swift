@@ -18,7 +18,7 @@ enum UserFlair {
     var color: Color {
         switch self {
         case .admin:
-            return .pink
+            return .teal
         case .moderator:
             return .green
         case .op:
