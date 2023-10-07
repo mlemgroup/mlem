@@ -18,6 +18,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
 
     // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: NavigationRoute.self) { route in
@@ -61,6 +62,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     LazyLoadExpandedPost(post: post)
                 case .apiPerson(let user):
                     UserView(userID: user.id)
+                case .userProfile(let user):
+                    UserView(userID: user.userId)
                         .environmentObject(appState)
                 case .postLinkWithContext(let post):
                     ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
@@ -75,6 +78,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             }
     }
     // swiftlint:enable function_body_length
+    // swiftlint:enable cyclomatic_complexity
 }
 
 struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {

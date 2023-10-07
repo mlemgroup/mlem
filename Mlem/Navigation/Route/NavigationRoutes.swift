@@ -20,7 +20,9 @@ enum NavigationRoute: Routable {
     case apiPostView(APIPostView)
     case apiPost(APIPost)
     
+    @available(*, deprecated, message: "Use userProfile instead.")
     case apiPerson(APIPerson)
+    case userProfile(UserModel)
     
     case postLinkWithContext(PostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
@@ -43,6 +45,8 @@ enum NavigationRoute: Routable {
             return .apiPost(value)
         case let value as APIPerson:
             return .apiPerson(value)
+        case let value as UserModel:
+            return .userProfile(value)
         case let value as PostLinkWithContext:
             return .postLinkWithContext(value)
         case let value as LazyLoadPostLinkWithContext:
