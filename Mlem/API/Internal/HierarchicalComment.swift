@@ -39,6 +39,16 @@ extension HierarchicalComment: Equatable {
     }
 }
 
+extension HierarchicalComment: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(commentView.id)
+        hasher.combine(commentView.comment.updated)
+        hasher.combine(commentView.counts.upvotes)
+        hasher.combine(commentView.counts.downvotes)
+        hasher.combine(commentView.myVote)
+    }
+}
+
 extension [HierarchicalComment] {
     /// A method to insert an updated `APICommentView` into this array of `HierarchicalComment`
     /// - Parameter commentView: The `APICommentView` you wish to insert

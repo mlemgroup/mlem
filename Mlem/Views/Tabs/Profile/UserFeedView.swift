@@ -14,11 +14,17 @@ struct UserFeedView: View {
     
     @Binding var selectedTab: UserViewTab
     
-    struct FeedItem: Identifiable {
-        let id = UUID()
+    struct FeedItem: Identifiable, Hashable {
+        static func == (lhs: UserFeedView.FeedItem, rhs: UserFeedView.FeedItem) -> Bool {
+            lhs.hashValue == rhs.hashValue
+        }
+        
+        var id: Int { hashValue }
+        var uid: ContentModelIdentifier
         let published: Date
         let comment: HierarchicalComment?
         let post: PostModel?
+        let hashValue: Int
     }
     
     var body: some View {
@@ -43,7 +49,7 @@ struct UserFeedView: View {
     }
     
     func content(_ feed: [FeedItem]) -> some View {
-        ForEach(feed) { feedItem in
+        ForEach(feed, id: \.uid) { feedItem in
             if let post = feedItem.post {
                 postEntry(for: post)
             }
@@ -81,7 +87,7 @@ struct UserFeedView: View {
                 Divider()
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(EmptyButtonStyle())
     }
     
     private func commentEntry(for comment: HierarchicalComment) -> some View {
@@ -126,7 +132,13 @@ struct UserFeedView: View {
         
             // Create Feed Items
             .map {
-                FeedItem(published: $0.commentView.comment.published, comment: $0, post: nil)
+                FeedItem(
+                    uid: ContentModelIdentifier(contentType: .comment, contentId: $0.commentView.comment.id),
+                    published: $0.commentView.comment.published,
+                    comment: $0,
+                    post: nil,
+                    hashValue: $0.hashValue
+                )
             }
     }
     
@@ -145,7 +157,13 @@ struct UserFeedView: View {
         
             // Create Feed Items
             .map {
-                FeedItem(published: $0.post.published, comment: nil, post: $0)
+                FeedItem(
+                    uid: ContentModelIdentifier(contentType: .post, contentId: $0.postId),
+                    published: $0.post.published,
+                    comment: nil,
+                    post: $0,
+                    hashValue: $0.hashValue
+                )
             }
     }
     
