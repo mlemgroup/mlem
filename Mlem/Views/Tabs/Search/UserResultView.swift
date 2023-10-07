@@ -33,8 +33,16 @@ struct UserResultView: View {
         NavigationLink(value: NavigationRoute.apiPerson(user.user)) {
             HStack(spacing: 10) {
                 AvatarView(user: user.user, avatarSize: 48)
+                let flair = user.getFlair()
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(user.user.name)
+                    HStack(spacing: 4) {
+                        if let flair = flair {
+                            Image(systemName: flair.icon)
+                                .imageScale(.small)
+                        }
+                        Text(user.user.name)
+                    }
+                    .foregroundStyle(flair?.color ?? .primary)
                     Text(caption)
                         .font(.footnote)
                         .foregroundStyle(.secondary)

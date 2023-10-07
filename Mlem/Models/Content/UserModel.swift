@@ -7,6 +7,40 @@
 
 import Dependencies
 import Foundation
+import SwiftUI
+
+enum UserFlair {
+    case admin
+    case bot
+    case banned
+    case developer
+    
+    var color: Color {
+        switch self {
+        case .admin:
+            return .pink
+        case .bot:
+            return .indigo
+        case .banned:
+            return .red
+        case .developer:
+            return .purple
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .admin:
+            return Icons.adminFlair
+        case .bot:
+            return Icons.botFlair
+        case .banned:
+            return Icons.bannedFlair
+        case .developer:
+            return Icons.developerFlair
+        }
+    }
+}
 
 struct UserModel {
     let userId: Int
@@ -14,13 +48,40 @@ struct UserModel {
     var postCount: Int
     var commentCount: Int
     
-    // Creates a UserModel from an APIPersonView
+    static private let developerNames = [
+        "https://lemmy.tespia.org/u/navi",
+        "https://beehaw.org/u/jojo",
+        "https://beehaw.org/u/kronusdark",
+        "https://lemmy.ml/u/ericbandrews",
+        "https://programming.dev/u/tht7",
+        "https://sh.itjust.works/u/sjmarf"
+    ]
+    
+    /// Creates a UserModel from an APIPersonView
     /// - Parameter apiPersonView: APIPersonView to create a UserModel representation of
     init(from apiPersonView: APIPersonView) {
         self.userId = apiPersonView.person.id
         self.user = apiPersonView.person
         self.postCount = apiPersonView.counts.postCount
         self.commentCount = apiPersonView.counts.commentCount
+    }
+    
+    // This is a function and not a computed property because in future it will
+    // take in parameters for calculating flairs within specific contexts.
+    func getFlair() -> UserFlair? {
+        if user.admin ?? false {
+            return .admin
+        }
+        if user.botAccount {
+            return .bot
+        }
+        if user.banned {
+            return .banned
+        }
+        if UserModel.developerNames.contains(user.actorId.absoluteString) {
+            return .developer
+        }
+        return nil
     }
 }
 

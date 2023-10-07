@@ -93,6 +93,7 @@ struct Icons {
     static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
+    static let bannedFlair: String = "multiply.circle"
     
     // entities/general Lemmy concepts
     static let instance: String = "server.rack"

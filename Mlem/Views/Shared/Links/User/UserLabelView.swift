@@ -56,7 +56,8 @@ struct UserLabelView: View {
         "beehaw.org/u/jojo",
         "beehaw.org/u/kronusdark",
         "lemmy.ml/u/ericbandrews",
-        "programming.dev/u/tht7"
+        "programming.dev/u/tht7",
+        "sh.itjust.works/u/sjmarf"
     ]
     
     static let mlemOfficial = "vlemmy.net/u/MlemOfficial"
@@ -66,7 +67,7 @@ struct UserLabelView: View {
     static let flairMod = UserLinkViewFlair(color: Color.green, image: Image(systemName: Icons.moderationFill))
     static let flairBot = UserLinkViewFlair(color: Color.indigo, image: Image(systemName: Icons.botFlair))
     static let flairOP = UserLinkViewFlair(color: Color.orange, image: Image(systemName: Icons.opFlair))
-    static let flairAdmin = UserLinkViewFlair(color: Color.red, image: Image(systemName: Icons.adminFlair))
+    static let flairAdmin = UserLinkViewFlair(color: Color.pink, image: Image(systemName: Icons.adminFlair))
     static let flairRegular = UserLinkViewFlair(color: Color.gray)
     
     var body: some View {
