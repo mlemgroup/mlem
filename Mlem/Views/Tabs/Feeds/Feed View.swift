@@ -93,18 +93,9 @@ struct FeedView: View {
     @State private var scrollToTopAppeared = false
     private var scrollToTopId: Int? {
         postTracker.items.first?.id
+    }
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    // MARK: Destructive confirmation
-    
-    @State private var isPresentingConfirmDestructive: Bool = false
-    @State private var confirmationMenuFunction: StandardMenuFunction?
-    
-    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
-        confirmationMenuFunction = destructiveFunction
-        isPresentingConfirmDestructive = true
-    }
     
     // MARK: - Main Views
     

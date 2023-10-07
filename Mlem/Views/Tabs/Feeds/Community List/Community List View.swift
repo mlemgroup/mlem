@@ -41,7 +41,7 @@ struct CommunityListView: View {
                 List(selection: $selectedCommunity) {
                     HomepageFeedRowView(
                         feedType: .subscribed,
-                        iconName: AppConstants.subscribedFeedSymbolNameFill,
+                        iconName: Icons.subscribedFeedFill,
                         iconColor: .red,
                         description: "Subscribed communities from all servers",
                         navigationContext: .sidebar
@@ -49,14 +49,14 @@ struct CommunityListView: View {
                     .id("top") // For "scroll to top" sidebar item
                     HomepageFeedRowView(
                         feedType: .local,
-                        iconName: AppConstants.localFeedSymbolNameFill,
+                        iconName: Icons.localFeedFill,
                         iconColor: .green,
                         description: "Local communities from your server",
                         navigationContext: .sidebar
                     )
                     HomepageFeedRowView(
                         feedType: .all,
-                        iconName: AppConstants.federatedFeedSymbolNameFill,
+                        iconName: Icons.federatedFeedFill,
                         iconColor: .blue,
                         description: "All communities that federate with your server",
                         navigationContext: .sidebar

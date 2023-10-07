@@ -118,7 +118,7 @@ struct UserView: View {
             Button {
                 isPresentingAccountSwitcher = true
             } label: {
-                Image(systemName: AppConstants.switchUserSymbolName)
+                Image(systemName: Icons.switchUser)
             }
         }
     }
