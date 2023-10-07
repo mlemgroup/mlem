@@ -95,7 +95,7 @@ struct UserLabelView: View {
                         .imageScale(.large)
                 } else if !flairs.isEmpty {
                     HStack(spacing: 2) {
-                        LazyHGrid(rows: [GridItem(), GridItem()], alignment: .center) {
+                        LazyHGrid(rows: [GridItem(), GridItem()], alignment: .center, spacing: 2) {
                             ForEach(flairs.dropLast(flairs.count % 2), id: \.self) { flair in
                                 userFlairIcon(with: flair)
                                     .imageScale(.medium)
@@ -106,7 +106,6 @@ struct UserLabelView: View {
                                 .imageScale(.medium)
                         }
                     }
-                    .padding(2)
                     .padding(.trailing, 4)
                 }
         
@@ -153,7 +152,7 @@ struct UserLabelView: View {
         Text(user.displayName)
             .bold()
             .font(.footnote)
-            .foregroundColor(flairs.count == 1 ? flairs.first!.color : .gray)
+            .foregroundStyle(.gray)
     }
     
     @ViewBuilder

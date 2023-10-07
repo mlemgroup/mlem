@@ -42,7 +42,6 @@ struct UserResultView: View {
                                 .foregroundStyle(flair.color)
                         }
                         Text(user.name)
-                            .foregroundStyle(flairs.count == 1 ? flairs.first!.color : .primary)
                     }
                     Text(caption)
                         .font(.footnote)
