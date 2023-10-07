@@ -11,8 +11,8 @@ import SwiftUI
 struct GeneralSettingsView: View {
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
-    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -59,16 +59,6 @@ struct GeneralSettingsView: View {
                 // swiftlint:disable line_length
                 Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings on \(appState.currentActiveAccount?.instanceLink.host ?? "your instance's webpage").")
                 // swiftlint:enable line_length
-            }
-            
-            Section {
-                SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.attachment,
-                    settingName: "Confirm Image Uploads",
-                    isTicked: $confirmImageUploads
-                )
-            } footer: {
-                Text("Ask to confirm your choice before uploading an image to your instance.")
             }
             
             Section {

@@ -18,7 +18,7 @@ public struct SwipeAction {
     
     let symbol: Symbol
     let color: Color
-    let action: () -> Void
+    let action: () async -> Void
 }
 
 // MARK: -
@@ -29,7 +29,7 @@ public struct SwipeConfiguration {
     /// In ascending order of appearance.
     let trailingActions: [SwipeAction]
     
-    init(leadingActions: [SwipeAction?] = [], trailingActions: [SwipeAction?] = []) {
+    init(leadingActions: [SwipeAction?], trailingActions: [SwipeAction?]) {
         assert(
             leadingActions.count <= 3 && trailingActions.count <= 3,
             "Getting a little swipey aren't we? Ask your fellow Mlem'ers if you really need more than 3 swipe actions =)"
@@ -185,7 +185,6 @@ struct SwipeyView: ViewModifier {
                                 .padding(.horizontal, 20)
                         }
                         .accessibilityHidden(true) // prevent these from popping up in VO
-                        .opacity(dragState == .zero ? 0 : 1) // prevent this view from appearing in animations on parent view(s).
                     }
             }
             // prevents various animation glitches
@@ -201,7 +200,9 @@ struct SwipeyView: ViewModifier {
         
         reset()
         
-        swipeAction(at: finalDragPosition)?.action()
+        Task(priority: .userInitiated) {
+            await swipeAction(at: finalDragPosition)?.action()
+        }
     }
     
     private func reset() {
@@ -346,14 +347,8 @@ struct SwipeyView: ViewModifier {
 // swiftlint:enable function_body_length
 
 extension View {
-    /// Adds swipey actions to a view.
-    ///
-    /// NOTE: if the view you are attaching this to also has a context menu, add the context menu view modifier AFTER the swipey actions modifier! This will prevent the swipey action from triggering and appearing bugged on an aborted context menu pop if the context menu animation initiates.
-    /// - Parameters:
-    ///   - leading: leading edge swipey actions, ordered by ascending swipe distance from leading edge
-    ///   - trailing: trailing edge swipey actions, ordered by ascending swipe distance from leading edge
     @ViewBuilder
-    func addSwipeyActions(leading: [SwipeAction?] = [], trailing: [SwipeAction?] = []) -> some View {
+    func addSwipeyActions(leading: [SwipeAction?], trailing: [SwipeAction?]) -> some View {
         modifier(
             SwipeyView(
                 configuration: .init(

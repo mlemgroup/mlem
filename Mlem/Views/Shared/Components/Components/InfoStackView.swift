@@ -20,7 +20,6 @@ struct DetailedVotes {
 struct InfoStackView: View {
     let votes: DetailedVotes?
     let published: Date?
-    let updated: Date?
     let commentCount: Int?
     let saved: Bool?
     let alignment: HorizontalAlignment
@@ -39,10 +38,8 @@ struct InfoStackView: View {
                 }
             }
             
-            if let updated {
-                UpdatedTimestampView(date: updated, spacing: AppConstants.iconToTextSpacing)
-            } else if let published {
-                PublishedTimestampView(date: published, spacing: AppConstants.iconToTextSpacing)
+            if let published {
+                TimestampView(date: published, spacing: AppConstants.iconToTextSpacing)
             }
             
             if let saved {

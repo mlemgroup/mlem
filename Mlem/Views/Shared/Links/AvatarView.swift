@@ -10,6 +10,8 @@ struct AvatarView: View {
     // Don't clip the avatars of communities from these instances
     static let unclippedInstances = ["beehaw.org"]
     
+    enum AvatarType { case community, user }
+    
     let type: AvatarType
     let url: URL?
     let avatarSize: CGFloat
@@ -46,15 +48,21 @@ struct AvatarView: View {
 
         return !unclippedInstances.contains(hostString)
     }
-    
+
     var body: some View {
-        CachedImage(
-            url: url?.withIcon64Parameters,
-            shouldExpand: false,
-            fixedSize: CGSize(width: avatarSize, height: avatarSize),
-            imageNotFound: { AnyView(DefaultAvatarView(avatarType: type)) },
-            contentMode: .fill
-        )
+        Group {
+            if let url {
+                CachedImage(
+                    url: url.withIcon64Parameters,
+                    shouldExpand: false,
+                    fixedSize: CGSize(width: avatarSize, height: avatarSize),
+                    imageNotFound: defaultAvatar,
+                    contentMode: .fill
+                )
+            } else {
+                defaultAvatar()
+            }
+        }
         .frame(width: avatarSize, height: avatarSize)
         .accessibilityHidden(true)
         .blur(radius: blurAvatar ? 4 : 0)
@@ -64,5 +72,26 @@ struct AvatarView: View {
                 lineColor,
                 lineWidth: clipAvatar ? 1 : 0
             ))
+    }
+
+    private func defaultAvatar() -> AnyView {
+        switch type {
+        case .community:
+            return AnyView(
+                Image(systemName: Icons.communityFill)
+                    .resizable()
+                    .scaledToFill()
+                    .background(.white)
+                    .foregroundStyle(Color.gray.gradient)
+            )
+        case .user:
+            return AnyView(
+                Image(systemName: Icons.userFill)
+                    .resizable()
+                    .scaledToFill()
+                    .background(.white)
+                    .foregroundStyle(Color.gray.gradient)
+            )
+        }
     }
 }

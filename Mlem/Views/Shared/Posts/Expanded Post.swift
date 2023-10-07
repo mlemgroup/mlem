@@ -230,7 +230,6 @@ struct ExpandedPost: View {
             InteractionBarView(
                 votes: post.votes,
                 published: post.published,
-                updated: post.updated,
                 numReplies: post.numReplies,
                 saved: post.saved,
                 accessibilityContext: "post",
@@ -318,5 +317,4 @@ struct ExpandedPost: View {
         }
     }
 }
-
 // swiftlint:enable type_body_length

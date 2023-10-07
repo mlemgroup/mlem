@@ -103,8 +103,8 @@ struct CachedImage: View {
                                 width: screenWidth,
                                 height: min(maxHeight, imageContainer.image.size.height * ratio)
                             )
-                            cacheImageSize()
                             shouldRecomputeSize = false
+                            cacheImageSize()
                         }
                     }
                 if shouldExpand {
@@ -142,13 +142,11 @@ struct CachedImage: View {
             } else if state.error != nil {
                 // Indicates an error
                 imageNotFound()
-                    .frame(idealWidth: size.width)
-                    .frame(height: size.height)
+                    .frame(idealWidth: size.width, maxHeight: size.height)
                     .background(errorBackgroundColor)
             } else {
                 ProgressView() // Acts as a placeholder
-                    .frame(idealWidth: size.width)
-                    .frame(height: size.height)
+                    .frame(idealWidth: size.width, maxHeight: size.height)
             }
         }
         .processors([
@@ -157,15 +155,7 @@ struct CachedImage: View {
                 contentMode: contentMode == .fill ? .aspectFill : .aspectFit
             )
         ])
-        .frame(idealWidth: size.width)
-        .frame(height: size.height)
-        .onDisappear {
-            // if the post disappears and the size still isn't computed, cache the fallback size. This ensures that the view doesn't resize while scrolling back up.
-            if shouldRecomputeSize {
-                cacheImageSize()
-                shouldRecomputeSize = false
-            }
-        }
+        .frame(idealWidth: size.width, maxHeight: size.height)
     }
     
     static func imageNotFoundDefault() -> AnyView {

@@ -75,7 +75,7 @@ struct AccountsPage: View {
                         Button(role: .destructive) {
                             accountForDeletion = account
                         } label: {
-                            Label("Delete Current Account", systemImage: Icons.delete)
+                            Label("Delete Current Account", systemImage: "trash")
                                 .foregroundColor(.red)
                         }
                     }

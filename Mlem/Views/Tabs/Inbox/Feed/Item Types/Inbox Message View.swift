@@ -48,7 +48,7 @@ struct InboxMessageView: View {
                 
                 Spacer()
                 
-                PublishedTimestampView(date: message.privateMessage.published)
+                TimestampView(date: message.privateMessage.published)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

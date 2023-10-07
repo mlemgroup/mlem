@@ -45,7 +45,6 @@ struct Icons {
     static let moderationReport: String = "exclamationmark.shield"
     
     // misc post
-    static let posts: String = "doc.plaintext"
     static let replies: String = "bubble.right"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
@@ -126,28 +125,17 @@ struct Icons {
     static let noContent: String = "binoculars"
     static let noPosts: String = "text.bubble"
     static let time: String = "clock"
-    static let updated: String = "clock.arrow.2.circlepath"
     static let favorite: String = "star"
     static let favoriteFill: String = "star.fill"
-    static let personFill: String = "person.fill"
-    static let close: String = "multiply"
     
     // common operations
     static let share: String = "square.and.arrow.up"
     static let subscribe: String = "plus.circle"
-    static let subscribed: String = "checkmark.circle"
-    static let subscribePerson: String = "person.crop.circle.badge.plus"
-    static let subscribePersonFill: String = "person.crop.circle.badge.plus.fill"
     static let unsubscribe: String = "multiply.circle"
-    static let unsubscribePerson: String = "person.crop.circle.badge.xmark"
-    static let unsubscribePersonFill: String = "person.crop.circle.badge.xmark.fill"
     static let filter: String = "line.3.horizontal.decrease.circle"
     static let filterFill: String = "line.3.horizontal.decrease.circle.fill"
     static let menu: String = "ellipsis"
-    static let `import`: String = "square.and.arrow.down"
-    static let attachment: String = "paperclip"
-    static let edit: String = "pencil"
-    static let delete: String = "trash"
+    static let importSymbol: String = "square.and.arrow.down" // Just "import" can't be used :(
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"
@@ -182,5 +170,6 @@ struct Icons {
     static let emptySquare: String = "square"
     static let dropdown: String = "chevron.down"
     static let noFile: String = "questionmark.folder"
+    static let delete: String = "trash"
     static let forward: String = "chevron.right"
 }

@@ -104,8 +104,7 @@ struct UserView: View {
             bannerURL: shouldShowUserHeaders ? userDetails.person.bannerUrl : nil,
             avatarUrl: userDetails.person.avatarUrl,
             label1: "\(userDetails.counts.commentCount) Comments",
-            label2: "\(userDetails.counts.postCount) Posts",
-            avatarType: .user
+            label2: "\(userDetails.counts.postCount) Posts"
         )
     }
     

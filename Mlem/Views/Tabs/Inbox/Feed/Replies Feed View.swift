@@ -69,6 +69,11 @@ extension InboxView {
                         await loadTrackerPage(tracker: repliesTracker)
                     }
                 }
+                .contextMenu {
+                    ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                    }
+                }
                 .destructiveConfirmation(
                     isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
                     confirmationMenuFunction: confirmationMenuFunction
@@ -83,11 +88,6 @@ extension InboxView {
                         replyToCommentReplySwipeAction(commentReply: reply)
                     ]
                 )
-                .contextMenu {
-                    ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                    }
-                }
         }
         .buttonStyle(EmptyButtonStyle())
     }

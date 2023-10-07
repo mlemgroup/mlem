@@ -162,7 +162,6 @@ struct CommentItem: View {
                     InteractionBarView(
                         votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
                         published: hierarchicalComment.commentView.comment.published,
-                        updated: hierarchicalComment.commentView.comment.updated,
                         numReplies: hierarchicalComment.commentView.counts.childCount,
                         saved: hierarchicalComment.commentView.saved,
                         accessibilityContext: "comment",
@@ -227,11 +226,7 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptyVoteSymbolName, fillName: upvoteSymbolName),
             color: .upvoteColor,
-            action: {
-                Task {
-                    await upvote()
-                }
-            }
+            action: upvote
         )
     }
     
@@ -240,11 +235,7 @@ extension CommentItem {
         return SwipeAction(
             symbol: .init(emptyName: emptyDownvoteSymbolName, fillName: downvoteSymbolName),
             color: .downvoteColor,
-            action: {
-                Task {
-                    await downvote()
-                }
-            }
+            action: downvote
         )
     }
     
@@ -252,11 +243,7 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptySaveSymbolName, fillName: saveSymbolName),
             color: .saveColor,
-            action: {
-                Task {
-                    await saveComment()
-                }
-            }
+            action: saveComment
         )
     }
 
@@ -264,11 +251,7 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
             color: .accentColor,
-            action: {
-                Task {
-                    await replyToCommentAsyncWrapper()
-                }
-            }
+            action: replyToCommentAsyncWrapper
         )
     }
     

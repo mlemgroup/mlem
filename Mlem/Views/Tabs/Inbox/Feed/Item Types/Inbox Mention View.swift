@@ -71,7 +71,7 @@ struct InboxMentionView: View {
                 
                 Spacer()
                 
-                PublishedTimestampView(date: mention.comment.published)
+                TimestampView(date: mention.comment.published)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

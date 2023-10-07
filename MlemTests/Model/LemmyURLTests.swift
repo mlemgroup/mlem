@@ -17,7 +17,6 @@ final class LemmyURLTests: XCTestCase {
         XCTAssertEqual(lemmyUrl?.url.absoluteString, validUrl)
     }
     
-    // NOTE: this test fails on XCode 15+
     func testHandlesUnencodedURL() throws {
         let unencodedUrl = "https://matrix.to/#/#space:lemmy.world"
         let lemmyUrl = LemmyURL(string: unencodedUrl)

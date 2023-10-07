@@ -75,7 +75,7 @@ struct Window: View {
     
     private func setFlow(_ flow: AppFlow) {
         transition(flow)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.flow = flow
         }
     }
@@ -83,17 +83,30 @@ struct Window: View {
     /// This method changes the current application flow and places a _transition_ view across the active window while
     /// - Parameter newFlow: The `AppFlow` that the application should transition into
     private func transition(_ newFlow: AppFlow) {
-        let transitionAccountName: String?
+        struct TransitionView: View {
+            let text: String
+            
+            var body: some View {
+                VStack(spacing: 24) {
+                    ProgressView()
+                        .controlSize(.large)
+                    Text(text)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
+        
+        let transitionText: String
         switch newFlow {
         case .onboarding:
-            transitionAccountName = nil
+            transitionText = "See you soon 👋"
         case let .account(account):
-            transitionAccountName = account.nickname
+            transitionText = "Welcome \(account.nickname) 🚀"
         }
         
         Task { @MainActor in
             
-            let transition = TransitionView(accountName: transitionAccountName)
+            let transition = TransitionView(text: transitionText)
             guard let transitionView = UIHostingController(rootView: transition).view,
                   let window = UIApplication.shared.firstKeyWindow else {
                 return

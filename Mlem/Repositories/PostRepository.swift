@@ -36,13 +36,13 @@ class PostRepository {
     /// - Parameter postId: id of the post to load
     /// - Returns: PostModel of the requested post
     func loadPost(postId: Int) async throws -> PostModel {
-        let postView = try await apiClient.loadPost(id: postId)
-        return PostModel(from: postView)
+        let post = try await apiClient.loadPost(id: postId)
+        return PostModel(from: post)
     }
     
     func markRead(postId: Int, read: Bool) async throws -> PostModel {
-        let postView = try await apiClient.markPostAsRead(for: postId, read: read).postView
-        return PostModel(from: postView)
+        let response = try await apiClient.markPostAsRead(for: postId, read: read).postView
+        return PostModel(from: response)
     }
 
     /// Rates a given post. Does not care what the current vote state is; sends the given request no matter what (i.e., calling this with operation .upvote on an already upvoted post will not send a .resetVote, but will instead send a second idempotent .upvote
@@ -51,8 +51,8 @@ class PostRepository {
     ///   - operation: ScoringOperation to apply to the given post id
     /// - Returns: PostModel representing the new state of the post
     func ratePost(postId: Int, operation: ScoringOperation) async throws -> PostModel {
-        let postView = try await apiClient.ratePost(id: postId, score: operation)
-        return PostModel(from: postView)
+        let response = try await apiClient.ratePost(id: postId, score: operation)
+        return PostModel(from: response)
     }
 
     /// Saves a given post. Does not care what the current save state is; sends the given request no matter what (i.e., calling this operation with shouldSave: true on an already saved post will not unsave the post, but will instead send a second idempotent save: true)
@@ -61,13 +61,13 @@ class PostRepository {
     ///   - shouldSave: bool indicating whether to save (true) or unsave (false)
     /// - Returns: PostModel representing the new state of the post
     func savePost(postId: Int, shouldSave: Bool) async throws -> PostModel {
-        let postView = try await apiClient.savePost(id: postId, shouldSave: shouldSave)
-        return PostModel(from: postView)
+        let response = try await apiClient.savePost(id: postId, shouldSave: shouldSave)
+        return PostModel(from: response)
     }
     
     func deletePost(postId: Int, shouldDelete: Bool) async throws -> PostModel {
-        let postView = try await apiClient.deletePost(id: postId, shouldDelete: true)
-        return PostModel(from: postView)
+        let response = try await apiClient.deletePost(id: postId, shouldDelete: true)
+        return PostModel(from: response)
     }
     
     /// Edits a post. Any non-nil parameters will be updated

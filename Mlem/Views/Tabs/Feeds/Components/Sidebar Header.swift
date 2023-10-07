@@ -19,8 +19,6 @@ struct CommunitySidebarHeader: View {
     var label1: String?
     var label2: String?
     
-    let avatarType: AvatarType
-    
     var body: some View {
         ZStack(alignment: .top) {
             // Banner
@@ -40,10 +38,9 @@ struct CommunitySidebarHeader: View {
                 }
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
-                        SidebarHeaderAvatar(
+                        CommunitySidebarHeaderAvatar(
                             shouldClipAvatar: AvatarView.shouldClipCommunityAvatar(url: avatarUrl),
-                            imageUrl: avatarUrl,
-                            avatarType: avatarType
+                            imageUrl: avatarUrl
                         )
                         
                         Button {
@@ -99,8 +96,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/2001/300"),
                     avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
                     label1: "Label 1",
-                    label2: "Label 2",
-                    avatarType: .community
+                    label2: "Label 2"
                 )
                 Divider()
                 CommunitySidebarHeader(
@@ -110,8 +106,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
                     avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
                     label1: "Label 1",
-                    label2: "Label 2",
-                    avatarType: .community
+                    label2: "Label 2"
                 )
                 Divider()
                 CommunitySidebarHeader(
@@ -121,8 +116,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     bannerURL: URL(string: "https://picsum.photos/seed/mlem-banner/200/300"),
                     avatarUrl: nil,
                     label1: "Label 1",
-                    label2: "Label 2",
-                    avatarType: .community
+                    label2: "Label 2"
                 )
                 Divider()
                 CommunitySidebarHeader(
@@ -132,8 +126,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     bannerURL: nil,
                     avatarUrl: URL(string: "https://picsum.photos/seed/mlem-avatar/200"),
                     label1: "Label 1",
-                    label2: "Label 2",
-                    avatarType: .community
+                    label2: "Label 2"
                 )
                 Divider()
                 CommunitySidebarHeader(
@@ -143,8 +136,7 @@ struct SidebarHeaderPreview: PreviewProvider {
                     bannerURL: nil,
                     avatarUrl: nil,
                     label1: "Label 1",
-                    label2: "Label 2",
-                    avatarType: .community
+                    label2: "Label 2"
                 )
                 Spacer()
             }

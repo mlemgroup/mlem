@@ -9,25 +9,38 @@ import Foundation
 
 import SwiftUI
 
-struct SidebarHeaderAvatar: View {
+struct CommunitySidebarHeaderAvatar: View {
     @State var shouldClipAvatar: Bool = false
     @State var imageUrl: URL?
-    let avatarType: AvatarType
-    
+
     var body: some View {
-        CachedImage(
-            url: imageUrl,
-            shouldExpand: false,
-            fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
-            imageNotFound: { AnyView(DefaultAvatarView(avatarType: avatarType)) },
-            contentMode: .fill
-        )
-        .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
-        .clipShape(Circle())
-        .overlay(Circle()
-            .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
-        .shadow(radius: 10)
-        .background(shouldClipAvatar ? Circle()
-            .foregroundColor(.systemBackground) : nil)
+        avatar
+            .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
+            .clipShape(Circle())
+            .overlay(Circle()
+                .stroke(.secondary, lineWidth: shouldClipAvatar ? 2 : 0))
+            .shadow(radius: 10)
+            .background(shouldClipAvatar ? Circle()
+                .foregroundColor(.systemBackground) : nil)
+    }
+    
+    @ViewBuilder
+    var avatar: some View {
+        if let avatarURL = imageUrl {
+            CachedImage(
+                url: avatarURL,
+                shouldExpand: false,
+                fixedSize: CGSize(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize),
+                contentMode: .fill
+            )
+        } else {
+            VStack(alignment: .center) {
+                Spacer()
+                    .frame(height: 20)
+                Image(systemName: Icons.user)
+                    .font(.system(size: AppConstants.hugeAvatarSize)) // SF Symbols are apparently font
+                    .foregroundColor(.secondary)
+            }
+        }
     }
 }

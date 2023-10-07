@@ -23,16 +23,8 @@ private let possible2FAErrors = [
     "incorrect_totp_token"
 ]
 
-private let registrationErrors = [
-    "registration_application_pending",
-    "email_not_verified"
-]
-
 extension APIErrorResponse {
     var isIncorrectLogin: Bool { possibleCredentialErrors.contains(error) }
     var requires2FA: Bool { possible2FAErrors.contains(error) }
     var isNotLoggedIn: Bool { error == "not_logged_in" }
-    var userRegistrationPending: Bool { registrationErrors.contains(error) }
-    var emailNotVerified: Bool { registrationErrors.contains(error) }
-    var instanceIsPrivate: Bool { error == "instance_is_private" }
 }

@@ -96,8 +96,8 @@ extension ExpandedPost {
         
         // upvote
         let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
-            ("Undo upvote", Icons.upvoteSquareFill) :
-            ("Upvote", Icons.upvoteSquare)
+            ("Undo upvote", "arrow.up.square.fill") :
+            ("Upvote", "arrow.up.square")
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
@@ -111,8 +111,8 @@ extension ExpandedPost {
         
         // downvote
         let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
-            ("Undo downvote", Icons.downvoteSquareFill) :
-            ("Downvote", Icons.downvoteSquare)
+            ("Undo downvote", "arrow.down.square.fill") :
+            ("Downvote", "arrow.down.square")
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
@@ -125,9 +125,7 @@ extension ExpandedPost {
         })
         
         // save
-        let (saveText, saveImg) = post.saved ?
-            ("Unsave", Icons.unsave) :
-            ("Save", Icons.save)
+        let (saveText, saveImg) = post.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
         ret.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg,
@@ -142,7 +140,7 @@ extension ExpandedPost {
         // reply
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
-            imageName: Icons.reply,
+            imageName: "arrowshape.turn.up.left",
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -153,7 +151,7 @@ extension ExpandedPost {
             // edit
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
-                imageName: Icons.edit,
+                imageName: "pencil",
                 destructiveActionPrompt: nil,
                 enabled: true
             ) {
@@ -168,7 +166,7 @@ extension ExpandedPost {
             // delete
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
-                imageName: Icons.delete,
+                imageName: "trash",
                 destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
                 enabled: !post.post.deleted
             ) {

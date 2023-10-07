@@ -154,7 +154,7 @@ struct LayoutWidgetEditView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onAppear {
                         barCollection.rect = geo.frame(in: .global)
-                            .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y)
+                            .offsetBy(dx: 0, dy: -outerFrame.origin.y)
                             .insetBy(dx: -20, dy: -60)
                     }
             }
@@ -186,9 +186,8 @@ struct LayoutWidgetEditView: View {
                 Color.clear
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onAppear {
-                        
                         trayCollection.rect = geo.frame(in: .global)
-                            .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y - 90)
+                            .offsetBy(dx: 0, dy: -outerFrame.origin.y - 90)
                     }
             }
         }

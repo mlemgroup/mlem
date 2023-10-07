@@ -59,7 +59,7 @@ struct FiltersSettingsView: View {
                         Text("Import Filters")
                     } icon: {
                         if showSettingsIcons {
-                            Image(systemName: Icons.import)
+                            Image(systemName: Icons.importSymbol)
                         }
                     }
                 }

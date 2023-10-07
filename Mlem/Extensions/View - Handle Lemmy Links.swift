@@ -49,16 +49,15 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     .environmentObject(CommunitySearchResultsTracker())
                 case .apiPostView(let post):
                     let postModel = PostModel(from: post)
-                    let postTracker = PostTracker(
-                        shouldPerformMergeSorting: false,
-                        internetSpeed: internetSpeed,
-                        initialItems: [postModel],
-                        upvoteOnSave: upvoteOnSave
-                    )
-                    // swiftlint:disable:next redundant_discardable_let
-                    let _ = postTracker.add([postModel])
                     ExpandedPost(post: postModel)
-                        .environmentObject(postTracker)
+                        .environmentObject(
+                            PostTracker(
+                                shouldPerformMergeSorting: false,
+                                internetSpeed: internetSpeed,
+                                initialItems: [postModel],
+                                upvoteOnSave: upvoteOnSave
+                            )
+                        )
                         .environmentObject(appState)
                 case .apiPost(let post):
                     LazyLoadExpandedPost(post: post)

@@ -112,7 +112,6 @@ struct CompactPost: View {
                     showDownvotes: showDownvotesSeparately
                 ),
                 published: post.published,
-                updated: post.updated,
                 commentCount: post.numReplies,
                 saved: post.saved,
                 alignment: .center
