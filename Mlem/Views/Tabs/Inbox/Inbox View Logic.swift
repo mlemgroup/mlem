@@ -147,7 +147,16 @@ extension InboxView {
     
     // MARK: - Replies
     
+    /// Marks a comment reply as read or unread. Has no effect if the requested read status is already the current read status
+    /// - Parameters:
+    ///   - commentReplyView: commentReplyView to mark
+    ///   - read: true to mark as read, false to mark as unread
     func markCommentReplyRead(commentReplyView: APICommentReplyView, read: Bool) async {
+        // skip noop case
+        guard commentReplyView.commentReply.read != read else {
+            return
+        }
+        
         do {
             let response = try await commentRepository.markCommentReadStatus(
                 id: commentReplyView.id,
@@ -212,7 +221,16 @@ extension InboxView {
     
     // MARK: Mentions
     
+    /// Marks a person mention as read or unread. Has no effect if the requested read status is already the current read status
+    /// - Parameters:
+    ///   - mention: mention to mark
+    ///   - read: true to mark as read, false to mark as unread
     func markMentionRead(mention: APIPersonMentionView, read: Bool) async {
+        // skip noop case
+        guard mention.personMention.read != read else {
+            return
+        }
+        
         do {
             let updatedMention = try await apiClient.markPersonMentionAsRead(
                 mentionId: mention.personMention.id,
