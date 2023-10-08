@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct ReplyToMessage: ResponseEditorModel {
-    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.messageRepository) var messageRepository
     @Dependency(\.hapticManager) var hapticManager
     
     var id: Int { message.id }
@@ -26,7 +26,7 @@ struct ReplyToMessage: ResponseEditorModel {
     
     func sendResponse(responseContents: String) async throws {
         do {
-            try await apiClient.sendPrivateMessage(content: responseContents, recipient: message.creator)
+            _ = try await messageRepository.sendMessage(content: responseContents, recipientId: message.creator.id)
             hapticManager.play(haptic: .success, priority: .high)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

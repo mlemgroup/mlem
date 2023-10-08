@@ -20,7 +20,17 @@ struct CreatePrivateMessageRequest: APIPostRequest {
         let content: String
         let recipient_id: Int
     }
-
+    
+    init(
+        session: APISession,
+        content: String,
+        recipientId: Int
+    ) throws {
+        self.instanceURL = try session.instanceUrl
+        self.body = try .init(auth: session.token, content: content, recipient_id: recipientId)
+    }
+    
+    @available(*, deprecated, message: "Use id-based initializer instead")
     init(
         session: APISession,
         content: String,

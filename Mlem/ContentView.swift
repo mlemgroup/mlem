@@ -51,7 +51,8 @@ struct ContentView: View {
                 // but when guest mode arrives we'll either omit these entirely, or replace them with a
                 // guest mode specific tab for sign in / change instance screen.
                 if let account = appState.currentActiveAccount {
-                    InboxView()
+                    // InboxView()
+                    InboxViewNew()
                         .fancyTabItem(tag: TabSelection.inbox) {
                             FancyTabBarLabel(
                                 tag: TabSelection.inbox,
@@ -157,7 +158,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists && allowTabBarSwipeUpGesture {
+        if !homeButtonExists, allowTabBarSwipeUpGesture {
             isPresentingAccountSwitcher = true
         }
     }
