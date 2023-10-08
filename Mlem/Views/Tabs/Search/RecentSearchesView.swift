@@ -75,13 +75,16 @@ struct RecentSearchesView: View {
                     CommunityResultView(
                         community: community,
                         showTypeLabel: true,
-                        hasSwipeActions: false
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
                     )
                 } else if let user = contentModel.wrappedValue as? UserModel {
-                    UserResultView(user: user, showTypeLabel: true)
+                    UserResultView(
+                        user: user,
+                        showTypeLabel: true,
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                    )
                 }
             }
-            .addSwipeyActions(trailing: [deleteSwipeAction(contentModel)])
             .simultaneousGesture(TapGesture().onEnded {
                 recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
             })

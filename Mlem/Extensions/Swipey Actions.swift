@@ -363,4 +363,11 @@ extension View {
             )
         )
     }
+    
+    @ViewBuilder
+    func addSwipeyActions(_ configuration: SwipeConfiguration) -> some View {
+        modifier(
+        SwipeyView(configuration: configuration)
+        )
+    }
 }
