@@ -16,18 +16,8 @@ struct CommunityResultView: View {
     
     let community: CommunityModel
     let showTypeLabel: Bool
-    var swipeActions: SwipeConfiguration = .init()
-    
-    init(
-        community: CommunityModel,
-        showTypeLabel: Bool = false,
-        swipeActions: SwipeConfiguration? = nil
-    ) {
-        self.community = community
-        self.showTypeLabel = showTypeLabel
-        self.swipeActions = swipeActions ?? .init(trailingActions: [subscribeSwipeAction])
-    }
-    
+    var swipeActions: SwipeConfiguration?
+
     var subscribeSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = community.subscribed
         ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
@@ -112,6 +102,6 @@ struct CommunityResultView: View {
                     systemImage: community.subscribed ? Icons.unsubscribe : Icons.subscribe)
             }
         }
-        .addSwipeyActions(swipeActions)
+        .addSwipeyActions(swipeActions ?? .init(trailingActions: [subscribeSwipeAction]))
     }
 }

@@ -16,7 +16,7 @@ struct UserResultView: View {
     
     let user: UserModel
     let showTypeLabel: Bool
-    var swipeActions: SwipeConfiguration = .init()
+    var swipeActions: SwipeConfiguration?
     
     var caption: String {
         if let host = user.user.actorId.host {
@@ -89,6 +89,6 @@ struct UserResultView: View {
             .background(.background)
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
-        .addSwipeyActions(swipeActions)
+        .addSwipeyActions(swipeActions ?? .init())
     }
 }
