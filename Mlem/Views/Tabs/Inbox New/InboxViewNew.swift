@@ -67,6 +67,7 @@ struct InboxViewNew: View {
                         print("re-selected \(TabSelection.inbox) tab")
                     }
                 }
+                .task {}
         }
     }
 

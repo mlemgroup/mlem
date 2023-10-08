@@ -41,6 +41,10 @@ class InboxTrackerNew: ObservableObject {
     }
 
     // MARK: loading methods
+    
+    /// Refreshes the tracker, clearing all items and loading new ones
+    /// - Parameter clearBeforeFetch: true to clear items before fetch
+    func refresh(clearBeforeFetch: Bool = false) {}
 
     /// Loads the next page of items
     func loadNextPage() {
@@ -48,6 +52,7 @@ class InboxTrackerNew: ObservableObject {
         isLoading = true
 
         // TODO: handle no more items to load
+        // TODO: handle sub-tracker loading (return, but flag status as awaiting)
         
         // perform what amounts to a 3-way merge sort between the child trackers until we have the requisite number of items--the trick here is that the consumeNextItem() method of the sub-trackers makes each one _appear_ to be an infinite stream of sorted, filtered, deduped items, allowing us to do a high-level merge sort here--all of the dynamic loading is handled by the trackers themselves via consumeNextItem()
         // note that this method assumes that sorting, filtering, and deduping is all handled by the trackers
@@ -64,6 +69,8 @@ class InboxTrackerNew: ObservableObject {
 
         items.append(contentsOf: newItems)
     }
+    
+    func reset(with newItems: [InboxItemNew] = .init()) {}
 
     // MARK: helpers
     
