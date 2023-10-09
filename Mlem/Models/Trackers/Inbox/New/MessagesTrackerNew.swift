@@ -39,11 +39,11 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
         self.unreadOnly = unreadOnly
     }
 
-    func nextItemSortVal(sortType: InboxSortType) -> InboxSortVal {
+    func nextItemSortVal(sortType: InboxSortType) -> StreamItem<InboxSortVal> {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
 
         if cursor < messages.count {
-            return messages[cursor].getInboxSortVal(sortType: sortType)
+            return .present(messages[cursor].getInboxSortVal(sortType: sortType))
         } else if isLoading {
             return .loading
         } else {
@@ -52,13 +52,16 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
         }
     }
 
-    func consumeNextItem() -> InboxItemNew? {
+    func consumeNextItem() -> StreamItem<InboxItemNew> {
         if cursor < messages.count {
             cursor += 1
-            return InboxItemNew.message(messages[cursor - 1])
+            return .present(InboxItemNew.message(messages[cursor - 1]))
+        } else if isLoading {
+            return .loading
+        } else {
+            print("no more messages")
+            return .absent
         }
-        print("no more messages")
-        return nil
     }
 
     // MARK: - basic loading operations

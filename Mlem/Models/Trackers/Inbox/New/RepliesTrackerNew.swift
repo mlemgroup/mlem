@@ -21,11 +21,11 @@ class RepliesTrackerNew: ObservableObject, InboxFeedSubTracker {
     /// Returns the sorting value for the next item
     /// - Parameter sortType: InboxSortType the values should be sorted by. This MUST agree with this tracker's sortType field!
     /// - Returns: InboxSortVal? containing the next item's sort value if present, nil otherwise
-    func nextItemSortVal(sortType: InboxSortType) -> InboxSortVal {
+    func nextItemSortVal(sortType: InboxSortType) -> StreamItem<InboxSortVal> {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
 
         if cursor < replies.count {
-            return replies[cursor].getInboxSortVal(sortType: sortType)
+            return .present(replies[cursor].getInboxSortVal(sortType: sortType))
         } else if isLoading {
             return .loading
         } else {
@@ -34,12 +34,15 @@ class RepliesTrackerNew: ObservableObject, InboxFeedSubTracker {
         }
     }
 
-    func consumeNextItem() -> InboxItemNew? {
+    func consumeNextItem() -> StreamItem<InboxItemNew> {
         if cursor < replies.count {
             cursor += 1
-            return InboxItemNew.reply(replies[cursor - 1])
+            return .present(InboxItemNew.reply(replies[cursor - 1]))
+        } else if isLoading {
+            return .loading
+        } else {
+            print("no more replies")
+            return .absent
         }
-        print("no more replies")
-        return nil
     }
 }

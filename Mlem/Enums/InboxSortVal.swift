@@ -11,27 +11,24 @@ import Foundation
 /// - absent: indicates that there are no more items
 enum InboxSortVal: Comparable {
     case published(Date)
-    case loading
-    case absent
     
     /// Determines whether this should be sorted before another, optional InboxSortVal
     /// - Parameter other: InboxSortVal to compare to
     /// - Returns: true if other is nil or should be sorted after this, false otherwise
-    func shouldSortBefore(other: InboxSortVal) -> Bool {
+    func shouldSortBefore(other: InboxSortVal?) -> Bool {
         switch self {
         case let .published(published):
             switch other {
             case let .published(otherPublished):
                 return published >= otherPublished
-            default:
-                // cannot sort on other types
-                assertionFailure("shouldSortAfter called with incompatible other type \(self)")
+            // default not needed now but will be useful with other types
+            //            default:
+            //                assertionFailure("shouldSortAfter called with incompatible other type \(self)")
+            //                return true
+            //            }
+            case .none:
                 return true
             }
-        default:
-            // cannot sort on other types
-            assertionFailure("shouldSortAfter called with incompatible type \(self)")
-            return true
         }
     }
 }
