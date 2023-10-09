@@ -16,6 +16,7 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private var page: Int = 1
     private var loadThreshold: ContentModelIdentifier?
+    private var isLoading: Bool = false
 
     // params governing behavior
     private var internetSpeed: InternetSpeed
@@ -38,14 +39,17 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
         self.unreadOnly = unreadOnly
     }
 
-    func nextItemSortVal(sortType: InboxSortType) -> InboxSortVal? {
+    func nextItemSortVal(sortType: InboxSortType) -> InboxSortVal {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
 
         if cursor < messages.count {
             return messages[cursor].getInboxSortVal(sortType: sortType)
+        } else if isLoading {
+            return .loading
+        } else {
+            print("no more messages")
+            return .absent
         }
-        print("no more replies")
-        return nil
     }
 
     func consumeNextItem() -> InboxItemNew? {
