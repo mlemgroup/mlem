@@ -62,7 +62,7 @@ struct FeedView: View {
     
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType
-    @State var isLoading: Bool = false
+    @State var isLoading: Bool = true
     @State var shouldLoad: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
@@ -128,17 +128,21 @@ struct FeedView: View {
     @ViewBuilder
     private var contentView: some View {
         ScrollView {
-            if postTracker.items.isEmpty {
-                noPostsView()
-            } else {
+            if !postTracker.items.isEmpty {
                 LazyVStack(spacing: 0) {
                     // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
                     ForEach(postTracker.items, id: \.uid) { post in
                         feedPost(for: post)
                     }
                     
-                    EndOfFeedView(isLoading: isLoading)
+                    EndOfFeedView(isLoading: isLoading && postTracker.page > 1)
                 }
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .overlay {
+            if postTracker.items.isEmpty {
+                noPostsView()
             }
         }
         .fancyTabScrollCompatible()
@@ -146,17 +150,17 @@ struct FeedView: View {
     
     @ViewBuilder
     private func noPostsView() -> some View {
-        if isLoading {
-            LoadingView(whatIsLoading: .posts)
-        } else {
-            VStack(alignment: .center, spacing: 5) {
-                Image(systemName: Icons.noPosts)
-                Text("No posts to be found")
+        VStack {
+            if isLoading {
+                LoadingView(whatIsLoading: .posts)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
+            } else {
+                NoPostsView(isLoading: $isLoading, postSortType: $postSortType, showReadPosts: $showReadPosts)
+                    .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
-            .padding()
-            .foregroundColor(.secondary)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .animation(.easeOut(duration: 0.1), value: isLoading)
     }
     
     // MARK: Helper Views

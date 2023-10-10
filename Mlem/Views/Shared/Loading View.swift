@@ -15,7 +15,7 @@ struct LoadingView: View {
     let whatIsLoading: PossibleThingsToLoad
 
     var body: some View {
-        VStack {
+        VStack(spacing: AppConstants.postAndCommentSpacing) {
             Spacer()
 
             ProgressView()
@@ -51,4 +51,8 @@ struct LoadingView: View {
         .foregroundColor(.secondary)
         .frame(maxWidth: .infinity)
     }
+}
+
+#Preview {
+    LoadingView(whatIsLoading: .posts)
 }

@@ -288,9 +288,10 @@ extension FeedView {
         )
     }
     
-    private func filter(postView: PostModel) -> Bool {
-        !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
-            (showReadPosts || !postView.read)
+    private func filter(postView: PostModel) -> PostFilterReason? {
+        guard !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) else { return .keyword }
+        guard showReadPosts || !postView.read else { return .read }
+        return nil
     }
     
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
