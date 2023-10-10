@@ -8,7 +8,7 @@ import Foundation
 
 class RepliesTrackerNew: ObservableObject, InboxFeedSubTracker {
     @Published var replies: [ReplyModel] = .init()
-    private var isLoading: Bool = false
+    private(set) var isLoading: Bool = false
 
     /// Parent tracker. If present, will be updated when this tracker is updated
     var parentTracker: InboxTrackerNew?

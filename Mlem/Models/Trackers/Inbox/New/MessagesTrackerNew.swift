@@ -16,7 +16,7 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private var page: Int = 1
     private var loadThreshold: ContentModelIdentifier?
-    private var isLoading: Bool = false
+    private(set) var isLoading: Bool = false
 
     // params governing behavior
     private var internetSpeed: InternetSpeed
@@ -68,8 +68,8 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     
     func refresh(clearBeforeFetch: Bool = false) async throws {
         if clearBeforeFetch { try await reset() }
-
-        let items = try await fetchNextPage()
+        
+        try await reset(andLoad: true)
     }
 
     // filter
@@ -90,11 +90,13 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     /// Fetches the given page of items and increments the page counter
     /// - Returns: next page of items
     private func fetchNextPage() async throws -> [MessageModel] {
+        print("fetching new messages")
         let newMessages = try await messageRepository.loadMessages(
             page: page,
             limit: internetSpeed.pageSize,
             unreadOnly: unreadOnly
         )
+        print("got \(newMessages.count) messages")
         page += 1
         return newMessages
     }

@@ -9,7 +9,7 @@ import Foundation
 class MentionsTrackerNew: ObservableObject, InboxFeedSubTracker {
     @Published var mentions: [MentionModel] = .init()
     
-    private var isLoading: Bool = false
+    private(set) var isLoading: Bool = false
 
     /// Parent tracker. If present, will be updated when this tracker is updated
     var parentTracker: InboxTrackerNew?

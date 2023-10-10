@@ -7,7 +7,7 @@
 import Foundation
 
 enum LoadingState {
-    case loading, waiting, idle
+    case loading, waiting, idle, done
 }
 
 class InboxTrackerNew: ObservableObject {
@@ -30,6 +30,8 @@ class InboxTrackerNew: ObservableObject {
     private var messagesTracker: MessagesTrackerNew
     
     private let sortType: InboxSortType = .published
+    
+    private var allTrackersReady: Bool { !(repliesTracker.isLoading || mentionsTracker.isLoading || messagesTracker.isLoading) }
     
     // other
     private(set) var internetSpeed: InternetSpeed
@@ -60,38 +62,55 @@ class InboxTrackerNew: ObservableObject {
         if clearBeforeFetch {
             reset()
         }
+        
+        loadNextPage()
     }
     
     /// Fetches the requested number of items. If any of the child trackers are loading and not enough items have been loaded to trigger autoloading behavior, sets the loading status to waiting. All requests for more items should go through this method, as it handles loading state.
     /// - Returns: requested number of items, if possible
-    func fetchNextItems(numItems: Int) -> [InboxItemNew] {
-        guard loadingState == .idle
+    private func fetchNextItems(numItems: Int) -> [InboxItemNew] {
+        guard loadingState == .idle || (loadingState == .waiting && allTrackersReady) else {
+            print("cannot fetch more items right now.\n    loading state: \(loadingState)\n    trackers ready: \(allTrackersReady)")
+            return .init()
+        }
+        
+        assert(numItems > abs(AppConstants.infiniteLoadThresholdOffset), "cannot load fewer items than infinite load offset")
         
         loadingState = .loading
+        
+        var newItems: [InboxItemNew] = .init()
+        for idx in 0 ..< numItems {
+            let nextItem = computeNextItem()
+            switch nextItem {
+            case let .present(item):
+                // if item is present, add it to newItems
+                // dev note: don't need to dedupe because that's handled at the child trackers
+                newItems.append(item)
+                assert(!ids.contains(item.uid))
+                ids.insert(item.uid)
+            case .loading:
+                // if item is loading, two cases.
+                // if we don't have enough items for infinite load, set loading to `waiting` to trigger a reload when the trackers finish loading
+                // if we do have enough items for infinite load, call it a day and go to `idle`
+                if idx < abs(AppConstants.infiniteLoadThresholdOffset) {
+                    loadingState = .waiting
+                } else {
+                    loadingState = .idle
+                }
+                return newItems
+            case .absent:
+                // if there is no next item, we're done
+                loadingState = .done
+                return newItems
+            }
+        }
+        
+        return newItems
     }
     
     /// Loads the next page of items
     func loadNextPage() {
-        defer { isLoading = false }
-        isLoading = true
-        
-        // TODO: handle no more items to load
-        // TODO: handle sub-tracker loading (return, but flag status as awaiting)
-        
-        // perform what amounts to a 3-way merge sort between the child trackers until we have the requisite number of items--the trick here is that the consumeNextItem() method of the sub-trackers makes each one _appear_ to be an infinite stream of sorted, filtered, deduped items, allowing us to do a high-level merge sort here--all of the dynamic loading is handled by the trackers themselves via consumeNextItem()
-        // note that this method assumes that sorting, filtering, and deduping is all handled by the trackers
-        var newItems: [InboxItemNew] = .init()
-        for _ in 0 ..< internetSpeed.pageSize {
-            if let nextItem = computeNextItem() {
-                newItems.append(nextItem)
-                assert(!ids.contains(nextItem.uid))
-                ids.insert(nextItem.uid)
-            } else {
-                break
-            }
-        }
-        
-        items.append(contentsOf: newItems)
+        items.append(contentsOf: fetchNextItems(numItems: internetSpeed.pageSize))
     }
     
     /// Resets the tracker to an empty state
@@ -109,8 +128,6 @@ class InboxTrackerNew: ObservableObject {
         // TODO: other sorts--need to ensure that the trackers are all sorted the same way
         var sortVal: InboxSortVal?
         var trackerToConsume: (any InboxFeedSubTracker)?
-        
-        // TODO: handle .published being different from *all* the others--maybe make a generic absent/loading enum?
   
         for tracker: InboxFeedSubTracker in [messagesTracker, mentionsTracker, repliesTracker] {
             (sortVal, trackerToConsume) = compareNextTrackerItem(
@@ -127,7 +144,14 @@ class InboxTrackerNew: ObservableObject {
         return .absent
     }
     
-    func compareNextTrackerItem(
+    /// Compares the current sorting value of `trackerToConsume` with the current sorting value of `trackerToCompare`. Returns a tuple of the lower sorting value and its associated tracker.
+    /// - Parameters:
+    ///   - sortType: type of sorting being performed
+    ///   - sortVal: sorting value of the next item in trackerToConsume
+    ///   - trackerToConsume: tracker currently set for consumption
+    ///   - trackerToCompare: tracker to compare with
+    /// - Returns: tuple of the earlier-sorted inbox sort value and its associated tracker
+    private func compareNextTrackerItem(
         sortType: InboxSortType,
         sortVal: InboxSortVal?,
         trackerToConsume: (any InboxFeedSubTracker)?,
@@ -142,6 +166,7 @@ class InboxTrackerNew: ObservableObject {
             return (sortVal, trackerToConsume)
         case .loading:
             assertionFailure("todo: handle loading")
+            return (sortVal, trackerToConsume)
         case .absent:
             return (sortVal, trackerToConsume)
         }

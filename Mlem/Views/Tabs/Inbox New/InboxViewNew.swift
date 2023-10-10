@@ -67,7 +67,11 @@ struct InboxViewNew: View {
                         print("re-selected \(TabSelection.inbox) tab")
                     }
                 }
-                .task {}
+                .task {
+                    if inboxTracker.items.isEmpty {
+                        inboxTracker.refresh()
+                    }
+                }
         }
     }
 
