@@ -127,7 +127,7 @@ struct CommentBodyView: View {
                 }
             } else {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: myVote == .resetVote ? Icons.upvoteSquare : myVote.iconName)
+                    Image(systemName: myVote == .resetVote ? Icons.upvoteSquare : myVote.iconNameFill)
                     Text(String(commentView.counts.score))
                 }
                 .foregroundColor(.secondary)
