@@ -56,6 +56,7 @@ struct SearchView: View {
                         searchModel.searchText = ""
                     }
             }
+            .navigationSearchBarHiddenWhenScrolling(false)
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
             .onAppear {
