@@ -19,14 +19,15 @@ struct NoPostsView: View {
             if !isLoading {
                 VStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
                     
+                    let unreadItems = postTracker.hiddenItems[.read, default: 0]
+                    
                     Image(systemName: Icons.noPosts)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 50)
-                        .padding(.bottom)
+                        .frame(width: unreadItems == 0 ? 35 : 50)
+                        .padding(.bottom, unreadItems == 0 ? 8: 12)
                     Text(title)
                     
-                    let unreadItems = postTracker.hiddenItems[.read, default: 0]
                     if unreadItems != 0 {
                         Text(
                             (unreadItems == 1 ? "1 available post was" : "\(unreadItems) available posts were")
