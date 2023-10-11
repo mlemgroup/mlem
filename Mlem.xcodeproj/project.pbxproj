@@ -1080,6 +1080,15 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		030D00832AD0842900953B1D /* Results */ = {
+			isa = PBXGroup;
+			children = (
+				03EEEAF22AB8DCDF0087F8D8 /* CommunityResultView.swift */,
+				03B7AAF42ABEFA7A00068B23 /* UserResultView.swift */,
+			);
+			path = Results;
+			sourceTree = "<group>";
+		};
 		030E86422AC6F6CB000283A6 /* Search Bar */ = {
 			isa = PBXGroup;
 			children = (
@@ -1938,8 +1947,7 @@
 				03EC92942AC064AE007BBE7E /* SearchHomeView.swift */,
 				036ED3BB2ABF1058009664BC /* SearchModel.swift */,
 				03EEEAF62AB8ED3C0087F8D8 /* SearchTabPicker.swift */,
-				03EEEAF22AB8DCDF0087F8D8 /* CommunityResultView.swift */,
-				03B7AAF42ABEFA7A00068B23 /* UserResultView.swift */,
+				030D00832AD0842900953B1D /* Results */,
 			);
 			path = Search;
 			sourceTree = "<group>";
