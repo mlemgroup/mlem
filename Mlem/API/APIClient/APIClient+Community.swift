@@ -31,6 +31,7 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    @discardableResult
     func followCommunity(id: Int, shouldFollow: Bool) async throws -> CommunityResponse {
         let request = try FollowCommunityRequest(session: session, communityId: id, follow: shouldFollow)
         return try await perform(request: request)
