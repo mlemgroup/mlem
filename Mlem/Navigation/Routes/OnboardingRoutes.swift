@@ -8,7 +8,8 @@
 
 import Foundation
 
-enum OnboardingRoute: Hashable {
+/// Routes for Onboarding navigation flow.
+enum OnboardingRoute: Routable {
     case onboard
     case login(URL?)
 }

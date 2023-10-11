@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Conforming types can be added to a `NavigationRouter`'s path.
+/// Conforming types can be added to `AnyNavigablePath`'s path.
 protocol Routable: Hashable {
     
     /// - Parameter value: A data type for a given navigation destination. This value could be (but not limited to) some raw data, a view model, or an enum case (representing a route on a navigation path).
