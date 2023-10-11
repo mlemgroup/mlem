@@ -23,7 +23,11 @@ struct CommunityResultView: View {
         return SwipeAction(
             symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
             color: community.subscribed ? .red : .green,
-            action: subscribe
+            action: {
+                Task {
+                    await subscribe()
+                }
+            }
         )
     }
     

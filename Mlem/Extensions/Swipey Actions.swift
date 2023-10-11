@@ -18,7 +18,7 @@ public struct SwipeAction {
     
     let symbol: Symbol
     let color: Color
-    let action: () async -> Void
+    let action: () -> Void
 }
 
 // MARK: -
@@ -201,9 +201,7 @@ struct SwipeyView: ViewModifier {
         
         reset()
         
-        Task(priority: .userInitiated) {
-            await swipeAction(at: finalDragPosition)?.action()
-        }
+        swipeAction(at: finalDragPosition)?.action()
     }
     
     private func reset() {

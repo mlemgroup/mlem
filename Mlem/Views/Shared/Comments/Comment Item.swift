@@ -227,7 +227,11 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptyVoteSymbolName, fillName: upvoteSymbolName),
             color: .upvoteColor,
-            action: upvote
+            action: {
+                Task {
+                    await upvote()
+                }
+            }
         )
     }
     
@@ -236,7 +240,11 @@ extension CommentItem {
         return SwipeAction(
             symbol: .init(emptyName: emptyDownvoteSymbolName, fillName: downvoteSymbolName),
             color: .downvoteColor,
-            action: downvote
+            action: {
+                Task {
+                    await downvote()
+                }
+            }
         )
     }
     
@@ -244,7 +252,11 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptySaveSymbolName, fillName: saveSymbolName),
             color: .saveColor,
-            action: saveComment
+            action: {
+                Task {
+                    await saveComment()
+                }
+            }
         )
     }
 
@@ -252,7 +264,11 @@ extension CommentItem {
         SwipeAction(
             symbol: .init(emptyName: emptyReplySymbolName, fillName: replySymbolName),
             color: .accentColor,
-            action: replyToCommentAsyncWrapper
+            action: {
+                Task {
+                    await replyToCommentAsyncWrapper()
+                }
+            }
         )
     }
     
