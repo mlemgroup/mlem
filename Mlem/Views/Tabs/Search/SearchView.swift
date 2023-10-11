@@ -73,24 +73,39 @@ struct SearchView: View {
     
     @ViewBuilder
     private var content: some View {
-        ScrollView {
-            VStack {
-                switch page {
-                case .home:
-                    SearchHomeView()
-                        .transition(.opacity)
-                        .environmentObject(homeSearchModel)
-                        .environmentObject(homeContentTracker)
-                case .recents:
-                    RecentSearchesView()
-                        .transition(.opacity)
-                case .results:
-                    SearchResultsView()
-                        .environmentObject(searchModel)
-                        .transition(.opacity)
-                }
+        ZStack {
+            ScrollView {
+                SearchHomeView()
+                    .transition(.opacity)
+                    .environmentObject(homeSearchModel)
+                    .environmentObject(homeContentTracker)
             }
             .animation(.default, value: page)
+            .fancyTabScrollCompatible()
+            .scrollDismissesKeyboard(.immediately)
+            .zIndex(page == .home ? 1 : 0)
+            .opacity(page == .home ? 1 : 0)
+            
+            ScrollView {
+                RecentSearchesView()
+                    .transition(.opacity)
+            }
+            .animation(.default, value: page)
+            .fancyTabScrollCompatible()
+            .scrollDismissesKeyboard(.immediately)
+            .zIndex(page == .recents ? 1 : 0)
+            .opacity(page == .recents ? 1 : 0)
+            
+            ScrollView {
+                SearchResultsView()
+                    .environmentObject(searchModel)
+                    .transition(.opacity)
+            }
+            .animation(.default, value: page)
+            .fancyTabScrollCompatible()
+            .scrollDismissesKeyboard(.immediately)
+            .zIndex(page == .results ? 1 : 0)
+            .opacity(page == .results ? 1 : 0)
         }
         .onChange(of: isSearching) { newValue in
             if newValue, searchModel.searchText.isEmpty {
@@ -106,7 +121,5 @@ struct SearchView: View {
                 }
             }
         }
-        .fancyTabScrollCompatible()
-        .scrollDismissesKeyboard(.immediately)
     }
 }
