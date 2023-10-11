@@ -62,11 +62,6 @@ extension InboxView {
                     await loadTrackerPage(tracker: messagesTracker)
                 }
             }
-            .contextMenu {
-                ForEach(genMessageMenuGroup(message: message)) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                }
-            }
             .addSwipeyActions(
                 leading: [],
                 trailing: [
@@ -74,5 +69,10 @@ extension InboxView {
                     replyToMessageSwipeAction(message: message)
                 ]
             )
+            .contextMenu {
+                ForEach(genMessageMenuGroup(message: message)) { item in
+                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                }
+            }
     }
 }
