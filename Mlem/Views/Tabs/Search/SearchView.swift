@@ -76,37 +76,33 @@ struct SearchView: View {
         ZStack {
             ScrollView {
                 SearchHomeView()
-                    .transition(.opacity)
                     .environmentObject(homeSearchModel)
                     .environmentObject(homeContentTracker)
             }
-            .animation(.default, value: page)
             .fancyTabScrollCompatible()
             .scrollDismissesKeyboard(.immediately)
+            ._opacity(page == .home ? 1 : 0, speed: page == .home ? 1 : 0)
             .zIndex(page == .home ? 1 : 0)
-            .opacity(page == .home ? 1 : 0)
             
             ScrollView {
                 RecentSearchesView()
-                    .transition(.opacity)
             }
-            .animation(.default, value: page)
             .fancyTabScrollCompatible()
             .scrollDismissesKeyboard(.immediately)
+            ._opacity(page == .recents ? 1 : 0, speed: page == .recents ? 1 : 0)
             .zIndex(page == .recents ? 1 : 0)
-            .opacity(page == .recents ? 1 : 0)
             
             ScrollView {
                 SearchResultsView()
                     .environmentObject(searchModel)
-                    .transition(.opacity)
             }
-            .animation(.default, value: page)
             .fancyTabScrollCompatible()
             .scrollDismissesKeyboard(.immediately)
+            ._opacity(page == .results ? 1 : 0, speed: page == .results ? 1 : 0)
             .zIndex(page == .results ? 1 : 0)
-            .opacity(page == .results ? 1 : 0)
         }
+        .animation(.default, value: page)
+        .transition(.opacity)
         .onChange(of: isSearching) { newValue in
             if newValue, searchModel.searchText.isEmpty {
                 page = .recents
@@ -118,6 +114,33 @@ struct SearchView: View {
                     page = .recents
                 } else {
                     page = .results
+                }
+            }
+        }
+    }
+}
+
+extension View {
+    
+    @ViewBuilder
+    func _opacity(_ opacity: Double, speed: Double) -> some View {
+        if #available(iOS 17.0, *) {
+            self.transaction { transaction in
+                if speed > 0 {
+                    transaction.animation = transaction.animation?.speed(speed)
+                } else {
+                    transaction.animation = nil
+                }
+            } body: { view in
+                view.opacity(opacity)
+            }
+        } else {
+            self.opacity(opacity)
+                .transaction { transaction in
+                if speed > 0 {
+                    transaction.animation = transaction.animation?.speed(speed)
+                } else {
+                    transaction.animation = nil
                 }
             }
         }
