@@ -19,6 +19,7 @@ struct PostModel {
     let saved: Bool
     let read: Bool
     let published: Date
+    let updated: Date?
     
     var uid: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
     
@@ -34,6 +35,7 @@ struct PostModel {
         self.saved = apiPostView.saved
         self.read = apiPostView.read
         self.published = apiPostView.published
+        self.updated = apiPostView.post.updated
     }
     
     /// Creates a PostModel from another PostModel. Any provided field values will override values in post.
@@ -58,7 +60,8 @@ struct PostModel {
         numReplies: Int? = nil,
         saved: Bool? = nil,
         read: Bool? = nil,
-        published: Date? = nil
+        published: Date? = nil,
+        updated: Date? = nil
     ) {
         self.postId = postId ?? other.postId
         self.post = post ?? other.post
@@ -69,6 +72,7 @@ struct PostModel {
         self.saved = saved ?? other.saved
         self.read = read ?? other.read
         self.published = published ?? other.published
+        self.updated = updated ?? other.updated
     }
     
     var postType: PostType {

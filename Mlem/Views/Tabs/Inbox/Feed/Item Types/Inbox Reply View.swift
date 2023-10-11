@@ -69,7 +69,7 @@ struct InboxReplyView: View {
                 
                 Spacer()
                 
-                TimestampView(date: reply.commentReply.published)
+                PublishedTimestampView(date: reply.commentReply.published)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

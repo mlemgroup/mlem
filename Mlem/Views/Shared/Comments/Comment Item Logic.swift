@@ -147,8 +147,8 @@ extension CommentItem {
         
         // upvote
         let (upvoteText, upvoteImg) = hierarchicalComment.commentView.myVote == .upvote ?
-            ("Undo upvote", "arrow.up.square.fill") :
-            ("Upvote", "arrow.up.square")
+            ("Undo upvote", Icons.upvoteSquareFill) :
+            ("Upvote", Icons.upvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
@@ -162,8 +162,8 @@ extension CommentItem {
         
         // downvote
         let (downvoteText, downvoteImg) = hierarchicalComment.commentView.myVote == .downvote ?
-            ("Undo downvote", "arrow.down.square.fill") :
-            ("Downvote", "arrow.down.square")
+            ("Undo downvote", Icons.downvoteSquareFill) :
+            ("Downvote", Icons.downvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
@@ -176,7 +176,9 @@ extension CommentItem {
         })
         
         // save
-        let (saveText, saveImg) = hierarchicalComment.commentView.saved ? ("Unsave", "bookmark.slash") : ("Save", "bookmark")
+        let (saveText, saveImg) = hierarchicalComment.commentView.saved ?
+            ("Unsave", Icons.unsave) :
+            ("Save", Icons.save)
         ret.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg,
@@ -191,7 +193,7 @@ extension CommentItem {
         // reply
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
-            imageName: "arrowshape.turn.up.left",
+            imageName: Icons.reply,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -202,7 +204,7 @@ extension CommentItem {
         if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
-                imageName: "pencil",
+                imageName: Icons.edit,
                 destructiveActionPrompt: nil,
                 enabled: true
             ) {
@@ -214,7 +216,7 @@ extension CommentItem {
         if appState.isCurrentAccountId(hierarchicalComment.commentView.creator.id) {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
-                imageName: "trash",
+                imageName: Icons.delete,
                 destructiveActionPrompt: "Are you sure you want to delete this comment?  This cannot be undone.",
                 enabled: !hierarchicalComment.commentView.comment.deleted
             ) {
