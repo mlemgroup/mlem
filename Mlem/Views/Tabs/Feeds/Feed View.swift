@@ -34,6 +34,8 @@ struct FeedView: View {
     let showLoading: Bool
     @State var feedType: FeedType
     
+    @State var errorDetails: ErrorDetails?
+    
     init(
         community: APICommunity?,
         feedType: FeedType,
@@ -151,7 +153,10 @@ struct FeedView: View {
     @ViewBuilder
     private func noPostsView() -> some View {
         VStack {
-            if isLoading {
+            if let errorDetails = errorDetails {
+                ErrorView(errorDetails)
+                    .frame(maxWidth: .infinity)
+            } else if isLoading {
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
