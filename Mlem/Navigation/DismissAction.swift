@@ -50,7 +50,6 @@ struct NavigationDismissHoisting: ViewModifier {
     @EnvironmentObject private var navigation: Navigation
     
     @Environment(\.navigationPathWithRoutes) private var routesNavigationPath
-    @Environment(\.settingsRoutesNavigationPath) private var settingsNavigationPath
     
     @Environment(\.tabSelectionHashValue) private var selectedTabHashValue
     
@@ -62,11 +61,7 @@ struct NavigationDismissHoisting: ViewModifier {
             assertionFailure()
             return []
         }
-        if selectedTabHashValue == TabSelection.settings.hashValue {
-            return settingsNavigationPath.wrappedValue
-        } else {
-            return routesNavigationPath.wrappedValue
-        }
+        return routesNavigationPath.wrappedValue
     }
     
     /// - Note: Unfortunately, we can't access the dismiss action via View.environment...doing so causes SwiftUI to enter into infinite loop. [2023.09]
@@ -123,7 +118,6 @@ struct PerformTabBarNavigation: ViewModifier {
     @Dependency(\.hapticManager) private var hapticManager
     
     @Environment(\.navigationPathWithRoutes) private var routesNavigationPath
-    @Environment(\.settingsRoutesNavigationPath) private var settingsNavigationPath
     
     @Environment(\.tabSelectionHashValue) private var selectedTabHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
@@ -136,11 +130,7 @@ struct PerformTabBarNavigation: ViewModifier {
             assertionFailure()
             return []
         }
-        if selectedTabHashValue == TabSelection.settings.hashValue {
-            return settingsNavigationPath.wrappedValue
-        } else {
-            return routesNavigationPath.wrappedValue
-        }
+        return routesNavigationPath.wrappedValue
     }
     
     let tab: TabSelection

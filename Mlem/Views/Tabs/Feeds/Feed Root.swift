@@ -17,7 +17,7 @@ struct FeedRoot: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
-    @StateObject private var feedRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
@@ -36,7 +36,7 @@ struct FeedRoot: View {
             NavigationSplitView(columnVisibility: $columnVisibility) {
                 CommunityListView(selectedCommunity: $rootDetails)
             } detail: {
-                NavigationStack(path: $feedRouter.path) {
+                NavigationStack(path: $feedTabNavigation.path) {
                     if let rootDetails {
                         FeedView(
                             community: rootDetails.community,
@@ -57,14 +57,13 @@ struct FeedRoot: View {
             }
             .environment(\.scrollViewProxy, proxy)
         }
-        .environment(\.navigationPathWithRoutes, $feedRouter.path)
         .environmentObject(navigation)
         .handleLemmyLinkResolution(
-            navigationPath: .constant(feedRouter)
+            navigationPath: .constant(feedTabNavigation)
         )
-        .environmentObject(feedRouter)
+        .environmentObject(feedTabNavigation)
         .environmentObject(appState)
-        .environment(\.navigationPathWithRoutes, $feedRouter.path)
+        .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:
@@ -81,7 +80,7 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
                 
-                _ = HandleLemmyLinkResolution(navigationPath: .constant(feedRouter))
+                _ = HandleLemmyLinkResolution(navigationPath: .constant(feedTabNavigation))
                     .didReceiveURL(url)
             }
         }

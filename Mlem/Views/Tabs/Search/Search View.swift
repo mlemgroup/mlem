@@ -35,14 +35,14 @@ struct SearchView: View {
     
     @State private var scrollToTopAppeared = false
     
-    @StateObject private var searchRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var searchTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
 
     // constants
     private let searchPageSize = 50
 
     var body: some View {
-        NavigationStack(path: $searchRouter.path) {
+        NavigationStack(path: $searchTabNavigation.path) {
             content
                 .tabBarNavigationEnabled(.search, navigation)
                 .handleLemmyViews()
@@ -50,9 +50,9 @@ struct SearchView: View {
                 .navigationBarColor()
                 .navigationTitle("Search")
         }
-        .environment(\.navigationPathWithRoutes, $searchRouter.path)
+        .environment(\.navigationPathWithRoutes, $searchTabNavigation.path)
         .environmentObject(navigation)
-        .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
+        .handleLemmyLinkResolution(navigationPath: .constant(searchTabNavigation))
         .searchable(text: getSearchTextBinding(), prompt: "Search for communities")
         .autocorrectionDisabled(true)
         .textInputAutocapitalization(.never)
