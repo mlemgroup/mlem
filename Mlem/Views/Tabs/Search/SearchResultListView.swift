@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SearchResultListView: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
     @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
     
@@ -26,7 +27,7 @@ struct SearchResultListView: View {
                     }
                 }
                 .simultaneousGesture(TapGesture().onEnded {
-                    recentSearchesTracker.addRecentSearch(contentModel)
+                    recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
                 })
                 Divider()
                     .onAppear {
@@ -54,7 +55,7 @@ struct SearchResultListView: View {
             } else if contentTracker.items.isEmpty {
                 Text("No results found.")
                     .foregroundStyle(.secondary)
-            } else if contentTracker.hasReachedEnd && contentTracker.items.count > 10 {
+            } else if contentTracker.hasReachedEnd, contentTracker.items.count > 10 {
                 HStack {
                     Image(systemName: "figure.climbing")
                     Text("I think I've found the bottom!")

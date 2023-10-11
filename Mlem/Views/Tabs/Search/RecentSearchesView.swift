@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecentSearchesView: View {
-    
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
     
@@ -17,8 +17,8 @@ struct RecentSearchesView: View {
             if !recentSearchesTracker.recentSearches.isEmpty {
                 VStack(alignment: .leading, spacing: 0) {
                     headerView
-                    .padding(.top, 15)
-                    .padding(.bottom, 6)
+                        .padding(.top, 15)
+                        .padding(.bottom, 6)
                     Divider()
                     itemsView
                 }
@@ -47,7 +47,7 @@ struct RecentSearchesView: View {
             Spacer()
             
             Button {
-                recentSearchesTracker.clearRecentSearches()
+                recentSearchesTracker.clearRecentSearches(accountId: appState.currentActiveAccount?.stableIdString)
             } label: {
                 Text("Clear")
                     .font(.subheadline)
@@ -68,7 +68,7 @@ struct RecentSearchesView: View {
                 }
             }
             .simultaneousGesture(TapGesture().onEnded {
-                recentSearchesTracker.addRecentSearch(contentModel)
+                recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
             })
             Divider()
         }
