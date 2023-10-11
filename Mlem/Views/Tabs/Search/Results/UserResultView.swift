@@ -32,7 +32,7 @@ struct UserResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: NavigationRoute.apiPerson(user.user)) {
+        NavigationLink(value: AppRoute.apiPerson(user.user)) {
             HStack(spacing: 10) {
                 AvatarView(user: user.user, avatarSize: 48)
                 VStack(alignment: .leading, spacing: 4) {

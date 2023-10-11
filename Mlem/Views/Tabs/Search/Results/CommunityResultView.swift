@@ -52,7 +52,7 @@ struct CommunityResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: NavigationRoute.apiCommunity(community.community)) {
+        NavigationLink(value: AppRoute.apiCommunity(community.community)) {
             HStack(spacing: 10) {
                 AvatarView(community: community.community, avatarSize: 48)
                 VStack(alignment: .leading, spacing: 4) {
