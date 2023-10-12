@@ -37,6 +37,12 @@ struct SearchView: View {
     @State var isSearching: Bool = false
     @State var page: Page = .home
     
+    @State private var recentsScrollToTopSignal: Int = .min
+    @State private var resultsScrollToTopSignal: Int = .min
+    
+    @Namespace private var resultsScrollToTop
+    @Namespace private var recentsScrollToTop
+    
     init() {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         _searchModel = StateObject(wrappedValue: .init(internetSpeed: internetSpeed))
@@ -54,6 +60,8 @@ struct SearchView: View {
                     .onCancel {
                         page = .home
                         searchModel.searchText = ""
+                        resultsScrollToTopSignal += 1
+                        recentsScrollToTopSignal += 1
                     }
             }
             .navigationSearchBarHiddenWhenScrolling(false)
@@ -69,51 +77,68 @@ struct SearchView: View {
                     }
                 }
             }
+            .onChange(of: searchModel.searchText) { value in
+                if value.isEmpty {
+                    resultsScrollToTopSignal += 1
+                }
+            }
     }
     
     @ViewBuilder
     private var content: some View {
-        ZStack {
-            ScrollView {
-                SearchHomeView()
-                    .environmentObject(homeSearchModel)
-                    .environmentObject(homeContentTracker)
+        ScrollViewReader { proxy in
+            ZStack {
+                ScrollView {
+                    SearchHomeView()
+                        .environmentObject(homeSearchModel)
+                        .environmentObject(homeContentTracker)
+                }
+                .fancyTabScrollCompatible()
+                .scrollDismissesKeyboard(.immediately)
+                ._opacity(page == .home ? 1 : 0, speed: page == .home ? 1 : 0)
+                .zIndex(page == .home ? 1 : 0)
+                
+                ScrollView {
+                    HStack { EmptyView() }
+                        .id(recentsScrollToTop)
+                    RecentSearchesView()
+                }
+                .fancyTabScrollCompatible()
+                .scrollDismissesKeyboard(.immediately)
+                ._opacity(page == .recents ? 1 : 0, speed: page == .recents ? 1 : 0)
+                .zIndex(page == .recents ? 1 : 0)
+                .onChange(of: recentsScrollToTopSignal) { _ in
+                    proxy.scrollTo(recentsScrollToTop)
+                }
+                
+                ScrollView {
+                    HStack { EmptyView() }
+                        .id(resultsScrollToTop)
+                    SearchResultsView()
+                        .environmentObject(searchModel)
+                }
+                .fancyTabScrollCompatible()
+                .scrollDismissesKeyboard(.immediately)
+                ._opacity(page == .results ? 1 : 0, speed: page == .results ? 1 : 0)
+                .zIndex(page == .results ? 1 : 0)
+                .onChange(of: resultsScrollToTopSignal) { _ in
+                    proxy.scrollTo(resultsScrollToTop)
+                }
             }
-            .fancyTabScrollCompatible()
-            .scrollDismissesKeyboard(.immediately)
-            ._opacity(page == .home ? 1 : 0, speed: page == .home ? 1 : 0)
-            .zIndex(page == .home ? 1 : 0)
-            
-            ScrollView {
-                RecentSearchesView()
-            }
-            .fancyTabScrollCompatible()
-            .scrollDismissesKeyboard(.immediately)
-            ._opacity(page == .recents ? 1 : 0, speed: page == .recents ? 1 : 0)
-            .zIndex(page == .recents ? 1 : 0)
-            
-            ScrollView {
-                SearchResultsView()
-                    .environmentObject(searchModel)
-            }
-            .fancyTabScrollCompatible()
-            .scrollDismissesKeyboard(.immediately)
-            ._opacity(page == .results ? 1 : 0, speed: page == .results ? 1 : 0)
-            .zIndex(page == .results ? 1 : 0)
-        }
-        .animation(.default, value: page)
-        .transition(.opacity)
-        .onChange(of: isSearching) { newValue in
-            if newValue, searchModel.searchText.isEmpty {
-                page = .recents
-            }
-        }
-        .onChange(of: searchModel.searchText) { newValue in
-            if page != .home {
-                if newValue.isEmpty {
+            .animation(.default, value: page)
+            .transition(.opacity)
+            .onChange(of: isSearching) { newValue in
+                if newValue, searchModel.searchText.isEmpty {
                     page = .recents
-                } else {
-                    page = .results
+                }
+            }
+            .onChange(of: searchModel.searchText) { newValue in
+                if page != .home {
+                    if newValue.isEmpty {
+                        page = .recents
+                    } else {
+                        page = .results
+                    }
                 }
             }
         }
@@ -121,6 +146,15 @@ struct SearchView: View {
 }
 
 extension View {
+    
+    @ViewBuilder
+    func _defaultScrollAnchor(_ anchor: UnitPoint) -> some View {
+        if #available(iOS 17.0, *) {
+            self.defaultScrollAnchor(anchor)
+        } else {
+            self
+        }
+    }
     
     @ViewBuilder
     func _opacity(_ opacity: Double, speed: Double) -> some View {
