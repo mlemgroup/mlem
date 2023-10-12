@@ -148,15 +148,6 @@ struct SearchView: View {
 extension View {
     
     @ViewBuilder
-    func _defaultScrollAnchor(_ anchor: UnitPoint) -> some View {
-        if #available(iOS 17.0, *) {
-            self.defaultScrollAnchor(anchor)
-        } else {
-            self
-        }
-    }
-    
-    @ViewBuilder
     func _opacity(_ opacity: Double, speed: Double) -> some View {
         if #available(iOS 17.0, *) {
             self.transaction { transaction in
