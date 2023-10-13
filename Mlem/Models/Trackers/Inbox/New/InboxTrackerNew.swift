@@ -31,7 +31,11 @@ class InboxTrackerNew: ObservableObject {
     
     private let sortType: InboxSortType = .published
     
-    private var allTrackersReady: Bool { !(repliesTracker.isLoading || mentionsTracker.isLoading || messagesTracker.isLoading) }
+    private var allTrackersReady: Bool { !(
+        repliesTracker.loadingState == .loading ||
+            mentionsTracker.loadingState == .loading ||
+            messagesTracker.loadingState == .loading
+    ) }
     
     // other
     private(set) var internetSpeed: InternetSpeed
@@ -52,6 +56,28 @@ class InboxTrackerNew: ObservableObject {
         self.repliesTracker.parentTracker = self
         self.mentionsTracker.parentTracker = self
         self.messagesTracker.parentTracker = self
+    }
+    
+    // MARK: child tracker handling
+    
+    func childFinishedLoading() {
+        print("child finished loading | loadingState: \(loadingState)\t| allTrackersReady: \(allTrackersReady)")
+        if loadingState == .waiting, allTrackersReady {
+            print("ready to load, loading next page")
+            loadNextPage()
+        } else {
+            print("no items will be loaded")
+        }
+    }
+
+    // MARK: items manipulation methods
+
+    // note: all of the methods in here run on the main loop. items shouldn't be touched directly, but instead should be manipulated using these methods to ensure we aren't publishing updates from the background
+    
+    func addItems(_ newItems: [InboxItemNew]) {
+        RunLoop.main.perform {
+            self.items.append(contentsOf: newItems)
+        }
     }
     
     // MARK: loading methods
@@ -110,7 +136,7 @@ class InboxTrackerNew: ObservableObject {
     
     /// Loads the next page of items
     func loadNextPage() {
-        items.append(contentsOf: fetchNextItems(numItems: internetSpeed.pageSize))
+        addItems(fetchNextItems(numItems: internetSpeed.pageSize))
     }
     
     /// Resets the tracker to an empty state
@@ -129,13 +155,23 @@ class InboxTrackerNew: ObservableObject {
         var sortVal: InboxSortVal?
         var trackerToConsume: (any InboxFeedSubTracker)?
   
-        for tracker: InboxFeedSubTracker in [messagesTracker, mentionsTracker, repliesTracker] {
-            (sortVal, trackerToConsume) = compareNextTrackerItem(
+        for tracker: InboxFeedSubTracker in [messagesTracker] { // [messagesTracker, mentionsTracker, repliesTracker] {
+            // (sortVal, trackerToConsume) = compareNextTrackerItem(
+            let nextItem = compareNextTrackerItem(
                 sortType: sortType,
                 sortVal: sortVal,
                 trackerToConsume: trackerToConsume,
                 trackerToCompare: tracker
             )
+            
+            switch nextItem {
+            case let .present(item):
+                (sortVal, trackerToConsume) = item
+            case .loading:
+                return .loading
+            case .absent:
+                return .absent
+            }
         }
         
         if let trackerToConsume {
@@ -156,19 +192,18 @@ class InboxTrackerNew: ObservableObject {
         sortVal: InboxSortVal?,
         trackerToConsume: (any InboxFeedSubTracker)?,
         trackerToCompare: any InboxFeedSubTracker
-    ) -> (InboxSortVal?, (any InboxFeedSubTracker)?) {
+    ) -> StreamItem<(InboxSortVal?, (any InboxFeedSubTracker)?)> {
         let sortValToCompare = trackerToCompare.nextItemSortVal(sortType: sortType)
         switch sortValToCompare {
         case let .present(val):
             if val.shouldSortBefore(other: sortVal) {
-                return (val, trackerToCompare)
+                return .present((val, trackerToCompare))
             }
-            return (sortVal, trackerToConsume)
+            return .present((sortVal, trackerToConsume))
         case .loading:
-            assertionFailure("todo: handle loading")
-            return (sortVal, trackerToConsume)
+            return .loading
         case .absent:
-            return (sortVal, trackerToConsume)
+            return .present((sortVal, trackerToConsume))
         }
     }
 }

@@ -16,7 +16,15 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private var page: Int = 1
     private var loadThreshold: ContentModelIdentifier?
-    private(set) var isLoading: Bool = false
+    private(set) var loadingState: TrackerLoadingState = .idle {
+        didSet {
+            if loadingState != .loading, let parentTracker {
+                parentTracker.childFinishedLoading()
+            }
+        }
+    }
+
+    private var loadingLock: NSLock = .init()
 
     // params governing behavior
     private var internetSpeed: InternetSpeed
@@ -44,7 +52,16 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
 
         if cursor < messages.count {
             return .present(messages[cursor].getInboxSortVal(sortType: sortType))
-        } else if isLoading {
+        } else if loadingState == .loading {
+            // if no message after the cursor and currently loading, notify that loading
+            print("no message after cursor, but loading")
+            return .loading
+        } else if loadingState == .idle {
+            print("no message after cursor, initializing loading")
+            // if no messages after cursor and idle, start loading and notify
+            Task(priority: .userInitiated) {
+                try await loadNextPage()
+            }
             return .loading
         } else {
             print("no more messages")
@@ -56,7 +73,7 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
         if cursor < messages.count {
             cursor += 1
             return .present(InboxItemNew.message(messages[cursor - 1]))
-        } else if isLoading {
+        } else if loadingState == .loading {
             return .loading
         } else {
             print("no more messages")
@@ -78,9 +95,21 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     
     /// Retrieves the next page of items, incrementing page counter and adding the new items to the tracker
     func loadNextPage() async throws {
+        guard loadingState == .idle else {
+            print(loadingState == .done ? "no messages left to load" : "already loading")
+            return
+        }
+            
+        // TODO: lock this all so that only one load happens at once
+            
+        loadingState = .loading
+            
         let newMessages = try await fetchNextPage()
         let toAdd = storeIdsAndDedupe(newMessages: newMessages)
         add(toAdd: toAdd)
+            
+        // TODO: EOF
+        loadingState = .idle
     }
 
     // reply

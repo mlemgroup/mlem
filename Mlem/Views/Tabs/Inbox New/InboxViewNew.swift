@@ -28,14 +28,12 @@ struct InboxViewNew: View {
     @StateObject var inboxTracker: InboxTrackerNew
 
     // utility
-    @StateObject private var inboxRouter: NavigationRouter<NavigationRoute>
+    @StateObject private var inboxTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @State var curTab: InboxTabNew = .all
 
     init() {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("shouldFilterRead") var unreadOnly = false
-
-        self._inboxRouter = StateObject(wrappedValue: .init())
 
         self._inboxTracker = StateObject(wrappedValue: .init(
             internetSpeed: internetSpeed,
@@ -47,7 +45,7 @@ struct InboxViewNew: View {
 
     var body: some View {
         // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
-        NavigationStack(path: $inboxRouter.path) {
+        NavigationStack(path: $inboxTabNavigation.path) {
             contentView
                 .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)
@@ -67,7 +65,8 @@ struct InboxViewNew: View {
                         print("re-selected \(TabSelection.inbox) tab")
                     }
                 }
-                .task {
+                .onAppear {
+                    print(inboxTracker.items.isEmpty)
                     if inboxTracker.items.isEmpty {
                         inboxTracker.refresh()
                     }

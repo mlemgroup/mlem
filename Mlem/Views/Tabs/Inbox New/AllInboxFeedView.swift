@@ -8,7 +8,7 @@ import Foundation
 import SwiftUI
 
 struct AllInboxFeedView: View {
-    var inboxTracker: InboxTrackerNew
+    @ObservedObject var inboxTracker: InboxTrackerNew
 
     var body: some View {
         ForEach(inboxTracker.items) { item in

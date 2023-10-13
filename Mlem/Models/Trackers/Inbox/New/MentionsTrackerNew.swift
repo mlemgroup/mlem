@@ -9,7 +9,7 @@ import Foundation
 class MentionsTrackerNew: ObservableObject, InboxFeedSubTracker {
     @Published var mentions: [MentionModel] = .init()
     
-    private(set) var isLoading: Bool = false
+    private(set) var loadingState: TrackerLoadingState = .idle
 
     /// Parent tracker. If present, will be updated when this tracker is updated
     var parentTracker: InboxTrackerNew?
@@ -27,7 +27,7 @@ class MentionsTrackerNew: ObservableObject, InboxFeedSubTracker {
 
         if cursor < mentions.count {
             return .present(mentions[cursor].getInboxSortVal(sortType: sortType))
-        } else if isLoading {
+        } else if loadingState == .loading {
             return .loading
         } else {
             print("no more mentions")
@@ -39,7 +39,7 @@ class MentionsTrackerNew: ObservableObject, InboxFeedSubTracker {
         if cursor < mentions.count {
             cursor += 1
             return .present(InboxItemNew.mention(mentions[cursor - 1]))
-        } else if isLoading {
+        } else if loadingState == .loading {
             return .loading
         } else {
             print("no more mentions")
