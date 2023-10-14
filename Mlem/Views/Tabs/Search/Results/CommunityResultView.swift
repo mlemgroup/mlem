@@ -13,9 +13,11 @@ struct CommunityResultView: View {
     @Dependency(\.hapticManager) var hapticManager
     
     @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
+    
     let community: CommunityModel
     let showTypeLabel: Bool
-    
+    var swipeActions: SwipeConfiguration?
+
     var subscribeSwipeAction: SwipeAction {
         let (emptySymbolName, fullSymbolName) = community.subscribed
         ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
@@ -50,7 +52,7 @@ struct CommunityResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: NavigationRoute.apiCommunity(community.community)) {
+        NavigationLink(value: AppRoute.apiCommunity(community.community)) {
             HStack(spacing: 10) {
                 AvatarView(community: community.community, avatarSize: 48)
                 VStack(alignment: .leading, spacing: 4) {
@@ -82,7 +84,6 @@ struct CommunityResultView: View {
         .buttonStyle(.plain)
         .padding(.vertical, 8)
         .background(.background)
-        .addSwipeyActions(trailing: [subscribeSwipeAction])
         .draggable(community.community.actorId) {
             HStack {
                 AvatarView(community: community.community, avatarSize: 24)
@@ -101,5 +102,6 @@ struct CommunityResultView: View {
                     systemImage: community.subscribed ? Icons.unsubscribe : Icons.subscribe)
             }
         }
+        .addSwipeyActions(swipeActions ?? .init(trailingActions: [subscribeSwipeAction]))
     }
 }

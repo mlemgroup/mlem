@@ -13,8 +13,10 @@ struct UserResultView: View {
     @Dependency(\.hapticManager) var hapticManager
     
     @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
+    
     let user: UserModel
     let showTypeLabel: Bool
+    var swipeActions: SwipeConfiguration?
     
     var caption: String {
         if let host = user.profileUrl.host {
@@ -99,5 +101,6 @@ struct UserResultView: View {
             .background(.background)
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
+        .addSwipeyActions(swipeActions ?? .init())
     }
 }

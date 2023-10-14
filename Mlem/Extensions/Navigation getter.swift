@@ -24,11 +24,11 @@ extension EnvironmentValues {
 // MARK: - Mlem NavigationRoute
 
 private struct NavigationPathWithRoutes: EnvironmentKey {
-    static let defaultValue: Binding<[NavigationRoute]> = .constant([])
+    static let defaultValue: Binding<[AppRoute]> = .constant([])
 }
 
 extension EnvironmentValues {
-    var navigationPathWithRoutes: Binding<[NavigationRoute]> {
+    var navigationPathWithRoutes: Binding<[AppRoute]> {
         get { self[NavigationPathWithRoutes.self] }
         set { self[NavigationPathWithRoutes.self] = newValue }
     }

@@ -6,26 +6,45 @@
 //
 
 import Foundation
-import SwiftUI
 
-protocol AnyNavigationPath {
+/// For when the system `NavigationPath` doesn't meet your needs.
+///
+/// Technical Note:
+/// - [2023.09] Initially, enum-based navigation routes were added during the development of tab-bar navigation. When using the system `NavigationPath`, the UI would exhibit a bug where views would randomly push onto view without any animations, after which the navigation path became corrupt, making programmatic navigation unreliable. Using enum-based navigation routes with custom navigation paths resulted in this issue disappearing on both iOS 16/17.
+final class AnyNavigationPath<RouteValue: Routable>: ObservableObject {
     
-    associatedtype Route: Routable
+    /// - Avoid directly manipulating this value, if alternate methods are provided.
+    @Published var path: [RouteValue] = []
     
-    /// Implementation should make a route that makes sense for the passed-in data value and can be appended to the navigation path.
-    static func makeRoute<V>(_ value: V) throws -> Route where V: Hashable
+}
+ 
+extension AnyNavigationPath: AnyNavigablePath {
+
+    typealias Route = RouteValue
     
-    /// The number of elements in this path.
-    var count: Int { get }
+    static func makeRoute<V>(_ value: V) throws -> Route where V: Hashable {
+        try RouteValue.makeRoute(value)
+    }
     
-    /// A Boolean that indicates whether this path is empty.
-    var isEmpty: Bool { get }
+    var count: Int {
+        path.count
+    }
     
-    /// Appends a new value to the end of this path.
-    mutating func append<V>(_ value: V) where V: Routable
+    var isEmpty: Bool {
+        path.isEmpty
+    }
+    
+    func append<V>(_ value: V) where V: Routable {
+        guard let route = value as? Route else {
+            assert(value is Route)
+            return
+        }
+        path.append(route)
+    }
     
     // swiftlint:disable identifier_name
-    /// Removes values from the end of this path.
-    mutating func removeLast(_ k: Int)
+    func removeLast(_ k: Int = 1) {
+        path.removeLast(k)
+    }
     // swiftlint:enable identifier_name
 }

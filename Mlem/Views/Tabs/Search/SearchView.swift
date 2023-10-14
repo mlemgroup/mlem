@@ -85,6 +85,7 @@ struct SearchView: View {
                         .transition(.opacity)
                 case .results:
                     SearchResultsView()
+                        .environmentObject(searchModel)
                         .transition(.opacity)
                 }
             }
@@ -105,7 +106,6 @@ struct SearchView: View {
             }
         }
         .fancyTabScrollCompatible()
-        .environmentObject(searchModel)
         .scrollDismissesKeyboard(.immediately)
     }
 }
