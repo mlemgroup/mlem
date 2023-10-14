@@ -37,7 +37,7 @@ struct InboxViewNew: View {
 
         self._inboxTracker = StateObject(wrappedValue: .init(
             internetSpeed: internetSpeed,
-            repliesTracker: .init(),
+            repliesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly),
             mentionsTracker: .init(),
             messagesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly)
         ))
@@ -65,10 +65,10 @@ struct InboxViewNew: View {
                         print("re-selected \(TabSelection.inbox) tab")
                     }
                 }
-                .onAppear {
+                .task {
                     print(inboxTracker.items.isEmpty)
                     if inboxTracker.items.isEmpty {
-                        inboxTracker.refresh()
+                        await inboxTracker.refresh()
                     }
                 }
         }

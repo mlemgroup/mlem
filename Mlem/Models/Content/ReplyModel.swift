@@ -29,6 +29,21 @@ struct ReplyModel {
             return .published(commentReply.published)
         }
     }
+    
+    init(from replyView: APICommentReplyView) {
+        self.commentReply = replyView.commentReply
+        self.comment = replyView.comment
+        self.creator = replyView.creator
+        self.post = replyView.post
+        self.community = replyView.community
+        self.recipient = replyView.recipient
+        self.counts = replyView.counts
+        self.creatorBannedFromCommunity = replyView.creatorBannedFromCommunity
+        self.subscribed = replyView.subscribed
+        self.saved = replyView.saved
+        self.creatorBlocked = replyView.creatorBlocked
+        self.myVote = replyView.myVote
+    }
 
     // TODO: hasher
     // TODO: published should be top-level based on commentReply.published

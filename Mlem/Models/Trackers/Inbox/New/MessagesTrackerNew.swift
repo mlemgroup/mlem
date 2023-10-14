@@ -24,9 +24,6 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     private var internetSpeed: InternetSpeed
     private var unreadOnly: Bool
 
-    /// Parent tracker. If present, will be updated when this tracker is updated
-    var parentTracker: InboxTrackerNew?
-
     /// Index of the first non-consumed item in messages
     private var cursor: Int = 0
 
@@ -58,36 +55,17 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
             try await loadPage(page + 1)
             return cursor < messages.count ? messages[cursor].getInboxSortVal(sortType: sortType) : nil
         }
-        
-//        if cursor < messages.count {
-//            return messages[cursor].getInboxSortVal(sortType: sortType)
-//        } else if loadingState == .loading {
-//            // if no message after the cursor and currently loading, notify that loading
-//            print("no message after cursor, but loading")
-//            return .loading
-//        } else if loadingState == .idle {
-//            print("no message after cursor, initializing loading")
-//            // if no messages after cursor and idle, start loading and notify
-//            Task(priority: .userInitiated) {
-//                try await loadNextPage()
-//            }
-//            return .loading
-//        } else {
-//            print("no more messages")
-//            return .absent
-//        }
     }
 
-    func consumeNextItem() -> StreamItem<InboxItemNew> {
+    func consumeNextItem() -> InboxItemNew? {
+        assert(cursor < messages.count, "consumeNextItem called on a tracker without a next item!")
+        
         if cursor < messages.count {
             cursor += 1
-            return .present(InboxItemNew.message(messages[cursor - 1]))
-        } else if loadingState == .loading {
-            return .loading
-        } else {
-            print("no more messages")
-            return .absent
+            return InboxItemNew.message(messages[cursor - 1])
         }
+        
+        return nil
     }
 
     // MARK: - basic loading operations
@@ -105,13 +83,15 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     /// Loads the requested page. If the requested page has already been loaded, does nothing.
     /// - Parameter page: page number to load
     func loadPage(_ pageToLoad: Int) async throws {
+        print("attempting to load page \(pageToLoad) of messages")
+        
         // only one thread may execute this function at a time
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
         
         // if we've already loaded this page, do nothing
         guard pageToLoad > page else {
-            print("will not load page \(pageToLoad), have already loaded \(page)")
+            print("will not load page \(pageToLoad) of messages, have already loaded \(page)")
             return
         }
         
@@ -134,43 +114,6 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
         add(toAdd: storeIdsAndDedupe(newMessages: newMessages))
         loadingState = .idle
     }
-    
-    /// Retrieves the next page of items, incrementing page counter and adding the new items to the tracker
-//    func loadNextPage() async throws {
-//        guard loadingState == .idle else {
-//            print(loadingState == .done ? "no messages left to load" : "already loading")
-//            return
-//        }
-//
-//        // TODO: lock this all so that only one load happens at once
-//
-//        loadingState = .loading
-//
-//        let newMessages = try await fetchNextPage()
-//        let toAdd = storeIdsAndDedupe(newMessages: newMessages)
-//        add(toAdd: toAdd)
-//
-//        // TODO: EOF
-//        loadingState = .idle
-//    }
-
-    // reply
-    
-    // MARK: - helpers
-    
-    /// Fetches the given page of items and increments the page counter
-    /// - Returns: next page of items
-//    private func fetchNextPage() async throws -> [MessageModel] {
-//        print("fetching new messages")
-//        let newMessages = try await messageRepository.loadMessages(
-//            page: page,
-//            limit: internetSpeed.pageSize,
-//            unreadOnly: unreadOnly
-//        )
-//        print("got \(newMessages.count) messages")
-//        page += 1
-//        return newMessages
-//    }
 
     private func add(toAdd: [MessageModel]) {
         // TODO: filtering
@@ -182,9 +125,8 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
     private func reset(andLoad: Bool = false) async throws {
         ids = .init(minimumCapacity: 1000)
         if andLoad {
-            loadPage(1)
+            try await loadPage(1)
         }
-        // messages = andLoad ? try await storeIdsAndDedupe(newMessages: fetchNextPage()) : .init()
     }
 
     /// Given an array of MessageModel, adds their message ids to ids. Returns the input filtered to only items not previously present in ids.

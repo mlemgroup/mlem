@@ -4,6 +4,8 @@
 //
 //  Created by Eric Andrews on 2023-09-23.
 //
+
+import Dependencies
 import Foundation
 
 enum LoadingState {
@@ -11,6 +13,8 @@ enum LoadingState {
 }
 
 class InboxTrackerNew: ObservableObject {
+    @Dependency(\.errorHandler) var errorHandler
+    
     @Published var items: [InboxItemNew] = .init()
     
     // internal state trackers
@@ -31,12 +35,6 @@ class InboxTrackerNew: ObservableObject {
     
     private let sortType: InboxSortType = .published
     
-    private var allTrackersReady: Bool { !(
-        repliesTracker.loadingState == .loading ||
-            mentionsTracker.loadingState == .loading ||
-            messagesTracker.loadingState == .loading
-    ) }
-    
     // other
     private(set) var internetSpeed: InternetSpeed
     
@@ -51,23 +49,6 @@ class InboxTrackerNew: ObservableObject {
         self.repliesTracker = repliesTracker
         self.mentionsTracker = mentionsTracker
         self.messagesTracker = messagesTracker
-        
-        // give child trackers reference to self to propagate state updates
-        self.repliesTracker.parentTracker = self
-        self.mentionsTracker.parentTracker = self
-        self.messagesTracker.parentTracker = self
-    }
-    
-    // MARK: child tracker handling
-    
-    func childFinishedLoading() {
-        print("child finished loading | loadingState: \(loadingState)\t| allTrackersReady: \(allTrackersReady)")
-        if loadingState == .waiting, allTrackersReady {
-            print("ready to load, loading next page")
-            loadNextPage()
-        } else {
-            print("no items will be loaded")
-        }
     }
 
     // MARK: items manipulation methods
@@ -84,50 +65,29 @@ class InboxTrackerNew: ObservableObject {
     
     /// Refreshes the tracker, clearing all items and loading new ones
     /// - Parameter clearBeforeFetch: true to clear items before fetch
-    func refresh(clearBeforeFetch: Bool = false) {
+    func refresh(clearBeforeFetch: Bool = false) async {
         if clearBeforeFetch {
             reset()
         }
         
-        loadNextPage()
+        await loadNextPage()
     }
     
     /// Fetches the requested number of items. If any of the child trackers are loading and not enough items have been loaded to trigger autoloading behavior, sets the loading status to waiting. All requests for more items should go through this method, as it handles loading state.
     /// - Returns: requested number of items, if possible
-    private func fetchNextItems(numItems: Int) -> [InboxItemNew] {
-        guard loadingState == .idle || (loadingState == .waiting && allTrackersReady) else {
-            print("cannot fetch more items right now.\n    loading state: \(loadingState)\n    trackers ready: \(allTrackersReady)")
-            return .init()
-        }
-        
+    private func fetchNextItems(numItems: Int) async -> [InboxItemNew] {
         assert(numItems > abs(AppConstants.infiniteLoadThresholdOffset), "cannot load fewer items than infinite load offset")
         
         loadingState = .loading
         
         var newItems: [InboxItemNew] = .init()
-        for idx in 0 ..< numItems {
-            let nextItem = computeNextItem()
-            switch nextItem {
-            case let .present(item):
-                // if item is present, add it to newItems
-                // dev note: don't need to dedupe because that's handled at the child trackers
-                newItems.append(item)
-                assert(!ids.contains(item.uid))
-                ids.insert(item.uid)
-            case .loading:
-                // if item is loading, two cases.
-                // if we don't have enough items for infinite load, set loading to `waiting` to trigger a reload when the trackers finish loading
-                // if we do have enough items for infinite load, call it a day and go to `idle`
-                if idx < abs(AppConstants.infiniteLoadThresholdOffset) {
-                    loadingState = .waiting
-                } else {
-                    loadingState = .idle
-                }
-                return newItems
-            case .absent:
-                // if there is no next item, we're done
+        for _ in 0 ..< numItems {
+            if let nextItem = await computeNextItem() {
+                newItems.append(nextItem)
+            } else {
+                print("no next item found!")
                 loadingState = .done
-                return newItems
+                break
             }
         }
         
@@ -135,8 +95,8 @@ class InboxTrackerNew: ObservableObject {
     }
     
     /// Loads the next page of items
-    func loadNextPage() {
-        addItems(fetchNextItems(numItems: internetSpeed.pageSize))
+    func loadNextPage() async {
+        await addItems(fetchNextItems(numItems: internetSpeed.pageSize))
     }
     
     /// Resets the tracker to an empty state
@@ -150,34 +110,25 @@ class InboxTrackerNew: ObservableObject {
     
     /// Computes, consumes, and returns the next sorted item from the InboxFeedSubTrackers.
     /// - Returns: InboxItemNew of the top-sorted item from the three trackers if present, nil otherwise
-    private func computeNextItem() -> StreamItem<InboxItemNew> {
+    private func computeNextItem() async -> InboxItemNew? {
         // TODO: other sorts--need to ensure that the trackers are all sorted the same way
         var sortVal: InboxSortVal?
         var trackerToConsume: (any InboxFeedSubTracker)?
   
-        for tracker: InboxFeedSubTracker in [messagesTracker] { // [messagesTracker, mentionsTracker, repliesTracker] {
-            // (sortVal, trackerToConsume) = compareNextTrackerItem(
-            let nextItem = compareNextTrackerItem(
+        for tracker: InboxFeedSubTracker in [messagesTracker, repliesTracker] { // [messagesTracker, mentionsTracker, repliesTracker] {
+            (sortVal, trackerToConsume) = await compareNextTrackerItem(
                 sortType: sortType,
                 sortVal: sortVal,
                 trackerToConsume: trackerToConsume,
                 trackerToCompare: tracker
             )
-            
-            switch nextItem {
-            case let .present(item):
-                (sortVal, trackerToConsume) = item
-            case .loading:
-                return .loading
-            case .absent:
-                return .absent
-            }
         }
         
         if let trackerToConsume {
             return trackerToConsume.consumeNextItem()
         }
-        return .absent
+        
+        return nil
     }
     
     /// Compares the current sorting value of `trackerToConsume` with the current sorting value of `trackerToCompare`. Returns a tuple of the lower sorting value and its associated tracker.
@@ -192,18 +143,16 @@ class InboxTrackerNew: ObservableObject {
         sortVal: InboxSortVal?,
         trackerToConsume: (any InboxFeedSubTracker)?,
         trackerToCompare: any InboxFeedSubTracker
-    ) -> StreamItem<(InboxSortVal?, (any InboxFeedSubTracker)?)> {
-        let sortValToCompare = trackerToCompare.nextItemSortVal(sortType: sortType)
-        switch sortValToCompare {
-        case let .present(val):
-            if val.shouldSortBefore(other: sortVal) {
-                return .present((val, trackerToCompare))
+    ) async -> (InboxSortVal?, (any InboxFeedSubTracker)?) {
+        do {
+            if let sortValToCompare = try await trackerToCompare.nextItemSortVal(sortType: sortType),
+               sortValToCompare.shouldSortBefore(other: sortVal) {
+                return (sortValToCompare, trackerToCompare)
             }
-            return .present((sortVal, trackerToConsume))
-        case .loading:
-            return .loading
-        case .absent:
-            return .present((sortVal, trackerToConsume))
+            return (sortVal, trackerToConsume)
+        } catch {
+            errorHandler.handle(error)
+            return (sortVal, trackerToConsume)
         }
     }
 }

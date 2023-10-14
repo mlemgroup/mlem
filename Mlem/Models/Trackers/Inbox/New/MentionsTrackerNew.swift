@@ -22,28 +22,32 @@ class MentionsTrackerNew: ObservableObject, InboxFeedSubTracker {
     /// Returns the sorting value for the next item
     /// - Parameter sortType: InboxSortType the values should be sorted by. This MUST agree with this tracker's sortType field!
     /// - Returns: InboxSortVal? containing the next item's sort value if present, nil otherwise
-    func nextItemSortVal(sortType: InboxSortType) -> StreamItem<InboxSortVal> {
+    func nextItemSortVal(sortType: InboxSortType) -> InboxSortVal? {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
 
-        if cursor < mentions.count {
-            return .present(mentions[cursor].getInboxSortVal(sortType: sortType))
-        } else if loadingState == .loading {
-            return .loading
-        } else {
-            print("no more mentions")
-            return .absent
-        }
+        assertionFailure("implement me!")
+        return nil
+//        if cursor < mentions.count {
+//            return .present(mentions[cursor].getInboxSortVal(sortType: sortType))
+//        } else if loadingState == .loading {
+//            return .loading
+//        } else {
+//            print("no more mentions")
+//            return .absent
+//        }
     }
 
-    func consumeNextItem() -> StreamItem<InboxItemNew> {
-        if cursor < mentions.count {
-            cursor += 1
-            return .present(InboxItemNew.mention(mentions[cursor - 1]))
-        } else if loadingState == .loading {
-            return .loading
-        } else {
-            print("no more mentions")
-            return .absent
-        }
+    func consumeNextItem() -> InboxItemNew? {
+        assertionFailure("implement me!")
+        return nil
+//        if cursor < mentions.count {
+//            cursor += 1
+//            return .present(InboxItemNew.mention(mentions[cursor - 1]))
+//        } else if loadingState == .loading {
+//            return .loading
+//        } else {
+//            print("no more mentions")
+//            return .absent
+//        }
     }
 }
