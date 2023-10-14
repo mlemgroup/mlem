@@ -328,6 +328,7 @@
 		CD18DC732A522A7C002C56BC /* CreatePrivateMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD18DC722A522A7C002C56BC /* CreatePrivateMessageRequest.swift */; };
 		CD1907532AD89ADD00272FE4 /* MultiTrackerLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1907522AD89ADD00272FE4 /* MultiTrackerLoadingState.swift */; };
 		CD1907552AD89AEB00272FE4 /* TrackerLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1907542AD89AEB00272FE4 /* TrackerLoadingState.swift */; };
+		CD1907582ADA295300272FE4 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = CD1907572ADA295300272FE4 /* Semaphore */; };
 		CD2053102AC878B50000AA38 /* UpdatedTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */; };
 		CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053112ACB72190000AA38 /* AccountTransitionView.swift */; };
 		CD2053142ACBAF150000AA38 /* AvatarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2053132ACBAF150000AA38 /* AvatarType.swift */; };
@@ -997,6 +998,7 @@
 				B104A6D82A59BF3C00B3E725 /* Nuke in Frameworks */,
 				50C99B562A61D792005D57DD /* Dependencies in Frameworks */,
 				636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */,
+				CD1907582ADA295300272FE4 /* Semaphore in Frameworks */,
 				B104A6DE2A59BF3C00B3E725 /* NukeVideo in Frameworks */,
 				B104A6DC2A59BF3C00B3E725 /* NukeUI in Frameworks */,
 			);
@@ -2528,6 +2530,7 @@
 				B104A6DB2A59BF3C00B3E725 /* NukeUI */,
 				B104A6DD2A59BF3C00B3E725 /* NukeVideo */,
 				50C99B552A61D792005D57DD /* Dependencies */,
+				CD1907572ADA295300272FE4 /* Semaphore */,
 			);
 			productName = Mlem;
 			productReference = 6363D5C127EE196700E34822 /* Mlem.app */;
@@ -2606,6 +2609,7 @@
 				636250DA2A18111400FC59B4 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */,
 				50C99B542A61D792005D57DD /* XCRemoteSwiftPackageReference "swift-dependencies" */,
+				CD1907562ADA295300272FE4 /* XCRemoteSwiftPackageReference "Semaphore" */,
 			);
 			productRefGroup = 6363D5C227EE196700E34822 /* Products */;
 			projectDirPath = "";
@@ -3529,6 +3533,14 @@
 				minimumVersion = 12.1.2;
 			};
 		};
+		CD1907562ADA295300272FE4 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/Semaphore";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3566,6 +3578,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B104A6D62A59BF3C00B3E725 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeVideo;
+		};
+		CD1907572ADA295300272FE4 /* Semaphore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD1907562ADA295300272FE4 /* XCRemoteSwiftPackageReference "Semaphore" */;
+			productName = Semaphore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
