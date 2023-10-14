@@ -54,7 +54,7 @@ struct UserModel {
         "https://beehaw.org/u/kronusdark",
         "https://lemmy.ml/u/ericbandrews",
         "https://programming.dev/u/tht7",
-        "https://sh.itjust.works/u/sjmarf"
+        "https://lemmy.ml/u/sjmarf"
     ]
     
     /// Creates a UserModel from an APIPersonView

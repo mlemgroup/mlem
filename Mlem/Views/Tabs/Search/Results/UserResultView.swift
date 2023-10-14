@@ -32,7 +32,7 @@ struct UserResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: NavigationRoute.userProfile(user)) {
+        NavigationLink(value: AppRoute.userProfile(user)) {
             HStack(spacing: 10) {
                 AvatarView(user: user, avatarSize: 48)
                 let flairs = user.getFlairs()
