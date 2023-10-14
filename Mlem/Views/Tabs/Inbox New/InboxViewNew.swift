@@ -37,9 +37,13 @@ struct InboxViewNew: View {
 
         self._inboxTracker = StateObject(wrappedValue: .init(
             internetSpeed: internetSpeed,
-            repliesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly),
-            mentionsTracker: .init(),
-            messagesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly)
+            childTrackers: [
+                RepliesTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly),
+                MessagesTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly)
+            ]
+//            repliesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly),
+//            mentionsTracker: .init(),
+//            messagesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly)
         ))
     }
 
@@ -66,7 +70,6 @@ struct InboxViewNew: View {
                     }
                 }
                 .task {
-                    print(inboxTracker.items.isEmpty)
                     if inboxTracker.items.isEmpty {
                         await inboxTracker.refresh()
                     }
@@ -98,6 +101,9 @@ struct InboxViewNew: View {
                 }
             }
             .fancyTabScrollCompatible()
+            .refreshable {
+                await inboxTracker.refresh()
+            }
         }
     }
 

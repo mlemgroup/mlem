@@ -29,9 +29,11 @@ class InboxTrackerNew: ObservableObject {
     private var loadingState: LoadingState = .idle
     
     // sub-trackers
-    private var repliesTracker: RepliesTrackerNew
-    private var mentionsTracker: MentionsTrackerNew
-    private var messagesTracker: MessagesTrackerNew
+    private var childTrackers: [InboxFeedSubTracker]
+    
+//    private var repliesTracker: RepliesTrackerNew
+//    private var mentionsTracker: MentionsTrackerNew
+//    private var messagesTracker: MessagesTrackerNew
     
     private let sortType: InboxSortType = .published
     
@@ -40,15 +42,12 @@ class InboxTrackerNew: ObservableObject {
     
     init(
         internetSpeed: InternetSpeed,
-        repliesTracker: RepliesTrackerNew,
-        mentionsTracker: MentionsTrackerNew,
-        messagesTracker: MessagesTrackerNew
+        childTrackers: [InboxFeedSubTracker]
     ) {
         self.internetSpeed = internetSpeed
+        self.childTrackers = childTrackers
         
-        self.repliesTracker = repliesTracker
-        self.mentionsTracker = mentionsTracker
-        self.messagesTracker = messagesTracker
+        // TODO: child trackers need references to parent in order to notify about clears and resets
     }
 
     // MARK: items manipulation methods
@@ -66,6 +65,8 @@ class InboxTrackerNew: ObservableObject {
     /// Refreshes the tracker, clearing all items and loading new ones
     /// - Parameter clearBeforeFetch: true to clear items before fetch
     func refresh(clearBeforeFetch: Bool = false) async {
+        // TODO: handle child trackers
+        
         if clearBeforeFetch {
             reset()
         }
@@ -115,7 +116,7 @@ class InboxTrackerNew: ObservableObject {
         var sortVal: InboxSortVal?
         var trackerToConsume: (any InboxFeedSubTracker)?
   
-        for tracker: InboxFeedSubTracker in [messagesTracker, repliesTracker] { // [messagesTracker, mentionsTracker, repliesTracker] {
+        for tracker: InboxFeedSubTracker in childTrackers {
             (sortVal, trackerToConsume) = await compareNextTrackerItem(
                 sortType: sortType,
                 sortVal: sortVal,

@@ -70,28 +70,51 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
 
     // MARK: - basic loading operations
     
-    func refresh(clearBeforeFetch: Bool = false) async throws {
-        if clearBeforeFetch { try await reset() }
-        
-        try await reset(andLoad: true)
+    func loadNextPage() async throws {
+        try await loadPage(page + 1)
+    }
+    
+    func refresh(clearBeforeReset: Bool = false) async throws {
+        try await loadPage(1, clearBeforeReset: clearBeforeReset)
     }
 
     // filter
     
     // update
     
-    /// Loads the requested page. If the requested page has already been loaded, does nothing.
+    /// Loads the requested page. To account for the fact that multiple threads might request a load at the same time, this function requires that the caller pass in what it thinks is the next page to load. If that is not the next page by the time that call is allowed to execute, its request will be ignored.
+    /// There is additional logic to handle the reset case--because page is updated at the end of this call, if reset() set the page to 0 itself and a reset call were made while another loading call was in-flight, the in-flight call would update page before the reset call went through and the reset call's load would be aborted.
     /// - Parameter page: page number to load
-    func loadPage(_ pageToLoad: Int) async throws {
+    private func loadPage(_ pageToLoad: Int, clearBeforeReset: Bool = false) async throws {
+        assert(!clearBeforeReset || pageToLoad == 1, "clearBeforeReset cannot be true if not loading page 1")
+        
         print("attempting to load page \(pageToLoad) of messages")
         
         // only one thread may execute this function at a time
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
         
-        // if we've already loaded this page, do nothing
-        guard pageToLoad > page else {
-            print("will not load page \(pageToLoad) of messages, have already loaded \(page)")
+        // special reset cases
+        if pageToLoad == 0 {
+            print("received request to load page 0")
+            clear()
+            return
+        }
+        
+        if pageToLoad == 1 {
+            print("received request to reload page 1")
+            if clearBeforeReset {
+                clear()
+            } else {
+                // if not clearing before reset, still get rid of these--we just handle the messages themselves differently
+                page = 0
+                ids = .init(minimumCapacity: 1000)
+            }
+        }
+        
+        // do nothing if this is not the next page to load
+        guard pageToLoad == page + 1 else {
+            print("will not load page \(pageToLoad) of messages (have loaded \(page) pages)")
             return
         }
         
@@ -111,7 +134,15 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
         
         // TODO: repeat load until we have enough things
         
-        add(toAdd: storeIdsAndDedupe(newMessages: newMessages))
+        let allowedMessages = storeIdsAndDedupe(newMessages: newMessages)
+        
+        // if loading page 1, we can just do a straight assignment regardless of whether we did clearBeforeReset
+        if page == 1 {
+            messages = allowedMessages
+        } else {
+            add(toAdd: allowedMessages)
+        }
+    
         loadingState = .idle
     }
 
@@ -119,14 +150,14 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
         // TODO: filtering
         messages.append(contentsOf: toAdd)
     }
-
-    /// Resets the tracker state to empty. If passed an array of messages, resets it to contain only those messages.
-    /// - Parameter andLoad if true, will load a new page of messages and populate the tracker with them
-    private func reset(andLoad: Bool = false) async throws {
+    
+    /// Clears the tracker to an empty state.
+    /// WARNING: do NOT call this method from anywhere but loadPage!
+    private func clear() {
+        print("clearing messages tracker")
         ids = .init(minimumCapacity: 1000)
-        if andLoad {
-            try await loadPage(1)
-        }
+        messages = .init()
+        page = 0
     }
 
     /// Given an array of MessageModel, adds their message ids to ids. Returns the input filtered to only items not previously present in ids.
