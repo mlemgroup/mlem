@@ -17,7 +17,7 @@ extension UserModel: ContentModel {
         return []
     }
     var searchResultScore: Int {
-        if let commentCount = commentCount, let postCount = postCount {
+        if let commentCount, let postCount {
             let result = commentCount / 4 + postCount
             return Int(result)
         }
