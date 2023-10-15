@@ -1,5 +1,5 @@
 //
-//  ReplyTrackerNew.swift
+//  MessageTracker.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-10-15.
@@ -8,10 +8,10 @@
 import Dependencies
 import Foundation
 
-class ReplyTrackerNew: BasicTracker<ReplyModel>, ChildTrackerProtocol {
+class MessageTracker: BasicTracker<MessageModel>, ChildTrackerProtocol {
     @Dependency(\.inboxRepository) var inboxRepository
-
-    typealias Item = ReplyModel
+    
+    typealias Item = MessageModel
     typealias ParentType = InboxItemNew
     
     var cursor: Int = 0
@@ -22,23 +22,25 @@ class ReplyTrackerNew: BasicTracker<ReplyModel>, ChildTrackerProtocol {
     }
     
     override func fetchPage(page: Int) async throws -> [Item] {
-        try await inboxRepository.loadReplies(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
+        try await inboxRepository.loadMessages(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
     }
 }
 
-extension ReplyModel: TrackerItem {
+// note: I have put these extensions here, rather than in MessageModel, to consolidate the logic required to conform MessageTracker to ChildTrackerProtocol. This should also allow this file to serve as a better template for creating other ChildTrackers.
+
+extension MessageModel: TrackerItem {
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
         switch sortType {
         case .published:
-            return .published(commentReply.published)
+            return .published(privateMessage.published)
         }
     }
 }
 
-extension ReplyModel: ChildTrackerItemProtocol {
+extension MessageModel: ChildTrackerItemProtocol {
     typealias ParentType = InboxItemNew
     
     func toParent() -> ParentType {
-        .reply(self)
+        .message(self)
     }
 }

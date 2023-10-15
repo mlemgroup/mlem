@@ -49,11 +49,6 @@ extension InboxItemNew: Identifiable {
     }
 }
 
-/// InboxItemNew but with no associated type
-enum InboxItemTypeNew {
-    case message, mention, reply
-}
-
 extension InboxItemNew: TrackerItem {
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
         switch sortType {

@@ -39,8 +39,8 @@ struct InboxViewNew: View {
             internetSpeed: internetSpeed,
             sortType: .published,
             childTrackers: [
-                MessageTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published),
-                ReplyTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
+                MessageTracker(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published),
+                ReplyTracker(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
             ]
         ))
     }
