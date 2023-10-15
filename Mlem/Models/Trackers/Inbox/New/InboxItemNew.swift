@@ -53,3 +53,12 @@ extension InboxItemNew: Identifiable {
 enum InboxItemTypeNew {
     case message, mention, reply
 }
+
+extension InboxItemNew: TrackerItem {
+    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
+        switch sortType {
+        case .published:
+            return .published(published)
+        }
+    }
+}

@@ -1,76 +1,32 @@
 //
-//  ChildTracker.swift
+//  BasicTracker.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2023-10-14.
+//  Created by Eric Andrews on 2023-10-15.
 //
 
 import Foundation
 import Semaphore
 
-/// Generic class for a sub-tracker; that is, a tracker that can be used to feed a multi tracker. Generic across three parameters:
-/// T: type of item that this tracker provides
-/// P: type of item that this tracker's parent requires
-/// S: enum of sort types that P can be sorted on
-class ChildTracker<Item: ChildTrackerItem>: ObservableObject {
+class BasicTracker<Item: TrackerItem> {
     @Published var items: [Item] = .init()
     
     // loading state
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
-    private var page: Int = 0 // number of the most recently loaded page--0 indicates no content
+    private(set) var page: Int = 0 // number of the most recently loaded page--0 indicates no content
     private var loadThreshold: ContentModelIdentifier?
     private(set) var loadingState: TrackerLoadingState = .idle
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
     // loading behavior governors
-    private var internetSpeed: InternetSpeed
-    private var unreadOnly: Bool?
-    private var sortType: Item.ParentItem.SortType
+    var internetSpeed: InternetSpeed
+    var unreadOnly: Bool?
+    var sortType: TrackerSortType
     
-    // multi-feed tracking
-    private var parentTracker: MultiTracker<Item.ParentItem>?
-    private var cursor: Int = 0 // Index of the first non-consumed item in items
-    
-    init(internetSpeed: InternetSpeed, unreadOnly: Bool, sortType: Item.ParentItem.SortType) {
+    init(internetSpeed: InternetSpeed, unreadOnly: Bool, sortType: TrackerSortType) {
         self.internetSpeed = internetSpeed
         self.unreadOnly = unreadOnly
         self.sortType = sortType
-    }
-    
-    // MARK: - Multi-feed tracking methods
-    
-    public func setParentTracker(_ newParent: MultiTracker<Item.ParentItem>) {
-        parentTracker = newParent
-    }
-    
-    func consumeNextItem() -> Item.ParentItem? {
-        assert(cursor < items.count, "consumeNextItem called on a tracker without a next item!")
-        
-        if cursor < items.count {
-            cursor += 1
-            return items[cursor - 1].toParentItem()
-        }
-        
-        return nil
-    }
-    
-    public func nextItemSortVal(sortType: Item.ParentItem.SortType) async throws -> Item.ParentItem.SortVal? {
-        assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
-
-        if cursor < items.count {
-            return items[cursor].getSortVal(sortType: sortType)
-        } else {
-            // if done loading, return nil
-            if loadingState == .done {
-                print("done loading!")
-                return nil
-            }
-            
-            // otherwise, wait for the next page to load and try to return the first value
-            // if the next page is already loading, this call to loadNextPage will be noop, but still wait until that load completes thanks to the semaphore
-            try await loadPage(page + 1)
-            return cursor < items.count ? items[cursor].getSortVal(sortType: sortType) : nil
-        }
     }
     
     // MARK: - Internal tracking methods
@@ -78,7 +34,7 @@ class ChildTracker<Item: ChildTrackerItem>: ObservableObject {
     /// Loads the requested page. To account for the fact that multiple threads might request a load at the same time, this function requires that the caller pass in what it thinks is the next page to load. If that is not the next page by the time that call is allowed to execute, its request will be ignored.
     /// There is additional logic to handle the reset case--because page is updated at the end of this call, if reset() set the page to 0 itself and a reset call were made while another loading call was in-flight, the in-flight call would update page before the reset call went through and the reset call's load would be aborted. Instead, this method takes on responsibility for resetting--calling it on page 0 clears the tracker, and page 1 refreshes it
     /// - Parameter page: page number to load
-    private func loadPage(_ pageToLoad: Int, clearBeforeReset: Bool = false) async throws {
+    func loadPage(_ pageToLoad: Int, clearBeforeReset: Bool = false) async throws {
         assert(!clearBeforeReset || pageToLoad == 1, "clearBeforeReset cannot be true if not loading page 1")
         
         print("attempting to load page \(pageToLoad)")
@@ -141,7 +97,7 @@ class ChildTracker<Item: ChildTrackerItem>: ObservableObject {
     /// - Parameters:
     ///   - page: page number to fetch
     /// - Returns: requested page of items
-    private func fetchPage(page: Int) async throws -> [Item] {
+    func fetchPage(page: Int) async throws -> [Item] {
         assertionFailure("This method must be implemented by the child tracker")
         return []
     }
@@ -173,11 +129,3 @@ class ChildTracker<Item: ChildTrackerItem>: ObservableObject {
         page = 0
     }
 }
-
-// child tracker types:
-// parent type: must be sortable
-// underlying type: must be convertable to parent type
-
-// parent tracker types:
-// self type: must be sortable
-// child types: must be convertable to parent type

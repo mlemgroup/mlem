@@ -11,7 +11,7 @@ import Foundation
  
  Note: To make the transition to internal models smoother, this is currently identical to APIPrivateMessageView
  */
-struct MessageModel {
+struct MessageModel: ContentIdentifiable {
     let creator: APIPerson
     let recipient: APIPerson
     let privateMessage: APIPrivateMessage
@@ -26,6 +26,7 @@ struct MessageModel {
         self.privateMessage = apiPrivateMessageView.privateMessage
     }
     
+    // swiftlint:disable function_body_length
     /// Dummy initializer for convenience
     init() {
         self.creator = APIPerson(
@@ -80,6 +81,8 @@ struct MessageModel {
             deleted: false
         )
     }
+
+    // swiftlint:enable function_body_length
 
     func getInboxSortVal(sortType: InboxSortType) -> InboxSortVal {
         switch sortType {

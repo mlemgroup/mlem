@@ -9,7 +9,7 @@ import Foundation
 /// Enumeration of values on which the inbox can be sorted with the relevant type associated. Has two special cases:
 /// - loading: indicates that there may be more items, but they are currently being fetched
 /// - absent: indicates that there are no more items
-enum InboxSortVal: TrackerSortable {
+enum InboxSortVal {
     typealias SortVal = InboxSortVal
     
     case published(Date)

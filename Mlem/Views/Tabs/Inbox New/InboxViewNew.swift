@@ -25,7 +25,7 @@ struct InboxViewNew: View {
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
     // data model
-    @StateObject var inboxTracker: InboxTrackerNew
+    @StateObject var inboxTracker: ParentTracker<InboxItemNew>
 
     // utility
     @StateObject private var inboxTabNavigation: AnyNavigationPath<AppRoute> = .init()
@@ -34,16 +34,14 @@ struct InboxViewNew: View {
     init() {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("shouldFilterRead") var unreadOnly = false
-
+        
         self._inboxTracker = StateObject(wrappedValue: .init(
             internetSpeed: internetSpeed,
+            sortType: .published,
             childTrackers: [
-                RepliesTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly),
-                MessagesTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly)
+                MessageTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published),
+                ReplyTrackerNew(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
             ]
-//            repliesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly),
-//            mentionsTracker: .init(),
-//            messagesTracker: .init(internetSpeed: internetSpeed, unreadOnly: unreadOnly)
         ))
     }
 
