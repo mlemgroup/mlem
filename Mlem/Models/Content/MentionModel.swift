@@ -23,13 +23,6 @@ struct MentionModel {
 
     var uid: ContentModelIdentifier { .init(contentType: .mention, contentId: personMention.id) }
 
-    func getInboxSortVal(sortType: InboxSortType) -> InboxSortVal {
-        switch sortType {
-        case .published:
-            return .published(personMention.published)
-        }
-    }
-
     // TODO: hasher
     // TODO: published should be top-level based on personMention.published
 }

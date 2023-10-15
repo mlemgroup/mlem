@@ -15,7 +15,7 @@ class BasicTracker<Item: TrackerItem> {
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var page: Int = 0 // number of the most recently loaded page--0 indicates no content
     private var loadThreshold: ContentModelIdentifier?
-    private(set) var loadingState: TrackerLoadingState = .idle
+    private(set) var loadingState: LoadingState = .idle
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
     
     // loading behavior governors

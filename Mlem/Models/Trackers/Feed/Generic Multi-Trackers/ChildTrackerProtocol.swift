@@ -15,7 +15,7 @@ protocol ChildTrackerProtocol {
     
     var items: [Item] { get set }
     var sortType: TrackerSortType { get set }
-    var loadingState: TrackerLoadingState { get }
+    var loadingState: LoadingState { get }
     var page: Int { get }
     
     func loadPage(_ pageToLoad: Int, clearBeforeReset: Bool) async throws

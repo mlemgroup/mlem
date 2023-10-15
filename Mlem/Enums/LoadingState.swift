@@ -1,5 +1,5 @@
 //
-//  TrackerLoadingState.swift
+//  LoadingState.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-10-12.
@@ -11,6 +11,6 @@ import Foundation
 /// - idle: not currently loading, but more posts available to load
 /// - loading: currently loading more posts
 /// - done: no more posts available to load
-enum TrackerLoadingState {
+enum LoadingState {
     case idle, loading, done
 }

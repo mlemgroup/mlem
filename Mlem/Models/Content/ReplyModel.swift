@@ -22,13 +22,6 @@ struct ReplyModel {
     let myVote: ScoringOperation?
 
     var uid: ContentModelIdentifier { .init(contentType: .reply, contentId: commentReply.id) }
-
-    func getInboxSortVal(sortType: InboxSortType) -> InboxSortVal {
-        switch sortType {
-        case .published:
-            return .published(commentReply.published)
-        }
-    }
     
     init(from replyView: APICommentReplyView) {
         self.commentReply = replyView.commentReply
