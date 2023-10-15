@@ -9,9 +9,7 @@ import Foundation
 import Semaphore
 
 class RepliesTrackerNew: ObservableObject, InboxFeedSubTracker {
-    // @Dependency(\.repliesRepository) var repliesRepository
-    @Dependency(\.apiClient) var apiClient
-    // TODO: repository
+    @Dependency(\.inboxRepository) var inboxRepository
     @Dependency(\.errorHandler) var errorHandler
     
     @Published var replies: [ReplyModel] = .init()
@@ -98,7 +96,7 @@ class RepliesTrackerNew: ObservableObject, InboxFeedSubTracker {
         }
 
         // TODO: repository
-        let newReplies = try await apiClient.getReplies(sort: .new, page: pageToLoad, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
+        let newReplies = try await inboxRepository.loadReplies(page: pageToLoad, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
         
         page = pageToLoad
         
@@ -111,7 +109,7 @@ class RepliesTrackerNew: ObservableObject, InboxFeedSubTracker {
         
         // TODO: repeat load until we have enough things
         
-        add(toAdd: storeIdsAndDedupe(newReplies: newReplies.map { ReplyModel(from: $0) }))
+        add(toAdd: storeIdsAndDedupe(newReplies: newReplies))
         loadingState = .idle
     }
     

@@ -9,7 +9,7 @@ import Foundation
 import Semaphore
 
 class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
-    @Dependency(\.messageRepository) var messageRepository
+    @Dependency(\.inboxRepository) var inboxRepository
     @Dependency(\.errorHandler) var errorHandler
 
     @Published var messages: [MessageModel] = .init()
@@ -118,7 +118,7 @@ class MessagesTrackerNew: ObservableObject, InboxFeedSubTracker {
             return
         }
         
-        let newMessages = try await messageRepository.loadMessages(
+        let newMessages = try await inboxRepository.loadMessages(
             page: pageToLoad,
             limit: internetSpeed.pageSize,
             unreadOnly: unreadOnly

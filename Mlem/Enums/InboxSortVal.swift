@@ -9,13 +9,15 @@ import Foundation
 /// Enumeration of values on which the inbox can be sorted with the relevant type associated. Has two special cases:
 /// - loading: indicates that there may be more items, but they are currently being fetched
 /// - absent: indicates that there are no more items
-enum InboxSortVal: Comparable {
+enum InboxSortVal: TrackerSortable {
+    typealias SortVal = InboxSortVal
+    
     case published(Date)
     
     /// Determines whether this should be sorted before another, optional InboxSortVal
     /// - Parameter other: InboxSortVal to compare to
     /// - Returns: true if other is nil or should be sorted after this, false otherwise
-    func shouldSortBefore(other: InboxSortVal?) -> Bool {
+    func shouldSortBefore(_ other: InboxSortVal?) -> Bool {
         switch self {
         case let .published(published):
             switch other {

@@ -1,5 +1,5 @@
 //
-//  MessageRepository.swift
+//  InboxRepository.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-09-23.
@@ -7,9 +7,30 @@
 import Dependencies
 import Foundation
 
-class MessageRepository {
+/// Repository for inbox items
+class InboxRepository {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.hapticManager) var hapticManager
+    
+    // MARK: - replies
+    
+    func loadReplies(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [ReplyModel] {
+        try await apiClient.getReplies(
+            sort: .new,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        .map { ReplyModel(from: $0) }
+    }
+    
+    // MARK: - mentions
+    
+    // MARK: - messages
 
     /// Loads a page of private messages
     /// - Parameters:
@@ -59,4 +80,6 @@ class MessageRepository {
     func reportMessage(id: Int, reason: String) async throws -> APIPrivateMessageReportView {
         try await apiClient.reportPrivateMessage(id: id, reason: reason)
     }
+    
+    //
 }

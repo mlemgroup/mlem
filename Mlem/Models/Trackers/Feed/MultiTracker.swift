@@ -1,56 +1,46 @@
 //
-//  InboxTrackerNew.swift
+//  MultiTracker.swift
 //  Mlem
 //
-//  Created by Eric Andrews on 2023-09-23.
+//  Created by Eric Andrews on 2023-10-14.
 //
 
 import Dependencies
 import Foundation
 
-enum LoadingState {
-    case loading, waiting, idle, done
-}
-
-class InboxTrackerNew: ObservableObject {
+/// Generic type for a multi-tracker.
+/// In order to use this, you must define a symmetric pair of types: one conforming to ParentTrackerItem and one conforming to ChildTrackerItem, with each referring to the other as their ChildType and ParentType, respectively. Your ChildTrackerItem should itself be a
+class MultiTracker<Item: ParentTrackerItem>: ObservableObject {
     @Dependency(\.errorHandler) var errorHandler
     
-    @Published var items: [InboxItemNew] = .init()
+    @Published var items: [Item] = .init()
     
     // internal state trackers
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
-    
-    /// Indicates whether the tracker is currently loading more items. This is true in two cases:
-    /// - The tracker is currently fetching items from its sub-trackers
-    /// - The tracker is currently awaiting a child tracker that is loading. In this state, it will remain loading until the child tracker notifies this tracker that the loading is complete, at which point this tracker will resume loading
-    private(set) var isLoading: Bool = false // accessible but not published because it causes lots of bad view redraws
-    private var awaitingSubTrackers: Bool = false // indicates whether loading was prematurely suspended
-    
     private var loadingState: LoadingState = .idle
     
-    // sub-trackers
-    private var childTrackers: [InboxFeedSubTracker]
-    
-    private let sortType: InboxSortType = .published
-    
-    // other
+    // loading behavior governors
+    private let sortType: Item.SortType
     private(set) var internetSpeed: InternetSpeed
     
+    // sub-trackers
+    private var childTrackers: [ChildTracker<Item.ChildType>]
+    
     init(
+        sortType: Item.SortType,
         internetSpeed: InternetSpeed,
-        childTrackers: [InboxFeedSubTracker]
+        childTrackers: [ChildTracker<Item.ChildType>]
     ) {
+        self.sortType = sortType
         self.internetSpeed = internetSpeed
         self.childTrackers = childTrackers
-        
-        // TODO: child trackers need references to parent in order to notify about clears and resets
     }
-
+    
     // MARK: items manipulation methods
 
     // note: all of the methods in here run on the main loop. items shouldn't be touched directly, but instead should be manipulated using these methods to ensure we aren't publishing updates from the background
     
-    func addItems(_ newItems: [InboxItemNew]) {
+    func addItems(_ newItems: [Item]) {
         RunLoop.main.perform {
             self.items.append(contentsOf: newItems)
         }
@@ -60,7 +50,7 @@ class InboxTrackerNew: ObservableObject {
     
     /// Refreshes the tracker, clearing all items and loading new ones
     /// - Parameter clearBeforeFetch: true to clear items before fetch
-    func refresh(clearBeforeFetch: Bool = false) async {
+    func refresh(clearBeforeFetch: Bool = false) async where Item.ChildType.ParentItem == Item {
         // TODO: handle child trackers
         
         if clearBeforeFetch {
@@ -72,12 +62,12 @@ class InboxTrackerNew: ObservableObject {
     
     /// Fetches the requested number of items. If any of the child trackers are loading and not enough items have been loaded to trigger autoloading behavior, sets the loading status to waiting. All requests for more items should go through this method, as it handles loading state.
     /// - Returns: requested number of items, if possible
-    private func fetchNextItems(numItems: Int) async -> [InboxItemNew] {
+    private func fetchNextItems(numItems: Int) async -> [Item] where Item.ChildType.ParentItem == Item {
         assert(numItems > abs(AppConstants.infiniteLoadThresholdOffset), "cannot load fewer items than infinite load offset")
         
         loadingState = .loading
         
-        var newItems: [InboxItemNew] = .init()
+        var newItems: [Item] = .init()
         for _ in 0 ..< numItems {
             if let nextItem = await computeNextItem() {
                 newItems.append(nextItem)
@@ -92,13 +82,13 @@ class InboxTrackerNew: ObservableObject {
     }
     
     /// Loads the next page of items
-    func loadNextPage() async {
+    func loadNextPage() async where Item.ChildType.ParentItem == Item {
         await addItems(fetchNextItems(numItems: internetSpeed.pageSize))
     }
     
     /// Resets the tracker to an empty state
     /// - Parameter newItems: optional; if provided, will pre-populate the tracker with these items
-    func reset(with newItems: [InboxItemNew] = .init()) {
+    func reset(with newItems: [Item] = .init()) {
         ids = .init(minimumCapacity: 1000)
         items = newItems
     }
@@ -107,12 +97,15 @@ class InboxTrackerNew: ObservableObject {
     
     /// Computes, consumes, and returns the next sorted item from the InboxFeedSubTrackers.
     /// - Returns: InboxItemNew of the top-sorted item from the three trackers if present, nil otherwise
-    private func computeNextItem() async -> InboxItemNew? {
+    private func computeNextItem() async -> Item? where
+        Item.SortType == Item.ChildType.ParentItem.SortType,
+        Item.SortVal == Item.ChildType.ParentItem.SortVal,
+        Item.ChildType.ParentItem == Item {
         // TODO: other sorts--need to ensure that the trackers are all sorted the same way
-        var sortVal: InboxSortVal?
-        var trackerToConsume: (any InboxFeedSubTracker)?
+        var sortVal: Item.SortVal?
+        var trackerToConsume: ChildTracker<Item.ChildType>?
   
-        for tracker: InboxFeedSubTracker in childTrackers {
+        for tracker in childTrackers {
             (sortVal, trackerToConsume) = await compareNextTrackerItem(
                 sortType: sortType,
                 sortVal: sortVal,
@@ -136,11 +129,13 @@ class InboxTrackerNew: ObservableObject {
     ///   - trackerToCompare: tracker to compare with
     /// - Returns: tuple of the earlier-sorted inbox sort value and its associated tracker
     private func compareNextTrackerItem(
-        sortType: InboxSortType,
-        sortVal: InboxSortVal?,
-        trackerToConsume: (any InboxFeedSubTracker)?,
-        trackerToCompare: any InboxFeedSubTracker
-    ) async -> (InboxSortVal?, (any InboxFeedSubTracker)?) {
+        sortType: Item.SortType,
+        sortVal: Item.SortVal?,
+        trackerToConsume: ChildTracker<Item.ChildType>?,
+        trackerToCompare: ChildTracker<Item.ChildType>
+    ) async -> (Item.SortVal?, ChildTracker<Item.ChildType>?) where
+        Item.ChildType.ParentItem.SortType == Item.SortType,
+        Item.ChildType.ParentItem.SortVal == Item.SortVal {
         do {
             if let sortValToCompare = try await trackerToCompare.nextItemSortVal(sortType: sortType),
                sortValToCompare.shouldSortBefore(sortVal) {
