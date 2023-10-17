@@ -24,9 +24,6 @@ enum TrackerSortVal {
             switch other {
             case let .published(otherDate):
                 return selfDate >= otherDate
-            default:
-                assertionFailure("shouldSortBefore called with incompatible types")
-                return false
             }
         }
     }

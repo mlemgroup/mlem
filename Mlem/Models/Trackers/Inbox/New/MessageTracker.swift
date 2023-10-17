@@ -21,22 +21,3 @@ class MessageTracker: ChildTracker<MessageModel> {
         try await inboxRepository.loadMessages(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
     }
 }
-
-// note: I have put these extensions here, rather than in MessageModel, to consolidate the logic required to conform MessageTracker to ChildTrackerProtocol. This should also allow this file to serve as a better template for creating other ChildTrackers.
-
-extension MessageModel: TrackerItem {
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
-        switch sortType {
-        case .published:
-            return .published(privateMessage.published)
-        }
-    }
-}
-
-extension MessageModel: ChildTrackerItem {
-    typealias ParentType = InboxItemNew
-    
-    func toParent() -> ParentType {
-        .message(self)
-    }
-}

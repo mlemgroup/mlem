@@ -12,7 +12,6 @@ enum InboxItemNew {
     case mention(MentionModel)
     case reply(ReplyModel)
 
-    // TODO: support for multiple sorting types--need protocols and such
     var published: Date {
         switch self {
         case let .message(message):

@@ -21,20 +21,3 @@ class ReplyTracker: ChildTracker<ReplyModel> {
         try await inboxRepository.loadReplies(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
     }
 }
-
-extension ReplyModel: TrackerItem {
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
-        switch sortType {
-        case .published:
-            return .published(commentReply.published)
-        }
-    }
-}
-
-extension ReplyModel: ChildTrackerItem {
-    typealias ParentType = InboxItemNew
-    
-    func toParent() -> ParentType {
-        .reply(self)
-    }
-}
