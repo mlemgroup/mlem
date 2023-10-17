@@ -10,6 +10,8 @@ import Foundation
 import SwiftUI
 
 struct HandleLemmyLinksDisplay: ViewModifier {
+    @Environment(\.navigationPath) private var navigationPath
+    @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     
@@ -18,9 +20,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
 
     // swiftlint:disable function_body_length
+    // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
         content
-            .navigationDestination(for: NavigationRoute.self) { route in
+            .navigationDestination(for: AppRoute.self) { route in
                 switch route {
                 case .apiCommunity(let community):
                     FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
@@ -71,13 +74,108 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 case .userModeratorLink(let user):
                     UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
                         .environmentObject(appState)
+                case .settings(let page):
+                    settingsDestination(for: page)
+                case .aboutSettings(let page):
+                    aboutSettingsDestination(for: page)
+                case .appearanceSettings(let page):
+                    appearanceSettingsDestination(for: page)
+                case .commentSettings(let page):
+                    commentSettingsDestination(for: page)
+                case .postSettings(let page):
+                    postSettingsDestination(for: page)
+                case .licenseSettings(let page):
+                    licensesSettingsDestination(for: page)
                 }
             }
     }
     // swiftlint:enable function_body_length
+    
+    @ViewBuilder
+    private func settingsDestination(for page: SettingsPage) -> some View {
+        switch page {
+        case .accounts:
+            AccountsPage()
+        case .general:
+            GeneralSettingsView()
+        case .accessibility:
+            AccessibilitySettingsView()
+        case .appearance:
+            AppearanceSettingsView()
+        case .contentFilters:
+            FiltersSettingsView()
+        case .about:
+            AboutView(navigationPath: navigationPath)
+        case .advanced:
+            AdvancedSettingsView()
+        }
+    }
+    
+    @ViewBuilder
+    private func aboutSettingsDestination(for page: AboutSettingsPage) -> some View {
+        switch page {
+        case .contributors:
+            ContributorsView()
+        case let .document(doc):
+            DocumentView(text: doc.body)
+        case .licenses:
+            LicensesView()
+        }
+    }
+    
+    @ViewBuilder
+    private func appearanceSettingsDestination(for page: AppearanceSettingsPage) -> some View {
+        switch page {
+        case .theme:
+            ThemeSettingsView()
+        case .appIcon:
+            IconSettingsView()
+        case .posts:
+            PostSettingsView()
+        case .comments:
+            CommentSettingsView()
+        case .communities:
+            CommunitySettingsView()
+        case .users:
+            UserSettingsView()
+        case .tabBar:
+            TabBarSettingsView()
+        }
+    }
+    
+    @ViewBuilder
+    private func commentSettingsDestination(for page: CommentSettingsPage) -> some View {
+        switch page {
+        case .layoutWidget:
+            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+                layoutWidgetTracker.groups.comment = widgets
+                layoutWidgetTracker.saveLayoutWidgets()
+            })
+        }
+    }
+    
+    @ViewBuilder
+    private func postSettingsDestination(for page: PostSettingsPage) -> some View {
+        switch page {
+        case .customizeWidgets:
+            /// We really should be passing in the layout widget through the route enum value, but that would involve making layout widget tracker hashable and codable.
+            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+                layoutWidgetTracker.groups.post = widgets
+                layoutWidgetTracker.saveLayoutWidgets()
+            })
+        }
+    }
+    
+    @ViewBuilder
+    private func licensesSettingsDestination(for page: LicensesSettingsPage) -> some View {
+        switch page {
+        case let .licenseDocument(doc):
+            DocumentView(text: doc.body)
+        }
+    }
 }
 
-struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
+struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
@@ -181,7 +279,7 @@ extension View {
         modifier(HandleLemmyLinksDisplay())
     }
 
-    func handleLemmyLinkResolution<P: AnyNavigationPath>(navigationPath: Binding<P>) -> some View {
+    func handleLemmyLinkResolution<P: AnyNavigablePath>(navigationPath: Binding<P>) -> some View {
         modifier(HandleLemmyLinkResolution(navigationPath: navigationPath))
     }
 }
