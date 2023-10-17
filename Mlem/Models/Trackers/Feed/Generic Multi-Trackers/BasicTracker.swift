@@ -29,14 +29,29 @@ class BasicTracker<Item: TrackerItem> {
         self.sortType = sortType
     }
     
+    // MARK: - External methods
+    
+    func refresh(clearBeforeRefresh: Bool) async throws {
+        try await loadPage(1, clearBeforeRefresh: clearBeforeRefresh)
+    }
+    
+    func reset() async {
+        do {
+            try await loadPage(0)
+        } catch {
+            assertionFailure("Exception thrown when resetting, this should not be possible!")
+            clear() // this is not a thread-safe use of clear, but I'm using it here because we should never get here
+        }
+    }
+    
     // MARK: - Internal tracking methods
     
     /// Loads the requested page. To account for the fact that multiple threads might request a load at the same time, this function requires that the caller pass in what it thinks is the next page to load. If that is not the next page by the time that call is allowed to execute, its request will be ignored.
     /// This grants this function an additional, extremely useful property: calling `await loadPage` while `loadPage` is already being executed will, practically speaking, await the in-flight request.
     /// There is additional logic to handle the reset case--because page is updated at the end of this call, if reset() set the page to 0 itself and a reset call were made while another loading call was in-flight, the in-flight call would update page before the reset call went through and the reset call's load would be aborted. Instead, this method takes on responsibility for resetting--calling it on page 0 clears the tracker, and page 1 refreshes it
     /// - Parameter page: page number to load
-    func loadPage(_ pageToLoad: Int, clearBeforeReset: Bool = false) async throws {
-        assert(!clearBeforeReset || pageToLoad == 1, "clearBeforeReset cannot be true if not loading page 1")
+    func loadPage(_ pageToLoad: Int, clearBeforeRefresh: Bool = false) async throws {
+        assert(!clearBeforeRefresh || pageToLoad == 1, "clearBeforeRefresh cannot be true if not loading page 1")
         
         print("attempting to load page \(pageToLoad)")
         
@@ -53,7 +68,7 @@ class BasicTracker<Item: TrackerItem> {
         
         if pageToLoad == 1 {
             print("received request to reload page 1")
-            if clearBeforeReset {
+            if clearBeforeRefresh {
                 clear()
             } else {
                 // if not clearing before reset, still clear these two fields in order to sanitize the loading state--we just keep the items in place until we have received new ones, which will be set below
@@ -124,9 +139,10 @@ class BasicTracker<Item: TrackerItem> {
     /// **WARNING:**
     /// **DO NOT** call this method from anywhere but loadPage! This is *purely* a helper function for loadPage and *will* lead to unexpected behavior if called elsewhere!
     private func clear() {
-        print("clearing messages tracker")
+        print("clearing tracker (removing \(items.count) items)")
         ids = .init(minimumCapacity: 1000)
         items = .init()
         page = 0
+        loadingState = .idle
     }
 }

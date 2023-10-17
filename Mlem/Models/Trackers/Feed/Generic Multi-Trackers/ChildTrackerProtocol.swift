@@ -10,9 +10,17 @@ import Foundation
 protocol ChildTrackerProtocol {
     associatedtype Item: ChildTrackerItem
     
-    mutating func setParentTracker(_ newParent: ParentTracker<Item.ParentType>)
+    // stream support methods
+    
+    mutating func setParentTracker(_ newParent: any ParentTrackerProtocol)
     
     mutating func consumeNextItem() -> Item.ParentType?
     
     func nextItemSortVal(sortType: TrackerSortType) async throws -> TrackerSortVal?
+    
+    // loading methods
+    
+    func reset(notifyParent: Bool) async
+    
+    func refresh(clearBeforeRefresh: Bool, notifyParent: Bool) async throws
 }

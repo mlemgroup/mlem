@@ -100,7 +100,7 @@ struct InboxViewNew: View {
             }
             .fancyTabScrollCompatible()
             .refreshable {
-                await inboxTracker.refresh()
+                await inboxTracker.refresh(clearBeforeFetch: true)
             }
         }
     }

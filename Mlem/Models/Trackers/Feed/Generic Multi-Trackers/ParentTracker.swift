@@ -8,12 +8,12 @@
 import Dependencies
 import Foundation
 
-class ParentTracker<Item: TrackerItem>: ObservableObject {
+class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol {
     @Dependency(\.errorHandler) var errorHandler
     
     @Published var items: [Item] = .init()
     
-    private var childTrackers: [any ChildTrackerProtocol]
+    private var childTrackers: [any ChildTrackerProtocol] = .init()
     private var internetSpeed: InternetSpeed
     private var sortType: TrackerSortType
     private var loadingState: LoadingState = .idle
@@ -22,6 +22,15 @@ class ParentTracker<Item: TrackerItem>: ObservableObject {
         self.internetSpeed = internetSpeed
         self.sortType = sortType
         self.childTrackers = childTrackers
+        
+        for var child in self.childTrackers {
+            child.setParentTracker(self)
+        }
+    }
+    
+    func addChildTracker(_ newChild: some ChildTrackerProtocol) {
+        var newChild = newChild
+        newChild.setParentTracker(self)
     }
     
     // MARK: items manipulation methods
@@ -39,10 +48,8 @@ class ParentTracker<Item: TrackerItem>: ObservableObject {
     /// Refreshes the tracker, clearing all items and loading new ones
     /// - Parameter clearBeforeFetch: true to clear items before fetch
     func refresh(clearBeforeFetch: Bool = false) async {
-        // TODO: handle child trackers
-        
         if clearBeforeFetch {
-            reset()
+            await reset()
         }
         
         await loadNextPage()
@@ -54,9 +61,15 @@ class ParentTracker<Item: TrackerItem>: ObservableObject {
     }
     
     /// Resets the tracker to an empty state
-    /// - Parameter newItems: optional; if provided, will pre-populate the tracker with these items
-    func reset(with newItems: [Item] = .init()) {
-        items = newItems
+    func reset() async {
+        RunLoop.main.perform {
+            self.items = .init()
+        }
+        
+        // note: this could in theory be run in parallel, but these calls should be super quick so it shouldn't matter
+        for child in childTrackers {
+            await child.reset(notifyParent: false)
+        }
     }
     
     // MARK: private loading methods
@@ -94,7 +107,12 @@ class ParentTracker<Item: TrackerItem>: ObservableObject {
         }
         
         if var trackerToConsume {
-            return trackerToConsume.consumeNextItem() as? Item
+            guard let nextItem = trackerToConsume.consumeNextItem() as? Item else {
+                assertionFailure("Could not convert child item to Item!")
+                return nil
+            }
+            
+            return nextItem
         }
         
         return nil

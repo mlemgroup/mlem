@@ -8,10 +8,10 @@
 import Foundation
 
 class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProtocol {
-    private var parentTracker: ParentTracker<Item.ParentType>?
+    private weak var parentTracker: (any ParentTrackerProtocol)?
     private var cursor: Int = 0
     
-    func setParentTracker(_ newParent: ParentTracker<Item.ParentType>) {
+    func setParentTracker(_ newParent: any ParentTrackerProtocol) {
         parentTracker = newParent
     }
     
@@ -40,8 +40,27 @@ class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProt
             
             // otherwise, wait for the next page to load and try to return the first value
             // if the next page is already loading, this call to loadNextPage will be noop, but still wait until that load completes thanks to the semaphore
-            try await loadPage(page + 1, clearBeforeReset: false)
+            try await loadPage(page + 1, clearBeforeRefresh: false)
             return cursor < items.count ? items[cursor].sortVal(sortType: sortType) : nil
+        }
+    }
+    
+    func refresh(clearBeforeRefresh: Bool, notifyParent: Bool = true) async throws {
+        try await refresh(clearBeforeRefresh: clearBeforeRefresh)
+        cursor = 0
+        
+        if notifyParent, let parentTracker {
+            print("refreshing parent tracker")
+            await parentTracker.refresh(clearBeforeFetch: clearBeforeRefresh)
+        }
+    }
+    
+    func reset(notifyParent: Bool = true) async {
+        await reset()
+        cursor = 0
+        if notifyParent, let parentTracker {
+            print("resetting parent tracker")
+            await parentTracker.reset()
         }
     }
 }
