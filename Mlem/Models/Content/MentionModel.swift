@@ -22,9 +22,6 @@ struct MentionModel {
     let myVote: ScoringOperation?
 
     var uid: ContentModelIdentifier { .init(contentType: .mention, contentId: personMention.id) }
-
-    // TODO: hasher
-    // TODO: published should be top-level based on personMention.published
 }
 
 extension MentionModel: Hashable {

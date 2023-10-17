@@ -37,9 +37,6 @@ struct ReplyModel {
         self.creatorBlocked = replyView.creatorBlocked
         self.myVote = replyView.myVote
     }
-
-    // TODO: hasher
-    // TODO: published should be top-level based on commentReply.published
 }
 
 extension ReplyModel: Hashable {

@@ -8,7 +8,7 @@
 import Dependencies
 import Foundation
 
-class ReplyTracker: BasicTracker<ReplyModel>, ChildTrackerProtocol {
+class ReplyTracker: ChildTracker<ReplyModel> {
     @Dependency(\.inboxRepository) var inboxRepository
 
     typealias Item = ReplyModel
@@ -16,10 +16,6 @@ class ReplyTracker: BasicTracker<ReplyModel>, ChildTrackerProtocol {
     
     var cursor: Int = 0
     var parentTracker: ParentTracker<ParentType>?
-    
-    override init(internetSpeed: InternetSpeed, unreadOnly: Bool, sortType: TrackerSortType) {
-        super.init(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: sortType)
-    }
     
     override func fetchPage(page: Int) async throws -> [Item] {
         try await inboxRepository.loadReplies(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
@@ -35,7 +31,7 @@ extension ReplyModel: TrackerItem {
     }
 }
 
-extension ReplyModel: ChildTrackerItemProtocol {
+extension ReplyModel: ChildTrackerItem {
     typealias ParentType = InboxItemNew
     
     func toParent() -> ParentType {

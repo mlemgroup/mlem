@@ -465,6 +465,7 @@
 		CDF6B4902ADC52EF002AE419 /* MessageTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6B48F2ADC52EF002AE419 /* MessageTracker.swift */; };
 		CDF6B4922ADC5A19002AE419 /* TrackerSorts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6B4912ADC5A19002AE419 /* TrackerSorts.swift */; };
 		CDF6B4942ADC6193002AE419 /* ReplyTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6B4932ADC6193002AE419 /* ReplyTracker.swift */; };
+		CDF6B4962ADE0EFE002AE419 /* ChildTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6B4952ADE0EFE002AE419 /* ChildTracker.swift */; };
 		CDF8425C2A49E4C000723DA0 /* APIPersonMentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8425B2A49E4C000723DA0 /* APIPersonMentionView.swift */; };
 		CDF8425E2A49E61A00723DA0 /* APIPersonMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8425D2A49E61A00723DA0 /* APIPersonMention.swift */; };
 		CDF842612A49EA3900723DA0 /* Mentions Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF842602A49EA3900723DA0 /* Mentions Tracker.swift */; };
@@ -966,6 +967,7 @@
 		CDF6B48F2ADC52EF002AE419 /* MessageTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTracker.swift; sourceTree = "<group>"; };
 		CDF6B4912ADC5A19002AE419 /* TrackerSorts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSorts.swift; sourceTree = "<group>"; };
 		CDF6B4932ADC6193002AE419 /* ReplyTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyTracker.swift; sourceTree = "<group>"; };
+		CDF6B4952ADE0EFE002AE419 /* ChildTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTracker.swift; sourceTree = "<group>"; };
 		CDF8425B2A49E4C000723DA0 /* APIPersonMentionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonMentionView.swift; sourceTree = "<group>"; };
 		CDF8425D2A49E61A00723DA0 /* APIPersonMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPersonMention.swift; sourceTree = "<group>"; };
 		CDF842602A49EA3900723DA0 /* Mentions Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mentions Tracker.swift"; sourceTree = "<group>"; };
@@ -2425,6 +2427,7 @@
 				CDF6B48B2ADC4FB4002AE419 /* ParentTracker.swift */,
 				CDF6B48D2ADC51AC002AE419 /* ChildTrackerItem.swift */,
 				CDF6B4912ADC5A19002AE419 /* TrackerSorts.swift */,
+				CDF6B4952ADE0EFE002AE419 /* ChildTracker.swift */,
 			);
 			path = "Generic Multi-Trackers";
 			sourceTree = "<group>";
@@ -2705,6 +2708,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DEB0FFB2A4F87BF007CAB99 /* User Moderator View.swift in Sources */,
+				CDF6B4962ADE0EFE002AE419 /* ChildTracker.swift in Sources */,
 				CDDB2EDE2A85C2F1001D4B16 /* HapticPriority.swift in Sources */,
 				CD6F29AA2A78003A00F20B6B /* PostRepository.swift in Sources */,
 				63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */,

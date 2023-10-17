@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ChildTrackerItemProtocol: TrackerItem {
+protocol ChildTrackerItem: TrackerItem {
     associatedtype ParentType: TrackerItem
     
     func toParent() -> ParentType

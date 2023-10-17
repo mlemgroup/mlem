@@ -8,7 +8,7 @@
 import Dependencies
 import Foundation
 
-class MessageTracker: BasicTracker<MessageModel>, ChildTrackerProtocol {
+class MessageTracker: ChildTracker<MessageModel> {
     @Dependency(\.inboxRepository) var inboxRepository
     
     typealias Item = MessageModel
@@ -16,10 +16,6 @@ class MessageTracker: BasicTracker<MessageModel>, ChildTrackerProtocol {
     
     var cursor: Int = 0
     var parentTracker: ParentTracker<ParentType>?
-    
-    override init(internetSpeed: InternetSpeed, unreadOnly: Bool, sortType: TrackerSortType) {
-        super.init(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: sortType)
-    }
     
     override func fetchPage(page: Int) async throws -> [Item] {
         try await inboxRepository.loadMessages(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
@@ -37,7 +33,7 @@ extension MessageModel: TrackerItem {
     }
 }
 
-extension MessageModel: ChildTrackerItemProtocol {
+extension MessageModel: ChildTrackerItem {
     typealias ParentType = InboxItemNew
     
     func toParent() -> ParentType {
