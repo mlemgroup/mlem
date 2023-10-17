@@ -14,9 +14,6 @@ class ReplyTracker: ChildTracker<ReplyModel> {
     typealias Item = ReplyModel
     typealias ParentType = InboxItemNew
     
-    var cursor: Int = 0
-    var parentTracker: ParentTracker<ParentType>?
-    
     override func fetchPage(page: Int) async throws -> [Item] {
         try await inboxRepository.loadReplies(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
     }

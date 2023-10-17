@@ -1,5 +1,5 @@
 //
-//  TrackerSorts.swift
+//  TrackerSort.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-10-15.
