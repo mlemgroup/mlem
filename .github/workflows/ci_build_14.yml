@@ -14,7 +14,7 @@ on:
 jobs:
   Build:
     permissions: write-all
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -28,7 +28,7 @@ jobs:
 
   Test:
     permissions: write-all
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v3
