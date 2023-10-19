@@ -28,11 +28,11 @@ struct AvatarView: View {
         self.blurAvatar = shouldBlurNsfw && community.nsfw
     }
     
-    init(user: APIPerson, avatarSize: CGFloat, blurAvatar: Bool = false, lineColor: Color? = nil) {
+    init(user: UserModel, avatarSize: CGFloat, blurAvatar: Bool = false, lineColor: Color? = nil) {
         @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
         
         self.type = .user
-        self.url = user.avatarUrl
+        self.url = user.avatar
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
         self.clipAvatar = false

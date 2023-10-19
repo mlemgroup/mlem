@@ -396,7 +396,7 @@ struct UserViewPreview: PreviewProvider {
         }
         
         return UserLinkView(
-            user: previewUser,
+            user: UserModel(from: previewUser),
             serverInstanceLocation: .bottom,
             overrideShowAvatar: true,
             postContext: postContext?.post,

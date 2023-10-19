@@ -64,6 +64,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     LazyLoadExpandedPost(post: post)
                 case .apiPerson(let user):
                     UserView(userID: user.id)
+                case .userProfile(let user):
+                    UserView(userID: user.userId)
                         .environmentObject(appState)
                 case .postLinkWithContext(let post):
                     ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
