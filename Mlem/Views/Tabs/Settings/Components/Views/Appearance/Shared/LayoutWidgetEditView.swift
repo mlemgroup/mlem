@@ -15,7 +15,6 @@ struct LayoutWidgetEditView: View {
     var onSave: (_ widgets: [LayoutWidgetType]) -> Void
     
     @Namespace var animation
-    @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     
     @StateObject var barCollection: OrderedWidgetCollection
     @StateObject var trayCollection: InfiniteWidgetCollection
@@ -70,7 +69,17 @@ struct LayoutWidgetEditView: View {
                         .padding(.vertical, 40)
                         .zIndex(1)
                     Spacer()
+                    Button("Reset") {
+                        barCollection.replaceItems(with: [.scoreCounter, .infoStack, .save, .reply])
+                        Task {
+                            onSave(barCollection.items.map(\.type))
+                        }
+                    
+                    }
+                        .foregroundStyle(.tertiary)
+                        .padding(.bottom, 20)
                 }
+                .fancyTabScrollCompatible()
             }
             .gesture(
                 DragGesture(minimumDistance: 0)
@@ -100,7 +109,6 @@ struct LayoutWidgetEditView: View {
         .background(Color(UIColor.systemGroupedBackground))
         .onChange(of: isPresented) { newValue in
             if newValue == false {
-                print("SAVING")
                 Task {
                     onSave(barCollection.items.map(\.type))
                 }
@@ -181,7 +189,7 @@ struct LayoutWidgetEditView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 300)
+        .frame(height: 130)
         .overlay {
             // little hack to determine the frame after rendering and update the collection
             GeometryReader { geo in
@@ -189,8 +197,12 @@ struct LayoutWidgetEditView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onAppear {
                         
-                        trayCollection.rect = geo.frame(in: .global)
-                            .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y - 90)
+                        var rect = geo.frame(in: .global)
+                            .offsetBy(dx: -outerFrame.origin.x, dy: -outerFrame.origin.y)
+                        // Extend the rect into the infoText area a little
+                        rect.origin.y -= 130
+                        rect.size.height += 130
+                        trayCollection.rect = rect
                     }
             }
         }

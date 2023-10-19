@@ -81,6 +81,10 @@ class FiniteWidgetCollection: LayoutWidgetCollection {
             accumulator + element.type.cost
         } + (widgetDragging?.type.cost ?? 0)
     }
+    
+    func replaceItems(with widgets: [LayoutWidgetType]) {
+        self.items = widgets.map { LayoutWidget($0) }
+    }
 }
 
 class UnorderedWidgetCollection: FiniteWidgetCollection {}
@@ -92,6 +96,11 @@ class OrderedWidgetCollection: FiniteWidgetCollection {
     
     override init(_ items: [LayoutWidget], costLimit: Float = .infinity) {
         super.init(items, costLimit: costLimit)
+        self.itemsWithPlaceholder = self.items
+    }
+    
+    override func replaceItems(with widgets: [LayoutWidgetType]) {
+        self.items = widgets.map { LayoutWidget($0) }
         self.itemsWithPlaceholder = self.items
     }
     
