@@ -24,10 +24,10 @@ struct HeadlinePost: View {
 
     // computed
     var usernameColor: Color {
-        if post.creator.admin == true {
+        if post.creator.isAdmin {
             return .red
         }
-        if post.creator.botAccount {
+        if post.creator.isBot {
             return .indigo
         }
 

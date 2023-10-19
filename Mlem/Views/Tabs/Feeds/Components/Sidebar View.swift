@@ -97,7 +97,7 @@ struct CommunitySidebarView: View {
                         NavigationLink(.apiPerson(moderatorView.moderator)) {
                             HStack {
                                 UserLabelView(
-                                    user: moderatorView.moderator,
+                                    person: moderatorView.moderator,
                                     serverInstanceLocation: .bottom,
                                     overrideShowAvatar: true,
                                     communityContext: communityDetails

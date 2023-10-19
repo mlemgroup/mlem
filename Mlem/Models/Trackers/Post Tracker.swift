@@ -429,7 +429,7 @@ class PostTracker: ObservableObject {
                 imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
             
-            if let userAvatarLink = post.creator.avatarUrl {
+            if let userAvatarLink = post.creator.avatar {
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
             }
             
