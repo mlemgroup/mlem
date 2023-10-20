@@ -8,12 +8,13 @@
 import Foundation
 import SwiftUI
 
-extension InboxView {
-    @ViewBuilder
-    func repliesFeedView() -> some View {
+struct RepliesFeedView: View {
+    @ObservedObject var replyTracker: ReplyTracker
+    
+    var body: some View {
         Group {
-            if repliesTracker.items.isEmpty {
-                if repliesTracker.isLoading {
+            if replyTracker.items.isEmpty {
+                if replyTracker.loadingState == .loading {
                     LoadingView(whatIsLoading: .replies)
                 } else {
                     noRepliesView()
@@ -22,7 +23,7 @@ extension InboxView {
                 LazyVStack(spacing: 0) {
                     repliesListView()
                     
-                    if repliesTracker.isLoading {
+                    if replyTracker.loadingState == .loading {
                         LoadingView(whatIsLoading: .replies)
                     } else {
                         // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
@@ -46,49 +47,50 @@ extension InboxView {
     
     @ViewBuilder
     func repliesListView() -> some View {
-        ForEach(repliesTracker.items) { reply in
+        ForEach(replyTracker.items) { reply in
             VStack(spacing: 0) {
-                inboxReplyViewWithInteraction(reply: reply)
+                // inboxReplyViewWithInteraction(reply: reply)
+                InboxReplyView(reply: reply, menuFunctions: [])
 
                 Divider()
             }
         }
     }
     
-    func inboxReplyViewWithInteraction(reply: APICommentReplyView) -> some View {
-        NavigationLink(.lazyLoadPostLinkWithContext(.init(
-            post: reply.post,
-            scrollTarget: reply.comment.id
-        ))) {
-            InboxReplyView(reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
-                .padding(.vertical, AppConstants.postAndCommentSpacing)
-                .padding(.horizontal)
-                .background(Color.systemBackground)
-                .task {
-                    if repliesTracker.shouldLoadContent(after: reply) {
-                        await loadTrackerPage(tracker: repliesTracker)
-                    }
-                }
-                .destructiveConfirmation(
-                    isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                    confirmationMenuFunction: confirmationMenuFunction
-                )
-                .addSwipeyActions(
-                    leading: [
-                        upvoteCommentReplySwipeAction(commentReply: reply),
-                        downvoteCommentReplySwipeAction(commentReply: reply)
-                    ],
-                    trailing: [
-                        toggleCommentReplyReadSwipeAction(commentReply: reply),
-                        replyToCommentReplySwipeAction(commentReply: reply)
-                    ]
-                )
-                .contextMenu {
-                    ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                    }
-                }
-        }
-        .buttonStyle(EmptyButtonStyle())
-    }
+//    func inboxReplyViewWithInteraction(reply: APICommentReplyView) -> some View {
+//        NavigationLink(.lazyLoadPostLinkWithContext(.init(
+//            post: reply.post,
+//            scrollTarget: reply.comment.id
+//        ))) {
+//            InboxReplyView(reply: reply, menuFunctions: genCommentReplyMenuGroup(commentReply: reply))
+//                .padding(.vertical, AppConstants.postAndCommentSpacing)
+//                .padding(.horizontal)
+//                .background(Color.systemBackground)
+//                .task {
+//                    if repliesTracker.shouldLoadContent(after: reply) {
+//                        await loadTrackerPage(tracker: repliesTracker)
+//                    }
+//                }
+//                .destructiveConfirmation(
+//                    isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+//                    confirmationMenuFunction: confirmationMenuFunction
+//                )
+//                .addSwipeyActions(
+//                    leading: [
+//                        upvoteCommentReplySwipeAction(commentReply: reply),
+//                        downvoteCommentReplySwipeAction(commentReply: reply)
+//                    ],
+//                    trailing: [
+//                        toggleCommentReplyReadSwipeAction(commentReply: reply),
+//                        replyToCommentReplySwipeAction(commentReply: reply)
+//                    ]
+//                )
+//                .contextMenu {
+//                    ForEach(genCommentReplyMenuGroup(commentReply: reply)) { item in
+//                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+//                    }
+//                }
+//        }
+//        .buttonStyle(EmptyButtonStyle())
+//    }
 }

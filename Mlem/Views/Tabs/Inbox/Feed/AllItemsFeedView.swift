@@ -1,5 +1,5 @@
 //
-//  All Items Feed View.swift
+//  AllItemsFeedView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-26.
@@ -8,13 +8,14 @@
 import Foundation
 import SwiftUI
 
-extension InboxView {
-    @ViewBuilder
-    func inboxFeedView() -> some View {
+struct AllItemsFeedView: View {
+    @ObservedObject var inboxTracker: ParentTracker<InboxItem>
+    
+    var body: some View {
         Group {
-            if allItems.isEmpty, isLoading {
+            if inboxTracker.items.isEmpty, inboxTracker.loadingState == .loading {
                 LoadingView(whatIsLoading: .inbox)
-            } else if allItems.isEmpty {
+            } else if inboxTracker.items.isEmpty {
                 noItemsView()
             } else {
                 LazyVStack(spacing: 0) {
@@ -39,16 +40,19 @@ extension InboxView {
     // delete it, recompile, paste it, and it should work. Go figure.
     @ViewBuilder
     func inboxListView() -> some View {
-        ForEach(allItems) { item in
+        ForEach(inboxTracker.items) { item in
             VStack(spacing: 0) {
                 Group {
-                    switch item.type {
+                    switch item {
                     case let .mention(mention):
-                        inboxMentionViewWithInteraction(mention: mention)
+                        InboxMentionView(mention: mention, menuFunctions: [])
+                    // inboxMentionViewWithInteraction(mention: mention)
                     case let .message(message):
-                        inboxMessageViewWithInteraction(message: message)
+                        InboxMessageView(message: message, menuFunctions: [])
+                    // inboxMessageViewWithInteraction(message: message)
                     case let .reply(reply):
-                        inboxReplyViewWithInteraction(reply: reply)
+                        InboxReplyView(reply: reply, menuFunctions: [])
+                        // inboxReplyViewWithInteraction(reply: reply)
                     }
                 }
                 

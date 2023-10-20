@@ -15,7 +15,7 @@ struct ReplyToCommentReply: ResponseEditorModel {
     let canUpload: Bool = true
     let modalName: String = "New Comment"
     let prefillContents: String? = nil
-    let commentReply: APICommentReplyView
+    let commentReply: ReplyModel
     
     var id: Int { commentReply.id }
     

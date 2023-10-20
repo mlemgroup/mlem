@@ -11,7 +11,7 @@ class MessageTracker: ChildTracker<MessageModel> {
     @Dependency(\.inboxRepository) var inboxRepository
 
     typealias Item = MessageModel
-    typealias ParentType = InboxItemNew
+    typealias ParentType = InboxItem
 
     override func fetchPage(page: Int) async throws -> [Item] {
         try await inboxRepository.loadMessages(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)

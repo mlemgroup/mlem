@@ -11,12 +11,12 @@ struct InboxMessageView: View {
     let spacing: CGFloat = 10
     let userAvatarWidth: CGFloat = 30
     
-    let message: APIPrivateMessageView
+    let message: MessageModel
     let menuFunctions: [MenuFunction]
     
     var iconName: String { message.privateMessage.read ? "envelope.open" : "envelope.fill" }
     
-    init(message: APIPrivateMessageView, menuFunctions: [MenuFunction]) {
+    init(message: MessageModel, menuFunctions: [MenuFunction]) {
         self.message = message
         self.menuFunctions = menuFunctions
     }

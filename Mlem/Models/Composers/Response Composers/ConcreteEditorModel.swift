@@ -75,7 +75,7 @@ extension ConcreteEditorModel {
     }
     
     /// Create a ConcreteEditorModel to reply to or report a comment reply
-    init(commentReply: APICommentReplyView, operation: InboxItemOperation) {
+    init(commentReply: ReplyModel, operation: InboxItemOperation) {
         switch operation {
         case .replyToInboxItem: self.editorModel = ReplyToCommentReply(commentReply: commentReply)
         case .reportInboxItem: self.editorModel = ReportCommentReply(commentReply: commentReply)
@@ -83,7 +83,7 @@ extension ConcreteEditorModel {
     }
     
     /// Create a ConcreteEditorModel to reply to or report a mention
-    init(mention: APIPersonMentionView, operation: InboxItemOperation) {
+    init(mention: MentionModel, operation: InboxItemOperation) {
         switch operation {
         case .replyToInboxItem: self.editorModel = ReplyToMention(mention: mention)
         case .reportInboxItem: self.editorModel = ReportMention(mention: mention)
@@ -91,7 +91,7 @@ extension ConcreteEditorModel {
     }
     
     /// Create a ConcreteEditorModel to reply to or report a message
-    init(message: APIPrivateMessageView, operation: InboxItemOperation) {
+    init(message: MessageModel, operation: InboxItemOperation) {
         switch operation {
         case .replyToInboxItem: self.editorModel = ReplyToMessage(message: message)
         case .reportInboxItem: self.editorModel = ReportMessage(message: message)

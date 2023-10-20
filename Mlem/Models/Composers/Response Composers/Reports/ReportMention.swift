@@ -16,7 +16,7 @@ struct ReportMention: ResponseEditorModel {
     let canUpload: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
-    let mention: APIPersonMentionView
+    let mention: MentionModel
     
     func embeddedView() -> AnyView {
         AnyView(InboxMentionView(mention: mention, menuFunctions: [])

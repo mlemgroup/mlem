@@ -15,7 +15,7 @@ struct ReplyToMention: ResponseEditorModel {
     let canUpload: Bool = true
     let modalName: String = "New Comment"
     let prefillContents: String? = nil
-    let mention: APIPersonMentionView
+    let mention: MentionModel
     
     var id: Int { mention.id }
     

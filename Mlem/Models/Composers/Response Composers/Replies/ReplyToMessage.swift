@@ -17,7 +17,7 @@ struct ReplyToMessage: ResponseEditorModel {
     let canUpload: Bool = true
     let modalName: String = "New Message"
     let prefillContents: String? = nil
-    let message: APIPrivateMessageView
+    let message: MessageModel
     
     func embeddedView() -> AnyView {
         AnyView(InboxMessageView(message: message, menuFunctions: [])
