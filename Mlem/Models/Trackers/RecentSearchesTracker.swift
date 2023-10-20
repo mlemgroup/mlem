@@ -36,8 +36,9 @@ class RecentSearchesTracker: ObservableObject {
                 case .user:
                     let user = try await personRepository.loadUser(for: id.contentId)
                     newSearches.append(AnyContentModel(user))
-                case .comment:
-                    break
+                default:
+                    assertionFailure("Received unexpected content type in recent searches \(id.contentType)")
+                    return
                 }
             }
             

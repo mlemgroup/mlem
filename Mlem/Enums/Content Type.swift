@@ -8,5 +8,5 @@
 import Foundation
 
 enum ContentType: Int, Codable {
-    case post, comment, community, user
+    case post, comment, community, user, message, mention, reply
 }
