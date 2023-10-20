@@ -98,7 +98,7 @@ class BasicTracker<Item: TrackerItem> {
 
         // if loading page 1, we can just do a straight assignment regardless of whether we did clearBeforeReset
         if page == 1 {
-            items = allowedItems
+            setItems(newItems: allowedItems)
         } else {
             add(toAdd: allowedItems)
         }
@@ -128,10 +128,18 @@ class BasicTracker<Item: TrackerItem> {
         return accepted
     }
 
+    private func setItems(newItems: [Item]) {
+        RunLoop.main.perform {
+            self.items = newItems
+        }
+    }
+    
     /// Adds the given items to the items array
     /// - Parameter toAdd: items to add
     private func add(toAdd: [Item]) {
-        items.append(contentsOf: toAdd)
+        RunLoop.main.perform {
+            self.items.append(contentsOf: toAdd)
+        }
     }
 
     /// Clears the tracker to an empty state.
