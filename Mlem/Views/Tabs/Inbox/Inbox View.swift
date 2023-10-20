@@ -164,7 +164,7 @@ struct InboxView: View {
             }
             .fancyTabScrollCompatible()
             .refreshable {
-                Task(priority: .userInitiated) {
+                do {
                     switch curTab {
                     case .all:
                         await inboxTracker.refresh(clearBeforeFetch: false)
@@ -175,6 +175,8 @@ struct InboxView: View {
                     case .messages:
                         try await messageTracker.refresh(clearBeforeRefresh: false)
                     }
+                } catch {
+                    errorHandler.handle(error)
                 }
             }
         }
