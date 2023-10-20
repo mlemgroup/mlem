@@ -17,7 +17,7 @@ struct ReportMessage: ResponseEditorModel {
     let canUpload: Bool = false
     let modalName: String = "Report Message"
     let prefillContents: String? = nil
-    let message: APIPrivateMessageView
+    let message: MessageModel
     
     func embeddedView() -> AnyView {
         AnyView(InboxMessageView(message: message, menuFunctions: [])

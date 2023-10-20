@@ -22,6 +22,21 @@ struct MentionModel {
     let myVote: ScoringOperation?
 
     var uid: ContentModelIdentifier { .init(contentType: .mention, contentId: personMention.id) }
+    
+    init(from personMentionView: APIPersonMentionView) {
+        self.personMention = personMentionView.personMention
+        self.comment = personMentionView.comment
+        self.creator = personMentionView.creator
+        self.post = personMentionView.post
+        self.community = personMentionView.community
+        self.recipient = personMentionView.recipient
+        self.counts = personMentionView.counts
+        self.creatorBannedFromCommunity = personMentionView.creatorBannedFromCommunity
+        self.subscribed = personMentionView.subscribed
+        self.saved = personMentionView.saved
+        self.creatorBlocked = personMentionView.creatorBlocked
+        self.myVote = personMentionView.myVote
+    }
 }
 
 extension MentionModel: Hashable {

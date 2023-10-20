@@ -15,7 +15,7 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
     private var childTrackers: [any ChildTrackerProtocol] = .init()
     private var internetSpeed: InternetSpeed
     private var sortType: TrackerSortType
-    private var loadingState: LoadingState = .idle
+    var loadingState: LoadingState = .idle
 
     init(internetSpeed: InternetSpeed, sortType: TrackerSortType, childTrackers: [any ChildTrackerProtocol]) {
         self.internetSpeed = internetSpeed

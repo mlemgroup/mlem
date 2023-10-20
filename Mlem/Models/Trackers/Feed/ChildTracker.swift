@@ -6,7 +6,7 @@
 //
 import Foundation
 
-class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProtocol {
+class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProtocol, ObservableObject {
     private weak var parentTracker: (any ParentTrackerProtocol)?
     private var cursor: Int = 0
 

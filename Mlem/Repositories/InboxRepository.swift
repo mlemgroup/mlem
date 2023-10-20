@@ -30,6 +30,20 @@ class InboxRepository {
 
     // MARK: - mentions
     
+    func loadMentions(
+        page: Int,
+        limit: Int,
+        unreadOnly: Bool
+    ) async throws -> [MentionModel] {
+        try await apiClient.getPersonMentions(
+            sort: .new,
+            page: page,
+            limit: limit,
+            unreadOnly: unreadOnly
+        )
+        .map { MentionModel(from: $0) }
+    }
+    
     // MARK: - messages
 
     /// Loads a page of private messages
