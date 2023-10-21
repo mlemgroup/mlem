@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct RecentSearchesView: View {
-    
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var recentSearchesTracker: RecentSearchesTracker
     @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
+    
+    func deleteSwipeAction(_ item: AnyContentModel) -> SwipeAction {
+        return SwipeAction(
+            symbol: .init(emptyName: Icons.close, fillName: Icons.close),
+            color: .red,
+            action: {
+                recentSearchesTracker.removeRecentSearch(item, accountId: appState.currentActiveAccount?.stableIdString)
+            }
+        )
+    }
     
     var body: some View {
         Group {
             if !recentSearchesTracker.recentSearches.isEmpty {
                 VStack(alignment: .leading, spacing: 0) {
                     headerView
-                    .padding(.top, 15)
-                    .padding(.bottom, 6)
+                        .padding(.top, 15)
+                        .padding(.bottom, 6)
                     Divider()
                     itemsView
                 }
@@ -47,7 +57,7 @@ struct RecentSearchesView: View {
             Spacer()
             
             Button {
-                recentSearchesTracker.clearRecentSearches()
+                recentSearchesTracker.clearRecentSearches(accountId: appState.currentActiveAccount?.stableIdString)
             } label: {
                 Text("Clear")
                     .font(.subheadline)
@@ -62,13 +72,21 @@ struct RecentSearchesView: View {
         ForEach(contentTracker.items, id: \.uid) { contentModel in
             Group {
                 if let community = contentModel.wrappedValue as? CommunityModel {
-                    CommunityResultView(community: community, showTypeLabel: true)
+                    CommunityResultView(
+                        community: community,
+                        showTypeLabel: true,
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                    )
                 } else if let user = contentModel.wrappedValue as? UserModel {
-                    UserResultView(user: user, showTypeLabel: true)
+                    UserResultView(
+                        user: user,
+                        showTypeLabel: true,
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                    )
                 }
             }
             .simultaneousGesture(TapGesture().onEnded {
-                recentSearchesTracker.addRecentSearch(contentModel)
+                recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
             })
             Divider()
         }

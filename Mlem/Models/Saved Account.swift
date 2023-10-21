@@ -15,6 +15,11 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let storedNickname: String?
     let avatarUrl: URL?
     
+    var stableIdString: String {
+        assert(instanceLink.host() != nil, "nil instance link host!")
+        return "\(username)@\(instanceLink.host() ?? "unknown")"
+    }
+    
     init(
         id: Int,
         instanceLink: URL,

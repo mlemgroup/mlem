@@ -18,25 +18,34 @@ class RecentSearchesTracker: ObservableObject {
     var hasLoaded: Bool = false
     @Published var recentSearches: [AnyContentModel] = .init()
     
-    func loadRecentSearches() async throws {
-        hasLoaded = true
-        let identifiers = persistenceRepository.loadRecentSearches()
-        for id in identifiers {
-            print(id.contentType, id.contentId)
-            switch id.contentType {
-            case .post:
-                break
-            case .community:
-                let community: CommunityModel = try await communityRepository.loadDetails(for: id.contentId)
-                recentSearches.append(AnyContentModel(community))
-            case .user:
-                let user = try await personRepository.loadDetails(for: id.contentId)
-                recentSearches.append(AnyContentModel(user))
+    /// clears recentSearches and loads new values based on the current account
+    func reloadRecentSearches(accountId: String?) async throws {
+        defer { hasLoaded = true }
+        
+        if let accountId {
+            let identifiers = persistenceRepository.loadRecentSearches(for: accountId)
+            var newSearches: [AnyContentModel] = .init()
+            
+            for id in identifiers {
+                switch id.contentType {
+                case .post:
+                    break
+                case .community:
+                    let community: CommunityModel = try await communityRepository.loadDetails(for: id.contentId)
+                    newSearches.append(AnyContentModel(community))
+                case .user:
+                    let user = try await personRepository.loadUser(for: id.contentId)
+                    newSearches.append(AnyContentModel(user))
+                case .comment:
+                    break
+                }
             }
+            
+            recentSearches = newSearches
         }
     }
     
-    func addRecentSearch(_ item: AnyContentModel) {
+    func addRecentSearch(_ item: AnyContentModel, accountId: String?) {
         // if the item is already in the recent list, move it to the top
         if let index = recentSearches.firstIndex(of: item) {
             recentSearches.remove(at: index)
@@ -49,17 +58,27 @@ class RecentSearchesTracker: ObservableObject {
                 recentSearches = recentSearches.dropLast(1)
             }
         }
-        saveRecentSearches()
+        saveRecentSearches(accountId: accountId)
     }
     
-    func clearRecentSearches() {
+    func removeRecentSearch(_ item: AnyContentModel, accountId: String?) {
+        if let index = recentSearches.firstIndex(of: item) {
+            recentSearches.remove(at: index)
+        }
+        saveRecentSearches(accountId: accountId)
+    }
+    
+    func clearRecentSearches(accountId: String?) {
         recentSearches.removeAll()
-        saveRecentSearches()
+        saveRecentSearches(accountId: accountId)
     }
     
-    private func saveRecentSearches() {
-        Task(priority: .background) {
-            try await persistenceRepository.saveRecentSearches(recentSearches.map { $0.uid })
+    private func saveRecentSearches(accountId: String?) {
+        if let accountId {
+            print("saving searches for \(accountId)")
+            Task(priority: .background) {
+                try await persistenceRepository.saveRecentSearches(for: accountId, with: recentSearches.map(\.uid))
+            }
         }
     }
 }

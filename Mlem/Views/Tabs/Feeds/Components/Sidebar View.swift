@@ -69,7 +69,8 @@ struct CommunitySidebarView: View {
                 avatarSubtext: .constant("Created \(getRelativeTime(date: communityDetails.communityView.community.published))"),
                 bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.bannerUrl : nil,
                 avatarUrl: communityDetails.communityView.community.iconUrl,
-                label1: "\(communityDetails.communityView.counts.subscribers) Subscribers"
+                label1: "\(communityDetails.communityView.counts.subscribers) Subscribers",
+                avatarType: .community
             )
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
@@ -94,7 +95,7 @@ struct CommunitySidebarView: View {
                         NavigationLink(.apiPerson(moderatorView.moderator)) {
                             HStack {
                                 UserLabelView(
-                                    user: moderatorView.moderator,
+                                    person: moderatorView.moderator,
                                     serverInstanceLocation: .bottom,
                                     overrideShowAvatar: true,
                                     communityContext: communityDetails

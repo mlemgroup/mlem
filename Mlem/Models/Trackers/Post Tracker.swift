@@ -165,7 +165,7 @@ class PostTracker: ObservableObject {
     }
     
     @MainActor
-    private func reset(
+    func reset(
         with newItems: [PostModel] = .init(),
         filteredWith filter: @escaping (_: PostModel) -> Bool = { _ in true }
     ) {
@@ -429,7 +429,7 @@ class PostTracker: ObservableObject {
                 imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
             
-            if let userAvatarLink = post.creator.avatarUrl {
+            if let userAvatarLink = post.creator.avatar {
                 imageRequests.append(ImageRequest(url: userAvatarLink.withIcon64Parameters))
             }
             

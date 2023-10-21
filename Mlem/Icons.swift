@@ -97,6 +97,7 @@ struct Icons {
     static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
+    static let bannedFlair: String = "multiply.circle"
     
     // entities/general Lemmy concepts
     static let instance: String = "server.rack"
@@ -169,6 +170,7 @@ struct Icons {
     static let leftRight: String = "arrow.left.arrow.right"
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
+    static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
     
     // misc
     static let switchUser: String = "person.crop.circle.badge.plus"

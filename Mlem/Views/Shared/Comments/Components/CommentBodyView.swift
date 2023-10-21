@@ -58,7 +58,7 @@ struct CommentBodyView: View {
         VStack(alignment: .leading, spacing: spacing) {
             HStack(spacing: AppConstants.compactSpacing) {
                 UserLinkView(
-                    user: commentView.creator,
+                    person: commentView.creator,
                     serverInstanceLocation: serverInstanceLocation,
                     postContext: commentView.post,
                     commentContext: commentView.comment
@@ -127,7 +127,7 @@ struct CommentBodyView: View {
                 }
             } else {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
-                    Image(systemName: myVote == .resetVote ? Icons.upvoteSquare : myVote.iconName)
+                    Image(systemName: myVote == .resetVote ? Icons.upvoteSquare : myVote.iconNameFill)
                     Text(String(commentView.counts.score))
                 }
                 .foregroundColor(.secondary)

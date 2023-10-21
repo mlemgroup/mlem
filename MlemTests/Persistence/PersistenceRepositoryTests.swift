@@ -122,24 +122,30 @@ final class PersistenceRepositoryTests: XCTestCase {
     func testSaveRecentSearches() async throws {
         let searches: [ContentModelIdentifier] = [.init(contentType: .user, contentId: 1), .init(contentType: .community, contentId: 2)]
         
-        try await repository.saveRecentSearches(searches) // write the examples to disk
-        let searchesFromDisk = try load([ContentModelIdentifier].self) // load them from the disk _without_ using the repository
+        try await repository.saveRecentSearches(for: "one@test", with: searches) // write the examples to disk
+        let searchesFromDisk = try load([String: [ContentModelIdentifier]].self) // load them from the disk _without_ using the repository
         
-        XCTAssertEqual(searches, searchesFromDisk) // confirm what was written to disk matches what we sent in
+        let expected: [String: [ContentModelIdentifier]] = ["one@test": searches]
+        XCTAssertEqual(expected, searchesFromDisk) // confirm what was written to disk matches what we sent in
     }
     
     func testLoadRecentSearchesWithValues() async throws {
-        let searches: [ContentModelIdentifier] = [.init(contentType: .user, contentId: 1), .init(contentType: .community, contentId: 2)]
+        let searches1: [ContentModelIdentifier] = [.init(contentType: .user, contentId: 1), .init(contentType: .community, contentId: 2)]
+        let searches2: [ContentModelIdentifier] = [.init(contentType: .user, contentId: 2), .init(contentType: .community, contentId: 3)]
         
-        try await repository.saveRecentSearches(searches) // write the example terms to the disk
-        let loadedSearches = repository.loadRecentSearches() // read them back
+        try await repository.saveRecentSearches(for: "one@test", with: searches1)
+        try await repository.saveRecentSearches(for: "two@test", with: searches2)
         
-        XCTAssertEqual(loadedSearches, searches) // assert we were given the same values back
+        let loadedSearches1 = repository.loadRecentSearches(for: "one@test") // read them back
+        let loadedSearches2 = repository.loadRecentSearches(for: "two@test")
+        
+        XCTAssertEqual(loadedSearches1, searches1) // assert we were given the same values back
+        XCTAssertEqual(loadedSearches2, searches2)
     }
     
     func testLoadRecentSearchesWithoutValues() async throws {
         XCTAssert(disk.isEmpty) // assert that our mock disk has nothing in it
-        let loadedSearches = repository.loadRecentSearches() // perform a load knowing the disk is empty
+        let loadedSearches = repository.loadRecentSearches(for: "one@test") // perform a load knowing the disk is empty
         XCTAssert(loadedSearches.isEmpty) // assert we were returned an empty list
     }
     

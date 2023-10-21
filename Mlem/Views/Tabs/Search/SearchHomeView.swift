@@ -37,7 +37,9 @@ struct SearchHomeView: View {
             searchModel.tabSwitchRefresh(contentTracker: contentTracker)
         }
         .onAppear {
-            contentTracker.refresh(using: searchModel.performSearch)
+            if contentTracker.items.isEmpty {
+                contentTracker.refresh(using: searchModel.performSearch)
+            }
         }
     }
 }

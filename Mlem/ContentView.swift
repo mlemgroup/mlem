@@ -32,6 +32,7 @@ struct ContentView: View {
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
+    @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
@@ -156,7 +157,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists {
+        if !homeButtonExists && allowTabBarSwipeUpGesture {
             isPresentingAccountSwitcher = true
         }
     }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserLinkView: View {
-    var user: APIPerson
+    var user: UserModel
     let serverInstanceLocation: ServerInstanceLocation
     var overrideShowAvatar: Bool? // shows or hides the avatar according to value. If not set, uses system setting.
 
@@ -17,8 +17,25 @@ struct UserLinkView: View {
     var postContext: APIPost?
     var commentContext: APIComment?
     
+    @available(*, deprecated, message: "Provide a UserModel rather than an APIPerson.")
     init(
-        user: APIPerson,
+        person: APIPerson,
+        serverInstanceLocation: ServerInstanceLocation,
+        overrideShowAvatar: Bool? = nil,
+        postContext: APIPost? = nil,
+        commentContext: APIComment? = nil
+    ) {
+        self.init(
+            user: UserModel(from: person),
+            serverInstanceLocation: serverInstanceLocation,
+            overrideShowAvatar: overrideShowAvatar,
+            postContext: postContext,
+            commentContext: commentContext
+        )
+    }
+    
+    init(
+        user: UserModel,
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
@@ -32,7 +49,7 @@ struct UserLinkView: View {
     }
 
     var body: some View {
-        NavigationLink(.apiPerson(user)) {
+        NavigationLink(.userProfile(user)) {
             UserLabelView(
                 user: user,
                 serverInstanceLocation: serverInstanceLocation,
