@@ -10,14 +10,29 @@ import Foundation
 import SwiftUI
 
 struct HandleLemmyLinksDisplay: ViewModifier {
+    @Dependency(\.siteInformation) var siteInformation
+    
     @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    
+    @AppStorage("defaultPostSorting") var _defaultPostSorting: PostSortType = .hot
+    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+    
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
+    
+    var defaultPostSorting: PostSortType {
+        if let siteVersion = siteInformation.version {
+            if siteVersion >= _defaultPostSorting.minimumVersion {
+                return _defaultPostSorting
+            }
+            return fallbackDefaultPostSorting
+        }
+        return _defaultPostSorting
+    }
 
     // swiftlint:disable function_body_length
     // swiftlint:disable:next cyclomatic_complexity
@@ -100,12 +115,14 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             AccountsPage()
         case .general:
             GeneralSettingsView()
+        case .sorting:
+            SortingSettingsView()
+        case .contentFilters:
+            FiltersSettingsView()
         case .accessibility:
             AccessibilitySettingsView()
         case .appearance:
             AppearanceSettingsView()
-        case .contentFilters:
-            FiltersSettingsView()
         case .about:
             AboutView(navigationPath: navigationPath)
         case .advanced:

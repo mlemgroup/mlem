@@ -6,15 +6,30 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct FeedRoot: View {
+    @Dependency(\.siteInformation) var siteInformation
+    
     @EnvironmentObject var appState: AppState
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    
+    @AppStorage("defaultPostSorting") var _defaultPostSorting: PostSortType = .hot
+    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+    
+    var defaultPostSorting: PostSortType {
+        if let siteVersion = siteInformation.version {
+            if siteVersion >= _defaultPostSorting.minimumVersion {
+                return _defaultPostSorting
+            }
+            return fallbackDefaultPostSorting
+        }
+        return _defaultPostSorting
+    }
 
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
