@@ -52,7 +52,7 @@ class BasicTracker<Item: TrackerItem> {
     func loadPage(_ pageToLoad: Int, clearBeforeRefresh: Bool = false) async throws {
         assert(!clearBeforeRefresh || pageToLoad == 1, "clearBeforeRefresh cannot be true if not loading page 1")
 
-        print("attempting to load page \(pageToLoad)")
+        print("[\(Item.self) tracker] attempting to load page \(pageToLoad)")
 
         // only one thread may execute this function at a time
         await loadingSemaphore.wait()
@@ -60,13 +60,13 @@ class BasicTracker<Item: TrackerItem> {
 
         // special reset cases
         if pageToLoad == 0 {
-            print("received request to load page 0")
+            print("[\(Item.self) tracker] received request to load page 0")
             clear()
             return
         }
 
         if pageToLoad == 1 {
-            print("received request to reload page 1")
+            print("[\(Item.self) tracker] received request to load page 1")
             if clearBeforeRefresh {
                 clear()
             } else {
@@ -78,7 +78,7 @@ class BasicTracker<Item: TrackerItem> {
 
         // do nothing if this is not the next page to load
         guard pageToLoad == page + 1 else {
-            print("will not load page \(pageToLoad) of items (have loaded \(page) pages)")
+            print("[\(Item.self) tracker] will not load page \(pageToLoad) of items (have loaded \(page) pages)")
             return
         }
 
@@ -87,7 +87,7 @@ class BasicTracker<Item: TrackerItem> {
 
         // if no messages show up and no error was thrown, there's nothing left to load
         if newItems.isEmpty {
-            print("received no items, loading must be finished")
+            print("[\(Item.self) tracker] received no items, loading must be finished")
             loadingState = .done
             return
         }
@@ -98,9 +98,9 @@ class BasicTracker<Item: TrackerItem> {
 
         // if loading page 1, we can just do a straight assignment regardless of whether we did clearBeforeReset
         if page == 1 {
-            setItems(newItems: allowedItems)
+            await setItems(newItems: allowedItems)
         } else {
-            add(toAdd: allowedItems)
+            await add(toAdd: allowedItems)
         }
 
         loadingState = .idle
@@ -117,6 +117,15 @@ class BasicTracker<Item: TrackerItem> {
         return []
     }
 
+    @MainActor
+    func update(with item: Item) {
+        guard let index = items.firstIndex(where: { $0.uid == item.uid }) else {
+            return
+        }
+
+        items[index] = item
+    }
+    
     // TODO: figure out filtering
     // idea 1: put it in storeIdsAndDedupe
     
@@ -128,17 +137,18 @@ class BasicTracker<Item: TrackerItem> {
         return accepted
     }
 
-    private func setItems(newItems: [Item]) {
-        RunLoop.main.perform {
-            self.items = newItems
+    private func setItems(newItems: [Item]) async {
+        print("[\(Item.self) tracker] setting items with \(newItems.count)")
+        await MainActor.run {
+            items = newItems
         }
     }
     
     /// Adds the given items to the items array
     /// - Parameter toAdd: items to add
-    private func add(toAdd: [Item]) {
-        RunLoop.main.perform {
-            self.items.append(contentsOf: toAdd)
+    private func add(toAdd: [Item]) async {
+        await MainActor.run {
+            items.append(contentsOf: toAdd)
         }
     }
 
@@ -146,7 +156,7 @@ class BasicTracker<Item: TrackerItem> {
     /// **WARNING:**
     /// **DO NOT** call this method from anywhere but loadPage! This is *purely* a helper function for loadPage and *will* lead to unexpected behavior if called elsewhere!
     private func clear() {
-        print("clearing tracker (removing \(items.count) items)")
+        print("[\(Item.self) tracker] clearing tracker (removing \(items.count) items)")
         ids = .init(minimumCapacity: 1000)
         items = .init()
         page = 0

@@ -10,7 +10,15 @@ protocol TrackerSortable {
     func shouldSortBefore(_ other: Self?) -> Bool
 }
 
-protocol TrackerItem {
+protocol TrackerItem: Equatable {
     var uid: ContentModelIdentifier { get }
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal
+    
+    static func == (lhs: any TrackerItem, rhs: any TrackerItem) -> Bool
+}
+
+extension TrackerItem {
+    static func == (lhs: any TrackerItem, rhs: any TrackerItem) -> Bool {
+        lhs.uid == rhs.uid
+    }
 }

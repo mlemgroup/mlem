@@ -10,20 +10,47 @@ enum TrackerSortType {
     case published
 }
 
-enum TrackerSortVal {
+enum TrackerSortVal: Comparable {
     case published(Date)
-
-    func shouldSortBefore(_ other: TrackerSortVal?) -> Bool {
-        guard let other else {
-            return true
-        }
-
-        switch self {
-        case let .published(selfDate):
-            switch other {
-            case let .published(otherDate):
-                return selfDate >= otherDate
+    
+    static func typeEquals(lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
+        switch lhs {
+        case .published:
+            switch rhs {
+            case .published:
+                return true
             }
         }
     }
+    
+    static func < (lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
+        print("COMPARING")
+        
+        guard typeEquals(lhs: lhs, rhs: rhs) else {
+            assertionFailure("Compare oncalled on trackersortvals with different types")
+            return true
+        }
+        
+        switch lhs {
+        case let .published(lhsDate):
+            switch rhs {
+            case let .published(rhsDate):
+                return lhsDate < rhsDate
+            }
+        }
+    }
+
+//    func shouldSortBefore(_ other: TrackerSortVal?) -> Bool {
+//        guard let other else {
+//            return true
+//        }
+//
+//        switch self {
+//        case let .published(selfDate):
+//            switch other {
+//            case let .published(otherDate):
+//                return selfDate >= otherDate
+//            }
+//        }
+//    }
 }
