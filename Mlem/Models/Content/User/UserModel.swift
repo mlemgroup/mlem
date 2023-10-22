@@ -100,7 +100,7 @@ struct UserModel {
     func getFlairs(
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
-        communityContext: GetCommunityResponse? = nil
+        communityContext: CommunityModel? = nil
     ) -> [UserFlair] {
         var ret: [UserFlair] = .init()
         if let post = postContext, post.creatorId == self.userId {
@@ -114,7 +114,7 @@ struct UserModel {
         }
         if let comment = commentContext, comment.distinguished {
             ret.append(.moderator)
-        } else if let community = communityContext, community.moderators.contains(where: { $0.moderator.id == userId }) {
+        } else if let community = communityContext, let moderators = community.moderators, moderators.contains(where: { $0.moderator.id == userId }) {
             ret.append(.moderator)
         }
         if isBot {

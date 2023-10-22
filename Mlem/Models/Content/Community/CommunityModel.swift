@@ -12,6 +12,7 @@ struct CommunityModel {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.communityRepository) var communityRepository
     
     enum CommunityError: Error {
         case noData
@@ -34,12 +35,17 @@ struct CommunityModel {
     let banner: URL?
     
     // State
-    let nsfw: Bool
-    let local: Bool
-    let removed: Bool
-    let deleted: Bool
-    let hidden: Bool
-    let postingRestrictedToMods: Bool
+    var nsfw: Bool
+    var local: Bool
+    var removed: Bool
+    var deleted: Bool
+    var hidden: Bool
+    var postingRestrictedToMods: Bool
+    
+    // From APICommunityView
+    var blocked: Bool?
+    var subscribed: Bool?
+    var subscriberCount: Int?
     
     // Dates
     let creationDate: Date
@@ -48,16 +54,25 @@ struct CommunityModel {
     // URLs
     let communityUrl: URL
     
-    // These values are nil if the CommunityModel was created from an APICommunity and not an APICommunityView
-    var subscribed: Bool?
-    var subscriberCount: Int?
+    // These values are only available via GetCommunityResponse
+    var site: APISite?
+    var moderators: [APICommunityModeratorView]?
+    var discussionLanguages: [Int]?
+    var defaultPostLanguage: Int?
     
-    /// Creates a CommunityModel from an APICommunityView
-    /// - Parameter apiCommunityView: APICommunityView to create a CommunityModel representation of
+    init(from response: GetCommunityResponse) {
+        self.init(from: response.communityView)
+        self.site = response.site
+        self.moderators = response.moderators
+        self.discussionLanguages = response.discussionLanguages
+        self.defaultPostLanguage = response.defaultPostLanguage
+    }
+    
     init(from communityView: APICommunityView) {
         self.init(from: communityView.community)
         self.subscriberCount = communityView.counts.subscribers
         self.subscribed = communityView.subscribed != .notSubscribed ? true : false
+        self.blocked = communityView.blocked
     }
     
     init(from community: APICommunity) {
@@ -100,10 +115,37 @@ struct CommunityModel {
             callback(self)
         }
         do {
-            try await apiClient.followCommunity(id: communityId, shouldFollow: subscribed)
+            try await apiClient.followCommunity(id: communityId, shouldFollow: !subscribed)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            let phrase = (self.subscribed ?? false) ? "unsubscribe from" : "subscribe to"
+            errorHandler.handle(
+                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
+            )
+        }
+    }
+    
+    mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
+        guard let blocked else {
+            throw CommunityError.noData
+        }
+        self.blocked = !blocked
+        RunLoop.main.perform { [self] in
+            callback(self)
+        }
+        do {
+            if !blocked {
+                try await communityRepository.blockCommunity(id: communityId)
+            } else {
+                try await communityRepository.unblockCommunity(id: communityId)
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
+            let phrase = !blocked ? "block" : "unblock"
+            errorHandler.handle(
+                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
+            )
         }
     }
 }
@@ -121,5 +163,8 @@ extension CommunityModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(subscribed)
+        hasher.combine(subscriberCount)
+        hasher.combine(blocked)
+        hasher.combine(moderators?.map { $0.moderator.id } ?? [])
     }
 }

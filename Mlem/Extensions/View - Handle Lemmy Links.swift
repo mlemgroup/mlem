@@ -35,8 +35,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(filtersTracker)
                 case .communitySidebarLinkWithContext(let context):
                     CommunitySidebarView(
-                        community: context.community.community,
-                        communityDetails: context.communityDetails
+                        community: context.community
                     )
                     .environmentObject(filtersTracker)
                 case .apiPostView(let post):

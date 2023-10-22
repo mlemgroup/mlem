@@ -17,8 +17,7 @@ struct CommunitySidebarLinkWithContext: Equatable, Identifiable, Hashable {
         hasher.combine(id)
     }
     
-    var id: String { communityDetails?.communityView.community.id.description ?? UUID().uuidString }
+    var id: String { community.communityId.description }
     
     let community: CommunityModel
-    let communityDetails: GetCommunityResponse?
 }

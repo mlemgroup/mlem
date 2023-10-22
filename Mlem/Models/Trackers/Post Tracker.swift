@@ -220,7 +220,7 @@ class PostTracker: ObservableObject {
     @MainActor
     func removeCommunityPosts(from communityId: Int) {
         filter {
-            $0.community.id != communityId
+            $0.community.communityId != communityId
         }
     }
     

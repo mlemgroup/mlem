@@ -68,11 +68,11 @@ extension FeedView {
     }
     
     // MARK: Community loading
-    
     func fetchCommunityDetails() async {
         if let community {
             do {
-                communityDetails = try await communityRepository.loadDetails(for: community.communityId)
+                let communityDetails: GetCommunityResponse = try await communityRepository.loadDetails(for: community.communityId)
+                self.community = .init(from: communityDetails)
             } catch {
                 errorHandler.handle(
                     .init(
@@ -143,7 +143,8 @@ extension FeedView {
     }
     
     // swiftlint:disable function_body_length
-    func genCommunitySpecificMenuFunctions(for community: CommunityModel) -> [MenuFunction] {
+    func genCommunitySpecificMenuFunctions() -> [MenuFunction] {
+        guard let community else { return [] }
         var ret: [MenuFunction] = .init()
         // new post
         ret.append(MenuFunction.standardMenuFunction(
@@ -159,9 +160,8 @@ extension FeedView {
         })
         
         // subscribe/unsubscribe
-        if let communityDetails {
-            let isSubscribed: Bool = communityDetails.communityView.subscribed.rawValue == "Subscribed"
-            let (subscribeText, subscribeSymbol, subscribePrompt) = isSubscribed
+        if let subscribed = community.subscribed {
+            let (subscribeText, subscribeSymbol, subscribePrompt) = subscribed
                 ? ("Unsubscribe", Icons.unsubscribe, "Really unsubscribe from \(community.name)?")
                 : ("Subscribe", Icons.subscribe, nil)
             ret.append(MenuFunction.standardMenuFunction(
@@ -171,7 +171,7 @@ extension FeedView {
                 enabled: true
             ) {
                 Task(priority: .userInitiated) {
-                    await subscribe(communityId: community.communityId, shouldSubscribe: !isSubscribed)
+                    await toggleSubscribe()
                 }
             })
         }
@@ -207,9 +207,9 @@ extension FeedView {
         ret.append(MenuFunction.shareMenuFunction(url: community.communityUrl))
         
         // block/unblock
-        if let communityDetails {
+        if let blocked = community.blocked {
             // block
-            let (blockText, blockSymbol, blockPrompt) = communityDetails.communityView.blocked
+            let (blockText, blockSymbol, blockPrompt) = blocked
                 ? ("Unblock", Icons.show, nil)
                 : ("Block", Icons.hide, "Really block \(community.name)?")
             ret.append(MenuFunction.standardMenuFunction(
@@ -219,7 +219,7 @@ extension FeedView {
                 enabled: true
             ) {
                 Task(priority: .userInitiated) {
-                    await block(communityId: community.communityId, shouldBlock: !communityDetails.communityView.blocked)
+                    await block()
                 }
             })
         }
@@ -293,53 +293,36 @@ extension FeedView {
             (showReadPosts || !postView.read)
     }
     
-    private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
-        hapticManager.play(haptic: .success, priority: .high)
-        do {
-            let response = try await communityRepository.updateSubscription(for: communityId, subscribed: shouldSubscribe)
-            // TODO: we receive the updated `APICommunityView` here to update our local state
-            // so there is no need to make a second call but we still need to address 'faking'
-            // the state while the call is in flight
-            communityDetails?.communityView = response
-            
-            let communityName = community?.name ?? "community"
-            if shouldSubscribe {
-                await notifier.add(.success("Subscibed to \(communityName)"))
-            } else {
-                await notifier.add(.success("Unsubscribed from \(communityName)"))
+    private func toggleSubscribe() async {
+        if var community = self.community {
+            hapticManager.play(haptic: .success, priority: .high)
+            do {
+                try await community.toggleSubscribe {
+                    self.community = $0
+                }
+                if community.subscribed ?? false {
+                    await notifier.add(.success("Subscribed to \(community.name)"))
+                } else {
+                    await notifier.add(.success("Unsubscribed from \(community.name)"))
+                }
+            } catch {
+                errorHandler.handle(error)
             }
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            let phrase = shouldSubscribe ? "subscribe to" : "unsubscribe from"
-            errorHandler.handle(
-                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
-            )
         }
     }
     
-    private func block(communityId: Int, shouldBlock: Bool) async {
-        do {
+    private func block() async {
+        if var community = self.community {
             hapticManager.play(haptic: .violentSuccess, priority: .high)
-
-            let response: BlockCommunityResponse
-            let communityName = community?.name ?? "community"
-            if shouldBlock {
-                response = try await communityRepository.blockCommunity(id: communityId)
-                await notifier.add(.success("Blocked \(communityName)"))
-            } else {
-                response = try await communityRepository.unblockCommunity(id: communityId)
-                await notifier.add(.success("Unblocked \(communityName)"))
+            do {
+                try await community.toggleBlock {
+                    self.community = $0
+                }
+                // refresh the feed after blocking which will show/hide the posts
+                await hardRefreshFeed()
+            } catch {
+                errorHandler.handle(error)
             }
-
-            communityDetails?.communityView = response.communityView
-            // refresh the feed after blocking which will show/hide the posts
-            await hardRefreshFeed()
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            let phrase = shouldBlock ? "block" : "unblock"
-            errorHandler.handle(
-                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
-            )
         }
     }
 }
