@@ -274,9 +274,8 @@ struct FeedPost: View {
     
     func editPost() {
         editorTracker.openEditor(with: PostEditorModel(
-            community: post.community,
-            postTracker: postTracker,
-            editPost: post
+            post: post,
+            postTracker: postTracker
         ))
     }
 

@@ -30,12 +30,12 @@ struct FeedView: View {
     
     // MARK: Parameters and init
     
-    let community: APICommunity?
+    let community: CommunityModel?
     let showLoading: Bool
     @State var feedType: FeedType
     
     init(
-        community: APICommunity?,
+        community: CommunityModel?,
         feedType: FeedType,
         sortType: PostSortType,
         showLoading: Bool = false

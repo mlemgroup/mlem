@@ -25,28 +25,20 @@ struct HandleLemmyLinksDisplay: ViewModifier {
         content
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
-                case .apiCommunity(let community):
+                case .community(let community):
                     FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
-                        .environmentObject(CommunitySearchResultsTracker())
-                case .apiCommunityView(let context):
-                    FeedView(community: context.community, feedType: .all, sortType: defaultPostSorting)
-                        .environmentObject(appState)
-                        .environmentObject(filtersTracker)
-                        .environmentObject(CommunitySearchResultsTracker())
                 case .communityLinkWithContext(let context):
                     FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
-                        .environmentObject(CommunitySearchResultsTracker())
                 case .communitySidebarLinkWithContext(let context):
                     CommunitySidebarView(
-                        community: context.community,
+                        community: context.community.community,
                         communityDetails: context.communityDetails
                     )
                     .environmentObject(filtersTracker)
-                    .environmentObject(CommunitySearchResultsTracker())
                 case .apiPostView(let post):
                     let postModel = PostModel(from: post)
                     let postTracker = PostTracker(

@@ -26,7 +26,7 @@ extension FeedView {
         isLoading = true
         do {
             try await postTracker.loadNextPage(
-                communityId: community?.id,
+                communityId: community?.communityId,
                 sort: postSortType,
                 type: feedType,
                 filtering: filter
@@ -40,7 +40,7 @@ extension FeedView {
         // NOTE: refresh doesn't need to touch isLoading because that visual cue is handled by .refreshable
         do {
             try await postTracker.refresh(
-                communityId: community?.id,
+                communityId: community?.communityId,
                 sort: postSortType,
                 feedType: feedType,
                 filtering: filter
@@ -56,7 +56,7 @@ extension FeedView {
         isLoading = true
         do {
             try await postTracker.refresh(
-                communityId: community?.id,
+                communityId: community?.communityId,
                 sort: postSortType,
                 feedType: feedType,
                 clearBeforeFetch: true,
@@ -72,7 +72,7 @@ extension FeedView {
     func fetchCommunityDetails() async {
         if let community {
             do {
-                communityDetails = try await communityRepository.loadDetails(for: community.id)
+                communityDetails = try await communityRepository.loadDetails(for: community.communityId)
             } catch {
                 errorHandler.handle(
                     .init(
@@ -143,7 +143,7 @@ extension FeedView {
     }
     
     // swiftlint:disable function_body_length
-    func genCommunitySpecificMenuFunctions(for community: APICommunity) -> [MenuFunction] {
+    func genCommunitySpecificMenuFunctions(for community: CommunityModel) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         // new post
         ret.append(MenuFunction.standardMenuFunction(
@@ -171,20 +171,20 @@ extension FeedView {
                 enabled: true
             ) {
                 Task(priority: .userInitiated) {
-                    await subscribe(communityId: community.id, shouldSubscribe: !isSubscribed)
+                    await subscribe(communityId: community.communityId, shouldSubscribe: !isSubscribed)
                 }
             })
         }
         
         // favorite/unfavorite
-        if favoriteCommunitiesTracker.isFavorited(community) {
+        if favoriteCommunitiesTracker.isFavorited(community.community) {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Unfavorite",
                 imageName: "star.slash",
                 destructiveActionPrompt: "Really unfavorite \(community.name)?",
                 enabled: true
             ) {
-                favoriteCommunitiesTracker.unfavorite(community)
+                favoriteCommunitiesTracker.unfavorite(community.community)
                 Task {
                     await notifier.add(.success("Unfavorited \(community.name)"))
                 }
@@ -196,7 +196,7 @@ extension FeedView {
                 destructiveActionPrompt: nil,
                 enabled: true
             ) {
-                favoriteCommunitiesTracker.favorite(community)
+                favoriteCommunitiesTracker.favorite(community.community)
                 Task {
                     await notifier.add(.success("Favorited \(community.name)"))
                 }
@@ -204,7 +204,7 @@ extension FeedView {
         }
         
         // share
-        ret.append(MenuFunction.shareMenuFunction(url: community.actorId))
+        ret.append(MenuFunction.shareMenuFunction(url: community.communityUrl))
         
         // block/unblock
         if let communityDetails {
@@ -219,7 +219,7 @@ extension FeedView {
                 enabled: true
             ) {
                 Task(priority: .userInitiated) {
-                    await block(communityId: community.id, shouldBlock: !communityDetails.communityView.blocked)
+                    await block(communityId: community.communityId, shouldBlock: !communityDetails.communityView.blocked)
                 }
             })
         }

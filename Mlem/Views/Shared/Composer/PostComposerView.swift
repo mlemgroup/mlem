@@ -75,7 +75,7 @@ struct PostComposerView_Previews: PreviewProvider {
         NavigationStack {
             PostComposerView(
                 editModel: PostEditorModel(
-                    community: .mock(id: 1, name: "mlem")
+                    community: CommunityModel(from: .mock(id: 1, name: "mlem"))
                 )
             )
         }

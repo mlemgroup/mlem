@@ -20,6 +20,6 @@ struct CommunityLinkWithContext: Equatable, Identifiable, Hashable {
     
     var id: Int { hashValue }
     
-    let community: APICommunity?
+    let community: CommunityModel?
     let feedType: FeedType
 }

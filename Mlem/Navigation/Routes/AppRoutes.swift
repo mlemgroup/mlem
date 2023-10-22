@@ -11,16 +11,15 @@ import Foundation
 ///
 /// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
 enum AppRoute: Routable {
-    case apiCommunityView(APICommunityView)
-    case apiCommunity(APICommunity)
-    
     case communityLinkWithContext(CommunityLinkWithContext)
     case communitySidebarLinkWithContext(CommunitySidebarLinkWithContext)
     
     case apiPostView(APIPostView)
     case apiPost(APIPost)
     
-    @available(*, deprecated, message: "Use userProfile instead.")
+    case community(CommunityModel)
+    
+    @available(*, deprecated, message: "Use .userProfile instead.")
     case apiPerson(APIPerson)
     case userProfile(UserModel)
     
@@ -39,10 +38,6 @@ enum AppRoute: Routable {
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute<V>(_ value: V) throws -> AppRoute where V: Hashable {
         switch value {
-        case let value as APICommunityView:
-            return .apiCommunityView(value)
-        case let value as APICommunity:
-            return .apiCommunity(value)
         case let value as CommunityLinkWithContext:
             return .communityLinkWithContext(value)
         case let value as CommunitySidebarLinkWithContext:
@@ -51,6 +46,8 @@ enum AppRoute: Routable {
             return .apiPostView(value)
         case let value as APIPost:
             return .apiPost(value)
+        case let value as CommunityModel:
+            return .community(value)
         case let value as APIPerson:
             return .apiPerson(value)
         case let value as UserModel:
