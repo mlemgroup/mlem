@@ -29,18 +29,35 @@ class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProt
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
 
         if cursor < items.count {
+            print("[\(Item.self) tracker] next item (\(cursor)) loaded")
             return items[cursor].sortVal(sortType: sortType)
         } else {
             // if done loading, return nil
             if loadingState == .done {
-                print("done loading!")
+                print("[\(Item.self) tracker] done loading!")
                 return nil
             }
 
             // otherwise, wait for the next page to load and try to return the first value
             // if the next page is already loading, this call to loadNextPage will be noop, but still wait until that load completes thanks to the semaphore
+            print("[\(Item.self) tracker] loading next page")
             try await loadPage(page + 1, clearBeforeRefresh: false)
+            print("[\(Item.self) tracker] got next page, there are now \(items.count) items")
             return cursor < items.count ? items[cursor].sortVal(sortType: sortType) : nil
+        }
+    }
+    
+    /// Resets the cursor to 0 but does not unload any items
+    func resetCursor() {
+        cursor = 0
+    }
+    
+    @MainActor
+    func updateAndNotifyParent(with item: Item) async {
+        update(with: item)
+        
+        if let parentTracker {
+            await parentTracker.reload()
         }
     }
 

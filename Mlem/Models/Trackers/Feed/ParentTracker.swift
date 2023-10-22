@@ -4,6 +4,7 @@
 //
 //  Created by Eric Andrews on 2023-10-15.
 //
+
 import Dependencies
 import Foundation
 
@@ -15,6 +16,8 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
     private var childTrackers: [any ChildTrackerProtocol] = .init()
     private var internetSpeed: InternetSpeed
     private var sortType: TrackerSortType
+    
+    var threshold: ContentModelIdentifier?
     var loadingState: LoadingState = .idle
 
     init(internetSpeed: InternetSpeed, sortType: TrackerSortType, childTrackers: [any ChildTrackerProtocol]) {
@@ -31,6 +34,10 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         var newChild = newChild
         newChild.setParentTracker(self)
     }
+    
+    func shouldLoadContentAfter(_ item: Item) -> Bool {
+        item.uid == threshold
+    }
 
     // MARK: items manipulation methods
     
@@ -41,8 +48,19 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
             self.items.append(contentsOf: newItems)
         }
     }
+    
+    func setItems(_ newItems: [Item]) {
+        RunLoop.main.perform {
+            self.items = newItems
+        }
+    }
 
     // MARK: loading methods
+    
+    /// Loads the next page of items
+    func loadNextPage() async {
+        await addItems(fetchNextItems(numItems: internetSpeed.pageSize))
+    }
     
     /// Refreshes the tracker, clearing all items and loading new ones
     /// - Parameter clearBeforeFetch: true to clear items before fetch
@@ -52,11 +70,6 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         }
 
         await loadNextPage()
-    }
-
-    /// Loads the next page of items
-    func loadNextPage() async {
-        await addItems(fetchNextItems(numItems: internetSpeed.pageSize))
     }
 
     /// Resets the tracker to an empty state
@@ -69,6 +82,16 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         for child in childTrackers {
             await child.reset(notifyParent: false)
         }
+    }
+    
+    /// Reloads all items up to the current number
+    func reload() async {
+        print("reloading")
+        for child in childTrackers {
+            child.resetCursor()
+        }
+        
+        await setItems(fetchNextItems(numItems: items.count))
     }
 
     // MARK: private loading methods
@@ -83,11 +106,12 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
             if let nextItem = await computeNextItem() {
                 newItems.append(nextItem)
             } else {
-                print("no next item found!")
                 loadingState = .done
                 break
             }
         }
+        
+        loadingState = .idle
 
         return newItems
     }
@@ -124,12 +148,15 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         rhsTracker: any ChildTrackerProtocol
     ) async -> (TrackerSortVal?, (any ChildTrackerProtocol)?) {
         do {
-            if let rhsVal = try await rhsTracker.nextItemSortVal(sortType: sortType),
-               rhsVal.shouldSortBefore(lhsVal) {
+            guard let rhsVal = try await rhsTracker.nextItemSortVal(sortType: sortType) else {
+                return (lhsVal, lhsTracker)
+            }
+            
+            guard let lhsVal else {
                 return (rhsVal, rhsTracker)
             }
-
-            return (lhsVal, lhsTracker)
+            
+            return lhsVal > rhsVal ? (lhsVal, lhsTracker) : (rhsVal, rhsTracker)
         } catch {
             errorHandler.handle(error)
             return (lhsVal, lhsTracker)

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AllItemsFeedView: View {
     @ObservedObject var inboxTracker: ParentTracker<InboxItem>
+    @ObservedObject var messageTracker: MessageTracker
     
     var body: some View {
         Group {
@@ -48,7 +49,14 @@ struct AllItemsFeedView: View {
                         InboxMentionView(mention: mention, menuFunctions: [])
                     // inboxMentionViewWithInteraction(mention: mention)
                     case let .message(message):
-                        InboxMessageView(message: message, menuFunctions: [])
+                        InboxMessageView(
+                            message: message,
+                            menuFunctions: message.menuFunctions { item in
+                                Task(priority: .userInitiated) {
+                                    await messageTracker.updateAndNotifyParent(with: item)
+                                }
+                            }
+                        )
                     // inboxMessageViewWithInteraction(message: message)
                     case let .reply(reply):
                         InboxReplyView(reply: reply, menuFunctions: [])

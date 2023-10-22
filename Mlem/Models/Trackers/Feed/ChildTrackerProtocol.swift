@@ -16,8 +16,12 @@ protocol ChildTrackerProtocol {
     mutating func consumeNextItem() -> Item.ParentType?
 
     func nextItemSortVal(sortType: TrackerSortType) async throws -> TrackerSortVal?
+    
+    func resetCursor()
 
     // loading methods
+    
+    func updateAndNotifyParent(with item: Item) async
     
     func reset(notifyParent: Bool) async
 
