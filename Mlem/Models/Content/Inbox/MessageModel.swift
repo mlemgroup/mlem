@@ -13,14 +13,14 @@ import Foundation
  
  Note: To make the transition to internal models smoother, this is currently identical to APIPrivateMessageView
  */
-struct MessageModel: ContentIdentifiable {
+class MessageModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.inboxRepository) var inboxRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     
-    var creator: APIPerson
-    var recipient: APIPerson
-    var privateMessage: APIPrivateMessage
+    @Published var creator: APIPerson
+    @Published var recipient: APIPerson
+    @Published var privateMessage: APIPrivateMessage
 
     var uid: ContentModelIdentifier { .init(contentType: .message, contentId: privateMessage.id) }
 
@@ -32,38 +32,40 @@ struct MessageModel: ContentIdentifiable {
         self.privateMessage = apiPrivateMessageView.privateMessage
     }
     
-    mutating func toggleRead(_ updateTracker: @escaping (_ item: Self) -> Void = { _ in }) async {
+    /// Re-initializes all fields to match the given MessageModel
+    func reinit(from messageModel: MessageModel) {
+        self.creator = messageModel.creator
+        self.recipient = messageModel.recipient
+        self.privateMessage = messageModel.privateMessage
+    }
+    
+    func toggleRead() async {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         
         // store original state
         let originalPrivateMessage = APIPrivateMessage(from: privateMessage)
         
         // state fake
-        privateMessage = APIPrivateMessage(from: privateMessage, read: !privateMessage.read)
-        RunLoop.main.perform { [self] in
-            updateTracker(self)
+        await MainActor.run {
+            self.privateMessage = APIPrivateMessage(from: self.privateMessage, read: !self.privateMessage.read)
         }
         
         // call API
         do {
-            // if call succeeds, udpate tracker with result of call, discarding
             let newMessage = try await inboxRepository.markMessageRead(id: privateMessage.id, isRead: privateMessage.read)
-            RunLoop.main.perform {
-                updateTracker(newMessage)
+            await MainActor.run {
+                self.reinit(from: newMessage)
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
-            
-            // revert state fake
-            privateMessage = originalPrivateMessage
-            RunLoop.main.perform { [self] in
-                updateTracker(self)
+            await MainActor.run {
+                self.privateMessage = originalPrivateMessage
             }
         }
     }
     
-    func menuFunctions(_ updateTracker: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
+    func menuFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         // mark read
@@ -77,8 +79,7 @@ struct MessageModel: ContentIdentifiable {
             enabled: true
         ) {
             Task(priority: .userInitiated) {
-                var new = self
-                await new.toggleRead(updateTracker)
+                await self.toggleRead()
             }
         })
         

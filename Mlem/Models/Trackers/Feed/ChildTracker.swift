@@ -51,15 +51,6 @@ class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProt
     func resetCursor() {
         cursor = 0
     }
-    
-    @MainActor
-    func updateAndNotifyParent(with item: Item) async {
-        update(with: item)
-        
-        if let parentTracker {
-            await parentTracker.reload()
-        }
-    }
 
     func refresh(clearBeforeRefresh: Bool, notifyParent: Bool = true) async throws {
         try await refresh(clearBeforeRefresh: clearBeforeRefresh)

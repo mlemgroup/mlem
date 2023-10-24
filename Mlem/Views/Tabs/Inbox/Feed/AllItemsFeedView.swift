@@ -41,7 +41,7 @@ struct AllItemsFeedView: View {
     // delete it, recompile, paste it, and it should work. Go figure.
     @ViewBuilder
     func inboxListView() -> some View {
-        ForEach(inboxTracker.items) { item in
+        ForEach(inboxTracker.items, id: \.uid) { item in
             VStack(spacing: 0) {
                 Group {
                     switch item {
@@ -49,14 +49,7 @@ struct AllItemsFeedView: View {
                         InboxMentionView(mention: mention, menuFunctions: [])
                     // inboxMentionViewWithInteraction(mention: mention)
                     case let .message(message):
-                        InboxMessageView(
-                            message: message,
-                            menuFunctions: message.menuFunctions { item in
-                                Task(priority: .userInitiated) {
-                                    await messageTracker.updateAndNotifyParent(with: item)
-                                }
-                            }
-                        )
+                        InboxMessageView(message: message)
                     // inboxMessageViewWithInteraction(message: message)
                     case let .reply(reply):
                         InboxReplyView(reply: reply, menuFunctions: [])
