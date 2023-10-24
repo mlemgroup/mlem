@@ -39,7 +39,7 @@ struct CommunitySidebarView: View {
             let communityDetails: GetCommunityResponse = try await communityRepository.loadDetails(for: community.communityId)
             community = .init(from: communityDetails)
         } catch {
-            errorMessage = "We were unable to load this community's details, please try again."
+            errorMessage = "Unable to load community details, please try again."
             errorHandler.handle(error)
         }
     }
