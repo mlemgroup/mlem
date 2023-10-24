@@ -8,29 +8,36 @@
 import SwiftUI
 
 struct InboxMessageView: View {
-    let spacing: CGFloat = 10
-    let userAvatarWidth: CGFloat = 30
-    
-    let message: MessageModel
-    let menuFunctions: [MenuFunction]
+    @ObservedObject var message: MessageModel
     
     var iconName: String { message.privateMessage.read ? "envelope.open" : "envelope.fill" }
     
-    init(message: MessageModel, menuFunctions: [MenuFunction]) {
+    init(message: MessageModel) {
         self.message = message
-        self.menuFunctions = menuFunctions
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: spacing) {
+        content
+            .padding(AppConstants.postAndCommentSpacing)
+            .background(Color(uiColor: .systemBackground))
+            .contentShape(Rectangle())
+            .contextMenu {
+                ForEach(message.menuFunctions()) { item in
+                    MenuButton(menuFunction: item, confirmDestructive: nil)
+                }
+            }
+    }
+    
+    var content: some View {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             Text("Direct message")
                 .font(.headline.smallCaps())
-                .padding(.bottom, spacing)
+                .padding(.bottom, AppConstants.postAndCommentSpacing)
             
-            HStack(alignment: .top, spacing: spacing) {
+            HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
                 Image(systemName: iconName)
                     .foregroundColor(.accentColor)
-                    .frame(height: userAvatarWidth)
+                    .frame(width: AppConstants.largeAvatarSize)
                 
                 MarkdownView(text: message.privateMessage.content, isNsfw: false)
                     .font(.subheadline)
@@ -44,14 +51,12 @@ struct InboxMessageView: View {
             .font(.subheadline)
             
             HStack {
-                EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
+                EllipsisMenu(size: AppConstants.largeAvatarSize, menuFunctions: message.menuFunctions())
                 
                 Spacer()
                 
                 PublishedTimestampView(date: message.privateMessage.published)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
     }
 }

@@ -37,6 +37,10 @@ struct InboxMentionView: View {
     }
     
     var body: some View {
+        content
+    }
+    
+    var content: some View {
         VStack(alignment: .leading, spacing: spacing) {
             Text(mention.post.name)
                 .font(.headline)
@@ -74,7 +78,5 @@ struct InboxMentionView: View {
                 PublishedTimestampView(date: mention.comment.published)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
     }
 }

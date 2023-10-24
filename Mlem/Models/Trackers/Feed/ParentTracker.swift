@@ -83,16 +83,6 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
             await child.reset(notifyParent: false)
         }
     }
-    
-    /// Reloads all items up to the current number
-    func reload() async {
-        print("reloading")
-        for child in childTrackers {
-            child.resetCursor()
-        }
-        
-        await setItems(fetchNextItems(numItems: items.count))
-    }
 
     // MARK: private loading methods
     

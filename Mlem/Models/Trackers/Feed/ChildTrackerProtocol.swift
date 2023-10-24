@@ -21,8 +21,6 @@ protocol ChildTrackerProtocol {
 
     // loading methods
     
-    func updateAndNotifyParent(with item: Item) async
-    
     func reset(notifyParent: Bool) async
 
     func refresh(clearBeforeRefresh: Bool, notifyParent: Bool) async throws

@@ -10,8 +10,6 @@ protocol ParentTrackerProtocol: AnyObject {
     associatedtype Item: TrackerItem
 
     func shouldLoadContentAfter(_ item: Item) -> Bool
-
-    func reload() async
     
     func refresh(clearBeforeFetch: Bool) async
 

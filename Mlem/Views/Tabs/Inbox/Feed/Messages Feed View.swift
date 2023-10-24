@@ -45,7 +45,7 @@ struct MessagesFeedView: View {
     func messagesListView() -> some View {
         ForEach(messageTracker.items) { message in
             VStack(spacing: 0) {
-                InboxMessageView(message: message, menuFunctions: [])
+                InboxMessageView(message: message)
                 // inboxMessageViewWithInteraction(message: message)
                 
                 Divider()

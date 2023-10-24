@@ -39,6 +39,10 @@ struct InboxReplyView: View {
     }
     
     var body: some View {
+        content
+    }
+    
+    var content: some View {
         VStack(alignment: .leading, spacing: spacing) {
             Text(reply.post.name)
                 .font(.headline)
@@ -72,7 +76,5 @@ struct InboxReplyView: View {
                 PublishedTimestampView(date: reply.commentReply.published)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
     }
 }

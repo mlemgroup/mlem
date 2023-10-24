@@ -144,7 +144,7 @@ struct InboxView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .padding(.horizontal)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
             
             ScrollView(showsIndicators: false) {
                 if errorOccurred {
