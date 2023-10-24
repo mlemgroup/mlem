@@ -34,9 +34,9 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     
     /// Re-initializes all fields to match the given MessageModel
     func reinit(from messageModel: MessageModel) {
-        self.creator = messageModel.creator
-        self.recipient = messageModel.recipient
-        self.privateMessage = messageModel.privateMessage
+        creator = messageModel.creator
+        recipient = messageModel.recipient
+        privateMessage = messageModel.privateMessage
     }
     
     func toggleRead() async {
