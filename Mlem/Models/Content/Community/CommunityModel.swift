@@ -68,6 +68,11 @@ struct CommunityModel {
         self.defaultPostLanguage = response.defaultPostLanguage
     }
     
+    init(from response: CommunityResponse) {
+        self.init(from: response.communityView)
+        self.discussionLanguages = response.discussionLanguages
+    }
+    
     init(from communityView: APICommunityView) {
         self.init(from: communityView.community)
         self.subscriberCount = communityView.counts.subscribers
@@ -115,7 +120,10 @@ struct CommunityModel {
             callback(self)
         }
         do {
-            try await apiClient.followCommunity(id: communityId, shouldFollow: !subscribed)
+            let response = try await apiClient.followCommunity(id: communityId, shouldFollow: !subscribed)
+            RunLoop.main.perform {
+                callback(CommunityModel(from: response))
+            }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             let phrase = (self.subscribed ?? false) ? "unsubscribe from" : "subscribe to"
@@ -134,10 +142,14 @@ struct CommunityModel {
             callback(self)
         }
         do {
+            let response: BlockCommunityResponse
             if !blocked {
-                try await communityRepository.blockCommunity(id: communityId)
+                response = try await communityRepository.blockCommunity(id: communityId)
             } else {
-                try await communityRepository.unblockCommunity(id: communityId)
+                response = try await communityRepository.unblockCommunity(id: communityId)
+            }
+            RunLoop.main.perform {
+                callback(CommunityModel(from: response.communityView))
             }
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

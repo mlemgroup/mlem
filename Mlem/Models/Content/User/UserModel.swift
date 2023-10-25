@@ -114,7 +114,9 @@ struct UserModel {
         }
         if let comment = commentContext, comment.distinguished {
             ret.append(.moderator)
-        } else if let community = communityContext, let moderators = community.moderators, moderators.contains(where: { $0.moderator.id == userId }) {
+        } else if let community = communityContext,
+                  let moderators = community.moderators,
+                  moderators.contains(where: { $0.moderator.id == userId }) {
             ret.append(.moderator)
         }
         if isBot {
