@@ -28,33 +28,68 @@ class UnreadTracker: ObservableObject {
         total = counts.replies + counts.mentions + counts.privateMessages
     }
     
+    @MainActor
     func readReply() {
         replies -= 1
         total -= 1
     }
     
+    @MainActor
     func unreadReply() {
         replies += 1
         total += 1
     }
     
+    @MainActor
     func readMention() {
         mentions -= 1
         total -= 1
     }
     
+    @MainActor
     func unreadMention() {
         mentions += 1
         total += 1
     }
     
+    @MainActor
     func readMessage() {
         messages -= 1
         total -= 1
     }
     
+    @MainActor
     func unreadMessage() {
         messages += 1
         total += 1
+    }
+    
+    // convenience methods to flip a read state (if originalState is true (read), will unread a message; if false, will read a message)
+    
+    @MainActor
+    func toggleReplyRead(originalState: Bool) {
+        if originalState {
+            unreadReply()
+        } else {
+            readReply()
+        }
+    }
+    
+    @MainActor
+    func toggleMentionRead(originalState: Bool) {
+        if originalState {
+            unreadMention()
+        } else {
+            readMention()
+        }
+    }
+    
+    @MainActor
+    func toggleMessageRead(originalState: Bool) {
+        if originalState {
+            unreadMessage()
+        } else {
+            readMessage()
+        }
     }
 }

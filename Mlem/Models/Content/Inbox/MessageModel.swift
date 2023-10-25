@@ -15,7 +15,9 @@ import Foundation
  */
 class MessageModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.inboxRepository) var inboxRepository
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     
     @Published var creator: APIPerson
@@ -32,46 +34,94 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         self.privateMessage = apiPrivateMessageView.privateMessage
     }
     
+    // MARK: Main actor actions
+    
     /// Re-initializes all fields to match the given MessageModel
+    @MainActor
     func reinit(from messageModel: MessageModel) {
         creator = messageModel.creator
         recipient = messageModel.recipient
         privateMessage = messageModel.privateMessage
     }
     
-    func toggleRead() async {
+    @MainActor
+    func setPrivateMessage(_ privateMessage: APIPrivateMessage) {
+        self.privateMessage = privateMessage
+    }
+    
+    func toggleRead(unreadTracker: UnreadTracker?) async {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         
         // store original state
         let originalPrivateMessage = APIPrivateMessage(from: privateMessage)
         
         // state fake
-        await MainActor.run {
-            self.privateMessage = APIPrivateMessage(from: self.privateMessage, read: !self.privateMessage.read)
-        }
+        await setPrivateMessage(APIPrivateMessage(from: privateMessage, read: !privateMessage.read))
+        await unreadTracker?.toggleMessageRead(originalState: originalPrivateMessage.read)
         
-        // call API
+        // call API and either update with latest info or revert state fake on fail
         do {
             let newMessage = try await inboxRepository.markMessageRead(id: privateMessage.id, isRead: privateMessage.read)
-            await MainActor.run {
-                self.reinit(from: newMessage)
-            }
+            await reinit(from: newMessage)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
-            await MainActor.run {
-                self.privateMessage = originalPrivateMessage
-            }
+            await setPrivateMessage(originalPrivateMessage)
+            await unreadTracker?.toggleMessageRead(originalState: !originalPrivateMessage.read)
         }
     }
     
-    func menuFunctions() -> [MenuFunction] {
+    @MainActor
+    func reply(editorTracker: EditorTracker, unreadTracker: UnreadTracker) {
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            message: self,
+            operation: InboxItemOperation.replyToInboxItem
+        ))
+        
+        // replying to a message marks it as read, but the call doesn't return anything so we just state fake it here
+        setPrivateMessage(APIPrivateMessage(from: privateMessage, read: true))
+        unreadTracker.readMessage()
+    }
+    
+    @MainActor
+    func report(editorTracker: EditorTracker) {
+        editorTracker.openEditor(with: ConcreteEditorModel(
+            message: self,
+            operation: InboxItemOperation.reportInboxItem
+        ))
+    }
+    
+    func blockUser(userId: Int, filterUser: () -> Void) async {
+        do {
+            let response = try await apiClient.blockPerson(id: userId, shouldBlock: true)
+            
+            if response.blocked {
+                hapticManager.play(haptic: .violentSuccess, priority: .high)
+                await notifier.add(.success("Blocked user"))
+                filterUser()
+            }
+        } catch {
+            errorHandler.handle(
+                .init(
+                    message: "Unable to block user",
+                    style: .toast,
+                    underlyingError: error
+                )
+            )
+        }
+    }
+    
+    func menuFunctions(
+        unreadTracker: UnreadTracker,
+        editorTracker: EditorTracker,
+        filterUser: @escaping () -> Void
+    ) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         // mark read
         let (markReadText, markReadImg) = privateMessage.read ?
-            ("Mark unread", "envelope.fill") :
-            ("Mark read", "envelope.open")
+            ("Mark unread", Icons.markUnread) :
+            ("Mark read", Icons.markRead)
         ret.append(MenuFunction.standardMenuFunction(
             text: markReadText,
             imageName: markReadImg,
@@ -79,7 +129,43 @@ class MessageModel: ContentIdentifiable, ObservableObject {
             enabled: true
         ) {
             Task(priority: .userInitiated) {
-                await self.toggleRead()
+                await self.toggleRead(unreadTracker: unreadTracker)
+            }
+        })
+        
+        // reply
+        ret.append(MenuFunction.standardMenuFunction(
+            text: "Reply",
+            imageName: Icons.reply,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await self.reply(editorTracker: editorTracker, unreadTracker: unreadTracker)
+            }
+        })
+        
+        // report
+        ret.append(MenuFunction.standardMenuFunction(
+            text: "Report",
+            imageName: Icons.moderationReport,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await self.report(editorTracker: editorTracker)
+            }
+        })
+        
+        // block
+        ret.append(MenuFunction.standardMenuFunction(
+            text: "Block User",
+            imageName: Icons.userBlock,
+            destructiveActionPrompt: AppConstants.blockUserPrompt,
+            enabled: true
+        ) {
+            Task(priority: .userInitiated) {
+                await self.blockUser(userId: self.creator.id, filterUser: filterUser)
             }
         })
         
