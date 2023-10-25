@@ -9,6 +9,8 @@ import SwiftUI
 
 struct InboxMessageView: View {
     @ObservedObject var message: MessageModel
+    @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
     var iconName: String { message.privateMessage.read ? "envelope.open" : "envelope.fill" }
     
@@ -22,7 +24,7 @@ struct InboxMessageView: View {
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
             .contextMenu {
-                ForEach(message.menuFunctions()) { item in
+                ForEach(message.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker, filterUser: {})) { item in
                     MenuButton(menuFunction: item, confirmDestructive: nil)
                 }
             }
@@ -37,7 +39,7 @@ struct InboxMessageView: View {
             HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
                 Image(systemName: iconName)
                     .foregroundColor(.accentColor)
-                    .frame(width: AppConstants.largeAvatarSize)
+                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
                 
                 MarkdownView(text: message.privateMessage.content, isNsfw: false)
                     .font(.subheadline)
@@ -51,7 +53,10 @@ struct InboxMessageView: View {
             .font(.subheadline)
             
             HStack {
-                EllipsisMenu(size: AppConstants.largeAvatarSize, menuFunctions: message.menuFunctions())
+                EllipsisMenu(
+                    size: AppConstants.largeAvatarSize,
+                    menuFunctions: message.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker, filterUser: {})
+                )
                 
                 Spacer()
                 
