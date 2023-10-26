@@ -30,8 +30,7 @@ struct NoPostsView: View {
                     
                     if unreadItems != 0 {
                         Text(
-                            (unreadItems == 1 ? "1 available post was" : "\(unreadItems) available posts were")
-                            + " hidden because you have 'hide read' enabled."
+                            "\(unreadItems) read post\(unreadItems == 1 ? " has" : "s have") been hidden."
                         )
                         .foregroundStyle(.tertiary)
                         .multilineTextAlignment(.center)

@@ -53,6 +53,8 @@ struct LoadingView: View {
     }
 }
 
-#Preview {
-    LoadingView(whatIsLoading: .posts)
+struct LoadingView_Preview: PreviewProvider {
+    static var previews: some View {
+        LoadingView(whatIsLoading: .posts)
+    }
 }
