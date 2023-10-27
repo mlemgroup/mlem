@@ -91,14 +91,14 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ))
     }
     
-    func blockUser(userId: Int, filterUser: () -> Void) async {
+    func blockUser(userId: Int, filterUser: () async -> Void) async {
         do {
             let response = try await apiClient.blockPerson(id: userId, shouldBlock: true)
             
             if response.blocked {
                 hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked user"))
-                filterUser()
+                await filterUser()
             }
         } catch {
             errorHandler.handle(
@@ -114,7 +114,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     func menuFunctions(
         unreadTracker: UnreadTracker,
         editorTracker: EditorTracker,
-        filterUser: @escaping () -> Void
+        filterUser: @escaping () async -> Void
     ) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         

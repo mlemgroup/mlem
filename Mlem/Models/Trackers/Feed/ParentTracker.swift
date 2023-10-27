@@ -43,16 +43,14 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
     
     // note: all of the methods in here run on the main loop. items shouldn't be touched directly, but instead should be manipulated using these methods to ensure we aren't publishing updates from the background
     
+    @MainActor
     func addItems(_ newItems: [Item]) {
-        RunLoop.main.perform {
-            self.items.append(contentsOf: newItems)
-        }
+        items.append(contentsOf: newItems)
     }
     
+    @MainActor
     func setItems(_ newItems: [Item]) {
-        RunLoop.main.perform {
-            self.items = newItems
-        }
+        items = newItems
     }
 
     // MARK: loading methods
@@ -66,22 +64,68 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
     /// - Parameter clearBeforeFetch: true to clear items before fetch
     func refresh(clearBeforeFetch: Bool = false) async {
         if clearBeforeFetch {
-            await reset()
+            await setItems(.init())
         }
-
-        await loadNextPage()
+        
+        await resetChildren()
+        
+        let newItems = await fetchNextItems(numItems: internetSpeed.pageSize)
+        await setItems(newItems)
     }
 
     /// Resets the tracker to an empty state
     func reset() async {
-        RunLoop.main.perform {
+        await MainActor.run {
             self.items = .init()
         }
 
+        await resetChildren()
+    }
+    
+    private func resetChildren() async {
         // note: this could in theory be run in parallel, but these calls should be super quick so it shouldn't matter
         for child in childTrackers {
             await child.reset(notifyParent: false)
         }
+    }
+    
+    /// Filters out items according to the given filtering function.
+    /// - Parameter filter: function that, given an Item, returns true if the item should REMAIN in the tracker
+    func filter(with filter: @escaping (Item) -> Bool) async {
+        // build set of uids to remove
+        var uidsToFilter: Set<ContentModelIdentifier> = .init()
+        items.forEach { item in
+            if !filter(item) {
+                uidsToFilter.insert(item.uid)
+            }
+        }
+        
+        // function to remove items from child trackers based on uid--this makes the Item-specific filtering applied here generically applicable to any child tracker
+        let filterFunc = { (item: any ChildTrackerItem) in
+            !uidsToFilter.contains(item.uid)
+        }
+        
+        // apply filtering to children
+        let removed = await withTaskGroup(of: Int.self) { taskGroup in
+            childTrackers.forEach { child in
+                taskGroup.addTask { await child.filter(with: filterFunc) }
+            }
+            
+            // aggregate count of removed
+            var removed = 0
+            for await result in taskGroup {
+                removed += result
+            }
+            
+            return removed
+        }
+        
+        // reload all non-removed items
+        let remaining = items.count - removed
+        await MainActor.run {
+            items = .init()
+        }
+        await addItems(fetchNextItems(numItems: remaining))
     }
 
     // MARK: private loading methods

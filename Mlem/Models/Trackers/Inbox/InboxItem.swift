@@ -35,6 +35,28 @@ enum InboxItem {
             return reply.uid
         }
     }
+    
+    var creatorId: Int {
+        switch self {
+        case let .message(message):
+            return message.privateMessage.creatorId
+        case let .mention(mention):
+            return mention.comment.creatorId
+        case let .reply(reply):
+            return reply.comment.creatorId
+        }
+    }
+    
+    var read: Bool {
+        switch self {
+        case let .message(message):
+            return message.privateMessage.read
+        case let .mention(mention):
+            return mention.personMention.read
+        case let .reply(reply):
+            return reply.commentReply.read
+        }
+    }
 }
 
 extension InboxItem: Identifiable {

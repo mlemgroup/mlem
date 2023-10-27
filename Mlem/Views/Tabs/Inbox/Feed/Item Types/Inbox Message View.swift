@@ -9,6 +9,7 @@ import SwiftUI
 
 struct InboxMessageView: View {
     @ObservedObject var message: MessageModel
+    @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
     
@@ -24,7 +25,11 @@ struct InboxMessageView: View {
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
             .contextMenu {
-                ForEach(message.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker, filterUser: {})) { item in
+                ForEach(message.menuFunctions(
+                    unreadTracker: unreadTracker,
+                    editorTracker: editorTracker,
+                    filterUser: { await inboxTracker.filterUser(id: message.creator.id) }
+                )) { item in
                     MenuButton(menuFunction: item, confirmDestructive: nil)
                 }
             }
@@ -55,7 +60,11 @@ struct InboxMessageView: View {
             HStack {
                 EllipsisMenu(
                     size: AppConstants.largeAvatarSize,
-                    menuFunctions: message.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker, filterUser: {})
+                    menuFunctions: message.menuFunctions(
+                        unreadTracker: unreadTracker,
+                        editorTracker: editorTracker,
+                        filterUser: { await inboxTracker.filterUser(id: message.creator.id) }
+                    )
                 )
                 
                 Spacer()

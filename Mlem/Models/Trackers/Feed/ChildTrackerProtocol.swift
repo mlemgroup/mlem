@@ -24,4 +24,7 @@ protocol ChildTrackerProtocol {
     func reset(notifyParent: Bool) async
 
     func refresh(clearBeforeRefresh: Bool, notifyParent: Bool) async throws
+    
+    @discardableResult func filter(with filter: @escaping (Item) -> Bool) async -> Int
+//    @discardableResult func filterFromParent(with filter: @escaping(Item.ParentType) -> Bool)
 }

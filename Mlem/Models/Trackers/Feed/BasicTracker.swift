@@ -39,7 +39,7 @@ class BasicTracker<Item: TrackerItem> {
             try await loadPage(0)
         } catch {
             assertionFailure("Exception thrown when resetting, this should not be possible!")
-            clear() // this is not a thread-safe use of clear, but I'm using it here because we should never get here
+            await clear() // this is not a thread-safe use of clear, but I'm using it here because we should never get here
         }
     }
 
@@ -61,14 +61,14 @@ class BasicTracker<Item: TrackerItem> {
         // special reset cases
         if pageToLoad == 0 {
             print("[\(Item.self) tracker] received request to load page 0")
-            clear()
+            await clear()
             return
         }
 
         if pageToLoad == 1 {
             print("[\(Item.self) tracker] received request to load page 1")
             if clearBeforeRefresh {
-                clear()
+                await clear()
             } else {
                 // if not clearing before reset, still clear these two fields in order to sanitize the loading state--we just keep the items in place until we have received new ones, which will be set below
                 page = 0
@@ -126,8 +126,18 @@ class BasicTracker<Item: TrackerItem> {
         items[index] = item
     }
     
-    // TODO: figure out filtering
-    // idea 1: put it in storeIdsAndDedupe
+    /// Filters out items according to the given filtering function.
+    /// - Parameter filter: function that, given an Item, returns true if the item should REMAIN in the tracker
+    @discardableResult func filter(with filter: @escaping (Item) -> Bool) async -> Int {
+        let newItems = items.filter(filter)
+        let removed = items.count - newItems.count
+        
+        await MainActor.run {
+            items = newItems
+        }
+        
+        return removed
+    }
     
     /// Given an array of Items, adds their ids to ids. Returns the input filtered to only items not previously present in ids.
     /// - Parameter newMessages: array of MessageModel
@@ -137,29 +147,27 @@ class BasicTracker<Item: TrackerItem> {
         return accepted
     }
 
-    private func setItems(newItems: [Item]) async {
+    @MainActor
+    func setItems(newItems: [Item]) {
         print("[\(Item.self) tracker] setting items with \(newItems.count)")
-        await MainActor.run {
-            items = newItems
-        }
+        items = newItems
     }
     
     /// Adds the given items to the items array
     /// - Parameter toAdd: items to add
+    @MainActor
     private func add(toAdd: [Item]) async {
-        await MainActor.run {
-            items.append(contentsOf: toAdd)
-        }
+        items.append(contentsOf: toAdd)
     }
 
     /// Clears the tracker to an empty state.
     /// **WARNING:**
     /// **DO NOT** call this method from anywhere but loadPage! This is *purely* a helper function for loadPage and *will* lead to unexpected behavior if called elsewhere!
-    private func clear() {
+    private func clear() async {
         print("[\(Item.self) tracker] clearing tracker (removing \(items.count) items)")
         ids = .init(minimumCapacity: 1000)
-        items = .init()
         page = 0
         loadingState = .idle
+        await setItems(newItems: .init())
     }
 }
