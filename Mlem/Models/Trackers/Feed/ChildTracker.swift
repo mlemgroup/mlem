@@ -70,4 +70,24 @@ class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProt
             await parentTracker.reset()
         }
     }
+    
+    @discardableResult override func filter(with filter: @escaping (Item) -> Bool) async -> Int {
+        let newItems = items.filter(filter)
+        let removed = items.count - newItems.count
+        
+        cursor = 0
+        await setItems(newItems: newItems)
+        
+        return removed
+    }
+    
+    /// Filters items from the parent tracker according to the given filtering criterion
+    /// - Parameter filter: function that, given an Item.ParentType, returns true if the item should REMAIN in the tracker
+    func filterFromParent(with filter: @escaping (any TrackerItem) -> Bool) async {
+        if let parentTracker {
+            await parentTracker.filter(with: filter)
+        } else {
+            print("filterFromParent called with no parent tracker!")
+        }
+    }
 }

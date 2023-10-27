@@ -64,9 +64,10 @@ struct InboxView: View {
     // loading handling
     @State var isLoading: Bool = true
     @AppStorage("shouldFilterRead") var shouldFilterRead: Bool = false
+    @State var refreshId: UUID = .init() // for keeping the refresh task running through view redraws
     
     // item feeds
-    @StateObject var inboxTracker: ParentTracker<InboxItem>
+    @StateObject var inboxTracker: InboxTracker
     @StateObject var replyTracker: ReplyTracker
     @StateObject var mentionTracker: MentionTracker
     @StateObject var messageTracker: MessageTracker
@@ -82,7 +83,7 @@ struct InboxView: View {
         let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
         let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
         
-        let newInboxTracker = ParentTracker<InboxItem>(
+        let newInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
             sortType: .published,
             childTrackers: [
@@ -123,6 +124,7 @@ struct InboxView: View {
                 }
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
+                .environmentObject(inboxTracker)
                 .onChange(of: selectedTagHashValue) { newValue in
                     if newValue == TabSelection.inbox.hashValue {
                         print("switched to inbox tab")
@@ -164,6 +166,9 @@ struct InboxView: View {
             }
             .fancyTabScrollCompatible()
             .refreshable {
+                refreshId = .init()
+            }
+            .task(id: refreshId) {
                 do {
                     switch curTab {
                     case .all:
@@ -178,12 +183,6 @@ struct InboxView: View {
                 } catch {
                     errorHandler.handle(error)
                 }
-            }
-        }
-        // load view if empty
-        .task(priority: .userInitiated) {
-            if inboxTracker.items.isEmpty {
-                await inboxTracker.refresh()
             }
         }
     }

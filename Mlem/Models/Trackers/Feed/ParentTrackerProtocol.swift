@@ -14,4 +14,6 @@ protocol ParentTrackerProtocol: AnyObject {
     func refresh(clearBeforeFetch: Bool) async
 
     func reset() async
+    
+    func filter(with filter: @escaping (Item) -> Bool) async
 }
