@@ -6,8 +6,9 @@ If you're reading this, you probably want to contribute to Mlem. Welcome! We're 
 
 This project makes use of the following tools:
 
-[SwiftLint](https://github.com/realm/SwiftLint#swiftlint). This runs as part of the Xcode build phases.
-[Swiftformat](https://github.com/nicklockwood/SwiftFormat#what-is-this). This runs as a pre-commit hook.
+- Xcode 15
+- [SwiftLint](https://github.com/realm/SwiftLint#swiftlint). This runs as part of the Xcode build phases.
+- [Swiftformat](https://github.com/nicklockwood/SwiftFormat#what-is-this). This runs as a pre-commit hook.
 
 In order to benefit please ensure you have [Homebrew](https://brew.sh) installed on your system and then run the following commands inside the project directory:
 
