@@ -122,15 +122,14 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         
         // reload all non-removed items
         let remaining = items.count - removed
-        await MainActor.run {
-            items = .init()
-        }
-        await addItems(fetchNextItems(numItems: remaining))
+        let newItems = await fetchNextItems(numItems: max(remaining, abs(AppConstants.infiniteLoadThresholdOffset) + 1))
+        await setItems(newItems)
     }
 
     // MARK: private loading methods
     
     private func fetchNextItems(numItems: Int) async -> [Item] {
+        print("fetching \(numItems)")
         assert(numItems > abs(AppConstants.infiniteLoadThresholdOffset), "cannot load fewer items than infinite load offset")
 
         loadingState = .loading

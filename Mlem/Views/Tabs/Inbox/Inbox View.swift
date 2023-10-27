@@ -19,14 +19,6 @@ enum InboxTab: String, CaseIterable, Identifiable {
     }
 }
 
-enum ComposingTypes {
-    case commentReply(APICommentReplyView?)
-    case mention(APIPersonMentionView?)
-    case message(APIPerson?)
-}
-
-// NOTE:
-// all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
@@ -64,7 +56,6 @@ struct InboxView: View {
     // loading handling
     @State var isLoading: Bool = true
     @AppStorage("shouldFilterRead") var shouldFilterRead: Bool = false
-    @State var refreshId: UUID = .init() // for keeping the refresh task running through view redraws
     
     // item feeds
     @StateObject var inboxTracker: InboxTracker
@@ -79,9 +70,9 @@ struct InboxView: View {
         @AppStorage("shouldFilterRead") var unreadOnly = false
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
-        let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
-        let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
-        let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, unreadOnly: unreadOnly, sortType: .published)
+        let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
+        let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
+        let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
         
         let newInboxTracker = InboxTracker(
             internetSpeed: internetSpeed,
@@ -125,6 +116,11 @@ struct InboxView: View {
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
                 .environmentObject(inboxTracker)
+                .onChange(of: shouldFilterRead) { newValue in
+                    Task(priority: .userInitiated) {
+                        await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+                    }
+                }
                 .onChange(of: selectedTagHashValue) { newValue in
                     if newValue == TabSelection.inbox.hashValue {
                         print("switched to inbox tab")
@@ -147,6 +143,7 @@ struct InboxView: View {
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            .padding(.top, AppConstants.postAndCommentSpacing)
             
             ScrollView(showsIndicators: false) {
                 if errorOccurred {
@@ -166,24 +163,15 @@ struct InboxView: View {
             }
             .fancyTabScrollCompatible()
             .refreshable {
-                refreshId = .init()
+                // wrapping refresh in its own task prevents it from being cancelled by view redraws
+                // awaiting the value makes the refreshable indicator properly wait for the call to finish
+                await Task {
+                    await refresh()
+                }.value
             }
-            .task(id: refreshId) {
-                do {
-                    switch curTab {
-                    case .all:
-                        await inboxTracker.refresh(clearBeforeFetch: false)
-                    case .replies:
-                        try await replyTracker.refresh(clearBeforeRefresh: false)
-                    case .mentions:
-                        try await mentionTracker.refresh(clearBeforeRefresh: false)
-                    case .messages:
-                        try await messageTracker.refresh(clearBeforeRefresh: false)
-                    }
-                } catch {
-                    errorHandler.handle(error)
-                }
-            }
+        }
+        .task {
+            await refresh()
         }
     }
     

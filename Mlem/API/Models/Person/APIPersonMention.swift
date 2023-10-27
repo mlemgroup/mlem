@@ -14,6 +14,21 @@ struct APIPersonMention: Decodable {
     let commentId: Int
     let read: Bool
     let published: Date
+    
+    init(
+        from personMention: APIPersonMention,
+        id: Int? = nil,
+        recipientId: Int? = nil,
+        commentId: Int? = nil,
+        read: Bool? = nil,
+        published: Date? = nil
+    ) {
+        self.id = id ?? personMention.id
+        self.recipientId = recipientId ?? personMention.recipientId
+        self.commentId = commentId ?? personMention.commentId
+        self.read = read ?? personMention.read
+        self.published = published ?? personMention.published
+    }
 }
 
 extension APIPersonMention: Equatable {

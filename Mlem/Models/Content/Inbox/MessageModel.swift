@@ -49,7 +49,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         self.privateMessage = privateMessage
     }
     
-    func toggleRead(unreadTracker: UnreadTracker?) async {
+    func toggleRead(unreadTracker: UnreadTracker) async {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         
         // store original state
@@ -57,7 +57,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         
         // state fake
         await setPrivateMessage(APIPrivateMessage(from: privateMessage, read: !privateMessage.read))
-        await unreadTracker?.toggleMessageRead(originalState: originalPrivateMessage.read)
+        await unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
         
         // call API and either update with latest info or revert state fake on fail
         do {
@@ -67,7 +67,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
             await setPrivateMessage(originalPrivateMessage)
-            await unreadTracker?.toggleMessageRead(originalState: !originalPrivateMessage.read)
+            await unreadTracker.toggleMessageRead(originalState: !originalPrivateMessage.read)
         }
     }
     
@@ -79,8 +79,10 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ))
         
         // replying to a message marks it as read, but the call doesn't return anything so we just state fake it here
-        setPrivateMessage(APIPrivateMessage(from: privateMessage, read: true))
-        unreadTracker.readMessage()
+        if !privateMessage.read {
+            setPrivateMessage(APIPrivateMessage(from: privateMessage, read: true))
+            unreadTracker.readMessage()
+        }
     }
     
     @MainActor
@@ -91,14 +93,13 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ))
     }
     
-    func blockUser(userId: Int, filterUser: () async -> Void) async {
+    func blockUser(userId: Int) async {
         do {
             let response = try await apiClient.blockPerson(id: userId, shouldBlock: true)
             
             if response.blocked {
                 hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked user"))
-                await filterUser()
             }
         } catch {
             errorHandler.handle(
@@ -111,20 +112,18 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         }
     }
     
+    // MARK: - Menu functions and swipe actions
+    
     func menuFunctions(
         unreadTracker: UnreadTracker,
-        editorTracker: EditorTracker,
-        filterUser: @escaping () async -> Void
+        editorTracker: EditorTracker
     ) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         // mark read
-        let (markReadText, markReadImg) = privateMessage.read ?
-            ("Mark unread", Icons.markUnread) :
-            ("Mark read", Icons.markRead)
         ret.append(MenuFunction.standardMenuFunction(
-            text: markReadText,
-            imageName: markReadImg,
+            text: privateMessage.read ? "Mark unread" : "Mark read",
+            imageName: privateMessage.read ? Icons.markUnread : Icons.markRead,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
@@ -149,7 +148,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: AppConstants.reportMessagePrompt,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -165,11 +164,41 @@ class MessageModel: ContentIdentifiable, ObservableObject {
             enabled: true
         ) {
             Task(priority: .userInitiated) {
-                await self.blockUser(userId: self.creator.id, filterUser: filterUser)
+                await self.blockUser(userId: self.creator.id)
             }
         })
         
         return ret
+    }
+    
+    func swipeActions(
+        unreadTracker: UnreadTracker,
+        editorTracker: EditorTracker
+    ) -> SwipeConfiguration {
+        var trailingActions: [SwipeAction] = .init()
+        
+        trailingActions.append(SwipeAction(
+            symbol: .init(
+                emptyName: privateMessage.read ? Icons.markUnreadFill : Icons.markReadFill,
+                fillName: privateMessage.read ? Icons.markRead : Icons.markUnread
+            ),
+            color: .purple
+        ) {
+            Task(priority: .userInitiated) {
+                await self.toggleRead(unreadTracker: unreadTracker)
+            }
+        })
+        
+        trailingActions.append(SwipeAction(
+            symbol: .init(emptyName: Icons.reply, fillName: Icons.replyFill),
+            color: .blue
+        ) {
+            Task(priority: .userInitiated) {
+                await self.reply(editorTracker: editorTracker, unreadTracker: unreadTracker)
+            }
+        })
+        
+        return SwipeConfiguration(leadingActions: .init(), trailingActions: trailingActions)
     }
 }
 

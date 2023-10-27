@@ -8,12 +8,41 @@
 import Foundation
 
 extension InboxView {
-    func filterRead() {
-        assertionFailure("implement me")
+    func refresh() async {
+        do {
+            switch curTab {
+            case .all:
+                await inboxTracker.refresh(clearBeforeFetch: false)
+            case .replies:
+                try await replyTracker.refresh(clearBeforeRefresh: false)
+            case .mentions:
+                try await mentionTracker.refresh(clearBeforeRefresh: false)
+            case .messages:
+                try await messageTracker.refresh(clearBeforeRefresh: false)
+            }
+        } catch {
+            errorHandler.handle(error)
+        }
     }
     
-    func markAllAsRead() {
-        assertionFailure("implement me")
+    func toggleFilterRead() {
+        shouldFilterRead = !shouldFilterRead
+    }
+    
+    func handleShouldFilterReadChange(newShouldFilterRead: Bool) async {
+        replyTracker.unreadOnly = newShouldFilterRead
+        mentionTracker.unreadOnly = newShouldFilterRead
+        messageTracker.unreadOnly = newShouldFilterRead
+        
+        if newShouldFilterRead {
+            await inboxTracker.filterRead()
+        } else {
+            await inboxTracker.refresh(clearBeforeFetch: true)
+        }
+    }
+    
+    func markAllAsRead() async {
+        await inboxTracker.markAllAsRead(unreadTracker: unreadTracker)
     }
     
     func genMenuFunctions() -> [MenuFunction] {
@@ -29,9 +58,7 @@ extension InboxView {
             destructiveActionPrompt: nil,
             enabled: true
         ) {
-            Task(priority: .userInitiated) {
-                await filterRead()
-            }
+            toggleFilterRead()
         })
         
         ret.append(MenuFunction.standardMenuFunction(

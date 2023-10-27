@@ -46,7 +46,7 @@ struct AllItemsFeedView: View {
                 Group {
                     switch item {
                     case let .mention(mention):
-                        InboxMentionView(mention: mention, menuFunctions: [])
+                        InboxMentionView(mention: mention)
                     // inboxMentionViewWithInteraction(mention: mention)
                     case let .message(message):
                         InboxMessageView(message: message)

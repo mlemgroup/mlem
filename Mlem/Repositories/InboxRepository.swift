@@ -10,8 +10,13 @@ import Foundation
 /// Repository for inbox items
 class InboxRepository {
     @Dependency(\.apiClient) var apiClient
+    @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.hapticManager) var hapticManager
-
+    
+    func markAllAsRead() async throws {
+        try await apiClient.markAllAsRead()
+    }
+    
     // MARK: - replies
     
     func loadReplies(
@@ -27,7 +32,7 @@ class InboxRepository {
         )
         .map { ReplyModel(from: $0) }
     }
-
+    
     // MARK: - mentions
     
     func loadMentions(
@@ -44,8 +49,37 @@ class InboxRepository {
         .map { MentionModel(from: $0) }
     }
     
+    func markMentionRead(id: Int, isRead: Bool) async throws -> MentionModel {
+        let response = try await apiClient.markPersonMentionAsRead(mentionId: id, isRead: isRead)
+        return MentionModel(from: response)
+    }
+    
+    func voteOnMention(_ mention: MentionModel, vote: ScoringOperation) async throws -> MentionModel {
+        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
+        do {
+            let updatedCommentView = try await commentRepository.voteOnComment(id: mention.comment.id, vote: vote)
+            let updatedPersonMention = APIPersonMentionView(
+                personMention: mention.personMention,
+                comment: updatedCommentView.comment,
+                creator: mention.creator,
+                post: updatedCommentView.post,
+                community: updatedCommentView.community,
+                recipient: mention.recipient,
+                counts: updatedCommentView.counts,
+                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+                subscribed: updatedCommentView.subscribed,
+                saved: updatedCommentView.saved,
+                creatorBlocked: updatedCommentView.creatorBlocked,
+                myVote: updatedCommentView.myVote
+            )
+            return MentionModel(from: updatedPersonMention)
+        } catch {
+            throw error
+        }
+    }
+    
     // MARK: - messages
-
+    
     /// Loads a page of private messages
     /// - Parameters:
     ///   - page: page number to load
@@ -64,7 +98,7 @@ class InboxRepository {
         )
         .map { MessageModel(from: $0) }
     }
-
+    
     /// Sends a private message
     /// - Parameters:
     ///   - content: body of the message
@@ -74,7 +108,7 @@ class InboxRepository {
         let response = try await apiClient.sendPrivateMessage(content: content, recipientId: recipientId)
         return MessageModel(from: response.privateMessageView)
     }
-
+    
     /// Marks a private message as read or unread
     /// - Parameters:
     ///   - id: id of the private message to mark as read
@@ -84,7 +118,7 @@ class InboxRepository {
         let response = try await apiClient.markPrivateMessageRead(id: id, isRead: isRead)
         return MessageModel(from: response)
     }
-
+    
     // TODO: migrate APIPrivateMessageReportView to middleware model
     /// Reports a private message
     /// - Parameters:
@@ -94,6 +128,4 @@ class InboxRepository {
     func reportMessage(id: Int, reason: String) async throws -> APIPrivateMessageReportView {
         try await apiClient.reportPrivateMessage(id: id, reason: reason)
     }
-
-    //
 }

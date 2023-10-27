@@ -64,4 +64,6 @@ struct AppConstants {
 
     static let blockUserPrompt: String = "Really block this user?"
     static let reportPostPrompt: String = "Really report this post?"
+    static let reportMentionPrompt: String = "Really report this mention?"
+    static let reportMessagePrompt: String = "Really report this message?"
 }

@@ -19,12 +19,10 @@ class BasicTracker<Item: TrackerItem> {
 
     // loading behavior governors
     var internetSpeed: InternetSpeed
-    var unreadOnly: Bool?
     var sortType: TrackerSortType
 
-    init(internetSpeed: InternetSpeed, unreadOnly: Bool, sortType: TrackerSortType) {
+    init(internetSpeed: InternetSpeed, sortType: TrackerSortType) {
         self.internetSpeed = internetSpeed
-        self.unreadOnly = unreadOnly
         self.sortType = sortType
     }
 
@@ -60,13 +58,13 @@ class BasicTracker<Item: TrackerItem> {
 
         // special reset cases
         if pageToLoad == 0 {
-            print("[\(Item.self) tracker] received request to load page 0")
+            print("[\(Item.self) tracker] clearing")
             await clear()
             return
         }
 
         if pageToLoad == 1 {
-            print("[\(Item.self) tracker] received request to load page 1")
+            print("[\(Item.self) tracker] refreshing")
             if clearBeforeRefresh {
                 await clear()
             } else {
@@ -75,24 +73,32 @@ class BasicTracker<Item: TrackerItem> {
                 ids = .init(minimumCapacity: 1000)
             }
         }
+        
+        // do not continue to load if done. this check has to come after the clear/refresh cases because those cases can be called on a .done tracker
+        guard loadingState != .done else {
+            print("[\(Item.self) tracker] done loading, will not continue")
+            return
+        }
 
         // do nothing if this is not the next page to load
         guard pageToLoad == page + 1 else {
             print("[\(Item.self) tracker] will not load page \(pageToLoad) of items (have loaded \(page) pages)")
             return
         }
-
-        let newItems = try await fetchPage(page: pageToLoad)
-        page = pageToLoad
-
-        // if no messages show up and no error was thrown, there's nothing left to load
-        if newItems.isEmpty {
-            print("[\(Item.self) tracker] received no items, loading must be finished")
-            loadingState = .done
-            return
+        
+        var newItems: [Item] = .init()
+        while newItems.count < internetSpeed.pageSize {
+            let fetchedItems = try await fetchPage(page: page + 1)
+            page += 1
+            
+            if fetchedItems.isEmpty {
+                print("[\(Item.self) tracker] received no items, loading must be finished")
+                loadingState = .done
+                break
+            }
+            
+            newItems.append(contentsOf: fetchedItems)
         }
-
-        // TODO: repeat load until we have enough things
         
         let allowedItems = storeIdsAndDedupe(newItems: newItems)
 
@@ -103,7 +109,9 @@ class BasicTracker<Item: TrackerItem> {
             await add(toAdd: allowedItems)
         }
 
-        loadingState = .idle
+        if loadingState != .done {
+            loadingState = .idle
+        }
     }
 
     // MARK: - Helpers

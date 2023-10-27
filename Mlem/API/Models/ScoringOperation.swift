@@ -7,11 +7,20 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum ScoringOperation: Int, Decodable {
     case upvote = 1
     case downvote = -1
     case resetVote = 0
+    
+    var color: Color? {
+        switch self {
+        case .upvote: return .blue
+        case .downvote: return .red
+        case .resetVote: return nil
+        }
+    }
 }
 
 extension ScoringOperation: AssociatedIcon {

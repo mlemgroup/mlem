@@ -43,45 +43,12 @@ struct MentionsFeedView: View {
     
     @ViewBuilder
     func mentionsListView() -> some View {
-        ForEach(mentionTracker.items) { mention in
+        ForEach(mentionTracker.items, id: \.uid) { mention in
             VStack(spacing: 0) {
-                InboxMentionView(mention: mention, menuFunctions: [])
-                // inboxMentionViewWithInteraction(mention: mention)
+                InboxMentionView(mention: mention)
+                
                 Divider()
             }
         }
     }
-    
-//    func inboxMentionViewWithInteraction(mention: MentionModel) -> some View {
-//        NavigationLink(.lazyLoadPostLinkWithContext(.init(
-//            post: mention.post,
-//            scrollTarget: mention.comment.id
-//        ))) {
-//            InboxMentionView(mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
-//                .padding(.vertical, AppConstants.postAndCommentSpacing)
-//                .padding(.horizontal)
-//                .background(Color.systemBackground)
-//                .task {
-//                    if mentionsTracker.shouldLoadContent(after: mention) {
-//                        await loadTrackerPage(tracker: mentionsTracker)
-//                    }
-//                }
-//                .addSwipeyActions(
-//                    leading: [
-//                        upvoteMentionSwipeAction(mentionView: mention),
-//                        downvoteMentionSwipeAction(mentionView: mention)
-//                    ],
-//                    trailing: [
-//                        toggleMentionReadSwipeAction(mentionView: mention),
-//                        replyToMentionSwipeAction(mentionView: mention)
-//                    ]
-//                )
-//                .contextMenu {
-//                    ForEach(genMentionMenuGroup(mention: mention)) { item in
-//                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-//                    }
-//                }
-//        }
-//        .buttonStyle(EmptyButtonStyle())
-//    }
 }
