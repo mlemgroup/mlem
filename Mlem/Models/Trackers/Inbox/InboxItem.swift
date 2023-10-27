@@ -57,6 +57,23 @@ enum InboxItem {
             return reply.commentReply.read
         }
     }
+    
+//    func markRead(unreadTracker: UnreadTracker) async {
+//        switch self {
+//        case let .message(message):
+//            if !message.privateMessage.read {
+//                await message.toggleRead(unreadTracker: unreadTracker)
+//            }
+//        case let .mention(mention):
+//            if !mention.personMention.read {
+//                await mention.toggleRead(unreadTracker: unreadTracker)
+//            }
+//        case let .reply(reply):
+//            if !reply.commentReply.read {
+//                await reply.toggleRead(unreadTracker: unreadTracker)
+//            }
+//        }
+//    }
 }
 
 extension InboxItem: Identifiable {

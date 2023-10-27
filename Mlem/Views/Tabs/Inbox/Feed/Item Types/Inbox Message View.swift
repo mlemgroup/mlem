@@ -24,11 +24,11 @@ struct InboxMessageView: View {
             .padding(AppConstants.postAndCommentSpacing)
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
+            .addSwipeyActions(message.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
             .contextMenu {
                 ForEach(message.menuFunctions(
                     unreadTracker: unreadTracker,
-                    editorTracker: editorTracker,
-                    filterUser: { await inboxTracker.filterUser(id: message.creator.id) }
+                    editorTracker: editorTracker
                 )) { item in
                     MenuButton(menuFunction: item, confirmDestructive: nil)
                 }
@@ -62,8 +62,7 @@ struct InboxMessageView: View {
                     size: AppConstants.largeAvatarSize,
                     menuFunctions: message.menuFunctions(
                         unreadTracker: unreadTracker,
-                        editorTracker: editorTracker,
-                        filterUser: { await inboxTracker.filterUser(id: message.creator.id) }
+                        editorTracker: editorTracker
                     )
                 )
                 

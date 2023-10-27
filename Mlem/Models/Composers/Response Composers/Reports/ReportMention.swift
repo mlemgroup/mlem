@@ -19,8 +19,10 @@ struct ReportMention: ResponseEditorModel {
     let mention: MentionModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxMentionView(mention: mention, menuFunctions: [])
-            .padding(.horizontal))
+        AnyView(
+            InboxMentionView(mention: mention)
+                .padding(.horizontal)
+        )
     }
     
     func sendResponse(responseContents: String) async throws {

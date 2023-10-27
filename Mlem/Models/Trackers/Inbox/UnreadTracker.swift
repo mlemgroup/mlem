@@ -29,6 +29,14 @@ class UnreadTracker: ObservableObject {
     }
     
     @MainActor
+    func reset() {
+        replies = 0
+        mentions = 0
+        messages = 0
+        total = 0
+    }
+    
+    @MainActor
     func readReply() {
         replies -= 1
         total -= 1

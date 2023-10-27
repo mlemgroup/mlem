@@ -43,38 +43,12 @@ struct MessagesFeedView: View {
     
     @ViewBuilder
     func messagesListView() -> some View {
-        ForEach(messageTracker.items) { message in
+        ForEach(messageTracker.items, id: \.uid) { message in
             VStack(spacing: 0) {
                 InboxMessageView(message: message)
-                // inboxMessageViewWithInteraction(message: message)
                 
                 Divider()
             }
         }
     }
-    
-//    @ViewBuilder
-//    func inboxMessageViewWithInteraction(message: APIPrivateMessageView) -> some View {
-//        InboxMessageView(message: message, menuFunctions: genMessageMenuGroup(message: message))
-//            .padding(.vertical, AppConstants.postAndCommentSpacing)
-//            .padding(.horizontal)
-//            .background(Color.systemBackground)
-//            .task {
-//                if messagesTracker.shouldLoadContent(after: message) {
-//                    await loadTrackerPage(tracker: messagesTracker)
-//                }
-//            }
-//            .addSwipeyActions(
-//                leading: [],
-//                trailing: [
-//                    toggleMessageReadSwipeAction(message: message),
-//                    replyToMessageSwipeAction(message: message)
-//                ]
-//            )
-//            .contextMenu {
-//                ForEach(genMessageMenuGroup(message: message)) { item in
-//                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-//                }
-//            }
-//    }
 }

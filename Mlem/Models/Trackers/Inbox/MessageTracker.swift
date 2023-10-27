@@ -12,8 +12,15 @@ class MessageTracker: ChildTracker<MessageModel> {
 
     typealias Item = MessageModel
     typealias ParentType = InboxItem
+    
+    var unreadOnly: Bool
+    
+    init(internetSpeed: InternetSpeed, sortType: TrackerSortType, unreadOnly: Bool) {
+        self.unreadOnly = unreadOnly
+        super.init(internetSpeed: internetSpeed, sortType: sortType)
+    }
 
     override func fetchPage(page: Int) async throws -> [Item] {
-        try await inboxRepository.loadMessages(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly ?? false)
+        try await inboxRepository.loadMessages(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
     }
 }

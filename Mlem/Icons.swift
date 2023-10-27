@@ -34,9 +34,9 @@ struct Icons {
     static let unsaveFill: String = "bookmark.slash.fill"
     
     // mark read
-    static let markRead: String = "envelope"
+    static let markRead: String = "envelope.open"
     static let markReadFill: String = "envelope.open.fill"
-    static let markUnread: String = "envelope.open"
+    static let markUnread: String = "envelope"
     static let markUnreadFill: String = "envelope.fill"
     
     // moderation
