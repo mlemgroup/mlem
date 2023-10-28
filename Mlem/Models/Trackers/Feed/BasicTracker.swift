@@ -68,9 +68,10 @@ class BasicTracker<Item: TrackerItem> {
             if clearBeforeRefresh {
                 await clear()
             } else {
-                // if not clearing before reset, still clear these two fields in order to sanitize the loading state--we just keep the items in place until we have received new ones, which will be set below
+                // if not clearing before reset, still clear these fields in order to sanitize the loading state--we just keep the items in place until we have received new ones, which will be set below
                 page = 0
                 ids = .init(minimumCapacity: 1000)
+                loadingState = .idle
             }
         }
         
@@ -89,6 +90,7 @@ class BasicTracker<Item: TrackerItem> {
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
             let fetchedItems = try await fetchPage(page: page + 1)
+            print("found \(fetchedItems.count) items")
             page += 1
             
             if fetchedItems.isEmpty {

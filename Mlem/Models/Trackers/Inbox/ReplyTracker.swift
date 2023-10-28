@@ -22,6 +22,7 @@ class ReplyTracker: ChildTracker<ReplyModel> {
     }
 
     override func fetchPage(page: Int) async throws -> [Item] {
-        try await inboxRepository.loadReplies(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
+        print("fetching page \(page) of replies")
+        return try await inboxRepository.loadReplies(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
     }
 }

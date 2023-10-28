@@ -151,7 +151,7 @@ struct InboxView: View {
                 } else {
                     switch curTab {
                     case .all:
-                        AllItemsFeedView(inboxTracker: inboxTracker, messageTracker: messageTracker)
+                        AllItemsFeedView(inboxTracker: inboxTracker)
                     case .replies:
                         RepliesFeedView(replyTracker: replyTracker)
                     case .mentions:

@@ -128,6 +128,7 @@ extension ReplyModel {
             let updatedReply = try await inboxRepository.voteOnCommentReply(self, vote: operation)
             await reinit(from: updatedReply)
             if !original.commentReply.read {
+                _ = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: true)
                 await unreadTracker.readReply()
             }
         } catch {
@@ -165,12 +166,6 @@ extension ReplyModel {
             commentReply: self,
             operation: InboxItemOperation.replyToInboxItem
         ))
-        
-        // replying to a reply marks it as read, but the call doesn't return anything so we just state fake it here
-        if !commentReply.read {
-            setCommentReply(APICommentReply(from: commentReply, read: true))
-            unreadTracker.readReply()
-        }
     }
     
     @MainActor

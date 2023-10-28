@@ -24,8 +24,6 @@ enum TrackerSortVal: Comparable {
     }
     
     static func < (lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
-        print("COMPARING")
-        
         guard typeEquals(lhs: lhs, rhs: rhs) else {
             assertionFailure("Compare oncalled on trackersortvals with different types")
             return true
@@ -39,18 +37,4 @@ enum TrackerSortVal: Comparable {
             }
         }
     }
-
-//    func shouldSortBefore(_ other: TrackerSortVal?) -> Bool {
-//        guard let other else {
-//            return true
-//        }
-//
-//        switch self {
-//        case let .published(selfDate):
-//            switch other {
-//            case let .published(otherDate):
-//                return selfDate >= otherDate
-//            }
-//        }
-//    }
 }

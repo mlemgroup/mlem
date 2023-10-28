@@ -127,6 +127,7 @@ extension MentionModel {
             let updatedMention = try await inboxRepository.voteOnMention(self, vote: operation)
             await reinit(from: updatedMention)
             if !original.personMention.read {
+                _ = try await inboxRepository.markMentionRead(id: personMention.id, isRead: true)
                 await unreadTracker.readMention()
             }
         } catch {
@@ -260,7 +261,7 @@ extension MentionModel {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report",
             imageName: Icons.moderationReport,
-            destructiveActionPrompt: AppConstants.reportMentionPrompt,
+            destructiveActionPrompt: AppConstants.reportCommentPrompt,
             enabled: true
         ) {
             Task(priority: .userInitiated) {

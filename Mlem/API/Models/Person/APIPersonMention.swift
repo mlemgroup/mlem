@@ -31,8 +31,16 @@ struct APIPersonMention: Decodable {
     }
 }
 
+extension APIPersonMention: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(read)
+        hasher.combine(published)
+    }
+}
+
 extension APIPersonMention: Equatable {
     static func == (lhs: APIPersonMention, rhs: APIPersonMention) -> Bool {
-        lhs.id == rhs.id
+        lhs.hashValue == rhs.hashValue
     }
 }
