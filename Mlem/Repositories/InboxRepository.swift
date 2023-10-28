@@ -33,6 +33,35 @@ class InboxRepository {
         .map { ReplyModel(from: $0) }
     }
     
+    func voteOnCommentReply(_ reply: ReplyModel, vote: ScoringOperation) async throws -> ReplyModel {
+        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
+        do {
+            let updatedCommentView = try await commentRepository.voteOnComment(id: reply.comment.id, vote: vote)
+            let updatedCommentReplyView = APICommentReplyView(
+                commentReply: reply.commentReply,
+                comment: updatedCommentView.comment,
+                creator: updatedCommentView.creator,
+                post: updatedCommentView.post,
+                community: updatedCommentView.community,
+                recipient: reply.recipient,
+                counts: updatedCommentView.counts,
+                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
+                subscribed: updatedCommentView.subscribed,
+                saved: updatedCommentView.saved,
+                creatorBlocked: updatedCommentView.creatorBlocked,
+                myVote: updatedCommentView.myVote
+            )
+            return ReplyModel(from: updatedCommentReplyView)
+        } catch {
+            throw error
+        }
+    }
+    
+    func markReplyRead(id: Int, isRead: Bool) async throws -> ReplyModel {
+        let updatedReply = try await apiClient.markCommentReplyRead(id: id, isRead: isRead)
+        return ReplyModel(from: updatedReply.commentReplyView)
+    }
+    
     // MARK: - mentions
     
     func loadMentions(

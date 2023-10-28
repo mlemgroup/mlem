@@ -20,11 +20,8 @@ struct ReplyToCommentReply: ResponseEditorModel {
     var id: Int { commentReply.id }
     
     func embeddedView() -> AnyView {
-        AnyView(InboxReplyView(
-            reply: commentReply,
-            menuFunctions: []
-        )
-        .padding(.horizontal))
+        AnyView(InboxReplyView(reply: commentReply)
+            .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {

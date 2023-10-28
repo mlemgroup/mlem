@@ -49,7 +49,7 @@ struct RepliesFeedView: View {
     func repliesListView() -> some View {
         ForEach(replyTracker.items) { reply in
             VStack(spacing: 0) {
-                InboxReplyView(reply: reply, menuFunctions: [])
+                InboxReplyView(reply: reply)
 
                 Divider()
             }

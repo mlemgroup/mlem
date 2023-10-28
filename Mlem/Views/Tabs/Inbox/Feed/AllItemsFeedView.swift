@@ -47,13 +47,10 @@ struct AllItemsFeedView: View {
                     switch item {
                     case let .mention(mention):
                         InboxMentionView(mention: mention)
-                    // inboxMentionViewWithInteraction(mention: mention)
                     case let .message(message):
                         InboxMessageView(message: message)
-                    // inboxMessageViewWithInteraction(message: message)
                     case let .reply(reply):
-                        InboxReplyView(reply: reply, menuFunctions: [])
-                        // inboxReplyViewWithInteraction(reply: reply)
+                        InboxReplyView(reply: reply)
                     }
                 }
                 
