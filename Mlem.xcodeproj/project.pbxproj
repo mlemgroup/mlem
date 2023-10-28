@@ -1155,15 +1155,6 @@
 			path = User;
 			sourceTree = "<group>";
 		};
-		030D00862AD1BB0D00953B1D /* User */ = {
-			isa = PBXGroup;
-			children = (
-				03B7AAF22ABEF85200068B23 /* UserModel.swift */,
-				030D00872AD1BB2600953B1D /* UserModel+ContentModel.swift */,
-			);
-			path = User;
-			sourceTree = "<group>";
-		};
 		030D00832AD0842900953B1D /* Results */ = {
 			isa = PBXGroup;
 			children = (
