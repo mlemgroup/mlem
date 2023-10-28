@@ -14,7 +14,6 @@ struct InboxMentionView: View {
     @EnvironmentObject var unreadTracker: UnreadTracker
     
     var voteIconName: String { mention.votes.myVote == .downvote ? Icons.downvote : Icons.upvote }
-    
     var iconName: String { mention.personMention.read ? "quote.bubble" : "quote.bubble.fill" }
     
     var body: some View {

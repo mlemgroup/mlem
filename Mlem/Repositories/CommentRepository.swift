@@ -42,29 +42,6 @@ class CommentRepository {
         }
     }
     
-    func voteOnCommentReply(_ reply: APICommentReplyView, vote: ScoringOperation) async throws -> APICommentReplyView {
-        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
-        do {
-            let updatedCommentView = try await voteOnComment(id: reply.comment.id, vote: vote)
-            return .init(
-                commentReply: reply.commentReply,
-                comment: updatedCommentView.comment,
-                creator: updatedCommentView.creator,
-                post: updatedCommentView.post,
-                community: updatedCommentView.community,
-                recipient: reply.recipient,
-                counts: updatedCommentView.counts,
-                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                subscribed: updatedCommentView.subscribed,
-                saved: updatedCommentView.saved,
-                creatorBlocked: updatedCommentView.creatorBlocked,
-                myVote: updatedCommentView.myVote
-            )
-        } catch {
-            throw error
-        }
-    }
-    
     @discardableResult
     func postComment(
         content: String,
@@ -145,9 +122,5 @@ class CommentRepository {
             hapticManager.play(haptic: .failure, priority: .high)
             throw error
         }
-    }
-    
-    func markCommentReadStatus(id: Int, isRead: Bool) async throws -> CommentReplyResponse {
-        try await apiClient.markCommentReplyRead(id: id, isRead: isRead)
     }
 }
