@@ -24,7 +24,13 @@ class ErrorHandler: ObservableObject {
         handle(.init(underlyingError: error), file: file, function: function, line: line)
     }
     
-    func handle(_ error: ContextualError?, file: StaticString = #fileID, function: StaticString = #function, line: Int = #line) {
+    func handle(
+        _ error: ContextualError?,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: Int = #line,
+        showNoInternet: Bool = true
+    ) {
         guard let error else {
             return
         }
@@ -43,7 +49,9 @@ class ErrorHandler: ObservableObject {
                 }
                 
                 if error.title != nil && !InternetConnectionManager.isConnectedToNetwork() {
-                    await notifier.add(.noInternet)
+                    if showNoInternet {
+                        await notifier.add(.noInternet)
+                    }
                     return
                 }
                 

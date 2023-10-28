@@ -36,7 +36,8 @@ extension FeedView {
         }
     }
     
-    func refreshFeed() async {
+    @discardableResult
+    func refreshFeed() async -> Bool {
         // NOTE: refresh doesn't need to touch isLoading because that visual cue is handled by .refreshable
         do {
             try await postTracker.refresh(
@@ -45,8 +46,11 @@ extension FeedView {
                 feedType: feedType,
                 filtering: filter
             )
+            errorDetails = nil
+            return true
         } catch {
             handle(error)
+            return false
         }
     }
     
@@ -79,7 +83,8 @@ extension FeedView {
                         title: "Could not load community information",
                         message: "The server might be overloaded.\nTry again later.",
                         underlyingError: error
-                    )
+                    ),
+                    showNoInternet: false
                 )
             }
         }
@@ -267,30 +272,24 @@ extension FeedView {
     // MARK: Helper Functions
     
     private func handle(_ error: Error) {
-        let title: String?
-        let errorMessage: String?
-        
+
         switch error {
         case APIClientError.networking:
             guard postTracker.items.isEmpty else {
                 return
             }
-            
-            title = "Unable to connect to Lemmy"
-            errorMessage = "Please check your internet connection and try again"
+            errorDetails = .init(title: "Unable to connect to Lemmy", error: error, refresh: self.refreshFeed)
+            return
         default:
-            title = nil
-            errorMessage = nil
+            break
         }
-        
-        errorHandler.handle(
-            .init(title: title, message: errorMessage, underlyingError: error)
-        )
+        errorDetails = .init(error: error, refresh: self.refreshFeed)
     }
     
-    private func filter(postView: PostModel) -> Bool {
-        !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
-            (showReadPosts || !postView.read)
+    private func filter(postView: PostModel) -> PostFilterReason? {
+        guard !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) else { return .keyword }
+        guard showReadPosts || !postView.read else { return .read }
+        return nil
     }
     
     private func toggleSubscribe() async {
