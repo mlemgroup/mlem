@@ -10,7 +10,6 @@ import SwiftUI
 
 struct AllItemsFeedView: View {
     @ObservedObject var inboxTracker: ParentTracker<InboxItem>
-    @ObservedObject var messageTracker: MessageTracker
     
     var body: some View {
         Group {

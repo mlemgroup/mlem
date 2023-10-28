@@ -6,7 +6,7 @@
 //
 import Foundation
 
-// TODO: this feels like it should be the proper ContentModel protocol, since it's the most generic content model--maybe we can have an ImageContentModel type that extends this?
+// TODO: migrate this to be ContentModel and make subtypes of ContentModel for content with URLs, etc.
 protocol ContentIdentifiable {
     var uid: ContentModelIdentifier { get }
 }

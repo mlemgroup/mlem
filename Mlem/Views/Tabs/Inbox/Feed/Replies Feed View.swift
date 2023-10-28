@@ -47,7 +47,7 @@ struct RepliesFeedView: View {
     
     @ViewBuilder
     func repliesListView() -> some View {
-        ForEach(replyTracker.items) { reply in
+        ForEach(replyTracker.items, id: \.uid) { reply in
             VStack(spacing: 0) {
                 InboxReplyView(reply: reply)
 
