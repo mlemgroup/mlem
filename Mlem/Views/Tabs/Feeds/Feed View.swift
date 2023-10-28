@@ -30,14 +30,14 @@ struct FeedView: View {
     
     // MARK: Parameters and init
     
-    let community: APICommunity?
+    @State var community: CommunityModel?
     let showLoading: Bool
     @State var feedType: FeedType
     
     @State var errorDetails: ErrorDetails?
     
     init(
-        community: APICommunity?,
+        community: CommunityModel?,
         feedType: FeedType,
         sortType: PostSortType,
         showLoading: Bool = false
@@ -46,9 +46,6 @@ struct FeedView: View {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
-        self.community = community
-        self.showLoading = showLoading
-        
         self._feedType = State(initialValue: feedType)
         self._postSortType = .init(initialValue: sortType)
         self._postTracker = StateObject(wrappedValue: .init(
@@ -56,13 +53,15 @@ struct FeedView: View {
             internetSpeed: internetSpeed,
             upvoteOnSave: upvoteOnSave
         ))
+        
+        self.showLoading = showLoading
+        self._community = State(initialValue: community)
     }
     
     // MARK: State
     
     @StateObject var postTracker: PostTracker
     
-    @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType
     @State var isLoading: Bool = true
     @State var shouldLoad: Bool = false
@@ -195,18 +194,17 @@ struct FeedView: View {
     @ViewBuilder
     private var ellipsisMenu: some View {
         Menu {
-            if let community, let communityDetails {
+            if let community {
                 // until we find a nice way to put nav stuff in MenuFunction, this'll have to do :(
                 NavigationLink(.communitySidebarLinkWithContext(
                     .init(
-                        community: community,
-                        communityDetails: communityDetails
+                        community: community
                     )
                 )) {
                     Label("Sidebar", systemImage: "sidebar.right")
                 }
                 
-                ForEach(genCommunitySpecificMenuFunctions(for: community)) { menuFunction in
+                ForEach(genCommunitySpecificMenuFunctions()) { menuFunction in
                     MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
             }
@@ -261,8 +259,7 @@ struct FeedView: View {
     private var toolbarHeader: some View {
         if let community {
             NavigationLink(.communitySidebarLinkWithContext(.init(
-                community: community,
-                communityDetails: communityDetails
+                community: community
             ))) {
                 Text(community.name)
                     .font(.headline)

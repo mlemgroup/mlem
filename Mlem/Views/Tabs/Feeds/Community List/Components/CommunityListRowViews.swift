@@ -68,10 +68,10 @@ struct CommuntiyFeedRowView: View {
 
     private var pathValue: AnyHashable {
         if navigationContext == .sidebar {
-            return CommunityLinkWithContext(community: community, feedType: .subscribed)
+            return CommunityLinkWithContext(community: CommunityModel(from: community), feedType: .subscribed)
         } else {
             // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
-            return AppRoute.communityLinkWithContext(.init(community: community, feedType: .subscribed))
+            return AppRoute.communityLinkWithContext(.init(community: CommunityModel(from: community), feedType: .subscribed))
         }
     }
     

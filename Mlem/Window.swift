@@ -15,7 +15,6 @@ struct Window: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
 
-    @StateObject var communitySearchResultsTracker: CommunitySearchResultsTracker = .init()
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
@@ -67,7 +66,6 @@ struct Window: View {
         ContentView()
             .environmentObject(filtersTracker)
             .environmentObject(appState)
-            .environmentObject(communitySearchResultsTracker)
             .environmentObject(recentSearchesTracker)
             .environmentObject(easterFlagsTracker)
             .environmentObject(layoutWidgetTracker)

@@ -18,10 +18,10 @@ struct UserLabelView: View {
     // to pick the correct flair
     @State var postContext: APIPost?
     @State var commentContext: APIComment?
-    @State var communityContext: GetCommunityResponse?
+    @State var communityContext: CommunityModel?
     
     var blurAvatar: Bool { postContext?.nsfw ?? false ||
-        communityContext?.communityView.community.nsfw ?? false
+        communityContext?.nsfw ?? false
     }
     
     @available(*, deprecated, message: "Provide a UserModel rather than an APIPerson.")
@@ -31,7 +31,7 @@ struct UserLabelView: View {
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
-        communityContext: GetCommunityResponse? = nil
+        communityContext: CommunityModel? = nil
     ) {
         self.init(
             user: UserModel(from: person),
@@ -49,7 +49,7 @@ struct UserLabelView: View {
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
-        communityContext: GetCommunityResponse? = nil
+        communityContext: CommunityModel? = nil
     ) {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
