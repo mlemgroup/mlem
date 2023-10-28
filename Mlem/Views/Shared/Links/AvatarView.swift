@@ -17,14 +17,14 @@ struct AvatarView: View {
     let clipAvatar: Bool
     let blurAvatar: Bool
     
-    init(community: APICommunity, avatarSize: CGFloat, lineColor: Color? = nil) {
+    init(community: CommunityModel, avatarSize: CGFloat, lineColor: Color? = nil) {
         @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
         
         self.type = .community
-        self.url = community.iconUrl
+        self.url = community.avatar
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
-        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.iconUrl)
+        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.avatar)
         self.blurAvatar = shouldBlurNsfw && community.nsfw
     }
     

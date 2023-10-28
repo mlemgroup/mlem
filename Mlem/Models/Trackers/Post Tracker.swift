@@ -227,7 +227,7 @@ class PostTracker: ObservableObject {
     @MainActor
     func removeCommunityPosts(from communityId: Int) {
         filter {
-            $0.community.id != communityId
+            $0.community.communityId != communityId
         }
     }
     
@@ -432,7 +432,7 @@ class PostTracker: ObservableObject {
         for post in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
-            if let communityAvatarLink = post.community.iconUrl {
+            if let communityAvatarLink = post.community.avatar {
                 imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
             
