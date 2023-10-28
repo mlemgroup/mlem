@@ -41,6 +41,8 @@ struct FeedView: View {
     /// Applicable when presented as root view in a column of NavigationSplitView.
     @Binding var splitViewColumnVisibility: NavigationSplitViewVisibility
     
+    @State var errorDetails: ErrorDetails?
+    
     init(
         community: APICommunity?,
         feedType: FeedType,
@@ -74,7 +76,7 @@ struct FeedView: View {
     
     @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType
-    @State var isLoading: Bool = false
+    @State var isLoading: Bool = true
     @State var shouldLoad: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
@@ -198,9 +200,7 @@ struct FeedView: View {
     @ViewBuilder
     private var contentView: some View {
         ScrollView {
-            if postTracker.items.isEmpty {
-                noPostsView()
-            } else {
+            if !postTracker.items.isEmpty {
                 LazyVStack(spacing: 0) {
                     ScrollToView(appeared: $scrollToTopAppeared)
                         .id(scrollToTop)
@@ -210,8 +210,14 @@ struct FeedView: View {
                         feedPost(for: post)
                     }
                     
-                    EndOfFeedView(isLoading: isLoading)
+                    EndOfFeedView(isLoading: isLoading && postTracker.page > 1)
                 }
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .overlay {
+            if postTracker.items.isEmpty {
+                noPostsView()
             }
         }
         .fancyTabScrollCompatible()
@@ -219,17 +225,20 @@ struct FeedView: View {
     
     @ViewBuilder
     private func noPostsView() -> some View {
-        if isLoading {
-            LoadingView(whatIsLoading: .posts)
-        } else {
-            VStack(alignment: .center, spacing: 5) {
-                Image(systemName: Icons.noPosts)
-                Text("No posts to be found")
+        VStack {
+            if let errorDetails = errorDetails {
+                ErrorView(errorDetails)
+                    .frame(maxWidth: .infinity)
+            } else if isLoading {
+                LoadingView(whatIsLoading: .posts)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
+            } else {
+                NoPostsView(isLoading: $isLoading, postSortType: $postSortType, showReadPosts: $showReadPosts)
+                    .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
-            .padding()
-            .foregroundColor(.secondary)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .animation(.easeOut(duration: 0.1), value: isLoading)
     }
     
     // MARK: Helper Views
