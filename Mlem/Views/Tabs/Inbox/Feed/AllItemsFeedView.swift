@@ -52,13 +52,12 @@ struct AllItemsFeedView: View {
     @ViewBuilder
     func inboxItemView(item: AnyInboxItem) -> some View {
         Group {
-            if let message = item.wrappedValue as? MessageModel {
+            switch item {
+            case let .message(message):
                 InboxMessageView(message: message)
-            }
-            if let mention = item.wrappedValue as? MentionModel {
+            case let .mention(mention):
                 InboxMentionView(mention: mention)
-            }
-            if let reply = item.wrappedValue as? ReplyModel {
+            case let .reply(reply):
                 InboxReplyView(reply: reply)
             }
         }

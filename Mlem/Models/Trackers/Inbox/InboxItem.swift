@@ -13,22 +13,34 @@ protocol InboxItem: Identifiable, ContentIdentifiable, TrackerItem {
     var uid: ContentModelIdentifier { get }
     var creatorId: Int { get }
     var read: Bool { get }
+    var id: Int { get }
 }
 
-class AnyInboxItem: InboxItem {
-    let wrappedValue: any InboxItem
-    init(_ wrappedValue: any InboxItem) {
-        self.wrappedValue = wrappedValue
+enum AnyInboxItem: InboxItem {
+    case reply(ReplyModel)
+    case mention(MentionModel)
+    case message(MessageModel)
+    
+    var value: any InboxItem {
+        switch self {
+        case let .reply(reply):
+            return reply
+        case let .mention(mention):
+            return mention
+        case let .message(message):
+            return message
+        }
     }
     
-    var uid: ContentModelIdentifier { wrappedValue.uid }
-    var published: Date { wrappedValue.published }
-    var creatorId: Int { wrappedValue.creatorId }
-    var read: Bool { wrappedValue.read }
+    var published: Date { value.published }
     
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal { wrappedValue.sortVal(sortType: sortType) }
+    var uid: ContentModelIdentifier { value.uid }
     
-    static func == (lhs: AnyInboxItem, rhs: AnyInboxItem) -> Bool {
-        lhs.uid == rhs.uid
-    }
+    var creatorId: Int { value.creatorId }
+    
+    var read: Bool { value.read }
+    
+    var id: Int { value.id }
+    
+    func sortVal(sortType: TrackerSortType) -> TrackerSortVal { value.sortVal(sortType: sortType) }
 }
