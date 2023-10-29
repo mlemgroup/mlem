@@ -8,7 +8,7 @@
 import Dependencies
 import Foundation
 
-class InboxTracker: ParentTracker<InboxItem> {
+class InboxTracker: ParentTracker<AnyInboxItem> {
     @Dependency(\.inboxRepository) var inboxRepository
     @Dependency(\.hapticManager) var hapticManager
     
