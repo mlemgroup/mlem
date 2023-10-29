@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension MentionModel: ChildTrackerItem, InboxItem {
+extension MentionModel: TrackerItem, InboxItem {
     typealias ParentType = AnyInboxItem
     
     var published: Date { personMention.published }

@@ -8,11 +8,8 @@
 import Dependencies
 import Foundation
 
-class MentionTracker: ChildTracker<MentionModel> {
+class MentionTracker: ChildTracker<MentionModel, AnyInboxItem> {
     @Dependency(\.inboxRepository) var inboxRepository
-
-    typealias Item = MentionModel
-    typealias ParentType = InboxItem
     
     var unreadOnly: Bool
     
@@ -21,7 +18,11 @@ class MentionTracker: ChildTracker<MentionModel> {
         super.init(internetSpeed: internetSpeed, sortType: sortType)
     }
 
-    override func fetchPage(page: Int) async throws -> [Item] {
+    override func fetchPage(page: Int) async throws -> [MentionModel] {
         try await inboxRepository.loadMentions(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
+    }
+    
+    override func toParent(item: MentionModel) -> AnyInboxItem {
+        .mention(item)
     }
 }

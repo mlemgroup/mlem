@@ -6,7 +6,7 @@
 //
 import Foundation
 
-extension ReplyModel: ChildTrackerItem, InboxItem {
+extension ReplyModel: InboxItem {
     typealias ParentType = AnyInboxItem
     
     var published: Date { commentReply.published }

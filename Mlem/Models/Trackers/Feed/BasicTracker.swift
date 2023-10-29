@@ -123,7 +123,7 @@ class BasicTracker<Item: TrackerItem> {
     ///   - page: page number to fetch
     /// - Returns: requested page of items
     func fetchPage(page: Int) async throws -> [Item] {
-        assertionFailure("This method must be implemented by the child tracker")
+        assertionFailure("This method must be implemented by the inheriting class")
         return []
     }
 
