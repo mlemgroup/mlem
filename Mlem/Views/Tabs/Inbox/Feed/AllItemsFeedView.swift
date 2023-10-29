@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AllItemsFeedView: View {
-    @ObservedObject var inboxTracker: ParentTracker<InboxItem>
+    @ObservedObject var inboxTracker: ParentTracker<AnyInboxItem>
     
     var body: some View {
         Group {
@@ -42,18 +42,24 @@ struct AllItemsFeedView: View {
     func inboxListView() -> some View {
         ForEach(inboxTracker.items, id: \.uid) { item in
             VStack(spacing: 0) {
-                Group {
-                    switch item {
-                    case let .mention(mention):
-                        InboxMentionView(mention: mention)
-                    case let .message(message):
-                        InboxMessageView(message: message)
-                    case let .reply(reply):
-                        InboxReplyView(reply: reply)
-                    }
-                }
+                inboxItemView(item: item)
                 
                 Divider()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func inboxItemView(item: AnyInboxItem) -> some View {
+        Group {
+            if let message = item.wrappedValue as? MessageModel {
+                InboxMessageView(message: message)
+            }
+            if let mention = item.wrappedValue as? MentionModel {
+                InboxMentionView(mention: mention)
+            }
+            if let reply = item.wrappedValue as? ReplyModel {
+                InboxReplyView(reply: reply)
             }
         }
     }

@@ -7,11 +7,17 @@
 
 import Foundation
 
-extension MentionModel: ChildTrackerItem {
-    typealias ParentType = InboxItem
+extension MentionModel: ChildTrackerItem, InboxItem {
+    typealias ParentType = AnyInboxItem
+    
+    var published: Date { personMention.published }
+    
+    var creatorId: Int { comment.creatorId }
+    
+    var read: Bool { personMention.read }
 
     func toParent() -> ParentType {
-        .mention(self)
+        AnyInboxItem(self)
     }
 
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal {

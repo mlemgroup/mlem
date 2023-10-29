@@ -6,8 +6,14 @@
 //
 import Foundation
 
-extension MessageModel: ChildTrackerItem {
-    typealias ParentType = InboxItem
+extension MessageModel: ChildTrackerItem, InboxItem {
+    typealias ParentType = AnyInboxItem
+    
+    var published: Date { privateMessage.published }
+    
+    var creatorId: Int { privateMessage.creatorId }
+    
+    var read: Bool { privateMessage.read }
 
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
         switch sortType {
@@ -17,6 +23,6 @@ extension MessageModel: ChildTrackerItem {
     }
 
     func toParent() -> ParentType {
-        .message(self)
+        AnyInboxItem(self)
     }
 }

@@ -6,11 +6,17 @@
 //
 import Foundation
 
-extension ReplyModel: ChildTrackerItem {
-    typealias ParentType = InboxItem
+extension ReplyModel: ChildTrackerItem, InboxItem {
+    typealias ParentType = AnyInboxItem
+    
+    var published: Date { commentReply.published }
+    
+    var creatorId: Int { comment.creatorId }
+    
+    var read: Bool { commentReply.read }
 
     func toParent() -> ParentType {
-        .reply(self)
+        AnyInboxItem(self)
     }
 
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
