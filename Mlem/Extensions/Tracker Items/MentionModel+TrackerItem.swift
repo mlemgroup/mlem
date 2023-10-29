@@ -17,7 +17,7 @@ extension MentionModel: ChildTrackerItem, InboxItem {
     var read: Bool { personMention.read }
 
     func toParent() -> ParentType {
-        AnyInboxItem(self)
+        .mention(self)
     }
 
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal {

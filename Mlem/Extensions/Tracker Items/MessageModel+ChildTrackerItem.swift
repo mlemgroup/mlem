@@ -23,6 +23,6 @@ extension MessageModel: ChildTrackerItem, InboxItem {
     }
 
     func toParent() -> ParentType {
-        AnyInboxItem(self)
+        .message(self)
     }
 }

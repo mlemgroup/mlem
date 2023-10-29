@@ -16,7 +16,7 @@ extension ReplyModel: ChildTrackerItem, InboxItem {
     var read: Bool { commentReply.read }
 
     func toParent() -> ParentType {
-        AnyInboxItem(self)
+        .reply(self)
     }
 
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
