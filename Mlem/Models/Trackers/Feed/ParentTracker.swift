@@ -101,7 +101,7 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         }
         
         // function to remove items from child trackers based on uid--this makes the Item-specific filtering applied here generically applicable to any child tracker
-        let filterFunc = { (item: any ChildTrackerItem) in
+        let filterFunc = { (item: any TrackerItem) in
             !uidsToFilter.contains(item.uid)
         }
         

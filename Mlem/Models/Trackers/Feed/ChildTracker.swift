@@ -6,20 +6,27 @@
 //
 import Foundation
 
-class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProtocol, ObservableObject {
+class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: BasicTracker<Item>, ChildTrackerProtocol, ObservableObject {
     private weak var parentTracker: (any ParentTrackerProtocol)?
     private var cursor: Int = 0
 
+    func toParent(item: Item) -> ParentItem {
+        assertionFailure("This method must be implemented by the inheriting class")
+        // swiftlint:disable force_cast
+        return item as! ParentItem // this line is only here to make the compiler happy
+        // swiftlint:enable force_cast
+    }
+    
     func setParentTracker(_ newParent: any ParentTrackerProtocol) {
         parentTracker = newParent
     }
 
-    func consumeNextItem() -> Item.ParentType? {
+    func consumeNextItem() -> ParentItem? {
         assert(cursor < items.count, "consumeNextItem called on a tracker without a next item!")
 
         if cursor < items.count {
             cursor += 1
-            return items[cursor - 1].toParent()
+            return toParent(item: items[cursor - 1])
         }
 
         return nil
@@ -82,7 +89,7 @@ class ChildTracker<Item: ChildTrackerItem>: BasicTracker<Item>, ChildTrackerProt
     }
     
     /// Filters items from the parent tracker according to the given filtering criterion
-    /// - Parameter filter: function that, given an Item.ParentType, returns true if the item should REMAIN in the tracker
+    /// - Parameter filter: function that, given a TrackerItem, returns true if the item should REMAIN in the tracker
     func filterFromParent(with filter: @escaping (any TrackerItem) -> Bool) async {
         if let parentTracker {
             await parentTracker.filter(with: filter)

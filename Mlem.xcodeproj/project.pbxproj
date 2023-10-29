@@ -351,7 +351,6 @@
 		CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE82A4B482700B2063F /* Generic Merge.swift */; };
 		CD4368AE2AE23ED400BD8BD1 /* BasicTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368AD2AE23ED400BD8BD1 /* BasicTracker.swift */; };
 		CD4368B02AE23F1400BD8BD1 /* ChildTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */; };
-		CD4368B22AE23F2600BD8BD1 /* ChildTrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368B12AE23F2600BD8BD1 /* ChildTrackerItem.swift */; };
 		CD4368B42AE23F3500BD8BD1 /* ChildTrackerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368B32AE23F3500BD8BD1 /* ChildTrackerProtocol.swift */; };
 		CD4368B62AE23F4700BD8BD1 /* ParentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368B52AE23F4700BD8BD1 /* ParentTracker.swift */; };
 		CD4368B82AE23F5400BD8BD1 /* ParentTrackerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368B72AE23F5400BD8BD1 /* ParentTrackerProtocol.swift */; };
@@ -852,7 +851,6 @@
 		CD3FBCE82A4B482700B2063F /* Generic Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Generic Merge.swift"; sourceTree = "<group>"; };
 		CD4368AD2AE23ED400BD8BD1 /* BasicTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTracker.swift; sourceTree = "<group>"; };
 		CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTracker.swift; sourceTree = "<group>"; };
-		CD4368B12AE23F2600BD8BD1 /* ChildTrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTrackerItem.swift; sourceTree = "<group>"; };
 		CD4368B32AE23F3500BD8BD1 /* ChildTrackerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTrackerProtocol.swift; sourceTree = "<group>"; };
 		CD4368B52AE23F4700BD8BD1 /* ParentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentTracker.swift; sourceTree = "<group>"; };
 		CD4368B72AE23F5400BD8BD1 /* ParentTrackerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentTrackerProtocol.swift; sourceTree = "<group>"; };
@@ -1384,7 +1382,6 @@
 				50D61E5C2AA4904F00A926EC /* FeedTracking.swift */,
 				CD4368AD2AE23ED400BD8BD1 /* BasicTracker.swift */,
 				CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */,
-				CD4368B12AE23F2600BD8BD1 /* ChildTrackerItem.swift */,
 				CD4368B32AE23F3500BD8BD1 /* ChildTrackerProtocol.swift */,
 				CD4368B52AE23F4700BD8BD1 /* ParentTracker.swift */,
 				CD4368B72AE23F5400BD8BD1 /* ParentTrackerProtocol.swift */,
@@ -2751,7 +2748,6 @@
 				CD82A2592A71775E00111034 /* UnreadTracker.swift in Sources */,
 				CDEBC32E2A9A583900518D9D /* Post Tracker.swift in Sources */,
 				CD4368CA2AE2428C00BD8BD1 /* ContentIdentifiable.swift in Sources */,
-				CD4368B22AE23F2600BD8BD1 /* ChildTrackerItem.swift in Sources */,
 				CD3FBCE32A4A844800B2063F /* Replies Feed View.swift in Sources */,
 				637218652A3A2AAD008C4816 /* GetPosts.swift in Sources */,
 				E4DDB4342A819C8000B3A7E0 /* QuickLookView.swift in Sources */,

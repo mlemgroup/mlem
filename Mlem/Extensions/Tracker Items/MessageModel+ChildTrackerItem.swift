@@ -6,7 +6,7 @@
 //
 import Foundation
 
-extension MessageModel: ChildTrackerItem, InboxItem {
+extension MessageModel: InboxItem {
     typealias ParentType = AnyInboxItem
     
     var published: Date { privateMessage.published }

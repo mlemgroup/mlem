@@ -73,7 +73,7 @@ import SwiftUI
 
             if context.environment.isEnabled {
                 DispatchQueue.main.async {
-                    if (isInitialFirstResponder ?? isFocused?.value) ?? false {
+                    if (isInitialFirstResponder ?? isFocused?.wrappedValue) ?? false {
                         uiView.becomeFirstResponder()
                     }
                 }
@@ -138,9 +138,9 @@ import SwiftUI
                         if let isFocused, uiView.window != nil {
                             uiView.isFirstResponderBinding = isFocused
 
-                            if isFocused.value, !uiView.isFirstResponder {
+                            if isFocused.wrappedValue, !uiView.isFirstResponder {
                                 uiView.becomeFirstResponder()
-                            } else if !isFocused.value, uiView.isFirstResponder {
+                            } else if !isFocused.wrappedValue, uiView.isFirstResponder {
                                 uiView.resignFirstResponder()
                             }
                         }
@@ -157,7 +157,7 @@ import SwiftUI
             }
         
             public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-                base.isFocused?.removeDuplicates().value = true
+                base.isFocused?.removeDuplicates().wrappedValue = true
             
                 base.onEditingChanged(true)
             }
@@ -171,7 +171,7 @@ import SwiftUI
             }
 
             public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-                base.isFocused?.removeDuplicates().value = false
+                base.isFocused?.removeDuplicates().wrappedValue = false
             
                 base.onEditingChanged(false)
             }
@@ -179,7 +179,7 @@ import SwiftUI
             public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
                 searchBar.endEditing(true)
             
-                base.isFocused?.removeDuplicates().value = false
+                base.isFocused?.removeDuplicates().wrappedValue = false
 
                 base.onCancel()
             }
@@ -270,7 +270,7 @@ import SwiftUI
             override func becomeFirstResponder() -> Bool {
                 let result = super.becomeFirstResponder()
         
-                isFirstResponderBinding?.value = result
+                isFirstResponderBinding?.wrappedValue = result
         
                 return result
             }
@@ -279,7 +279,7 @@ import SwiftUI
             override func resignFirstResponder() -> Bool {
                 let result = super.resignFirstResponder()
         
-                isFirstResponderBinding?.value = !result
+                isFirstResponderBinding?.wrappedValue = !result
         
                 return result
             }
