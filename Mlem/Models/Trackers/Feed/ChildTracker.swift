@@ -13,7 +13,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: BasicTracker<Ite
     func toParent(item: Item) -> ParentItem {
         assertionFailure("This method must be implemented by the inheriting class")
         // swiftlint:disable force_cast
-        return item as! ParentItem // this line is only here to make the compiler happy
+        return item as! ParentItem // this cursed and wretched line is only here to make the compiler happy
         // swiftlint:enable force_cast
     }
     
