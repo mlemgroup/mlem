@@ -23,7 +23,7 @@ jobs:
       uses: "./.github/actions/ci_xcodebuild"
       with:
         xcode_version: "15.0.1"
-        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 14,OS=17.0"
+        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 14,OS=17.0.1"
         xcodebuild_action: "build"
 
   Test:
@@ -37,5 +37,5 @@ jobs:
       uses: "./.github/actions/ci_xcodebuild"
       with:
         xcode_version: "15.0.1"
-        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 14,OS=17.0"
+        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 14,OS=17.0.1"
         xcodebuild_action: "test"
