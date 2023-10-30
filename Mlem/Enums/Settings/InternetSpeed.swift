@@ -17,7 +17,7 @@ enum InternetSpeed: String, SettingsOptions {
     var pageSize: Int {
         switch self {
         case .slow: return 25
-        case .fast: return 10 // CHANGEME
+        case .fast: return 50
         }
     }
 }
