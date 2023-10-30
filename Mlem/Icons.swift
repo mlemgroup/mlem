@@ -124,7 +124,6 @@ struct Icons {
     static let hide: String = "eye.slash"
     static let show: String = "eye"
     static let blurNsfw: String = "eye.trianglebadge.exclamationmark"
-    static let endOfFeed: String = "figure.climbing"
     static let noContent: String = "binoculars"
     static let noPosts: String = "text.bubble"
     static let time: String = "clock"
@@ -133,6 +132,10 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
+    
+    // end of feed
+    static let endOfFeedHobbit: String = "figure.climbing"
+    static let endOfFeedCartoon: String = "figure.wave"
     
     // common operations
     static let share: String = "square.and.arrow.up"

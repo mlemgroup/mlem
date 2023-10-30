@@ -13,8 +13,8 @@ class BasicTracker<Item: TrackerItem> {
     // loading state
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var page: Int = 0 // number of the most recently loaded page--0 indicates no content
-    private var loadThreshold: ContentModelIdentifier?
-    private(set) var loadingState: LoadingState = .idle
+    private var threshold: ContentModelIdentifier?
+    @Published private(set) var loadingState: LoadingState = .idle
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
 
     // loading behavior governors
@@ -25,8 +25,53 @@ class BasicTracker<Item: TrackerItem> {
         self.internetSpeed = internetSpeed
         self.sortType = sortType
     }
+    
+    // MARK: - Main actor methods
+    
+    @MainActor
+    func update(with item: Item) {
+        guard let index = items.firstIndex(where: { $0.uid == item.uid }) else {
+            return
+        }
+
+        items[index] = item
+    }
+    
+    @MainActor
+    func setItems(newItems: [Item]) {
+        items = newItems
+        updateThreshold()
+    }
+    
+    /// Adds the given items to the items array
+    /// - Parameter toAdd: items to add
+    @MainActor
+    private func addItems(toAdd: [Item]) async {
+        items.append(contentsOf: toAdd)
+        updateThreshold()
+    }
+    
+    @MainActor
+    func setLoading(_ newState: LoadingState) {
+        loadingState = newState
+    }
 
     // MARK: - External methods
+    
+    /// If the given item is the loading threshold item, loads more content
+    /// This should be called as an .onAppear of every item in a feed that should support infinite scrolling
+    func loadIfThreshold(_ item: Item) {
+        if loadingState != .done, item.uid == threshold {
+            // this is a synchronous function that wraps the loading as a task so that the task is attached to the tracker itself, not the view that calls it, and is therefore safe from being cancelled by view redraws
+            Task(priority: .userInitiated) {
+                try await loadNextPage()
+            }
+        }
+    }
+    
+    func loadNextPage() async throws {
+        try await loadPage(page + 1)
+    }
     
     func refresh(clearBeforeRefresh: Bool) async throws {
         try await loadPage(1, clearBeforeRefresh: clearBeforeRefresh)
@@ -50,8 +95,6 @@ class BasicTracker<Item: TrackerItem> {
     func loadPage(_ pageToLoad: Int, clearBeforeRefresh: Bool = false) async throws {
         assert(!clearBeforeRefresh || pageToLoad == 1, "clearBeforeRefresh cannot be true if not loading page 1")
 
-        print("[\(Item.self) tracker] attempting to load page \(pageToLoad)")
-
         // only one thread may execute this function at a time
         await loadingSemaphore.wait()
         defer { loadingSemaphore.signal() }
@@ -71,8 +114,12 @@ class BasicTracker<Item: TrackerItem> {
                 // if not clearing before reset, still clear these fields in order to sanitize the loading state--we just keep the items in place until we have received new ones, which will be set below
                 page = 0
                 ids = .init(minimumCapacity: 1000)
-                loadingState = .idle
+                await setLoading(.idle)
             }
+        }
+        
+        if pageToLoad > 1 {
+            print("[\(Item.self) tracker] loading page \(pageToLoad)")
         }
         
         // do not continue to load if done. this check has to come after the clear/refresh cases because those cases can be called on a .done tracker
@@ -90,12 +137,11 @@ class BasicTracker<Item: TrackerItem> {
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
             let fetchedItems = try await fetchPage(page: page + 1)
-            print("found \(fetchedItems.count) items")
             page += 1
             
             if fetchedItems.isEmpty {
-                print("[\(Item.self) tracker] received no items, loading must be finished")
-                loadingState = .done
+                print("[\(Item.self) tracker] fetch returned no items, setting loading state to done")
+                await setLoading(.done)
                 break
             }
             
@@ -105,14 +151,14 @@ class BasicTracker<Item: TrackerItem> {
         let allowedItems = storeIdsAndDedupe(newItems: newItems)
 
         // if loading page 1, we can just do a straight assignment regardless of whether we did clearBeforeReset
-        if page == 1 {
+        if pageToLoad == 1 {
             await setItems(newItems: allowedItems)
         } else {
-            await add(toAdd: allowedItems)
+            await addItems(toAdd: allowedItems)
         }
 
         if loadingState != .done {
-            loadingState = .idle
+            await setLoading(.idle)
         }
     }
 
@@ -126,15 +172,6 @@ class BasicTracker<Item: TrackerItem> {
         assertionFailure("This method must be implemented by the inheriting class")
         return []
     }
-
-    @MainActor
-    func update(with item: Item) {
-        guard let index = items.firstIndex(where: { $0.uid == item.uid }) else {
-            return
-        }
-
-        items[index] = item
-    }
     
     /// Filters out items according to the given filtering function.
     /// - Parameter filter: function that, given an Item, returns true if the item should REMAIN in the tracker
@@ -142,9 +179,7 @@ class BasicTracker<Item: TrackerItem> {
         let newItems = items.filter(filter)
         let removed = items.count - newItems.count
         
-        await MainActor.run {
-            items = newItems
-        }
+        await setItems(newItems: newItems)
         
         return removed
     }
@@ -157,27 +192,22 @@ class BasicTracker<Item: TrackerItem> {
         return accepted
     }
 
-    @MainActor
-    func setItems(newItems: [Item]) {
-        print("[\(Item.self) tracker] setting items with \(newItems.count)")
-        items = newItems
-    }
-    
-    /// Adds the given items to the items array
-    /// - Parameter toAdd: items to add
-    @MainActor
-    private func add(toAdd: [Item]) async {
-        items.append(contentsOf: toAdd)
-    }
-
     /// Clears the tracker to an empty state.
     /// **WARNING:**
     /// **DO NOT** call this method from anywhere but loadPage! This is *purely* a helper function for loadPage and *will* lead to unexpected behavior if called elsewhere!
     private func clear() async {
-        print("[\(Item.self) tracker] clearing tracker (removing \(items.count) items)")
         ids = .init(minimumCapacity: 1000)
         page = 0
-        loadingState = .idle
+        await setLoading(.idle)
         await setItems(newItems: .init())
+    }
+    
+    private func updateThreshold() {
+        if items.isEmpty {
+            threshold = nil
+        } else {
+            let thresholdIndex = max(0, items.count + AppConstants.infiniteLoadThresholdOffset)
+            threshold = items[thresholdIndex].uid
+        }
     }
 }

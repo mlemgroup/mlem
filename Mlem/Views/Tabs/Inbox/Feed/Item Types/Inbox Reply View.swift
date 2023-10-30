@@ -60,6 +60,11 @@ struct InboxReplyView: View {
                     Text(reply.votes.total.description)
                 }
                 .foregroundColor(reply.votes.myVote.color ?? .secondary)
+                .onTapGesture {
+                    Task(priority: .userInitiated) {
+                        await reply.vote(inputOp: .upvote, unreadTracker: unreadTracker)
+                    }
+                }
                 
                 EllipsisMenu(
                     size: AppConstants.largeAvatarSize,

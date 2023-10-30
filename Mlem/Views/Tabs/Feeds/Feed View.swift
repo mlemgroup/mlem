@@ -136,7 +136,8 @@ struct FeedView: View {
                         feedPost(for: post)
                     }
                     
-                    EndOfFeedView(isLoading: isLoading && postTracker.page > 1)
+                    // TODO: update to use proper LoadingState
+                    EndOfFeedView(loadingState: (isLoading && postTracker.page > 1 ? .loading : .done), viewType: .hobbit)
                 }
             }
         }

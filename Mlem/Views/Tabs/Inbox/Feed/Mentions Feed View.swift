@@ -12,20 +12,11 @@ struct MentionsFeedView: View {
     @ObservedObject var mentionTracker: MentionTracker
     
     var body: some View {
-        Group {
-            if mentionTracker.items.isEmpty, mentionTracker.loadingState != .loading {
-                noMentionsView()
-            } else {
-                LazyVStack(spacing: 0) {
-                    mentionsListView()
-                    
-                    if mentionTracker.loadingState != .loading {
-                        LoadingView(whatIsLoading: .mentions)
-                    } else {
-                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
-                    }
-                }
+        if mentionTracker.loadingState == .done, mentionTracker.items.isEmpty {
+            noMentionsView()
+        } else {
+            LazyVStack(spacing: 0) {
+                mentionsListView()
             }
         }
     }
@@ -46,9 +37,14 @@ struct MentionsFeedView: View {
         ForEach(mentionTracker.items, id: \.uid) { mention in
             VStack(spacing: 0) {
                 InboxMentionView(mention: mention)
+                    .onAppear {
+                        mentionTracker.loadIfThreshold(mention)
+                    }
                 
                 Divider()
             }
         }
+        
+        EndOfFeedView(loadingState: mentionTracker.loadingState, viewType: .cartoon)
     }
 }

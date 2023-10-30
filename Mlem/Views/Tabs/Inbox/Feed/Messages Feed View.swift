@@ -12,20 +12,11 @@ struct MessagesFeedView: View {
     @ObservedObject var messageTracker: MessageTracker
     
     var body: some View {
-        Group {
-            if messageTracker.items.isEmpty, messageTracker.loadingState != .loading {
-                noMessagesView()
-            } else {
-                LazyVStack(spacing: 0) {
-                    messagesListView()
-                    
-                    if messageTracker.loadingState == .loading {
-                        LoadingView(whatIsLoading: .messages)
-                    } else {
-                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
-                    }
-                }
+        if messageTracker.loadingState == .done, messageTracker.items.isEmpty {
+            noMessagesView()
+        } else {
+            LazyVStack(spacing: 0) {
+                messagesListView()
             }
         }
     }
@@ -46,9 +37,14 @@ struct MessagesFeedView: View {
         ForEach(messageTracker.items, id: \.uid) { message in
             VStack(spacing: 0) {
                 InboxMessageView(message: message)
+                    .onAppear {
+                        messageTracker.loadIfThreshold(message)
+                    }
                 
                 Divider()
             }
         }
+        
+        EndOfFeedView(loadingState: messageTracker.loadingState, viewType: .cartoon)
     }
 }

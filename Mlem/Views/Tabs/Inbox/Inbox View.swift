@@ -163,7 +163,7 @@ struct InboxView: View {
             }
             .fancyTabScrollCompatible()
             .refreshable {
-                // wrapping refresh in its own task prevents it from being cancelled by view redraws
+                // wrapping in task so view redraws don't cancel
                 // awaiting the value makes the refreshable indicator properly wait for the call to finish
                 await Task {
                     await refresh()
@@ -171,7 +171,10 @@ struct InboxView: View {
             }
         }
         .task {
-            await refresh()
+            // wrapping in task so view redraws don't cancel
+            Task(priority: .userInitiated) {
+                await refresh()
+            }
         }
     }
     

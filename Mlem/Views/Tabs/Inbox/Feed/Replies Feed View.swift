@@ -12,24 +12,11 @@ struct RepliesFeedView: View {
     @ObservedObject var replyTracker: ReplyTracker
     
     var body: some View {
-        Group {
-            if replyTracker.items.isEmpty {
-                if replyTracker.loadingState == .loading {
-                    LoadingView(whatIsLoading: .replies)
-                } else {
-                    noRepliesView()
-                }
-            } else {
-                LazyVStack(spacing: 0) {
-                    repliesListView()
-                    
-                    if replyTracker.loadingState == .loading {
-                        LoadingView(whatIsLoading: .replies)
-                    } else {
-                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
-                    }
-                }
+        if replyTracker.loadingState == .done, replyTracker.items.isEmpty {
+            noRepliesView()
+        } else {
+            LazyVStack(spacing: 0) {
+                repliesListView()
             }
         }
     }
@@ -50,9 +37,14 @@ struct RepliesFeedView: View {
         ForEach(replyTracker.items, id: \.uid) { reply in
             VStack(spacing: 0) {
                 InboxReplyView(reply: reply)
+                    .onAppear {
+                        replyTracker.loadIfThreshold(reply)
+                    }
 
                 Divider()
             }
         }
+        
+        EndOfFeedView(loadingState: replyTracker.loadingState, viewType: .cartoon)
     }
 }

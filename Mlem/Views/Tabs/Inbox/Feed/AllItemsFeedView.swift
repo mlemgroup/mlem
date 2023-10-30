@@ -47,6 +47,8 @@ struct AllItemsFeedView: View {
                 Divider()
             }
         }
+        
+        EndOfFeedView(loadingState: inboxTracker.loadingState, viewType: .cartoon)
     }
     
     @ViewBuilder
@@ -60,6 +62,9 @@ struct AllItemsFeedView: View {
             case let .reply(reply):
                 InboxReplyView(reply: reply)
             }
+        }
+        .onAppear {
+            inboxTracker.loadIfThreshold(item)
         }
     }
 }

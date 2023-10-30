@@ -9,7 +9,7 @@ import Foundation
 protocol ParentTrackerProtocol: AnyObject {
     associatedtype Item: TrackerItem
 
-    func shouldLoadContentAfter(_ item: Item) -> Bool
+    func loadIfThreshold(_ item: Item)
     
     func refresh(clearBeforeFetch: Bool) async
 
