@@ -1,5 +1,5 @@
 //
-//  ReplyModel+ChildTrackerItem.swift
+//  ReplyModel+InboxItem.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-10-16.
@@ -14,15 +14,4 @@ extension ReplyModel: InboxItem {
     var creatorId: Int { comment.creatorId }
     
     var read: Bool { commentReply.read }
-
-    func toParent() -> ParentType {
-        .reply(self)
-    }
-
-    func sortVal(sortType: TrackerSortType) -> TrackerSortVal {
-        switch sortType {
-        case .published:
-            return .published(commentReply.published)
-        }
-    }
 }

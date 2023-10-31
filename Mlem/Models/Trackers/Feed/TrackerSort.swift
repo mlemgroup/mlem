@@ -25,7 +25,7 @@ enum TrackerSortVal: Comparable {
     
     static func < (lhs: TrackerSortVal, rhs: TrackerSortVal) -> Bool {
         guard typeEquals(lhs: lhs, rhs: rhs) else {
-            assertionFailure("Compare oncalled on trackersortvals with different types")
+            assertionFailure("Compare called on trackersortvals with different types")
             return true
         }
         
