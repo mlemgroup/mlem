@@ -7,7 +7,7 @@
 import Foundation
 import Semaphore
 
-class BasicTracker<Item: TrackerItem> {
+class BasicTracker<Item: TrackerItem>: ObservableObject {
     @Published var items: [Item] = .init()
 
     // loading state
@@ -169,8 +169,7 @@ class BasicTracker<Item: TrackerItem> {
     ///   - page: page number to fetch
     /// - Returns: requested page of items
     func fetchPage(page: Int) async throws -> [Item] {
-        assertionFailure("This method must be implemented by the inheriting class")
-        return []
+        preconditionFailure("This method must be implemented by the inheriting class")
     }
     
     /// Filters out items according to the given filtering function.

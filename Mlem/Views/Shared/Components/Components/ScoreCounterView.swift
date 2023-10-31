@@ -17,24 +17,13 @@ struct ScoreCounterView: View {
     let upvote: () async -> Void
     let downvote: () async -> Void
 
-    var scoreColor: Color {
-        switch vote {
-        case .upvote:
-            return Color.upvoteColor
-        case .resetVote:
-            return Color.primary
-        case .downvote:
-            return Color.downvoteColor
-        }
-    }
-
     var body: some View {
         HStack(spacing: 6) {
             UpvoteButtonView(vote: vote, upvote: upvote)
                 .offset(x: AppConstants.postAndCommentSpacing)
             
             Text(String(score))
-                .foregroundColor(scoreColor)
+                .foregroundColor(vote.color ?? .primary)
             
             if siteInformation.enableDownvotes {
                 DownvoteButtonView(vote: vote, downvote: downvote)

@@ -6,15 +6,12 @@
 //
 import Foundation
 
-class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: BasicTracker<Item>, ChildTrackerProtocol, ObservableObject {
+class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: BasicTracker<Item>, ChildTrackerProtocol {
     private weak var parentTracker: (any ParentTrackerProtocol)?
     private var cursor: Int = 0
 
     func toParent(item: Item) -> ParentItem {
-        assertionFailure("This method must be implemented by the inheriting class")
-        // swiftlint:disable force_cast
-        return item as! ParentItem // this cursed and wretched line is only here to make the compiler happy
-        // swiftlint:enable force_cast
+        preconditionFailure("This method must be implemented by the inheriting class")
     }
     
     func setParentTracker(_ newParent: any ParentTrackerProtocol) {

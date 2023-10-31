@@ -142,7 +142,7 @@ extension ReplyModel {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         
         // store original state
-        let originalCommentReply = APICommentReply(from: commentReply)
+        let originalCommentReply = commentReply
         
         // state fake
         await setCommentReply(APICommentReply(from: commentReply, read: !commentReply.read))

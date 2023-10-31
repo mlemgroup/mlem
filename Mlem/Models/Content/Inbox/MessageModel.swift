@@ -53,7 +53,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
         hapticManager.play(haptic: .gentleSuccess, priority: .low)
         
         // store original state
-        let originalPrivateMessage = APIPrivateMessage(from: privateMessage)
+        let originalPrivateMessage = privateMessage
         
         // state fake
         await setPrivateMessage(APIPrivateMessage(from: privateMessage, read: !privateMessage.read))

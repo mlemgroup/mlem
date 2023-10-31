@@ -6,15 +6,15 @@
 //
 import Foundation
 
-protocol ChildTrackerProtocol {
+protocol ChildTrackerProtocol: AnyObject {
     associatedtype Item: TrackerItem
     associatedtype ParentItem: TrackerItem
 
     // stream support methods
     
-    mutating func setParentTracker(_ newParent: any ParentTrackerProtocol)
+    func setParentTracker(_ newParent: any ParentTrackerProtocol)
 
-    mutating func consumeNextItem() -> ParentItem?
+    func consumeNextItem() -> ParentItem?
 
     func nextItemSortVal(sortType: TrackerSortType) async throws -> TrackerSortVal?
     

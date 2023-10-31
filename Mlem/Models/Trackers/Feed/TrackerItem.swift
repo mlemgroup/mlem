@@ -6,10 +6,6 @@
 //
 import Foundation
 
-protocol TrackerSortable {
-    func shouldSortBefore(_ other: Self?) -> Bool
-}
-
 protocol TrackerItem: Equatable {
     var uid: ContentModelIdentifier { get }
     func sortVal(sortType: TrackerSortType) -> TrackerSortVal

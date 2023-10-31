@@ -25,13 +25,12 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         self.sortType = sortType
         self.childTrackers = childTrackers
 
-        for var child in self.childTrackers {
+        for child in self.childTrackers {
             child.setParentTracker(self)
         }
     }
 
     func addChildTracker(_ newChild: some ChildTrackerProtocol) {
-        var newChild = newChild
         newChild.setParentTracker(self)
     }
     
@@ -186,7 +185,7 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
             )
         }
 
-        if var trackerToConsume {
+        if let trackerToConsume {
             guard let nextItem = trackerToConsume.consumeNextItem() as? Item else {
                 assertionFailure("Could not convert child item to Item!")
                 return nil
