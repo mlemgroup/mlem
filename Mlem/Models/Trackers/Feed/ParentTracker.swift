@@ -7,11 +7,13 @@
 
 import Dependencies
 import Foundation
+import Semaphore
 
 class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol {
     @Dependency(\.errorHandler) var errorHandler
 
     private var childTrackers: [any ChildTrackerProtocol] = .init()
+    private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
 
     init(internetSpeed: InternetSpeed, sortType: TrackerSortType, childTrackers: [any ChildTrackerProtocol]) {
         self.childTrackers = childTrackers
@@ -108,6 +110,10 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     
     private func fetchNextItems(numItems: Int) async -> [Item] {
         assert(numItems > abs(AppConstants.infiniteLoadThresholdOffset), "cannot load fewer items than infinite load offset")
+        
+        // only one thread may execute this function at a time
+        await loadingSemaphore.wait()
+        defer { loadingSemaphore.signal() }
         
         await setLoading(.loading)
 

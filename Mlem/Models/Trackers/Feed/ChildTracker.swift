@@ -19,7 +19,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
 
     func consumeNextItem() -> ParentItem? {
-        assert(cursor < items.count, "consumeNextItem called on a tracker without a next item!")
+        assert(cursor < items.count, "consumeNextItem called on a tracker without a next item (cursor: \(cursor), count: \(items.count))!")
 
         if cursor < items.count {
             cursor += 1
@@ -42,7 +42,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
 
             // otherwise, wait for the next page to load and try to return the first value
             // if the next page is already loading, this call to loadNextPage will be noop, but still wait until that load completes thanks to the semaphore
-            try await loadNextPage()
+            await loadNextPage()
             return cursor < items.count ? items[cursor].sortVal(sortType: sortType) : nil
         }
     }
