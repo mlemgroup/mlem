@@ -6,7 +6,7 @@
 //
 import Foundation
 
-class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: BasicTracker<Item>, ChildTrackerProtocol {
+class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<Item>, ChildTrackerProtocol {
     private weak var parentTracker: (any ParentTrackerProtocol)?
     private var cursor: Int = 0
 
@@ -74,7 +74,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: BasicTracker<Ite
         let removed = items.count - newItems.count
         
         cursor = 0
-        await setItems(newItems: newItems)
+        await setItems(newItems)
         
         return removed
     }

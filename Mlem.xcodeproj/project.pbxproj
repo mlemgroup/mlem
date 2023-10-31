@@ -348,7 +348,7 @@
 		CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE42A4A89B900B2063F /* Mentions Feed View.swift */; };
 		CD3FBCE72A4A8CE300B2063F /* Messages Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE62A4A8CE300B2063F /* Messages Feed View.swift */; };
 		CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE82A4B482700B2063F /* Generic Merge.swift */; };
-		CD4368AE2AE23ED400BD8BD1 /* BasicTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368AD2AE23ED400BD8BD1 /* BasicTracker.swift */; };
+		CD4368AE2AE23ED400BD8BD1 /* StandardTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368AD2AE23ED400BD8BD1 /* StandardTracker.swift */; };
 		CD4368B02AE23F1400BD8BD1 /* ChildTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */; };
 		CD4368B42AE23F3500BD8BD1 /* ChildTrackerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368B32AE23F3500BD8BD1 /* ChildTrackerProtocol.swift */; };
 		CD4368B62AE23F4700BD8BD1 /* ParentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368B52AE23F4700BD8BD1 /* ParentTracker.swift */; };
@@ -852,7 +852,7 @@
 		CD3FBCE42A4A89B900B2063F /* Mentions Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mentions Feed View.swift"; sourceTree = "<group>"; };
 		CD3FBCE62A4A8CE300B2063F /* Messages Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Messages Feed View.swift"; sourceTree = "<group>"; };
 		CD3FBCE82A4B482700B2063F /* Generic Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Generic Merge.swift"; sourceTree = "<group>"; };
-		CD4368AD2AE23ED400BD8BD1 /* BasicTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTracker.swift; sourceTree = "<group>"; };
+		CD4368AD2AE23ED400BD8BD1 /* StandardTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTracker.swift; sourceTree = "<group>"; };
 		CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTracker.swift; sourceTree = "<group>"; };
 		CD4368B32AE23F3500BD8BD1 /* ChildTrackerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTrackerProtocol.swift; sourceTree = "<group>"; };
 		CD4368B52AE23F4700BD8BD1 /* ParentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentTracker.swift; sourceTree = "<group>"; };
@@ -1388,7 +1388,7 @@
 				50F830F72A4C92BF00D67099 /* FeedTrackerItemProviding.swift */,
 				50F830F92A4C935C00D67099 /* FeedTracker.swift */,
 				50D61E5C2AA4904F00A926EC /* FeedTracking.swift */,
-				CD4368AD2AE23ED400BD8BD1 /* BasicTracker.swift */,
+				CD4368AD2AE23ED400BD8BD1 /* StandardTracker.swift */,
 				CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */,
 				CD4368B32AE23F3500BD8BD1 /* ChildTrackerProtocol.swift */,
 				CD4368B52AE23F4700BD8BD1 /* ParentTracker.swift */,
@@ -3160,7 +3160,7 @@
 				6372186E2A3A2AAD008C4816 /* DeleteComment.swift in Sources */,
 				CDB45C5C2AF1A1D800A1FF08 /* CoreTracker.swift in Sources */,
 				507573982A5AD60100AA7ABD /* ErrorAlert.swift in Sources */,
-				CD4368AE2AE23ED400BD8BD1 /* BasicTracker.swift in Sources */,
+				CD4368AE2AE23ED400BD8BD1 /* StandardTracker.swift in Sources */,
 				CDE6A8182A490AF20062D161 /* Inbox Mention View.swift in Sources */,
 				CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */,
 				CD4368DB2AE247B700BD8BD1 /* MentionTracker.swift in Sources */,

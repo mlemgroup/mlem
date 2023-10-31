@@ -8,22 +8,15 @@
 import Dependencies
 import Foundation
 
-class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol {
+class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol {
     @Dependency(\.errorHandler) var errorHandler
 
-    @Published var items: [Item] = .init()
-
     private var childTrackers: [any ChildTrackerProtocol] = .init()
-    private var internetSpeed: InternetSpeed
-    private var sortType: TrackerSortType
-    
-    var threshold: ContentModelIdentifier?
-    @Published var loadingState: LoadingState = .idle
 
     init(internetSpeed: InternetSpeed, sortType: TrackerSortType, childTrackers: [any ChildTrackerProtocol]) {
-        self.internetSpeed = internetSpeed
-        self.sortType = sortType
         self.childTrackers = childTrackers
+        
+        super.init(internetSpeed: internetSpeed, sortType: sortType)
 
         for child in self.childTrackers {
             child.setParentTracker(self)
@@ -33,43 +26,15 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
     func addChildTracker(_ newChild: some ChildTrackerProtocol) {
         newChild.setParentTracker(self)
     }
-    
-    /// If the given item is the loading threshold item, loads more content
-    /// This should be called as an .onAppear of every item in a feed that should support infinite scrolling
-    func loadIfThreshold(_ item: Item) {
-        if loadingState != .done, item.uid == threshold {
-            // this is a synchronous function that wraps the loading as a task so that the task is attached to the tracker itself, not the view that calls it, and is therefore safe from being cancelled by view redraws
-            Task(priority: .userInitiated) {
-                await loadNextPage()
-            }
-        }
-    }
 
     // MARK: main actor methods
     
     // note: all of the methods in here run on the main loop. items shouldn't be touched directly, but instead should be manipulated using these methods to ensure we aren't publishing updates from the background
-    
-    @MainActor
-    func addItems(_ newItems: [Item]) {
-        items.append(contentsOf: newItems)
-        updateThreshold()
-    }
-    
-    @MainActor
-    func setItems(_ newItems: [Item]) {
-        items = newItems
-        updateThreshold()
-    }
-    
-    @MainActor
-    func setLoading(_ newState: LoadingState) {
-        loadingState = newState
-    }
 
     // MARK: loading methods
     
     /// Loads the next page of items
-    func loadNextPage() async {
+    override func loadNextPage() async {
         guard loadingState != .done else {
             return
         }
@@ -137,15 +102,6 @@ class ParentTracker<Item: TrackerItem>: ObservableObject, ParentTrackerProtocol 
         let remaining = items.count - removed
         let newItems = await fetchNextItems(numItems: max(remaining, abs(AppConstants.infiniteLoadThresholdOffset) + 1))
         await setItems(newItems)
-    }
-    
-    private func updateThreshold() {
-        if items.isEmpty {
-            threshold = nil
-        } else {
-            let thresholdIndex = max(0, items.count + AppConstants.infiniteLoadThresholdOffset)
-            threshold = items[thresholdIndex].uid
-        }
     }
 
     // MARK: private loading methods

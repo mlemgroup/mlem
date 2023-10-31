@@ -1,30 +1,21 @@
 //
-//  BasicTracker.swift
+//  StandardTracker.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-10-15.
 //
+
+import Dependencies
 import Foundation
 import Semaphore
 
-class BasicTracker<Item: TrackerItem>: ObservableObject {
-    @Published var items: [Item] = .init()
-
+class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
+    @Dependency(\.errorHandler) var errorHandler
+    
     // loading state
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var page: Int = 0 // number of the most recently loaded page--0 indicates no content
-    private var threshold: ContentModelIdentifier?
-    @Published private(set) var loadingState: LoadingState = .idle
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
-
-    // loading behavior governors
-    var internetSpeed: InternetSpeed
-    var sortType: TrackerSortType
-
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortType) {
-        self.internetSpeed = internetSpeed
-        self.sortType = sortType
-    }
     
     // MARK: - Main actor methods
     
@@ -36,41 +27,15 @@ class BasicTracker<Item: TrackerItem>: ObservableObject {
 
         items[index] = item
     }
-    
-    @MainActor
-    func setItems(newItems: [Item]) {
-        items = newItems
-        updateThreshold()
-    }
-    
-    /// Adds the given items to the items array
-    /// - Parameter toAdd: items to add
-    @MainActor
-    private func addItems(toAdd: [Item]) async {
-        items.append(contentsOf: toAdd)
-        updateThreshold()
-    }
-    
-    @MainActor
-    func setLoading(_ newState: LoadingState) {
-        loadingState = newState
-    }
 
     // MARK: - External methods
     
-    /// If the given item is the loading threshold item, loads more content
-    /// This should be called as an .onAppear of every item in a feed that should support infinite scrolling
-    func loadIfThreshold(_ item: Item) {
-        if loadingState != .done, item.uid == threshold {
-            // this is a synchronous function that wraps the loading as a task so that the task is attached to the tracker itself, not the view that calls it, and is therefore safe from being cancelled by view redraws
-            Task(priority: .userInitiated) {
-                try await loadNextPage()
-            }
+    override func loadNextPage() async {
+        do {
+            try await loadPage(page + 1)
+        } catch {
+            errorHandler.handle(error)
         }
-    }
-    
-    func loadNextPage() async throws {
-        try await loadPage(page + 1)
     }
     
     func refresh(clearBeforeRefresh: Bool) async throws {
@@ -152,9 +117,9 @@ class BasicTracker<Item: TrackerItem>: ObservableObject {
 
         // if loading page 1, we can just do a straight assignment regardless of whether we did clearBeforeReset
         if pageToLoad == 1 {
-            await setItems(newItems: allowedItems)
+            await setItems(allowedItems)
         } else {
-            await addItems(toAdd: allowedItems)
+            await addItems(allowedItems)
         }
 
         if loadingState != .done {
@@ -178,7 +143,7 @@ class BasicTracker<Item: TrackerItem>: ObservableObject {
         let newItems = items.filter(filter)
         let removed = items.count - newItems.count
         
-        await setItems(newItems: newItems)
+        await setItems(newItems)
         
         return removed
     }
@@ -198,15 +163,6 @@ class BasicTracker<Item: TrackerItem>: ObservableObject {
         ids = .init(minimumCapacity: 1000)
         page = 0
         await setLoading(.idle)
-        await setItems(newItems: .init())
-    }
-    
-    private func updateThreshold() {
-        if items.isEmpty {
-            threshold = nil
-        } else {
-            let thresholdIndex = max(0, items.count + AppConstants.infiniteLoadThresholdOffset)
-            threshold = items[thresholdIndex].uid
-        }
+        await setItems(.init())
     }
 }
