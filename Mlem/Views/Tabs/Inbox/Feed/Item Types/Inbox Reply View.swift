@@ -20,8 +20,8 @@ struct InboxReplyView: View {
     
     var body: some View {
         NavigationLink(.lazyLoadPostLinkWithContext(.init(
-                   post: reply.post,
-                   scrollTarget: reply.comment.id
+            post: reply.post,
+            scrollTarget: reply.comment.id
         ))) {
             content
                 .padding(AppConstants.postAndCommentSpacing)
