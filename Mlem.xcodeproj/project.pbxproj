@@ -317,6 +317,7 @@
 		CD05E7792A4E381A0081D102 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7782A4E381A0081D102 /* PostSize.swift */; };
 		CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77E2A4F263B0081D102 /* Menu Function.swift */; };
 		CD05E7812A4F7A4B0081D102 /* Inbox Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7802A4F7A4B0081D102 /* Inbox Tracker.swift */; };
+		CD06123A2AF09FAB00BD0EC7 /* AlternativeIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0612392AF09FAB00BD0EC7 /* AlternativeIconLabel.swift */; };
 		CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */; };
 		CD1446182A58FC3B00610EF1 /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446172A58FC3B00610EF1 /* InfoStackView.swift */; };
 		CD14461B2A5A4B6D00610EF1 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */; };
@@ -800,6 +801,7 @@
 		CD05E7782A4E381A0081D102 /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CD05E77E2A4F263B0081D102 /* Menu Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Function.swift"; sourceTree = "<group>"; };
 		CD05E7802A4F7A4B0081D102 /* Inbox Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Tracker.swift"; sourceTree = "<group>"; };
+		CD0612392AF09FAB00BD0EC7 /* AlternativeIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIconLabel.swift; sourceTree = "<group>"; };
 		CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Haptic Manager.swift"; sourceTree = "<group>"; };
 		CD1446172A58FC3B00610EF1 /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
@@ -1060,6 +1062,7 @@
 			children = (
 				CD4E98A22A69BEDC0026C4D9 /* IconSettingsView.swift */,
 				CD4E98A02A69BE980026C4D9 /* AlternativeIconCell.swift */,
+				CD0612392AF09FAB00BD0EC7 /* AlternativeIconLabel.swift */,
 			);
 			path = Icon;
 			sourceTree = "<group>";
@@ -2987,6 +2990,7 @@
 				03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */,
 				CDF842642A49EAFA00723DA0 /* GetPersonMentions.swift in Sources */,
 				6D405B052A43E82300C65F9C /* Sidebar Header.swift in Sources */,
+				CD06123A2AF09FAB00BD0EC7 /* AlternativeIconLabel.swift in Sources */,
 				50811B302A92049B006BA3F2 /* APICommunityView+Mock.swift in Sources */,
 				CDA217F32A63202600BDA173 /* NSFW Overlay.swift in Sources */,
 				6372184E2A3A2AAD008C4816 /* APIPersonView.swift in Sources */,
