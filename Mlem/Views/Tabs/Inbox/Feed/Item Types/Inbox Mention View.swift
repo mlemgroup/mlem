@@ -17,19 +17,25 @@ struct InboxMentionView: View {
     var iconName: String { mention.personMention.read ? "quote.bubble" : "quote.bubble.fill" }
     
     var body: some View {
-        content
-            .padding(AppConstants.postAndCommentSpacing)
-            .background(Color(uiColor: .systemBackground))
-            .contentShape(Rectangle())
-            .addSwipeyActions(mention.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
-            .contextMenu {
-                ForEach(mention.menuFunctions(
-                    unreadTracker: unreadTracker,
-                    editorTracker: editorTracker
-                )) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: nil)
+        NavigationLink(.lazyLoadPostLinkWithContext(.init(
+            post: mention.post,
+            scrollTarget: mention.comment.id
+        ))) {
+            content
+                .padding(AppConstants.postAndCommentSpacing)
+                .background(Color(uiColor: .systemBackground))
+                .contentShape(Rectangle())
+                .addSwipeyActions(mention.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
+                .contextMenu {
+                    ForEach(mention.menuFunctions(
+                        unreadTracker: unreadTracker,
+                        editorTracker: editorTracker
+                    )) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: nil)
+                    }
                 }
-            }
+        }
+        .buttonStyle(EmptyButtonStyle())
     }
     
     var content: some View {

@@ -19,19 +19,25 @@ struct InboxReplyView: View {
     var iconName: String { reply.commentReply.read ? "arrowshape.turn.up.right" : "arrowshape.turn.up.right.fill" }
     
     var body: some View {
-        content
-            .padding(AppConstants.postAndCommentSpacing)
-            .background(Color(uiColor: .systemBackground))
-            .contentShape(Rectangle())
-            .addSwipeyActions(reply.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
-            .contextMenu {
-                ForEach(reply.menuFunctions(
-                    unreadTracker: unreadTracker,
-                    editorTracker: editorTracker
-                )) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: nil)
+        NavigationLink(.lazyLoadPostLinkWithContext(.init(
+                   post: reply.post,
+                   scrollTarget: reply.comment.id
+        ))) {
+            content
+                .padding(AppConstants.postAndCommentSpacing)
+                .background(Color(uiColor: .systemBackground))
+                .contentShape(Rectangle())
+                .addSwipeyActions(reply.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
+                .contextMenu {
+                    ForEach(reply.menuFunctions(
+                        unreadTracker: unreadTracker,
+                        editorTracker: editorTracker
+                    )) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: nil)
+                    }
                 }
-            }
+        }
+        .buttonStyle(EmptyButtonStyle())
     }
     
     var content: some View {

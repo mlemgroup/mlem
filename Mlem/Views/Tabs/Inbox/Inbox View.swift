@@ -145,7 +145,7 @@ struct InboxView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             .padding(.top, AppConstants.postAndCommentSpacing)
             
-            ScrollView(showsIndicators: true) {
+            ScrollView(showsIndicators: false) {
                 if errorOccurred {
                     errorView()
                 } else {
