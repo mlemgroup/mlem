@@ -151,7 +151,7 @@ struct UserFeedView: View {
                 } else {
                     // If we unfavorited something while
                     // here we don't want it showing up in our feed
-                    return $0.creator.id == userID
+                    return $0.creator.userId == userID
                 }
             }
         
