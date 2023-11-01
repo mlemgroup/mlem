@@ -17,7 +17,10 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     func setParentTracker(_ newParent: any ParentTrackerProtocol) {
         parentTracker = newParent
     }
-
+    
+    /// Gets the next item in the feed stream and increments the cursor
+    /// **WARNING** this is NOT a thread-safe function! Only one thread at a time may call this function!
+    /// - Returns: next item in the feed stream
     func consumeNextItem() -> ParentItem? {
         assert(cursor < items.count, "consumeNextItem called on a tracker without a next item (cursor: \(cursor), count: \(items.count))!")
 
@@ -29,6 +32,10 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
         return nil
     }
 
+    /// Gets the sort value of the next item in feed stream for a given sort type without affecting the cursor. The sort type must match the sort type of this tracker.
+    /// **WARNING** this is NOT a thread-safe function! Only one thread at a time may call this function!
+    /// - Parameter sortType: type of sorting being performed
+    /// - Returns: sorting value of the next tracker item corresponding to the given sort type
     func nextItemSortVal(sortType: TrackerSortType) async throws -> TrackerSortVal? {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
 
