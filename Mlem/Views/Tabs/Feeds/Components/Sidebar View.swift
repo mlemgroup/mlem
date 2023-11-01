@@ -13,29 +13,19 @@ struct CommunitySidebarView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     // parameters
-    let community: APICommunity
-    @State var communityDetails: GetCommunityResponse?
+    @State var community: CommunityModel
 
     @State private var selectionSection = 0
     var shouldShowCommunityHeaders: Bool = true
     @State private var errorMessage: String?
 
     var body: some View {
-        Section {
-            if let loadedDetails = communityDetails {
-                view(for: loadedDetails)
-            } else if let shownError = errorMessage {
-                errorView(errorDetails: shownError)
-            } else {
-                LoadingView(whatIsLoading: .communityDetails)
-            }
-        }
+        Section { view }
         .navigationTitle("Sidebar")
         .navigationBarTitleDisplayMode(.inline)
         .task(priority: .userInitiated) {
-            // Load community details if they weren't provided
-            // when we loaded
-            if communityDetails == nil {
+            // Load community details if they weren't provided already
+            if community.moderators == nil {
                 await loadCommunity()
             }
         }.refreshable {
@@ -46,9 +36,10 @@ struct CommunitySidebarView: View {
     private func loadCommunity() async {
         do {
             errorMessage = nil
-            communityDetails = try await communityRepository.loadDetails(for: community.id)
+            let communityDetails: GetCommunityResponse = try await communityRepository.loadDetails(for: community.communityId)
+            community = .init(from: communityDetails)
         } catch {
-            errorMessage = "We were unable to load this communities details, please try again."
+            errorMessage = "Unable to load community details, please try again."
             errorHandler.handle(error)
         }
     }
@@ -60,16 +51,15 @@ struct CommunitySidebarView: View {
         return formatter.localizedString(for: date, relativeTo: Date.now)
     }
     
-    @ViewBuilder
-    private func view(for communityDetails: GetCommunityResponse) -> some View {
+    var view: some View {
         ScrollView {
             CommunitySidebarHeader(
-                title: communityDetails.communityView.community.name,
-                subtitle: "@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)",
-                avatarSubtext: .constant("Created \(getRelativeTime(date: communityDetails.communityView.community.published))"),
-                bannerURL: shouldShowCommunityHeaders ? communityDetails.communityView.community.bannerUrl : nil,
-                avatarUrl: communityDetails.communityView.community.iconUrl,
-                label1: "\(communityDetails.communityView.counts.subscribers) Subscribers",
+                title: community.displayName,
+                subtitle: "@\(community.name)@\(community.communityUrl.host()!)",
+                avatarSubtext: .constant("Created \(getRelativeTime(date: community.creationDate))"),
+                bannerURL: shouldShowCommunityHeaders ? community.banner : nil,
+                avatarUrl: community.avatar,
+                label1: "\(community.subscriberCount ?? 0) Subscribers",
                 avatarType: .community
             )
             
@@ -81,29 +71,28 @@ struct CommunitySidebarView: View {
             .padding(.horizontal)
 
             if selectionSection == 0 {
-                if let description = communityDetails
-                    .communityView
-                    .community
-                    .description {
+                if let description = community.description {
                     MarkdownView(text: description, isNsfw: false).padding()
                 }
             } else if selectionSection == 1 {
                 VStack {
                     Divider()
-                    ForEach(communityDetails.moderators) { moderatorView in
-
-                        NavigationLink(.apiPerson(moderatorView.moderator)) {
-                            HStack {
-                                UserLabelView(
-                                    person: moderatorView.moderator,
-                                    serverInstanceLocation: .bottom,
-                                    overrideShowAvatar: true,
-                                    communityContext: communityDetails
-                                )
-                                Spacer()
-                            }.padding()
+                    if let moderators = community.moderators {
+                        ForEach(moderators) { moderatorView in
+                            
+                            NavigationLink(.apiPerson(moderatorView.moderator)) {
+                                HStack {
+                                    UserLabelView(
+                                        person: moderatorView.moderator,
+                                        serverInstanceLocation: .bottom,
+                                        overrideShowAvatar: true,
+                                        communityContext: community
+                                    )
+                                    Spacer()
+                                }.padding()
+                            }
+                            Divider()
                         }
-                        Divider()
                     }
                 }.padding(.top)
             }
@@ -153,15 +142,14 @@ struct SidebarPreview: PreviewProvider {
     static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
     
     static var previews: some View {
-        CommunitySidebarView(
-            community: previewCommunity,
-            communityDetails: .mock(
-                communityView: .mock(
-                    community: previewCommunity,
-                    subscribed: .subscribed
-                ),
-                moderators: .init(repeating: previewModerator, count: 11)
-            )
-        )
+        let model = CommunityModel(from: GetCommunityResponse.mock(
+            communityView: .mock(
+                community: previewCommunity,
+                subscribed: .subscribed
+            ),
+            moderators: .init(repeating: previewModerator, count: 11)
+        ))
+        
+        CommunitySidebarView(community: model)
     }
 }

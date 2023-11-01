@@ -26,7 +26,7 @@ extension FeedView {
         isLoading = true
         do {
             try await postTracker.loadNextPage(
-                communityId: community?.id,
+                communityId: community?.communityId,
                 sort: postSortType,
                 type: feedType,
                 filtering: filter
@@ -36,17 +36,21 @@ extension FeedView {
         }
     }
     
-    func refreshFeed() async {
+    @discardableResult
+    func refreshFeed() async -> Bool {
         // NOTE: refresh doesn't need to touch isLoading because that visual cue is handled by .refreshable
         do {
             try await postTracker.refresh(
-                communityId: community?.id,
+                communityId: community?.communityId,
                 sort: postSortType,
                 feedType: feedType,
                 filtering: filter
             )
+            errorDetails = nil
+            return true
         } catch {
             handle(error)
+            return false
         }
     }
     
@@ -56,7 +60,7 @@ extension FeedView {
         isLoading = true
         do {
             try await postTracker.refresh(
-                communityId: community?.id,
+                communityId: community?.communityId,
                 sort: postSortType,
                 feedType: feedType,
                 clearBeforeFetch: true,
@@ -68,18 +72,19 @@ extension FeedView {
     }
     
     // MARK: Community loading
-    
     func fetchCommunityDetails() async {
         if let community {
             do {
-                communityDetails = try await communityRepository.loadDetails(for: community.id)
+                let communityDetails: GetCommunityResponse = try await communityRepository.loadDetails(for: community.communityId)
+                self.community = .init(from: communityDetails)
             } catch {
                 errorHandler.handle(
                     .init(
                         title: "Could not load community information",
                         message: "The server might be overloaded.\nTry again later.",
                         underlyingError: error
-                    )
+                    ),
+                    showNoInternet: false
                 )
             }
         }
@@ -143,7 +148,8 @@ extension FeedView {
     }
     
     // swiftlint:disable function_body_length
-    func genCommunitySpecificMenuFunctions(for community: APICommunity) -> [MenuFunction] {
+    func genCommunitySpecificMenuFunctions() -> [MenuFunction] {
+        guard let community else { return [] }
         var ret: [MenuFunction] = .init()
         // new post
         ret.append(MenuFunction.standardMenuFunction(
@@ -159,9 +165,8 @@ extension FeedView {
         })
         
         // subscribe/unsubscribe
-        if let communityDetails {
-            let isSubscribed: Bool = communityDetails.communityView.subscribed.rawValue == "Subscribed"
-            let (subscribeText, subscribeSymbol, subscribePrompt) = isSubscribed
+        if let subscribed = community.subscribed {
+            let (subscribeText, subscribeSymbol, subscribePrompt) = subscribed
                 ? ("Unsubscribe", Icons.unsubscribe, "Really unsubscribe from \(community.name)?")
                 : ("Subscribe", Icons.subscribe, nil)
             ret.append(MenuFunction.standardMenuFunction(
@@ -171,20 +176,20 @@ extension FeedView {
                 enabled: true
             ) {
                 Task(priority: .userInitiated) {
-                    await subscribe(communityId: community.id, shouldSubscribe: !isSubscribed)
+                    await toggleSubscribe()
                 }
             })
         }
         
         // favorite/unfavorite
-        if favoriteCommunitiesTracker.isFavorited(community) {
+        if favoriteCommunitiesTracker.isFavorited(community.community) {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Unfavorite",
                 imageName: "star.slash",
                 destructiveActionPrompt: "Really unfavorite \(community.name)?",
                 enabled: true
             ) {
-                favoriteCommunitiesTracker.unfavorite(community)
+                favoriteCommunitiesTracker.unfavorite(community.community)
                 Task {
                     await notifier.add(.success("Unfavorited \(community.name)"))
                 }
@@ -196,7 +201,7 @@ extension FeedView {
                 destructiveActionPrompt: nil,
                 enabled: true
             ) {
-                favoriteCommunitiesTracker.favorite(community)
+                favoriteCommunitiesTracker.favorite(community.community)
                 Task {
                     await notifier.add(.success("Favorited \(community.name)"))
                 }
@@ -204,12 +209,12 @@ extension FeedView {
         }
         
         // share
-        ret.append(MenuFunction.shareMenuFunction(url: community.actorId))
+        ret.append(MenuFunction.shareMenuFunction(url: community.communityUrl))
         
         // block/unblock
-        if let communityDetails {
+        if let blocked = community.blocked {
             // block
-            let (blockText, blockSymbol, blockPrompt) = communityDetails.communityView.blocked
+            let (blockText, blockSymbol, blockPrompt) = blocked
                 ? ("Unblock", Icons.show, nil)
                 : ("Block", Icons.hide, "Really block \(community.name)?")
             ret.append(MenuFunction.standardMenuFunction(
@@ -219,7 +224,7 @@ extension FeedView {
                 enabled: true
             ) {
                 Task(priority: .userInitiated) {
-                    await block(communityId: community.id, shouldBlock: !communityDetails.communityView.blocked)
+                    await block()
                 }
             })
         }
@@ -267,79 +272,56 @@ extension FeedView {
     // MARK: Helper Functions
     
     private func handle(_ error: Error) {
-        let title: String?
-        let errorMessage: String?
-        
+
         switch error {
         case APIClientError.networking:
             guard postTracker.items.isEmpty else {
                 return
             }
-            
-            title = "Unable to connect to Lemmy"
-            errorMessage = "Please check your internet connection and try again"
+            errorDetails = .init(title: "Unable to connect to Lemmy", error: error, refresh: self.refreshFeed)
+            return
         default:
-            title = nil
-            errorMessage = nil
+            break
         }
-        
-        errorHandler.handle(
-            .init(title: title, message: errorMessage, underlyingError: error)
-        )
+        errorDetails = .init(error: error, refresh: self.refreshFeed)
     }
     
-    private func filter(postView: PostModel) -> Bool {
-        !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) &&
-            (showReadPosts || !postView.read)
+    private func filter(postView: PostModel) -> PostFilterReason? {
+        guard !postView.post.name.lowercased().contains(filtersTracker.filteredKeywords) else { return .keyword }
+        guard showReadPosts || !postView.read else { return .read }
+        return nil
     }
     
-    private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
-        hapticManager.play(haptic: .success, priority: .high)
-        do {
-            let response = try await communityRepository.updateSubscription(for: communityId, subscribed: shouldSubscribe)
-            // TODO: we receive the updated `APICommunityView` here to update our local state
-            // so there is no need to make a second call but we still need to address 'faking'
-            // the state while the call is in flight
-            communityDetails?.communityView = response
-            
-            let communityName = community?.name ?? "community"
-            if shouldSubscribe {
-                await notifier.add(.success("Subscibed to \(communityName)"))
-            } else {
-                await notifier.add(.success("Unsubscribed from \(communityName)"))
+    private func toggleSubscribe() async {
+        if var community = self.community {
+            hapticManager.play(haptic: .success, priority: .high)
+            do {
+                try await community.toggleSubscribe {
+                    self.community = $0
+                }
+                if community.subscribed ?? false {
+                    await notifier.add(.success("Subscribed to \(community.name)"))
+                } else {
+                    await notifier.add(.success("Unsubscribed from \(community.name)"))
+                }
+            } catch {
+                errorHandler.handle(error)
             }
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            let phrase = shouldSubscribe ? "subscribe to" : "unsubscribe from"
-            errorHandler.handle(
-                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
-            )
         }
     }
     
-    private func block(communityId: Int, shouldBlock: Bool) async {
-        do {
+    private func block() async {
+        if var community = self.community {
             hapticManager.play(haptic: .violentSuccess, priority: .high)
-
-            let response: BlockCommunityResponse
-            let communityName = community?.name ?? "community"
-            if shouldBlock {
-                response = try await communityRepository.blockCommunity(id: communityId)
-                await notifier.add(.success("Blocked \(communityName)"))
-            } else {
-                response = try await communityRepository.unblockCommunity(id: communityId)
-                await notifier.add(.success("Unblocked \(communityName)"))
+            do {
+                try await community.toggleBlock {
+                    self.community = $0
+                }
+                // refresh the feed after blocking which will show/hide the posts
+                await hardRefreshFeed()
+            } catch {
+                errorHandler.handle(error)
             }
-
-            communityDetails?.communityView = response.communityView
-            // refresh the feed after blocking which will show/hide the posts
-            await hardRefreshFeed()
-        } catch {
-            hapticManager.play(haptic: .failure, priority: .high)
-            let phrase = shouldBlock ? "block" : "unblock"
-            errorHandler.handle(
-                .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
-            )
         }
     }
 }

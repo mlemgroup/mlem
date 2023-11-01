@@ -30,7 +30,8 @@ class MockErrorHandler: ErrorHandler {
         _ error: ContextualError?,
         file: StaticString = #fileID,
         function: StaticString = #function,
-        line: Int = #line
+        line: Int = #line,
+        showNoInternet: Bool = true
     ) {
         if let error {
             didReceiveError(error)

@@ -10,6 +10,9 @@ import Foundation
 import Nuke
 import SwiftUI
 
+enum PostFilterReason {
+    case read, keyword
+}
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
 /// New post tracker built on top of the PostRepository instead of calling the API directly. Because this thing works fundamentally differently from the old one, it can't conform to FeedTracker--that's going to need a revamp down the line once everything uses nice shiny middleware models, so for now we're going to have to put up with some ugly
@@ -32,6 +35,7 @@ class PostTracker: ObservableObject {
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
     private(set) var isLoading: Bool = false // accessible but not published because it causes lots of bad view redraws
     private(set) var page: Int = 1
+    private(set) var hiddenItems: [PostFilterReason: Int] = .init()
     
     private var hasReachedEnd: Bool = false
     
@@ -62,7 +66,7 @@ class PostTracker: ObservableObject {
         communityId: Int?,
         sort: PostSortType?,
         type: FeedType,
-        filtering: @escaping (_: PostModel) -> Bool = { _ in true }
+        filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
     ) async throws {
         let currentPage = page
         
@@ -99,7 +103,7 @@ class PostTracker: ObservableObject {
         }
         
         // don't preload filtered images
-        preloadImages(newPosts.filter(filtering))
+        preloadImages(filterItems(items: newPosts, with: filtering))
     }
     
     /// Loads a single post and adds it to the tracker
@@ -117,7 +121,7 @@ class PostTracker: ObservableObject {
         sort: PostSortType?,
         feedType: FeedType,
         clearBeforeFetch: Bool = false,
-        filtering: @escaping (_: PostModel) -> Bool = { _ in true }
+        filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
     ) async throws {
         if clearBeforeFetch {
             await reset()
@@ -144,10 +148,10 @@ class PostTracker: ObservableObject {
     ///   - preload: true if the new post's image should be preloaded
     func add(
         _ newItems: [PostModel],
-        filtering: @escaping (_: PostModel) -> Bool = { _ in true },
+        filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil },
         preload: Bool = false
     ) {
-        let accepted = dedupedItems(from: newItems.filter(filtering))
+        let accepted = dedupedItems(from: filterItems(items: newItems, with: filtering))
         
         if preload { preloadImages(newItems) }
         
@@ -167,12 +171,15 @@ class PostTracker: ObservableObject {
     @MainActor
     func reset(
         with newItems: [PostModel] = .init(),
-        filteredWith filter: @escaping (_: PostModel) -> Bool = { _ in true }
+        filteredWith filter: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
     ) {
         hasReachedEnd = false
         page = newItems.isEmpty ? 1 : 2
+        if page == 1 {
+            hiddenItems.removeAll()
+        }
         ids = .init(minimumCapacity: 1000)
-        items = dedupedItems(from: newItems.filter(filter))
+        items = dedupedItems(from: filterItems(items: newItems, with: filter))
     }
 
     /// Determines whether the tracker should load more items
@@ -220,7 +227,7 @@ class PostTracker: ObservableObject {
     @MainActor
     func removeCommunityPosts(from communityId: Int) {
         filter {
-            $0.community.id != communityId
+            $0.community.communityId != communityId
         }
     }
     
@@ -425,7 +432,7 @@ class PostTracker: ObservableObject {
         for post in newPosts {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
-            if let communityAvatarLink = post.community.iconUrl {
+            if let communityAvatarLink = post.community.avatar {
                 imageRequests.append(ImageRequest(url: communityAvatarLink.withIcon64Parameters))
             }
             
@@ -457,6 +464,19 @@ class PostTracker: ObservableObject {
     /// Filters a list of PostModels to only those PostModels not present in ids. Updates ids.
     private func dedupedItems(from newItems: [PostModel]) -> [PostModel] {
         newItems.filter { ids.insert($0.uid).inserted }
+    }
+    
+    private func filterItems(
+        items: [PostModel],
+        with filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
+    ) -> [PostModel] {
+        return items.filter { item in
+            if let reason = filtering(item) {
+                self.hiddenItems[reason] = self.hiddenItems[reason, default: 0] + 1
+                return false
+            }
+            return true
+        }
     }
 }
 
