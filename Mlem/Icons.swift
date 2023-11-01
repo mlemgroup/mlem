@@ -34,9 +34,9 @@ struct Icons {
     static let unsaveFill: String = "bookmark.slash.fill"
     
     // mark read
-    static let markRead: String = "envelope"
+    static let markRead: String = "envelope.open"
     static let markReadFill: String = "envelope.open.fill"
-    static let markUnread: String = "envelope.open"
+    static let markUnread: String = "envelope"
     static let markUnreadFill: String = "envelope.fill"
     
     // moderation
@@ -124,7 +124,6 @@ struct Icons {
     static let hide: String = "eye.slash"
     static let show: String = "eye"
     static let blurNsfw: String = "eye.trianglebadge.exclamationmark"
-    static let endOfFeed: String = "figure.climbing"
     static let noContent: String = "binoculars"
     static let noPosts: String = "text.bubble"
     static let time: String = "clock"
@@ -133,6 +132,10 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
+    
+    // end of feed
+    static let endOfFeedHobbit: String = "figure.climbing"
+    static let endOfFeedCartoon: String = "figure.wave"
     
     // common operations
     static let share: String = "square.and.arrow.up"

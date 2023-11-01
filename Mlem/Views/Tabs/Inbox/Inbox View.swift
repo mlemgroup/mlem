@@ -19,14 +19,6 @@ enum InboxTab: String, CaseIterable, Identifiable {
     }
 }
 
-enum ComposingTypes {
-    case commentReply(APICommentReplyView?)
-    case mention(APIPersonMentionView?)
-    case message(APIPerson?)
-}
-
-// NOTE:
-// all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 struct InboxView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
@@ -70,16 +62,41 @@ struct InboxView: View {
     @AppStorage("shouldFilterRead") var shouldFilterRead: Bool = false
     
     // item feeds
-    @State var allItems: [InboxItem] = .init()
-    @StateObject var mentionsTracker: MentionsTracker = .init()
-    @StateObject var messagesTracker: MessagesTracker = .init()
-    @StateObject var repliesTracker: RepliesTracker = .init()
+    @StateObject var inboxTracker: InboxTracker
+    @StateObject var replyTracker: ReplyTracker
+    @StateObject var mentionTracker: MentionTracker
+    @StateObject var messageTracker: MessageTracker
     @StateObject var dummyPostTracker: PostTracker // used for navigation
     
     init() {
         // TODO: once the post tracker is changed we won't need this here...
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+        @AppStorage("shouldFilterRead") var unreadOnly = false
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        
+        let newReplyTracker = ReplyTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
+        let newMentionTracker = MentionTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
+        let newMessageTracker = MessageTracker(internetSpeed: internetSpeed, sortType: .published, unreadOnly: unreadOnly)
+        
+        let newInboxTracker = InboxTracker(
+            internetSpeed: internetSpeed,
+            sortType: .published,
+            childTrackers: [
+                newReplyTracker,
+                newMentionTracker,
+                newMessageTracker
+            ]
+        )
+        
+        newReplyTracker.setParentTracker(newInboxTracker)
+        newMentionTracker.setParentTracker(newInboxTracker)
+        newMessageTracker.setParentTracker(newInboxTracker)
+        
+        self._inboxTracker = StateObject(wrappedValue: newInboxTracker)
+        self._replyTracker = StateObject(wrappedValue: newReplyTracker)
+        self._mentionTracker = StateObject(wrappedValue: newMentionTracker)
+        self._messageTracker = StateObject(wrappedValue: newMessageTracker)
+        
         self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, upvoteOnSave: upvoteOnSave))
     }
     
@@ -104,6 +121,12 @@ struct InboxView: View {
                 .listStyle(PlainListStyle())
                 .tabBarNavigationEnabled(.inbox, navigation)
                 .handleLemmyViews()
+                .environmentObject(inboxTracker)
+                .onChange(of: shouldFilterRead) { newValue in
+                    Task(priority: .userInitiated) {
+                        await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+                    }
+                }
                 .onChange(of: selectedTagHashValue) { newValue in
                     if newValue == TabSelection.inbox.hashValue {
                         print("switched to inbox tab")
@@ -127,10 +150,11 @@ struct InboxView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .padding(.horizontal)
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+            .padding(.top, AppConstants.postAndCommentSpacing)
             
             ScrollViewReader { proxy in
-                ScrollView(showsIndicators: false) {
+                ScrollView {
                     ScrollToView(appeared: $scrollToTopAppeared)
                         .id(scrollToTop)
                     
@@ -139,21 +163,23 @@ struct InboxView: View {
                     } else {
                         switch curTab {
                         case .all:
-                            inboxFeedView()
+                            AllItemsFeedView(inboxTracker: inboxTracker)
                         case .replies:
-                            repliesFeedView()
+                            RepliesFeedView(replyTracker: replyTracker)
                         case .mentions:
-                            mentionsFeedView()
+                            MentionsFeedView(mentionTracker: mentionTracker)
                         case .messages:
-                            messagesFeedView()
+                            MessagesFeedView(messageTracker: messageTracker)
                         }
                     }
                 }
                 .fancyTabScrollCompatible()
                 .refreshable {
-                    Task(priority: .userInitiated) {
-                        await refreshFeed()
-                    }
+                    // wrapping in task so view redraws don't cancel
+                    // awaiting the value makes the refreshable indicator properly wait for the call to finish
+                    await Task {
+                        await refresh()
+                    }.value
                 }
                 .hoistNavigation(
                     dismiss: dismiss,
@@ -166,16 +192,10 @@ struct InboxView: View {
                 )
             }
         }
-        // load view if empty or account has changed
-        .task(priority: .userInitiated) {
-            // if a tracker is empty or the account has changed, refresh
-            if mentionsTracker.items.isEmpty ||
-                messagesTracker.items.isEmpty ||
-                repliesTracker.items.isEmpty {
-                print("Inbox tracker is empty")
-                await refreshFeed()
-            } else {
-                print("Inbox tracker is not empty")
+        .task {
+            // wrapping in task so view redraws don't cancel
+            Task(priority: .userInitiated) {
+                await refresh()
             }
         }
     }

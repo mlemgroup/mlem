@@ -16,11 +16,13 @@ struct ReportMention: ResponseEditorModel {
     let canUpload: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
-    let mention: APIPersonMentionView
+    let mention: MentionModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxMentionView(mention: mention, menuFunctions: [])
-            .padding(.horizontal))
+        AnyView(
+            InboxMentionView(mention: mention)
+                .padding(.horizontal)
+        )
     }
     
     func sendResponse(responseContents: String) async throws {
