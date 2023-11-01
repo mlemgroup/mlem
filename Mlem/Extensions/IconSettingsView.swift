@@ -31,6 +31,7 @@ struct IconSettingsView: View {
             iconsList()
         }
         .fancyTabScrollCompatible()
+        .navigationTitle("App Icon")
     }
     
     @ViewBuilder
