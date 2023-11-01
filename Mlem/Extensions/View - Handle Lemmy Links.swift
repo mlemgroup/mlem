@@ -19,21 +19,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
-    @AppStorage("defaultPostSorting") var _defaultPostSorting: PostSortType = .hot
-    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
-    
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
-    var defaultPostSorting: PostSortType {
-        if let siteVersion = siteInformation.version {
-            if siteVersion >= _defaultPostSorting.minimumVersion {
-                return _defaultPostSorting
-            }
-            return fallbackDefaultPostSorting
-        }
-        return _defaultPostSorting
-    }
-
     // swiftlint:disable function_body_length
     // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
@@ -41,11 +28,11 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
                 case .community(let community):
-                    FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
+                    FeedView(community: community, feedType: .all)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                 case .communityLinkWithContext(let context):
-                    FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
+                    FeedView(community: context.community, feedType: context.feedType)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                 case .communitySidebarLinkWithContext(let context):
