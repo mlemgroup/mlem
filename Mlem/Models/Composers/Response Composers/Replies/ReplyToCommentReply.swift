@@ -15,16 +15,13 @@ struct ReplyToCommentReply: ResponseEditorModel {
     let canUpload: Bool = true
     let modalName: String = "New Comment"
     let prefillContents: String? = nil
-    let commentReply: APICommentReplyView
+    let commentReply: ReplyModel
     
     var id: Int { commentReply.id }
     
     func embeddedView() -> AnyView {
-        AnyView(InboxReplyView(
-            reply: commentReply,
-            menuFunctions: []
-        )
-        .padding(.horizontal))
+        AnyView(InboxReplyView(reply: commentReply)
+            .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {
