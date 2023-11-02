@@ -17,7 +17,7 @@ struct SearchResultListView: View {
     @State var shouldLoad = false
     
     var body: some View {
-        LazyVStack(spacing: 0) {
+        Group {
             ForEach(contentTracker.items, id: \.uid) { contentModel in
                 Group {
                     if let community = contentModel.wrappedValue as? CommunityModel {
@@ -30,11 +30,12 @@ struct SearchResultListView: View {
                     recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
                 })
                 Divider()
-                    .onAppear {
-                        if contentTracker.shouldLoadContentAfter(after: contentModel) {
-                            shouldLoad = true
-                        }
-                    }
+                // - Todo: This is getting called repeatedly in List view.
+//                    .onAppear {
+//                        if contentTracker.shouldLoadContentAfter(after: contentModel) {
+//                            shouldLoad = true
+//                        }
+//                    }
             }
             footer
         }

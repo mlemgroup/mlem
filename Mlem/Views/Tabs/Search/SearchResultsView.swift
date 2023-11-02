@@ -16,7 +16,7 @@ struct SearchResultsView: View {
     @State var shouldLoad: Bool = false
     
     var body: some View {
-        VStack(spacing: 0) {
+        List {
             tabs
             Divider()
                 .padding(.top, 8)
