@@ -30,3 +30,19 @@ struct SearchRoot: View {
         }
     }
 }
+
+#Preview {
+    SearchRootPreview()
+}
+
+struct SearchRootPreview: View {
+    
+    @StateObject var appState: AppState = .init()
+    @StateObject private var recentSearchesTracker: RecentSearchesTracker = .init()
+    
+    var body: some View {
+        SearchRoot()
+            .environmentObject(appState)
+            .environmentObject(recentSearchesTracker)
+    }
+}
