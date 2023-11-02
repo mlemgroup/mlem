@@ -294,7 +294,7 @@ extension FeedView {
     
     private func toggleSubscribe() async {
         if var community {
-            hapticManager.play(haptic: .heavySuccess, priority: .high)
+            hapticManager.play(haptic: .success, priority: .high)
             do {
                 try await community.toggleSubscribe {
                     self.community = $0

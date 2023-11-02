@@ -57,7 +57,7 @@ class CommentRepository {
                     postId: postId
                 )
 
-            hapticManager.play(haptic: .heavySuccess, priority: .high)
+            hapticManager.play(haptic: .success, priority: .high)
             return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -81,7 +81,7 @@ class CommentRepository {
                 formId: formId
             )
             
-            hapticManager.play(haptic: .heavySuccess, priority: .high)
+            hapticManager.play(haptic: .success, priority: .high)
             return response
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

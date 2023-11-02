@@ -414,7 +414,7 @@ class PostTracker: ObservableObject {
         // TODO: state faking (should wait until APIPost is replaced with PostContentModel)
         
         do {
-            hapticManager.play(haptic: .heavySuccess, priority: .high)
+            hapticManager.play(haptic: .success, priority: .high)
             let response = try await postRepository.editPost(postId: post.postId, name: name, url: url, body: body, nsfw: nsfw)
             await update(with: response)
             return response

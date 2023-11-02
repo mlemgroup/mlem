@@ -56,7 +56,7 @@ struct PostComposerView: View {
                     url: postURL.trimmed
                 )
                 
-                hapticManager.play(haptic: .heavySuccess, priority: .high)
+                hapticManager.play(haptic: .success, priority: .high)
                 
                 await MainActor.run {
                     withAnimation {

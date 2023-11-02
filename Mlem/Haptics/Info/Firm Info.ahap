@@ -8,11 +8,11 @@
         "EventParameters": [
           {
             "ParameterID": "HapticIntensity",
-            "ParameterValue": 0.45
+            "ParameterValue": 0.6
           },
           {
             "ParameterID": "HapticSharpness",
-            "ParameterValue": 0.75
+            "ParameterValue": 0.55
           }
         ]
       }

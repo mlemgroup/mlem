@@ -310,9 +310,9 @@ struct SwipeyView: ViewModifier {
             if previousIndex == nil {
                 return (.gentleInfo, .high)
             } else if previousIndex == 1 {
-                return (.lightSuccess, .high)
+                return (.firmInfo, .high)
             } else {
-                return (.lightSuccess, .high)
+                return (.firmInfo, .high)
             }
         }
     }
