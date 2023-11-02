@@ -65,3 +65,21 @@ struct SearchResultListView: View {
         .frame(height: 100)
     }
 }
+
+#Preview {
+    SearchResultsListViewPreview()
+}
+
+struct SearchResultsListViewPreview: View {
+
+    @StateObject var searchModel: SearchModel = .init()
+    @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
+    @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
+
+    var body: some View {
+        SearchResultsView(shouldLoad: true)
+            .environmentObject(searchModel)
+            .environmentObject(contentTracker)
+            .environmentObject(recentSearchesTracker)
+    }
+}

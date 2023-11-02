@@ -58,3 +58,10 @@ struct SearchTabPicker: View {
         }
     }
 }
+
+#Preview {
+    SearchTabPicker(
+        selected: .constant(.communities),
+        tabs: SearchTab.homePageCases
+    )
+}
