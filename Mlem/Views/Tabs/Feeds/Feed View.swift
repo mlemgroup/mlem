@@ -9,7 +9,6 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-// swiftlint:disable type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -33,21 +32,17 @@ struct FeedView: View {
     // MARK: Parameters and init
     
     @State var community: CommunityModel?
-    let showLoading: Bool
     @State var feedType: FeedType
     
     @State var errorDetails: ErrorDetails?
     
     init(
         community: CommunityModel?,
-        feedType: FeedType,
-        showLoading: Bool = false
+        feedType: FeedType
     ) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        
-        self.showLoading = showLoading
         
         self._feedType = State(initialValue: feedType)
         self._postTracker = StateObject(wrappedValue: .init(
@@ -63,7 +58,6 @@ struct FeedView: View {
         @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
         
         _postSortType = .init(initialValue: fallbackDefaultPostSorting)
-        isWaitingForSiteInformation = true
     }
     
     // MARK: State
@@ -71,7 +65,6 @@ struct FeedView: View {
     @StateObject var postTracker: PostTracker
     
     @State var postSortType: PostSortType = .hot
-    @State var isWaitingForSiteInformation: Bool = false
     @State var isLoading: Bool = true
     @State var shouldLoad: Bool = false
     
@@ -102,11 +95,6 @@ struct FeedView: View {
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
-            .task(priority: .userInitiated) {
-                if !isWaitingForSiteInformation {
-                    await initFeed()
-                }
-            }
             .task(id: siteInformation.version) {
                 if let siteVersion = siteInformation.version {
                     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -116,7 +104,6 @@ struct FeedView: View {
                     } else {
                         self.postSortType = fallbackDefaultPostSorting
                     }
-                    isWaitingForSiteInformation = false
                     Task(priority: .userInitiated) {
                         await initFeed()
                     }
@@ -152,7 +139,6 @@ struct FeedView: View {
                 }
             }
             .refreshable {
-                isWaitingForSiteInformation = false
                 await refreshFeed()
             }
     }
@@ -318,4 +304,3 @@ struct FeedView: View {
         }
     }
 }
-// swiftlint:enable type_body_length

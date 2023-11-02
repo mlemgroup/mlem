@@ -19,8 +19,6 @@ struct FeedRoot: View {
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
-    
-    let showLoading: Bool
 
     var body: some View {
         NavigationSplitView {
@@ -30,8 +28,7 @@ struct FeedRoot: View {
                 NavigationStack(path: $feedTabNavigation.path) {
                     FeedView(
                         community: rootDetails.community,
-                        feedType: rootDetails.feedType,
-                        showLoading: showLoading
+                        feedType: rootDetails.feedType
                     )
                     .environmentObject(appState)
                     .handleLemmyViews()
@@ -93,6 +90,6 @@ struct FeedRoot: View {
 
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
-        FeedRoot(showLoading: false)
+        FeedRoot()
     }
 }
