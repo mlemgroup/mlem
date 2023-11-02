@@ -62,18 +62,8 @@ struct FeedView: View {
         @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
         @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
         
-        if let siteVersion = siteInformation.version {
-            
-            if siteVersion >= defaultPostSorting.minimumVersion {
-                _postSortType = .init(initialValue: defaultPostSorting)
-            } else {
-                _postSortType = .init(initialValue: fallbackDefaultPostSorting)
-            }
-            isWaitingForSiteInformation = false
-        } else {
-            _postSortType = .init(initialValue: .hot)
-            isWaitingForSiteInformation = true
-        }
+        _postSortType = .init(initialValue: fallbackDefaultPostSorting)
+        isWaitingForSiteInformation = true
     }
     
     // MARK: State
@@ -117,8 +107,8 @@ struct FeedView: View {
                     await initFeed()
                 }
             }
-            .onChange(of: siteInformation.version) { newValue in
-                if let siteVersion = newValue {
+            .task(id: siteInformation.version) {
+                if let siteVersion = siteInformation.version {
                     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
                     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
                     if siteVersion >= defaultPostSorting.minimumVersion {
