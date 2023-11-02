@@ -30,47 +30,64 @@ struct IconSettingsView: View {
 
     var body: some View {
         List {
-            ForEach(getAllIcons()) { icon in
-                AlternativeIconCell(icon: icon, setAppIcon: setAppIcon)
-            }
+            iconsList()
         }
         .fancyTabScrollCompatible()
         .hoistNavigation(dismiss: dismiss)
+        .navigationTitle("App Icon")
+    }
+    
+    @ViewBuilder
+    func iconsList() -> some View {
+        let allIcons = getAllIcons()
+        let creators = allIcons.keys.sorted()
+        
+        ForEach(creators, id: \.self) { creator in
+            if let icons = allIcons[creator], !icons.isEmpty {
+                DisclosureGroup {
+                    ForEach(icons) { icon in
+                        AlternativeIconCell(icon: icon, setAppIcon: setAppIcon)
+                    }
+                } label: {
+                    AlternativeIconLabel(icon: AlternativeIcon(id: icons[0].id, name: creator, author: nil, selected: false))
+                }
+            }
+        }
     }
 
-    func getAllIcons() -> [AlternativeIcon] {
-        guard let iconsBundle = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any?]
-        else { return [] }
+    func getAllIcons() -> [String: [AlternativeIcon]] {
+        guard let iconsBundle = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any?] else { return [:] }
 
-        guard let altIcons = iconsBundle["CFBundleAlternateIcons"] as? [String: Any?]
-        else { return [] }
+        guard let altIcons = iconsBundle["CFBundleAlternateIcons"] as? [String: Any?] else { return [:] }
 
         let currentIconSelection = UIApplication.shared.alternateIconName
-
-        var allIcons = [
-            AlternativeIcon(id: nil, name: "Mlem", author: "By Clay/s", selected: currentIconSelection == nil)
-        ]
-        allIcons.append(contentsOf: altIcons.keys.map { key in
+        
+        var ret: [String: [AlternativeIcon]] = .init()
+        
+        altIcons.keys.forEach { key in
+            // parse AlternativeIcon from icon data
             print("found icon: \(key)")
             let match = key.firstMatch(of: iconFinder)
             let name = (match?.output.1 != nil) ? String(match!.output.1) : key
-            var author = (match?.output.2 != nil) ? "By \(String(match!.output.2))" : ""
+            var author = (match?.output.2 != nil) ? "\(String(match!.output.2))" : "Anonymous"
             author = author.replacingOccurrences(of: "Clays", with: "Clay/s")
-            return AlternativeIcon(id: key, name: name, author: author, selected: currentIconSelection == key)
-        }.filter {
-            if let id = IconId(rawValue: $0.id ?? "Default"),
-               let requiredEasterFlag = easterDependentIcons[id] {
-                return easterTracker.flags.contains(requiredEasterFlag)
+            let icon = AlternativeIcon(id: key, name: name, author: author, selected: currentIconSelection == key)
+            
+            // if we should show this icon, add to map
+            if shouldShowIcon(icon: icon) {
+                ret[author, default: []].append(icon)
             }
-            return true
-        }.sorted(by: { lhs, rhs in
-            lhs.name < rhs.name
-        }))
+        }
+        
+        ret.keys.forEach { key in
+            ret[key] = ret[key]?.sorted {
+                $0.name < $1.name
+            }
+        }
 
-        return allIcons
+        return ret
     }
 
-    // static func getCurrentIcon() -> some View {
     static func getCurrentIcon() -> Image {
         let icon = AlternativeIcon(
             id: UIApplication.shared.alternateIconName,
@@ -78,7 +95,7 @@ struct IconSettingsView: View {
             author: "",
             selected: false
         )
-        return AlternativeIconCell(icon: icon) { _ in }.getImage()
+        return AlternativeIconLabel(icon: icon).getImage()
     }
 
     @MainActor
@@ -89,6 +106,14 @@ struct IconSettingsView: View {
         } catch {
             // do nothing!
         }
+    }
+    
+    private func shouldShowIcon(icon: AlternativeIcon) -> Bool {
+        if let id = IconId(rawValue: icon.id ?? "Default"),
+           let requiredEasterFlag = easterDependentIcons[id] {
+            return easterTracker.flags.contains(requiredEasterFlag)
+        }
+        return true
     }
 }
 
