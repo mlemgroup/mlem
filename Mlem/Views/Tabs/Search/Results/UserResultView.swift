@@ -104,3 +104,10 @@ struct UserResultView: View {
         .addSwipeyActions(swipeActions ?? .init())
     }
 }
+
+#Preview {
+    UserResultView(
+        user: .init(from: .mock()),
+        showTypeLabel: true
+    )
+}

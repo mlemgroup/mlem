@@ -58,3 +58,21 @@ struct SearchResultsView: View {
         .padding(.vertical, 4)
     }
 }
+
+#Preview {
+    SearchResultsViewPreview()
+}
+
+struct SearchResultsViewPreview: View {
+    
+    @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
+    @StateObject var searchModel: SearchModel = .init()
+    @StateObject var contentTracker: ContentTracker<AnyContentModel> = .init()
+    
+    var body: some View {
+        SearchResultsView(shouldLoad: true)
+            .environmentObject(recentSearchesTracker)
+            .environmentObject(searchModel)
+            .environmentObject(contentTracker)
+    }
+}

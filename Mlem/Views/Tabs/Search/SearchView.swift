@@ -171,3 +171,19 @@ extension View {
         }
     }
 }
+
+#Preview {
+    SearchViewPreview()
+}
+
+struct SearchViewPreview: View {
+
+    @StateObject private var appState: AppState = .init()
+    @StateObject private var recentSearchesTracker: RecentSearchesTracker = .init()
+
+    var body: some View {
+        SearchView()
+            .environmentObject(appState)
+            .environmentObject(recentSearchesTracker)
+    }
+}
