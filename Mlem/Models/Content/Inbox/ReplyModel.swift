@@ -115,7 +115,7 @@ extension ReplyModel {
         voting = true
         defer { voting = false }
         
-        hapticManager.play(haptic: .gentleSuccess, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         let operation = votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
         
         let original: ReplyModel = .init(from: self)
@@ -139,7 +139,7 @@ extension ReplyModel {
     }
     
     func toggleRead(unreadTracker: UnreadTracker) async {
-        hapticManager.play(haptic: .gentleSuccess, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         
         // store original state
         let originalCommentReply = commentReply

@@ -72,6 +72,7 @@ extension FeedView {
     }
     
     // MARK: Community loading
+
     func fetchCommunityDetails() async {
         if let community {
             do {
@@ -272,18 +273,17 @@ extension FeedView {
     // MARK: Helper Functions
     
     private func handle(_ error: Error) {
-
         switch error {
         case APIClientError.networking:
             guard postTracker.items.isEmpty else {
                 return
             }
-            errorDetails = .init(title: "Unable to connect to Lemmy", error: error, refresh: self.refreshFeed)
+            errorDetails = .init(title: "Unable to connect to Lemmy", error: error, refresh: refreshFeed)
             return
         default:
             break
         }
-        errorDetails = .init(error: error, refresh: self.refreshFeed)
+        errorDetails = .init(error: error, refresh: refreshFeed)
     }
     
     private func filter(postView: PostModel) -> PostFilterReason? {
@@ -293,8 +293,8 @@ extension FeedView {
     }
     
     private func toggleSubscribe() async {
-        if var community = self.community {
-            hapticManager.play(haptic: .success, priority: .high)
+        if var community {
+            hapticManager.play(haptic: .heavySuccess, priority: .high)
             do {
                 try await community.toggleSubscribe {
                     self.community = $0
@@ -311,7 +311,7 @@ extension FeedView {
     }
     
     private func block() async {
-        if var community = self.community {
+        if var community {
             hapticManager.play(haptic: .violentSuccess, priority: .high)
             do {
                 try await community.toggleBlock {

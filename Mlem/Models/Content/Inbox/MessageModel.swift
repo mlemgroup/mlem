@@ -50,7 +50,7 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     }
     
     func toggleRead(unreadTracker: UnreadTracker) async {
-        hapticManager.play(haptic: .gentleSuccess, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         
         // store original state
         let originalPrivateMessage = privateMessage

@@ -310,9 +310,9 @@ struct SwipeyView: ViewModifier {
             if previousIndex == nil {
                 return (.gentleInfo, .high)
             } else if previousIndex == 1 {
-                return (.firmerInfo, .high)
+                return (.lightSuccess, .high)
             } else {
-                return (.firmerInfo, .high)
+                return (.lightSuccess, .high)
             }
         }
     }
@@ -367,7 +367,7 @@ extension View {
     @ViewBuilder
     func addSwipeyActions(_ configuration: SwipeConfiguration) -> some View {
         modifier(
-        SwipeyView(configuration: configuration)
+            SwipeyView(configuration: configuration)
         )
     }
 }

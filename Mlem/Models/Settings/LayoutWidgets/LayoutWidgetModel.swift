@@ -67,7 +67,7 @@ class LayoutWidgetModel: ObservableObject {
     }
     
     func dropWidget() {
-        hapticManager.play(haptic: .firmerInfo, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         
         widgetDraggingOffset = .zero
         

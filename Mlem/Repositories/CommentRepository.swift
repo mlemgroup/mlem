@@ -32,7 +32,6 @@ class CommentRepository {
     }
     
     func voteOnComment(id: Int, vote: ScoringOperation) async throws -> APICommentView {
-        hapticManager.play(haptic: .gentleSuccess, priority: .high)
         do {
             let response = try await apiClient.applyCommentScore(id: id, score: vote.rawValue)
             return response.commentView
@@ -58,7 +57,7 @@ class CommentRepository {
                     postId: postId
                 )
 
-            hapticManager.play(haptic: .success, priority: .high)
+            hapticManager.play(haptic: .heavySuccess, priority: .high)
             return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -82,7 +81,7 @@ class CommentRepository {
                 formId: formId
             )
             
-            hapticManager.play(haptic: .success, priority: .high)
+            hapticManager.play(haptic: .heavySuccess, priority: .high)
             return response
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -104,7 +103,6 @@ class CommentRepository {
     func saveComment(id: Int, shouldSave: Bool) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.saveComment(id: id, shouldSave: shouldSave)
-            hapticManager.play(haptic: .gentleSuccess, priority: .high)
             return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
