@@ -145,17 +145,16 @@ extension MentionModel {
         
         // state fake
         await setPersonMention(APIPersonMention(from: personMention, read: !personMention.read))
-        await unreadTracker.toggleMentionRead(originalState: originalPersonMention.read)
         
         // call API and either update with latest info or revert state fake on fail
         do {
             let newMessage = try await inboxRepository.markMentionRead(id: personMention.id, isRead: personMention.read)
+            await unreadTracker.toggleMentionRead(originalState: originalPersonMention.read)
             await reinit(from: newMessage)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
             await setPersonMention(originalPersonMention)
-            await unreadTracker.toggleMentionRead(originalState: !originalPersonMention.read)
         }
     }
     
