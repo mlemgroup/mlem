@@ -2426,9 +2426,9 @@
 			isa = PBXGroup;
 			children = (
 				CDE9CE4B2A7B0831002B97DD /* Gentle Info.ahap */,
+				CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */,
 				CDE9CE522A7B1100002B97DD /* Mushy Info.ahap */,
 				CDE9CE562A7B11FD002B97DD /* Rigid Info.ahap */,
-				CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */,
 			);
 			path = Info;
 			sourceTree = "<group>";

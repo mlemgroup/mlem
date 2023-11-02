@@ -12,7 +12,7 @@
           },
           {
             "ParameterID": "HapticSharpness",
-            "ParameterValue": 0.75
+            "ParameterValue": 0.55
           }
         ]
       }
