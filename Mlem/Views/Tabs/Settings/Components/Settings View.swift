@@ -14,7 +14,7 @@ struct SettingsView: View {
 
     @Environment(\.openURL) private var openURL
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+    @Environment(\.tabReselectionHashValue) private var tabReselectionHashValue
 
     @Namespace var scrollToTop
     
@@ -60,9 +60,9 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .onChange(of: selectedNavigationTabHashValue) { newValue in
+                .onChange(of: tabReselectionHashValue) { newValue in
                     if newValue == TabSelection.settings.hashValue {
-                        print("re-selected \(TabSelection.settings) tab")
+                        print("re-selected settings")
                     }
                 }
             }
@@ -74,10 +74,5 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.settings.hashValue {
-                print("switched to Settings tab")
-            }
-        }
     }
 }

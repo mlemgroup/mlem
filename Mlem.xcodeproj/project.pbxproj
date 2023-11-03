@@ -404,6 +404,7 @@
 		CD863FBA2A6AEB5900A31ED9 /* TabSafeScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */; };
 		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
 		CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8C55332A95515C0060B75B /* Onboarding Text.swift */; };
+		CD8CF20B2AF47E20009FFC23 /* FancyTabBarDoubleTappEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8CF20A2AF47E20009FFC23 /* FancyTabBarDoubleTappEnvironmentKey.swift */; };
 		CD9DD8832A622A6C0044EA8E /* ReportCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */; };
 		CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8842A62302A0044EA8E /* ConcreteEditorModel.swift */; };
 		CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */; };
@@ -416,12 +417,12 @@
 		CDA2C5262A705D6000649D5A /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA2C5252A705D6000649D5A /* PostEditor.swift */; };
 		CDB0117D2A6F703800D043EB /* CommentEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0117C2A6F703800D043EB /* CommentEditor.swift */; };
 		CDB0117F2A6F70A000D043EB /* Editor Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */; };
+		CDB45C5A2AF0AEFE00A1FF08 /* AlternativeIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C592AF0AEFE00A1FF08 /* AlternativeIconLabel.swift */; };
 		CDB45C5C2AF1A1D800A1FF08 /* CoreTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C5B2AF1A1D800A1FF08 /* CoreTracker.swift */; };
 		CDB45C5E2AF1A96C00A1FF08 /* AssociatedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C5D2AF1A96C00A1FF08 /* AssociatedColor.swift */; };
 		CDB45C602AF1AF4900A1FF08 /* MentionModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C5F2AF1AF4900A1FF08 /* MentionModel+TrackerItem.swift */; };
 		CDB45C622AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C612AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift */; };
 		CDB45C642AF1AFB900A1FF08 /* MessageModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C632AF1AFB900A1FF08 /* MessageModel+TrackerItem.swift */; };
-		CDB45C5A2AF0AEFE00A1FF08 /* AlternativeIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C592AF0AEFE00A1FF08 /* AlternativeIconLabel.swift */; };
 		CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */; };
 		CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */; };
 		CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */; };
@@ -908,6 +909,7 @@
 		CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSafeScrollView.swift; sourceTree = "<group>"; };
 		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		CD8C55332A95515C0060B75B /* Onboarding Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboarding Text.swift"; sourceTree = "<group>"; };
+		CD8CF20A2AF47E20009FFC23 /* FancyTabBarDoubleTappEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarDoubleTappEnvironmentKey.swift; sourceTree = "<group>"; };
 		CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCommentReply.swift; sourceTree = "<group>"; };
 		CD9DD8842A62302A0044EA8E /* ConcreteEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteEditorModel.swift; sourceTree = "<group>"; };
 		CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsReadRequest.swift; sourceTree = "<group>"; };
@@ -920,12 +922,12 @@
 		CDA2C5252A705D6000649D5A /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
 		CDB0117C2A6F703800D043EB /* CommentEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEditor.swift; sourceTree = "<group>"; };
 		CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editor Tracker.swift"; sourceTree = "<group>"; };
+		CDB45C592AF0AEFE00A1FF08 /* AlternativeIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIconLabel.swift; sourceTree = "<group>"; };
 		CDB45C5B2AF1A1D800A1FF08 /* CoreTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTracker.swift; sourceTree = "<group>"; };
 		CDB45C5D2AF1A96C00A1FF08 /* AssociatedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedColor.swift; sourceTree = "<group>"; };
 		CDB45C5F2AF1AF4900A1FF08 /* MentionModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MentionModel+TrackerItem.swift"; sourceTree = "<group>"; };
 		CDB45C612AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplyModel+TrackerItem.swift"; sourceTree = "<group>"; };
 		CDB45C632AF1AFB900A1FF08 /* MessageModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageModel+TrackerItem.swift"; sourceTree = "<group>"; };
-		CDB45C592AF0AEFE00A1FF08 /* AlternativeIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIconLabel.swift; sourceTree = "<group>"; };
 		CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
 		CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
 		CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadMarkStyle.swift; sourceTree = "<group>"; };
@@ -2374,6 +2376,7 @@
 				CDDCF6502A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift */,
 				CDDCF6562A678298003DA3AC /* FancyTabBarSelection.swift */,
 				CD863FB92A6AEB5900A31ED9 /* TabSafeScrollView.swift */,
+				CD8CF20A2AF47E20009FFC23 /* FancyTabBarDoubleTappEnvironmentKey.swift */,
 			);
 			path = "Custom Tab Bar";
 			sourceTree = "<group>";
@@ -2948,6 +2951,7 @@
 				CD04D5D92A3614BE008EF95B /* Large Post.swift in Sources */,
 				CDF8425E2A49E61A00723DA0 /* APIPersonMention.swift in Sources */,
 				50A881242A71A4CD003E3661 /* PersistenceRepository.swift in Sources */,
+				CD8CF20B2AF47E20009FFC23 /* FancyTabBarDoubleTappEnvironmentKey.swift in Sources */,
 				032109492AA7C41800912DFC /* AvatarView.swift in Sources */,
 				CD4368B02AE23F1400BD8BD1 /* ChildTracker.swift in Sources */,
 				CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */,

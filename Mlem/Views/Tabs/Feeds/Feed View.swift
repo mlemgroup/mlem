@@ -28,6 +28,8 @@ struct FeedView: View {
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var editorTracker: EditorTracker
     
+    @Environment(\.tabReselectionHashValue) private var tabReselectionHashValue
+    
     // MARK: Parameters and init
     
     @State var community: CommunityModel?
@@ -128,16 +130,28 @@ struct FeedView: View {
     
     @ViewBuilder
     private var contentView: some View {
-        ScrollView {
-            if !postTracker.items.isEmpty {
-                LazyVStack(spacing: 0) {
-                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
-                    ForEach(postTracker.items, id: \.uid) { post in
-                        feedPost(for: post)
+        ScrollViewReader { value in
+            ScrollView {
+                if !postTracker.items.isEmpty {
+                    LazyVStack(spacing: 0) {
+                        EmptyView().id("top")
+                        
+                        // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                        ForEach(postTracker.items, id: \.uid) { post in
+                            feedPost(for: post)
+                        }
+                        
+                        // TODO: update to use proper LoadingState
+                        EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                     }
-                    
-                    // TODO: update to use proper LoadingState
-                    EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
+                }
+            }
+            .onChange(of: tabReselectionHashValue) { newValue in
+                if newValue == TabSelection.feeds.hashValue {
+                    print("re-selected feeds")
+                    withAnimation {
+                        value.scrollTo("top")
+                    }
                 }
             }
         }

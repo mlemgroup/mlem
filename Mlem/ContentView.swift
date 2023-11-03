@@ -37,7 +37,12 @@ struct ContentView: View {
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
-        FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
+        FancyTabBar(
+            selection: $tabSelection,
+            navigationSelection: $tabNavigation,
+            dragUpGestureCallback: showAccountSwitcherDragCallback,
+            doubleTapCallback: doubleTapCallback
+        ) {
             Group {
                 FeedRoot(showLoading: showLoading)
                     .fancyTabItem(tag: TabSelection.feeds) {
@@ -156,8 +161,12 @@ struct ContentView: View {
         }
     }
     
+    func doubleTapCallback(selection: TabSelection) {
+        print("doubled tapped \(selection)")
+    }
+    
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists && allowTabBarSwipeUpGesture {
+        if !homeButtonExists, allowTabBarSwipeUpGesture {
             isPresentingAccountSwitcher = true
         }
     }
