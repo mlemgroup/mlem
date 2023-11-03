@@ -17,11 +17,12 @@ struct SearchResultListView: View {
     @State var shouldLoad = false
     
     var body: some View {
-        Group {
+        Section {
             ForEach(contentTracker.items, id: \.uid) { contentModel in
                 Group {
                     if let community = contentModel.wrappedValue as? CommunityModel {
                         CommunityResultView(community: community, showTypeLabel: showTypeLabel)
+                            .frame(height: 64)
                     } else if let user = contentModel.wrappedValue as? UserModel {
                         UserResultView(user: user, showTypeLabel: showTypeLabel)
                     }
@@ -29,13 +30,18 @@ struct SearchResultListView: View {
                 .simultaneousGesture(TapGesture().onEnded {
                     recentSearchesTracker.addRecentSearch(contentModel, accountId: appState.currentActiveAccount?.stableIdString)
                 })
+                .listRowSpacing(0)
+                .listRowSeparator(.hidden)
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                
                 Divider()
                 // - Todo: This is getting called repeatedly in List view.
-//                    .onAppear {
-//                        if contentTracker.shouldLoadContentAfter(after: contentModel) {
-//                            shouldLoad = true
-//                        }
-//                    }
+                    .onAppear {
+//                        print("onAppear -> \(contentModel.uid)")
+                        if contentTracker.shouldLoadContentAfter(after: contentModel) {
+                            shouldLoad = true
+                        }
+                    }
             }
             footer
         }

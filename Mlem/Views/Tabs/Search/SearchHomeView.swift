@@ -14,22 +14,24 @@ struct SearchHomeView: View {
     @State var shouldLoad: Bool = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Browse")
-                .font(.title2)
-                .fontWeight(.semibold)
-                .padding(.horizontal, 18)
-                .padding(.top, 12)
-            ScrollView(.horizontal) {
-                SearchTabPicker(selected: $searchModel.searchTab, tabs: SearchTab.homePageCases)
-                    .padding(.horizontal)
-            }
-            .scrollIndicators(.hidden)
-            .padding(.top, 8)
-            .padding(.bottom, 12)
-            Divider()
+        List {
+//        VStack(alignment: .leading, spacing: 0) {
+//            Text("Browse")
+//                .font(.title2)
+//                .fontWeight(.semibold)
+//                .padding(.horizontal, 18)
+//                .padding(.top, 12)
+//            ScrollView(.horizontal) {
+//                SearchTabPicker(selected: $searchModel.searchTab, tabs: SearchTab.homePageCases)
+//                    .padding(.horizontal)
+//            }
+//            .scrollIndicators(.hidden)
+//            .padding(.top, 8)
+//            .padding(.bottom, 12)
+//            Divider()
             SearchResultListView(showTypeLabel: false)
         }
+        .listStyle(.plain)
         .frame(maxWidth: .infinity)
         .environmentObject(contentTracker)
         .environmentObject(searchModel)
