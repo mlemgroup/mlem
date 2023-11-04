@@ -10,38 +10,39 @@ import Foundation
 import SwiftUI
 
 struct DeleteAccountView: View {
+    @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
+    @Dependency(\.apiClient) private var apiClient
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
+    
     @EnvironmentObject var appState: AppState // TODO: this is only needed while onboarding does not support existing accounts
     
     @Environment(\.setAppFlow) private var setFlow
     @Environment(\.dismiss) var dismiss
     
-    @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
-    @Dependency(\.apiClient) private var apiClient
-    @Dependency(\.errorHandler) var errorHandler
-    
     let account: SavedAccount
     
     @State private var password = ""
+    @State var confirmed: Bool = false
+    @State var deleteContent: Bool = false
+    
+    let deleteContentMinimumVersion: SiteVersion = .init("0.19.0")
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
+            Image(systemName: Icons.warning)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(.red)
+                .frame(width: AppConstants.hugeAvatarSize, height: AppConstants.hugeAvatarSize)
+            
             Text("Really delete \(account.username)?")
                 .font(.title)
                 .fontWeight(.bold)
             
             Text("Please note that this will *permanently* remove it from \(account.hostName ?? "the instance"), not just Mlem!")
             
-            Text("To confirm, please enter your password:")
-            
-            SecureField("", text: $password)
-                .padding(4)
-                .background(Color.secondarySystemBackground)
-                .cornerRadius(AppConstants.smallItemCornerRadius)
-                .textContentType(.password)
-                .submitLabel(.go)
-                .onSubmit {
-                    deleteAccount()
-                }
+            deleteConfirmation
             
             Button("Cancel") {
                 dismiss()
@@ -49,6 +50,47 @@ struct DeleteAccountView: View {
         }
         .multilineTextAlignment(.center)
         .padding()
+    }
+    
+    @ViewBuilder
+    var deleteConfirmation: some View {
+        if confirmed {
+            if let version = siteInformation.version {
+                passwordPrompt(canDeleteContent: version >= deleteContentMinimumVersion)
+            } else {
+                LoadingView(whatIsLoading: .instanceDetails)
+            }
+        } else {
+            Button("Permanently delete \(account.username)") {
+                withAnimation {
+                    confirmed = true
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.red)
+        }
+    }
+    
+    @ViewBuilder
+    func passwordPrompt(canDeleteContent: Bool) -> some View {
+        Text("To confirm, please enter your password:")
+        
+        Group {
+            SecureField("", text: $password)
+                .padding(4)
+                .background(Color.secondarySystemBackground)
+                .cornerRadius(AppConstants.smallItemCornerRadius)
+                .textContentType(.password)
+                .submitLabel(.go)
+                .onSubmit(deleteAccount)
+            
+            if canDeleteContent {
+                Toggle(isOn: $deleteContent) {
+                    Text("Delete posts and comments")
+                }
+            }
+        }
+        .padding(.horizontal, 30)
     }
     
     func deleteAccount() {
