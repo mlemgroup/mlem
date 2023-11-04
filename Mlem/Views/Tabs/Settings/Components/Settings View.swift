@@ -13,8 +13,6 @@ struct SettingsView: View {
     @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @Environment(\.openURL) private var openURL
-    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabReselectionHashValue) private var tabReselectionHashValue
 
     @Namespace var scrollToTop
     
@@ -60,10 +58,8 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .onChange(of: tabReselectionHashValue) { newValue in
-                    if newValue == TabSelection.settings.hashValue {
-                        print("re-selected settings")
-                    }
+                .reselectAction(tab: TabSelection.settings) {
+                    print("re-selected settings")
                 }
             }
             .environmentObject(settingsTabNavigation)

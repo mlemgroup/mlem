@@ -32,9 +32,6 @@ struct InboxView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var unreadTracker: UnreadTracker
-    
-    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabReselectionHashValue) private var tabReselectionHashValue
 
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
@@ -122,10 +119,8 @@ struct InboxView: View {
                     }
                 }
         }
-        .onChange(of: tabReselectionHashValue) { newValue in
-            if newValue == TabSelection.inbox.hashValue {
-                print("re-selected inbox")
-            }
+        .reselectAction(tab: TabSelection.inbox) {
+            print("re-selected inbox")
         }
     }
     

@@ -28,8 +28,6 @@ struct FeedView: View {
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var editorTracker: EditorTracker
     
-    @Environment(\.tabReselectionHashValue) private var tabReselectionHashValue
-    
     // MARK: Parameters and init
     
     @State var community: CommunityModel?
@@ -146,12 +144,9 @@ struct FeedView: View {
                     }
                 }
             }
-            .onChange(of: tabReselectionHashValue) { newValue in
-                if newValue == TabSelection.feeds.hashValue {
-                    print("re-selected feeds")
-                    withAnimation {
-                        value.scrollTo("top")
-                    }
+            .reselectAction(tab: TabSelection.feeds) {
+                withAnimation {
+                    value.scrollTo("top")
                 }
             }
         }

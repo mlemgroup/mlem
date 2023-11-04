@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SearchRoot: View {
-    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabReselectionHashValue) private var tabReselectionHashValue
     @StateObject private var searchRouter: AnyNavigationPath<AppRoute> = .init()
     
     var body: some View {
@@ -17,10 +15,8 @@ struct SearchRoot: View {
             SearchView()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
-        .onChange(of: tabReselectionHashValue) { newValue in
-            if newValue == TabSelection.search.hashValue {
-                print("re-selected search")
-            }
+        .reselectAction(tab: TabSelection.search) {
+            print("re-selected search")
         }
     }
 }

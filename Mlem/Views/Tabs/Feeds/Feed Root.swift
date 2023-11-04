@@ -78,11 +78,6 @@ struct FeedRoot: View {
                 }
             }
         }
-//        .onChange(of: tabReselectionHashValue) { newValue in
-//            if newValue == TabSelection.feeds.hashValue {
-//                print("re-selected feeds")
-//            }
-//        }
     }
 }
 
