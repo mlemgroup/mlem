@@ -21,6 +21,8 @@ struct CachedImage: View {
     @State var shouldRecomputeSize: Bool
     @State private var quickLookUrl: URL?
     
+    @EnvironmentObject private var quickLook: QuickLook
+    
     var imageNotFound: () -> AnyView
     
     let maxHeight: CGFloat
@@ -121,21 +123,22 @@ struct CachedImage: View {
                                     }
                                     try data.write(to: quicklook)
                                     await MainActor.run {
-                                        quickLookUrl = quicklook
+                                        quickLook.url = quicklook
+//                                        quickLookUrl = quicklook
                                     }
                                 } catch {
                                     print(String(describing: error))
                                 }
                             }
                         }
-                        .onChange(of: quickLookUrl) { url in
+                        .onChange(of: quickLook.url) { url in
                             if url == nil, let dismissCallback {
                                 dismissCallback()
                             }
                         }
-                        .fullScreenCover(item: $quickLookUrl) { url in
-                            QuickLookView(urls: [url])
-                        }
+//                        .fullScreenCover(item: $quickLookUrl) { url in
+//                            QuickLookView(urls: [url])
+//                        }
                 } else {
                     imageView
                 }

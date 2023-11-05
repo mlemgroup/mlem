@@ -9,6 +9,10 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+final class QuickLook: ObservableObject {
+    @Published var url: URL?
+}
+
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -35,6 +39,8 @@ struct FeedView: View {
     @State var feedType: FeedType
     
     @State var errorDetails: ErrorDetails?
+    
+    @StateObject private var quickLook: QuickLook = .init()
     
     init(
         community: CommunityModel?,
@@ -93,6 +99,7 @@ struct FeedView: View {
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
+            .environmentObject(quickLook)
             .task(priority: .userInitiated) { await initFeed() }
             .task(priority: .background) { await fetchCommunityDetails() }
             // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
@@ -124,6 +131,9 @@ struct FeedView: View {
                 }
             }
             .refreshable { await refreshFeed() }
+            .fullScreenCover(item: $quickLook.url) { url in
+                QuickLookView(urls: [url])
+            }
     }
     
     @ViewBuilder
