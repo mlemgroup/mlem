@@ -10,23 +10,23 @@ import Foundation
 import SwiftUI
 
 struct ReplyToMessage: ResponseEditorModel {
-    @Dependency(\.apiClient) var apiClient
+    @Dependency(\.inboxRepository) var inboxRepository
     @Dependency(\.hapticManager) var hapticManager
     
     var id: Int { message.id }
     let canUpload: Bool = true
     let modalName: String = "New Message"
     let prefillContents: String? = nil
-    let message: APIPrivateMessageView
+    let message: MessageModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxMessageView(message: message, menuFunctions: [])
+        AnyView(InboxMessageView(message: message)
             .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }
     
     func sendResponse(responseContents: String) async throws {
         do {
-            try await apiClient.sendPrivateMessage(content: responseContents, recipient: message.creator)
+            _ = try await inboxRepository.sendMessage(content: responseContents, recipientId: message.creator.id)
             hapticManager.play(haptic: .success, priority: .high)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)

@@ -108,3 +108,19 @@ struct RecentSearchesView: View {
         .transition(.opacity)
     }
 }
+
+#Preview {
+    RecentSearchesViewPreview()
+}
+
+struct RecentSearchesViewPreview: View {
+    
+    @StateObject var appState: AppState = .init()
+    @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
+
+    var body: some View {
+        RecentSearchesView()
+            .environmentObject(appState)
+            .environmentObject(recentSearchesTracker)
+    }
+}

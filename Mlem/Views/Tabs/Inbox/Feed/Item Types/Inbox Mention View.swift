@@ -8,39 +8,41 @@
 import SwiftUI
 
 struct InboxMentionView: View {
-    let spacing: CGFloat = 10
-    let userAvatarWidth: CGFloat = 30
+    @ObservedObject var mention: MentionModel
+    @EnvironmentObject var inboxTracker: InboxTracker
+    @EnvironmentObject var editorTracker: EditorTracker
+    @EnvironmentObject var unreadTracker: UnreadTracker
     
-    let mention: APIPersonMentionView
-    let menuFunctions: [MenuFunction]
-    
-    let voteIconName: String
-    let voteColor: Color
-    
+    var voteIconName: String { mention.votes.myVote == .downvote ? Icons.downvote : Icons.upvote }
     var iconName: String { mention.personMention.read ? "quote.bubble" : "quote.bubble.fill" }
     
-    init(mention: APIPersonMentionView, menuFunctions: [MenuFunction]) {
-        self.mention = mention
-        self.menuFunctions = menuFunctions
-        
-        switch mention.myVote {
-        case .upvote:
-            self.voteIconName = Icons.upvote
-            self.voteColor = .upvoteColor
-        case .downvote:
-            self.voteIconName = Icons.downvote
-            self.voteColor = .downvoteColor
-        default:
-            self.voteIconName = Icons.upvote
-            self.voteColor = .secondary
+    var body: some View {
+        NavigationLink(.lazyLoadPostLinkWithContext(.init(
+            post: mention.post,
+            scrollTarget: mention.comment.id
+        ))) {
+            content
+                .padding(AppConstants.postAndCommentSpacing)
+                .background(Color(uiColor: .systemBackground))
+                .contentShape(Rectangle())
+                .addSwipeyActions(mention.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
+                .contextMenu {
+                    ForEach(mention.menuFunctions(
+                        unreadTracker: unreadTracker,
+                        editorTracker: editorTracker
+                    )) { item in
+                        MenuButton(menuFunction: item, confirmDestructive: nil)
+                    }
+                }
         }
+        .buttonStyle(EmptyButtonStyle())
     }
     
-    var body: some View {
-        VStack(alignment: .leading, spacing: spacing) {
+    var content: some View {
+        VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             Text(mention.post.name)
                 .font(.headline)
-                .padding(.bottom, spacing)
+                .padding(.bottom, AppConstants.postAndCommentSpacing)
             
             UserLinkView(
                 person: mention.creator,
@@ -49,10 +51,10 @@ struct InboxMentionView: View {
             )
             .font(.subheadline)
             
-            HStack(alignment: .top, spacing: spacing) {
+            HStack(alignment: .top, spacing: AppConstants.postAndCommentSpacing) {
                 Image(systemName: iconName)
                     .foregroundColor(.accentColor)
-                    .frame(width: userAvatarWidth)
+                    .frame(width: AppConstants.largeAvatarSize)
                 
                 MarkdownView(text: mention.comment.content, isNsfw: false)
                     .font(.subheadline)
@@ -63,18 +65,24 @@ struct InboxMentionView: View {
             HStack {
                 HStack(spacing: 4) {
                     Image(systemName: voteIconName)
-                    Text(mention.counts.score.description)
+                    Text(mention.votes.total.description)
                 }
-                .foregroundColor(voteColor)
+                .foregroundColor(mention.votes.myVote.color ?? .secondary)
+                .onTapGesture {
+                    Task(priority: .userInitiated) {
+                        await mention.vote(inputOp: .upvote, unreadTracker: unreadTracker)
+                    }
+                }
                 
-                EllipsisMenu(size: userAvatarWidth, menuFunctions: menuFunctions)
+                EllipsisMenu(
+                    size: AppConstants.largeAvatarSize,
+                    menuFunctions: mention.menuFunctions(unreadTracker: unreadTracker, editorTracker: editorTracker)
+                )
                 
                 Spacer()
                 
                 PublishedTimestampView(date: mention.comment.published)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
     }
 }

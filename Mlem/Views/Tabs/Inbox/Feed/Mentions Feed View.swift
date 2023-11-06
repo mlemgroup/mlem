@@ -8,23 +8,15 @@
 import Foundation
 import SwiftUI
 
-extension InboxView {
-    @ViewBuilder
-    func mentionsFeedView() -> some View {
-        Group {
-            if mentionsTracker.items.isEmpty, !mentionsTracker.isLoading {
-                noMentionsView()
-            } else {
-                LazyVStack(spacing: 0) {
-                    mentionsListView()
-                    
-                    if mentionsTracker.isLoading {
-                        LoadingView(whatIsLoading: .mentions)
-                    } else {
-                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
-                    }
-                }
+struct MentionsFeedView: View {
+    @ObservedObject var mentionTracker: MentionTracker
+    
+    var body: some View {
+        if mentionTracker.loadingState == .done, mentionTracker.items.isEmpty {
+            noMentionsView()
+        } else {
+            LazyVStack(spacing: 0) {
+                mentionsListView()
             }
         }
     }
@@ -42,44 +34,17 @@ extension InboxView {
     
     @ViewBuilder
     func mentionsListView() -> some View {
-        ForEach(mentionsTracker.items) { mention in
+        ForEach(mentionTracker.items, id: \.uid) { mention in
             VStack(spacing: 0) {
-                inboxMentionViewWithInteraction(mention: mention)
+                InboxMentionView(mention: mention)
+                    .onAppear {
+                        mentionTracker.loadIfThreshold(mention)
+                    }
+                
                 Divider()
             }
         }
-    }
-    
-    func inboxMentionViewWithInteraction(mention: APIPersonMentionView) -> some View {
-        NavigationLink(.lazyLoadPostLinkWithContext(.init(
-            post: mention.post,
-            scrollTarget: mention.comment.id
-        ))) {
-            InboxMentionView(mention: mention, menuFunctions: genMentionMenuGroup(mention: mention))
-                .padding(.vertical, AppConstants.postAndCommentSpacing)
-                .padding(.horizontal)
-                .background(Color.systemBackground)
-                .task {
-                    if mentionsTracker.shouldLoadContent(after: mention) {
-                        await loadTrackerPage(tracker: mentionsTracker)
-                    }
-                }
-                .addSwipeyActions(
-                    leading: [
-                        upvoteMentionSwipeAction(mentionView: mention),
-                        downvoteMentionSwipeAction(mentionView: mention)
-                    ],
-                    trailing: [
-                        toggleMentionReadSwipeAction(mentionView: mention),
-                        replyToMentionSwipeAction(mentionView: mention)
-                    ]
-                )
-                .contextMenu {
-                    ForEach(genMentionMenuGroup(mention: mention)) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                    }
-                }
-        }
-        .buttonStyle(EmptyButtonStyle())
+        
+        EndOfFeedView(loadingState: mentionTracker.loadingState, viewType: .cartoon)
     }
 }

@@ -43,3 +43,21 @@ struct SearchHomeView: View {
         }
     }
 }
+
+#Preview {
+    SearchHomeViewPreview()
+}
+
+struct SearchHomeViewPreview: View {
+    
+    @StateObject var homeSearchModel: SearchModel = .init()
+    @StateObject var homeContentTracker: ContentTracker<AnyContentModel> = .init()
+    
+    var body: some View {
+        VStack {
+            SearchHomeView(shouldLoad: true)
+                .environmentObject(homeSearchModel)
+                .environmentObject(homeContentTracker)
+        }
+    }
+}

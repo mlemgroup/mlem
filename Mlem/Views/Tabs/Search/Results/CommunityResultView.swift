@@ -107,3 +107,10 @@ struct CommunityResultView: View {
         .addSwipeyActions(swipeActions ?? .init(trailingActions: [subscribeSwipeAction]))
     }
 }
+
+#Preview {
+    CommunityResultView(
+        community: .init(from: .mock()),
+        showTypeLabel: true
+    )
+}

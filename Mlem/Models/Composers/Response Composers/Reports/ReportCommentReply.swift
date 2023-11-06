@@ -16,14 +16,11 @@ struct ReportCommentReply: ResponseEditorModel {
     let canUpload: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
-    let commentReply: APICommentReplyView
+    let commentReply: ReplyModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxReplyView(
-            reply: commentReply,
-            menuFunctions: []
-        )
-        .padding(.horizontal))
+        AnyView(InboxReplyView(reply: commentReply)
+            .padding(.horizontal))
     }
     
     func sendResponse(responseContents: String) async throws {

@@ -1,5 +1,5 @@
 //
-//  All Items Feed View.swift
+//  AllItemsFeedView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-26.
@@ -8,13 +8,14 @@
 import Foundation
 import SwiftUI
 
-extension InboxView {
-    @ViewBuilder
-    func inboxFeedView() -> some View {
+struct AllItemsFeedView: View {
+    @ObservedObject var inboxTracker: ParentTracker<AnyInboxItem>
+    
+    var body: some View {
         Group {
-            if allItems.isEmpty, isLoading {
+            if inboxTracker.items.isEmpty, inboxTracker.loadingState == .loading {
                 LoadingView(whatIsLoading: .inbox)
-            } else if allItems.isEmpty {
+            } else if inboxTracker.items.isEmpty {
                 noItemsView()
             } else {
                 LazyVStack(spacing: 0) {
@@ -39,21 +40,31 @@ extension InboxView {
     // delete it, recompile, paste it, and it should work. Go figure.
     @ViewBuilder
     func inboxListView() -> some View {
-        ForEach(allItems) { item in
+        ForEach(inboxTracker.items, id: \.uid) { item in
             VStack(spacing: 0) {
-                Group {
-                    switch item.type {
-                    case let .mention(mention):
-                        inboxMentionViewWithInteraction(mention: mention)
-                    case let .message(message):
-                        inboxMessageViewWithInteraction(message: message)
-                    case let .reply(reply):
-                        inboxReplyViewWithInteraction(reply: reply)
-                    }
-                }
+                inboxItemView(item: item)
                 
                 Divider()
             }
+        }
+        
+        EndOfFeedView(loadingState: inboxTracker.loadingState, viewType: .cartoon)
+    }
+    
+    @ViewBuilder
+    func inboxItemView(item: AnyInboxItem) -> some View {
+        Group {
+            switch item {
+            case let .message(message):
+                InboxMessageView(message: message)
+            case let .mention(mention):
+                InboxMentionView(mention: mention)
+            case let .reply(reply):
+                InboxReplyView(reply: reply)
+            }
+        }
+        .onAppear {
+            inboxTracker.loadIfThreshold(item)
         }
     }
 }

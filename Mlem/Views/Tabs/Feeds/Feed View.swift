@@ -153,7 +153,8 @@ struct FeedView: View {
                         feedPost(for: post)
                     }
                     
-                    EndOfFeedView(isLoading: isLoading && postTracker.page > 1)
+                    // TODO: update to use proper LoadingState
+                    EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                 }
             }
         }
@@ -169,7 +170,7 @@ struct FeedView: View {
     @ViewBuilder
     private func noPostsView() -> some View {
         VStack {
-            if let errorDetails = errorDetails {
+            if let errorDetails {
                 ErrorView(errorDetails)
                     .frame(maxWidth: .infinity)
             } else if isLoading {

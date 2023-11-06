@@ -351,9 +351,16 @@ extension APIClient {
         return try await perform(request: request).privateMessageReportView
     }
     
+    @available(*, deprecated, message: "Use id-based sendPrivateMessage instead")
     @discardableResult
     func sendPrivateMessage(content: String, recipient: APIPerson) async throws -> PrivateMessageResponse {
         let request = try CreatePrivateMessageRequest(session: session, content: content, recipient: recipient)
+        return try await perform(request: request)
+    }
+    
+    @discardableResult
+    func sendPrivateMessage(content: String, recipientId: Int) async throws -> PrivateMessageResponse {
+        let request = try CreatePrivateMessageRequest(session: session, content: content, recipientId: recipientId)
         return try await perform(request: request)
     }
     
