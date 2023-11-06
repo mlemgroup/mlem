@@ -62,7 +62,7 @@ struct FeedView: View {
     
     @StateObject var postTracker: PostTracker
     
-    @State var postSortType: PostSortType
+    @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = true
     @State var siteInformationLoading: Bool = true
     @State var shouldLoad: Bool = false
