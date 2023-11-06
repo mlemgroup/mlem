@@ -24,7 +24,7 @@ struct ContentView: View {
     
     // tabs
     @State private var tabSelection: TabSelection = .feeds
-    @State private var showLoading: Bool = false
+    @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
@@ -38,7 +38,7 @@ struct ContentView: View {
     var body: some View {
         FancyTabBar(selection: $tabSelection, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                FeedRoot(showLoading: showLoading)
+                FeedRoot()
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
                             tag: TabSelection.feeds,

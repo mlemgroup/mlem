@@ -15,8 +15,6 @@ struct GeneralSettingsView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
-    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
@@ -81,26 +79,6 @@ struct GeneralSettingsView: View {
                 )
             } footer: {
                 Text("The feed to show by default when you open the app.")
-            }
-            
-            Section {
-                SelectableSettingsItem(
-                    settingIconSystemName: defaultPostSorting.iconName,
-                    settingName: "Posts",
-                    currentValue: $defaultPostSorting,
-                    options: PostSortType.allCases
-                )
-                
-                SelectableSettingsItem(
-                    settingIconSystemName: defaultCommentSorting.iconName,
-                    settingName: "Comments",
-                    currentValue: $defaultCommentSorting,
-                    options: CommentSortType.allCases
-                )
-            } header: {
-                Text("Default Sorting")
-            } footer: {
-                Text("The sort mode that is selected by default when you open the app.")
             }
             
             Section {

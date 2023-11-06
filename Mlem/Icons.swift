@@ -75,6 +75,8 @@ struct Icons {
     static let activeSortFill: String = "popcorn.fill"
     static let hotSort: String = "flame"
     static let hotSortFill: String = "flame.fill"
+    static let scaledSort: String = "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"
+    static let scaledSortFill: String = "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"
     static let newSort: String = "hare"
     static let newSortFill: String = "hare.fill"
     static let oldSort: String = "tortoise"
@@ -83,11 +85,13 @@ struct Icons {
     static let newCommentsSortFill: String = "exclamationmark.bubble.fill"
     static let mostCommentsSort: String = "bubble.left.and.bubble.right"
     static let mostCommentsSortFill: String = "bubble.left.and.bubble.right.fill"
+    static let controversialSort: String = "bolt"
+    static let controversialSortFill: String = "bolt.fill"
     static let topSortMenu: String = "text.line.first.and.arrowtriangle.forward"
     static let topSort: String = "trophy"
     static let topSortFill: String = "trophy.fill"
     static let timeSort: String = "calendar.day.timeline.leading"
-    static let timeSortFill: String = "calendar.day.timeline.leading.fill"
+    static let timeSortFill: String = "calendar.day.timeline.leading"
     
     // user flairs
     static let developerFlair: String = "hammer.fill"

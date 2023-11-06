@@ -35,6 +35,16 @@ struct SettingsView: View {
                             Label("General", systemImage: "gear").labelStyle(SquircleLabelStyle(color: .gray))
                         }
                         
+                        NavigationLink(.settings(.sorting)) {
+                            Label("Sorting", systemImage: "arrow.up.and.down.text.horizontal")
+                                .labelStyle(SquircleLabelStyle(color: .indigo))
+                        }
+                        
+                        NavigationLink(.settings(.contentFilters)) {
+                            Label("Content Filters", systemImage: "line.3.horizontal.decrease")
+                                .labelStyle(SquircleLabelStyle(color: .orange))
+                        }
+                        
                         NavigationLink(.settings(.accessibility)) {
                             // apparently the Apple a11y symbol isn't an SFSymbol
                             Label("Accessibility", systemImage: "hand.point.up.braille.fill").labelStyle(SquircleLabelStyle(color: .blue))
@@ -43,11 +53,7 @@ struct SettingsView: View {
                         NavigationLink(.settings(.appearance)) {
                             Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .pink))
                         }
-                        
-                        NavigationLink(.settings(.contentFilters)) {
-                            Label("Content Filters", systemImage: "line.3.horizontal.decrease")
-                                .labelStyle(SquircleLabelStyle(color: .orange))
-                        }
+
                     }
                     
                     Section {

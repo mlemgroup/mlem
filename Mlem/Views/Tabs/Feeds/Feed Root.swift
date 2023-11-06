@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
@@ -15,15 +16,11 @@ struct FeedRoot: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
-    
-    let showLoading: Bool
-    
     @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
 
     var body: some View {
@@ -41,8 +38,6 @@ struct FeedRoot: View {
                         FeedView(
                             community: rootDetails.community,
                             feedType: rootDetails.feedType,
-                            sortType: defaultPostSorting,
-                            showLoading: showLoading,
                             rootDetails: $rootDetails,
                             splitViewColumnVisibility: $columnVisibility
                         )
@@ -111,6 +106,6 @@ struct FeedRoot: View {
 
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
-        FeedRoot(showLoading: false)
+        FeedRoot()
     }
 }

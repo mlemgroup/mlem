@@ -18,6 +18,7 @@ struct FeedView: View {
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
+    @Dependency(\.siteInformation) var siteInformation
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -35,7 +36,6 @@ struct FeedView: View {
     // MARK: Parameters and init
     
     @State var community: CommunityModel?
-    let showLoading: Bool
     @State var feedType: FeedType
     @Binding var rootDetails: CommunityLinkWithContext?
     /// Applicable when presented as root view in a column of NavigationSplitView.
@@ -46,8 +46,6 @@ struct FeedView: View {
     init(
         community: CommunityModel?,
         feedType: FeedType,
-        sortType: PostSortType,
-        showLoading: Bool = false,
         rootDetails: Binding<CommunityLinkWithContext?>? = nil,
         splitViewColumnVisibility: Binding<NavigationSplitViewVisibility>? = nil
     ) {
@@ -56,7 +54,6 @@ struct FeedView: View {
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self._feedType = State(initialValue: feedType)
-        self._postSortType = .init(initialValue: sortType)
         self._postTracker = StateObject(wrappedValue: .init(
             shouldPerformMergeSorting: false,
             internetSpeed: internetSpeed,
@@ -65,15 +62,20 @@ struct FeedView: View {
         
         self._rootDetails = rootDetails ?? .constant(nil)
         self._splitViewColumnVisibility = splitViewColumnVisibility ?? .constant(.automatic)
-        self.showLoading = showLoading
         self._community = State(initialValue: community)
+        
+        @Dependency(\.siteInformation) var siteInformation
+        @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+        @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+        
+        _postSortType = .init(initialValue: fallbackDefaultPostSorting)
     }
     
     // MARK: State
     
     @StateObject var postTracker: PostTracker
     
-    @State var postSortType: PostSortType
+    @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = true
     @State var shouldLoad: Bool = false
     
@@ -156,7 +158,20 @@ struct FeedView: View {
                 }
             )
             .environmentObject(postTracker)
-            .task(priority: .userInitiated) { await initFeed() }
+            .task(id: siteInformation.version) {
+                if let siteVersion = siteInformation.version {
+                    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+                    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+                    if siteVersion >= defaultPostSorting.minimumVersion {
+                        self.postSortType = defaultPostSorting
+                    } else {
+                        self.postSortType = fallbackDefaultPostSorting
+                    }
+                    Task(priority: .userInitiated) {
+                        await initFeed()
+                    }
+                }
+            }
             .task(priority: .background) { await fetchCommunityDetails() }
         // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
             .onChange(of: feedType) { _ in
@@ -186,12 +201,14 @@ struct FeedView: View {
                     shouldLoad = false
                 }
             }
-            .refreshable { await refreshFeed() }
             .onAppear {
                 print("FeedView appeared")
             }
             .onDisappear {
                 print("FeedView disappeared")
+            }
+            .refreshable {
+                await refreshFeed()
             }
     }
     

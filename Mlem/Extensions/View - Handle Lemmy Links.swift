@@ -10,15 +10,17 @@ import Foundation
 import SwiftUI
 
 struct HandleLemmyLinksDisplay: ViewModifier {
+    @Dependency(\.siteInformation) var siteInformation
+    
     @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
-
+    
     // swiftlint:disable function_body_length
     // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
@@ -26,11 +28,11 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
                 case .community(let community):
-                    FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
+                    FeedView(community: community, feedType: .all)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                 case .communityLinkWithContext(let context):
-                    FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
+                    FeedView(community: context.community, feedType: context.feedType)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                 case .communitySidebarLinkWithContext(let context):
@@ -91,12 +93,14 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             AccountsPage()
         case .general:
             GeneralSettingsView()
+        case .sorting:
+            SortingSettingsView()
+        case .contentFilters:
+            FiltersSettingsView()
         case .accessibility:
             AccessibilitySettingsView()
         case .appearance:
             AppearanceSettingsView()
-        case .contentFilters:
-            FiltersSettingsView()
         case .about:
             AboutView()
         case .advanced:
