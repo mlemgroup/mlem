@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
@@ -14,13 +15,10 @@ struct FeedRoot: View {
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
-    
-    let showLoading: Bool
 
     var body: some View {
         NavigationSplitView {
@@ -30,9 +28,7 @@ struct FeedRoot: View {
                 NavigationStack(path: $feedTabNavigation.path) {
                     FeedView(
                         community: rootDetails.community,
-                        feedType: rootDetails.feedType,
-                        sortType: defaultPostSorting,
-                        showLoading: showLoading
+                        feedType: rootDetails.feedType
                     )
                     .environmentObject(appState)
                     .handleLemmyViews()
@@ -94,6 +90,6 @@ struct FeedRoot: View {
 
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
-        FeedRoot(showLoading: false)
+        FeedRoot()
     }
 }
