@@ -73,6 +73,8 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .controversial, .scaled:
             return .init("0.19.0")
+        case .topThreeMonth, .topSixMonth, .topNineMonth:
+            return .init("0.18.1")
         default:
             return .zero
         }
