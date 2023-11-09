@@ -13,6 +13,7 @@ import SwiftUI
 enum PostFilterReason {
     case read, keyword
 }
+
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
 /// New post tracker built on top of the PostRepository instead of calling the API directly. Because this thing works fundamentally differently from the old one, it can't conform to FeedTracker--that's going to need a revamp down the line once everything uses nice shiny middleware models, so for now we're going to have to put up with some ugly
@@ -278,7 +279,7 @@ class PostTracker: ObservableObject {
         // fake state
         let stateFakedPost = PostModel(from: post, votes: post.votes.applyScoringOperation(operation: operation))
         await update(with: stateFakedPost)
-        hapticManager.play(haptic: .gentleSuccess, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         
         // perform real upvote
         do {
@@ -316,7 +317,7 @@ class PostTracker: ObservableObject {
             stateFakedPost.votes = stateFakedPost.votes.applyScoringOperation(operation: .upvote)
         }
         await update(with: stateFakedPost)
-        hapticManager.play(haptic: .firmerInfo, priority: .high)
+        hapticManager.play(haptic: .success, priority: .high)
         
         // perform real save
         do {
@@ -470,7 +471,7 @@ class PostTracker: ObservableObject {
         items: [PostModel],
         with filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
     ) -> [PostModel] {
-        return items.filter { item in
+        items.filter { item in
             if let reason = filtering(item) {
                 self.hiddenItems[reason] = self.hiddenItems[reason, default: 0] + 1
                 return false
