@@ -75,8 +75,6 @@ class APIClient {
     @discardableResult
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request)
-        
-        print(String(data: urlRequest.httpBody ?? Data(), encoding: .utf8))
 
         let (data, response) = try await execute(urlRequest)
         
