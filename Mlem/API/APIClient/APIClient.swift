@@ -75,6 +75,8 @@ class APIClient {
     @discardableResult
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request)
+        
+        print(String(data: urlRequest.httpBody ?? Data(), encoding: .utf8))
 
         let (data, response) = try await execute(urlRequest)
         
@@ -259,8 +261,13 @@ extension APIClient {
     
     // MARK: - User requests
 
-    func deleteUser(user: SavedAccount, password: String) async throws {
-        let request = DeleteAccountRequest(account: user, password: password)
+    func legacyDeleteUser(user: SavedAccount, password: String, deleteContent: Bool) async throws {
+        let request = LegacyDeleteAccountRequest(account: user, password: password)
+        try await perform(request: request)
+    }
+    
+    func deleteUser(user: SavedAccount, password: String, deleteContent: Bool) async throws {
+        let request = DeleteAccountRequest(account: user, password: password, deleteContent: deleteContent)
         try await perform(request: request)
     }
 }

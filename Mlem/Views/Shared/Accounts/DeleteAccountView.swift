@@ -24,7 +24,7 @@ struct DeleteAccountView: View {
     
     @State private var password = ""
     @State var confirmed: Bool = false
-    @State var deleteContent: Bool = false
+    @State var deleteContent: Bool = true
     
     let deleteContentMinimumVersion: SiteVersion = .init("0.19.0")
     
@@ -82,7 +82,9 @@ struct DeleteAccountView: View {
                 .cornerRadius(AppConstants.smallItemCornerRadius)
                 .textContentType(.password)
                 .submitLabel(.go)
-                .onSubmit(deleteAccount)
+                .onSubmit {
+                    deleteAccount(canDeleteContent: canDeleteContent)
+                }
             
             if canDeleteContent {
                 Toggle(isOn: $deleteContent) {
@@ -93,10 +95,14 @@ struct DeleteAccountView: View {
         .padding(.horizontal, 30)
     }
     
-    func deleteAccount() {
+    func deleteAccount(canDeleteContent: Bool) {
         Task {
             do {
-                try await apiClient.deleteUser(user: account, password: password)
+                if canDeleteContent {
+                    try await apiClient.deleteUser(user: account, password: password, deleteContent: deleteContent)
+                } else {
+                    try await apiClient.legacyDeleteUser(user: account, password: password, deleteContent: deleteContent)
+                }
                 accountsTracker.removeAccount(account: account)
                 if account == appState.currentActiveAccount {
                     // if we just deleted the current account we (currently!) have a decision to make
