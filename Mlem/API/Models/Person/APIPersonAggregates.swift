@@ -12,7 +12,7 @@ struct APIPersonAggregates: Decodable {
     let id: Int
     let personId: Int
     let postCount: Int
-    let postScore: Int
+    let postScore: Int?
     let commentCount: Int
-    let commentScore: Int
+    let commentScore: Int?
 }
