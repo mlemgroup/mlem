@@ -17,6 +17,7 @@ struct FeedView: View {
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
+    @Dependency(\.siteInformation) var siteInformation
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -31,38 +32,39 @@ struct FeedView: View {
     // MARK: Parameters and init
     
     @State var community: CommunityModel?
-    let showLoading: Bool
     @State var feedType: FeedType
     
     @State var errorDetails: ErrorDetails?
     
     init(
         community: CommunityModel?,
-        feedType: FeedType,
-        sortType: PostSortType,
-        showLoading: Bool = false
+        feedType: FeedType
     ) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self._feedType = State(initialValue: feedType)
-        self._postSortType = .init(initialValue: sortType)
         self._postTracker = StateObject(wrappedValue: .init(
             shouldPerformMergeSorting: false,
             internetSpeed: internetSpeed,
             upvoteOnSave: upvoteOnSave
         ))
         
-        self.showLoading = showLoading
         self._community = State(initialValue: community)
+        
+        @Dependency(\.siteInformation) var siteInformation
+        @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+        @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+        
+        _postSortType = .init(initialValue: fallbackDefaultPostSorting)
     }
     
     // MARK: State
     
     @StateObject var postTracker: PostTracker
     
-    @State var postSortType: PostSortType
+    @State var postSortType: PostSortType = .hot
     @State var isLoading: Bool = true
     @State var shouldLoad: Bool = false
     
@@ -93,7 +95,20 @@ struct FeedView: View {
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
-            .task(priority: .userInitiated) { await initFeed() }
+            .task(id: siteInformation.version) {
+                if let siteVersion = siteInformation.version {
+                    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+                    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+                    if siteVersion >= defaultPostSorting.minimumVersion {
+                        self.postSortType = defaultPostSorting
+                    } else {
+                        self.postSortType = fallbackDefaultPostSorting
+                    }
+                    Task(priority: .userInitiated) {
+                        await initFeed()
+                    }
+                }
+            }
             .task(priority: .background) { await fetchCommunityDetails() }
             // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
             .onChange(of: feedType) { _ in
@@ -123,7 +138,9 @@ struct FeedView: View {
                     shouldLoad = false
                 }
             }
-            .refreshable { await refreshFeed() }
+            .refreshable {
+                await refreshFeed()
+            }
     }
     
     @ViewBuilder

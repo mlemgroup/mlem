@@ -37,7 +37,7 @@ struct CommuntiyFeedRowView: View {
 
                 Spacer()
                 Button("Favorite Community") {
-                    hapticManager.play(haptic: .gentleSuccess, priority: .high)
+                    hapticManager.play(haptic: .success, priority: .high)
 
                     toggleFavorite()
 

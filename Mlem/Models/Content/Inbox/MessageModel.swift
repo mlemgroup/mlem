@@ -50,24 +50,23 @@ class MessageModel: ContentIdentifiable, ObservableObject {
     }
     
     func toggleRead(unreadTracker: UnreadTracker) async {
-        hapticManager.play(haptic: .gentleSuccess, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         
         // store original state
         let originalPrivateMessage = privateMessage
         
         // state fake
         await setPrivateMessage(APIPrivateMessage(from: privateMessage, read: !privateMessage.read))
-        await unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
         
         // call API and either update with latest info or revert state fake on fail
         do {
             let newMessage = try await inboxRepository.markMessageRead(id: privateMessage.id, isRead: privateMessage.read)
+            await unreadTracker.toggleMessageRead(originalState: originalPrivateMessage.read)
             await reinit(from: newMessage)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
             await setPrivateMessage(originalPrivateMessage)
-            await unreadTracker.toggleMessageRead(originalState: !originalPrivateMessage.read)
         }
     }
     

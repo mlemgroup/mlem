@@ -115,7 +115,7 @@ extension ReplyModel {
         voting = true
         defer { voting = false }
         
-        hapticManager.play(haptic: .gentleSuccess, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         let operation = votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
         
         let original: ReplyModel = .init(from: self)
@@ -139,24 +139,23 @@ extension ReplyModel {
     }
     
     func toggleRead(unreadTracker: UnreadTracker) async {
-        hapticManager.play(haptic: .gentleSuccess, priority: .low)
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         
         // store original state
         let originalCommentReply = commentReply
         
         // state fake
         await setCommentReply(APICommentReply(from: commentReply, read: !commentReply.read))
-        await unreadTracker.toggleReplyRead(originalState: originalCommentReply.read)
         
         // call API and either update with latest info or revert state fake on fail
         do {
             let newReply = try await inboxRepository.markReplyRead(id: commentReply.id, isRead: commentReply.read)
+            await unreadTracker.toggleReplyRead(originalState: originalCommentReply.read)
             await reinit(from: newReply)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
             await setCommentReply(originalCommentReply)
-            await unreadTracker.toggleReplyRead(originalState: !originalCommentReply.read)
         }
     }
     

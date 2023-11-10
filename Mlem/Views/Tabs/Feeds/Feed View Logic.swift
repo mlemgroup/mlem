@@ -72,6 +72,7 @@ extension FeedView {
     }
     
     // MARK: Community loading
+
     func fetchCommunityDetails() async {
         if let community {
             do {
@@ -93,11 +94,11 @@ extension FeedView {
     // MARK: Menus
     
     func genOuterSortMenuFunctions() -> [MenuFunction] {
-        PostSortType.outerTypes.map { type in
+        PostSortType.availableOuterTypes.map { type in
             let isSelected = postSortType == type
             let imageName = isSelected ? type.iconNameFill : type.iconName
             return MenuFunction.standardMenuFunction(
-                text: type.description,
+                text: type.label,
                 imageName: imageName,
                 destructiveActionPrompt: nil,
                 enabled: !isSelected
@@ -108,10 +109,10 @@ extension FeedView {
     }
     
     func genTopSortMenuFunctions() -> [MenuFunction] {
-        PostSortType.topTypes.map { type in
+        PostSortType.availableTopTypes.map { type in
             let isSelected = postSortType == type
             return MenuFunction.standardMenuFunction(
-                text: type.description,
+                text: type.label,
                 imageName: isSelected ? Icons.timeSortFill : Icons.timeSort,
                 destructiveActionPrompt: nil,
                 enabled: !isSelected
@@ -272,18 +273,17 @@ extension FeedView {
     // MARK: Helper Functions
     
     private func handle(_ error: Error) {
-
         switch error {
         case APIClientError.networking:
             guard postTracker.items.isEmpty else {
                 return
             }
-            errorDetails = .init(title: "Unable to connect to Lemmy", error: error, refresh: self.refreshFeed)
+            errorDetails = .init(title: "Unable to connect to Lemmy", error: error, refresh: refreshFeed)
             return
         default:
             break
         }
-        errorDetails = .init(error: error, refresh: self.refreshFeed)
+        errorDetails = .init(error: error, refresh: refreshFeed)
     }
     
     private func filter(postView: PostModel) -> PostFilterReason? {
@@ -293,7 +293,7 @@ extension FeedView {
     }
     
     private func toggleSubscribe() async {
-        if var community = self.community {
+        if var community {
             hapticManager.play(haptic: .success, priority: .high)
             do {
                 try await community.toggleSubscribe {
@@ -311,7 +311,7 @@ extension FeedView {
     }
     
     private func block() async {
-        if var community = self.community {
+        if var community {
             hapticManager.play(haptic: .violentSuccess, priority: .high)
             do {
                 try await community.toggleBlock {

@@ -10,9 +10,10 @@ import Foundation
 enum SettingsPage: DestinationValue {
     case accounts
     case general
+    case sorting
+    case contentFilters
     case accessibility
     case appearance
-    case contentFilters
     case about
     case advanced
 }
