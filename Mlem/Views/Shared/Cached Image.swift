@@ -31,8 +31,8 @@ struct CachedImage: View {
     let cornerRadius: CGFloat
     let errorBackgroundColor: Color
     
-    // Optional callback triggered when the quicklook preview is dismissed
-    let dismissCallback: (() -> Void)?
+    // Optional callback triggered when the quicklook preview is presented on tap gesture.
+    let onTapCallback: (() -> Void)?
     
     init(
         url: URL?,
@@ -42,7 +42,7 @@ struct CachedImage: View {
         imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
         errorBackgroundColor: Color = Color(uiColor: .systemGray4),
         contentMode: ContentMode = .fit,
-        dismissCallback: (() -> Void)? = nil,
+        onTapCallback: (() -> Void)? = nil,
         cornerRadius: CGFloat? = nil
     ) {
         self.url = url
@@ -51,7 +51,7 @@ struct CachedImage: View {
         self.imageNotFound = imageNotFound
         self.errorBackgroundColor = errorBackgroundColor
         self.contentMode = contentMode
-        self.dismissCallback = dismissCallback
+        self.onTapCallback = onTapCallback
         self.cornerRadius = cornerRadius ?? 0
         
         self.screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
@@ -136,7 +136,7 @@ struct CachedImage: View {
                                     await MainActor.run {
                                         quickLookState.url = quicklook
                                         /// Since quickLookState is a global state, calling callback on tap ensures we only call one callback (i.e. the one user requested to view). [2023.11]
-                                        dismissCallback?()
+                                        onTapCallback?()
                                         /// It takes some time for actual QuickLookUI to appear:
                                         /// Ideally, progress view is removed once QuickLookUI fully appears. 
                                         /// [2023.11]
