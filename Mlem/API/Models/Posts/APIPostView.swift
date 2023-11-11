@@ -13,6 +13,7 @@ struct APIPostView: Decodable, APIContentViewProtocol {
     let creator: APIPerson
     let community: APICommunity
     let creatorBannedFromCommunity: Bool
+    let creatorIsModerator: Bool?
     var counts: APIPostAggregates
     let subscribed: APISubscribedStatus
     let saved: Bool

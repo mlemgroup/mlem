@@ -16,8 +16,8 @@ struct APIPostAggregates: Decodable, APIContentAggregatesProtocol {
     let upvotes: Int
     let downvotes: Int
     let published: Date
-    let newestCommentTime: Date
-    let newestCommentTimeNecro: Date
-    let featuredCommunity: Bool
-    let featuredLocal: Bool
+    let newestCommentTime: Date?
+    let newestCommentTimeNecro: Date?
+    let featuredCommunity: Bool?
+    let featuredLocal: Bool?
 }
