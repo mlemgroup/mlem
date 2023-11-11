@@ -62,4 +62,9 @@ class PersonRepository {
             throw error
         }
     }
+    
+    @discardableResult
+    func updateBlocked(for personId: Int, blocked: Bool) async throws -> BlockPersonResponse {
+        try await apiClient.blockPerson(id: personId, shouldBlock: blocked)
+    }
 }

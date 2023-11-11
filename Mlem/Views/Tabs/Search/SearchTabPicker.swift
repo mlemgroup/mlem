@@ -39,6 +39,7 @@ struct SearchTabPicker: View {
                     Text(type.label)
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
+                        .contentShape(Rectangle())
                         .foregroundStyle(selected == type ? .white : .primary)
                         .font(.subheadline)
                         .fontWeight(.semibold)

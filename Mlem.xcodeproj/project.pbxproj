@@ -43,6 +43,9 @@
 		03A1B3F42A83F46200AB0DE0 /* ShareButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F32A83F46200AB0DE0 /* ShareButtonView.swift */; };
 		03A1B3F72A84000400AB0DE0 /* APIContentAggregatesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */; };
 		03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */; };
+		03A276792AFD903600C0D66B /* CommunityModel+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A276782AFD903600C0D66B /* CommunityModel+MenuFunctions.swift */; };
+		03A2767B2AFE560000C0D66B /* CommunityModel+SwipeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A2767A2AFE560000C0D66B /* CommunityModel+SwipeActions.swift */; };
+		03A2767D2AFE656700C0D66B /* UserModel+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A2767C2AFE656700C0D66B /* UserModel+MenuFunctions.swift */; };
 		03A40DAD2AD5EA11005F019F /* NoPostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A40DAC2AD5EA11005F019F /* NoPostsView.swift */; };
 		03B643572A6864CD00F65700 /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B643562A6864CD00F65700 /* TabBarSettingsView.swift */; };
 		03B7AAEF2ABCB9DC00068B23 /* ContentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */; };
@@ -554,6 +557,9 @@
 		03A1B3F32A83F46200AB0DE0 /* ShareButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButtonView.swift; sourceTree = "<group>"; };
 		03A1B3F62A84000400AB0DE0 /* APIContentAggregatesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentAggregatesProtocol.swift; sourceTree = "<group>"; };
 		03A1B3F82A8400DD00AB0DE0 /* APIContentViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContentViewProtocol.swift; sourceTree = "<group>"; };
+		03A276782AFD903600C0D66B /* CommunityModel+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityModel+MenuFunctions.swift"; sourceTree = "<group>"; };
+		03A2767A2AFE560000C0D66B /* CommunityModel+SwipeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityModel+SwipeActions.swift"; sourceTree = "<group>"; };
+		03A2767C2AFE656700C0D66B /* UserModel+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserModel+MenuFunctions.swift"; sourceTree = "<group>"; };
 		03A40DAC2AD5EA11005F019F /* NoPostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPostsView.swift; sourceTree = "<group>"; };
 		03B643562A6864CD00F65700 /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
 		03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTracker.swift; sourceTree = "<group>"; };
@@ -1155,6 +1161,7 @@
 			children = (
 				03B7AAF22ABEF85200068B23 /* UserModel.swift */,
 				030D00872AD1BB2600953B1D /* UserModel+ContentModel.swift */,
+				03A2767C2AFE656700C0D66B /* UserModel+MenuFunctions.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1254,6 +1261,8 @@
 			isa = PBXGroup;
 			children = (
 				03EEEAF82ABB985D0087F8D8 /* CommunityModel.swift */,
+				03A276782AFD903600C0D66B /* CommunityModel+MenuFunctions.swift */,
+				03A2767A2AFE560000C0D66B /* CommunityModel+SwipeActions.swift */,
 				03FD64FE2AE53D0E00957AA9 /* CommunityModel+ContentModel.swift */,
 			);
 			path = Community;
@@ -2874,6 +2883,7 @@
 				637218582A3A2AAD008C4816 /* APISite.swift in Sources */,
 				B11D72832A49FAA7009DC22F /* Cached Image.swift in Sources */,
 				637218752A3A2AAD008C4816 /* GetCommunity.swift in Sources */,
+				03A2767B2AFE560000C0D66B /* CommunityModel+SwipeActions.swift in Sources */,
 				CDF1EF142A6B6D6E003594B6 /* Feed View Logic.swift in Sources */,
 				6DFF50432A48DED3001E648D /* Inbox View.swift in Sources */,
 				03EEEAF72AB8ED3C0087F8D8 /* SearchTabPicker.swift in Sources */,
@@ -3037,6 +3047,7 @@
 				CDDCF6452A66375E003DA3AC /* FancyTabItemViewModifier.swift in Sources */,
 				6DA61F872A5720EA001EA633 /* RecentSearchesTracker.swift in Sources */,
 				CD4368DD2AE24E1A00BD8BD1 /* InboxView+Logic.swift in Sources */,
+				03A276792AFD903600C0D66B /* CommunityModel+MenuFunctions.swift in Sources */,
 				637218762A3A2AAD008C4816 /* BlockCommunity.swift in Sources */,
 				03CB329E2A6D8E910021EF27 /* PostDetailEditorView.swift in Sources */,
 				CD69F5752A42479A0028D4F7 /* Comment Item Logic.swift in Sources */,
@@ -3126,6 +3137,7 @@
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
 				CDDCF6532A677F45003DA3AC /* TabSelection.swift in Sources */,
 				CD4368C42AE240B100BD8BD1 /* MentionModel.swift in Sources */,
+				03A2767D2AFE656700C0D66B /* UserModel+MenuFunctions.swift in Sources */,
 				6372184D2A3A2AAD008C4816 /* APIErrorResponse.swift in Sources */,
 				CD7B53B92A5F263D00006E81 /* APIPrivateMessageReport.swift in Sources */,
 				637218602A3A2AAD008C4816 /* EditPost.swift in Sources */,

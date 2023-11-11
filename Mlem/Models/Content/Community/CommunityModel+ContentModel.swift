@@ -11,7 +11,7 @@ extension CommunityModel: ContentModel {
     var uid: ContentModelIdentifier { .init(contentType: .community, contentId: communityId) }
     var imageUrls: [URL] {
         if let url = avatar {
-            return [url.withIcon64Parameters]
+            return [url.withIconSize(128)]
         }
         return []
     }
