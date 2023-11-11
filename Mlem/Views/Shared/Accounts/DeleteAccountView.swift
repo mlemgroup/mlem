@@ -101,7 +101,7 @@ struct DeleteAccountView: View {
                 if canDeleteContent {
                     try await apiClient.deleteUser(user: account, password: password, deleteContent: deleteContent)
                 } else {
-                    try await apiClient.legacyDeleteUser(user: account, password: password, deleteContent: deleteContent)
+                    try await apiClient.legacyDeleteUser(user: account, password: password)
                 }
                 accountsTracker.removeAccount(account: account)
                 if account == appState.currentActiveAccount {
