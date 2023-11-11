@@ -134,20 +134,20 @@ struct CachedImage: View {
                                     }
                                     try data.write(to: quicklook)
                                     await MainActor.run {
-                                        /// It takes some time for actual UI to appear.
+                                        quickLookState.url = quicklook
+                                        /// Since quickLookState is a global state, calling callback on tap ensures we only call one callback (i.e. the one user requested to view). [2023.11]
+                                        dismissCallback?()
+                                        /// It takes some time for actual QuickLookUI to appear:
+                                        /// Ideally, progress view is removed once QuickLookUI fully appears. 
+                                        /// [2023.11]
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             isPresentingQuickLook = false
                                         }
-                                        quickLookState.url = quicklook
                                     }
                                 } catch {
                                     print(String(describing: error))
+                                    isPresentingQuickLook = false
                                 }
-                            }
-                        }
-                        .onChange(of: quickLookState.url) { url in
-                            if url == nil, let dismissCallback {
-                                dismissCallback()
                             }
                         }
                 } else {
