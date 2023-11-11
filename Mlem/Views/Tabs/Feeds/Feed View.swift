@@ -53,10 +53,7 @@ struct FeedView: View {
         
         self._community = State(initialValue: community)
         
-        @Dependency(\.siteInformation) var siteInformation
-        @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
         @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
-        
         _postSortType = .init(initialValue: fallbackDefaultPostSorting)
     }
     
@@ -64,8 +61,9 @@ struct FeedView: View {
     
     @StateObject var postTracker: PostTracker
     
-    @State var postSortType: PostSortType = .hot
+    @State var postSortType: PostSortType
     @State var isLoading: Bool = true
+    @State var siteInformationLoading: Bool = true
     @State var shouldLoad: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
@@ -96,13 +94,16 @@ struct FeedView: View {
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
             .task(id: siteInformation.version) {
-                if let siteVersion = siteInformation.version {
+                // update post sort once we have siteInformation. Assumes site version won't change once we receive it.
+                if let siteVersion = siteInformation.version, siteInformationLoading {
+                    siteInformationLoading = false
+                    
                     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
                     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
                     if siteVersion >= defaultPostSorting.minimumVersion {
-                        self.postSortType = defaultPostSorting
+                        postSortType = defaultPostSorting
                     } else {
-                        self.postSortType = fallbackDefaultPostSorting
+                        postSortType = fallbackDefaultPostSorting
                     }
                     Task(priority: .userInitiated) {
                         await initFeed()
@@ -173,7 +174,7 @@ struct FeedView: View {
             if let errorDetails {
                 ErrorView(errorDetails)
                     .frame(maxWidth: .infinity)
-            } else if isLoading {
+            } else if isLoading || siteInformationLoading { // don't show posts until site information loads to avoid jarring redraw
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
