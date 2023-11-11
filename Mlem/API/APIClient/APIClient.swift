@@ -259,8 +259,13 @@ extension APIClient {
     
     // MARK: - User requests
 
-    func deleteUser(user: SavedAccount, password: String) async throws {
-        let request = DeleteAccountRequest(account: user, password: password)
+    func legacyDeleteUser(user: SavedAccount, password: String) async throws {
+        let request = LegacyDeleteAccountRequest(account: user, password: password)
+        try await perform(request: request)
+    }
+    
+    func deleteUser(user: SavedAccount, password: String, deleteContent: Bool) async throws {
+        let request = DeleteAccountRequest(account: user, password: password, deleteContent: deleteContent)
         try await perform(request: request)
     }
 }
