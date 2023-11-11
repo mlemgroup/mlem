@@ -49,7 +49,6 @@ extension FeedView {
             errorDetails = nil
             return true
         } catch {
-            print(error)
             handle(error)
             return false
         }

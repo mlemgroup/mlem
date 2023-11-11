@@ -16,6 +16,7 @@ struct APIPostAggregates: Decodable, APIContentAggregatesProtocol {
     let upvotes: Int
     let downvotes: Int
     let published: Date
+    // TODO: 0.18 Deprecation remove these fields
     let newestCommentTime: Date?
     let newestCommentTimeNecro: Date?
     let featuredCommunity: Bool?
