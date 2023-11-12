@@ -37,6 +37,7 @@ class PostTracker: ObservableObject {
     private(set) var isLoading: Bool = false // accessible but not published because it causes lots of bad view redraws
     private(set) var page: Int = 1
     private(set) var hiddenItems: [PostFilterReason: Int] = .init()
+    private(set) var currentCursor: String?
     
     private var hasReachedEnd: Bool = false
     
@@ -75,19 +76,25 @@ class PostTracker: ObservableObject {
         var newPosts: [PostModel] = .init()
         let numItems = items.count
         repeat {
-            newPosts = try await postRepository.loadPage(
+            let (posts, cursor) = try await postRepository.loadPage(
                 communityId: communityId,
                 page: page,
+                cursor: currentCursor,
                 sort: sort,
                 type: type,
                 limit: internetSpeed.pageSize
             )
             
+            newPosts = posts
+            
             if newPosts.isEmpty {
+                hasReachedEnd = true
+            } else if let currentCursor, cursor == currentCursor {
                 hasReachedEnd = true
             } else {
                 await add(newPosts, filtering: filtering)
                 page += 1
+                currentCursor = cursor
             }
         } while !hasReachedEnd && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
         
@@ -130,15 +137,17 @@ class PostTracker: ObservableObject {
         
         page = 1
         
-        let newPosts = try await postRepository.loadPage(
+        let (newPosts, cursor) = try await postRepository.loadPage(
             communityId: communityId,
             page: page,
+            cursor: currentCursor,
             sort: sort,
             type: feedType,
             limit: internetSpeed.pageSize
         )
         
-        await reset(with: newPosts, filteredWith: filtering)
+        currentCursor = cursor
+        await reset(with: newPosts, cursor: cursor, filteredWith: filtering)
     }
     
     @MainActor
@@ -172,10 +181,12 @@ class PostTracker: ObservableObject {
     @MainActor
     func reset(
         with newItems: [PostModel] = .init(),
+        cursor: String? = nil,
         filteredWith filter: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
     ) {
         hasReachedEnd = false
         page = newItems.isEmpty ? 1 : 2
+        currentCursor = cursor
         if page == 1 {
             hiddenItems.removeAll()
         }
@@ -434,11 +445,11 @@ class PostTracker: ObservableObject {
             // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
             // so it's probably not an API crime, right?
             if let communityAvatarLink = post.community.avatar {
-                imageRequests.append(ImageRequest(url: communityAvatarLink.withIconSize(Int(AppConstants.smallAvatarSize*2))))
+                imageRequests.append(ImageRequest(url: communityAvatarLink.withIconSize(Int(AppConstants.smallAvatarSize * 2))))
             }
             
             if let userAvatarLink = post.creator.avatar {
-                imageRequests.append(ImageRequest(url: userAvatarLink.withIconSize(Int(AppConstants.largeAvatarSize*2))))
+                imageRequests.append(ImageRequest(url: userAvatarLink.withIconSize(Int(AppConstants.largeAvatarSize * 2))))
             }
             
             switch post.postType {
