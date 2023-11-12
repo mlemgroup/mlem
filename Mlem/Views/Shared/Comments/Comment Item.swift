@@ -18,6 +18,7 @@ struct CommentItem: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.hapticManager) var hapticManager
     
     // appstorage
     @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = true
