@@ -267,6 +267,7 @@ struct UserLinkViewPreview: PreviewProvider {
             creator: creator,
             community: community,
             creatorBannedFromCommunity: false,
+            creatorIsModerator: false,
             counts: postVotes,
             subscribed: .notSubscribed,
             saved: false,
