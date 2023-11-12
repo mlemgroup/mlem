@@ -9,6 +9,7 @@ import SwiftUI
 
 extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
         let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
         do {
             let updatedComment = try await commentRepository.voteOnComment(
@@ -22,6 +23,7 @@ extension CommentItem {
     }
     
     func deleteComment() async {
+        hapticManager.play(haptic: .success, priority: .low)
         let comment = hierarchicalComment.commentView.comment
         do {
             let updatedComment = try await commentRepository.deleteComment(
@@ -117,6 +119,8 @@ extension CommentItem {
         defer { dirty = false }
         dirty = true
         dirtySaved.toggle()
+        
+        hapticManager.play(haptic: .success, priority: .low)
         
         do {
             let response = try await commentRepository.saveComment(
