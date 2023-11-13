@@ -9,10 +9,9 @@ import Foundation
 
 extension UserModel: ContentModel {
     var uid: ContentModelIdentifier { .init(contentType: .user, contentId: userId) }
-    
     var imageUrls: [URL] {
         if let url = avatar {
-            return [url.withIcon64Parameters]
+            return [url.withIconSize(128)]
         }
         return []
     }

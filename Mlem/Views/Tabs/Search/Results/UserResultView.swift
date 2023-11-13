@@ -18,6 +18,22 @@ struct UserResultView: View {
     let showTypeLabel: Bool
     var swipeActions: SwipeConfiguration?
     
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
+    var title: String {
+        if user.blocked {
+            return "\(user.name) ∙ Blocked"
+        } else {
+            return user.name
+        }
+    }
+    
     var caption: String {
         if let host = user.profileUrl.host {
             if showTypeLabel {
@@ -34,7 +50,15 @@ struct UserResultView: View {
     var body: some View {
         NavigationLink(value: AppRoute.userProfile(user)) {
             HStack(spacing: 10) {
-                AvatarView(user: user, avatarSize: 48)
+                if user.blocked {
+                    Image(systemName: Icons.hide)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30, height: 30)
+                        .padding(9)
+                } else {
+                    AvatarView(user: user, avatarSize: 48, iconResolution: 128)
+                }
                 let flairs = user.getFlairs()
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
@@ -43,7 +67,7 @@ struct UserResultView: View {
                                 .imageScale(.small)
                                 .foregroundStyle(flair.color)
                         }
-                        Text(user.name)
+                        Text(title)
                     }
                     Text(caption)
                         .font(.footnote)
@@ -89,6 +113,7 @@ struct UserResultView: View {
             .padding(.horizontal)
             .contentShape(Rectangle())
         }
+        .opacity(user.blocked ? 0.5 : 1)
         .buttonStyle(.plain)
         .padding(.vertical, 8)
         .background(.background)
@@ -101,7 +126,18 @@ struct UserResultView: View {
             .background(.background)
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
+        .destructiveConfirmation(
+            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+            confirmationMenuFunction: confirmationMenuFunction
+        )
         .addSwipeyActions(swipeActions ?? .init())
+        .contextMenu {
+            ForEach(user.menuFunctions {
+                contentTracker.update(with: AnyContentModel($0))
+            }) { item in
+                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            }
+        }
     }
 }
 

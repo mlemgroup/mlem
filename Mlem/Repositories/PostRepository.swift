@@ -11,26 +11,33 @@ import Foundation
 class PostRepository {
     @Dependency(\.apiClient) private var apiClient
     
+    // swiftlint:disable function_parameter_count
     func loadPage(
         communityId: Int?,
         page: Int,
+        cursor: String?,
         sort: PostSortType?,
         type: FeedType,
         limit: Int,
         savedOnly: Bool? = nil,
         communityName: String? = nil
-    ) async throws -> [PostModel] {
-        try await apiClient.loadPosts(
+    ) async throws -> (posts: [PostModel], cursor: String?) {
+        let response = try await apiClient.loadPosts(
             communityId: communityId,
             page: page,
+            cursor: cursor,
             sort: sort,
             type: type,
             limit: limit,
             savedOnly: savedOnly,
             communityName: communityName
         )
-        .map { PostModel(from: $0) }
+        
+        let posts = response.posts.map { PostModel(from: $0) }
+        return (posts, response.nextPage)
     }
+
+    // swiftlint:enable function_parameter_count
     
     /// Loads a single post
     /// - Parameter postId: id of the post to load

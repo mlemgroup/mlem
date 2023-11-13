@@ -10,6 +10,9 @@ import Foundation
 import SwiftUI
 
 struct UserModel {
+    @Dependency(\.personRepository) var personRepository
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
     
     @available(*, deprecated, message: "Use attributes of the UserModel directly instead.")
     var person: APIPerson
@@ -47,6 +50,8 @@ struct UserModel {
     // These values are nil if the UserModel was created from an APIPerson and not an APIPersonView
     var postCount: Int?
     var commentCount: Int?
+    
+    var blocked: Bool
     
     static let developerNames = [
         "https://lemmy.tespia.org/u/navi",
@@ -94,6 +99,10 @@ struct UserModel {
         
         self.profileUrl = person.actorId
         self.sharedInboxUrl = person.sharedInboxLink
+        
+        // Annoyingly, PersonView doesn't include whether the user is blocked so we can't
+        // actually determine this without making extra requests...
+        self.blocked = false
     }
     
     // Once we've done other model types we should stop this from relying on API types
@@ -127,6 +136,23 @@ struct UserModel {
         }
         return ret
     }
+    
+    mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async {
+        blocked.toggle()
+        RunLoop.main.perform { [self] in
+            callback(self)
+        }
+        do {
+            let response = try await personRepository.updateBlocked(for: userId, blocked: blocked)
+            self.blocked = response.blocked
+            RunLoop.main.perform { [self] in
+                callback(self)
+            }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
 }
 
 extension UserModel: Identifiable {
@@ -141,5 +167,6 @@ extension UserModel: Hashable {
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
+        hasher.combine(blocked)
     }
 }

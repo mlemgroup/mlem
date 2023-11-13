@@ -69,7 +69,7 @@ struct UserLabelView: View {
     }
     
     var avatarSize: CGFloat { serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize }
-    
+
     var body: some View {
         HStack(alignment: .center, spacing: AppConstants.largeAvatarSpacing) {
             if showAvatar {
@@ -267,6 +267,7 @@ struct UserLinkViewPreview: PreviewProvider {
             creator: creator,
             community: community,
             creatorBannedFromCommunity: false,
+            creatorIsModerator: false,
             counts: postVotes,
             subscribed: .notSubscribed,
             saved: false,
