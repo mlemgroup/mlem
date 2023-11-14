@@ -32,7 +32,7 @@ struct ThumbnailImageView: View {
                     url: url,
                     fixedSize: size,
                     contentMode: .fill,
-                    dismissCallback: markPostAsRead
+                    onTapCallback: markPostAsRead
                 )
                 .blur(radius: showNsfwFilter ? 8 : 0)
             case let .link(url):

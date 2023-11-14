@@ -33,6 +33,8 @@ struct ContentView: View {
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     
+    @StateObject private var quickLookState: QuickLookState = .init()
+    
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
@@ -129,9 +131,13 @@ struct ContentView: View {
             .presentationDetents([.medium, .large], selection: .constant(.large))
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
+        .fullScreenCover(item: $quickLookState.url) { url in
+            QuickLookView(urls: [url])
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
+        .environmentObject(quickLookState)
         .onChange(of: scenePhase) { phase in
             // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
             if phase != .active {
