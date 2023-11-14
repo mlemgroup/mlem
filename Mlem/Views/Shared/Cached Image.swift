@@ -96,6 +96,16 @@ struct CachedImage: View {
                             .frame(maxHeight: size.height)
                             .opacity(0.00000000001)
                     }
+                    .overlay {
+                        if isPresentingQuickLook {
+                            ProgressView()
+                                .padding(12)
+                                .background(.ultraThinMaterial)
+                                .clipShape(Circle())
+                                .animation(.default, value: isPresentingQuickLook)
+                                .transition(.opacity)
+                        }
+                    }
                     .onAppear {
                         // if the image appears and its size isn't cached, compute its size and cache it
                         if shouldRecomputeSize {
