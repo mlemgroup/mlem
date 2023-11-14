@@ -13,7 +13,6 @@
 // swiftlint:disable type_body_length
 
 import Dependencies
-import QuickLook
 import SwiftUI
 
 /// Displays a single post in the feed

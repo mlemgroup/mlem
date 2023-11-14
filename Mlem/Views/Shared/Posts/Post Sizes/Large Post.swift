@@ -203,7 +203,7 @@ struct LargePost: View {
                     CachedImage(
                         url: url,
                         maxHeight: layoutMode.getMaxHeight(limitHeight),
-                        dismissCallback: markPostAsRead,
+                        onTapCallback: markPostAsRead,
                         cornerRadius: AppConstants.largeItemCornerRadius
                     )
                     .frame(

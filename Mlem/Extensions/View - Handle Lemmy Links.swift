@@ -16,6 +16,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
+    @EnvironmentObject private var quickLookState: QuickLookState
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
@@ -31,10 +32,12 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     FeedView(community: community, feedType: .all)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
+                        .environmentObject(quickLookState)
                 case .communityLinkWithContext(let context):
                     FeedView(community: context.community, feedType: context.feedType)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
+                        .environmentObject(quickLookState)
                 case .communitySidebarLinkWithContext(let context):
                     CommunitySidebarView(
                         community: context.community
@@ -53,22 +56,29 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     ExpandedPost(post: postModel)
                         .environmentObject(postTracker)
                         .environmentObject(appState)
+                        .environmentObject(quickLookState)
                 case .apiPost(let post):
                     LazyLoadExpandedPost(post: post)
+                        .environmentObject(quickLookState)
                 case .apiPerson(let user):
                     UserView(userID: user.id)
+                        .environmentObject(quickLookState)
                 case .userProfile(let user):
                     UserView(userID: user.userId)
                         .environmentObject(appState)
+                        .environmentObject(quickLookState)
                 case .postLinkWithContext(let post):
                     ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                         .environmentObject(post.postTracker)
                         .environmentObject(appState)
+                        .environmentObject(quickLookState)
                 case .lazyLoadPostLinkWithContext(let post):
                     LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
+                        .environmentObject(quickLookState)
                 case .userModeratorLink(let user):
                     UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
                         .environmentObject(appState)
+                        .environmentObject(quickLookState)
                 case .settings(let page):
                     settingsDestination(for: page)
                 case .aboutSettings(let page):
