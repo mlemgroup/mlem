@@ -131,9 +131,17 @@ struct ContentView: View {
             .presentationDetents([.medium, .large], selection: .constant(.large))
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
-        .fullScreenCover(item: $quickLookState.url) { url in
-            QuickLookView(urls: [url])
+        .sheet(item: $quickLookState.url) { url in
+            MediaUIAttachmentImageView(url: url)
+//          MediaUIView(selectedAttachment: selectedMediaAttachment,
+//                      attachments: quickLook.mediaAttachments)
+//            .presentationBackground(.ultraThinMaterial)
+//            .presentationCornerRadius(16)
+//            .withEnvironments()
         }
+//        .fullScreenCover(item: $quickLookState.url) { url in
+//            QuickLookView(urls: [url])
+//        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
@@ -162,7 +170,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists && allowTabBarSwipeUpGesture {
+        if !homeButtonExists, allowTabBarSwipeUpGesture {
             isPresentingAccountSwitcher = true
         }
     }
