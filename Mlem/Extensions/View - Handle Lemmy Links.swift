@@ -22,6 +22,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
+    @StateObject var scrollState = ScrollState()
+    
     // swiftlint:disable function_body_length
     // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
@@ -33,11 +35,13 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)
+                        .environmentObject(scrollState)
                 case .communityLinkWithContext(let context):
                     FeedView(community: context.community, feedType: context.feedType)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)
+                        .environmentObject(scrollState)
                 case .communitySidebarLinkWithContext(let context):
                     CommunitySidebarView(
                         community: context.community

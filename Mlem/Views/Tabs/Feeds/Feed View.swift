@@ -26,6 +26,7 @@ struct FeedView: View {
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var scrollState: ScrollState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var editorTracker: EditorTracker
     
@@ -65,7 +66,6 @@ struct FeedView: View {
     @State var isLoading: Bool = true
     @State var siteInformationLoading: Bool = true
     @State var shouldLoad: Bool = false
-    @State var scrollToTop: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
@@ -171,10 +171,13 @@ struct FeedView: View {
                 }
             }
             .fancyTabScrollCompatible()
-            .onChange(of: scrollToTop) { value in
+            .onChange(of: scrollState.shouldScrollToTop) { value in
                 if value {
-                    reader.scrollTo("topOfFeed")
-                    scrollToTop = false
+                    withAnimation(.smooth(duration: 5, extraBounce: 3.0)) {
+                        reader.scrollTo("topOfFeed", anchor: .bottomLeading)
+                    }
+                    scrollState.shouldScrollToTop = false
+                    print("scrolled to top")
                 }
             }
         }

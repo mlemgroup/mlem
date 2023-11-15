@@ -10,6 +10,7 @@ import Dependencies
 
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
+    @StateObject var scrollState = ScrollState()
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
@@ -43,6 +44,7 @@ struct FeedRoot: View {
         )
         .environmentObject(feedTabNavigation)
         .environmentObject(appState)
+        .environmentObject(scrollState)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
                 let feedType = FeedType(rawValue:
@@ -82,6 +84,12 @@ struct FeedRoot: View {
         }
         .onChange(of: selectedNavigationTabHashValue) { newValue in
             if newValue == TabSelection.feeds.hashValue {
+                scrollState.clickCount += 1
+                
+                if scrollState.clickCount == 2 {
+                    scrollState.shouldScrollToTop = true
+                    scrollState.clickCount = 0
+                }
                 print("re-selected \(TabSelection.feeds) tab")
             }
         }
