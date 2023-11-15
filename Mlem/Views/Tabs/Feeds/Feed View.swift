@@ -65,6 +65,7 @@ struct FeedView: View {
     @State var isLoading: Bool = true
     @State var siteInformationLoading: Bool = true
     @State var shouldLoad: Bool = false
+    @State var scrollToTop: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
     
@@ -146,26 +147,37 @@ struct FeedView: View {
     
     @ViewBuilder
     private var contentView: some View {
-        ScrollView {
-            if !postTracker.items.isEmpty {
-                LazyVStack(spacing: 0) {
-                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
-                    ForEach(postTracker.items, id: \.uid) { post in
-                        feedPost(for: post)
+        ScrollViewReader { reader in
+            ScrollView {
+                if !postTracker.items.isEmpty {
+                    LazyVStack(spacing: 0) {
+                        EmptyView()
+                            .id("topOfFeed")
+                        
+                        // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                        ForEach(postTracker.items, id: \.uid) { post in
+                            feedPost(for: post)
+                        }
+                        
+                        // TODO: update to use proper LoadingState
+                        EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                     }
-                    
-                    // TODO: update to use proper LoadingState
-                    EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .overlay {
+                if postTracker.items.isEmpty {
+                    noPostsView()
+                }
+            }
+            .fancyTabScrollCompatible()
+            .onChange(of: scrollToTop) { value in
+                if value {
+                    reader.scrollTo("topOfFeed")
+                    scrollToTop = false
                 }
             }
         }
-        .frame(maxWidth: .infinity)
-        .overlay {
-            if postTracker.items.isEmpty {
-                noPostsView()
-            }
-        }
-        .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
