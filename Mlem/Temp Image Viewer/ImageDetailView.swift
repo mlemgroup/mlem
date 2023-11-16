@@ -14,7 +14,7 @@ struct ImageDetailView: View {
     let url: URL
     
     var body: some View {
-        image
+        ZoomableImageView(url: url)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -24,15 +24,5 @@ struct ImageDetailView: View {
                     }
                 }
             }
-    }
-    
-    @ViewBuilder
-    var image: some View {
-        if #available(iOS 16.4, *) {
-            ZoomableImageView(url: url)
-                .presentationBackground(.regularMaterial)
-        } else {
-            ZoomableImageView(url: url)
-        }
     }
 }
