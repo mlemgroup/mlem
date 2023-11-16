@@ -33,7 +33,7 @@ struct ContentView: View {
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     
-    @StateObject private var quickLookState: QuickLookState = .init()
+    @StateObject private var quickLookState: ImageDetailSheetState = .init()
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     

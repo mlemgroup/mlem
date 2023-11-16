@@ -20,8 +20,7 @@ struct CachedImage: View {
     @State var size: CGSize
     @State var shouldRecomputeSize: Bool
     
-    @EnvironmentObject private var quickLookState: QuickLookState
-    @State private var isPresentingQuickLook = false
+    @EnvironmentObject private var imageDetailSheetState: ImageDetailSheetState
     
     var imageNotFound: () -> AnyView
     
@@ -97,16 +96,6 @@ struct CachedImage: View {
                             .frame(maxHeight: size.height)
                             .opacity(0.00000000001)
                     }
-                    .overlay {
-                        if isPresentingQuickLook {
-                            ProgressView()
-                                .padding(12)
-                                .background(.ultraThinMaterial)
-                                .clipShape(Circle())
-                                .animation(.default, value: isPresentingQuickLook)
-                                .transition(.opacity)
-                        }
-                    }
                     .onAppear {
                         // if the image appears and its size isn't cached, compute its size and cache it
                         if shouldRecomputeSize {
@@ -122,33 +111,8 @@ struct CachedImage: View {
                 if shouldExpand {
                     imageView
                         .onTapGesture {
-                            isPresentingQuickLook = true
-                            Task(priority: .userInitiated) {
-//                                do {
-//                                    let (data, _) = try await ImagePipeline.shared.data(for: url!)
-//                                    let fileType = url?.pathExtension ?? "png"
-//                                    let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
-//                                    if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
-//                                        print("file exsists")
-//                                        try FileManager.default.removeItem(at: quicklook)
-//                                    }
-//                                    try data.write(to: quicklook)
-                                await MainActor.run {
-                                    quickLookState.url = url // quicklook
-                                    /// Since quickLookState is a global state, calling callback on tap ensures we only call one callback (i.e. the one user requested to view). [2023.11]
-                                    onTapCallback?()
-                                    // It takes some time for actual QuickLookUI to appear:
-                                    // Ideally, progress view is removed once QuickLookUI fully appears.
-                                    // [2023.11]
-//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                                            isPresentingQuickLook = false
-//                                        }
-                                }
-//                                } catch {
-//                                    print(String(describing: error))
-//                                    isPresentingQuickLook = false
-//                                }
-                            }
+                            imageDetailSheetState.url = url // show image detail
+                            onTapCallback?()
                         }
                 } else {
                     imageView
