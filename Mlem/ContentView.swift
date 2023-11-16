@@ -132,16 +132,10 @@ struct ContentView: View {
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .sheet(item: $quickLookState.url) { url in
-            MediaUIAttachmentImageView(url: url)
-//          MediaUIView(selectedAttachment: selectedMediaAttachment,
-//                      attachments: quickLook.mediaAttachments)
-//            .presentationBackground(.ultraThinMaterial)
-//            .presentationCornerRadius(16)
-//            .withEnvironments()
+            NavigationStack {
+                ImageDetailView(url: url)
+            }
         }
-//        .fullScreenCover(item: $quickLookState.url) { url in
-//            QuickLookView(urls: [url])
-//        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)

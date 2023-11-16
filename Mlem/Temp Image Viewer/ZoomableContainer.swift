@@ -3,6 +3,7 @@
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-11-14.
+//  Adapted from Ice Cubes for Mastodon: https://github.com/Dimillian/IceCubesApp
 //
 
 import SwiftUI
@@ -13,7 +14,7 @@ import UIKit
 private let maxAllowedScale = 4.0
 
 @MainActor
-struct MediaUIZoomableContainer<Content: View>: View {
+struct ZoomableContainer<Content: View>: View {
     let content: Content
     @State private var currentScale: CGFloat = 1.0
     @State private var tapLocation: CGPoint = .zero

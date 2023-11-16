@@ -124,30 +124,30 @@ struct CachedImage: View {
                         .onTapGesture {
                             isPresentingQuickLook = true
                             Task(priority: .userInitiated) {
-                                do {
-                                    let (data, _) = try await ImagePipeline.shared.data(for: url!)
-                                    let fileType = url?.pathExtension ?? "png"
-                                    let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
-                                    if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
-                                        print("file exsists")
-                                        try FileManager.default.removeItem(at: quicklook)
-                                    }
-                                    try data.write(to: quicklook)
-                                    await MainActor.run {
-                                        quickLookState.url = quicklook
-                                        /// Since quickLookState is a global state, calling callback on tap ensures we only call one callback (i.e. the one user requested to view). [2023.11]
-                                        onTapCallback?()
-                                        /// It takes some time for actual QuickLookUI to appear:
-                                        /// Ideally, progress view is removed once QuickLookUI fully appears. 
-                                        /// [2023.11]
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            isPresentingQuickLook = false
-                                        }
-                                    }
-                                } catch {
-                                    print(String(describing: error))
-                                    isPresentingQuickLook = false
+//                                do {
+//                                    let (data, _) = try await ImagePipeline.shared.data(for: url!)
+//                                    let fileType = url?.pathExtension ?? "png"
+//                                    let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
+//                                    if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
+//                                        print("file exsists")
+//                                        try FileManager.default.removeItem(at: quicklook)
+//                                    }
+//                                    try data.write(to: quicklook)
+                                await MainActor.run {
+                                    quickLookState.url = url // quicklook
+                                    /// Since quickLookState is a global state, calling callback on tap ensures we only call one callback (i.e. the one user requested to view). [2023.11]
+                                    onTapCallback?()
+                                    // It takes some time for actual QuickLookUI to appear:
+                                    // Ideally, progress view is removed once QuickLookUI fully appears.
+                                    // [2023.11]
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                            isPresentingQuickLook = false
+//                                        }
                                 }
+//                                } catch {
+//                                    print(String(describing: error))
+//                                    isPresentingQuickLook = false
+//                                }
                             }
                         }
                 } else {

@@ -409,8 +409,10 @@
 		CD863FBC2A6B026400A31ED9 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863FBB2A6B026400A31ED9 /* DocumentView.swift */; };
 		CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8C55332A95515C0060B75B /* Onboarding Text.swift */; };
 		CD8CF2092AF3F131009FFC23 /* Firm Info.ahap in Resources */ = {isa = PBXBuildFile; fileRef = CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */; };
-		CD9A49D12B045B64001E18A0 /* MediaUIZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A49D02B045B64001E18A0 /* MediaUIZoomableContainer.swift */; };
-		CD9A49D32B045B81001E18A0 /* MediaUIAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A49D22B045B81001E18A0 /* MediaUIAttachmentView.swift */; };
+		CD9A49D12B045B64001E18A0 /* ZoomableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A49D02B045B64001E18A0 /* ZoomableContainer.swift */; };
+		CD9A49D32B045B81001E18A0 /* ZoomableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A49D22B045B81001E18A0 /* ZoomableImageView.swift */; };
+		CD9A49D52B0587F1001E18A0 /* ImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A49D42B0587F1001E18A0 /* ImageDetailView.swift */; };
+		CD9A49D72B059303001E18A0 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9A49D62B059303001E18A0 /* ImageSaver.swift */; };
 		CD9DD8832A622A6C0044EA8E /* ReportCommentReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */; };
 		CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9DD8842A62302A0044EA8E /* ConcreteEditorModel.swift */; };
 		CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */; };
@@ -920,8 +922,10 @@
 		CD863FBB2A6B026400A31ED9 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 		CD8C55332A95515C0060B75B /* Onboarding Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Onboarding Text.swift"; sourceTree = "<group>"; };
 		CD8CF2082AF3F131009FFC23 /* Firm Info.ahap */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Firm Info.ahap"; sourceTree = "<group>"; };
-		CD9A49D02B045B64001E18A0 /* MediaUIZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUIZoomableContainer.swift; sourceTree = "<group>"; };
-		CD9A49D22B045B81001E18A0 /* MediaUIAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUIAttachmentView.swift; sourceTree = "<group>"; };
+		CD9A49D02B045B64001E18A0 /* ZoomableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableContainer.swift; sourceTree = "<group>"; };
+		CD9A49D22B045B81001E18A0 /* ZoomableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableImageView.swift; sourceTree = "<group>"; };
+		CD9A49D42B0587F1001E18A0 /* ImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailView.swift; sourceTree = "<group>"; };
+		CD9A49D62B059303001E18A0 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		CD9DD8822A622A6C0044EA8E /* ReportCommentReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCommentReply.swift; sourceTree = "<group>"; };
 		CD9DD8842A62302A0044EA8E /* ConcreteEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteEditorModel.swift; sourceTree = "<group>"; };
 		CDA145EC2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCommentReplyAsReadRequest.swift; sourceTree = "<group>"; };
@@ -2309,8 +2313,10 @@
 		CD9A49CF2B045B52001E18A0 /* Temp Image Viewer */ = {
 			isa = PBXGroup;
 			children = (
-				CD9A49D02B045B64001E18A0 /* MediaUIZoomableContainer.swift */,
-				CD9A49D22B045B81001E18A0 /* MediaUIAttachmentView.swift */,
+				CD9A49D02B045B64001E18A0 /* ZoomableContainer.swift */,
+				CD9A49D22B045B81001E18A0 /* ZoomableImageView.swift */,
+				CD9A49D42B0587F1001E18A0 /* ImageDetailView.swift */,
+				CD9A49D62B059303001E18A0 /* ImageSaver.swift */,
 			);
 			path = "Temp Image Viewer";
 			sourceTree = "<group>";
@@ -2832,7 +2838,7 @@
 				CD04D5DD2A361564008EF95B /* ReplyButtonView.swift in Sources */,
 				6314C9EB2A18D9C500B08405 /* Reply Editor.swift in Sources */,
 				CD4368D22AE2460100BD8BD1 /* ReplyTracker.swift in Sources */,
-				CD9A49D32B045B81001E18A0 /* MediaUIAttachmentView.swift in Sources */,
+				CD9A49D32B045B81001E18A0 /* ZoomableImageView.swift in Sources */,
 				6DFF50452A48E373001E648D /* GetPrivateMessages.swift in Sources */,
 				ADDC9E3A2A5CEAA100383D58 /* BlockPerson.swift in Sources */,
 				CD6F29A82A77FF1700F20B6B /* MarkPostRead.swift in Sources */,
@@ -2879,6 +2885,7 @@
 				CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */,
 				CD391F982A537E8E00E213B5 /* ReplyToComment.swift in Sources */,
 				5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */,
+				CD9A49D52B0587F1001E18A0 /* ImageDetailView.swift in Sources */,
 				CDC65D912A86B830007205E5 /* DeleteAccountView.swift in Sources */,
 				CDC3E8002AEAFEAF008062CA /* InboxTracker.swift in Sources */,
 				CD391F9C2A53980900E213B5 /* ReplyToCommentReply.swift in Sources */,
@@ -3046,7 +3053,7 @@
 				CD4368BE2AE23FA600BD8BD1 /* LoadingState.swift in Sources */,
 				CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */,
 				CD4E98A32A69BEDC0026C4D9 /* IconSettingsView.swift in Sources */,
-				CD9A49D12B045B64001E18A0 /* MediaUIZoomableContainer.swift in Sources */,
+				CD9A49D12B045B64001E18A0 /* ZoomableContainer.swift in Sources */,
 				637218692A3A2AAD008C4816 /* CreateCommentLike.swift in Sources */,
 				03BAA23A2A57DC1400D48252 /* PublishedTimestampView.swift in Sources */,
 				B157E0C42A507B8000B02C8B /* Window.swift in Sources */,
@@ -3065,6 +3072,7 @@
 				CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */,
 				50C99B622A629C06005D57DD /* ErrorHandler+Dependency.swift in Sources */,
 				CD309C462A93FBD300988F95 /* Logo View.swift in Sources */,
+				CD9A49D72B059303001E18A0 /* ImageSaver.swift in Sources */,
 				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63344C602A080CA1001BC616 /* Outlined Web Complex Style.swift in Sources */,
