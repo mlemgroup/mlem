@@ -353,7 +353,12 @@ struct AddSavedInstanceView: View {
                 .personView
                 .person
         } catch {
-            print("getUserId Error info: \(error)")
+            if let apiError = error as? APIClientError {
+                print("API error in loadUser: \(apiError.description)")
+            } else {
+                print("Error in loadUser: \(error)")
+            }
+            
             switch error {
             case let APIClientError.response(errorResponse, _) where errorResponse.instanceIsPrivate:
                 throw UserIDRetrievalError.instanceIsPrivate
@@ -369,7 +374,8 @@ struct AddSavedInstanceView: View {
         case EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints:
             message = "Could not connect to \(instance)"
         case UserIDRetrievalError.couldNotFetchUserInformation:
-            message = "Mlem couldn't fetch you account's information.\nFile a bug report."
+            message = "Mlem couldn't fetch your account's information.\nFile a bug report."
+            print(error)
         case UserIDRetrievalError.instanceIsPrivate:
             message = "\(instance) is a private instance."
         case APIClientError.encoding:
