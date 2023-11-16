@@ -30,6 +30,10 @@ extension APIClientError: CustomStringConvertible {
             }
             
             return "Unable to decode: \(string)"
+        case let .networking(error):
+            return "Networking error: \(error)"
+        case let .response(error, code):
+            return "Response error (HTTP status \(code?.description ?? "unknown")): \(error)"
         default:
             return localizedDescription
         }
