@@ -10,8 +10,12 @@ import Foundation
 import Nuke
 import NukeUI
 import SwiftUI
+import Dependencies
 
 struct ZoomableImageView: View {
+    
+    @Dependency(\.notifier) var notifier
+    
     let url: URL
     
     @State var quickLookUrl: URL?
@@ -64,6 +68,7 @@ struct ZoomableImageView: View {
             let (data, _) = try await ImagePipeline.shared.data(for: url)
             let imageSaver = ImageSaver()
             imageSaver.writeToPhotoAlbum(imageData: data)
+            await notifier.add(.success("Image saved"))
         } catch {
             print(String(describing: error))
         }
