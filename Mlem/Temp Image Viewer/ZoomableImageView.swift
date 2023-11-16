@@ -6,14 +6,13 @@
 //  Adapted from Ice Cubes for Mastodon: https://github.com/Dimillian/IceCubesApp
 //
 
+import Dependencies
 import Foundation
 import Nuke
 import NukeUI
 import SwiftUI
-import Dependencies
 
 struct ZoomableImageView: View {
-    
     @Dependency(\.notifier) var notifier
     
     let url: URL
