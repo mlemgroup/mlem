@@ -33,7 +33,7 @@ struct ContentView: View {
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     
-    @StateObject private var quickLookState: QuickLookState = .init()
+    @StateObject private var quickLookState: ImageDetailSheetState = .init()
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
@@ -131,8 +131,10 @@ struct ContentView: View {
             .presentationDetents([.medium, .large], selection: .constant(.large))
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
-        .fullScreenCover(item: $quickLookState.url) { url in
-            QuickLookView(urls: [url])
+        .sheet(item: $quickLookState.url) { url in
+            NavigationStack {
+                ImageDetailView(url: url)
+            }
         }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
@@ -162,7 +164,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists && allowTabBarSwipeUpGesture {
+        if !homeButtonExists, allowTabBarSwipeUpGesture {
             isPresentingAccountSwitcher = true
         }
     }

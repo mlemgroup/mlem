@@ -16,7 +16,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
-    @EnvironmentObject private var quickLookState: QuickLookState
+    @EnvironmentObject private var quickLookState: ImageDetailSheetState
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
@@ -28,22 +28,22 @@ struct HandleLemmyLinksDisplay: ViewModifier {
         content
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
-                case .community(let community):
+                case let .community(community):
                     FeedView(community: community, feedType: .all)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)
-                case .communityLinkWithContext(let context):
+                case let .communityLinkWithContext(context):
                     FeedView(community: context.community, feedType: context.feedType)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)
-                case .communitySidebarLinkWithContext(let context):
+                case let .communitySidebarLinkWithContext(context):
                     CommunitySidebarView(
                         community: context.community
                     )
                     .environmentObject(filtersTracker)
-                case .apiPostView(let post):
+                case let .apiPostView(post):
                     let postModel = PostModel(from: post)
                     let postTracker = PostTracker(
                         shouldPerformMergeSorting: false,
@@ -57,43 +57,44 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(postTracker)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
-                case .apiPost(let post):
+                case let .apiPost(post):
                     LazyLoadExpandedPost(post: post)
                         .environmentObject(quickLookState)
-                case .apiPerson(let user):
+                case let .apiPerson(user):
                     UserView(userID: user.id)
                         .environmentObject(quickLookState)
-                case .userProfile(let user):
+                case let .userProfile(user):
                     UserView(userID: user.userId)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
-                case .postLinkWithContext(let post):
+                case let .postLinkWithContext(post):
                     ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                         .environmentObject(post.postTracker)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
-                case .lazyLoadPostLinkWithContext(let post):
+                case let .lazyLoadPostLinkWithContext(post):
                     LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                         .environmentObject(quickLookState)
-                case .userModeratorLink(let user):
+                case let .userModeratorLink(user):
                     UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
-                case .settings(let page):
+                case let .settings(page):
                     settingsDestination(for: page)
-                case .aboutSettings(let page):
+                case let .aboutSettings(page):
                     aboutSettingsDestination(for: page)
-                case .appearanceSettings(let page):
+                case let .appearanceSettings(page):
                     appearanceSettingsDestination(for: page)
-                case .commentSettings(let page):
+                case let .commentSettings(page):
                     commentSettingsDestination(for: page)
-                case .postSettings(let page):
+                case let .postSettings(page):
                     postSettingsDestination(for: page)
-                case .licenseSettings(let page):
+                case let .licenseSettings(page):
                     licensesSettingsDestination(for: page)
                 }
             }
     }
+
     // swiftlint:enable function_body_length
     
     @ViewBuilder
@@ -262,13 +263,13 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
             do {
                 switch resolution {
                 case let .post(object):
-                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
                     return true
                 case let .person(object):
-                    navigationPath.wrappedValue.append(try Path.makeRoute(object.person))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(object.person))
                     return true
                 case let .community(object):
-                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
                     return true
                 case .comment:
                     return false
@@ -286,7 +287,7 @@ extension View {
         modifier(HandleLemmyLinksDisplay())
     }
 
-    func handleLemmyLinkResolution<P: AnyNavigablePath>(navigationPath: Binding<P>) -> some View {
+    func handleLemmyLinkResolution(navigationPath: Binding<some AnyNavigablePath>) -> some View {
         modifier(HandleLemmyLinkResolution(navigationPath: navigationPath))
     }
 }
