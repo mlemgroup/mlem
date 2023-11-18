@@ -10,7 +10,7 @@ import SwiftUI
 
 // swiftlint:disable file_length
 enum UserIDRetrievalError: Error {
-    case couldNotFetchUserInformation
+    case couldNotFetchUserInformation(APIClientError?, String?)
     case instanceIsPrivate
 }
 
@@ -353,17 +353,22 @@ struct AddSavedInstanceView: View {
                 .personView
                 .person
         } catch {
-            if let apiError = error as? APIClientError {
-                print("API error in loadUser: \(apiError.description)")
-            } else {
-                print("Error in loadUser: \(error)")
-            }
-            
             switch error {
-            case let APIClientError.response(errorResponse, _) where errorResponse.instanceIsPrivate:
-                throw UserIDRetrievalError.instanceIsPrivate
+            case let APIClientError.response(errorResponse, _, debug):
+                if errorResponse.instanceIsPrivate {
+                    throw UserIDRetrievalError.instanceIsPrivate
+                }
+                
+                if let apiClientError = error as? APIClientError {
+                    print("could convert to APIClientError")
+                    throw UserIDRetrievalError.couldNotFetchUserInformation(apiClientError, debug)
+                }
+                
+                print("well fuck")
+                
+                throw UserIDRetrievalError.couldNotFetchUserInformation(nil, nil)
             default:
-                throw UserIDRetrievalError.couldNotFetchUserInformation
+                throw UserIDRetrievalError.couldNotFetchUserInformation(nil, nil)
             }
         }
     }
@@ -373,9 +378,10 @@ struct AddSavedInstanceView: View {
         switch error {
         case EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints:
             message = "Could not connect to \(instance)"
-        case UserIDRetrievalError.couldNotFetchUserInformation:
+        case let UserIDRetrievalError.couldNotFetchUserInformation(error, debug):
             message = "Mlem couldn't fetch your account's information.\nFile a bug report."
             print(error)
+            print(debug)
         case UserIDRetrievalError.instanceIsPrivate:
             message = "\(instance) is a private instance."
         case APIClientError.encoding:
@@ -385,7 +391,7 @@ struct AddSavedInstanceView: View {
             message = badCredentialsMessage
         case APIClientError.networking:
             message = "Please check your internet connection and try again"
-        case let APIClientError.response(errorResponse, _) where errorResponse.requires2FA:
+        case let APIClientError.response(errorResponse, _, _) where errorResponse.requires2FA:
             message = ""
             
             withAnimation {
@@ -393,13 +399,13 @@ struct AddSavedInstanceView: View {
             }
             
             return
-        case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
+        case let APIClientError.response(errorResponse, _, _) where errorResponse.isIncorrectLogin:
             message = badCredentialsMessage
             
-        case let APIClientError.response(errorResponse, _) where errorResponse.emailNotVerified:
+        case let APIClientError.response(errorResponse, _, _) where errorResponse.emailNotVerified:
             message = registrationError
             
-        case let APIClientError.response(errorResponse, _) where errorResponse.userRegistrationPending:
+        case let APIClientError.response(errorResponse, _, _) where errorResponse.userRegistrationPending:
             message = registrationError
             
         default:

@@ -42,20 +42,19 @@ class ErrorHandler: ObservableObject {
         Task { @MainActor in
             
             if let clientError = error.underlyingError.base as? APIClientError {
-                
                 if case .invalidSession = clientError {
                     sessionExpired = true
                     return
                 }
                 
-                if error.title != nil && !InternetConnectionManager.isConnectedToNetwork() {
+                if error.title != nil, !InternetConnectionManager.isConnectedToNetwork() {
                     if showNoInternet {
                         await notifier.add(.noInternet)
                     }
                     return
                 }
                 
-                if case .response(let apiError, _) = clientError {
+                if case let .response(apiError, _, _) = clientError {
                     await notifier.add(.failure(apiError.error))
                     return
                 }

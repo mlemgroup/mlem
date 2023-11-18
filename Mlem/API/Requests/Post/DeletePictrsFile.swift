@@ -25,7 +25,7 @@ struct ImageDeleteRequest: APIRequest {
         components.path = "/pictrs/image"
         
         guard let url = components.url else {
-            throw APIClientError.response(.init(error: "Failed to modify instance URL to delete from pictrs."), nil)
+            throw APIClientError.response(.init(error: "Failed to modify instance URL to delete from pictrs."), nil, nil)
         }
         self.instanceURL = url
         
@@ -33,4 +33,4 @@ struct ImageDeleteRequest: APIRequest {
     }
 }
 
-struct ImageDeleteResponse: Decodable { }
+struct ImageDeleteResponse: Decodable {}

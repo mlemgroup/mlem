@@ -15,7 +15,7 @@ enum HTTPMethod {
 enum APIClientError: Error {
     case encoding(Error)
     case networking(Error)
-    case response(APIErrorResponse, Int?)
+    case response(APIErrorResponse, Int?, String?)
     case cancelled
     case invalidSession
     case decoding(Data)
@@ -32,7 +32,7 @@ extension APIClientError: CustomStringConvertible {
             return "Unable to decode: \(string)"
         case let .networking(error):
             return "Networking error: \(error)"
-        case let .response(error, code):
+        case let .response(error, code, nil):
             return "Response error (HTTP status \(code?.description ?? "unknown")): \(error)"
         default:
             return localizedDescription
@@ -86,7 +86,8 @@ class APIClient {
             if response.statusCode >= 500 { // Error code for server being offline.
                 throw APIClientError.response(
                     APIErrorResponse(error: "Instance appears to be offline.\nTry again later."),
-                    response.statusCode
+                    response.statusCode,
+                    nil
                 )
             }
         }
@@ -102,7 +103,11 @@ class APIClient {
             }
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
-            throw APIClientError.response(apiError, statusCode)
+            
+            if let data = urlRequest.httpBody {
+                throw APIClientError.response(apiError, statusCode, String(data: data, encoding: .utf8))
+            }
+            throw APIClientError.response(apiError, statusCode, nil)
         }
         
         return try decode(Request.Response.self, from: data)

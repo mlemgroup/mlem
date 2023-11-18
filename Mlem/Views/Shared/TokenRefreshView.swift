@@ -197,14 +197,14 @@ struct TokenRefreshView: View {
         } catch {
             HapticManager.shared.play(haptic: .failure, priority: .high)
             
-            if case let APIClientError.response(apiError, _) = error,
+            if case let APIClientError.response(apiError, _, _) = error,
                apiError.isIncorrectLogin {
                 updateViewState(.incorrectLogin)
                 selectedField = .password
                 return
             }
             
-            if case let APIClientError.response(apiError, _) = error,
+            if case let APIClientError.response(apiError, _, _) = error,
                apiError.requires2FA {
                 showing2FAAlert = true
                 selectedField = .onetimecode

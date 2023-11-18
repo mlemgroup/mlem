@@ -197,6 +197,7 @@ struct UserLinkViewPreview: PreviewProvider {
         }
         
         return APIPerson(
+            deleteme: 0,
             id: name.hashValue,
             name: name,
             displayName: displayName,

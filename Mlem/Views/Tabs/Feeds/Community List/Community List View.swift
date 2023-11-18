@@ -122,7 +122,7 @@ struct CommunityListViewPreview: PreviewProvider {
                 withDependencies {
                     // return an error when calling subscriptions
                     $0.communityRepository.subscriptions = { _ in
-                        throw APIClientError.response(.init(error: "Borked"), nil)
+                        throw APIClientError.response(.init(error: "Borked"), nil, nil)
                     }
                 } operation: {
                     CommunityListView(selectedCommunity: .constant(nil))

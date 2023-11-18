@@ -30,6 +30,7 @@ extension APIPerson {
         instanceId: Int = 0
     ) -> APIPerson {
         .init(
+            deleteme: 0,
             id: id,
             name: name,
             displayName: displayName,
