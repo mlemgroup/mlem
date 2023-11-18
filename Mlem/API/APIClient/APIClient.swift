@@ -5,6 +5,7 @@
 //  Created by Nicholas Lawson on 04/06/2023.
 //
 
+import Dependencies
 import Foundation
 
 enum HTTPMethod {
@@ -37,6 +38,8 @@ extension APIClientError: CustomStringConvertible {
 }
 
 class APIClient {
+    @Dependency(\.debugManager) var debugManager
+    
     let urlSession: URLSession
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
