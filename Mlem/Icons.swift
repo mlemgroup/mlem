@@ -193,4 +193,5 @@ struct Icons {
     static let dropdown: String = "chevron.down"
     static let noFile: String = "questionmark.folder"
     static let forward: String = "chevron.right"
+    static let imageDetails: String = "doc.badge.ellipsis"
 }

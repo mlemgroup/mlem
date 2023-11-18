@@ -40,7 +40,10 @@ struct LicensesView: View {
 
                     NavigationLink(
                         "Awesome Lemmy Instances",
-                        value: AppRoute.licenseSettings(.licenseDocument(awesomeLemmyInstancesLicense)))
+                        value: AppRoute.licenseSettings(.licenseDocument(awesomeLemmyInstancesLicense))
+                    )
+                    
+                    NavigationLink("Ice Cubes App", value: AppRoute.licenseSettings(.licenseDocument(iceCubesLicense)))
                 }
             }
             .fancyTabScrollCompatible()
