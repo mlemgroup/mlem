@@ -10,8 +10,9 @@ import SwiftUI
 
 // swiftlint:disable file_length
 enum UserIDRetrievalError: Error {
-    case couldNotFetchUserInformation(APIClientError?, String?)
+    case couldNotFetchUserInformation(String?, String?) // (error response, debug info)
     case instanceIsPrivate
+    case generic(String?)
 }
 
 enum Field: Hashable {
@@ -352,38 +353,40 @@ struct AddSavedInstanceView: View {
             return try await apiClient.getPersonDetails(session: session, username: username)
                 .personView
                 .person
-        } catch {
-            switch error {
-            case let APIClientError.response(errorResponse, _, debug):
-                if errorResponse.instanceIsPrivate {
-                    throw UserIDRetrievalError.instanceIsPrivate
-                }
-                
-                if let apiClientError = error as? APIClientError {
-                    print("could convert to APIClientError")
-                    throw UserIDRetrievalError.couldNotFetchUserInformation(apiClientError, debug)
-                }
-                
-                print("well fuck")
-                
-                throw UserIDRetrievalError.couldNotFetchUserInformation(nil, nil)
-            default:
-                throw UserIDRetrievalError.couldNotFetchUserInformation(nil, nil)
+        } catch let APIClientError.response(errorResponse, _, debug) {
+            if errorResponse.instanceIsPrivate {
+                throw UserIDRetrievalError.instanceIsPrivate
             }
+            
+            throw UserIDRetrievalError.couldNotFetchUserInformation(errorResponse.error, debug)
+        } catch {
+            print("throwing generic...")
+            
+            if let apiClientError = error as? APIClientError {
+                throw UserIDRetrievalError.generic(String(describing: apiClientError))
+            }
+            
+            throw UserIDRetrievalError.generic("No debug information available")
         }
     }
     
+    // swiftlint:disable cyclomatic_complexity
     private func handle(_ error: Error) {
         let message: String
         switch error {
         case EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints:
             message = "Could not connect to \(instance)"
-        case let UserIDRetrievalError.couldNotFetchUserInformation(error, debug):
-            message = "Mlem couldn't fetch your account's information.\nFile a bug report."
+        case let UserIDRetrievalError.couldNotFetchUserInformation(error, debugInfo):
+            message = "Mlem couldn't fetch your account information.\nPlease file a bug report."
             print(error)
-            print(debug)
+            print(debugInfo)
         case UserIDRetrievalError.instanceIsPrivate:
             message = "\(instance) is a private instance."
+        case let UserIDRetrievalError.generic(debugInfo):
+            message = "Mlem couldn't fetch your account information.\nPlease file a bug report."
+            if let debugInfo {
+                print(debugInfo)
+            }
         case APIClientError.encoding:
             // TODO: we should add better validation
             //  at the UI layer as encoding failures can be caught
@@ -416,6 +419,8 @@ struct AddSavedInstanceView: View {
         
         displayError(message)
     }
+
+    // swiftlint:enable cyclomatic_complexity
     
     private func displayError(_ message: String) {
         errorMessage = message
