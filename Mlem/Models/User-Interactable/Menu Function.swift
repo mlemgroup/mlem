@@ -6,19 +6,23 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum MenuFunction: Identifiable {
     var id: String {
         switch self {
         case let .standard(standardMenuFunction):
             return standardMenuFunction.id
-        case let .share(shareMenuFunction):
+        case let .shareUrl(shareMenuFunction):
             return shareMenuFunction.id
+        case let .shareImage(shareImageFunction):
+            return shareImageFunction.id
         }
     }
     
     case standard(StandardMenuFunction)
-    case share(ShareMenuFunction)
+    case shareUrl(ShareMenuFunction)
+    case shareImage(ShareImageFunction)
 }
 
 // some convenience initializers because MenuFunction.standard(StandardMenuFunction...) is ugly
@@ -40,7 +44,11 @@ extension MenuFunction {
     }
     
     static func shareMenuFunction(url: URL) -> MenuFunction {
-        MenuFunction.share(ShareMenuFunction(url: url))
+        MenuFunction.shareUrl(ShareMenuFunction(url: url))
+    }
+    
+    static func shareImageFunction(image: Image) -> MenuFunction {
+        MenuFunction.shareImage(ShareImageFunction(image: image))
     }
 }
 
@@ -49,6 +57,16 @@ struct ShareMenuFunction: Identifiable {
     var id: String { url.absoluteString }
     
     let url: URL
+}
+
+struct ShareImageFunction: Identifiable {
+    let id: String
+    let image: Image
+    
+    init(image: Image) {
+        self.image = image
+        self.id = UUID().uuidString
+    }
 }
 
 /// MenuFunction to perform a generic menu action
