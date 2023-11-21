@@ -9,6 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+// swiftlint:disable type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -146,26 +147,37 @@ struct FeedView: View {
     
     @ViewBuilder
     private var contentView: some View {
-        ScrollView {
-            if !postTracker.items.isEmpty {
-                LazyVStack(spacing: 0) {
-                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
-                    ForEach(postTracker.items, id: \.uid) { post in
-                        feedPost(for: post)
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                if !postTracker.items.isEmpty {
+                    LazyVStack(spacing: 0) {
+                        EmptyView().id("top")
+                        
+                        // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                        ForEach(postTracker.items, id: \.uid) { post in
+                            feedPost(for: post)
+                        }
+                        
+                        // TODO: update to use proper LoadingState
+                        EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                     }
-                    
-                    // TODO: update to use proper LoadingState
-                    EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                 }
             }
-        }
-        .frame(maxWidth: .infinity)
-        .overlay {
-            if postTracker.items.isEmpty {
-                noPostsView()
+            .frame(maxWidth: .infinity)
+            .overlay {
+                if postTracker.items.isEmpty {
+                    noPostsView()
+                }
             }
+            .reselectAction(tab: TabSelection.feeds) {
+                // TODO: SwiftUI doesn't seem to natively support customizing this animation
+                // https://stackoverflow.com/questions/62535553/swiftui-customize-animation-for-scrollto-using-scrollviewreader
+                withAnimation {
+                    scrollProxy.scrollTo("top")
+                }
+            }
+            .fancyTabScrollCompatible()
         }
-        .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
@@ -306,3 +318,5 @@ struct FeedView: View {
         }
     }
 }
+
+// swiftlint:enable type_body_length
