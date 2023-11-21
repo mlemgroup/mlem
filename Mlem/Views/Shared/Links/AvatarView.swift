@@ -14,25 +14,49 @@ struct AvatarView: View {
     let url: URL?
     let avatarSize: CGFloat
     let lineColor: Color
+    let lineWidth: CGFloat
     let clipAvatar: Bool
     let blurAvatar: Bool
     let iconResolution: Int
     
     init(
-        community: CommunityModel,
+        url: URL?,
+        type: AvatarType,
         avatarSize: CGFloat,
+        blurAvatar: Bool = false,
+        clipAvatar: Bool = true,
         lineColor: Color? = nil,
+        lineWidth: CGFloat = 1,
         iconResolution: Int? = nil
     ) {
         @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
-        
-        self.type = .community
-        self.url = community.avatar
+        self.type = type
+        self.url = url
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
-        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.avatar)
-        self.blurAvatar = shouldBlurNsfw && community.nsfw
+        self.lineWidth = lineWidth
+        self.clipAvatar = clipAvatar
+        self.blurAvatar = shouldBlurNsfw && blurAvatar
         self.iconResolution = iconResolution ?? Int(avatarSize * 2)
+    }
+    
+    init(
+        community: CommunityModel,
+        avatarSize: CGFloat,
+        lineColor: Color? = nil,
+        lineWidth: CGFloat = 1,
+        iconResolution: Int? = nil
+    ) {
+        self.init(
+            url: community.avatar,
+            type: .community,
+            avatarSize: avatarSize,
+            blurAvatar: community.nsfw,
+            clipAvatar: AvatarView.shouldClipCommunityAvatar(url: community.avatar),
+            lineColor: lineColor,
+            lineWidth: lineWidth,
+            iconResolution: iconResolution
+        )
     }
     
     init(
@@ -40,17 +64,18 @@ struct AvatarView: View {
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
         lineColor: Color? = nil,
+        lineWidth: CGFloat = 1,
         iconResolution: Int? = nil
     ) {
-        @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
-        
-        self.type = .user
-        self.url = user.avatar
-        self.avatarSize = avatarSize
-        self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
-        self.clipAvatar = false
-        self.blurAvatar = shouldBlurNsfw && blurAvatar
-        self.iconResolution = iconResolution ?? Int(avatarSize * 2)
+        self.init(
+            url: user.avatar,
+            type: .user,
+            avatarSize: avatarSize,
+            blurAvatar: blurAvatar,
+            lineColor: lineColor,
+            lineWidth: lineWidth,
+            iconResolution: iconResolution
+        )
     }
     
     static func shouldClipCommunityAvatar(url: URL?) -> Bool {
@@ -76,7 +101,7 @@ struct AvatarView: View {
         .overlay(Circle()
             .stroke(
                 lineColor,
-                lineWidth: clipAvatar ? 1 : 0
+                lineWidth: clipAvatar ? lineWidth : 0
             ))
     }
 }
