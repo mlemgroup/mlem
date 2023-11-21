@@ -13,8 +13,6 @@ struct SettingsView: View {
     @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @Environment(\.openURL) private var openURL
-    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
     @Namespace var scrollToTop
     
@@ -51,7 +49,6 @@ struct SettingsView: View {
                         NavigationLink(.settings(.appearance)) {
                             Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .pink))
                         }
-
                     }
                     
                     Section {
@@ -66,10 +63,8 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .onChange(of: selectedNavigationTabHashValue) { newValue in
-                    if newValue == TabSelection.settings.hashValue {
-                        print("re-selected \(TabSelection.settings) tab")
-                    }
+                .reselectAction(tab: TabSelection.settings) {
+                    print("re-selected settings")
                 }
             }
             .environmentObject(settingsTabNavigation)
@@ -80,10 +75,5 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.settings.hashValue {
-                print("switched to Settings tab")
-            }
-        }
     }
 }
