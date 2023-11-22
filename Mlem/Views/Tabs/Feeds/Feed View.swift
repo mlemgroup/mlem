@@ -208,6 +208,11 @@ struct FeedView: View {
             .onDisappear {
                 print("FeedView disappeared")
             }
+            .onChange(of: postTracker.items) { newValue in
+                if !newValue.isEmpty {
+                    errorDetails = nil
+                }
+            }
             .refreshable {
                 await refreshFeed()
             }
