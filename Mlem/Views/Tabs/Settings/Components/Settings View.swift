@@ -29,14 +29,16 @@ struct SettingsView: View {
                     Section {
                         NavigationLink { EmptyView() } label: {
                             HStack(spacing: 20) {
-                                AvatarView(url: appState.profileTabRemoteSymbolUrl, type: .user, avatarSize: 56, iconResolution: 512)
+                                AvatarView(url: appState.profileTabRemoteSymbolUrl, type: .user, avatarSize: 60, iconResolution: 512)
+                                    .padding(.vertical, -8)
                                 if let account = appState.currentActiveAccount {
 
-                                    VStack(alignment: .leading, spacing: 6) {
+                                    VStack(alignment: .leading, spacing: 4) {
                                         Text(account.nickname)
                                             .font(.title2)
                                         if let hostName = account.hostName {
                                             Text("@\(hostName)")
+                                                .foregroundStyle(.secondary)
                                                 .font(.caption)
                                         }
                                     }
@@ -55,7 +57,7 @@ struct SettingsView: View {
                                                 avatarSize: 28,
                                                 lineWidth: 0
                                             )
-                                            .padding(2)
+                                            .padding(1.8)
                                             .background {
                                                 Circle()
                                                     .fill(Color(UIColor.secondarySystemGroupedBackground))
@@ -65,7 +67,7 @@ struct SettingsView: View {
                                     }
                                 }
                                 .frame(minWidth: 80)
-                                .padding(.leading, -12)
+                                .padding(.leading, -10)
                                 Text("Accounts")
                                 Spacer()
                                 Text("\(accountsTracker.savedAccounts.count)")
@@ -122,8 +124,8 @@ struct SettingsView: View {
             .fancyTabScrollCompatible()
             .handleLemmyViews()
             .navigationTitle("Settings")
-            .navigationBarColor()
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarColor()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
         .onChange(of: selectedTagHashValue) { newValue in
