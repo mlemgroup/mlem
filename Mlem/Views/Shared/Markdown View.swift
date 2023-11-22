@@ -220,16 +220,32 @@ struct MarkdownBlock: Identifiable {
 }
 
 struct MarkdownView: View {
-    @State var text: String
-    let isNsfw: Bool
-    let replaceImagesWithEmoji: Bool
-    let isInline: Bool
+    
+    private final class TextViewModel: ObservableObject {
+        @Published var text: String
+        let isNsfw: Bool
+        let replaceImagesWithEmoji: Bool
+        let isInline: Bool
+        
+        init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool, isInline: Bool) {
+            self.text = text
+            self.isNsfw = isNsfw
+            self.replaceImagesWithEmoji = replaceImagesWithEmoji
+            self.isInline = isInline
+        }
+    }
+    
+    @StateObject private var viewModel: TextViewModel
     
     init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isInline: Bool = false) {
-        self.text = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
-        self.isNsfw = isNsfw
-        self.replaceImagesWithEmoji = replaceImagesWithEmoji
-        self.isInline = isInline
+        _viewModel = .init(
+            wrappedValue: .init(
+                text: isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text,
+                isNsfw: isNsfw,
+                replaceImagesWithEmoji: replaceImagesWithEmoji,
+                isInline: isInline
+            )
+        )
     }
 
     var body: some View {
@@ -237,17 +253,17 @@ struct MarkdownView: View {
     }
 
     @MainActor func generateView() -> some View {
-        let blocks = parseMarkdownForImages(text: text)
-        let theme: Theme = isInline ? .plain : .mlem
+        let blocks = parseMarkdownForImages(text: viewModel.text)
+        let theme: Theme = viewModel.isInline ? .plain : .mlem
         
         return VStack {
             ForEach(blocks) { block in
                 if block.isImage {
-                    if replaceImagesWithEmoji {
+                    if viewModel.replaceImagesWithEmoji {
                         getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
                     } else {
                         CachedImage(url: URL(string: String(block.text)))
-                            .applyNsfwOverlay(isNsfw)
+                            .applyNsfwOverlay(viewModel.isNsfw)
                     }
                 } else {
                     getMarkdown(text: String(block.text), theme: theme)
