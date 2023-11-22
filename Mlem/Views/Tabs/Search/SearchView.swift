@@ -35,6 +35,7 @@ struct SearchView: View {
     @StateObject var homeContentTracker: ContentTracker<AnyContentModel> = .init()
     
     @State var isSearching: Bool = false
+    @State var searchBarFocused: Bool = true
     @State var page: Page = .home
     
     @State private var recentsScrollToTopSignal: Int = .min
@@ -82,6 +83,9 @@ struct SearchView: View {
                     resultsScrollToTopSignal += 1
                 }
             }
+//            .reselectAction(tab: .search) {
+//                isSearching = true
+//            }
     }
     
     @ViewBuilder
