@@ -9,5 +9,6 @@ import Foundation
 
 // lemmy_api_common::site::MyUserInfo
 struct APIMyUserInfo: Decodable {
-    // TODO:
+    // Some properties aren't implemented yet: https://join-lemmy.org/api/interfaces/MyUserInfo.html#local_user_view
+    let localUserView: APILocalUserView
 }
