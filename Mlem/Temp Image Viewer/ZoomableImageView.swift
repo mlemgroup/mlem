@@ -31,7 +31,7 @@ struct ZoomableImageView: View {
                         .scaledToFit()
                         .scaleEffect(zoom)
                         .contextMenu {
-                            ForEach(genMenuFunctions()) { item in
+                            ForEach(genMenuFunctions(image: image)) { item in
                                 MenuButton(menuFunction: item, confirmDestructive: nil)
                             }
                         }
@@ -73,7 +73,7 @@ struct ZoomableImageView: View {
         }
     }
     
-    func genMenuFunctions() -> [MenuFunction] {
+    func genMenuFunctions(image: Image) -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
         
         ret.append(MenuFunction.standardMenuFunction(
@@ -98,7 +98,7 @@ struct ZoomableImageView: View {
             }
         })
         
-        ret.append(MenuFunction.share(ShareMenuFunction(url: url)))
+        ret.append(MenuFunction.shareImageFunction(image: image))
         
         return ret
     }
