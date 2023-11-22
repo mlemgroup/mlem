@@ -25,9 +25,9 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     case topDay = "TopDay"
     case topWeek = "TopWeek"
     case topMonth = "TopMonth"
-    case topThreeMonth = "TopThreeMonth"
-    case topSixMonth = "TopSixMonth"
-    case topNineMonth = "TopNineMonth"
+    case topThreeMonths = "TopThreeMonths"
+    case topSixMonths = "TopSixMonths"
+    case topNineMonths = "TopNineMonths"
     case topYear = "TopYear"
     case topAll = "TopAll"
     
@@ -51,9 +51,9 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         .topDay,
         .topWeek,
         .topMonth,
-        .topThreeMonth,
-        .topSixMonth,
-        .topNineMonth,
+        .topThreeMonths,
+        .topSixMonths,
+        .topNineMonths,
         .topYear,
         .topAll
     ] }
@@ -73,7 +73,7 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .controversial, .scaled:
             return .init("0.19.0")
-        case .topThreeMonth, .topSixMonth, .topNineMonth:
+        case .topThreeMonths, .topSixMonths, .topNineMonths:
             return .init("0.18.1")
         default:
             return .zero
@@ -94,11 +94,11 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             return "Top of the week"
         case .topMonth:
             return "Top of the month"
-        case .topThreeMonth:
+        case .topThreeMonths:
             return "Top of the last 3 months"
-        case .topSixMonth:
+        case .topSixMonths:
             return "Top of the last 6 months"
-        case .topNineMonth:
+        case .topNineMonths:
             return "Top of the last 9 months"
         case .topYear:
             return "Top of the year"
@@ -129,11 +129,11 @@ extension PostSortType: SettingsOptions {
             return "Week"
         case .topMonth:
             return "Month"
-        case .topThreeMonth:
+        case .topThreeMonths:
             return "3 Months"
-        case .topSixMonth:
+        case .topSixMonths:
             return "6 Months"
-        case .topNineMonth:
+        case .topNineMonths:
             return "9 Months"
         case .topYear:
             return "Year"
