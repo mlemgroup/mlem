@@ -140,6 +140,11 @@ struct FeedView: View {
                     shouldLoad = false
                 }
             }
+            .onChange(of: postTracker.items) { newValue in
+                if !newValue.isEmpty {
+                    errorDetails = nil
+                }
+            }
             .refreshable {
                 await refreshFeed()
             }
