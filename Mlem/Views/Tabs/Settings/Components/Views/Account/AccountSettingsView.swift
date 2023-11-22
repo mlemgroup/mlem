@@ -13,11 +13,11 @@ struct AccountSettingsView: View {
     
     var body: some View {
         Form {
-            if let info = siteInformation.myUserInfo {
-                Text(info.localUserView.localUser.email ?? "No email")
-            } else {
-                Text("No user info")
-            }
+//            if let info = siteInformation.myUserInfo {
+//                Text(info.localUserView.localUser.email ?? "No email")
+//            } else {
+//                Text("No user info")
+//            }
         }
         .navigationTitle("Account Settings")
     }

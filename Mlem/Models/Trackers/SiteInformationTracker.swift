@@ -14,14 +14,14 @@ class SiteInformationTracker: ObservableObject {
     
     @Published private(set) var enableDownvotes = true
     @Published private(set) var version: SiteVersion?
-    @Published private(set) var myUserInfo: APIMyUserInfo?
+    // @Published private(set) var myUserInfo: APIMyUserInfo?
     
     func load() {
         Task {
             let information = try await apiClient.loadSiteInformation()
             enableDownvotes = information.siteView.localSite.enableDownvotes
             version = SiteVersion(information.version)
-            myUserInfo = information.myUser
+            // myUserInfo = information.myUser
         }
     }
 }
