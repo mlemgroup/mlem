@@ -31,10 +31,13 @@ struct SearchView: View {
     @EnvironmentObject private var recentSearchesTracker: RecentSearchesTracker
     @StateObject var searchModel: SearchModel
     
+    @Environment(\.tabSelectionHashValue) var tabSelectionHashValue
+    
     @StateObject var homeSearchModel: SearchModel
     @StateObject var homeContentTracker: ContentTracker<AnyContentModel> = .init()
     
     @State var isSearching: Bool = false
+    @State var searchBarFocused: Bool = false
     @State var page: Page = .home
     
     @State private var recentsScrollToTopSignal: Int = .min
@@ -63,6 +66,15 @@ struct SearchView: View {
                         resultsScrollToTopSignal += 1
                         recentsScrollToTopSignal += 1
                     }
+                    .focused($searchBarFocused)
+            }
+            .onChange(of: tabSelectionHashValue) { newValue in
+                // due to the hack in SearchBar:136, this is required to move focus off of the search bar when changing tabs
+                // because the keyboard hides the tab bar and so users are required to cancel a search to switch tabs, this
+                // probably isn't needed in most cases, but since it's possible to disable the on-screen keyboard I've included it
+                if tabSelectionHashValue == TabSelection.search.hashValue, newValue != TabSelection.search.hashValue {
+                    searchBarFocused = false
+                }
             }
             .navigationSearchBarHiddenWhenScrolling(false)
             .autocorrectionDisabled(true)
@@ -81,6 +93,9 @@ struct SearchView: View {
                 if value.isEmpty {
                     resultsScrollToTopSignal += 1
                 }
+            }
+            .reselectAction(tab: .search) {
+                searchBarFocused = true
             }
     }
     
