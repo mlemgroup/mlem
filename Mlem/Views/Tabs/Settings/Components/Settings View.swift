@@ -85,6 +85,7 @@ struct SettingsView: View {
                     }
                 )
             }
+            .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)
             .environmentObject(navigation)
             .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
             .onChange(of: selectedTagHashValue) { newValue in
