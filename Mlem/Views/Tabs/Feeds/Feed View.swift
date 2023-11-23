@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-// swiftlint:disable type_body_length
+// swiftlint:disable:next type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -398,4 +398,3 @@ struct FeedView: View {
         }
     }
 }
-// swiftlint:enable type_body_length
