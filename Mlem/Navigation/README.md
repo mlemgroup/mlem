@@ -1,5 +1,7 @@
 # Navigation
 
+Date Created: Nov. 23, 2023
+
 ### Tab Bar Navigation
 
 **Initial Setup: Tab Root View**
@@ -61,3 +63,7 @@ On each view, including the tab's 'root view:
 Tab navigation is configured such that the auxiliary action is always performed until no more actions can be found. After which, the navigator will perform the dismiss action.
 - In the auxiliary action closure, return `true` to indicate that all auxiliary actions have been performed.
 - You may wish to perform multiple auxiliary actions in a view. For example, you may wish to have the `ExpandedPost` view travel up each parent comment when user taps on tab. In this scenario, continue returning `false` until that view reaches the top. 
+
+### Implementation Notes
+Q: Why not have a view modifier that declares the dismiss action, instead of passing it in to the hoisting function?
+A: Declaring the dismiss env var inside a view modifier causes SwiftUI to enter an infinite loop. [2023.11]
