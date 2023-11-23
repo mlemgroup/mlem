@@ -11,6 +11,7 @@ import SwiftUI
 struct SortingSettingsView: View {
     @Dependency(\.siteInformation) var siteInformation
     
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var appState: AppState
     
     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
@@ -62,5 +63,6 @@ struct SortingSettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Sorting")
         .navigationBarColor()
+        .hoistNavigation(dismiss: dismiss)
     }
 }
