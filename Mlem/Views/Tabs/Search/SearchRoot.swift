@@ -16,22 +16,25 @@ struct SearchRoot: View {
     @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
-        NavigationStack(path: $searchRouter.path) {
-            SearchView()
-                .environmentObject(searchRouter)
-                .tabBarNavigationEnabled(.search, navigation)
-        }
-        .environment(\.navigationPathWithRoutes, $searchRouter.path)
-        .environmentObject(navigation)
-        .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.search.hashValue {
-                print("switched to Search tab")
+        ScrollViewReader { proxy in
+            NavigationStack(path: $searchRouter.path) {
+                SearchView()
+                    .environmentObject(searchRouter)
+                    .tabBarNavigationEnabled(.search, navigation)
             }
-        }
-        .onChange(of: selectedNavigationTabHashValue) { newValue in
-            if newValue == TabSelection.search.hashValue {
-                print("re-selected \(TabSelection.search) tab")
+            .environment(\.scrollViewProxy, proxy)
+            .environment(\.navigationPathWithRoutes, $searchRouter.path)
+            .environmentObject(navigation)
+            .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
+            .onChange(of: selectedTagHashValue) { newValue in
+                if newValue == TabSelection.search.hashValue {
+                    print("switched to Search tab")
+                }
+            }
+            .onChange(of: selectedNavigationTabHashValue) { newValue in
+                if newValue == TabSelection.search.hashValue {
+                    print("re-selected \(TabSelection.search) tab")
+                }
             }
         }
     }
