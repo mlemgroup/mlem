@@ -11,12 +11,18 @@ struct SearchRoot: View {
     
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
     @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+    
     @StateObject private var searchRouter: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
         NavigationStack(path: $searchRouter.path) {
             SearchView()
+                .environmentObject(searchRouter)
+                .tabBarNavigationEnabled(.search, navigation)
         }
+        .environment(\.navigationPathWithRoutes, $searchRouter.path)
+        .environmentObject(navigation)
         .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
         .onChange(of: selectedTagHashValue) { newValue in
             if newValue == TabSelection.search.hashValue {

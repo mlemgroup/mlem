@@ -37,6 +37,9 @@ struct SearchView: View {
     @State var isSearching: Bool = false
     @State var page: Page = .home
     
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+    
     @State private var recentsScrollToTopSignal: Int = .min
     @State private var resultsScrollToTopSignal: Int = .min
     
@@ -89,6 +92,9 @@ struct SearchView: View {
         ScrollViewReader { proxy in
             ZStack {
                 ScrollView {
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+
                     SearchHomeView()
                         .environmentObject(homeSearchModel)
                         .environmentObject(homeContentTracker)
@@ -141,6 +147,14 @@ struct SearchView: View {
                     }
                 }
             }
+            .hoistNavigation(
+                auxiliaryAction: {
+                    withAnimation {
+                        proxy.scrollTo(scrollToTop, anchor: .bottom)
+                    }
+                    return true
+                }
+            )
         }
     }
 }
