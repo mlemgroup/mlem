@@ -64,6 +64,5 @@ Tab navigation is configured such that the auxiliary action is always performed 
 - In the auxiliary action closure, return `true` to indicate that all auxiliary actions have been performed.
 - You may wish to perform multiple auxiliary actions in a view. For example, you may wish to have the `ExpandedPost` view travel up each parent comment when user taps on tab. In this scenario, continue returning `false` until that view reaches the top. 
 
-### Implementation Notes
-Q: Why not have a view modifier that declares the dismiss action, instead of passing it in to the hoisting function?
-A: Declaring the dismiss env var inside a view modifier causes SwiftUI to enter an infinite loop. [2023.11]
+**Tab Navigation: Scroll to Top**
+For ease of use, you may wish to declare a `ScrollViewReader` near or at the top of your tab's root view, and then propagate that proxy via the `@Environment(\.scrollViewProxy)` environment value. If you do so, that reader must be wrapped outside of NavigationStack, otherwise environment values won't propagate to views pushed onto the stack. 
