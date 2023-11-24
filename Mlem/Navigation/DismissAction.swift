@@ -36,10 +36,28 @@ extension View {
     ) -> some View {
         modifier(
             NavigationDismissHoisting(
-                dismiss: dismiss,
                 auxiliaryAction: auxiliaryAction
             )
         )
+    }
+}
+
+/// `NavigationDismissView` works around an issue where adding an `@Environment(\.dismiss)` property in some view configurations causes SwiftUI to enter infinite loop.
+///
+/// Technical Note:
+/// - Note: In some configurations, declaring the `@Environment(\.dismiss) var` inside a view modifier causes SwiftUI to enter into infinite loop. [2023.09]
+/// - Note: This view allows us to conditionally move where we declare the dismiss action, if some view (modifier) configuration causes SwiftUI to enter infinite loop. [2023.11]
+private struct NavigationDismissView<Content: View>: View {
+    
+    @Environment(\.dismiss) private var dismissAction
+    private let content: (DismissAction) -> Content
+    
+    init(@ViewBuilder content: @escaping (DismissAction) -> Content) {
+        self.content = content
+    }
+    
+    var body: some View {
+        content(dismissAction)
     }
 }
 
@@ -64,41 +82,41 @@ struct NavigationDismissHoisting: ViewModifier {
         return routesNavigationPath.wrappedValue
     }
     
-    /// - Note: Unfortunately, we can't access the dismiss action via View.environment...doing so causes SwiftUI to enter into infinite loop. [2023.09]
-    let dismiss: DismissAction
     let auxiliaryAction: Navigation.AuxiliaryAction?
     
     @State private var didAppear = false
     
     func body(content: Content) -> some View {
-        content
-            .onAppear {
-                defer { didAppear = true }
-                
-                /// This must only be called once:
-                /// For example, user may wish to drag to peek at the previous view, but then cancel that drag action. During this, the previous view's .onAppear will get called. If we run this logic for that view again, the actual top view's dismiss action will get lost. [2023.09]
-                if didAppear == false {
-                    print("onAppear: hoist navigation dismiss action")
-                    navigation.dismiss = dismiss
-                    navigation.auxiliaryAction = auxiliaryAction
-                    let pathIndex = max(0, navigationPath.count)
-                    print("     adding path action at index -> \(pathIndex)")
-                    navigation.pathActions[pathIndex] = (dismiss, auxiliaryAction)
+        NavigationDismissView { dismiss in
+            content
+                .onAppear {
+                    defer { didAppear = true }
+                    
+                    /// This must only be called once:
+                    /// For example, user may wish to drag to peek at the previous view, but then cancel that drag action. During this, the previous view's .onAppear will get called. If we run this logic for that view again, the actual top view's dismiss action will get lost. [2023.09]
+                    if didAppear == false {
+                        print("onAppear: hoist navigation dismiss action")
+                        navigation.dismiss = dismiss
+                        navigation.auxiliaryAction = auxiliaryAction
+                        let pathIndex = max(0, navigationPath.count)
+                        print("     adding path action at index -> \(pathIndex)")
+                        navigation.pathActions[pathIndex] = (dismiss, auxiliaryAction)
+                        print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
+                    }
+                }
+                .onDisappear {
+                    print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
                     print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
+                    let removeIndex = navigationPath.count + 1
+                    // swiftlint:disable unused_optional_binding
+                    if let _ = navigation.pathActions.removeValue(forKey: removeIndex) {
+                        // swiftlint:enable unused_optional_binding
+                        print("     removed path action at index -> \(removeIndex)")
+                    } else {
+                        print("     no path action to remove at index -> \(removeIndex)")
+                    }
                 }
-            }
-            .onDisappear {
-                print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
-                print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
-                let removeIndex = navigationPath.count + 1
-                // swiftlint:disable unused_optional_binding
-                if let _ = navigation.pathActions.removeValue(forKey: removeIndex) {
-                    // swiftlint:enable unused_optional_binding
-                    print("     removed path action at index -> \(removeIndex)")
-                } else {
-                    print("     no path action to remove at index -> \(removeIndex)")
-                }
-            }
+        }
     }
 }
 

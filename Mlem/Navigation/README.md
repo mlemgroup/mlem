@@ -11,7 +11,7 @@ Date Created: Nov. 23, 2023
 @StateObject private var navigation: Navigation = .init()
 ```
 2. In your tab's root view (this should also be where a NavigationStack is declared), pass in an `AnyNavigationPath<Path>` binding as that stack's path.
-3. On the NavigationStack, pass in the following environment values:
+3. On the NavigationStack itself, pass in the following environment values:
 ```
 .environment(\.navigationPathWithRoutes, $tabNavigationPath.path)
 .environmentObject(navigation)
@@ -20,12 +20,12 @@ Date Created: Nov. 23, 2023
 ```
 .handleLemmyLinkResolution(navigationPath: .constant(tabNavigationPath))
 ```
-5. On the outer-most view inside your NavigationStack, do the following:
+5. On the outer-most view *inside* your NavigationStack, do the following:
 - 5a. Pass in the following environment values:
 ```
 .environmentObject(tabNavigationPath)
 ```
-- 5b. Apply the following view modifiers:
+- 5b. On that same outer-most view, apply the following view modifiers:
 ```
 .tabBarNavigationEnabled(.settings, navigation)
 .hoistNavigation(
