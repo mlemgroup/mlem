@@ -31,6 +31,19 @@ final class Navigation: ObservableObject {
     var auxiliaryAction: AuxiliaryAction?
 }
 
+// MARK: - Navigation Behaviour
+extension Navigation {
+    
+    enum Behaviour {
+        /// Mimics Apple platforms tab bar navigation behaviour (i.e. pop to root regardless of navigation stack size, then scroll to top).
+        case system
+        /// Only perform the primary action for navigation (this defaults to dismiss action).
+        case primary
+        /// Perform the auxiliary action(s) first, if specified, before proceeding with the primary action.
+        case primaryAuxiliary
+    }
+}
+
 // MARK: - Hoist dismiss action
 extension View {
     
