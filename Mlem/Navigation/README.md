@@ -28,6 +28,12 @@ Date Created: Nov. 23, 2023
 - 5b. On that same outer-most view, apply the following view modifiers:
 ```
 .tabBarNavigationEnabled(.settings, navigation)
+AND either of the following (read the function's documentation for explanation):
+.hoistNavigation(
+    _ primaryAction: .dismiss,
+    auxiliaryAction: nil
+)
+OR:
 .hoistNavigation(
     dismiss: dismiss,
     auxiliaryAction: {
@@ -38,14 +44,18 @@ Date Created: Nov. 23, 2023
     }
 )
 ```
-
-And now you're done configuring the tab's root view! See `Tap to Dismiss` section to enable/customize tab navigation behaviour.
+6. And now you're done configuring the tab's root view! See `Tap to Dismiss` section to enable/customize tab navigation behaviour.
 
 **Tap to Dismiss: Enabling Behaviour**
 On each view, including the tab's 'root view:
 1. Add the `@Environment(\.dismiss)` action to view.
-2. On the outer-most view in that view's 'body, apply the `.hoistNavigation(dismiss:)` view modifier, optionally passing in an `auxiliaryAction`. For example:
+2. On the outer-most view in that view's 'body, apply the `.hoistNavigation(...)` view modifier, optionally passing in an `auxiliaryAction`. For example:
 ```
+.hoistNavigation(
+    _ primaryAction: .dismiss,
+    auxiliaryAction: nil
+)
+OR:
 .hoistNavigation(
     dismiss: dismiss,
     auxiliaryAction: {
