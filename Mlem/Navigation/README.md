@@ -66,3 +66,7 @@ Tab navigation is configured such that the auxiliary action is always performed 
 
 **Tab Navigation: Scroll to Top**
 For ease of use, you may wish to declare a `ScrollViewReader` near or at the top of your tab's root view, and then propagate that proxy via the `@Environment(\.scrollViewProxy)` environment value. If you do so, that reader must be wrapped outside of NavigationStack, otherwise environment values won't propagate to views pushed onto the stack. 
+
+## FAQ
+Q: Why can't I rapidly tap the tab bar to trigger multiple navigation actions at once?
+A: Technically, this is possible by programmatically manipulating a navigation path, but doing so will cause SwiftUI's navigation state to become corrupt (on iOS 16/17) such that the navigation data state and UI state become desynced. Our workaround uses the system environment's dismiss action to perform dismissal, which correctly coordinates the data/UI states, but that dismiss action requires a view to become fully dismissed before the previous view's dismiss action can be triggered.
