@@ -12,6 +12,10 @@ import SwiftUI
 // MARK: - Navigation
 final class Navigation: ObservableObject {
     
+    enum PrimaryAction {
+        case dismiss
+    }
+    
     /// Return `true` to indicate that an auxiliary action was performed.
     typealias AuxiliaryAction = () -> Bool
     
@@ -30,8 +34,25 @@ final class Navigation: ObservableObject {
 // MARK: - Hoist dismiss action
 extension View {
     
+    /// - Parameter dismiss: Pass in the `@Environment(\.dismiss)` property declared in the view being modified.
+    /// - Note: See `hoistNavigation(_ primaryAction:...)`, if declaring dismiss action in your view causes SwiftUI to enter an infinite loop.
     func hoistNavigation(
         dismiss: DismissAction,
+        auxiliaryAction: Navigation.AuxiliaryAction? = nil
+    ) -> some View {
+        // TODO: Possibly allow injection. If not, deprecate and remove this function.
+        modifier(
+            NavigationDismissHoisting(
+                auxiliaryAction: auxiliaryAction
+            )
+        )
+    }
+    
+    /// This view modifier variant manages the primary action on behalf of caller.
+    ///
+    /// In some view configurations, declaring the `@Environment(\.dismiss)` property may cause SwiftUI to enter an infinite loop. If so, use this view modifier, instead.
+    func hoistNavigation(
+        _ primaryAction: Navigation.PrimaryAction = .dismiss,
         auxiliaryAction: Navigation.AuxiliaryAction? = nil
     ) -> some View {
         modifier(
