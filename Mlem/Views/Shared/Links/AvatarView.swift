@@ -6,6 +6,11 @@
 //
 import SwiftUI
 
+enum AvatarIconResolution {
+    case unrestricted
+    case fixed(Int)
+}
+
 struct AvatarView: View {
     // Don't clip the avatars of communities from these instances
     static let unclippedInstances = ["beehaw.org"]
@@ -17,7 +22,6 @@ struct AvatarView: View {
     let lineWidth: CGFloat
     let clipAvatar: Bool
     let blurAvatar: Bool
-    let iconResolution: Int
     
     init(
         url: URL?,
@@ -27,17 +31,25 @@ struct AvatarView: View {
         clipAvatar: Bool = true,
         lineColor: Color? = nil,
         lineWidth: CGFloat = 1,
-        iconResolution: Int? = nil
+        iconResolution: AvatarIconResolution? = nil
     ) {
         @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
         self.type = type
-        self.url = url
+        
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
         self.lineWidth = lineWidth
         self.clipAvatar = clipAvatar
         self.blurAvatar = shouldBlurNsfw && blurAvatar
-        self.iconResolution = iconResolution ?? Int(avatarSize * 2)
+        switch iconResolution {
+            
+        case .fixed(let pixels):
+            self.url = url?.withIconSize(pixels)
+        case .unrestricted:
+            self.url = url
+        case nil:
+            self.url = url?.withIconSize(Int(avatarSize * 2))
+        }
     }
     
     init(
@@ -45,7 +57,7 @@ struct AvatarView: View {
         avatarSize: CGFloat,
         lineColor: Color? = nil,
         lineWidth: CGFloat = 1,
-        iconResolution: Int? = nil
+        iconResolution: AvatarIconResolution? = nil
     ) {
         self.init(
             url: community.avatar,
@@ -65,7 +77,7 @@ struct AvatarView: View {
         blurAvatar: Bool = false,
         lineColor: Color? = nil,
         lineWidth: CGFloat = 1,
-        iconResolution: Int? = nil
+        iconResolution: AvatarIconResolution? = nil
     ) {
         self.init(
             url: user.avatar,
@@ -88,7 +100,7 @@ struct AvatarView: View {
     
     var body: some View {
         CachedImage(
-            url: url?.withIconSize(iconResolution),
+            url: url,
             shouldExpand: false,
             fixedSize: CGSize(width: avatarSize, height: avatarSize),
             imageNotFound: { AnyView(DefaultAvatarView(avatarType: type)) },

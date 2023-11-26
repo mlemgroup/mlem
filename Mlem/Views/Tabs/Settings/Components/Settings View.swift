@@ -25,9 +25,14 @@ struct SettingsView: View {
             ScrollViewReader { _ in
                 List {
                     Section {
-                        NavigationLink { EmptyView() } label: {
+                        NavigationLink(.settings(.currentAccount)) {
                             HStack(spacing: 20) {
-                                AvatarView(url: appState.profileTabRemoteSymbolUrl, type: .user, avatarSize: 60, iconResolution: 512)
+                                AvatarView(
+                                    url: appState.profileTabRemoteSymbolUrl,
+                                    type: .user,
+                                    avatarSize: 60,
+                                    iconResolution: .unrestricted
+                                )
                                     .padding(.vertical, -8)
                                 if let account = appState.currentActiveAccount {
 

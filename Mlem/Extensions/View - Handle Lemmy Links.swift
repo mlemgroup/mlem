@@ -100,6 +100,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     @ViewBuilder
     private func settingsDestination(for page: SettingsPage) -> some View {
         switch page {
+        case .currentAccount:
+            AccountSettingsView()
+        case .editProfile:
+            ProfileSettingsView()
         case .accounts:
             AccountsPage()
         case .general:

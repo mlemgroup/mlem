@@ -11,7 +11,7 @@ import Foundation
 struct APIPerson: Decodable, Identifiable, Hashable {
     let id: Int
     let name: String
-    let displayName: String?
+    var displayName: String?
     let avatar: String?
     let banned: Bool
     let published: Date
