@@ -29,6 +29,7 @@ struct ThumbnailImageView: View {
             case let .image(url):
                 // just blur, no need for the whole filter viewModifier since this is just a thumbnail
                 CachedImage(
+                    // url: url.withIconSize(Int(AppConstants.thumbnailSize * 2)),
                     url: url,
                     fixedSize: size,
                     contentMode: .fill,

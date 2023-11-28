@@ -455,7 +455,8 @@ class PostTracker: ObservableObject {
             switch post.postType {
             case let .image(url):
                 // images: only load the image
-                imageRequests.append(ImageRequest(url: url, priority: .high))
+                // imageRequests.append(ImageRequest(url: url.withIconSize(Int(AppConstants.thumbnailSize * 2)), priority: .high))
+                x1imageRequests.append(ImageRequest(url: url, priority: .high))
             case let .link(url):
                 // websites: load image and favicon
                 if let baseURL = post.post.linkUrl?.host,
