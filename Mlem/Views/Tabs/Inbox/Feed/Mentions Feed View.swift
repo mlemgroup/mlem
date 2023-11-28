@@ -16,6 +16,7 @@ struct MentionsFeedView: View {
             noMentionsView()
         } else {
             LazyVStack(spacing: 0) {
+                EmptyView().id("top")
                 mentionsListView()
             }
         }
