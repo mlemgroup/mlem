@@ -55,8 +55,10 @@ struct DeleteAccountView: View {
     @ViewBuilder
     var deleteConfirmation: some View {
         if confirmed {
-            if let version = siteInformation.version {
-                passwordPrompt(canDeleteContent: version >= deleteContentMinimumVersion)
+            // if let version = siteInformation.version {
+            if siteInformation.version != .zero {
+                // passwordPrompt(canDeleteContent: version >= deleteContentMinimumVersion)
+                passwordPrompt(canDeleteContent: siteInformation.version >= deleteContentMinimumVersion)
             } else {
                 LoadingView(whatIsLoading: .instanceDetails)
             }

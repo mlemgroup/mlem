@@ -6,7 +6,8 @@
 //
 import Foundation
 
-enum SiteVersion: Equatable {
+enum SiteVersion: Equatable, Identifiable {
+    var id: String { description }
     
     case release(major: Int, minor: Int, patch: Int)
     case other(String)
@@ -14,7 +15,6 @@ enum SiteVersion: Equatable {
     case infinity
     
     init(_ version: String) {
-        
         let parts = version.split(separator: "-")
         if let firstPart = parts.first {
             let components = firstPart.split(separator: ".").compactMap { Int($0) }
@@ -28,10 +28,14 @@ enum SiteVersion: Equatable {
         }
     }
     
+    init() {
+        self = .zero
+    }
+    
     // swiftlint: disable large_tuple
     var parts: (Int, Int, Int)? {
         switch self {
-        case .release(let major, let minor, let patch):
+        case let .release(major, minor, patch):
             return (major, minor, patch)
         default:
             return nil
@@ -47,9 +51,9 @@ extension SiteVersion: CustomStringConvertible {
             return "zero"
         case .infinity:
             return "infinity"
-        case .release(let major, let minor, let patch):
+        case let .release(major, minor, patch):
             return "\(major).\(minor).\(patch)"
-        case .other(let string):
+        case let .other(string):
             return string
         }
     }
@@ -70,7 +74,6 @@ extension SiteVersion: Codable {
 
 extension SiteVersion: Comparable {
     static func < (lhs: SiteVersion, rhs: SiteVersion) -> Bool {
-
         switch (lhs, rhs) {
         case (.release, .release):
             return lhs.parts! < rhs.parts!

@@ -18,20 +18,35 @@ enum APIClientError: Error {
     case response(APIErrorResponse, Int?)
     case cancelled
     case invalidSession
-    case decoding(Data)
+    case decoding(Data, Error?)
 }
 
 extension APIClientError: CustomStringConvertible {
     var description: String {
         switch self {
-        case let .decoding(data):
+        case let .encoding(error):
+            return "Unable to encode: \(error)"
+        case let .networking(error):
+            return "Networking error: \(error)"
+        case let .response(errorResponse, status):
+            if let status {
+                return "Response error: \(errorResponse) with status \(status)"
+            }
+            return "Response error: \(errorResponse)"
+        case .cancelled:
+            return "Cancelled"
+        case .invalidSession:
+            return "Invalid session"
+        case let .decoding(data, error):
             guard let string = String(data: data, encoding: .utf8) else {
                 return localizedDescription
             }
             
+            if let error {
+                return "Unable to decode: \(string)\nError: \(error)"
+            }
+            
             return "Unable to decode: \(string)"
-        default:
-            return localizedDescription
         }
     }
 }
@@ -173,7 +188,8 @@ class APIClient {
         do {
             return try decoder.decode(model, from: data)
         } catch {
-            throw APIClientError.decoding(data)
+            print(error)
+            throw APIClientError.decoding(data, error)
         }
     }
 }

@@ -11,6 +11,7 @@ extension FeedView {
     // MARK: Feed loading
     
     func initFeed() async {
+        print("initializing feed")
         defer { isLoading = false }
         isLoading = true
         if postTracker.items.isEmpty {

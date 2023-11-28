@@ -94,14 +94,19 @@ struct FeedView: View {
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
+            .task(id: siteInformation.versionString) {
+                print("new version: \(siteInformation.versionString)")
+            }
             .task(id: siteInformation.version) {
                 // update post sort once we have siteInformation. Assumes site version won't change once we receive it.
-                if let siteVersion = siteInformation.version, siteInformationLoading {
+//                if let siteVersion = siteInformation.version, siteInformationLoading {
+                if siteInformation.version != .zero, siteInformationLoading {
                     siteInformationLoading = false
                     
                     @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
                     @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
-                    if siteVersion >= defaultPostSorting.minimumVersion {
+                    // if siteVersion >= defaultPostSorting.minimumVersion {
+                    if siteInformation.version >= defaultPostSorting.minimumVersion {
                         postSortType = defaultPostSorting
                     } else {
                         postSortType = fallbackDefaultPostSorting

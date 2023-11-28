@@ -12,7 +12,7 @@ import Foundation
 // <X>: (X rate limit amount per time window)
 // <X>_per_second: (rate limit time window in seconds)
 struct APILocalSiteRateLimit: Decodable {
-    let id: Int
+    let id: Int? // TODO: 0.18 Deprecation remove this field
     let localSiteId: Int
     let message: Int
     let messagePerSecond: Int
