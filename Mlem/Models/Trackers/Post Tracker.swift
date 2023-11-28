@@ -77,7 +77,6 @@ class PostTracker: ObservableObject {
         var newPosts: [PostModel] = .init()
         let numItems = items.count
         repeat {
-            print("loading more posts")
             let (posts, cursor) = try await postRepository.loadPage(
                 communityId: communityId,
                 page: page,
@@ -86,7 +85,6 @@ class PostTracker: ObservableObject {
                 type: type,
                 limit: internetSpeed.pageSize
             )
-            print("got \(posts.count) posts")
             
             newPosts = posts
             
@@ -140,7 +138,6 @@ class PostTracker: ObservableObject {
         
         page = 1
         
-        print("loading fresh posts")
         let (newPosts, cursor) = try await postRepository.loadPage(
             communityId: communityId,
             page: page,
@@ -149,7 +146,6 @@ class PostTracker: ObservableObject {
             type: feedType,
             limit: internetSpeed.pageSize
         )
-        print("got \(newPosts.count) new posts")
         
         currentCursor = cursor
         await reset(with: newPosts, cursor: cursor, filteredWith: filtering)

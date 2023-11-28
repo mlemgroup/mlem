@@ -188,7 +188,6 @@ class APIClient {
         do {
             return try decoder.decode(model, from: data)
         } catch {
-            print(error)
             throw APIClientError.decoding(data, error)
         }
     }

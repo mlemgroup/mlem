@@ -26,10 +26,6 @@ enum SiteVersion: Equatable {
         }
     }
     
-    init() {
-        self = .zero
-    }
-    
     // swiftlint: disable large_tuple
     var parts: (Int, Int, Int)? {
         switch self {
