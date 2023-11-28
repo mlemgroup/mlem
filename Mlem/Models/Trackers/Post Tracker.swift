@@ -70,7 +70,6 @@ class PostTracker: ObservableObject {
         type: FeedType,
         filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
     ) async throws {
-        print("loading next page")
         let currentPage = page
         
         // retry this until we get enough items through the filter to enable autoload
