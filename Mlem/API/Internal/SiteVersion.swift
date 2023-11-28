@@ -6,9 +6,7 @@
 //
 import Foundation
 
-enum SiteVersion: Equatable, Identifiable {
-    var id: String { description }
-    
+enum SiteVersion: Equatable {
     case release(major: Int, minor: Int, patch: Int)
     case other(String)
     case zero

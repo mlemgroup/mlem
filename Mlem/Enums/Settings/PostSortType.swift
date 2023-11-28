@@ -65,10 +65,8 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
     static var alwaysAvailableTypes = allCases.filter { $0.minimumVersion == .zero }
     
     private static func filterTypes(_ types: [PostSortType]) -> [PostSortType] {
-        // guard let siteVersion = siteInformation.version else { return types }
-        guard siteInformation.version != .zero else { return types }
-        // return types.filter { siteVersion >= $0.minimumVersion }
-        return types.filter { siteInformation.version >= $0.minimumVersion }
+        guard let siteVersion = siteInformation.version else { return types }
+        return types.filter { siteVersion >= $0.minimumVersion }
     }
     
     var minimumVersion: SiteVersion {
