@@ -9,7 +9,7 @@ import Foundation
 
 // lemmy_db_schema::aggregates::structs::CommunityAggregates
 struct APICommunityAggregates: Decodable {
-    let id: Int
+    let id: Int? // TODO: 0.18 Deprecation remove this field
     let communityId: Int
     let subscribers: Int
     let posts: Int

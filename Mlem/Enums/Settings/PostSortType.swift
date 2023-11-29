@@ -5,8 +5,8 @@
 //  Created by David Bureš on 05.05.2023.
 //
 
-import Foundation
 import Dependencies
+import Foundation
 
 enum PostSortType: String, Codable, CaseIterable, Identifiable {
     @Dependency(\.siteInformation) static var siteInformation

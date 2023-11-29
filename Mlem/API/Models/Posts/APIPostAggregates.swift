@@ -9,7 +9,7 @@ import Foundation
 
 // lemmy_db_schema::aggregates::structs::PostAggregates
 struct APIPostAggregates: Decodable, APIContentAggregatesProtocol {
-    let id: Int
+    let id: Int? // TODO: 0.18 Deprecation remove this field
     let postId: Int
     let comments: Int
     var score: Int

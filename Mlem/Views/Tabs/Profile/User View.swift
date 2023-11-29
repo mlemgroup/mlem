@@ -419,7 +419,8 @@ struct UserViewPreview: PreviewProvider {
             userID: 123,
             userDetails: APIPersonView(
                 person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .normal),
-                counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)
+                counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974),
+                isAdmin: false
             )
         ).environmentObject(AppState())
     }

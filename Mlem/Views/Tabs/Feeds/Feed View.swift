@@ -95,6 +95,7 @@ struct FeedView: View {
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
             .task(id: siteInformation.version) {
+                print("new site version: \(siteInformation.version)")
                 // update post sort once we have siteInformation. Assumes site version won't change once we receive it.
                 if let siteVersion = siteInformation.version, siteInformationLoading {
                     siteInformationLoading = false
