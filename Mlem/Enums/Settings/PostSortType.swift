@@ -8,6 +8,7 @@
 import Dependencies
 import Foundation
 import Dependencies
+import Foundation
 
 enum PostSortType: String, Codable, CaseIterable, Identifiable {
     @Dependency(\.siteInformation) static var siteInformation
