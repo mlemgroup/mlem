@@ -16,6 +16,7 @@ struct RepliesFeedView: View {
             noRepliesView()
         } else {
             LazyVStack(spacing: 0) {
+                EmptyView().id("top")
                 repliesListView()
             }
         }

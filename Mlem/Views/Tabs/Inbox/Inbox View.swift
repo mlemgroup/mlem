@@ -118,9 +118,6 @@ struct InboxView: View {
                         await handleShouldFilterReadChange(newShouldFilterRead: newValue)
                     }
                 }
-                .reselectAction(tab: TabSelection.inbox) {
-                    print("re-selected inbox")
-                }
         }
     }
     
@@ -135,29 +132,37 @@ struct InboxView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             .padding(.top, AppConstants.postAndCommentSpacing)
             
-            ScrollView {
-                if errorOccurred {
-                    errorView()
-                } else {
-                    switch curTab {
-                    case .all:
-                        AllItemsFeedView(inboxTracker: inboxTracker)
-                    case .replies:
-                        RepliesFeedView(replyTracker: replyTracker)
-                    case .mentions:
-                        MentionsFeedView(mentionTracker: mentionTracker)
-                    case .messages:
-                        MessagesFeedView(messageTracker: messageTracker)
+            ScrollViewReader { scrollProxy in
+                ScrollView {
+                    if errorOccurred {
+                        errorView()
+                    } else {
+                        switch curTab {
+                        case .all:
+                            AllItemsFeedView(inboxTracker: inboxTracker)
+                        case .replies:
+                            RepliesFeedView(replyTracker: replyTracker)
+                        case .mentions:
+                            MentionsFeedView(mentionTracker: mentionTracker)
+                        case .messages:
+                            MessagesFeedView(messageTracker: messageTracker)
+                        }
                     }
                 }
-            }
-            .fancyTabScrollCompatible()
-            .refreshable {
-                // wrapping in task so view redraws don't cancel
-                // awaiting the value makes the refreshable indicator properly wait for the call to finish
-                await Task {
-                    await refresh()
-                }.value
+                .reselectAction(tab: .inbox) {
+                    withAnimation {
+                        // note that the actual "top" views live within the tabs themselves so they get placed correctly within the LazyVStacks
+                        scrollProxy.scrollTo("top")
+                    }
+                }
+                .fancyTabScrollCompatible()
+                .refreshable {
+                    // wrapping in task so view redraws don't cancel
+                    // awaiting the value makes the refreshable indicator properly wait for the call to finish
+                    await Task {
+                        await refresh()
+                    }.value
+                }
             }
         }
         .task {

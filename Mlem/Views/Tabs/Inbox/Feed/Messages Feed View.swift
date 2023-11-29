@@ -16,6 +16,7 @@ struct MessagesFeedView: View {
             noMessagesView()
         } else {
             LazyVStack(spacing: 0) {
+                EmptyView().id("top")
                 messagesListView()
             }
         }

@@ -161,7 +161,9 @@ class APIClient {
 
     private func createBodyData(for defintion: any APIRequestBodyProviding) throws -> Data {
         do {
-            return try JSONEncoder().encode(defintion.body)
+            var encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            return try encoder.encode(defintion.body)
         } catch {
             throw APIClientError.encoding(error)
         }

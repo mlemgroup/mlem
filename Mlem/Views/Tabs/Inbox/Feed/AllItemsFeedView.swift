@@ -19,6 +19,7 @@ struct AllItemsFeedView: View {
                 noItemsView()
             } else {
                 LazyVStack(spacing: 0) {
+                    EmptyView().id("top")
                     inboxListView()
                 }
             }

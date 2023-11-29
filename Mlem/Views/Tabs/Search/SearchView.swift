@@ -146,7 +146,6 @@ struct SearchView: View {
 }
 
 extension View {
-    
     @ViewBuilder
     func _opacity(_ opacity: Double, speed: Double) -> some View {
         if #available(iOS 17.0, *) {
@@ -162,12 +161,12 @@ extension View {
         } else {
             self.opacity(opacity)
                 .transaction { transaction in
-                if speed > 0 {
-                    transaction.animation = transaction.animation?.speed(speed)
-                } else {
-                    transaction.animation = nil
+                    if speed > 0 {
+                        transaction.animation = transaction.animation?.speed(speed)
+                    } else {
+                        transaction.animation = nil
+                    }
                 }
-            }
         }
     }
 }
@@ -177,7 +176,6 @@ extension View {
 }
 
 struct SearchViewPreview: View {
-
     @StateObject private var appState: AppState = .init()
     @StateObject private var recentSearchesTracker: RecentSearchesTracker = .init()
 
