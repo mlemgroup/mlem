@@ -6,9 +6,27 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension FeedView {
     // MARK: Feed loading
+    
+    func loadIfVersionResolved() {
+        if let siteVersion = siteInformation.version, siteInformationLoading {
+            siteInformationLoading = false
+            
+            @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+            @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+            if siteVersion >= defaultPostSorting.minimumVersion {
+                postSortType = defaultPostSorting
+            } else {
+                postSortType = fallbackDefaultPostSorting
+            }
+            Task(priority: .userInitiated) {
+                await initFeed()
+            }
+        }
+    }
     
     func initFeed() async {
         defer { isLoading = false }
