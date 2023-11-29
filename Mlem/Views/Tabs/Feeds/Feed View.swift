@@ -107,6 +107,8 @@ struct FeedView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
                     if siteInformation.version == nil {
                         errorDetails = ErrorDetails(title: "Failed to determine site version!")
+                    } else {
+                        loadIfVersionResolved()
                     }
                 }
             }
