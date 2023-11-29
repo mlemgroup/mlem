@@ -150,11 +150,22 @@ struct SearchView: View {
         .hoistNavigation(
             auxiliaryAction: {
                 withAnimation {
-                    scrollProxy?.scrollTo(scrollToTop, anchor: .bottom)
+                    scrollToTop(page: page)
                 }
                 return true
             }
         )
+    }
+    
+    private func scrollToTop(page: Page) {
+        switch page {
+        case .home:
+            scrollProxy?.scrollTo(scrollToTop, anchor: .bottom)
+        case .recents:
+            scrollProxy?.scrollTo(recentsScrollToTop, anchor: .bottom)
+        case .results:
+            scrollProxy?.scrollTo(resultsScrollToTop, anchor: .bottom)
+        }
     }
 }
 
