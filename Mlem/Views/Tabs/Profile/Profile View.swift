@@ -22,8 +22,5 @@ struct ProfileView: View {
                 .handleLemmyViews()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(profileTabNavigation))
-        .reselectAction(tab: TabSelection.profile) {
-            print("re-selected profile")
-        }
     }
 }

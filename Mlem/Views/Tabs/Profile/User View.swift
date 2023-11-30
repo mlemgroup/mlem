@@ -114,48 +114,57 @@ struct UserView: View {
     }
     
     private func view(for userDetails: APIPersonView) -> some View {
-        ScrollView {
-            header(for: userDetails)
-            
-            if let bio = userDetails.person.bio {
-                MarkdownView(text: bio, isNsfw: false).padding()
-            }
-            
-            Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                ForEach(UserViewTab.allCases, id: \.id) { tab in
-                    // Skip tabs that are meant for only our profile
-                    if tab.onlyShowInOwnProfile {
-                        if isShowingOwnProfile() {
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                EmptyView().id("top")
+                
+                header(for: userDetails)
+                
+                if let bio = userDetails.person.bio {
+                    MarkdownView(text: bio, isNsfw: false).padding()
+                }
+                
+                Picker(selection: $selectionSection, label: Text("Profile Section")) {
+                    ForEach(UserViewTab.allCases, id: \.id) { tab in
+                        // Skip tabs that are meant for only our profile
+                        if tab.onlyShowInOwnProfile {
+                            if isShowingOwnProfile() {
+                                Text(tab.label).tag(tab.rawValue)
+                            }
+                        } else {
                             Text(tab.label).tag(tab.rawValue)
                         }
-                    } else {
-                        Text(tab.label).tag(tab.rawValue)
                     }
                 }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                
+                UserFeedView(
+                    userID: userID,
+                    privatePostTracker: privatePostTracker,
+                    privateCommentTracker: privateCommentTracker,
+                    selectedTab: $selectionSection
+                )
             }
-            .pickerStyle(.segmented)
-            .padding(.horizontal)
-            
-            UserFeedView(
-                userID: userID,
-                privatePostTracker: privatePostTracker,
-                privateCommentTracker: privateCommentTracker,
-                selectedTab: $selectionSection
-            )
-        }
-        .fancyTabScrollCompatible()
-        .environmentObject(privatePostTracker)
-        .environmentObject(privateCommentTracker)
-        .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarColor()
-        .headerProminence(.standard)
-        .refreshable {
-            await tryReloadUser()
-        }.toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                accountSwitcher
-                moderatorButton
+            .fancyTabScrollCompatible()
+            .environmentObject(privatePostTracker)
+            .environmentObject(privateCommentTracker)
+            .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarColor()
+            .headerProminence(.standard)
+            .refreshable {
+                await tryReloadUser()
+            }.toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    accountSwitcher
+                    moderatorButton
+                }
+            }
+            .reselectAction(tab: .profile) {
+                withAnimation {
+                    scrollProxy.scrollTo("top")
+                }
             }
         }
     }
@@ -410,7 +419,8 @@ struct UserViewPreview: PreviewProvider {
             userID: 123,
             userDetails: APIPersonView(
                 person: generatePreviewUser(name: "actualUsername", displayName: "PreferredUsername", userType: .normal),
-                counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974)
+                counts: APIPersonAggregates(id: 123, personId: 123, postCount: 123, postScore: 567, commentCount: 14, commentScore: 974),
+                isAdmin: false
             )
         ).environmentObject(AppState())
     }

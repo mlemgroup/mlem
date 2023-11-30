@@ -11,4 +11,5 @@ import Foundation
 struct APIPersonView: Decodable {
     let person: APIPerson
     let counts: APIPersonAggregates
+    let isAdmin: Bool?
 }

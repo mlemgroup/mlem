@@ -9,7 +9,7 @@ import Foundation
 
 // lemmy_db_schema::aggregates::structs::SiteAggregates
 struct APISiteAggregates: Decodable {
-    let id: Int
+    let id: Int? // TODO: 0.18 Deprecation remove this field
     let siteId: Int
     let users: Int
     let posts: Int
