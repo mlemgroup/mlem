@@ -38,6 +38,7 @@ extension APIClient {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         // This is required pre 0.19.0
+        // TODO: 0.18 deprecation: possibly remove this? Haven't tested how >0.19 behaves without this, but I assume it's not required anymore since they're now requiring a different format instead
         try request.setValue("jwt=\(session.token)", forHTTPHeaderField: "Cookie")
         // This is required post 0.19.0
         try request.setValue("Bearer \(session.token)", forHTTPHeaderField: "Authorization")
