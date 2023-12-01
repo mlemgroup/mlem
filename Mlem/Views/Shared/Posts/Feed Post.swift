@@ -228,9 +228,9 @@ struct FeedPost: View {
     func blockUser() async {
         // TODO: migrate to personRepository
         do {
-            let response = try await apiClient.blockPerson(id: post.creator.id, shouldBlock: true)
+            let response = try await apiClient.blockPerson(id: post.creator.userId, shouldBlock: true)
             if response.blocked {
-                postTracker.removeUserPosts(from: post.creator.id)
+                postTracker.removeUserPosts(from: post.creator.userId)
                 hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked \(post.creator.name)"))
             }
