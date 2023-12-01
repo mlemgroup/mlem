@@ -135,7 +135,7 @@ struct ExpandedPost: View {
                     .frame(
                         maxWidth: .infinity,
                         maxHeight: .infinity,
-                        alignment: commentJumpButtonSide == .bottomTrailing ? .bottomTrailing : .bottomLeading
+                        alignment: commentJumpButtonSide.alignment
                     )
             }
         }
