@@ -20,10 +20,11 @@ struct GetPrivateMessagesRequest: APIGetRequest {
         page: Int?,
         limit: Int?,
         unreadOnly: Bool
+        // TODO: 0.19 support add creator_id? field
     ) throws {
         self.instanceURL = try session.instanceUrl
-        self.queryItems = [
-            .init(name: "auth", value: try session.token),
+        self.queryItems = try [
+            .init(name: "auth", value: session.token),
             .init(name: "page", value: page?.description),
             .init(name: "limit", value: limit?.description),
             .init(name: "unread_only", value: String(unreadOnly))

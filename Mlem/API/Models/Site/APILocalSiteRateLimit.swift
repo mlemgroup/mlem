@@ -28,4 +28,5 @@ struct APILocalSiteRateLimit: Decodable {
     let searchPerSecond: Int
     let published: Date
     let updated: Date?
+    // TODO: 0.19 support add import_user_settings and import_user_settings_per_second
 }
