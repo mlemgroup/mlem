@@ -12,6 +12,7 @@ struct SuccessResponse: Decodable {
     let success: Bool
     
     // TODO: 0.18 deprecation remove all code below this point
+    // To handle multiple API specs, I have defined "compatibility responses" that encompass multiple response specs. These initializers then handle converting the compatibility response to a SuccessResponse.
     init(from compatibilityResponse: MarkReadCompatibilityResponse) {
         if let success = compatibilityResponse.success {
             self.success = success
