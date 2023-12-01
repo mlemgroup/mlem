@@ -17,7 +17,7 @@ struct APIPerson: Decodable, Identifiable, Hashable {
     let published: Date
     let updated: Date?
     let actorId: URL
-    let bio: String?
+    var bio: String?
     let local: Bool
     let banner: String?
     let deleted: Bool

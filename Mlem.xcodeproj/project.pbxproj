@@ -75,6 +75,7 @@
 		03EEEAF32AB8DCDF0087F8D8 /* CommunityResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EEEAF22AB8DCDF0087F8D8 /* CommunityResultView.swift */; };
 		03EEEAF72AB8ED3C0087F8D8 /* SearchTabPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EEEAF62AB8ED3C0087F8D8 /* SearchTabPicker.swift */; };
 		03EEEAF92ABB985D0087F8D8 /* CommunityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EEEAF82ABB985D0087F8D8 /* CommunityModel.swift */; };
+		03F4DC9D2B193F4C00556C67 /* MatrixLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F4DC9C2B193F4C00556C67 /* MatrixLinkView.swift */; };
 		03FD64FF2AE53D0E00957AA9 /* CommunityModel+ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD64FE2AE53D0E00957AA9 /* CommunityModel+ContentModel.swift */; };
 		500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */; };
 		5016A2B12A67EB8600B257E8 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5016A2B02A67EB8600B257E8 /* UIViewController.swift */; };
@@ -598,6 +599,7 @@
 		03EEEAF22AB8DCDF0087F8D8 /* CommunityResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityResultView.swift; sourceTree = "<group>"; };
 		03EEEAF62AB8ED3C0087F8D8 /* SearchTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabPicker.swift; sourceTree = "<group>"; };
 		03EEEAF82ABB985D0087F8D8 /* CommunityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityModel.swift; sourceTree = "<group>"; };
+		03F4DC9C2B193F4C00556C67 /* MatrixLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixLinkView.swift; sourceTree = "<group>"; };
 		03FD64FE2AE53D0E00957AA9 /* CommunityModel+ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityModel+ContentModel.swift"; sourceTree = "<group>"; };
 		500C168D2A66FAAB006F243B /* HapticManager+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+Dependency.swift"; sourceTree = "<group>"; };
 		5016A2B02A67EB8600B257E8 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -1070,6 +1072,7 @@
 			children = (
 				0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */,
 				03A18CBA2B0FD6F000BA69D2 /* ProfileSettingsView.swift */,
+				03F4DC9C2B193F4C00556C67 /* MatrixLinkView.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -3164,6 +3167,7 @@
 				63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */,
 				E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */,
 				6363D5C727EE196700E34822 /* ContentView.swift in Sources */,
+				03F4DC9D2B193F4C00556C67 /* MatrixLinkView.swift in Sources */,
 				6D8F08FF2A4029AE003EB4FD /* Community List View.swift in Sources */,
 				035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */,
 				5016A2B12A67EB8600B257E8 /* UIViewController.swift in Sources */,
