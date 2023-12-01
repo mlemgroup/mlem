@@ -94,23 +94,27 @@ struct FeedView: View {
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
-            .task(id: siteInformation.version) {
-                print("new site version: \(siteInformation.version)")
-                // update post sort once we have siteInformation. Assumes site version won't change once we receive it.
-                if let siteVersion = siteInformation.version, siteInformationLoading {
-                    siteInformationLoading = false
-                    
-                    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
-                    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
-                    if siteVersion >= defaultPostSorting.minimumVersion {
-                        postSortType = defaultPostSorting
+            .task {
+                // hack to load if task below fails
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    loadIfVersionResolved()
+                }
+                // fallback
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    loadIfVersionResolved()
+                }
+                // error
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    if siteInformation.version == nil {
+                        errorDetails = ErrorDetails(title: "Failed to determine site version!")
                     } else {
-                        postSortType = fallbackDefaultPostSorting
-                    }
-                    Task(priority: .userInitiated) {
-                        await initFeed()
+                        loadIfVersionResolved()
                     }
                 }
+            }
+            .task(id: siteInformation.version) {
+                // update post sort and load once we have siteInformation. Assumes site version won't change once we receive it.
+                loadIfVersionResolved()
             }
             .task(priority: .background) { await fetchCommunityDetails() }
             // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
