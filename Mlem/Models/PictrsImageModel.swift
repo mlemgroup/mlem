@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ImageUploadResponse: Codable {
-    public let msg: String
+    public let msg: String?
     public let files: [PictrsFile]?
 }
 

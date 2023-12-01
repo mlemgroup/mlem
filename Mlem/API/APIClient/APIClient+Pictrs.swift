@@ -36,7 +36,11 @@ extension APIClient {
         let boundary = UUID().uuidString
 
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        // This is required pre 0.19.0
         try request.setValue("jwt=\(session.token)", forHTTPHeaderField: "Cookie")
+        // This is required post 0.19.0
+        try request.setValue("Bearer \(session.token)", forHTTPHeaderField: "Authorization")
         
         let multiPartForm: MultiPartForm = try .init(
             mimeType: "image/png",
