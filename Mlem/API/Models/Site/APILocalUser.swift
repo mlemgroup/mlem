@@ -29,11 +29,11 @@ struct APILocalUser: Decodable {
     let sendNotificationsToEmail: Bool
     let showAvatars: Bool
     let showBotAccounts: Bool
-    let showNewPostNotifs: Bool
+    let showNewPostNotifs: Bool?
     let showNsfw: Bool
     let showReadPosts: Bool
     let showScores: Bool
     let theme: String
     let totp2faUrl: String?
-    let validatorTime: String
+    let validatorTime: String?
 }

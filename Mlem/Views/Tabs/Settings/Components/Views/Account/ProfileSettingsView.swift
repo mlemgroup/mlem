@@ -92,11 +92,11 @@ struct ProfileSettingsView: View {
                                 siteInformation.myUserInfo?.localUserView.person.bio = bio
                                 if let info = siteInformation.myUserInfo {
                                     hasEdited = .updating
-                                    
                                     try await apiClient.saveUserSettings(myUserInfo: info)
                                     hasEdited = .unedited
                                 }
                             } catch {
+                                hasEdited = .edited
                                 errorHandler.handle(error)
                             }
                         }
