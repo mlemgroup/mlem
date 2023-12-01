@@ -47,9 +47,13 @@ class PostRepository {
         return PostModel(from: postView)
     }
     
-    func markRead(postId: Int, read: Bool) async throws -> PostModel {
-        let postView = try await apiClient.markPostAsRead(for: postId, read: read).postView
-        return PostModel(from: postView)
+    /// Attempts to mark the given PostModel as read. On success, returns a new PostModel with the updated read state; on failure, returns the original PostModel.
+    /// - Parameters:
+    ///   - post: PostModel to attempt to read
+    ///   - read: Intended read state of the post model (true to mark read, false to mark unread)
+    func markRead(post: PostModel, read: Bool) async throws -> PostModel {
+        let success = try await apiClient.markPostAsRead(for: post.postId, read: read).success
+        return PostModel(from: post, read: success ? read : post.read)
     }
 
     /// Rates a given post. Does not care what the current vote state is; sends the given request no matter what (i.e., calling this with operation .upvote on an already upvoted post will not send a .resetVote, but will instead send a second idempotent .upvote
