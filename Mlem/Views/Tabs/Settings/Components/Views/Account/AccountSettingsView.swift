@@ -16,6 +16,8 @@ struct AccountSettingsView: View {
     @State var displayName: String = ""
     @State var showNsfw: Bool = false
     
+    @State var accountForDeletion: SavedAccount?
+    
     init() {
         if let info = siteInformation.myUserInfo {
             displayName = info.localUserView.person.displayName ?? ""
@@ -52,13 +54,13 @@ struct AccountSettingsView: View {
                     NavigationLink(.settings(.editProfile)) {
                         Label("My Profile", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .indigo))
                     }
-                    NavigationLink { EmptyView() } label: {
+                    NavigationLink(.settings(.signInAndSecurity)) {
                         Label("Sign-In & Security", systemImage: "key.fill").labelStyle(SquircleLabelStyle(color: .blue))
                     }
-                    NavigationLink { EmptyView() } label: {
+                    NavigationLink(.settings(.accountContent)) {
                         Label("Content", systemImage: "list.bullet.rectangle.fill").labelStyle(SquircleLabelStyle(color: .orange))
                     }
-                    NavigationLink { EmptyView() } label: {
+                    NavigationLink(.settings(.accountNotifications)) {
                         Label("Notifications", systemImage: "bell.fill").labelStyle(SquircleLabelStyle(color: .red))
                     }
                 } footer: {
@@ -71,17 +73,26 @@ struct AccountSettingsView: View {
                 }
                 .disabled(settingsDisabled)
                 
+//                Section {
+//                    NavigationLink { EmptyView() } label: {
+//                        Label("Blocked Commuities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .gray))
+//                    }
+//                    NavigationLink { EmptyView() } label: {
+//                        Label("Blocked Users", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .gray))
+//                    }
+//                }
+                
                 Section {
-                    NavigationLink { EmptyView() } label: {
-                        Label("Blocked Commuities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .gray))
-                    }
-                    NavigationLink { EmptyView() } label: {
-                        Label("Blocked Users", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .gray))
-                    }
+                    Button("Sign Out", role: .destructive) { }
+                        .frame(maxWidth: .infinity)
                 }
                 
-                Button("Sign Out", role: .destructive) { }
-                .frame(maxWidth: .infinity)
+                Section {
+                    Button("Delete Account", role: .destructive) {
+                        accountForDeletion = appState.currentActiveAccount
+                    }
+                        .frame(maxWidth: .infinity)
+                }
                 
             } else {
                 Text("No user info")
@@ -89,5 +100,8 @@ struct AccountSettingsView: View {
         }
         .navigationTitle("Account Settings")
         .fancyTabScrollCompatible()
+        .sheet(item: $accountForDeletion) { account in
+            DeleteAccountView(account: account)
+        }
     }
 }

@@ -106,6 +106,12 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             AccountSettingsView()
         case .editProfile:
             ProfileSettingsView()
+        case .signInAndSecurity:
+            SignInAndSecuritySettingsView()
+        case .accountContent:
+            AccountContentSettingsView()
+        case .accountNotifications:
+            AccountNotificationsSettingsView()
         case .linkMatrixAccount:
             MatrixLinkView()
         case .accounts:

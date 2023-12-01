@@ -8,7 +8,7 @@
 import Foundation
 
 struct SaveUserSettingsRequest: APIPutRequest {
-    typealias Response = LoginResponse
+    typealias Response = SaveUserSettingsCompatibilityResponse
 
     let instanceURL: URL
     let path = "user/save_user_settings"

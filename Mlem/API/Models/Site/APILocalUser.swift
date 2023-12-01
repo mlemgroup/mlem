@@ -9,31 +9,31 @@ import Foundation
 
 // lemmy_api_common::site::LocalUser
 struct APILocalUser: Decodable {
-    let acceptedApplication: Bool
+    var acceptedApplication: Bool
     
-    let defaultListingType: APIListingType?
-    let defaultSortType: PostSortType?
+    var defaultListingType: APIListingType?
+    var defaultSortType: PostSortType?
     
-    let email: String?
-    let emailVerified: Bool?
-    let id: Int
-    let interfaceLanguage: String
+    var email: String?
+    var emailVerified: Bool?
+    var id: Int
+    var interfaceLanguage: String
     
     // can be nil on old instances (introduced somewhere after 0.17.3)
-    let openLinksInNewTab: Bool?
+    var openLinksInNewTab: Bool?
     
     // New sometime between 0.17.3 and 0.18.5
-    let infiniteScrollEnabled: Bool?
+    var infiniteScrollEnabled: Bool?
     
-    let personId: Int
-    let sendNotificationsToEmail: Bool
-    let showAvatars: Bool
-    let showBotAccounts: Bool
-    let showNewPostNotifs: Bool?
-    let showNsfw: Bool
-    let showReadPosts: Bool
-    let showScores: Bool
-    let theme: String
-    let totp2faUrl: String?
-    let validatorTime: String?
+    var personId: Int
+    var sendNotificationsToEmail: Bool
+    var showAvatars: Bool
+    var showBotAccounts: Bool
+    var showNewPostNotifs: Bool?
+    var showNsfw: Bool
+    var showReadPosts: Bool
+    var showScores: Bool
+    var theme: String
+    var totp2faUrl: String?
+    var validatorTime: String?
 }

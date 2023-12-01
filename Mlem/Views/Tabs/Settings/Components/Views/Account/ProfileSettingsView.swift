@@ -65,6 +65,7 @@ struct ProfileSettingsView: View {
             }
             NavigationLink(.settings(.linkMatrixAccount)) {
                 Label("Link Matrix Account", image: "logo.matrix").labelStyle(SquircleLabelStyle(color: .black))
+                    .disabled(hasEdited != .unedited)
             }
         }
         .scrollDismissesKeyboard(.interactively)

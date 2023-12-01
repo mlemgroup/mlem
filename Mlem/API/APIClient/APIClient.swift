@@ -291,7 +291,7 @@ extension APIClient {
     @discardableResult
     func saveUserSettings(
         myUserInfo info: APIMyUserInfo
-    ) async throws -> LoginResponse {
+    ) async throws -> SuccessResponse {
         
         // Despite all values being optional, we actually have to provide all values 
         // here otherwise Lemmy returns 'user_already_exists'. Possibly fixed >0.19.0
@@ -327,7 +327,7 @@ extension APIClient {
                 auth: try session.token
             )
         )
-        return try await perform(request: request)
+        return SuccessResponse(from: try await perform(request: request))
     }
 }
 
