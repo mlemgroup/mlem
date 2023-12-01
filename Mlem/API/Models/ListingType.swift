@@ -15,6 +15,8 @@ enum APIListingType: String, Codable {
     // Pre 0.18.0 it appears that they used integers instead of strings here. We can remove this intialiser once we drop support for old versions. To fully support both systems, we'd also need to *encode* back into the correct integer or string format. I'd rather not go through the effort for instance versions that most people don't use any more, so I've disabled the option to edit account settings on instances running <0.18.0
     // - sjmarf
     
+    // TODO: 0.17 deprecation remove this initialiser
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let stringValue = try? container.decode(String.self) {

@@ -44,7 +44,8 @@ struct AccountSettingsView: View {
                     .padding(.vertical, -12)
                 }
                 
-                // See comments under APIListingType for why this is necessary. Remove when we drop support for <0.18.0
+                // See comments under APIListingType for why this is necessary.
+                // TODO: 0.17 deprecation remove this logic
                 let settingsDisabled = (siteInformation.version ?? .infinity) < .init("0.18.0")
                 
                 Section {
