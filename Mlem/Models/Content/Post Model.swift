@@ -17,7 +17,7 @@ struct PostModel {
     var votes: VotesModel
     let numReplies: Int
     let saved: Bool
-    let read: Bool
+    var read: Bool
     let published: Date
     let updated: Date?
     
