@@ -36,9 +36,11 @@ extension APIClient {
 
     // swiftlint:enable function_parameter_count
     
-    func markPostAsRead(for postId: Int, read: Bool) async throws -> PostResponse {
+    func markPostAsRead(for postId: Int, read: Bool) async throws -> SuccessResponse {
         let request = try MarkPostReadRequest(session: session, postId: postId, read: read)
-        return try await perform(request: request)
+        // TODO: 0.18 deprecation simply return result of perform
+        let compatibilityResponse = try await perform(request: request)
+        return SuccessResponse(from: compatibilityResponse)
     }
     
     func loadPost(id: Int, commentId: Int? = nil) async throws -> APIPostView {

@@ -8,7 +8,7 @@
 import Foundation
 
 struct MarkPostReadRequest: APIPostRequest {
-    typealias Response = PostResponse
+    typealias Response = MarkReadCompatibilityResponse
 
     let instanceURL: URL
     let path = "post/mark_as_read"

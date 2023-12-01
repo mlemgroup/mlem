@@ -232,7 +232,7 @@ class PostTracker: ObservableObject {
     @MainActor
     func removeUserPosts(from personId: Int) {
         filter {
-            $0.creator.id != personId
+            $0.creator.userId != personId
         }
     }
     
@@ -368,7 +368,7 @@ class PostTracker: ObservableObject {
         
         // perform real read
         do {
-            let response = try await postRepository.markRead(postId: post.postId, read: true)
+            let response = try await postRepository.markRead(post: post, read: true)
             await update(with: response)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
