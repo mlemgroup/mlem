@@ -33,7 +33,7 @@ class PictrsRespository {
                         imageModel.state = .uploaded(file: firstFile)
                         updateCallback(imageModel)
                     } else {
-                        print("Upload failed: \(response.msg)")
+                        print("Upload failed (1): \(response.msg)")
                         imageModel.state = .failed(response.msg)
                         updateCallback(imageModel)
                     }
@@ -43,10 +43,15 @@ class PictrsRespository {
                     updateCallback(imageModel)
                 }
             }, catch: { error in
-                print("Upload failed: \(error)")
+                print("Upload failed (2): \(error)")
                 switch error {
                 case let APIClientError.decoding(data, _):
-                    imageModel.state = .failed(String(data: data, encoding: .utf8))
+                    let text = String(data: data, encoding: .utf8)
+                    if text?.contains("413 Request Entity Too Large") ?? false {
+                        imageModel.state = .failed("Image too large")
+                    } else {
+                        imageModel.state = .failed(text)
+                    }
                 default:
                     imageModel.state = .failed(error.localizedDescription)
                 }
@@ -54,7 +59,7 @@ class PictrsRespository {
                 updateCallback(imageModel)
             })
         } catch {
-            print("Upload failed: \(error)")
+            print("Upload failed (3): \(error)")
             imageModel.state = .failed(error.localizedDescription)
             updateCallback(imageModel)
         }
