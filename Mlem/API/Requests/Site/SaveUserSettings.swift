@@ -35,7 +35,10 @@ struct SaveUserSettingsRequest: APIPutRequest {
         let sendNotificationsToEmail: Bool?
         let showAvatars: Bool?
         let showBotAccounts: Bool?
+        
+        // TODO: 0.18 deprecation remove this property https://github.com/LemmyNet/lemmy/pull/4158
         let showNewPostNotifs: Bool?
+        
         let showNsfw: Bool?
         let showReadPosts: Bool?
         let showScores: Bool?

@@ -29,7 +29,10 @@ struct APILocalUser: Decodable {
     var sendNotificationsToEmail: Bool
     var showAvatars: Bool
     var showBotAccounts: Bool
+    
+    // TODO: 0.18 deprecation remove this property https://github.com/LemmyNet/lemmy/pull/4158
     var showNewPostNotifs: Bool?
+    
     var showNsfw: Bool
     var showReadPosts: Bool
     var showScores: Bool

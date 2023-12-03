@@ -15,15 +15,17 @@ class SiteInformationTracker: ObservableObject {
     
     @Published private(set) var enableDownvotes = true
     @Published private(set) var version: SiteVersion?
+    @Published private(set) var allLanguages: [APILanguage] = .init()
     @Published var myUserInfo: APIMyUserInfo?
     
     func load() {
         Task {
             do {
-                let information = try await apiClient.loadSiteInformation()
-                enableDownvotes = information.siteView.localSite.enableDownvotes
-                version = SiteVersion(information.version)
-                myUserInfo = information.myUser
+                let response = try await apiClient.loadSiteInformation()
+                enableDownvotes = response.siteView.localSite.enableDownvotes
+                version = SiteVersion(response.version)
+                myUserInfo = response.myUser
+                allLanguages = response.allLanguages
             } catch {
                 errorHandler.handle(error)
             }

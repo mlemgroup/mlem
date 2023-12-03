@@ -329,6 +329,17 @@ extension APIClient {
         )
         return SuccessResponse(from: try await perform(request: request))
     }
+    
+    @discardableResult
+    func changePassword(newPassword: String, confirmNewPassword: String, currentPassword: String) async throws -> LoginResponse {
+        let request = try ChangePasswordRequest(
+            session: session,
+            newPassword: newPassword,
+            newPasswordVerify: confirmNewPassword,
+            oldPassword: currentPassword
+        )
+        return try await perform(request: request)
+    }
 }
 
 // MARK: - Object Resolving methods

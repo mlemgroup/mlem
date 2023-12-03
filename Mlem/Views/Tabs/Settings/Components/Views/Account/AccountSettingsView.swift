@@ -10,11 +10,15 @@ import Dependencies
 
 struct AccountSettingsView: View {
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
+    @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
     
     @EnvironmentObject var appState: AppState
+    @Environment(\.setAppFlow) private var setFlow
 
     @State var displayName: String = ""
     @State var showNsfw: Bool = false
+    
+    @State var showingSignOutConfirmation: Bool = false
     
     @State var accountForDeletion: SavedAccount?
     
@@ -52,16 +56,20 @@ struct AccountSettingsView: View {
                 
                 Section {
                     NavigationLink(.settings(.editProfile)) {
-                        Label("My Profile", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .indigo))
+                        Label("My Profile", systemImage: "person.fill")
+                            .labelStyle(SquircleLabelStyle(color: .indigo))
                     }
                     NavigationLink(.settings(.signInAndSecurity)) {
-                        Label("Sign-In & Security", systemImage: "key.fill").labelStyle(SquircleLabelStyle(color: .blue))
+                        Label("Sign-In & Security", systemImage: "key.fill")
+                            .labelStyle(SquircleLabelStyle(color: .blue))
                     }
-                    NavigationLink(.settings(.accountContent)) {
-                        Label("Content", systemImage: "list.bullet.rectangle.fill").labelStyle(SquircleLabelStyle(color: .orange))
+                    NavigationLink(.settings(.accountGeneral)) {
+                        Label("Content & Notifications", systemImage: "list.bullet.rectangle.fill")
+                        .labelStyle(SquircleLabelStyle(color: .orange))
                     }
-                    NavigationLink(.settings(.accountNotifications)) {
-                        Label("Notifications", systemImage: "bell.fill").labelStyle(SquircleLabelStyle(color: .red))
+                    NavigationLink(.settings(.accountAdvanced)) {
+                        Label("Advanced", systemImage: "gearshape.2.fill")
+                        .labelStyle(SquircleLabelStyle(color: .gray))
                     }
                 } footer: {
                     if settingsDisabled {
@@ -83,8 +91,27 @@ struct AccountSettingsView: View {
 //                }
                 
                 Section {
-                    Button("Sign Out", role: .destructive) { }
-                        .frame(maxWidth: .infinity)
+                    Button("Sign Out", role: .destructive) {
+                        showingSignOutConfirmation = true
+                        
+                    }
+                    .frame(maxWidth: .infinity)
+                    .confirmationDialog("Really sign out?", isPresented: $showingSignOutConfirmation) {
+                        Button("Sign Out", role: .destructive) {
+                            Task {
+                                if let currentActiveAccount = appState.currentActiveAccount {
+                                    accountsTracker.removeAccount(account: currentActiveAccount)
+                                    if let first = accountsTracker.savedAccounts.first {
+                                        setFlow(.account(first))
+                                    } else {
+                                        setFlow(.onboarding)
+                                    }
+                                }
+                            }
+                        }
+                    } message: {
+                        Text("Really sign out?")
+                    }
                 }
                 
                 Section {

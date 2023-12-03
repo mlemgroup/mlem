@@ -11,8 +11,8 @@ enum SettingsPage: DestinationValue {
     case currentAccount
     case editProfile
     case signInAndSecurity
-    case accountContent
-    case accountNotifications
+    case accountGeneral
+    case accountAdvanced
     case linkMatrixAccount
     case accounts
     case general

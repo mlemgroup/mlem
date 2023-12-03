@@ -32,6 +32,7 @@ struct ExpandedPost: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.siteInformation) var siteInformation
     
     // appstorage
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false

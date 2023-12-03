@@ -8,19 +8,19 @@
 import SwiftUI
 import Dependencies
 
+enum UserSettingsEditState {
+    case unedited, edited, updating
+}
+
 struct ProfileSettingsView: View {
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
     @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler: ErrorHandler
     
-    enum EditState {
-        case unedited, edited, updating
-    }
-    
     @State var displayName: String = ""
     @State var bio: String = ""
     
-    @State var hasEdited: EditState = .unedited
+    @State var hasEdited: UserSettingsEditState = .unedited
     
     init() {
         if let user = siteInformation.myUserInfo?.localUserView {
@@ -33,8 +33,10 @@ struct ProfileSettingsView: View {
         Form {
             Section {
                 TextField(text: $displayName) {
-                    Text("(Optional)")
+                    Text("Optional")
                 }
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
                 .accessibilityLabel("Display Name")
                 .onChange(of: displayName) { newValue in
                     if newValue != siteInformation.myUserInfo?.localUserView.person.displayName {
@@ -47,7 +49,7 @@ struct ProfileSettingsView: View {
                 Text("The name that is displayed on your profile. This is not the same as your username, which cannot be changed.")
             }
             Section {
-                TextField("(Optional)", text: $bio, axis: .vertical)
+                TextField("Optional", text: $bio, axis: .vertical)
                     .lineLimit(8, reservesSpace: true)
                     .onChange(of: bio) { newValue in
                         if newValue != siteInformation.myUserInfo?.localUserView.person.bio {
@@ -58,10 +60,6 @@ struct ProfileSettingsView: View {
                 Text("Biography")
             } footer: {
                 Text("You can use markdown here.")
-            }
-            Section {
-                Text("Change profile picture / banner will go here")
-                    .foregroundStyle(.secondary)
             }
             NavigationLink(.settings(.linkMatrixAccount)) {
                 Label("Link Matrix Account", image: "logo.matrix").labelStyle(SquircleLabelStyle(color: .black))
@@ -102,8 +100,7 @@ struct ProfileSettingsView: View {
                             }
                         }
                     }
-                }
-                if hasEdited == .updating {
+                } else if hasEdited == .updating {
                     ProgressView()
                 }
             }
