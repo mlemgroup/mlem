@@ -116,6 +116,8 @@ struct AccountGeneralSettingsView: View {
                             )) {
                                 Text("Undetermined")
                             }
+                        } footer: {
+                            Text("If you deselect Undetermined, you won't see most content.")
                         }
                         Section {
                             ForEach(siteInformation.allLanguages.dropFirst(), id: \.self) { language in
@@ -138,8 +140,6 @@ struct AccountGeneralSettingsView: View {
                     .fancyTabScrollCompatible()
                 }
                 
-            } footer: {
-                Text("If you deselect Undetermined, you won't see most content.")
             }
             Section {
                 SwitchableSettingsItem(
