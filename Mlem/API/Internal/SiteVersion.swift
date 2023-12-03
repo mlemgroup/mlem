@@ -87,17 +87,14 @@ extension SiteVersion: Codable {
 
 extension SiteVersion: Comparable {
     static func < (lhs: SiteVersion, rhs: SiteVersion) -> Bool {
-        print(rhs, lhs)
         switch (lhs, rhs) {
         case (.release, .release):
             return lhs.parts! < rhs.parts!
             
         // TODO: don't treat other as infinity
         case (_, .other):
-            print("comparing lhs to other")
             return true
         case (.other, _):
-            print("comparing other to rhs")
             return false
             
         case (.zero, _), (_, .infinity):
