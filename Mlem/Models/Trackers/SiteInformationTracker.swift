@@ -15,11 +15,16 @@ class SiteInformationTracker: ObservableObject {
     @Published private(set) var enableDownvotes = true
     @Published private(set) var version: SiteVersion?
     
-    func load() {
+    func load(onLoaded: ((SiteVersion) -> Void)? = nil) {
         Task {
             let information = try await apiClient.loadSiteInformation()
             enableDownvotes = information.siteView.localSite.enableDownvotes
             version = SiteVersion(information.version)
+            print("LOADED VERSION: \(version)")
+            if let version, let onLoaded {
+                print("CALLING onLoaded")
+                onLoaded(version)
+            }
         }
     }
 }

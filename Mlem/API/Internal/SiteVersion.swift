@@ -38,6 +38,25 @@ enum SiteVersion: Equatable {
     // swiftlint: enable large_tuple
 }
 
+extension SiteVersion: Hashable {
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case let .release(major, minor, patch):
+            hasher.combine(0)
+            hasher.combine(major)
+            hasher.combine(minor)
+            hasher.combine(patch)
+        case let .other(description):
+            hasher.combine(1)
+            hasher.combine(description)
+        case .zero:
+            hasher.combine(2)
+        case .infinity:
+            hasher.combine(3)
+        }
+    }
+}
+
 extension SiteVersion: CustomStringConvertible {
     var description: String {
         switch self {

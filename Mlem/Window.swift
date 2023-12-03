@@ -14,6 +14,7 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
 
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -39,10 +40,23 @@ struct Window: View {
         case .onboarding:
             appState.clearActiveAccount()
             favoriteCommunitiesTracker.clearStoredAccount()
+        case let .reauth(account):
+            appState.clearActiveAccount()
+            accountsTracker.removeAccount(account: account)
         case let .account(account):
+            print(account.lastLoggedInVersion)
             appState.setActiveAccount(account)
             favoriteCommunitiesTracker.configure(for: account)
-            siteInformation.load()
+            siteInformation.load { version in
+                // TODO:
+                // - save that the account has been version checked
+                // - better transition screen
+                let thresholdVersion = SiteVersion("0.19.0")
+                if account.lastLoggedInVersion < thresholdVersion,
+                   version >= thresholdVersion {
+                    setFlow(.reauth(account))
+                }
+            }
             
             if let host = account.instanceLink.host(),
                let instance = RecognizedLemmyInstances(rawValue: host) {
@@ -56,6 +70,8 @@ struct Window: View {
         switch flow {
         case .onboarding:
             LandingPage()
+        case let .reauth(account):
+            AddSavedInstanceView(onboarding: false, givenInstance: account.instanceLink.absoluteString, givenUsername: account.username)
         case let .account(account):
             view(for: account)
         }
@@ -84,6 +100,8 @@ struct Window: View {
         let transitionAccountName: String?
         switch newFlow {
         case .onboarding:
+            transitionAccountName = nil
+        case .reauth:
             transitionAccountName = nil
         case let .account(account):
             transitionAccountName = account.nickname

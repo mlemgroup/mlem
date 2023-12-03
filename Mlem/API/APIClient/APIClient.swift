@@ -78,6 +78,8 @@ class APIClient {
         switch flow {
         case let .account(account):
             session = .authenticated(account.instanceLink, account.accessToken)
+        case let .reauth(account):
+            session = .unauthenticated(account.instanceLink)
         case .onboarding:
             // no calls to our `APIClient` should be made during onboarding
             // excluding a _login_ call which requires an explicit session to be provided

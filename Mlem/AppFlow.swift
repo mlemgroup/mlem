@@ -12,6 +12,8 @@ import Foundation
 enum AppFlow: Equatable {
     /// The onboarding flow
     case onboarding
+    /// Re-authentication flow
+    case reauth(SavedAccount)
     /// A signed-in session with the user's `SavedAccount` as an associated value
     case account(SavedAccount)
 }

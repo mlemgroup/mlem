@@ -14,6 +14,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let username: String
     let storedNickname: String?
     let avatarUrl: URL?
+    let lastLoggedInVersion: SiteVersion
     
     var stableIdString: String {
         assert(instanceLink.host() != nil, "nil instance link host!")
@@ -26,7 +27,8 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         accessToken: String,
         username: String,
         storedNickname: String? = nil,
-        avatarUrl: URL? = nil
+        avatarUrl: URL? = nil,
+        lastLoggedInVersion: SiteVersion = .zero
     ) {
         self.id = id
         self.instanceLink = instanceLink
@@ -34,6 +36,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = username
         self.storedNickname = storedNickname
         self.avatarUrl = avatarUrl
+        self.lastLoggedInVersion = lastLoggedInVersion
     }
     
     // Convenience initializer to create an equal copy with different non-identifying properties.
@@ -41,7 +44,8 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         from account: SavedAccount,
         accessToken: String? = nil,
         storedNickname: String? = nil,
-        avatarUrl: URL?
+        avatarUrl: URL?,
+        lastLoggedInVersion: SiteVersion = .zero
     ) {
         self.id = account.id
         self.instanceLink = account.instanceLink
@@ -49,6 +53,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = account.username
         self.storedNickname = storedNickname ?? account.storedNickname
         self.avatarUrl = avatarUrl
+        self.lastLoggedInVersion = lastLoggedInVersion
     }
   
     // convenience
@@ -66,6 +71,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         try container.encode(username, forKey: .username)
         try container.encode(storedNickname, forKey: .storedNickname)
         try container.encode(avatarUrl, forKey: .avatarUrl)
+        try container.encode(lastLoggedInVersion, forKey: .lastLoggedInVersion)
     }
     
     static func == (lhs: SavedAccount, rhs: SavedAccount) -> Bool {

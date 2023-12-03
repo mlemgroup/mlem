@@ -60,6 +60,7 @@ struct AddSavedInstanceView: View {
     
     let onboarding: Bool
     let givenInstance: String? // if present, will override manual instance entry
+    let givenUsername: String? // if present, will override manual account entry
     
     var instance: String { givenInstance ?? enteredInstance }
     var badCredentialsMessage: String { onboarding
@@ -73,10 +74,12 @@ struct AddSavedInstanceView: View {
     
     init(
         onboarding: Bool,
-        givenInstance: String? = nil
+        givenInstance: String? = nil,
+        givenUsername: String? = nil
     ) {
         self.onboarding = onboarding
         self.givenInstance = givenInstance
+        self.givenUsername = givenUsername
     }
     
     var body: some View {
