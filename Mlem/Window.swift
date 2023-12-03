@@ -52,8 +52,11 @@ struct Window: View {
                 // - save that the account has been version checked
                 // - better transition screen
                 let thresholdVersion = SiteVersion("0.19.0")
-                if account.lastLoggedInVersion < thresholdVersion,
+                if account.lastLoggedInVersion ?? .zero < thresholdVersion,
                    version >= thresholdVersion {
+                    // swiftlint:disable line_length
+                    print("site version \(version) over threshold \(thresholdVersion), account was last logged in to \(account.lastLoggedInVersion). reauthenticating.")
+                    // swiftlint:enable line_length
                     setFlow(.reauth(account))
                 }
             }

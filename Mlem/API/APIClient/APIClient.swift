@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable file_length
 enum HTTPMethod {
     case get
     case post(Data)
@@ -325,8 +326,15 @@ extension APIClient {
 // MARK: - Miscellaneous requests (these will end up in repositories soon)
 
 extension APIClient {
+    /// Loads site information for the currently configured session
     func loadSiteInformation() async throws -> SiteResponse {
         let request = try GetSiteRequest(session: session)
+        return try await perform(request: request)
+    }
+    
+    /// Loads site information for the given url
+    func loadSiteInformation(_ instanceUrl: URL) async throws -> SiteResponse {
+        let request = GetSiteRequest(instanceURL: instanceUrl)
         return try await perform(request: request)
     }
     
@@ -397,3 +405,5 @@ extension APIClient {
         return try await perform(request: request).privateMessageView
     }
 }
+
+// swiftlint:enable file_length

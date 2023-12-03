@@ -15,9 +15,7 @@ struct GetSiteRequest: APIGetRequest {
     let path = "site"
     let queryItems: [URLQueryItem]
 
-    init(
-        session: APISession
-    ) throws {
+    init(session: APISession) throws {
         self.instanceURL = try session.instanceUrl
         var queryItems: [URLQueryItem] = []
         
@@ -30,11 +28,8 @@ struct GetSiteRequest: APIGetRequest {
         self.queryItems = queryItems
     }
 
-    init(
-        instanceURL: URL
-    ) {
+    init(instanceURL: URL) {
         self.instanceURL = instanceURL
-
         self.queryItems = []
     }
 }

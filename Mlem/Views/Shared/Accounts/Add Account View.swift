@@ -324,13 +324,18 @@ struct AddSavedInstanceView: View {
                 viewState = .success
             }
             
-            let user = try await loadUser(authToken: response.jwt, instanceURL: instanceURL)
+            async let fetchUser = try await loadUser(authToken: response.jwt, instanceURL: instanceURL)
+            async let fetchSite = try await apiClient.loadSiteInformation(instanceURL)
+            let (user, site) = try await (fetchUser, fetchSite)
+            print("adding account with site version: \(SiteVersion(site.version))")
+            
             let newAccount = SavedAccount(
                 id: user.id,
                 instanceLink: instanceURL,
                 accessToken: response.jwt,
                 username: username,
-                avatarUrl: user.avatarUrl
+                avatarUrl: user.avatarUrl,
+                lastLoggedInVersion: SiteVersion(site.version)
             )
             
             // MARK: - Save the account's credentials into the keychain

@@ -14,7 +14,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let username: String
     let storedNickname: String?
     let avatarUrl: URL?
-    let lastLoggedInVersion: SiteVersion
+    let lastLoggedInVersion: SiteVersion?
     
     var stableIdString: String {
         assert(instanceLink.host() != nil, "nil instance link host!")
@@ -44,8 +44,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         from account: SavedAccount,
         accessToken: String? = nil,
         storedNickname: String? = nil,
-        avatarUrl: URL?,
-        lastLoggedInVersion: SiteVersion = .zero
+        avatarUrl: URL?
     ) {
         self.id = account.id
         self.instanceLink = account.instanceLink
@@ -53,7 +52,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = account.username
         self.storedNickname = storedNickname ?? account.storedNickname
         self.avatarUrl = avatarUrl
-        self.lastLoggedInVersion = lastLoggedInVersion
+        self.lastLoggedInVersion = account.lastLoggedInVersion
     }
   
     // convenience
