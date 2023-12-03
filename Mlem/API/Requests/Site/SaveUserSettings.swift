@@ -16,8 +16,6 @@ struct SaveUserSettingsRequest: APIPutRequest {
 
     // lemmy_api_common::user::SaveUserSettings
     
-    // Some properties not added yet https://join-lemmy.org/api/interfaces/SaveUserSettings.html#avatar
-    
     struct Body: Encodable {
         let avatar: String?
         let banner: String?

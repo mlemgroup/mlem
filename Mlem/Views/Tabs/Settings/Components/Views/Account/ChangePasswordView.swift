@@ -99,6 +99,12 @@ struct ChangePasswordView: View {
                 .animation(.easeOut(duration: 0.1), value: viewState)
                 .frame(maxWidth: .infinity)
                 .disabled(!canSave)
+                
+                Button("Cancel") {
+                    dismiss()
+                }
+                .frame(maxWidth: .infinity)
+                .disabled(viewState != .initial)
             } footer: {
                 if newPassword != confirmNewPassword {
                     Text("Passwords don't match.")
