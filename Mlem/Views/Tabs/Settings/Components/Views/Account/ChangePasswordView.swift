@@ -99,7 +99,8 @@ struct ChangePasswordView: View {
                 .animation(.easeOut(duration: 0.1), value: viewState)
                 .frame(maxWidth: .infinity)
                 .disabled(!canSave)
-                
+            }
+            Section {
                 Button("Cancel") {
                     dismiss()
                 }
