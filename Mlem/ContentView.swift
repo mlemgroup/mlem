@@ -28,6 +28,7 @@ struct ContentView: View {
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
+    @State private var isPresentingTokenRefresh: Bool = false
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
@@ -97,10 +98,22 @@ struct ContentView: View {
             accountChanged()
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired, let account = appState.currentActiveAccount {
-                NotificationDisplayer.presentTokenRefreshFlow(for: account) { updatedAccount in
+            print("received expired session: \(expired)")
+            if expired, appState.currentActiveAccount != nil {
+                isPresentingTokenRefresh = true
+            }
+        }
+        .sheet(isPresented: $isPresentingTokenRefresh) {
+            print("dismissed")
+            errorHandler.clearExpiredSession()
+        } content: {
+            if let account = appState.currentActiveAccount {
+                TokenRefreshView(account: account) { updatedAccount in
                     appState.setActiveAccount(updatedAccount)
                 }
+            } else {
+                // shouldn't ever get here, since isPresentingTokenRefresh shouldn't get set true if account is nil
+                Text("Something went horribly wrong. Please file a bug report.")
             }
         }
         .alert(using: $errorAlert) { content in

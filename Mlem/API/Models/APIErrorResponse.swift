@@ -18,6 +18,13 @@ private let possibleCredentialErrors = [
     "couldnt_find_that_username_or_email"
 ]
 
+private let possibleAuthenticationErrors = [
+    "incorrect_password",
+    "password_incorrect",
+    "incorrect_login",
+    "not_logged_in"
+]
+
 private let possible2FAErrors = [
     "missing_totp_token",
     "incorrect_totp_token"
@@ -29,9 +36,9 @@ private let registrationErrors = [
 ]
 
 extension APIErrorResponse {
-    var isIncorrectLogin: Bool { possibleCredentialErrors.contains(error) }
+    // var isIncorrectLogin: Bool { possibleCredentialErrors.contains(error) }
     var requires2FA: Bool { possible2FAErrors.contains(error) }
-    var isNotLoggedIn: Bool { error == "not_logged_in" }
+    var isNotLoggedIn: Bool { possibleAuthenticationErrors.contains(error) }
     var userRegistrationPending: Bool { registrationErrors.contains(error) }
     var emailNotVerified: Bool { registrationErrors.contains(error) }
     var instanceIsPrivate: Bool { error == "instance_is_private" }

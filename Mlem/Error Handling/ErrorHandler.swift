@@ -42,20 +42,20 @@ class ErrorHandler: ObservableObject {
         Task { @MainActor in
             
             if let clientError = error.underlyingError.base as? APIClientError {
-                
                 if case .invalidSession = clientError {
+                    print("HANDLING INVALID SESSION")
                     sessionExpired = true
                     return
                 }
                 
-                if error.title != nil && !InternetConnectionManager.isConnectedToNetwork() {
+                if error.title != nil, !InternetConnectionManager.isConnectedToNetwork() {
                     if showNoInternet {
                         await notifier.add(.noInternet)
                     }
                     return
                 }
                 
-                if case .response(let apiError, _) = clientError {
+                if case let .response(apiError, _) = clientError {
                     await notifier.add(.failure(apiError.error))
                     return
                 }
@@ -66,6 +66,10 @@ class ErrorHandler: ObservableObject {
             // on the values supplied when the error was created
             await notifier.add(error)
         }
+    }
+    
+    func clearExpiredSession() {
+        sessionExpired = false
     }
     
     private func log(_ error: ContextualError, _ file: StaticString, _ function: StaticString, _ line: Int) {

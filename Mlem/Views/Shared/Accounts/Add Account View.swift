@@ -387,7 +387,9 @@ struct AddSavedInstanceView: View {
             }
             
             return
-        case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
+//        case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
+//            message = badCredentialsMessage
+        case APIClientError.invalidSession:
             message = badCredentialsMessage
             
         case let APIClientError.response(errorResponse, _) where errorResponse.emailNotVerified:
