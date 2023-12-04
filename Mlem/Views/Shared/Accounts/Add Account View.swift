@@ -19,6 +19,12 @@ enum Field: Hashable {
     case twoFactorField
 }
 
+// enum AddInstanceState {
+//    case onboarding
+//    case authenticating
+//    case reauthenticating(SavedAccount)
+// }
+
 // swiftlint:disable type_body_length
 struct AddSavedInstanceView: View {
     @Dependency(\.accountsTracker) var accountsTracker
@@ -58,8 +64,11 @@ struct AddSavedInstanceView: View {
     @State private var errorAlert: ErrorAlert?
     @FocusState private var focusedField: FocusedField?
     
+    // TODO: use enum for all this crap
     let onboarding: Bool
+    let reauthenticating: Bool
     let givenInstance: String? // if present, will override manual instance entry
+    let givenUsername: String? // if present, will override manual username entry
     
     var instance: String { givenInstance ?? enteredInstance }
     var badCredentialsMessage: String { onboarding
@@ -73,10 +82,14 @@ struct AddSavedInstanceView: View {
     
     init(
         onboarding: Bool,
-        givenInstance: String? = nil
+        reauthenticating: Bool = false,
+        givenInstance: String? = nil,
+        givenUsername: String? = nil
     ) {
         self.onboarding = onboarding
+        self.reauthenticating = reauthenticating
         self.givenInstance = givenInstance
+        self.givenUsername = givenUsername
     }
     
     var body: some View {
@@ -333,7 +346,11 @@ struct AddSavedInstanceView: View {
             // MARK: - Save the account's credentials into the keychain
             
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
-            accountsTracker.addAccount(account: newAccount)
+            if reauthenticating {
+                accountsTracker.update(with: newAccount)
+            } else {
+                accountsTracker.addAccount(account: newAccount)
+            }
             
             setFlow(.account(newAccount))
             
@@ -388,6 +405,8 @@ struct AddSavedInstanceView: View {
             
             return
         case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
+            message = badCredentialsMessage
+        case APIClientError.invalidLogin:
             message = badCredentialsMessage
             
         case let APIClientError.response(errorResponse, _) where errorResponse.emailNotVerified:

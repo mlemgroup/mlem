@@ -14,6 +14,7 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.accountsTracker) var accountsTracker
 
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -39,6 +40,9 @@ struct Window: View {
         case .onboarding:
             appState.clearActiveAccount()
             favoriteCommunitiesTracker.clearStoredAccount()
+        case let .reauthenticating(account):
+            appState.clearActiveAccount()
+            accountsTracker.removeAccount(account: account)
         case let .account(account):
             // pop reauth sheet if login credentials invalid
             Task {
@@ -47,6 +51,7 @@ struct Window: View {
                     print("login check succeeded")
                 } catch {
                     print("login check failed")
+                    setFlow(.reauthenticating(account))
                 }
             }
             
@@ -66,6 +71,8 @@ struct Window: View {
         switch flow {
         case .onboarding:
             LandingPage()
+        case let .reauthenticating(account):
+            AddSavedInstanceView(onboarding: false, reauthenticating: true, givenInstance: account.instanceLink.absoluteString, givenUsername: account.username)
         case let .account(account):
             view(for: account)
         }
@@ -94,6 +101,8 @@ struct Window: View {
         let transitionAccountName: String?
         switch newFlow {
         case .onboarding:
+            transitionAccountName = nil
+        case .reauthenticating:
             transitionAccountName = nil
         case let .account(account):
             transitionAccountName = account.nickname
