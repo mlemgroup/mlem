@@ -197,8 +197,7 @@ struct TokenRefreshView: View {
         } catch {
             HapticManager.shared.play(haptic: .failure, priority: .high)
             
-            if case let APIClientError.response(apiError, _) = error,
-               apiError.isIncorrectLogin {
+            if case APIClientError.invalidSession = error {
                 updateViewState(.incorrectLogin)
                 selectedField = .password
                 return
