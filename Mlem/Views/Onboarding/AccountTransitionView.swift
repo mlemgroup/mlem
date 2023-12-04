@@ -8,23 +8,32 @@
 import Foundation
 import SwiftUI
 
+enum TransitionType {
+    case switchingAccount(String)
+    case goingToOnboarding
+    case reauthenticating
+}
+
 struct TransitionView: View {
-    let accountName: String?
+    let transitionType: TransitionType
     @State var accountNameOpacity: CGFloat = .zero
     
     var body: some View {
         VStack(spacing: 24) {
-            if let accountName {
+            switch transitionType {
+            case let .switchingAccount(username):
                 Text("Welcome")
                     .onAppear {
                         withAnimation(.easeIn(duration: 0.5)) {
                             accountNameOpacity = 1.0
                         }
                     }
-                Text(accountName)
+                Text(username)
                     .opacity(accountNameOpacity)
-            } else {
+            case .goingToOnboarding:
                 Text("Goodbye!")
+            case .reauthenticating:
+                Text("Authentication Expired")
             }
         }
         .font(.largeTitle)

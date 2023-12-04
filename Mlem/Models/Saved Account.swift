@@ -52,7 +52,14 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     }
   
     // convenience
-    var hostName: String? { instanceLink.host?.description }
+    var hostName: String? {
+        if let host = instanceLink.host()?.description, host != "localhost" {
+            return host
+        } else {
+            // for localhost, removes `/api/vX` from link string
+            return String(instanceLink.absoluteString.dropLast(7))
+        }
+    }
     
     /// If there is a nickname stored, returns that; otherwise returns the username
     var nickname: String { storedNickname ?? username }

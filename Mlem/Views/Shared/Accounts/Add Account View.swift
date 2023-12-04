@@ -277,20 +277,13 @@ struct AddSavedInstanceView: View {
                 Button("Cancel", role: .destructive) {
                     dismiss()
                 }
-//                Button(role: .destructive) {
-//                    dismiss()
-//                } label: {
-//                    Text("Cancel")
-//                }
                 
                 Spacer()
                 
-                Button {
+                Button("Submit") {
                     Task {
                         await tryToAddAccount()
                     }
-                } label: {
-                    Text("Submit")
                 }
                 .disabled(!isReadyToSubmit)
             }
@@ -355,7 +348,7 @@ struct AddSavedInstanceView: View {
             
             let response = try await apiClient.login(
                 instanceURL: instanceURL,
-                username: enteredUsername,
+                username: username,
                 password: password,
                 totpToken: twoFactorCode.isEmpty ? nil : twoFactorCode
             )
@@ -417,7 +410,7 @@ struct AddSavedInstanceView: View {
         case EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints:
             message = "Could not connect to \(instance)"
         case UserIDRetrievalError.couldNotFetchUserInformation:
-            message = "Mlem couldn't fetch you account's information.\nFile a bug report."
+            message = "Mlem couldn't fetch your account information.\nPlease file a bug report."
         case UserIDRetrievalError.instanceIsPrivate:
             message = "\(instance) is a private instance."
         case APIClientError.encoding:

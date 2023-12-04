@@ -23,6 +23,8 @@ struct Window: View {
     @StateObject var appState: AppState = .init()
 
     @State var flow: AppFlow
+    
+    @State private var navigationPath = NavigationPath() // for reauthentication case
 
     var body: some View {
         content
@@ -72,7 +74,14 @@ struct Window: View {
         case .onboarding:
             LandingPage()
         case let .reauthenticating(account):
-            AddSavedInstanceView(loginType: .reauthenticating(account.instanceLink.absoluteString, account.username), displayMode: .nav)
+            if let instance = account.hostName {
+                NavigationStack(path: $navigationPath) {
+                    AddSavedInstanceView(loginType: .reauthenticating(instance, account.username), displayMode: .nav)
+                }
+            } else {
+                // not ideal but it should be basically impossible to get here
+                view(for: account)
+            }
         case let .account(account):
             view(for: account)
         }
@@ -98,19 +107,19 @@ struct Window: View {
     /// This method changes the current application flow and places a _transition_ view across the active window while
     /// - Parameter newFlow: The `AppFlow` that the application should transition into
     private func transition(_ newFlow: AppFlow) {
-        let transitionAccountName: String?
+        let transitionType: TransitionType
         switch newFlow {
         case .onboarding:
-            transitionAccountName = nil
+            transitionType = .goingToOnboarding
         case .reauthenticating:
-            transitionAccountName = nil
+            transitionType = .reauthenticating
         case let .account(account):
-            transitionAccountName = account.nickname
+            transitionType = .switchingAccount(account.nickname)
         }
         
         Task { @MainActor in
             
-            let transition = TransitionView(accountName: transitionAccountName)
+            let transition = TransitionView(transitionType: transitionType)
             guard let transitionView = UIHostingController(rootView: transition).view,
                   let window = UIApplication.shared.firstKeyWindow else {
                 return
