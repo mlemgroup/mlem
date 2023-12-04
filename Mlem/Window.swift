@@ -40,6 +40,16 @@ struct Window: View {
             appState.clearActiveAccount()
             favoriteCommunitiesTracker.clearStoredAccount()
         case let .account(account):
+            // pop reauth sheet if login credentials invalid
+            Task {
+                do {
+                    try await apiClient.checkLogin()
+                    print("login check succeeded")
+                } catch {
+                    print("login check failed")
+                }
+            }
+            
             appState.setActiveAccount(account)
             favoriteCommunitiesTracker.configure(for: account)
             siteInformation.load()

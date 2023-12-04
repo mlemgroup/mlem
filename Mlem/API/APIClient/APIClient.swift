@@ -18,6 +18,7 @@ enum APIClientError: Error {
     case response(APIErrorResponse, Int?)
     case cancelled
     case invalidSession
+    case invalidLogin
     case decoding(Data, Error?)
 }
 
@@ -37,6 +38,8 @@ extension APIClientError: CustomStringConvertible {
             return "Cancelled"
         case .invalidSession:
             return "Invalid session"
+        case .invalidLogin:
+            return "Invalid login"
         case let .decoding(data, error):
             guard let string = String(data: data, encoding: .utf8) else {
                 return localizedDescription
@@ -112,11 +115,33 @@ class APIClient {
                 throw APIClientError.invalidSession
             }
             
+            if apiError.isIncorrectLogin {
+                throw APIClientError.invalidLogin
+            }
+            
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             throw APIClientError.response(apiError, statusCode)
         }
         
         return try decode(Request.Response.self, from: data)
+    }
+    
+    public func checkLogin() async throws {
+        let request = try GetPrivateMessagesRequest(
+            session: session,
+            page: 1,
+            limit: 1,
+            unreadOnly: false
+        )
+        
+        do {
+            try await perform(request: request)
+        } catch {
+            // we're only interested in throwing for invalid sessions here...
+            if case APIClientError.invalidLogin = error {
+                throw error
+            }
+        }
     }
     
     public func attemptAuthenticatedCall() async throws {
