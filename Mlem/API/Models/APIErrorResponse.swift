@@ -36,7 +36,6 @@ private let registrationErrors = [
 ]
 
 extension APIErrorResponse {
-    // var isIncorrectLogin: Bool { possibleCredentialErrors.contains(error) }
     var requires2FA: Bool { possible2FAErrors.contains(error) }
     var isNotLoggedIn: Bool { possibleAuthenticationErrors.contains(error) }
     var userRegistrationPending: Bool { registrationErrors.contains(error) }

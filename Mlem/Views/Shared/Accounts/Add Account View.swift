@@ -379,6 +379,8 @@ struct AddSavedInstanceView: View {
             message = badCredentialsMessage
         case APIClientError.networking:
             message = "Please check your internet connection and try again"
+        case APIClientError.invalidSession:
+            message = badCredentialsMessage
         case let APIClientError.response(errorResponse, _) where errorResponse.requires2FA:
             message = ""
             
@@ -387,11 +389,6 @@ struct AddSavedInstanceView: View {
             }
             
             return
-//        case let APIClientError.response(errorResponse, _) where errorResponse.isIncorrectLogin:
-//            message = badCredentialsMessage
-        case APIClientError.invalidSession:
-            message = badCredentialsMessage
-            
         case let APIClientError.response(errorResponse, _) where errorResponse.emailNotVerified:
             message = registrationError
             

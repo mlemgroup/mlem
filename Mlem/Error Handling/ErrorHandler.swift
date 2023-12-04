@@ -43,7 +43,6 @@ class ErrorHandler: ObservableObject {
             
             if let clientError = error.underlyingError.base as? APIClientError {
                 if case .invalidSession = clientError {
-                    print("HANDLING INVALID SESSION")
                     sessionExpired = true
                     return
                 }

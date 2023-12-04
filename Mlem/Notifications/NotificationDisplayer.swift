@@ -11,9 +11,6 @@ import UIKit
 
 /// A class responsible for displaying important notifications to the user
 class NotificationDisplayer {
-    // private static var isPresentingTokenRefreshFlow: Bool = false
-    // @Environment(\.isPresentingTokenRefresh) var isPresentingTokenRefresh
-    
     // MARK: - Public methods
     
     /// A method that displays a `Notifiable` object to the user
