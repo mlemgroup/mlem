@@ -31,7 +31,7 @@ struct LandingPage: View {
                 case .onboard:
                     OnboardingView(navigationPath: $navigationPath)
                 case let .login(url):
-                    AddSavedInstanceView(onboarding: true, givenInstance: url?.absoluteString)
+                    AddSavedInstanceView(loginType: .onboarding(url?.absoluteString), displayMode: .nav)
                 }
             }
         }

@@ -12,21 +12,19 @@ struct AccountsPage: View {
     @Dependency(\.accountsTracker) var accountsTracker
     
     @Environment(\.setAppFlow) private var setFlow
+    @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var appState: AppState
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
-    
     @State var accountForDeletion: SavedAccount?
-    
-    @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         let instances = Array(accountsTracker.accountsByInstance.keys).sorted()
         
         Group {
             if instances.isEmpty {
-                AddSavedInstanceView(onboarding: false)
+                AddSavedInstanceView(loginType: .authenticating, displayMode: .sheet)
             } else {
                 List {
                     ForEach(instances, id: \.self) { instance in
@@ -83,7 +81,7 @@ struct AccountsPage: View {
             }
         }
         .sheet(isPresented: $isShowingInstanceAdditionSheet) {
-            AddSavedInstanceView(onboarding: false)
+            AddSavedInstanceView(loginType: .authenticating, displayMode: .sheet)
         }
         .sheet(item: $accountForDeletion) { account in
             DeleteAccountView(account: account)

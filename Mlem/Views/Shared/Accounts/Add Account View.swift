@@ -19,11 +19,20 @@ enum Field: Hashable {
     case twoFactorField
 }
 
-// enum AddInstanceState {
-//    case onboarding
-//    case authenticating
-//    case reauthenticating(SavedAccount)
-// }
+/// Enumeration of the possible types of login that this view can handle
+enum LoginType {
+    /// case for onboarding. Takes an optional instance string
+    case onboarding(String?)
+    /// case for signing in to an existing account
+    case authenticating
+    /// case for reauthenticating an existing account. Takes required instance and username strings
+    case reauthenticating(String, String)
+}
+
+/// Enumeration of the possible ways this view can be displayed, used to determine whether to display actions as a header or in the nav bar
+enum LoginDisplayMode {
+    case sheet, nav
+}
 
 // swiftlint:disable type_body_length
 struct AddSavedInstanceView: View {
@@ -53,7 +62,7 @@ struct AddSavedInstanceView: View {
     @Environment(\.setAppFlow) private var setFlow
 
     @State private var enteredInstance: String = ""
-    @State private var username = ""
+    @State private var enteredUsername = ""
     @State private var password = ""
     @State private var twoFactorCode = ""
     @State private var viewState: ViewState = .initial
@@ -64,39 +73,50 @@ struct AddSavedInstanceView: View {
     @State private var errorAlert: ErrorAlert?
     @FocusState private var focusedField: FocusedField?
     
-    // TODO: use enum for all this crap
-    let onboarding: Bool
-    let reauthenticating: Bool
-    let givenInstance: String? // if present, will override manual instance entry
-    let givenUsername: String? // if present, will override manual username entry
+    let loginType: LoginType
+    let displayMode: LoginDisplayMode
+    
+    // convenience for computed vars
+    let givenInstance: String?
+    let givenUsername: String?
     
     var instance: String { givenInstance ?? enteredInstance }
-    var badCredentialsMessage: String { onboarding
-        // swiftlint:disable line_length
-        ? "Please check your username and password. If you signed up with an email, make sure you've activated your account from the confirmation email."
-        // swiftlint:enable line_length
-        : "Please check your username and password"
+    var username: String { givenUsername ?? enteredUsername }
+    var badCredentialsMessage: String {
+        if case .onboarding = loginType {
+            // swiftlint:disable line_length
+            "Please check your username and password. If you signed up with an email, make sure you've activated your account from the confirmation email."
+            // swiftlint:enable line_length
+        } else {
+            "Please check your username and password"
+        }
     }
     
     var registrationError = "Please verify your email and try again."
     
-    init(
-        onboarding: Bool,
-        reauthenticating: Bool = false,
-        givenInstance: String? = nil,
-        givenUsername: String? = nil
-    ) {
-        self.onboarding = onboarding
-        self.reauthenticating = reauthenticating
-        self.givenInstance = givenInstance
-        self.givenUsername = givenUsername
+    init(loginType: LoginType, displayMode: LoginDisplayMode) {
+        self.loginType = loginType
+        self.displayMode = displayMode
+        
+        // initialize convenience vars
+        switch loginType {
+        case let .onboarding(instance):
+            self.givenInstance = instance
+            self.givenUsername = nil
+        case let .reauthenticating(instance, username):
+            self.givenInstance = instance
+            self.givenUsername = username
+        default:
+            self.givenInstance = nil
+            self.givenUsername = nil
+        }
     }
     
     var body: some View {
         ScrollView {
             VStack {
-                if !onboarding {
-                    title
+                if displayMode == .sheet {
+                    sheetTitle
                 }
                 headerSection
             }
@@ -115,7 +135,7 @@ struct AddSavedInstanceView: View {
             Alert(title: Text(content.title), message: Text(content.message))
         }
         .toolbar {
-            if onboarding {
+            if displayMode == .nav {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         Task(priority: .userInitiated) {
@@ -127,7 +147,7 @@ struct AddSavedInstanceView: View {
                 }
             }
         }
-        .navigationTitle(Text(onboarding ? "Log in" : ""))
+        .navigationTitle(Text(displayMode == .nav ? "Sign In" : ""))
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -175,15 +195,24 @@ struct AddSavedInstanceView: View {
                 GridRow {
                     Text("Username")
                         .foregroundColor(.secondary)
-                    TextField("", text: $username)
-                        .textContentType(.username)
-                        .focused($focusedField, equals: .username)
-                        .autocorrectionDisabled()
-                        .keyboardType(.default)
-                        .textInputAutocapitalization(.never)
-                        .onSubmit {
-                            focusedField = .password
-                        }
+                    if let givenUsername {
+                        Text(givenUsername)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.secondary)
+                            .onAppear {
+                                focusedField = .password
+                            }
+                    } else {
+                        TextField("", text: $enteredUsername)
+                            .textContentType(.username)
+                            .focused($focusedField, equals: .username)
+                            .autocorrectionDisabled()
+                            .keyboardType(.default)
+                            .textInputAutocapitalization(.never)
+                            .onSubmit {
+                                focusedField = .password
+                            }
+                    }
                 }
                 .padding(.horizontal)
                 .onTapGesture {
@@ -239,19 +268,20 @@ struct AddSavedInstanceView: View {
     }
     
     @ViewBuilder
-    var title: some View {
+    var sheetTitle: some View {
         ZStack {
             Text("Sign In")
                 .bold()
             
             HStack {
-                if !onboarding {
-                    Button(role: .destructive) {
-                        dismiss()
-                    } label: {
-                        Text("Cancel")
-                    }
+                Button("Cancel", role: .destructive) {
+                    dismiss()
                 }
+//                Button(role: .destructive) {
+//                    dismiss()
+//                } label: {
+//                    Text("Cancel")
+//                }
                 
                 Spacer()
                 
@@ -260,7 +290,7 @@ struct AddSavedInstanceView: View {
                         await tryToAddAccount()
                     }
                 } label: {
-                    Text("Log In")
+                    Text("Submit")
                 }
                 .disabled(!isReadyToSubmit)
             }
@@ -325,7 +355,7 @@ struct AddSavedInstanceView: View {
             
             let response = try await apiClient.login(
                 instanceURL: instanceURL,
-                username: username,
+                username: enteredUsername,
                 password: password,
                 totpToken: twoFactorCode.isEmpty ? nil : twoFactorCode
             )
@@ -339,22 +369,23 @@ struct AddSavedInstanceView: View {
                 id: user.id,
                 instanceLink: instanceURL,
                 accessToken: response.jwt,
-                username: username,
+                username: enteredUsername,
                 avatarUrl: user.avatarUrl
             )
             
             // MARK: - Save the account's credentials into the keychain
             
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
-            if reauthenticating {
-                accountsTracker.update(with: newAccount)
-            } else {
+            switch loginType {
+            case .authenticating, .onboarding:
                 accountsTracker.addAccount(account: newAccount)
+            case .reauthenticating:
+                accountsTracker.update(with: newAccount)
             }
             
             setFlow(.account(newAccount))
             
-            if !onboarding {
+            if displayMode == .sheet {
                 dismiss()
             }
         } catch {
@@ -366,7 +397,7 @@ struct AddSavedInstanceView: View {
         // create a session to use for this request, since we're in the process of creating the account...
         let session = APISession.authenticated(instanceURL, authToken)
         do {
-            return try await apiClient.getPersonDetails(session: session, username: username)
+            return try await apiClient.getPersonDetails(session: session, username: enteredUsername)
                 .personView
                 .person
         } catch {
@@ -449,7 +480,7 @@ struct AddSavedInstanceView: View {
 
 struct AddSavedInstanceView_Previews: PreviewProvider {
     static var previews: some View {
-        AddSavedInstanceView(onboarding: true)
+        AddSavedInstanceView(loginType: .onboarding(nil), displayMode: .nav)
     }
 }
 

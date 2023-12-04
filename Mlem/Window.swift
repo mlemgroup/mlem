@@ -72,7 +72,7 @@ struct Window: View {
         case .onboarding:
             LandingPage()
         case let .reauthenticating(account):
-            AddSavedInstanceView(onboarding: false, reauthenticating: true, givenInstance: account.instanceLink.absoluteString, givenUsername: account.username)
+            AddSavedInstanceView(loginType: .reauthenticating(account.instanceLink.absoluteString, account.username), displayMode: .nav)
         case let .account(account):
             view(for: account)
         }
