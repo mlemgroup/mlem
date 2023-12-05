@@ -25,6 +25,7 @@ struct GetPostsRequest: APIGetRequest {
         limit: Int? = nil,
         savedOnly: Bool? = nil,
         communityName: String? = nil
+        // TODO: 0.19 support add liked_only and disliked_only fields
     ) throws {
         self.instanceURL = try session.instanceUrl
         var queryItems: [URLQueryItem] = [

@@ -25,6 +25,7 @@ struct PictrsImageModel {
         case uploaded(file: PictrsFile?)
         case failed(String?)
     }
+
     var image: Image?
     var state: UploadState = .waiting
 }

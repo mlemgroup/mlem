@@ -13,8 +13,8 @@ struct APIPostView: Decodable, APIContentViewProtocol {
     let creator: APIPerson
     let community: APICommunity
     let creatorBannedFromCommunity: Bool
-    // TODO: 0.18 Deprecation make this field non-optional
-    let creatorIsModerator: Bool?
+    let creatorIsModerator: Bool? // TODO: 0.18 deprecation make this field non-optional
+    let creatorIsAdmin: Bool? // TODO: 0.18 deprecation make this field non-optional
     var counts: APIPostAggregates
     let subscribed: APISubscribedStatus
     let saved: Bool
