@@ -8,18 +8,40 @@
 import Foundation
 import SwiftUI
 
+struct EndOfFeedViewContent {
+    let icon: String
+    let message: String
+}
+
+enum EndOfFeedViewType {
+    case hobbit, cartoon
+    
+    var viewContent: EndOfFeedViewContent {
+        switch self {
+        case .hobbit:
+            return EndOfFeedViewContent(icon: Icons.endOfFeedHobbit, message: "I think I've found the bottom!")
+        case .cartoon:
+            return EndOfFeedViewContent(icon: Icons.endOfFeedCartoon, message: "That's all, folks!")
+        }
+    }
+}
+
 struct EndOfFeedView: View {
-    let isLoading: Bool
+    let loadingState: LoadingState
+    let viewType: EndOfFeedViewType
     
     var body: some View {
         Group {
-            if isLoading {
+            switch loadingState {
+            case .idle:
+                EmptyView()
+            case .loading:
                 LoadingView(whatIsLoading: .posts)
-            } else {
+            case .done:
                 HStack {
-                    Image(systemName: Icons.endOfFeed)
+                    Image(systemName: viewType.viewContent.icon)
                     
-                    Text("I think I've found the bottom!")
+                    Text(viewType.viewContent.message)
                 }
                 .foregroundColor(.secondary)
             }

@@ -34,9 +34,9 @@ struct Icons {
     static let unsaveFill: String = "bookmark.slash.fill"
     
     // mark read
-    static let markRead: String = "envelope"
+    static let markRead: String = "envelope.open"
     static let markReadFill: String = "envelope.open.fill"
-    static let markUnread: String = "envelope.open"
+    static let markUnread: String = "envelope"
     static let markUnreadFill: String = "envelope.fill"
     
     // moderation
@@ -51,6 +51,7 @@ struct Icons {
     static let titleOnlyPost: String = "character.bubble"
     static let pinned: String = "pin.fill"
     static let websiteIcon: String = "globe"
+    static let hideRead: String = "book"
     
     // post sizes
     static let postSizeSetting: String = "rectangle.expand.vertical"
@@ -74,6 +75,8 @@ struct Icons {
     static let activeSortFill: String = "popcorn.fill"
     static let hotSort: String = "flame"
     static let hotSortFill: String = "flame.fill"
+    static let scaledSort: String = "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"
+    static let scaledSortFill: String = "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"
     static let newSort: String = "hare"
     static let newSortFill: String = "hare.fill"
     static let oldSort: String = "tortoise"
@@ -82,17 +85,20 @@ struct Icons {
     static let newCommentsSortFill: String = "exclamationmark.bubble.fill"
     static let mostCommentsSort: String = "bubble.left.and.bubble.right"
     static let mostCommentsSortFill: String = "bubble.left.and.bubble.right.fill"
+    static let controversialSort: String = "bolt"
+    static let controversialSortFill: String = "bolt.fill"
     static let topSortMenu: String = "text.line.first.and.arrowtriangle.forward"
     static let topSort: String = "trophy"
     static let topSortFill: String = "trophy.fill"
     static let timeSort: String = "calendar.day.timeline.leading"
-    static let timeSortFill: String = "calendar.day.timeline.leading.fill"
+    static let timeSortFill: String = "calendar.day.timeline.leading"
     
     // user flairs
     static let developerFlair: String = "hammer.fill"
     static let adminFlair: String = "crown.fill"
     static let botFlair: String = "terminal.fill"
     static let opFlair: String = "person.fill"
+    static let bannedFlair: String = "multiply.circle"
     
     // entities/general Lemmy concepts
     static let instance: String = "server.rack"
@@ -122,7 +128,6 @@ struct Icons {
     static let hide: String = "eye.slash"
     static let show: String = "eye"
     static let blurNsfw: String = "eye.trianglebadge.exclamationmark"
-    static let endOfFeed: String = "figure.climbing"
     static let noContent: String = "binoculars"
     static let noPosts: String = "text.bubble"
     static let time: String = "clock"
@@ -131,6 +136,10 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
+    
+    // end of feed
+    static let endOfFeedHobbit: String = "figure.climbing"
+    static let endOfFeedCartoon: String = "figure.wave"
     
     // common operations
     static let share: String = "square.and.arrow.up"
@@ -184,4 +193,5 @@ struct Icons {
     static let dropdown: String = "chevron.down"
     static let noFile: String = "questionmark.folder"
     static let forward: String = "chevron.right"
+    static let imageDetails: String = "doc.badge.ellipsis"
 }

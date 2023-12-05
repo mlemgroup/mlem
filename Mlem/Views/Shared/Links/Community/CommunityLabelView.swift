@@ -11,7 +11,7 @@ struct CommunityLabelView: View {
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
 
     // parameters
-    let community: APICommunity
+    let community: CommunityModel
     let serverInstanceLocation: ServerInstanceLocation
     let overrideShowAvatar: Bool? // if present, shows or hides the avatar according to value; otherwise uses system setting
     
@@ -27,9 +27,22 @@ struct CommunityLabelView: View {
             return shouldShowCommunityIcons
         }
     }
-
+    
+    @available(*, deprecated, message: "Provide a CommunityModel rather than an APICommunity.")
     init(
         community: APICommunity,
+        serverInstanceLocation: ServerInstanceLocation,
+        overrideShowAvatar: Bool? = nil
+    ) {
+        self.init(
+            community: CommunityModel(from: community),
+            serverInstanceLocation: serverInstanceLocation,
+            overrideShowAvatar: overrideShowAvatar
+        )
+    }
+
+    init(
+        community: CommunityModel,
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil
     ) {
@@ -77,7 +90,7 @@ struct CommunityLabelView: View {
 
     @ViewBuilder
     private var communityInstance: some View {
-        if let host = community.actorId.host() {
+        if let host = community.communityUrl.host() {
             Text("@\(host)")
                 .dynamicTypeSize(.small ... .accessibility2)
                 .lineLimit(1)

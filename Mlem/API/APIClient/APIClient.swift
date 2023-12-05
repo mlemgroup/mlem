@@ -18,20 +18,35 @@ enum APIClientError: Error {
     case response(APIErrorResponse, Int?)
     case cancelled
     case invalidSession
-    case decoding(Data)
+    case decoding(Data, Error?)
 }
 
 extension APIClientError: CustomStringConvertible {
     var description: String {
         switch self {
-        case let .decoding(data):
+        case let .encoding(error):
+            return "Unable to encode: \(error)"
+        case let .networking(error):
+            return "Networking error: \(error)"
+        case let .response(errorResponse, status):
+            if let status {
+                return "Response error: \(errorResponse) with status \(status)"
+            }
+            return "Response error: \(errorResponse)"
+        case .cancelled:
+            return "Cancelled"
+        case .invalidSession:
+            return "Invalid session"
+        case let .decoding(data, error):
             guard let string = String(data: data, encoding: .utf8) else {
                 return localizedDescription
             }
             
+            if let error {
+                return "Unable to decode: \(string)\nError: \(error)"
+            }
+            
             return "Unable to decode: \(string)"
-        default:
-            return localizedDescription
         }
     }
 }
@@ -141,6 +156,10 @@ class APIClient {
         defintion.headers.forEach { header in
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
+        
+        if case let .authenticated(_, token) = session {
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
 
         if defintion as? any APIGetRequest != nil {
             urlRequest.httpMethod = "GET"
@@ -157,7 +176,9 @@ class APIClient {
 
     private func createBodyData(for defintion: any APIRequestBodyProviding) throws -> Data {
         do {
-            return try JSONEncoder().encode(defintion.body)
+            var encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            return try encoder.encode(defintion.body)
         } catch {
             throw APIClientError.encoding(error)
         }
@@ -167,7 +188,7 @@ class APIClient {
         do {
             return try decoder.decode(model, from: data)
         } catch {
-            throw APIClientError.decoding(data)
+            throw APIClientError.decoding(data, error)
         }
     }
 }
@@ -255,8 +276,13 @@ extension APIClient {
     
     // MARK: - User requests
 
-    func deleteUser(user: SavedAccount, password: String) async throws {
-        let request = DeleteAccountRequest(account: user, password: password)
+    func legacyDeleteUser(user: SavedAccount, password: String) async throws {
+        let request = LegacyDeleteAccountRequest(account: user, password: password)
+        try await perform(request: request)
+    }
+    
+    func deleteUser(user: SavedAccount, password: String, deleteContent: Bool) async throws {
+        let request = DeleteAccountRequest(account: user, password: password, deleteContent: deleteContent)
         try await perform(request: request)
     }
 }
@@ -351,9 +377,16 @@ extension APIClient {
         return try await perform(request: request).privateMessageReportView
     }
     
+    @available(*, deprecated, message: "Use id-based sendPrivateMessage instead")
     @discardableResult
     func sendPrivateMessage(content: String, recipient: APIPerson) async throws -> PrivateMessageResponse {
         let request = try CreatePrivateMessageRequest(session: session, content: content, recipient: recipient)
+        return try await perform(request: request)
+    }
+    
+    @discardableResult
+    func sendPrivateMessage(content: String, recipientId: Int) async throws -> PrivateMessageResponse {
+        let request = try CreatePrivateMessageRequest(session: session, content: content, recipientId: recipientId)
         return try await perform(request: request)
     }
     

@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: 0.19 support add all the error types (https://github.com/LemmyNet/lemmy-js-client/blob/b2edfeeaffd189a51150362cc8ead03c65ee2652/src/types/LemmyErrorType.ts)
+
 struct APIErrorResponse: Decodable {
     let error: String
 }
@@ -16,6 +18,13 @@ private let possibleCredentialErrors = [
     "password_incorrect",
     "incorrect_login",
     "couldnt_find_that_username_or_email"
+]
+
+private let possibleAuthenticationErrors = [
+    "incorrect_password",
+    "password_incorrect",
+    "incorrect_login",
+    "not_logged_in"
 ]
 
 private let possible2FAErrors = [
@@ -29,9 +38,8 @@ private let registrationErrors = [
 ]
 
 extension APIErrorResponse {
-    var isIncorrectLogin: Bool { possibleCredentialErrors.contains(error) }
     var requires2FA: Bool { possible2FAErrors.contains(error) }
-    var isNotLoggedIn: Bool { error == "not_logged_in" }
+    var isNotLoggedIn: Bool { possibleAuthenticationErrors.contains(error) }
     var userRegistrationPending: Bool { registrationErrors.contains(error) }
     var emailNotVerified: Bool { registrationErrors.contains(error) }
     var instanceIsPrivate: Bool { error == "instance_is_private" }

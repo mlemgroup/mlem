@@ -17,15 +17,14 @@ extension APIClient {
     func uploadImage(
         _ imageData: Data,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void,
-        onCompletion completionCallback: @escaping(_ response: ImageUploadResponse?) -> Void,
-        `catch`: @escaping (Error) -> Void
-    ) async throws -> Task<(), any Error> {
-        
+        onCompletion completionCallback: @escaping (_ response: ImageUploadResponse?) -> Void,
+        catch: @escaping (Error) -> Void
+    ) async throws -> Task<Void, any Error> {
         let delegate = ImageUploadDelegate(callback: progressCallback)
         // Modify the instance URL to remove "api/v3" and add "pictrs/image".
         var components = URLComponents()
-        components.scheme = try self.session.instanceUrl.scheme
-        components.host = try self.session.instanceUrl.host
+        components.scheme = try session.instanceUrl.scheme
+        components.host = try session.instanceUrl.host
         components.path = "/pictrs/image"
         
         guard let url = components.url else {
@@ -37,7 +36,12 @@ extension APIClient {
         let boundary = UUID().uuidString
 
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("jwt=\(try session.token)", forHTTPHeaderField: "Cookie")
+        
+        // This is required pre 0.19.0
+        // TODO: 0.18 deprecation: possibly remove this? Haven't tested how >0.19 behaves without this, but I assume it's not required anymore since they're now requiring a different format instead
+        try request.setValue("jwt=\(session.token)", forHTTPHeaderField: "Cookie")
+        // This is required post 0.19.0
+        try request.setValue("Bearer \(session.token)", forHTTPHeaderField: "Authorization")
         
         let multiPartForm: MultiPartForm = try .init(
             mimeType: "image/png",
@@ -51,14 +55,15 @@ extension APIClient {
                 let (data, _) = try await self.urlSession.upload(
                     for: request,
                     from: multiPartForm.createField(boundary: boundary),
-                    delegate: delegate)
+                    delegate: delegate
+                )
                 do {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let response = try decoder.decode(ImageUploadResponse.self, from: data)
                     completionCallback(response)
                 } catch DecodingError.dataCorrupted {
-                    throw APIClientError.decoding(data)
+                    throw APIClientError.decoding(data, nil)
                 }
             } catch {
                 if !Task.isCancelled {

@@ -49,7 +49,7 @@ struct PostSettingsView: View {
                     options: PostSize.allCases
                 )
             
-                NavigationLink(value: SettingsRoute.postPage(.customizeWidgets)) {
+                NavigationLink(.postSettings(.customizeWidgets)) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {

@@ -25,21 +25,23 @@ struct ContentView: View {
     // tabs
     @State private var tabSelection: TabSelection = .feeds
     @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
-    @State private var showLoading: Bool = false
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
+    @State private var tokenRefreshAccount: SavedAccount?
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
+    
+    @StateObject private var quickLookState: ImageDetailSheetState = .init()
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                FeedRoot(showLoading: showLoading)
+                FeedRoot()
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
                             tag: TabSelection.feeds,
@@ -96,10 +98,15 @@ struct ContentView: View {
             accountChanged()
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired, let account = appState.currentActiveAccount {
-                NotificationDisplayer.presentTokenRefreshFlow(for: account) { updatedAccount in
-                    appState.setActiveAccount(updatedAccount)
-                }
+            if expired {
+                tokenRefreshAccount = appState.currentActiveAccount
+            }
+        }
+        .sheet(item: $tokenRefreshAccount) {
+            errorHandler.clearExpiredSession()
+        } content: { account in
+            TokenRefreshView(account: account) { updatedAccount in
+                appState.setActiveAccount(updatedAccount)
             }
         }
         .alert(using: $errorAlert) { content in
@@ -130,9 +137,15 @@ struct ContentView: View {
             .presentationDetents([.medium, .large], selection: .constant(.large))
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
+        .sheet(item: $quickLookState.url) { url in
+            NavigationStack {
+                ImageDetailView(url: url)
+            }
+        }
         .environment(\.openURL, OpenURLAction(handler: didReceiveURL))
         .environmentObject(editorTracker)
         .environmentObject(unreadTracker)
+        .environmentObject(quickLookState)
         .onChange(of: scenePhase) { phase in
             // when app moves into background, hide the account switcher. This prevents the app from reopening with the switcher enabled.
             if phase != .active {
@@ -157,7 +170,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists && allowTabBarSwipeUpGesture {
+        if !homeButtonExists, allowTabBarSwipeUpGesture {
             isPresentingAccountSwitcher = true
         }
     }

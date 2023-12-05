@@ -13,27 +13,14 @@ struct ProfileView: View {
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
     let userID: Int
-    
-    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
-    @StateObject private var profileRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
     
     var body: some View {
-        NavigationStack(path: $profileRouter.path) {
+        NavigationStack(path: $profileTabNavigation.path) {
             UserView(userID: userID)
                 .handleLemmyViews()
         }
-        .handleLemmyLinkResolution(navigationPath: .constant(profileRouter))
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.profile.hashValue {
-                print("switched to Profile tab")
-            }
-        }
-        .onChange(of: selectedNavigationTabHashValue) { newValue in
-            if newValue == TabSelection.profile.hashValue {
-                print("re-selected \(TabSelection.profile) tab")
-            }
-        }
+        .handleLemmyLinkResolution(navigationPath: .constant(profileTabNavigation))
     }
 }

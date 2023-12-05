@@ -18,30 +18,26 @@ struct CommunityResultView: View {
     let showTypeLabel: Bool
     var swipeActions: SwipeConfiguration?
 
-    var subscribeSwipeAction: SwipeAction {
-        let (emptySymbolName, fullSymbolName) = community.subscribed
-        ? (Icons.unsubscribePerson, Icons.unsubscribePersonFill)
-        : (Icons.subscribePerson, Icons.subscribePersonFill)
-        return SwipeAction(
-            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
-            color: community.subscribed ? .red : .green,
-            action: {
-                Task {
-                    await subscribe()
-                }
-            }
-        )
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
     }
     
-    func subscribe() async {
-        var community = community
-        await community.toggleSubscribe {
-            contentTracker.update(with: AnyContentModel($0))
+    var title: String {
+        if community.blocked ?? false {
+            return "\(community.name) ∙ Blocked"
+        } else if community.nsfw {
+            return "\(community.name) ∙ NSFW"
+        } else {
+            return community.name
         }
     }
     
     var caption: String {
-        if let host = community.community.actorId.host {
+        if let host = community.communityUrl.host {
             if showTypeLabel {
                 return "Community ∙ @\(host)"
             } else {
@@ -52,16 +48,21 @@ struct CommunityResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: NavigationRoute.apiCommunity(community.community)) {
+        NavigationLink(value: AppRoute.community(community)) {
             HStack(spacing: 10) {
-                AvatarView(community: community.community, avatarSize: 48)
+                if community.blocked ?? false {
+                    Image(systemName: Icons.hide)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30, height: 30)
+                        .padding(9)
+                } else {
+                    AvatarView(community: community, avatarSize: 48, iconResolution: 128)
+                }
+                
                 VStack(alignment: .leading, spacing: 4) {
-                    if community.community.nsfw {
-                        Text("\(community.community.name) - NSFW")
-                            .foregroundStyle(.red)
-                    } else {
-                        Text(community.community.name)
-                    }
+                    Text(title)
+                        .foregroundStyle(community.nsfw ? .red : .primary)
                     Text(caption)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
@@ -69,11 +70,11 @@ struct CommunityResultView: View {
                 }
                 Spacer()
                 HStack(spacing: 5) {
-                    Text(abbreviateNumber(community.subscriberCount))
+                    Text(abbreviateNumber(community.subscriberCount ?? 0))
                         .monospacedDigit()
-                    Image(systemName: community.subscribed ? Icons.subscribed : Icons.personFill)
+                    Image(systemName: (community.subscribed ?? false) ? Icons.subscribed : Icons.personFill)
                 }
-                .foregroundStyle(community.subscribed ? .green : .secondary)
+                .foregroundStyle((community.subscribed ?? false) ? .green : .secondary)
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
                     .foregroundStyle(.tertiary)
@@ -81,27 +82,39 @@ struct CommunityResultView: View {
             .padding(.horizontal)
             .contentShape(Rectangle())
         }
+        .opacity((community.blocked ?? false) ? 0.5 : 1)
         .buttonStyle(.plain)
         .padding(.vertical, 8)
         .background(.background)
-        .draggable(community.community.actorId) {
+        .draggable(community.communityUrl) {
             HStack {
-                AvatarView(community: community.community, avatarSize: 24)
-                Text(community.community.name)
+                AvatarView(community: community, avatarSize: 24)
+                Text(community.name)
             }
             .padding(8)
             .background(.background)
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
+        .destructiveConfirmation(
+            isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+            confirmationMenuFunction: confirmationMenuFunction
+        )
+        .addSwipeyActions(swipeActions ?? community.swipeActions({
+            contentTracker.update(with: AnyContentModel($0))
+        }, confirmDestructive: confirmDestructive))
         .contextMenu {
-            Button(role: community.subscribed ? .destructive : nil) {
-                Task(priority: .userInitiated) { await subscribe() }
-            } label: {
-                Label(
-                    community.subscribed ? "Unsubscribe" : "Subscribe",
-                    systemImage: community.subscribed ? Icons.unsubscribe : Icons.subscribe)
+            ForEach(community.menuFunctions {
+                contentTracker.update(with: AnyContentModel($0))
+            }) { item in
+                MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
         }
-        .addSwipeyActions(swipeActions ?? .init(trailingActions: [subscribeSwipeAction]))
     }
+}
+
+#Preview {
+    CommunityResultView(
+        community: .init(from: .mock()),
+        showTypeLabel: true
+    )
 }

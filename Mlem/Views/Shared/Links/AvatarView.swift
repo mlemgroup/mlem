@@ -16,27 +16,41 @@ struct AvatarView: View {
     let lineColor: Color
     let clipAvatar: Bool
     let blurAvatar: Bool
+    let iconResolution: Int
     
-    init(community: APICommunity, avatarSize: CGFloat, lineColor: Color? = nil) {
+    init(
+        community: CommunityModel,
+        avatarSize: CGFloat,
+        lineColor: Color? = nil,
+        iconResolution: Int? = nil
+    ) {
         @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
         
         self.type = .community
-        self.url = community.iconUrl
+        self.url = community.avatar
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
-        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.iconUrl)
+        self.clipAvatar = AvatarView.shouldClipCommunityAvatar(url: community.avatar)
         self.blurAvatar = shouldBlurNsfw && community.nsfw
+        self.iconResolution = iconResolution ?? Int(avatarSize * 2)
     }
     
-    init(user: APIPerson, avatarSize: CGFloat, blurAvatar: Bool = false, lineColor: Color? = nil) {
+    init(
+        user: UserModel,
+        avatarSize: CGFloat,
+        blurAvatar: Bool = false,
+        lineColor: Color? = nil,
+        iconResolution: Int? = nil
+    ) {
         @AppStorage("shouldBlurNsfw") var shouldBlurNsfw = true
         
         self.type = .user
-        self.url = user.avatarUrl
+        self.url = user.avatar
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
         self.clipAvatar = false
         self.blurAvatar = shouldBlurNsfw && blurAvatar
+        self.iconResolution = iconResolution ?? Int(avatarSize * 2)
     }
     
     static func shouldClipCommunityAvatar(url: URL?) -> Bool {
@@ -49,7 +63,7 @@ struct AvatarView: View {
     
     var body: some View {
         CachedImage(
-            url: url?.withIcon64Parameters,
+            url: url?.withIconSize(iconResolution),
             shouldExpand: false,
             fixedSize: CGSize(width: avatarSize, height: avatarSize),
             imageNotFound: { AnyView(DefaultAvatarView(avatarType: type)) },

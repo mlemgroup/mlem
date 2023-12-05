@@ -15,6 +15,8 @@ struct APICommentView: Decodable, APIContentViewProtocol {
     let community: APICommunity
     let counts: APICommentAggregates
     let creatorBannedFromCommunity: Bool
+    let creatorIsModerator: Bool? // TODO: 0.18 deprecation make this field non-optional
+    let creatorIsAdmin: Bool? // TODO: 0.18 deprecation make this field non-optional
     let subscribed: APISubscribedStatus
     let saved: Bool
     let creatorBlocked: Bool

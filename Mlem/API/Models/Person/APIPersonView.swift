@@ -11,4 +11,5 @@ import Foundation
 struct APIPersonView: Decodable {
     let person: APIPerson
     let counts: APIPersonAggregates
+    let isAdmin: Bool? // TODO: 0.18 deprecation make this field non-optional
 }

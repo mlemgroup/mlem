@@ -5,34 +5,29 @@
 //  Created by tht7 on 30/06/2023.
 //
 
+import Dependencies
 import SwiftUI
 
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.scenePhase) var phase
     @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
 
-    @StateObject private var feedRouter: NavigationRouter<NavigationRoute> = .init()
+    @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @State var rootDetails: CommunityLinkWithContext?
-    
-    let showLoading: Bool
 
     var body: some View {
         NavigationSplitView {
             CommunityListView(selectedCommunity: $rootDetails)
         } detail: {
             if let rootDetails {
-                NavigationStack(path: $feedRouter.path) {
+                NavigationStack(path: $feedTabNavigation.path) {
                     FeedView(
                         community: rootDetails.community,
-                        feedType: rootDetails.feedType,
-                        sortType: defaultPostSorting,
-                        showLoading: showLoading
+                        feedType: rootDetails.feedType
                     )
                     .environmentObject(appState)
                     .handleLemmyViews()
@@ -43,9 +38,9 @@ struct FeedRoot: View {
             }
         }
         .handleLemmyLinkResolution(
-            navigationPath: .constant(feedRouter)
+            navigationPath: .constant(feedTabNavigation)
         )
-        .environmentObject(feedRouter)
+        .environmentObject(feedTabNavigation)
         .environmentObject(appState)
         .onAppear {
             if rootDetails == nil || shortcutItemToProcess != nil {
@@ -63,7 +58,7 @@ struct FeedRoot: View {
                     rootDetails = CommunityLinkWithContext(community: nil, feedType: defaultFeed)
                 }
                 
-                _ = HandleLemmyLinkResolution(navigationPath: .constant(feedRouter))
+                _ = HandleLemmyLinkResolution(navigationPath: .constant(feedTabNavigation))
                     .didReceiveURL(url)
             }
         }
@@ -79,21 +74,11 @@ struct FeedRoot: View {
                 }
             }
         }
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.feeds.hashValue {
-                print("switched to Feed tab")
-            }
-        }
-        .onChange(of: selectedNavigationTabHashValue) { newValue in
-            if newValue == TabSelection.feeds.hashValue {
-                print("re-selected \(TabSelection.feeds) tab")
-            }
-        }
     }
 }
 
 struct FeedRootPreview: PreviewProvider {
     static var previews: some View {
-        FeedRoot(showLoading: false)
+        FeedRoot()
     }
 }

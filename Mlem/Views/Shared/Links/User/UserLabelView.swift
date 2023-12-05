@@ -10,7 +10,7 @@ import SwiftUI
 struct UserLabelView: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
-    var user: APIPerson
+    var user: UserModel
     let serverInstanceLocation: ServerInstanceLocation
     let overrideShowAvatar: Bool? // if present, shows or hides avatar according to value; otherwise uses system settings
     
@@ -18,19 +18,38 @@ struct UserLabelView: View {
     // to pick the correct flair
     @State var postContext: APIPost?
     @State var commentContext: APIComment?
-    @State var communityContext: GetCommunityResponse?
-
+    @State var communityContext: CommunityModel?
+    
     var blurAvatar: Bool { postContext?.nsfw ?? false ||
-        communityContext?.communityView.community.nsfw ?? false
+        communityContext?.nsfw ?? false
     }
     
+    @available(*, deprecated, message: "Provide a UserModel rather than an APIPerson.")
     init(
-        user: APIPerson,
+        person: APIPerson,
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
         commentContext: APIComment? = nil,
-        communityContext: GetCommunityResponse? = nil
+        communityContext: CommunityModel? = nil
+    ) {
+        self.init(
+            user: UserModel(from: person),
+            serverInstanceLocation: serverInstanceLocation,
+            overrideShowAvatar: overrideShowAvatar,
+            postContext: postContext,
+            commentContext: commentContext,
+            communityContext: communityContext
+        )
+    }
+    
+    init(
+        user: UserModel,
+        serverInstanceLocation: ServerInstanceLocation,
+        overrideShowAvatar: Bool? = nil,
+        postContext: APIPost? = nil,
+        commentContext: APIComment? = nil,
+        communityContext: CommunityModel? = nil
     ) {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
@@ -50,25 +69,7 @@ struct UserLabelView: View {
     }
     
     var avatarSize: CGFloat { serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize }
-    
-    static let developerNames = [
-        "lemmy.tespia.org/u/navi",
-        "beehaw.org/u/jojo",
-        "beehaw.org/u/kronusdark",
-        "lemmy.ml/u/ericbandrews",
-        "programming.dev/u/tht7"
-    ]
-    
-    static let mlemOfficial = "vlemmy.net/u/MlemOfficial"
-    
-    static let flairMlemOfficial = UserLinkViewFlair(color: Color.purple, image: Image("mlem"))
-    static let flairDeveloper = UserLinkViewFlair(color: Color.purple, image: Image(systemName: Icons.developerFlair))
-    static let flairMod = UserLinkViewFlair(color: Color.green, image: Image(systemName: Icons.moderationFill))
-    static let flairBot = UserLinkViewFlair(color: Color.indigo, image: Image(systemName: Icons.botFlair))
-    static let flairOP = UserLinkViewFlair(color: Color.orange, image: Image(systemName: Icons.opFlair))
-    static let flairAdmin = UserLinkViewFlair(color: Color.red, image: Image(systemName: Icons.adminFlair))
-    static let flairRegular = UserLinkViewFlair(color: Color.gray)
-    
+
     var body: some View {
         HStack(alignment: .center, spacing: AppConstants.largeAvatarSpacing) {
             if showAvatar {
@@ -81,27 +82,57 @@ struct UserLabelView: View {
     
     @ViewBuilder
     private var userName: some View {
-        let flair = calculateLinkFlair()
+        let flairs = user.getFlairs(
+            postContext: postContext,
+            commentContext: commentContext,
+            communityContext: communityContext
+        )
         
         HStack(spacing: 4) {
-            if let flairImage = flair.image {
-                flairImage
-                    .font(.footnote)
-                    .imageScale(serverInstanceLocation == .bottom ? .large : .small)
-                    .foregroundColor(flair.color)
+            if serverInstanceLocation == .bottom {
+                if flairs.count == 1, let first = flairs.first {
+                    userFlairIcon(with: first)
+                        .imageScale(.large)
+                } else if !flairs.isEmpty {
+                    HStack(spacing: 2) {
+                        LazyHGrid(rows: [GridItem(), GridItem()], alignment: .center, spacing: 2) {
+                            ForEach(flairs.dropLast(flairs.count % 2), id: \.self) { flair in
+                                userFlairIcon(with: flair)
+                                    .imageScale(.medium)
+                            }
+                        }
+                        if flairs.count % 2 != 0 {
+                            userFlairIcon(with: flairs.last!)
+                                .imageScale(.medium)
+                        }
+                    }
+                    .padding(.trailing, 4)
+                }
+        
+            } else {
+                if flairs.count == 1, let first = flairs.first {
+                    userFlairIcon(with: first)
+                        .imageScale(.small)
+                } else if !flairs.isEmpty {
+                    ForEach(flairs, id: \.self) { flair in
+                        userFlairIcon(with: flair)
+                            .imageScale(.small)
+                    }
+                    .padding(.trailing, 4)
+                }
             }
             
             switch serverInstanceLocation {
             case .disabled:
-                userName(with: flair)
+                userName(with: flairs)
             case .bottom:
                 VStack(alignment: .leading) {
-                    userName(with: flair)
+                    userName(with: flairs)
                     userInstance
                 }
             case .trailing:
                 HStack(spacing: 0) {
-                    userName(with: flair)
+                    userName(with: flairs)
                     userInstance
                 }
             }
@@ -109,16 +140,24 @@ struct UserLabelView: View {
     }
     
     @ViewBuilder
-    private func userName(with flair: UserLinkViewFlair) -> some View {
-        Text(user.displayName ?? user.name)
+    private func userFlairIcon(with flair: UserFlair) -> some View {
+        Image(systemName: flair.icon)
             .bold()
             .font(.footnote)
             .foregroundColor(flair.color)
     }
     
     @ViewBuilder
+    private func userName(with flairs: [UserFlair]) -> some View {
+        Text(user.displayName)
+            .bold()
+            .font(.footnote)
+            .foregroundStyle(.gray)
+    }
+    
+    @ViewBuilder
     private var userInstance: some View {
-        if let host = user.actorId.host() {
+        if let host = user.profileUrl.host() {
             Text("@\(host)")
                 .minimumScaleFactor(0.01)
                 .lineLimit(1)
@@ -134,38 +173,8 @@ struct UserLabelView: View {
         var color: Color
         var image: Image?
     }
-    
-    private func calculateLinkFlair() -> UserLinkViewFlair {
-        if let userServer = user.actorId.host() {
-            /*
-             if UserLabelView.mlemOfficial == "\(userServer)\(user.actorId.path())" {
-                 return UserLabelView.flairMlemOfficial
-             }
-             */
-            
-            if UserLabelView.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
-                return UserLabelView.flairDeveloper
-            }
-        }
-        if user.admin == true {
-            return UserLabelView.flairAdmin
-        }
-        if user.botAccount {
-            return UserLabelView.flairBot
-        }
-        if let comment = commentContext, comment.distinguished {
-            return UserLabelView.flairMod
-        }
-        if let community = communityContext, community.moderators.contains(where: { $0.moderator == user }) {
-            return UserLabelView.flairMod
-        }
-        if let post = postContext, post.creatorId == user.id {
-            return UserLabelView.flairOP
-        }
-        return UserLabelView.flairRegular
-    }
 }
-
+    
 // TODO: darknavi - Move these to a common area for reuse
 struct UserLinkViewPreview: PreviewProvider {
     // Only Admin and Bot work right now
@@ -182,7 +191,7 @@ struct UserLinkViewPreview: PreviewProvider {
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
         let actorId: URL
         if userType == .dev {
-            actorId = URL(string: "http://\(UserLabelView.developerNames[0])")!
+            actorId = URL(string: "http://\(UserModel.developerNames[0])")!
         } else {
             actorId = URL(string: "http://lemmy.ml/u/ericbandrews")!
         }
@@ -252,12 +261,14 @@ struct UserLinkViewPreview: PreviewProvider {
             featuredCommunity: false,
             featuredLocal: false
         )
-  
+        
         return PostModel(from: APIPostView(
             post: post,
             creator: creator,
             community: community,
             creatorBannedFromCommunity: false,
+            creatorIsModerator: false,
+            creatorIsAdmin: false,
             counts: postVotes,
             subscribed: .notSubscribed,
             saved: false,
@@ -287,7 +298,7 @@ struct UserLinkViewPreview: PreviewProvider {
         }
         
         return UserLinkView(
-            user: previewUser,
+            user: UserModel(from: previewUser),
             serverInstanceLocation: serverInstanceLocation,
             postContext: postContext,
             commentContext: commentContext

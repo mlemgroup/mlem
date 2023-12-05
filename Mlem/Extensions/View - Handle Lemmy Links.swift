@@ -10,41 +10,40 @@ import Foundation
 import SwiftUI
 
 struct HandleLemmyLinksDisplay: ViewModifier {
+    @Dependency(\.siteInformation) var siteInformation
+    
+    @Environment(\.navigationPath) private var navigationPath
+    @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
+    @EnvironmentObject private var quickLookState: ImageDetailSheetState
     
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
-    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
-
+    
     // swiftlint:disable function_body_length
+    // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
         content
-            .navigationDestination(for: NavigationRoute.self) { route in
+            .navigationDestination(for: AppRoute.self) { route in
                 switch route {
-                case .apiCommunity(let community):
-                    FeedView(community: community, feedType: .all, sortType: defaultPostSorting)
+                case let .community(community):
+                    FeedView(community: community, feedType: .all)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
-                        .environmentObject(CommunitySearchResultsTracker())
-                case .apiCommunityView(let context):
-                    FeedView(community: context.community, feedType: .all, sortType: defaultPostSorting)
+                        .environmentObject(quickLookState)
+                case let .communityLinkWithContext(context):
+                    FeedView(community: context.community, feedType: context.feedType)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
-                        .environmentObject(CommunitySearchResultsTracker())
-                case .communityLinkWithContext(let context):
-                    FeedView(community: context.community, feedType: context.feedType, sortType: defaultPostSorting)
-                        .environmentObject(appState)
-                        .environmentObject(filtersTracker)
-                        .environmentObject(CommunitySearchResultsTracker())
-                case .communitySidebarLinkWithContext(let context):
+                        .environmentObject(quickLookState)
+                case let .communitySidebarLinkWithContext(context):
                     CommunitySidebarView(
-                        community: context.community,
-                        communityDetails: context.communityDetails
+                        community: context.community
                     )
                     .environmentObject(filtersTracker)
-                    .environmentObject(CommunitySearchResultsTracker())
-                case .apiPostView(let post):
+                case let .apiPostView(post):
                     let postModel = PostModel(from: post)
                     let postTracker = PostTracker(
                         shouldPerformMergeSorting: false,
@@ -57,27 +56,135 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     ExpandedPost(post: postModel)
                         .environmentObject(postTracker)
                         .environmentObject(appState)
-                case .apiPost(let post):
+                        .environmentObject(quickLookState)
+                case let .apiPost(post):
                     LazyLoadExpandedPost(post: post)
-                case .apiPerson(let user):
+                        .environmentObject(quickLookState)
+                case let .apiPerson(user):
                     UserView(userID: user.id)
+                        .environmentObject(quickLookState)
+                case let .userProfile(user):
+                    UserView(userID: user.userId)
                         .environmentObject(appState)
-                case .postLinkWithContext(let post):
+                        .environmentObject(quickLookState)
+                case let .postLinkWithContext(post):
                     ExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                         .environmentObject(post.postTracker)
                         .environmentObject(appState)
-                case .lazyLoadPostLinkWithContext(let post):
+                        .environmentObject(quickLookState)
+                        .environmentObject(layoutWidgetTracker)
+                case let .lazyLoadPostLinkWithContext(post):
                     LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
-                case .userModeratorLink(let user):
+                        .environmentObject(quickLookState)
+                case let .userModeratorLink(user):
                     UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
                         .environmentObject(appState)
+                        .environmentObject(quickLookState)
+                case let .settings(page):
+                    settingsDestination(for: page)
+                case let .aboutSettings(page):
+                    aboutSettingsDestination(for: page)
+                case let .appearanceSettings(page):
+                    appearanceSettingsDestination(for: page)
+                case let .commentSettings(page):
+                    commentSettingsDestination(for: page)
+                case let .postSettings(page):
+                    postSettingsDestination(for: page)
+                case let .licenseSettings(page):
+                    licensesSettingsDestination(for: page)
                 }
             }
     }
+
     // swiftlint:enable function_body_length
+    
+    @ViewBuilder
+    private func settingsDestination(for page: SettingsPage) -> some View {
+        switch page {
+        case .accounts:
+            AccountsPage()
+        case .general:
+            GeneralSettingsView()
+        case .sorting:
+            SortingSettingsView()
+        case .contentFilters:
+            FiltersSettingsView()
+        case .accessibility:
+            AccessibilitySettingsView()
+        case .appearance:
+            AppearanceSettingsView()
+        case .about:
+            AboutView(navigationPath: navigationPath)
+        case .advanced:
+            AdvancedSettingsView()
+        }
+    }
+    
+    @ViewBuilder
+    private func aboutSettingsDestination(for page: AboutSettingsPage) -> some View {
+        switch page {
+        case .contributors:
+            ContributorsView()
+        case let .document(doc):
+            DocumentView(text: doc.body)
+        case .licenses:
+            LicensesView()
+        }
+    }
+    
+    @ViewBuilder
+    private func appearanceSettingsDestination(for page: AppearanceSettingsPage) -> some View {
+        switch page {
+        case .theme:
+            ThemeSettingsView()
+        case .appIcon:
+            IconSettingsView()
+        case .posts:
+            PostSettingsView()
+        case .comments:
+            CommentSettingsView()
+        case .communities:
+            CommunitySettingsView()
+        case .users:
+            UserSettingsView()
+        case .tabBar:
+            TabBarSettingsView()
+        }
+    }
+    
+    @ViewBuilder
+    private func commentSettingsDestination(for page: CommentSettingsPage) -> some View {
+        switch page {
+        case .layoutWidget:
+            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.comment, onSave: { widgets in
+                layoutWidgetTracker.groups.comment = widgets
+                layoutWidgetTracker.saveLayoutWidgets()
+            })
+        }
+    }
+    
+    @ViewBuilder
+    private func postSettingsDestination(for page: PostSettingsPage) -> some View {
+        switch page {
+        case .customizeWidgets:
+            /// We really should be passing in the layout widget through the route enum value, but that would involve making layout widget tracker hashable and codable.
+            LayoutWidgetEditView(widgets: layoutWidgetTracker.groups.post, onSave: { widgets in
+                layoutWidgetTracker.groups.post = widgets
+                layoutWidgetTracker.saveLayoutWidgets()
+            })
+        }
+    }
+    
+    @ViewBuilder
+    private func licensesSettingsDestination(for page: LicensesSettingsPage) -> some View {
+        switch page {
+        case let .licenseDocument(doc):
+            DocumentView(text: doc.body)
+        }
+    }
 }
 
-struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
+struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
@@ -157,13 +264,13 @@ struct HandleLemmyLinkResolution<Path: AnyNavigationPath>: ViewModifier {
             do {
                 switch resolution {
                 case let .post(object):
-                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
                     return true
                 case let .person(object):
-                    navigationPath.wrappedValue.append(try Path.makeRoute(object.person))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(object.person))
                     return true
                 case let .community(object):
-                    navigationPath.wrappedValue.append(try Path.makeRoute(object))
+                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
                     return true
                 case .comment:
                     return false
@@ -181,7 +288,7 @@ extension View {
         modifier(HandleLemmyLinksDisplay())
     }
 
-    func handleLemmyLinkResolution<P: AnyNavigationPath>(navigationPath: Binding<P>) -> some View {
+    func handleLemmyLinkResolution(navigationPath: Binding<some AnyNavigablePath>) -> some View {
         modifier(HandleLemmyLinkResolution(navigationPath: navigationPath))
     }
 }

@@ -11,26 +11,33 @@ import Foundation
 class PostRepository {
     @Dependency(\.apiClient) private var apiClient
     
+    // swiftlint:disable function_parameter_count
     func loadPage(
         communityId: Int?,
         page: Int,
+        cursor: String?,
         sort: PostSortType?,
         type: FeedType,
         limit: Int,
         savedOnly: Bool? = nil,
         communityName: String? = nil
-    ) async throws -> [PostModel] {
-        try await apiClient.loadPosts(
+    ) async throws -> (posts: [PostModel], cursor: String?) {
+        let response = try await apiClient.loadPosts(
             communityId: communityId,
             page: page,
+            cursor: cursor,
             sort: sort,
             type: type,
             limit: limit,
             savedOnly: savedOnly,
             communityName: communityName
         )
-        .map { PostModel(from: $0) }
+        
+        let posts = response.posts.map { PostModel(from: $0) }
+        return (posts, response.nextPage)
     }
+
+    // swiftlint:enable function_parameter_count
     
     /// Loads a single post
     /// - Parameter postId: id of the post to load
@@ -40,9 +47,13 @@ class PostRepository {
         return PostModel(from: postView)
     }
     
-    func markRead(postId: Int, read: Bool) async throws -> PostModel {
-        let postView = try await apiClient.markPostAsRead(for: postId, read: read).postView
-        return PostModel(from: postView)
+    /// Attempts to mark the given PostModel as read. On success, returns a new PostModel with the updated read state; on failure, returns the original PostModel.
+    /// - Parameters:
+    ///   - post: PostModel to attempt to read
+    ///   - read: Intended read state of the post model (true to mark read, false to mark unread)
+    func markRead(post: PostModel, read: Bool) async throws -> PostModel {
+        let success = try await apiClient.markPostAsRead(for: post.postId, read: read).success
+        return PostModel(from: post, read: success ? read : post.read)
     }
 
     /// Rates a given post. Does not care what the current vote state is; sends the given request no matter what (i.e., calling this with operation .upvote on an already upvoted post will not send a .resetVote, but will instead send a second idempotent .upvote

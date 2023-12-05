@@ -10,75 +10,70 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
-    @StateObject private var settingsRouter: NavigationRouter<SettingsRoute> = .init()
+    @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
 
     @Environment(\.openURL) private var openURL
-    @Environment(\.tabSelectionHashValue) private var selectedTagHashValue
-    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
 
     @Namespace var scrollToTop
     
     var body: some View {
-        NavigationStack(path: $settingsRouter.path) {
+        NavigationStack(path: $settingsTabNavigation.path) {
             ScrollViewReader { _ in
                 List {
                     Section {
-                        NavigationLink(value: SettingsRoute.accountsPage) {
+                        NavigationLink(.settings(.accounts)) {
                             Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
                         }
                         .id(scrollToTop)
                     }
                     Section {
-                        NavigationLink(value: SettingsRoute.general) {
+                        NavigationLink(.settings(.general)) {
                             Label("General", systemImage: "gear").labelStyle(SquircleLabelStyle(color: .gray))
                         }
                         
-                        NavigationLink(value: SettingsRoute.accessibility) {
+                        NavigationLink(.settings(.sorting)) {
+                            Label("Sorting", systemImage: "arrow.up.and.down.text.horizontal")
+                                .labelStyle(SquircleLabelStyle(color: .indigo))
+                        }
+                        
+                        NavigationLink(.settings(.contentFilters)) {
+                            Label("Content Filters", systemImage: "line.3.horizontal.decrease")
+                                .labelStyle(SquircleLabelStyle(color: .orange))
+                        }
+                        
+                        NavigationLink(.settings(.accessibility)) {
                             // apparently the Apple a11y symbol isn't an SFSymbol
                             Label("Accessibility", systemImage: "hand.point.up.braille.fill").labelStyle(SquircleLabelStyle(color: .blue))
                         }
                         
-                        NavigationLink(value: SettingsRoute.appearance) {
+                        NavigationLink(.settings(.appearance)) {
                             Label("Appearance", systemImage: "paintbrush.fill").labelStyle(SquircleLabelStyle(color: .pink))
-                        }
-                        
-                        NavigationLink(value: SettingsRoute.contentFilters) {
-                            Label("Content Filters", systemImage: "line.3.horizontal.decrease")
-                                .labelStyle(SquircleLabelStyle(color: .orange))
                         }
                     }
                     
                     Section {
-                        NavigationLink(value: SettingsRoute.about) {
+                        NavigationLink(.settings(.about)) {
                             Label("About Mlem", systemImage: "info").labelStyle(SquircleLabelStyle(color: .blue))
                         }
                     }
                     
                     Section {
-                        NavigationLink(value: SettingsRoute.advanced) {
+                        NavigationLink(.settings(.advanced)) {
                             Label("Advanced", systemImage: "gearshape.2.fill").labelStyle(SquircleLabelStyle(color: .gray))
                         }
                     }
                 }
-                .onChange(of: selectedNavigationTabHashValue) { newValue in
-                    if newValue == TabSelection.settings.hashValue {
-                        print("re-selected \(TabSelection.settings) tab")
-                    }
+                .reselectAction(tab: TabSelection.settings) {
+                    print("re-selected settings")
                 }
             }
-            .environmentObject(settingsRouter)
+            .environmentObject(settingsTabNavigation)
             .fancyTabScrollCompatible()
             .handleLemmyViews()
             .navigationTitle("Settings")
             .navigationBarColor()
             .navigationBarTitleDisplayMode(.inline)
-            .useSettingsNavigationRouter()
         }
-        .handleLemmyLinkResolution(navigationPath: .constant(settingsRouter))
-        .onChange(of: selectedTagHashValue) { newValue in
-            if newValue == TabSelection.settings.hashValue {
-                print("switched to Settings tab")
-            }
-        }
+        .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
     }
 }

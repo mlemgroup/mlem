@@ -33,7 +33,7 @@ struct PostDetailEditorView: View {
     
     @Environment(\.dismiss) var dismiss
         
-    var community: APICommunity
+    var community: CommunityModel
     var onSubmit: () async throws -> Void
     
     @Binding var postTitle: String
@@ -54,7 +54,7 @@ struct PostDetailEditorView: View {
     @FocusState private var focusedField: Field?
     
     init(
-        community: APICommunity,
+        community: CommunityModel,
         postTitle: Binding<String>,
         postURL: Binding<String>,
         postBody: Binding<String>,

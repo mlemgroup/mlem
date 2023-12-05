@@ -32,58 +32,11 @@ class CommentRepository {
     }
     
     func voteOnComment(id: Int, vote: ScoringOperation) async throws -> APICommentView {
-        hapticManager.play(haptic: .gentleSuccess, priority: .high)
         do {
             let response = try await apiClient.applyCommentScore(id: id, score: vote.rawValue)
             return response.commentView
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
-            throw error
-        }
-    }
-    
-    func voteOnCommentReply(_ reply: APICommentReplyView, vote: ScoringOperation) async throws -> APICommentReplyView {
-        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
-        do {
-            let updatedCommentView = try await voteOnComment(id: reply.comment.id, vote: vote)
-            return .init(
-                commentReply: reply.commentReply,
-                comment: updatedCommentView.comment,
-                creator: updatedCommentView.creator,
-                post: updatedCommentView.post,
-                community: updatedCommentView.community,
-                recipient: reply.recipient,
-                counts: updatedCommentView.counts,
-                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                subscribed: updatedCommentView.subscribed,
-                saved: updatedCommentView.saved,
-                creatorBlocked: updatedCommentView.creatorBlocked,
-                myVote: updatedCommentView.myVote
-            )
-        } catch {
-            throw error
-        }
-    }
-    
-    func voteOnPersonMention(_ mention: APIPersonMentionView, vote: ScoringOperation) async throws -> APIPersonMentionView {
-        // no haptics here as we defer to the `voteOnComment` method which will produce them if necessary
-        do {
-            let updatedCommentView = try await voteOnComment(id: mention.comment.id, vote: vote)
-            return .init(
-                personMention: mention.personMention,
-                comment: updatedCommentView.comment,
-                creator: mention.creator,
-                post: updatedCommentView.post,
-                community: updatedCommentView.community,
-                recipient: mention.recipient,
-                counts: updatedCommentView.counts,
-                creatorBannedFromCommunity: updatedCommentView.creatorBannedFromCommunity,
-                subscribed: updatedCommentView.subscribed,
-                saved: updatedCommentView.saved,
-                creatorBlocked: updatedCommentView.creatorBlocked,
-                myVote: updatedCommentView.myVote
-            )
-        } catch {
             throw error
         }
     }
@@ -150,7 +103,6 @@ class CommentRepository {
     func saveComment(id: Int, shouldSave: Bool) async throws -> HierarchicalComment {
         do {
             let response = try await apiClient.saveComment(id: id, shouldSave: shouldSave)
-            hapticManager.play(haptic: .gentleSuccess, priority: .high)
             return .init(comment: response.commentView, children: [], parentCollapsed: false, collapsed: false)
         } catch {
             hapticManager.play(haptic: .failure, priority: .high)
@@ -168,9 +120,5 @@ class CommentRepository {
             hapticManager.play(haptic: .failure, priority: .high)
             throw error
         }
-    }
-    
-    func markCommentReadStatus(id: Int, isRead: Bool) async throws -> CommentReplyResponse {
-        try await apiClient.markCommentReplyRead(id: id, isRead: isRead)
     }
 }

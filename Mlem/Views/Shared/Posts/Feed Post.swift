@@ -13,7 +13,6 @@
 // swiftlint:disable type_body_length
 
 import Dependencies
-import QuickLook
 import SwiftUI
 
 /// Displays a single post in the feed
@@ -229,9 +228,9 @@ struct FeedPost: View {
     func blockUser() async {
         // TODO: migrate to personRepository
         do {
-            let response = try await apiClient.blockPerson(id: post.creator.id, shouldBlock: true)
+            let response = try await apiClient.blockPerson(id: post.creator.userId, shouldBlock: true)
             if response.blocked {
-                postTracker.removeUserPosts(from: post.creator.id)
+                postTracker.removeUserPosts(from: post.creator.userId)
                 hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked \(post.creator.name)"))
             }
@@ -249,9 +248,9 @@ struct FeedPost: View {
     func blockCommunity() async {
         // TODO: migrate to communityRepository
         do {
-            let response = try await apiClient.blockCommunity(id: post.community.id, shouldBlock: true)
+            let response = try await apiClient.blockCommunity(id: post.community.communityId, shouldBlock: true)
             if response.blocked {
-                postTracker.removeCommunityPosts(from: post.community.id)
+                postTracker.removeCommunityPosts(from: post.community.communityId)
                 await notifier.add(.success("Blocked \(post.community.name)"))
             }
         } catch {
@@ -274,9 +273,8 @@ struct FeedPost: View {
     
     func editPost() {
         editorTracker.openEditor(with: PostEditorModel(
-            community: post.community,
-            postTracker: postTracker,
-            editPost: post
+            post: post,
+            postTracker: postTracker
         ))
     }
 
@@ -351,7 +349,7 @@ struct FeedPost: View {
             replyToPost()
         })
 
-        if appState.isCurrentAccountId(post.creator.id) {
+        if appState.isCurrentAccountId(post.creator.userId) {
             // edit
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
@@ -366,7 +364,7 @@ struct FeedPost: View {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
-                destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
+                destructiveActionPrompt: "Are you sure you want to delete this post? This cannot be undone.",
                 enabled: !post.post.deleted
             ) {
                 Task(priority: .userInitiated) {

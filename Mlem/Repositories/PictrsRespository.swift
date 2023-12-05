@@ -15,25 +15,25 @@ class PictrsRespository {
     func uploadImage(
         imageModel: PictrsImageModel,
         onUpdate updateCallback: @escaping (_ imageModel: PictrsImageModel) -> Void
-    ) async throws -> Task<(), any Error>? {
+    ) async throws -> Task<Void, any Error>? {
         var imageModel = imageModel
-        guard case .readyToUpload(data: let data) = imageModel.state else {
+        guard case let .readyToUpload(data: data) = imageModel.state else {
             imageModel.state = .failed("No data")
             updateCallback(imageModel)
             return nil
         }
         do {
             return try await apiClient.uploadImage(data, onProgress: {
-                print("Uploading: \(round($0*100))%")
+                print("Uploading: \(round($0 * 100))%")
                 imageModel.state = .uploading(progress: $0)
                 updateCallback(imageModel)
             }, onCompletion: { response in
-                if let response = response {
+                if let response {
                     if let firstFile = response.files?.first {
                         imageModel.state = .uploaded(file: firstFile)
                         updateCallback(imageModel)
                     } else {
-                        print("Upload failed: \(response.msg)")
+                        print("Upload failed (1): \(response.msg)")
                         imageModel.state = .failed(response.msg)
                         updateCallback(imageModel)
                     }
@@ -43,10 +43,15 @@ class PictrsRespository {
                     updateCallback(imageModel)
                 }
             }, catch: { error in
-                print("Upload failed: \(error)")
+                print("Upload failed (2): \(error)")
                 switch error {
-                case APIClientError.decoding(let data):
-                    imageModel.state = .failed(String(data: data, encoding: .utf8))
+                case let APIClientError.decoding(data, _):
+                    let text = String(data: data, encoding: .utf8)
+                    if text?.contains("413 Request Entity Too Large") ?? false {
+                        imageModel.state = .failed("Image too large")
+                    } else {
+                        imageModel.state = .failed(text)
+                    }
                 default:
                     imageModel.state = .failed(error.localizedDescription)
                 }
@@ -54,7 +59,7 @@ class PictrsRespository {
                 updateCallback(imageModel)
             })
         } catch {
-            print("Upload failed: \(error)")
+            print("Upload failed (3): \(error)")
             imageModel.state = .failed(error.localizedDescription)
             updateCallback(imageModel)
         }
@@ -67,6 +72,6 @@ class PictrsRespository {
         // associated with it, possibly via an intermediate APIRequestWithResponse protocol
         do {
             try await apiClient.deleteImage(file: file)
-        } catch APIClientError.decoding(_) { }
+        } catch APIClientError.decoding(_) {}
     }
 }

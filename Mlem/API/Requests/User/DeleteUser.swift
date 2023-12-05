@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct DeleteAccountRequest: APIPostRequest {
+// TODO: 0.18 deprecation remove this struct
+struct LegacyDeleteAccountRequest: APIPostRequest {
     typealias Response = DeleteAccountResponse
 
     let instanceURL: URL
@@ -28,6 +29,32 @@ struct DeleteAccountRequest: APIPostRequest {
         self.body = .init(
             password: password,
             auth: account.accessToken
+        )
+    }
+}
+
+struct DeleteAccountRequest: APIPostRequest {
+    typealias Response = SuccessResponse
+    
+    let instanceURL: URL
+    let path = "user/delete_account"
+    let body: Body
+    
+    // lemmy_api_common::person::DeleteAccount
+    struct Body: Encodable {
+        let password: String
+        let delete_content: Bool
+    }
+    
+    init(
+        account: SavedAccount,
+        password: String,
+        deleteContent: Bool
+    ) {
+        self.instanceURL = account.instanceLink
+        self.body = .init(
+            password: password,
+            delete_content: deleteContent
         )
     }
 }

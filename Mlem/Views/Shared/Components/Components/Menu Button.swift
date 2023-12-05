@@ -14,8 +14,10 @@ struct MenuButton: View {
 
     var body: some View {
         switch menuFunction {
-        case let .share(shareMenuFunction):
+        case let .shareUrl(shareMenuFunction):
             ShareLink(item: shareMenuFunction.url)
+        case let .shareImage(shareImageFunction):
+            ShareLink(item: shareImageFunction.image, preview: .init("photo", image: shareImageFunction.image))
         case let .standard(standardMenuFunction):
             let role: ButtonRole? = standardMenuFunction.destructiveActionPrompt != nil ? .destructive : nil
             Button(role: role) {

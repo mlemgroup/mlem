@@ -9,10 +9,10 @@ import Foundation
 
 // lemmy_db_schema::aggregates::structs::PersonAggregates
 struct APIPersonAggregates: Decodable {
-    let id: Int
+    let id: Int? // TODO: 0.18 Deprecation remove this field
     let personId: Int
     let postCount: Int
-    let postScore: Int
+    let postScore: Int?
     let commentCount: Int
-    let commentScore: Int
+    let commentScore: Int?
 }

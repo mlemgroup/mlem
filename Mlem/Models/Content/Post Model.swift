@@ -12,8 +12,8 @@ import Foundation
 struct PostModel {
     let postId: Int
     let post: APIPost
-    let creator: APIPerson
-    let community: APICommunity
+    let creator: UserModel
+    let community: CommunityModel
     var votes: VotesModel
     let numReplies: Int
     let saved: Bool
@@ -28,8 +28,8 @@ struct PostModel {
     init(from apiPostView: APIPostView) {
         self.postId = apiPostView.post.id
         self.post = apiPostView.post
-        self.creator = apiPostView.creator
-        self.community = apiPostView.community
+        self.creator = UserModel(from: apiPostView.creator)
+        self.community = CommunityModel(from: apiPostView.community)
         self.votes = VotesModel(from: apiPostView.counts, myVote: apiPostView.myVote)
         self.numReplies = apiPostView.counts.comments
         self.saved = apiPostView.saved
@@ -54,8 +54,8 @@ struct PostModel {
         from other: PostModel,
         postId: Int? = nil,
         post: APIPost? = nil,
-        creator: APIPerson? = nil,
-        community: APICommunity? = nil,
+        creator: UserModel? = nil,
+        community: CommunityModel? = nil,
         votes: VotesModel? = nil,
         numReplies: Int? = nil,
         saved: Bool? = nil,

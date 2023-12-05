@@ -1,5 +1,5 @@
 //
-//  Private Messages View.swift
+//  MessagesFeedView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-26.
@@ -8,23 +8,16 @@
 import Foundation
 import SwiftUI
 
-extension InboxView {
-    @ViewBuilder
-    func messagesFeedView() -> some View {
-        Group {
-            if messagesTracker.items.isEmpty, !messagesTracker.isLoading {
-                noMessagesView()
-            } else {
-                LazyVStack(spacing: 0) {
-                    messagesListView()
-                    
-                    if messagesTracker.isLoading {
-                        LoadingView(whatIsLoading: .messages)
-                    } else {
-                        // this isn't just cute--if it's not here we get weird bouncing behavior if we get here, load, and then there's nothing
-                        Text("That's all!").foregroundColor(.secondary).padding(.vertical, AppConstants.postAndCommentSpacing)
-                    }
-                }
+struct MessagesFeedView: View {
+    @ObservedObject var messageTracker: MessageTracker
+    
+    var body: some View {
+        if messageTracker.loadingState == .done, messageTracker.items.isEmpty {
+            noMessagesView()
+        } else {
+            LazyVStack(spacing: 0) {
+                EmptyView().id("top")
+                messagesListView()
             }
         }
     }
@@ -42,37 +35,17 @@ extension InboxView {
     
     @ViewBuilder
     func messagesListView() -> some View {
-        ForEach(messagesTracker.items) { message in
+        ForEach(messageTracker.items, id: \.uid) { message in
             VStack(spacing: 0) {
-                inboxMessageViewWithInteraction(message: message)
+                InboxMessageView(message: message)
+                    .onAppear {
+                        messageTracker.loadIfThreshold(message)
+                    }
                 
                 Divider()
             }
         }
-    }
-    
-    @ViewBuilder
-    func inboxMessageViewWithInteraction(message: APIPrivateMessageView) -> some View {
-        InboxMessageView(message: message, menuFunctions: genMessageMenuGroup(message: message))
-            .padding(.vertical, AppConstants.postAndCommentSpacing)
-            .padding(.horizontal)
-            .background(Color.systemBackground)
-            .task {
-                if messagesTracker.shouldLoadContent(after: message) {
-                    await loadTrackerPage(tracker: messagesTracker)
-                }
-            }
-            .addSwipeyActions(
-                leading: [],
-                trailing: [
-                    toggleMessageReadSwipeAction(message: message),
-                    replyToMessageSwipeAction(message: message)
-                ]
-            )
-            .contextMenu {
-                ForEach(genMessageMenuGroup(message: message)) { item in
-                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                }
-            }
+        
+        EndOfFeedView(loadingState: messageTracker.loadingState, viewType: .cartoon)
     }
 }

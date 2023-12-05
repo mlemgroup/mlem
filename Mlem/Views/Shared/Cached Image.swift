@@ -19,7 +19,8 @@ struct CachedImage: View {
     // state vars to track the current image size and whether that size needs to be recomputed when the image actually loads. Combined with the image size cache, this produces good scrolling behavior except in the case where we scroll past an image and it derenders before it ever gets a chance to load, in which case that image will cause a slight hiccup on the way back up. That's kind of an unsolvable problem, since we can't know the size before we load the image at all, but that's fine because it shouldn't really happen during normal use. If we really want to guarantee smooth feed scrolling we can squish any image with no cached size into a square, but that feels like squishing a lot of images for the sake of a fringe case.
     @State var size: CGSize
     @State var shouldRecomputeSize: Bool
-    @State private var quickLookUrl: URL?
+    
+    @EnvironmentObject private var imageDetailSheetState: ImageDetailSheetState
     
     var imageNotFound: () -> AnyView
     
@@ -29,8 +30,8 @@ struct CachedImage: View {
     let cornerRadius: CGFloat
     let errorBackgroundColor: Color
     
-    // Optional callback triggered when the quicklook preview is dismissed
-    let dismissCallback: (() -> Void)?
+    // Optional callback triggered when the quicklook preview is presented on tap gesture.
+    let onTapCallback: (() -> Void)?
     
     init(
         url: URL?,
@@ -40,7 +41,7 @@ struct CachedImage: View {
         imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
         errorBackgroundColor: Color = Color(uiColor: .systemGray4),
         contentMode: ContentMode = .fit,
-        dismissCallback: (() -> Void)? = nil,
+        onTapCallback: (() -> Void)? = nil,
         cornerRadius: CGFloat? = nil
     ) {
         self.url = url
@@ -49,7 +50,7 @@ struct CachedImage: View {
         self.imageNotFound = imageNotFound
         self.errorBackgroundColor = errorBackgroundColor
         self.contentMode = contentMode
-        self.dismissCallback = dismissCallback
+        self.onTapCallback = onTapCallback
         self.cornerRadius = cornerRadius ?? 0
         
         self.screenWidth = UIScreen.main.bounds.width - (AppConstants.postAndCommentSpacing * 2)
@@ -110,31 +111,8 @@ struct CachedImage: View {
                 if shouldExpand {
                     imageView
                         .onTapGesture {
-                            Task(priority: .userInitiated) {
-                                do {
-                                    let (data, _) = try await ImagePipeline.shared.data(for: url!)
-                                    let fileType = url?.pathExtension ?? "png"
-                                    let quicklook = FileManager.default.temporaryDirectory.appending(path: "quicklook.\(fileType)")
-                                    if FileManager.default.fileExists(atPath: quicklook.absoluteString) {
-                                        print("file exsists")
-                                        try FileManager.default.removeItem(at: quicklook)
-                                    }
-                                    try data.write(to: quicklook)
-                                    await MainActor.run {
-                                        quickLookUrl = quicklook
-                                    }
-                                } catch {
-                                    print(String(describing: error))
-                                }
-                            }
-                        }
-                        .onChange(of: quickLookUrl) { url in
-                            if url == nil, let dismissCallback {
-                                dismissCallback()
-                            }
-                        }
-                        .fullScreenCover(item: $quickLookUrl) { url in
-                            QuickLookView(urls: [url])
+                            imageDetailSheetState.url = url // show image detail
+                            onTapCallback?()
                         }
                 } else {
                     imageView

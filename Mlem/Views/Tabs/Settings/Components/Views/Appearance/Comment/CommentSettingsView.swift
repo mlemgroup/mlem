@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum JumpButtonLocation: String, SettingsOptions {
-    case bottomLeading, bottomTrailing
+    case bottomLeading, bottomTrailing, center
     
     var id: Self { self }
     
@@ -19,6 +19,19 @@ enum JumpButtonLocation: String, SettingsOptions {
             return "Left"
         case .bottomTrailing:
             return "Right"
+        case .center:
+            return "Center"
+        }
+    }
+    
+    var alignment: Alignment {
+        switch self {
+        case .bottomLeading:
+            return .bottomLeading
+        case .bottomTrailing:
+            return .bottomTrailing
+        case .center:
+            return .bottom
         }
     }
 }
@@ -49,7 +62,7 @@ struct CommentSettingsView: View {
                     isTicked: $compactComments
                 )
                 
-                NavigationLink(value: SettingsRoute.commentPage(.layoutWidget)) {
+                NavigationLink(.commentSettings(.layoutWidget)) {
                     Label {
                         Text("Customize Widgets")
                     } icon: {

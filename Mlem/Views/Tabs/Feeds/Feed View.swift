@@ -9,6 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+// swiftlint:disable type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
     
@@ -17,6 +18,7 @@ struct FeedView: View {
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.notifier) var notifier
+    @Dependency(\.siteInformation) var siteInformation
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -30,39 +32,39 @@ struct FeedView: View {
     
     // MARK: Parameters and init
     
-    let community: APICommunity?
-    let showLoading: Bool
+    @State var community: CommunityModel?
     @State var feedType: FeedType
     
+    @State var errorDetails: ErrorDetails?
+    
     init(
-        community: APICommunity?,
-        feedType: FeedType,
-        sortType: PostSortType,
-        showLoading: Bool = false
+        community: CommunityModel?,
+        feedType: FeedType
     ) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
-        self.community = community
-        self.showLoading = showLoading
-        
         self._feedType = State(initialValue: feedType)
-        self._postSortType = .init(initialValue: sortType)
         self._postTracker = StateObject(wrappedValue: .init(
             shouldPerformMergeSorting: false,
             internetSpeed: internetSpeed,
             upvoteOnSave: upvoteOnSave
         ))
+        
+        self._community = State(initialValue: community)
+        
+        @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+        _postSortType = .init(initialValue: fallbackDefaultPostSorting)
     }
     
     // MARK: State
     
     @StateObject var postTracker: PostTracker
     
-    @State var communityDetails: GetCommunityResponse?
     @State var postSortType: PostSortType
-    @State var isLoading: Bool = false
+    @State var isLoading: Bool = true
+    @State var siteInformationLoading: Bool = true
     @State var shouldLoad: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
@@ -92,7 +94,28 @@ struct FeedView: View {
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
             .environmentObject(postTracker)
-            .task(priority: .userInitiated) { await initFeed() }
+            .task {
+                // hack to load if task below fails
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    loadIfVersionResolved()
+                }
+                // fallback
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    loadIfVersionResolved()
+                }
+                // error
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    if siteInformation.version == nil {
+                        errorDetails = ErrorDetails(title: "Failed to determine site version!")
+                    } else {
+                        loadIfVersionResolved()
+                    }
+                }
+            }
+            .task(id: siteInformation.version) {
+                // update post sort and load once we have siteInformation. Assumes site version won't change once we receive it.
+                loadIfVersionResolved()
+            }
             .task(priority: .background) { await fetchCommunityDetails() }
             // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
             .onChange(of: feedType) { _ in
@@ -122,41 +145,67 @@ struct FeedView: View {
                     shouldLoad = false
                 }
             }
-            .refreshable { await refreshFeed() }
+            .onChange(of: postTracker.items) { newValue in
+                if !newValue.isEmpty {
+                    errorDetails = nil
+                }
+            }
+            .refreshable {
+                await refreshFeed()
+            }
     }
     
     @ViewBuilder
     private var contentView: some View {
-        ScrollView {
-            if postTracker.items.isEmpty {
-                noPostsView()
-            } else {
-                LazyVStack(spacing: 0) {
-                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
-                    ForEach(postTracker.items, id: \.uid) { post in
-                        feedPost(for: post)
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                if !postTracker.items.isEmpty {
+                    LazyVStack(spacing: 0) {
+                        EmptyView().id("top")
+                        
+                        // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                        ForEach(postTracker.items, id: \.uid) { post in
+                            feedPost(for: post)
+                        }
+                        
+                        // TODO: update to use proper LoadingState
+                        EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                     }
-                    
-                    EndOfFeedView(isLoading: isLoading)
                 }
             }
+            .frame(maxWidth: .infinity)
+            .overlay {
+                if postTracker.items.isEmpty {
+                    noPostsView()
+                }
+            }
+            .reselectAction(tab: TabSelection.feeds) {
+                // TODO: SwiftUI doesn't seem to natively support customizing this animation
+                // https://stackoverflow.com/questions/62535553/swiftui-customize-animation-for-scrollto-using-scrollviewreader
+                withAnimation {
+                    scrollProxy.scrollTo("top")
+                }
+            }
+            .fancyTabScrollCompatible()
         }
-        .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
     private func noPostsView() -> some View {
-        if isLoading {
-            LoadingView(whatIsLoading: .posts)
-        } else {
-            VStack(alignment: .center, spacing: 5) {
-                Image(systemName: Icons.noPosts)
-                Text("No posts to be found")
+        VStack {
+            if let errorDetails {
+                ErrorView(errorDetails)
+                    .frame(maxWidth: .infinity)
+            } else if isLoading || siteInformationLoading { // don't show posts until site information loads to avoid jarring redraw
+                LoadingView(whatIsLoading: .posts)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
+            } else {
+                NoPostsView(isLoading: $isLoading, postSortType: $postSortType, showReadPosts: $showReadPosts)
+                    .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
-            .padding()
-            .foregroundColor(.secondary)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .animation(.easeOut(duration: 0.1), value: isLoading)
     }
     
     // MARK: Helper Views
@@ -186,18 +235,17 @@ struct FeedView: View {
     @ViewBuilder
     private var ellipsisMenu: some View {
         Menu {
-            if let community, let communityDetails {
+            if let community {
                 // until we find a nice way to put nav stuff in MenuFunction, this'll have to do :(
                 NavigationLink(.communitySidebarLinkWithContext(
                     .init(
-                        community: community,
-                        communityDetails: communityDetails
+                        community: community
                     )
                 )) {
                     Label("Sidebar", systemImage: "sidebar.right")
                 }
                 
-                ForEach(genCommunitySpecificMenuFunctions(for: community)) { menuFunction in
+                ForEach(genCommunitySpecificMenuFunctions()) { menuFunction in
                     MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
             }
@@ -252,8 +300,7 @@ struct FeedView: View {
     private var toolbarHeader: some View {
         if let community {
             NavigationLink(.communitySidebarLinkWithContext(.init(
-                community: community,
-                communityDetails: communityDetails
+                community: community
             ))) {
                 Text(community.name)
                     .font(.headline)
@@ -281,3 +328,5 @@ struct FeedView: View {
         }
     }
 }
+
+// swiftlint:enable type_body_length

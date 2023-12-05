@@ -27,6 +27,7 @@ struct GetCommentsRequest: APIGetRequest {
         communityName: String?,
         parentId: Int?,
         savedOnly: Bool?
+        // TODO: 0.19 support add liked_only and disliked_only query params
     ) throws {
         self.instanceURL = try session.instanceUrl
         var queryItems: [URLQueryItem] = [
