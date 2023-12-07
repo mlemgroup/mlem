@@ -74,7 +74,7 @@ struct AccountSettingsView: View {
                 } footer: {
                     if settingsDisabled {
                         // swiftlint:disable:next line_length
-                        Text("We don't support editing of account settings on instances running versions older than 0.18.0 due to API differences on those versions. Your instance is running version \(String(describing: siteInformation.version ?? .zero)). Sorry!")
+                        Text("Account settings are only available on instances running 0.18.0 or above. Your instance is running version \(String(describing: siteInformation.version ?? .zero)).")
                             .foregroundStyle(.red)
                             .textCase(.none)
                     }
