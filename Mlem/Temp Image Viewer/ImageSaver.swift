@@ -7,16 +7,19 @@
 //
 
 import Foundation
-import UIKit
+import Photos
 
 class ImageSaver: NSObject {
     func writeToPhotoAlbum(imageData: Data) {
-        if let image = UIImage(data: imageData) {
-            UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveCompleted), nil)
-        }
-    }
-
-    @objc func saveCompleted(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        print("Save finished!")
+        PHPhotoLibrary.shared().performChanges({
+            let creationRequest = PHAssetCreationRequest.forAsset()
+            creationRequest.addResource(with: .photo, data: imageData, options: nil)
+        }, completionHandler: { success, error in
+            if success {
+                print("Save finished!")
+            } else {
+                print("Error saving photo: \(String(describing: error?.localizedDescription))")
+            }
+        })
     }
 }
