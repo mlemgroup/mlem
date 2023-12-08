@@ -30,10 +30,11 @@ struct SettingsView: View {
                                 AvatarView(
                                     url: appState.profileTabRemoteSymbolUrl,
                                     type: .user,
-                                    avatarSize: 60,
+                                    avatarSize: 54,
                                     iconResolution: .unrestricted
                                 )
-                                    .padding(.vertical, -8)
+                                    .padding(.vertical, -6)
+                                    .padding(.leading, 3)
                                 if let account = appState.currentActiveAccount {
 
                                     VStack(alignment: .leading, spacing: 4) {
