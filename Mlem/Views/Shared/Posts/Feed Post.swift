@@ -298,7 +298,7 @@ struct FeedPost: View {
 
         // upvote
         let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
-            ("Undo upvote", Icons.upvoteSquareFill) :
+            ("Undo Upvote", Icons.upvoteSquareFill) :
             ("Upvote", Icons.upvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
@@ -313,7 +313,7 @@ struct FeedPost: View {
 
         // downvote
         let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
-            ("Undo downvote", Icons.downvoteSquareFill) :
+            ("Undo Downvote", Icons.downvoteSquareFill) :
             ("Downvote", Icons.downvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
@@ -404,7 +404,7 @@ struct FeedPost: View {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block Community",
             imageName: Icons.hide,
-            destructiveActionPrompt: nil,
+            destructiveActionPrompt: AppConstants.blockCommunityPrompt,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
