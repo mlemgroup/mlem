@@ -20,6 +20,7 @@ struct PostModel {
     let read: Bool
     let published: Date
     let updated: Date?
+    let links: [URL]
     
     var uid: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
     
@@ -36,6 +37,9 @@ struct PostModel {
         self.read = apiPostView.read
         self.published = apiPostView.published
         self.updated = apiPostView.post.updated
+        
+        self.links = PostModel.parseLinks(from: post.body)
+        print(links)
     }
     
     /// Creates a PostModel from another PostModel. Any provided field values will override values in post.
@@ -73,6 +77,9 @@ struct PostModel {
         self.read = read ?? other.read
         self.published = published ?? other.published
         self.updated = updated ?? other.updated
+        
+        self.links = PostModel.parseLinks(from: post?.body)
+        print(links)
     }
     
     var postType: PostType {
@@ -88,6 +95,27 @@ struct PostModel {
         }
 
         return .titleOnly
+    }
+    
+    static func parseLinks(from body: String?) -> [URL] {
+        guard let body else {
+            return []
+        }
+        
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+            assertionFailure("Failed to initialize link detector")
+            return []
+        }
+        
+        let matches = detector.matches(
+            in: body,
+            options: .reportCompletion,
+            range: NSRange(location: 0, length: body.count)
+        )
+        
+        return matches.compactMap { match in
+            match.url
+        }
     }
 }
 
