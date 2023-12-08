@@ -37,7 +37,7 @@ struct SettingsView: View {
                                     .padding(.leading, 3)
                                 if let account = appState.currentActiveAccount {
 
-                                    VStack(alignment: .leading, spacing: 4) {
+                                    VStack(alignment: .leading, spacing: 3) {
                                         Text(account.nickname)
                                             .font(.title2)
                                         if let hostName = account.hostName {
