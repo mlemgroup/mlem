@@ -26,7 +26,7 @@ struct SettingsView: View {
                 List {
                     Section {
                         NavigationLink(.settings(.currentAccount)) {
-                            HStack(spacing: 20) {
+                            HStack(spacing: 23) {
                                 AvatarView(
                                     url: appState.profileTabRemoteSymbolUrl,
                                     type: .user,
