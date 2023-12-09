@@ -12,15 +12,14 @@ enum AvatarIconResolution {
 }
 
 struct AvatarView: View {
-    // Don't clip the avatars of communities from these instances
-    static let unclippedInstances = ["beehaw.org"]
+    // Don't show the outline for avatars of communities from these instances
+    static let noOutlineInstances = ["beehaw.org"]
     
     let type: AvatarType
     let url: URL?
     let avatarSize: CGFloat
     let lineColor: Color
     let lineWidth: CGFloat
-    let clipAvatar: Bool
     let blurAvatar: Bool
     
     init(
@@ -28,7 +27,6 @@ struct AvatarView: View {
         type: AvatarType,
         avatarSize: CGFloat,
         blurAvatar: Bool = false,
-        clipAvatar: Bool = true,
         lineColor: Color? = nil,
         lineWidth: CGFloat = 1,
         iconResolution: AvatarIconResolution? = nil
@@ -39,7 +37,6 @@ struct AvatarView: View {
         self.avatarSize = avatarSize
         self.lineColor = lineColor ?? Color(UIColor.secondarySystemBackground)
         self.lineWidth = lineWidth
-        self.clipAvatar = clipAvatar
         self.blurAvatar = shouldBlurNsfw && blurAvatar
         switch iconResolution {
             
@@ -64,9 +61,8 @@ struct AvatarView: View {
             type: .community,
             avatarSize: avatarSize,
             blurAvatar: community.nsfw,
-            clipAvatar: AvatarView.shouldClipCommunityAvatar(url: community.avatar),
             lineColor: lineColor,
-            lineWidth: lineWidth,
+            lineWidth: AvatarView.shouldShowCommunityAvatarOutline(url: community.avatar) ? lineWidth : 0,
             iconResolution: iconResolution
         )
     }
@@ -90,12 +86,12 @@ struct AvatarView: View {
         )
     }
     
-    static func shouldClipCommunityAvatar(url: URL?) -> Bool {
+    static func shouldShowCommunityAvatarOutline(url: URL?) -> Bool {
         guard let hostString = url?.host else {
             return true
         }
 
-        return !unclippedInstances.contains(hostString)
+        return !noOutlineInstances.contains(hostString)
     }
     
     var body: some View {
@@ -113,7 +109,7 @@ struct AvatarView: View {
         .overlay(Circle()
             .stroke(
                 lineColor,
-                lineWidth: clipAvatar ? lineWidth : 0
+                lineWidth: lineWidth
             ))
     }
 }
