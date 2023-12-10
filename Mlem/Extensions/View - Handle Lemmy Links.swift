@@ -247,8 +247,6 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                             resolved = try await resolve(query: lookup)
                         }
                         
-                        // let resolved = try await resolve(query: lookup)
-                        
                         if resolved {
                             // as the link was handled we return, else it would also be passed to the default URL handling below
                             return
