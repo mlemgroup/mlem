@@ -100,18 +100,65 @@ struct PostModel {
             return []
         }
         
-        // regex to match website links
+        // regex to match raw links not embedded in Markdown
+        // (^|[^(\]\()]) ignores anything after a markdown link format (preceded by start of string or anything but '](')
+        // (?'link'(http:|https:)+[^\s]+[\w]) matches anything starting with http: or https: and captures it as link
+        let rawLinks: [LinkType] = body
+            .matches(of: /(^|[^(\]\()])(?'link'(http:|https:)+[^\s]+[\w])/)
+            .compactMap { match in
+                if let url = URL(string: String(match.link)) {
+                    return .website(body.distance(from: body.startIndex, to: match.range.lowerBound), String(url.host() ?? "Website"), url)
+                }
+                return nil
+            }
+        
+        // regex to match markdown links
         // [^\!]? ensures we ignore image links
         // \[(?'title'[^\[]*)\] matches '[title]' and captures 'title' as title
         // \((?'url'[^\s\)]*)\) matches '(url)' and captures 'url' as url
-        let markdownLinks = body.matches(of: /[^\!]?\[(?'title'[^\[]*)\]\((?'link'[^\s\)]*)\)/)
-        
-        return markdownLinks.compactMap { match in
-            if let url = URL(string: String(match.link)) {
-                return .website(String(match.title), url)
+        let markdownLinks: [LinkType] = body
+            .matches(of: /[^\!]?\[(?'title'[^\[]*)\]\((?'link'[^\s\)]*)\)/)
+            .compactMap { match in
+                if let url = URL(string: String(match.link)) {
+                    return .website(body.distance(from: body.startIndex, to: match.range.lowerBound), String(match.title), url)
+                }
+                return nil
             }
-            return nil
-        }
+        
+        // regex to match user links
+        // \!(?'name'[^\s]+) matches '!user' and captures 'user' as name
+        // \@(?'instance'[^\s]+) matches '@instance' and captures 'instance' as instance
+        let userLinks: [LinkType] = body
+            .matches(of: /\@(?'name'[^\s]+)\@(?'instance'[^\s]+)/)
+            .compactMap { match in
+                if let url = URL(string: String(match.output.0)) {
+                    return .user(
+                        body.distance(from: body.startIndex, to: match.range.lowerBound),
+                        String(match.name),
+                        String(match.instance),
+                        url
+                    )
+                }
+                return nil
+            }
+                
+        // same as above but with \! at the start
+        let communityLinks: [LinkType] = body
+            .matches(of: /\!(?'name'[^\s]+)\@(?'instance'[^\s]+)/)
+            .compactMap { match in
+                if let url = URL(string: String(match.output.0)) {
+                    return .community(
+                        body.distance(from: body.startIndex, to: match.range.lowerBound),
+                        String(match.name),
+                        String(match.instance),
+                        url
+                    )
+                }
+                return nil
+            }
+        
+        // sort links by position in body and return
+        return (rawLinks + markdownLinks + userLinks + communityLinks).sorted { $0.position < $1.position }
     }
 }
 

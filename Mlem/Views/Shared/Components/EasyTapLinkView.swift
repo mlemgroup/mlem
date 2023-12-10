@@ -10,6 +10,7 @@ import SwiftUI
 
 /// Enumerates the types of links
 /// Equatable so that things like PostModel can be equatable
+/// All cases have a 'position' int for sorting the list
 enum LinkType {
     // TODO: capture internal Lemmy links:
     // - users
@@ -17,12 +18,38 @@ enum LinkType {
     // - posts
     // - comments
     
-    case website(String, URL)
+    case website(Int, String, URL) // position, link title, url
+    case user(Int, String, String, URL) // position, username, instance, url
+    case community(Int, String, String, URL) // position, community name, instance, url
     
     var title: String {
         switch self {
-        case let .website(title, _):
+        case let .website(_, title, _):
             return title
+        case let .user(_, username, _, _):
+            return "/u/\(username)"
+        case let .community(_, community, _, _):
+            return "/c/\(community)"
+        }
+    }
+    
+    var position: Int {
+        switch self {
+        case
+            let .website(position, _, _),
+            let .user(position, _, _, _),
+            let .community(position, _, _, _):
+            return position
+        }
+    }
+    
+    var url: URL {
+        switch self {
+        case
+            let .website(_, _, url),
+            let .user(_, _, _, url),
+            let .community(_, _, _, url):
+            return url
         }
     }
 }
@@ -30,9 +57,15 @@ enum LinkType {
 extension LinkType: Hashable, Identifiable {
     func hash(into hasher: inout Hasher) {
         switch self {
-        case let .website(title, url):
+        case let .website(_, title, url):
             hasher.combine(0)
             hasher.combine(title)
+            hasher.combine(url)
+        case let .user(_, _, _, url):
+            hasher.combine(1)
+            hasher.combine(url)
+        case let .community(_, _, _, url):
+            hasher.combine(2)
             hasher.combine(url)
         }
     }
@@ -46,13 +79,10 @@ struct EasyTapLinkView: View {
     let linkType: LinkType
     
     var body: some View {
-        switch linkType {
-        case let .website(_, url):
-            content
-                .onTapGesture {
-                    openURL(url)
-                }
-        }
+        content
+            .onTapGesture {
+                openURL(linkType.url)
+            }
     }
     
     var content: some View {
@@ -70,10 +100,13 @@ struct EasyTapLinkView: View {
             .foregroundColor(Color(UIColor.secondarySystemBackground)))
     }
     
+    @ViewBuilder
     var caption: some View {
         switch linkType {
-        case let .website(_, url):
+        case let .website(_, _, url):
             websiteCaption(url: url)
+        case let .user(_, name, instance, _), let .community(_, name, instance, _):
+            userOrCommunityCaption(name: name, instance: instance)
         }
     }
     
@@ -81,5 +114,18 @@ struct EasyTapLinkView: View {
         Text(url.description)
             .foregroundColor(.secondary)
             .font(.footnote)
+    }
+    
+    private func userOrCommunityCaption(name: String, instance: String) -> some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(name)
+                .foregroundColor(.secondary)
+                .font(.footnote)
+            
+            Text("@\(instance)")
+                .foregroundColor(.secondary)
+                .font(.footnote)
+                .opacity(0.5)
+        }
     }
 }
