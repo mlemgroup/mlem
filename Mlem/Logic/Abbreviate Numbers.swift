@@ -8,8 +8,11 @@
 import Foundation
 
 func abbreviateNumber(_ number: Int) -> String {
+    if number >= 10_000_000 {
+        return "\(Int(round(Double(number) / 1_000_000)))M"
+    }
     if number >= 1_000_000 {
-        return "\(Double(round(Double(number) / 100) / 10))M"
+        return "\(Double(round(Double(number) / 100_000) / 10))M"
     }
     if number >= 10_000 {
         return "\(Int(round(Double(number) / 1000)))K"

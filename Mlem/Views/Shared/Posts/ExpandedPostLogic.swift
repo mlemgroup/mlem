@@ -96,7 +96,7 @@ extension ExpandedPost {
         
         // upvote
         let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
-            ("Undo upvote", Icons.upvoteSquareFill) :
+            ("Undo Upvote", Icons.upvoteSquareFill) :
             ("Upvote", Icons.upvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
@@ -111,7 +111,7 @@ extension ExpandedPost {
         
         // downvote
         let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
-            ("Undo downvote", Icons.downvoteSquareFill) :
+            ("Undo Downvote", Icons.downvoteSquareFill) :
             ("Downvote", Icons.downvoteSquare)
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,

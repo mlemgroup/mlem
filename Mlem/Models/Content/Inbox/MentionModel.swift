@@ -210,7 +210,7 @@ extension MentionModel {
         
         // upvote
         ret.append(MenuFunction.standardMenuFunction(
-            text: votes.myVote == .upvote ? "Undo upvote" : "Upvote",
+            text: votes.myVote == .upvote ? "Undo Upvote" : "Upvote",
             imageName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare,
             destructiveActionPrompt: nil,
             enabled: true
@@ -222,7 +222,7 @@ extension MentionModel {
         
         // downvote
         ret.append(MenuFunction.standardMenuFunction(
-            text: votes.myVote == .downvote ? "Undo downvote" : "Downvote",
+            text: votes.myVote == .downvote ? "Undo Downvote" : "Downvote",
             imageName: votes.myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare,
             destructiveActionPrompt: nil,
             enabled: true
@@ -234,7 +234,7 @@ extension MentionModel {
         
         // toggle read
         ret.append(MenuFunction.standardMenuFunction(
-            text: personMention.read ? "Mark unread" : "Mark read",
+            text: personMention.read ? "Mark Unread" : "Mark Read",
             imageName: personMention.read ? Icons.markUnread : Icons.markRead,
             destructiveActionPrompt: nil,
             enabled: true
