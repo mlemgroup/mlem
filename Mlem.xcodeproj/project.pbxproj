@@ -459,6 +459,7 @@
 		CDCBD7282A8D6B7700387A2C /* Instance Picker View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */; };
 		CDCBD72B2A8EC0A800387A2C /* Instance Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */; };
 		CDD55D1D2B23BA41002020C7 /* EasyTapLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */; };
+		CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */; };
 		CDDB08782A5DF1330075BFEE /* CommentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */; };
 		CDDB2EDE2A85C2F1001D4B16 /* HapticPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB2EDD2A85C2F1001D4B16 /* HapticPriority.swift */; };
 		CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */; };
@@ -991,6 +992,7 @@
 		CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Picker View Logic.swift"; sourceTree = "<group>"; };
 		CDCBD72A2A8EC0A800387A2C /* Instance Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Summary.swift"; sourceTree = "<group>"; };
 		CDD55D1C2B23BA41002020C7 /* EasyTapLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyTapLinkView.swift; sourceTree = "<group>"; };
+		CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ParseLinks.swift"; sourceTree = "<group>"; };
 		CDDB08772A5DF1330075BFEE /* CommentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSettingsView.swift; sourceTree = "<group>"; };
 		CDDB2EDD2A85C2F1001D4B16 /* HapticPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPriority.swift; sourceTree = "<group>"; };
 		CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBar.swift; sourceTree = "<group>"; };
@@ -1596,6 +1598,7 @@
 		6332FDC127EFCB530009A98A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CDD55D202B2674B3002020C7 /* String */,
 				CD4368D32AE2462A00BD8BD1 /* Tracker Items */,
 				CD18243E2AA8E23100D9BEB5 /* View Modifiers */,
 				63344C612A08460D001BC616 /* View - Border on Specific Sides.swift */,
@@ -2476,6 +2479,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		CDD55D202B2674B3002020C7 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				CDD55D212B2674BD002020C7 /* String+ParseLinks.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
 		CDDCF6412A662444003DA3AC /* Custom Tab Bar */ = {
 			isa = PBXGroup;
 			children = (
@@ -3008,6 +3019,7 @@
 				508845CF2A3641160088E483 /* JSONDecoder+Default.swift in Sources */,
 				637218672A3A2AAD008C4816 /* GetPersonDetails.swift in Sources */,
 				B1A26FE12A44AAB200B91A32 /* Navigation getter.swift in Sources */,
+				CDD55D222B2674BD002020C7 /* String+ParseLinks.swift in Sources */,
 				6332FDC027EFB05F0009A98A /* Settings Item.swift in Sources */,
 				031A93D62AC847DA0077030C /* UploadConfirmationView.swift in Sources */,
 				CD8C55342A95515C0060B75B /* Onboarding Text.swift in Sources */,
