@@ -249,7 +249,8 @@ struct LargePost: View {
                 
                 if layoutMode == .maximize {
                     ForEach(post.links) { link in
-                        EasyTapLinkView(title: "Some Title", url: link)
+                        // EasyTapLinkView(title: "Some Title", url: link)
+                        EasyTapLinkView(linkType: link)
                     }
                 }
             }

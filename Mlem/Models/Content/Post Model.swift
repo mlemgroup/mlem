@@ -20,7 +20,7 @@ struct PostModel {
     let read: Bool
     let published: Date
     let updated: Date?
-    let links: [URL]
+    let links: [LinkType]
     
     var uid: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
     
@@ -39,7 +39,6 @@ struct PostModel {
         self.updated = apiPostView.post.updated
         
         self.links = PostModel.parseLinks(from: post.body)
-        print(links)
     }
     
     /// Creates a PostModel from another PostModel. Any provided field values will override values in post.
@@ -79,7 +78,6 @@ struct PostModel {
         self.updated = updated ?? other.updated
         
         self.links = PostModel.parseLinks(from: post?.body)
-        print(links)
     }
     
     var postType: PostType {
@@ -97,24 +95,22 @@ struct PostModel {
         return .titleOnly
     }
     
-    static func parseLinks(from body: String?) -> [URL] {
+    static func parseLinks(from body: String?) -> [LinkType] {
         guard let body else {
             return []
         }
         
-        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
-            assertionFailure("Failed to initialize link detector")
-            return []
-        }
+        // regex to match website links
+        // [^\!]? ensures we ignore image links
+        // \[(?'title'[^\[]*)\] matches '[title]' and captures 'title' as title
+        // \((?'url'[^\s\)]*)\) matches '(url)' and captures 'url' as url
+        let markdownLinks = body.matches(of: /[^\!]?\[(?'title'[^\[]*)\]\((?'link'[^\s\)]*)\)/)
         
-        let matches = detector.matches(
-            in: body,
-            options: .reportCompletion,
-            range: NSRange(location: 0, length: body.count)
-        )
-        
-        return matches.compactMap { match in
-            match.url
+        return markdownLinks.compactMap { match in
+            if let url = URL(string: String(match.link)) {
+                return .website(String(match.title), url)
+            }
+            return nil
         }
     }
 }
