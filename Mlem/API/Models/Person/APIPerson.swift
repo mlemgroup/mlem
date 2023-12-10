@@ -24,7 +24,7 @@ struct APIPerson: Decodable, Identifiable, Hashable {
     let sharedInboxUrl: String?
     let matrixUserId: String?
     let admin: Bool? // TODO: 0.18 deprecation remove this field
-    let botAccount: Bool
+    var botAccount: Bool
     let banExpires: Date?
     let instanceId: Int
 }
