@@ -18,6 +18,7 @@ struct MarkPostReadRequest: APIPostRequest {
         let post_id: Int
         let read: Bool
         let auth: String
+        // TODO: 0.19 support add post_ids? field
     }
 
     init(

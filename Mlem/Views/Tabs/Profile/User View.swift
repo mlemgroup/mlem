@@ -381,6 +381,7 @@ struct UserViewPreview: PreviewProvider {
             community: community,
             creatorBannedFromCommunity: false,
             creatorIsModerator: false,
+            creatorIsAdmin: false,
             counts: postVotes,
             subscribed: .notSubscribed,
             saved: false,

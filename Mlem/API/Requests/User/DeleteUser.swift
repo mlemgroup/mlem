@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: 0.18 deprecation remove this struct
 struct LegacyDeleteAccountRequest: APIPostRequest {
     typealias Response = DeleteAccountResponse
 
@@ -33,7 +34,7 @@ struct LegacyDeleteAccountRequest: APIPostRequest {
 }
 
 struct DeleteAccountRequest: APIPostRequest {
-    typealias Response = DeleteAccountResponse
+    typealias Response = SuccessResponse
     
     let instanceURL: URL
     let path = "user/delete_account"

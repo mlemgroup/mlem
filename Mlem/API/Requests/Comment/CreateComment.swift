@@ -20,7 +20,7 @@ struct CreateCommentRequest: APIPostRequest {
         let post_id: Int
         let parent_id: Int?
         let language_id: Int?
-        let form_id: String?
+        let form_id: String? // TODO: 0.18 deprecation remove this field
         let auth: String
     }
 
@@ -47,5 +47,5 @@ struct CreateCommentRequest: APIPostRequest {
 struct CommentResponse: Decodable {
     let commentView: APICommentView
     let recipientIds: [Int]
-    let formId: String?
+    let formId: String? // TODO: 0.18 deprecation remove this field
 }

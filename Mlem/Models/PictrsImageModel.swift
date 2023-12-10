@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ImageUploadResponse: Codable {
-    public let msg: String
+    public let msg: String?
     public let files: [PictrsFile]?
 }
 
@@ -25,6 +25,7 @@ struct PictrsImageModel {
         case uploaded(file: PictrsFile?)
         case failed(String?)
     }
+
     var image: Image?
     var state: UploadState = .waiting
 }

@@ -28,6 +28,7 @@ struct ContentView: View {
     @GestureState private var isDetectingLongPress = false
     
     @State private var isPresentingAccountSwitcher: Bool = false
+    @State private var tokenRefreshAccount: SavedAccount?
     
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
@@ -97,10 +98,15 @@ struct ContentView: View {
             accountChanged()
         }
         .onReceive(errorHandler.$sessionExpired) { expired in
-            if expired, let account = appState.currentActiveAccount {
-                NotificationDisplayer.presentTokenRefreshFlow(for: account) { updatedAccount in
-                    appState.setActiveAccount(updatedAccount)
-                }
+            if expired {
+                tokenRefreshAccount = appState.currentActiveAccount
+            }
+        }
+        .sheet(item: $tokenRefreshAccount) {
+            errorHandler.clearExpiredSession()
+        } content: { account in
+            TokenRefreshView(account: account) { updatedAccount in
+                appState.setActiveAccount(updatedAccount)
             }
         }
         .alert(using: $errorAlert) { content in

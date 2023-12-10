@@ -22,9 +22,9 @@ struct APIPerson: Decodable, Identifiable, Hashable {
     let banner: String?
     let deleted: Bool
     let sharedInboxUrl: String?
-    var matrixUserId: String?
-    let admin: Bool? // this is no longer returned on beehaw...
-    var botAccount: Bool
+    let matrixUserId: String?
+    let admin: Bool? // TODO: 0.18 deprecation remove this field
+    let botAccount: Bool
     let banExpires: Date?
     let instanceId: Int
 }
