@@ -99,8 +99,21 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     // swiftlint:enable function_body_length
     
     @ViewBuilder
+    // swiftlint:disable:next cyclomatic_complexity
     private func settingsDestination(for page: SettingsPage) -> some View {
         switch page {
+        case .currentAccount:
+            AccountSettingsView()
+        case .editProfile:
+            ProfileSettingsView()
+        case .signInAndSecurity:
+            SignInAndSecuritySettingsView()
+        case .accountGeneral:
+            AccountGeneralSettingsView()
+        case .accountAdvanced:
+            AdvancedAccountSettingsView()
+        case .linkMatrixAccount:
+            MatrixLinkView()
         case .accounts:
             AccountsPage()
         case .general:

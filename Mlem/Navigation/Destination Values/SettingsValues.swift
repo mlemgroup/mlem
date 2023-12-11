@@ -8,6 +8,12 @@
 import Foundation
 
 enum SettingsPage: DestinationValue {
+    case currentAccount
+    case editProfile
+    case signInAndSecurity
+    case accountGeneral
+    case accountAdvanced
+    case linkMatrixAccount
     case accounts
     case general
     case sorting

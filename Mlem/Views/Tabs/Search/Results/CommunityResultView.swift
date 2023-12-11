@@ -57,7 +57,7 @@ struct CommunityResultView: View {
                         .frame(width: 30, height: 30)
                         .padding(9)
                 } else {
-                    AvatarView(community: community, avatarSize: 48, iconResolution: 128)
+                    AvatarView(community: community, avatarSize: 48, iconResolution: .fixed(128))
                 }
                 
                 VStack(alignment: .leading, spacing: 4) {

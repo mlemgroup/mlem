@@ -17,8 +17,6 @@ struct AccountsPage: View {
     
     @State private var isShowingInstanceAdditionSheet: Bool = false
     
-    @State var accountForDeletion: SavedAccount?
-    
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -70,24 +68,13 @@ struct AccountsPage: View {
                         Label("Add Account", systemImage: Icons.switchUser)
                     }
                     .accessibilityLabel("Add a new account.")
-
-                    if let account = appState.currentActiveAccount {
-                        Button(role: .destructive) {
-                            accountForDeletion = account
-                        } label: {
-                            Label("Delete Current Account", systemImage: Icons.delete)
-                                .foregroundColor(.red)
-                        }
-                    }
                 }
             }
         }
         .sheet(isPresented: $isShowingInstanceAdditionSheet) {
             AddSavedInstanceView(onboarding: false)
         }
-        .sheet(item: $accountForDeletion) { account in
-            DeleteAccountView(account: account)
-        }
+        .fancyTabScrollCompatible()
     }
     
     private func color(for account: SavedAccount) -> Color {

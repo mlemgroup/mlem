@@ -57,7 +57,7 @@ struct UserResultView: View {
                         .frame(width: 30, height: 30)
                         .padding(9)
                 } else {
-                    AvatarView(user: user, avatarSize: 48, iconResolution: 128)
+                    AvatarView(user: user, avatarSize: 48, iconResolution: .fixed(128))
                 }
                 let flairs = user.getFlairs()
                 VStack(alignment: .leading, spacing: 4) {
