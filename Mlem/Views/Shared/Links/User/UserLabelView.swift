@@ -71,7 +71,10 @@ struct UserLabelView: View {
     var avatarSize: CGFloat { serverInstanceLocation == .bottom ? AppConstants.largeAvatarSize : AppConstants.smallAvatarSize }
 
     var body: some View {
-        HStack(alignment: .center, spacing: AppConstants.largeAvatarSpacing) {
+        HStack(
+            alignment: .center,
+            spacing: serverInstanceLocation == .bottom ? AppConstants.largeAvatarSpacing : 8
+        ) {
             if showAvatar {
                 AvatarView(user: user, avatarSize: avatarSize, blurAvatar: blurAvatar)
                     .accessibilityHidden(true)
