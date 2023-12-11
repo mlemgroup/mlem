@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::language::Language
-struct APILanguage: Decodable {
+struct APILanguage: Decodable, Hashable, Identifiable {
     let id: Int
     let code: String
     let name: String

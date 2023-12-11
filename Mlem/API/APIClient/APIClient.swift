@@ -7,6 +7,8 @@
 
 import Foundation
 
+// swiftlint:disable file_length
+
 enum HTTPMethod {
     case get
     case post(Data)
@@ -285,6 +287,59 @@ extension APIClient {
         let request = DeleteAccountRequest(account: user, password: password, deleteContent: deleteContent)
         try await perform(request: request)
     }
+    
+    @discardableResult
+    func saveUserSettings(
+        myUserInfo info: APIMyUserInfo
+    ) async throws -> SuccessResponse {
+        
+        // Despite all values being optional, we actually have to provide all values 
+        // here otherwise Lemmy returns 'user_already_exists'. Possibly fixed >0.19.0
+        // https://github.com/LemmyNet/lemmy/issues/4076
+        
+        let person = info.localUserView.person
+        let localUser = info.localUserView.localUser
+        
+        let request = try SaveUserSettingsRequest(
+            session: session,
+            body: .init(
+                avatar: person.avatar,
+                banner: person.banner,
+                bio: person.bio,
+                botAccount: person.botAccount,
+                defaultListingType: localUser.defaultListingType,
+                defaultSortType: localUser.defaultSortType,
+                discussionLanguages: info.discussionLanguages,
+                displayName: person.displayName,
+                email: localUser.email,
+                generateTotp2fa: nil,
+                interfaceLanguage: localUser.interfaceLanguage,
+                matrixUserId: person.matrixUserId,
+                openLinksInNewTab: localUser.openLinksInNewTab,
+                sendNotificationsToEmail: localUser.sendNotificationsToEmail,
+                showAvatars: localUser.showAvatars,
+                showBotAccounts: localUser.showBotAccounts,
+                showNewPostNotifs: localUser.showNewPostNotifs,
+                showNsfw: localUser.showNsfw,
+                showReadPosts: localUser.showReadPosts,
+                showScores: localUser.showScores,
+                theme: localUser.theme,
+                auth: try session.token
+            )
+        )
+        return SuccessResponse(from: try await perform(request: request))
+    }
+    
+    @discardableResult
+    func changePassword(newPassword: String, confirmNewPassword: String, currentPassword: String) async throws -> LoginResponse {
+        let request = try ChangePasswordRequest(
+            session: session,
+            newPassword: newPassword,
+            newPasswordVerify: confirmNewPassword,
+            oldPassword: currentPassword
+        )
+        return try await perform(request: request)
+    }
 }
 
 // MARK: - Object Resolving methods
@@ -395,3 +450,5 @@ extension APIClient {
         return try await perform(request: request).privateMessageView
     }
 }
+
+// swiftlint:enable file_length

@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct SettingsView: View {
+    @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
+    
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
@@ -21,8 +25,58 @@ struct SettingsView: View {
             ScrollViewReader { _ in
                 List {
                     Section {
+                        NavigationLink(.settings(.currentAccount)) {
+                            HStack(spacing: 23) {
+                                AvatarView(
+                                    url: appState.profileTabRemoteSymbolUrl,
+                                    type: .user,
+                                    avatarSize: 54,
+                                    iconResolution: .unrestricted
+                                )
+                                    .padding(.vertical, -6)
+                                    .padding(.leading, 3)
+                                if let account = appState.currentActiveAccount {
+
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text(account.nickname)
+                                            .font(.title2)
+                                        if let hostName = account.hostName {
+                                            Text("@\(hostName)")
+                                                .foregroundStyle(.secondary)
+                                                .font(.caption)
+                                        }
+                                    }
+                                }
+                                Spacer()
+                            }
+                        }
                         NavigationLink(.settings(.accounts)) {
-                            Label("Accounts", systemImage: "person.fill").labelStyle(SquircleLabelStyle(color: .teal))
+                            HStack(spacing: 10) {
+                                HStack {
+                                    HStack {
+                                        ForEach(accountsTracker.savedAccounts.prefix(4), id: \.id) { account in
+                                            AvatarView(
+                                                url: account.avatarUrl,
+                                                type: .user,
+                                                avatarSize: 28,
+                                                lineWidth: 0
+                                            )
+                                            .padding(1.8)
+                                            .background {
+                                                Circle()
+                                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                                            }
+                                            .frame(maxWidth: 8)
+                                        }
+                                    }
+                                }
+                                .frame(minWidth: 80)
+                                .padding(.leading, -10)
+                                Text("Accounts")
+                                Spacer()
+                                Text("\(accountsTracker.savedAccounts.count)")
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                         .id(scrollToTop)
                     }
@@ -71,8 +125,8 @@ struct SettingsView: View {
             .fancyTabScrollCompatible()
             .handleLemmyViews()
             .navigationTitle("Settings")
-            .navigationBarColor()
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarColor()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
     }

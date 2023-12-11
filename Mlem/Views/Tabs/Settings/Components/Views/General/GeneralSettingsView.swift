@@ -10,6 +10,7 @@ import SwiftUI
 
 struct GeneralSettingsView: View {
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
     
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -54,9 +55,25 @@ struct GeneralSettingsView: View {
                     isTicked: $shouldBlurNsfw
                 )
             } footer: {
-                // swiftlint:disable line_length
-                Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings on \(appState.currentActiveAccount?.instanceLink.host ?? "your instance's webpage").")
-                // swiftlint:enable line_length
+                VStack(alignment: .leading, spacing: 3) {
+                    // swiftlint:disable:next line_length
+                    Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings.")
+                    
+                    // TODO: 0.17 deprecation remove this check
+                    if (siteInformation.version ?? .zero) >= .init("0.18.0") {
+                        
+                        NavigationLink(.settings(.accountGeneral)) {
+                            HStack(spacing: 3) {
+                                Text("Account Settings")
+                                Image(systemName: "chevron.right")
+                                    .fontWeight(.semibold)
+                                    .imageScale(.small)
+                            }
+                            .font(.footnote)
+                        }
+                        
+                    }
+                }
             }
             
             Section {
