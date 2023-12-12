@@ -77,7 +77,7 @@ struct PostModel {
         self.published = published ?? other.published
         self.updated = updated ?? other.updated
         
-        self.links = PostModel.parseLinks(from: post?.body)
+        self.links = PostModel.parseLinks(from: self.post.body)
     }
     
     var postType: PostType {
