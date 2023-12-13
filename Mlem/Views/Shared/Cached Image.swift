@@ -19,6 +19,7 @@ struct CachedImage: View {
     // state vars to track the current image size and whether that size needs to be recomputed when the image actually loads. Combined with the image size cache, this produces good scrolling behavior except in the case where we scroll past an image and it derenders before it ever gets a chance to load, in which case that image will cause a slight hiccup on the way back up. That's kind of an unsolvable problem, since we can't know the size before we load the image at all, but that's fine because it shouldn't really happen during normal use. If we really want to guarantee smooth feed scrolling we can squish any image with no cached size into a square, but that feels like squishing a lot of images for the sake of a fringe case.
     @State var size: CGSize
     @State var shouldRecomputeSize: Bool
+    @State var showProgressView: Bool = false
     
     @EnvironmentObject private var imageDetailSheetState: ImageDetailSheetState
     
@@ -82,52 +83,67 @@ struct CachedImage: View {
     
     var body: some View {
         LazyImage(url: url) { state in
-            if let imageContainer = state.imageContainer {
-                let imageView = Image(uiImage: imageContainer.image)
-                    .resizable()
-                    .aspectRatio(contentMode: contentMode)
+                if let imageContainer = state.imageContainer {
+                    let imageView = Image(uiImage: imageContainer.image)
+                        .resizable()
+                        .aspectRatio(contentMode: contentMode)
+                        .cornerRadius(cornerRadius)
+                        .frame(idealWidth: size.width, maxHeight: size.height)
+                        .clipped()
+                        .allowsHitTesting(false)
+                        .overlay(alignment: .top) {
+                            // weeps in janky hack but this lets us tap the image only in the area we want
+                            Rectangle()
+                                .frame(maxHeight: size.height)
+                                .opacity(0.00000000001)
+                        }
+                        .onAppear {
+                            // if the image appears and its size isn't cached, compute its size and cache it
+                            if shouldRecomputeSize {
+                                let ratio = screenWidth / imageContainer.image.size.width
+                                size = CGSize(
+                                    width: screenWidth,
+                                    height: min(maxHeight, imageContainer.image.size.height * ratio)
+                                )
+                                cacheImageSize()
+                                shouldRecomputeSize = false
+                            }
+                        }
+                    if shouldExpand {
+                        imageView
+                            .onTapGesture {
+                                imageDetailSheetState.url = url // show image detail
+                                onTapCallback?()
+                            }
+                            .transition(AnyTransition.opacity.animation(.easeOut(duration: 0.1)))
+                    } else {
+                        imageView
+                            .transition(AnyTransition.opacity.animation(.easeOut(duration: 0.1)))
+                    }
+                } else if state.error != nil {
+                    // Indicates an error
+                    imageNotFound()
+                        .frame(idealWidth: size.width)
+                        .frame(height: size.height)
+                        .background(errorBackgroundColor)
+                } else if state.isLoading {
+                    ZStack {
+                        Color.secondarySystemBackground
+                        if showProgressView {
+                            ProgressView() // Acts as a placeholder
+                                .transition(AnyTransition.opacity.animation(.easeOut(duration: 0.1)))
+                        }
+                    }
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.showProgressView = true
+                        }
+                    }
                     .cornerRadius(cornerRadius)
                     .frame(idealWidth: size.width, maxHeight: size.height)
                     .clipped()
-                    .allowsHitTesting(false)
-                    .overlay(alignment: .top) {
-                        // weeps in janky hack but this lets us tap the image only in the area we want
-                        Rectangle()
-                            .frame(maxHeight: size.height)
-                            .opacity(0.00000000001)
-                    }
-                    .onAppear {
-                        // if the image appears and its size isn't cached, compute its size and cache it
-                        if shouldRecomputeSize {
-                            let ratio = screenWidth / imageContainer.image.size.width
-                            size = CGSize(
-                                width: screenWidth,
-                                height: min(maxHeight, imageContainer.image.size.height * ratio)
-                            )
-                            cacheImageSize()
-                            shouldRecomputeSize = false
-                        }
-                    }
-                if shouldExpand {
-                    imageView
-                        .onTapGesture {
-                            imageDetailSheetState.url = url // show image detail
-                            onTapCallback?()
-                        }
-                } else {
-                    imageView
+                    .transition(AnyTransition.opacity.animation(.easeOut(duration: 0.1)))
                 }
-            } else if state.error != nil {
-                // Indicates an error
-                imageNotFound()
-                    .frame(idealWidth: size.width)
-                    .frame(height: size.height)
-                    .background(errorBackgroundColor)
-            } else {
-                ProgressView() // Acts as a placeholder
-                    .frame(idealWidth: size.width)
-                    .frame(height: size.height)
-            }
         }
         .processors([
             .resize(

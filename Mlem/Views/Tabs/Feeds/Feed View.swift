@@ -159,25 +159,33 @@ struct FeedView: View {
     private var contentView: some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
-                if !postTracker.items.isEmpty {
-                    LazyVStack(spacing: 0) {
-                        EmptyView().id("top")
-                        
-                        // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
-                        ForEach(postTracker.items, id: \.uid) { post in
-                            feedPost(for: post)
+                Group {
+                    if !postTracker.items.isEmpty {
+                        LazyVStack(spacing: 0) {
+                            EmptyView().id("top")
+                            
+                            // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                            ForEach(postTracker.items, id: \.uid) { post in
+                                feedPost(for: post)
+                            }
+                            
+                            // TODO: update to use proper LoadingState
+                            EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                         }
-                        
-                        // TODO: update to use proper LoadingState
-                        EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
+                        .transition(.opacity)
                     }
                 }
+                .animation(.easeOut(duration: 0.1), value: postTracker.items.isEmpty)
             }
             .frame(maxWidth: .infinity)
             .overlay {
-                if postTracker.items.isEmpty {
-                    noPostsView()
+                Group {
+                    if postTracker.items.isEmpty {
+                        noPostsView()
+                            // .transition(.scale(scale: 0.9).combined(with: .opacity))
+                    }
                 }
+                .animation(.easeOut(duration: 0.1), value: postTracker.items.isEmpty)
             }
             .reselectAction(tab: TabSelection.feeds) {
                 // TODO: SwiftUI doesn't seem to natively support customizing this animation
