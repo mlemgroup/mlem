@@ -161,11 +161,6 @@ struct UserView: View {
                     moderatorButton
                 }
             }
-            .reselectAction(tab: .profile) {
-                withAnimation {
-                    scrollProxy.scrollTo("top")
-                }
-            }
         }
     }
     

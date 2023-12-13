@@ -15,9 +15,6 @@ struct SearchRoot: View {
             SearchView()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
-        .reselectAction(tab: TabSelection.search) {
-            print("re-selected search")
-        }
     }
 }
 

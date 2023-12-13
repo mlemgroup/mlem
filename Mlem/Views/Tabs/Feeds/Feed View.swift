@@ -179,13 +179,6 @@ struct FeedView: View {
                     noPostsView()
                 }
             }
-            .reselectAction(tab: TabSelection.feeds) {
-                // TODO: SwiftUI doesn't seem to natively support customizing this animation
-                // https://stackoverflow.com/questions/62535553/swiftui-customize-animation-for-scrollto-using-scrollviewreader
-                withAnimation {
-                    scrollProxy.scrollTo("top")
-                }
-            }
             .fancyTabScrollCompatible()
         }
     }

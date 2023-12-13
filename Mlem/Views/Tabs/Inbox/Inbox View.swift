@@ -149,12 +149,6 @@ struct InboxView: View {
                         }
                     }
                 }
-                .reselectAction(tab: .inbox) {
-                    withAnimation {
-                        // note that the actual "top" views live within the tabs themselves so they get placed correctly within the LazyVStacks
-                        scrollProxy.scrollTo("top")
-                    }
-                }
                 .fancyTabScrollCompatible()
                 .refreshable {
                     // wrapping in task so view redraws don't cancel

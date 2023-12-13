@@ -117,9 +117,6 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .reselectAction(tab: TabSelection.settings) {
-                    print("re-selected settings")
-                }
             }
             .environmentObject(settingsTabNavigation)
             .fancyTabScrollCompatible()
