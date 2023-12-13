@@ -217,16 +217,18 @@ struct FeedView: View {
     private var contentView: some View {
         ScrollView {
             if !postTracker.items.isEmpty {
-                ScrollToView(appeared: $scrollToTopAppeared)
-                    .id(scrollToTop)
-                
-                // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
-                ForEach(postTracker.items, id: \.uid) { post in
-                    feedPost(for: post)
+                LazyVStack(spacing: 0) {
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    
+                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                    ForEach(postTracker.items, id: \.uid) { post in
+                        feedPost(for: post)
+                    }
+                    
+                    // TODO: update to use proper LoadingState
+                    EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                 }
-                
-                // TODO: update to use proper LoadingState
-                EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
             }
         }
         .frame(maxWidth: .infinity)
