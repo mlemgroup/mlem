@@ -13,17 +13,17 @@ struct SettingsView: View {
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
-
+    
     @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
     
     @Environment(\.openURL) private var openURL
-
+    
     @Namespace var scrollToTop
     
     var body: some View {
-        NavigationStack(path: $settingsTabNavigation.path) {
-            ScrollViewReader { _ in
+        ScrollViewReader { proxy in
+            NavigationStack(path: $settingsTabNavigation.path) {
                 List {
                     Section {
                         NavigationLink(.settings(.currentAccount)) {
@@ -34,10 +34,10 @@ struct SettingsView: View {
                                     avatarSize: 54,
                                     iconResolution: .unrestricted
                                 )
-                                    .padding(.vertical, -6)
-                                    .padding(.leading, 3)
+                                .padding(.vertical, -6)
+                                .padding(.leading, 3)
                                 if let account = appState.currentActiveAccount {
-
+                                    
                                     VStack(alignment: .leading, spacing: 3) {
                                         Text(account.nickname)
                                             .font(.title2)
@@ -126,6 +126,12 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor()
             .tabBarNavigationEnabled(.settings, navigation)
+            .hoistNavigation {
+                withAnimation {
+                    proxy.scrollTo(scrollToTop, anchor: .bottom)
+                }
+                return true
+            }
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
         .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)

@@ -185,7 +185,7 @@ struct PerformTabBarNavigation: ViewModifier {
     @Environment(\.navigationPathWithRoutes) private var routesNavigationPath
     
     @Environment(\.tabSelectionHashValue) private var selectedTabHashValue
-    @Environment(\.tabNavigationSelectionHashValue) private var selectedNavigationTabHashValue
+    @Environment(\.tabReselectionHashValue) private var selectedNavigationTabHashValue
 
     private var navigationPath: [AnyRoute] {
         guard let selectedTabHashValue else {

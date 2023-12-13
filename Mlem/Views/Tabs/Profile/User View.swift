@@ -24,6 +24,8 @@ struct UserView: View {
     let internetSpeed: InternetSpeed
     
     // environment
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    @Environment(\.scrollViewProxy) private var scrollViewProxy
     @EnvironmentObject var appState: AppState
     
     // parameters
@@ -39,6 +41,9 @@ struct UserView: View {
     @State private var selectionSection = UserViewTab.overview
     @State private var errorDetails: ErrorDetails?
     
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+
     init(userID: Int, userDetails: APIPersonView? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
@@ -62,8 +67,26 @@ struct UserView: View {
         if let errorDetails {
             ErrorView(errorDetails)
                 .fancyTabScrollCompatible()
+                .hoistNavigation()
         } else {
             contentView
+                .hoistNavigation {
+                    if navigationPath.isEmpty {
+                        withAnimation {
+                            scrollViewProxy?.scrollTo(scrollToTop)
+                        }
+                        return true
+                    } else {
+                        if scrollToTopAppeared {
+                            return false
+                        } else {
+                            withAnimation {
+                                scrollViewProxy?.scrollTo(scrollToTop)
+                            }
+                            return true
+                        }
+                    }
+                }
                 .sheet(isPresented: $isPresentingAccountSwitcher) {
                     AccountsPage()
                 }
@@ -114,52 +137,51 @@ struct UserView: View {
     }
     
     private func view(for userDetails: APIPersonView) -> some View {
-        ScrollViewReader { scrollProxy in
-            ScrollView {
-                EmptyView().id("top")
-                
-                header(for: userDetails)
-                
-                if let bio = userDetails.person.bio {
-                    MarkdownView(text: bio, isNsfw: false).padding()
-                }
-                
-                Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                    ForEach(UserViewTab.allCases, id: \.id) { tab in
-                        // Skip tabs that are meant for only our profile
-                        if tab.onlyShowInOwnProfile {
-                            if isShowingOwnProfile() {
-                                Text(tab.label).tag(tab.rawValue)
-                            }
-                        } else {
+        ScrollView {
+            ScrollToView(appeared: $scrollToTopAppeared)
+                .id(scrollToTop)
+            
+            header(for: userDetails)
+            
+            if let bio = userDetails.person.bio {
+                MarkdownView(text: bio, isNsfw: false).padding()
+            }
+            
+            Picker(selection: $selectionSection, label: Text("Profile Section")) {
+                ForEach(UserViewTab.allCases, id: \.id) { tab in
+                    // Skip tabs that are meant for only our profile
+                    if tab.onlyShowInOwnProfile {
+                        if isShowingOwnProfile() {
                             Text(tab.label).tag(tab.rawValue)
                         }
+                    } else {
+                        Text(tab.label).tag(tab.rawValue)
                     }
                 }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                
-                UserFeedView(
-                    userID: userID,
-                    privatePostTracker: privatePostTracker,
-                    privateCommentTracker: privateCommentTracker,
-                    selectedTab: $selectionSection
-                )
             }
-            .fancyTabScrollCompatible()
-            .environmentObject(privatePostTracker)
-            .environmentObject(privateCommentTracker)
-            .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarColor()
-            .headerProminence(.standard)
-            .refreshable {
-                await tryReloadUser()
-            }.toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    accountSwitcher
-                    moderatorButton
-                }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+            
+            UserFeedView(
+                userID: userID,
+                privatePostTracker: privatePostTracker,
+                privateCommentTracker: privateCommentTracker,
+                selectedTab: $selectionSection
+            )
+        }
+        .fancyTabScrollCompatible()
+        .environmentObject(privatePostTracker)
+        .environmentObject(privateCommentTracker)
+        .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarColor()
+        .headerProminence(.standard)
+        .refreshable {
+            await tryReloadUser()
+        }.toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                accountSwitcher
+                moderatorButton
             }
         }
     }

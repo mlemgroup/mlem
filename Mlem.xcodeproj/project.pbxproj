@@ -508,6 +508,8 @@
 		E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */; };
 		E46AF98E2B29A4AA0087FDF3 /* DismissAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46AF98D2B29A4AA0087FDF3 /* DismissAction.swift */; };
 		E46AF9902B29A50A0087FDF3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E46AF98F2B29A50A0087FDF3 /* README.md */; };
+		E46AF9922B29AA350087FDF3 /* ScrollToView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46AF9912B29AA340087FDF3 /* ScrollToView.swift */; };
+		E46AF9942B29AB270087FDF3 /* Environment+ScrollViewReaderProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46AF9932B29AB270087FDF3 /* Environment+ScrollViewReaderProxy.swift */; };
 		E47478132AAC350E001CB1AC /* NavigationLink+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47478122AAC350E001CB1AC /* NavigationLink+Helpers.swift */; };
 		E47478152AAC3C19001CB1AC /* NavigationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47478142AAC3C19001CB1AC /* NavigationContext.swift */; };
 		E47B2B762A902DE200629AF7 /* SettingsValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B2B752A902DE200629AF7 /* SettingsValues.swift */; };
@@ -1037,6 +1039,8 @@
 		E453A1CF2A81C2140004BB8A /* QuickLookPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreviewController.swift; sourceTree = "<group>"; };
 		E46AF98D2B29A4AA0087FDF3 /* DismissAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAction.swift; sourceTree = "<group>"; };
 		E46AF98F2B29A50A0087FDF3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E46AF9912B29AA340087FDF3 /* ScrollToView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollToView.swift; sourceTree = "<group>"; };
+		E46AF9932B29AB270087FDF3 /* Environment+ScrollViewReaderProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Environment+ScrollViewReaderProxy.swift"; sourceTree = "<group>"; };
 		E47478122AAC350E001CB1AC /* NavigationLink+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationLink+Helpers.swift"; sourceTree = "<group>"; };
 		E47478142AAC3C19001CB1AC /* NavigationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContext.swift; sourceTree = "<group>"; };
 		E47B2B752A902DE200629AF7 /* SettingsValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsValues.swift; sourceTree = "<group>"; };
@@ -1610,6 +1614,7 @@
 				6D15D74B2A44DC240061B5CB /* Date.swift */,
 				63A200522A2DDD38005CDDE3 /* Dictionary - Append.swift */,
 				E4DDB4312A81819300B3A7E0 /* Double.swift */,
+				E46AF9932B29AB270087FDF3 /* Environment+ScrollViewReaderProxy.swift */,
 				B1955A202A6145C00056CF99 /* Environment - EasterFlagSetter.swift */,
 				507573902A5AD53C00AA7ABD /* Error+Equatable.swift */,
 				6D8601ED2A43C0B1002A56FC /* Image.swift */,
@@ -2063,6 +2068,7 @@
 				CD863FBB2A6B026400A31ED9 /* DocumentView.swift */,
 				030E86422AC6F6CB000283A6 /* Search Bar */,
 				CD20530F2AC878B50000AA38 /* UpdatedTimestampView.swift */,
+				E46AF9912B29AA340087FDF3 /* ScrollToView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -3158,6 +3164,7 @@
 				637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */,
 				505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */,
 				6332FDC327EFCB5F0009A98A /* Color.swift in Sources */,
+				E46AF9942B29AB270087FDF3 /* Environment+ScrollViewReaderProxy.swift in Sources */,
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */,
 				63DF71F12A02999C002AC14E /* App Constants.swift in Sources */,
@@ -3254,6 +3261,7 @@
 				03A40DAD2AD5EA11005F019F /* NoPostsView.swift in Sources */,
 				6372184A2A3A2AAD008C4816 /* APIPost.swift in Sources */,
 				6D693A3E2A5113DF009E2D76 /* CreatePostReport.swift in Sources */,
+				E46AF9922B29AA350087FDF3 /* ScrollToView.swift in Sources */,
 				CD391F942A533B7700E213B5 /* EditorModelProtocol.swift in Sources */,
 				CD69F56F2A41EDF50028D4F7 /* Swipey Actions.swift in Sources */,
 				637218632A3A2AAD008C4816 /* CreatePost.swift in Sources */,

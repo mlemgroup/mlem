@@ -23,6 +23,7 @@ struct CommunitySidebarView: View {
         Section { view }
         .navigationTitle("Sidebar")
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation()
         .task(priority: .userInitiated) {
             // Load community details if they weren't provided already
             if community.moderators == nil {

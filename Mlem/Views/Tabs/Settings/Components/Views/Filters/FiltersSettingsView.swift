@@ -151,6 +151,7 @@ struct FiltersSettingsView: View {
         .navigationTitle("Filters")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation()
         .toolbar {
             ToolbarItem(placement: .automatic) {
                 EditButton()

@@ -24,5 +24,6 @@ struct CommunitySettingsView: View {
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Communities")
+        .hoistNavigation()
     }
 }

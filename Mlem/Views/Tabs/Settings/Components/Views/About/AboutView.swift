@@ -62,6 +62,7 @@ struct AboutView: View {
         }
         .navigationTitle("About")
         .navigationBarColor()
+        .hoistNavigation()
     }
 
     var versionString: String {

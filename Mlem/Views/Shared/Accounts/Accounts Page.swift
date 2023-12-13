@@ -71,6 +71,7 @@ struct AccountsPage: View {
                 }
             }
         }
+        .hoistNavigation(.dismiss)
         .sheet(isPresented: $isShowingInstanceAdditionSheet) {
             AddSavedInstanceView(onboarding: false)
         }

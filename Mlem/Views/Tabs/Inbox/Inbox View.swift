@@ -28,6 +28,9 @@ struct InboxView: View {
     @Dependency(\.personRepository) var personRepository
     
     // MARK: Global
+    
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var editorTracker: EditorTracker
@@ -139,6 +142,9 @@ struct InboxView: View {
             .padding(.top, AppConstants.postAndCommentSpacing)
             
             ScrollViewReader { scrollProxy in
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+
                 ScrollView {
                     if errorOccurred {
                         errorView()
@@ -162,6 +168,12 @@ struct InboxView: View {
                     await Task {
                         await refresh()
                     }.value
+                }
+                .hoistNavigation {
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollToTop)
+                    }
+                    return true
                 }
             }
         }
