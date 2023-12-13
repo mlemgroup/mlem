@@ -24,6 +24,7 @@ struct InfoStackView: View {
     let commentCount: Int?
     let saved: Bool?
     let alignment: HorizontalAlignment
+    let colorizeVotes: Bool
     
     var body: some View {
         HStack {
@@ -70,6 +71,7 @@ struct InfoStackView: View {
             Image(systemName: votes.myVote == .resetVote ? Icons.upvoteSquare : votes.myVote.iconNameFill)
             Text(String(votes.score))
         }
+        .foregroundColor(colorizeVotes ? votes.myVote.color ?? .secondary : .secondary)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(votes.score) net votes")
@@ -81,6 +83,7 @@ struct InfoStackView: View {
             Image(systemName: votes.myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare)
             Text(String(votes.upvotes))
         }
+        .foregroundColor(colorizeVotes && votes.myVote == .upvote ? .upvoteColor : .secondary)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(votes.upvotes) upvotes")
@@ -94,6 +97,7 @@ struct InfoStackView: View {
                 : Icons.downvoteSquare)
             Text(String(votes.downvotes))
         }
+        .foregroundColor(colorizeVotes && votes.myVote == .downvote ? .downvoteColor : .secondary)
         .accessibilityAddTraits(.isStaticText)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(votes.downvotes) downvotes")

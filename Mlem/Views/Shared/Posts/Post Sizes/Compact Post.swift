@@ -115,7 +115,8 @@ struct CompactPost: View {
                 updated: post.updated,
                 commentCount: post.numReplies,
                 saved: post.saved,
-                alignment: .center
+                alignment: .center,
+                colorizeVotes: true
             )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
