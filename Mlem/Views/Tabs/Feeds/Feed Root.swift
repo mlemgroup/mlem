@@ -19,6 +19,7 @@ struct FeedRoot: View {
     @StateObject private var navigation: Navigation = .init()
     
     @State var rootDetails: CommunityLinkWithContext?
+    @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
 
     var body: some View {
         NavigationSplitView {
@@ -28,7 +29,9 @@ struct FeedRoot: View {
                 NavigationStack(path: $feedTabNavigation.path) {
                     FeedView(
                         community: rootDetails.community,
-                        feedType: rootDetails.feedType
+                        feedType: rootDetails.feedType,
+                        rootDetails: $rootDetails,
+                        splitViewColumnVisibility: $columnVisibility
                     )
                     .environmentObject(appState)
                     .environmentObject(feedTabNavigation)
