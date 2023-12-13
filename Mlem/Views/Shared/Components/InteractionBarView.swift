@@ -113,7 +113,8 @@ struct InteractionBarView: View {
                         updated: shouldShowTime ? updated : nil,
                         commentCount: shouldShowReplies ? numReplies : nil,
                         saved: shouldShowSaved ? saved : nil,
-                        alignment: infoStackAlignment(offset)
+                        alignment: infoStackAlignment(offset),
+                        colorizeVotes: false
                     )
                     .padding(AppConstants.postAndCommentSpacing)
                     .frame(minWidth: 0, maxWidth: .infinity)

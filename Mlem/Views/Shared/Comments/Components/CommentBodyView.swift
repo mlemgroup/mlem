@@ -120,17 +120,19 @@ struct CommentBodyView: View {
                     Image(systemName: myVote == .upvote ? Icons.upvoteSquareFill : Icons.upvoteSquare)
                     Text(String(commentView.counts.upvotes))
                 }
+                .foregroundColor(myVote == .upvote ? .upvoteColor : .secondary)
                 
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .downvote ? Icons.downvoteSquareFill : Icons.downvoteSquare)
                     Text(String(commentView.counts.downvotes))
                 }
+                .foregroundColor(myVote == .downvote ? .downvoteColor : .secondary)
             } else {
                 HStack(spacing: AppConstants.iconToTextSpacing) {
                     Image(systemName: myVote == .resetVote ? Icons.upvoteSquare : myVote.iconNameFill)
                     Text(String(commentView.counts.score))
                 }
-                .foregroundColor(.secondary)
+                .foregroundColor(myVote.color ?? .secondary)
                 .font(.footnote)
             }
         }
