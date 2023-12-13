@@ -15,7 +15,8 @@ struct SettingsView: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
 
     @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
-
+    @StateObject private var navigation: Navigation = .init()
+    
     @Environment(\.openURL) private var openURL
 
     @Namespace var scrollToTop

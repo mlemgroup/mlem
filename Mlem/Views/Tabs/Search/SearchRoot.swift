@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SearchRoot: View {
     @StateObject private var searchRouter: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
         NavigationStack(path: $searchRouter.path) {

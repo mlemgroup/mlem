@@ -15,6 +15,7 @@ struct ProfileView: View {
     let userID: Int
 
     @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
         NavigationStack(path: $profileTabNavigation.path) {

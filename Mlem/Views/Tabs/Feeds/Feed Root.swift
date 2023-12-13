@@ -16,7 +16,8 @@ struct FeedRoot: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
-
+    @StateObject private var navigation: Navigation = .init()
+    
     @State var rootDetails: CommunityLinkWithContext?
 
     var body: some View {
