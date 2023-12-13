@@ -28,7 +28,7 @@ struct FeedRoot: View {
          - For tab bar navigation (scroll to top) to work, ScrollViewReader must wrap the entire `NavigationSplitView`. Furthermore, the proxy must be passed into the environment on the split view. Attempting to do so on a column view doesn't work. [2023.09]
          */
         ScrollViewReader { scrollProxy in
-            NavigationSplitView {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
                 CommunityListView(selectedCommunity: $rootDetails)
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
