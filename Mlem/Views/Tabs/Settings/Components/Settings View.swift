@@ -125,6 +125,7 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor()
+            .tabBarNavigationEnabled(.settings, navigation)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
         .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)

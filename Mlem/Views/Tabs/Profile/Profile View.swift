@@ -21,6 +21,8 @@ struct ProfileView: View {
         NavigationStack(path: $profileTabNavigation.path) {
             UserView(userID: userID)
                 .handleLemmyViews()
+                .environmentObject(profileTabNavigation)
+                .tabBarNavigationEnabled(.settings, navigation)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(profileTabNavigation))
         .environment(\.navigationPathWithRoutes, $profileTabNavigation.path)

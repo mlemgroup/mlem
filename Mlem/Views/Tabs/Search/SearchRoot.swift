@@ -14,6 +14,8 @@ struct SearchRoot: View {
     var body: some View {
         NavigationStack(path: $searchRouter.path) {
             SearchView()
+                .environmentObject(searchRouter)
+                .tabBarNavigationEnabled(.settings, navigation)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
         .environment(\.navigationPathWithRoutes, $searchRouter.path)

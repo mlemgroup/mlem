@@ -113,12 +113,14 @@ struct InboxView: View {
                 }
                 .listStyle(PlainListStyle())
                 .handleLemmyViews()
+                .environmentObject(inboxTabNavigation)
                 .environmentObject(inboxTracker)
                 .onChange(of: shouldFilterRead) { newValue in
                     Task(priority: .userInitiated) {
                         await handleShouldFilterReadChange(newShouldFilterRead: newValue)
                     }
                 }
+                .tabBarNavigationEnabled(.settings, navigation)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
         .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
