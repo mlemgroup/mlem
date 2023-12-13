@@ -120,6 +120,8 @@ struct InboxView: View {
                     }
                 }
         }
+        .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
+        .environmentObject(navigation)
     }
     
     @ViewBuilder var contentView: some View {

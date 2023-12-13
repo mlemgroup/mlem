@@ -127,5 +127,7 @@ struct SettingsView: View {
             .navigationBarColor()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
+        .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)
+        .environmentObject(navigation)
     }
 }

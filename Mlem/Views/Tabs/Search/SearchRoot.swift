@@ -16,6 +16,8 @@ struct SearchRoot: View {
             SearchView()
         }
         .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
+        .environment(\.navigationPathWithRoutes, $searchRouter.path)
+        .environmentObject(navigation)
     }
 }
 

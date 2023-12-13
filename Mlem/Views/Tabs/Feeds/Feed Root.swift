@@ -34,6 +34,8 @@ struct FeedRoot: View {
                     .handleLemmyViews()
                 }
                 .id(rootDetails.id)
+                .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
+                .environmentObject(navigation)
             } else {
                 Text("Please select a community")
             }
