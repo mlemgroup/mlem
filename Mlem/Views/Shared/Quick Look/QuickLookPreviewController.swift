@@ -6,7 +6,6 @@
 //
 
 import QuickLook
-import UIKit
 
 /// QuickLookPreviewController allows us to use UIKit's Quick Look view inside SwiftUI with interactive dismiss gesture, and a transparent background.
 final class QuickLookPreviewController: UIViewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate {

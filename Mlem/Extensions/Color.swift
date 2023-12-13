@@ -5,9 +5,7 @@
 //  Created by David Bureš on 26.03.2022.
 //
 
-import Foundation
 import SwiftUI
-import UIKit
 
 extension Color {
     // This is here to give me dynamic light/dark system colors for view backgrounds
