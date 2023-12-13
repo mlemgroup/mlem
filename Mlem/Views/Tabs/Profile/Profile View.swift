@@ -22,7 +22,7 @@ struct ProfileView: View {
             UserView(userID: userID)
                 .handleLemmyViews()
                 .environmentObject(profileTabNavigation)
-                .tabBarNavigationEnabled(.settings, navigation)
+                .tabBarNavigationEnabled(.profile, navigation)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(profileTabNavigation))
         .environment(\.navigationPathWithRoutes, $profileTabNavigation.path)

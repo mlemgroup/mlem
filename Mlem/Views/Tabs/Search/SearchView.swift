@@ -90,70 +90,68 @@ struct SearchView: View {
     
     @ViewBuilder
     private var content: some View {
-        ScrollViewReader { proxy in
-            ZStack {
-                ScrollView {
-                    ScrollToView(appeared: $scrollToTopAppeared)
-                        .id(scrollToTop)
-
-                    SearchHomeView()
-                        .environmentObject(homeSearchModel)
-                        .environmentObject(homeContentTracker)
-                }
-                .fancyTabScrollCompatible()
-                .scrollDismissesKeyboard(.immediately)
-                ._opacity(page == .home ? 1 : 0, speed: page == .home ? 1 : 0)
-                .zIndex(page == .home ? 1 : 0)
+        ZStack {
+            ScrollView {
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
                 
-                ScrollView {
-                    HStack { EmptyView() }
-                        .id(recentsScrollToTop)
-                    RecentSearchesView()
-                }
-                .fancyTabScrollCompatible()
-                .scrollDismissesKeyboard(.immediately)
-                ._opacity(page == .recents ? 1 : 0, speed: page == .recents ? 1 : 0)
-                .zIndex(page == .recents ? 1 : 0)
-                .onChange(of: recentsScrollToTopSignal) { _ in
-                    proxy.scrollTo(recentsScrollToTop)
-                }
-                
-                ScrollView {
-                    HStack { EmptyView() }
-                        .id(resultsScrollToTop)
-                    SearchResultsView()
-                        .environmentObject(searchModel)
-                }
-                .fancyTabScrollCompatible()
-                .scrollDismissesKeyboard(.immediately)
-                ._opacity(page == .results ? 1 : 0, speed: page == .results ? 1 : 0)
-                .zIndex(page == .results ? 1 : 0)
-                .onChange(of: resultsScrollToTopSignal) { _ in
-                    proxy.scrollTo(resultsScrollToTop)
-                }
+                SearchHomeView()
+                    .environmentObject(homeSearchModel)
+                    .environmentObject(homeContentTracker)
             }
-            .animation(.default, value: page)
-            .transition(.opacity)
-            .onChange(of: isSearching) { newValue in
-                if newValue, searchModel.searchText.isEmpty {
+            .fancyTabScrollCompatible()
+            .scrollDismissesKeyboard(.immediately)
+            ._opacity(page == .home ? 1 : 0, speed: page == .home ? 1 : 0)
+            .zIndex(page == .home ? 1 : 0)
+            
+            ScrollView {
+                HStack { EmptyView() }
+                    .id(recentsScrollToTop)
+                RecentSearchesView()
+            }
+            .fancyTabScrollCompatible()
+            .scrollDismissesKeyboard(.immediately)
+            ._opacity(page == .recents ? 1 : 0, speed: page == .recents ? 1 : 0)
+            .zIndex(page == .recents ? 1 : 0)
+            .onChange(of: recentsScrollToTopSignal) { _ in
+                scrollProxy?.scrollTo(recentsScrollToTop)
+            }
+            
+            ScrollView {
+                HStack { EmptyView() }
+                    .id(resultsScrollToTop)
+                SearchResultsView()
+                    .environmentObject(searchModel)
+            }
+            .fancyTabScrollCompatible()
+            .scrollDismissesKeyboard(.immediately)
+            ._opacity(page == .results ? 1 : 0, speed: page == .results ? 1 : 0)
+            .zIndex(page == .results ? 1 : 0)
+            .onChange(of: resultsScrollToTopSignal) { _ in
+                scrollProxy?.scrollTo(resultsScrollToTop)
+            }
+        }
+        .animation(.default, value: page)
+        .transition(.opacity)
+        .onChange(of: isSearching) { newValue in
+            if newValue, searchModel.searchText.isEmpty {
+                page = .recents
+            }
+        }
+        .onChange(of: searchModel.searchText) { newValue in
+            if page != .home {
+                if newValue.isEmpty {
                     page = .recents
+                } else {
+                    page = .results
                 }
             }
-            .onChange(of: searchModel.searchText) { newValue in
-                if page != .home {
-                    if newValue.isEmpty {
-                        page = .recents
-                    } else {
-                        page = .results
-                    }
-                }
+        }
+        .hoistNavigation {
+            withAnimation {
+                scrollToTop(page: page)
             }
-            .hoistNavigation {
-                withAnimation {
-                    scrollToTop(page: page)
-                }
-                return true
-            }
+            return true
         }
     }
     

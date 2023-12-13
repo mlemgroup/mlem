@@ -12,14 +12,17 @@ struct SearchRoot: View {
     @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
-        NavigationStack(path: $searchRouter.path) {
-            SearchView()
-                .environmentObject(searchRouter)
-                .tabBarNavigationEnabled(.settings, navigation)
+        ScrollViewReader { proxy in
+            NavigationStack(path: $searchRouter.path) {
+                SearchView()
+                    .environmentObject(searchRouter)
+                    .tabBarNavigationEnabled(.search, navigation)
+            }
+            .environment(\.scrollViewProxy, proxy)
+            .environment(\.navigationPathWithRoutes, $searchRouter.path)
+            .environmentObject(navigation)
+            .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
         }
-        .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
-        .environment(\.navigationPathWithRoutes, $searchRouter.path)
-        .environmentObject(navigation)
     }
 }
 

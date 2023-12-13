@@ -123,7 +123,7 @@ struct InboxView: View {
                         await handleShouldFilterReadChange(newShouldFilterRead: newValue)
                     }
                 }
-                .tabBarNavigationEnabled(.settings, navigation)
+                .tabBarNavigationEnabled(.inbox, navigation)
         }
         .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
         .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)

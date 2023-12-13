@@ -36,7 +36,7 @@ struct FeedRoot: View {
                     .environmentObject(appState)
                     .environmentObject(feedTabNavigation)
                     .handleLemmyViews()
-                    .tabBarNavigationEnabled(.settings, navigation)
+                    .tabBarNavigationEnabled(.feeds, navigation)
                 }
                 .id(rootDetails.id)
                 .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
