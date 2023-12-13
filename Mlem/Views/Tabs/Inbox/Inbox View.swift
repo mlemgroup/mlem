@@ -105,32 +105,35 @@ struct InboxView: View {
     @StateObject private var navigation: Navigation = .init()
     
     var body: some View {
-        // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
-        NavigationStack(path: $inboxTabNavigation.path) {
-            contentView
-                .navigationTitle("Inbox")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarColor()
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
-                }
-                .listStyle(PlainListStyle())
-                .handleLemmyViews()
-                .environmentObject(inboxTabNavigation)
-                .environmentObject(inboxTracker)
-                .onChange(of: shouldFilterRead) { newValue in
-                    Task(priority: .userInitiated) {
-                        await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+        ScrollViewReader { scrollProxy in
+            // NOTE: there appears to be a SwiftUI issue with segmented pickers stacked on top of ScrollViews which causes the tab bar to appear fully transparent. The internet suggests that this may be a bug that only manifests in dev mode, so, unless this pops up in a build, don't worry about it. If it does manifest, we can either put the Picker *in* the ScrollView (bad because then you can't access it without scrolling to the top) or put a Divider() at the bottom of the VStack (bad because then the material tab bar doesn't show)
+            NavigationStack(path: $inboxTabNavigation.path) {
+                contentView(scrollProxy: scrollProxy)
+                    .navigationTitle("Inbox")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarColor()
+                    .toolbar {
+                        ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
                     }
-                }
-                .tabBarNavigationEnabled(.inbox, navigation)
+                    .listStyle(PlainListStyle())
+                    .tabBarNavigationEnabled(.inbox, navigation)
+                    .handleLemmyViews()
+                    .environmentObject(inboxTabNavigation)
+                    .environmentObject(inboxTracker)
+                    .onChange(of: shouldFilterRead) { newValue in
+                        Task(priority: .userInitiated) {
+                            await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+                        }
+                    }
+            }
+            .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
+            .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
+            .environmentObject(navigation)
+            .environment(\.scrollViewProxy, scrollProxy)
         }
-        .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
-        .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
-        .environmentObject(navigation)
     }
     
-    @ViewBuilder var contentView: some View {
+    @ViewBuilder private func contentView(scrollProxy: ScrollViewProxy) -> some View {
         VStack(spacing: AppConstants.postAndCommentSpacing) {
             Picker(selection: $curTab, label: Text("Inbox tab")) {
                 ForEach(InboxTab.allCases) { tab in
@@ -141,40 +144,38 @@ struct InboxView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
             .padding(.top, AppConstants.postAndCommentSpacing)
             
-            ScrollViewReader { scrollProxy in
+            ScrollView {
                 ScrollToView(appeared: $scrollToTopAppeared)
                     .id(scrollToTop)
-
-                ScrollView {
-                    if errorOccurred {
-                        errorView()
-                    } else {
-                        switch curTab {
-                        case .all:
-                            AllItemsFeedView(inboxTracker: inboxTracker)
-                        case .replies:
-                            RepliesFeedView(replyTracker: replyTracker)
-                        case .mentions:
-                            MentionsFeedView(mentionTracker: mentionTracker)
-                        case .messages:
-                            MessagesFeedView(messageTracker: messageTracker)
-                        }
+                
+                if errorOccurred {
+                    errorView()
+                } else {
+                    switch curTab {
+                    case .all:
+                        AllItemsFeedView(inboxTracker: inboxTracker)
+                    case .replies:
+                        RepliesFeedView(replyTracker: replyTracker)
+                    case .mentions:
+                        MentionsFeedView(mentionTracker: mentionTracker)
+                    case .messages:
+                        MessagesFeedView(messageTracker: messageTracker)
                     }
                 }
-                .fancyTabScrollCompatible()
-                .refreshable {
-                    // wrapping in task so view redraws don't cancel
-                    // awaiting the value makes the refreshable indicator properly wait for the call to finish
-                    await Task {
-                        await refresh()
-                    }.value
+            }
+            .fancyTabScrollCompatible()
+            .refreshable {
+                // wrapping in task so view redraws don't cancel
+                // awaiting the value makes the refreshable indicator properly wait for the call to finish
+                await Task {
+                    await refresh()
+                }.value
+            }
+            .hoistNavigation {
+                withAnimation {
+                    scrollProxy.scrollTo(scrollToTop)
                 }
-                .hoistNavigation {
-                    withAnimation {
-                        scrollProxy.scrollTo(scrollToTop)
-                    }
-                    return true
-                }
+                return true
             }
         }
         .task {
