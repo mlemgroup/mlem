@@ -118,23 +118,23 @@ struct SettingsView: View {
                         }
                     }
                 }
-            }
-            .environmentObject(settingsTabNavigation)
-            .fancyTabScrollCompatible()
-            .handleLemmyViews()
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarColor()
-            .tabBarNavigationEnabled(.settings, navigation)
-            .hoistNavigation {
-                withAnimation {
-                    proxy.scrollTo(scrollToTop, anchor: .bottom)
+                .environmentObject(settingsTabNavigation)
+                .fancyTabScrollCompatible()
+                .handleLemmyViews()
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarColor()
+                .tabBarNavigationEnabled(.settings, navigation)
+                .hoistNavigation {
+                    withAnimation {
+                        proxy.scrollTo(scrollToTop, anchor: .bottom)
+                    }
+                    return true
                 }
-                return true
             }
+            .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
+            .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)
+            .environmentObject(navigation)
         }
-        .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
-        .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)
-        .environmentObject(navigation)
     }
 }
