@@ -112,6 +112,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             AccountGeneralSettingsView()
         case .accountAdvanced:
             AdvancedAccountSettingsView()
+        case .accountDiscussionLanguages:
+            AccountDiscussionLanguagesView()
         case .linkMatrixAccount:
             MatrixLinkView()
         case .accounts:
