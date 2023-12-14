@@ -97,6 +97,7 @@ struct EasyTapLinkView: View {
                 .bold()
             
             caption
+                .lineLimit(1)
         }
         .padding(AppConstants.postAndCommentSpacing)
         .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
