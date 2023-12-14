@@ -57,15 +57,18 @@ enum LinkType {
 extension LinkType: Hashable, Identifiable {
     func hash(into hasher: inout Hasher) {
         switch self {
-        case let .website(_, title, url):
+        case let .website(position, title, url):
             hasher.combine(0)
+            hasher.combine(position)
             hasher.combine(title)
             hasher.combine(url)
-        case let .user(_, _, _, url):
+        case let .user(position, _, _, url):
             hasher.combine(1)
+            hasher.combine(position)
             hasher.combine(url)
-        case let .community(_, _, _, url):
+        case let .community(position, _, _, url):
             hasher.combine(2)
+            hasher.combine(position)
             hasher.combine(url)
         }
     }
