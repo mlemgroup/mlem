@@ -8,7 +8,6 @@
 import Dependencies
 import Nuke
 import SwiftUI
-import UIKit
 import XCTestDynamicOverlay
 
 @main

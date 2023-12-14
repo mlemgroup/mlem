@@ -9,7 +9,6 @@ import Combine
 import Dependencies
 import Foundation
 import SwiftUI
-import UIKit
 
 private struct ViewOffsetKey: PreferenceKey {
     typealias Value = CGFloat
