@@ -12,7 +12,8 @@ extension String {
         // regex to match raw links not embedded in Markdown
         // (^|[^(\]\()]) ignores anything after a markdown link format (preceded by start of string or anything but '](')
         // (?'link'(http:|https:)+[^\s]+[\w]) matches anything starting with http: or https: and captures it as link
-        let rawLinks: [LinkType] = matches(of: /(^|[^(\]\()])(?'link'(http:|https:)+[^\s]+[\w])/)
+        // let rawLinks: [LinkType] = matches(of: /(^|[^(\]\()])(?'link'(http:|https:)+[^\s]+[\w])/)
+        let rawLinks: [LinkType] = matches(of: /(^|[^(\]\()])(?'link'(http:|https:)+[^\s\[\]]+[\w])/)
             .compactMap { match in
                 if let url = URL(string: String(match.link)) {
                     return .website(
@@ -41,8 +42,9 @@ extension String {
         
         // regex to match user links
         // \!(?'name'[^\s]+) matches '!user' and captures 'user' as name
-        // \@(?'instance'[^\s]+) matches '@instance' and captures 'instance' as instance
-        let userLinks: [LinkType] = matches(of: /\@(?'name'[^\s]+)\@(?'instance'[^\s]+)/)
+        // \@(?'instance'[^\s(\]\()]+)\] matches '@instance' and captures 'instance' as instance, excluding cases where instance is followed by '](' (suggesting a username embedded in a link)
+        // \]?(\s|$) ensures that usernames wrapped in [] that are not part of links get appropriately parsed
+        let userLinks: [LinkType] = matches(of: /\@(?'name'[^\s]+)\@(?'instance'[^\s(\]\()]+)\]?(\s|$)/)
             .compactMap { match in
                 if let url = URL(string: String(match.output.0)) {
                     return .user(
@@ -56,7 +58,7 @@ extension String {
             }
         
         // same as above but with \! at the start
-        let communityLinks: [LinkType] = matches(of: /\!(?'name'[^\s]+)\@(?'instance'[^\s]+)/)
+        let communityLinks: [LinkType] = matches(of: /\!(?'name'[^\s]+)\@(?'instance'[^\s(\]\()]+)\]?(\s|$)/)
             .compactMap { match in
                 if let url = URL(string: String(match.output.0)) {
                     return .community(
