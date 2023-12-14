@@ -62,5 +62,6 @@ struct SortingSettingsView: View {
         .fancyTabScrollCompatible()
         .navigationTitle("Sorting")
         .navigationBarColor()
+        .hoistNavigation()
     }
 }

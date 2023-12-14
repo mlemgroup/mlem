@@ -70,6 +70,9 @@ struct ExpandedPost: View {
     @State var commentSortingType: CommentSortType = .appStorageValue()
     @State private var postLayoutMode: LargePost.LayoutMode = .maximize
     
+    @State private var scrollToTopAppeared = false
+    @Namespace var scrollToTop
+    
     var body: some View {
         contentView
             .environmentObject(commentTracker)
@@ -91,6 +94,9 @@ struct ExpandedPost: View {
         GeometryReader { proxy in
             ScrollViewReader { (scrollProxy: ScrollViewProxy) in
                 ScrollView {
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+
                     VStack(spacing: 0) {
                         postView
                             .id(0)
@@ -126,6 +132,16 @@ struct ExpandedPost: View {
                 }
                 .onPreferenceChange(AnchorsKey.self) { anchors in
                     topVisibleCommentId = topCommentRow(of: anchors, in: proxy)
+                }
+                .hoistNavigation {
+                    if scrollToTopAppeared {
+                        return false
+                    } else {
+                        withAnimation {
+                            scrollProxy.scrollTo(scrollToTop)
+                        }
+                        return true
+                    }
                 }
             }
         }

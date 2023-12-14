@@ -180,5 +180,6 @@ struct PostSettingsView: View {
         .navigationTitle("Posts")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation()
     }
 }

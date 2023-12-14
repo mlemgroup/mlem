@@ -127,5 +127,6 @@ struct CommentSettingsView: View {
         .navigationTitle("Comments")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation()
     }
 }

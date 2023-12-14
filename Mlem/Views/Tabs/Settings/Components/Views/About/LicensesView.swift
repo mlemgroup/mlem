@@ -50,5 +50,6 @@ struct LicensesView: View {
         }
         .navigationTitle("Licenses")
         .navigationBarColor()
+        .hoistNavigation()
     }
 }

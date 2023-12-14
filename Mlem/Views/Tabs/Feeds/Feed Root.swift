@@ -16,30 +16,46 @@ struct FeedRoot: View {
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
-
+    @StateObject private var navigation: Navigation = .init()
+    
     @State var rootDetails: CommunityLinkWithContext?
+    @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
 
     var body: some View {
-        NavigationSplitView {
-            CommunityListView(selectedCommunity: $rootDetails)
-        } detail: {
-            if let rootDetails {
+        /*
+         Implementation Note:
+         - The conditional content in `detail` column must be inside the `NavigationStack`. To be clear, the root view for `detail` column must be `NavigationStack`, otherwise navigation may break in odd ways. [2023.09]
+         - For tab bar navigation (scroll to top) to work, ScrollViewReader must wrap the entire `NavigationSplitView`. Furthermore, the proxy must be passed into the environment on the split view. Attempting to do so on a column view doesn't work. [2023.09]
+         */
+        ScrollViewReader { scrollProxy in
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                CommunityListView(selectedCommunity: $rootDetails)
+            } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
-                    FeedView(
-                        community: rootDetails.community,
-                        feedType: rootDetails.feedType
-                    )
-                    .environmentObject(appState)
-                    .handleLemmyViews()
+                    if let rootDetails {
+                        FeedView(
+                            community: rootDetails.community,
+                            feedType: rootDetails.feedType,
+                            rootDetails: $rootDetails,
+                            splitViewColumnVisibility: $columnVisibility
+                        )
+                        .environmentObject(appState)
+                        .environmentObject(feedTabNavigation)
+                        .tabBarNavigationEnabled(.feeds, navigation)
+                        .handleLemmyViews()
+                    } else {
+                        Text("Please select a community")
+                    }
                 }
-                .id(rootDetails.id)
-            } else {
-                Text("Please select a community")
+                .id(rootDetails?.id ?? 0)
             }
+            .environment(\.scrollViewProxy, scrollProxy)
         }
         .handleLemmyLinkResolution(
             navigationPath: .constant(feedTabNavigation)
         )
+        .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
+        .environmentObject(navigation)
         .environmentObject(feedTabNavigation)
         .environmentObject(appState)
         .onAppear {
