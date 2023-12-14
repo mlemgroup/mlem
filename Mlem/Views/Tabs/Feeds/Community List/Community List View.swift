@@ -21,6 +21,9 @@ struct CommunityListView: View {
     
     @Binding var selectedCommunity: CommunityLinkWithContext?
     
+    /// Set to `false` on disappear.
+    @State private var appeared: Bool = false
+    
     init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
         self._selectedCommunity = selectedCommunity
     }
@@ -72,8 +75,22 @@ struct CommunityListView: View {
                 .navigationBarColor()
                 .listStyle(PlainListStyle())
                 .scrollIndicators(.hidden)
+                .onAppear {
+                    appeared = true
+                }
+                .onDisappear {
+                    appeared = false
+                }
                 
                 SectionIndexTitles(proxy: scrollProxy, communitySections: model.allSections())
+            }
+            .reselectAction(tab: .feeds) {
+                guard appeared else {
+                    return
+                }
+                withAnimation {
+                    scrollProxy.scrollTo("top", anchor: .bottom)
+                }
             }
         }
         .refreshable {

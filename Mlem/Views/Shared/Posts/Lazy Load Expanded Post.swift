@@ -38,6 +38,7 @@ struct LazyLoadExpandedPost: View {
                 progressView
             }
         }
+        .hoistNavigation()
     }
     
     private var progressView: some View {

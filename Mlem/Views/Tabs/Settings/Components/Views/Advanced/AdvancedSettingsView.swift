@@ -53,5 +53,6 @@ struct AdvancedSettingsView: View {
         }
         .navigationTitle("Advanced")
         .navigationBarColor()
+        .hoistNavigation()
     }
 }

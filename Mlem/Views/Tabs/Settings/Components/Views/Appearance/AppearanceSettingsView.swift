@@ -71,5 +71,6 @@ struct AppearanceSettingsView: View {
         .navigationTitle("Appearance")
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
+        .hoistNavigation()
     }
 }

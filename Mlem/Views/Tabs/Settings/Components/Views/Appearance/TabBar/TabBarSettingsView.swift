@@ -102,5 +102,6 @@ struct TabBarSettingsView: View {
             print("new nickname: \(nickname)")
             textFieldEntry = nickname
         }
+        .hoistNavigation()
     }
 }

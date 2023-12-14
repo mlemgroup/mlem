@@ -26,6 +26,8 @@ struct FeedView: View {
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    @Environment(\.scrollViewProxy) private var scrollViewProxy
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var editorTracker: EditorTracker
@@ -34,12 +36,17 @@ struct FeedView: View {
     
     @State var community: CommunityModel?
     @State var feedType: FeedType
+    @Binding var rootDetails: CommunityLinkWithContext?
+    /// Applicable when presented as root view in a column of NavigationSplitView.
+    @Binding var splitViewColumnVisibility: NavigationSplitViewVisibility
     
     @State var errorDetails: ErrorDetails?
     
     init(
         community: CommunityModel?,
-        feedType: FeedType
+        feedType: FeedType,
+        rootDetails: Binding<CommunityLinkWithContext?>? = nil,
+        splitViewColumnVisibility: Binding<NavigationSplitViewVisibility>? = nil
     ) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -52,6 +59,8 @@ struct FeedView: View {
             upvoteOnSave: upvoteOnSave
         ))
         
+        self._rootDetails = rootDetails ?? .constant(nil)
+        self._splitViewColumnVisibility = splitViewColumnVisibility ?? .constant(.automatic)
         self._community = State(initialValue: community)
         
         @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
@@ -79,6 +88,14 @@ struct FeedView: View {
         isPresentingConfirmDestructive = true
     }
     
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+    private var scrollToTopId: Int? {
+        postTracker.items.first?.id
+    }
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     // MARK: - Main Views
     
     var body: some View {
@@ -93,6 +110,47 @@ struct FeedView: View {
             .navigationBarTitleDisplayMode(.inline)
             /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
             .navigationBarColor(visibility: .visible)
+            .hoistNavigation {
+                if navigationPath.isEmpty {
+                    /// Need to check `scrollToTopAppeared` because we want to scroll to top before popping back to sidebar. [2023.09]
+                    if scrollToTopAppeared {
+                        if horizontalSizeClass == .regular {
+                            print("show/hide sidebar in regular size class")
+                            splitViewColumnVisibility = {
+                                if splitViewColumnVisibility == .all {
+                                    return .automatic
+                                } else {
+                                    return .all
+                                }
+                            }()
+                            return true
+                        } else {
+                            print("show/hide sidebar in compact size class")
+                            // This seems a lot more reliable than dismiss action for some reason. [2023.09]
+                            rootDetails = nil
+                            return true
+                            //                                // Return `false` to use dismiss action to go back to sidebar. Not sure
+                            //                                return false
+                        }
+                    } else {
+                        print("scroll to top")
+                        withAnimation {
+                            scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)
+                        }
+                        return true
+                    }
+                } else {
+                    if scrollToTopAppeared {
+                        print("exhausted auxiliary actions, perform dismiss action instead...")
+                        return false
+                    } else {
+                        withAnimation {
+                            scrollViewProxy?.scrollTo(scrollToTop, anchor: .top)
+                        }
+                        return true
+                    }
+                }
+            }
             .environmentObject(postTracker)
             .task {
                 // hack to load if task below fails
@@ -157,37 +215,29 @@ struct FeedView: View {
     
     @ViewBuilder
     private var contentView: some View {
-        ScrollViewReader { scrollProxy in
-            ScrollView {
-                if !postTracker.items.isEmpty {
-                    LazyVStack(spacing: 0) {
-                        EmptyView().id("top")
-                        
-                        // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
-                        ForEach(postTracker.items, id: \.uid) { post in
-                            feedPost(for: post)
-                        }
-                        
-                        // TODO: update to use proper LoadingState
-                        EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
+        ScrollView {
+            if !postTracker.items.isEmpty {
+                LazyVStack(spacing: 0) {
+                    ScrollToView(appeared: $scrollToTopAppeared)
+                        .id(scrollToTop)
+                    
+                    // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
+                    ForEach(postTracker.items, id: \.uid) { post in
+                        feedPost(for: post)
                     }
+                    
+                    // TODO: update to use proper LoadingState
+                    EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .overlay {
-                if postTracker.items.isEmpty {
-                    noPostsView()
-                }
-            }
-            .reselectAction(tab: TabSelection.feeds) {
-                // TODO: SwiftUI doesn't seem to natively support customizing this animation
-                // https://stackoverflow.com/questions/62535553/swiftui-customize-animation-for-scrollto-using-scrollviewreader
-                withAnimation {
-                    scrollProxy.scrollTo("top")
-                }
-            }
-            .fancyTabScrollCompatible()
         }
+        .frame(maxWidth: .infinity)
+        .overlay {
+            if postTracker.items.isEmpty {
+                noPostsView()
+            }
+        }
+        .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
