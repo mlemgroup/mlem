@@ -12,7 +12,6 @@ extension String {
         // regex to match raw links not embedded in Markdown
         // (^|[^(\]\()]) ignores anything after a markdown link format (preceded by start of string or anything but '](')
         // (?'link'(http:|https:)+[^\s]+[\w]) matches anything starting with http: or https: and captures it as link
-        // let rawLinks: [LinkType] = matches(of: /(^|[^(\]\()])(?'link'(http:|https:)+[^\s]+[\w])/)
         let rawLinks: [LinkType] = matches(of: /(^|[^(\]\()])(?'link'(http:|https:)+[^\s\[\]]+[\w])/)
             .compactMap { match in
                 if let url = URL(string: String(match.link)) {
