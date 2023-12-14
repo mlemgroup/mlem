@@ -110,5 +110,6 @@ struct MatrixLinkView: View {
                 }
             }
         }
+        .hoistNavigation()
     }
 }

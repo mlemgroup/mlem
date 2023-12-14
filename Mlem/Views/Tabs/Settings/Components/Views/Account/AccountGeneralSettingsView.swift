@@ -173,5 +173,6 @@ struct AccountGeneralSettingsView: View {
             }
         }
         .navigationTitle("Content & Notifications")
+        .hoistNavigation()
     }
 }

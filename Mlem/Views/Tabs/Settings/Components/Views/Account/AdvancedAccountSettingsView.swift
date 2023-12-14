@@ -48,5 +48,6 @@ struct AdvancedAccountSettingsView: View {
             }
         }
         .navigationTitle("Advanced")
+        .hoistNavigation()
     }
 }
