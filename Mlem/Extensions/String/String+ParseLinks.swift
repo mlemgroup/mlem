@@ -25,10 +25,10 @@ extension String {
             }
         
         // regex to match markdown links
-        // [^\!]? ensures we ignore image links
+        // ([^\!]|^) ensures we ignore image links (matches start of string or anything but !)
         // \[(?'title'[^\[]*)\] matches '[title]' and captures 'title' as title
         // \((?'url'[^\s\)]*)\) matches '(url)' and captures 'url' as url
-        let markdownLinks: [LinkType] = matches(of: /[^\!]?\[(?'title'[^\[]*)\]\((?'link'[^\s\)]*)\)/)
+        let markdownLinks: [LinkType] = matches(of: /(^|[^\!])\[(?'title'[^\[]*)\]\((?'link'[^\s\)]*)\)/)
             .compactMap { match in
                 if let url = URL(string: String(match.link)) {
                     return .website(
