@@ -31,6 +31,10 @@ extension String {
         let markdownLinks: [LinkType] = matches(of: /(^|[^\!])\[(?'title'[^\[]*)\]\((?'link'[^\s\)]*)\)/)
             .compactMap { match in
                 if let url = URL(string: String(match.link)) {
+                    // if the label is just the URL that the link points to, ignore it--the raw link parser will capture the same link and display it with the host as url, and this one would be duplicate. If the label URL is different from the target URL, display with label URL as label and target URL as target
+                    if let labelUrl = URL(string: String(match.title)), labelUrl == url {
+                        return nil
+                    }
                     return .website(
                         self.distance(from: self.startIndex, to: match.range.lowerBound),
                         String(match.title), url
