@@ -14,6 +14,7 @@ class HierarchicalComment: ObservableObject {
     /// Indicates comment's position in a post's parent/child comment thread.
     /// Values range from `0...Int.max`, where 0 indicates the parent comment.
     let depth: Int
+    let links: [LinkType]
     
     /// The *closest* parent's collapsed state.
     @Published var isParentCollapsed: Bool = false
@@ -26,6 +27,7 @@ class HierarchicalComment: ObservableObject {
         self.depth = max(0, commentView.comment.path.split(separator: ".").count - 2)
         self.isParentCollapsed = parentCollapsed
         self.isCollapsed = collapsed
+        self.links = comment.comment.content.parseLinks()
     }
 }
 

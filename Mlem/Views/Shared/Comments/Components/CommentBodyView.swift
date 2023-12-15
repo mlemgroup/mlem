@@ -20,6 +20,7 @@ struct CommentBodyView: View {
     let showPostContext: Bool
     let commentorLabel: String
     let menuFunctions: [MenuFunction]
+    let links: [LinkType]
     
     var myVote: ScoringOperation { commentView.myVote ?? .resetVote }
     
@@ -40,7 +41,8 @@ struct CommentBodyView: View {
         isParentCollapsed: Binding<Bool>,
         isCollapsed: Binding<Bool>,
         showPostContext: Bool,
-        menuFunctions: [MenuFunction]
+        menuFunctions: [MenuFunction],
+        links: [LinkType]
     ) {
         self._isParentCollapsed = isParentCollapsed
         self._isCollapsed = isCollapsed
@@ -48,6 +50,7 @@ struct CommentBodyView: View {
         self.commentView = commentView
         self.showPostContext = showPostContext
         self.menuFunctions = menuFunctions
+        self.links = links
         
         let commentor = commentView.creator
         let publishedAgo: String = getTimeIntervalFromNow(date: commentView.comment.published)
@@ -90,6 +93,10 @@ struct CommentBodyView: View {
                     MarkdownView(text: commentView.comment.content, isNsfw: commentView.post.nsfw)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                         .transition(.markdownView())
+                    
+                    ForEach(links) { link in
+                        EasyTapLinkView(linkType: link)
+                    }
                 }
             }
             
