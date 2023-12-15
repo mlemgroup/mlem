@@ -29,7 +29,6 @@ struct EmbeddedPost: View {
     // TODO:
     // - beautify
     // - enrich info
-    // - navigation link to post
     var body: some View {
         NavigationLink(.lazyLoadPostLinkWithContext(.init(
             post: post,

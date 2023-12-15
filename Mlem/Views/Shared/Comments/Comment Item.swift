@@ -153,7 +153,8 @@ struct CommentItem: View {
                     isParentCollapsed: $hierarchicalComment.isParentCollapsed,
                     isCollapsed: $hierarchicalComment.isCollapsed,
                     showPostContext: showPostContext,
-                    menuFunctions: genMenuFunctions()
+                    menuFunctions: genMenuFunctions(),
+                    links: hierarchicalComment.links
                 )
                 // top and bottom spacing uses default even when compact--it's *too* compact otherwise
                 .padding(.top, AppConstants.postAndCommentSpacing)

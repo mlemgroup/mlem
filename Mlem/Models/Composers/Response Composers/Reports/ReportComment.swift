@@ -24,7 +24,8 @@ struct ReportComment: ResponseEditorModel {
             isParentCollapsed: .constant(false),
             isCollapsed: .constant(false),
             showPostContext: true,
-            menuFunctions: []
+            menuFunctions: [],
+            links: []
         )
         .padding(.horizontal, AppConstants.postAndCommentSpacing))
     }

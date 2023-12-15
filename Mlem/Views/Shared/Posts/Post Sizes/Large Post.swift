@@ -235,15 +235,23 @@ struct LargePost: View {
     @ViewBuilder
     var postBodyView: some View {
         if let bodyText = post.post.body, !bodyText.isEmpty {
-            MarkdownView(
-                text: postBodyText(bodyText, layoutMode: layoutMode),
-                isNsfw: post.post.nsfw,
-                replaceImagesWithEmoji: isExpanded ? false : true,
-                isInline: isExpanded ? false : true
-            )
-            .id(post.id)
-            .font(.subheadline)
-            .lineLimit(layoutMode.lineLimit)
+            VStack {
+                MarkdownView(
+                    text: postBodyText(bodyText, layoutMode: layoutMode),
+                    isNsfw: post.post.nsfw,
+                    replaceImagesWithEmoji: isExpanded ? false : true,
+                    isInline: isExpanded ? false : true
+                )
+                .id(post.id)
+                .font(.subheadline)
+                .lineLimit(layoutMode.lineLimit)
+                
+                if layoutMode == .maximize {
+                    ForEach(post.links) { link in
+                        EasyTapLinkView(linkType: link)
+                    }
+                }
+            }
         }
     }
     
