@@ -221,18 +221,33 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                 await notifier.performWithLoader {
                     var lookup = url.absoluteString
                     lookup = lookup.replacingOccurrences(of: "mlem://", with: "https://")
-                    if lookup.contains("@"), !lookup.contains("!") {
-                        // SUS I think this might be a community link
+                    var altLookup: String?
+                    
+                    // anything with an @ gets parsed to mailto: by Markdown
+                    if lookup.starts(with: "mailto:") {
+                        // SUS I think this might be a community or user link
                         let processedLookup = lookup
                             .replacing(/.*\/c\//, with: "")
                             .replacingOccurrences(of: "mailto:", with: "")
-                        lookup = "!\(processedLookup)"
+                        
+                        // the mailto: strips the ! and @, so we have to try both
+                        lookup = "!\(processedLookup)" // community
+                        altLookup = "@\(processedLookup)" // user
                     }
                     
-                    print("lookup: \(lookup) (original: \(url.absoluteString))")
+                    print("lookup: \(lookup), altLookup: \(String(describing: altLookup)) (original: \(url.absoluteString))")
                     // Wooo this is a lemmy server we're talking to! time to parse this url and push it to the stack
                     do {
-                        let resolved = try await resolve(query: lookup)
+                        var resolved: Bool
+                        if let altLookup {
+                            do {
+                                resolved = try await resolve(query: lookup)
+                            } catch {
+                                resolved = try await resolve(query: altLookup)
+                            }
+                        } else {
+                            resolved = try await resolve(query: lookup)
+                        }
                         
                         if resolved {
                             // as the link was handled we return, else it would also be passed to the default URL handling below
@@ -285,7 +300,8 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                     try navigationPath.wrappedValue.append(Path.makeRoute(object.person))
                     return true
                 case let .community(object):
-                    try navigationPath.wrappedValue.append(Path.makeRoute(object))
+                    // TODO: routes should all be based on middleware models, and the resolution should return a middleware model
+                    try navigationPath.wrappedValue.append(Path.makeRoute(CommunityModel(from: object)))
                     return true
                 case .comment:
                     return false
