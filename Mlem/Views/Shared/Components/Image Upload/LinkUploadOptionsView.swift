@@ -8,24 +8,24 @@
 import SwiftUI
 
 struct LinkUploadOptionsView<Content: View>: View {
-    var proxy: LinkAttachmentProxy
+    @ObservedObject var model: LinkAttachmentModel
     
     let label: Content
     
-    init(proxy: LinkAttachmentProxy, @ViewBuilder label: () -> Content) {
-        self.proxy = proxy
+    init(model: LinkAttachmentModel, @ViewBuilder label: () -> Content) {
+        self.model = model
         self.label = label()
     }
     
     var body: some View {
         Menu {
-            Button(action: proxy.attachImageAction) {
+            Button(action: model.attachImageAction) {
                 Label("Photo Library", systemImage: "photo.on.rectangle")
             }
-            Button(action: proxy.attachFileAction) {
+            Button(action: model.attachFileAction) {
                 Label("Choose File", systemImage: "folder")
             }
-            Button(action: proxy.pasteFromClipboardAction) {
+            Button(action: model.pasteFromClipboardAction) {
                 Label("Paste", systemImage: "doc.on.clipboard")
             }
         } label: {

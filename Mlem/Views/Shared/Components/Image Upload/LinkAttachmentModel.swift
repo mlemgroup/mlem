@@ -16,27 +16,35 @@ class LinkAttachmentModel: ObservableObject {
     
     var uploadTask: Task<(), any Error>?
     
+    @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
+    @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = false
+    
+    @Published var url: String = ""
+    @Published var imageModel: PictrsImageModel?
+    
+    init(url: String) {
+        self.url = url
+    }
+    
     @Published var photosPickerItem: PhotosPickerItem?
     @Published var showingUploadConfirmation: Bool = false
-    
-    @Binding var url: String
-    @Binding var imageModel: PictrsImageModel?
-    @Binding var askedForPermissionToUploadImages: Bool
-    @Binding var confirmImageUploads: Bool
-    
     @Published var showingPhotosPicker: Bool = false
     @Published var showingFilePicker: Bool = false
     
-    init(
-        url: Binding<String>,
-        imageModel: Binding<PictrsImageModel?>,
-        askedForPermissionToUploadImages: Binding<Bool>,
-        confirmImageUploads: Binding<Bool>
-    ) {
-        self._url = url
-        self._imageModel = imageModel
-        self._askedForPermissionToUploadImages = askedForPermissionToUploadImages
-        self._confirmImageUploads = confirmImageUploads
+    func attachImageAction() {
+        showingPhotosPicker = true
+    }
+    
+    func attachFileAction() {
+        showingFilePicker = true
+    }
+    
+    func pasteFromClipboardAction() {
+        pasteFromClipboard()
+    }
+    
+    func removeLinkAction() {
+        url = ""
     }
     
     func prepareToUpload(photo: PhotosPickerItem) async {
@@ -95,7 +103,9 @@ class LinkAttachmentModel: ObservableObject {
                     }
                 }
             } else if UIPasteboard.general.hasURLs, let content = UIPasteboard.general.url {
-                url = content.absoluteString
+                DispatchQueue.main.async {
+                    self.url = content.absoluteString
+                }
             }
         }
     }

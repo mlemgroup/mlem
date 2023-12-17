@@ -19,21 +19,19 @@ struct ProfileSettingsView: View {
     
     @State var displayName: String = ""
     @State var bio: String = ""
-    @State var avatarUrl: String = ""
-    @State var bannerUrl: String = ""
     
-    @State var avatarImageModel: PictrsImageModel?
-    @State var bannerImageModel: PictrsImageModel?
+    @StateObject var avatarAttachmentModel: LinkAttachmentModel
+    @StateObject var bannerAttachmentModel: LinkAttachmentModel
     
     @State var hasEdited: UserSettingsEditState = .unedited
     
     init() {
-        if let user = siteInformation.myUserInfo?.localUserView {
-            _displayName = State(wrappedValue: user.person.displayName ?? "")
-            _bio = State(wrappedValue: user.person.bio ?? "")
-            _avatarUrl = State(wrappedValue: user.person.avatar ?? "")
-            _bannerUrl = State(wrappedValue: user.person.banner ?? "")
-        }
+        @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
+        let user = siteInformation.myUserInfo?.localUserView
+        _displayName = State(wrappedValue: user?.person.displayName ?? "")
+        _bio = State(wrappedValue: user?.person.bio ?? "")
+        _avatarAttachmentModel = StateObject(wrappedValue: .init(url: user?.person.avatar ?? ""))
+        _bannerAttachmentModel = StateObject(wrappedValue: .init(url: user?.person.banner ?? ""))
     }
     
     @ViewBuilder
@@ -77,27 +75,27 @@ struct ProfileSettingsView: View {
                 Text("You can use markdown here.")
             }
             Section {
-                LinkAttachmentView(url: $avatarUrl, imageModel: $avatarImageModel) { proxy in
+                LinkAttachmentView(model: avatarAttachmentModel) {
                     HStack {
-                        AvatarView(url: URL(string: avatarUrl), type: .user, avatarSize: 48, iconResolution: .unrestricted)
-                        switch avatarImageModel?.state {
+                        AvatarView(url: URL(string: avatarAttachmentModel.url), type: .user, avatarSize: 48, iconResolution: .unrestricted)
+                        switch avatarAttachmentModel.imageModel?.state {
                         case nil, .uploaded:
                             Text("Avatar")
                                 .padding(.leading, 3)
                         default:
-                            if let avatarImageModel {
-                                UploadProgressView(imageModel: avatarImageModel)
+                            if let imageModel = avatarAttachmentModel.imageModel {
+                                UploadProgressView(imageModel: imageModel)
                                     .padding(.leading, 3)
                             }
                         }
                         Spacer()
-                        if avatarImageModel != nil || avatarUrl.isNotEmpty {
-                            Button(action: proxy.removeLinkAction) {
+                        if avatarAttachmentModel.imageModel != nil || avatarAttachmentModel.url.isNotEmpty {
+                            Button(action: avatarAttachmentModel.removeLinkAction) {
                                 circleImage(systemName: "xmark")
                             }
                             .buttonStyle(.plain)
                         } else {
-                            LinkUploadOptionsView(proxy: proxy) {
+                            LinkUploadOptionsView(model: avatarAttachmentModel) {
                                 circleImage(systemName: "plus")
                             }
                         }
@@ -105,18 +103,18 @@ struct ProfileSettingsView: View {
                 }
                 .padding(10)
                 .listRowInsets(EdgeInsets())
-                .onChange(of: avatarUrl) { newValue in
+                .onChange(of: avatarAttachmentModel.url) { newValue in
                     if newValue != siteInformation.myUserInfo?.localUserView.person.avatar ?? "" {
                         hasEdited = .edited
                     }
                 }
             }
             Section {
-                LinkAttachmentView(url: $bannerUrl, imageModel: $bannerImageModel) { proxy in
+                LinkAttachmentView(model: bannerAttachmentModel) {
                     VStack(spacing: 0) {
                         Group {
-                            if bannerUrl.isNotEmpty {
-                                CachedImage(url: URL(string: bannerUrl), shouldExpand: false)
+                            if bannerAttachmentModel.url.isNotEmpty {
+                                CachedImage(url: URL(string: bannerAttachmentModel.url), shouldExpand: false)
                             } else {
                                 Color(uiColor: .tertiarySystemGroupedBackground)
                             }
@@ -124,24 +122,24 @@ struct ProfileSettingsView: View {
                         .frame(height: 100)
                         .clipped()
                         HStack {
-                            switch bannerImageModel?.state {
+                            switch bannerAttachmentModel.imageModel?.state {
                             case nil, .uploaded:
                                 Text("Banner")
                                     .padding(.leading, 3)
                             default:
-                                if let bannerImageModel {
-                                    UploadProgressView(imageModel: bannerImageModel)
+                                if let imageModel = bannerAttachmentModel.imageModel {
+                                    UploadProgressView(imageModel: imageModel)
                                         .padding(.leading, 3)
                                 }
                             }
                             Spacer()
-                            if bannerImageModel != nil || bannerUrl.isNotEmpty {
-                                Button(action: proxy.removeLinkAction) {
+                            if bannerAttachmentModel.imageModel != nil || bannerAttachmentModel.url.isNotEmpty {
+                                Button(action: bannerAttachmentModel.removeLinkAction) {
                                     circleImage(systemName: "xmark")
                                 }
                                 .buttonStyle(.plain)
                             } else {
-                                LinkUploadOptionsView(proxy: proxy) {
+                                LinkUploadOptionsView(model: bannerAttachmentModel) {
                                     circleImage(systemName: "plus")
                                 }
                             }
@@ -150,12 +148,12 @@ struct ProfileSettingsView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets())
-                .onChange(of: bannerUrl) { newValue in
+                .onChange(of: bannerAttachmentModel.url) { newValue in
                     if newValue != siteInformation.myUserInfo?.localUserView.person.banner ?? "" {
                         hasEdited = .edited
                     }
                 }
-            }
+          }
             NavigationLink(.settings(.linkMatrixAccount)) {
                 Label("Link Matrix Account", image: "logo.matrix").labelStyle(SquircleLabelStyle(color: .black))
                     .disabled(hasEdited != .unedited)
@@ -172,8 +170,8 @@ struct ProfileSettingsView: View {
                         if let user = siteInformation.myUserInfo?.localUserView {
                             displayName = user.person.displayName ?? ""
                             bio = user.person.bio ?? ""
-                            avatarUrl = user.person.avatar ?? ""
-                            bannerUrl = user.person.banner ?? ""
+                            avatarAttachmentModel.url = user.person.avatar ?? ""
+                            bannerAttachmentModel.url = user.person.banner ?? ""
                         }
                     }
                 }
@@ -186,8 +184,8 @@ struct ProfileSettingsView: View {
                                 let displayName = displayName.isNotEmpty ? displayName : nil
                                 siteInformation.myUserInfo?.localUserView.person.displayName = displayName
                                 siteInformation.myUserInfo?.localUserView.person.bio = bio
-                                siteInformation.myUserInfo?.localUserView.person.avatar = avatarUrl
-                                siteInformation.myUserInfo?.localUserView.person.banner = bannerUrl
+                                siteInformation.myUserInfo?.localUserView.person.avatar = avatarAttachmentModel.url
+                                siteInformation.myUserInfo?.localUserView.person.banner = bannerAttachmentModel.url
                                 if let info = siteInformation.myUserInfo {
                                     hasEdited = .updating
                                     try await apiClient.saveUserSettings(myUserInfo: info)
@@ -200,10 +198,10 @@ struct ProfileSettingsView: View {
                             if displayName.isEmpty {
                                 siteInformation.myUserInfo?.localUserView.person.displayName = nil
                             }
-                            if avatarUrl.isEmpty {
+                            if avatarAttachmentModel.url.isEmpty {
                                 siteInformation.myUserInfo?.localUserView.person.avatar = nil
                             }
-                            if bannerUrl.isEmpty {
+                            if bannerAttachmentModel.url.isEmpty {
                                 siteInformation.myUserInfo?.localUserView.person.banner = nil
                             }
                         }
