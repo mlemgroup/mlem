@@ -226,7 +226,9 @@ struct MarkdownView: View {
     let isInline: Bool
     
     init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isInline: Bool = false) {
-        self.text = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
+        _text = isInline
+            ? .init(wrappedValue: MarkdownView.prepareInlineMarkdown(text: text))
+            : .init(wrappedValue: text)
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
         self.isInline = isInline
