@@ -48,6 +48,7 @@ struct UploadConfirmationView: View {
                     endPoint: .top
                 )
                 .frame(height: 100)
+                .allowsHitTesting(false)
             }
             switch imageModel?.state {
             case .readyToUpload:
