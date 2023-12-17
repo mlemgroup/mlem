@@ -58,5 +58,6 @@ struct UserLinkView: View {
                 commentContext: commentContext
             )
         }
+        .buttonStyle(.plain)
     }
 }
