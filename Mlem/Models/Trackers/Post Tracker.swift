@@ -76,6 +76,7 @@ class PostTracker: ObservableObject {
         var newPosts: [PostModel] = .init()
         let numItems = items.count
         repeat {
+            print("[DEBUG] current cursor: \(currentCursor)")
             let (posts, cursor) = try await postRepository.loadPage(
                 communityId: communityId,
                 page: page,
@@ -86,6 +87,8 @@ class PostTracker: ObservableObject {
             )
             
             newPosts = posts
+            
+            print("[DEBUG] got \(newPosts.count) new posts")
             
             if newPosts.isEmpty {
                 hasReachedEnd = true
