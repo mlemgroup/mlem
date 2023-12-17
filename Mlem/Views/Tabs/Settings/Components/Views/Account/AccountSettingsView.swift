@@ -127,6 +127,7 @@ struct AccountSettingsView: View {
         }
         .navigationTitle("Account Settings")
         .fancyTabScrollCompatible()
+        .hoistNavigation()
         .sheet(item: $accountForDeletion) { account in
             DeleteAccountView(account: account)
         }
