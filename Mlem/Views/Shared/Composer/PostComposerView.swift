@@ -130,7 +130,7 @@ struct PostComposerView: View {
                                     HStack(spacing: AppConstants.postAndCommentSpacing) {
                                         if attachmentModel.url.isNotEmpty {
                                             let url = URL(string: attachmentModel.url)
-                                            CachedImage(url: url)
+                                            CachedImage(url: url, shouldExpand: false)
                                                 .frame(
                                                     width: AppConstants.thumbnailSize,
                                                     height: AppConstants.thumbnailSize,
