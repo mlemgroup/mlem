@@ -241,13 +241,13 @@ struct MarkdownView: View {
             ForEach(blocks) { block in
                 if block.isImage {
                     if replaceImagesWithEmoji {
-                        getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
+                        renderAsMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
                     } else {
                         CachedImage(url: URL(string: String(block.text)))
                             .applyNsfwOverlay(isNsfw)
                     }
                 } else {
-                    getMarkdown(text: String(block.text), theme: theme)
+                    renderAsMarkdown(text: String(block.text), theme: theme)
                 }
             }
         }
@@ -310,7 +310,7 @@ struct MarkdownView: View {
         return blocks
     }
 
-    func getMarkdown(text: String, theme: Theme = .mlem) -> some View {
+    func renderAsMarkdown(text: String, theme: Theme = .mlem) -> some View {
         Markdown(text)
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .markdownTheme(theme)
