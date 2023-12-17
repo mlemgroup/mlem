@@ -90,7 +90,6 @@ class PostTracker: ObservableObject {
             if newPosts.isEmpty {
                 hasReachedEnd = true
             } else if let currentCursor, cursor == currentCursor {
-                print("cursor has reached end")
                 hasReachedEnd = true
             } else {
                 await add(newPosts, filtering: filtering)
