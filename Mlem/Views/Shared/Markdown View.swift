@@ -220,10 +220,12 @@ struct MarkdownBlock: Identifiable {
 }
 
 struct MarkdownView: View {
-    @State var text: String
-    let isNsfw: Bool
-    let replaceImagesWithEmoji: Bool
-    let isInline: Bool
+    @State private var text: String
+    @State private var blocks: [MarkdownBlock] = []
+    
+    private let isNsfw: Bool
+    private let replaceImagesWithEmoji: Bool
+    private let isInline: Bool
     
     init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isInline: Bool = false) {
         _text = isInline
@@ -235,14 +237,7 @@ struct MarkdownView: View {
     }
 
     var body: some View {
-        generateView()
-    }
-
-    @MainActor func generateView() -> some View {
-        let blocks = parseMarkdownForImages(text: text)
-        let theme: Theme = isInline ? .plain : .mlem
-        
-        return VStack {
+        VStack {
             ForEach(blocks) { block in
                 if block.isImage {
                     if replaceImagesWithEmoji {
@@ -256,6 +251,13 @@ struct MarkdownView: View {
                 }
             }
         }
+        .task {
+            blocks = parseMarkdownForImages(text: text)
+        }
+    }
+    
+    private var theme: Theme {
+        isInline ? .plain : .mlem
     }
     
     static func prepareInlineMarkdown(text: String) -> String {
