@@ -116,7 +116,7 @@ struct ProfileSettingsView: View {
                             if bannerAttachmentModel.url.isNotEmpty {
                                 CachedImage(url: URL(string: bannerAttachmentModel.url), shouldExpand: false)
                             } else {
-                                Color(uiColor: .tertiarySystemGroupedBackground)
+                                Color(uiColor: .systemGray5)
                             }
                         }
                         .frame(height: 100)
