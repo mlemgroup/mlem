@@ -1117,7 +1117,7 @@
 				030AC0502A64666000037155 /* User */,
 				030AC04D2A64646100037155 /* Community */,
 				030AC04A2A62F8D500037155 /* Theme */,
-				030AC0492A62F8CA00037155 /* Icon */,
+				030AC0492A62F8CA00037155 /* Icons */,
 				030AC0452A62F89000037155 /* Post */,
 				030AC0482A62F8C300037155 /* Comment */,
 			);
@@ -1174,14 +1174,14 @@
 			path = Comment;
 			sourceTree = "<group>";
 		};
-		030AC0492A62F8CA00037155 /* Icon */ = {
+		030AC0492A62F8CA00037155 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
 				CDB45C592AF0AEFE00A1FF08 /* AlternativeIconLabel.swift */,
 				CD3720EB2B2E8F96004D7103 /* AlternativeIconCell.swift */,
 				CD3720ED2B2E8FE6004D7103 /* IconSettingsView.swift */,
 			);
-			path = Icon;
+			path = Icons;
 			sourceTree = "<group>";
 		};
 		030AC04A2A62F8D500037155 /* Theme */ = {
