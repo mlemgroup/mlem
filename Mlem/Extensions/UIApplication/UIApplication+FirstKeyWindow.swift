@@ -16,8 +16,4 @@ extension UIApplication {
             .first?
             .keyWindow
     }
-    
-    var topMostViewController: UIViewController? {
-        UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController()
-    }
 }

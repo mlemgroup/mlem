@@ -7,8 +7,8 @@
 
 import SwiftUI
 
+// TODO: iOS 16 deprecation remove this
 extension View {
-    
     /// No-op prior to iOS 16.4.
     func _presentationBackgroundInteraction(enabledUpThrough detent: PresentationDetent) -> some View {
         if #available(iOS 16.4, *) {

@@ -1,5 +1,5 @@
 //
-//  Double.swift
+//  Double+MaxZIndex.swift
 //  Mlem
 //
 //  Created by Bosco Ho on 2023-08-07.

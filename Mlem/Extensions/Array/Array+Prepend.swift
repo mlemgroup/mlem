@@ -1,5 +1,5 @@
 //
-//  Array - Prepend.swift
+//  Array+Prepend.swift
 //  Mlem
 //
 //  Created by David Bureš on 07.05.2023.

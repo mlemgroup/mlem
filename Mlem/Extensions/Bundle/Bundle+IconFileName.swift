@@ -1,5 +1,5 @@
 //
-//  Bundle - Current App Icon.swift
+//  Bundle+IconFileName.swift
 //  Mlem
 //
 //  Created by tht7 on 28/06/2023.

@@ -1,5 +1,5 @@
 //
-//  Array - Move Elements Around.swift
+//  Array+MoveElements.swift
 //  Mlem
 //
 //  Created by David Bureš on 07.05.2023.

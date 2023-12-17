@@ -1,5 +1,5 @@
 //
-//  UIUserInterfaceStyle - SettingsOption conformant.swift
+//  UIUserInterfaceStyle+SettingsOptions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-19.

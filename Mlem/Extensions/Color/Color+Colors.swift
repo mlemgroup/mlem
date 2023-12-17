@@ -1,5 +1,5 @@
 //
-//  Color.swift
+//  Color+Colors.swift
 //  Mlem
 //
 //  Created by David Bureš on 26.03.2022.
@@ -18,15 +18,4 @@ extension Color {
     static let upvoteColor = Color.blue
     static let downvoteColor = Color.red
     static let saveColor = Color.green
-}
-
-public extension Color {
-    static func random(randomOpacity: Bool = false) -> Color {
-        Color(
-            red: .random(in: 0 ... 1),
-            green: .random(in: 0 ... 1),
-            blue: .random(in: 0 ... 1),
-            opacity: randomOpacity ? .random(in: 0 ... 1) : 1
-        )
-    }
 }
