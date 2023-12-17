@@ -13,6 +13,7 @@ enum SettingsPage: DestinationValue {
     case signInAndSecurity
     case accountGeneral
     case accountAdvanced
+    case accountDiscussionLanguages
     case linkMatrixAccount
     case accounts
     case general

@@ -127,5 +127,6 @@ struct SignInAndSecuritySettingsView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .hoistNavigation()
     }
 }

@@ -106,5 +106,6 @@ struct ProfileSettingsView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .hoistNavigation()
     }
 }
