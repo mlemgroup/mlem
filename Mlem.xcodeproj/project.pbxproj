@@ -350,6 +350,8 @@
 		CD2BD6782A79F55800ECFF89 /* ImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BD6772A79F55800ECFF89 /* ImageSize.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
 		CD309C462A93FBD300988F95 /* Logo View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD309C452A93FBD300988F95 /* Logo View.swift */; };
+		CD3720EC2B2E8F96004D7103 /* AlternativeIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3720EB2B2E8F96004D7103 /* AlternativeIconCell.swift */; };
+		CD3720EE2B2E8FE6004D7103 /* IconSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3720ED2B2E8FE6004D7103 /* IconSettingsView.swift */; };
 		CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F8A2A53371300E213B5 /* ExpandedPostLogic.swift */; };
 		CD391F942A533B7700E213B5 /* EditorModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F932A533B7700E213B5 /* EditorModelProtocol.swift */; };
 		CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD391F952A535F5400E213B5 /* ResponseEditorView.swift */; };
@@ -390,8 +392,6 @@
 		CD46C1F62B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F52B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift */; };
 		CD46C1F82B0D0A8A00065953 /* View+ReselectAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */; };
 		CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */; };
-		CD4E98A12A69BE980026C4D9 /* AlternativeIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E98A02A69BE980026C4D9 /* AlternativeIconCell.swift */; };
-		CD4E98A32A69BEDC0026C4D9 /* IconSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E98A22A69BEDC0026C4D9 /* IconSettingsView.swift */; };
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
 		CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */; };
@@ -885,6 +885,8 @@
 		CD2BD6772A79F55800ECFF89 /* ImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSize.swift; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
 		CD309C452A93FBD300988F95 /* Logo View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logo View.swift"; sourceTree = "<group>"; };
+		CD3720EB2B2E8F96004D7103 /* AlternativeIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeIconCell.swift; sourceTree = "<group>"; };
+		CD3720ED2B2E8FE6004D7103 /* IconSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSettingsView.swift; sourceTree = "<group>"; };
 		CD391F8A2A53371300E213B5 /* ExpandedPostLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandedPostLogic.swift; sourceTree = "<group>"; };
 		CD391F932A533B7700E213B5 /* EditorModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModelProtocol.swift; sourceTree = "<group>"; };
 		CD391F952A535F5400E213B5 /* ResponseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseEditorView.swift; sourceTree = "<group>"; };
@@ -924,8 +926,6 @@
 		CD46C1F52B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabReselectionHashValue.swift"; sourceTree = "<group>"; };
 		CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ReselectAction.swift"; sourceTree = "<group>"; };
 		CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToPost.swift; sourceTree = "<group>"; };
-		CD4E98A02A69BE980026C4D9 /* AlternativeIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlternativeIconCell.swift; path = Mlem/Extensions/AlternativeIconCell.swift; sourceTree = SOURCE_ROOT; };
-		CD4E98A22A69BEDC0026C4D9 /* IconSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IconSettingsView.swift; path = Mlem/Extensions/IconSettingsView.swift; sourceTree = SOURCE_ROOT; };
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteCounterView.swift; sourceTree = "<group>"; };
@@ -1177,9 +1177,9 @@
 		030AC0492A62F8CA00037155 /* Icon */ = {
 			isa = PBXGroup;
 			children = (
-				CD4E98A22A69BEDC0026C4D9 /* IconSettingsView.swift */,
-				CD4E98A02A69BE980026C4D9 /* AlternativeIconCell.swift */,
 				CDB45C592AF0AEFE00A1FF08 /* AlternativeIconLabel.swift */,
+				CD3720EB2B2E8F96004D7103 /* AlternativeIconCell.swift */,
+				CD3720ED2B2E8FE6004D7103 /* IconSettingsView.swift */,
 			);
 			path = Icon;
 			sourceTree = "<group>";
@@ -3097,6 +3097,7 @@
 				507573962A5AD5CF00AA7ABD /* ContextualError.swift in Sources */,
 				50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */,
 				031A617C2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift in Sources */,
+				CD3720EE2B2E8FE6004D7103 /* IconSettingsView.swift in Sources */,
 				CDDCF6572A678298003DA3AC /* FancyTabBarSelection.swift in Sources */,
 				CDB45C5E2AF1A96C00A1FF08 /* AssociatedColorProtocol.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
@@ -3168,7 +3169,6 @@
 				503422582AAB798600EFE88D /* AppFlow.swift in Sources */,
 				637218642A3A2AAD008C4816 /* GetPost.swift in Sources */,
 				63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */,
-				CD4E98A12A69BE980026C4D9 /* AlternativeIconCell.swift in Sources */,
 				CDA217E42A62FB3300BDA173 /* ReplyToMessage.swift in Sources */,
 				038A16DF2A75172C0087987E /* LayoutWidgetEditView.swift in Sources */,
 				CD69F5732A4239D70028D4F7 /* Comment Item.swift in Sources */,
@@ -3193,6 +3193,7 @@
 				03EA79C42AC0D92C00BCDC91 /* PostDetailEditorView+Logic.swift in Sources */,
 				03A18CBF2B1252BD00BA69D2 /* ListingType.swift in Sources */,
 				637218482A3A2AAD008C4816 /* APICommentReply.swift in Sources */,
+				CD3720EC2B2E8F96004D7103 /* AlternativeIconCell.swift in Sources */,
 				032109472AA7C3FC00912DFC /* CommunityLabelView.swift in Sources */,
 				637218502A3A2AAD008C4816 /* APIPersonAggregates.swift in Sources */,
 				CD4368D72AE2464D00BD8BD1 /* ReplyModel+InboxItem.swift in Sources */,
@@ -3277,7 +3278,6 @@
 				E453477E2A9DE37300D1B46F /* Array+SafeIndexing.swift in Sources */,
 				CD4368BE2AE23FA600BD8BD1 /* LoadingState.swift in Sources */,
 				CD9DD8852A62302A0044EA8E /* ConcreteEditorModel.swift in Sources */,
-				CD4E98A32A69BEDC0026C4D9 /* IconSettingsView.swift in Sources */,
 				CD9A49D12B045B64001E18A0 /* ZoomableContainer.swift in Sources */,
 				637218692A3A2AAD008C4816 /* CreateCommentLike.swift in Sources */,
 				03BAA23A2A57DC1400D48252 /* PublishedTimestampView.swift in Sources */,
