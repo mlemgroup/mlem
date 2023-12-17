@@ -134,7 +134,7 @@ struct SettingsView: View {
             }
             .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
             .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)
-            .environmentObject(navigation)
+            .environment(\.navigation, navigation)
         }
     }
 }

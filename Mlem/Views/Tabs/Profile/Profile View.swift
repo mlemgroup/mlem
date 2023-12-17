@@ -28,7 +28,7 @@ struct ProfileView: View {
             .handleLemmyLinkResolution(navigationPath: .constant(profileTabNavigation))
             .environment(\.navigationPathWithRoutes, $profileTabNavigation.path)
             .environment(\.scrollViewProxy, proxy)
-            .environmentObject(navigation)
+            .environment(\.navigation, navigation)
         }
     }
 }

@@ -33,3 +33,16 @@ extension EnvironmentValues {
         set { self[NavigationPathWithRoutes.self] = newValue }
     }
 }
+
+// MARK: - Navigation
+
+private struct NavigationEnvironmentKey: EnvironmentKey {
+    static let defaultValue: Navigation? = nil
+}
+
+extension EnvironmentValues {
+    var navigation: Navigation? {
+        get { self[NavigationEnvironmentKey.self] }
+        set { self[NavigationEnvironmentKey.self] = newValue }
+    }
+}

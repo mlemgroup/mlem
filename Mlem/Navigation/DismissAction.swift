@@ -99,10 +99,8 @@ struct NavigationDismissHoisting: ViewModifier {
     
     private typealias AnyRoute = any Hashable
     
-    @EnvironmentObject private var navigation: Navigation
-    
+    @Environment(\.navigation) private var navigation
     @Environment(\.navigationPathWithRoutes) private var routesNavigationPath
-    
     @Environment(\.tabSelectionHashValue) private var selectedTabHashValue
     
     private var navigationPath: [AnyRoute] {
@@ -126,6 +124,13 @@ struct NavigationDismissHoisting: ViewModifier {
                 .onAppear {
                     defer { didAppear = true }
                     
+                    guard let navigation else {
+#if DEBUG
+                        print("⚠️ Navigation not configured: Ignore if not applicable for current view.")
+#endif
+                        return
+                    }
+                    
                     /// This must only be called once:
                     /// For example, user may wish to drag to peek at the previous view, but then cancel that drag action. During this, the previous view's .onAppear will get called. If we run this logic for that view again, the actual top view's dismiss action will get lost. [2023.09]
                     if didAppear == false {
@@ -145,6 +150,12 @@ struct NavigationDismissHoisting: ViewModifier {
                     }
                 }
                 .onDisappear {
+                    guard let navigation else {
+#if DEBUG
+                        print("⚠️ Navigation not configured: Ignore if not applicable for current view.")
+#endif
+                        return
+                    }
                     #if DEBUG
                     print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
                     print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
