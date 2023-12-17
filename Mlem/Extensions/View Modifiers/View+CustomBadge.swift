@@ -1,5 +1,5 @@
 //
-//  View - CustomBadge.swift
+//  View+CustomBadge.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-25.

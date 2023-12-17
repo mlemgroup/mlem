@@ -387,7 +387,7 @@
 		CD4368DB2AE247B700BD8BD1 /* MentionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368DA2AE247B700BD8BD1 /* MentionTracker.swift */; };
 		CD4368DD2AE24E1A00BD8BD1 /* InboxView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4368DC2AE24E1A00BD8BD1 /* InboxView+Logic.swift */; };
 		CD45BCEE2A75CA7200A2899C /* Thumbnail Image View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45BCED2A75CA7200A2899C /* Thumbnail Image View.swift */; };
-		CD46C1F62B0D0A5700065953 /* EnvironmentValues+FancyTabBarReselectionEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F52B0D0A5700065953 /* EnvironmentValues+FancyTabBarReselectionEnvironmentKey.swift */; };
+		CD46C1F62B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F52B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift */; };
 		CD46C1F82B0D0A8A00065953 /* View+ReselectAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */; };
 		CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */; };
 		CD4E98A12A69BE980026C4D9 /* AlternativeIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4E98A02A69BE980026C4D9 /* AlternativeIconCell.swift */; };
@@ -464,7 +464,7 @@
 		CDDB2EDE2A85C2F1001D4B16 /* HapticPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB2EDD2A85C2F1001D4B16 /* HapticPriority.swift */; };
 		CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */; };
 		CDDCF6452A66375E003DA3AC /* View+FancyTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6442A66375E003DA3AC /* View+FancyTabItem.swift */; };
-		CDDCF6472A663849003DA3AC /* EnvironmentValues+FancyTabBarSelectionEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6462A663849003DA3AC /* EnvironmentValues+FancyTabBarSelectionEnvironmentKey.swift */; };
+		CDDCF6472A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6462A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift */; };
 		CDDCF6492A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6482A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift */; };
 		CDDCF64F2A672C0A003DA3AC /* FancyTabBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF64E2A672C0A003DA3AC /* FancyTabBarLabel.swift */; };
 		CDDCF6512A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDCF6502A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift */; };
@@ -921,7 +921,7 @@
 		CD4368DA2AE247B700BD8BD1 /* MentionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentionTracker.swift; sourceTree = "<group>"; };
 		CD4368DC2AE24E1A00BD8BD1 /* InboxView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxView+Logic.swift"; sourceTree = "<group>"; };
 		CD45BCED2A75CA7200A2899C /* Thumbnail Image View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Thumbnail Image View.swift"; sourceTree = "<group>"; };
-		CD46C1F52B0D0A5700065953 /* EnvironmentValues+FancyTabBarReselectionEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+FancyTabBarReselectionEnvironmentKey.swift"; sourceTree = "<group>"; };
+		CD46C1F52B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabReselectionHashValue.swift"; sourceTree = "<group>"; };
 		CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ReselectAction.swift"; sourceTree = "<group>"; };
 		CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToPost.swift; sourceTree = "<group>"; };
 		CD4E98A02A69BE980026C4D9 /* AlternativeIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlternativeIconCell.swift; path = Mlem/Extensions/AlternativeIconCell.swift; sourceTree = SOURCE_ROOT; };
@@ -998,7 +998,7 @@
 		CDDB2EDD2A85C2F1001D4B16 /* HapticPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPriority.swift; sourceTree = "<group>"; };
 		CDDCF6422A66343D003DA3AC /* FancyTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBar.swift; sourceTree = "<group>"; };
 		CDDCF6442A66375E003DA3AC /* View+FancyTabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+FancyTabItem.swift"; sourceTree = "<group>"; };
-		CDDCF6462A663849003DA3AC /* EnvironmentValues+FancyTabBarSelectionEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+FancyTabBarSelectionEnvironmentKey.swift"; sourceTree = "<group>"; };
+		CDDCF6462A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabSelectionHashValue.swift"; sourceTree = "<group>"; };
 		CDDCF6482A6641F0003DA3AC /* FancyTabItemLabelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemLabelBuilder.swift; sourceTree = "<group>"; };
 		CDDCF64E2A672C0A003DA3AC /* FancyTabBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabBarLabel.swift; sourceTree = "<group>"; };
 		CDDCF6502A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyTabItemPreferenceKeys.swift; sourceTree = "<group>"; };
@@ -2281,11 +2281,11 @@
 			children = (
 				503422552AAB784000EFE88D /* EnvironmentValues+AppFlow.swift */,
 				B1955A202A6145C00056CF99 /* EnvironmentValues+EasterFlagSetter.swift */,
-				CD46C1F52B0D0A5700065953 /* EnvironmentValues+FancyTabBarReselectionEnvironmentKey.swift */,
-				CDDCF6462A663849003DA3AC /* EnvironmentValues+FancyTabBarSelectionEnvironmentKey.swift */,
 				CD29ED462B2E8785006937CE /* EnvironmentValues+NavigationPath.swift */,
 				B1A26FE02A44AAB200B91A32 /* EnvironmentValues+NavigationPathWithRoutes.swift */,
 				E46AF9932B29AB270087FDF3 /* EnvironmentValues+ScrollViewReaderProxy.swift */,
+				CD46C1F52B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift */,
+				CDDCF6462A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift */,
 			);
 			path = EnvironmentValues;
 			sourceTree = "<group>";
@@ -3010,7 +3010,7 @@
 				6386E02F2A03ED39006B3C1D /* Comment Tracker.swift in Sources */,
 				6372185F2A3A2AAD008C4816 /* LoginRequest.swift in Sources */,
 				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
-				CDDCF6472A663849003DA3AC /* EnvironmentValues+FancyTabBarSelectionEnvironmentKey.swift in Sources */,
+				CDDCF6472A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
 				E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */,
 				B104A6E02A59C19400B3E725 /* OperationQueue+ConvenienceInit.swift in Sources */,
@@ -3131,7 +3131,7 @@
 				504106CD2A744D7F000AAEF8 /* CommentRepository+Dependency.swift in Sources */,
 				6372186F2A3A2AAD008C4816 /* SearchRequest.swift in Sources */,
 				03EC92952AC064AE007BBE7E /* SearchHomeView.swift in Sources */,
-				CD46C1F62B0D0A5700065953 /* EnvironmentValues+FancyTabBarReselectionEnvironmentKey.swift in Sources */,
+				CD46C1F62B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */,
 				50811B362A920519006BA3F2 /* APISite+Mock.swift in Sources */,
 				503422562AAB784000EFE88D /* EnvironmentValues+AppFlow.swift in Sources */,
 				CDDCF6512A677E1B003DA3AC /* FancyTabItemPreferenceKeys.swift in Sources */,

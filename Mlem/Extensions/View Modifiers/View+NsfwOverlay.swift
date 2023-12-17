@@ -1,5 +1,5 @@
 //
-//  NSFW Overlay.swift
+//  View+NsfwOverlay.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-15.

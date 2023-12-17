@@ -1,5 +1,5 @@
 //
-//  String - Contains Elements From Array.swift
+//  String+Contains.swift
 //  Mlem
 //
 //  Created by David Bureš on 04.05.2023.

@@ -1,5 +1,5 @@
 //
-//  URL - Lemmy Image Parameters.swift
+//  URL+WithIconSize.swift
 //  Mlem
 //
 //  Created by Jake Shirley on 7/6/23.

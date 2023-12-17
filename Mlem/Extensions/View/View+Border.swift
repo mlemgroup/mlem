@@ -1,5 +1,5 @@
 //
-//  View - Border on Specific Sides.swift
+//  View+Border.swift
 //  Mlem
 //
 //  Created by David Bureš on 07.05.2023.

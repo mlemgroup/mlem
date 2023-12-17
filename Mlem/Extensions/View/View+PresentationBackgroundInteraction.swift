@@ -1,5 +1,5 @@
 //
-//  PresentationBackgroundInteraction.swift
+//  View+PresentationBackgroundInteraction.swift
 //  Mlem
 //
 //  Created by Bosco Ho on 2023-09-21.

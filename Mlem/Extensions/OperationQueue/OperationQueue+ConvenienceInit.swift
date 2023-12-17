@@ -1,5 +1,5 @@
 //
-//  OperationQueue - Easy init.swift
+//  OperationQueue+ConvenienceInit.swift
 //  Mlem
 //
 //  Created by tht7 on 08/07/2023.

@@ -1,5 +1,5 @@
 //
-//  View - Handle Lemmy Links.swift
+//  View+HandleLemmyLinks.swift
 //  Mlem
 //
 //  Created by tht7 on 23/06/2023.

@@ -1,5 +1,5 @@
 //
-//  View - EasterFlags.swift
+//  EnvironmentValues+EasterFlagSetter.swift
 //  Mlem
 //
 //  Created by tht7 on 14/07/2023.

@@ -1,5 +1,5 @@
 //
-//  TabSafeScrollView.swift
+//  View+FancyTabScrollCompatible.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-07-21.

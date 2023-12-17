@@ -1,5 +1,5 @@
 //
-//  Swipey Actions.swift
+//  View+SwipeyActions.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-20.

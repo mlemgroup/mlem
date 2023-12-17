@@ -1,5 +1,5 @@
 //
-//  UIApplication - First Key Window.swift
+//  UIApplication+FirstKeyWindow.swift
 //  Mlem
 //
 //  Created by David Bureš on 18.05.2023.

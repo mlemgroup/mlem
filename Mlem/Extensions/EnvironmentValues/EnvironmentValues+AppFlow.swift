@@ -1,5 +1,5 @@
 //
-//  Environment+AppFlow.swift
+//  EnvironmentValues+AppFlow.swift
 //  Mlem
 //
 //  Created by mormaer on 08/09/2023.

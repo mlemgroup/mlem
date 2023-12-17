@@ -1,5 +1,5 @@
 //
-//  View+TabReselectionConsumer.swift
+//  View+ReselectAction.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-11-04.

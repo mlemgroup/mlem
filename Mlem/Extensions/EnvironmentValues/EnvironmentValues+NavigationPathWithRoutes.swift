@@ -1,5 +1,5 @@
 //
-//  Navigation getter.swift
+//  EnvironmentValues+NavigationPathWithRoutes.swift
 //  Mlem
 //
 //  Created by tht7 on 22/06/2023.

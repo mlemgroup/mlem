@@ -1,5 +1,5 @@
 //
-//  View - View - NavigationBar Color.swift
+//  View+NavigationBarColor.swift
 //  Mlem
 //
 //  Created by fer0n on 11.08.23.

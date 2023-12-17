@@ -1,5 +1,5 @@
 //
-//  Alert - Multiple Alerts.swift
+//  View+Alert.swift
 //  Mlem
 //
 //  Created by David Bureš on 05.06.2023.
