@@ -76,7 +76,6 @@ class PostTracker: ObservableObject {
         var newPosts: [PostModel] = .init()
         let numItems = items.count
         repeat {
-            print("[DEBUG] current cursor: \(currentCursor)")
             let (posts, cursor) = try await postRepository.loadPage(
                 communityId: communityId,
                 page: page,
@@ -88,11 +87,10 @@ class PostTracker: ObservableObject {
             
             newPosts = posts
             
-            print("[DEBUG] got \(newPosts.count) new posts")
-            
             if newPosts.isEmpty {
                 hasReachedEnd = true
             } else if let currentCursor, cursor == currentCursor {
+                print("cursor has reached end")
                 hasReachedEnd = true
             } else {
                 await add(newPosts, filtering: filtering)
@@ -206,7 +204,7 @@ class PostTracker: ObservableObject {
         let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset))
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uid == item.uid }),
-           itemIndex >= thresholdIndex {
+           itemIndex == thresholdIndex {
             return true
         }
 

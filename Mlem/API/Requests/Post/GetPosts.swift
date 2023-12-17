@@ -39,10 +39,8 @@ struct GetPostsRequest: APIGetRequest {
         
         let paginationParameter: URLQueryItem
         if let cursor {
-            print("adding page cursor")
             paginationParameter = .init(name: "page_cursor", value: cursor)
         } else {
-            print("adding raw page")
             paginationParameter = .init(name: "page", value: "\(page)")
         }
         
