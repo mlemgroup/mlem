@@ -45,6 +45,7 @@ class LinkAttachmentModel: ObservableObject {
     
     func removeLinkAction() {
         url = ""
+        deletePictrs()
     }
     
     func prepareToUpload(photo: PhotosPickerItem) async {
