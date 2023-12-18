@@ -7,8 +7,6 @@
 
 import Dependencies
 import Foundation
-import Dependencies
-import Foundation
 
 enum PostSortType: String, Codable, CaseIterable, Identifiable {
     @Dependency(\.siteInformation) static var siteInformation
@@ -127,7 +125,7 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
             }
             self = value
         } else if let intValue = try? container.decode(Int.self) {
-            guard 0...10 ~= intValue else {
+            guard 0 ... 10 ~= intValue else {
                 throw DecodingError.dataCorruptedError(
                     in: container,
                     debugDescription: "Must be an integer in range 0...10."

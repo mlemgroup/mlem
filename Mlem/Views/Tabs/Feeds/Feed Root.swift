@@ -7,8 +7,6 @@
 
 import Dependencies
 import SwiftUI
-import Dependencies
-import SwiftUI
 
 struct FeedRoot: View {
     @EnvironmentObject var appState: AppState
