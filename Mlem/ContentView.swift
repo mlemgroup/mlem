@@ -135,6 +135,7 @@ struct ContentView: View {
                 PostComposerView(editModel: editing)
             }
             .presentationDetents([.medium, .large], selection: .constant(.large))
+            .presentationDragIndicator(.hidden)
             ._presentationBackgroundInteraction(enabledUpThrough: .medium)
         }
         .sheet(item: $quickLookState.url) { url in

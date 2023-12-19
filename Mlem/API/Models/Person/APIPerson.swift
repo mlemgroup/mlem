@@ -12,14 +12,14 @@ struct APIPerson: Decodable, Identifiable, Hashable {
     let id: Int
     let name: String
     var displayName: String?
-    let avatar: String?
+    var avatar: String?
     let banned: Bool
     let published: Date
     let updated: Date?
     let actorId: URL
     var bio: String?
     let local: Bool
-    let banner: String?
+    var banner: String?
     let deleted: Bool
     let sharedInboxUrl: String?
     var matrixUserId: String?
