@@ -136,6 +136,7 @@ class PostTracker: ObservableObject {
         }
         
         page = 1
+        currentCursor = nil
         
         let (newPosts, cursor) = try await postRepository.loadPage(
             communityId: communityId,
