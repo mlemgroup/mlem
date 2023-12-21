@@ -20,7 +20,7 @@ struct SearchRoot: View {
             }
             .environment(\.scrollViewProxy, proxy)
             .environment(\.navigationPathWithRoutes, $searchRouter.path)
-            .environmentObject(navigation)
+            .environment(\.navigation, navigation)
             .handleLemmyLinkResolution(navigationPath: .constant(searchRouter))
         }
     }

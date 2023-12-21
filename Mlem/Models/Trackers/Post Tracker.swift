@@ -204,7 +204,7 @@ class PostTracker: ObservableObject {
         let thresholdIndex = max(0, items.index(items.endIndex, offsetBy: AppConstants.infiniteLoadThresholdOffset))
         if thresholdIndex >= 0,
            let itemIndex = items.firstIndex(where: { $0.uid == item.uid }),
-           itemIndex == thresholdIndex {
+           itemIndex >= thresholdIndex {
             return true
         }
 

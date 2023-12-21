@@ -55,7 +55,7 @@ struct FeedRoot: View {
             navigationPath: .constant(feedTabNavigation)
         )
         .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
-        .environmentObject(navigation)
+        .environment(\.navigation, navigation)
         .environmentObject(feedTabNavigation)
         .environmentObject(appState)
         .onAppear {
