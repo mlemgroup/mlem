@@ -220,40 +220,44 @@ struct MarkdownBlock: Identifiable {
 }
 
 struct MarkdownView: View {
-    @State var text: String
-    let isNsfw: Bool
-    let replaceImagesWithEmoji: Bool
-    let isInline: Bool
+    @State private var text: String
+    @State private var blocks: [MarkdownBlock] = []
+    
+    private let isNsfw: Bool
+    private let replaceImagesWithEmoji: Bool
+    private let isInline: Bool
     
     init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isInline: Bool = false) {
-        self.text = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
+        _text = isInline
+            ? .init(wrappedValue: MarkdownView.prepareInlineMarkdown(text: text))
+            : .init(wrappedValue: text)
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
         self.isInline = isInline
     }
 
     var body: some View {
-        generateView()
-    }
-
-    @MainActor func generateView() -> some View {
-        let blocks = parseMarkdownForImages(text: text)
-        let theme: Theme = isInline ? .plain : .mlem
-        
-        return VStack {
+        VStack {
             ForEach(blocks) { block in
                 if block.isImage {
                     if replaceImagesWithEmoji {
-                        getMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
+                        renderAsMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
                     } else {
                         CachedImage(url: URL(string: String(block.text)))
                             .applyNsfwOverlay(isNsfw)
                     }
                 } else {
-                    getMarkdown(text: String(block.text), theme: theme)
+                    renderAsMarkdown(text: String(block.text), theme: theme)
                 }
             }
         }
+        .task {
+            blocks = parseMarkdownForImages(text: text)
+        }
+    }
+    
+    private var theme: Theme {
+        isInline ? .plain : .mlem
     }
     
     static func prepareInlineMarkdown(text: String) -> String {
@@ -306,7 +310,7 @@ struct MarkdownView: View {
         return blocks
     }
 
-    func getMarkdown(text: String, theme: Theme = .mlem) -> some View {
+    func renderAsMarkdown(text: String, theme: Theme = .mlem) -> some View {
         Markdown(text)
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .markdownTheme(theme)
