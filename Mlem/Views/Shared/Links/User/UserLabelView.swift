@@ -155,7 +155,7 @@ struct UserLabelView: View {
         Text(user.displayName)
             .bold()
             .font(.footnote)
-            .foregroundStyle(.gray)
+            .foregroundStyle(.secondary)
     }
     
     @ViewBuilder
