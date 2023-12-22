@@ -15,7 +15,18 @@ struct DefaultAvatarView: View {
         Image(systemName: avatarType.iconNameFill)
             .resizable()
             .scaledToFill()
-            .background(.white)
-            .foregroundStyle(Color.gray.gradient)
+            .symbolRenderingMode(.multicolor)
+            .foregroundStyle(Color.gray.gradient, .white)
     }
+}
+
+#Preview {
+    VStack(spacing: 50) {
+        DefaultAvatarView(avatarType: .user)
+            .frame(width: 100, height: 100)
+        DefaultAvatarView(avatarType: .community)
+            .frame(width: 100, height: 100)
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(.black)
 }

@@ -11,6 +11,8 @@ import Dependencies
 struct AccountSwitcherSettingsView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
     
+    @State private var isShowingInstanceAdditionSheet: Bool = false
+    
     var body: some View {
         Form {
             Section {
@@ -30,9 +32,20 @@ struct AccountSwitcherSettingsView: View {
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color(.systemGroupedBackground))
             }
+            AccountListView()
             Section {
-                AccountListView()
+                Button {
+                    isShowingInstanceAdditionSheet = true
+                } label: {
+                    Label("Add Account", systemImage: "plus")
+                }
+                .accessibilityLabel("Add a new account.")
             }
         }
+        .sheet(isPresented: $isShowingInstanceAdditionSheet) {
+            AddSavedInstanceView(onboarding: false)
+        }
+        .fancyTabScrollCompatible()
     }
+    
 }

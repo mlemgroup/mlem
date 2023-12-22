@@ -74,7 +74,6 @@ class PersistenceRepository {
             guard let token = keychainAccess("\(account.id)_accessToken") else {
                 return nil
             }
-            
             return SavedAccount(from: account, accessToken: token, avatarUrl: account.avatarUrl)
         }
     }
