@@ -1,5 +1,5 @@
 //
-//  Inbox Message View.swift
+//  InboxMessageBodyView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-25.

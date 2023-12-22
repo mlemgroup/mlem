@@ -1,5 +1,5 @@
 //
-//  Inbox Reply View.swift
+//  InboxReplyBodyView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-25.
