@@ -37,7 +37,7 @@ struct RepliesFeedView: View {
     func repliesListView() -> some View {
         ForEach(replyTracker.items, id: \.uid) { reply in
             VStack(spacing: 0) {
-                InboxReplyBodyView(reply: reply)
+                InboxReplyView(reply: reply)
                     .onAppear {
                         replyTracker.loadIfThreshold(reply)
                     }
