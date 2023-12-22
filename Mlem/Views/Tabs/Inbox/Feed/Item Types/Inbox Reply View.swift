@@ -27,7 +27,6 @@ struct InboxReplyBodyView: View {
                 .padding(AppConstants.postAndCommentSpacing)
                 .background(Color(uiColor: .systemBackground))
                 .contentShape(Rectangle())
-                .addSwipeyActions(reply.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
                 .contextMenu {
                     ForEach(reply.menuFunctions(
                         unreadTracker: unreadTracker,
