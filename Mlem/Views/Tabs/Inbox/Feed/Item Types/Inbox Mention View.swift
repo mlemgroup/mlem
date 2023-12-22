@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InboxMentionView: View {
+struct InboxMentionBodyView: View {
     @ObservedObject var mention: MentionModel
     @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker

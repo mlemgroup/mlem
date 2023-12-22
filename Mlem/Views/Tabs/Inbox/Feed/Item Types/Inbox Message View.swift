@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InboxMessageView: View {
+struct InboxMessageBodyView: View {
     @ObservedObject var message: MessageModel
     @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker

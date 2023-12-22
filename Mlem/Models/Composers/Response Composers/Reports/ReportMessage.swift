@@ -20,7 +20,7 @@ struct ReportMessage: ResponseEditorModel {
     let message: MessageModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxMessageView(message: message)
+        AnyView(InboxMessageBodyView(message: message)
             .padding(.horizontal))
     }
     
