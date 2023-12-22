@@ -523,6 +523,8 @@
 		E48DE4A22AC3F23F004E6291 /* DestinationValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48DE4A12AC3F23F004E6291 /* DestinationValue.swift */; };
 		E49E01F42ABD99D300E42BB3 /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49E01F32ABD99D300E42BB3 /* Routable.swift */; };
 		E49F0E762A90395400BC4EE3 /* NavigationPath+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */; };
+		E4A7BFD12B35912500B95F56 /* InboxMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A7BFD02B35912500B95F56 /* InboxMessageView.swift */; };
+		E4A7BFD32B35913F00B95F56 /* InboxMentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A7BFD22B35913F00B95F56 /* InboxMentionView.swift */; };
 		E4D4DBA02A7C7B9D00C4F3DE /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */; };
 		E4DDB4322A81819300B3A7E0 /* Double+MaxZIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4312A81819300B3A7E0 /* Double+MaxZIndex.swift */; };
 		E4DDB4342A819C8000B3A7E0 /* QuickLookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */; };
@@ -1061,6 +1063,8 @@
 		E48DE4A12AC3F23F004E6291 /* DestinationValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationValue.swift; sourceTree = "<group>"; };
 		E49E01F32ABD99D300E42BB3 /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		E49F0E752A90395400BC4EE3 /* NavigationPath+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationPath+Helpers.swift"; sourceTree = "<group>"; };
+		E4A7BFD02B35912500B95F56 /* InboxMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxMessageView.swift; sourceTree = "<group>"; };
+		E4A7BFD22B35913F00B95F56 /* InboxMentionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxMentionView.swift; sourceTree = "<group>"; };
 		E4D4DB9F2A7C7B9D00C4F3DE /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		E4DDB4312A81819300B3A7E0 /* Double+MaxZIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+MaxZIndex.swift"; sourceTree = "<group>"; };
 		E4DDB4332A819C8000B3A7E0 /* QuickLookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookView.swift; sourceTree = "<group>"; };
@@ -2661,6 +2665,8 @@
 			isa = PBXGroup;
 			children = (
 				E449C5962B35239500E3BCF4 /* InboxReplyView.swift */,
+				E4A7BFD02B35912500B95F56 /* InboxMessageView.swift */,
+				E4A7BFD22B35913F00B95F56 /* InboxMentionView.swift */,
 				CDE6A8152A490AE00062D161 /* Inbox Message View.swift */,
 				CDE6A8172A490AF20062D161 /* Inbox Mention View.swift */,
 				CDE6A8192A490B970062D161 /* Inbox Reply View.swift */,
@@ -3257,6 +3263,7 @@
 				CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */,
 				CD69F55B2A400D820028D4F7 /* App Theme.swift in Sources */,
 				CDEBC3392A9ADE6C00518D9D /* APIClient+Post.swift in Sources */,
+				E4A7BFD12B35912500B95F56 /* InboxMessageView.swift in Sources */,
 				CDF9EF332AB2845C003F885B /* Icons.swift in Sources */,
 				B14E93C22A45D3B300D6DA93 /* Community Link.swift in Sources */,
 				637218712A3A2AAD008C4816 /* GetSite.swift in Sources */,
@@ -3281,6 +3288,7 @@
 				CD4368BC2AE23F6F00BD8BD1 /* TrackerSort.swift in Sources */,
 				E46AF98E2B29A4AA0087FDF3 /* DismissAction.swift in Sources */,
 				CD45BCEE2A75CA7200A2899C /* Thumbnail Image View.swift in Sources */,
+				E4A7BFD32B35913F00B95F56 /* InboxMentionView.swift in Sources */,
 				03A1B3F92A8400DD00AB0DE0 /* APIContentViewProtocol.swift in Sources */,
 				6322A5D027F8629700135D4F /* UserLinkView.swift in Sources */,
 				030E864C2AC7037F000283A6 /* SearchBarExtensions.swift in Sources */,

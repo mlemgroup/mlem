@@ -25,7 +25,6 @@ struct InboxMentionBodyView: View {
                 .padding(AppConstants.postAndCommentSpacing)
                 .background(Color(uiColor: .systemBackground))
                 .contentShape(Rectangle())
-                .addSwipeyActions(mention.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
                 .contextMenu {
                     ForEach(mention.menuFunctions(
                         unreadTracker: unreadTracker,
