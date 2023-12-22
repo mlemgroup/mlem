@@ -61,7 +61,7 @@ struct AllItemsFeedView: View {
             case let .mention(mention):
                 InboxMentionView(mention: mention)
             case let .reply(reply):
-                InboxReplyView(reply: reply)
+                InboxReplyBodyView(reply: reply)
             }
         }
         .onAppear {

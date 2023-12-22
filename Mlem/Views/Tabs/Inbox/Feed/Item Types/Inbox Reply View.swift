@@ -9,7 +9,7 @@ import SwiftUI
 
 // /user/replies
 
-struct InboxReplyView: View {
+struct InboxReplyBodyView: View {
     @ObservedObject var reply: ReplyModel
     @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker
