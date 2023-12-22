@@ -11,6 +11,6 @@ struct InboxReplyView: View {
     @ObservedObject var reply: ReplyModel
     
     var body: some View {
-        InboxReplyView(reply: reply)
+        InboxReplyBodyView(reply: reply)
     }
 }
