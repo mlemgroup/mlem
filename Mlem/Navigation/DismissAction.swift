@@ -10,8 +10,8 @@ import Foundation
 import SwiftUI
 
 // MARK: - Navigation
+
 final class Navigation: ObservableObject {
-    
     enum PrimaryAction {
         case dismiss
     }
@@ -32,8 +32,8 @@ final class Navigation: ObservableObject {
 }
 
 // MARK: - Navigation Behaviour
+
 extension Navigation {
-    
     enum Behaviour {
         /// Mimics Apple platforms tab bar navigation behaviour (i.e. pop to root regardless of navigation stack size, then scroll to top).
         case system
@@ -45,8 +45,8 @@ extension Navigation {
 }
 
 // MARK: - Hoist dismiss action
+
 extension View {
-    
     /// - Parameter dismiss: Pass in the `@Environment(\.dismiss)` property declared in the view being modified.
     /// - Note: See `hoistNavigation(_ primaryAction:...)`, if declaring dismiss action in your view causes SwiftUI to enter an infinite loop.
     func hoistNavigation(
@@ -82,7 +82,6 @@ extension View {
 /// - Note: In some configurations, declaring the `@Environment(\.dismiss) var` inside a view modifier causes SwiftUI to enter into infinite loop. [2023.09]
 /// - Note: This view allows us to conditionally move where we declare the dismiss action, if some view (modifier) configuration causes SwiftUI to enter infinite loop. [2023.11]
 private struct NavigationDismissView<Content: View>: View {
-    
     @Environment(\.dismiss) private var dismissAction
     private let content: (DismissAction) -> Content
     
@@ -96,13 +95,10 @@ private struct NavigationDismissView<Content: View>: View {
 }
 
 struct NavigationDismissHoisting: ViewModifier {
-    
     private typealias AnyRoute = any Hashable
     
-    @EnvironmentObject private var navigation: Navigation
-    
+    @Environment(\.navigation) private var navigation
     @Environment(\.navigationPathWithRoutes) private var routesNavigationPath
-    
     @Environment(\.tabSelectionHashValue) private var selectedTabHashValue
     
     private var navigationPath: [AnyRoute] {
@@ -126,40 +122,53 @@ struct NavigationDismissHoisting: ViewModifier {
                 .onAppear {
                     defer { didAppear = true }
                     
+                    guard let navigation else {
+                        #if DEBUG
+                            print("⚠️ Navigation not configured: Ignore if not applicable for current view.")
+                        #endif
+                        return
+                    }
+                    
                     /// This must only be called once:
                     /// For example, user may wish to drag to peek at the previous view, but then cancel that drag action. During this, the previous view's .onAppear will get called. If we run this logic for that view again, the actual top view's dismiss action will get lost. [2023.09]
                     if didAppear == false {
                         #if DEBUG
-                        print("onAppear: hoist navigation dismiss action")
+                            print("onAppear: hoist navigation dismiss action")
                         #endif
                         navigation.dismiss = dismiss
                         navigation.auxiliaryAction = auxiliaryAction
                         let pathIndex = max(0, navigationPath.count)
                         #if DEBUG
-                        print("     adding path action at index -> \(pathIndex)")
+                            print("     adding path action at index -> \(pathIndex)")
                         #endif
                         navigation.pathActions[pathIndex] = (dismiss, auxiliaryAction)
                         #if DEBUG
-                        print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
+                            print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
                         #endif
                     }
                 }
                 .onDisappear {
+                    guard let navigation else {
+                        #if DEBUG
+                            print("⚠️ Navigation not configured: Ignore if not applicable for current view.")
+                        #endif
+                        return
+                    }
                     #if DEBUG
-                    print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
-                    print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
+                        print("onDisappear: path count -> \(navigationPath.count), action count -> \(navigation.pathActions.count)")
+                        print("     navigation -> \(Unmanaged.passUnretained(navigation).toOpaque())")
                     #endif
                     
                     let removeIndex = navigationPath.count + 1
                     // swiftlint:disable unused_optional_binding
                     if let _ = navigation.pathActions.removeValue(forKey: removeIndex) {
                         #if DEBUG
-                        // swiftlint:enable unused_optional_binding
-                        print("     removed path action at index -> \(removeIndex)")
+                            // swiftlint:enable unused_optional_binding
+                            print("     removed path action at index -> \(removeIndex)")
                         #endif
                     } else {
                         #if DEBUG
-                        print("     no path action to remove at index -> \(removeIndex)")
+                            print("     no path action to remove at index -> \(removeIndex)")
                         #endif
                     }
                 }
@@ -168,8 +177,8 @@ struct NavigationDismissHoisting: ViewModifier {
 }
 
 // MARK: - Enable tab bar navigation
+
 extension View {
-    
     /// Unconditionally enable tab bar navigation.
     func tabBarNavigationEnabled(_ tab: TabSelection, _ navigator: Navigation) -> some View {
         modifier(PerformTabBarNavigation(tab: tab, navigator: navigator))
@@ -177,7 +186,6 @@ extension View {
 }
 
 struct PerformTabBarNavigation: ViewModifier {
-    
     private typealias AnyRoute = any Hashable
     
     @Dependency(\.hapticManager) private var hapticManager
@@ -217,11 +225,11 @@ struct PerformTabBarNavigation: ViewModifier {
     /// Runs all auxiliary actions before calling system dismiss action.
     private func performDismissAfterAuxiliary() {
         #if DEBUG
-        print("perform action on path index -> \(navigationPath.count)")
+            print("perform action on path index -> \(navigationPath.count)")
         #endif
         guard let pathAction = navigator.pathActions[navigationPath.count] else {
             #if DEBUG
-            print("path action not found at index -> \(navigationPath.count)")
+                print("path action not found at index -> \(navigationPath.count)")
             #endif
             return
         }
@@ -230,23 +238,23 @@ struct PerformTabBarNavigation: ViewModifier {
             let performed = auxiliaryAction()
             if !performed, let dismiss = pathAction.dismiss {
                 #if DEBUG
-                print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
-                print("perform tab navigation on \(tab) tab")
+                    print("found auxiliary action, but that logic has been exhausted...perform standard dismiss action")
+                    print("perform tab navigation on \(tab) tab")
                 #endif
                 dismiss()
             } else {
                 #if DEBUG
-                print("performed auxiliary action")
+                    print("performed auxiliary action")
                 #endif
             }
         } else if let dismiss = pathAction.dismiss {
             #if DEBUG
-            print("perform dismiss action via tab navigation on \(tab) tab")
+                print("perform dismiss action via tab navigation on \(tab) tab")
             #endif
             dismiss()
         } else {
             #if DEBUG
-            print("attempted tab navigation -> action(s) not found")
+                print("attempted tab navigation -> action(s) not found")
             #endif
         }
     }

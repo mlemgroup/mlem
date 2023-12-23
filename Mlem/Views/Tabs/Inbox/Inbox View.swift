@@ -128,7 +128,7 @@ struct InboxView: View {
             }
             .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
             .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
-            .environmentObject(navigation)
+            .environment(\.navigation, navigation)
             .environment(\.scrollViewProxy, scrollProxy)
         }
     }

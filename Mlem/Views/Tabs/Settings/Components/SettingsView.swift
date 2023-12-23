@@ -5,8 +5,8 @@
 //  Created by David Bureš on 25.03.2022.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct SettingsView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
@@ -39,7 +39,6 @@ struct SettingsView: View {
                                 .padding(.vertical, -6)
                                 .padding(.leading, 3)
                                 if let account = appState.currentActiveAccount {
-                                    
                                     VStack(alignment: .leading, spacing: 3) {
                                         Text(account.nickname)
                                             .font(.title2)
@@ -136,7 +135,7 @@ struct SettingsView: View {
             }
             .handleLemmyLinkResolution(navigationPath: .constant(settingsTabNavigation))
             .environment(\.navigationPathWithRoutes, $settingsTabNavigation.path)
-            .environmentObject(navigation)
+            .environment(\.navigation, navigation)
         }
     }
 }
