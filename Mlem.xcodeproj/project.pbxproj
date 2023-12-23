@@ -49,6 +49,7 @@
 		039C8DB92B35A81C0096BAAF /* AccountIconStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DB82B35A81C0096BAAF /* AccountIconStack.swift */; };
 		039C8DBB2B35B2EB0096BAAF /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DBA2B35B2EB0096BAAF /* AccountListView.swift */; };
 		039C8DBD2B361C160096BAAF /* AccountButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DBC2B361C160096BAAF /* AccountButtonView.swift */; };
+		039C8DBF2B363DAD0096BAAF /* AccountListView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C8DBE2B363DAD0096BAAF /* AccountListView+Logic.swift */; };
 		03A18CBB2B0FD6F000BA69D2 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A18CBA2B0FD6F000BA69D2 /* ProfileSettingsView.swift */; };
 		03A18CBD2B1005A400BA69D2 /* SaveUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A18CBC2B1005A400BA69D2 /* SaveUserSettings.swift */; };
 		03A18CBF2B1252BD00BA69D2 /* ListingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A18CBE2B1252BD00BA69D2 /* ListingType.swift */; };
@@ -593,6 +594,7 @@
 		039C8DB82B35A81C0096BAAF /* AccountIconStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountIconStack.swift; sourceTree = "<group>"; };
 		039C8DBA2B35B2EB0096BAAF /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
 		039C8DBC2B361C160096BAAF /* AccountButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountButtonView.swift; sourceTree = "<group>"; };
+		039C8DBE2B363DAD0096BAAF /* AccountListView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountListView+Logic.swift"; sourceTree = "<group>"; };
 		03A18CBA2B0FD6F000BA69D2 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		03A18CBC2B1005A400BA69D2 /* SaveUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveUserSettings.swift; sourceTree = "<group>"; };
 		03A18CBE2B1252BD00BA69D2 /* ListingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingType.swift; sourceTree = "<group>"; };
@@ -1614,6 +1616,7 @@
 				6332FDBF27EFB05F0009A98A /* Settings Item.swift */,
 				039C8DB82B35A81C0096BAAF /* AccountIconStack.swift */,
 				039C8DBA2B35B2EB0096BAAF /* AccountListView.swift */,
+				039C8DBE2B363DAD0096BAAF /* AccountListView+Logic.swift */,
 				039C8DBC2B361C160096BAAF /* AccountButtonView.swift */,
 				63344C522A07D189001BC616 /* Views */,
 			);
@@ -3190,6 +3193,7 @@
 				CDC65D8F2A86B6DD007205E5 /* DeleteUser.swift in Sources */,
 				CD6483382A3A0F2200EE6CA3 /* NSFW Tag.swift in Sources */,
 				503422582AAB798600EFE88D /* AppFlow.swift in Sources */,
+				039C8DBF2B363DAD0096BAAF /* AccountListView+Logic.swift in Sources */,
 				637218642A3A2AAD008C4816 /* GetPost.swift in Sources */,
 				63E5D3942A13CF3600EC1FBD /* Favorite Community.swift in Sources */,
 				CDA217E42A62FB3300BDA173 /* ReplyToMessage.swift in Sources */,

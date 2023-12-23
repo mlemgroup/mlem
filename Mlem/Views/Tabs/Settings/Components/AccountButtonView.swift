@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct AccountButtonView: View {
     @EnvironmentObject var appState: AppState
+    @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
     @Environment(\.setAppFlow) private var setFlow
+    
+    @State var showingSignOutConfirmation: Bool = false
     
     enum CaptionState {
         case instanceOnly, timeOnly, instanceAndTime
@@ -87,6 +91,30 @@ struct AccountButtonView: View {
         .accessibilityLabel(
             "\(account.nickname)@\(account.instanceLink.host() ?? "unknown")\(appState.currentActiveAccount == account ? ", active" : "")"
         )
+        .swipeActions {
+            Button("Sign Out") {
+                showingSignOutConfirmation = true
+            }
+            .tint(.red)
+        }
+        .confirmationDialog("Really sign out of \(account.nickname)?", isPresented: $showingSignOutConfirmation) {
+            Button("Sign Out", role: .destructive) {
+                Task {
+                    if let currentActiveAccount = appState.currentActiveAccount {
+                        accountsTracker.removeAccount(account: account)
+                        if currentActiveAccount == account {
+                            if let first = accountsTracker.savedAccounts.first {
+                                setFlow(.account(first))
+                            } else {
+                                setFlow(.onboarding)
+                            }
+                        }
+                    }
+                }
+            }
+        } message: {
+            Text("Really sign out?")
+        }
     }
     
     private func setFlow(using account: SavedAccount?) {
