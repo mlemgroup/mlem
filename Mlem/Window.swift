@@ -30,7 +30,9 @@ struct Window: View {
             .onChange(of: flow) { [flow] _ in
                 switch flow {
                 case let .account(account):
-                    accountsTracker.update(with: SavedAccount(from: account, lastUsed: .now))
+                    if accountsTracker.savedAccounts.contains(account) {
+                        accountsTracker.update(with: SavedAccount(from: account, lastUsed: .now))
+                    }
                 default:
                     break
                 }
