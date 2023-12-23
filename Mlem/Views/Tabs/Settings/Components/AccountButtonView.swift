@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Dependencies
+import NukeUI
 
 struct AccountButtonView: View {
     @EnvironmentObject var appState: AppState
@@ -63,8 +64,18 @@ struct AccountButtonView: View {
             }
         } label: {
             HStack(alignment: .center, spacing: 10) {
-                AvatarView(url: account.avatarUrl, type: .user, avatarSize: 40, iconResolution: .unrestricted)
-                    .padding(.leading, -5)
+                // Using AvatarView or CachedImage here causes the quick switcher sheet to be locked to `.large` on iOS 17. To avoid this, we're using LazyImage directly instead - Sjmarf
+                LazyImage(url: account.avatarUrl) { state in
+                    if let imageContainer = state.imageContainer {
+                        Image(uiImage: imageContainer.image)
+                            .resizable()
+                            .clipShape(Circle())
+                    } else {
+                        DefaultAvatarView(avatarType: .user)
+                    }
+                }
+                .frame(width: 40, height: 40)
+                .padding(.leading, -5)
                 VStack(alignment: .leading) {
                     Text(account.nickname)
                     if let captionText {

@@ -8,29 +8,15 @@
 import SwiftUI
 import Dependencies
 
-enum AccountSortMode: String, CaseIterable {
-    case name, instance, mostRecent
-    
-    var label: String {
-        switch self {
-        case .name:
-            return "Name"
-        case .instance:
-            return "Instance"
-        case .mostRecent:
-            return "Most Recent"
+struct QuickSwitcherView: View {
+    var body: some View {
+        Group {
+            List {
+                AccountListView(isQuickSwitcher: true)
+            }
         }
-    }
-    
-    var systemImage: String {
-        switch self {
-        case .name:
-            return "textformat"
-        case .instance:
-            return "at"
-        case .mostRecent:
-            return "clock"
-        }
+        .hoistNavigation(.dismiss)
+        .fancyTabScrollCompatible()
     }
 }
 
@@ -48,10 +34,13 @@ struct AccountListView: View {
         let accounts: [SavedAccount]
     }
     
-    init() {
+    let isQuickSwitcher: Bool
+    
+    init(isQuickSwitcher: Bool = false) {
         // We have to create an ObservedObject here so that changes to the accounts list create view updates
         @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
         self._accountsTracker = ObservedObject(wrappedValue: accountsTracker)
+        self.isQuickSwitcher = isQuickSwitcher
     }
     
     var body: some View {
@@ -87,33 +76,38 @@ struct AccountListView: View {
             if let text {
                 Text(text)
             }
-            if accountsTracker.savedAccounts.count > 2 {
+            if !isQuickSwitcher && accountsTracker.savedAccounts.count > 2 {
                 Spacer()
-                Menu {
-                    Picker("Sort", selection: $accountSort) {
-                        ForEach(AccountSortMode.allCases, id: \.self) { sortMode in
-                            Label(sortMode.label, systemImage: sortMode.systemImage).tag(sortMode)
-                        }
-                    }
-                    if accountsTracker.savedAccounts.count > 3 {
-                        Divider()
-                        Toggle(isOn: $groupAccountSort) {
-                            Label("Grouped", systemImage: "square.stack.3d.up.fill")
-                        }
-                    }
-                } label: {
-                    HStack(alignment: .center, spacing: 2) {
-                        Text("Sort by: \(accountSort.label)")
-                            .font(.caption)
-                            .textCase(nil)
-                        Image(systemName: "chevron.down")
-                            .imageScale(.small)
-                    }
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.blue)
-                }
-                .textCase(nil)
+                sortModeMenu()
             }
         }
+    }
+    
+    @ViewBuilder
+    func sortModeMenu() -> some View {
+        Menu {
+            Picker("Sort", selection: $accountSort) {
+                ForEach(AccountSortMode.allCases, id: \.self) { sortMode in
+                    Label(sortMode.label, systemImage: sortMode.systemImage).tag(sortMode)
+                }
+            }
+            if accountsTracker.savedAccounts.count > 3 {
+                Divider()
+                Toggle(isOn: $groupAccountSort) {
+                    Label("Grouped", systemImage: "square.stack.3d.up.fill")
+                }
+            }
+        } label: {
+            HStack(alignment: .center, spacing: 2) {
+                Text("Sort by: \(accountSort.label)")
+                    .font(.caption)
+                    .textCase(nil)
+                Image(systemName: "chevron.down")
+                    .imageScale(.small)
+            }
+            .fontWeight(.semibold)
+            .foregroundStyle(.blue)
+        }
+        .textCase(nil)
     }
 }

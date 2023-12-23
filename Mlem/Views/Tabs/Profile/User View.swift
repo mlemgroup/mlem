@@ -88,7 +88,7 @@ struct UserView: View {
                     }
                 }
                 .sheet(isPresented: $isPresentingAccountSwitcher) {
-                    AccountsPage()
+                    EmptyView()
                 }
         }
     }

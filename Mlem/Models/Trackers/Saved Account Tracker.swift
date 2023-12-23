@@ -20,7 +20,6 @@ class SavedAccountTracker: ObservableObject {
     @AppStorage("defaultAccountId") var defaultAccountId: Int?
     
     @Published var savedAccounts = [SavedAccount]()
-    @Published var accountsByInstance = [String: [SavedAccount]]()
     
     var defaultAccount: SavedAccount? {
         savedAccounts.first(where: { $0.id == defaultAccountId })
@@ -72,10 +71,6 @@ class SavedAccountTracker: ObservableObject {
     // MARK: - Private methods
     
     private func accountsDidChange(_ newValue: [SavedAccount]) {
-        accountsByInstance = Dictionary(
-            grouping: newValue,
-            by: { $0.hostName ?? defaultInstanceGroupKey }
-        )
         Task {
             try await self.persistenceRepository.saveAccounts(newValue)
         }

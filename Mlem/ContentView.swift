@@ -120,7 +120,7 @@ struct ContentView: View {
             )
         }
         .sheet(isPresented: $isPresentingAccountSwitcher) {
-            AccountsPage()
+            QuickSwitcherView()
                 .presentationDetents([.medium, .large])
         }
         .sheet(item: $editorTracker.editResponse) { editing in

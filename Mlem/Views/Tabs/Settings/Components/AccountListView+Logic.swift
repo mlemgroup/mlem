@@ -11,11 +11,11 @@ extension AccountListView {
     var accounts: [SavedAccount] {
         switch accountSort {
         case .name:
-            return accountsTracker.savedAccounts.sorted { $0.nicknameSortKey < $1.nicknameSortKey }
+            return unsortedAccounts.sorted { $0.nicknameSortKey < $1.nicknameSortKey }
         case .instance:
-            return accountsTracker.savedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
+            return unsortedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
         case .mostRecent:
-            return accountsTracker.savedAccounts.sorted {
+            return unsortedAccounts.sorted {
                 if appState.currentActiveAccount == $0 {
                     return true
                 } else if appState.currentActiveAccount == $1 {
@@ -34,17 +34,25 @@ extension AccountListView {
         return "*"
     }
     
+    var unsortedAccounts: [SavedAccount] {
+        if isQuickSwitcher {
+            return accountsTracker.savedAccounts.filter { $0 != appState.currentActiveAccount }
+        }
+        return accountsTracker.savedAccounts
+    }
+    
     var accountGroups: [AccountGroup] {
         switch accountSort {
         case .name:
+            
             return Dictionary(
-                grouping: accountsTracker.savedAccounts,
+                grouping: unsortedAccounts,
                 by: { getNameCategory(account: $0) }
             ).map { AccountGroup(header: $0, accounts: $1.sorted { $0.nicknameSortKey < $1.nicknameSortKey }) }
                 .sorted { $0.header < $1.header }
         case .instance:
             let dict = Dictionary(
-                grouping: accountsTracker.savedAccounts,
+                grouping: unsortedAccounts,
                 by: { $0.instanceLink.host() ?? "Unknown" }
             )
             let uniqueInstances = dict.filter { $1.count == 1 }.values.map { $0.first! }
@@ -63,12 +71,19 @@ extension AccountListView {
             var today = [SavedAccount]()
             var last30Days = [SavedAccount]()
             var older = [SavedAccount]()
-            for account in accountsTracker.savedAccounts {
+            for account in unsortedAccounts {
                 if account == appState.currentActiveAccount {
                     continue
                 }
+                
+                var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: .now)
+                dateComponents.hour = 0
+                dateComponents.minute = 0
+                dateComponents.second = 0
+                let todayDate = Calendar.current.date(from: dateComponents) ?? .distantFuture
+                
                 if let date = account.lastUsed {
-                    if date.timeIntervalSinceNow <= 60 * 60 * 24 {
+                    if date > todayDate {
                         today.append(account)
                     } else if date.timeIntervalSinceNow <= 60 * 60 * 24 * 7 {
                         last30Days.append(account)
@@ -80,7 +95,7 @@ extension AccountListView {
                 }
             }
             var groups = [AccountGroup]()
-            if let currentActiveAccount = appState.currentActiveAccount {
+            if let currentActiveAccount = appState.currentActiveAccount, !isQuickSwitcher {
                 groups.append(AccountGroup(header: "", accounts: [currentActiveAccount]))
             }
             if !today.isEmpty {
