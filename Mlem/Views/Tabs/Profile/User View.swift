@@ -18,6 +18,7 @@ struct UserView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.personRepository) var personRepository
+    @Dependency(\.accountsTracker) var accountsTracker
     
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
@@ -88,7 +89,9 @@ struct UserView: View {
                     }
                 }
                 .sheet(isPresented: $isPresentingAccountSwitcher) {
-                    EmptyView()
+                    Form {
+                        AccountListView()
+                    }
                 }
         }
     }
@@ -113,7 +116,7 @@ struct UserView: View {
     
     @ViewBuilder
     private var accountSwitcher: some View {
-        if isShowingOwnProfile() {
+        if isShowingOwnProfile() && accountsTracker.savedAccounts.count > 1 {
             Button {
                 isPresentingAccountSwitcher = true
             } label: {

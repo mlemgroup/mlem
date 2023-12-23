@@ -14,6 +14,9 @@ struct ContentView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.accountsTracker) var accountsTracker
+    
+    @Environment(\.setAppFlow) private var setFlow
     
     @EnvironmentObject var appState: AppState
     
@@ -171,7 +174,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists, allowTabBarSwipeUpGesture {
+        if !homeButtonExists, allowTabBarSwipeUpGesture, accountsTracker.savedAccounts.count > 2 {
             isPresentingAccountSwitcher = true
         }
     }
@@ -181,8 +184,16 @@ struct ContentView: View {
             .onEnded { _ in
                 // disable long press in accessibility mode to prevent conflict with HUD
                 if !accessibilityFont {
-                    hapticManager.play(haptic: .rigidInfo, priority: .high)
-                    isPresentingAccountSwitcher = true
+                    if accountsTracker.savedAccounts.count > 2 {
+                        hapticManager.play(haptic: .rigidInfo, priority: .high)
+                        isPresentingAccountSwitcher = true
+                    } else if accountsTracker.savedAccounts.count == 2 {
+                        hapticManager.play(haptic: .rigidInfo, priority: .high)
+                        for account in accountsTracker.savedAccounts where account != appState.currentActiveAccount {
+                            setFlow(.account(account))
+                            break
+                        }
+                    }
                 }
             }
     }
