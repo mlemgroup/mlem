@@ -9,6 +9,7 @@ import SwiftUI
 
 extension AccountListView {
     var accounts: [SavedAccount] {
+        let accountSort = accountsTracker.savedAccounts.count == 2 ? .name : accountSort
         switch accountSort {
         case .name:
             return unsortedAccounts.sorted { $0.nicknameSortKey < $1.nicknameSortKey }
