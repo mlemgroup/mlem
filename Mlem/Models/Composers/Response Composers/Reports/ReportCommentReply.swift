@@ -19,7 +19,7 @@ struct ReportCommentReply: ResponseEditorModel {
     let commentReply: ReplyModel
     
     func embeddedView() -> AnyView {
-        AnyView(InboxReplyView(reply: commentReply)
+        AnyView(InboxReplyBodyView(reply: commentReply)
             .padding(.horizontal))
     }
     

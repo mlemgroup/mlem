@@ -20,7 +20,7 @@ struct ReportMention: ResponseEditorModel {
     
     func embeddedView() -> AnyView {
         AnyView(
-            InboxMentionView(mention: mention)
+            InboxMentionBodyView(mention: mention)
                 .padding(.horizontal)
         )
     }
