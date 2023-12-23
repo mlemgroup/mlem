@@ -44,7 +44,7 @@ struct AccountListView: View {
     }
     
     var body: some View {
-        if accountsTracker.savedAccounts.count > 2 && groupAccountSort {
+        if accountsTracker.savedAccounts.count > 3 && groupAccountSort {
             ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
                 Section {
                     ForEach(group.accounts, id: \.self) { account in
