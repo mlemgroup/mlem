@@ -1,5 +1,5 @@
 //
-//  Inbox Message View.swift
+//  InboxMessageBodyView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InboxMessageView: View {
+struct InboxMessageBodyView: View {
     @ObservedObject var message: MessageModel
     @EnvironmentObject var inboxTracker: InboxTracker
     @EnvironmentObject var editorTracker: EditorTracker
@@ -24,7 +24,6 @@ struct InboxMessageView: View {
             .padding(AppConstants.postAndCommentSpacing)
             .background(Color(uiColor: .systemBackground))
             .contentShape(Rectangle())
-            .addSwipeyActions(message.swipeActions(unreadTracker: unreadTracker, editorTracker: editorTracker))
             .contextMenu {
                 ForEach(message.menuFunctions(
                     unreadTracker: unreadTracker,
