@@ -118,7 +118,7 @@ struct FeedView: View {
                             print("show/hide sidebar in regular size class")
                             splitViewColumnVisibility = {
                                 if splitViewColumnVisibility == .all {
-                                    return .automatic
+                                    return .detailOnly
                                 } else {
                                     return .all
                                 }
