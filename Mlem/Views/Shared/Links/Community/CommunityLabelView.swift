@@ -17,7 +17,6 @@ struct CommunityLabelView: View {
     let community: CommunityModel
     let serverInstanceLocation: ServerInstanceLocation
     let overrideShowAvatar: Bool? // if present, shows or hides the avatar according to value; otherwise uses system setting
-    let overrideShowSubscribed: Bool? // if present, shows or hides the subscribed status according to the value
     
     var avatarSize: CGFloat { serverInstanceLocation == .bottom
         ? AppConstants.largeAvatarSize
@@ -35,7 +34,6 @@ struct CommunityLabelView: View {
     var showSubscribed: Bool {
         if let feedType, feedType != .subscribed {
             return shouldShowSubscribedStatus &&
-                !(overrideShowSubscribed ?? false) &&
                 community.subscribed ?? false
         }
         return false
@@ -57,13 +55,11 @@ struct CommunityLabelView: View {
     init(
         community: CommunityModel,
         serverInstanceLocation: ServerInstanceLocation,
-        overrideShowAvatar: Bool? = nil,
-        overrideShowSubscribed: Bool? = nil
+        overrideShowAvatar: Bool? = nil
     ) {
         self.community = community
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
-        self.overrideShowSubscribed = overrideShowSubscribed
     }
 
     var body: some View {
