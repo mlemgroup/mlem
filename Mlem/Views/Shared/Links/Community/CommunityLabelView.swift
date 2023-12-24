@@ -9,6 +9,9 @@ import SwiftUI
 struct CommunityLabelView: View {
     // settings
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    @AppStorage("shouldShowSubscribedStatus") var shouldShowSubscribedStatus: Bool = true
+    
+    @Environment(\.feedType) var feedType
 
     // parameters
     let community: CommunityModel
@@ -27,6 +30,15 @@ struct CommunityLabelView: View {
         } else {
             return shouldShowCommunityIcons
         }
+    }
+    
+    var showSubscribed: Bool {
+        if let feedType, feedType != .subscribed {
+            return shouldShowSubscribedStatus &&
+                !(overrideShowSubscribed ?? false) &&
+                community.subscribed ?? false
+        }
+        return false
     }
     
     @available(*, deprecated, message: "Provide a CommunityModel rather than an APICommunity.")
@@ -92,13 +104,20 @@ struct CommunityLabelView: View {
     @ViewBuilder
     private var communityName: some View {
         HStack(spacing: 4) {
+            if showSubscribed, serverInstanceLocation != .bottom {
+                Image(systemName: Icons.present)
+                    .font(.system(size: 8.0))
+                    .imageScale(.small)
+                    .foregroundColor(.secondary)
+            }
+            
             Text(community.name)
                 .dynamicTypeSize(.small ... .accessibility1)
                 .font(.footnote)
                 .bold()
                 .foregroundColor(.secondary)
             
-            if community.subscribed ?? false {
+            if showSubscribed, serverInstanceLocation == .bottom {
                 Image(systemName: Icons.present)
                     .font(.system(size: 8.0))
                     .imageScale(.small)
