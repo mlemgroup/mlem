@@ -14,6 +14,7 @@ struct CommunityLabelView: View {
     let community: CommunityModel
     let serverInstanceLocation: ServerInstanceLocation
     let overrideShowAvatar: Bool? // if present, shows or hides the avatar according to value; otherwise uses system setting
+    let overrideShowSubscribed: Bool? // if present, shows or hides the subscribed status according to the value
     
     var avatarSize: CGFloat { serverInstanceLocation == .bottom
         ? AppConstants.largeAvatarSize
@@ -44,11 +45,13 @@ struct CommunityLabelView: View {
     init(
         community: CommunityModel,
         serverInstanceLocation: ServerInstanceLocation,
-        overrideShowAvatar: Bool? = nil
+        overrideShowAvatar: Bool? = nil,
+        overrideShowSubscribed: Bool? = nil
     ) {
         self.community = community
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
+        self.overrideShowSubscribed = overrideShowSubscribed
     }
 
     var body: some View {
@@ -58,34 +61,50 @@ struct CommunityLabelView: View {
                     AvatarView(community: community, avatarSize: avatarSize)
                         .accessibilityHidden(true)
                 }
-
-                switch serverInstanceLocation {
-                case .disabled:
-                    communityName
-                case .trailing:
-                    HStack(spacing: 0) {
-                        communityName
-                        communityInstance
-                    }
-                    .foregroundColor(.secondary)
-                case .bottom:
-                    VStack(alignment: .leading) {
-                        communityName
-                        communityInstance
-                    }
-                }
+                
+                communityLabel
             }
             .accessibilityElement(children: .combine)
+        }
+    }
+    
+    @ViewBuilder
+    private var communityLabel: some View {
+        HStack(spacing: 4) {
+            switch serverInstanceLocation {
+            case .disabled:
+                communityName
+            case .trailing:
+                HStack(spacing: 0) {
+                    communityName
+                    communityInstance
+                }
+                .foregroundColor(.secondary)
+            case .bottom:
+                VStack(alignment: .leading) {
+                    communityName
+                    communityInstance
+                }
+            }
         }
     }
 
     @ViewBuilder
     private var communityName: some View {
-        Text(community.name)
-            .dynamicTypeSize(.small ... .accessibility1)
-            .font(.footnote)
-            .bold()
-            .foregroundColor(.secondary)
+        HStack(spacing: 4) {
+            Text(community.name)
+                .dynamicTypeSize(.small ... .accessibility1)
+                .font(.footnote)
+                .bold()
+                .foregroundColor(.secondary)
+            
+            if community.subscribed ?? false {
+                Image(systemName: Icons.present)
+                    .font(.system(size: 8.0))
+                    .imageScale(.small)
+                    .foregroundColor(.secondary)
+            }
+        }
     }
 
     @ViewBuilder
@@ -101,5 +120,4 @@ struct CommunityLabelView: View {
             EmptyView()
         }
     }
-
 }
