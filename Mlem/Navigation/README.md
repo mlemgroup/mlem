@@ -14,7 +14,7 @@ Date Created: Nov. 23, 2023
 3. On the NavigationStack itself, pass in the following environment values:
 ```
 .environment(\.navigationPathWithRoutes, $tabNavigationPath.path)
-.environmentObject(navigation)
+.environment(\.navigation, navigation)
 ```
 4. Pass in the navigation path to `handleLemmyLinkResolution(...)`:
 ```
