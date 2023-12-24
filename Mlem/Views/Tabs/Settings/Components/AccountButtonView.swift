@@ -87,13 +87,9 @@ struct AccountButtonView: View {
                 .padding(.vertical, -2)
                 Spacer()
                 if appState.currentActiveAccount == account {
-                    Text("Active")
-                        .foregroundStyle(.secondary)
-                } else {
-                    Image(systemName: "chevron.right")
-                        .foregroundStyle(.tertiary)
-                        .fontWeight(.semibold)
-                        .imageScale(.small)
+                    Image(systemName: Icons.present)
+                        .foregroundStyle(.green)
+                        .font(.system(size: 10.0))
                 }
             }
             .contentShape(Rectangle())
