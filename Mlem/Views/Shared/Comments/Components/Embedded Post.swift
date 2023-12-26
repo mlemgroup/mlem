@@ -42,6 +42,7 @@ struct EmbeddedPost: View {
     private func postLinkButton() -> some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(post.embedTitle ?? post.name)
+                .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(.secondary)
                 .font(.subheadline)
