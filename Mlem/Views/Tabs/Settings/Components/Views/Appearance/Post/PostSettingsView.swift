@@ -21,6 +21,7 @@ struct PostSettingsView: View {
     
     // Community
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
+    @AppStorage("shouldShowSubscribedStatus") var shouldShowSubscribedStatus: Bool = true
     
     // Author
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
@@ -80,6 +81,12 @@ struct PostSettingsView: View {
                     settingPictureSystemName: Icons.instance,
                     settingName: "Show Community Server Instance",
                     isTicked: $shouldShowCommunityServerInPost
+                )
+                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.subscribed,
+                    settingName: "Show Subscribed Status",
+                    isTicked: $shouldShowSubscribedStatus
                 )
                 
                 SwitchableSettingsItem(

@@ -152,6 +152,7 @@ struct FeedView: View {
                 }
             }
             .environmentObject(postTracker)
+            .environment(\.feedType, feedType)
             .task {
                 // hack to load if task below fails
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
