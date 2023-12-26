@@ -76,11 +76,11 @@ struct CommunityModel {
     init(from communityView: APICommunityView) {
         self.init(from: communityView.community)
         self.subscriberCount = communityView.counts.subscribers
-        self.subscribed = communityView.subscribed != .notSubscribed ? true : false
+        self.subscribed = communityView.subscribed.isSubscribed
         self.blocked = communityView.blocked
     }
     
-    init(from community: APICommunity) {
+    init(from community: APICommunity, subscribed: Bool? = nil) {
         self.community = community
         
         self.communityId = community.id
@@ -104,6 +104,8 @@ struct CommunityModel {
         self.updatedDate = community.updated
         
         self.communityUrl = community.actorId
+        
+        self.subscribed = subscribed
     }
     
     mutating func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
@@ -168,7 +170,7 @@ extension CommunityModel: Identifiable {
 
 extension CommunityModel: Hashable {
     static func == (lhs: CommunityModel, rhs: CommunityModel) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
     }
     
     /// Hashes all fields for which state changes should trigger view updates.
@@ -177,6 +179,6 @@ extension CommunityModel: Hashable {
         hasher.combine(subscribed)
         hasher.combine(subscriberCount)
         hasher.combine(blocked)
-        hasher.combine(moderators?.map { $0.moderator.id } ?? [])
+        hasher.combine(moderators?.map(\.moderator.id) ?? [])
     }
 }
