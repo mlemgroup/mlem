@@ -16,7 +16,7 @@ extension AccountListView {
         case .instance:
             return accountsTracker.savedAccounts.sorted { $0.instanceSortKey < $1.instanceSortKey }
         case .mostRecent:
-            return nonActiveAccounts.sorted {
+            return accountsTracker.savedAccounts.sorted {
                 if appState.currentActiveAccount == $0 {
                     return true
                 } else if appState.currentActiveAccount == $1 {
@@ -33,13 +33,6 @@ extension AccountListView {
             return String(first)
         }
         return "*"
-    }
-    
-    var nonActiveAccounts: [SavedAccount] {
-        if isQuickSwitcher {
-            return accountsTracker.savedAccounts.filter { $0 != appState.currentActiveAccount }
-        }
-        return accountsTracker.savedAccounts
     }
     
     var accountGroups: [AccountGroup] {
@@ -96,8 +89,8 @@ extension AccountListView {
                 }
             }
             var groups = [AccountGroup]()
-            if let currentActiveAccount = appState.currentActiveAccount, !isQuickSwitcher {
-                groups.append(AccountGroup(header: "", accounts: [currentActiveAccount]))
+            if let currentActiveAccount = appState.currentActiveAccount {
+                today.prepend(currentActiveAccount)
             }
             if !today.isEmpty {
                 groups.append(

@@ -49,7 +49,7 @@ struct AccountButtonView: View {
         }
         switch caption {
         case .instanceOnly:
-            return host ?? "unknown"
+            return "@\(host ?? "unknown")"
         case .timeOnly:
             return timeText ?? ""
         case .instanceAndTime:

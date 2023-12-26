@@ -29,6 +29,8 @@ struct AccountListView: View {
     
     @ObservedObject var accountsTracker: SavedAccountTracker
     
+    @State private var isShowingInstanceAdditionSheet: Bool = false
+    
     struct AccountGroup {
         let header: String
         let accounts: [SavedAccount]
@@ -44,29 +46,42 @@ struct AccountListView: View {
     }
     
     var body: some View {
-        if accountsTracker.savedAccounts.count > 3 && groupAccountSort {
-            ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
-                Section {
-                    ForEach(group.accounts, id: \.self) { account in
-                        AccountButtonView(
-                            account: account,
-                            caption: accountSort != .instance || group.header == "Other" ? .instanceAndTime : .timeOnly
-                        )
+        Group {
+            if accountsTracker.savedAccounts.count > 3 && groupAccountSort {
+                ForEach(Array(accountGroups.enumerated()), id: \.offset) { offset, group in
+                    Section {
+                        ForEach(group.accounts, id: \.self) { account in
+                            AccountButtonView(
+                                account: account,
+                                caption: accountSort != .instance || group.header == "Other" ? .instanceAndTime : .timeOnly
+                            )
+                        }
+                    } header: {
+                        if offset == 0 {
+                            topHeader(text: group.header)
+                        } else {
+                            Text(group.header)
+                        }
                     }
-                } header: {
-                    if offset == 0 {
-                        topHeader(text: group.header)
-                    } else {
-                        Text(group.header)
+                }
+            } else {
+                Section(header: topHeader()) {
+                    ForEach(accounts, id: \.self) { account in
+                        AccountButtonView(account: account)
                     }
                 }
             }
-        } else {
-            Section(header: topHeader()) {
-                ForEach(accounts, id: \.self) { account in
-                    AccountButtonView(account: account)
+            Section {
+                Button {
+                    isShowingInstanceAdditionSheet = true
+                } label: {
+                    Label("Add Account", systemImage: "plus")
                 }
+                .accessibilityLabel("Add a new account.")
             }
+        }
+        .sheet(isPresented: $isShowingInstanceAdditionSheet) {
+            AddSavedInstanceView(onboarding: false)
         }
     }
     
