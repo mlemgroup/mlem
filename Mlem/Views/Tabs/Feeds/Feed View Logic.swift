@@ -9,33 +9,27 @@ import Foundation
 import SwiftUI
 
 extension FeedView {
-    // MARK: Feed loading
     
-    func loadIfVersionResolved() {
-        if let siteVersion = siteInformation.version, siteInformationLoading {
-            siteInformationLoading = false
-            
-            @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
-            @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
-            if siteVersion >= defaultPostSorting.minimumVersion {
-                postSortType = defaultPostSorting
-            } else {
-                postSortType = fallbackDefaultPostSorting
-            }
-            Task(priority: .userInitiated) {
-                await initFeed()
-            }
+    func setDefaultSortMode() {
+        @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+        @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+        if let siteVersion = siteInformation.version, siteVersion < defaultPostSorting.minimumVersion {
+            postSortType = fallbackDefaultPostSorting
+        } else {
+            postSortType = defaultPostSorting
         }
     }
     
+    // MARK: Feed loading
+    
     func initFeed() async {
-        defer { isLoading = false }
         isLoading = true
         if postTracker.items.isEmpty {
             print("Post tracker is empty")
             await loadFeed()
         } else {
             print("Post tracker is not empty")
+            isLoading = false
         }
     }
     
@@ -298,6 +292,17 @@ extension FeedView {
             }
             errorDetails = .init(title: "Unable to connect to Lemmy", error: error, refresh: refreshFeed)
             return
+        case APIClientError.decoding(let data, _):
+            // Checks if it's an "unknown sort type" error
+            if let str = String(data: data, encoding: .utf8), str.starts(with: "Query deserialize error: unknown variant") {
+                Task {
+                    print("Unknown sort type: reloading feed")
+                    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
+                    postSortType = fallbackDefaultPostSorting
+                    await loadFeed()
+                }
+                return
+            }
         default:
             break
         }

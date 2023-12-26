@@ -11,6 +11,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let id: Int
     let instanceLink: URL
     let accessToken: String
+    var siteVersion: SiteVersion?
     let username: String
     let storedNickname: String?
     let avatarUrl: URL?
@@ -26,7 +27,8 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         accessToken: String,
         username: String,
         storedNickname: String? = nil,
-        avatarUrl: URL? = nil
+        avatarUrl: URL? = nil,
+        siteVersion: SiteVersion? = nil
     ) {
         self.id = id
         self.instanceLink = instanceLink
@@ -34,6 +36,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = username
         self.storedNickname = storedNickname
         self.avatarUrl = avatarUrl
+        self.siteVersion = siteVersion
     }
     
     // Convenience initializer to create an equal copy with different non-identifying properties.
@@ -41,14 +44,16 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         from account: SavedAccount,
         accessToken: String? = nil,
         storedNickname: String? = nil,
-        avatarUrl: URL?
+        avatarUrl: URL? = nil,
+        siteVersion: SiteVersion? = nil
     ) {
         self.id = account.id
         self.instanceLink = account.instanceLink
         self.accessToken = accessToken ?? account.accessToken
         self.username = account.username
         self.storedNickname = storedNickname ?? account.storedNickname
-        self.avatarUrl = avatarUrl
+        self.avatarUrl = avatarUrl ?? account.avatarUrl
+        self.siteVersion = siteVersion ?? account.siteVersion
     }
   
     // convenience
@@ -66,6 +71,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         try container.encode(username, forKey: .username)
         try container.encode(storedNickname, forKey: .storedNickname)
         try container.encode(avatarUrl, forKey: .avatarUrl)
+        try container.encode(siteVersion, forKey: .siteVersion)
     }
     
     static func == (lhs: SavedAccount, rhs: SavedAccount) -> Bool {

@@ -12,18 +12,24 @@ import Foundation
 class SiteInformationTracker: ObservableObject {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.accountsTracker) var accountsTracker
     
     @Published private(set) var enableDownvotes = true
-    @Published private(set) var version: SiteVersion?
+    @Published var version: SiteVersion?
     @Published private(set) var allLanguages: [APILanguage] = .init()
     @Published var myUserInfo: APIMyUserInfo?
     
-    func load() {
+    func load(account: SavedAccount) {
+        version = account.siteVersion
         Task {
             do {
                 let response = try await apiClient.loadSiteInformation()
                 enableDownvotes = response.siteView.localSite.enableDownvotes
                 version = SiteVersion(response.version)
+                if version != account.siteVersion {
+                    let avatarUrl = response.myUser?.localUserView.person.avatarUrl
+                    accountsTracker.update(with: .init(from: account, avatarUrl: avatarUrl, siteVersion: version))
+                }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
             } catch {

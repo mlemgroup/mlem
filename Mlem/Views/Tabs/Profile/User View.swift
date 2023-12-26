@@ -224,7 +224,6 @@ struct UserView: View {
         }
     }
     
-    // swiftlint:disable function_body_length
     private func tryReloadUser() async {
         do {
             let authoredContent = try await personRepository.loadUserDetails(for: userID, limit: internetSpeed.pageSize)
@@ -235,23 +234,6 @@ struct UserView: View {
                     limit: internetSpeed.pageSize,
                     savedOnly: true
                 )
-            }
-            
-            if isShowingOwnProfile(), let currentAccount = appState.currentActiveAccount {
-                // take this opportunity to update the users avatar url to catch changes
-                // we should be able to shift this down to the repository layer in the future so that we
-                // catch anytime the app loads the signed in users details from any location in the app 🤞
-                // -> we'll need to find a way to stop the state changes this creates from cancelling other in-flight requests
-                let url = authoredContent.personView.person.avatarUrl
-                let updatedAccount = SavedAccount(
-                    id: currentAccount.id,
-                    instanceLink: currentAccount.instanceLink,
-                    accessToken: currentAccount.accessToken,
-                    username: currentAccount.username,
-                    storedNickname: currentAccount.storedNickname,
-                    avatarUrl: url
-                )
-                appState.setActiveAccount(updatedAccount)
             }
             
             // accumulate comments and posts so we don't update state more than we need to
@@ -296,7 +278,6 @@ struct UserView: View {
             }
         }
     }
-    // swiftlint:enable function_body_length
 }
 
 // TODO: darknavi - Move these to a common area for reuse

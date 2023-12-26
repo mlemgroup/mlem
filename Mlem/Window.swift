@@ -14,6 +14,7 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.accountsTracker) var accountsTracker
 
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
@@ -40,9 +41,10 @@ struct Window: View {
             appState.clearActiveAccount()
             favoriteCommunitiesTracker.clearStoredAccount()
         case let .account(account):
-            appState.setActiveAccount(account)
+            var account = account
+            appState.setActiveAccount(account, saveChanges: false)
+            siteInformation.load(account: account)
             favoriteCommunitiesTracker.configure(for: account)
-            siteInformation.load()
             
             if let host = account.instanceLink.host(),
                let instance = RecognizedLemmyInstances(rawValue: host) {
