@@ -21,7 +21,7 @@ enum AppRoute: Routable {
     
     @available(*, deprecated, message: "Use .userProfile instead.")
     case apiPerson(APIPerson)
-    case userProfile(UserModel)
+    case userProfile(UserModel, communityContext: CommunityModel? = nil)
     
     case postLinkWithContext(PostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)

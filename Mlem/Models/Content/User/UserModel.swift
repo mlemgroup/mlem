@@ -38,8 +38,8 @@ struct UserModel {
     let local: Bool
     let deleted: Bool
     let isBot: Bool
-    let isAdmin: Bool
-    
+    var blocked: Bool
+
     // Dates
     let creationDate: Date
     let updatedDate: Date?
@@ -50,10 +50,9 @@ struct UserModel {
     let sharedInboxUrl: URL?
     
     // These values are nil if the UserModel was created from an APIPerson and not an APIPersonView
+    var isAdmin: Bool?
     var postCount: Int?
     var commentCount: Int?
-    
-    var blocked: Bool
     
     static let developerNames = [
         "https://lemmy.tespia.org/u/navi",
@@ -68,8 +67,15 @@ struct UserModel {
     /// - Parameter apiPersonView: APIPersonView to create a UserModel representation of
     init(from personView: APIPersonView) {
         self.init(from: personView.person)
+        
         self.postCount = personView.counts.postCount
         self.commentCount = personView.counts.commentCount
+        
+        // TODO: 0.18 Deprecation
+        @Dependency(\.siteInformation) var siteInformation
+        if (siteInformation.version ?? .infinity) > .init("0.19.0") {
+            self.isAdmin = personView.isAdmin
+        }
     }
     
     /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
@@ -90,7 +96,8 @@ struct UserModel {
         self.local = person.local
         self.deleted = person.deleted
         self.isBot = person.botAccount
-        self.isAdmin = person.admin ?? false // is nil on Beehaw
+        
+        self.isAdmin = person.admin
         
         self.creationDate = person.published
         self.updatedDate = person.updated
@@ -113,11 +120,12 @@ struct UserModel {
         commentContext: APIComment? = nil,
         communityContext: CommunityModel? = nil
     ) -> [UserFlair] {
+        print("COMM NAME", communityContext?.name)
         var ret: [UserFlair] = .init()
         if let post = postContext, post.creatorId == self.userId {
             ret.append(.op)
         }
-        if isAdmin {
+        if isAdmin ?? false {
             ret.append(.admin)
         }
         if UserModel.developerNames.contains(profileUrl.absoluteString) {

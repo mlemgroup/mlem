@@ -34,28 +34,12 @@ struct CommunityListView: View {
         ScrollViewReader { scrollProxy in
             HStack {
                 List(selection: $selectedCommunity) {
-                    HomepageFeedRowView(
-                        feedType: .subscribed,
-                        iconName: Icons.subscribedFeedFill,
-                        iconColor: .red,
-                        description: "Subscribed communities from all servers",
-                        navigationContext: .sidebar
-                    )
-                    .id("top") // For "scroll to top" sidebar item
-                    HomepageFeedRowView(
-                        feedType: .local,
-                        iconName: Icons.localFeedFill,
-                        iconColor: .green,
-                        description: "Local communities from your server",
-                        navigationContext: .sidebar
-                    )
-                    HomepageFeedRowView(
-                        feedType: .all,
-                        iconName: Icons.federatedFeedFill,
-                        iconColor: .blue,
-                        description: "All communities that federate with your server",
-                        navigationContext: .sidebar
-                    )
+                    HomepageFeedRowView(.subscribed)
+                        .padding(.top, 5)
+                        .id("top") // For "scroll to top" sidebar item
+                    HomepageFeedRowView(.local)
+                    HomepageFeedRowView(.all)
+                    HomepageFeedRowView(.saved)
                     
                     ForEach(model.visibleSections) { section in
                         Section(header: headerView(for: section)) {

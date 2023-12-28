@@ -22,18 +22,6 @@ struct HeadlinePost: View {
     // arguments
     let post: PostModel
 
-    // computed
-    var usernameColor: Color {
-        if post.creator.isAdmin {
-            return .red
-        }
-        if post.creator.isBot {
-            return .indigo
-        }
-
-        return .secondary
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {
             HStack(alignment: .top, spacing: spacing) {

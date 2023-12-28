@@ -56,17 +56,20 @@ struct FeedPost: View {
     // MARK: Parameters
 
     let post: PostModel
+    let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
     let enableSwipeActions: Bool
     
     init(
         post: PostModel,
+        community: CommunityModel? = nil,
         showPostCreator: Bool = true,
         showCommunity: Bool = true,
         enableSwipeActions: Bool = true
     ) {
         self.post = post
+        self.community = community
         self.showPostCreator = showPostCreator
         self.showCommunity = showCommunity
         self.enableSwipeActions = enableSwipeActions
@@ -183,7 +186,8 @@ struct FeedPost: View {
                     if showPostCreator {
                         UserLinkView(
                             user: post.creator,
-                            serverInstanceLocation: userServerInstanceLocation
+                            serverInstanceLocation: userServerInstanceLocation,
+                            communityContext: community
                         )
                     }
                 }

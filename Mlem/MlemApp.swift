@@ -75,39 +75,50 @@ struct MlemApp: App {
         guard accountsTracker.savedAccounts.first != nil else { return }
 
         // Subscribed Feed
-        let homeIcon = UIApplicationShortcutIcon(systemImageName: "house")
+        let subscribedIcon = UIApplicationShortcutIcon(systemImageName: Icons.subscribedFeed)
         let subscribedFeedItem = UIApplicationShortcutItem(
             type: FeedType.subscribed.rawValue,
             localizedTitle: "Subscribed",
             localizedSubtitle: nil,
-            icon: homeIcon,
+            icon: subscribedIcon,
             userInfo: nil
         )
 
         // Local Feed
-        let officeIcon = UIApplicationShortcutIcon(systemImageName: "building.2")
+        let localIcon = UIApplicationShortcutIcon(systemImageName: Icons.localFeed)
         let localFeedItem = UIApplicationShortcutItem(
             type: FeedType.local.rawValue,
             localizedTitle: "Local",
             localizedSubtitle: nil,
-            icon: officeIcon,
+            icon: localIcon,
             userInfo: nil
         )
 
         // All Feed
-        let cloudIcon = UIApplicationShortcutIcon(systemImageName: "cloud")
+        let allIcon = UIApplicationShortcutIcon(systemImageName: Icons.federatedFeed)
         let allFeedItem = UIApplicationShortcutItem(
             type: FeedType.all.rawValue,
             localizedTitle: "All",
             localizedSubtitle: nil,
-            icon: cloudIcon,
+            icon: allIcon,
+            userInfo: nil
+        )
+        
+        // Saved Feed
+        let savedIcon = UIApplicationShortcutIcon(systemImageName: Icons.savedFeed)
+        let savedFeedItem = UIApplicationShortcutItem(
+            type: FeedType.saved.rawValue,
+            localizedTitle: "Saved",
+            localizedSubtitle: nil,
+            icon: savedIcon,
             userInfo: nil
         )
 
         UIApplication.shared.shortcutItems = [
             subscribedFeedItem,
             localFeedItem,
-            allFeedItem
+            allFeedItem,
+            savedFeedItem
         ]
     }
     

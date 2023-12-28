@@ -63,12 +63,14 @@ struct Icons {
     static let largePostFill: String = "text.below.photo.fill"
     
     // feeds
-    static let federatedFeed: String = "circle.hexagongrid.circle"
-    static let federatedFeedFill: String = "circle.hexagongrid.circle.fill"
-    static let localFeed: String = "house.circle"
-    static let localFeedFill: String = "house.circle.fill"
-    static let subscribedFeed: String = "newspaper.circle"
-    static let subscribedFeedFill: String = "newspaper.circle.fill"
+    static let federatedFeed: String = "circle.hexagongrid"
+    static let federatedFeedFill: String = "circle.hexagongrid.fill"
+    static let localFeed: String = "house"
+    static let localFeedFill: String = "house.fill"
+    static let subscribedFeed: String = "newspaper"
+    static let subscribedFeedFill: String = "newspaper.fill"
+    static let savedFeed: String = "bookmark"
+    static let savedFeedFill: String = "bookmark.fill"
     
     // sort types
     static let activeSort: String = "popcorn"

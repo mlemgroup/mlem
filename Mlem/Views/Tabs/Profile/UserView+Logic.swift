@@ -5,9 +5,28 @@
 //  Created by Sjmarf on 27/12/2023.
 //
 
-import Foundation
+import SwiftUI
 
 extension UserView {
+    
+    var cakeDayFormatter: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
+        return dateFormatter
+    }
+    
+    var bioAlignment: TextAlignment {
+        if let bio = user.bio {
+            if bio.rangeOfCharacter(from: CharacterSet.newlines) != nil {
+                return .leading
+            }
+            if bio.count > 100 {
+                return .leading
+            }
+        }
+        return .center
+    }
+    
     func tryReloadUser() async {
         do {
             let authoredContent = try await personRepository.loadUserDetails(for: user.userId, limit: internetSpeed.pageSize)

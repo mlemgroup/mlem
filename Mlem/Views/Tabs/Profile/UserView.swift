@@ -9,13 +9,14 @@ import SwiftUI
 import Dependencies
 
 struct UserView: View {
-    // @Dependency(\.apiClient) var apiClient
+    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.siteInformation) var siteInformation
     
     let internetSpeed: InternetSpeed
+    let communityContext: CommunityModel?
     
     @State var user: UserModel
     @State var selectedTab: UserViewTab = .overview
@@ -34,7 +35,7 @@ struct UserView: View {
     
     var isOwnProfile: Bool { user.userId == siteInformation.myUserInfo?.localUserView.person.id }
     
-    init(user: UserModel) {
+    init(user: UserModel, communityContext: CommunityModel? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
@@ -47,27 +48,12 @@ struct UserView: View {
         ))
         
         self._user = State(wrappedValue: user)
-    }
-    
-    @ViewBuilder
-    var separator: some View {
-        VStack(spacing: 0) {
-            Divider()
-            Color.secondarySystemBackground
-                .frame(height: 16)
-            Divider()
-        }
-    }
-    
-    var cakeDayFormatter: DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
-        return dateFormatter
+        self.communityContext = communityContext
     }
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 10) {
+            VStack(spacing: AppConstants.postAndCommentSpacing) {
                 UserHeaderView(user: user)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                     .padding(.top, 10)
@@ -75,26 +61,38 @@ struct UserView: View {
                     VStack(spacing: 5) {
                         Text(user.displayName)
                             .font(.title.bold())
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.01)
                         Text("@\(user.name)@\(user.profileUrl.host() ?? "unknown")")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
                 }
                 .buttonStyle(.plain)
+                
+                flairs
                 .padding(.bottom, AppConstants.postAndCommentSpacing)
                 
                 VStack(spacing: 0) {
+                    let bioAlignment = bioAlignment
                     if let bio = user.bio {
-                        MarkdownView(text: bio, isNsfw: false, alignment: .center).padding(AppConstants.postAndCommentSpacing)
+                        Divider()
+                            .padding(.bottom, AppConstants.postAndCommentSpacing)
+                        MarkdownView(text: bio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
                             
                     }
-                    let date1 = cakeDayFormatter.string(from: user.creationDate)
-                    let date2 = user.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated)
-                    Label("Joined \(date1), \(date2)", systemImage: Icons.cakeDay)
-                        .foregroundStyle(.secondary)
-                        .font(.footnote)
-                        .padding(.leading, AppConstants.postAndCommentSpacing)
-                        .padding(.top, 2)
+                    HStack {
+                        Label(cakeDayFormatter.string(from: user.creationDate), systemImage: Icons.cakeDay)
+                        Text("•")
+                        Label(user.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
+                        if bioAlignment == .leading {
+                            Spacer()
+                        }
+                    }
+                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+                    .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                    .padding(.top, 2)
                     
                     Divider()
                         .padding(.top, AppConstants.postAndCommentSpacing * 2)
@@ -158,7 +156,9 @@ struct UserView: View {
             }
         }
         .task(priority: .userInitiated) {
-            await tryReloadUser()
+            if isLoadingContent {
+                await tryReloadUser()
+            }
         }
         .onChange(of: user.userId) { _ in
             Task {
@@ -171,5 +171,68 @@ struct UserView: View {
         .fancyTabScrollCompatible()
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    var flairs: some View {
+        VStack(spacing: AppConstants.postAndCommentSpacing) {
+            ForEach(user.getFlairs(communityContext: communityContext), id: \.self) { flair in
+                switch flair {
+                case .developer:
+                    flairBackground(color: flair.color) {
+                        HStack {
+                            Image(systemName: Icons.developerFlair)
+                            Text("Mlem Developer")
+                        }
+                    }
+                case .banned:
+                    flairBackground(color: flair.color) {
+                        HStack {
+                            Image(systemName: Icons.bannedFlair)
+                            if let expirationDate = user.banExpirationDate {
+                                Text("Banned Until \(cakeDayFormatter.string(from: expirationDate))")
+                            } else {
+                                Text("Permanently Banned")
+                            }
+                        }
+                    }
+                case .bot:
+                    flairBackground(color: flair.color) {
+                        HStack {
+                            Image(systemName: Icons.botFlair)
+                            Text("Bot Account")
+                        }
+                    }
+                case .admin:
+                    flairBackground(color: flair.color) {
+                        HStack {
+                            Image(systemName: Icons.adminFlair)
+                            let host = try? apiClient.session.instanceUrl.host()
+                            Text("\(host ?? "Instance") Administrator")
+                        }
+                    }
+                case .moderator:
+                    flairBackground(color: flair.color) {
+                        HStack {
+                            Image(systemName: Icons.moderationFill)
+                            Text("\(communityContext?.displayName ?? "Community") Moderator")
+                        }
+                    }
+                default:
+                    EmptyView()
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func flairBackground<Content: View>(color: Color, @ViewBuilder content: () -> Content) -> some View {
+        content()
+            .foregroundStyle(color)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 10)
+            .background(
+                RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(color.opacity(0.2))
+            )
+            .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
