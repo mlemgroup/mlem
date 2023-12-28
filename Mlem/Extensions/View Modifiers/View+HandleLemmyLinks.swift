@@ -61,10 +61,10 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     LazyLoadExpandedPost(post: post)
                         .environmentObject(quickLookState)
                 case let .apiPerson(user):
-                    UserView(userID: user.id)
+                    UserView(user: UserModel(from: user))
                         .environmentObject(quickLookState)
                 case let .userProfile(user):
-                    UserView(userID: user.userId)
+                    UserView(user: user)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
                 case let .postLinkWithContext(post):

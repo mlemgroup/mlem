@@ -42,6 +42,7 @@ struct Window: View {
         case let .account(account):
             appState.setActiveAccount(account)
             favoriteCommunitiesTracker.configure(for: account)
+            siteInformation.myUserInfo = nil
             siteInformation.load()
             
             if let host = account.instanceLink.host(),

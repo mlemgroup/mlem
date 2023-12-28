@@ -28,9 +28,9 @@ struct UserResultView: View {
     
     var title: String {
         if user.blocked {
-            return "\(user.name) ∙ Blocked"
+            return "\(user.displayName) ∙ Blocked"
         } else {
-            return user.name
+            return user.displayName
         }
     }
     
@@ -68,6 +68,7 @@ struct UserResultView: View {
                                 .foregroundStyle(flair.color)
                         }
                         Text(title)
+                            .lineLimit(1)
                     }
                     Text(caption)
                         .font(.footnote)

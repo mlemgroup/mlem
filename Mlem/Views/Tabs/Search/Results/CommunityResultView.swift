@@ -62,6 +62,7 @@ struct CommunityResultView: View {
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
+                        .lineLimit(1)
                         .foregroundStyle(community.nsfw ? .red : .primary)
                     Text(caption)
                         .font(.footnote)

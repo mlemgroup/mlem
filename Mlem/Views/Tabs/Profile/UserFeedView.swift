@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct UserFeedView: View {
+    @Dependency(\.siteInformation) var siteInformation
+    @EnvironmentObject var editorTracker: EditorTracker
+    
     var userID: Int
-    @StateObject var privatePostTracker: PostTracker
-    @StateObject var privateCommentTracker: CommentTracker
+    @ObservedObject var privatePostTracker: PostTracker
+    @ObservedObject var privateCommentTracker: CommentTracker
     
     @Binding var selectedTab: UserViewTab
     
@@ -27,22 +31,18 @@ struct UserFeedView: View {
         let hashValue: Int
     }
     
+    var isOwnProfile: Bool {
+        return siteInformation.myUserInfo?.localUserView.person.id == userID
+    }
+    
     var body: some View {
-        let feed = generateFeed()
-            .sorted(by: {
-                $0.published > $1.published
-            })
-        
-        if feed.isEmpty {
-            emptyFeed
-        } else {
-            if selectedTab == .posts {
-                VStack(spacing: 0) {
-                    content(feed)
-                }
+        let feedItems = generateFeed()
+        Group {
+            if feedItems.isEmpty {
+                emptyFeed
             } else {
                 LazyVStack(spacing: 0) {
-                    content(feed)
+                    content(feedItems)
                 }
             }
         }
@@ -72,7 +72,9 @@ struct UserFeedView: View {
             feed = generatePostFeed()
         }
         
-        return feed
+        return feed.sorted(by: {
+            $0.published > $1.published
+        })
     }
     
     private func postEntry(for post: PostModel) -> some View {
@@ -104,17 +106,21 @@ struct UserFeedView: View {
         }
     }
     
+    var emptyFeedText: String {
+        if isOwnProfile {
+            return "Nothing to see here, get out there and make some stuff!"
+        } else {
+            return "Nothing to see here."
+        }
+    }
+    
     @ViewBuilder
     private var emptyFeed: some View {
-        HStack {
-            Spacer()
-            Text("Nothing to see here, get out there and make some stuff!")
-                .padding()
-                .font(.headline)
-                .opacity(0.5)
-            Spacer()
-        }
-        .background()
+        Text(emptyFeedText)
+            .padding()
+            .font(.headline)
+            .opacity(0.5)
+            .multilineTextAlignment(.center)
     }
     
     private func generateCommentFeed(savedItems: Bool = false) -> [FeedItem] {

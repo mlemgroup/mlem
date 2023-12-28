@@ -12,7 +12,9 @@ import SwiftUI
 struct UserModel {
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     @available(*, deprecated, message: "Use attributes of the UserModel directly instead.")
     var person: APIPerson
@@ -153,6 +155,31 @@ struct UserModel {
             errorHandler.handle(error)
         }
     }
+    
+    static func mock() -> UserModel {
+        return self.init(from: APIPerson.mock())
+    }
+    
+    var fullyQualifiedUsername: String? {
+        if let host = self.profileUrl.host() {
+            return "@\(name)@\(host)"
+        }
+        return nil
+    }
+    
+    func copyFullyQualifiedUsername() {
+        let pasteboard = UIPasteboard.general
+        if let fullyQualifiedUsername {
+            pasteboard.string = fullyQualifiedUsername
+            Task {
+                await notifier.add(.success("Username Copied"))
+            }
+        } else {
+            Task {
+                await notifier.add(.failure("Failed to copy"))
+            }
+        }
+    }
 }
 
 extension UserModel: Identifiable {
@@ -168,5 +195,7 @@ extension UserModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(blocked)
+        hasher.combine(postCount)
+        hasher.combine(commentCount)
     }
 }

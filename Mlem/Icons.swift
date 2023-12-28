@@ -136,6 +136,7 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
+    static let cakeDay: String = "birthday.cake"
     
     // end of feed
     static let endOfFeedHobbit: String = "figure.climbing"
@@ -157,6 +158,7 @@ struct Icons {
     static let attachment: String = "paperclip"
     static let edit: String = "pencil"
     static let delete: String = "trash"
+    static let copy: String = "doc.on.doc"
     
     // settings
     static let upvoteOnSave: String = "arrow.up.heart"

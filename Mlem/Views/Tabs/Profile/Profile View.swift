@@ -12,7 +12,7 @@ struct ProfileView: View {
     // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
-    let userID: Int
+    let user: UserModel?
 
     @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
@@ -20,10 +20,15 @@ struct ProfileView: View {
     var body: some View {
         ScrollViewReader { proxy in
             NavigationStack(path: $profileTabNavigation.path) {
-                UserView(userID: userID)
-                    .handleLemmyViews()
-                    .environmentObject(profileTabNavigation)
-                    .tabBarNavigationEnabled(.profile, navigation)
+                if let user {
+                    UserView(user: user)
+                        .handleLemmyViews()
+                        .environmentObject(profileTabNavigation)
+                        .tabBarNavigationEnabled(.profile, navigation)
+                } else {
+                    LoadingView(whatIsLoading: .profile)
+                        .fancyTabScrollCompatible()
+                }
             }
             .handleLemmyLinkResolution(navigationPath: .constant(profileTabNavigation))
             .environment(\.navigationPathWithRoutes, $profileTabNavigation.path)

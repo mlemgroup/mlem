@@ -12,7 +12,7 @@ struct APIPersonAggregates: Decodable {
     let id: Int? // TODO: 0.18 Deprecation remove this field
     let personId: Int
     let postCount: Int
-    let postScore: Int?
+    let postScore: Int? // TODO: 0.18 Deprecation remove this field
     let commentCount: Int
-    let commentScore: Int?
+    let commentScore: Int? // TODO: 0.18 Deprecation remove this field
 }
