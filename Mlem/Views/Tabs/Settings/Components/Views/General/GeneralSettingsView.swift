@@ -39,13 +39,11 @@ struct GeneralSettingsView: View {
                 
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.upvoteOnSave,
-                    settingName: "Upvote On Save",
+                    settingName: "Upvote on Save",
                     isTicked: $upvoteOnSave
                 )
-            } header: {
-                Text("Behavior")
             } footer: {
-                Text("You may need to restart the app for upvote-on-save changes to take effect.")
+                Text("You may need to restart the app for Upvote on Save changes to take effect.")
             }
             
             Section {
@@ -57,7 +55,7 @@ struct GeneralSettingsView: View {
             } footer: {
                 VStack(alignment: .leading, spacing: 3) {
                     // swiftlint:disable:next line_length
-                    Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content from appearing entirely in Account Settings.")
+                    Text("Blurs content flagged as Not Safe For Work until tapped. You can disable NSFW content completely in Account Settings.")
                     
                     // TODO: 0.17 deprecation remove this check
                     if (siteInformation.version ?? .zero) >= .init("0.18.0") {

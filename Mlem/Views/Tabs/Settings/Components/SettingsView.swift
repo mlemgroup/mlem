@@ -17,6 +17,8 @@ struct SettingsView: View {
     @StateObject private var settingsTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
     
+    @State private var isShowingInstanceAdditionSheet: Bool = false
+    
     @Environment(\.openURL) private var openURL
     
     @Namespace var scrollToTop
@@ -49,36 +51,36 @@ struct SettingsView: View {
                                 }
                                 Spacer()
                             }
+                            .id(scrollToTop)
                         }
-                        NavigationLink(.settings(.accounts)) {
-                            HStack(spacing: 10) {
-                                HStack {
-                                    HStack {
-                                        ForEach(accountsTracker.savedAccounts.prefix(4), id: \.id) { account in
-                                            AvatarView(
-                                                url: account.avatarUrl,
-                                                type: .user,
-                                                avatarSize: 28,
-                                                lineWidth: 0
-                                            )
-                                            .padding(1.8)
-                                            .background {
-                                                Circle()
-                                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
-                                            }
-                                            .frame(maxWidth: 8)
-                                        }
-                                    }
+                        if accountsTracker.savedAccounts.count > 1 {
+                            NavigationLink(.settings(.accounts)) {
+                                HStack(spacing: 10) {
+                                    AccountIconStack(
+                                        accounts: Array(accountsTracker.savedAccounts.prefix(4)),
+                                        avatarSize: 28,
+                                        spacing: 8,
+                                        outlineWidth: 1.8,
+                                        backgroundColor: Color(UIColor.secondarySystemGroupedBackground)
+                                    )
+                                    .frame(minWidth: 80)
+                                    .padding(.leading, -10)
+                                    Text("Accounts")
+                                    Spacer()
+                                    Text("\(accountsTracker.savedAccounts.count)")
+                                        .foregroundStyle(.secondary)
                                 }
-                                .frame(minWidth: 80)
-                                .padding(.leading, -10)
-                                Text("Accounts")
-                                Spacer()
-                                Text("\(accountsTracker.savedAccounts.count)")
-                                    .foregroundStyle(.secondary)
+                            }
+                        } else {
+                            Button {
+                                isShowingInstanceAdditionSheet = true
+                            } label: {
+                                Label("Add Another Account", systemImage: "plus")
+                            }
+                            .sheet(isPresented: $isShowingInstanceAdditionSheet) {
+                                AddSavedInstanceView(onboarding: false)
                             }
                         }
-                        .id(scrollToTop)
                     }
                     Section {
                         NavigationLink(.settings(.general)) {
