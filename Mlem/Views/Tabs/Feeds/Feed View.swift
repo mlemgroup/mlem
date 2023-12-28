@@ -152,9 +152,11 @@ struct FeedView: View {
             }
             .environmentObject(postTracker)
             .onAppear {
-                Task(priority: .userInitiated) {
-                    setDefaultSortMode()
-                    await initFeed()
+                if isLoading {
+                    Task(priority: .userInitiated) {
+                        setDefaultSortMode()
+                        await initFeed()
+                    }
                 }
             }
             .task(priority: .background) { await fetchCommunityDetails() }
