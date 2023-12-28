@@ -12,4 +12,13 @@ enum APISubscribedStatus: String, Decodable {
     case subscribed = "Subscribed"
     case pending = "Pending"
     case notSubscribed = "NotSubscribed"
+    
+    var isSubscribed: Bool {
+        switch self {
+        case .subscribed:
+            true
+        default:
+            false
+        }
+    }
 }

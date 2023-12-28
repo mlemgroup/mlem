@@ -118,7 +118,7 @@ struct FeedView: View {
                             print("show/hide sidebar in regular size class")
                             splitViewColumnVisibility = {
                                 if splitViewColumnVisibility == .all {
-                                    return .automatic
+                                    return .detailOnly
                                 } else {
                                     return .all
                                 }
@@ -152,6 +152,7 @@ struct FeedView: View {
                 }
             }
             .environmentObject(postTracker)
+            .environment(\.feedType, feedType)
             .task {
                 // hack to load if task below fails
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
