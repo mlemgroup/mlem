@@ -75,13 +75,8 @@ extension UserView {
             privatePostTracker.reset(with: newPosts)
             
             self.isLoadingContent = false
-//
-//            errorDetails = nil
+            
         } catch {
-//                errorDetails = ErrorDetails(error: error, refresh: {
-//                    await tryReloadUser()
-//                    return userDetails != nil
-//                })
                 errorHandler.handle(
                     .init(
                         title: "Couldn't load user info",
