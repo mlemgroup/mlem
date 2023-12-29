@@ -148,11 +148,7 @@ private struct OldUserView: View {
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
                 ForEach(UserViewTab.allCases, id: \.id) { tab in
                     // Skip tabs that are meant for only our profile
-                    if tab.onlyShowInOwnProfile {
-                        if isShowingOwnProfile() {
-                            Text(tab.label).tag(tab.rawValue)
-                        }
-                    } else {
+                    if isShowingOwnProfile() {
                         Text(tab.label).tag(tab.rawValue)
                     }
                 }

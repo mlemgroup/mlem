@@ -103,22 +103,11 @@ struct MlemApp: App {
             icon: allIcon,
             userInfo: nil
         )
-        
-        // Saved Feed
-        let savedIcon = UIApplicationShortcutIcon(systemImageName: Icons.savedFeed)
-        let savedFeedItem = UIApplicationShortcutItem(
-            type: FeedType.saved.rawValue,
-            localizedTitle: "Saved",
-            localizedSubtitle: nil,
-            icon: savedIcon,
-            userInfo: nil
-        )
 
         UIApplication.shared.shortcutItems = [
             subscribedFeedItem,
             localFeedItem,
-            allFeedItem,
-            savedFeedItem
+            allFeedItem
         ]
     }
     

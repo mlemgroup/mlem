@@ -22,15 +22,12 @@ enum FeedType: String, Encodable, SettingsOptions {
             return .orange
         case .subscribed:
             return .red
-        case .saved:
-            return .green
         }
     }
     
     case all = "All"
     case local = "Local"
     case subscribed = "Subscribed"
-    case saved = "Saved"
 }
 
 extension FeedType: AssociatedIcon {
@@ -39,7 +36,6 @@ extension FeedType: AssociatedIcon {
         case .all: return Icons.federatedFeed
         case .local: return Icons.localFeed
         case .subscribed: return Icons.subscribedFeed
-        case .saved: return Icons.savedFeed
         }
     }
     
@@ -48,7 +44,14 @@ extension FeedType: AssociatedIcon {
         case .all: return Icons.federatedFeedFill
         case .local: return Icons.localFeedFill
         case .subscribed: return Icons.subscribedFeedFill
-        case .saved: return Icons.savedFeedFill
+        }
+    }
+    
+    var iconNameCircle: String {
+        switch self {
+        case .all: return Icons.federatedFeedCircle
+        case .local: return Icons.localFeedCircle
+        case .subscribed: return Icons.subscribedFeedCircle
         }
     }
     
@@ -58,7 +61,6 @@ extension FeedType: AssociatedIcon {
         case .all: return "circle.hexagongrid"
         case .local: return "house"
         case .subscribed: return "newspaper"
-        case .saved: return Icons.saveFill
         }
     }
 }

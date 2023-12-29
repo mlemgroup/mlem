@@ -8,15 +8,11 @@
 import Foundation
 
 enum UserViewTab: String, CaseIterable, Identifiable {
-    case overview, comments, posts, saved
+    case overview, comments, posts
 
     var id: Self { self }
     
     var label: String {
         rawValue.capitalized
-    }
-    
-    var onlyShowInOwnProfile: Bool {
-        self == UserViewTab.saved
     }
 }
