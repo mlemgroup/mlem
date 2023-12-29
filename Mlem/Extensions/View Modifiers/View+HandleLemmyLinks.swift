@@ -118,7 +118,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
         case .linkMatrixAccount:
             MatrixLinkView()
         case .accounts:
-            AccountsPage()
+            AccountSwitcherSettingsView()
         case .general:
             GeneralSettingsView()
         case .sorting:
