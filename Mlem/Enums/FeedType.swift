@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum FeedType: String, Encodable, SettingsOptions {
+enum FeedType: String, Encodable, SettingsOptions, AssociatedColor {
     var id: Self { self }
 
     var label: String {
@@ -25,7 +25,7 @@ enum FeedType: String, Encodable, SettingsOptions {
         }
     }
     
-    var color: Color {
+    var color: Color? {
         switch self {
         case .all:
             return .blue

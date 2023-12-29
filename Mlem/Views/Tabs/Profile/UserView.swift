@@ -188,7 +188,9 @@ struct UserView: View {
             }
         }
         .refreshable {
-            await tryReloadUser()
+            await Task {
+                await tryReloadUser()
+            }.value
         }
         .hoistNavigation {
             if navigationPath.isEmpty {
