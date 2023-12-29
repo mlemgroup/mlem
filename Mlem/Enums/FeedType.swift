@@ -25,7 +25,7 @@ enum FeedType: String, Encodable, SettingsOptions, AssociatedColor {
         }
     }
     
-    var color: Color {
+    var color: Color? {
         switch self {
         case .all:
             return .blue
