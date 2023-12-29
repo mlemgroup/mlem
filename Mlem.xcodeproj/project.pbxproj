@@ -264,7 +264,6 @@
 		6386E03A2A0455BC006B3C1D /* String+Contains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E0392A0455BC006B3C1D /* String+Contains.swift */; };
 		6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E03F2A045723006B3C1D /* Website Icon Complex.swift */; };
 		63A09B69285F53E9004F0032 /* Error View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A09B68285F53E9004F0032 /* Error View.swift */; };
-		63ABCE0E27F894060047A7D0 /* OldUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63ABCE0D27F894060047A7D0 /* OldUserView.swift */; };
 		63CE4E732A06F5A100405271 /* Access Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E722A06F5A100405271 /* Access Token.swift */; };
 		63D24ED92A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D24ED82A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift */; };
 		63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 63D24EDB2A169F12005CCA81 /* MarkdownUI */; };
@@ -820,7 +819,6 @@
 		6386E0392A0455BC006B3C1D /* String+Contains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Contains.swift"; sourceTree = "<group>"; };
 		6386E03F2A045723006B3C1D /* Website Icon Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Website Icon Complex.swift"; sourceTree = "<group>"; };
 		63A09B68285F53E9004F0032 /* Error View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error View.swift"; sourceTree = "<group>"; };
-		63ABCE0D27F894060047A7D0 /* OldUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldUserView.swift; sourceTree = "<group>"; };
 		63CE4E722A06F5A100405271 /* Access Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Access Token.swift"; sourceTree = "<group>"; };
 		63D24ED82A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+FirstKeyWindow.swift"; sourceTree = "<group>"; };
 		63D24EDD2A169F2A005CCA81 /* Markdown View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Markdown View.swift"; sourceTree = "<group>"; };
@@ -2169,7 +2167,6 @@
 			isa = PBXGroup;
 			children = (
 				6DE1183B2A4A217400810C7E /* Profile View.swift */,
-				63ABCE0D27F894060047A7D0 /* OldUserView.swift */,
 				03C905C72B3C70E200B9082F /* UserView.swift */,
 				03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */,
 				03C905C92B3C834C00B9082F /* UserHeaderView.swift */,
@@ -3484,7 +3481,6 @@
 				637218632A3A2AAD008C4816 /* CreatePost.swift in Sources */,
 				CDE6A80B2A43E9F00062D161 /* CommentSortType.swift in Sources */,
 				503BA26F2A2C94540052516C /* URL+Identifiable.swift in Sources */,
-				63ABCE0E27F894060047A7D0 /* OldUserView.swift in Sources */,
 				CD6483322A38D3A600EE6CA3 /* ScoreCounterView.swift in Sources */,
 				50CC4A7A2A9CC45D0074C845 /* InstanceMetadata+Mock.swift in Sources */,
 				6318DE5427FB958800CC2AD6 /* Stickied Tag.swift in Sources */,

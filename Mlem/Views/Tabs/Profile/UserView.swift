@@ -210,7 +210,9 @@ struct UserView: View {
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isPresentingAccountSwitcher) {
-            AccountsPage()
+            Form {
+                AccountListView()
+            }
         }
     }
     
