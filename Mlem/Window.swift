@@ -15,7 +15,6 @@ struct Window: View {
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
-    @Dependency(\.accountsTracker) var accountsTracker
 
     @StateObject var easterFlagsTracker: EasterFlagsTracker = .init()
     @StateObject var filtersTracker: FiltersTracker = .init()
