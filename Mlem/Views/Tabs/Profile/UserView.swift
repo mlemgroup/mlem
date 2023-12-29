@@ -79,6 +79,7 @@ struct UserView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+                .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 .buttonStyle(.plain)
                 
                 flairs
