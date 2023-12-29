@@ -73,7 +73,6 @@ struct FeedView: View {
     
     @State var postSortType: PostSortType
     @State var isLoading: Bool = true
-    @State var siteInformationLoading: Bool = true
     @State var shouldLoad: Bool = false
     
     @AppStorage("hasTranslucentInsets") var hasTranslucentInsets: Bool = true
@@ -152,28 +151,13 @@ struct FeedView: View {
                 }
             }
             .environmentObject(postTracker)
-            .environment(\.feedType, feedType)
-            .task {
-                // hack to load if task below fails
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    loadIfVersionResolved()
-                }
-                // fallback
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                    loadIfVersionResolved()
-                }
-                // error
-                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                    if siteInformation.version == nil {
-                        errorDetails = ErrorDetails(title: "Failed to determine site version!")
-                    } else {
-                        loadIfVersionResolved()
+            .onAppear {
+                if isLoading {
+                    Task(priority: .userInitiated) {
+                        setDefaultSortMode()
+                        await initFeed()
                     }
                 }
-            }
-            .task(id: siteInformation.version) {
-                // update post sort and load once we have siteInformation. Assumes site version won't change once we receive it.
-                loadIfVersionResolved()
             }
             .task(priority: .background) { await fetchCommunityDetails() }
             // using hardRefreshFeed() for these three so that the user gets immediate feedback, also kills the ScrollViewReader
@@ -189,6 +173,7 @@ struct FeedView: View {
             }
             .onChange(of: appState.currentActiveAccount) { _ in
                 Task(priority: .userInitiated) {
+                    setDefaultSortMode()
                     await hardRefreshFeed()
                 }
             }
@@ -247,7 +232,7 @@ struct FeedView: View {
             if let errorDetails {
                 ErrorView(errorDetails)
                     .frame(maxWidth: .infinity)
-            } else if isLoading || siteInformationLoading { // don't show posts until site information loads to avoid jarring redraw
+            } else if isLoading { // don't show posts until site information loads to avoid jarring redraw
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)

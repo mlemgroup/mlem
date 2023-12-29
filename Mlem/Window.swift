@@ -51,9 +51,10 @@ struct Window: View {
             appState.clearActiveAccount()
             favoriteCommunitiesTracker.clearStoredAccount()
         case let .account(account):
-            appState.setActiveAccount(account)
+            var account = account
+            appState.setActiveAccount(account, saveChanges: false)
+            siteInformation.load(account: account)
             favoriteCommunitiesTracker.configure(for: account)
-            siteInformation.load()
             
             if let host = account.instanceLink.host(),
                let instance = RecognizedLemmyInstances(rawValue: host) {
