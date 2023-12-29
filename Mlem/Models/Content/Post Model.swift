@@ -30,7 +30,7 @@ struct PostModel {
         self.postId = apiPostView.post.id
         self.post = apiPostView.post
         self.creator = UserModel(from: apiPostView.creator)
-        self.community = CommunityModel(from: apiPostView.community)
+        self.community = CommunityModel(from: apiPostView.community, subscribed: apiPostView.subscribed.isSubscribed)
         self.votes = VotesModel(from: apiPostView.counts, myVote: apiPostView.myVote)
         self.numReplies = apiPostView.counts.comments
         self.saved = apiPostView.saved

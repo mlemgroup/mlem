@@ -11,6 +11,7 @@ import SwiftUI
 struct Window: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+    @Dependency(\.accountsTracker) var accountsTracker
     @Dependency(\.notifier) var notifier
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.siteInformation) var siteInformation
@@ -27,7 +28,17 @@ struct Window: View {
     var body: some View {
         content
             .id(appState.currentActiveAccount?.id ?? 0)
-            .onChange(of: flow) { _ in flowDidChange() }
+            .onChange(of: flow) { [flow] _ in
+                switch flow {
+                case let .account(account):
+                    if accountsTracker.savedAccounts.contains(account) {
+                        accountsTracker.update(with: SavedAccount(from: account, lastUsed: .now))
+                    }
+                default:
+                    break
+                }
+                flowDidChange()
+            }
             .onAppear(perform: flowDidChange)
             .environment(\.setAppFlow, setFlow)
     }

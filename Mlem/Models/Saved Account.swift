@@ -15,6 +15,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let username: String
     let storedNickname: String?
     let avatarUrl: URL?
+    var lastUsed: Date? // nil when loading SavedAccounts from before this was added
     
     var stableIdString: String {
         assert(instanceLink.host() != nil, "nil instance link host!")
@@ -28,7 +29,8 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         username: String,
         storedNickname: String? = nil,
         avatarUrl: URL? = nil,
-        siteVersion: SiteVersion? = nil
+        siteVersion: SiteVersion? = nil,
+        lastUsed: Date? = nil
     ) {
         self.id = id
         self.instanceLink = instanceLink
@@ -37,6 +39,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.storedNickname = storedNickname
         self.avatarUrl = avatarUrl
         self.siteVersion = siteVersion
+        self.lastUsed = .now
     }
     
     // Convenience initializer to create an equal copy with different non-identifying properties.
@@ -45,7 +48,8 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         accessToken: String? = nil,
         storedNickname: String? = nil,
         avatarUrl: URL? = nil,
-        siteVersion: SiteVersion? = nil
+        siteVersion: SiteVersion? = nil,
+        lastUsed: Date? = nil
     ) {
         self.id = account.id
         self.instanceLink = account.instanceLink
@@ -54,6 +58,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.storedNickname = storedNickname ?? account.storedNickname
         self.avatarUrl = avatarUrl ?? account.avatarUrl
         self.siteVersion = siteVersion ?? account.siteVersion
+        self.lastUsed = lastUsed ?? account.lastUsed
     }
   
     // convenience
@@ -72,11 +77,33 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         try container.encode(storedNickname, forKey: .storedNickname)
         try container.encode(avatarUrl, forKey: .avatarUrl)
         try container.encode(siteVersion, forKey: .siteVersion)
+        try container.encode(lastUsed, forKey: .lastUsed)
     }
     
     static func == (lhs: SavedAccount, rhs: SavedAccount) -> Bool {
         lhs.id == rhs.id &&
             lhs.instanceLink == rhs.instanceLink &&
             lhs.username == rhs.username
+    }
+}
+
+extension SavedAccount {
+    /// Return the lowercased first letter of the nickname if it is a letter, otherwise returns "\*".
+    var nameCategory: String {
+        guard let first = nickname.first?.description.lowercased() else { return "Unknown" }
+        if "abcdefghijklmnopqrstuvwxyz".contains(first) {
+            return first
+        }
+        return "*"
+    }
+    
+    /// Sort by instance and then by username
+    var instanceSortKey: String {
+        return "\(instanceLink.host() ?? "unknown")\(nickname)"
+    }
+    
+    // Sort by nickname and then by instance
+    var nicknameSortKey: String {
+        return "\(nickname)\(instanceLink.host() ?? "unknown")"
     }
 }
