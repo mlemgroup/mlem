@@ -8,6 +8,18 @@
 import SwiftUI
 
 extension UserView {
+    var isOwnProfile: Bool { user.userId == siteInformation.myUserInfo?.localUserView.person.id }
+    
+    var tabs: [UserViewTab] {
+        var tabs: [UserViewTab] = [.overview, .posts, .comments]
+        if isOwnProfile {
+            tabs.append(.saved)
+        }
+        if !(user.moderatedCommunities?.isEmpty ?? true) {
+            tabs.append(.communities)
+        }
+        return tabs
+    }
     
     var cakeDayFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
@@ -30,7 +42,8 @@ extension UserView {
     func tryReloadUser() async {
         do {
             let authoredContent = try await personRepository.loadUserDetails(for: user.userId, limit: internetSpeed.pageSize)
-            self.user = UserModel(from: authoredContent.personView)
+            self.user = UserModel(from: authoredContent)
+            self.communityTracker.replaceAll(with: user.moderatedCommunities?.map { AnyContentModel($0) } ?? [])
             
             var savedContentData: GetPersonDetailsResponse?
             if isOwnProfile {

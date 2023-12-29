@@ -15,6 +15,9 @@ struct UserView: View {
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.siteInformation) var siteInformation
     
+    @Environment(\.navigationPathWithRoutes) private var navigationPath
+    @Environment(\.scrollViewProxy) private var scrollViewProxy
+    
     let internetSpeed: InternetSpeed
     let communityContext: CommunityModel?
     
@@ -22,18 +25,24 @@ struct UserView: View {
     @State var selectedTab: UserViewTab = .overview
     @State var isLoadingContent: Bool = true
     
+    @State var isPresentingAccountSwitcher: Bool = false
+    
     @StateObject var privatePostTracker: PostTracker
     @StateObject var privateCommentTracker: CommentTracker = .init()
     
+    // We have to use AnyContentModel instead of CommunityModel here because of the way CommunityResultView is written... hopefully we'll find a better solution than this once we do a class-based middleware rewrite - Sjmarf 2023-12-29
+    @StateObject var communityTracker: ContentTracker<AnyContentModel> = .init()
+    
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
     
     func confirmDestructive(destructiveFunction: StandardMenuFunction) {
         confirmationMenuFunction = destructiveFunction
         isPresentingConfirmDestructive = true
     }
-    
-    var isOwnProfile: Bool { user.userId == siteInformation.myUserInfo?.localUserView.person.id }
     
     init(user: UserModel, communityContext: CommunityModel? = nil) {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
@@ -53,6 +62,8 @@ struct UserView: View {
     
     var body: some View {
         ScrollView {
+            ScrollToView(appeared: $scrollToTopAppeared)
+                .id(scrollToTop)
             VStack(spacing: AppConstants.postAndCommentSpacing) {
                 UserHeaderView(user: user)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
@@ -105,12 +116,14 @@ struct UserView: View {
                     } else {
                         VStack(spacing: 0) {
                             ScrollView(.horizontal) {
-                                BubblePicker([.overview, .posts, .comments, .saved], selected: $selectedTab) { tab in
+                                BubblePicker(tabs, selected: $selectedTab) { tab in
                                     switch tab {
                                     case .posts:
                                         Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
                                     case .comments:
                                         Text("Comments (\(abbreviateNumber(user.commentCount ?? 0)))")
+                                    case .communities:
+                                        Text("Communities (\(abbreviateNumber(user.moderatedCommunities?.count ?? 0)))")
                                     default:
                                         Text(tab.label)
                                     }
@@ -121,9 +134,10 @@ struct UserView: View {
                             .scrollIndicators(.hidden)
                             Divider()
                             UserFeedView(
-                                userID: user.userId,
+                                user: user,
                                 privatePostTracker: privatePostTracker,
                                 privateCommentTracker: privateCommentTracker,
+                                communityTracker: communityTracker,
                                 selectedTab: $selectedTab
                             )
                         }
@@ -154,6 +168,13 @@ struct UserView: View {
                     }
                 }
             }
+            if isOwnProfile {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Switch Account", systemImage: Icons.switchUser) {
+                        isPresentingAccountSwitcher = true
+                    }
+                }
+            }
         }
         .task(priority: .userInitiated) {
             if isLoadingContent {
@@ -168,9 +189,29 @@ struct UserView: View {
         .refreshable {
             await tryReloadUser()
         }
+        .hoistNavigation {
+            if navigationPath.isEmpty {
+                withAnimation {
+                    scrollViewProxy?.scrollTo(scrollToTop)
+                }
+                return true
+            } else {
+                if scrollToTopAppeared {
+                    return false
+                } else {
+                    withAnimation {
+                        scrollViewProxy?.scrollTo(scrollToTop)
+                    }
+                    return true
+                }
+            }
+        }
         .fancyTabScrollCompatible()
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isPresentingAccountSwitcher) {
+            AccountsPage()
+        }
     }
     
     var flairs: some View {

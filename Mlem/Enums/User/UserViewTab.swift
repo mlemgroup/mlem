@@ -8,7 +8,7 @@
 import Foundation
 
 enum UserViewTab: String, CaseIterable, Identifiable {
-    case overview, comments, posts
+    case overview, comments, posts, communities, saved
 
     var id: Self { self }
     

@@ -155,13 +155,6 @@ private struct OldUserView: View {
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
-            
-            UserFeedView(
-                userID: userID,
-                privatePostTracker: privatePostTracker,
-                privateCommentTracker: privateCommentTracker,
-                selectedTab: $selectionSection
-            )
         }
         .fancyTabScrollCompatible()
         .environmentObject(privatePostTracker)

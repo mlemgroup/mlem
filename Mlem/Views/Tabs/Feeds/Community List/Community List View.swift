@@ -39,7 +39,6 @@ struct CommunityListView: View {
                         .id("top") // For "scroll to top" sidebar item
                     HomepageFeedRowView(.local)
                     HomepageFeedRowView(.all)
-                    HomepageFeedRowView(.saved)
                     
                     ForEach(model.visibleSections) { section in
                         Section(header: headerView(for: section)) {

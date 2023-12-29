@@ -49,10 +49,13 @@ struct UserModel {
     let profileUrl: URL
     let sharedInboxUrl: URL?
     
-    // These values are nil if the UserModel was created from an APIPerson and not an APIPersonView
+    // From APIPersonView
     var isAdmin: Bool?
     var postCount: Int?
     var commentCount: Int?
+    
+    // From GetPersonDetailsResponse
+    var moderatedCommunities: [CommunityModel]?
     
     static let developerNames = [
         "https://lemmy.tespia.org/u/navi",
@@ -63,6 +66,13 @@ struct UserModel {
         "https://lemmy.ml/u/sjmarf"
     ]
     
+    /// Creates a UserModel from an GetPersonDetailsResponse
+    /// - Parameter response: GetPersonDetailsResponse to create a UserModel representation of
+    init(from response: GetPersonDetailsResponse) {
+        self.init(from: response.personView)
+        self.moderatedCommunities = response.moderates.map { CommunityModel(from: $0.community) }
+    }
+    
     /// Creates a UserModel from an APIPersonView
     /// - Parameter apiPersonView: APIPersonView to create a UserModel representation of
     init(from personView: APIPersonView) {
@@ -70,7 +80,7 @@ struct UserModel {
         
         self.postCount = personView.counts.postCount
         self.commentCount = personView.counts.commentCount
-        
+             
         // TODO: 0.18 Deprecation
         @Dependency(\.siteInformation) var siteInformation
         if (siteInformation.version ?? .infinity) > .init("0.19.0") {
@@ -120,7 +130,6 @@ struct UserModel {
         commentContext: APIComment? = nil,
         communityContext: CommunityModel? = nil
     ) -> [UserFlair] {
-        print("COMM NAME", communityContext?.name)
         var ret: [UserFlair] = .init()
         if let post = postContext, post.creatorId == self.userId {
             ret.append(.op)

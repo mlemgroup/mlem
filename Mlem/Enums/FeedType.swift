@@ -14,12 +14,23 @@ enum FeedType: String, Encodable, SettingsOptions {
         return rawValue
     }
     
+    var description: String {
+        switch self {
+        case .all:
+            return "Subscribed communities from all instances"
+        case .local:
+            return "Local communities from your server"
+        case .subscribed:
+            return "All communities that federate with your server"
+        }
+    }
+    
     var color: Color {
         switch self {
         case .all:
             return .blue
         case .local:
-            return .orange
+            return .green
         case .subscribed:
             return .red
         }

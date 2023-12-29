@@ -12,9 +12,10 @@ struct UserFeedView: View {
     @Dependency(\.siteInformation) var siteInformation
     @EnvironmentObject var editorTracker: EditorTracker
     
-    var userID: Int
+    var user: UserModel
     @ObservedObject var privatePostTracker: PostTracker
     @ObservedObject var privateCommentTracker: CommentTracker
+    @ObservedObject var communityTracker: ContentTracker<AnyContentModel>
     
     @Binding var selectedTab: UserViewTab
     
@@ -32,29 +33,44 @@ struct UserFeedView: View {
     }
     
     var isOwnProfile: Bool {
-        return siteInformation.myUserInfo?.localUserView.person.id == userID
+        return siteInformation.myUserInfo?.localUserView.person.id == user.userId
     }
     
     var body: some View {
-        let feedItems = generateFeed()
-        Group {
-            if feedItems.isEmpty {
-                emptyFeed
-            } else {
-                LazyVStack(spacing: 0) {
-                    content(feedItems)
+        
+        LazyVStack(spacing: 0) {
+            switch selectedTab {
+            case .communities:
+                Label(
+                    "\(user.displayName) moderates \(communityTracker.items.count) communities.",
+                    systemImage: Icons.moderationFill
+                )
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+                .padding(.vertical, 4)
+                Divider()
+                ForEach(communityTracker.items, id: \.wrappedValue.uid) { model in
+                    if let community = model.wrappedValue as? CommunityModel {
+                        CommunityResultView(community: community, showTypeLabel: false)
+                    }
+
+                    Divider()
                 }
-            }
-        }
-    }
-    
-    func content(_ feed: [FeedItem]) -> some View {
-        ForEach(feed, id: \.uid) { feedItem in
-            if let post = feedItem.post {
-                postEntry(for: post)
-            }
-            if let comment = feedItem.comment {
-                commentEntry(for: comment)
+                .environmentObject(communityTracker)
+            default:
+                let feedItems = generateFeed()
+                if feedItems.isEmpty {
+                    emptyFeed
+                } else {
+                    ForEach(feedItems, id: \.uid) { feedItem in
+                        if let post = feedItem.post {
+                            postEntry(for: post)
+                        }
+                        if let comment = feedItem.comment {
+                            commentEntry(for: comment)
+                        }
+                    }
+                }
             }
         }
     }
@@ -70,6 +86,8 @@ struct UserFeedView: View {
             feed = generateCommentFeed()
         case .posts:
             feed = generatePostFeed()
+        default:
+            feed = []
         }
         
         return feed.sorted(by: {
@@ -132,7 +150,7 @@ struct UserFeedView: View {
                 } else {
                     // If we unfavorited something while
                     // here we don't want it showing up in our feed
-                    return $0.commentView.creator.id == userID
+                    return $0.commentView.creator.id == user.userId
                 }
             }
         
@@ -157,7 +175,7 @@ struct UserFeedView: View {
                 } else {
                     // If we unfavorited something while
                     // here we don't want it showing up in our feed
-                    return $0.creator.userId == userID
+                    return $0.creator.userId == user.userId
                 }
             }
         

@@ -139,16 +139,16 @@ struct HomepageFeedRowView: View {
 
     var body: some View {
         NavigationLink(value: pathValue) {
-            HStack(spacing: 15) {
-                Image(systemName: feedType.iconNameFill).resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(feedType.color)
-                Text(feedType.label)
-                    .font(.title2)
+            HStack {
+                Image(systemName: feedType.iconNameCircle).resizable()
+                    .frame(width: 36, height: 36).foregroundColor(feedType.color)
+                VStack(alignment: .leading) {
+                    Text("\(feedType.label) Communities")
+                    Text(feedType.description).font(.caption).foregroundColor(.gray)
+                }
             }
+            .padding(.bottom, 1)
             .accessibilityElement(children: .combine)
-            // .frame(height: 36)
         }
     }
     
