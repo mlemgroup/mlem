@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum FeedType: String, Encodable, SettingsOptions {
+enum FeedType: String, Encodable, SettingsOptions, AssociatedColor {
     var id: Self { self }
 
     var label: String {
