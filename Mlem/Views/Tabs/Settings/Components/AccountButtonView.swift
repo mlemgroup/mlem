@@ -15,6 +15,7 @@ struct AccountButtonView: View {
     @Environment(\.setAppFlow) private var setFlow
     
     @State var showingSignOutConfirmation: Bool = false
+    @Binding var isSwitching: Bool
     
     enum CaptionState {
         case instanceOnly, timeOnly, instanceAndTime
@@ -23,9 +24,10 @@ struct AccountButtonView: View {
     let account: SavedAccount
     let caption: CaptionState
     
-    init(account: SavedAccount, caption: CaptionState = .instanceAndTime) {
+    init(account: SavedAccount, caption: CaptionState = .instanceAndTime, isSwitching: Binding<Bool>) {
         self.account = account
         self.caption = caption
+        self._isSwitching = isSwitching
     }
     
     var timeText: String? {
@@ -126,6 +128,7 @@ struct AccountButtonView: View {
     
     private func setFlow(using account: SavedAccount?) {
         if let account {
+            isSwitching = true
             setFlow(.account(account))
             return
         }
