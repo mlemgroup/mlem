@@ -11,6 +11,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
     let id: Int
     let instanceLink: URL
     let accessToken: String
+    var siteVersion: SiteVersion?
     let username: String
     let storedNickname: String?
     let avatarUrl: URL?
@@ -28,6 +29,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         username: String,
         storedNickname: String? = nil,
         avatarUrl: URL? = nil,
+        siteVersion: SiteVersion? = nil,
         lastUsed: Date? = nil
     ) {
         self.id = id
@@ -36,6 +38,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = username
         self.storedNickname = storedNickname
         self.avatarUrl = avatarUrl
+        self.siteVersion = siteVersion
         self.lastUsed = .now
     }
     
@@ -45,8 +48,8 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         accessToken: String? = nil,
         storedNickname: String? = nil,
         avatarUrl: URL? = nil,
+        siteVersion: SiteVersion? = nil,
         lastUsed: Date? = nil
-        
     ) {
         self.id = account.id
         self.instanceLink = account.instanceLink
@@ -54,6 +57,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         self.username = account.username
         self.storedNickname = storedNickname ?? account.storedNickname
         self.avatarUrl = avatarUrl ?? account.avatarUrl
+        self.siteVersion = siteVersion ?? account.siteVersion
         self.lastUsed = lastUsed ?? account.lastUsed
     }
   
@@ -72,6 +76,7 @@ struct SavedAccount: Identifiable, Codable, Equatable, Hashable {
         try container.encode(username, forKey: .username)
         try container.encode(storedNickname, forKey: .storedNickname)
         try container.encode(avatarUrl, forKey: .avatarUrl)
+        try container.encode(siteVersion, forKey: .siteVersion)
         try container.encode(lastUsed, forKey: .lastUsed)
     }
     
