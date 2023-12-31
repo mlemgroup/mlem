@@ -8,6 +8,7 @@
 import SwiftUI
 import Dependencies
 
+// swiftlint:disable type_body_length
 struct UserView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
@@ -65,7 +66,7 @@ struct UserView: View {
             ScrollToView(appeared: $scrollToTopAppeared)
                 .id(scrollToTop)
             VStack(spacing: AppConstants.postAndCommentSpacing) {
-                UserHeaderView(user: user)
+                AvatarBannerView(user: user)
                     .padding(.horizontal, AppConstants.postAndCommentSpacing)
                     .padding(.top, 10)
                 Button(action: user.copyFullyQualifiedUsername) {
@@ -83,7 +84,6 @@ struct UserView: View {
                 .buttonStyle(.plain)
                 
                 flairs
-                .padding(.bottom, AppConstants.postAndCommentSpacing)
                 
                 VStack(spacing: 0) {
                     let bioAlignment = bioAlignment
@@ -116,23 +116,19 @@ struct UserView: View {
                         .transition(.opacity)
                     } else {
                         VStack(spacing: 0) {
-                            ScrollView(.horizontal) {
-                                BubblePicker(tabs, selected: $selectedTab) { tab in
-                                    switch tab {
-                                    case .posts:
-                                        Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
-                                    case .comments:
-                                        Text("Comments (\(abbreviateNumber(user.commentCount ?? 0)))")
-                                    case .communities:
-                                        Text("Communities (\(abbreviateNumber(user.moderatedCommunities?.count ?? 0)))")
-                                    default:
-                                        Text(tab.label)
-                                    }
+                            BubblePicker(tabs, selected: $selectedTab) { tab in
+                                switch tab {
+                                case .posts:
+                                    Text("Posts (\(abbreviateNumber(user.postCount ?? 0)))")
+                                case .comments:
+                                    Text("Comments (\(abbreviateNumber(user.commentCount ?? 0)))")
+                                case .communities:
+                                    Text("Communities (\(abbreviateNumber(user.moderatedCommunities?.count ?? 0)))")
+                                default:
+                                    Text(tab.label)
                                 }
-                                .padding(.horizontal, AppConstants.postAndCommentSpacing)
-                                .padding(.vertical, 4)
                             }
-                            .scrollIndicators(.hidden)
+                            .padding(.vertical, 4)
                             Divider()
                             UserFeedView(
                                 user: user,
@@ -220,52 +216,58 @@ struct UserView: View {
     }
     
     var flairs: some View {
-        VStack(spacing: AppConstants.postAndCommentSpacing) {
-            ForEach(user.getFlairs(communityContext: communityContext), id: \.self) { flair in
-                switch flair {
-                case .developer:
-                    flairBackground(color: flair.color) {
-                        HStack {
-                            Image(systemName: Icons.developerFlair)
-                            Text("Mlem Developer")
-                        }
-                    }
-                case .banned:
-                    flairBackground(color: flair.color) {
-                        HStack {
-                            Image(systemName: Icons.bannedFlair)
-                            if let expirationDate = user.banExpirationDate {
-                                Text("Banned Until \(cakeDayFormatter.string(from: expirationDate))")
-                            } else {
-                                Text("Permanently Banned")
+        Group {
+            let flairs = user.getFlairs(communityContext: communityContext)
+            if !flairs.isEmpty {
+                VStack(spacing: AppConstants.postAndCommentSpacing) {
+                    ForEach(flairs, id: \.self) { flair in
+                        switch flair {
+                        case .developer:
+                            flairBackground(color: flair.color) {
+                                HStack {
+                                    Image(systemName: Icons.developerFlair)
+                                    Text("Mlem Developer")
+                                }
                             }
+                        case .banned:
+                            flairBackground(color: flair.color) {
+                                HStack {
+                                    Image(systemName: Icons.bannedFlair)
+                                    if let expirationDate = user.banExpirationDate {
+                                        Text("Banned Until \(cakeDayFormatter.string(from: expirationDate))")
+                                    } else {
+                                        Text("Permanently Banned")
+                                    }
+                                }
+                            }
+                        case .bot:
+                            flairBackground(color: flair.color) {
+                                HStack {
+                                    Image(systemName: Icons.botFlair)
+                                    Text("Bot Account")
+                                }
+                            }
+                        case .admin:
+                            flairBackground(color: flair.color) {
+                                HStack {
+                                    Image(systemName: Icons.adminFlair)
+                                    let host = try? apiClient.session.instanceUrl.host()
+                                    Text("\(host ?? "Instance") Administrator")
+                                }
+                            }
+                        case .moderator:
+                            flairBackground(color: flair.color) {
+                                HStack {
+                                    Image(systemName: Icons.moderationFill)
+                                    Text("\(communityContext?.displayName ?? "Community") Moderator")
+                                }
+                            }
+                        default:
+                            EmptyView()
                         }
                     }
-                case .bot:
-                    flairBackground(color: flair.color) {
-                        HStack {
-                            Image(systemName: Icons.botFlair)
-                            Text("Bot Account")
-                        }
-                    }
-                case .admin:
-                    flairBackground(color: flair.color) {
-                        HStack {
-                            Image(systemName: Icons.adminFlair)
-                            let host = try? apiClient.session.instanceUrl.host()
-                            Text("\(host ?? "Instance") Administrator")
-                        }
-                    }
-                case .moderator:
-                    flairBackground(color: flair.color) {
-                        HStack {
-                            Image(systemName: Icons.moderationFill)
-                            Text("\(communityContext?.displayName ?? "Community") Moderator")
-                        }
-                    }
-                default:
-                    EmptyView()
                 }
+                .padding(.bottom, AppConstants.postAndCommentSpacing)
             }
         }
     }
@@ -282,3 +284,4 @@ struct UserView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
+// swiftlint:enable type_body_length

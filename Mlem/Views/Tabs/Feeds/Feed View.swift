@@ -9,6 +9,13 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+enum FeedTab: String, Identifiable, CaseIterable {
+    
+    var id: Self { self }
+    case posts, about, moderators, statistics
+}
+
+// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 struct FeedView: View {
     // MARK: Environment and settings
@@ -87,6 +94,7 @@ struct FeedView: View {
         isPresentingConfirmDestructive = true
     }
     
+    @State var showNavigationTitle: Bool = false
     @Namespace var scrollToTop
     @State private var scrollToTopAppeared = false
     private var scrollToTopId: Int? {
@@ -99,16 +107,16 @@ struct FeedView: View {
     
     var body: some View {
         contentView
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(hasTranslucentInsets ? Color.secondarySystemBackground : Color.systemBackground)
+            // .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // .background(hasTranslucentInsets ? Color.secondarySystemBackground : Color.systemBackground)
             .toolbar {
                 ToolbarItem(placement: .principal) { toolbarHeader }
                 ToolbarItem(placement: .navigationBarTrailing) { sortMenu }
-                ToolbarItemGroup(placement: .navigationBarTrailing) { ellipsisMenu }
+                ToolbarItem(placement: .navigationBarTrailing) { ellipsisMenu }
             }
             .navigationBarTitleDisplayMode(.inline)
-            /// [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
-            .navigationBarColor(visibility: .visible)
+            // [2023.08] Set to `.visible` to workaround bug where navigation bar background may disappear on certain devices when device rotates.
+            .navigationBarColor(visibility: .automatic)
             .hoistNavigation {
                 if navigationPath.isEmpty {
                     /// Need to check `scrollToTopAppeared` because we want to scroll to top before popping back to sidebar. [2023.09]
@@ -206,6 +214,77 @@ struct FeedView: View {
                 LazyVStack(spacing: 0) {
                     ScrollToView(appeared: $scrollToTopAppeared)
                         .id(scrollToTop)
+                        .onAppear {
+                            showNavigationTitle = false
+                        }
+                        .onDisappear {
+                            showNavigationTitle = true
+                        }
+                    
+                    if let community {
+                        VStack(spacing: 5) {
+                            HStack(alignment: .center, spacing: 10) {
+                                AvatarView(community: community, avatarSize: 52)
+                                VStack(alignment: .leading, spacing: 0) {
+                                    Text(community.displayName)
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.01)
+                                    if let fullyQualifiedName = community.fullyQualifiedName {
+                                        Text(fullyQualifiedName)
+                                            .font(.footnote)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                Spacer()
+                                if let subscribed = community.subscribed {
+                                    let foregroundColor: Color = subscribed ? .green : .secondary
+                                    Button {
+                                        hapticManager.play(haptic: .lightSuccess, priority: .low)
+                                        Task {
+                                            var community = community
+                                            do {
+                                                try await community.toggleSubscribe { item in
+                                                    DispatchQueue.main.async { self.community = item }
+                                                }
+                                            } catch {
+                                                errorHandler.handle(error)
+                                            }
+                                        }
+                                    } label: {
+                                        HStack(spacing: 4) {
+                                            Text(abbreviateNumber(community.subscriberCount ?? 0))
+                                            Image(systemName: subscribed ? Icons.successCircle : Icons.personFill)
+                                                .aspectRatio(contentMode: .fit)
+                                        }
+                                        .foregroundStyle(foregroundColor)
+                                        .padding(.vertical, 5)
+                                        .padding(.horizontal, 10)
+                                        .background(
+                                            Capsule()
+                                                .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
+                                                .background(Capsule().fill(subscribed ? .green.opacity(0.1) : .clear))
+                                        )
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                            }
+                            .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                            Divider()
+                            BubblePicker(FeedTab.allCases, selected: .constant(FeedTab.posts)) {
+                                Text($0.rawValue.capitalized)
+                            }
+                        }
+                        .padding(.top, -15)
+                        .padding(.bottom, 5)
+                        VStack(spacing: 15) {
+                            Divider()
+                            Divider()
+                        }
+                        .frame(maxWidth: .infinity)
+                        .background(Color.secondarySystemBackground)
+                    }
                     
                     // note: using .uid here because .id causes swipe actions to break--state changes still seem to properly trigger rerenders this way 🤔
                     ForEach(postTracker.items, id: \.uid) { post in
@@ -215,6 +294,7 @@ struct FeedView: View {
                     // TODO: update to use proper LoadingState
                     EndOfFeedView(loadingState: isLoading && postTracker.page > 1 ? .loading : .done, viewType: .hobbit)
                 }
+                .padding(.top, 20)
             }
         }
         .frame(maxWidth: .infinity)
@@ -344,6 +424,9 @@ struct FeedView: View {
                     .foregroundColor(.primary)
                     .accessibilityHint("Activate to view sidebar.")
             }
+            .transition(.opacity)
+            .opacity(showNavigationTitle ? 1 : 0)
+            .animation(.easeOut(duration: 0.2), value: showNavigationTitle)
         } else {
             Menu {
                 ForEach(genFeedSwitchingFunctions()) { menuFunction in
@@ -367,3 +450,4 @@ struct FeedView: View {
 }
 
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length

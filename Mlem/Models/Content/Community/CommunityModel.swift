@@ -114,9 +114,9 @@ struct CommunityModel {
         }
         self.subscribed = !subscribed
         if subscribed {
-            self.subscriberCount = subscriberCount + 1
-        } else {
             self.subscriberCount = subscriberCount - 1
+        } else {
+            self.subscriberCount = subscriberCount + 1
         }
         RunLoop.main.perform { [self] in
             callback(self)
@@ -161,6 +161,13 @@ struct CommunityModel {
                 .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
             )
         }
+    }
+    
+    var fullyQualifiedName: String? {
+        if let host = self.communityUrl.host() {
+            return "@\(name)@\(host)"
+        }
+        return nil
     }
 }
 
