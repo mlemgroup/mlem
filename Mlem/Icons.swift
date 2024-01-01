@@ -140,6 +140,8 @@ struct Icons {
     static let updated: String = "clock.arrow.2.circlepath"
     static let favorite: String = "star"
     static let favoriteFill: String = "star.fill"
+    static let unfavorite: String = "star.slash"
+    static let unfavoriteFill: String = "star.slash.fill"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
     static let cakeDay: String = "birthday.cake"

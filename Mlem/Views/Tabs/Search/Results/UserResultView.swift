@@ -64,7 +64,7 @@ struct UserResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: AppRoute.userProfile(user)) {
+        NavigationLink(value: AppRoute.userProfile(user, communityContext: communityContext)) {
             HStack(spacing: 10) {
                 if user.blocked {
                     Image(systemName: Icons.hide)

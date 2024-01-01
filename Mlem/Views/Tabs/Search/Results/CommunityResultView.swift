@@ -20,6 +20,8 @@ struct CommunityResultView: View {
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
     
+    @EnvironmentObject var editorTracker: EditorTracker
+    
     init(
         _ community: CommunityModel,
         showTypeLabel: Bool = false,
@@ -58,6 +60,26 @@ struct CommunityResultView: View {
         return "Unknown instance"
     }
     
+    var subscriberCountColor: Color {
+        if community.favorited {
+            return .blue
+        }
+        if community.subscribed ?? false {
+            return .green
+        }
+        return .secondary
+    }
+    
+    var subscriberCountIcon: String {
+        if community.favorited {
+            return Icons.favoriteFill
+        }
+        if community.subscribed ?? false {
+            return Icons.subscribed
+        }
+        return Icons.personFill
+    }
+    
     var body: some View {
         NavigationLink(value: AppRoute.community(community)) {
             HStack(spacing: 10) {
@@ -85,9 +107,9 @@ struct CommunityResultView: View {
                     HStack(spacing: 5) {
                         Text(abbreviateNumber(subscriberCount))
                             .monospacedDigit()
-                        Image(systemName: (community.subscribed ?? false) ? Icons.subscribed : Icons.personFill)
+                        Image(systemName: subscriberCountIcon)
                     }
-                    .foregroundStyle((community.subscribed ?? false) ? .green : .secondary)
+                    .foregroundStyle(subscriberCountColor)
                 }
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
@@ -115,7 +137,12 @@ struct CommunityResultView: View {
         )
         .addSwipeyActions(swipeActions ?? community.swipeActions(trackerCallback, confirmDestructive: confirmDestructive))
         .contextMenu {
-            ForEach(community.menuFunctions(trackerCallback)) { item in
+            ForEach(
+                community.menuFunctions(
+                    trackerCallback,
+                    editorTracker: editorTracker
+                )
+            ) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
         }

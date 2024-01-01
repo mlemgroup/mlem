@@ -8,6 +8,7 @@
 import SwiftUI
 import Dependencies
 
+// swiftlint:disable type_body_length
 struct CommunityView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
@@ -21,6 +22,7 @@ struct CommunityView: View {
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject var editorTracker: EditorTracker
     
     @State var community: CommunityModel
     @State var selectedTab: Tab = .posts
@@ -179,7 +181,12 @@ struct CommunityView: View {
                 .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
             }
             ToolbarItemGroup(placement: .secondaryAction) {
-                ForEach(community.menuFunctions { community = $0 }) { menuFunction in
+                ForEach(
+                    community.menuFunctions({ community = $0 },
+                                            editorTracker: editorTracker,
+                                            postTracker: postTracker
+                    )
+                ) { menuFunction in
                     MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
                 .destructiveConfirmation(
@@ -237,8 +244,12 @@ struct CommunityView: View {
                             Task {
                                 var community = community
                                 do {
-                                    try await community.toggleSubscribe { item in
-                                        DispatchQueue.main.async { self.community = item }
+                                    if subscribed {
+                                        confirmDestructive(destructiveFunction: try community.subscribeMenuFunction { self.community = $0 })
+                                    } else {
+                                        try await community.toggleSubscribe { item in
+                                            DispatchQueue.main.async { self.community = item }
+                                        }
                                     }
                                 } catch {
                                     errorHandler.handle(error)
@@ -277,3 +288,5 @@ struct CommunityView: View {
         }
     }
 }
+
+// swiftlint:enable type_body_length

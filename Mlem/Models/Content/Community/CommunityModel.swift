@@ -13,6 +13,8 @@ struct CommunityModel {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
+    @Dependency(\.notifier) var notifier
+    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
     enum CommunityError: Error {
         case noData
@@ -48,6 +50,7 @@ struct CommunityModel {
     var deleted: Bool
     var hidden: Bool
     var postingRestrictedToMods: Bool
+    var favorited: Bool
     
     // Dates
     let creationDate: Date
@@ -74,7 +77,6 @@ struct CommunityModel {
         self.init(from: response.communityView)
         self.site = response.site
         self.moderators = response.moderators.map { UserModel(from: $0.moderator) }
-        print("MODERATORS", self.moderators)
         self.discussionLanguages = response.discussionLanguages
         self.defaultPostLanguage = response.defaultPostLanguage
     }
@@ -126,6 +128,9 @@ struct CommunityModel {
         self.communityUrl = community.actorId
         
         self.subscribed = subscribed
+        
+        @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
+        self.favorited = favoriteCommunitiesTracker.isFavorited(community)
     }
     
     mutating func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
@@ -153,6 +158,16 @@ struct CommunityModel {
                 .init(title: "Failed to \(phrase) community", style: .toast, underlyingError: error)
             )
         }
+    }
+    
+    mutating func toggleFavorite(_ callback: @escaping (_ item: Self) -> Void = { _ in }) {
+        if favorited {
+            favoriteCommunitiesTracker.unfavorite(community)
+        } else {
+            favoriteCommunitiesTracker.favorite(community)
+        }
+        self.favorited.toggle()
+        callback(self)
     }
     
     mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
@@ -208,6 +223,7 @@ extension CommunityModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(subscribed)
+        hasher.combine(favorited)
         hasher.combine(subscriberCount)
         hasher.combine(blocked)
         hasher.combine(moderators?.map(\.id) ?? [])
