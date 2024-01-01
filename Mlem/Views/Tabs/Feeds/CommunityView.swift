@@ -222,20 +222,23 @@ struct CommunityView: View {
             VStack(spacing: 5) {
                 HStack(alignment: .center, spacing: 10) {
                     AvatarView(community: community, avatarSize: 44, iconResolution: .unrestricted)
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text(community.displayName)
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                        if let fullyQualifiedName = community.fullyQualifiedName {
-                            Text(fullyQualifiedName)
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
+                    Button(action: community.copyFullyQualifiedName) {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text(community.displayName)
+                                .font(.title2)
+                                .fontWeight(.semibold)
                                 .lineLimit(1)
+                                .minimumScaleFactor(0.01)
+                            if let fullyQualifiedName = community.fullyQualifiedName {
+                                Text(fullyQualifiedName)
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(1)
+                            }
                         }
+                        .frame(height: 44)
                     }
-                    .frame(height: 44)
+                    .buttonStyle(.plain)
                     Spacer()
                     if let subscribed = community.subscribed {
                         let foregroundColor: Color = subscribed ? .green : .secondary

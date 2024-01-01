@@ -6,7 +6,7 @@
 //
 
 import Dependencies
-import Foundation
+import SwiftUI
 
 struct CommunityModel {
     @Dependency(\.apiClient) private var apiClient
@@ -219,6 +219,20 @@ struct CommunityModel {
             return "@\(name)@\(host)"
         }
         return nil
+    }
+    
+    func copyFullyQualifiedName() {
+        let pasteboard = UIPasteboard.general
+        if let fullyQualifiedName {
+            pasteboard.string = fullyQualifiedName
+            Task {
+                await notifier.add(.success("Community Name Copied"))
+            }
+        } else {
+            Task {
+                await notifier.add(.failure("Failed to copy"))
+            }
+        }
     }
     
     static func mock() -> CommunityModel {

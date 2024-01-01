@@ -97,6 +97,15 @@ extension CommunityModel {
         if let function = try? subscribeMenuFunction(callback) {
             functions.append(.standard(function))
         }
+        functions.append(
+            .standardMenuFunction(
+                text: "Copy Name",
+                imageName: Icons.copy,
+                destructiveActionPrompt: nil,
+                enabled: true,
+                callback: copyFullyQualifiedName
+            )
+        )
         functions.append(.standard(favoriteMenuFunction(callback)))
         functions.append(.shareMenuFunction(url: communityUrl))
         if let function = try? blockMenuFunction(callback) {
