@@ -25,7 +25,6 @@ enum AppRoute: Routable {
     
     case postLinkWithContext(PostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
-    case userModeratorLink(UserModeratorLink)
     
     // MARK: - Settings
     case settings(SettingsPage)
@@ -54,8 +53,6 @@ enum AppRoute: Routable {
             return .postLinkWithContext(value)
         case let value as LazyLoadPostLinkWithContext:
             return .lazyLoadPostLinkWithContext(value)
-        case let value as UserModeratorLink:
-            return .userModeratorLink(value)
         case let value as SettingsPage:
             return .settings(value)
         case let value as AboutSettingsPage:

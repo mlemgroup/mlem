@@ -72,10 +72,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 case let .lazyLoadPostLinkWithContext(post):
                     LazyLoadExpandedPost(post: post.post, scrollTarget: post.scrollTarget)
                         .environmentObject(quickLookState)
-                case let .userModeratorLink(user):
-                    UserModeratorView(userDetails: user.user, moderatedCommunities: user.moderatedCommunities)
-                        .environmentObject(appState)
-                        .environmentObject(quickLookState)
                 case let .settings(page):
                     settingsDestination(for: page)
                 case let .aboutSettings(page):
