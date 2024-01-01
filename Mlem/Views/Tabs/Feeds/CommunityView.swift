@@ -176,16 +176,16 @@ struct CommunityView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(community.name)
-                .font(.headline)
-                .opacity(scrollToTopAppeared ? 0 : 1)
-                .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
+                    .font(.headline)
+                    .opacity(scrollToTopAppeared ? 0 : 1)
+                    .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
             }
             ToolbarItemGroup(placement: .secondaryAction) {
                 ForEach(
                     community.menuFunctions({ community = $0 },
                                             editorTracker: editorTracker,
                                             postTracker: postTracker
-                    )
+                                           )
                 ) { menuFunction in
                     MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                 }
@@ -240,43 +240,7 @@ struct CommunityView: View {
                     }
                     .buttonStyle(.plain)
                     Spacer()
-                    if let subscribed = community.subscribed {
-                        let foregroundColor: Color = subscribed ? .green : .secondary
-                        Button {
-                            hapticManager.play(haptic: .lightSuccess, priority: .low)
-                            Task {
-                                var community = community
-                                do {
-                                    if subscribed {
-                                        confirmDestructive(destructiveFunction: try community.subscribeMenuFunction { self.community = $0 })
-                                    } else {
-                                        try await community.toggleSubscribe { item in
-                                            DispatchQueue.main.async { self.community = item }
-                                        }
-                                    }
-                                } catch {
-                                    errorHandler.handle(error)
-                                }
-                            }
-                        } label: {
-                            HStack(spacing: 4) {
-                                if let subscriberCount = community.subscriberCount {
-                                    Text(abbreviateNumber(subscriberCount))
-                                }
-                                Image(systemName: subscribed ? Icons.successCircle : Icons.personFill)
-                                    .aspectRatio(contentMode: .fit)
-                            }
-                            .foregroundStyle(foregroundColor)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .background(
-                                Capsule()
-                                    .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
-                                    .background(Capsule().fill(subscribed ? .green.opacity(0.1) : .clear))
-                            )
-                        }
-                        .buttonStyle(.plain)
-                    }
+                    subscribeButton
                 }
                 .padding(.horizontal, AppConstants.postAndCommentSpacing)
                 .padding(.bottom, 3)
@@ -288,6 +252,78 @@ struct CommunityView: View {
             Divider()
                 .padding(.bottom, 15)
                 .background(Color.secondarySystemBackground)
+        }
+    }
+    
+    var subscribeButtonColor: Color {
+        if community.favorited {
+            return .blue
+        } else if community.subscribed ?? false {
+            return .green
+        }
+        return .secondary
+    }
+    
+    var subscribeButtonIcon: String {
+        if community.favorited {
+            return Icons.favoriteFill
+        } else if community.subscribed ?? false {
+            return Icons.successCircle
+        }
+        return Icons.personFill
+    }
+    
+    @ViewBuilder
+    var subscribeButton: some View {
+        let foregroundColor = subscribeButtonColor
+        if let subscribed = community.subscribed {
+            HStack(spacing: 4) {
+                if let subscriberCount = community.subscriberCount {
+                    Text(abbreviateNumber(subscriberCount))
+                }
+                Image(systemName: subscribeButtonIcon)
+                    .aspectRatio(contentMode: .fit)
+            }
+            .foregroundStyle(foregroundColor)
+            .padding(.vertical, 5)
+            .padding(.horizontal, 10)
+            .background(
+                Capsule()
+                    .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
+                    .background(Capsule().fill(subscribed ? .green.opacity(0.1) : .clear))
+            )
+            .onTapGesture {
+                hapticManager.play(haptic: .lightSuccess, priority: .low)
+                Task {
+                    var community = community
+                    do {
+                        if community.favorited {
+                            confirmDestructive(destructiveFunction: community.favoriteMenuFunction { self.community = $0 })
+                        } else if subscribed {
+                            confirmDestructive(destructiveFunction: try community.subscribeMenuFunction { self.community = $0 })
+                        } else {
+                            try await community.toggleSubscribe { item in
+                                DispatchQueue.main.async { self.community = item }
+                            }
+                        }
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
+            }
+            .simultaneousGesture(LongPressGesture().onEnded { _ in
+                hapticManager.play(haptic: .lightSuccess, priority: .low)
+                Task {
+                    var community = community
+                    do {
+                        try await community.toggleFavorite { item in
+                            DispatchQueue.main.async { self.community = item }
+                        }
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
+            })
         }
     }
 }
