@@ -292,7 +292,7 @@ struct CommunityView: View {
                     .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
                     .background(Capsule().fill(subscribed ? .green.opacity(0.1) : .clear))
             )
-            .onTapGesture {
+            .gesture(TapGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
                 Task {
                     var community = community
@@ -310,7 +310,7 @@ struct CommunityView: View {
                         errorHandler.handle(error)
                     }
                 }
-            }
+            })
             .simultaneousGesture(LongPressGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
                 Task {
