@@ -52,8 +52,14 @@ extension CommunityModel {
             destructiveActionPrompt: favorited ? "Really unfavorite \(community.name)?" : nil,
             enabled: true
         ) {
-            var new = self
-            new.toggleFavorite(callback)
+            Task {
+                do {
+                    var new = self
+                    try await new.toggleFavorite(callback)
+                } catch {
+                    errorHandler.handle(error)
+                }
+            }
         }
     }
     

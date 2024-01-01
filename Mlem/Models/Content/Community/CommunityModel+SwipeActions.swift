@@ -61,7 +61,7 @@ extension CommunityModel {
                         confirmDestructive(favoriteMenuFunction(callback))
                     } else {
                         var new = self
-                        new.toggleFavorite(callback)
+                        try await new.toggleFavorite(callback)
                     }
                 }
             }
@@ -73,10 +73,21 @@ extension CommunityModel {
         confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
     ) -> SwipeConfiguration {
         var trailingActions: [SwipeAction] = []
-        if !self.favorited, let action = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive) {
-            trailingActions.append(action)
+        let subscribeAction = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive)
+        let favoriteAction = favoriteSwipeAction(callback, confirmDestructive: confirmDestructive)
+        
+        if !self.favorited {
+            if let subscribeAction {
+                trailingActions.append(subscribeAction)
+            }
+            trailingActions.append(favoriteAction)
+        } else {
+            trailingActions.append(favoriteAction)
+            if let subscribeAction {
+                trailingActions.append(subscribeAction)
+            }
         }
-        trailingActions.append(favoriteSwipeAction(callback, confirmDestructive: confirmDestructive))
+       
         return SwipeConfiguration(leadingActions: [], trailingActions: trailingActions)
     }
 }

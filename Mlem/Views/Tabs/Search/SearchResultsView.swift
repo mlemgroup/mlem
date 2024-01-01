@@ -44,7 +44,6 @@ struct SearchResultsView: View {
             BubblePicker(SearchTab.allCases, selected: $searchModel.searchTab) {
                 Text($0.label)
             }
-            .padding(.horizontal)
             Group {
                 if contentTracker.isLoading && contentTracker.page == 1 && !shouldLoad {
                     ProgressView()

@@ -140,6 +140,9 @@ struct CommunityModel {
         self.subscribed = !subscribed
         if subscribed {
             self.subscriberCount = subscriberCount - 1
+            if favorited {
+                favoriteCommunitiesTracker.unfavorite(community)
+            }
         } else {
             self.subscriberCount = subscriberCount + 1
         }
@@ -160,14 +163,27 @@ struct CommunityModel {
         }
     }
     
-    mutating func toggleFavorite(_ callback: @escaping (_ item: Self) -> Void = { _ in }) {
-        if favorited {
+    mutating func toggleFavorite(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
+        self.favorited.toggle()
+        if !favorited {
             favoriteCommunitiesTracker.unfavorite(community)
         } else {
             favoriteCommunitiesTracker.favorite(community)
+            if let subscribed, !subscribed {
+                try await self.toggleSubscribe { [self] community in
+                    var community = community
+                    if !(community.subscribed ?? true) {
+                        print("Subscribe failed, unfavoriting...")
+                        community.favorited = false
+                        favoriteCommunitiesTracker.unfavorite(self.community)
+                    }
+                    callback(community)
+                }
+            }
         }
-        self.favorited.toggle()
-        callback(self)
+        RunLoop.main.perform { [self] in
+            callback(self)
+        }
     }
     
     mutating func toggleBlock(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
