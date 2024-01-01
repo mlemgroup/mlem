@@ -31,8 +31,7 @@ struct UserView: View {
     @StateObject var privatePostTracker: PostTracker
     @StateObject var privateCommentTracker: CommentTracker = .init()
     
-    // We have to use AnyContentModel instead of CommunityModel here because of the way CommunityResultView is written... hopefully we'll find a better solution than this once we do a class-based middleware rewrite - Sjmarf 2023-12-29
-    @StateObject var communityTracker: ContentTracker<AnyContentModel> = .init()
+    @StateObject var communityTracker: ContentTracker<CommunityModel> = .init()
     
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
@@ -161,7 +160,7 @@ struct UserView: View {
                             MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                         }
                     } label: {
-                        Label("Menu", systemImage: Icons.menu)
+                        Label("Menu", systemImage: Icons.menuCircle)
                     }
                 }
             }

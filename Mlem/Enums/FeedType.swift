@@ -35,10 +35,9 @@ enum FeedType: String, Encodable, SettingsOptions, AssociatedColor {
             return .red
         }
     }
-    
-    case all = "All"
-    case local = "Local"
     case subscribed = "Subscribed"
+    case local = "Local"
+    case all = "All"
 }
 
 extension FeedType: AssociatedIcon {

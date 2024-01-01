@@ -21,8 +21,17 @@ class PostTracker: ObservableObject {
     // dependencies
     @Dependency(\.postRepository) var postRepository
     @Dependency(\.apiClient) var apiClient
-    @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
+    
+    enum LoaderType: Equatable {
+        case feed(FeedType, sortedBy: PostSortType)
+        case community(CommunityModel, sortedBy: PostSortType)
+    }
+    
+    enum PostTrackerError: Error {
+        case notConfiguredForPageLoading
+    }
     
     // behavior governors
     private let shouldPerformMergeSorting: Bool
@@ -31,6 +40,8 @@ class PostTracker: ObservableObject {
 
     // state drivers
     @Published private(set) var items: [PostModel]
+    @Published var type: LoaderType?
+    @Published var showLoadingIcon: Bool = true
 
     // utility
     private var ids: Set<ContentModelIdentifier> = .init(minimumCapacity: 1000)
@@ -40,6 +51,9 @@ class PostTracker: ObservableObject {
     private(set) var currentCursor: String?
     
     private var hasReachedEnd: Bool = false
+    
+    var filter: (PostModel) -> PostFilterReason?
+    var handleError: ((Error) -> Void)!
     
     // prefetching
     private let prefetcher = ImagePrefetcher(
@@ -52,66 +66,93 @@ class PostTracker: ObservableObject {
         shouldPerformMergeSorting: Bool = true,
         internetSpeed: InternetSpeed,
         initialItems: [PostModel] = .init(),
-        upvoteOnSave: Bool
+        upvoteOnSave: Bool,
+        type: LoaderType? = nil,
+        filter: @escaping (PostModel) -> PostFilterReason? = { _ in nil },
+        handleError: ((Error) -> Void)? = nil
     ) {
         self.shouldPerformMergeSorting = shouldPerformMergeSorting
         self.internetSpeed = internetSpeed
         self.items = initialItems
         self.upvoteOnSave = upvoteOnSave
+        self.type = type
+        self.filter = filter
+        self.handleError = handleError
+        if self.handleError == nil {
+            self.handleError = { error in self.errorHandler.handle(error) }
+        }
     }
     
     // MARK: - Loading Methods
     
     // TODO: ERIC handle loading state properly
     
-    func loadNextPage(
-        communityId: Int?,
-        sort: PostSortType?,
-        type: FeedType,
-        filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
-    ) async throws {
-        let currentPage = page
-        
-        // retry this until we get enough items through the filter to enable autoload
-        var newPosts: [PostModel] = .init()
-        let numItems = items.count
-        repeat {
-            let (posts, cursor) = try await postRepository.loadPage(
-                communityId: communityId,
+    func getNextPageFromRepository() async throws -> (posts: [PostModel], cursor: String?) {
+        switch self.type {
+        case .feed(let feedType, let postSortType):
+            return try await postRepository.loadPage(
+                communityId: nil,
                 page: page,
                 cursor: currentCursor,
-                sort: sort,
-                type: type,
+                sort: postSortType,
+                type: feedType,
                 limit: internetSpeed.pageSize
             )
-            
-            newPosts = posts
-            
-            if newPosts.isEmpty {
-                hasReachedEnd = true
-            } else if let currentCursor, cursor == currentCursor {
-                hasReachedEnd = true
-            } else {
-                await add(newPosts, filtering: filtering)
-                page += 1
-                currentCursor = cursor
-            }
-        } while !hasReachedEnd && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
-        
-        // so although the API kindly returns `400`/"not_logged_in" for expired
-        // sessions _without_ 2FA enabled, currently once you enable 2FA on an account
-        // an expired session for a call with optional authentication such as loading
-        // posts returns a `200` with an empty list of data 😭
-        // if we get back an empty list for page 1, chances are this session is borked and
-        // the API doesn't want to tell us - so to avoid the user being confused, we'll fire
-        // off an authenticated call in the background and if appropriate show the expired
-        // session modal. We should be able to remove this once the API behaves as expected.
-        if currentPage == 1, newPosts.isEmpty {
-            try await apiClient.attemptAuthenticatedCall()
+        case .community(let community, let postSortType):
+            return try await postRepository.loadPage(
+                communityId: community.communityId,
+                page: page,
+                cursor: currentCursor,
+                sort: postSortType,
+                type: .subscribed,
+                limit: internetSpeed.pageSize
+            )
+        case nil:
+            throw PostTrackerError.notConfiguredForPageLoading
         }
-        
-        // don't preload filtered images
-        preloadImages(filterItems(items: newPosts, with: filtering))
+    }
+    
+    func loadNextPage() async {
+        defer { DispatchQueue.main.async { self.showLoadingIcon = false } }
+        DispatchQueue.main.async { self.showLoadingIcon = true }
+        do {
+            let currentPage = page
+            
+            // retry this until we get enough items through the filter to enable autoload
+            var newPosts: [PostModel] = .init()
+            let numItems = items.count
+            repeat {
+                let (posts, cursor) = try await getNextPageFromRepository()
+                newPosts = posts
+                
+                if newPosts.isEmpty {
+                    hasReachedEnd = true
+                } else if let currentCursor, cursor == currentCursor {
+                    hasReachedEnd = true
+                } else {
+                    await add(newPosts)
+                    page += 1
+                    currentCursor = cursor
+                }
+            } while !hasReachedEnd && numItems > items.count + AppConstants.infiniteLoadThresholdOffset
+            
+            // so although the API kindly returns `400`/"not_logged_in" for expired
+            // sessions _without_ 2FA enabled, currently once you enable 2FA on an account
+            // an expired session for a call with optional authentication such as loading
+            // posts returns a `200` with an empty list of data 😭
+            // if we get back an empty list for page 1, chances are this session is borked and
+            // the API doesn't want to tell us - so to avoid the user being confused, we'll fire
+            // off an authenticated call in the background and if appropriate show the expired
+            // session modal. We should be able to remove this once the API behaves as expected.
+            if currentPage == 1, newPosts.isEmpty {
+                try await apiClient.attemptAuthenticatedCall()
+            }
+            
+            // don't preload filtered images
+            preloadImages(filterItems(items: newPosts))
+        } catch {
+            handleError(error)
+        }
     }
     
     /// Loads a single post and adds it to the tracker
@@ -124,13 +165,10 @@ class PostTracker: ObservableObject {
         return newPost
     }
     
-    func refresh(
-        communityId: Int?,
-        sort: PostSortType?,
-        feedType: FeedType,
-        clearBeforeFetch: Bool = false,
-        filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
-    ) async throws {
+    @discardableResult
+    func refresh(clearBeforeFetch: Bool = false) async -> Bool {
+        defer { DispatchQueue.main.async { self.showLoadingIcon = false } }
+        DispatchQueue.main.async { self.showLoadingIcon = true }
         if clearBeforeFetch {
             await reset()
         }
@@ -138,31 +176,39 @@ class PostTracker: ObservableObject {
         page = 1
         currentCursor = nil
         
-        let (newPosts, cursor) = try await postRepository.loadPage(
-            communityId: communityId,
-            page: page,
-            cursor: currentCursor,
-            sort: sort,
-            type: feedType,
-            limit: internetSpeed.pageSize
-        )
-        
-        currentCursor = cursor
-        await reset(with: newPosts, cursor: cursor, filteredWith: filtering)
+        do {
+            let (newPosts, cursor) = try await getNextPageFromRepository()
+            
+            currentCursor = cursor
+            await reset(with: newPosts, cursor: cursor)
+            return true
+        } catch {
+            handleError(error)
+            return false
+        }
+    }
+    
+    func initFeed() async {
+        DispatchQueue.main.async { self.showLoadingIcon = true }
+        if items.isEmpty {
+            print("Post tracker is empty")
+            await loadNextPage()
+        } else {
+            print("Post tracker is not empty")
+            DispatchQueue.main.async { self.showLoadingIcon = false }
+        }
     }
     
     @MainActor
     /// Adds a given list of posts to items. Can be configured to perform filtering and preloading.
     /// - Parameters:
     ///   - newItems: list of PostModels to add
-    ///   - filtering: filter to apply before adding items
     ///   - preload: true if the new post's image should be preloaded
     func add(
         _ newItems: [PostModel],
-        filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil },
         preload: Bool = false
     ) {
-        let accepted = dedupedItems(from: filterItems(items: newItems, with: filtering))
+        let accepted = dedupedItems(from: filterItems(items: newItems))
         
         if preload { preloadImages(newItems) }
         
@@ -182,8 +228,7 @@ class PostTracker: ObservableObject {
     @MainActor
     func reset(
         with newItems: [PostModel] = .init(),
-        cursor: String? = nil,
-        filteredWith filter: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
+        cursor: String? = nil
     ) {
         hasReachedEnd = false
         page = newItems.isEmpty ? 1 : 2
@@ -192,7 +237,7 @@ class PostTracker: ObservableObject {
             hiddenItems.removeAll()
         }
         ids = .init(minimumCapacity: 1000)
-        items = dedupedItems(from: filterItems(items: newItems, with: filter))
+        items = dedupedItems(from: filterItems(items: newItems))
     }
 
     /// Determines whether the tracker should load more items
@@ -480,11 +525,10 @@ class PostTracker: ObservableObject {
     }
     
     private func filterItems(
-        items: [PostModel],
-        with filtering: @escaping (_: PostModel) -> PostFilterReason? = { _ in nil }
+        items: [PostModel]
     ) -> [PostModel] {
         items.filter { item in
-            if let reason = filtering(item) {
+            if let reason = self.filter(item) {
                 self.hiddenItems[reason] = self.hiddenItems[reason, default: 0] + 1
                 return false
             }

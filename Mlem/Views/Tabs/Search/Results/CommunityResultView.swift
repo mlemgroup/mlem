@@ -12,14 +12,25 @@ struct CommunityResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
-    @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
-    
     let community: CommunityModel
     let showTypeLabel: Bool
-    var swipeActions: SwipeConfiguration?
+    let trackerCallback: (_ item: CommunityModel) -> Void
+    let swipeActions: SwipeConfiguration?
 
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    init(
+        _ community: CommunityModel,
+        showTypeLabel: Bool = false,
+        swipeActions: SwipeConfiguration? = nil,
+        trackerCallback: @escaping (_ item: CommunityModel) -> Void = { _ in }
+    ) {
+        self.community = community
+        self.showTypeLabel = showTypeLabel
+        self.swipeActions = swipeActions
+        self.trackerCallback = trackerCallback
+    }
     
     func confirmDestructive(destructiveFunction: StandardMenuFunction) {
         confirmationMenuFunction = destructiveFunction
@@ -102,13 +113,9 @@ struct CommunityResultView: View {
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
             confirmationMenuFunction: confirmationMenuFunction
         )
-        .addSwipeyActions(swipeActions ?? community.swipeActions({
-            contentTracker.update(with: AnyContentModel($0))
-        }, confirmDestructive: confirmDestructive))
+        .addSwipeyActions(swipeActions ?? community.swipeActions(trackerCallback, confirmDestructive: confirmDestructive))
         .contextMenu {
-            ForEach(community.menuFunctions {
-                contentTracker.update(with: AnyContentModel($0))
-            }) { item in
+            ForEach(community.menuFunctions(trackerCallback)) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
         }
@@ -117,7 +124,7 @@ struct CommunityResultView: View {
 
 #Preview {
     CommunityResultView(
-        community: .init(from: .mock()),
+        .init(from: .mock()),
         showTypeLabel: true
     )
 }

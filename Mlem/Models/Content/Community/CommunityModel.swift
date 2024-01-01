@@ -18,6 +18,13 @@ struct CommunityModel {
         case noData
     }
     
+    struct ActiveUserCount {
+        let sixMonths: Int
+        let month: Int
+        let week: Int
+        let day: Int
+    }
+    
     @available(*, deprecated, message: "Use attributes of the CommunityModel directly instead.")
     var community: APICommunity
     
@@ -42,11 +49,6 @@ struct CommunityModel {
     var hidden: Bool
     var postingRestrictedToMods: Bool
     
-    // From APICommunityView
-    var blocked: Bool?
-    var subscribed: Bool?
-    var subscriberCount: Int?
-    
     // Dates
     let creationDate: Date
     let updatedDate: Date?
@@ -54,16 +56,25 @@ struct CommunityModel {
     // URLs
     let communityUrl: URL
     
-    // These values are only available via GetCommunityResponse
+    // From APICommunityView
+    var blocked: Bool?
+    var subscribed: Bool?
+    var subscriberCount: Int?
+    var postCount: Int?
+    var commentCount: Int?
+    var activeUserCount: ActiveUserCount?
+    
+    // From GetCommunityResponse
     var site: APISite?
-    var moderators: [APICommunityModeratorView]?
+    var moderators: [UserModel]?
     var discussionLanguages: [Int]?
     var defaultPostLanguage: Int?
     
     init(from response: GetCommunityResponse) {
         self.init(from: response.communityView)
         self.site = response.site
-        self.moderators = response.moderators
+        self.moderators = response.moderators.map { UserModel(from: $0.moderator) }
+        print("MODERATORS", self.moderators)
         self.discussionLanguages = response.discussionLanguages
         self.defaultPostLanguage = response.defaultPostLanguage
     }
@@ -75,9 +86,18 @@ struct CommunityModel {
     
     init(from communityView: APICommunityView) {
         self.init(from: communityView.community)
-        self.subscriberCount = communityView.counts.subscribers
         self.subscribed = communityView.subscribed.isSubscribed
         self.blocked = communityView.blocked
+        
+        self.subscriberCount = communityView.counts.subscribers
+        self.postCount = communityView.counts.posts
+        self.commentCount = communityView.counts.comments
+        self.activeUserCount = .init(
+            sixMonths: communityView.counts.usersActiveHalfYear,
+            month: communityView.counts.usersActiveMonth,
+            week: communityView.counts.usersActiveWeek,
+            day: communityView.counts.usersActiveDay
+        )
     }
     
     init(from community: APICommunity, subscribed: Bool? = nil) {
@@ -169,6 +189,10 @@ struct CommunityModel {
         }
         return nil
     }
+    
+    static func mock() -> CommunityModel {
+        return .init(from: GetCommunityResponse.mock())
+    }
 }
 
 extension CommunityModel: Identifiable {
@@ -186,6 +210,6 @@ extension CommunityModel: Hashable {
         hasher.combine(subscribed)
         hasher.combine(subscriberCount)
         hasher.combine(blocked)
-        hasher.combine(moderators?.map(\.moderator.id) ?? [])
+        hasher.combine(moderators?.map(\.id) ?? [])
     }
 }

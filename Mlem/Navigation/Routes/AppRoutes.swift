@@ -13,7 +13,6 @@ import Foundation
 ///
 enum AppRoute: Routable {
     case communityLinkWithContext(CommunityLinkWithContext)
-    case communitySidebarLinkWithContext(CommunitySidebarLinkWithContext)
 
     case apiPostView(APIPostView)
     case apiPost(APIPost)
@@ -41,8 +40,6 @@ enum AppRoute: Routable {
         switch value {
         case let value as CommunityLinkWithContext:
             return .communityLinkWithContext(value)
-        case let value as CommunitySidebarLinkWithContext:
-            return .communitySidebarLinkWithContext(value)
         case let value as APIPostView:
             return .apiPostView(value)
         case let value as APIPost:

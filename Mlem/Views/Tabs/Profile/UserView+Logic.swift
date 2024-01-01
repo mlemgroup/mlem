@@ -43,7 +43,7 @@ extension UserView {
         do {
             let authoredContent = try await personRepository.loadUserDetails(for: user.userId, limit: internetSpeed.pageSize)
             self.user = UserModel(from: authoredContent)
-            self.communityTracker.replaceAll(with: user.moderatedCommunities?.map { AnyContentModel($0) } ?? [])
+            self.communityTracker.replaceAll(with: user.moderatedCommunities ?? [])
             
             var savedContentData: GetPersonDetailsResponse?
             if isOwnProfile {
