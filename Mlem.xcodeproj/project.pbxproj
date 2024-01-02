@@ -262,7 +262,6 @@
 		6386E03A2A0455BC006B3C1D /* String+Contains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E0392A0455BC006B3C1D /* String+Contains.swift */; };
 		6386E0402A045723006B3C1D /* Website Icon Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6386E03F2A045723006B3C1D /* Website Icon Complex.swift */; };
 		63A09B69285F53E9004F0032 /* Error View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A09B68285F53E9004F0032 /* Error View.swift */; };
-		63CE4E732A06F5A100405271 /* Access Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CE4E722A06F5A100405271 /* Access Token.swift */; };
 		63D24ED92A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D24ED82A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift */; };
 		63D24EDC2A169F12005CCA81 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 63D24EDB2A169F12005CCA81 /* MarkdownUI */; };
 		63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D24EDD2A169F2A005CCA81 /* Markdown View.swift */; };
@@ -808,7 +807,6 @@
 		6386E0392A0455BC006B3C1D /* String+Contains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Contains.swift"; sourceTree = "<group>"; };
 		6386E03F2A045723006B3C1D /* Website Icon Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Website Icon Complex.swift"; sourceTree = "<group>"; };
 		63A09B68285F53E9004F0032 /* Error View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error View.swift"; sourceTree = "<group>"; };
-		63CE4E722A06F5A100405271 /* Access Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Access Token.swift"; sourceTree = "<group>"; };
 		63D24ED82A169A5F005CCA81 /* UIApplication+FirstKeyWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+FirstKeyWindow.swift"; sourceTree = "<group>"; };
 		63D24EDD2A169F2A005CCA81 /* Markdown View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Markdown View.swift"; sourceTree = "<group>"; };
 		63DF71F02A02999C002AC14E /* App Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Constants.swift"; sourceTree = "<group>"; };
