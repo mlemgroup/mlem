@@ -255,13 +255,22 @@ struct CommunityView: View {
         }
     }
     
-    var subscribeButtonColor: Color {
+    var subscribeButtonForegroundColor: Color {
         if community.favorited {
             return .blue
         } else if community.subscribed ?? false {
             return .green
         }
         return .secondary
+    }
+    
+    var subscribeButtonBackgroundColor: Color {
+        if community.favorited {
+            return .blue.opacity(0.1)
+        } else if community.subscribed ?? false {
+            return .green.opacity(0.1)
+        }
+        return .clear
     }
     
     var subscribeButtonIcon: String {
@@ -275,7 +284,7 @@ struct CommunityView: View {
     
     @ViewBuilder
     var subscribeButton: some View {
-        let foregroundColor = subscribeButtonColor
+        let foregroundColor = subscribeButtonForegroundColor
         if let subscribed = community.subscribed {
             HStack(spacing: 4) {
                 if let subscriberCount = community.subscriberCount {
@@ -290,7 +299,7 @@ struct CommunityView: View {
             .background(
                 Capsule()
                     .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
-                    .background(Capsule().fill(subscribed ? .green.opacity(0.1) : .clear))
+                    .background(Capsule().fill(subscribeButtonBackgroundColor))
             )
             .gesture(TapGesture().onEnded { _ in
                 hapticManager.play(haptic: .lightSuccess, priority: .low)
