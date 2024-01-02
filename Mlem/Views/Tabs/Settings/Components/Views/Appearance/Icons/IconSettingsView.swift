@@ -64,7 +64,8 @@ struct IconSettingsView: View {
                                     )
                                 }
                             })
-                            .padding()
+                            .padding(.vertical, 15)
+                            .padding(.horizontal, 12)
                         }
                     }
                 }
