@@ -35,6 +35,17 @@ enum FeedType: String, Encodable, SettingsOptions, AssociatedColor {
             return .red
         }
     }
+    
+    var color: Color? {
+        switch self {
+        case .all:
+            return .blue
+        case .local:
+            return .green
+        case .subscribed:
+            return .red
+        }
+    }
     case subscribed = "Subscribed"
     case local = "Local"
     case all = "All"
