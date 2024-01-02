@@ -16,24 +16,30 @@ struct CommunitySection: Identifiable {
     let accessibilityLabel: String
 }
 
+enum FeedSelection: Hashable {
+    case saved, subscribed, local, all
+    case community(CommunityLinkWithContext)
+}
+
 struct CommunityListView: View {
     @StateObject private var model: CommunityListModel = .init()
     
-    @Binding var selectedCommunity: CommunityLinkWithContext?
+    // @Binding var selectedCommunity: CommunityLinkWithContext?
     
     /// Set to `false` on disappear.
     @State private var appeared: Bool = false
     
-    init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
-        self._selectedCommunity = selectedCommunity
-    }
+//    init(selectedCommunity: Binding<CommunityLinkWithContext?>) {
+//        self._selectedCommunity = selectedCommunity
+//    }
     
     // MARK: - Body
     
     var body: some View {
         ScrollViewReader { scrollProxy in
             HStack {
-                List(selection: $selectedCommunity) {
+                // List(selection: $selectedCommunity) {
+                List {
                     HomepageFeedRowView(
                         feedType: .subscribed,
                         iconName: Icons.subscribedFeedFill,
@@ -54,6 +60,14 @@ struct CommunityListView: View {
                         iconName: Icons.federatedFeedFill,
                         iconColor: .blue,
                         description: "All communities that federate with your server",
+                        navigationContext: .sidebar
+                    )
+                    
+                    HomepageFeedRowView(
+                        feedType: .saved,
+                        iconName: Icons.save,
+                        iconColor: .green,
+                        description: "Your saved posts",
                         navigationContext: .sidebar
                     )
                     
@@ -117,35 +131,36 @@ struct CommunityListView: View {
 
 // MARK: - Previews
 
-struct CommunityListViewPreview: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                CommunityListView(selectedCommunity: .constant(nil))
-            }
-            .previewDisplayName("Populated")
-            
-            NavigationStack {
-                withDependencies {
-                    // return no subscriptions...
-                    $0.communityRepository.subscriptions = { _ in [] }
-                } operation: {
-                    CommunityListView(selectedCommunity: .constant(nil))
-                }
-            }
-            .previewDisplayName("Empty")
-            
-            NavigationStack {
-                withDependencies {
-                    // return an error when calling subscriptions
-                    $0.communityRepository.subscriptions = { _ in
-                        throw APIClientError.response(.init(error: "Borked"), nil)
-                    }
-                } operation: {
-                    CommunityListView(selectedCommunity: .constant(nil))
-                }
-            }
-            .previewDisplayName("Error")
-        }
-    }
-}
+// struct CommunityListViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            NavigationStack {
+//                CommunityListView(selectedCommunity: .constant(nil))
+//            }
+//            .previewDisplayName("Populated")
+//
+//            NavigationStack {
+//                withDependencies {
+//                    // return no subscriptions...
+//                    $0.communityRepository.subscriptions = { _ in [] }
+//                } operation: {
+//                    // CommunityListView(selectedCommunity: .constant(nil))
+//                    CommunityListView()
+//                }
+//            }
+//            .previewDisplayName("Empty")
+//
+//            NavigationStack {
+//                withDependencies {
+//                    // return an error when calling subscriptions
+//                    $0.communityRepository.subscriptions = { _ in
+//                        throw APIClientError.response(.init(error: "Borked"), nil)
+//                    }
+//                } operation: {
+//                    CommunityListView(selectedCommunity: .constant(nil))
+//                }
+//            }
+//            .previewDisplayName("Error")
+//        }
+//    }
+// }

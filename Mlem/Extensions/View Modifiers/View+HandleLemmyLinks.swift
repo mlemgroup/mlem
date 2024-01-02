@@ -28,6 +28,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
         content
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
+                case let .feed(feedPage):
+                    feedDestination(for: feedPage)
                 case let .community(community):
                     FeedView(community: community, feedType: .all)
                         .environmentObject(appState)
@@ -97,6 +99,14 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     }
 
     // swiftlint:enable function_body_length
+    
+    @ViewBuilder
+    private func feedDestination(for page: FeedPage) -> some View {
+        switch page {
+        case .saved:
+            SavedFeedView()
+        }
+    }
     
     @ViewBuilder
     // swiftlint:disable:next cyclomatic_complexity

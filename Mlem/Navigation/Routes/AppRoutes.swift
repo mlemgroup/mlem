@@ -27,7 +27,10 @@ enum AppRoute: Routable {
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
     case userModeratorLink(UserModeratorLink)
     
+    case feed(FeedPage)
+    
     // MARK: - Settings
+
     case settings(SettingsPage)
     case aboutSettings(AboutSettingsPage)
     case appearanceSettings(AppearanceSettingsPage)
@@ -36,8 +39,10 @@ enum AppRoute: Routable {
     case licenseSettings(LicensesSettingsPage)
     
     // swiftlint:disable cyclomatic_complexity
-    static func makeRoute<V>(_ value: V) throws -> AppRoute where V: Hashable {
+    static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
+        case let value as FeedPage:
+            return .feed(value)
         case let value as CommunityLinkWithContext:
             return .communityLinkWithContext(value)
         case let value as CommunitySidebarLinkWithContext:

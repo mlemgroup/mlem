@@ -29,25 +29,83 @@ struct FeedRoot: View {
          */
         ScrollViewReader { scrollProxy in
             NavigationSplitView(columnVisibility: $columnVisibility) {
-                CommunityListView(selectedCommunity: $rootDetails)
-            } detail: {
-                NavigationStack(path: $feedTabNavigation.path) {
-                    if let rootDetails {
-                        FeedView(
-                            community: rootDetails.community,
-                            feedType: rootDetails.feedType,
-                            rootDetails: $rootDetails,
-                            splitViewColumnVisibility: $columnVisibility
-                        )
-                        .environmentObject(appState)
-                        .environmentObject(feedTabNavigation)
-                        .tabBarNavigationEnabled(.feeds, navigation)
-                        .handleLemmyViews()
-                    } else {
-                        Text("Please select a community")
+                // CommunityListView(selectedCommunity: $rootDetails)
+                CommunityListView()
+                    .navigationDestination(for: FeedSelection.self) { feedType in
+                        NavigationStack(path: $feedTabNavigation.path) {
+                            switch feedType {
+                            case .saved:
+                                SavedFeedView()
+                            case .subscribed:
+                                FeedView(
+                                    community: nil, // rootDetails.community,
+                                    feedType: .subscribed, // rootDetails.feedType,
+                                    rootDetails: $rootDetails,
+                                    splitViewColumnVisibility: $columnVisibility
+                                )
+                                .environmentObject(appState)
+                                .environmentObject(feedTabNavigation)
+                                .tabBarNavigationEnabled(.feeds, navigation)
+                                .handleLemmyViews()
+                            case .local:
+                                FeedView(
+                                    community: nil, // rootDetails.community,
+                                    feedType: .local, // rootDetails.feedType,
+                                    rootDetails: $rootDetails,
+                                    splitViewColumnVisibility: $columnVisibility
+                                )
+                                .environmentObject(appState)
+                                .environmentObject(feedTabNavigation)
+                                .tabBarNavigationEnabled(.feeds, navigation)
+                                .handleLemmyViews()
+                            case .all:
+                                FeedView(
+                                    community: nil, // rootDetails.community,
+                                    feedType: .all, // rootDetails.feedType,
+                                    rootDetails: $rootDetails,
+                                    splitViewColumnVisibility: $columnVisibility
+                                )
+                                .environmentObject(appState)
+                                .environmentObject(feedTabNavigation)
+                                .tabBarNavigationEnabled(.feeds, navigation)
+                                .handleLemmyViews()
+                            case let .community(communityLink):
+                                FeedView(
+                                    community: communityLink.community,
+                                    feedType: .subscribed,
+                                    rootDetails: $rootDetails,
+                                    splitViewColumnVisibility: $columnVisibility
+                                )
+                                .environmentObject(appState)
+                                .environmentObject(feedTabNavigation)
+                                .tabBarNavigationEnabled(.feeds, navigation)
+                                .handleLemmyViews()
+                            }
+                        }
                     }
-                }
-                .id(rootDetails?.id ?? 0)
+            } detail: {
+                Text("Please select a community")
+//                NavigationStack(path: $feedTabNavigation.path) {
+//                    if let rootDetails {
+//                        if rootDetails.feedType == .saved {
+//                            SavedFeedView()
+//                        } else {
+//                            FeedView(
+//                                community: rootDetails.community,
+//                                feedType: rootDetails.feedType,
+//                                rootDetails: $rootDetails,
+//                                splitViewColumnVisibility: $columnVisibility
+//                            )
+//                            .environmentObject(appState)
+//                            .environmentObject(feedTabNavigation)
+//                            .tabBarNavigationEnabled(.feeds, navigation)
+//                            .handleLemmyViews()
+//                        }
+//                    } else {
+//                        Text("Please select a community")
+//                    }
+//                }
+//                .id(rootDetails?.id ?? 0)
             }
             .environment(\.scrollViewProxy, scrollProxy)
         }

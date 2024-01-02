@@ -66,13 +66,15 @@ struct CommuntiyFeedRowView: View {
         .accessibilityLabel(communityLabel)
     }
 
-    private var pathValue: AnyHashable {
-        if navigationContext == .sidebar {
-            return CommunityLinkWithContext(community: CommunityModel(from: community), feedType: .subscribed)
-        } else {
-            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
-            return AppRoute.communityLinkWithContext(.init(community: CommunityModel(from: community), feedType: .subscribed))
-        }
+    // private var pathValue: AnyHashable {
+    private var pathValue: FeedSelection {
+        .community(CommunityLinkWithContext(community: CommunityModel(from: community), feedType: .subscribed))
+//        if navigationContext == .sidebar {
+//            return CommunityLinkWithContext(community: CommunityModel(from: community), feedType: .subscribed)
+//        } else {
+//            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
+//            return AppRoute.communityLinkWithContext(.init(community: CommunityModel(from: community), feedType: .subscribed))
+//        }
     }
     
     private var communityNameText: Text {
@@ -131,19 +133,21 @@ struct CommuntiyFeedRowView: View {
 }
 
 struct HomepageFeedRowView: View {
-    let feedType: FeedType
+    let feedType: FeedSelection
     let iconName: String
     let iconColor: Color
     let description: String
     let navigationContext: NavigationContext
 
     var body: some View {
-        NavigationLink(value: pathValue) {
+        // NavigationLink(value: pathValue) {
+        NavigationLink(value: feedType) {
             HStack {
                 Image(systemName: iconName).resizable()
                     .frame(width: 36, height: 36).foregroundColor(iconColor)
                 VStack(alignment: .leading) {
-                    Text("\(feedType.label) Communities")
+                    // Text("\(feedType.label) Communities")
+                    Text("Communities")
                     Text(description).font(.caption).foregroundColor(.gray)
                 }
             }
@@ -152,12 +156,12 @@ struct HomepageFeedRowView: View {
         }
     }
     
-    private var pathValue: AnyHashable {
-        if navigationContext == .sidebar {
-            return CommunityLinkWithContext(community: nil, feedType: feedType)
-        } else {
-            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
-            return AppRoute.communityLinkWithContext(.init(community: nil, feedType: feedType))
-        }
-    }
+//    private var pathValue: AnyHashable {
+//        if navigationContext == .sidebar {
+//            return CommunityLinkWithContext(community: nil, feedType: feedType)
+//        } else {
+//            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
+//            return AppRoute.communityLinkWithContext(.init(community: nil, feedType: feedType))
+//        }
+//    }
 }

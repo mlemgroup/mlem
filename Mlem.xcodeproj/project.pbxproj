@@ -332,6 +332,8 @@
 		CD04D5DD2A361564008EF95B /* ReplyButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DC2A361564008EF95B /* ReplyButtonView.swift */; };
 		CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5DE2A361585008EF95B /* Empty Button Style.swift */; };
 		CD04D5E72A3636FB008EF95B /* Headline Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E62A3636FB008EF95B /* Headline Post.swift */; };
+		CD05C3442B43637F0005CA0F /* SavedFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05C3432B43637F0005CA0F /* SavedFeedView.swift */; };
+		CD05C3462B43673A0005CA0F /* FeedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05C3452B43673A0005CA0F /* FeedValues.swift */; };
 		CD05E7792A4E381A0081D102 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7782A4E381A0081D102 /* PostSize.swift */; };
 		CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77E2A4F263B0081D102 /* Menu Function.swift */; };
 		CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */; };
@@ -880,6 +882,8 @@
 		CD04D5DC2A361564008EF95B /* ReplyButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyButtonView.swift; sourceTree = "<group>"; };
 		CD04D5DE2A361585008EF95B /* Empty Button Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Empty Button Style.swift"; sourceTree = "<group>"; };
 		CD04D5E62A3636FB008EF95B /* Headline Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Headline Post.swift"; sourceTree = "<group>"; };
+		CD05C3432B43637F0005CA0F /* SavedFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFeedView.swift; sourceTree = "<group>"; };
+		CD05C3452B43673A0005CA0F /* FeedValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedValues.swift; sourceTree = "<group>"; };
 		CD05E7782A4E381A0081D102 /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CD05E77E2A4F263B0081D102 /* Menu Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Function.swift"; sourceTree = "<group>"; };
 		CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Haptic Manager.swift"; sourceTree = "<group>"; };
@@ -2407,6 +2411,7 @@
 				B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */,
 				6332FDD427F080FA0009A98A /* Community List */,
 				63344C6F2A098054001BC616 /* Components */,
+				CD05C3432B43637F0005CA0F /* SavedFeedView.swift */,
 			);
 			path = Feeds;
 			sourceTree = "<group>";
@@ -2808,6 +2813,7 @@
 			children = (
 				E48DE4A12AC3F23F004E6291 /* DestinationValue.swift */,
 				E47B2B752A902DE200629AF7 /* SettingsValues.swift */,
+				CD05C3452B43673A0005CA0F /* FeedValues.swift */,
 			);
 			path = "Destination Values";
 			sourceTree = "<group>";
@@ -3164,6 +3170,7 @@
 				03EEEAF72AB8ED3C0087F8D8 /* SearchTabPicker.swift in Sources */,
 				CD2053102AC878B50000AA38 /* UpdatedTimestampView.swift in Sources */,
 				CD1446232A5B336900610EF1 /* LicensesView.swift in Sources */,
+				CD05C3462B43673A0005CA0F /* FeedValues.swift in Sources */,
 				CD4368D02AE245F400BD8BD1 /* MessageTracker.swift in Sources */,
 				CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */,
 				505240E52A86E32700EA4558 /* CommunityListModel.swift in Sources */,
@@ -3357,6 +3364,7 @@
 				CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */,
 				6372186D2A3A2AAD008C4816 /* EditComment.swift in Sources */,
 				6D693A4A2A51B98F009E2D76 /* APICommentReportView.swift in Sources */,
+				CD05C3442B43637F0005CA0F /* SavedFeedView.swift in Sources */,
 				637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */,
 				505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */,
 				6332FDC327EFCB5F0009A98A /* Color+Colors.swift in Sources */,
