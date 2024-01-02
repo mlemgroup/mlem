@@ -20,6 +20,7 @@ struct PostLinkWithContext: Equatable, Identifiable, Hashable {
     var id: Int { post.postId }
 
     let post: PostModel
+    var community: CommunityModel?
     let postTracker: PostTracker
     var scrollTarget: Int?
 }

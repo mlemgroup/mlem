@@ -132,19 +132,19 @@ struct CommuntiyFeedRowView: View {
 
 struct HomepageFeedRowView: View {
     let feedType: FeedType
-    let iconName: String
-    let iconColor: Color
-    let description: String
-    let navigationContext: NavigationContext
+    
+    init(_ feedType: FeedType) {
+        self.feedType = feedType
+    }
 
     var body: some View {
         NavigationLink(value: pathValue) {
             HStack {
-                Image(systemName: iconName).resizable()
-                    .frame(width: 36, height: 36).foregroundColor(iconColor)
+                Image(systemName: feedType.iconNameCircle).resizable()
+                    .frame(width: 36, height: 36).foregroundColor(feedType.color)
                 VStack(alignment: .leading) {
                     Text("\(feedType.label) Communities")
-                    Text(description).font(.caption).foregroundColor(.gray)
+                    Text(feedType.description).font(.caption).foregroundColor(.gray)
                 }
             }
             .padding(.bottom, 1)
@@ -153,11 +153,6 @@ struct HomepageFeedRowView: View {
     }
     
     private var pathValue: AnyHashable {
-        if navigationContext == .sidebar {
-            return CommunityLinkWithContext(community: nil, feedType: feedType)
-        } else {
-            // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
-            return AppRoute.communityLinkWithContext(.init(community: nil, feedType: feedType))
-        }
+        return CommunityLinkWithContext(community: nil, feedType: feedType)
     }
 }

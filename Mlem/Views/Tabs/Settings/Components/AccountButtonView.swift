@@ -13,6 +13,7 @@ struct AccountButtonView: View {
     @EnvironmentObject var appState: AppState
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
     @Environment(\.setAppFlow) private var setFlow
+    @Environment(\.dismiss) var dismiss
     
     @State var showingSignOutConfirmation: Bool = false
     
@@ -126,6 +127,7 @@ struct AccountButtonView: View {
     
     private func setFlow(using account: SavedAccount?) {
         if let account {
+            dismiss()
             setFlow(.account(account))
             return
         }
