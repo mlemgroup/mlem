@@ -9,31 +9,33 @@ import SwiftUI
 
 struct AlternativeIconLabel: View {
     let icon: AlternativeIcon
+    let selected: Bool
 
     var body: some View {
-        HStack {
+        VStack {
             getImage()
                 .resizable()
                 .scaledToFit()
                 .frame(width: AppConstants.appIconSize, height: AppConstants.appIconSize)
                 .foregroundColor(Color.white)
                 .cornerRadius(AppConstants.appIconCornerRadius)
+                .padding(3)
+                .shadow(radius: 2, x: 0, y: 2)
                 .overlay {
-                    RoundedRectangle(cornerRadius: AppConstants.appIconCornerRadius)
-                        .stroke(Color(.secondarySystemBackground), lineWidth: 1)
+                    ZStack(alignment: .bottom) {
+//                        RoundedRectangle(cornerRadius: AppConstants.appIconCornerRadius)
+//                            .stroke(Color(.secondarySystemBackground), lineWidth: selected ? 3 : 1)
+//                            .padding(3)
+                        if selected {
+                            RoundedRectangle(cornerRadius: AppConstants.appIconCornerRadius + 3)
+                                .stroke(.blue, lineWidth: 3)
+                        }
+                    }
                 }
-            VStack(alignment: .leading) {
-                Text(icon.name)
-                if let author = icon.author {
-                    Text(author)
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                }
-            }
-            Spacer()
-            if icon.selected {
-                Image(systemName: Icons.success)
-            }
+            Text(icon.name)
+                .multilineTextAlignment(.center)
+                .font(.footnote)
+                .foregroundStyle(selected ? .blue : .secondary)
         }
     }
     

@@ -8,92 +8,78 @@
 import RegexBuilder
 import SwiftUI
 
-let iconName = Reference<Substring>()
-let iconAuthor = Reference<Substring>()
-let iconFinder = Regex {
-    Capture {
-        ZeroOrMore(.any, .eager) // Icon name
-    }
-    " By "
-    Capture {
-        ZeroOrMore(.any, .eager) // Icon Maker
-    }
-}
-.ignoresCase()
-
 // struct AlternativeIcons: View {
 struct IconSettingsView: View {
     @State var currentIcon: String? = UIApplication.shared.alternateIconName
     @EnvironmentObject var easterTracker: EasterFlagsTracker
+    
+    let icons: [AlternativeIconGroup] = [
+        .init(authorName: "Sjmarf", collapsed: false, icons: [
+            .init(id: "icon.sjmarf.default", name: "Default"),
+            .init(id: "icon.sjmarf.alien", name: "Alien"),
+            .init(id: "icon.sjmarf.silver", name: "Silver")
+        ]),
+        
+        .init(authorName: "Eric Andrews", collapsed: false, icons: [
+            .init(id: "icon.eric.lemmy", name: "Lemmy")
+        ]),
+        
+        .init(authorName: "Aaron Schneider", collapsed: false, icons: [
+            .init(id: "icon.aaron.beehaw", name: "Beehaw")
+        ]),
+        
+        .init(authorName: "Clay/s", collapsed: true, icons: [
+            .init(id: "icon.clays.default", name: "Default"),
+            .init(id: "icon.clays.red", name: "Red"),
+            .init(id: "icon.clays.lime", name: "Lime"),
+            .init(id: "icon.clays.mono", name: "Mono"),
+            .init(id: "icon.clays.dark", name: "Dark"),
+            .init(id: "icon.clays.dev", name: "Dev"),
+            .init(id: "icon.clays.wave", name: "Wave"),
+            .init(id: "icon.clays.conductor", name: "Conductor"),
+            .init(id: "icon.clays.pumpkin", name: "Pumpkin"),
+            .init(id: "icon.clays.pride", name: "Pride"),
+            .init(id: "icon.clays.pride2", name: "Pride 2"),
+            .init(id: "icon.clays.trans", name: "Trans"),
+            .init(id: "icon.clays.beehaw", name: "Beehaw")
+        ])
+    ]
 
     var body: some View {
-        List {
-            iconsList()
+        ScrollView {
+            VStack(spacing: 32) {
+                ForEach(icons, id: \.authorName) { group in
+                    let icons = group.icons.filter { shouldShowIcon(icon: $0) }
+                    if !icons.isEmpty {
+                        CollapsibleSection(group.authorName, collapsed: group.collapsed) {
+                            LazyVGrid(columns: .init(repeating: GridItem(.flexible()), count: 4), spacing: 10, content: {
+                                ForEach(icons) { icon in
+                                    AlternativeIconCell(
+                                        icon: icon,
+                                        setAppIcon: setAppIcon,
+                                        selected: UIApplication.shared.alternateIconName == icon.id
+                                    )
+                                }
+                            })
+                            .padding()
+                        }
+                    }
+                }
+            }
+            .padding(.vertical)
         }
+        .background(Color(uiColor: .systemGroupedBackground))
         .fancyTabScrollCompatible()
         .hoistNavigation()
         .navigationTitle("App Icon")
-    }
-    
-    @ViewBuilder
-    func iconsList() -> some View {
-        let allIcons = getAllIcons()
-        let creators = allIcons.keys.sorted()
-        
-        ForEach(creators, id: \.self) { creator in
-            if let icons = allIcons[creator], !icons.isEmpty {
-                DisclosureGroup {
-                    ForEach(icons) { icon in
-                        AlternativeIconCell(icon: icon, setAppIcon: setAppIcon)
-                    }
-                } label: {
-                    AlternativeIconLabel(icon: AlternativeIcon(id: icons[0].id, name: creator, author: nil, selected: false))
-                }
-            }
-        }
-    }
-
-    func getAllIcons() -> [String: [AlternativeIcon]] {
-        guard let iconsBundle = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any?] else { return [:] }
-
-        guard let altIcons = iconsBundle["CFBundleAlternateIcons"] as? [String: Any?] else { return [:] }
-
-        let currentIconSelection = UIApplication.shared.alternateIconName
-        
-        var ret: [String: [AlternativeIcon]] = .init()
-        
-        altIcons.keys.forEach { key in
-            // parse AlternativeIcon from icon data
-            print("found icon: \(key)")
-            let match = key.firstMatch(of: iconFinder)
-            let name = (match?.output.1 != nil) ? String(match!.output.1) : key
-            var author = (match?.output.2 != nil) ? "\(String(match!.output.2))" : "Anonymous"
-            author = author.replacingOccurrences(of: "Clays", with: "Clay/s")
-            let icon = AlternativeIcon(id: key, name: name, author: author, selected: currentIconSelection == key)
-            
-            // if we should show this icon, add to map
-            if shouldShowIcon(icon: icon) {
-                ret[author, default: []].append(icon)
-            }
-        }
-        
-        ret.keys.forEach { key in
-            ret[key] = ret[key]?.sorted {
-                $0.name < $1.name
-            }
-        }
-
-        return ret
     }
 
     static func getCurrentIcon() -> Image {
         let icon = AlternativeIcon(
             id: UIApplication.shared.alternateIconName,
-            name: "",
-            author: "",
-            selected: false
+            name: ""
         )
-        return AlternativeIconLabel(icon: icon).getImage()
+        return AlternativeIconLabel(icon: icon, selected: true).getImage()
     }
 
     @MainActor

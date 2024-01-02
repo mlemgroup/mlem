@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0304F58A2B44AF5B00537BFA /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0304F5892B44AF5B00537BFA /* CollapsibleSection.swift */; };
 		0308E1142B0EA32A000CA955 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */; };
 		0308E1162B0EA42B000CA955 /* APILocalUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0308E1152B0EA42B000CA955 /* APILocalUserView.swift */; };
 		0308E1182B0EA466000CA955 /* APILocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0308E1172B0EA466000CA955 /* APILocalUser.swift */; };
@@ -557,6 +558,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0304F5892B44AF5B00537BFA /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
 		0308E1132B0EA32A000CA955 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		0308E1152B0EA42B000CA955 /* APILocalUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APILocalUserView.swift; sourceTree = "<group>"; };
 		0308E1172B0EA466000CA955 /* APILocalUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APILocalUser.swift; sourceTree = "<group>"; };
@@ -2083,6 +2085,7 @@
 				63D24EDD2A169F2A005CCA81 /* Markdown View.swift */,
 				03BAA2392A57DC1400D48252 /* PublishedTimestampView.swift */,
 				6374570F2A18CB6600B69C03 /* Custom Text Field.swift */,
+				0304F5892B44AF5B00537BFA /* CollapsibleSection.swift */,
 				B11D72822A49FAA7009DC22F /* Cached Image.swift */,
 				50F2851B2A5C5C1500CF8865 /* TokenRefreshView.swift */,
 				CD863FBB2A6B026400A31ED9 /* DocumentView.swift */,
@@ -3165,6 +3168,7 @@
 				CD2053102AC878B50000AA38 /* UpdatedTimestampView.swift in Sources */,
 				CD1446232A5B336900610EF1 /* LicensesView.swift in Sources */,
 				CD4368D02AE245F400BD8BD1 /* MessageTracker.swift in Sources */,
+				0304F58A2B44AF5B00537BFA /* CollapsibleSection.swift in Sources */,
 				CDDCF6432A66343D003DA3AC /* FancyTabBar.swift in Sources */,
 				505240E52A86E32700EA4558 /* CommunityListModel.swift in Sources */,
 				CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */,
