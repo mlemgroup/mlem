@@ -62,6 +62,11 @@ struct CommentSettingsView: View {
                     settingName: "Compact Comments",
                     isTicked: $compactComments
                 )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.collapseComments,
+                    settingName: "Collapse Comments",
+                    isTicked: $collapseChildComments
+                )
                 
                 NavigationLink(.commentSettings(.layoutWidget)) {
                     Label {
@@ -115,11 +120,6 @@ struct CommentSettingsView: View {
                     settingPictureSystemName: Icons.jumpButtonCircle,
                     settingName: "Show Jump Button",
                     isTicked: $showCommentJumpButton
-                )
-                SwitchableSettingsItem(
-                    settingPictureSystemName: Icons.collapseComments,
-                    settingName: "Automatically Collapse Replies",
-                    isTicked: $collapseChildComments
                 )
                 SelectableSettingsItem(
                     settingIconSystemName: Icons.leftRight,
