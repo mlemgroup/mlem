@@ -164,7 +164,7 @@ extension [APICommentView] {
         
         /// Recursively populates child comments by looking up IDs from `childrenById`
         func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
-            let collapseChildCommentsFlag = UserDefaults.standard.bool(forKey: "collapseCommentReplies")
+            let collapseChildCommentsFlag = UserDefaults.standard.bool(forKey: "collapseChildComments")
             // Collapse all child comments and excluse parents comments
             let isCollapsed = collapseChildCommentsFlag && !(comment.comment.parentId == nil)
             
