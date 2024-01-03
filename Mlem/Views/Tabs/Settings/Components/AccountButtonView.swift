@@ -13,6 +13,7 @@ struct AccountButtonView: View {
     @EnvironmentObject var appState: AppState
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
     @Environment(\.setAppFlow) private var setFlow
+    @Environment(\.dismiss) var dismiss
     
     @State var showingSignOutConfirmation: Bool = false
     @Binding var isSwitching: Bool

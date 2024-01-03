@@ -62,6 +62,7 @@ struct CommunityResultView: View {
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
+                        .lineLimit(1)
                         .foregroundStyle(community.nsfw ? .red : .primary)
                     Text(caption)
                         .font(.footnote)
@@ -69,12 +70,14 @@ struct CommunityResultView: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                HStack(spacing: 5) {
-                    Text(abbreviateNumber(community.subscriberCount ?? 0))
-                        .monospacedDigit()
-                    Image(systemName: (community.subscribed ?? false) ? Icons.subscribed : Icons.personFill)
+                if let subscriberCount = community.subscriberCount {
+                    HStack(spacing: 5) {
+                        Text(abbreviateNumber(subscriberCount))
+                            .monospacedDigit()
+                        Image(systemName: (community.subscribed ?? false) ? Icons.subscribed : Icons.personFill)
+                    }
+                    .foregroundStyle((community.subscribed ?? false) ? .green : .secondary)
                 }
-                .foregroundStyle((community.subscribed ?? false) ? .green : .secondary)
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
                     .foregroundStyle(.tertiary)

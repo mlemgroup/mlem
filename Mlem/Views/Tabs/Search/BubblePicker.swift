@@ -8,26 +8,22 @@
 import SwiftUI
 import Dependencies
 
-enum SearchTab: String, CaseIterable {
-    case topResults, communities, users
-    
-    var label: String {
-        switch self {
-        case .topResults:
-            return "Top Results"
-        default:
-            return rawValue.capitalized
-        }
-    }
-    
-    static var homePageCases: [SearchTab] = [.communities, .users]
-}
-
-struct SearchTabPicker: View {
+struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     @Dependency(\.hapticManager) var hapticManager
     
-    @Binding var selected: SearchTab
-    var tabs: [SearchTab] = SearchTab.allCases
+    @Binding var selected: Value
+    let tabs: [Value]
+    @ViewBuilder let labelBuilder: (Value) -> any View
+    
+    init(
+        _ tabs: [Value],
+        selected: Binding<Value>,
+        @ViewBuilder labelBuilder: @escaping (Value) -> any View
+    ) {
+        self._selected = selected
+        self.tabs = tabs
+        self.labelBuilder = labelBuilder
+    }
     
     var body: some View {
         HStack(spacing: 0) {
@@ -36,10 +32,9 @@ struct SearchTabPicker: View {
                     selected = type
                     hapticManager.play(haptic: .gentleInfo, priority: .low)
                 } label: {
-                    Text(type.label)
+                    AnyView(labelBuilder(type))
                         .padding(.vertical, 6)
                         .padding(.horizontal, 12)
-                        .contentShape(Rectangle())
                         .foregroundStyle(selected == type ? .white : .primary)
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -53,6 +48,8 @@ struct SearchTabPicker: View {
                             }
                         )
                         .animation(.spring(response: 0.15, dampingFraction: 0.7), value: selected)
+                        .padding(.vertical, 4)
+                        .contentShape(Rectangle())
                 }
                     .buttonStyle(EmptyButtonStyle())
             }
@@ -61,8 +58,10 @@ struct SearchTabPicker: View {
 }
 
 #Preview {
-    SearchTabPicker(
-        selected: .constant(.communities),
-        tabs: SearchTab.homePageCases
-    )
+    BubblePicker(
+        SearchTab.allCases,
+        selected: .constant(.communities)
+    ) {
+        Text($0.label)
+    }
 }

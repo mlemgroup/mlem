@@ -33,14 +33,16 @@ struct CompactPost: View {
     
     // arguments
     let post: PostModel
+    let community: CommunityModel?
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]
     
     // computed
     var showReadCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
     
-    init(post: PostModel, showCommunity: Bool, menuFunctions: [MenuFunction]) {
+    init(post: PostModel, community: CommunityModel? = nil, showCommunity: Bool, menuFunctions: [MenuFunction]) {
         self.post = post
+        self.community = community
         self.showCommunity = showCommunity
         self.menuFunctions = menuFunctions
     }
@@ -59,7 +61,8 @@ struct CompactPost: View {
                         } else {
                             UserLinkView(
                                 user: post.creator,
-                                serverInstanceLocation: .trailing
+                                serverInstanceLocation: .trailing,
+                                communityContext: community
                             )
                         }
                     }

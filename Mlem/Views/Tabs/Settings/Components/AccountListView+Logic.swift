@@ -20,7 +20,7 @@ extension AccountListView {
                 if appState.currentActiveAccount == $0 {
                     return true
                 } else if appState.currentActiveAccount == $1 {
-                    return true
+                    return false
                 }
                 return $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast
             }

@@ -25,8 +25,19 @@ extension UserModel {
     
     func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
+        functions.append(
+            .standardMenuFunction(
+                text: "Copy Username",
+                imageName: Icons.copy,
+                destructiveActionPrompt: nil,
+                enabled: true,
+                callback: copyFullyQualifiedUsername
+            )
+        )
         functions.append(.shareMenuFunction(url: profileUrl))
-        functions.append(blockMenuFunction(callback))
+        if siteInformation.myUserInfo?.localUserView.person.id != userId {
+            functions.append(blockMenuFunction(callback))
+        }
         return functions
     }
 }

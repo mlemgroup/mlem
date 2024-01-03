@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct UserFeedView: View {
-    var userID: Int
-    @StateObject var privatePostTracker: PostTracker
-    @StateObject var privateCommentTracker: CommentTracker
+    @Dependency(\.siteInformation) var siteInformation
+    @EnvironmentObject var editorTracker: EditorTracker
+    
+    var user: UserModel
+    @ObservedObject var privatePostTracker: PostTracker
+    @ObservedObject var privateCommentTracker: CommentTracker
+    @ObservedObject var communityTracker: ContentTracker<AnyContentModel>
     
     @Binding var selectedTab: UserViewTab
     
@@ -27,34 +32,45 @@ struct UserFeedView: View {
         let hashValue: Int
     }
     
-    var body: some View {
-        let feed = generateFeed()
-            .sorted(by: {
-                $0.published > $1.published
-            })
-        
-        if feed.isEmpty {
-            emptyFeed
-        } else {
-            if selectedTab == .posts {
-                VStack(spacing: 0) {
-                    content(feed)
-                }
-            } else {
-                LazyVStack(spacing: 0) {
-                    content(feed)
-                }
-            }
-        }
+    var isOwnProfile: Bool {
+        return siteInformation.myUserInfo?.localUserView.person.id == user.userId
     }
     
-    func content(_ feed: [FeedItem]) -> some View {
-        ForEach(feed, id: \.uid) { feedItem in
-            if let post = feedItem.post {
-                postEntry(for: post)
-            }
-            if let comment = feedItem.comment {
-                commentEntry(for: comment)
+    var body: some View {
+        
+        LazyVStack(spacing: 0) {
+            switch selectedTab {
+            case .communities:
+                Label(
+                    "\(user.displayName) moderates \(communityTracker.items.count) communities.",
+                    systemImage: Icons.moderationFill
+                )
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+                .padding(.vertical, 4)
+                Divider()
+                ForEach(communityTracker.items, id: \.wrappedValue.uid) { model in
+                    if let community = model.wrappedValue as? CommunityModel {
+                        CommunityResultView(community: community, showTypeLabel: false)
+                    }
+
+                    Divider()
+                }
+                .environmentObject(communityTracker)
+            default:
+                let feedItems = generateFeed()
+                if feedItems.isEmpty {
+                    emptyFeed
+                } else {
+                    ForEach(feedItems, id: \.uid) { feedItem in
+                        if let post = feedItem.post {
+                            postEntry(for: post)
+                        }
+                        if let comment = feedItem.comment {
+                            commentEntry(for: comment)
+                        }
+                    }
+                }
             }
         }
     }
@@ -70,9 +86,13 @@ struct UserFeedView: View {
             feed = generateCommentFeed()
         case .posts:
             feed = generatePostFeed()
+        default:
+            feed = []
         }
         
-        return feed
+        return feed.sorted(by: {
+            $0.published > $1.published
+        })
     }
     
     private func postEntry(for post: PostModel) -> some View {
@@ -104,17 +124,21 @@ struct UserFeedView: View {
         }
     }
     
+    var emptyFeedText: String {
+        if isOwnProfile {
+            return "Nothing to see here, get out there and make some stuff!"
+        } else {
+            return "Nothing to see here."
+        }
+    }
+    
     @ViewBuilder
     private var emptyFeed: some View {
-        HStack {
-            Spacer()
-            Text("Nothing to see here, get out there and make some stuff!")
-                .padding()
-                .font(.headline)
-                .opacity(0.5)
-            Spacer()
-        }
-        .background()
+        Text(emptyFeedText)
+            .padding()
+            .font(.headline)
+            .opacity(0.5)
+            .multilineTextAlignment(.center)
     }
     
     private func generateCommentFeed(savedItems: Bool = false) -> [FeedItem] {
@@ -126,7 +150,7 @@ struct UserFeedView: View {
                 } else {
                     // If we unfavorited something while
                     // here we don't want it showing up in our feed
-                    return $0.commentView.creator.id == userID
+                    return $0.commentView.creator.id == user.userId
                 }
             }
         
@@ -151,7 +175,7 @@ struct UserFeedView: View {
                 } else {
                     // If we unfavorited something while
                     // here we don't want it showing up in our feed
-                    return $0.creator.userId == userID
+                    return $0.creator.userId == user.userId
                 }
             }
         
