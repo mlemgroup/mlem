@@ -51,6 +51,7 @@ struct CommentSettingsView: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     @AppStorage("showCommentJumpButton") var showCommentJumpButton: Bool = true
+    @AppStorage("collapseCommentReplies") var collapseChildComments: Bool = false
     @AppStorage("commentJumpButtonSide") var commentJumpButtonSide: JumpButtonLocation = .bottomTrailing
     
     var body: some View {
@@ -114,6 +115,11 @@ struct CommentSettingsView: View {
                     settingPictureSystemName: Icons.jumpButtonCircle,
                     settingName: "Show Jump Button",
                     isTicked: $showCommentJumpButton
+                )
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.absent,
+                    settingName: "Automatically Collapse Replies",
+                    isTicked: $collapseChildComments
                 )
                 SelectableSettingsItem(
                     settingIconSystemName: Icons.leftRight,
