@@ -172,7 +172,7 @@ extension [APICommentView] {
                 return .init(
                     comment: comment,
                     children: [],
-                    parentCollapsed: false,
+                    parentCollapsed: isCollapsed,
                     collapsed: isCollapsed
                 )
             }
@@ -180,7 +180,7 @@ extension [APICommentView] {
             let commentWithChildren = HierarchicalComment(
                 comment: comment,
                 children: [],
-                parentCollapsed: false,
+                parentCollapsed: isCollapsed,
                 collapsed: isCollapsed
             )
             commentWithChildren.children = childIds
