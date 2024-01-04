@@ -1482,9 +1482,10 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
-		50F830EC2A4C8F8D00D67099 /* Feed */ = {
+		50F830EC2A4C8F8D00D67099 /* Generics */ = {
 			isa = PBXGroup;
 			children = (
+				CDB45C5B2AF1A1D800A1FF08 /* CoreTracker.swift */,
 				CD4368AD2AE23ED400BD8BD1 /* StandardTracker.swift */,
 				CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */,
 				CD4368B32AE23F3500BD8BD1 /* ChildTrackerProtocol.swift */,
@@ -1492,9 +1493,8 @@
 				CD4368B72AE23F5400BD8BD1 /* ParentTrackerProtocol.swift */,
 				CD4368B92AE23F6400BD8BD1 /* TrackerItem.swift */,
 				CD4368BB2AE23F6F00BD8BD1 /* TrackerSort.swift */,
-				CDB45C5B2AF1A1D800A1FF08 /* CoreTracker.swift */,
 			);
-			path = Feed;
+			path = Generics;
 			sourceTree = "<group>";
 		};
 		630049EB27EF390900D5105B /* Networking */ = {
@@ -1990,7 +1990,7 @@
 		6386E0282A03D0B8006B3C1D /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
-				50F830EC2A4C8F8D00D67099 /* Feed */,
+				50F830EC2A4C8F8D00D67099 /* Generics */,
 				CDF8425F2A49EA2A00723DA0 /* Inbox */,
 				6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */,
 				63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */,
