@@ -76,17 +76,10 @@ extension CommunityModel {
         let subscribeAction = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive)
         let favoriteAction = favoriteSwipeAction(callback, confirmDestructive: confirmDestructive)
         
-        if !self.favorited {
-            if let subscribeAction {
-                trailingActions.append(subscribeAction)
-            }
-            trailingActions.append(favoriteAction)
-        } else {
-            trailingActions.append(favoriteAction)
-            if let subscribeAction {
-                trailingActions.append(subscribeAction)
-            }
+        if let subscribeAction {
+            trailingActions.append(subscribeAction)
         }
+        trailingActions.append(favoriteAction)
        
         return SwipeConfiguration(leadingActions: [], trailingActions: trailingActions)
     }
