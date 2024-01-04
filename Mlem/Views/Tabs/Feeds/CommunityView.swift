@@ -22,6 +22,7 @@ struct CommunityView: View {
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var editorTracker: EditorTracker
     
     @State var community: CommunityModel
@@ -92,11 +93,15 @@ struct CommunityView: View {
                 case .posts:
                     if !postTracker.items.isEmpty {
                         Divider()
+                            .padding(.top, 15)
+                            .background(Color.secondarySystemBackground)
                     }
                     PostFeedView(community: community, postTracker: postTracker, postSortType: $postSortType)
                         .background(Color.secondarySystemBackground)
                 case .about:
                     Divider()
+                        .padding(.top, 15)
+                        .background(Color.secondarySystemBackground)
                     VStack(spacing: AppConstants.postAndCommentSpacing) {
                         if let banner = community.banner {
                             CachedImage(url: banner, cornerRadius: AppConstants.largeItemCornerRadius)
@@ -107,6 +112,8 @@ struct CommunityView: View {
                 case .moderators:
                     if let moderators = community.moderators {
                         Divider()
+                            .padding(.top, 15)
+                            .background(Color.secondarySystemBackground)
                         ForEach(moderators, id: \.id) { user in
                             UserResultView(user, communityContext: community)
                             Divider()
@@ -115,10 +122,9 @@ struct CommunityView: View {
                             .frame(height: 100)
                     }
                 case .statistics:
-                    Divider()
                     CommunityStatsView(community: community)
-                        .padding(.top, 10)
-                        .background(Color.systemBackground)
+                        .padding(.top, 16)
+                        .background(Color(uiColor: .systemGroupedBackground))
                 }
             }
         }
@@ -129,7 +135,7 @@ struct CommunityView: View {
             VStack(spacing: 0) {
                 Color.systemBackground
                     .frame(height: 200)
-                if selectedTab != .about {
+                if selectedTab != .about && (selectedTab != .statistics || colorScheme == .light) {
                     Color.secondarySystemBackground
                 } else {
                     Color.systemBackground
@@ -250,8 +256,6 @@ struct CommunityView: View {
                 }
             }
             Divider()
-                .padding(.bottom, 15)
-                .background(Color.secondarySystemBackground)
         }
     }
     

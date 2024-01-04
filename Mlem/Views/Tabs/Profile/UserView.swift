@@ -74,7 +74,7 @@ struct UserView: View {
                             .font(.title.bold())
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-                        Text("@\(user.name)@\(user.profileUrl.host() ?? "unknown")")
+                        Text(user.fullyQualifiedUsername ?? user.name)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }

@@ -11,56 +11,84 @@ struct CommunityStatsView: View {
     let community: CommunityModel
     
     var body: some View {
-        VStack(spacing: 0) {
-            VStack {
-                Text("\(community.subscriberCount ?? 0)")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+        VStack(spacing: 16) {
+            VStack(spacing: 5) {
                 Text("Subscribers")
                     .foregroundStyle(.secondary)
+                Text("\(community.subscriberCount ?? 0)")
+                    .fontWeight(.semibold)
+                    .font(.title)
+                
+            }
+            .padding(.vertical)
+            .frame(maxWidth: .infinity)
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .cornerRadius(AppConstants.largeItemCornerRadius)
+            HStack(spacing: 16) {
+                
+                VStack(spacing: 5) {
+                    HStack {
+                        Text("Posts")
+                            .foregroundStyle(.secondary)
+                    }
+                    HStack {
+                        Text("\(abbreviateNumber(community.postCount ?? 0))")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.pink)
+                    }
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity)
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                .cornerRadius(AppConstants.largeItemCornerRadius)
+                
+                VStack(spacing: 5) {
+                    HStack {
+                        Text("Comments")
+                            .foregroundStyle(.secondary)
+                    }
+                    HStack {
+                        Text("\(abbreviateNumber(community.commentCount ?? 0))")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.orange)
+                    }
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity)
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                .cornerRadius(AppConstants.largeItemCornerRadius)
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            .padding(.bottom, 10)
-            Divider()
-            HStack {
-                Spacer()
-                Label("\(community.postCount ?? 0)", systemImage: Icons.posts)
-                Spacer()
-                Label("\(community.commentCount ?? 0)", systemImage: Icons.replies)
-                Spacer()
-            }
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            .padding(.vertical, 10)
-            Divider()
-            VStack {
-                Text("Active users")
+            
+            if let activeUserCount = community.activeUserCount {
+                Text("Active Users")
                     .foregroundStyle(.secondary)
-                    .padding(.bottom, 2)
                 HStack {
-                    activeUserBox("6mo", value: community.activeUserCount?.sixMonths ?? 0)
-                    activeUserBox("1mo", value: community.activeUserCount?.month ?? 0)
-                    activeUserBox("1w", value: community.activeUserCount?.week ?? 0)
-                    activeUserBox("1d", value: community.activeUserCount?.day ?? 0)
+                    activeUserBox("6mo", value: activeUserCount.sixMonths)
+                    activeUserBox("1mo", value: activeUserCount.month)
+                    activeUserBox("1w", value: activeUserCount.week)
+                    activeUserBox("1d", value: activeUserCount.day)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, AppConstants.postAndCommentSpacing)
-            .padding(.vertical, 10)
-            Divider()
         }
+        .padding(.horizontal, 16)
     }
     
     @ViewBuilder
     func activeUserBox(_ label: String, value: Int) -> some View {
         VStack {
+            Text(label)
+                .foregroundStyle(.secondary)
             Text(abbreviateNumber(value))
                 .font(.title3)
                 .fontWeight(.semibold)
-            Text(label)
-                .foregroundStyle(.secondary)
         }
+        .padding(.vertical, 10)
         .frame(maxWidth: .infinity)
+        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        .cornerRadius(AppConstants.largeItemCornerRadius)
     }
 }
 
@@ -69,8 +97,7 @@ struct CommunityStatsView: View {
         Divider()
         CommunityStatsView(community: .mock())
             .padding(.top, 10)
-            .background(Color.systemBackground)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color.secondarySystemBackground)
+    .background(Color(uiColor: .systemGroupedBackground))
 }

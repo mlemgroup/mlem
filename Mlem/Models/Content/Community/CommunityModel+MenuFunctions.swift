@@ -30,7 +30,7 @@ extension CommunityModel {
         return .init(
             text: subscribed ? "Unsubscribe" : "Subscribe",
             imageName: subscribed ? Icons.unsubscribe : Icons.subscribe,
-            destructiveActionPrompt: subscribed ? "Are you sure you want to unsubscribe from \(name)?" : nil,
+            destructiveActionPrompt: subscribed ? "Are you sure you want to unsubscribe from \(name!)?" : nil,
             enabled: true,
             callback: {
                 Task {
