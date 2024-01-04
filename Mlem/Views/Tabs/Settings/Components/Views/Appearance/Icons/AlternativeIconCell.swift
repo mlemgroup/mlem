@@ -10,6 +10,7 @@ import SwiftUI
 struct AlternativeIconCell: View {
     let icon: AlternativeIcon
     let setAppIcon: (_ id: String?) async -> Void
+    let selected: Bool
 
     var body: some View {
         Button {
@@ -17,13 +18,7 @@ struct AlternativeIconCell: View {
                 await setAppIcon(icon.id)
             }
         } label: {
-            AlternativeIconLabel(icon: icon)
+            AlternativeIconLabel(icon: icon, selected: selected)
         }.accessibilityElement(children: .combine)
-    }
-}
-
-struct AlternativeIconCellPreview: PreviewProvider {
-    static var previews: some View {
-        AlternativeIconCell(icon: AlternativeIcon(id: nil, name: "Default", author: "Mlem team", selected: true)) { _ in }
     }
 }

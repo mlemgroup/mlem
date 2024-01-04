@@ -8,8 +8,8 @@
 import Foundation
 
 enum IconId: String {
-    case beehawCommunity = "Beehaw Community By Aaron Schneider"
-    case mlemhaw = "Mlemhaw By Clays"
+    case beehawCommunity = "icon.aaron.beehaw"
+    case mlemhaw = "icon.clays.beehaw"
 }
 
 enum EasterFlag: Codable, Hashable {

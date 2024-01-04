@@ -7,9 +7,13 @@
 
 import Foundation
 
+struct AlternativeIconGroup {
+    let authorName: String
+    let collapsed: Bool
+    let icons: [AlternativeIcon]
+}
+
 struct AlternativeIcon: Identifiable {
-    let id: String?
+    var id: String?
     let name: String
-    let author: String?
-    let selected: Bool
 }
