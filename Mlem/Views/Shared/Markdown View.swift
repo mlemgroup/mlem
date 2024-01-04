@@ -220,8 +220,8 @@ struct MarkdownBlock: Identifiable {
 }
 
 struct MarkdownView: View {
-    @State private var text: String
-    @State private var blocks: [MarkdownBlock]
+    private let text: String
+    private let blocks: [MarkdownBlock]
     
     private let isNsfw: Bool
     private let replaceImagesWithEmoji: Bool
@@ -235,13 +235,12 @@ struct MarkdownView: View {
         isInline: Bool = false,
         alignment: TextAlignment = .leading
     ) {
-        let text: String = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
-        _text = .init(wrappedValue: text)
+        self.text = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
         self.isInline = isInline
         self.alignment = alignment
-        _blocks = .init(wrappedValue: MarkdownView.parseMarkdownForImages(text: text))
+        self.blocks = MarkdownView.parseMarkdownForImages(text: text)
     }
 
     var body: some View {
