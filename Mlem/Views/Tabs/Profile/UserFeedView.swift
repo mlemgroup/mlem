@@ -15,7 +15,7 @@ struct UserFeedView: View {
     var user: UserModel
     @ObservedObject var privatePostTracker: PostTracker
     @ObservedObject var privateCommentTracker: CommentTracker
-    @ObservedObject var communityTracker: ContentTracker<AnyContentModel>
+    @ObservedObject var communityTracker: ContentTracker<CommunityModel>
     
     @Binding var selectedTab: UserViewTab
     
@@ -49,10 +49,10 @@ struct UserFeedView: View {
                 .font(.footnote)
                 .padding(.vertical, 4)
                 Divider()
-                ForEach(communityTracker.items, id: \.wrappedValue.uid) { model in
-                    if let community = model.wrappedValue as? CommunityModel {
-                        CommunityResultView(community: community, showTypeLabel: false)
-                    }
+                ForEach(communityTracker.items, id: \.uid) { community in
+                    CommunityResultView(community, showTypeLabel: false, trackerCallback: {
+                        communityTracker.update(with: $0)
+                    })
 
                     Divider()
                 }

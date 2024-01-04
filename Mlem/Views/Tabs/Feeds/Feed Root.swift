@@ -33,11 +33,9 @@ struct FeedRoot: View {
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
                     if let rootDetails {
-                        FeedView(
+                        FeedParentView(
                             community: rootDetails.community,
-                            feedType: rootDetails.feedType,
-                            rootDetails: $rootDetails,
-                            splitViewColumnVisibility: $columnVisibility
+                            feedType: rootDetails.feedType
                         )
                         .environmentObject(appState)
                         .environmentObject(feedTabNavigation)

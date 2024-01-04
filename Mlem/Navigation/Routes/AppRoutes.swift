@@ -13,7 +13,6 @@ import Foundation
 ///
 enum AppRoute: Routable {
     case communityLinkWithContext(CommunityLinkWithContext)
-    case communitySidebarLinkWithContext(CommunitySidebarLinkWithContext)
 
     case apiPostView(APIPostView)
     case apiPost(APIPost)
@@ -26,7 +25,6 @@ enum AppRoute: Routable {
     
     case postLinkWithContext(PostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
-    case userModeratorLink(UserModeratorLink)
     
     // MARK: - Settings
     case settings(SettingsPage)
@@ -41,8 +39,6 @@ enum AppRoute: Routable {
         switch value {
         case let value as CommunityLinkWithContext:
             return .communityLinkWithContext(value)
-        case let value as CommunitySidebarLinkWithContext:
-            return .communitySidebarLinkWithContext(value)
         case let value as APIPostView:
             return .apiPostView(value)
         case let value as APIPost:
@@ -57,8 +53,6 @@ enum AppRoute: Routable {
             return .postLinkWithContext(value)
         case let value as LazyLoadPostLinkWithContext:
             return .lazyLoadPostLinkWithContext(value)
-        case let value as UserModeratorLink:
-            return .userModeratorLink(value)
         case let value as SettingsPage:
             return .settings(value)
         case let value as AboutSettingsPage:

@@ -144,7 +144,7 @@ struct UserModel {
             ret.append(.moderator)
         } else if let community = communityContext,
                   let moderators = community.moderators,
-                  moderators.contains(where: { $0.moderator.id == userId }) {
+                  moderators.contains(where: { $0.userId == userId }) {
             ret.append(.moderator)
         }
         if isBot {
@@ -179,7 +179,7 @@ struct UserModel {
     
     var fullyQualifiedUsername: String? {
         if let host = self.profileUrl.host() {
-            return "@\(name)@\(host)"
+            return "\(name)@\(host)"
         }
         return nil
     }
@@ -187,7 +187,7 @@ struct UserModel {
     func copyFullyQualifiedUsername() {
         let pasteboard = UIPasteboard.general
         if let fullyQualifiedUsername {
-            pasteboard.string = fullyQualifiedUsername
+            pasteboard.string = "@\(fullyQualifiedUsername)"
             Task {
                 await notifier.add(.success("Username Copied"))
             }
