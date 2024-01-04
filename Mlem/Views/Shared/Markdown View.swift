@@ -221,7 +221,7 @@ struct MarkdownBlock: Identifiable {
 
 struct MarkdownView: View {
     @State private var text: String
-    @State private var blocks: [MarkdownBlock] = []
+    @State private var blocks: [MarkdownBlock]
     
     private let isNsfw: Bool
     private let replaceImagesWithEmoji: Bool
@@ -235,13 +235,13 @@ struct MarkdownView: View {
         isInline: Bool = false,
         alignment: TextAlignment = .leading
     ) {
-        _text = isInline
-            ? .init(wrappedValue: MarkdownView.prepareInlineMarkdown(text: text))
-            : .init(wrappedValue: text)
+        let text: String = isInline ? MarkdownView.prepareInlineMarkdown(text: text) : text
+        _text = .init(wrappedValue: text)
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
         self.isInline = isInline
         self.alignment = alignment
+        _blocks = .init(wrappedValue: MarkdownView.parseMarkdownForImages(text: text))
     }
 
     var body: some View {
@@ -259,9 +259,6 @@ struct MarkdownView: View {
                 }
             }
         }
-        .task {
-            blocks = parseMarkdownForImages(text: text)
-        }
     }
     
     private var theme: Theme {
@@ -275,7 +272,7 @@ struct MarkdownView: View {
             .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
     }
     
-    func parseMarkdownForImages(text: String) -> [MarkdownBlock] {
+    static func parseMarkdownForImages(text: String) -> [MarkdownBlock] {
         // this regex will capture the '![label](url "title") pattern so we can handle it separately
         // piece by piece:
         // !\[(?'label'[^\]]*)\] matches '![label]' and captures 'label' as label
