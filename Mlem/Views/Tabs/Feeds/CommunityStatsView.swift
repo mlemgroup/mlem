@@ -65,7 +65,7 @@ struct CommunityStatsView: View {
             if let activeUserCount = community.activeUserCount {
                 Text("Active Users")
                     .foregroundStyle(.secondary)
-                HStack {
+                HStack(spacing: 16) {
                     activeUserBox("6mo", value: activeUserCount.sixMonths)
                     activeUserBox("1mo", value: activeUserCount.month)
                     activeUserBox("1w", value: activeUserCount.week)
