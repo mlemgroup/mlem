@@ -90,7 +90,7 @@ struct FeedView: View {
         }
         .refreshable {
             await Task {
-                _ = await postTracker.refresh(clearBeforeFetch: true)
+                _ = await postTracker.refresh(clearBeforeFetch: false)
             }.value
         }
         .background {
