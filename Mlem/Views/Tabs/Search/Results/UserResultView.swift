@@ -15,11 +15,27 @@ struct UserResultView: View {
     @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
     
     let user: UserModel
+    let communityContext: CommunityModel?
     let showTypeLabel: Bool
-    var swipeActions: SwipeConfiguration?
+    let trackerCallback: (_ item: UserModel) -> Void
+    let swipeActions: SwipeConfiguration?
     
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    init(
+        _ user: UserModel,
+        communityContext: CommunityModel? = nil,
+        showTypeLabel: Bool = false,
+        swipeActions: SwipeConfiguration? = nil,
+        trackerCallback: @escaping (_ item: UserModel) -> Void = { _ in }
+    ) {
+        self.user = user
+        self.communityContext = communityContext
+        self.showTypeLabel = showTypeLabel
+        self.swipeActions = swipeActions
+        self.trackerCallback = trackerCallback
+    }
     
     func confirmDestructive(destructiveFunction: StandardMenuFunction) {
         confirmationMenuFunction = destructiveFunction
@@ -28,9 +44,9 @@ struct UserResultView: View {
     
     var title: String {
         if user.blocked {
-            return "\(user.name) ∙ Blocked"
+            return "\(user.displayName) ∙ Blocked"
         } else {
-            return user.name
+            return user.displayName
         }
     }
     
@@ -48,7 +64,7 @@ struct UserResultView: View {
     }
     
     var body: some View {
-        NavigationLink(value: AppRoute.userProfile(user)) {
+        NavigationLink(value: AppRoute.userProfile(user, communityContext: communityContext)) {
             HStack(spacing: 10) {
                 if user.blocked {
                     Image(systemName: Icons.hide)
@@ -59,7 +75,7 @@ struct UserResultView: View {
                 } else {
                     AvatarView(user: user, avatarSize: 48, iconResolution: .fixed(128))
                 }
-                let flairs = user.getFlairs()
+                let flairs = user.getFlairs(communityContext: communityContext)
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
                         ForEach(flairs, id: \.self) { flair in
@@ -68,6 +84,7 @@ struct UserResultView: View {
                                 .foregroundStyle(flair.color)
                         }
                         Text(title)
+                            .lineLimit(1)
                     }
                     Text(caption)
                         .font(.footnote)
@@ -132,9 +149,7 @@ struct UserResultView: View {
         )
         .addSwipeyActions(swipeActions ?? .init())
         .contextMenu {
-            ForEach(user.menuFunctions {
-                contentTracker.update(with: AnyContentModel($0))
-            }) { item in
+            ForEach(user.menuFunctions(trackerCallback)) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
         }
@@ -143,7 +158,7 @@ struct UserResultView: View {
 
 #Preview {
     UserResultView(
-        user: .init(from: .mock()),
+        .init(from: .mock()),
         showTypeLabel: true
     )
 }

@@ -73,15 +73,21 @@ struct RecentSearchesView: View {
             Group {
                 if let community = contentModel.wrappedValue as? CommunityModel {
                     CommunityResultView(
-                        community: community,
+                        community,
                         showTypeLabel: true,
-                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
+                        trackerCallback: {
+                            contentTracker.update(with: AnyContentModel($0))
+                        }
                     )
                 } else if let user = contentModel.wrappedValue as? UserModel {
                     UserResultView(
-                        user: user,
+                        user,
                         showTypeLabel: true,
-                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
+                        trackerCallback: {
+                            contentTracker.update(with: AnyContentModel($0))
+                        }
                     )
                 }
             }

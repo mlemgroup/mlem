@@ -23,12 +23,15 @@ class SiteInformationTracker: ObservableObject {
         version = account.siteVersion
         Task {
             do {
+            
                 let response = try await apiClient.loadSiteInformation()
                 enableDownvotes = response.siteView.localSite.enableDownvotes
                 version = SiteVersion(response.version)
                 if version != account.siteVersion {
                     let avatarUrl = response.myUser?.localUserView.person.avatarUrl
-                    accountsTracker.update(with: .init(from: account, avatarUrl: avatarUrl, siteVersion: version))
+                    DispatchQueue.main.async {
+                        self.accountsTracker.update(with: .init(from: account, avatarUrl: avatarUrl, siteVersion: self.version))
+                    }
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages

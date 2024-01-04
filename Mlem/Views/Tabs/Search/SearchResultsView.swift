@@ -41,11 +41,9 @@ struct SearchResultsView: View {
     @ViewBuilder
     private var tabs: some View {
         HStack {
-            ScrollView(.horizontal) {
-                SearchTabPicker(selected: $searchModel.searchTab)
-                    .padding(.horizontal)
+            BubblePicker(SearchTab.allCases, selected: $searchModel.searchTab) {
+                Text($0.label)
             }
-            .scrollIndicators(.hidden)
             Group {
                 if contentTracker.isLoading && contentTracker.page == 1 && !shouldLoad {
                     ProgressView()
@@ -55,7 +53,6 @@ struct SearchResultsView: View {
             }
             .animation(.default, value: contentTracker.isLoading)
         }
-        .padding(.vertical, 4)
     }
 }
 

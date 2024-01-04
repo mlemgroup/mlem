@@ -12,7 +12,9 @@ import SwiftUI
 struct UserModel {
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     @available(*, deprecated, message: "Use attributes of the UserModel directly instead.")
     var person: APIPerson
@@ -36,8 +38,8 @@ struct UserModel {
     let local: Bool
     let deleted: Bool
     let isBot: Bool
-    let isAdmin: Bool
-    
+    var blocked: Bool
+
     // Dates
     let creationDate: Date
     let updatedDate: Date?
@@ -47,11 +49,13 @@ struct UserModel {
     let profileUrl: URL
     let sharedInboxUrl: URL?
     
-    // These values are nil if the UserModel was created from an APIPerson and not an APIPersonView
+    // From APIPersonView
+    var isAdmin: Bool?
     var postCount: Int?
     var commentCount: Int?
     
-    var blocked: Bool
+    // From GetPersonDetailsResponse
+    var moderatedCommunities: [CommunityModel]?
     
     static let developerNames = [
         "https://lemmy.tespia.org/u/navi",
@@ -62,12 +66,26 @@ struct UserModel {
         "https://lemmy.ml/u/sjmarf"
     ]
     
+    /// Creates a UserModel from an GetPersonDetailsResponse
+    /// - Parameter response: GetPersonDetailsResponse to create a UserModel representation of
+    init(from response: GetPersonDetailsResponse) {
+        self.init(from: response.personView)
+        self.moderatedCommunities = response.moderates.map { CommunityModel(from: $0.community) }
+    }
+    
     /// Creates a UserModel from an APIPersonView
     /// - Parameter apiPersonView: APIPersonView to create a UserModel representation of
     init(from personView: APIPersonView) {
         self.init(from: personView.person)
+        
         self.postCount = personView.counts.postCount
         self.commentCount = personView.counts.commentCount
+             
+        // TODO: 0.18 Deprecation
+        @Dependency(\.siteInformation) var siteInformation
+        if (siteInformation.version ?? .infinity) > .init("0.19.0") {
+            self.isAdmin = personView.isAdmin
+        }
     }
     
     /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
@@ -88,7 +106,8 @@ struct UserModel {
         self.local = person.local
         self.deleted = person.deleted
         self.isBot = person.botAccount
-        self.isAdmin = person.admin ?? false // is nil on Beehaw
+        
+        self.isAdmin = person.admin
         
         self.creationDate = person.published
         self.updatedDate = person.updated
@@ -115,7 +134,7 @@ struct UserModel {
         if let post = postContext, post.creatorId == self.userId {
             ret.append(.op)
         }
-        if isAdmin {
+        if isAdmin ?? false {
             ret.append(.admin)
         }
         if UserModel.developerNames.contains(profileUrl.absoluteString) {
@@ -125,7 +144,7 @@ struct UserModel {
             ret.append(.moderator)
         } else if let community = communityContext,
                   let moderators = community.moderators,
-                  moderators.contains(where: { $0.moderator.id == userId }) {
+                  moderators.contains(where: { $0.userId == userId }) {
             ret.append(.moderator)
         }
         if isBot {
@@ -153,6 +172,31 @@ struct UserModel {
             errorHandler.handle(error)
         }
     }
+    
+    static func mock() -> UserModel {
+        return self.init(from: APIPerson.mock())
+    }
+    
+    var fullyQualifiedUsername: String? {
+        if let host = self.profileUrl.host() {
+            return "\(name)@\(host)"
+        }
+        return nil
+    }
+    
+    func copyFullyQualifiedUsername() {
+        let pasteboard = UIPasteboard.general
+        if let fullyQualifiedUsername {
+            pasteboard.string = "@\(fullyQualifiedUsername)"
+            Task {
+                await notifier.add(.success("Username Copied"))
+            }
+        } else {
+            Task {
+                await notifier.add(.failure("Failed to copy"))
+            }
+        }
+    }
 }
 
 extension UserModel: Identifiable {
@@ -168,5 +212,7 @@ extension UserModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(blocked)
+        hasher.combine(postCount)
+        hasher.combine(commentCount)
     }
 }

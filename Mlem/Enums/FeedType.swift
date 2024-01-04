@@ -5,22 +5,40 @@
 //  Created by Jonathan de Jong on 12.06.2023.
 //
 
-import Foundation
+import SwiftUI
 
-enum FeedType: String, Encodable, SettingsOptions {
+enum FeedType: String, Encodable, SettingsOptions, AssociatedColor {
     var id: Self { self }
 
     var label: String {
+        return rawValue
+    }
+    
+    var description: String {
         switch self {
-        case .all: return rawValue
-        case .local: return rawValue
-        case .subscribed: return rawValue
+        case .all:
+            return "Subscribed communities from all instances"
+        case .local:
+            return "Local communities from your server"
+        case .subscribed:
+            return "All communities that federate with your server"
         }
     }
     
-    case all = "All"
-    case local = "Local"
+    var color: Color? {
+        switch self {
+        case .all:
+            return .blue
+        case .local:
+            return .green
+        case .subscribed:
+            return .red
+        }
+    }
+
     case subscribed = "Subscribed"
+    case local = "Local"
+    case all = "All"
 }
 
 extension FeedType: AssociatedIcon {
@@ -34,9 +52,17 @@ extension FeedType: AssociatedIcon {
     
     var iconNameFill: String {
         switch self {
-        case .all: return Icons.federatedFeed
+        case .all: return Icons.federatedFeedFill
         case .local: return Icons.localFeedFill
         case .subscribed: return Icons.subscribedFeedFill
+        }
+    }
+    
+    var iconNameCircle: String {
+        switch self {
+        case .all: return Icons.federatedFeedCircle
+        case .local: return Icons.localFeedCircle
+        case .subscribed: return Icons.subscribedFeedCircle
         }
     }
     

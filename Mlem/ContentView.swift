@@ -14,6 +14,7 @@ struct ContentView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.personRepository) var personRepository
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.accountsTracker) var accountsTracker
     
     @Environment(\.setAppFlow) private var setFlow
@@ -41,6 +42,14 @@ struct ContentView: View {
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
+    var myUser: UserModel? {
+        if let person = siteInformation.myUserInfo?.localUserView.person {
+            return UserModel(from: person)
+        } else {
+            return nil
+        }
+    }
+    
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
@@ -64,20 +73,20 @@ struct ContentView: View {
                                 badgeCount: showInboxUnreadBadge ? unreadTracker.total : 0
                             )
                         }
+                }
                     
-                    ProfileView(userID: account.id)
-                        .fancyTabItem(tag: TabSelection.profile) {
-                            FancyTabBarLabel(
-                                tag: TabSelection.profile,
-                                customText: appState.tabDisplayName,
-                                symbolConfiguration: .init(
-                                    symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                                    activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                    remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
-                                )
-                            )
-                            .simultaneousGesture(accountSwitchLongPress)
-                        }
+                ProfileView(user: myUser)
+                .fancyTabItem(tag: TabSelection.profile) {
+                    FancyTabBarLabel(
+                        tag: TabSelection.profile,
+                        customText: appState.tabDisplayName,
+                        symbolConfiguration: .init(
+                            symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                            activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                            remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                        )
+                    )
+                    .simultaneousGesture(accountSwitchLongPress)
                 }
                 
                 SearchRoot()

@@ -56,6 +56,7 @@ struct ExpandedPost: View {
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: PostTracker
     @State var post: PostModel
+    var community: CommunityModel?
     
     @State var commentErrorDetails: ErrorDetails?
     
@@ -237,7 +238,8 @@ struct ExpandedPost: View {
                 
                 UserLinkView(
                     user: post.creator,
-                    serverInstanceLocation: userServerInstanceLocation
+                    serverInstanceLocation: userServerInstanceLocation,
+                    communityContext: community
                 )
             }
             .padding(.top, AppConstants.postAndCommentSpacing)

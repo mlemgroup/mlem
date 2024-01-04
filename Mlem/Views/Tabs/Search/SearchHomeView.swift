@@ -20,13 +20,10 @@ struct SearchHomeView: View {
                 .fontWeight(.semibold)
                 .padding(.horizontal, 18)
                 .padding(.top, 12)
-            ScrollView(.horizontal) {
-                SearchTabPicker(selected: $searchModel.searchTab, tabs: SearchTab.homePageCases)
-                    .padding(.horizontal)
+            BubblePicker(SearchTab.homePageCases, selected: $searchModel.searchTab) {
+                Text($0.label)
             }
-            .scrollIndicators(.hidden)
-            .padding(.top, 8)
-            .padding(.bottom, 12)
+            .padding(.bottom, 10)
             Divider()
             SearchResultListView(showTypeLabel: false)
         }

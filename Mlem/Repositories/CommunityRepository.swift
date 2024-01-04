@@ -78,7 +78,7 @@ struct CommunityRepository {
     }
     
     func loadDetails(for id: Int) async throws -> CommunityModel {
-        CommunityModel(from: try await details(apiClient, id).communityView)
+        CommunityModel(from: try await details(apiClient, id))
     }
     
     @discardableResult

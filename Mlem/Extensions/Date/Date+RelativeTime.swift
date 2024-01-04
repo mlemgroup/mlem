@@ -9,9 +9,9 @@ import SwiftUI
 
 extension Date {
     // Returns strings like "3 seconds ago" and "10 days ago"
-    func getRelativeTime(date: Date) -> String {
+    func getRelativeTime(date: Date, unitsStyle: RelativeDateTimeFormatter.UnitsStyle = .full) -> String {
         let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
+        formatter.unitsStyle = unitsStyle
 
         return formatter.localizedString(for: self, relativeTo: date)
     }

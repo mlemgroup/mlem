@@ -158,15 +158,15 @@ extension PostSortType: SettingsOptions {
     var label: String {
         switch self {
         case .newComments:
-            return "New comments"
+            return "New Comments"
         case .mostComments:
-            return "Most comments"
+            return "Most Comments"
         case .topHour:
             return "Hour"
         case .topSixHour:
-            return "Six hours"
+            return "Six Hours"
         case .topTwelveHour:
-            return "Twelve hours"
+            return "Twelve Hours"
         case .topDay:
             return "Day"
         case .topWeek:
@@ -182,7 +182,7 @@ extension PostSortType: SettingsOptions {
         case .topYear:
             return "Year"
         case .topAll:
-            return "All time"
+            return "All Time"
         default:
             return rawValue
         }

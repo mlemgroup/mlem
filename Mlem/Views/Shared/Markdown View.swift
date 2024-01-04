@@ -226,14 +226,22 @@ struct MarkdownView: View {
     private let isNsfw: Bool
     private let replaceImagesWithEmoji: Bool
     private let isInline: Bool
+    private let alignment: TextAlignment
     
-    init(text: String, isNsfw: Bool, replaceImagesWithEmoji: Bool = false, isInline: Bool = false) {
+    init(
+        text: String,
+        isNsfw: Bool,
+        replaceImagesWithEmoji: Bool = false,
+        isInline: Bool = false,
+        alignment: TextAlignment = .leading
+    ) {
         _text = isInline
             ? .init(wrappedValue: MarkdownView.prepareInlineMarkdown(text: text))
             : .init(wrappedValue: text)
         self.isNsfw = isNsfw
         self.replaceImagesWithEmoji = replaceImagesWithEmoji
         self.isInline = isInline
+        self.alignment = alignment
     }
 
     var body: some View {
@@ -312,7 +320,8 @@ struct MarkdownView: View {
 
     func renderAsMarkdown(text: String, theme: Theme = .mlem) -> some View {
         Markdown(text)
-            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .frame(maxWidth: .infinity, alignment: alignment == .center ? .top : .topLeading)
+            .multilineTextAlignment(alignment)
             .markdownTheme(theme)
     }
 }

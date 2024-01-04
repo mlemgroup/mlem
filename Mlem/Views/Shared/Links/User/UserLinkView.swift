@@ -16,6 +16,7 @@ struct UserLinkView: View {
     // to pick the correct flair
     var postContext: APIPost?
     var commentContext: APIComment?
+    var communityContext: CommunityModel?
     
     @available(*, deprecated, message: "Provide a UserModel rather than an APIPerson.")
     init(
@@ -23,14 +24,16 @@ struct UserLinkView: View {
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
-        commentContext: APIComment? = nil
+        commentContext: APIComment? = nil,
+        communityContext: CommunityModel? = nil
     ) {
         self.init(
             user: UserModel(from: person),
             serverInstanceLocation: serverInstanceLocation,
             overrideShowAvatar: overrideShowAvatar,
             postContext: postContext,
-            commentContext: commentContext
+            commentContext: commentContext,
+            communityContext: communityContext
         )
     }
     
@@ -39,23 +42,27 @@ struct UserLinkView: View {
         serverInstanceLocation: ServerInstanceLocation,
         overrideShowAvatar: Bool? = nil,
         postContext: APIPost? = nil,
-        commentContext: APIComment? = nil
+        commentContext: APIComment? = nil,
+        communityContext: CommunityModel? = nil
+
     ) {
         self.user = user
         self.serverInstanceLocation = serverInstanceLocation
         self.overrideShowAvatar = overrideShowAvatar
         self.postContext = postContext
         self.commentContext = commentContext
+        self.communityContext = communityContext
     }
 
     var body: some View {
-        NavigationLink(.userProfile(user)) {
+        NavigationLink(.userProfile(user, communityContext: communityContext)) {
             UserLabelView(
                 user: user,
                 serverInstanceLocation: serverInstanceLocation,
                 overrideShowAvatar: overrideShowAvatar,
                 postContext: postContext,
-                commentContext: commentContext
+                commentContext: commentContext,
+                communityContext: communityContext
             )
         }
         .buttonStyle(.plain)

@@ -27,7 +27,7 @@ extension CommunityModel {
                     hapticManager.play(haptic: .lightSuccess, priority: .low)
                     
                     if subscribed, let confirmDestructive {
-                        if case .standard(let function) = try? subscribeMenuFunction(callback) {
+                        if let function = try? subscribeMenuFunction(callback) {
                             confirmDestructive(function)
                         }
                     } else {
@@ -43,14 +43,44 @@ extension CommunityModel {
         )
     }
     
+    func favoriteSwipeAction(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
+    ) -> SwipeAction {
+        let (emptySymbolName, fullSymbolName) = (favorited)
+        ? (Icons.unfavorite, Icons.unfavoriteFill)
+        : (Icons.favorite, Icons.favoriteFill)
+        return SwipeAction(
+            symbol: .init(emptyName: emptySymbolName, fillName: fullSymbolName),
+            color: favorited ? .red : .blue,
+            action: {
+                Task {
+                    hapticManager.play(haptic: .lightSuccess, priority: .low)
+                    
+                    if favorited, let confirmDestructive {
+                        confirmDestructive(favoriteMenuFunction(callback))
+                    } else {
+                        var new = self
+                        try await new.toggleFavorite(callback)
+                    }
+                }
+            }
+        )
+    }
+        
     func swipeActions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
         confirmDestructive: ((StandardMenuFunction) -> Void)? = nil
     ) -> SwipeConfiguration {
         var trailingActions: [SwipeAction] = []
-        if let action = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive) {
-            trailingActions.append(action)
+        let subscribeAction = try? subscribeSwipeAction(callback, confirmDestructive: confirmDestructive)
+        let favoriteAction = favoriteSwipeAction(callback, confirmDestructive: confirmDestructive)
+        
+        if let subscribeAction {
+            trailingActions.append(subscribeAction)
         }
+        trailingActions.append(favoriteAction)
+       
         return SwipeConfiguration(leadingActions: [], trailingActions: trailingActions)
     }
 }

@@ -207,7 +207,7 @@ struct InboxView: View {
                 MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive functions
             }
         } label: {
-            Label("More", systemImage: "ellipsis")
+            Label("More", systemImage: Icons.menuCircle)
                 .frame(height: AppConstants.barIconHitbox)
                 .contentShape(Rectangle())
         }

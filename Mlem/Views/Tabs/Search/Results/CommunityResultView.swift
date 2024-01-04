@@ -12,14 +12,27 @@ struct CommunityResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
-    @EnvironmentObject var contentTracker: ContentTracker<AnyContentModel>
-    
     let community: CommunityModel
     let showTypeLabel: Bool
-    var swipeActions: SwipeConfiguration?
+    let trackerCallback: (_ item: CommunityModel) -> Void
+    let swipeActions: SwipeConfiguration?
 
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    @EnvironmentObject var editorTracker: EditorTracker
+    
+    init(
+        _ community: CommunityModel,
+        showTypeLabel: Bool = false,
+        swipeActions: SwipeConfiguration? = nil,
+        trackerCallback: @escaping (_ item: CommunityModel) -> Void = { _ in }
+    ) {
+        self.community = community
+        self.showTypeLabel = showTypeLabel
+        self.swipeActions = swipeActions
+        self.trackerCallback = trackerCallback
+    }
     
     func confirmDestructive(destructiveFunction: StandardMenuFunction) {
         confirmationMenuFunction = destructiveFunction
@@ -47,6 +60,26 @@ struct CommunityResultView: View {
         return "Unknown instance"
     }
     
+    var subscriberCountColor: Color {
+        if community.favorited {
+            return .blue
+        }
+        if community.subscribed ?? false {
+            return .green
+        }
+        return .secondary
+    }
+    
+    var subscriberCountIcon: String {
+        if community.favorited {
+            return Icons.favoriteFill
+        }
+        if community.subscribed ?? false {
+            return Icons.subscribed
+        }
+        return Icons.personFill
+    }
+    
     var body: some View {
         NavigationLink(value: AppRoute.community(community)) {
             HStack(spacing: 10) {
@@ -62,6 +95,7 @@ struct CommunityResultView: View {
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
+                        .lineLimit(1)
                         .foregroundStyle(community.nsfw ? .red : .primary)
                     Text(caption)
                         .font(.footnote)
@@ -69,12 +103,14 @@ struct CommunityResultView: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                HStack(spacing: 5) {
-                    Text(abbreviateNumber(community.subscriberCount ?? 0))
-                        .monospacedDigit()
-                    Image(systemName: (community.subscribed ?? false) ? Icons.subscribed : Icons.personFill)
+                if let subscriberCount = community.subscriberCount {
+                    HStack(spacing: 5) {
+                        Text(abbreviateNumber(subscriberCount))
+                            .monospacedDigit()
+                        Image(systemName: subscriberCountIcon)
+                    }
+                    .foregroundStyle(subscriberCountColor)
                 }
-                .foregroundStyle((community.subscribed ?? false) ? .green : .secondary)
                 Image(systemName: Icons.forward)
                     .imageScale(.small)
                     .foregroundStyle(.tertiary)
@@ -99,13 +135,14 @@ struct CommunityResultView: View {
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
             confirmationMenuFunction: confirmationMenuFunction
         )
-        .addSwipeyActions(swipeActions ?? community.swipeActions({
-            contentTracker.update(with: AnyContentModel($0))
-        }, confirmDestructive: confirmDestructive))
+        .addSwipeyActions(swipeActions ?? community.swipeActions(trackerCallback, confirmDestructive: confirmDestructive))
         .contextMenu {
-            ForEach(community.menuFunctions {
-                contentTracker.update(with: AnyContentModel($0))
-            }) { item in
+            ForEach(
+                community.menuFunctions(
+                    trackerCallback,
+                    editorTracker: editorTracker
+                )
+            ) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
         }
@@ -114,7 +151,7 @@ struct CommunityResultView: View {
 
 #Preview {
     CommunityResultView(
-        community: .init(from: .mock()),
+        .init(from: .mock()),
         showTypeLabel: true
     )
 }
