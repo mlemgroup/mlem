@@ -14,6 +14,9 @@ struct CommunityView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.communityRepository) var communityRepository
     
+    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
+    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    
     enum Tab: String, Identifiable, CaseIterable {
         var id: Self { self }
         case posts, about, moderators, statistics
@@ -103,7 +106,7 @@ struct CommunityView: View {
                         .padding(.top, 15)
                         .background(Color.secondarySystemBackground)
                     VStack(spacing: AppConstants.postAndCommentSpacing) {
-                        if let banner = community.banner {
+                        if shouldShowCommunityHeaders, let banner = community.banner {
                             CachedImage(url: banner, cornerRadius: AppConstants.largeItemCornerRadius)
                         }
                         MarkdownView(text: community.description ?? "", isNsfw: false)
@@ -227,7 +230,9 @@ struct CommunityView: View {
         Group {
             VStack(spacing: 5) {
                 HStack(alignment: .center, spacing: 10) {
-                    AvatarView(community: community, avatarSize: 44, iconResolution: .unrestricted)
+                    if shouldShowCommunityIcons {
+                        AvatarView(community: community, avatarSize: 44, iconResolution: .unrestricted)
+                    }
                     Button(action: community.copyFullyQualifiedName) {
                         VStack(alignment: .leading, spacing: 0) {
                             Text(community.displayName)
