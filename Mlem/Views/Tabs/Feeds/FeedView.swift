@@ -89,7 +89,9 @@ struct FeedView: View {
             }
         }
         .refreshable {
-            await postTracker.refresh(clearBeforeFetch: true)
+            await Task {
+                _ = await postTracker.refresh(clearBeforeFetch: true)
+            }.value
         }
         .background {
             VStack(spacing: 0) {
