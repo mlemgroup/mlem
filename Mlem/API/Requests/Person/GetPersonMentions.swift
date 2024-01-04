@@ -38,9 +38,3 @@ struct GetPersonMentionsRequest: APIGetRequest {
 struct GetPersonMentionsResponse: Decodable {
     let mentions: [APIPersonMentionView]
 }
-
-// MARK: - FeedTrackerItemProviding
-
-extension GetPersonMentionsResponse: FeedTrackerItemProviding {
-    var items: [APIPersonMentionView] { mentions }
-}
