@@ -63,14 +63,20 @@ struct CommunityStatsView: View {
             .frame(maxWidth: .infinity)
             
             if let activeUserCount = community.activeUserCount {
-                Text("Active Users")
-                    .foregroundStyle(.secondary)
-                HStack(spacing: 16) {
-                    activeUserBox("6mo", value: activeUserCount.sixMonths)
-                    activeUserBox("1mo", value: activeUserCount.month)
-                    activeUserBox("1w", value: activeUserCount.week)
-                    activeUserBox("1d", value: activeUserCount.day)
+                VStack(spacing: 5) {
+                    Text("Active Users")
+                        .foregroundStyle(.secondary)
+                    HStack(spacing: 16) {
+                        activeUserBox("6mo", value: activeUserCount.sixMonths)
+                        activeUserBox("1mo", value: activeUserCount.month)
+                        activeUserBox("1w", value: activeUserCount.week)
+                        activeUserBox("1d", value: activeUserCount.day)
+                    }
                 }
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity)
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                .cornerRadius(AppConstants.largeItemCornerRadius)
             }
         }
         .padding(.horizontal, 16)
@@ -79,16 +85,14 @@ struct CommunityStatsView: View {
     @ViewBuilder
     func activeUserBox(_ label: String, value: Int) -> some View {
         VStack {
-            Text(label)
-                .foregroundStyle(.secondary)
             Text(abbreviateNumber(value))
                 .font(.title3)
                 .fontWeight(.semibold)
+            Text(label)
+                .foregroundStyle(.secondary)
         }
-        .padding(.vertical, 10)
         .frame(maxWidth: .infinity)
-        .background(Color(uiColor: .secondarySystemGroupedBackground))
-        .cornerRadius(AppConstants.largeItemCornerRadius)
+        
     }
 }
 
