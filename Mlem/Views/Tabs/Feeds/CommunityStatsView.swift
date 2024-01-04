@@ -63,7 +63,7 @@ struct CommunityStatsView: View {
             .frame(maxWidth: .infinity)
             
             if let activeUserCount = community.activeUserCount {
-                VStack(spacing: 5) {
+                VStack(spacing: 8) {
                     Text("Active Users")
                         .foregroundStyle(.secondary)
                     HStack(spacing: 16) {
