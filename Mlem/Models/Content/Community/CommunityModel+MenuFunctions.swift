@@ -9,14 +9,28 @@ import Foundation
 import SwiftUI
 
 extension CommunityModel {
-    func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> MenuFunction {
+    func newPostMenuFunction(editorTracker: EditorTracker, postTracker: PostTracker? = nil) -> MenuFunction {
+        return .standardMenuFunction(
+                text: "New Post",
+                imageName: Icons.sendFill,
+                destructiveActionPrompt: nil,
+                enabled: true
+            ) {
+                editorTracker.openEditor(with: PostEditorModel(
+                    community: self,
+                    postTracker: postTracker
+                ))
+            }
+    }
+    
+    func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> StandardMenuFunction {
         guard let subscribed else {
             throw CommunityError.noData
         }
-        return .standardMenuFunction(
+        return .init(
             text: subscribed ? "Unsubscribe" : "Subscribe",
             imageName: subscribed ? Icons.unsubscribe : Icons.subscribe,
-            destructiveActionPrompt: subscribed ? "Are you sure you want to unsubscribe from \(name)?" : nil,
+            destructiveActionPrompt: subscribed ? "Are you sure you want to unsubscribe from \(name!)?" : nil,
             enabled: true,
             callback: {
                 Task {
@@ -29,6 +43,24 @@ extension CommunityModel {
                 }
             }
         )
+    }
+    
+    func favoriteMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> StandardMenuFunction {
+        return .init(
+            text: favorited ? "Unfavorite" : "Favorite",
+            imageName: favorited ? Icons.unfavorite : Icons.favorite,
+            destructiveActionPrompt: favorited ? "Really unfavorite \(community.name)?" : nil,
+            enabled: true
+        ) {
+            Task {
+                do {
+                    var new = self
+                    try await new.toggleFavorite(callback)
+                } catch {
+                    errorHandler.handle(error)
+                }
+            }
+        }
     }
     
     func blockMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> MenuFunction {
@@ -53,11 +85,28 @@ extension CommunityModel {
         )
     }
     
-    func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
+    func menuFunctions(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        editorTracker: EditorTracker? = nil,
+        postTracker: PostTracker? = nil
+    ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
-        if let function = try? subscribeMenuFunction(callback) {
-            functions.append(function)
+        if let editorTracker {
+            functions.append(newPostMenuFunction(editorTracker: editorTracker, postTracker: postTracker))
         }
+        if let function = try? subscribeMenuFunction(callback) {
+            functions.append(.standard(function))
+        }
+        functions.append(.standard(favoriteMenuFunction(callback)))
+        functions.append(
+            .standardMenuFunction(
+                text: "Copy Name",
+                imageName: Icons.copy,
+                destructiveActionPrompt: nil,
+                enabled: true,
+                callback: copyFullyQualifiedName
+            )
+        )
         functions.append(.shareMenuFunction(url: communityUrl))
         if let function = try? blockMenuFunction(callback) {
             functions.append(function)

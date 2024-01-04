@@ -11,7 +11,6 @@ import Nuke
 
 class ContentTracker<Content: ContentModel>: ObservableObject {
     // dependencies
-    @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.hapticManager) var hapticManager
     

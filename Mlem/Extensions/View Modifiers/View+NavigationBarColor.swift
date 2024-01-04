@@ -20,7 +20,7 @@ struct NavigationBarColorModifier: ViewModifier {
         } else {
             content
                 .toolbarBackground(Color.systemBackground, for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarBackground(visibility, for: .navigationBar)
         }
     }
 }
