@@ -92,8 +92,11 @@ struct AvatarBannerView: View {
                         }
                         Spacer()
                     }
-                    if showAvatar {
-                        avatarView
+                    .overlay {
+                        if showAvatar {
+                            avatarView
+                                .frame(maxHeight: .infinity, alignment: .bottom)
+                        }
                     }
                 }
                 .frame(height: AvatarBannerView.bannerHeight + (showAvatar ? AvatarBannerView.avatarOverdraw : 0))
