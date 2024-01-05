@@ -9,20 +9,23 @@ import SwiftUI
 
 struct CollapsedCommentReplies: View {
     @Binding var numberOfReplies: Int
+    var lineWidth: CGFloat = 2
     
     var body: some View {
         let replyText = numberOfReplies != 1 ? "comments" : "comment"
 
         HStack {
             Rectangle()
-                .frame(width: 40, alignment: .leading)
-                .background(.white)
+                .border(width: lineWidth, edges: [.leading], color: .green)
+                .frame(width: lineWidth)
             Image(systemName: Icons.replies)
-            Text("\(numberOfReplies) \(replyText)")
+            Text("show \(numberOfReplies) \(replyText)")
+                .foregroundStyle(.blue)
         }
+        .background(.background)
     }
 }
 
 #Preview {
-    CollapsedCommentReplies(numberOfReplies: .constant(99))
+    CollapsedCommentReplies(numberOfReplies: .constant(1))
 }
