@@ -28,7 +28,7 @@ class HierarchicalComment: ObservableObject {
         self.commentView = comment
         self.children = children
         self.depth = depth
-        self.isParentCollapsed = collapseChildCommentsFlag && depth > 1 || parentCollapsed
+        self.isParentCollapsed = collapseChildCommentsFlag && depth >= 1 || parentCollapsed
         self.isCollapsed = collapseChildCommentsFlag && depth == 1 || collapsed
         self.links = comment.comment.content.parseLinks()
     }
