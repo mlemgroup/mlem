@@ -197,6 +197,10 @@ struct CommentItem: View {
                             .onTapGesture {
                                 isCommentReplyHidden = true
                                 commentTracker.setCollapsed(false, comment: hierarchicalComment)
+                                
+                                for comment in hierarchicalComment.children where comment.depth == 1 {
+                                    commentTracker.setCollapsed(false, comment: comment)
+                                }
                             }
                     }
                 }

@@ -22,7 +22,6 @@ struct CollapsedCommentReplies: View {
             Text("show \(numberOfReplies) \(replyText)")
                 .foregroundStyle(.blue)
         }
-        .background(.background)
     }
 }
 
