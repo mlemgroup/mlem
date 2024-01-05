@@ -327,6 +327,8 @@
 		CD05E7792A4E381A0081D102 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E7782A4E381A0081D102 /* PostSize.swift */; };
 		CD05E77F2A4F263B0081D102 /* Menu Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD05E77E2A4F263B0081D102 /* Menu Function.swift */; };
 		CD0BE42F2A65A73600314B24 /* Haptic Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */; };
+		CD12627A2B4759BC007549F9 /* NEW PostTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1262792B4759BC007549F9 /* NEW PostTracker.swift */; };
+		CD12627D2B475E45007549F9 /* PostModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12627C2B475E45007549F9 /* PostModel+TrackerItem.swift */; };
 		CD1446182A58FC3B00610EF1 /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446172A58FC3B00610EF1 /* InfoStackView.swift */; };
 		CD14461B2A5A4B6D00610EF1 /* PostSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */; };
 		CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1446202A5B328E00610EF1 /* Privacy Policy.swift */; };
@@ -865,6 +867,9 @@
 		CD05E7782A4E381A0081D102 /* PostSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSize.swift; sourceTree = "<group>"; };
 		CD05E77E2A4F263B0081D102 /* Menu Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Menu Function.swift"; sourceTree = "<group>"; };
 		CD0BE42E2A65A73600314B24 /* Haptic Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Haptic Manager.swift"; sourceTree = "<group>"; };
+		CD1262792B4759BC007549F9 /* NEW PostTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NEW PostTracker.swift"; sourceTree = "<group>"; };
+		CD12627B2B475A80007549F9 /* README - Generic Trackers.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "README - Generic Trackers.md"; sourceTree = "<group>"; };
+		CD12627C2B475E45007549F9 /* PostModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostModel+TrackerItem.swift"; sourceTree = "<group>"; };
 		CD1446172A58FC3B00610EF1 /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		CD14461A2A5A4B6D00610EF1 /* PostSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsView.swift; sourceTree = "<group>"; };
 		CD1446202A5B328E00610EF1 /* Privacy Policy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Privacy Policy.swift"; sourceTree = "<group>"; };
@@ -1485,6 +1490,7 @@
 		50F830EC2A4C8F8D00D67099 /* Generics */ = {
 			isa = PBXGroup;
 			children = (
+				CD12627B2B475A80007549F9 /* README - Generic Trackers.md */,
 				CDB45C5B2AF1A1D800A1FF08 /* CoreTracker.swift */,
 				CD4368AD2AE23ED400BD8BD1 /* StandardTracker.swift */,
 				CD4368AF2AE23F1400BD8BD1 /* ChildTracker.swift */,
@@ -1991,6 +1997,7 @@
 			isa = PBXGroup;
 			children = (
 				50F830EC2A4C8F8D00D67099 /* Generics */,
+				CD1262782B47597E007549F9 /* Feeds */,
 				CDF8425F2A49EA2A00723DA0 /* Inbox */,
 				6386E02E2A03ED39006B3C1D /* Comment Tracker.swift */,
 				63344C4E2A07BD2A001BC616 /* Filters Tracker.swift */,
@@ -2158,6 +2165,14 @@
 				CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */,
 			);
 			path = APIClient;
+			sourceTree = "<group>";
+		};
+		CD1262782B47597E007549F9 /* Feeds */ = {
+			isa = PBXGroup;
+			children = (
+				CD1262792B4759BC007549F9 /* NEW PostTracker.swift */,
+			);
+			path = Feeds;
 			sourceTree = "<group>";
 		};
 		CD14461F2A5B328600610EF1 /* Data */ = {
@@ -2445,6 +2460,7 @@
 				CDB45C5F2AF1AF4900A1FF08 /* MentionModel+TrackerItem.swift */,
 				CDB45C632AF1AFB900A1FF08 /* MessageModel+TrackerItem.swift */,
 				CDB45C612AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift */,
+				CD12627C2B475E45007549F9 /* PostModel+TrackerItem.swift */,
 			);
 			path = "Tracker Items";
 			sourceTree = "<group>";
@@ -3058,6 +3074,7 @@
 				507573942A5AD59E00AA7ABD /* EquatableError.swift in Sources */,
 				CDE6A81A2A490B970062D161 /* Inbox ReplyBodyView.swift in Sources */,
 				50811B3C2A92059C006BA3F2 /* BlockCommunityResponse+Mock.swift in Sources */,
+				CD12627A2B4759BC007549F9 /* NEW PostTracker.swift in Sources */,
 				CD391F9E2A539F1800E213B5 /* ReplyToMention.swift in Sources */,
 				CD1446272A5B36DA00610EF1 /* EULA.swift in Sources */,
 				500C168E2A66FAAB006F243B /* HapticManager+Dependency.swift in Sources */,
@@ -3351,6 +3368,7 @@
 				035EB0CA2A8687C200227859 /* JumpButtonView.swift in Sources */,
 				5016A2B12A67EB8600B257E8 /* UIViewController+TopMostViewController.swift in Sources */,
 				6372184C2A3A2AAD008C4816 /* APIPostView.swift in Sources */,
+				CD12627D2B475E45007549F9 /* PostModel+TrackerItem.swift in Sources */,
 				CDB0117D2A6F703800D043EB /* CommentEditor.swift in Sources */,
 				0308E1162B0EA42B000CA955 /* APILocalUserView.swift in Sources */,
 				030E863F2AC6C5E9000283A6 /* PictrsImageModel.swift in Sources */,
