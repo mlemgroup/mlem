@@ -30,12 +30,12 @@ class CoreTracker<Item: TrackerItem>: ObservableObject {
         if loadingState == .idle, item.uid == threshold || item.uid == fallbackThreshold {
             // this is a synchronous function that wraps the loading as a task so that the task is attached to the tracker itself, not the view that calls it, and is therefore safe from being cancelled by view redraws
             Task(priority: .userInitiated) {
-                await loadNextPage()
+                await loadMoreItems()
             }
         }
     }
     
-    func loadNextPage() async {
+    func loadMoreItems() async {
         preconditionFailure("This method must be overridden by the inheriting class")
     }
     
