@@ -121,6 +121,7 @@ struct InboxView: View {
                     .environmentObject(inboxTabNavigation)
                     .environmentObject(inboxTracker)
                     .onChange(of: shouldFilterRead) { newValue in
+                        print("filtering read: \(newValue)")
                         Task(priority: .userInitiated) {
                             await handleShouldFilterReadChange(newShouldFilterRead: newValue)
                         }

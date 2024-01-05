@@ -36,7 +36,7 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     // MARK: loading methods
     
     /// Loads the next page of items
-    override func loadNextPage() async {
+    override func loadMoreItems() async {
         guard loadingState != .done else {
             return
         }
