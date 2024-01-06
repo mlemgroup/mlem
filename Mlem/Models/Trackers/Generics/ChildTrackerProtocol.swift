@@ -9,8 +9,12 @@ import Foundation
 protocol ChildTrackerProtocol: AnyObject {
     associatedtype Item: TrackerItem
     associatedtype ParentItem: TrackerItem
+    
+    /// All items present in the tracker
+    /// - Warning: this should not be directly accessed by the parent except to perform filtering!
+    var allItems: [ParentItem] { get }
 
-    // stream support methods
+    // MARK: stream support methods
     
     func setParentTracker(_ newParent: any ParentTrackerProtocol)
 
@@ -20,7 +24,7 @@ protocol ChildTrackerProtocol: AnyObject {
     
     func resetCursor()
 
-    // loading methods
+    // MARK: loading methods
     
     func reset(notifyParent: Bool) async
 
