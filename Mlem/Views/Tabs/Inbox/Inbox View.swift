@@ -120,17 +120,16 @@ struct InboxView: View {
                     .handleLemmyViews()
                     .environmentObject(inboxTabNavigation)
                     .environmentObject(inboxTracker)
-                    .onChange(of: shouldFilterRead) { newValue in
-                        print("filtering read: \(newValue)")
-                        Task(priority: .userInitiated) {
-                            await handleShouldFilterReadChange(newShouldFilterRead: newValue)
-                        }
-                    }
             }
             .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
             .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
             .environment(\.navigation, navigation)
             .environment(\.scrollViewProxy, scrollProxy)
+        }
+        .onChange(of: shouldFilterRead) { newValue in
+            Task(priority: .userInitiated) {
+                await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+            }
         }
     }
     

@@ -74,7 +74,7 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             try await load(action: .clear)
         } catch {
             assertionFailure("Exception thrown when resetting, this should not be possible!")
-            await clear() // this is not a thread-safe use of clear, but I'm using it here because we should never get here
+            await clearHelper() // this is not a thread-safe use of clear, but I'm using it here because we should never get here
         }
     }
 
@@ -92,20 +92,10 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         switch action {
         case .clear:
             print("[\(Item.self) tracker] clearing")
-            await clear()
-            return
+            await clearHelper()
         case let .refresh(clearBeforeRefresh):
             print("[\(Item.self) tracker] refreshing")
-            if clearBeforeRefresh {
-                await clear()
-            } else {
-                // if not clearing before reset, still clear these fields in order to sanitize the loading state--we just keep the items in place until we have received new ones, which will be set by loadPage/loadCursor
-                page = 0
-                loadingCursor = nil
-                ids = .init(minimumCapacity: 1000)
-                await setLoading(.idle)
-            }
-            try await loadPageHelper(1)
+            try await refreshHelper(clearBeforeRefresh: clearBeforeRefresh)
         case let .loadPage(pageToLoad):
             print("[\(Item.self) tracker] loading page \(pageToLoad)")
             try await loadPageHelper(pageToLoad)
@@ -142,6 +132,30 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     private func storeIdsAndDedupe(newItems: [Item]) -> [Item] {
         let accepted = newItems.filter { ids.insert($0.uid).inserted }
         return accepted
+    }
+
+    /// Clears the tracker to an empty state.
+    /// - Warning: **DO NOT** call this method from anywhere but `load`! This is *purely* a helper function for `load` and *will* lead to unexpected behavior if called elsewhere!
+    private func clearHelper() async {
+        ids = .init(minimumCapacity: 1000)
+        page = 0
+        await setLoading(.idle)
+        await setItems(.init())
+    }
+    
+    /// Clears
+    /// - Warning: **DO NOT** call this method from anywhere but `load`! This is *purely* a helper function for `load` and *will* lead to unexpected behavior if called elsewhere!
+    private func refreshHelper(clearBeforeRefresh: Bool) async throws {
+        if clearBeforeRefresh {
+            await clearHelper()
+        } else {
+            // if not clearing before reset, still clear these fields in order to sanitize the loading state--we just keep the items in place until we have received new ones, which will be set by loadPage/loadCursor
+            page = 0
+            loadingCursor = nil
+            ids = .init(minimumCapacity: 1000)
+            await setLoading(.idle)
+        }
+        try await loadPageHelper(1)
     }
     
     /// Loads a given page of items
@@ -186,14 +200,5 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         if loadingState != .done {
             await setLoading(.idle)
         }
-    }
-
-    /// Clears the tracker to an empty state.
-    /// - Warning: **DO NOT** call this method from anywhere but `load`! This is *purely* a helper function for `load` and *will* lead to unexpected behavior if called elsewhere!
-    private func clear() async {
-        ids = .init(minimumCapacity: 1000)
-        page = 0
-        await setLoading(.idle)
-        await setItems(.init())
     }
 }

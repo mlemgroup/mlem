@@ -72,13 +72,24 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
     /// Filters out items according to the given filtering function.
     /// - Parameter filter: function that, given an Item, returns true if the item should REMAIN in the tracker
     func filter(with filter: @escaping (Item) -> Bool) async {
-        // build set of uids to remove
+        // build set of uids to remove. need to iterate through every item in every tracker because trackers may have items that should be filtered but are not present in the parent yet
         var uidsToFilter: Set<ContentModelIdentifier> = .init()
-        items.forEach { item in
-            if !filter(item) {
-                uidsToFilter.insert(item.uid)
+        childTrackers.forEach { child in
+            child.allItems.forEach { item in
+                guard let item = item as? Item else {
+                    assertionFailure("Could not convert to parent type!")
+                    return
+                }
+                if !filter(item) {
+                    uidsToFilter.insert(item.uid)
+                }
             }
         }
+//        items.forEach { item in
+//            if !filter(item) {
+//                uidsToFilter.insert(item.uid)
+//            }
+//        }
         
         // function to remove items from child trackers based on uid--this makes the Item-specific filtering applied here generically applicable to any child tracker
         let filterFunc = { (item: any TrackerItem) in
@@ -99,6 +110,8 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
             
             return removed
         }
+        
+        print("[\(Item.self) tracker] removed \(removed) items, fetching more")
         
         // reload all non-removed items
         let remaining = items.count - removed
