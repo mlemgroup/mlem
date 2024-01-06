@@ -143,6 +143,15 @@ extension CommentItem {
         }
     }
     
+    /// Uncollapses HierarchicalComment and children at depth level 1
+    func uncollapseComment() {
+        commentTracker.setCollapsed(false, comment: hierarchicalComment)
+        
+        for comment in hierarchicalComment.children where comment.depth == 1 {
+            commentTracker.setCollapsed(false, comment: comment)
+        }
+    }
+    
     // MARK: helpers
     
     // swiftlint:disable function_body_length

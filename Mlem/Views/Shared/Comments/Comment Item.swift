@@ -196,11 +196,7 @@ struct CommentItem: View {
                         CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
                             .onTapGesture {
                                 isCommentReplyHidden = true
-                                commentTracker.setCollapsed(false, comment: hierarchicalComment)
-                                
-                                for comment in hierarchicalComment.children where comment.depth == 1 {
-                                    commentTracker.setCollapsed(false, comment: comment)
-                                }
+                                uncollapseComment()
                             }
                     }
                 }
@@ -223,6 +219,11 @@ struct CommentItem: View {
         .contextMenu {
             ForEach(genMenuFunctions()) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+            }
+        }
+        .onChange(of: collapseComments) { newValue in
+            if newValue == false {
+                uncollapseComment()
             }
         }
     }
