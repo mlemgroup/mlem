@@ -16,7 +16,7 @@ struct CollapsedCommentReplies: View {
 
         HStack {
             Rectangle()
-                .border(width: lineWidth, edges: [.leading], color: .green)
+                .border(width: lineWidth, edges: [.leading], color: .accentColor)
                 .frame(width: lineWidth)
             Image(systemName: Icons.replies)
             Text("show \(numberOfReplies) \(replyText)")
@@ -24,6 +24,7 @@ struct CollapsedCommentReplies: View {
         }
         .padding(.top, 5)
         .padding(.bottom, 10)
+        .frame(maxHeight: 50)
     }
 }
 
