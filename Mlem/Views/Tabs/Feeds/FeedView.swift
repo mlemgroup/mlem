@@ -111,18 +111,18 @@ struct FeedView: View {
                     }
                 } else {
                     if tabBarVisibility.visibility != .hidden {
-                        withAnimation(.smooth(duration: 0.650)) {
+//                        withAnimation(.smooth(duration: 0.650)) {
                             tabBarVisibility.visibility = .hidden
-                        }
+//                        }
                     }
                 }
             }
         }, bounce: { edge in
             if edge.contains(.top) || edge.contains(.bottom) || edge.contains(.vertical) {
                 if tabBarVisibility.visibility != .automatic {
-                    withAnimation(.smooth(duration: 0.650)) {
+//                    withAnimation(.smooth(duration: 0.650)) {
                         tabBarVisibility.visibility = .automatic
-                    }
+//                    }
                 }
             }
         })
