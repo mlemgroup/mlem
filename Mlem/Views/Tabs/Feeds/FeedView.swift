@@ -94,14 +94,26 @@ struct FeedView: View {
                     .background(Color.secondarySystemBackground)
             }
         }
-        .onOffsetChange({ _, edge in
-            if let edge, edge == .top, tabBarVisibility.visibility != .automatic {
-                withAnimation(.smooth(duration: 0.650)) {
-                    tabBarVisibility.visibility = .automatic
-                }
-            } else if tabBarVisibility.visibility != .hidden {
-                withAnimation(.smooth(duration: 0.650)) {
-                    tabBarVisibility.visibility = .hidden
+        .onOffsetChange({ frame, edge in
+            guard frame.size.height > UIScreen.main.bounds.size.height else {
+                return
+            }
+            if let edge {
+                if edge == .top {
+                    if tabBarVisibility.visibility != .automatic {
+                        /// Need to run on default mode, otherwise scrolling animation inteferes with tab bar show/hide animation. [2024.01]
+                        RunLoop.main.perform(inModes: [.default]) {
+                            withAnimation(.smooth(duration: 0.650)) {
+                                tabBarVisibility.visibility = .automatic
+                            }
+                        }
+                    }
+                } else {
+                    if tabBarVisibility.visibility != .hidden {
+                        withAnimation(.smooth(duration: 0.650)) {
+                            tabBarVisibility.visibility = .hidden
+                        }
+                    }
                 }
             }
         }, bounce: { edge in
@@ -113,6 +125,11 @@ struct FeedView: View {
                 }
             }
         })
+        .onDisappear {
+            withAnimation(.smooth(duration: 0.650)) {
+                tabBarVisibility.visibility = .automatic
+            }
+        }
         .refreshable {
             await Task {
                 _ = await postTracker.refresh(clearBeforeFetch: false)

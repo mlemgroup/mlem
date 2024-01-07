@@ -22,7 +22,7 @@ struct ScrollViewOffset<Content: View>: View {
 
     var body: some View {
         ScrollView(axes) {
-            offsetReader
+//            offsetReader
             content()
                 .background {
                     GeometryReader { geometry in
@@ -30,6 +30,10 @@ struct ScrollViewOffset<Content: View>: View {
                             .preference(
                                 key: ContentSizePreferenceKey.self,
                                 value: geometry.size
+                            )
+                            .preference(
+                                key: FramePreferenceKey.self,
+                                value: geometry.frame(in: .named(geometryPreferences))
                             )
                     }
                 }
@@ -93,16 +97,16 @@ struct ScrollViewOffset<Content: View>: View {
 //            )
     }
     
-    var offsetReader: some View {
-        GeometryReader { geometry in
-            Color.clear
-                .preference(
-                    key: FramePreferenceKey.self,
-                    value: geometry.frame(in: .named(geometryPreferences))
-                )
-        }
-        .frame(height: 0)
-    }
+//    var offsetReader: some View {
+//        GeometryReader { geometry in
+//            Color.clear
+//                .preference(
+//                    key: FramePreferenceKey.self,
+//                    value: geometry.frame(in: .named(geometryPreferences))
+//                )
+//        }
+//        .frame(height: 0)
+//    }
 }
 
 struct TabBarVisibilityPreferenceKey: PreferenceKey {
@@ -142,7 +146,7 @@ private struct BouncePreferenceKey: PreferenceKey {
 extension View {
     
     func onOffsetChange(
-        _ change: @escaping (CGFloat, Edge?) -> Void,
+        _ change: @escaping (CGRect, Edge?) -> Void,
         bounce: ((Edge.Set) -> Void)? = nil
     ) -> some View {
         modifier(
@@ -155,7 +159,7 @@ extension View {
 }
 
 private struct OffsetChangeModifier: ViewModifier {
-    let onChange: (CGFloat, Edge?) -> Void
+    let onChange: (CGRect, Edge?) -> Void
     let onBounce: ((Edge.Set) -> Void)?
     
     @State private var axes: Axis.Set = []
@@ -234,7 +238,7 @@ private struct OffsetChangeModifier: ViewModifier {
                             return nil
                         }
                     }()
-                    onChange(frame.minY, towardsEdge)
+                    onChange(frame, towardsEdge)
                 }
             }
             .onPreferenceChange(ContentSizePreferenceKey.self) { size in

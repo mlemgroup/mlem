@@ -52,7 +52,12 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                     }
                     .accessibilitySortPriority(-1)
                     .ignoresSafeArea(.keyboard, edges: .bottom)
-                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom)))
+                    .transition(
+                        .asymmetric(
+                            insertion: .push(from: .bottom),
+                            removal: .push(from: .top)
+                        )
+                    )
                     .offset(y: tabBarVisibility.visibility == .hidden ? 88 : 0)
 //                }
             }
