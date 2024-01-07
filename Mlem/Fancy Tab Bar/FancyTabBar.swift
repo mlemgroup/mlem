@@ -71,7 +71,7 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 }
             }
             .onChange(of: navBarVis) { newValue in
-                withAnimation {
+                withAnimation(.smooth(duration: 0.6)) {
                     localNavBarVis = newValue
                 }
             }
