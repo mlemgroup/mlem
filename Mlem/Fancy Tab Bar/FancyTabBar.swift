@@ -38,17 +38,23 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
         self.doubleTapCallback = doubleTapCallback
     }
     
+    @Environment(\.navBarVisibility) private var navBarVis
+    @State private var localNavBarVis: Visibility = .automatic
+    
     var body: some View {
         ZStack(content: content)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, alignment: .center) {
                 // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up
-                VStack {
-                    Spacer()
-                    tabBar
+                if localNavBarVis != .hidden {
+                    VStack {
+                        Spacer()
+                        tabBar
+                    }
+                    .accessibilitySortPriority(-1)
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
+                    .transition(.move(edge: .bottom))
                 }
-                .accessibilitySortPriority(-1)
-                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .environment(\.tabSelectionHashValue, selection.hashValue)
             .environment(\.tabReselectionHashValue, tabReselectionHashValue)
@@ -62,6 +68,11 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 // resets the reselection value to nil after the change is published
                 if newValue != nil {
                     tabReselectionHashValue = nil
+                }
+            }
+            .onChange(of: navBarVis) { newValue in
+                withAnimation {
+                    localNavBarVis = newValue
                 }
             }
     }
