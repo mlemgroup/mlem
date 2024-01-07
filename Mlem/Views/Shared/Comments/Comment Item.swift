@@ -188,7 +188,9 @@ struct CommentItem: View {
                         .frame(height: AppConstants.postAndCommentSpacing)
                 }
                 
-                if collapseComments, hierarchicalComment.depth == 0,
+                if collapseComments,
+                   !hierarchicalComment.isCollapsed,
+                   hierarchicalComment.depth == 0,
                    hierarchicalComment.commentView.counts.childCount > 0,
                    !isCommentReplyHidden {
                     HStack {
@@ -224,6 +226,8 @@ struct CommentItem: View {
         .onChange(of: collapseComments) { newValue in
             if newValue == false {
                 uncollapseComment()
+            } else {
+                collapseComment()
             }
         }
     }

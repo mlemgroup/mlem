@@ -137,7 +137,9 @@ extension CommentItem {
     func toggleCollapsed() {
         withAnimation(.showHideComment(!hierarchicalComment.isCollapsed)) {
             // Perhaps we want an explict flag for this in the future?
-            if !showPostContext {
+            if collapseComments, !isCommentReplyHidden {
+                toggleTopLevelCommentCollapse(isCollapsed: !hierarchicalComment.isCollapsed)
+            } else if !showPostContext {
                 commentTracker.setCollapsed(!hierarchicalComment.isCollapsed, comment: hierarchicalComment)
             }
         }
@@ -149,6 +151,24 @@ extension CommentItem {
         
         for comment in hierarchicalComment.children where comment.depth == 1 {
             commentTracker.setCollapsed(false, comment: comment)
+        }
+    }
+    
+    // Collapses the top level comment and retains the child comment collapse state
+    // If a user views all child comments, then collapses top level comment, the children will be uncollapsed along side top level
+    func toggleTopLevelCommentCollapse(isCollapsed: Bool) {
+        hierarchicalComment.isCollapsed = isCollapsed
+        
+        if !isCollapsed {
+            isCommentReplyHidden = false
+        }
+    }
+    
+    /// Collapses HierarchicalComment and children at depth level 1
+    func collapseComment() {
+        for comment in hierarchicalComment.children where comment.depth == 1 {
+            commentTracker.setCollapsed(true, comment: comment)
+            comment.isParentCollapsed = true
         }
     }
     
