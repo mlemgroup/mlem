@@ -82,14 +82,11 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
     
     @discardableResult override func filter(with filter: @escaping (Item) -> Bool) async -> Int {
-        print("[\(Item.self) tracker] filtering \(items.count) items")
         let newItems = items.filter(filter)
         let removed = items.count - newItems.count
-        print("[\(Item.self) tracker] filtered \(removed) items")
         
         streamCursor = 0
         await setItems(newItems)
-        print("[\(Item.self) tracker] now contains \(items.count) items")
         
         return removed
     }
