@@ -8,6 +8,17 @@
 import Dependencies
 import SwiftUI
 
+private struct NavBarVisibility: EnvironmentKey {
+    static let defaultValue: Visibility = .automatic
+}
+
+extension EnvironmentValues {
+    var navBarVisibility: Visibility {
+        get { self[NavBarVisibility.self] }
+        set { self[NavBarVisibility.self] = newValue }
+    }
+}
+
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     
@@ -49,6 +60,8 @@ struct ContentView: View {
             return nil
         }
     }
+    
+    @State private var navBarVis: Visibility = .automatic
     
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
@@ -105,7 +118,18 @@ struct ContentView: View {
                         )
                     }
             }
+            .simultaneousGesture(
+                DragGesture().onChanged({ value in
+                    if value.startLocation.x > 70 {
+//                        withAnimation {
+                            navBarVis = navBarVis == .hidden ? .visible : .hidden
+//                        }
+                    }
+                }),
+                including: .all
+            )
         }
+        .environment(\.navBarVisibility, navBarVis)
         .task(id: appState.currentActiveAccount) {
             accountChanged()
         }

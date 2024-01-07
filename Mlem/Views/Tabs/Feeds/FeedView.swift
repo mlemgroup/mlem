@@ -70,7 +70,7 @@ struct FeedView: View {
             type: .feed(feedType, sortedBy: defaultPostSorting)
         ))
     }
-    
+        
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
