@@ -8,6 +8,10 @@
 import SwiftUI
 import Dependencies
 
+final class TabBarVisibility: ObservableObject {
+    @Published var visibility: Visibility = .automatic
+}
+
 struct FeedView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
@@ -70,9 +74,11 @@ struct FeedView: View {
             type: .feed(feedType, sortedBy: defaultPostSorting)
         ))
     }
-        
+    
+    @EnvironmentObject private var tabBarVisibility: TabBarVisibility
+    
     var body: some View {
-        ScrollView {
+        ScrollViewOffset {
             VStack(spacing: 0) {
                 VStack(spacing: 0) {
                     ScrollToView(appeared: $scrollToTopAppeared)
@@ -88,6 +94,25 @@ struct FeedView: View {
                     .background(Color.secondarySystemBackground)
             }
         }
+        .onOffsetChange({ _, edge in
+            if let edge, edge == .top, tabBarVisibility.visibility != .automatic {
+                withAnimation(.smooth(duration: 0.650)) {
+                    tabBarVisibility.visibility = .automatic
+                }
+            } else if tabBarVisibility.visibility != .hidden {
+                withAnimation(.smooth(duration: 0.650)) {
+                    tabBarVisibility.visibility = .hidden
+                }
+            }
+        }, bounce: { edge in
+            if edge.contains(.top) || edge.contains(.bottom) || edge.contains(.vertical) {
+                if tabBarVisibility.visibility != .automatic {
+                    withAnimation(.smooth(duration: 0.650)) {
+                        tabBarVisibility.visibility = .automatic
+                    }
+                }
+            }
+        })
         .refreshable {
             await Task {
                 _ = await postTracker.refresh(clearBeforeFetch: false)
