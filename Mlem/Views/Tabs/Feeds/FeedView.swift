@@ -102,11 +102,12 @@ struct FeedView: View {
                 if edge == .top {
                     if tabBarVisibility.visibility != .automatic {
                         /// Need to run on default mode, otherwise scrolling animation inteferes with tab bar show/hide animation. [2024.01]
-                        RunLoop.main.perform(inModes: [.default]) {
-                            withAnimation(.smooth(duration: 0.650)) {
-                                tabBarVisibility.visibility = .automatic
-                            }
-                        }
+                        tabBarVisibility.visibility = .automatic
+//                        RunLoop.main.perform(inModes: [.default]) {
+//                            withAnimation(.smooth(duration: 0.650)) {
+//                                tabBarVisibility.visibility = .automatic
+//                            }
+//                        }
                     }
                 } else {
                     if tabBarVisibility.visibility != .hidden {

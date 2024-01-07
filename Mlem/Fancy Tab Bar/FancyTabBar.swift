@@ -58,6 +58,8 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                             removal: .push(from: .top)
                         )
                     )
+                /// This prevents scrolling jankiness.
+                    .animation(.smooth(duration: 0.650), value: tabBarVisibility.visibility == .automatic)
                     .offset(y: tabBarVisibility.visibility == .hidden ? 88 : 0)
 //                }
             }
