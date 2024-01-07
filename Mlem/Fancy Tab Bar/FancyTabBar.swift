@@ -38,26 +38,27 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
         self.doubleTapCallback = doubleTapCallback
     }
     
-    @Environment(\.navBarVisibility) private var navBarVis
-    @State private var localNavBarVis: Visibility = .automatic
-    
+    @StateObject private var tabBarVisibility: TabBarVisibility = .init()
+
     var body: some View {
         ZStack(content: content)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, alignment: .center) {
                 // this VStack/Spacer()/ignoresSafeArea thing prevents the keyboard from pushing the bar up
-                if localNavBarVis != .hidden {
+//                if tabBarVisibility.visibility != .hidden {
                     VStack {
                         Spacer()
                         tabBar
                     }
                     .accessibilitySortPriority(-1)
                     .ignoresSafeArea(.keyboard, edges: .bottom)
-                    .transition(.move(edge: .bottom))
-                }
+                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom)))
+                    .offset(y: tabBarVisibility.visibility == .hidden ? 88 : 0)
+//                }
             }
             .environment(\.tabSelectionHashValue, selection.hashValue)
             .environment(\.tabReselectionHashValue, tabReselectionHashValue)
+            .environmentObject(tabBarVisibility)
             .onPreferenceChange(FancyTabItemPreferenceKey<Selection>.self) {
                 tabItemKeys = $0
             }
@@ -68,11 +69,6 @@ struct FancyTabBar<Selection: FancyTabBarSelection, Content: View>: View {
                 // resets the reselection value to nil after the change is published
                 if newValue != nil {
                     tabReselectionHashValue = nil
-                }
-            }
-            .onChange(of: navBarVis) { newValue in
-                withAnimation(.smooth(duration: 0.6)) {
-                    localNavBarVis = newValue
                 }
             }
     }

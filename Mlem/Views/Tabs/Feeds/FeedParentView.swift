@@ -40,5 +40,8 @@ struct FeedParentView: View {
                 FeedView(feedType: feedType)
             }
         }
+//        .onPreferenceChange(TabBarVisibilityPreferenceKey.self, perform: { value in
+//            print("TabBarVisibilityPreferenceKey changed -> \(value)")
+//        })
     }
 }
