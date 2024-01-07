@@ -12,19 +12,17 @@ struct CollapsedCommentReplies: View {
     var lineWidth: CGFloat = 2
     
     var body: some View {
-        let replyText = numberOfReplies != 1 ? "comments" : "comment"
-
         HStack {
             Rectangle()
                 .border(width: lineWidth, edges: [.leading], color: .accentColor)
                 .frame(width: lineWidth)
             Image(systemName: Icons.replies)
-            Text("show \(numberOfReplies) \(replyText)")
+            Text("Show ^[\(numberOfReplies) Reply](inflect: true)")
                 .foregroundStyle(.blue)
+                .padding(.vertical, 10)
         }
-        .padding(.top, 5)
-        .padding(.bottom, 10)
         .frame(maxHeight: 50)
+        .padding(.leading, 10)
     }
 }
 
