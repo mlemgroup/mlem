@@ -50,15 +50,20 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     
     override func loadMoreItems() async {
         do {
+            // declare this once here to avoid nasty race conditions
             let pageToLoad = page + 1
             
             if pageToLoad == 1 {
+                // for loading first page, always use refresh--functions identically for page and cursor
                 try await load(action: .refresh(false))
             } else {
-                try await load(action: .loadPage(pageToLoad))
+                // for loading subsequent pages, use cursor if available, page otherwise
+                if let loadingCursor {
+                    try await load(action: .loadCursor(loadingCursor))
+                } else {
+                    try await load(action: .loadPage(pageToLoad))
+                }
             }
-            
-            // try await load(page + 1)
         } catch {
             errorHandler.handle(error)
         }
@@ -99,9 +104,9 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         case let .loadPage(pageToLoad):
             print("[\(Item.self) tracker] loading page \(pageToLoad)")
             try await loadPageHelper(pageToLoad)
-        case .loadCursor:
+        case let .loadCursor(cursorToLoad):
             print("[\(Item.self) tracker] loading cursor")
-            assertionFailure("Not implemented!")
+            try await loadCursorHelper(cursorToLoad)
         }
     }
 
@@ -111,7 +116,11 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     /// - Parameters:
     ///   - page: page number to fetch
     /// - Returns: requested page of items
-    func fetchPage(page: Int) async throws -> [Item] {
+    func fetchPage(page: Int) async throws -> (items: [Item], cursor: String?) {
+        preconditionFailure("This method must be implemented by the inheriting class")
+    }
+    
+    func fetchCursor(cursor: String) async throws -> (items: [Item], cursor: String?) {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
@@ -162,7 +171,7 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     /// - Parameter pageToLoad: page to load
     /// - Warning: **DO NOT** call this method from anywhere but `load`! This is *purely* a helper function for `load` and *will* lead to unexpected behavior if called elsewhere!
     private func loadPageHelper(_ pageToLoad: Int) async throws {
-        // do not continue to load if done. this check has to come after the clear/refresh cases because those cases can be called on a .done tracker
+        // do not continue to load if done
         guard loadingState != .done else {
             print("[\(Item.self) tracker] done loading, will not continue")
             return
@@ -176,8 +185,9 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
-            let fetchedItems = try await fetchPage(page: page + 1)
+            let (fetchedItems, newLoadingCursor) = try await fetchPage(page: page + 1)
             page += 1
+            loadingCursor = newLoadingCursor
             
             if fetchedItems.isEmpty {
                 print("[\(Item.self) tracker] fetch returned no items, setting loading state to done")
@@ -197,6 +207,44 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             await addItems(allowedItems)
         }
 
+        if loadingState != .done {
+            await setLoading(.idle)
+        }
+    }
+    
+    private func loadCursorHelper(_ cursor: String) async throws {
+        // do not continue to load if done
+        guard loadingState != .done else {
+            print("[\(Item.self) tracker] done loading, will not continue")
+            return
+        }
+
+        // do nothing if this is not the next page to load
+        guard cursor == loadingCursor else {
+            print("[\(Item.self) tracker] will not load cursor \(cursor) (current cursor is \(String(describing: loadingCursor))")
+            return
+        }
+        
+        var newItems: [Item] = .init()
+        while newItems.count < internetSpeed.pageSize {
+            let (fetchedItems, newLoadingCursor) = try await fetchCursor(cursor: cursor)
+            
+            if fetchedItems.isEmpty || newLoadingCursor == loadingCursor {
+                print("[\(Item.self) tracker] fetch returned no items or EOF cursor, setting loading state to done")
+                await setLoading(.done)
+                break
+            }
+            
+            loadingCursor = newLoadingCursor
+            page += 1 // not strictly necessary but good for tracking number of loaded pages
+            
+            newItems.append(contentsOf: fetchedItems)
+        }
+        
+        let allowedItems = storeIdsAndDedupe(newItems: newItems)
+        
+        await addItems(allowedItems)
+        
         if loadingState != .done {
             await setLoading(.idle)
         }
