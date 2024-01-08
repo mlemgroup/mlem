@@ -9,11 +9,17 @@ import Dependencies
 import Foundation
 
 enum NewFeedType {
-    case all
+    case all, local, subscribed, saved
     
     var toLegacyFeedType: FeedType {
         switch self {
         case .all:
+            return .all
+        case .local:
+            return .local
+        case .subscribed:
+            return .subscribed
+        case .saved:
             return .all
         }
     }
