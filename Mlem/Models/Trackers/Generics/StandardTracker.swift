@@ -14,7 +14,7 @@ enum LoadAction {
     /// Clears the tracker
     case clear
     
-    /// Resets the tracker. If true, clears before resetting.
+    /// Refreshes the tracker, loading the first page of new items. If associated bool is true, clears the tracker before loading new items.
     case refresh(Bool)
     
     /// Load the requested page
@@ -73,9 +73,8 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         try await load(action: .refresh(clearBeforeRefresh))
     }
 
-    func reset() async {
+    func clear() async {
         do {
-            // try await load(0)
             try await load(action: .clear)
         } catch {
             assertionFailure("Exception thrown when resetting, this should not be possible!")
@@ -83,7 +82,7 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         }
     }
 
-    // MARK: - Internal tracking methods
+    // MARK: - Internal methods
     
     /// Performs the requested loading operation. To account for the fact that multiple threads might request a load at the same time, this function requires that the caller pass in what it thinks is the next page or cursor to load. If that is not the next page/cursor by the time that call is allowed to execute, its request will be ignored.
     /// This grants this function an additional, extremely useful property: calling `await loadPage` while `loadPage` is already being executed will, practically speaking, await the in-flight request.
@@ -109,10 +108,8 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             try await loadCursorHelper(cursorToLoad)
         }
     }
-
-    // MARK: - Helpers
     
-    /// Fetches the next page of items. This method must be overridden by the instantiating class because different items are loaded differently. Relies on the instantiating class to handle fetch parameters such as unreadOnly and page size.
+    /// Fetches the given page of items. This method must be overridden by the instantiating class because different items are loaded differently. Relies on the instantiating class to handle fetch parameters such as unreadOnly and page size.
     /// - Parameters:
     ///   - page: page number to fetch
     /// - Returns: requested page of items
@@ -120,9 +117,15 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
+    // Fetches items from the given cursor. This method must be overridden by the instantiating class because different items are loaded differently. Relies on the instantiating class to handle fetch parameters such as unreadOnly and page size.
+    /// - Parameters:
+    ///   - cursor: cursor to fetch
+    /// - Returns: requested list of items
     func fetchCursor(cursor: String) async throws -> (items: [Item], cursor: String?) {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
+
+    // MARK: - Helpers
     
     /// Filters out items according to the given filtering function.
     /// - Parameter filter: function that, given an Item, returns true if the item should REMAIN in the tracker

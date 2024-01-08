@@ -393,6 +393,7 @@
 		CD45BCEE2A75CA7200A2899C /* Thumbnail Image View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45BCED2A75CA7200A2899C /* Thumbnail Image View.swift */; };
 		CD46C1F62B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F52B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift */; };
 		CD46C1F82B0D0A8A00065953 /* View+ReselectAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */; };
+		CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */; };
 		CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */; };
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
@@ -933,6 +934,7 @@
 		CD45BCED2A75CA7200A2899C /* Thumbnail Image View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Thumbnail Image View.swift"; sourceTree = "<group>"; };
 		CD46C1F52B0D0A5700065953 /* EnvironmentValues+TabReselectionHashValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TabReselectionHashValue.swift"; sourceTree = "<group>"; };
 		CD46C1F72B0D0A8A00065953 /* View+ReselectAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ReselectAction.swift"; sourceTree = "<group>"; };
+		CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedsView.swift; sourceTree = "<group>"; };
 		CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToPost.swift; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
@@ -2368,6 +2370,7 @@
 				B11A1A772A4EFF2B00520DB4 /* Feed Root.swift */,
 				6332FDD427F080FA0009A98A /* Community List */,
 				63344C6F2A098054001BC616 /* Components */,
+				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
 			);
 			path = Feeds;
 			sourceTree = "<group>";
@@ -3234,6 +3237,7 @@
 				CD391F962A535F5400E213B5 /* ResponseEditorView.swift in Sources */,
 				03EEEAF92ABB985D0087F8D8 /* CommunityModel.swift in Sources */,
 				CD391F8B2A53371300E213B5 /* ExpandedPostLogic.swift in Sources */,
+				CD4BAD352B4B2C0B00A1E726 /* FeedsView.swift in Sources */,
 				CDCBD7242A8D62FF00387A2C /* InstanceMetadata.swift in Sources */,
 				CD18DC6B2A5202D4002C56BC /* MarkPersonMentionAsReadRequest.swift in Sources */,
 				CD1824402AA8E24100D9BEB5 /* View+DestructiveConfirmation.swift in Sources */,

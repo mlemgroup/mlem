@@ -74,7 +74,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
 
     func reset(notifyParent: Bool = true) async {
-        await reset()
+        await clear()
         streamCursor = 0
         if notifyParent, let parentTracker {
             await parentTracker.reset()
