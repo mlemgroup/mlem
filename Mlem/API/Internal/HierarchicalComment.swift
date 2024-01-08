@@ -22,11 +22,14 @@ class HierarchicalComment: ObservableObject {
     @Published var isCollapsed: Bool = false
 
     init(comment: APICommentView, children: [HierarchicalComment], parentCollapsed: Bool, collapsed: Bool) {
+        let collapseChildCommentsFlag = UserDefaults.standard.bool(forKey: "collapseChildComments")
+        let depth = max(0, comment.comment.path.split(separator: ".").count - 2)
+        
         self.commentView = comment
         self.children = children
-        self.depth = max(0, commentView.comment.path.split(separator: ".").count - 2)
-        self.isParentCollapsed = parentCollapsed
-        self.isCollapsed = collapsed
+        self.depth = depth
+        self.isParentCollapsed = collapseChildCommentsFlag && depth >= 1 || parentCollapsed
+        self.isCollapsed = collapseChildCommentsFlag && depth == 1 || collapsed
         self.links = comment.comment.content.parseLinks()
     }
 }

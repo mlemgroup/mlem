@@ -27,6 +27,7 @@ struct CommentItem: View {
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("compactComments") var compactComments: Bool = false
+    @AppStorage("collapseChildComments") var collapseComments: Bool = false
 
     // MARK: Temporary
 
@@ -35,6 +36,8 @@ struct CommentItem: View {
     @State var dirtyScore: Int // = 0
     @State var dirtySaved: Bool // = false
     @State var dirty: Bool = false
+    
+    @State var isCommentReplyHidden: Bool = false
 
     @State var isComposingReport: Bool = false
 
@@ -184,6 +187,21 @@ struct CommentItem: View {
                     Spacer()
                         .frame(height: AppConstants.postAndCommentSpacing)
                 }
+                
+                if collapseComments,
+                   !hierarchicalComment.isCollapsed,
+                   hierarchicalComment.depth == 0,
+                   hierarchicalComment.commentView.counts.childCount > 0,
+                   !isCommentReplyHidden {
+                    HStack {
+                        Divider()
+                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
+                            .onTapGesture {
+                                isCommentReplyHidden = true
+                                uncollapseComment()
+                            }
+                    }
+                }
             }
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
@@ -204,6 +222,16 @@ struct CommentItem: View {
             ForEach(genMenuFunctions()) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
             }
+        }
+        .onChange(of: collapseComments) { newValue in
+            if newValue == false {
+                uncollapseComment()
+            } else {
+                collapseComment()
+            }
+        }
+        .onDisappear {
+            isCommentReplyHidden = false
         }
     }
     // swiftlint:enable function_body_length
