@@ -194,7 +194,8 @@ struct CommentItem: View {
                    hierarchicalComment.children.count > 0,
                    !isCommentReplyHidden {
                     Divider()
-                    HStack {                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
+                    HStack {
+                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
                             .onTapGesture {
                                 isCommentReplyHidden = true
                                 uncollapseComment()
