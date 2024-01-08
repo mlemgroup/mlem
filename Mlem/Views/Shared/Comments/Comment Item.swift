@@ -230,6 +230,9 @@ struct CommentItem: View {
                 collapseComment()
             }
         }
+        .onDisappear {
+            isCommentReplyHidden = false
+        }
     }
     // swiftlint:enable function_body_length
 }
