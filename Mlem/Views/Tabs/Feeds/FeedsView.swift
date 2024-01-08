@@ -11,9 +11,11 @@ import SwiftUI
 struct FeedsView: View {
     @EnvironmentObject var appState: AppState
     
+    @State private var feedColumnVisibility: NavigationSplitViewVisibility = .automatic
+    
     var body: some View {
         ScrollViewReader { _ in
-            NavigationSplitView {
+            NavigationSplitView(columnVisibility: $feedColumnVisibility) {
                 List {
                     NavigationLink(value: NewFeedType.all) {
                         Text("All Communities")
@@ -46,6 +48,7 @@ struct FeedsView: View {
             } detail: {
                 Text("Please select a community")
             }
+            .environment(\.feedColumnVisibility, feedColumnVisibility)
         }
     }
 }
