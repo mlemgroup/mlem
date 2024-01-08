@@ -191,7 +191,7 @@ struct CommentItem: View {
                 if collapseComments,
                    !hierarchicalComment.isCollapsed,
                    hierarchicalComment.depth == 0,
-                   hierarchicalComment.commentView.counts.childCount > 0,
+                   hierarchicalComment.children.count > 0,
                    !isCommentReplyHidden {
                     Divider()
                     HStack {                        CollapsedCommentReplies(numberOfReplies: .constant(hierarchicalComment.commentView.counts.childCount))
