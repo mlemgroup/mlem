@@ -5,6 +5,8 @@
 //  Created by Bosco Ho on 2024-01-06.
 //
 
+// swiftlint:disable file_length
+
 import SwiftUI
 
 struct ScrollViewOffset<Content: View>: View {
@@ -25,16 +27,25 @@ struct ScrollViewOffset<Content: View>: View {
 //            offsetReader
             content()
                 .background {
-                    GeometryReader { geometry in
-                        Color.clear
-                            .preference(
-                                key: ContentSizePreferenceKey.self,
-                                value: geometry.size
-                            )
-                            .preference(
-                                key: FramePreferenceKey.self,
-                                value: geometry.frame(in: .named(geometryPreferences))
-                            )
+                    if #available(iOS 17, *) {
+                        GeometryReader { geometry in
+                            Color.clear
+                                .preference(
+                                    key: ContentSizePreferenceKey.self,
+                                    value: geometry.size
+                                )
+                                .preference(
+                                    key: FramePreferenceKey.self,
+                                    value: geometry.frame(in: .named(geometryPreferences))
+                                )
+                                .onChange(of: geometry.frame(in: .named(geometryPreferences)), perform: { value in
+                                    if let bounds = geometry.bounds(of: .named(geometryPreferences)) {
+                                        print(" bounds -> \(bounds)")
+                                    }
+                                })
+                        }
+                    } else {
+                        
                     }
                 }
         }
@@ -168,12 +179,18 @@ private struct OffsetChangeModifier: ViewModifier {
     
     private func edges(frame: CGRect) -> Edge.Set {
         let size = contentSize
+
+        print("")
+        print("frame: \(frame), contentSize: \(size)")
+        print(" origin: \(frame.origin), width: \(frame.width)")
+        print(" minX: \(frame.minX), maxX: \(frame.maxX)")
+
         let xAxis: [(Bool, Edge.Set)] = [
-            (frame.minX >= 0, .leading),
-            (frame.maxX <= size.width, .trailing)
+            (frame.origin.x > 0, .leading),
+            (frame.origin.x < -size.width, .trailing)
         ]
         let yAxis: [(Bool, Edge.Set)] = [
-            (frame.minY >= 0, .top),
+            (frame.minY > 0, .top),
             /// Not sure why `maxY` reports same value as `minY` here. [2024.01]
             (frame.minY + size.height <= -size.height, .bottom)
         ]
@@ -195,58 +212,65 @@ private struct OffsetChangeModifier: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        content
-            .onPreferenceChange(AxesPreferenceKey.self) { axes in
-                self.axes = axes
-            }
-            .onPreferenceChange(FramePreferenceKey.self) { frame in
-                defer {
-                    previousOffset = frame.origin
+        /// Read scroll view's viewport geometry (i.e. bounds). On iOS 17, we can use `.bounds(...)` API instead. [2024.01]
+        // TODO: Check for performance or weird layout issues.
+        GeometryReader { geometry in
+            content
+                .onPreferenceChange(AxesPreferenceKey.self) { axes in
+                    self.axes = axes
                 }
-                
-                let edges = self.edges(frame: frame)
-                if edges.isEmpty == false {
-//                    print("* * * ")
-//                    print("content size -> \(contentSize)")
-//                    print("edges -> \(frame.origin)")
-//                    print("minX - \(frame.minX)")
-//                    print("minY - \(frame.minY)")
-//                    print("maxX - \(frame.maxX)")
-//                    print("maxY - \(frame.maxY)")
-//                    
-//                    if edges.contains(.top) {
-//                        print(" -> top")
-//                    }
-//                    if edges.contains(.bottom) {
-//                        print(" -> bottom")
-//                    }
-//                    if edges.contains(.leading) {
-//                        print(" -> leading")
-//                    }
-//                    if edges.contains(.trailing) {
-//                        print(" -> trailing")
-//                    }
+                .onPreferenceChange(FramePreferenceKey.self) { frame in
+                    defer {
+                        previousOffset = frame.origin
+                    }
                     
-                    onBounce?(edges)
-                } else {
-                    let towardsEdge: Edge? = {
-                        if frame.minY > previousOffset.y {
-                            return .top
-                        } else if frame.minY < previousOffset.y {
-                            return .bottom
-                        } else {
-                            return nil
-                        }
-                    }()
-                    onChange(frame, towardsEdge)
+                    let localFrame = geometry.frame(in: .local)
+                    let _ = print(" localFrame -> \(localFrame)")
+
+                    let edges = self.edges(frame: frame)
+                    if edges.isEmpty == false {
+                        //                    print("* * * ")
+                        //                    print("content size -> \(contentSize)")
+                        //                    print("edges -> \(frame.origin)")
+                        //                    print("minX - \(frame.minX)")
+                        //                    print("minY - \(frame.minY)")
+                        //                    print("maxX - \(frame.maxX)")
+                        //                    print("maxY - \(frame.maxY)")
+                        //
+                        //                    if edges.contains(.top) {
+                        //                        print(" -> top")
+                        //                    }
+                        //                    if edges.contains(.bottom) {
+                        //                        print(" -> bottom")
+                        //                    }
+                        //                    if edges.contains(.leading) {
+                        //                        print(" -> leading")
+                        //                    }
+                        //                    if edges.contains(.trailing) {
+                        //                        print(" -> trailing")
+                        //                    }
+                        
+                        onBounce?(edges)
+                    } else {
+                        let towardsEdge: Edge? = {
+                            if frame.minY > previousOffset.y {
+                                return .top
+                            } else if frame.minY < previousOffset.y {
+                                return .bottom
+                            } else {
+                                return nil
+                            }
+                        }()
+                        onChange(frame, towardsEdge)
+                    }
                 }
-            }
-            .onPreferenceChange(ContentSizePreferenceKey.self) { size in
-                /// [2024.01] This value is produced inside ScrollView:
-                /// - We observe and assign the change here in the view modifier because doing so inside the ScrollView can result in an infinite loop in certain configurations.
-                /// - Be careful if you need to shift things around.
-                contentSize = size
-            }
+                .onPreferenceChange(ContentSizePreferenceKey.self) { size in
+                    /// [2024.01] This value is produced inside ScrollView:
+                    /// - We observe and assign the change here in the view modifier because doing so inside the ScrollView can result in an infinite loop in certain configurations.
+                    /// - Be careful if you need to shift things around.
+                    contentSize = size
+                }
+        }
     }
 }
 
@@ -259,3 +283,168 @@ private struct BounceModifier: ViewModifier {
             }
     }
 }
+
+extension Edge: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .top:
+            return """
+            top
+            |-|
+            """
+        case .leading:
+            return "leading["
+        case .bottom:
+            return """
+            |_|
+            bottom
+            """
+        case .trailing:
+            return "]trailing"
+        }
+    }
+}
+
+extension Edge.Set: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        guard self.contains(.all) == false else {
+            return "Edge.Set.all"
+        }
+        
+        var members: [String] = []
+        
+        if self.contains(.vertical) {
+            members.append("vertical")
+        } else {
+            if self.contains(.top) {
+                members.append("top")
+            }
+            if self.contains(.bottom) {
+                members.append("bottom")
+            }
+        }
+        
+        if self.contains(.horizontal) {
+            members.append("horizontal")
+        } else {
+            if self.contains(.leading) {
+                members.append("leading")
+            }
+            if self.contains(.trailing) {
+                members.append("trailing")
+            }
+        }
+      
+        return "Edge.Set.".appending(members.joined(separator: ","))
+    }
+}
+
+// MARK: - Test Cases
+
+#Preview("VContentFitsContainer") {
+    ScrollViewOffset {
+        VStack {
+            Text("If I fits, I sits.")
+        }
+    }
+    .onOffsetChange { frame, edge in
+        if let edge {
+            print("onChange -> \(edge.debugDescription), \(frame.origin)")
+        } else {
+            print("onChange -> no edge, \(frame.origin)")
+        }
+    } bounce: { edge in
+        print("onBounce -> ", edge)
+    }
+}
+
+#Preview("VContentDoesNotFitContainer") {
+    ScrollViewOffset {
+        VStack {
+            ForEach(0..<100) { value in
+                Text("\(value)")
+            }
+        }
+    }
+    .onOffsetChange { frame, edge in
+        if let edge {
+            print("onChange -> \(edge.debugDescription), \(frame.origin)")
+        } else {
+            print("onChange -> no edge, \(frame.origin)")
+        }
+    } bounce: { edge in
+        print("onBounce -> ", edge)
+    }
+}
+
+#Preview("HContentFitsContainer") {
+    ScrollViewOffset(.horizontal) {
+        HStack {
+            Text("If I fits, I sits.")
+        }
+    }
+    .onOffsetChange { frame, edge in
+        if let edge {
+            print("onChange -> \(edge.debugDescription), \(frame.origin)")
+        } else {
+            print("onChange -> no edge, \(frame.origin)")
+        }
+    } bounce: { edge in
+        print("onBounce -> ", edge)
+    }
+}
+
+#Preview("HContentDoesNotFitContainer") {
+    ScrollViewOffset(.horizontal) {
+        HStack {
+            ForEach(0..<30) { value in
+                Text("\(value)")
+            }
+        }
+    }
+    .onOffsetChange { frame, edge in
+        if let edge {
+            print("onChange -> \(edge.debugDescription), \(frame.origin)")
+        } else {
+            print("onChange -> no edge, \(frame.origin)")
+        }
+    } bounce: { edge in
+        print("onBounce -> ", edge)
+    }
+}
+
+#Preview("2DContentFitsContainer") {
+    ScrollViewOffset([.vertical, .horizontal]) {
+        Image(systemName: "photo")
+            .resizable(resizingMode: .stretch)
+            .frame(width: 100, height: 100)
+    }
+    .onOffsetChange { frame, edge in
+        if let edge {
+            print("onChange -> \(edge.debugDescription), \(frame.origin)")
+        } else {
+            print("onChange -> no edge, \(frame.origin)")
+        }
+    } bounce: { edge in
+        print("onBounce -> ", edge)
+    }
+}
+
+#Preview("2DContentDoesNotFitContainer") {
+    ScrollViewOffset([.vertical, .horizontal]) {
+        Image(systemName: "photo")
+            .resizable(resizingMode: .stretch)
+            .frame(width: 1000, height: 2000)
+    }
+    .onOffsetChange { frame, edge in
+        if let edge {
+            print("onChange -> \(edge.debugDescription), \(frame.origin)")
+        } else {
+            print("onChange -> no edge, \(frame.origin)")
+        }
+    } bounce: { edge in
+        print("onBounce -> ", edge)
+    }
+}
+
+// swiftlint:enable file_length
