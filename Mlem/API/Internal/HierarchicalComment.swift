@@ -26,7 +26,6 @@ class HierarchicalComment: ObservableObject {
         children: [HierarchicalComment],
         parentCollapsed: Bool,
         collapsed: Bool,
-        
         shouldCollapseChildren: Bool = false
     ) {
         let depth = max(0, comment.comment.path.split(separator: ".").count - 2)
