@@ -108,7 +108,7 @@ struct PostSettingsView: View {
                 )
             }
             
-            Section("Interactions and Info") {
+            Section {
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.upvoteSquare,
                     settingName: "Show Score In Info",
@@ -134,6 +134,10 @@ struct PostSettingsView: View {
                     settingName: "Show Replies In Info",
                     isTicked: $shouldShowRepliesInPostBar
                 )
+            } header: {
+                Text("Interactions and Info")
+            } footer: {
+                Text("Choose which information is shown when using Large or Headline mode. In Compact mode, all info stack widgets are shown.")
             }
             
             Section("Website Previews") {
