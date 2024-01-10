@@ -137,7 +137,9 @@ struct PostSettingsView: View {
             } header: {
                 Text("Interactions and Info")
             } footer: {
-                Text("Choose which information is shown when using Large or Headline mode. In Compact mode, all info stack widgets are shown.")
+                Text(
+                    "Choose which information is shown when using Large or Headline mode. In Compact mode, all info stack widgets are shown."
+                )
             }
             
             Section("Website Previews") {
