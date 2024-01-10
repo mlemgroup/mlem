@@ -85,9 +85,9 @@ enum PostSortType: String, Codable, CaseIterable, Identifiable {
         case .topHour:
             return "Top of the last hour"
         case .topSixHour:
-            return "Top of the last six hours"
+            return "Top of the last 6 hours"
         case .topTwelveHour:
-            return "Top of the last twelve hours"
+            return "Top of the last 12 hours"
         case .topDay:
             return "Top of today"
         case .topWeek:
@@ -164,9 +164,9 @@ extension PostSortType: SettingsOptions {
         case .topHour:
             return "Hour"
         case .topSixHour:
-            return "Six Hours"
+            return "6 Hours"
         case .topTwelveHour:
-            return "Twelve Hours"
+            return "12 Hours"
         case .topDay:
             return "Day"
         case .topWeek:
