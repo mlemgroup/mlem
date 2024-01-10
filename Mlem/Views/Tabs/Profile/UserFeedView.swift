@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 25/08/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct UserFeedView: View {
     @Dependency(\.siteInformation) var siteInformation
@@ -33,11 +33,10 @@ struct UserFeedView: View {
     }
     
     var isOwnProfile: Bool {
-        return siteInformation.myUserInfo?.localUserView.person.id == user.userId
+        siteInformation.myUserInfo?.localUserView.person.id == user.userId
     }
     
     var body: some View {
-        
         LazyVStack(spacing: 0) {
             switch selectedTab {
             case .communities:
@@ -117,7 +116,8 @@ struct UserFeedView: View {
                 postContext: nil,
                 indentBehaviour: .never,
                 showPostContext: true,
-                showCommentCreator: false
+                showCommentCreator: false,
+                pageContext: .profile
             )
             
             Divider()

@@ -21,15 +21,21 @@ class HierarchicalComment: ObservableObject {
     /// Indicates whether the *current* comment is collapsed.
     @Published var isCollapsed: Bool = false
 
-    init(comment: APICommentView, children: [HierarchicalComment], parentCollapsed: Bool, collapsed: Bool) {
-        let collapseChildCommentsFlag = UserDefaults.standard.bool(forKey: "collapseChildComments")
+    init(
+        comment: APICommentView,
+        children: [HierarchicalComment],
+        parentCollapsed: Bool,
+        collapsed: Bool,
+        
+        shouldCollapseChildren: Bool = false
+    ) {
         let depth = max(0, comment.comment.path.split(separator: ".").count - 2)
         
         self.commentView = comment
         self.children = children
         self.depth = depth
-        self.isParentCollapsed = collapseChildCommentsFlag && depth >= 1 || parentCollapsed
-        self.isCollapsed = collapseChildCommentsFlag && depth == 1 || collapsed
+        self.isParentCollapsed = shouldCollapseChildren && depth >= 1 || parentCollapsed
+        self.isCollapsed = shouldCollapseChildren && depth == 1 || collapsed
         self.links = comment.comment.content.parseLinks()
     }
 }
@@ -164,7 +170,8 @@ extension [APICommentView] {
         }
         
         let identifiedComments = Dictionary(uniqueKeysWithValues: allComments.lazy.map { ($0.id, $0) })
-        
+        let collapseChildComments = UserDefaults.standard.bool(forKey: "collapseChildComments")
+
         /// Recursively populates child comments by looking up IDs from `childrenById`
         func populateChildren(_ comment: APICommentView) -> HierarchicalComment {
             guard let childIds = childrenById[comment.id] else {
@@ -172,7 +179,8 @@ extension [APICommentView] {
                     comment: comment,
                     children: [],
                     parentCollapsed: false,
-                    collapsed: false
+                    collapsed: false,
+                    shouldCollapseChildren: collapseChildComments
                 )
             }
             
@@ -180,7 +188,8 @@ extension [APICommentView] {
                 comment: comment,
                 children: [],
                 parentCollapsed: false,
-                collapsed: false
+                collapsed: false,
+                shouldCollapseChildren: collapseChildComments
             )
             commentWithChildren.children = childIds
                 .compactMap { id -> HierarchicalComment? in

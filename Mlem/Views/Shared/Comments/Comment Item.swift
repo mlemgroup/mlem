@@ -13,6 +13,10 @@ struct CommentItem: View {
         case standard, never
     }
     
+    enum PageContext {
+        case posts, profile
+    }
+    
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.commentRepository) var commentRepository
     @Dependency(\.errorHandler) var errorHandler
@@ -67,6 +71,7 @@ struct CommentItem: View {
     let showPostContext: Bool
     let showCommentCreator: Bool
     let enableSwipeActions: Bool
+    let pageContext: PageContext
     
     // MARK: Destructive confirmation
     
@@ -103,7 +108,8 @@ struct CommentItem: View {
         indentBehaviour: IndentBehaviour = .standard,
         showPostContext: Bool,
         showCommentCreator: Bool,
-        enableSwipeActions: Bool = true
+        enableSwipeActions: Bool = true,
+        pageContext: PageContext = .posts
     ) {
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
@@ -111,6 +117,7 @@ struct CommentItem: View {
         self.showPostContext = showPostContext
         self.showCommentCreator = showCommentCreator
         self.enableSwipeActions = enableSwipeActions
+        self.pageContext = pageContext
 
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
@@ -189,6 +196,7 @@ struct CommentItem: View {
                 }
                 
                 if collapseComments,
+                   pageContext == .posts,
                    !hierarchicalComment.isCollapsed,
                    hierarchicalComment.depth == 0,
                    hierarchicalComment.children.count > 0,
@@ -206,7 +214,9 @@ struct CommentItem: View {
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
         .onTapGesture {
-            toggleCollapsed()
+            if pageContext == .posts {
+                toggleCollapsed()
+            }
         }
         .destructiveConfirmation(
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
@@ -224,14 +234,13 @@ struct CommentItem: View {
             }
         }
         .onChange(of: collapseComments) { newValue in
-            if newValue == false {
-                uncollapseComment()
-            } else {
-                collapseComment()
+            if pageContext == .posts {
+                if newValue == false {
+                    uncollapseComment()
+                } else {
+                    collapseComment()
+                }
             }
-        }
-        .onDisappear {
-            isCommentReplyHidden = false
         }
     }
     // swiftlint:enable function_body_length
