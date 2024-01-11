@@ -23,6 +23,7 @@ struct Window: View {
     @StateObject var appState: AppState = .init()
 
     @State var flow: AppFlow
+    @State var loadedInitialFlow: Bool = false
 
     var body: some View {
         content
@@ -38,11 +39,17 @@ struct Window: View {
                 }
                 flowDidChange()
             }
-            .onAppear(perform: flowDidChange)
+            .onAppear {
+                if !loadedInitialFlow {
+                    flowDidChange()
+                    loadedInitialFlow = true
+                }
+            }
             .environment(\.setAppFlow, setFlow)
     }
 
     func flowDidChange() {
+        print("FLOW CHANGE")
         hapticManager.initEngine()
         apiClient.configure(for: flow)
         
