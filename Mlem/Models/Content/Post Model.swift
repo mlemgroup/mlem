@@ -35,7 +35,7 @@ struct PostModel {
         self.numReplies = apiPostView.counts.comments
         self.saved = apiPostView.saved
         self.read = apiPostView.read
-        self.published = apiPostView.published
+        self.published = apiPostView.post.published
         self.updated = apiPostView.post.updated
         
         self.links = PostModel.parseLinks(from: post.body)

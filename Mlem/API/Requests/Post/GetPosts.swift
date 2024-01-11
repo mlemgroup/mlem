@@ -61,9 +61,3 @@ struct GetPostsResponse: Decodable {
     let posts: [APIPostView]
     let nextPage: String?
 }
-
-// MARK: - FeedTrackerItemProviding
-
-extension GetPostsResponse: FeedTrackerItemProviding {
-    var items: [APIPostView] { posts }
-}

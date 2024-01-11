@@ -29,10 +29,3 @@ struct APIPersonMentionView: Decodable {
 extension APIPersonMentionView: Identifiable {
     var id: Int { personMention.id }
 }
-
-// MARK: - FeedTrackerItem
-
-extension APIPersonMentionView: FeedTrackerItem {
-    var uniqueIdentifier: Int { id }
-    var published: Date { personMention.published }
-}

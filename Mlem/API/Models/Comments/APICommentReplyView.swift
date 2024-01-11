@@ -28,10 +28,3 @@ struct APICommentReplyView: Decodable {
 extension APICommentReplyView: Identifiable {
     var id: Int { commentReply.id }
 }
-
-// MARK: - FeedTrackerItem
-
-extension APICommentReplyView: FeedTrackerItem {
-    var uniqueIdentifier: Int { id }
-    var published: Date { commentReply.published }
-}
