@@ -13,11 +13,17 @@ struct MatrixLinkView: View {
     @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler: ErrorHandler
     
-    @State var matrixUserId: String = ""
+    @State var matrixUserId: String
     
     @State var hasEdited: UserSettingsEditState = .unedited
     
     let matrixIdRegex = /@.+\:.+\..+/
+    
+    init() {
+        @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
+        let user = siteInformation.myUserInfo?.localUserView
+        _matrixUserId = State(wrappedValue: user?.person.matrixUserId ?? "")
+    }
     
     var matrixIdValid: Bool {
         if matrixUserId.isEmpty {
@@ -51,7 +57,7 @@ struct MatrixLinkView: View {
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
                 .onChange(of: matrixUserId) { newValue in
-                    if newValue != siteInformation.myUserInfo?.localUserView.person.matrixUserId {
+                    if newValue != siteInformation.myUserInfo?.localUserView.person.matrixUserId ?? "" {
                         hasEdited = .edited
                     }
                 }
