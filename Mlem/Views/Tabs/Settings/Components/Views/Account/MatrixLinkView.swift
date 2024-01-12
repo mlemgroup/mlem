@@ -74,7 +74,7 @@ struct MatrixLinkView: View {
                 }
             } footer: {
                 // swiftlint:disable:next line_length
-                Text("Everyone will be able to see your matrix ID, and will be able to send you messages through Lemmy or another matrix client.")
+                Text("Everyone will be able to see your Matrix ID.")
             }
             Link("What is matrix?", destination: URL(string: "https://matrix.org/")!)
         }
