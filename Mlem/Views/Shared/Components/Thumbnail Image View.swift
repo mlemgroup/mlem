@@ -31,15 +31,16 @@ struct ThumbnailImageView: View {
                 CachedImage(
                     url: url,
                     fixedSize: size,
+                    blurRadius: showNsfwFilter ? 8 : 0,
                     contentMode: .fill,
                     onTapCallback: markPostAsRead
                 )
-                .blur(radius: showNsfwFilter ? 8 : 0)
             case let .link(url):
                 CachedImage(
                     url: url,
                     shouldExpand: false,
                     fixedSize: size,
+                    blurRadius: showNsfwFilter ? 8 : 0,
                     contentMode: .fill
                 )
                 .onTapGesture {
@@ -48,7 +49,6 @@ struct ThumbnailImageView: View {
                         markPostAsRead()
                     }
                 }
-                .blur(radius: showNsfwFilter ? 8 : 0)
                 .overlay {
                     Group {
                         WebsiteIndicatorView()

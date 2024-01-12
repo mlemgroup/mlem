@@ -41,9 +41,9 @@ struct CommunityResultView: View {
     
     var title: String {
         if community.blocked ?? false {
-            return "\(community.name) ∙ Blocked"
+            return "\(community.name!) ∙ Blocked"
         } else if community.nsfw {
-            return "\(community.name) ∙ NSFW"
+            return "\(community.name!) ∙ NSFW"
         } else {
             return community.name
         }
