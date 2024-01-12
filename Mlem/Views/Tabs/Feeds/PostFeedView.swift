@@ -112,6 +112,7 @@ struct PostFeedView: View {
         }
         .onChange(of: showReadPosts) { _ in
             Task(priority: .userInitiated) {
+                postTracker.filter = self.filter
                 await postTracker.refresh(clearBeforeFetch: true)
             }
         }
