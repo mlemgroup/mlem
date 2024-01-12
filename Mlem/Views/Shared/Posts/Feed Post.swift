@@ -33,7 +33,7 @@ struct FeedPost: View {
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = true
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = true
     
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
     @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
