@@ -10,7 +10,14 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     private weak var parentTracker: (any ParentTrackerProtocol)?
     private var streamCursor: Int = 0
     
+    private(set) var sortType: TrackerSortType
+    
     var allItems: [ParentItem] { items.map { toParent(item: $0) }}
+    
+    init(internetSpeed: InternetSpeed, sortType: TrackerSortType) {
+        self.sortType = sortType
+        super.init(internetSpeed: internetSpeed)
+    }
 
     func toParent(item: Item) -> ParentItem {
         preconditionFailure("This method must be implemented by the inheriting class")

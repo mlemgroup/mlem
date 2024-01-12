@@ -34,14 +34,17 @@ struct FeedsView: View {
     var content: some View {
         ScrollViewReader { _ in
             NavigationSplitView {
+                // Note on navigation: nesting List(selection: $selectedFeed) inside a NavigationSplitView here automagically sets up navigation so that nav links inside this block update selectedFeed, which is then handled by the switch in the detail. This can also be achieved by defining .navigationDestinations on the List; those will then propagate to the detail when selected, but due to the amount of manual navigation stuff we're doing this approach seems less troublesome [Eric 2023.01.11]
                 List(selection: $selectedFeed) {
                     ForEach([NewFeedType.all, NewFeedType.local, NewFeedType.subscribed, NewFeedType.saved]) { feedType in
+                        // These are automagically turned into NavigationLinks
                         FeedRowView(feedType: feedType)
                     }
                     
                     ForEach(communityListModel.visibleSections) { section in
-                        Section(header: headerView(for: section)) {
+                        Section(header: communitySectionHeaderView(for: section)) {
                             ForEach(communityListModel.communities(for: section)) { community in
+                                // These are not automagically turned into NavigationLinks, so we do it manually
                                 NavigationLink(value: NewFeedType.all) {
                                     CommunityFeedRowView(
                                         community: community,
@@ -57,13 +60,13 @@ struct FeedsView: View {
             } detail: {
                 switch selectedFeed {
                 case .all:
-                    Text("This is the all feed!")
+                    AggregateFeedView(feedType: .all)
                 case .local:
-                    Text("This is the local feed!")
+                    AggregateFeedView(feedType: .local)
                 case .subscribed:
-                    Text("This is the subscribed feed!")
+                    AggregateFeedView(feedType: .subscribed)
                 case .saved:
-                    Text("This is the saved feed!")
+                    AggregateFeedView(feedType: .saved)
                 case .none:
                     Text("Please select a feed")
                 }
@@ -71,7 +74,7 @@ struct FeedsView: View {
         }
     }
     
-    private func headerView(for section: CommunitySection) -> some View {
+    private func communitySectionHeaderView(for section: CommunitySection) -> some View {
         HStack {
             Text(section.inlineHeaderLabel!)
                 .accessibilityLabel(section.accessibilityLabel)

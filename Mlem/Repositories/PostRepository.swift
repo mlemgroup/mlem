@@ -33,6 +33,8 @@ class PostRepository {
             communityName: communityName
         )
         
+        print(response.nextPage)
+        
         let posts = response.posts.map { PostModel(from: $0) }
         return (posts, response.nextPage)
     }

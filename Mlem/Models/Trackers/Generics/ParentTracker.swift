@@ -14,11 +14,14 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
 
     private var childTrackers: [any ChildTrackerProtocol] = .init()
     private let loadingSemaphore: AsyncSemaphore = .init(value: 1)
+    
+    private(set) var sortType: TrackerSortType
 
     init(internetSpeed: InternetSpeed, sortType: TrackerSortType, childTrackers: [any ChildTrackerProtocol]) {
         self.childTrackers = childTrackers
+        self.sortType = sortType
         
-        super.init(internetSpeed: internetSpeed, sortType: sortType)
+        super.init(internetSpeed: internetSpeed)
 
         for child in self.childTrackers {
             child.setParentTracker(self)
@@ -85,11 +88,6 @@ class ParentTracker<Item: TrackerItem>: CoreTracker<Item>, ParentTrackerProtocol
                 }
             }
         }
-//        items.forEach { item in
-//            if !filter(item) {
-//                uidsToFilter.insert(item.uid)
-//            }
-//        }
         
         // function to remove items from child trackers based on uid--this makes the Item-specific filtering applied here generically applicable to any child tracker
         let filterFunc = { (item: any TrackerItem) in
