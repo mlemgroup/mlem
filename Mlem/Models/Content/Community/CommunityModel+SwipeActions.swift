@@ -78,8 +78,8 @@ extension CommunityModel {
         
         if let subscribeAction {
             trailingActions.append(subscribeAction)
+            trailingActions.append(favoriteAction)
         }
-        trailingActions.append(favoriteAction)
        
         return SwipeConfiguration(leadingActions: [], trailingActions: trailingActions)
     }
