@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
+    @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
     
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
@@ -38,11 +39,11 @@ struct SettingsView: View {
                                 )
                                 .padding(.vertical, -6)
                                 .padding(.leading, 3)
-                                if let account = appState.currentActiveAccount {
+                                if let person = siteInformation.myUserInfo?.localUserView.person {
                                     VStack(alignment: .leading, spacing: 3) {
-                                        Text(account.nickname)
+                                        Text(person.displayName ?? person.name)
                                             .font(.title2)
-                                        if let hostName = account.hostName {
+                                        if let hostName = person.actorId.host() {
                                             Text("@\(hostName)")
                                                 .foregroundStyle(.secondary)
                                                 .font(.caption)
