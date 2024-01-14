@@ -58,7 +58,7 @@ class APIClient {
     let decoder: JSONDecoder
     let transport: (URLSession, URLRequest) async throws -> (Data, URLResponse)
     
-    private(set) var session: APISession = .undefined
+    var session: APISession = .undefined
     
     // MARK: - Initialisation
     

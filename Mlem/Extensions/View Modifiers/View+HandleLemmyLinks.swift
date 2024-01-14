@@ -63,6 +63,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     UserView(user: user, communityContext: communityContext)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
+                case let .instance(domainName, instance):
+                    InstanceView(domainName: domainName, instance: instance)
                 case let .postLinkWithContext(post):
                     ExpandedPost(post: post.post, community: post.community, scrollTarget: post.scrollTarget)
                         .environmentObject(post.postTracker)

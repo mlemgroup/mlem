@@ -250,7 +250,7 @@ struct UserView: View {
                             flairBackground(color: flair.color) {
                                 HStack {
                                     Image(systemName: Icons.adminFlair)
-                                    let host = try? apiClient.session.instanceUrl.host()
+                                    let host = user.profileUrl.host()
                                     Text("\(host ?? "Instance") Administrator")
                                 }
                             }

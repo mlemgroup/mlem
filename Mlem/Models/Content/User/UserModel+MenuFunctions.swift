@@ -25,6 +25,15 @@ extension UserModel {
     
     func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
+        if let instanceHost = self.profileUrl.host() {
+            functions.append(
+                .navigationMenuFunction(
+                    text: instanceHost,
+                    imageName: Icons.instance,
+                    destination: .instance(instanceHost)
+                )
+            )
+        }
         functions.append(
             .standardMenuFunction(
                 text: "Copy Username",

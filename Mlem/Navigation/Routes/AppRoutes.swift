@@ -18,6 +18,7 @@ enum AppRoute: Routable {
     case apiPost(APIPost)
     
     case community(CommunityModel)
+    case instance(String, InstanceModel? = nil)
     
     @available(*, deprecated, message: "Use .userProfile instead.")
     case apiPerson(APIPerson)
