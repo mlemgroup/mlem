@@ -242,9 +242,6 @@ struct CommentItem: View {
                 }
             }
         }
-        .onDisappear {
-            isCommentReplyHidden = false
-        }
     }
     // swiftlint:enable function_body_length
 }

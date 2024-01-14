@@ -81,7 +81,11 @@ struct ExpandedPost: View {
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
-            .task { await loadComments() }
+            .task {
+                if commentTracker.comments.isEmpty {
+                    await loadComments()
+                }
+            }
             .task { await postTracker.markRead(post: post) }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
