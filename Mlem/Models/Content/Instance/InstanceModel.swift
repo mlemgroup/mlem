@@ -15,6 +15,7 @@ struct InstanceModel {
     var banner: URL?
     var administrators: [UserModel]?
     var url: URL!
+    var version: SiteVersion?
     
     init(from response: SiteResponse) {
         self.update(with: response)
@@ -30,6 +31,7 @@ struct InstanceModel {
             user.isAdmin = true
             return user
         }
+        self.version = SiteVersion(response.version)
         self.update(with: response.siteView.site)
     }
     

@@ -44,6 +44,14 @@ struct InstanceView: View {
         _instance = State(wrappedValue: instance)
     }
     
+    var subtitleText: String {
+        if let version = instance?.version {
+            "\(domainName) • \(String(describing: version))"
+        } else {
+            domainName
+        }
+    }
+    
     var body: some View {
         ScrollView {
             ScrollToView(appeared: $scrollToTopAppeared)
@@ -60,10 +68,10 @@ struct InstanceView: View {
                                 .fontWeight(.semibold)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.01)
-                            Text(domainName)
+
+                            Text(subtitleText)
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
-                                .padding(.bottom, 5)
                         }
                     } else {
                         Text(domainName)
@@ -73,9 +81,9 @@ struct InstanceView: View {
                             .minimumScaleFactor(0.01)
                             .padding(.bottom, 5)
                         Divider()
-                        
                     }
                 }
+                .padding(.bottom, 5)
                 if let instance {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
