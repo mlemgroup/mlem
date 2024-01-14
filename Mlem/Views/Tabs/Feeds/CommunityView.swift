@@ -118,7 +118,7 @@ struct CommunityView: View {
                             .padding(.top, 15)
                             .background(Color.secondarySystemBackground)
                         ForEach(moderators, id: \.id) { user in
-                            UserResultView(user, communityContext: community)
+                            UserResultView(user, complications: [.instance, .date], communityContext: community)
                             Divider()
                         }
                         Color.secondarySystemBackground

@@ -50,7 +50,7 @@ struct UserFeedView: View {
                 .padding(.vertical, 4)
                 Divider()
                 ForEach(communityTracker.items, id: \.uid) { community in
-                    CommunityResultView(community, showTypeLabel: false, trackerCallback: {
+                    CommunityResultView(community, complications: .instanceOnly, trackerCallback: {
                         communityTracker.update(with: $0)
                     })
 
