@@ -106,7 +106,7 @@ struct InstanceView: View {
                         case .administrators:
                             if let administrators = instance.administrators {
                                 ForEach(administrators, id: \.self) { user in
-                                    UserResultView(user, complications: [.instance, .date])
+                                    UserResultView(user, complications: [.date])
                                     Divider()
                                 }
                             } else {
