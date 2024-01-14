@@ -25,7 +25,7 @@ struct CommentItem: View {
     @Dependency(\.hapticManager) var hapticManager
     
     // appstorage
-    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = true
+    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
