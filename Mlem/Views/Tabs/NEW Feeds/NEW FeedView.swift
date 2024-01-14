@@ -33,20 +33,17 @@ struct AggregateFeedView: View {
     var body: some View {
         content
             .onAppear {
-                Task {
-                    await postTracker.loadMoreItems()
-                }
+                Task { await postTracker.loadMoreItems() }
             }
+            .background(Color.secondarySystemBackground)
+            .fancyTabScrollCompatible()
     }
     
     @ViewBuilder
     var content: some View {
-        Text("I'm a general feed!")
-        Text("The post tracker contains \(postTracker.items.count) items")
-        Button("More") {
-            Task {
-                await postTracker.loadMoreItems()
-            }
+        ScrollView {
+            NewPostFeedView(postTracker: postTracker)
+                .background(Color.secondarySystemBackground)
         }
     }
 }

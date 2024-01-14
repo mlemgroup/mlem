@@ -186,6 +186,8 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             return
         }
         
+        await setLoading(.loading)
+        
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
             let (fetchedItems, newLoadingCursor) = try await fetchPage(page: page + 1)
@@ -227,6 +229,8 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             print("[\(Item.self) tracker] will not load cursor \(cursor) (current cursor is \(String(describing: loadingCursor))")
             return
         }
+        
+        await setLoading(.loading)
         
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {

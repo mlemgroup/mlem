@@ -17,12 +17,7 @@ class CoreTracker<Item: TrackerItem>: ObservableObject {
     private(set) var fallbackThreshold: ContentModelIdentifier?
     
     private(set) var internetSpeed: InternetSpeed
-    // private(set) var sortType: TrackerSortType
-    
-//    init(internetSpeed: InternetSpeed, sortType: TrackerSortType) {
-//        self.internetSpeed = internetSpeed
-//        self.sortType = sortType
-//    }
+
     init(internetSpeed: InternetSpeed) {
         self.internetSpeed = internetSpeed
     }
