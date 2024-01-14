@@ -30,10 +30,14 @@ class URLHandler {
         guard let scheme = url.scheme, scheme.hasPrefix("http") else {
             return .init(result: .systemAction, action: .error("This type of link is not currently supported 😞"))
         }
-
-        Task { @MainActor in
-            let viewController = SFSafariViewController(url: url, configuration: .default)
-            UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
+        let openLinksInBrowser = UserDefaults.standard.bool(forKey: "openLinksInBrowser")
+        if openLinksInBrowser {
+            UIApplication.shared.open(url)
+        } else {
+            Task { @MainActor in
+                let viewController = SFSafariViewController(url: url, configuration: .default)
+                UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController().present(viewController, animated: true)
+            }
         }
         
         return .init(result: .handled, action: nil)
