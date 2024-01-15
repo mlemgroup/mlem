@@ -14,6 +14,7 @@ struct AggregateFeedView: View {
     @StateObject var postTracker: StandardPostTracker
     
     // TODO: sorting
+    @State var postSortType: PostSortType = .hot
     
     init(feedType: NewFeedType) {
         // need to grab some stuff from app storage to initialize post tracker with
@@ -42,7 +43,7 @@ struct AggregateFeedView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            NewPostFeedView(postTracker: postTracker)
+            NewPostFeedView(postTracker: postTracker, postSortType: $postSortType, showCommunity: true)
                 .background(Color.secondarySystemBackground)
         }
     }

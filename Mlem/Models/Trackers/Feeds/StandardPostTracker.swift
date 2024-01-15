@@ -8,6 +8,9 @@
 import Dependencies
 import Foundation
 
+// TODO:
+// - re-enable hidden item counts
+
 /// Post tracker for use with single feeds. Supports all post sorting types, but is not suitable for multi-feed use.
 class StandardPostTracker: StandardTracker<PostModel> {
     @Dependency(\.postRepository) var postRepository

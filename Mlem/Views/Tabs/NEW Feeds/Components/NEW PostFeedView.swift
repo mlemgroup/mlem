@@ -9,15 +9,21 @@ import Foundation
 import SwiftUI
 
 struct NewPostFeedView: View {
+    
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
+    @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
     @ObservedObject var postTracker: StandardPostTracker
+    @Binding var postSortType: PostSortType
+    let showCommunity: Bool
+    
+    @State var errorDetails: ErrorDetails?
     
     var body: some View {
-        if postTracker.items.isEmpty {
-            Text("No posts!")
-        } else {
-            LazyVStack(spacing: 0) {
+        LazyVStack(spacing: 0) {
+            if postTracker.items.isEmpty { // && !(postTracker.loadingState == .loading) {
+                noPostsView()
+            } else {
                 ForEach(postTracker.items, id: \.uid) { feedPost(for: $0) }
                 EndOfFeedView(loadingState: postTracker.loadingState, viewType: .hobbit)
             }
@@ -32,11 +38,30 @@ struct NewPostFeedView: View {
                 post: post,
                 community: post.community,
                 showPostCreator: shouldShowPostCreator,
-                showCommunity: false // TODO: show community
+                showCommunity: showCommunity
             )
-            // .onAppear { postTracker.loadIfThreshold(post) }
+            .onAppear { postTracker.loadIfThreshold(post) }
             Divider()
         }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
+    }
+    
+    @ViewBuilder
+    private func noPostsView() -> some View {
+        VStack {
+            if postTracker.loadingState == .loading { // don't show posts until site information loads to avoid jarring redraw
+                LoadingView(whatIsLoading: .posts)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
+            } else if let errorDetails {
+                ErrorView(errorDetails)
+                    .frame(maxWidth: .infinity)
+            } else {
+                NewNoPostsView(loadingState: postTracker.loadingState, postSortType: $postSortType, showReadPosts: $showReadPosts)
+                    .transition(.scale(scale: 0.9).combined(with: .opacity))
+                    .padding(.top, 25)
+            }
+        }
+        .animation(.easeOut(duration: 0.1), value: postTracker.loadingState)
     }
 }

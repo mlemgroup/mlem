@@ -456,6 +456,7 @@
 		CDB45C622AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C612AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift */; };
 		CDB45C642AF1AFB900A1FF08 /* MessageModel+TrackerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB45C632AF1AFB900A1FF08 /* MessageModel+TrackerItem.swift */; };
 		CDBCBA202B537A4B0070F60D /* NEW PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBCBA1F2B537A4B0070F60D /* NEW PostFeedView.swift */; };
+		CDBCBA242B54A5F40070F60D /* NEW NoPostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBCBA232B54A5F40070F60D /* NEW NoPostsView.swift */; };
 		CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */; };
 		CDC1C93F2A7AB8C700072E3D /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */; };
 		CDC1C9412A7ABA9C00072E3D /* ReadMarkStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */; };
@@ -1002,6 +1003,7 @@
 		CDB45C612AF1AF9B00A1FF08 /* ReplyModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReplyModel+TrackerItem.swift"; sourceTree = "<group>"; };
 		CDB45C632AF1AFB900A1FF08 /* MessageModel+TrackerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageModel+TrackerItem.swift"; sourceTree = "<group>"; };
 		CDBCBA1F2B537A4B0070F60D /* NEW PostFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NEW PostFeedView.swift"; sourceTree = "<group>"; };
+		CDBCBA232B54A5F40070F60D /* NEW NoPostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NEW NoPostsView.swift"; sourceTree = "<group>"; };
 		CDC1C93B2A7AA76000072E3D /* InternetSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetSpeed.swift; sourceTree = "<group>"; };
 		CDC1C93E2A7AB8C700072E3D /* AccessibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsView.swift; sourceTree = "<group>"; };
 		CDC1C9402A7ABA9C00072E3D /* ReadMarkStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadMarkStyle.swift; sourceTree = "<group>"; };
@@ -2495,6 +2497,7 @@
 			children = (
 				CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */,
 				CDBCBA1F2B537A4B0070F60D /* NEW PostFeedView.swift */,
+				CDBCBA232B54A5F40070F60D /* NEW NoPostsView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3142,6 +3145,7 @@
 				CDB45C5E2AF1A96C00A1FF08 /* AssociatedColorProtocol.swift in Sources */,
 				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
 				E47B2B762A902DE200629AF7 /* SettingsValues.swift in Sources */,
+				CDBCBA242B54A5F40070F60D /* NEW NoPostsView.swift in Sources */,
 				CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */,
 				CD391F982A537E8E00E213B5 /* ReplyToComment.swift in Sources */,
 				5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */,
