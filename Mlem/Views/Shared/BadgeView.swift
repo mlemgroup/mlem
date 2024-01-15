@@ -122,7 +122,7 @@ struct BadgeView: View {
         case "github":
             self.label = "Github"
             self.color = .init(.black, outline: .white, text: .white)
-            self.logo = .bundle("github.lol")
+            self.logo = .bundle("github.logo")
         case "lemmy":
             self.label = path[2]
         default:
