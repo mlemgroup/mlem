@@ -55,7 +55,7 @@ struct FeedPost: View {
     
     // MARK: Parameters
 
-    let post: PostModel
+    @ObservedObject var post: PostModel
     let community: CommunityModel?
     let showPostCreator: Bool
     let showCommunity: Bool
@@ -285,7 +285,7 @@ struct FeedPost: View {
     /// Votes on a post
     /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
-        await postTracker.voteOnPost(post: post, inputOp: inputOp)
+        await post.vote(inputOp: inputOp)
     }
 
     func savePost() async {

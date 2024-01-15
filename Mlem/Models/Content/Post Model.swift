@@ -5,24 +5,32 @@
 //  Created by Eric Andrews on 2023-08-26.
 //
 
+import Dependencies
 import Foundation
 
 /// Internal model to represent a post
 /// Note: this is just the first pass at decoupling the internal models from the API models--to avoid massive merge conflicts and an unreviewably large PR, I've kept the structure practically identical, and will slowly morph it over the course of several PRs. Eventually all of the API types that this model uses will go away and everything downstream of the repositories won't ever know there's an API at all :)
-struct PostModel {
-    let postId: Int
-    let post: APIPost
-    let creator: UserModel
-    let community: CommunityModel
-    var votes: VotesModel
-    let numReplies: Int
-    let saved: Bool
-    let read: Bool
-    let published: Date
-    let updated: Date?
-    let links: [LinkType]
+class PostModel: ContentIdentifiable, ObservableObject {
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.postRepository) var postRepository
+    
+    var postId: Int
+    var post: APIPost
+    var creator: UserModel
+    var community: CommunityModel
+    @Published var votes: VotesModel
+    var numReplies: Int
+    var saved: Bool
+    var read: Bool
+    var published: Date
+    var updated: Date?
+    var links: [LinkType]
     
     var uid: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
+    
+    // prevents a voting operation from ocurring while another is ocurring
+    var voting: Bool = false
     
     /// Creates a PostModel from an APIPostView
     /// - Parameter apiPostView: APIPostView to create a PostModel representation of
@@ -80,6 +88,58 @@ struct PostModel {
         self.links = PostModel.parseLinks(from: self.post.body)
     }
     
+    // MARK: Main Actor State Change Methods
+    
+    @MainActor func reinit(from postModel: PostModel) {
+        postId = postModel.postId
+        post = postModel.post
+        creator = postModel.creator
+        community = postModel.community
+        votes = postModel.votes
+        numReplies = postModel.numReplies
+        saved = postModel.saved
+        read = postModel.read
+        published = postModel.published
+        updated = postModel.updated
+        links = postModel.links
+    }
+    
+    @MainActor
+    func setVotes(_ newVotes: VotesModel) {
+        votes = newVotes
+    }
+    
+    // MARK: Interaction Methods
+    
+    func vote(inputOp: ScoringOperation) async {
+        guard !voting else {
+            return
+        }
+        
+        voting = true
+        defer { voting = false }
+        
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
+        let operation = votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+        
+        let original: PostModel = .init(from: self)
+        
+        // state fake
+        await setVotes(votes.applyScoringOperation(operation: operation))
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
+        
+        do {
+            let updatedPost = try await postRepository.ratePost(postId: postId, operation: operation)
+            await reinit(from: updatedPost)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
+        }
+    }
+    
+    // MARK: Utility Methods
+    
     var postType: PostType {
         // post with URL: either image or link
         if let postUrl = post.linkUrl {
@@ -103,10 +163,6 @@ struct PostModel {
     }
 }
 
-extension PostModel: Identifiable {
-    var id: Int { hashValue }
-}
-
 extension PostModel: Hashable {
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
@@ -115,5 +171,15 @@ extension PostModel: Hashable {
         hasher.combine(saved)
         hasher.combine(read)
         hasher.combine(post.updated)
+    }
+}
+
+extension PostModel: Identifiable {
+    var id: Int { hashValue }
+}
+
+extension PostModel: Equatable {
+    static func == (lhs: PostModel, rhs: PostModel) -> Bool {
+        lhs.id == rhs.id
     }
 }
