@@ -73,7 +73,7 @@ struct BadgeView: View {
     ]
     
     init(url: URL) {
-        self.label = "Invalid"
+        self.label = "Unsupported Badge"
         if let host = url.host(), host == "img.shields.io" {
             let path = url.pathComponents
             self.decodeBadgeType(path)
@@ -106,22 +106,25 @@ struct BadgeView: View {
     }
     
     mutating func decodeBadgeType(_ path: [String]) {
-        if path[1] == "mastodon" {
+        switch path[1] {
+        case "mastodon":
             self.label = "Follow on Mastodon"
             self.color = .init(Color(hex: "6364FF"), text: .white)
             self.logo = .bundle("mastodon.logo")
-        }
-        if path[1] == "discord" {
+        case "discord":
             self.label = "Join Discord Server"
             self.color = .init(Color(hex: "5865F2"), text: .white)
             self.logo = .bundle("discord.logo")
-        }
-        if path[1] == "matrix" {
+        case "matrix":
             self.label = "Join Matrix Room"
             self.color = .init(.black, outline: .white, text: .white)
-        }
-        if path[1] == "lemmy" {
+        case "github":
+            self.label = "Github"
+            self.color = .init(.black, outline: .white, text: .white)
+        case "lemmy":
             self.label = path[2]
+        default:
+            break
         }
     }
     
@@ -138,9 +141,11 @@ struct BadgeView: View {
     }
     
     mutating func decodeColor(_ text: String) {
-        self.color = BadgeView.colorNameMap[text]
-        if self.color == nil {
-            self.color = .init(Color(hex: text), text: .primary)
+        if color == nil {
+            self.color = BadgeView.colorNameMap[text]
+            if self.color == nil {
+                self.color = .init(Color(hex: text), text: .primary)
+            }
         }
     }
     
@@ -205,7 +210,7 @@ struct BadgeView: View {
             ![](https://img.shields.io/badge/label_and_logo-gray?logo=github)
             [![](https://img.shields.io/badge/with-link-pink)](https://lemmy.ml/c/mlemapp)
             ![](https://img.shields.io/badge/label-message_and_logo-gray?logo=mastodon)
-        
+            ![]https://img.shields.io/github/contributors/mlemgroup/mlem)
             ![](https://img.shields.io/mastodon/follow/110952393950540579?domain=https%3A%2F%2Fmastodon.world&style=flat-square&logo=mastodon&color=6364FF)
             ![](https://img.shields.io/discord/1120387349864534107?style=flat-square&logo=discord&color=565EAE)
             ![](https://img.shields.io/matrix/lemmy.world_general%3Amatrix.org?style=flat-square&logo=matrix&color=blue)
