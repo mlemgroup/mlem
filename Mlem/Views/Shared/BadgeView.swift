@@ -212,7 +212,7 @@ struct BadgeView: View {
             ![](https://img.shields.io/badge/label_and_logo-gray?logo=github)
             [![](https://img.shields.io/badge/with-link-pink)](https://lemmy.ml/c/mlemapp)
             ![](https://img.shields.io/badge/label-message_and_logo-gray?logo=mastodon)
-            ![]https://img.shields.io/github/contributors/mlemgroup/mlem)
+            ![](https://img.shields.io/github/contributors/mlemgroup/mlem)
             ![](https://img.shields.io/mastodon/follow/110952393950540579?domain=https%3A%2F%2Fmastodon.world&style=flat-square&logo=mastodon&color=6364FF)
             ![](https://img.shields.io/discord/1120387349864534107?style=flat-square&logo=discord&color=565EAE)
             ![](https://img.shields.io/matrix/lemmy.world_general%3Amatrix.org?style=flat-square&logo=matrix&color=blue)
