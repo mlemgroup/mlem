@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct NewPostFeedView: View {
-    
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     
