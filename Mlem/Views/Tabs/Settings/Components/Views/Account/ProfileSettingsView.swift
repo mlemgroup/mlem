@@ -155,7 +155,7 @@ struct ProfileSettingsView: View {
                 }
           }
             NavigationLink(.settings(.linkMatrixAccount)) {
-                Label("Link Matrix Account", image: "logo.matrix").labelStyle(SquircleLabelStyle(color: .black))
+                Label("Link Matrix Account", image: "matrix.logo").labelStyle(SquircleLabelStyle(color: .black))
                     .disabled(hasEdited != .unedited)
             }
         }

@@ -37,7 +37,7 @@ struct AboutView: View {
 
                 Section {
                     Link(destination: URL(string: "https://github.com/mlemgroup/mlem")!) {
-                        Label("Github Repository", image: "logo.github").labelStyle(SquircleLabelStyle(color: .black))
+                        Label("Github Repository", image: "github.logo").labelStyle(SquircleLabelStyle(color: .black))
                     }
                     .buttonStyle(SettingsButtonStyle())
 

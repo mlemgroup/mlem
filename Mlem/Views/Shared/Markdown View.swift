@@ -10,6 +10,8 @@ import MarkdownUI
 import RegexBuilder
 import SwiftUI
 
+// swiftlint:disable file_length
+
 extension Theme {
     static let mlem = Theme()
         .text {
@@ -214,9 +216,13 @@ private extension Color {
 
 /// Little helper struct to help with the fact that we need to handle images specially
 struct MarkdownBlock: Identifiable {
-    let text: Substring
-    let isImage: Bool
+    enum BlockType {
+        case text(String)
+        case image(url: String)
+        case linkedImage(imageUrl: String, linkUrl: String)
+    }
     let id: Int
+    let type: BlockType
 }
 
 struct MarkdownView: View {
@@ -227,6 +233,13 @@ struct MarkdownView: View {
     private let replaceImagesWithEmoji: Bool
     private let isInline: Bool
     private let alignment: TextAlignment
+    
+    // Don't show images from these domains
+    static let hiddenImageDomains = [
+        "lemmy-status.org",
+        "fediseer.com",
+        "uptime.lemmings.world"
+    ]
     
     init(
         text: String,
@@ -244,25 +257,53 @@ struct MarkdownView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             ForEach(blocks) { block in
-                if block.isImage {
-                    if replaceImagesWithEmoji {
-                        renderAsMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
-                    } else {
-                        CachedImage(url: URL(string: String(block.text)))
-                            .applyNsfwOverlay(isNsfw)
-                    }
-                } else {
-                    renderAsMarkdown(text: String(block.text), theme: theme)
+                renderBlock(block: block)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func renderBlock(block: MarkdownBlock) -> some View {
+        switch block.type {
+        case .text(let text):
+            renderAsMarkdown(text: text, theme: theme)
+        case .image(url: let imageUrl):
+            if replaceImagesWithEmoji {
+                renderAsMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
+            } else {
+                if let imageUrl = URL(string: imageUrl) {
+                    imageView(url: imageUrl)
+                }
+            }
+        case .linkedImage(imageUrl: let imageUrl, linkUrl: let linkUrl):
+            if let imageUrl = URL(string: imageUrl), let linkUrl = URL(string: linkUrl) {
+                Link(destination: linkUrl) {
+                    imageView(url: imageUrl)
                 }
             }
         }
     }
     
-    private var theme: Theme {
-        isInline ? .plain : .mlem
+    func imageView(url: URL) -> AnyView? {
+        if let host = url.host() {
+            if host == "img.shields.io" {
+                return AnyView(
+                    BadgeView(url: url)
+                        .padding(.vertical, 6)
+                    )
+            } else if !MarkdownView.hiddenImageDomains.contains(host) {
+                return AnyView(
+                    CachedImage(url: url)
+                        .applyNsfwOverlay(isNsfw)
+                    )
+            }
+        }
+        return nil
     }
+    
+    private var theme: Theme { isInline ? .plain : .mlem }
     
     static func prepareInlineMarkdown(text: String) -> String {
         text
@@ -271,6 +312,7 @@ struct MarkdownView: View {
             .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
     }
     
+    // swiftlint:disable:next function_body_length
     static func parseMarkdownForImages(text: String) -> [MarkdownBlock] {
         // this regex will capture the '![label](url "title") pattern so we can handle it separately
         // piece by piece:
@@ -280,29 +322,64 @@ struct MarkdownView: View {
         let imageLooker = /!\[(?'label'[^\]]*)\]\((?'url'[^\s\)]*)( \"(?'title'[^\"]*)\")?\)/
             .ignoresCase()
         
+        // Looks for images inside of links
+        let imageLinkLooker = /\[!\[(?'label'[^\]]*)\]\((?'imageURL'[^\s\)]*)( \"(?'title'[^\"]*)\")?\)\]\((?'linkURL'[^\]]*)\)/
+            .ignoresCase()
+ 
         var blocks: [MarkdownBlock] = .init()
         var idx: String.Index = .init(utf16Offset: 0, in: text)
         var blockId = 0
         while idx < text.endIndex {
             do {
-                if let firstImage = try imageLooker.firstMatch(in: text[idx...]) {
+                if let firstImage = try imageLinkLooker.firstMatch(in: text[idx...]) {
                     // if there is some image found, add it to blocks
+                    print("LINKED IMAGE", firstImage.output.imageURL, firstImage.output.linkURL)
                     if firstImage.range.lowerBound == idx {
                         // if the regex starts *right here*, add to images
-                        blocks.append(MarkdownBlock(text: firstImage.output.url, isImage: true, id: blockId))
+                        blocks.append(
+                            MarkdownBlock(
+                                id: blockId,
+                                type: .linkedImage(
+                                    imageUrl: String(firstImage.output.imageURL),
+                                    linkUrl: String(firstImage.output.linkURL)
+                                )
+                            )
+                        )
                         blockId += 1
                     } else {
                         // otherwise, add text in between, then first match
-                        blocks.append(MarkdownBlock(text: text[idx ..< firstImage.range.lowerBound], isImage: false, id: blockId))
+                        blocks.append(MarkdownBlock(id: blockId, type: .text(String(text[idx ..< firstImage.range.lowerBound]))))
                         blockId += 1
-                        blocks.append(MarkdownBlock(text: firstImage.output.url, isImage: true, id: blockId))
+                        blocks.append(
+                            MarkdownBlock(
+                                id: blockId,
+                                type: .linkedImage(
+                                    imageUrl: String(firstImage.output.imageURL),
+                                    linkUrl: String(firstImage.output.linkURL)
+                                )
+                            )
+                        )
+                        blockId += 1
+                    }
+                    idx = firstImage.range.upperBound
+                } else if let firstImage = try imageLooker.firstMatch(in: text[idx...]) {
+                    // if there is some image found, add it to blocks
+                    if firstImage.range.lowerBound == idx {
+                        // if the regex starts *right here*, add to images
+                        blocks.append(MarkdownBlock(id: blockId, type: .image(url: String(firstImage.output.url))))
+                        blockId += 1
+                    } else {
+                        // otherwise, add text in between, then first match
+                        blocks.append(MarkdownBlock(id: blockId, type: .text(String(text[idx ..< firstImage.range.lowerBound]))))
+                        blockId += 1
+                        blocks.append(MarkdownBlock(id: blockId, type: .image(url: String(firstImage.output.url))))
                         blockId += 1
                     }
                     idx = firstImage.range.upperBound
                 } else {
                     // if no image found, add the rest of the text to blocks, if it exists
                     let remainder = text[idx...]
-                    if !remainder.isEmpty { blocks.append(MarkdownBlock(text: remainder, isImage: false, id: blockId)) }
+                    if !remainder.isEmpty { blocks.append(MarkdownBlock(id: blockId, type: .text(String(remainder)))) }
                     blockId += 1
                     idx = text.endIndex // softly end loop
                 }
@@ -321,3 +398,5 @@ struct MarkdownView: View {
             .markdownTheme(theme)
     }
 }
+
+// swiftlint:enable file_length
