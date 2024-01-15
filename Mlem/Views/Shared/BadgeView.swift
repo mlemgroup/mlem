@@ -118,9 +118,11 @@ struct BadgeView: View {
         case "matrix":
             self.label = "Join Matrix Room"
             self.color = .init(.black, outline: .white, text: .white)
+            self.logo = .bundle("matrix.logo")
         case "github":
             self.label = "Github"
             self.color = .init(.black, outline: .white, text: .white)
+            self.logo = .bundle("github.lol")
         case "lemmy":
             self.label = path[2]
         default:
