@@ -15,6 +15,7 @@ struct GeneralSettingsView: View {
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("appLock") var appLock: AppLock = .disabled
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     
@@ -65,7 +66,6 @@ struct GeneralSettingsView: View {
                     
                     // TODO: 0.17 deprecation remove this check
                     if (siteInformation.version ?? .zero) >= .init("0.18.0") {
-                        
                         NavigationLink(.settings(.accountGeneral)) {
                             HStack(spacing: 3) {
                                 Text("Account Settings")
@@ -75,7 +75,6 @@ struct GeneralSettingsView: View {
                             }
                             .font(.footnote)
                         }
-                        
                     }
                 }
             }
@@ -112,6 +111,19 @@ struct GeneralSettingsView: View {
                 Text("Connection Type")
             } footer: {
                 Text("Optimizes performance for your internet speed. You may need to restart the app for all optimizations to take effect.")
+            }
+            
+            Section {
+                SelectableSettingsItem(
+                    settingIconSystemName: Icons.appLockSettings,
+                    settingName: "App Lock",
+                    currentValue: $appLock,
+                    options: AppLock.allCases
+                )
+            } header: {
+                Text("Privacy")
+            } footer: {
+                Text("Locks your app with Face ID")
             }
 
             Section {

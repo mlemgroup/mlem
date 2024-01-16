@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 /// SFSymbol names for icons
-struct Icons {
+enum Icons {
     // votes
     static let votes: String = "arrow.up.arrow.down.square"
     static let upvote: String = "arrow.up"
@@ -186,6 +186,7 @@ struct Icons {
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
+    static let appLockSettings: String = "lock.app.dashed"
     
     // misc
     static let switchUser: String = "person.crop.circle.badge.plus"
@@ -205,4 +206,5 @@ struct Icons {
     static let noFile: String = "questionmark.folder"
     static let forward: String = "chevron.right"
     static let imageDetails: String = "doc.badge.ellipsis"
+    static let faceID: String = "faceid"
 }
