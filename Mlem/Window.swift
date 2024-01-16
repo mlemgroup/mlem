@@ -49,7 +49,6 @@ struct Window: View {
     }
 
     func flowDidChange() {
-        print("FLOW CHANGE")
         hapticManager.initEngine()
         apiClient.configure(for: flow)
         
