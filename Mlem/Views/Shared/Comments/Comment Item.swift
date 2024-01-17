@@ -165,7 +165,7 @@ struct CommentItem: View {
                         votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
                         published: hierarchicalComment.commentView.comment.published,
                         updated: hierarchicalComment.commentView.comment.updated,
-                        numReplies: hierarchicalComment.commentView.counts.childCount,
+                        commentCount: hierarchicalComment.commentView.counts.childCount,
                         saved: hierarchicalComment.commentView.saved,
                         accessibilityContext: "comment",
                         widgets: layoutWidgetTracker.groups.comment,

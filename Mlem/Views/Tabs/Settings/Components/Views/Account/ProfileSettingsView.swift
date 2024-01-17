@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 23/11/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 enum UserSettingsEditState {
     case unedited, edited, updating
@@ -17,8 +17,8 @@ struct ProfileSettingsView: View {
     @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler: ErrorHandler
     
-    @State var displayName: String = ""
-    @State var bio: String = ""
+    @State var displayName: String
+    @State var bio: String
     
     @StateObject var avatarAttachmentModel: LinkAttachmentModel
     @StateObject var bannerAttachmentModel: LinkAttachmentModel
@@ -153,11 +153,21 @@ struct ProfileSettingsView: View {
                         hasEdited = .edited
                     }
                 }
-          }
-            NavigationLink(.settings(.linkMatrixAccount)) {
-                Label("Link Matrix Account", image: "logo.matrix").labelStyle(SquircleLabelStyle(color: .black))
-                    .disabled(hasEdited != .unedited)
             }
+            NavigationLink(.settings(.linkMatrixAccount)) {
+                let user = siteInformation.myUserInfo?.localUserView
+                if let user, let matrixId = user.person.matrixUserId {
+                    HStack {
+                        Label("Matrix ID", image: "logo.matrix").labelStyle(SquircleLabelStyle(color: .black))
+                        Spacer()
+                        Text(matrixId)
+                            .foregroundStyle(.secondary)
+                    }
+                } else {
+                    Label("Link Matrix Account", image: "logo.matrix").labelStyle(SquircleLabelStyle(color: .black))
+                }
+            }
+            .disabled(hasEdited != .unedited)
         }
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("My Profile")

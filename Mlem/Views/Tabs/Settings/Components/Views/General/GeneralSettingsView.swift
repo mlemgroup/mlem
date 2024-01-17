@@ -22,6 +22,7 @@ struct GeneralSettingsView: View {
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
     
     @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = false
+    @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
     @EnvironmentObject var appState: AppState
 
@@ -30,6 +31,11 @@ struct GeneralSettingsView: View {
     var body: some View {
         List {
             Section {
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.browser,
+                    settingName: "Open Links in Browser",
+                    isTicked: $openLinksInBrowser
+                )
                 SelectableSettingsItem(
                     settingIconSystemName: Icons.haptics,
                     settingName: "Haptic Level",
@@ -59,7 +65,6 @@ struct GeneralSettingsView: View {
                     
                     // TODO: 0.17 deprecation remove this check
                     if (siteInformation.version ?? .zero) >= .init("0.18.0") {
-                        
                         NavigationLink(.settings(.accountGeneral)) {
                             HStack(spacing: 3) {
                                 Text("Account Settings")
@@ -69,7 +74,6 @@ struct GeneralSettingsView: View {
                             }
                             .font(.footnote)
                         }
-                        
                     }
                 }
             }

@@ -20,7 +20,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
     var creator: UserModel
     var community: CommunityModel
     @Published var votes: VotesModel
-    var numReplies: Int
+    var commentCount: Int
+    var unreadCommentCount: Int
     @Published var saved: Bool
     @Published var read: Bool
     var published: Date
@@ -40,7 +41,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
         self.creator = UserModel(from: apiPostView.creator)
         self.community = CommunityModel(from: apiPostView.community, subscribed: apiPostView.subscribed.isSubscribed)
         self.votes = VotesModel(from: apiPostView.counts, myVote: apiPostView.myVote)
-        self.numReplies = apiPostView.counts.comments
+        self.commentCount = apiPostView.counts.comments
+        self.unreadCommentCount = apiPostView.unreadComments
         self.saved = apiPostView.saved
         self.read = apiPostView.read
         self.published = apiPostView.post.published
@@ -68,7 +70,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
         creator: UserModel? = nil,
         community: CommunityModel? = nil,
         votes: VotesModel? = nil,
-        numReplies: Int? = nil,
+        commentCount: Int? = nil,
+        unreadCommentCount: Int? = nil,
         saved: Bool? = nil,
         read: Bool? = nil,
         published: Date? = nil,
@@ -79,7 +82,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
         self.creator = creator ?? other.creator
         self.community = community ?? other.community
         self.votes = votes ?? other.votes
-        self.numReplies = numReplies ?? other.numReplies
+        self.commentCount = commentCount ?? other.commentCount
+        self.unreadCommentCount = unreadCommentCount ?? other.unreadCommentCount
         self.saved = saved ?? other.saved
         self.read = read ?? other.read
         self.published = published ?? other.published
@@ -96,7 +100,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
         creator = postModel.creator
         community = postModel.community
         votes = postModel.votes
-        numReplies = postModel.numReplies
+        commentCount = postModel.commentCount
+        unreadCommentCount = postModel.unreadCommentCount
         saved = postModel.saved
         read = postModel.read
         published = postModel.published
