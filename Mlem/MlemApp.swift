@@ -16,7 +16,8 @@ struct MlemApp: App {
     
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-    
+    @AppStorage("appLock") var appLock: AppLock = .disabled
+
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
@@ -115,6 +116,10 @@ struct MlemApp: App {
     private var initialFlow: AppFlow {
         guard let account = accountsTracker.defaultAccount else {
             return .onboarding
+        }
+        
+        if appLock != .disabled {
+            return .applock
         }
         
         return .account(account)

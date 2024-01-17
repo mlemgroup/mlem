@@ -61,6 +61,8 @@ struct Window: View {
                let instance = RecognizedLemmyInstances(rawValue: host) {
                 easterFlagsTracker.setEasterFlag(.login(host: instance))
             }
+        case .applock:
+            return
         }
     }
     
@@ -71,6 +73,9 @@ struct Window: View {
             LandingPage()
         case let .account(account):
             view(for: account)
+        case .applock:
+            AppLockView(biometricUnlock: BiometricUnlock())
+                .environmentObject(appState)
         }
     }
     
@@ -96,10 +101,10 @@ struct Window: View {
     private func transition(_ newFlow: AppFlow) {
         let transitionAccountName: String?
         switch newFlow {
-        case .onboarding:
-            transitionAccountName = nil
         case let .account(account):
             transitionAccountName = account.nickname
+        default:
+            transitionAccountName = nil
         }
         
         Task { @MainActor in

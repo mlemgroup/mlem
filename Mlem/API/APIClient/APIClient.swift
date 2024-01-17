@@ -80,8 +80,8 @@ class APIClient {
         switch flow {
         case let .account(account):
             session = .authenticated(account.instanceLink, account.accessToken)
-        case .onboarding:
-            // no calls to our `APIClient` should be made during onboarding
+        default:
+            // no calls to our `APIClient` should be made during onboarding or applock
             // excluding a _login_ call which requires an explicit session to be provided
             // setting to `.undefined` here ensures that errors will be throw should a call
             // be attempted
@@ -292,8 +292,7 @@ extension APIClient {
     func saveUserSettings(
         myUserInfo info: APIMyUserInfo
     ) async throws -> SuccessResponse {
-        
-        // Despite all values being optional, we actually have to provide all values 
+        // Despite all values being optional, we actually have to provide all values
         // here otherwise Lemmy returns 'user_already_exists'. Possibly fixed >0.19.0
         // https://github.com/LemmyNet/lemmy/issues/4076
         
@@ -324,10 +323,10 @@ extension APIClient {
                 showReadPosts: localUser.showReadPosts,
                 showScores: localUser.showScores,
                 theme: localUser.theme,
-                auth: try session.token
+                auth: session.token
             )
         )
-        return SuccessResponse(from: try await perform(request: request))
+        return try await SuccessResponse(from: perform(request: request))
     }
     
     @discardableResult

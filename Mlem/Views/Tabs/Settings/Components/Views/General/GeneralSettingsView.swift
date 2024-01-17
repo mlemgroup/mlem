@@ -173,14 +173,12 @@ struct GeneralSettingsView: View {
         .navigationBarColor()
         .hoistNavigation()
         .onChange(of: appLock) { _ in
-            if appLock != .disabled {
-                BiometricUnlock().requestPermissions { isEnabled, _ in
-                    if !isEnabled {
-                        showErrorAlert = true
-                        BiometricUnlock().isUnlocked = true
-                        appLock = .disabled
-                    }
+            if appLock != .disabled, !BiometricUnlock().requestBiometricPermissions() {
+                showErrorAlert = true
+                Task {
+                    await BiometricUnlockState().setUnlockStatus(isUnlocked: true)
                 }
+                appLock = .disabled
             }
         }
         .alert(isPresented: $showErrorAlert, content: {

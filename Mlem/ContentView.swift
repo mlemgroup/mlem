@@ -39,7 +39,7 @@ struct ContentView: View {
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("appLock") var appLock: AppLock = .disabled
 
-    @State var biometricUnlock = BiometricUnlock()
+    var biometricUnlock = BiometricUnlock()
     
     @StateObject private var quickLookState: ImageDetailSheetState = .init()
     
@@ -51,14 +51,6 @@ struct ContentView: View {
         } else {
             return nil
         }
-    }
-    
-    var isAppLocked: Bool {
-        if appLock != .disabled, !biometricUnlock.isUnlocked {
-            return true
-        }
-        
-        return false
     }
     
     var body: some View {
@@ -175,10 +167,29 @@ struct ContentView: View {
             if phase != .active {
                 isPresentingAccountSwitcher = false
             }
+            
+            if phase == .active, appLock != .disabled {
+                print("PHASE FLOW YO")
+                Task {
+                    if await BiometricUnlockState().getUnlockStatus() {
+//                        print("VAR: phase: \(phase), appLock: \(appLock), isAppLocked: \(await BiometricUnlockState().isUnlocked) YO")
+                        print("SET APPLOCK FLOW YO")
+                        DispatchQueue.main.async {
+                            setFlow(.applock)
+                        }
+                    }
+                }
+            }
+            
+            if phase == .background, appLock != .disabled {
+                Task {
+                    await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
+                }
+            }
         }
-        .fullScreenCover(isPresented: .constant(isAppLocked)) {
-            AppLockView(biometricUnlock: biometricUnlock)
-        }
+//        .fullScreenCover(isPresented: .constant(isAppLocked)) {
+//            AppLockView(biometricUnlock: biometricUnlock)
+//        }
     }
     
     // MARK: Helpers
