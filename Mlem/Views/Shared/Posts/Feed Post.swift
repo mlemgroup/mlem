@@ -280,8 +280,7 @@ struct FeedPost: View {
     
     func editPost() {
         editorTracker.openEditor(with: PostEditorModel(
-            post: post,
-            postTracker: postTracker
+            post: post
         ))
     }
 

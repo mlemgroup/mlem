@@ -81,6 +81,8 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
             await clearHelper() // this is not a thread-safe use of clear, but I'm using it here because we should never get here
         }
     }
+    
+    func prepend(_ item: Item) async {}
 
     // MARK: - Internal methods
     

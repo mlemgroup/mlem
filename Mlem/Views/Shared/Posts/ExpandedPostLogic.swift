@@ -157,11 +157,7 @@ extension ExpandedPost {
                 destructiveActionPrompt: nil,
                 enabled: true
             ) {
-                editorTracker.openEditor(with: PostEditorModel(
-                    post: post,
-                    postTracker: postTracker,
-                    responseCallback: updatePost
-                ))
+                editorTracker.openEditor(with: PostEditorModel(post: post))
             })
             
             // delete
@@ -262,9 +258,5 @@ extension ExpandedPost {
             newComment.children = sortComments(comment.children, by: sort)
             return newComment
         }
-    }
-    
-    func updatePost(newPost: PostModel) {
-        post = newPost
     }
 }

@@ -10,17 +10,18 @@ import SwiftUI
 
 extension CommunityModel {
     func newPostMenuFunction(editorTracker: EditorTracker, postTracker: PostTracker? = nil) -> MenuFunction {
-        return .standardMenuFunction(
-                text: "New Post",
-                imageName: Icons.sendFill,
-                destructiveActionPrompt: nil,
-                enabled: true
-            ) {
-                editorTracker.openEditor(with: PostEditorModel(
-                    community: self,
-                    postTracker: postTracker
-                ))
-            }
+        .standardMenuFunction(
+            text: "New Post",
+            imageName: Icons.sendFill,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
+            assertionFailure("ERIC RE-IMPLEMENT THIS")
+//                editorTracker.openEditor(with: PostEditorModel(
+//                    community: self,
+//                    postTracker: postTracker
+//                ))
+        }
     }
     
     func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> StandardMenuFunction {
@@ -46,7 +47,7 @@ extension CommunityModel {
     }
     
     func favoriteMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> StandardMenuFunction {
-        return .init(
+        .init(
             text: favorited ? "Unfavorite" : "Favorite",
             imageName: favorited ? Icons.unfavorite : Icons.favorite,
             destructiveActionPrompt: favorited ? "Really unfavorite \(community.name)?" : nil,

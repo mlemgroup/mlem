@@ -54,11 +54,6 @@ extension PostComposerView {
             
             if let post = editModel.editPost {
                 await post.edit(name: postTitle, url: attachmentModel.url, body: postBody, nsfw: isNSFW)
-                
-                if let responseCallback = editModel.responseCallback {
-                    responseCallback(post)
-                }
-                
             } else {
                 let response = try await apiClient.createPost(
                     communityId: editModel.community.communityId,
@@ -70,9 +65,10 @@ extension PostComposerView {
                 
                 hapticManager.play(haptic: .success, priority: .high)
                 
-                await MainActor.run {
+                // TODO: ERIC test this
+                if let postTracker = editModel.postTracker {
                     withAnimation {
-                        postTracker.prepend(PostModel(from: response.postView))
+                        postTracker.synchronousPrependItem(_:)(PostModel(from: response.postView))
                     }
                 }
             }

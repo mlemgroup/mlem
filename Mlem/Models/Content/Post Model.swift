@@ -196,9 +196,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
         body: String?,
         nsfw: Bool?
     ) async {
-        // TODO: state fake
-        
-        // API call
+        // no need to state fake because editor spins until call completes
         do {
             hapticManager.play(haptic: .success, priority: .high)
             let response = try await postRepository.editPost(postId: postId, name: name, url: url, body: body, nsfw: nsfw)
