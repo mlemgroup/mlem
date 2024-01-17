@@ -62,8 +62,6 @@ struct Window: View {
                let instance = RecognizedLemmyInstances(rawValue: host) {
                 easterFlagsTracker.setEasterFlag(.login(host: instance))
             }
-        case .applock:
-            return
         }
     }
     
@@ -74,8 +72,6 @@ struct Window: View {
             LandingPage()
         case let .account(account):
             view(for: account)
-        case .applock:
-            AppLockView(biometricUnlock: biometricUnlock)
         }
     }
     

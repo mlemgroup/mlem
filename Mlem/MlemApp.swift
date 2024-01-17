@@ -118,10 +118,6 @@ struct MlemApp: App {
             return .onboarding
         }
         
-        if appLock != .disabled {
-            return .applock
-        }
-        
         return .account(account)
     }
 }

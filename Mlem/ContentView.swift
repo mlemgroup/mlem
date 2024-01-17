@@ -40,7 +40,15 @@ struct ContentView: View {
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("appLock") var appLock: AppLock = .disabled
 
-    var biometricUnlock = BiometricUnlock()
+    @StateObject var biometricUnlock = BiometricUnlock()
+    
+    var isAppLocked: Bool {
+        if appLock != .disabled, !biometricUnlock.isUnlocked {
+            return true
+        }
+        
+        return false
+    }
     
     @StateObject private var quickLookState: ImageDetailSheetState = .init()
     
@@ -169,17 +177,12 @@ struct ContentView: View {
                 isPresentingAccountSwitcher = false
             }
             
-            if phase == .active, appLock != .disabled, !isAppLockAuthenticated {
-                isAppLockAuthenticated = true
-                setFlow(.applock)
-            }
-            
             if phase == .background, appLock != .disabled {
-                isAppLockAuthenticated = false
-                Task {
-                    await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
-                }
+                biometricUnlock.isUnlocked = false
             }
+        }
+        .fullScreenCover(isPresented: .constant(isAppLocked)) {
+            AppLockView(biometricUnlock: biometricUnlock)
         }
     }
     

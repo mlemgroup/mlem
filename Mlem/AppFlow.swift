@@ -14,6 +14,4 @@ enum AppFlow: Equatable {
     case onboarding
     /// A signed-in session with the user's `SavedAccount` as an associated value
     case account(SavedAccount)
-    
-    case applock
 }

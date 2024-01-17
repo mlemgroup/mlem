@@ -175,9 +175,6 @@ struct GeneralSettingsView: View {
         .onChange(of: appLock) { _ in
             if appLock != .disabled, !BiometricUnlock().requestBiometricPermissions() {
                 showErrorAlert = true
-                Task {
-                    await BiometricUnlockState().setUnlockStatus(isUnlocked: true)
-                }
                 appLock = .disabled
             }
         }

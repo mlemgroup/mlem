@@ -13,9 +13,6 @@ struct AppLockView: View {
     @Dependency(\.accountsTracker) var accountsTracker
 
     @ObservedObject var biometricUnlock: BiometricUnlock
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.scenePhase) var scenePhase
-    
     @Environment(\.setAppFlow) private var setFlow
     
     @AppStorage("appLock") var appLock: AppLock = .disabled
@@ -72,10 +69,7 @@ struct AppLockView: View {
         biometricUnlock.requestAuthentication { result in
             isAuthenticating = false
             switch result {
-            case .success:
-                if let account = accountsTracker.defaultAccount {
-                    setFlow(.account(account))
-                }
+            case .success: return
             case let .failure(error):
                 alertMessage = error.localizedDescription
                 isErrorVisible = true

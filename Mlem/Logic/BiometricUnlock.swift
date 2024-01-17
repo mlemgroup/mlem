@@ -9,18 +9,6 @@ import Foundation
 import LocalAuthentication
 import SwiftUI
 
-actor BiometricUnlockState {
-    var isUnlocked: Bool = false
-
-    func getUnlockStatus() async -> Bool {
-        isUnlocked
-    }
-        
-    func setUnlockStatus(isUnlocked: Bool) async {
-        self.isUnlocked = isUnlocked
-    }
-}
-
 enum BiometricsError: LocalizedError {
     case unknown
     case rejected
@@ -41,7 +29,8 @@ enum BiometricsError: LocalizedError {
 @MainActor
 class BiometricUnlock: ObservableObject {
     @Published var authorizationError: Error?
-    
+    @Published var isUnlocked: Bool = false
+
     func requestAuthentication(onComplete: @escaping (Result<Void, Error>) -> Void) {
         let context = LAContext()
         var error: NSError?
@@ -50,23 +39,19 @@ class BiometricUnlock: ObservableObject {
             let reason = "Please authenticate to unlock app."
             
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
-                if success {
-                    Task {
-                        await BiometricUnlockState().setUnlockStatus(isUnlocked: true)
+                DispatchQueue.main.sync {
+                    if success {
+                        self.isUnlocked = true
                         onComplete(.success(()))
-                    }
-                } else {
-                    Task {
-                        await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
+                    } else {
+                        self.isUnlocked = false
                         onComplete(.failure(BiometricsError.rejected))
                     }
                 }
             }
         } else {
-            Task {
-                await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
-                onComplete(.failure(BiometricsError.permissions))
-            }
+            isUnlocked = false
+            onComplete(.failure(BiometricsError.permissions))
         }
     }
     
