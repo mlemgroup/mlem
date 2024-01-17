@@ -21,6 +21,7 @@ struct Window: View {
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
     @StateObject var appState: AppState = .init()
+    @StateObject var biometricUnlock = BiometricUnlock()
 
     @State var flow: AppFlow
 
@@ -74,8 +75,7 @@ struct Window: View {
         case let .account(account):
             view(for: account)
         case .applock:
-            AppLockView(biometricUnlock: BiometricUnlock())
-                .environmentObject(appState)
+            AppLockView(biometricUnlock: biometricUnlock)
         }
     }
     

@@ -41,19 +41,19 @@ class BiometricUnlock: ObservableObject {
             
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
                 if success {
-                    Task {
+                    Task { @MainActor [weak self] in
                         await BiometricUnlockState().setUnlockStatus(isUnlocked: true)
                         onComplete(.success(()))
                     }
                 } else {
-                    Task {
+                    Task { @MainActor [weak self] in
                         await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
                         onComplete(.failure(BiometricsError.rejected))
                     }
                 }
             }
         } else {
-            Task {
+            Task { @MainActor [weak self] in
                 await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
                 onComplete(.failure(BiometricsError.permissions))
             }
@@ -62,7 +62,7 @@ class BiometricUnlock: ObservableObject {
     
     func requestBiometricPermissions() -> Bool {
         var error: NSError?
-        var context = LAContext()
+        let context = LAContext()
         
         let isBioMetricsAvailable = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
         

@@ -16,7 +16,6 @@ struct AppLockView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) var scenePhase
     
-    @EnvironmentObject var appState: AppState
     @Environment(\.setAppFlow) private var setFlow
     
     @AppStorage("appLock") var appLock: AppLock = .disabled

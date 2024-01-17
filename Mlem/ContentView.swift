@@ -169,12 +169,15 @@ struct ContentView: View {
             }
             
             if phase == .active, appLock != .disabled {
-                setFlow(.applock)
+                Task {
+                    if await BiometricUnlockState().getUnlockStatus() {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            setFlow(.applock)
+                        }
+                    }
+                }
             }
         }
-//        .fullScreenCover(isPresented: .constant(isAppLocked)) {
-//            AppLockView(biometricUnlock: biometricUnlock)
-//        }
     }
     
     // MARK: Helpers
