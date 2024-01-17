@@ -92,12 +92,8 @@ class APIClient {
     @discardableResult
     func perform<Request: APIRequest>(request: Request, overrideToken: String? = nil) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request, overrideToken: overrideToken)
-        
-        // print(String(data: urlRequest.httpBody ?? Data(), encoding: .utf8))
 
         let (data, response) = try await execute(urlRequest)
-        
-        print(response)
         
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 { // Error code for server being offline.
