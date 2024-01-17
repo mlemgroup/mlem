@@ -384,6 +384,11 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    func loadSiteInformation(instanceURL: URL) async throws -> SiteResponse {
+        let request = GetSiteRequest(instanceURL: instanceURL.appendingPathComponent("api/v3"))
+        return try await perform(request: request)
+    }
+    
     // swiftlint:disable function_parameter_count
     func performSearch(
         query: String,

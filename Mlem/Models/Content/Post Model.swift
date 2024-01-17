@@ -119,5 +119,6 @@ extension PostModel: Hashable {
         hasher.combine(saved)
         hasher.combine(read)
         hasher.combine(post.updated)
+        hasher.combine(unreadCommentCount)
     }
 }

@@ -206,6 +206,7 @@ struct UserView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationBarColor()
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isPresentingAccountSwitcher) {

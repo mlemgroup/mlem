@@ -25,6 +25,7 @@ enum InstanceViewTab: String, Identifiable, CaseIterable {
 }
 
 struct InstanceView: View {
+    @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.navigationPathWithRoutes) private var navigationPath
@@ -138,19 +139,20 @@ struct InstanceView: View {
         .task {
             if instance?.administrators == nil {
                 do {
-                    let client = APIClient(transport: { urlSession, urlRequest in try await urlSession.data(for: urlRequest) })
-                    let url = try await getCorrectURLtoEndpoint(baseInstanceAddress: domainName)
-                    client.session = .unauthenticated(url)
-                    let info = try await client.loadSiteInformation()
-                    DispatchQueue.main.async {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            if var instance {
-                                instance.update(with: info)
-                                self.instance = instance
-                            } else {
-                                self.instance = InstanceModel(from: info)
+                    if let url = URL(string: "https://\(domainName)") {
+                        let info = try await apiClient.loadSiteInformation(instanceURL: url)
+                        DispatchQueue.main.async {
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                if var instance {
+                                    instance.update(with: info)
+                                    self.instance = instance
+                                } else {
+                                    self.instance = InstanceModel(from: info)
+                                }
                             }
                         }
+                    } else {
+                        errorDetails = ErrorDetails(title: "\"\(domainName)\" is an invalid URL.")
                     }
                 } catch EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints {
                     withAnimation(.easeOut(duration: 0.2)) {
@@ -185,6 +187,7 @@ struct InstanceView: View {
                 }
             }
         }
+        .navigationBarColor()
         .navigationTitle(instance?.name ?? domainName)
         .navigationBarTitleDisplayMode(.inline)
     }
