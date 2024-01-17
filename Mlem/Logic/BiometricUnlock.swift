@@ -18,7 +18,6 @@ actor BiometricUnlockState {
         
     func setUnlockStatus(isUnlocked: Bool) async {
         self.isUnlocked = isUnlocked
-        print("SETTING UNLOCK STATUS TO \(isUnlocked) YO")
     }
 }
 

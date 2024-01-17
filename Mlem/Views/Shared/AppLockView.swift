@@ -21,45 +21,37 @@ struct AppLockView: View {
     @AppStorage("appLock") var appLock: AppLock = .disabled
     
     @State var presentError: Bool = false
-    
+    @State var isAuthenticating = false
+
     var body: some View {
-        VStack(spacing: 30) {
-            Image(systemName: Icons.faceID)
-                .resizable()
+        @State var logoOffset: CGFloat = 0
+
+        VStack(spacing: 50) {
+            LogoView()
                 .frame(width: 150, height: 150)
-            
-            Button {
-                biometricUnlock.requestAuthentication { result in
-                    if case .success = result, let account = accountsTracker.defaultAccount {
-                        setFlow(.account(account))
-                    } else if case .failure = result {
-                        presentError = true
+                .animation(.spring(), value: isAuthenticating)
+                .offset(y: isAuthenticating ? 0 : 300)
+            Group {
+                Button {
+                    authenticate()
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("Unlock Mlem")
+                            .bold()
+                        Spacer()
                     }
+                    .frame(width: 200)
+                    .padding(15)
+                    .background(.blue)
+                    .foregroundColor(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
-            } label: {
-                HStack {
-                    Spacer()
-                    Text("Unlock now")
-                        .bold()
-                    Spacer()
-                }
-                .frame(width: 200)
-                .padding(15)
-                .background(.blue)
-                .foregroundColor(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
+            .frame(maxHeight: .infinity, alignment: .bottom)
         }
         .onAppear {
-            biometricUnlock.requestAuthentication { result in
-                DispatchQueue.main.async {
-                    if case .success = result, let account = accountsTracker.defaultAccount {
-                        setFlow(.account(account))
-                    } else if case .failure = result {
-                        presentError = true
-                    }
-                }
-            }
+            authenticate()
         }
         .alert(isPresented: $presentError, content: {
             Alert(
@@ -68,6 +60,18 @@ struct AppLockView: View {
                 dismissButton: .default(Text("OK"))
             )
         })
+    }
+    
+    func authenticate() {
+        isAuthenticating = true
+        biometricUnlock.requestAuthentication { result in
+            isAuthenticating = false
+            if case .success = result, let account = accountsTracker.defaultAccount {
+                setFlow(.account(account))
+            } else if case .failure = result {
+                presentError = true
+            }
+        }
     }
 }
 
