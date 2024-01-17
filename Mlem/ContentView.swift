@@ -42,14 +42,6 @@ struct ContentView: View {
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
-    var myUser: UserModel? {
-        if let person = siteInformation.myUserInfo?.localUserView.person {
-            return UserModel(from: person)
-        } else {
-            return nil
-        }
-    }
-    
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
@@ -75,7 +67,7 @@ struct ContentView: View {
                         }
                 }
                     
-                ProfileView(user: myUser)
+                ProfileView()
                 .fancyTabItem(tag: TabSelection.profile) {
                     FancyTabBarLabel(
                         tag: TabSelection.profile,

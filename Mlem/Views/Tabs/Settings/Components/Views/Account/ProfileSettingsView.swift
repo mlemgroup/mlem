@@ -17,6 +17,8 @@ struct ProfileSettingsView: View {
     @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler: ErrorHandler
     
+    @Environment(\.dismiss) var dismiss
+    
     @State var displayName: String
     @State var bio: String
     
@@ -25,13 +27,16 @@ struct ProfileSettingsView: View {
     
     @State var hasEdited: UserSettingsEditState = .unedited
     
-    init() {
+    let showCloseButton: Bool
+    
+    init(showCloseButton: Bool = false) {
         @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
         let user = siteInformation.myUserInfo?.localUserView
         _displayName = State(wrappedValue: user?.person.displayName ?? "")
         _bio = State(wrappedValue: user?.person.bio ?? "")
         _avatarAttachmentModel = StateObject(wrappedValue: .init(url: user?.person.avatar ?? ""))
         _bannerAttachmentModel = StateObject(wrappedValue: .init(url: user?.person.banner ?? ""))
+        self.showCloseButton = showCloseButton
     }
     
     @ViewBuilder
@@ -172,6 +177,7 @@ struct ProfileSettingsView: View {
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("My Profile")
         .navigationBarBackButtonHidden(hasEdited != .unedited)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 if hasEdited == .edited {
@@ -183,6 +189,10 @@ struct ProfileSettingsView: View {
                             avatarAttachmentModel.url = user.person.avatar ?? ""
                             bannerAttachmentModel.url = user.person.banner ?? ""
                         }
+                    }
+                } else if showCloseButton {
+                    Button("Close", systemImage: Icons.close) {
+                        dismiss()
                     }
                 }
             }

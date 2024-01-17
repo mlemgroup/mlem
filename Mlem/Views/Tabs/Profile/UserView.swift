@@ -8,7 +8,6 @@
 import Dependencies
 import SwiftUI
 
-// swiftlint:disable type_body_length
 struct UserView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
@@ -25,8 +24,6 @@ struct UserView: View {
     @State var user: UserModel
     @State var selectedTab: UserViewTab = .overview
     @State var isLoadingContent: Bool = true
-    
-    @State var isPresentingAccountSwitcher: Bool = false
     
     @StateObject var privatePostTracker: PostTracker
     @StateObject var privateCommentTracker: CommentTracker = .init()
@@ -149,25 +146,10 @@ struct UserView: View {
             confirmationMenuFunction: confirmationMenuFunction
         )
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .secondaryAction) {
                 let functions = user.menuFunctions { user = $0 }
-                if functions.count == 1, let first = functions.first {
-                    MenuButton(menuFunction: first, confirmDestructive: confirmDestructive)
-                } else {
-                    Menu {
-                        ForEach(functions) { item in
-                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                        }
-                    } label: {
-                        Label("Menu", systemImage: Icons.menuCircle)
-                    }
-                }
-            }
-            if isOwnProfile {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Switch Account", systemImage: Icons.switchUser) {
-                        isPresentingAccountSwitcher = true
-                    }
+                ForEach(functions) { item in
+                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                 }
             }
         }
@@ -184,9 +166,9 @@ struct UserView: View {
             }
         }
         .refreshable {
-            await Task {
+            Task {
                 await tryReloadUser()
-            }.value
+            }
         }
         .hoistNavigation {
             if navigationPath.isEmpty {
@@ -206,13 +188,9 @@ struct UserView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationBarColor()
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPresentingAccountSwitcher) {
-            Form {
-                AccountListView()
-            }
-        }
     }
     
     var flairs: some View {
@@ -284,5 +262,3 @@ struct UserView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
-
-// swiftlint:enable type_body_length

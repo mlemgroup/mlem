@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_schema::source::person::PersonSafe
-struct APIPerson: Decodable, Identifiable, Hashable {
+struct APIPerson: Decodable, Identifiable, Hashable, Equatable {
     let id: Int
     let name: String
     var displayName: String?
@@ -29,11 +29,11 @@ struct APIPerson: Decodable, Identifiable, Hashable {
     let instanceId: Int
 }
 
-extension APIPerson: Equatable {
-    static func == (lhs: APIPerson, rhs: APIPerson) -> Bool {
-        lhs.actorId == rhs.actorId
-    }
-}
+// extension APIPerson: Equatable {
+//    static func == (lhs: APIPerson, rhs: APIPerson) -> Bool {
+//        lhs.actorId == rhs.actorId
+//    }
+// }
 
 extension APIPerson {
     var avatarUrl: URL? { LemmyURL(string: avatar)?.url }

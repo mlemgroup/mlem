@@ -27,7 +27,7 @@ struct UserModel {
     // Text
     let name: String
     let displayName: String
-    let bio: String?
+    var bio: String?
     
     // Images
     let avatar: URL?
@@ -214,5 +214,10 @@ extension UserModel: Hashable {
         hasher.combine(blocked)
         hasher.combine(postCount)
         hasher.combine(commentCount)
+        hasher.combine(displayName)
+        hasher.combine(bio)
+        hasher.combine(avatar)
+        hasher.combine(banner)
+        hasher.combine(matrixUserId)
     }
 }
