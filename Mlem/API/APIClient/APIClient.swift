@@ -90,10 +90,14 @@ class APIClient {
     }
     
     @discardableResult
-    func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
-        let urlRequest = try urlRequest(from: request)
+    func perform<Request: APIRequest>(request: Request, overrideToken: String? = nil) async throws -> Request.Response {
+        let urlRequest = try urlRequest(from: request, overrideToken: overrideToken)
+        
+        // print(String(data: urlRequest.httpBody ?? Data(), encoding: .utf8))
 
         let (data, response) = try await execute(urlRequest)
+        
+        print(response)
         
         if let response = response as? HTTPURLResponse {
             if response.statusCode >= 500 { // Error code for server being offline.
@@ -153,13 +157,15 @@ class APIClient {
         }
     }
 
-    private func urlRequest(from defintion: any APIRequest) throws -> URLRequest {
+    private func urlRequest(from defintion: any APIRequest, overrideToken: String?) throws -> URLRequest {
         var urlRequest = URLRequest(url: defintion.endpoint)
         defintion.headers.forEach { header in
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
         
-        if case let .authenticated(_, token) = session {
+        if let overrideToken {
+            urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
+        } else if case let .authenticated(_, token) = session {
             urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 
@@ -210,7 +216,7 @@ extension APIClient {
         // so an external session is required, as the expectation is the client will not yet have a session or
         // the session will be for another account.
         let request = try GetPersonDetailsRequest(session: session, username: username)
-        return try await perform(request: request)
+        return try await perform(request: request, overrideToken: session.token)
     }
     
     func getPersonDetails(for personId: Int, limit: Int?, savedOnly: Bool) async throws -> GetPersonDetailsResponse {
@@ -292,8 +298,7 @@ extension APIClient {
     func saveUserSettings(
         myUserInfo info: APIMyUserInfo
     ) async throws -> SuccessResponse {
-        
-        // Despite all values being optional, we actually have to provide all values 
+        // Despite all values being optional, we actually have to provide all values
         // here otherwise Lemmy returns 'user_already_exists'. Possibly fixed >0.19.0
         // https://github.com/LemmyNet/lemmy/issues/4076
         
@@ -324,10 +329,10 @@ extension APIClient {
                 showReadPosts: localUser.showReadPosts,
                 showScores: localUser.showScores,
                 theme: localUser.theme,
-                auth: try session.token
+                auth: session.token
             )
         )
-        return SuccessResponse(from: try await perform(request: request))
+        return try await SuccessResponse(from: perform(request: request))
     }
     
     @discardableResult
@@ -423,7 +428,7 @@ extension APIClient {
             totpToken: totpToken
         )
         
-        return try await perform(request: request)
+        return try await perform(request: request, overrideToken: "")
     }
     
     @discardableResult

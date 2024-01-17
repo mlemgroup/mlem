@@ -341,6 +341,7 @@ struct AddSavedInstanceView: View {
                 dismiss()
             }
         } catch {
+            print(error)
             handle(error)
         }
     }
