@@ -24,7 +24,6 @@ struct Window: View {
     @StateObject var biometricUnlock = BiometricUnlock()
 
     @State var flow: AppFlow
-    @State var loadedInitialFlow: Bool = false
 
     var body: some View {
         content
@@ -40,12 +39,7 @@ struct Window: View {
                 }
                 flowDidChange()
             }
-            .onAppear {
-                if !loadedInitialFlow {
-                    flowDidChange()
-                    loadedInitialFlow = false
-                }
-            }
+            .onAppear(perform: flowDidChange)
             .environment(\.setAppFlow, setFlow)
     }
 
