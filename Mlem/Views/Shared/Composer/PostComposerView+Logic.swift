@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 extension PostComposerView {
     var hasPostContent: Bool {
@@ -25,7 +25,7 @@ extension PostComposerView {
     
     var isValidURL: Bool {
         guard attachmentModel.url.lowercased().hasPrefix("http://") ||
-                attachmentModel.url.lowercased().hasPrefix("https://") else {
+            attachmentModel.url.lowercased().hasPrefix("https://") else {
             return false // URL protocol is missing
         }
 
@@ -53,10 +53,10 @@ extension PostComposerView {
             isSubmitting = true
             
             if let post = editModel.editPost {
-                let editedPost = await postTracker.edit(post: post, name: postTitle, url: attachmentModel.url, body: postBody, nsfw: isNSFW)
+                await post.edit(name: postTitle, url: attachmentModel.url, body: postBody, nsfw: isNSFW)
                 
                 if let responseCallback = editModel.responseCallback {
-                    responseCallback(editedPost)
+                    responseCallback(post)
                 }
                 
             } else {
