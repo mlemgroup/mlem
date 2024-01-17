@@ -14,9 +14,12 @@ struct AppLockView: View {
 
     @ObservedObject var biometricUnlock: BiometricUnlock
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) var scenePhase
     
     @EnvironmentObject var appState: AppState
     @Environment(\.setAppFlow) private var setFlow
+    
+    @AppStorage("appLock") var appLock: AppLock = .disabled
     
     @State var presentError: Bool = false
     
@@ -27,13 +30,13 @@ struct AppLockView: View {
                 .frame(width: 150, height: 150)
             
             Button {
-                biometricUnlock.requestAuthentication { isEnabled, _ in
-//                    print("APP LOCK STATUS END YO 5: \($biometricUnlock.isUnlocked)")
-                    if isEnabled, let account = accountsTracker.defaultAccount {
+                biometricUnlock.requestAuthentication { result in
+                    if case .success = result, let account = accountsTracker.defaultAccount {
                         print("SET ACCOUNT FLOW YO 2")
                         setFlow(.account(account))
+                    } else if case .failure = result {
+                        presentError = true
                     }
-                    presentError = !isEnabled
                 }
             } label: {
                 HStack {
@@ -50,16 +53,13 @@ struct AppLockView: View {
             }
         }
         .onAppear {
-            biometricUnlock.requestAuthentication { isEnabled, _ in
+            biometricUnlock.requestAuthentication { result in
                 DispatchQueue.main.async {
-//                        print("APP LOCK STATUS END YO 6: \($biometricUnlock.isUnlocked)")
-                    if isEnabled, let account = accountsTracker.defaultAccount {
-//                            biometricUnlock.isUnlocked = isEnabled
-//                            print("SET ACCOUNT FLOW YO: isUnlocked:\($biometricUnlock.isUnlocked)")
+                    if case .success = result, let account = accountsTracker.defaultAccount {
                         setFlow(.account(account))
+                    } else if case .failure = result {
+                        presentError = true
                     }
-                        
-                    presentError = !isEnabled
                 }
             }
         }
@@ -70,6 +70,13 @@ struct AppLockView: View {
                 dismissButton: .default(Text("OK"))
             )
         })
+        .onChange(of: scenePhase) { phase in
+            if phase == .background, appLock != .disabled {
+                Task {
+                    await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
+                }
+            }
+        }
     }
 }
 

@@ -16,39 +16,46 @@ actor BiometricUnlockState {
         isUnlocked
     }
         
-    func setUnlockStatus(isUnlocked: Bool) {
+    func setUnlockStatus(isUnlocked: Bool) async {
         self.isUnlocked = isUnlocked
-        print("SETTING UNLOCK STATUS TO \(isUnlocked) YO: \(self.isUnlocked)")
+        print("SETTING UNLOCK STATUS TO \(isUnlocked) YO")
     }
+}
+
+enum BiometricsError: Error {
+    case unknown
+    case rejected
+    case permissions
 }
 
 class BiometricUnlock: ObservableObject {
     @Published var authorizationError: Error?
     
-    func requestAuthentication(onComplete: @escaping (Bool, Error?) -> Void) {
+    func requestAuthentication(onComplete: @escaping (Result<Void, Error>) -> Void) {
         let context = LAContext()
         var error: NSError?
         
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             let reason = "Please authenticate to unlock app."
             
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, error in
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
                 if success {
-                    BiometricUnlockState().setUnlockStatus(isUnlocked: true)
-                    onComplete(true, error)
-//                    print("APP LOCK STATUS END YO 1 SUCCESS: \(BiometricUnlockState().getUnlockStatus())")
+                    Task {
+                        await BiometricUnlockState().setUnlockStatus(isUnlocked: true)
+                    }
+                    onComplete(.success(()))
                 } else {
-                    BiometricUnlockState().setUnlockStatus(isUnlocked: false)
-                    onComplete(false, error)
-//                    print("APP LOCK STATUS END YO 2 FAIL: \(BiometricUnlockState().getUnlockStatus())")
+                    Task {
+                        await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
+                    }
+                    onComplete(.failure(BiometricsError.rejected))
                 }
             }
         } else {
             Task {
                 await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
-                await print("APP LOCK STATUS END YO 3: \(BiometricUnlockState().getUnlockStatus())")
             }
-            onComplete(false, error)
+            onComplete(.failure(BiometricsError.permissions))
         }
     }
     

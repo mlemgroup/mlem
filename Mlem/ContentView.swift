@@ -169,22 +169,7 @@ struct ContentView: View {
             }
             
             if phase == .active, appLock != .disabled {
-                print("PHASE FLOW YO")
-                Task {
-                    if await BiometricUnlockState().getUnlockStatus() {
-//                        print("VAR: phase: \(phase), appLock: \(appLock), isAppLocked: \(await BiometricUnlockState().isUnlocked) YO")
-                        print("SET APPLOCK FLOW YO")
-                        DispatchQueue.main.async {
-                            setFlow(.applock)
-                        }
-                    }
-                }
-            }
-            
-            if phase == .background, appLock != .disabled {
-                Task {
-                    await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
-                }
+                setFlow(.applock)
             }
         }
 //        .fullScreenCover(isPresented: .constant(isAppLocked)) {
