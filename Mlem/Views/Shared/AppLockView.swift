@@ -22,6 +22,7 @@ struct AppLockView: View {
     
     @State var presentError: Bool = false
     @State var isAuthenticating = false
+    @State var alertMessage: String = ""
 
     var body: some View {
         @State var logoOffset: CGFloat = 0
@@ -56,7 +57,7 @@ struct AppLockView: View {
         .alert(isPresented: $presentError, content: {
             Alert(
                 title: Text("Error"),
-                message: Text("Unable to unlock. Please check FaceID permissions and try again."),
+                message: Text(alertMessage),
                 dismissButton: .default(Text("OK"))
             )
         })
@@ -66,9 +67,13 @@ struct AppLockView: View {
         isAuthenticating = true
         biometricUnlock.requestAuthentication { result in
             isAuthenticating = false
-            if case .success = result, let account = accountsTracker.defaultAccount {
-                setFlow(.account(account))
-            } else if case .failure = result {
+            switch result {
+            case .success:
+                if let account = accountsTracker.defaultAccount {
+                    setFlow(.account(account))
+                }
+            case let .failure(error):
+                alertMessage = error.localizedDescription
                 presentError = true
             }
         }

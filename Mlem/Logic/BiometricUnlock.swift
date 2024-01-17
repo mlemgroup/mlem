@@ -21,10 +21,21 @@ actor BiometricUnlockState {
     }
 }
 
-enum BiometricsError: Error {
+enum BiometricsError: LocalizedError {
     case unknown
     case rejected
     case permissions
+    
+    var errorDescription: String? {
+        switch self {
+        case .permissions:
+            return "Please check Face ID permissions."
+        case .rejected:
+            return "Please try again."
+        case .unknown:
+            return "An unknown error has occured."
+        }
+    }
 }
 
 @MainActor
