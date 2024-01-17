@@ -41,19 +41,19 @@ class BiometricUnlock: ObservableObject {
             
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
                 if success {
-                    Task { @MainActor [weak self] in
+                    Task {
                         await BiometricUnlockState().setUnlockStatus(isUnlocked: true)
                         onComplete(.success(()))
                     }
                 } else {
-                    Task { @MainActor [weak self] in
+                    Task {
                         await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
                         onComplete(.failure(BiometricsError.rejected))
                     }
                 }
             }
         } else {
-            Task { @MainActor [weak self] in
+            Task {
                 await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
                 onComplete(.failure(BiometricsError.permissions))
             }

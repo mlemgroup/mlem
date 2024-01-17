@@ -24,6 +24,7 @@ struct Window: View {
     @StateObject var biometricUnlock = BiometricUnlock()
 
     @State var flow: AppFlow
+    @State var loadedInitialFlow: Bool = false
 
     var body: some View {
         content
@@ -39,7 +40,12 @@ struct Window: View {
                 }
                 flowDidChange()
             }
-            .onAppear(perform: flowDidChange)
+            .onAppear {
+                if !loadedInitialFlow {
+                    flowDidChange()
+                    loadedInitialFlow = false
+                }
+            }
             .environment(\.setAppFlow, setFlow)
     }
 
@@ -89,6 +95,7 @@ struct Window: View {
             .environmentObject(layoutWidgetTracker)
     }
     
+    @MainActor
     private func setFlow(_ flow: AppFlow) {
         transition(flow)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

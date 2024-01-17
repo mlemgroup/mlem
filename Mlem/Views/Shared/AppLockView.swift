@@ -68,13 +68,6 @@ struct AppLockView: View {
                 dismissButton: .default(Text("OK"))
             )
         })
-        .onChange(of: scenePhase) { phase in
-            if phase == .background, appLock != .disabled {
-                Task {
-                    await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
-                }
-            }
-        }
     }
 }
 

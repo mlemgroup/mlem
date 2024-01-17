@@ -30,6 +30,7 @@ struct ContentView: View {
     @State private var tabSelection: TabSelection = .feeds
     @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
     @GestureState private var isDetectingLongPress = false
+    @State private var isAppLockAuthenticated: Bool = true
     
     @State private var isPresentingAccountSwitcher: Bool = false
     @State private var tokenRefreshAccount: SavedAccount?
@@ -168,13 +169,15 @@ struct ContentView: View {
                 isPresentingAccountSwitcher = false
             }
             
-            if phase == .active, appLock != .disabled {
+            if phase == .active, appLock != .disabled, !isAppLockAuthenticated {
+                isAppLockAuthenticated = true
+                setFlow(.applock)
+            }
+            
+            if phase == .background, appLock != .disabled {
+                isAppLockAuthenticated = false
                 Task {
-                    if await BiometricUnlockState().getUnlockStatus() {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                            setFlow(.applock)
-                        }
-                    }
+                    await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
                 }
             }
         }
