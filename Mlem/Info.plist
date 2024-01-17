@@ -20,7 +20,7 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSFaceIDUsageDescription</key>
-	<string>$(PRODUCT_NAME) requres Face ID permissions for app locking</string>
+	<string>$(PRODUCT_NAME) requires Face ID permissions for app locking feature.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string></string>
 	<key>NSAppTransportSecurity</key>
