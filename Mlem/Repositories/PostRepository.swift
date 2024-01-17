@@ -56,7 +56,7 @@ class PostRepository {
         return PostModel(from: post, read: success ? read : post.read)
     }
 
-    /// Rates a given post. Does not care what the current vote state is; sends the given request no matter what (i.e., calling this with operation .upvote on an already upvoted post will not send a .resetVote, but will instead send a second idempotent .upvote
+    /// Rates a given post. Does not care what the current vote state is; sends the given request no matter what (i.e., calling this with operation `.upvote` on an already upvoted post will not send a `.resetVote`, but will instead send a second idempotent `.upvote`)
     /// - Parameters:
     ///   - postId: id of the post to rate
     ///   - operation: ScoringOperation to apply to the given post id
@@ -73,7 +73,9 @@ class PostRepository {
     /// - Returns: PostModel representing the new state of the post
     func savePost(postId: Int, shouldSave: Bool) async throws -> PostModel {
         let postView = try await apiClient.savePost(id: postId, shouldSave: shouldSave)
-        return PostModel(from: postView)
+        let ret: PostModel = .init(from: postView)
+        ret.read = true // the API call sets read to true but doesn't include that in the response so we do it here
+        return ret
     }
     
     func deletePost(postId: Int, shouldDelete: Bool) async throws -> PostModel {

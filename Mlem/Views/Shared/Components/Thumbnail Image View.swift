@@ -11,7 +11,6 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    @EnvironmentObject var postTracker: PostTracker
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
@@ -76,7 +75,7 @@ struct ThumbnailImageView: View {
     /// Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
-            await postTracker.markRead(post: post)
+            await post.markRead(true)
         }
     }
 }

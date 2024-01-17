@@ -11,6 +11,8 @@ import SwiftUI
 
 /// View for post feeds aggregating multiple communities (all, local, subscribed, saved)
 struct AggregateFeedView: View {
+    @Dependency(\.errorHandler) var errorHandler
+    
     @StateObject var postTracker: StandardPostTracker
     
     // TODO: sorting
@@ -36,8 +38,29 @@ struct AggregateFeedView: View {
             .onAppear {
                 Task { await postTracker.loadMoreItems() }
             }
-            .background(Color.secondarySystemBackground)
+            .refreshable {
+                await Task {
+                    do {
+                        _ = try await postTracker.refresh(clearBeforeRefresh: false)
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }.value
+            }
+            .background {
+                VStack(spacing: 0) {
+                    Color.systemBackground
+                    Color.secondarySystemBackground
+                }
+            }
             .fancyTabScrollCompatible()
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Feed!")
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarColor(visibility: .automatic)
     }
     
     @ViewBuilder

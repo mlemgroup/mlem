@@ -41,6 +41,8 @@ struct FeedPost: View {
     
     @AppStorage("reakMarkStyle") var readMarkStyle: ReadMarkStyle = .bar
     @AppStorage("readBarThickness") var readBarThickness: Int = 3
+    
+    @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
 
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var editorTracker: EditorTracker
@@ -289,7 +291,7 @@ struct FeedPost: View {
     }
 
     func savePost() async {
-        await postTracker.toggleSave(post: post)
+        await post.toggleSave(upvoteOnSave: upvoteOnSave)
     }
     
     func reportPost() {

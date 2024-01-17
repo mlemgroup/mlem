@@ -7,6 +7,7 @@
 
 import Dependencies
 import Foundation
+import Nuke
 
 // TODO:
 // - re-enable hidden item counts
@@ -18,6 +19,13 @@ class StandardPostTracker: StandardTracker<PostModel> {
     var unreadOnly: Bool
     var feedType: NewFeedType
     private(set) var postSortType: PostSortType
+    
+    // prefetching
+    private let prefetcher = ImagePrefetcher(
+        pipeline: ImagePipeline.shared,
+        destination: .memoryCache,
+        maxConcurrentRequestCount: 40
+    )
     
     init(internetSpeed: InternetSpeed, sortType: PostSortType, unreadOnly: Bool, feedType: NewFeedType) {
         self.unreadOnly = unreadOnly
@@ -37,6 +45,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
             type: feedType.toLegacyFeedType,
             limit: internetSpeed.pageSize
         )
+        preloadImages(items)
         return (items, cursor)
     }
     
@@ -50,6 +59,42 @@ class StandardPostTracker: StandardTracker<PostModel> {
             type: feedType.toLegacyFeedType,
             limit: internetSpeed.pageSize
         )
+        preloadImages(items)
         return (items, cursor)
+    }
+    
+    private func preloadImages(_ newPosts: [PostModel]) {
+        URLSession.shared.configuration.urlCache = AppConstants.urlCache
+        var imageRequests: [ImageRequest] = []
+        for post in newPosts {
+            // preload user and community avatars--fetching both because we don't know which we'll need, but these are super tiny
+            // so it's probably not an API crime, right?
+            if let communityAvatarLink = post.community.avatar {
+                imageRequests.append(ImageRequest(url: communityAvatarLink.withIconSize(Int(AppConstants.smallAvatarSize * 2))))
+            }
+            
+            if let userAvatarLink = post.creator.avatar {
+                imageRequests.append(ImageRequest(url: userAvatarLink.withIconSize(Int(AppConstants.largeAvatarSize * 2))))
+            }
+            
+            switch post.postType {
+            case let .image(url):
+                // images: only load the image
+                imageRequests.append(ImageRequest(url: url, priority: .high))
+            case let .link(url):
+                // websites: load image and favicon
+                if let baseURL = post.post.linkUrl?.host,
+                   let favIconURL = URL(string: "https://www.google.com/s2/favicons?sz=64&domain=\(baseURL)") {
+                    imageRequests.append(ImageRequest(url: favIconURL))
+                }
+                if let url {
+                    imageRequests.append(ImageRequest(url: url, priority: .high))
+                }
+            default:
+                break
+            }
+        }
+        
+        prefetcher.startPrefetching(with: imageRequests)
     }
 }

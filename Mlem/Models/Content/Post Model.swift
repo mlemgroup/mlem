@@ -21,8 +21,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
     var community: CommunityModel
     @Published var votes: VotesModel
     var numReplies: Int
-    var saved: Bool
-    var read: Bool
+    @Published var saved: Bool
+    @Published var read: Bool
     var published: Date
     var updated: Date?
     var links: [LinkType]
@@ -109,25 +109,28 @@ class PostModel: ContentIdentifiable, ObservableObject {
         votes = newVotes
     }
     
+    @MainActor
+    func setRead(_ newRead: Bool) {
+        read = newRead
+    }
+    
+    @MainActor
+    func setSaved(_ newSaved: Bool) {
+        saved = newSaved
+    }
+    
     // MARK: Interaction Methods
     
     func vote(inputOp: ScoringOperation) async {
-        guard !voting else {
-            return
-        }
-        
-        voting = true
-        defer { voting = false }
-        
         hapticManager.play(haptic: .lightSuccess, priority: .low)
         let operation = votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
         
-        let original: PostModel = .init(from: self)
-        
         // state fake
+        let original: PostModel = .init(from: self)
         await setVotes(votes.applyScoringOperation(operation: operation))
-        hapticManager.play(haptic: .lightSuccess, priority: .low)
+        await setRead(true)
         
+        // API call
         do {
             let updatedPost = try await postRepository.ratePost(postId: postId, operation: operation)
             await reinit(from: updatedPost)
@@ -135,6 +138,76 @@ class PostModel: ContentIdentifiable, ObservableObject {
             hapticManager.play(haptic: .failure, priority: .high)
             errorHandler.handle(error)
             await reinit(from: original)
+        }
+    }
+    
+    func markRead(_ newRead: Bool) async {
+        // state fake
+        let original: PostModel = .init(from: self)
+        await setRead(newRead)
+        
+        // API call
+        do {
+            let updatedPost = try await postRepository.markRead(post: self, read: newRead)
+            await reinit(from: updatedPost)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
+        }
+    }
+    
+    func toggleSave(upvoteOnSave: Bool) async {
+        let shouldSave: Bool = !saved
+        
+        // state fake
+        let original: PostModel = .init(from: self)
+        await setSaved(shouldSave)
+        await setRead(true)
+        if upvoteOnSave, votes.myVote != .upvote {
+            await setVotes(votes.applyScoringOperation(operation: .upvote))
+        }
+        
+        // API call
+        do {
+            let saveResponse = try await postRepository.savePost(postId: postId, shouldSave: shouldSave)
+            
+            if shouldSave, upvoteOnSave {
+                let voteResponse = try await postRepository.ratePost(postId: postId, operation: .upvote)
+                await reinit(from: voteResponse)
+            } else {
+                await reinit(from: saveResponse)
+            }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
+        }
+    }
+    
+    func edit(
+        name: String?,
+        url: String?,
+        body: String?,
+        nsfw: Bool?
+    ) async {
+        // TODO: state fake
+        
+        // API call
+        do {
+            hapticManager.play(haptic: .success, priority: .high)
+            let response = try await postRepository.editPost(postId: postId, name: name, url: url, body: body, nsfw: nsfw)
+            await reinit(from: response)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
+    // TODO: implement
+    func delete(updateTrackers: (() async -> Void)?) async {
+        if let updateTrackers {
+            await updateTrackers()
         }
     }
     
