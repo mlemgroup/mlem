@@ -28,6 +28,7 @@ enum BiometricsError: Error {
     case permissions
 }
 
+@MainActor
 class BiometricUnlock: ObservableObject {
     @Published var authorizationError: Error?
     
@@ -42,20 +43,20 @@ class BiometricUnlock: ObservableObject {
                 if success {
                     Task {
                         await BiometricUnlockState().setUnlockStatus(isUnlocked: true)
+                        onComplete(.success(()))
                     }
-                    onComplete(.success(()))
                 } else {
                     Task {
                         await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
+                        onComplete(.failure(BiometricsError.rejected))
                     }
-                    onComplete(.failure(BiometricsError.rejected))
                 }
             }
         } else {
             Task {
                 await BiometricUnlockState().setUnlockStatus(isUnlocked: false)
+                onComplete(.failure(BiometricsError.permissions))
             }
-            onComplete(.failure(BiometricsError.permissions))
         }
     }
     

@@ -32,7 +32,6 @@ struct AppLockView: View {
             Button {
                 biometricUnlock.requestAuthentication { result in
                     if case .success = result, let account = accountsTracker.defaultAccount {
-                        print("SET ACCOUNT FLOW YO 2")
                         setFlow(.account(account))
                     } else if case .failure = result {
                         presentError = true
@@ -66,7 +65,7 @@ struct AppLockView: View {
         .alert(isPresented: $presentError, content: {
             Alert(
                 title: Text("Error"),
-                message: Text("Unable to unlock. Please check FaceID permissions."),
+                message: Text("Unable to unlock. Please check FaceID permissions and try again."),
                 dismissButton: .default(Text("OK"))
             )
         })
