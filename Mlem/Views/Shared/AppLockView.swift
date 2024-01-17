@@ -10,6 +10,9 @@ import SwiftUI
 
 struct AppLockView: View {
     @ObservedObject var biometricUnlock: BiometricUnlock
+    @Environment(\.dismiss) private var dismiss
+    
+    @State var presentError: Bool = false
     
     var body: some View {
         VStack(spacing: 30) {
@@ -18,7 +21,9 @@ struct AppLockView: View {
                 .frame(width: 150, height: 150)
             
             Button {
-                biometricUnlock.requestUnlock()
+                biometricUnlock.requestPermissions { isEnabled, _ in
+                    presentError = !isEnabled
+                }
             } label: {
                 HStack {
                     Spacer()
@@ -34,8 +39,17 @@ struct AppLockView: View {
             }
         }
         .onAppear {
-            biometricUnlock.requestUnlock()
+            biometricUnlock.requestPermissions { isEnabled, _ in
+                presentError = !isEnabled
+            }
         }
+        .alert(isPresented: $presentError, content: {
+            Alert(
+                title: Text("Error"),
+                message: Text("Unable to enable Applock. Please enable FaceID permissions."),
+                dismissButton: .default(Text("OK"))
+            )
+        })
     }
 }
 

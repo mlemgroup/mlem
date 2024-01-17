@@ -28,7 +28,9 @@ struct GeneralSettingsView: View {
     @EnvironmentObject var appState: AppState
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
-
+    
+    @State var showErrorAlert: Bool = false
+    
     var body: some View {
         List {
             Section {
@@ -170,5 +172,23 @@ struct GeneralSettingsView: View {
         .navigationTitle("General")
         .navigationBarColor()
         .hoistNavigation()
+        .onChange(of: appLock) { _ in
+            if appLock != .disabled {
+                BiometricUnlock().requestPermissions { isEnabled, _ in
+                    if !isEnabled {
+                        showErrorAlert = true
+                        BiometricUnlock().isUnlocked = true
+                        appLock = .disabled
+                    }
+                }
+            }
+        }
+        .alert(isPresented: $showErrorAlert, content: {
+            Alert(
+                title: Text("Error"),
+                message: Text("Unable to enable setting. Please check app permissions."),
+                dismissButton: .default(Text("OK"))
+            )
+        })
     }
 }

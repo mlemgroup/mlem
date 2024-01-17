@@ -13,6 +13,30 @@ class BiometricUnlock: ObservableObject {
     @Published var isUnlocked: Bool = false
     @Published var authorizationError: Error?
     
+    func requestPermissions(onComplete: @escaping ((Bool, Error?) -> Void)) {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Please authenticate to unlock app."
+            
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, error in
+                DispatchQueue.main.sync {
+                    if success {
+                        self.isUnlocked = true
+                        onComplete(true, error)
+                    } else {
+                        self.isUnlocked = false
+                        onComplete(false, error)
+                    }
+                }
+            }
+        } else {
+            isUnlocked = false
+            onComplete(false, error)
+        }
+    }
+    
     func requestUnlock() {
         let context = LAContext()
         var error: NSError?

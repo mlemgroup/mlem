@@ -37,6 +37,9 @@ struct ContentView: View {
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
+    @AppStorage("appLock") var appLock: AppLock = .disabled
+
+    @State var biometricUnlock = BiometricUnlock()
     
     @StateObject private var quickLookState: ImageDetailSheetState = .init()
     
@@ -48,6 +51,14 @@ struct ContentView: View {
         } else {
             return nil
         }
+    }
+    
+    var isAppLocked: Bool {
+        if appLock != .disabled, !biometricUnlock.isUnlocked {
+            return true
+        }
+        
+        return false
     }
     
     var body: some View {
@@ -76,18 +87,18 @@ struct ContentView: View {
                 }
                     
                 ProfileView(user: myUser)
-                .fancyTabItem(tag: TabSelection.profile) {
-                    FancyTabBarLabel(
-                        tag: TabSelection.profile,
-                        customText: appState.tabDisplayName,
-                        symbolConfiguration: .init(
-                            symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                            activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                            remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                    .fancyTabItem(tag: TabSelection.profile) {
+                        FancyTabBarLabel(
+                            tag: TabSelection.profile,
+                            customText: appState.tabDisplayName,
+                            symbolConfiguration: .init(
+                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                                remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
+                            )
                         )
-                    )
-                    .simultaneousGesture(accountSwitchLongPress)
-                }
+                        .simultaneousGesture(accountSwitchLongPress)
+                    }
                 
                 SearchRoot()
                     .fancyTabItem(tag: TabSelection.search) {
@@ -164,6 +175,9 @@ struct ContentView: View {
             if phase != .active {
                 isPresentingAccountSwitcher = false
             }
+        }
+        .fullScreenCover(isPresented: .constant(isAppLocked)) {
+            AppLockView(biometricUnlock: biometricUnlock)
         }
     }
     
