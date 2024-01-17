@@ -20,7 +20,8 @@ struct AppLockView: View {
     
     @AppStorage("appLock") var appLock: AppLock = .disabled
     
-    @State var presentError: Bool = false
+    @State var isErrorVisible: Bool = false
+    @State var isButtonHidden = true
     @State var isAuthenticating = false
     @State var alertMessage: String = ""
 
@@ -32,6 +33,7 @@ struct AppLockView: View {
                 .frame(width: 150, height: 150)
                 .animation(.spring(), value: isAuthenticating)
                 .offset(y: isAuthenticating ? 0 : 300)
+            
             Group {
                 Button {
                     authenticate()
@@ -50,11 +52,12 @@ struct AppLockView: View {
                 }
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
+            .opacity(isButtonHidden ? 0 : 1)
         }
         .onAppear {
             authenticate()
         }
-        .alert(isPresented: $presentError, content: {
+        .alert(isPresented: $isErrorVisible, content: {
             Alert(
                 title: Text("Error"),
                 message: Text(alertMessage),
@@ -65,6 +68,7 @@ struct AppLockView: View {
     
     func authenticate() {
         isAuthenticating = true
+        isButtonHidden = true
         biometricUnlock.requestAuthentication { result in
             isAuthenticating = false
             switch result {
@@ -74,7 +78,8 @@ struct AppLockView: View {
                 }
             case let .failure(error):
                 alertMessage = error.localizedDescription
-                presentError = true
+                isErrorVisible = true
+                isButtonHidden = false
             }
         }
     }
