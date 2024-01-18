@@ -63,6 +63,8 @@ struct PostComposerView: View {
         self._postBody = State(initialValue: editModel.editPost?.post.body ?? "")
         self._isNSFW = State(initialValue: editModel.editPost?.post.nsfw ?? false)
         self._attachmentModel = StateObject(wrappedValue: .init(url: editModel.editPost?.post.linkUrl?.description ?? ""))
+        
+        print(siteInformation.slurFilterRegex)
     }
 
     var body: some View {
