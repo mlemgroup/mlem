@@ -16,7 +16,6 @@ struct MlemApp: App {
     
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-    @AppStorage("appLock") var appLock: AppLock = .disabled
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
