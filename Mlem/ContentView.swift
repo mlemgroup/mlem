@@ -177,7 +177,7 @@ struct ContentView: View {
                 isPresentingAccountSwitcher = false
             }
             
-            if phase == .background, appLock != .disabled {
+            if phase == .background || phase == .inactive, appLock != .disabled {
                 biometricUnlock.isUnlocked = false
             }
         }

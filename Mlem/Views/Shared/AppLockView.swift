@@ -13,7 +13,7 @@ struct AppLockView: View {
     @Dependency(\.accountsTracker) var accountsTracker
 
     @ObservedObject var biometricUnlock: BiometricUnlock
-    @Environment(\.setAppFlow) private var setFlow
+    @Environment(\.scenePhase) var phase
     
     @AppStorage("appLock") var appLock: AppLock = .disabled
     
@@ -52,7 +52,9 @@ struct AppLockView: View {
             .opacity(isButtonHidden ? 0 : 1)
         }
         .onAppear {
-            authenticate()
+            if phase == .active {
+                authenticate()
+            }
         }
         .alert(isPresented: $isErrorVisible, content: {
             Alert(
@@ -61,6 +63,11 @@ struct AppLockView: View {
                 dismissButton: .default(Text("OK"))
             )
         })
+        .onChange(of: phase) { phase in
+            if phase == .active {
+                authenticate()
+            }
+        }
     }
     
     func authenticate() {
@@ -72,7 +79,7 @@ struct AppLockView: View {
             case .success: return
             case let .failure(error):
                 alertMessage = error.localizedDescription
-                isErrorVisible = true
+                isErrorVisible = (phase == .active) // only display when app is visible
                 isButtonHidden = false
             }
         }
