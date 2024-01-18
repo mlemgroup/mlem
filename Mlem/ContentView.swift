@@ -30,7 +30,6 @@ struct ContentView: View {
     @State private var tabSelection: TabSelection = .feeds
     @State private var tabNavigation: any FancyTabBarSelection = TabSelection._tabBarNavigation
     @GestureState private var isDetectingLongPress = false
-    @State private var isAppLockAuthenticated: Bool = true
     
     @State private var isPresentingAccountSwitcher: Bool = false
     @State private var tokenRefreshAccount: SavedAccount?
