@@ -12,14 +12,6 @@ struct ProfileView: View {
     // appstorage
     @Dependency(\.siteInformation) var siteInformation
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
-    
-    @State var user: UserModel?
-    
-    init() {
-        if let person = siteInformation.myUserInfo?.localUserView.person {
-            self._user = .init(wrappedValue: UserModel(from: person))
-        }
-    }
 
     @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var navigation: Navigation = .init()
@@ -30,8 +22,8 @@ struct ProfileView: View {
     var body: some View {
         ScrollViewReader { proxy in
             NavigationStack(path: $profileTabNavigation.path) {
-                if let user {
-                    UserView(user: user)
+                if let person = siteInformation.myUserInfo?.localUserView.person {
+                    UserView(user: UserModel(from: person))
                         .handleLemmyViews()
                         .environmentObject(profileTabNavigation)
                         .tabBarNavigationEnabled(.profile, navigation)
@@ -56,12 +48,6 @@ struct ProfileView: View {
                             }
                         }
                         .sheet(isPresented: $isPresentingProfileEditor) {
-                            if let person = siteInformation.myUserInfo?.localUserView.person {
-                                self.user = UserModel(from: person)
-                            } else {
-                                self.user = nil
-                            }
-                        } content: {
                             NavigationStack {
                                 ProfileSettingsView(showCloseButton: true)
                             }
@@ -75,13 +61,6 @@ struct ProfileView: View {
             .environment(\.navigationPathWithRoutes, $profileTabNavigation.path)
             .environment(\.scrollViewProxy, proxy)
             .environment(\.navigation, navigation)
-            .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
-                if let newValue {
-                    self.user?.bio = newValue.bio
-                } else {
-                    self.user = nil
-                }
-            }
         }
     }
 }

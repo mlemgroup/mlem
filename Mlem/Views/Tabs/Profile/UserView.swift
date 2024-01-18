@@ -170,6 +170,13 @@ struct UserView: View {
                 await tryReloadUser()
             }
         }
+        .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
+            if isOwnProfile {
+                if let newValue {
+                    self.user.update(with: newValue)
+                }
+            }
+        }
         .hoistNavigation {
             if navigationPath.isEmpty {
                 withAnimation {

@@ -17,37 +17,37 @@ struct UserModel {
     @Dependency(\.notifier) var notifier
     
     @available(*, deprecated, message: "Use attributes of the UserModel directly instead.")
-    var person: APIPerson
+    var person: APIPerson!
     
     // Ids
-    let userId: Int
-    let instanceId: Int
-    let matrixUserId: String?
+    var userId: Int!
+    var instanceId: Int!
+    var matrixUserId: String?
     
     // Text
-    let name: String
-    let displayName: String
+    var name: String!
+    var displayName: String!
     var bio: String?
     
     // Images
-    let avatar: URL?
-    let banner: URL?
+    var avatar: URL?
+    var banner: URL?
     
     // State
-    let banned: Bool
-    let local: Bool
-    let deleted: Bool
-    let isBot: Bool
-    var blocked: Bool
+    var banned: Bool!
+    var local: Bool!
+    var deleted: Bool!
+    var isBot: Bool!
+    var blocked: Bool!
 
     // Dates
-    let creationDate: Date
-    let updatedDate: Date?
-    let banExpirationDate: Date?
+    var creationDate: Date!
+    var updatedDate: Date?
+    var banExpirationDate: Date?
     
     // URLs
-    let profileUrl: URL
-    let sharedInboxUrl: URL?
+    var profileUrl: URL!
+    var sharedInboxUrl: URL?
     
     // From APIPersonView
     var isAdmin: Bool?
@@ -69,15 +69,28 @@ struct UserModel {
     /// Creates a UserModel from an GetPersonDetailsResponse
     /// - Parameter response: GetPersonDetailsResponse to create a UserModel representation of
     init(from response: GetPersonDetailsResponse) {
-        self.init(from: response.personView)
-        self.moderatedCommunities = response.moderates.map { CommunityModel(from: $0.community) }
+        self.update(with: response)
     }
     
     /// Creates a UserModel from an APIPersonView
     /// - Parameter apiPersonView: APIPersonView to create a UserModel representation of
     init(from personView: APIPersonView) {
-        self.init(from: personView.person)
-        
+        self.update(with: personView)
+    }
+    
+    /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
+    /// those are only accessable from APIPersonView.
+    /// - Parameter apiPerson: APIPerson to create a UserModel representation of
+    init(from person: APIPerson) {
+        update(with: person)
+    }
+    
+    mutating func update(with response: GetPersonDetailsResponse) {
+        self.moderatedCommunities = response.moderates.map { CommunityModel(from: $0.community) }
+        self.update(with: response.personView)
+    }
+    
+    mutating func update(with personView: APIPersonView) {
         self.postCount = personView.counts.postCount
         self.commentCount = personView.counts.commentCount
              
@@ -86,12 +99,11 @@ struct UserModel {
         if (siteInformation.version ?? .infinity) > .init("0.19.0") {
             self.isAdmin = personView.isAdmin
         }
+        
+        self.update(with: personView.person)
     }
     
-    /// Creates a UserModel from an APIPerson. Note that using this initialiser nullifies count values, since
-    /// those are only accessable from APIPersonView.
-    /// - Parameter apiPerson: APIPerson to create a UserModel representation of
-    init(from person: APIPerson) {
+    mutating func update(with person: APIPerson) {
         self.person = person
         
         self.userId = person.id
@@ -121,7 +133,9 @@ struct UserModel {
         
         // Annoyingly, PersonView doesn't include whether the user is blocked so we can't
         // actually determine this without making extra requests...
-        self.blocked = false
+        if self.blocked == nil {
+            self.blocked = false
+        }
     }
     
     // Once we've done other model types we should stop this from relying on API types
@@ -179,7 +193,7 @@ struct UserModel {
     
     var fullyQualifiedUsername: String? {
         if let host = self.profileUrl.host() {
-            return "\(name)@\(host)"
+            return "\(name!)@\(host)"
         }
         return nil
     }
