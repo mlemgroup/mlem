@@ -51,7 +51,6 @@ struct MarkdownView: View {
         self.isInline = isInline
         self.alignment = alignment
         do {
-            print("START")
             self.blocks = try MarkdownView.parseMarkdownForImages(text: text)
         } catch {
             print("Regex error occured!")
