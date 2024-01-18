@@ -73,12 +73,8 @@ struct MarkdownView: View {
         case .text(let text):
             renderAsMarkdown(text: text, theme: theme)
         case .image(url: let imageUrl):
-            if replaceImagesWithEmoji {
-                renderAsMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme)
-            } else {
-                if let imageUrl = URL(string: imageUrl) {
-                    imageView(url: imageUrl)
-                }
+            if let imageUrl = URL(string: imageUrl) {
+                imageView(url: imageUrl)
             }
         case .linkedImage(imageUrl: let imageUrl, linkUrl: let linkUrl):
             if let imageUrl = URL(string: imageUrl), let linkUrl = URL(string: linkUrl) {
@@ -98,10 +94,14 @@ struct MarkdownView: View {
                         .padding(.vertical, 4)
                     )
             } else if !MarkdownView.hiddenImageDomains.contains(host) {
-                return AnyView(
-                    CachedImage(url: url, shouldExpand: shouldExpand)
-                        .applyNsfwOverlay(isNsfw)
+                if replaceImagesWithEmoji {
+                    return AnyView(renderAsMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme))
+                } else {
+                    return AnyView(
+                        CachedImage(url: url, shouldExpand: shouldExpand)
+                            .applyNsfwOverlay(isNsfw)
                     )
+                }
             }
         }
         return nil
