@@ -22,13 +22,14 @@ struct AggregateFeedView: View {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
+        @AppStorage("showReadPosts") var showReadPosts = true
         
         // TODO: ERIC handle sort type
         
         self._postTracker = .init(wrappedValue: .init(
             internetSpeed: internetSpeed,
             sortType: .hot,
-            unreadOnly: false,
+            showReadPosts: showReadPosts,
             feedType: feedType
         ))
     }

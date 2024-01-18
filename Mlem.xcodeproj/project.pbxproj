@@ -465,6 +465,7 @@
 		CDC65D8F2A86B6DD007205E5 /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC65D8E2A86B6DD007205E5 /* DeleteUser.swift */; };
 		CDC65D912A86B830007205E5 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC65D902A86B830007205E5 /* DeleteAccountView.swift */; };
 		CDC6A8CA2A6F1C8D00CC11AC /* AssociatedIconProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6A8C92A6F1C8D00CC11AC /* AssociatedIconProtocol.swift */; };
+		CDCA28D42B58AF53009D9F54 /* NEW PostFeedView+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA28D32B58AF53009D9F54 /* NEW PostFeedView+MenuFunctions.swift */; };
 		CDCBD7242A8D62FF00387A2C /* InstanceMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7232A8D62FF00387A2C /* InstanceMetadata.swift */; };
 		CDCBD7262A8D69A200387A2C /* Instance Picker View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7252A8D69A200387A2C /* Instance Picker View.swift */; };
 		CDCBD7282A8D6B7700387A2C /* Instance Picker View Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */; };
@@ -1012,6 +1013,7 @@
 		CDC65D8E2A86B6DD007205E5 /* DeleteUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteUser.swift; sourceTree = "<group>"; };
 		CDC65D902A86B830007205E5 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		CDC6A8C92A6F1C8D00CC11AC /* AssociatedIconProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociatedIconProtocol.swift; sourceTree = "<group>"; };
+		CDCA28D32B58AF53009D9F54 /* NEW PostFeedView+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NEW PostFeedView+MenuFunctions.swift"; sourceTree = "<group>"; };
 		CDCBD7232A8D62FF00387A2C /* InstanceMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceMetadata.swift; sourceTree = "<group>"; };
 		CDCBD7252A8D69A200387A2C /* Instance Picker View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Picker View.swift"; sourceTree = "<group>"; };
 		CDCBD7272A8D6B7700387A2C /* Instance Picker View Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance Picker View Logic.swift"; sourceTree = "<group>"; };
@@ -2498,6 +2500,7 @@
 				CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */,
 				CDBCBA1F2B537A4B0070F60D /* NEW PostFeedView.swift */,
 				CDBCBA232B54A5F40070F60D /* NEW NoPostsView.swift */,
+				CDCA28D32B58AF53009D9F54 /* NEW PostFeedView+MenuFunctions.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3225,6 +3228,7 @@
 				6D7782362A48EED8008AC1BF /* APIPrivateMessage.swift in Sources */,
 				CDE3BA892A8C64BD00B972E2 /* Collapsible Text Item.swift in Sources */,
 				50CC4A742A9CB10B0074C845 /* TimestampedValue.swift in Sources */,
+				CDCA28D42B58AF53009D9F54 /* NEW PostFeedView+MenuFunctions.swift in Sources */,
 				505240E72A88D36D00EA4558 /* SectionIndexTitles.swift in Sources */,
 				5064D0452A71549C00B22EE3 /* NotificationMessage.swift in Sources */,
 				E4F0B56F2ABD00A000BC3E4A /* View+PresentationBackgroundInteraction.swift in Sources */,

@@ -11,6 +11,8 @@ import SwiftUI
 struct NewPostFeedView: View {
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
+    @AppStorage("postSize") var postSize: PostSize = .large
     
     @ObservedObject var postTracker: StandardPostTracker
     @Binding var postSortType: PostSortType
@@ -19,8 +21,37 @@ struct NewPostFeedView: View {
     @State var errorDetails: ErrorDetails?
     
     var body: some View {
+        content
+            .onChange(of: showReadPosts) { newValue in
+                if newValue {
+                    Task {
+                        await postTracker.removeFilter(.read)
+                    }
+                } else {
+                    Task {
+                        await postTracker.applyFilter(.read)
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    ForEach(genEllipsisMenuFunctions()) { menuFunction in
+                        MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                    }
+                    Menu {
+                        ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
+                            MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                        }
+                    } label: {
+                        Label("Post Size", systemImage: Icons.postSizeSetting)
+                    }
+                }
+            }
+    }
+    
+    var content: some View {
         LazyVStack(spacing: 0) {
-            if postTracker.items.isEmpty { // && !(postTracker.loadingState == .loading) {
+            if postTracker.items.isEmpty {
                 noPostsView()
             } else {
                 ForEach(postTracker.items, id: \.uid) { feedPost(for: $0) }
