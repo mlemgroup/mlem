@@ -42,11 +42,7 @@ struct ContentView: View {
     @StateObject var biometricUnlock = BiometricUnlock()
     
     var isAppLocked: Bool {
-        if appLock != .disabled, !biometricUnlock.isUnlocked {
-            return true
-        }
-        
-        return false
+        appLock != .disabled && !biometricUnlock.isUnlocked
     }
     
     @StateObject private var quickLookState: ImageDetailSheetState = .init()
