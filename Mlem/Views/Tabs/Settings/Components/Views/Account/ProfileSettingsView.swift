@@ -232,5 +232,6 @@ struct ProfileSettingsView: View {
         }
         .fancyTabScrollCompatible()
         .hoistNavigation()
+        .interactiveDismissDisabled(hasEdited != .unedited)
     }
 }
