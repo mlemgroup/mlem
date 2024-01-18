@@ -19,8 +19,6 @@ enum BiometricsError: LocalizedError {
             return "Please check Face ID permissions."
         case .rejected:
             return "Please try again."
-        case .unknown:
-            return "An unknown error has occured."
         }
     }
 }
