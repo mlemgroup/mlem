@@ -21,7 +21,6 @@ struct Window: View {
     @StateObject var recentSearchesTracker: RecentSearchesTracker = .init()
     @StateObject var layoutWidgetTracker: LayoutWidgetTracker = .init()
     @StateObject var appState: AppState = .init()
-    @StateObject var biometricUnlock = BiometricUnlock()
 
     @State var flow: AppFlow
 
