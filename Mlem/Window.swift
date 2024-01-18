@@ -97,10 +97,10 @@ struct Window: View {
     private func transition(_ newFlow: AppFlow) {
         let transitionAccountName: String?
         switch newFlow {
+        case .onboarding:
+            transitionAccountName = nil
         case let .account(account):
             transitionAccountName = account.nickname
-        default:
-            transitionAccountName = nil
         }
         
         Task { @MainActor in

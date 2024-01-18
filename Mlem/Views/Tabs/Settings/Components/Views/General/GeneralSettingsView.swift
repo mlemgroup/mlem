@@ -30,6 +30,7 @@ struct GeneralSettingsView: View {
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
     
     @State var showErrorAlert: Bool = false
+    @State var alertMessage: String = ""
     
     var body: some View {
         List {
@@ -177,13 +178,14 @@ struct GeneralSettingsView: View {
         .onChange(of: appLock) { _ in
             if appLock != .disabled, !BiometricUnlock().requestBiometricPermissions() {
                 showErrorAlert = true
+                alertMessage = "Please allow Mlem to use Face ID in Settings."
                 appLock = .disabled
             }
         }
         .alert(isPresented: $showErrorAlert, content: {
             Alert(
                 title: Text("Error"),
-                message: Text("Unable to enable setting. Please check app permissions."),
+                message: Text(alertMessage),
                 dismissButton: .default(Text("OK"))
             )
         })

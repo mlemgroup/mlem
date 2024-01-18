@@ -13,7 +13,6 @@ import XCTestDynamicOverlay
 @main
 struct MlemApp: App {
     @Dependency(\.accountsTracker) var accountsTracker
-    
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
 
