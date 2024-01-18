@@ -7,7 +7,7 @@ on:
         - master
 
     # Run when we tweak Swift or supporting files
-    pull_request_target:
+    pull_request:
         paths:
         - '.github/workflows/swiftlint.yml'
         - '.swiftlint.yml'
