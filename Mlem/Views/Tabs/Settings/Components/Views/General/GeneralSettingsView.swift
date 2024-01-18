@@ -116,16 +116,18 @@ struct GeneralSettingsView: View {
             }
             
             Section {
-                SelectableSettingsItem(
-                    settingIconSystemName: Icons.appLockSettings,
-                    settingName: "App Lock",
-                    currentValue: $appLock,
-                    options: AppLock.allCases
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.appLockSettings,
+                    settingName: "Lock with Face ID",
+                    isTicked: Binding(
+                        get: { appLock == .instant },
+                        set: { selected in
+                            appLock = selected ? .instant : .disabled
+                        }
+                    )
                 )
             } header: {
                 Text("Privacy")
-            } footer: {
-                Text("Locks your app with Face ID")
             }
 
             Section {
