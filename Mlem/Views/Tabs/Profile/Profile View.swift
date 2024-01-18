@@ -14,7 +14,10 @@ struct ProfileView: View {
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
 
     @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var editorSheetNavigation: AnyNavigationPath<AppRoute> = .init()
+    
     @StateObject private var navigation: Navigation = .init()
+    @StateObject private var sheetNavigation: Navigation = .init()
     
     @State var isPresentingAccountSwitcher: Bool = false
     @State var isPresentingProfileEditor: Bool = false
@@ -48,9 +51,14 @@ struct ProfileView: View {
                             }
                         }
                         .sheet(isPresented: $isPresentingProfileEditor) {
-                            NavigationStack {
+                            NavigationStack(path: $editorSheetNavigation.path) {
                                 ProfileSettingsView(showCloseButton: true)
+                                    .handleLemmyViews()
+                                    .environmentObject(editorSheetNavigation)
                             }
+                            .handleLemmyLinkResolution(navigationPath: .constant(editorSheetNavigation))
+                            .environment(\.navigationPathWithRoutes, $editorSheetNavigation.path)
+                            .environment(\.navigation, sheetNavigation)
                         }
                 } else {
                     LoadingView(whatIsLoading: .profile)
