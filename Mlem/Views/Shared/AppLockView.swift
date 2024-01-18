@@ -64,7 +64,7 @@ struct AppLockView: View {
             )
         })
         .onChange(of: phase) { phase in
-            if phase == .active {
+            if phase == .active, isButtonHidden {
                 authenticate()
             }
         }
