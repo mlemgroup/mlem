@@ -21,16 +21,15 @@ struct AppLockView: View {
     @State var isButtonHidden = true
     @State var isAuthenticating = false
     @State var alertMessage: String = ""
+    var hasDynamicIsland = UIDevice.current.hasDynamicIsland
 
     var body: some View {
-        @State var logoOffset: CGFloat = 0
-
-        VStack(spacing: 50) {
+        ZStack {
             LogoView()
                 .frame(width: 150, height: 150)
-                .animation(.spring(), value: isAuthenticating)
-                .offset(y: isAuthenticating ? 0 : 300)
-            
+                .animation(.spring, value: isAuthenticating)
+                .offset(y: isAuthenticating && !hasDynamicIsland ? -250 : 0)
+                .opacity((isAuthenticating || biometricUnlock.isUnlocked) && hasDynamicIsland ? 0 : 1)
             Group {
                 Button {
                     authenticate()

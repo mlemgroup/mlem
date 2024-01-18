@@ -299,6 +299,7 @@
 		6FDB98002B572F3E00048C0C /* AppLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB97FF2B572F3E00048C0C /* AppLockView.swift */; };
 		6FDB98022B57323A00048C0C /* BiometricUnlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB98012B57323A00048C0C /* BiometricUnlock.swift */; };
 		6FDB98042B57412000048C0C /* AppLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB98032B57412000048C0C /* AppLock.swift */; };
+		6FF17CFF2B59D799007E1814 /* UIDevice+DynamicIsland.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF17CFE2B59D799007E1814 /* UIDevice+DynamicIsland.swift */; };
 		88B165B82A8643F4007C9115 /* View+NavigationBarColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B165B72A8643F4007C9115 /* View+NavigationBarColor.swift */; };
 		AD1B0D352A5F63F60006F554 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D342A5F63F60006F554 /* AboutView.swift */; };
 		AD1B0D372A5F7A260006F554 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1B0D362A5F7A260006F554 /* Licenses.swift */; };
@@ -843,6 +844,7 @@
 		6FDB97FF2B572F3E00048C0C /* AppLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockView.swift; sourceTree = "<group>"; };
 		6FDB98012B57323A00048C0C /* BiometricUnlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricUnlock.swift; sourceTree = "<group>"; };
 		6FDB98032B57412000048C0C /* AppLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLock.swift; sourceTree = "<group>"; };
+		6FF17CFE2B59D799007E1814 /* UIDevice+DynamicIsland.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+DynamicIsland.swift"; sourceTree = "<group>"; };
 		88B165B72A8643F4007C9115 /* View+NavigationBarColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationBarColor.swift"; sourceTree = "<group>"; };
 		AD1B0D342A5F63F60006F554 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		AD1B0D362A5F7A260006F554 /* Licenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
@@ -1613,6 +1615,7 @@
 				CD29ED452B2E8716006937CE /* TimeInterval */,
 				CD4368D32AE2462A00BD8BD1 /* Tracker Items */,
 				CD29ED3F2B2E8668006937CE /* UIApplication */,
+				6FF17CFD2B59D75F007E1814 /* UIDevice */,
 				CD29ED422B2E86CD006937CE /* UIUserInterfaceStyle */,
 				CD29ED432B2E86E1006937CE /* UIViewController */,
 				CD29ED442B2E86F0006937CE /* URL */,
@@ -2125,6 +2128,14 @@
 				CD4368DC2AE24E1A00BD8BD1 /* InboxView+Logic.swift */,
 			);
 			path = Inbox;
+			sourceTree = "<group>";
+		};
+		6FF17CFD2B59D75F007E1814 /* UIDevice */ = {
+			isa = PBXGroup;
+			children = (
+				6FF17CFE2B59D799007E1814 /* UIDevice+DynamicIsland.swift */,
+			);
+			path = UIDevice;
 			sourceTree = "<group>";
 		};
 		ADF266932A4E89F800EBA648 /* Composer */ = {
@@ -3330,6 +3341,7 @@
 				CDF1EF182A6C40C9003594B6 /* Menu Button.swift in Sources */,
 				6FDB98022B57323A00048C0C /* BiometricUnlock.swift in Sources */,
 				6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */,
+				6FF17CFF2B59D799007E1814 /* UIDevice+DynamicIsland.swift in Sources */,
 				50A8812A2A72D6BD003E3661 /* CommunityRepository.swift in Sources */,
 				038A16E72A7A9C430087987E /* LayoutWidgetCollection.swift in Sources */,
 				6322A5D227F88CFD00135D4F /* Time Parser.swift in Sources */,
