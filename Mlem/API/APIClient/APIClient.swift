@@ -80,8 +80,8 @@ class APIClient {
         switch flow {
         case let .account(account):
             session = .authenticated(account.instanceLink, account.accessToken)
-        default:
-            // no calls to our `APIClient` should be made during onboarding or applock
+        case .onboarding:
+            // no calls to our `APIClient` should be made during onboarding
             // excluding a _login_ call which requires an explicit session to be provided
             // setting to `.undefined` here ensures that errors will be throw should a call
             // be attempted
