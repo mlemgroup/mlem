@@ -10,7 +10,6 @@ import LocalAuthentication
 import SwiftUI
 
 enum BiometricsError: LocalizedError {
-    case unknown
     case rejected
     case permissions
     
