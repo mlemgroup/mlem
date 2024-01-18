@@ -17,8 +17,8 @@ struct ProfileSettingsView: View {
     @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler: ErrorHandler
     
-    @State var displayName: String = ""
-    @State var bio: String = ""
+    @State var displayName: String
+    @State var bio: String
     
     @StateObject var avatarAttachmentModel: LinkAttachmentModel
     @StateObject var bannerAttachmentModel: LinkAttachmentModel
@@ -155,9 +155,19 @@ struct ProfileSettingsView: View {
                 }
           }
             NavigationLink(.settings(.linkMatrixAccount)) {
-                Label("Link Matrix Account", image: "matrix.logo").labelStyle(SquircleLabelStyle(color: .black))
-                    .disabled(hasEdited != .unedited)
+                let user = siteInformation.myUserInfo?.localUserView
+                if let user, let matrixId = user.person.matrixUserId {
+                    HStack {
+                        Label("Matrix ID", image: "matrix.logo").labelStyle(SquircleLabelStyle(color: .black))
+                        Spacer()
+                        Text(matrixId)
+                            .foregroundStyle(.secondary)
+                    }
+                } else {
+                    Label("Link Matrix Account", image: "matrix.logo").labelStyle(SquircleLabelStyle(color: .black))
+                }
             }
+            .disabled(hasEdited != .unedited)
         }
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("My Profile")
