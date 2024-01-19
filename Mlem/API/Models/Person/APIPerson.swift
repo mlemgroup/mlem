@@ -29,12 +29,6 @@ struct APIPerson: Decodable, Identifiable, Hashable, Equatable {
     let instanceId: Int
 }
 
-// extension APIPerson: Equatable {
-//    static func == (lhs: APIPerson, rhs: APIPerson) -> Bool {
-//        lhs.actorId == rhs.actorId
-//    }
-// }
-
 extension APIPerson {
     var avatarUrl: URL? { LemmyURL(string: avatar)?.url }
     var bannerUrl: URL? { LemmyURL(string: banner)?.url }
