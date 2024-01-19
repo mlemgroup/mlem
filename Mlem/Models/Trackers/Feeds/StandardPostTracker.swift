@@ -81,7 +81,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     
     // MARK: StandardTracker Loading Methods
     
-    override func fetchPage(page: Int) async throws -> (items: [PostModel], cursor: String?) {
+    override func fetchPage(page: Int) async throws -> FetchResponse<PostModel> {
         // TODO: ERIC migrate repository to use "items"
         let (items, cursor) = try await postRepository.loadPage(
             communityId: nil,
@@ -94,10 +94,10 @@ class StandardPostTracker: StandardTracker<PostModel> {
         
         let filteredItems = filter(items)
         preloadImages(filteredItems)
-        return (filteredItems, cursor)
+        return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
     }
     
-    override func fetchCursor(cursor: String?) async throws -> (items: [PostModel], cursor: String?) {
+    override func fetchCursor(cursor: String?) async throws -> FetchResponse<PostModel> {
         // TODO: ERIC migrate repository to use "items"
         let (items, cursor) = try await postRepository.loadPage(
             communityId: nil,
@@ -110,7 +110,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
         
         let filteredItems = filter(items)
         preloadImages(filteredItems)
-        return (filteredItems, cursor)
+        return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
     }
     
     // MARK: Custom Behavior
@@ -123,6 +123,14 @@ class StandardPostTracker: StandardTracker<PostModel> {
         
         filters[newFilter] = 0
         await setItems(filter(items))
+        
+        if items.isEmpty {
+            do {
+                try await refresh(clearBeforeRefresh: false)
+            } catch {
+                errorHandler.handle(error)
+            }
+        }
     }
     
     func removeFilter(_ filterToRemove: NewPostFilterReason) async {

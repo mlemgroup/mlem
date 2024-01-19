@@ -18,10 +18,10 @@ class MentionTracker: ChildTracker<MentionModel, AnyInboxItem> {
         super.init(internetSpeed: internetSpeed, sortType: sortType)
     }
 
-    override func fetchPage(page: Int) async throws -> (items: [MentionModel], cursor: String?) {
+    override func fetchPage(page: Int) async throws -> FetchResponse<MentionModel> {
         // TODO: can this return a cursor?
         let newItems = try await inboxRepository.loadMentions(page: page, limit: internetSpeed.pageSize, unreadOnly: unreadOnly)
-        return (newItems, nil)
+        return .init(items: newItems, cursor: nil, numFiltered: 0)
     }
     
     override func toParent(item: MentionModel) -> AnyInboxItem {

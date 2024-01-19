@@ -24,6 +24,21 @@ enum LoadAction {
     case loadCursor(String)
 }
 
+/// Helper struct bundling the response from a fetchPage or fetchCursor call
+struct FetchResponse<Item: TrackerItem> {
+    /// Items returned
+    let items: [Item]
+    
+    /// New cursor, if applicable
+    let cursor: String?
+    
+    /// Number of items filtered out
+    let numFiltered: Int
+    
+    /// True if the response has content, false otherwise. It is possible for a filter to remove all fetched items; this avoids that triggering an erroneous end of feed.
+    var hasContent: Bool { items.count + numFiltered > 0 }
+}
+
 class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     @Dependency(\.errorHandler) var errorHandler
     
@@ -114,16 +129,16 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
     /// Fetches the given page of items. This method must be overridden by the instantiating class because different items are loaded differently. Relies on the instantiating class to handle fetch parameters such as unreadOnly and page size.
     /// - Parameters:
     ///   - page: page number to fetch
-    /// - Returns: requested page of items
-    func fetchPage(page: Int) async throws -> (items: [Item], cursor: String?) {
+    /// - Returns: tuple of the requested page of items, the cursor returned by the API call (if present), and the number of items that were filtered out.
+    func fetchPage(page: Int) async throws -> FetchResponse<Item> {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
     // Fetches items from the given cursor. This method must be overridden by the instantiating class because different items are loaded differently. Relies on the instantiating class to handle fetch parameters such as unreadOnly and page size.
     /// - Parameters:
     ///   - cursor: cursor to fetch
-    /// - Returns: requested list of items
-    func fetchCursor(cursor: String) async throws -> (items: [Item], cursor: String?) {
+    /// - Returns: tuple of the requested page of items, the cursor returned by the API call (if present), and the number of items that were filtered out.
+    func fetchCursor(cursor: String) async throws -> FetchResponse<Item> {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
 
@@ -192,17 +207,17 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
-            let (fetchedItems, newLoadingCursor) = try await fetchPage(page: page + 1)
+            let fetched = try await fetchPage(page: page + 1)
             page += 1
-            loadingCursor = newLoadingCursor
+            loadingCursor = fetched.cursor
             
-            if fetchedItems.isEmpty {
+            if !fetched.hasContent {
                 print("[\(Item.self) tracker] fetch returned no items, setting loading state to done")
                 await setLoading(.done)
                 break
             }
             
-            newItems.append(contentsOf: fetchedItems)
+            newItems.append(contentsOf: fetched.items)
         }
         
         let allowedItems = storeIdsAndDedupe(newItems: newItems)
@@ -236,18 +251,18 @@ class StandardTracker<Item: TrackerItem>: CoreTracker<Item> {
         
         var newItems: [Item] = .init()
         while newItems.count < internetSpeed.pageSize {
-            let (fetchedItems, newLoadingCursor) = try await fetchCursor(cursor: cursor)
+            let fetched = try await fetchCursor(cursor: cursor)
             
-            if fetchedItems.isEmpty || newLoadingCursor == loadingCursor {
+            if !fetched.hasContent || fetched.cursor == loadingCursor {
                 print("[\(Item.self) tracker] fetch returned no items or EOF cursor, setting loading state to done")
                 await setLoading(.done)
                 break
             }
             
-            loadingCursor = newLoadingCursor
+            loadingCursor = fetched.cursor
             page += 1 // not strictly necessary but good for tracking number of loaded pages
             
-            newItems.append(contentsOf: fetchedItems)
+            newItems.append(contentsOf: fetched.items)
         }
         
         let allowedItems = storeIdsAndDedupe(newItems: newItems)
