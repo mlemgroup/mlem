@@ -161,8 +161,6 @@ class APIClient {
         
         if let overrideToken {
             urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
-        } else if case let .authenticated(_, token) = session {
-            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 
         if defintion as? any APIGetRequest != nil {
