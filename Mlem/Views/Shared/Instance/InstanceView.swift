@@ -85,7 +85,9 @@ struct InstanceView: View {
                     }
                 }
                 .padding(.bottom, 5)
-                if let instance {
+                if let errorDetails {
+                    ErrorView(errorDetails)
+                } else if let instance {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
                             Divider()
@@ -120,8 +122,6 @@ struct InstanceView: View {
                             .frame(height: 100)
                     }
                     
-                } else if let errorDetails {
-                    ErrorView(errorDetails)
                 } else {
                     LoadingView(whatIsLoading: .instanceDetails)
                 }

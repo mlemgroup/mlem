@@ -385,7 +385,7 @@ extension APIClient {
     }
     
     func loadSiteInformation(instanceURL: URL) async throws -> SiteResponse {
-        let request = GetSiteRequest(instanceURL: instanceURL.appendingPathComponent("api/v3"))
+        let request = GetSiteRequest(instanceURL: instanceURL.appendingPathComponent("api/v3/"))
         return try await perform(request: request)
     }
     
