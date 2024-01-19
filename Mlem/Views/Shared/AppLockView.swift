@@ -29,7 +29,6 @@ struct AppLockView: View {
                 .frame(width: 150, height: 150)
                 .animation(.spring, value: isAuthenticating)
                 .offset(y: isAuthenticating && !hasDynamicIsland ? -250 : 0)
-                .opacity((isAuthenticating || biometricUnlock.isUnlocked) && hasDynamicIsland ? 0 : 1)
             Group {
                 Button {
                     authenticate()
@@ -45,11 +44,13 @@ struct AppLockView: View {
                     .background(.blue)
                     .foregroundColor(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.bottom, 50)
                 }
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
             .opacity(isButtonHidden ? 0 : 1)
         }
+        .ignoresSafeArea()
         .onAppear {
             if phase == .active {
                 authenticate()
