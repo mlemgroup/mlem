@@ -19,6 +19,7 @@ extension HorizontalAlignment {
     static let labelStart = HorizontalAlignment(LabelStart.self)
 }
 
+// swiftlint:disable type_body_length
 struct PostComposerView: View {
     private enum Field: Hashable {
         case title, url, body
@@ -55,6 +56,9 @@ struct PostComposerView: View {
     
     @FocusState private var focusedField: Field?
     
+    @State var titleSlurMatch: String?
+    @State var bodySlurMatch: String?
+    
     init(editModel: PostEditorModel) {
         self.postTracker = editModel.postTracker
         self.editModel = editModel
@@ -63,8 +67,6 @@ struct PostComposerView: View {
         self._postBody = State(initialValue: editModel.editPost?.post.body ?? "")
         self._isNSFW = State(initialValue: editModel.editPost?.post.nsfw ?? false)
         self._attachmentModel = StateObject(wrappedValue: .init(url: editModel.editPost?.post.linkUrl?.description ?? ""))
-        
-        print(siteInformation.slurFilterRegex)
     }
 
     var body: some View {
@@ -77,22 +79,7 @@ struct PostComposerView: View {
                 .edgesIgnoringSafeArea(.bottom)
                 VStack(spacing: 0) {
                     // Community Row
-                    HStack {
-                        CommunityLabelView(
-                            community: editModel.community,
-                            serverInstanceLocation: .bottom,
-                            overrideShowAvatar: true
-                        )
-                        Spacer()
-                        if let person = siteInformation.myUserInfo?.localUserView.person {
-                            UserLabelView(
-                                person: person,
-                                serverInstanceLocation: .bottom,
-                                overrideShowAvatar: true
-                            )
-                            .environment(\.layoutDirection, layoutDirection == .leftToRight ? .rightToLeft : .leftToRight)
-                        }
-                    }
+                    headerView
                     .padding(.bottom, 15)
                     .padding(.horizontal)
                     .zIndex(1)
@@ -107,6 +94,19 @@ struct PostComposerView: View {
                             }
                             .padding(.top)
                             .padding(.horizontal)
+                            .onChange(of: postTitle) { newValue in
+                                do {
+                                    if let regex = siteInformation.slurFilterRegex {
+                                        if let output = try regex.firstMatch(in: newValue.lowercased()) {
+                                            titleSlurMatch = String(newValue[output.range])
+                                        } else {
+                                            titleSlurMatch = nil
+                                        }
+                                    }
+                                } catch {
+                                    print("REGEX FAILED")
+                                }
+                            }
                                              
                         if attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty {
                             VStack {
@@ -191,6 +191,19 @@ struct PostComposerView: View {
                         .accessibilityLabel("Post Body")
                         .focused($focusedField, equals: .body)
                         .padding(.horizontal)
+                        .onChange(of: postBody) { newValue in
+                            do {
+                                if let regex = siteInformation.slurFilterRegex {
+                                    if let output = try regex.firstMatch(in: newValue.lowercased()) {
+                                        bodySlurMatch = String(newValue[output.range])
+                                    } else {
+                                        bodySlurMatch = nil
+                                    }
+                                }
+                            } catch {
+                                print("REGEX FAILED")
+                            }
+                        }
                         
                         Spacer()
                     }
@@ -267,4 +280,36 @@ struct PostComposerView: View {
         .navigationBarColor()
         .navigationBarTitleDisplayMode(.inline)
     }
+    
+    @ViewBuilder
+    var headerView: some View {
+        HStack {
+            CommunityLabelView(
+                community: editModel.community,
+                serverInstanceLocation: .bottom,
+                overrideShowAvatar: true
+            )
+            Spacer()
+            if let person = siteInformation.myUserInfo?.localUserView.person {
+                UserLabelView(
+                    person: person,
+                    serverInstanceLocation: .bottom,
+                    overrideShowAvatar: true
+                )
+                .environment(\.layoutDirection, layoutDirection == .leftToRight ? .rightToLeft : .leftToRight)
+            }
+        }
+        .overlay {
+            if let slurMatch = titleSlurMatch == nil ? bodySlurMatch : titleSlurMatch {
+                ZStack {
+                    Capsule()
+                        .fill(.red)
+                    Text("\"\(slurMatch)\" is disallowed.")
+                }
+                .padding(-2)
+            }
+        }
+        .animation(.default, value: titleSlurMatch == nil && bodySlurMatch == nil)
+    }
 }
+// swiftlint:enable type_body_length

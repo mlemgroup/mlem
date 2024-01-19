@@ -18,9 +18,10 @@ class SiteInformationTracker: ObservableObject {
     @Published var version: SiteVersion?
     @Published private(set) var allLanguages: [APILanguage] = .init()
     @Published var myUserInfo: APIMyUserInfo?
-    @Published var slurFilterRegex: Regex<Void>?
+    @Published var slurFilterRegex: Regex<AnyRegexOutput>?
     
     func load(account: SavedAccount) {
+
         version = account.siteVersion
         Task {
             do {
@@ -41,6 +42,7 @@ class SiteInformationTracker: ObservableObject {
                 if let regex = response.siteView.localSite.slurFilterRegex {
                     slurFilterRegex = try .init(regex)
                 }
+                
             } catch {
                 errorHandler.handle(error)
             }
