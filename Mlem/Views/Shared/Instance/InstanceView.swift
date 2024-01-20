@@ -159,8 +159,8 @@ struct InstanceView: View {
                         if let content = String(data: data, encoding: .utf8),
                            content.contains("<title>Error 404 - \(domainName)</title>" ) {
                             errorDetails = ErrorDetails(
-                                title: "Cannot Connect to Instance",
-                                body: "Maybe this is a KBin instance? Mlem can't yet display KBin instance details.",
+                                title: "KBin Instance",
+                                body: "We can't yet display KBin instance details.",
                                 icon: "point.3.filled.connected.trianglepath.dotted"
                             )
                         } else {
