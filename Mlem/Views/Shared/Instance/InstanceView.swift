@@ -154,13 +154,18 @@ struct InstanceView: View {
                     } else {
                         errorDetails = ErrorDetails(title: "\"\(domainName)\" is an invalid URL.")
                     }
-                } catch EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints {
+                } catch APIClientError.decoding(let data, let error) {
                     withAnimation(.easeOut(duration: 0.2)) {
-                        errorDetails = ErrorDetails(
-                            title: "Cannot Connect to Instance",
-                            body: "Maybe this is a KBin instance? Mlem can't yet display KBin instance details.",
-                            icon: "point.3.filled.connected.trianglepath.dotted"
-                        )
+                        if let content = String(data: data, encoding: .utf8),
+                           content.contains("<title>Error 404 - \(domainName)<title/>" ) {
+                            errorDetails = ErrorDetails(
+                                title: "Cannot Connect to Instance",
+                                body: "Maybe this is a KBin instance? Mlem can't yet display KBin instance details.",
+                                icon: "point.3.filled.connected.trianglepath.dotted"
+                            )
+                        } else {
+                            errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
+                        }
                     }
                 } catch {
                     withAnimation(.easeOut(duration: 0.2)) {
