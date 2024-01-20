@@ -42,7 +42,10 @@ enum NewPostFilterReason: Hashable {
 /// Post tracker for use with single feeds. Supports all post sorting types, but is not suitable for multi-feed use.
 class StandardPostTracker: StandardTracker<PostModel> {
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.personRepository) var personRepository
     @Dependency(\.persistenceRepository) var persistenceRepository
+    @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.apiClient) var apiClient
     
     // TODO: ERIC keyword filters could be more elegant
     var filteredKeywords: [String]
@@ -67,7 +70,6 @@ class StandardPostTracker: StandardTracker<PostModel> {
         self.filteredKeywords = persistenceRepository.loadFilteredKeywords()
         self.filters = [.keyword: 0]
         if !showReadPosts {
-            print("hiding read posts")
             filters[.read] = 0
         }
         
@@ -82,13 +84,20 @@ class StandardPostTracker: StandardTracker<PostModel> {
     // MARK: StandardTracker Loading Methods
     
     override func fetchPage(page: Int) async throws -> FetchResponse<PostModel> {
-        // TODO: ERIC migrate repository to use "items"
+        let (items, cursor) = try await loadPageHelper(page: page)
+        
+        let filteredItems = filter(items)
+        preloadImages(filteredItems)
+        return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
+    }
+    
+    override func fetchCursor(cursor: String?) async throws -> FetchResponse<PostModel> {
         let (items, cursor) = try await postRepository.loadPage(
-            communityId: nil,
+            communityId: feedType.communityId,
             page: page,
-            cursor: nil,
+            cursor: cursor,
             sort: postSortType,
-            type: feedType.toLegacyFeedType,
+            type: feedType,
             limit: internetSpeed.pageSize
         )
         
@@ -97,20 +106,29 @@ class StandardPostTracker: StandardTracker<PostModel> {
         return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
     }
     
-    override func fetchCursor(cursor: String?) async throws -> FetchResponse<PostModel> {
-        // TODO: ERIC migrate repository to use "items"
-        let (items, cursor) = try await postRepository.loadPage(
-            communityId: nil,
-            page: page,
-            cursor: cursor,
-            sort: postSortType,
-            type: feedType.toLegacyFeedType,
-            limit: internetSpeed.pageSize
-        )
-        
-        let filteredItems = filter(items)
-        preloadImages(filteredItems)
-        return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
+    func loadPageHelper(page: Int) async throws -> (items: [PostModel], cursor: String?) {
+        if feedType == .saved {
+            guard let userId = siteInformation.myUserInfo?.localUserView.person.id else {
+                assertionFailure("Called loadPageHelper with no valid user!")
+                return (items: .init(), cursor: nil)
+            }
+            
+            let savedContentData = try await personRepository.loadUserDetails(
+                for: userId,
+                limit: internetSpeed.pageSize,
+                savedOnly: true
+            )
+            return (items: savedContentData.posts.map { PostModel(from: $0) }, cursor: nil)
+        } else {
+            return try await postRepository.loadPage(
+                communityId: feedType.communityId,
+                page: page,
+                cursor: nil,
+                sort: postSortType,
+                type: feedType,
+                limit: internetSpeed.pageSize
+            )
+        }
     }
     
     // MARK: Custom Behavior

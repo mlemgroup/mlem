@@ -8,6 +8,7 @@
 import Foundation
 
 extension APIClient {
+    // TODO: ERIC delete this
     // swiftlint:disable function_parameter_count
     func loadPosts(
         communityId: Int?,
@@ -15,6 +16,32 @@ extension APIClient {
         cursor: String?,
         sort: PostSortType?,
         type: FeedType,
+        limit: Int?,
+        savedOnly: Bool?,
+        communityName: String?
+    ) async throws -> GetPostsResponse {
+        let request = try OldGetPostsRequest(
+            session: session,
+            communityId: communityId,
+            page: page,
+            cursor: cursor,
+            sort: sort,
+            type: type,
+            limit: limit,
+            savedOnly: savedOnly,
+            communityName: communityName
+        )
+        
+        return try await perform(request: request)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    func loadPosts(
+        communityId: Int?,
+        page: Int,
+        cursor: String?,
+        sort: PostSortType?,
+        type: NewFeedType,
         limit: Int?,
         savedOnly: Bool?,
         communityName: String?

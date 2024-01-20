@@ -8,11 +8,29 @@
 import Foundation
 import SwiftUI
 
-enum NewFeedType: String, CaseIterable {
+enum NewFeedType {
     case all, local, subscribed, saved
+    case community(CommunityModel)
     
     var label: String {
-        rawValue.capitalized
+        switch self {
+        case .all: "All"
+        case .local: "Local"
+        case .subscribed: "Subscribed"
+        case .saved: "Saved"
+        case let .community(communityModel): communityModel.name
+        }
+    }
+    
+    /// String to pass into the API call
+    var typeString: String {
+        switch self {
+        case .all: "All"
+        case .local: "Local"
+        case .subscribed: "Subscribed"
+        case .saved: "Saved" // TODO: change this?
+        case .community: "Subscribed"
+        }
     }
     
     static func fromShortcut(shortcut: String?) -> NewFeedType? {
@@ -39,13 +57,40 @@ enum NewFeedType: String, CaseIterable {
         case .subscribed:
             return .subscribed
         case .saved:
+            assertionFailure("Incompatible feed type!")
             return .all
+        default:
+            assertionFailure("Incompatible feed type!")
+            return .all
+        }
+    }
+    
+    var communityId: Int? {
+        switch self {
+        case let .community(communityModel): communityModel.communityId
+        default: nil
         }
     }
 }
 
-extension NewFeedType: Identifiable {
-    var id: Self { self }
+extension NewFeedType: Hashable, Identifiable {
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case .all:
+            hasher.combine("all")
+        case .local:
+            hasher.combine("local")
+        case .subscribed:
+            hasher.combine("subscribed")
+        case .saved:
+            hasher.combine("saved")
+        case let .community(communityModel):
+            hasher.combine("community")
+            hasher.combine(communityModel.communityId)
+        }
+    }
+    
+    var id: Int { hashValue }
 }
 
 extension NewFeedType: AssociatedIcon {
@@ -55,6 +100,7 @@ extension NewFeedType: AssociatedIcon {
         case .local: Icons.localFeed
         case .subscribed: Icons.subscribedFeed
         case .saved: Icons.savedFeed
+        case .community: Icons.community
         }
     }
     
@@ -64,6 +110,7 @@ extension NewFeedType: AssociatedIcon {
         case .local: Icons.localFeedFill
         case .subscribed: Icons.subscribedFeedFill
         case .saved: Icons.savedFeedFill
+        case .community: Icons.communityFill
         }
     }
     
@@ -73,6 +120,7 @@ extension NewFeedType: AssociatedIcon {
         case .local: Icons.localFeedCircle
         case .subscribed: Icons.subscribedFeedCircle
         case .saved: Icons.savedFeedCircle
+        case .community: Icons.community
         }
     }
     
@@ -83,6 +131,7 @@ extension NewFeedType: AssociatedIcon {
         case .local: "house"
         case .subscribed: "newspaper"
         case .saved: Icons.save
+        case .community: Icons.community
         }
     }
 }
@@ -94,6 +143,7 @@ extension NewFeedType: AssociatedColor {
         case .local: .red
         case .subscribed: .red
         case .saved: .green
+        case .community: .blue
         }
     }
 }

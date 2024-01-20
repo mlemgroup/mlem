@@ -88,8 +88,8 @@ class PostTracker: ObservableObject {
     // TODO: ERIC handle loading state properly
     
     func getNextPageFromRepository() async throws -> (posts: [PostModel], cursor: String?) {
-        switch self.type {
-        case .feed(let feedType, let postSortType):
+        switch type {
+        case let .feed(feedType, postSortType):
             return try await postRepository.loadPage(
                 communityId: nil,
                 page: page,
@@ -98,13 +98,13 @@ class PostTracker: ObservableObject {
                 type: feedType,
                 limit: internetSpeed.pageSize
             )
-        case .community(let community, let postSortType):
+        case let .community(community, postSortType):
             return try await postRepository.loadPage(
                 communityId: community.communityId,
                 page: page,
                 cursor: currentCursor,
                 sort: postSortType,
-                type: .subscribed,
+                type: FeedType.subscribed,
                 limit: internetSpeed.pageSize
             )
         case nil:

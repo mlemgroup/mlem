@@ -11,6 +11,7 @@ import Foundation
 class PostRepository {
     @Dependency(\.apiClient) private var apiClient
     
+    // TODO: ERIC delete this
     // swiftlint:disable function_parameter_count
     func loadPage(
         communityId: Int?,
@@ -35,6 +36,32 @@ class PostRepository {
         
         let posts = response.posts.map { PostModel(from: $0) }
         return (posts, response.nextPage)
+    }
+    
+    // swiftlint:disable function_parameter_count
+    func loadPage(
+        communityId: Int?,
+        page: Int,
+        cursor: String?,
+        sort: PostSortType?,
+        type: NewFeedType,
+        limit: Int,
+        savedOnly: Bool? = nil,
+        communityName: String? = nil
+    ) async throws -> (items: [PostModel], cursor: String?) {
+        let response = try await apiClient.loadPosts(
+            communityId: communityId,
+            page: page,
+            cursor: cursor,
+            sort: sort,
+            type: type,
+            limit: limit,
+            savedOnly: savedOnly,
+            communityName: communityName
+        )
+        
+        let items = response.posts.map { PostModel(from: $0) }
+        return (items, response.nextPage)
     }
 
     // swiftlint:enable function_parameter_count

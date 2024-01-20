@@ -17,6 +17,9 @@ struct FeedsView: View {
     
     @StateObject private var communityListModel: CommunityListModel = .init()
     
+    @StateObject private var feedTabNavigation: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var navigation: Navigation = .init()
+    
     var body: some View {
         content
             .onAppear {
@@ -38,14 +41,16 @@ struct FeedsView: View {
                 List(selection: $selectedFeed) {
                     ForEach([NewFeedType.all, NewFeedType.local, NewFeedType.subscribed, NewFeedType.saved]) { feedType in
                         // These are automagically turned into NavigationLinks
-                        FeedRowView(feedType: feedType)
+                        NavigationLink(value: feedType) {
+                            FeedRowView(feedType: feedType)
+                        }
                     }
                     
                     ForEach(communityListModel.visibleSections) { section in
                         Section(header: communitySectionHeaderView(for: section)) {
                             ForEach(communityListModel.communities(for: section)) { community in
                                 // These are not automagically turned into NavigationLinks, so we do it manually
-                                NavigationLink(value: NewFeedType.all) {
+                                NavigationLink(value: NewFeedType.community(.init(from: community, subscribed: true))) {
                                     CommunityFeedRowView(
                                         community: community,
                                         subscribed: communityListModel.isSubscribed(to: community),
@@ -58,20 +63,30 @@ struct FeedsView: View {
                     }
                 }
             } detail: {
-                switch selectedFeed {
-                case .all:
-                    AggregateFeedView(feedType: .all)
-                case .local:
-                    AggregateFeedView(feedType: .local)
-                case .subscribed:
-                    AggregateFeedView(feedType: .subscribed)
-                case .saved:
-                    AggregateFeedView(feedType: .saved)
-                case .none:
-                    Text("Please select a feed")
+                NavigationStack(path: $feedTabNavigation.path) {
+                    Group {
+                        switch selectedFeed {
+                        case .all:
+                            AggregateFeedView(feedType: .all)
+                        case .local:
+                            AggregateFeedView(feedType: .local)
+                        case .subscribed:
+                            AggregateFeedView(feedType: .subscribed)
+                        case .saved:
+                            AggregateFeedView(feedType: .saved)
+                        case .community(let communityModel):
+                            NewCommunityFeedView(feedType: .community(communityModel))
+                        case .none:
+                            Text("Please select a feed")
+                        }
+                    }
+                    .handleLemmyViews()
                 }
             }
         }
+//        .handleLemmyLinkResolution(
+//            navigationPath: .constant(feedTabNavigation)
+//        )
     }
     
     private func communitySectionHeaderView(for section: CommunitySection) -> some View {

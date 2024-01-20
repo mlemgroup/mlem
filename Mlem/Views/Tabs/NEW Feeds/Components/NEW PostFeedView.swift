@@ -64,15 +64,18 @@ struct NewPostFeedView: View {
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
             // TODO: reenable nav
-            FeedPost(
-                post: post,
-                community: post.community,
-                showPostCreator: shouldShowPostCreator,
-                showCommunity: showCommunity
-            )
-            .onAppear { postTracker.loadIfThreshold(post) }
+            NavigationLink(.newPostLinkWithContext(.init(post: post, community: nil))) {
+                FeedPost(
+                    post: post,
+                    community: post.community,
+                    showPostCreator: shouldShowPostCreator,
+                    showCommunity: showCommunity
+                )
+            }
+            
             Divider()
         }
+        .onAppear { postTracker.loadIfThreshold(post) }
         .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
     }
     
