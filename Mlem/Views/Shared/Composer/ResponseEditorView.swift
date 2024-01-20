@@ -33,15 +33,7 @@ struct ResponseEditorView: View {
     private var isReadyToReply: Bool {
         editorBody.trimmed.isNotEmpty
     }
-    
-    func uploadImage() {
-        if editorModel.canUpload {
-            print("Uploading")
-        } else {
-            print("Uploading disabled for this sort of response")
-        }
-    }
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: AppConstants.postAndCommentSpacing) {

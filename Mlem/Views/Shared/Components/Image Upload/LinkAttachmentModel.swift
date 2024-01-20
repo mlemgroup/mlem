@@ -145,10 +145,10 @@ class LinkAttachmentModel: ObservableObject {
         if let task = self.uploadTask {
             task.cancel()
         }
+        self.photosPickerItem = nil
         switch self.imageModel?.state {
         case .uploaded(file: let file):
             if let file = file {
-                self.photosPickerItem = nil
                 Task {
                     do {
                         if let compareUrl {
