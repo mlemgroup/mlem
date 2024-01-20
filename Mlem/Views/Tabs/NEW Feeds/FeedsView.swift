@@ -74,7 +74,7 @@ struct FeedsView: View {
                             AggregateFeedView(feedType: .subscribed)
                         case .saved:
                             AggregateFeedView(feedType: .saved)
-                        case .community(let communityModel):
+                        case let .community(communityModel):
                             NewCommunityFeedView(feedType: .community(communityModel))
                         case .none:
                             Text("Please select a feed")

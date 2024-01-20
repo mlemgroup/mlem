@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 31/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct PostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
@@ -76,8 +76,8 @@ struct PostFeedView: View {
         .onAppear {
             if postTracker.showLoadingIcon {
                 Task(priority: .userInitiated) {
-                    postTracker.handleError = self.handle
-                    postTracker.filter = self.filter
+                    postTracker.handleError = handle
+                    postTracker.filter = filter
                     await postTracker.initFeed()
                 }
             }
@@ -95,9 +95,9 @@ struct PostFeedView: View {
         .onChange(of: postSortType) { newValue in
             Task(priority: .userInitiated) {
                 switch postTracker.type {
-                case .feed(let feedType, _):
+                case let .feed(feedType, _):
                     postTracker.type = .feed(feedType, sortedBy: newValue)
-                case .community(let community, _):
+                case let .community(community, _):
                     postTracker.type = .community(community, sortedBy: newValue)
                 case nil:
                     break
@@ -112,7 +112,7 @@ struct PostFeedView: View {
         }
         .onChange(of: showReadPosts) { _ in
             Task(priority: .userInitiated) {
-                postTracker.filter = self.filter
+                postTracker.filter = filter
                 await postTracker.refresh(clearBeforeFetch: true)
             }
         }
@@ -150,7 +150,7 @@ struct PostFeedView: View {
     @ViewBuilder
     private func noPostsView() -> some View {
         VStack {
-         if postTracker.showLoadingIcon { // don't show posts until site information loads to avoid jarring redraw
+            if postTracker.showLoadingIcon { // don't show posts until site information loads to avoid jarring redraw
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
