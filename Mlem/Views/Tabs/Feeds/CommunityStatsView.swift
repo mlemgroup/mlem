@@ -12,7 +12,7 @@ struct CommunityStatsView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            VStack(spacing: 5) {
+            box {
                 Text("Subscribers")
                     .foregroundStyle(.secondary)
                 Text("\(community.subscriberCount ?? 0)")
@@ -20,13 +20,9 @@ struct CommunityStatsView: View {
                     .font(.title)
                 
             }
-            .padding(.vertical)
-            .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .secondarySystemGroupedBackground))
-            .cornerRadius(AppConstants.largeItemCornerRadius)
             HStack(spacing: 16) {
                 
-                VStack(spacing: 5) {
+                box {
                     HStack {
                         Text("Posts")
                             .foregroundStyle(.secondary)
@@ -38,12 +34,8 @@ struct CommunityStatsView: View {
                             .foregroundStyle(.pink)
                     }
                 }
-                .padding(10)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                .cornerRadius(AppConstants.largeItemCornerRadius)
                 
-                VStack(spacing: 5) {
+                box {
                     HStack {
                         Text("Comments")
                             .foregroundStyle(.secondary)
@@ -55,15 +47,11 @@ struct CommunityStatsView: View {
                             .foregroundStyle(.orange)
                     }
                 }
-                .padding(10)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                .cornerRadius(AppConstants.largeItemCornerRadius)
             }
             .frame(maxWidth: .infinity)
             
             if let activeUserCount = community.activeUserCount {
-                VStack(spacing: 8) {
+                box(spacing: 8) {
                     Text("Active Users")
                         .foregroundStyle(.secondary)
                     HStack(spacing: 16) {
@@ -73,13 +61,19 @@ struct CommunityStatsView: View {
                         activeUserBox("1d", value: activeUserCount.day)
                     }
                 }
-                .padding(.vertical, 10)
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                .cornerRadius(AppConstants.largeItemCornerRadius)
             }
         }
         .padding(.horizontal, 16)
+    }
+    
+    @ViewBuilder func box(spacing: CGFloat = 5, @ViewBuilder content: () -> some View) -> some View {
+        VStack(spacing: spacing) {
+            content()
+        }
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        .cornerRadius(AppConstants.largeItemCornerRadius)
     }
     
     @ViewBuilder

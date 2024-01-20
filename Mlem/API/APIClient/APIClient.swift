@@ -156,7 +156,7 @@ class APIClient {
     private func urlRequest(from defintion: any APIRequest, overrideToken: String?) throws -> URLRequest {
         var urlRequest = URLRequest(url: defintion.endpoint)
         defintion.headers.forEach { header in
-            if header.key == "Authorization" {
+            if header.key == "auth" {
                 if let overrideToken {
                     urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
                 } else if case let .authenticated(_, token) = session {

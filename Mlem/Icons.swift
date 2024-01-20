@@ -108,6 +108,7 @@ struct Icons {
     static let bannedFlair: String = "multiply.circle"
     
     // entities/general Lemmy concepts
+    static let federation: String = "point.3.filled.connected.trianglepath.dotted"
     static let instance: String = "server.rack"
     static let user: String = "person.crop.circle"
     static let userFill: String = "person.crop.circle.fill"
@@ -189,6 +190,8 @@ struct Icons {
     static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
     
     // misc
+    static let email: String = "envelope"
+    static let photo: String = "photo"
     static let switchUser: String = "person.crop.circle.badge.plus"
     static let missing: String = "questionmark.square.dashed"
     static let connection: String = "antenna.radiowaves.left.and.right"

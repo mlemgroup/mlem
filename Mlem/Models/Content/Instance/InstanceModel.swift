@@ -17,8 +17,28 @@ struct InstanceModel {
     var url: URL!
     var version: SiteVersion?
     
+    // From APISiteView
+    var userCount: Int?
+    var communityCount: Int?
+    var postCount: Int?
+    var commentCount: Int?
+    var activeUserCount: ActiveUserCount?
+    
+    // From APILocalSite (only accessible via SiteResponse)
+    var federates: Bool?
+    var allowsDownvotes: Bool?
+    var allowsNSFW: Bool?
+    var allowsCommunityCreation: Bool?
+    var requiresEmailVerification: Bool?
+    var slurFilterRegex: Regex<AnyRegexOutput>?
+    var captchaDifficulty: APICaptchaDifficulty?
+    
     init(from response: SiteResponse) {
         self.update(with: response)
+    }
+    
+    init(from siteView: APISiteView) {
+        self.update(with: siteView)
     }
     
     init(from site: APISite) {
@@ -32,7 +52,39 @@ struct InstanceModel {
             return user
         }
         self.version = SiteVersion(response.version)
-        self.update(with: response.siteView.site)
+        
+        let localSite = response.siteView.localSite
+        self.allowsDownvotes = localSite.enableDownvotes
+        self.allowsNSFW = localSite.enableNsfw
+        self.allowsCommunityCreation = !localSite.communityCreationAdminOnly
+        self.requiresEmailVerification = localSite.requireEmailVerification
+        self.captchaDifficulty = localSite.captchaEnabled ? localSite.captchaDifficulty : nil
+        self.federates = localSite.federationEnabled
+        do {
+            if let regex = localSite.slurFilterRegex {
+                self.slurFilterRegex = try .init(regex)
+            }
+        } catch {
+            print("Invalid slur filter regex")
+        }
+        
+        self.update(with: response.siteView)
+    }
+    
+    mutating func update(with siteView: APISiteView) {
+        userCount = siteView.counts.users
+        communityCount = siteView.counts.communities
+        postCount = siteView.counts.posts
+        commentCount = siteView.counts.comments
+        
+        self.activeUserCount = .init(
+            sixMonths: siteView.counts.usersActiveHalfYear,
+            month: siteView.counts.usersActiveMonth,
+            week: siteView.counts.usersActiveWeek,
+            day: siteView.counts.usersActiveDay
+        )
+        
+        self.update(with: siteView.site)
     }
     
     mutating func update(with site: APISite) {
