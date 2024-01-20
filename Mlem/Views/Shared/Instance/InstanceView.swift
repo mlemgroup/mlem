@@ -27,6 +27,7 @@ enum InstanceViewTab: String, Identifiable, CaseIterable {
 struct InstanceView: View {
     @Dependency(\.apiClient) var apiClient: APIClient
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
@@ -42,6 +43,10 @@ struct InstanceView: View {
     
     init(domainName: String, instance: InstanceModel? = nil) {
         _domainName = State(wrappedValue: domainName)
+        var instance = instance
+        if domainName == siteInformation.instance?.url.host() {
+            instance = siteInformation.instance ?? instance
+        }
         _instance = State(wrappedValue: instance)
     }
     
