@@ -73,19 +73,19 @@ struct MarkdownView: View {
             renderAsMarkdown(text: text, theme: theme)
         case .image(url: let imageUrl):
             if let imageUrl = URL(string: imageUrl) {
-                imageView(url: imageUrl)
+                imageView(url: imageUrl, blockId: block.id)
             }
         case .linkedImage(imageUrl: let imageUrl, linkUrl: let linkUrl):
             if let imageUrl = URL(string: imageUrl), let linkUrl = URL(string: linkUrl) {
                 Link(destination: linkUrl) {
-                    imageView(url: imageUrl, shouldExpand: false)
+                    imageView(url: imageUrl, blockId: block.id, shouldExpand: false)
                 }
                 .buttonStyle(.plain)
             }
         }
     }
     
-    func imageView(url: URL, shouldExpand: Bool = true) -> AnyView? {
+    func imageView(url: URL, blockId: Int, shouldExpand: Bool = true) -> AnyView? {
         if let host = url.host() {
             if host == "img.shields.io" {
                 return AnyView(
@@ -94,7 +94,10 @@ struct MarkdownView: View {
                     )
             } else if !MarkdownView.hiddenImageDomains.contains(host) {
                 if replaceImagesWithEmoji {
-                    return AnyView(renderAsMarkdown(text: AppConstants.pictureEmoji.randomElement() ?? "🖼️", theme: theme))
+                    return AnyView(renderAsMarkdown(
+                        text: AppConstants.pictureEmoji[blockId % AppConstants.pictureEmoji.count],
+                        theme: theme)
+                    )
                 } else {
                     return AnyView(
                         CachedImage(url: url, shouldExpand: shouldExpand)
