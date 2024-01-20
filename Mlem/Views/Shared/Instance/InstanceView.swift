@@ -160,7 +160,7 @@ struct InstanceView: View {
                            content.contains("<title>Error 404 - \(domainName)</title>" ) {
                             errorDetails = ErrorDetails(
                                 title: "KBin Instance",
-                                body: "We can't yet display KBin instance details.",
+                                body: "We can't yet display KBin details.",
                                 icon: "point.3.filled.connected.trianglepath.dotted"
                             )
                         } else {
