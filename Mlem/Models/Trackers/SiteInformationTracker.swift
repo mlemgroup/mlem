@@ -38,7 +38,6 @@ class SiteInformationTracker: ObservableObject {
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
                 
-                print("REGEX", response.siteView.localSite.slurFilterRegex)
                 if let regex = response.siteView.localSite.slurFilterRegex {
                     slurFilterRegex = try .init(regex)
                 }
