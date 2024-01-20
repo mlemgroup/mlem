@@ -113,11 +113,12 @@ struct PostComposerView: View {
                                 let url = URL(string: attachmentModel.url)
                                 if !(url?.isImage ?? true) {
                                     HStack(spacing: AppConstants.postAndCommentSpacing) {
-                                        Image(systemName: "link")
+                                        Image(systemName: Icons.websiteAddress)
                                             .foregroundStyle(.blue)
                                         Text(attachmentModel.url)
                                             .foregroundStyle(.secondary)
                                             .lineLimit(1)
+                                        Spacer()
                                         Button(action: attachmentModel.removeLinkAction, label: {
                                             Image(systemName: Icons.close)
                                                 .fontWeight(.semibold)
@@ -255,7 +256,7 @@ struct PostComposerView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     LinkUploadOptionsView(model: attachmentModel) {
-                        Label("Attach image or link", systemImage: "link")
+                        Label("Attach Image or Link", systemImage: Icons.websiteAddress)
                     }
                     .disabled(attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty)
                 }
