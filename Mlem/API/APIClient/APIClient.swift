@@ -158,13 +158,11 @@ class APIClient {
         definition.headers.forEach { header in
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
-        
-        if !definition.headers.keys.contains("Authorization") {
-            if let overrideToken {
-                urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
-            } else if case let .authenticated(_, token) = session, try session.instanceUrl == definition.instanceURL {
-                urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            }
+    
+        if let overrideToken {
+            urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
+        } else if case let .authenticated(_, token) = session, try session.instanceUrl == definition.instanceURL {
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
         if definition as? any APIGetRequest != nil {
