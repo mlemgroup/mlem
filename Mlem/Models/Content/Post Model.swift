@@ -169,7 +169,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
         let original: PostModel = .init(from: self)
         await setSaved(shouldSave)
         await setRead(true)
-        if upvoteOnSave, votes.myVote != .upvote {
+        if shouldSave, upvoteOnSave, votes.myVote != .upvote {
             await setVotes(votes.applyScoringOperation(operation: .upvote))
         }
         

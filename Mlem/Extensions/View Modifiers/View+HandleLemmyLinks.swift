@@ -69,8 +69,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
                         .environmentObject(layoutWidgetTracker)
-                case let .newPostLinkWithContext(post):
-                    ExpandedPost(post: post.post, community: post.community, scrollTarget: post.scrollTarget)
+                case let .newPostLinkWithContext(postLink):
+                    ExpandedPost(post: postLink.post, community: postLink.community, scrollTarget: postLink.scrollTarget)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
                         .environmentObject(layoutWidgetTracker)

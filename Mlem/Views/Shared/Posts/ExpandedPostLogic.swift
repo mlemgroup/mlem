@@ -11,39 +11,15 @@ extension ExpandedPost {
     // MARK: Interaction callbacks
     
     func upvotePost() async {
-        // ensure post tracker isn't loading--avoids state faking causing flickering when post tracker doesn't upvote
-        guard !postTracker.isLoading else { return }
-        
-        // fake state
-        let oldPost = post // save this to pass to postTracker
-        let operation = post.votes.myVote == .upvote ? ScoringOperation.resetVote : .upvote
-        post = PostModel(from: post, votes: post.votes.applyScoringOperation(operation: operation))
-        
-        // perform upvote--passing in oldPost so that the state-faked upvote of post doesn't result in the opposite vote being passed in
-        post = await postTracker.voteOnPost(post: oldPost, inputOp: .upvote)
+        await post.vote(inputOp: .upvote)
     }
-
+    
     func downvotePost() async {
-        // fake state
-        let oldPost = post
-        let operation = post.votes.myVote == .downvote ? ScoringOperation.resetVote : .downvote
-        post = PostModel(from: post, votes: post.votes.applyScoringOperation(operation: operation))
-        
-        // perform downvote
-        post = await postTracker.voteOnPost(post: oldPost, inputOp: .downvote)
+        await post.vote(inputOp: .downvote)
     }
     
     func savePost() async {
-        // fake state
-        var stateFakedPost = PostModel(from: post, saved: !post.saved)
-        if upvoteOnSave, !post.saved, stateFakedPost.votes.myVote != .upvote {
-            stateFakedPost.votes = stateFakedPost.votes.applyScoringOperation(operation: .upvote)
-        }
-        let oldPost = post
-        post = stateFakedPost
-        
-        // perform save
-        post = await postTracker.toggleSave(post: oldPost)
+        await post.toggleSave(upvoteOnSave: upvoteOnSave)
     }
     
     func replyToPost() {
@@ -212,8 +188,8 @@ extension ExpandedPost {
         
         do {
             // Making this request marks unread comments as read.
-            post = try await PostModel(from: postRepository.loadPost(postId: post.postId))
-            postTracker.update(with: post)
+            // post = try await PostModel(from: postRepository.loadPost(postId: post.postId))
+            // postTracker.update(with: post)
             
             let comments = try await commentRepository.comments(for: post.post.id)
             let sorted = sortComments(comments, by: commentSortingType)

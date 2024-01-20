@@ -55,7 +55,7 @@ struct ExpandedPost: View {
 
     @StateObject var commentTracker: CommentTracker = .init()
     @EnvironmentObject var postTracker: PostTracker
-    @State var post: PostModel
+    @StateObject var post: PostModel
     var community: CommunityModel?
     
     @State var commentErrorDetails: ErrorDetails?
@@ -82,7 +82,7 @@ struct ExpandedPost: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) { toolbarMenu }
             }
             .task { await loadComments() }
-            .task { await postTracker.markRead(post: post) }
+            .task { await post.markRead(true) }
             .refreshable { await refreshComments() }
             .onChange(of: commentSortingType) { newSortingType in
                 withAnimation(.easeIn(duration: 0.4)) {
