@@ -157,7 +157,7 @@ struct InstanceView: View {
                 } catch APIClientError.decoding(let data, let error) {
                     withAnimation(.easeOut(duration: 0.2)) {
                         if let content = String(data: data, encoding: .utf8),
-                           content.contains("<title>Error 404 - \(domainName)<title/>" ) {
+                           content.contains("<title>Error 404 - \(domainName)</title>" ) {
                             errorDetails = ErrorDetails(
                                 title: "Cannot Connect to Instance",
                                 body: "Maybe this is a KBin instance? Mlem can't yet display KBin instance details.",
