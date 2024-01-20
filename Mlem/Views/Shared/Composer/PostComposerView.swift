@@ -115,6 +115,7 @@ struct PostComposerView: View {
                                     HStack(spacing: AppConstants.postAndCommentSpacing) {
                                         Image(systemName: Icons.websiteAddress)
                                             .foregroundStyle(.blue)
+                                            .padding(.leading, 5)
                                         Text(attachmentModel.url)
                                             .foregroundStyle(.secondary)
                                             .lineLimit(1)
