@@ -99,32 +99,36 @@ struct FeedPost: View {
     var showCheck: Bool { post.read && diffWithoutColor && readMarkStyle == .check }
 
     var body: some View {
-        VStack(spacing: 0) {
-            postItem
-                .border(width: barThickness, edges: [.leading], color: .secondary)
-                .background(Color.systemBackground)
-//                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
-//                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
-//                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
-                .destructiveConfirmation(
-                    isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
-                    confirmationMenuFunction: confirmationMenuFunction
-                )
-                .addSwipeyActions(
-                    leading: [
-                        enableSwipeActions ? upvoteSwipeAction : nil,
-                        enableSwipeActions ? downvoteSwipeAction : nil
-                    ],
-                    trailing: [
-                        enableSwipeActions ? saveSwipeAction : nil,
-                        enableSwipeActions ? replySwipeAction : nil
-                    ]
-                )
-                .contextMenu {
-                    ForEach(genMenuFunctions()) { item in
-                        MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+        if post.post.deleted {
+            EmptyView()
+        } else {
+            VStack(spacing: 0) {
+                postItem
+                    .border(width: barThickness, edges: [.leading], color: .secondary)
+                    .background(Color.systemBackground)
+                    //                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
+                    //                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
+                    //                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
+                    .destructiveConfirmation(
+                        isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                        confirmationMenuFunction: confirmationMenuFunction
+                    )
+                    .addSwipeyActions(
+                        leading: [
+                            enableSwipeActions ? upvoteSwipeAction : nil,
+                            enableSwipeActions ? downvoteSwipeAction : nil
+                        ],
+                        trailing: [
+                            enableSwipeActions ? saveSwipeAction : nil,
+                            enableSwipeActions ? replySwipeAction : nil
+                        ]
+                    )
+                    .contextMenu {
+                        ForEach(genMenuFunctions()) { item in
+                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
+                        }
                     }
-                }
+            }
         }
     }
 
@@ -229,7 +233,7 @@ struct FeedPost: View {
     }
 
     func deletePost() async {
-        await postTracker.delete(post: post)
+        await post.delete()
     }
 
     func blockUser() async {

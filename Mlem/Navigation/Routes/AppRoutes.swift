@@ -27,7 +27,7 @@ enum AppRoute: Routable {
     case userProfile(UserModel, communityContext: CommunityModel? = nil)
     
     case postLinkWithContext(PostLinkWithContext)
-    case newPostLinkWithContext(NewPostLinkWithContext)
+    // case newPostLinkWithContext(NewPostLinkWithContext)
     case lazyLoadPostLinkWithContext(LazyLoadPostLinkWithContext)
     
     // MARK: - Settings
@@ -56,8 +56,8 @@ enum AppRoute: Routable {
             return .userProfile(value)
         case let value as PostLinkWithContext:
             return .postLinkWithContext(value)
-        case let value as NewPostLinkWithContext:
-            return .newPostLinkWithContext(value)
+//        case let value as NewPostLinkWithContext:
+//            return .newPostLinkWithContext(value)
         case let value as LazyLoadPostLinkWithContext:
             return .lazyLoadPostLinkWithContext(value)
         case let value as SettingsPage:

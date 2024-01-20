@@ -24,6 +24,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
     var unreadCommentCount: Int
     @Published var saved: Bool
     @Published var read: Bool
+    @Published var deleted: Bool
     var published: Date
     var updated: Date?
     var links: [LinkType]
@@ -45,6 +46,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
         self.unreadCommentCount = apiPostView.unreadComments
         self.saved = apiPostView.saved
         self.read = apiPostView.read
+        self.deleted = apiPostView.post.deleted
         self.published = apiPostView.post.published
         self.updated = apiPostView.post.updated
         
@@ -74,6 +76,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
         unreadCommentCount: Int? = nil,
         saved: Bool? = nil,
         read: Bool? = nil,
+        deleted: Bool? = nil,
         published: Date? = nil,
         updated: Date? = nil
     ) {
@@ -86,6 +89,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
         self.unreadCommentCount = unreadCommentCount ?? other.unreadCommentCount
         self.saved = saved ?? other.saved
         self.read = read ?? other.read
+        self.deleted = deleted ?? other.deleted
         self.published = published ?? other.published
         self.updated = updated ?? other.updated
         
@@ -122,6 +126,11 @@ class PostModel: ContentIdentifiable, ObservableObject {
     @MainActor
     func setSaved(_ newSaved: Bool) {
         saved = newSaved
+    }
+    
+    @MainActor
+    func setDeleted(_ newDeleted: Bool) {
+        deleted = newDeleted
     }
     
     // MARK: Interaction Methods
@@ -207,10 +216,19 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
-    // TODO: implement
-    func delete(updateTrackers: (() async -> Void)?) async {
-        if let updateTrackers {
-            await updateTrackers()
+    func delete() async {
+        // state fake
+        let original: PostModel = .init(from: self)
+        await setDeleted(true)
+        
+        // API call
+        do {
+            let deletedResponse = try await postRepository.deletePost(postId: postId, shouldDelete: true)
+            await reinit(from: deletedResponse)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
         }
     }
     

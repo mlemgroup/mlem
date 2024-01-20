@@ -64,7 +64,7 @@ struct NewPostFeedView: View {
     private func feedPost(for post: PostModel) -> some View {
         VStack(spacing: 0) {
             // TODO: reenable nav
-            NavigationLink(.newPostLinkWithContext(.init(post: post, community: nil))) {
+            NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
                     community: post.community,

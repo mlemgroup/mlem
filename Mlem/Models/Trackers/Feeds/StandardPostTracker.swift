@@ -133,6 +133,11 @@ class StandardPostTracker: StandardTracker<PostModel> {
     
     // MARK: Custom Behavior
     
+    @available(*, deprecated, message: "Compatibility function for UserView. Should be removed and UserView refactored to use new multi-trackers.")
+    func reset(with newPosts: [PostModel]) async {
+        await setItems(newPosts)
+    }
+    
     func applyFilter(_ newFilter: NewPostFilterReason) async {
         guard !filters.keys.contains(newFilter) else {
             assertionFailure("Cannot apply new filter (already present in filters!)")
