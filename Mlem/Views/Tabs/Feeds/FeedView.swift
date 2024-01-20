@@ -86,6 +86,7 @@ struct FeedView: View {
                 }
                 PostFeedView(postTracker: postTracker, postSortType: $postSortType)
                     .background(Color.secondarySystemBackground)
+                    .environment(\.feedType, feedType)
             }
         }
         .refreshable {
