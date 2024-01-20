@@ -215,6 +215,10 @@ extension ExpandedPost {
         isLoading = true
         
         do {
+            // Making this request marks unread comments as read.
+            post = PostModel(from: try await postRepository.loadPost(postId: post.postId))
+            postTracker.update(with: post)
+            
             let comments = try await commentRepository.comments(for: post.post.id)
             let sorted = sortComments(comments, by: commentSortingType)
             commentTracker.comments = sorted

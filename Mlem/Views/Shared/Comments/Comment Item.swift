@@ -21,7 +21,7 @@ struct CommentItem: View {
     @Dependency(\.hapticManager) var hapticManager
     
     // appstorage
-    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = true
+    @AppStorage("shouldShowScoreInCommentBar") var shouldShowScoreInCommentBar: Bool = false
     @AppStorage("showCommentDownvotesSeparately") var showCommentDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInCommentBar") var shouldShowTimeInCommentBar: Bool = true
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
@@ -165,7 +165,7 @@ struct CommentItem: View {
                         votes: VotesModel(from: hierarchicalComment.commentView.counts, myVote: hierarchicalComment.commentView.myVote),
                         published: hierarchicalComment.commentView.comment.published,
                         updated: hierarchicalComment.commentView.comment.updated,
-                        numReplies: hierarchicalComment.commentView.counts.childCount,
+                        commentCount: hierarchicalComment.commentView.counts.childCount,
                         saved: hierarchicalComment.commentView.saved,
                         accessibilityContext: "comment",
                         widgets: layoutWidgetTracker.groups.comment,

@@ -38,7 +38,7 @@ struct ExpandedPost: View {
     @AppStorage("shouldShowCommunityServerInPost") var shouldShowCommunityServerInPost: Bool = false
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = false
     
-    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = true
+    @AppStorage("shouldShowScoreInPostBar") var shouldShowScoreInPostBar: Bool = false
     @AppStorage("showDownvotesSeparately") var showPostDownvotesSeparately: Bool = false
     @AppStorage("shouldShowTimeInPostBar") var shouldShowTimeInPostBar: Bool = true
     @AppStorage("shouldShowSavedInPostBar") var shouldShowSavedInPostBar: Bool = false
@@ -249,7 +249,8 @@ struct ExpandedPost: View {
                 votes: post.votes,
                 published: post.published,
                 updated: post.updated,
-                numReplies: post.numReplies,
+                commentCount: post.commentCount,
+                unreadCommentCount: post.unreadCommentCount,
                 saved: post.saved,
                 accessibilityContext: "post",
                 widgets: layoutWidgetTracker.groups.post,
