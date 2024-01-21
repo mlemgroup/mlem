@@ -29,7 +29,7 @@ struct NewPostFeedView: View {
                     }
                 } else {
                     Task {
-                        await postTracker.applyFilter(.read)
+                        await postTracker.addFilter(.read)
                     }
                 }
             }

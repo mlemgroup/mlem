@@ -36,6 +36,7 @@ struct AggregateFeedView: View {
     
     var body: some View {
         content
+            .environmentObject(postTracker)
             .onAppear {
                 Task { await postTracker.loadMoreItems() }
             }

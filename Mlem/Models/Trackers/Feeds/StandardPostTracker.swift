@@ -138,7 +138,17 @@ class StandardPostTracker: StandardTracker<PostModel> {
         await setItems(newPosts)
     }
     
-    func applyFilter(_ newFilter: NewPostFilterReason) async {
+    /// Applies a filter to all items currently in the tracker, but does **NOT** add the filter to the tracker!
+    /// Use in situations where filtering is handled server-side but should be retroactively applied to the current set of posts (e.g., filtering posts from a blocked user or community)
+    /// - Parameter filter: filter to apply
+    func applyFilter(_ filter: NewPostFilterReason) async {
+        await setItems(items.filter { shouldFilterPost($0, filters: [filter]) == nil })
+    }
+    
+    /// Adds a filter to the tracker, removing all current posts that do not pass the filter and filtering out all future posts that do not pass the filter.
+    /// Use in situations where filtering is handled client-side (e.g., filtering read posts or keywords)
+    /// - Parameter newFilter: NewPostFilterReason describing the filter to apply
+    func addFilter(_ newFilter: NewPostFilterReason) async {
         guard !filters.keys.contains(newFilter) else {
             assertionFailure("Cannot apply new filter (already present in filters!)")
             return
@@ -177,7 +187,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
         var ret: [PostModel] = .init()
         
         for post in posts {
-            if let filterReason = shouldFilterPost(post) {
+            if let filterReason = shouldFilterPost(post, filters: Array(filters.keys)) {
                 filters[filterReason] = filters[filterReason, default: 0] + 1
             } else {
                 ret.append(post)
@@ -189,8 +199,8 @@ class StandardPostTracker: StandardTracker<PostModel> {
     
     /// Given a post, determines whether it should be filtered
     /// - Returns: the first reason according to which the post should be filtered, if applicable, or nil if the post should not be filtered
-    private func shouldFilterPost(_ postModel: PostModel) -> NewPostFilterReason? {
-        for filter in filters.keys {
+    private func shouldFilterPost(_ postModel: PostModel, filters: [NewPostFilterReason]) -> NewPostFilterReason? {
+        for filter in filters {
             switch filter {
             case .read:
                 if postModel.read { return filter }
