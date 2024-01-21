@@ -97,6 +97,23 @@ struct SettingsButtonStyle: ButtonStyle {
     }
 }
 
+struct FooterLinkView: View {
+    let title: String
+    let destination: AppRoute
+    
+    var body: some View {
+        NavigationLink(destination) {
+            HStack(spacing: 3) {
+                Text(title)
+                Image(systemName: Icons.forward)
+                    .fontWeight(.semibold)
+                    .imageScale(.small)
+            }
+            .font(.footnote)
+        }
+    }
+}
+
 struct CheckboxToggleStyle: ToggleStyle {
    func makeBody(configuration: Configuration) -> some View {
        HStack {

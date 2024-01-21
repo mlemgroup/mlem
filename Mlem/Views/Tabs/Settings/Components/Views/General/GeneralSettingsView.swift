@@ -61,17 +61,7 @@ struct GeneralSettingsView: View {
                     
                     // TODO: 0.17 deprecation remove this check
                     if (siteInformation.version ?? .zero) >= .init("0.18.0") {
-                        
-                        NavigationLink(.settings(.accountGeneral)) {
-                            HStack(spacing: 3) {
-                                Text("Account Settings")
-                                Image(systemName: "chevron.right")
-                                    .fontWeight(.semibold)
-                                    .imageScale(.small)
-                            }
-                            .font(.footnote)
-                        }
-                        
+                        FooterLinkView(title: "Account Settings", destination: .settings(.accountGeneral))
                     }
                 }
             }

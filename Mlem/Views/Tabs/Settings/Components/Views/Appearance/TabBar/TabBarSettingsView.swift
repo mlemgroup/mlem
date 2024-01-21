@@ -35,7 +35,7 @@ struct TabBarSettingsView: View {
             
             // TODO: options like this will need to be updated to only show when there is an active account
             // present once guest mode is fully implemented
-            Section("Profile Icon Appearance") {
+            Section {
                 HStack {
                     ForEach(ProfileTabLabel.allCases, id: \.self) { item in
                         VStack(spacing: 10) {
@@ -74,6 +74,15 @@ struct TabBarSettingsView: View {
                     isTicked: profileTabLabel == .anonymous ? .constant(false) : $showUserAvatar
                 )
                 .disabled(profileTabLabel == .anonymous)
+            } header: {
+                Text("Profile Icon Appearance")
+            } footer: {
+                if profileTabLabel == .nickname {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("You can change your account's local nickname in Account Settings.")
+                        FooterLinkView(title: "Account Settings", destination: .settings(.accountLocal))
+                    }
+                }
             }
         }
         .fancyTabScrollCompatible()
