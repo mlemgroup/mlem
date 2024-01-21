@@ -26,7 +26,7 @@ struct QuickSwitcherSettingsView: View {
                 HStack(alignment: .center, spacing: 24) {
                     LongPressAnimationView(animationTrigger: animationTrigger)
                     Toggle(
-                        "Tapping and holding the Profile icon.",
+                        "Tapping and holding the Profile icon",
                         isOn: $allowQuickSwitcherLongPressGesture
                     )
                     .toggleStyle(CheckboxToggleStyle())
@@ -35,7 +35,7 @@ struct QuickSwitcherSettingsView: View {
                 HStack(alignment: .center, spacing: 24) {
                     SwipeUpAnimationView(animationTrigger: animationTrigger)
                     Toggle(
-                        "Swiping up from the tab bar.",
+                        "Swiping up from the tab bar",
                         isOn: $allowTabBarSwipeUpGesture
                     )
                     .toggleStyle(CheckboxToggleStyle())

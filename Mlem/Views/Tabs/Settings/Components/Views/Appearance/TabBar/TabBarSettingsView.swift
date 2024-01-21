@@ -22,13 +22,13 @@ struct TabBarSettingsView: View {
             Section {
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.label,
-                    settingName: "Show Tab Labels",
+                    settingName: "Tab Labels",
                     isTicked: $showTabNames
                 )
                 
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.unreadBadge,
-                    settingName: "Show Unread Count",
+                    settingName: "Inbox Unread Count",
                     isTicked: $showInboxUnreadBadge
                 )
             }
@@ -69,7 +69,7 @@ struct TabBarSettingsView: View {
                 }
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.showAvatar,
-                    settingName: "Show Avatar",
+                    settingName: "Avatar",
                     // if `.anonymous` is selected the toggle here should always be false
                     isTicked: profileTabLabel == .anonymous ? .constant(false) : $showUserAvatar
                 )
