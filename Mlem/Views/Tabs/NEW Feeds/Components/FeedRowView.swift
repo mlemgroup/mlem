@@ -16,12 +16,10 @@ struct FeedRowView: View {
         HStack {
             Image(systemName: feedType.iconNameCircle)
                 .resizable()
-                .frame(width: 36, height: 36)
+                .frame(width: 30, height: 30)
                 .foregroundColor(feedType.color)
             
-            VStack(alignment: .leading) {
-                Text(feedType.label)
-            }
+            Text(feedType.label)
         }
     }
 }

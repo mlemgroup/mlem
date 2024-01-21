@@ -12,12 +12,11 @@ extension UserView {
     
     var tabs: [UserViewTab] {
         var tabs: [UserViewTab] = [.overview, .posts, .comments]
-        if isOwnProfile {
-            tabs.append(.saved)
-        }
+        
         if !(user.moderatedCommunities?.isEmpty ?? true) {
             tabs.append(.communities)
         }
+        
         return tabs
     }
     

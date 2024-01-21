@@ -80,9 +80,7 @@ struct UserFeedView: View {
         let feed: [FeedItem]
         switch selectedTab {
         case .overview:
-            feed = generateMixedFeed(savedItems: false)
-        case .saved:
-            feed = generateMixedFeed(savedItems: true)
+            feed = generateOverviewFeed()
         case .comments:
             feed = generateCommentFeed()
         case .posts:
@@ -146,13 +144,7 @@ struct UserFeedView: View {
         privateCommentTracker.comments
             // Matched saved state
             .filter {
-                if savedItems {
-                    return $0.commentView.saved
-                } else {
-                    // If we unfavorited something while
-                    // here we don't want it showing up in our feed
-                    return $0.commentView.creator.id == user.userId
-                }
+                $0.commentView.creator.id == user.userId
             }
         
             // Create Feed Items
@@ -167,17 +159,10 @@ struct UserFeedView: View {
             }
     }
     
-    private func generatePostFeed(savedItems: Bool = false) -> [FeedItem] {
+    private func generatePostFeed() -> [FeedItem] {
         privatePostTracker.items
-            // Matched saved state
             .filter {
-                if savedItems {
-                    return $0.saved
-                } else {
-                    // If we unfavorited something while
-                    // here we don't want it showing up in our feed
-                    return $0.creator.userId == user.userId
-                }
+                $0.creator.userId == user.userId
             }
         
             // Create Feed Items
@@ -192,11 +177,11 @@ struct UserFeedView: View {
             }
     }
     
-    private func generateMixedFeed(savedItems: Bool) -> [FeedItem] {
+    private func generateOverviewFeed() -> [FeedItem] {
         var result: [FeedItem] = []
         
-        result.append(contentsOf: generatePostFeed(savedItems: savedItems))
-        result.append(contentsOf: generateCommentFeed(savedItems: savedItems))
+        result.append(contentsOf: generatePostFeed())
+        result.append(contentsOf: generateCommentFeed())
         
         return result
     }

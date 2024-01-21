@@ -5,19 +5,28 @@
 //  Created by Eric Andrews on 2024-01-13.
 //
 
+import Dependencies
 import Foundation
 import SwiftUI
 
 struct NewPostFeedView: View {
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
+    
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("postSize") var postSize: PostSize = .large
+    @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
+    @AppStorage("fallbackDefaultPostSorting") var fallbackDefaultPostSorting: PostSortType = .hot
     
-    @ObservedObject var postTracker: StandardPostTracker
+    @EnvironmentObject var postTracker: StandardPostTracker
+    @EnvironmentObject var appState: AppState
+    
     @Binding var postSortType: PostSortType
     let showCommunity: Bool
     
+    @State var siteVersionResolved: Bool = false
     @State var errorDetails: ErrorDetails?
     
     var body: some View {
@@ -29,23 +38,36 @@ struct NewPostFeedView: View {
                     Task { await postTracker.addFilter(.read) }
                 }
             }
+            .task(id: siteInformation.version) {
+                // when site version changes, check if it's resolved; if so, update sort type and siteVersionResolved
+                if let siteVersion = siteInformation.version {
+                    let newPostSort = siteVersion < defaultPostSorting.minimumVersion ? fallbackDefaultPostSorting : defaultPostSorting
+                    
+                    // manually change the tracker sort type here so that view is not redrawn by `onChange(of: postSortType)`
+                    await postTracker.changeSortType(to: newPostSort, forceRefresh: true)
+                    postSortType = newPostSort
+                    siteVersionResolved = true
+                }
+            }
             .onChange(of: postSortType) { newValue in
                 Task { await postTracker.changeSortType(to: newValue) }
             }
             .toolbar {
-                if postTracker.feedType != .saved {
-                    ToolbarItem(placement: .primaryAction) { sortMenu }
-                }
-                ToolbarItemGroup(placement: .secondaryAction) {
-                    ForEach(genEllipsisMenuFunctions()) { menuFunction in
-                        MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                if siteVersionResolved {
+                    if postTracker.feedType != .saved {
+                        ToolbarItem(placement: .primaryAction) { sortMenu }
                     }
-                    Menu {
-                        ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
+                    ToolbarItemGroup(placement: .secondaryAction) {
+                        ForEach(genEllipsisMenuFunctions()) { menuFunction in
                             MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
                         }
-                    } label: {
-                        Label("Post Size", systemImage: Icons.postSizeSetting)
+                        Menu {
+                            ForEach(genPostSizeSwitchingFunctions()) { menuFunction in
+                                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+                            }
+                        } label: {
+                            Label("Post Size", systemImage: Icons.postSizeSetting)
+                        }
                     }
                 }
             }
@@ -53,7 +75,7 @@ struct NewPostFeedView: View {
     
     var content: some View {
         LazyVStack(spacing: 0) {
-            if postTracker.items.isEmpty {
+            if postTracker.items.isEmpty || !siteVersionResolved {
                 noPostsView()
             } else {
                 ForEach(postTracker.items, id: \.uid) { feedPost(for: $0) }
@@ -84,7 +106,8 @@ struct NewPostFeedView: View {
     @ViewBuilder
     private func noPostsView() -> some View {
         VStack {
-            if postTracker.loadingState == .loading { // don't show posts until site information loads to avoid jarring redraw
+            // don't show posts until site information loads to avoid jarring redraw
+            if postTracker.loadingState == .loading || !siteVersionResolved {
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)

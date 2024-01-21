@@ -60,9 +60,6 @@ struct AggregateFeedView: View {
     var body: some View {
         content
             .environmentObject(postTracker)
-            .onAppear {
-                Task { await postTracker.loadMoreItems() }
-            }
             .refreshable {
                 await Task {
                     do {
@@ -73,10 +70,7 @@ struct AggregateFeedView: View {
                 }.value
             }
             .background {
-                VStack(spacing: 0) {
-                    Color.systemBackground
-                    Color.secondarySystemBackground
-                }
+                Color.secondarySystemBackground
             }
             .fancyTabScrollCompatible()
             .toolbar {
@@ -92,36 +86,43 @@ struct AggregateFeedView: View {
     
     @ViewBuilder
     var content: some View {
-        ScrollView {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            Divider()
+                .padding(.bottom, -1)
+            
+            ScrollView {
                 VStack(spacing: 0) {
-                    ScrollToView(appeared: $scrollToTopAppeared)
-                        .id(scrollToTop)
-                    headerView
-                        .padding(.top, 5)
+                    VStack(spacing: 0) {
+                        ScrollToView(appeared: $scrollToTopAppeared)
+                            .id(scrollToTop)
+                        headerView
+                            .padding(.top, -1)
+                    }
+                    
+                    NewPostFeedView(postSortType: $postSortType, showCommunity: true)
+                        .environmentObject(postTracker)
                 }
-                
-                NewPostFeedView(postTracker: postTracker, postSortType: $postSortType, showCommunity: true)
-                    .background(Color.secondarySystemBackground)
             }
         }
     }
     
     @ViewBuilder
     var headerView: some View {
-        VStack(spacing: 5) {
-            Menu {
-                ForEach(genFeedSwitchingFunctions()) { menuFunction in
-                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-                }
-            } label: {
+        Menu {
+            ForEach(genFeedSwitchingFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
+            }
+        } label: {
+            VStack(spacing: 0) {
+                Divider()
+                    
                 HStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
                     Image(systemName: postTracker.feedType.iconNameCircle)
                         .resizable()
                         .frame(width: 44, height: 44)
                         .foregroundStyle(postTracker.feedType.color ?? .primary)
                         .padding(.leading, AppConstants.postAndCommentSpacing)
-                    
+                        
                     VStack(alignment: .leading, spacing: 0) {
                         HStack(spacing: 5) {
                             Text(postTracker.feedType.label)
@@ -132,62 +133,21 @@ struct AggregateFeedView: View {
                                 .foregroundStyle(.secondary)
                         }
                         .font(.title2)
-                        
+                            
                         Text(subtitle)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
+                    .frame(height: 44)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .padding(.bottom, 3)
+                .padding(.vertical, 5)
+                    
+                Divider()
             }
-            .buttonStyle(.plain)
-            
-            Divider()
-                .padding(.bottom, 15)
-                .frame(maxWidth: .infinity)
-                .background(Color.secondarySystemBackground)
+            .background(Color.systemBackground)
         }
-        
-//        Group {
-//            VStack(spacing: 5) {
-//                HStack(alignment: .center, spacing: 10) {
-//                    Image(systemName: postTracker.feedType.iconNameCircle)
-//                        .resizable()
-//                        .frame(width: 44, height: 44)
-//                        .foregroundStyle(postTracker.feedType.color ?? .primary)
-//                    VStack(alignment: .leading, spacing: 0) {
-//                        Menu {
-//                            ForEach(genFeedSwitchingFunctions()) { menuFunction in
-//                                MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
-//                            }
-//                        } label: {
-//                            HStack(spacing: 5) {
-//                                Text(postTracker.feedType.label)
-//                                    .lineLimit(1)
-//                                    .minimumScaleFactor(0.01)
-//                                    .fontWeight(.semibold)
-//                                Image(systemName: Icons.dropdown)
-//                                    .foregroundStyle(.secondary)
-//                            }
-//                            .font(.title2)
-//                        }
-//                        .buttonStyle(.plain)
-//                        Text(subtitle)
-//                            .font(.footnote)
-//                            .foregroundStyle(.secondary)
-//                    }
-//                    .frame(height: 44)
-//                    Spacer()
-//                }
-//                .padding(.horizontal, AppConstants.postAndCommentSpacing)
-//                .padding(.bottom, 3)
-//            }
-//            Divider()
-//                .padding(.bottom, 15)
-//                .frame(maxWidth: .infinity)
-//                .background(Color.secondarySystemBackground)
-//        }
+        .buttonStyle(.plain)
     }
     
     @ViewBuilder

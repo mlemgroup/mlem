@@ -23,12 +23,12 @@ struct NewCommunityFeedView: View {
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         @AppStorage("showReadPosts") var showReadPosts = true
+        @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
         
-        // TODO: ERIC handle sort type
-        
+        self._postSortType = .init(wrappedValue: defaultPostSorting)
         self._postTracker = .init(wrappedValue: .init(
             internetSpeed: internetSpeed,
-            sortType: .hot,
+            sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
             feedType: feedType
         ))
@@ -67,7 +67,8 @@ struct NewCommunityFeedView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            NewPostFeedView(postTracker: postTracker, postSortType: $postSortType, showCommunity: true)
+            NewPostFeedView(postSortType: $postSortType, showCommunity: true)
+                .environmentObject(postTracker)
                 .background(Color.secondarySystemBackground)
         }
     }

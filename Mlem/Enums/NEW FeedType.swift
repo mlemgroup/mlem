@@ -142,7 +142,7 @@ extension NewFeedType: AssociatedColor {
     var color: Color? {
         switch self {
         case .all: .blue
-        case .local: .red
+        case .local: .purple
         case .subscribed: .red
         case .saved: .green
         case .community: .blue

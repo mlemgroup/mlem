@@ -114,6 +114,10 @@ class StandardPostTracker: StandardTracker<PostModel> {
                 return (items: .init(), cursor: nil)
             }
             
+            if page > 1 {
+                return (items: .init(), cursor: nil)
+            }
+            
             let savedContentData = try await personRepository.loadUserDetails(
                 for: userId,
                 limit: internetSpeed.pageSize,
@@ -135,7 +139,13 @@ class StandardPostTracker: StandardTracker<PostModel> {
     // MARK: Custom Behavior
     
     /// Changes the post sort type to the specified value and reloads the feed
-    func changeSortType(to newSortType: PostSortType) async {
+    func changeSortType(to newSortType: PostSortType, forceRefresh: Bool = false) async {
+        // don't do anything if sort type not changed
+        guard postSortType != newSortType || forceRefresh else {
+            print("DEBUG sort type unchanged and forceRefresh false, will not reload feed")
+            return
+        }
+        
         postSortType = newSortType
         do {
             try await refresh(clearBeforeRefresh: true)
@@ -146,6 +156,11 @@ class StandardPostTracker: StandardTracker<PostModel> {
     
     @MainActor
     func changeFeedType(to newFeedType: NewFeedType) async {
+        // don't do anything if feed type not changed
+        guard feedType != newFeedType else {
+            return
+        }
+        
         feedType = newFeedType
         do {
             try await refresh(clearBeforeRefresh: true)

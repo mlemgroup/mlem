@@ -56,11 +56,6 @@ struct UserView: View {
             showReadPosts: true,
             feedType: .all
         ))
-//        self._privatePostTracker = StateObject(wrappedValue: .init(
-//            shouldPerformMergeSorting: false,
-//            internetSpeed: internetSpeed,
-//            upvoteOnSave: upvoteOnSave
-//        ))
         
         self._user = State(wrappedValue: user)
         self.communityContext = communityContext

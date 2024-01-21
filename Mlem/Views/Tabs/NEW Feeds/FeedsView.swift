@@ -73,7 +73,7 @@ struct FeedsView: View {
                         case .subscribed:
                             AggregateFeedView(feedType: .subscribed)
                         case .saved:
-                            AggregateFeedView(feedType: .saved)
+                            SavedFeedView()
                         case let .community(communityModel):
                             NewCommunityFeedView(feedType: .community(communityModel))
                         case .none:
@@ -84,9 +84,6 @@ struct FeedsView: View {
                 }
             }
         }
-//        .handleLemmyLinkResolution(
-//            navigationPath: .constant(feedTabNavigation)
-//        )
     }
     
     private func communitySectionHeaderView(for section: CommunitySection) -> some View {
