@@ -73,6 +73,7 @@ struct AccountListView: View {
                         ForEach(accounts, id: \.self) { account in
                             AccountButtonView(account: account, isSwitching: $isSwitching)
                         }
+                        .onMove(perform: accountSort == .custom && !isQuickSwitcher ? reorderAccount : nil)
                     }
                 }
                 Section {
@@ -111,11 +112,17 @@ struct AccountListView: View {
                     Label(sortMode.label, systemImage: sortMode.systemImage).tag(sortMode)
                 }
             }
+            .onChange(of: accountSort) { newValue in
+                if newValue == .custom {
+                    groupAccountSort = false
+                }
+            }
             if accountsTracker.savedAccounts.count > 3 {
                 Divider()
                 Toggle(isOn: $groupAccountSort) {
                     Label("Grouped", systemImage: "square.stack.3d.up.fill")
                 }
+                .disabled(accountSort == .custom)
             }
         } label: {
             HStack(alignment: .center, spacing: 2) {
