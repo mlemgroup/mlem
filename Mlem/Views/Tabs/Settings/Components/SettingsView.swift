@@ -41,7 +41,7 @@ struct SettingsView: View {
                                 .padding(.leading, 3)
                                 if let person = siteInformation.myUserInfo?.localUserView.person {
                                     VStack(alignment: .leading, spacing: 3) {
-                                        Text(person.displayName ?? person.name)
+                                        Text(appState.currentActiveAccount?.nickname ?? info.localUserView.person.name)
                                             .font(.title2)
                                         if let hostName = person.actorId.host() {
                                             Text("@\(hostName)")
