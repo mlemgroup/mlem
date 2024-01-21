@@ -9,7 +9,7 @@ import SwiftUI
 
 extension AccountListView {
     var accounts: [SavedAccount] {
-        let accountSort = accountsTracker.savedAccounts.count == 2 ? .name : accountSort
+        let accountSort = accountsTracker.savedAccounts.count == 2 ? .custom : accountSort
         switch accountSort {
         case .custom:
             return accountsTracker.savedAccounts

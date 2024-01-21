@@ -23,7 +23,7 @@ struct QuickSwitcherView: View {
 struct AccountListView: View {
     @Environment(\.setAppFlow) var setFlow
     
-    @AppStorage("accountSort") var accountSort: AccountSortMode = .name
+    @AppStorage("accountSort") var accountSort: AccountSortMode = .custom
     @AppStorage("groupAccountSort") var groupAccountSort: Bool = false
     @EnvironmentObject var appState: AppState
     
@@ -45,6 +45,10 @@ struct AccountListView: View {
         @Dependency(\.accountsTracker) var accountsTracker: SavedAccountTracker
         self._accountsTracker = ObservedObject(wrappedValue: accountsTracker)
         self.isQuickSwitcher = isQuickSwitcher
+    }
+    
+    var shouldAllowReordering: Bool {
+        (accountSort == .custom || accountsTracker.savedAccounts.count == 2) && !isQuickSwitcher
     }
     
     var body: some View {
@@ -73,7 +77,7 @@ struct AccountListView: View {
                         ForEach(accounts, id: \.self) { account in
                             AccountButtonView(account: account, isSwitching: $isSwitching)
                         }
-                        .onMove(perform: accountSort == .custom && !isQuickSwitcher ? reorderAccount : nil)
+                        .onMove(perform: shouldAllowReordering ? reorderAccount : nil)
                     }
                 }
                 Section {
