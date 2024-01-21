@@ -70,7 +70,7 @@ struct AggregateFeedView: View {
                 }.value
             }
             .background {
-                Color.secondarySystemBackground
+                Color.systemBackground
             }
             .fancyTabScrollCompatible()
             .toolbar {
@@ -87,9 +87,6 @@ struct AggregateFeedView: View {
     @ViewBuilder
     var content: some View {
         VStack(spacing: 0) {
-            Divider()
-                .padding(.bottom, -1)
-            
             ScrollView {
                 VStack(spacing: 0) {
                     VStack(spacing: 0) {
@@ -114,8 +111,6 @@ struct AggregateFeedView: View {
             }
         } label: {
             VStack(spacing: 0) {
-                Divider()
-                    
                 HStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
                     Image(systemName: postTracker.feedType.iconNameCircle)
                         .resizable()
@@ -145,7 +140,6 @@ struct AggregateFeedView: View {
                     
                 Divider()
             }
-            .background(Color.systemBackground)
         }
         .buttonStyle(.plain)
     }
