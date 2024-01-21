@@ -15,19 +15,10 @@ struct TabBarSettingsView: View {
     @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
     
+    @EnvironmentObject var appState: AppState
+    
     var body: some View {
         Form {
-            // TODO: options like this will need to be updated to only show when there is an active account
-            // present once guest mode is fully implemented
-            Section {
-                SelectableSettingsItem(
-                    settingIconSystemName: Icons.profileTabSettings,
-                    settingName: "Profile Tab Label",
-                    currentValue: $profileTabLabel,
-                    options: ProfileTabLabel.allCases
-                )
-            }
-            
             Section {
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.label,
@@ -40,10 +31,45 @@ struct TabBarSettingsView: View {
                     settingName: "Show Unread Count",
                     isTicked: $showInboxUnreadBadge
                 )
-                
+            }
+            
+            // TODO: options like this will need to be updated to only show when there is an active account
+            // present once guest mode is fully implemented
+            Section("Profile Icon Appearance") {
+                HStack {
+                    ForEach(ProfileTabLabel.allCases, id: \.self) { item in
+                        VStack(spacing: 10) {
+                            let account = appState.currentActiveAccount
+                            if let avatar = account?.avatarUrl, item != .anonymous, showUserAvatar {
+                                AvatarView(url: avatar, type: .user, avatarSize: 42, iconResolution: .unrestricted)
+                            } else {
+                                Image(systemName: Icons.user)
+                                    .resizable()
+                                    .frame(width: 42, height: 42)
+                            }
+                            Group {
+                                switch item {
+                                case .nickname:
+                                    Text(account?.nickname ?? "Nickname")
+                                case .instance:
+                                    Text(account?.instanceLink.host() ?? "Instance")
+                                case .anonymous:
+                                    Text("Profile")
+                                }
+                            }
+                            .font(.footnote)
+                            Checkbox(isOn: profileTabLabel == item)
+                        }
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .onTapGesture {
+                            profileTabLabel = item
+                        }
+                    }
+                }
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.showAvatar,
-                    settingName: "Show User Avatar",
+                    settingName: "Show Avatar",
                     // if `.anonymous` is selected the toggle here should always be false
                     isTicked: profileTabLabel == .anonymous ? .constant(false) : $showUserAvatar
                 )

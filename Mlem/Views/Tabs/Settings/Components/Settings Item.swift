@@ -102,23 +102,31 @@ struct CheckboxToggleStyle: ToggleStyle {
        HStack {
            configuration.label
            Spacer()
-           VStack {
-               if configuration.isOn {
-                   Image(systemName: "checkmark.circle.fill")
-                       .foregroundStyle(.white, .blue)
-                       .imageScale(.large)
-               } else {
-                   Image(systemName: "circle")
-                       .foregroundStyle(Color(uiColor: .tertiaryLabel))
-                       .imageScale(.large)
-               }
-           }
+           Checkbox(isOn: configuration.isOn)
            .animation(.default, value: configuration.isOn)
        }
        .onTapGesture {
             configuration.isOn.toggle()
        }
    }
+}
+
+struct Checkbox: View {
+    let isOn: Bool
+    
+    var body: some View {
+        VStack {
+            if isOn {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.white, .blue)
+                    .imageScale(.large)
+            } else {
+                Image(systemName: "circle")
+                    .foregroundStyle(Color(uiColor: .tertiaryLabel))
+                    .imageScale(.large)
+            }
+        }
+    }
 }
 
 struct SettingsPickerButton<PickerLabel: View>: View {
