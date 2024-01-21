@@ -31,6 +31,10 @@ struct AccountSwitcherSettingsView: View {
                 .listRowBackground(Color(.systemGroupedBackground))
             }
             AccountListView()
+            NavigationLink { EmptyView() } label: {
+                Label("Quick Switcher", systemImage: "platter.filled.bottom.iphone")
+                    .labelStyle(SquircleLabelStyle(color: .teal))
+            }
         }
         .fancyTabScrollCompatible()
     }
