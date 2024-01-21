@@ -153,26 +153,24 @@ class APIClient {
         }
     }
 
-    private func urlRequest(from defintion: any APIRequest, overrideToken: String?) throws -> URLRequest {
-        var urlRequest = URLRequest(url: defintion.endpoint)
-        defintion.headers.forEach { header in
-            if header.key == "auth" {
-                if let overrideToken {
-                    urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
-                } else if case let .authenticated(_, token) = session {
-                    urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-                }
-            } else {
-                urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
-            }
+    private func urlRequest(from definition: any APIRequest, overrideToken: String?) throws -> URLRequest {
+        var urlRequest = URLRequest(url: definition.endpoint)
+        definition.headers.forEach { header in
+            urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+    
+        if let overrideToken {
+            urlRequest.setValue("Bearer \(overrideToken)", forHTTPHeaderField: "Authorization")
+        } else if case let .authenticated(_, token) = session, try session.instanceUrl == definition.instanceURL {
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
-        if defintion as? any APIGetRequest != nil {
+        if definition as? any APIGetRequest != nil {
             urlRequest.httpMethod = "GET"
-        } else if let postDefinition = defintion as? any APIPostRequest {
+        } else if let postDefinition = definition as? any APIPostRequest {
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = try createBodyData(for: postDefinition)
-        } else if let putDefinition = defintion as? any APIPutRequest {
+        } else if let putDefinition = definition as? any APIPutRequest {
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
