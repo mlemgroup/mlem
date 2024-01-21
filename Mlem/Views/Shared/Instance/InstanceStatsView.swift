@@ -10,63 +10,58 @@ import SwiftUI
 struct InstanceStatsView: View {
     @AppStorage("developerMode") var developerMode: Bool = false
     
+    @State var showingSlurRegex: Bool = false
+    
     let instance: InstanceModel
     
     var body: some View {
         VStack(spacing: 16) {
+            box {
+                HStack {
+                    Label(instance.creationDate.dateString, systemImage: Icons.cakeDay)
+                    Text("•")
+                    Label(instance.creationDate.getRelativeTime(unitsStyle: .abbreviated), systemImage: Icons.time)
+                }
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+            }
             HStack(spacing: 16) {
                 box {
-                    HStack {
-                        Text("Users")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(instance.userCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                    }
+                    Text("Users")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(instance.userCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
                 }
                 
                 box {
-                    HStack {
-                        Text("Communities")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(instance.communityCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.green)
-                    }
+                    Text("Communities")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(instance.communityCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.green)
                 }
             }
             .frame(maxWidth: .infinity)
             
             HStack(spacing: 16) {
                 box {
-                    HStack {
-                        Text("Posts")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(instance.postCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.pink)
-                    }
+                    Text("Posts")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(instance.postCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.pink)
                 }
                 
                 box {
-                    HStack {
-                        Text("Comments")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(instance.commentCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.orange)
-                    }
+                    Text("Comments")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(instance.commentCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.orange)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -110,35 +105,6 @@ struct InstanceStatsView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 settingRow(
-                    "NSFW Content",
-                    systemImage: Icons.blurNsfw,
-                    value: instance.allowsNSFW ?? false
-                )
-                Divider()
-                settingRow(
-                    "Downvotes",
-                    systemImage: Icons.downvote,
-                    value: instance.allowsDownvotes ?? false
-                )
-                Divider()
-                settingRow(
-                    "Community Creation",
-                    systemImage: "house",
-                    value: instance.allowsCommunityCreation ?? false
-                )
-                Divider()
-                settingRow(
-                    "Slur Filter",
-                    systemImage: Icons.filterFill,
-                    value: instance.slurFilterRegex != nil
-                )
-            }
-            .frame(maxWidth: .infinity)
-            .background(Color(uiColor: .secondarySystemGroupedBackground))
-            .cornerRadius(AppConstants.largeItemCornerRadius)
-            
-            VStack(alignment: .leading, spacing: 0) {
-                settingRow(
                     "Registration",
                     systemImage: Icons.person,
                     value: instance.registrationMode?.label ?? "Closed",
@@ -163,6 +129,79 @@ struct InstanceStatsView: View {
             .frame(maxWidth: .infinity)
             .background(Color(uiColor: .secondarySystemGroupedBackground))
             .cornerRadius(AppConstants.largeItemCornerRadius)
+            
+            VStack(alignment: .leading, spacing: 0) {
+                settingRow(
+                    "NSFW Content",
+                    systemImage: Icons.blurNsfw,
+                    value: instance.allowsNSFW ?? false
+                )
+                Divider()
+                settingRow(
+                    "Downvotes",
+                    systemImage: Icons.downvote,
+                    value: instance.allowsDownvotes ?? false
+                )
+                Divider()
+                settingRow(
+                    "Community Creation",
+                    systemImage: "house",
+                    value: instance.allowsCommunityCreation ?? false
+                )
+                Divider()
+                settingRow(
+                    "Slur Filter",
+                    systemImage: Icons.filterFill,
+                    value: instance.slurFilterRegex != nil
+                )
+                if developerMode, let regex = instance.slurFilterString {
+                    Divider()
+                    Text(showingSlurRegex ? regex : "Tap to show slur filter regex")
+                        .textSelection(.enabled)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .padding(12)
+                        .onTapGesture {
+                            showingSlurRegex.toggle()
+                        }
+                }
+                if developerMode, let feedType = instance.defaultFeedType {
+                    Divider()
+                    settingRow(
+                        "Default Feed Type",
+                        systemImage: Icons.feeds,
+                        value: feedType.label
+                    )
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .cornerRadius(AppConstants.largeItemCornerRadius)
+            
+            if developerMode {
+                VStack(alignment: .leading, spacing: 0) {
+                    settingRow(
+                        "Show Mod Names in Modlog",
+                        systemImage: Icons.moderation,
+                        value: !(instance.hideModlogModNames ?? true)
+                    )
+                    Divider()
+                    settingRow(
+                        "Applications Email Admins",
+                        systemImage: Icons.person,
+                        value: instance.applicationsEmailAdmins ?? false
+                    )
+                    Divider()
+                    settingRow(
+                        "Reports Email Admins",
+                        systemImage: Icons.moderationReport,
+                        value: instance.reportsEmailAdmins ?? false
+                    )
+                }
+                .frame(maxWidth: .infinity)
+                .background(Color(uiColor: .secondarySystemGroupedBackground))
+                .cornerRadius(AppConstants.largeItemCornerRadius)
+            }
             
         }
         .padding(.horizontal, 16)

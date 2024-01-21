@@ -63,6 +63,7 @@ struct CommunityModel {
     var blocked: Bool?
     var subscribed: Bool?
     var subscriberCount: Int?
+    var localSubscriberCount: Int?
     var postCount: Int?
     var commentCount: Int?
     var activeUserCount: ActiveUserCount?
@@ -110,6 +111,7 @@ struct CommunityModel {
         self.blocked = communityView.blocked
         
         self.subscriberCount = communityView.counts.subscribers
+        self.localSubscriberCount = communityView.counts.subscribersLocal
         self.postCount = communityView.counts.posts
         self.commentCount = communityView.counts.comments
         self.activeUserCount = .init(

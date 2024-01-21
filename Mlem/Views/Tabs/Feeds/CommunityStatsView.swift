@@ -13,39 +13,38 @@ struct CommunityStatsView: View {
     var body: some View {
         VStack(spacing: 16) {
             box {
+                HStack {
+                    Label(community.creationDate.dateString, systemImage: Icons.cakeDay)
+                    Text("•")
+                    Label(community.creationDate.getRelativeTime(date: Date.now, unitsStyle: .abbreviated), systemImage: Icons.time)
+                }
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+            }
+            box {
                 Text("Subscribers")
                     .foregroundStyle(.secondary)
                 Text("\(community.subscriberCount ?? 0)")
                     .fontWeight(.semibold)
                     .font(.title)
-                
             }
             HStack(spacing: 16) {
-                
                 box {
-                    HStack {
-                        Text("Posts")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(community.postCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.pink)
-                    }
+                    Text("Posts")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(community.postCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.pink)
                 }
                 
                 box {
-                    HStack {
-                        Text("Comments")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("\(abbreviateNumber(community.commentCount ?? 0))")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.orange)
-                    }
+                    Text("Comments")
+                        .foregroundStyle(.secondary)
+                    Text("\(abbreviateNumber(community.commentCount ?? 0))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.orange)
                 }
             }
             .frame(maxWidth: .infinity)

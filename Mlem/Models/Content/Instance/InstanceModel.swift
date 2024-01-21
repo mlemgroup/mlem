@@ -16,6 +16,7 @@ struct InstanceModel {
     var administrators: [UserModel]?
     var url: URL!
     var version: SiteVersion?
+    var creationDate: Date!
     
     // From APISiteView
     var userCount: Int?
@@ -33,8 +34,13 @@ struct InstanceModel {
     var allowsCommunityCreation: Bool?
     var requiresEmailVerification: Bool?
     var slurFilterRegex: Regex<AnyRegexOutput>?
+    var slurFilterString: String?
     var captchaDifficulty: APICaptchaDifficulty?
     var registrationMode: APIRegistrationMode?
+    var defaultFeedType: FeedType?
+    var hideModlogModNames: Bool?
+    var applicationsEmailAdmins: Bool?
+    var reportsEmailAdmins: Bool?
     
     init(from response: SiteResponse) {
         self.update(with: response)
@@ -65,10 +71,15 @@ struct InstanceModel {
         self.private = localSite.privateInstance
         self.federates = localSite.federationEnabled
         self.federationSignedFetch = localSite.federationSignedFetch
+        self.defaultFeedType = localSite.defaultPostListingType
+        self.hideModlogModNames = localSite.hideModlogModNames
+        self.applicationsEmailAdmins = localSite.applicationEmailAdmins
+        self.reportsEmailAdmins = localSite.reportsEmailAdmins
 
         self.registrationMode = localSite.registrationMode
         do {
             if let regex = localSite.slurFilterRegex {
+                self.slurFilterString = regex
                 self.slurFilterRegex = try .init(regex)
             }
         } catch {
@@ -100,6 +111,7 @@ struct InstanceModel {
         description = site.sidebar
         avatar = site.iconUrl
         banner = site.bannerUrl
+        creationDate = site.published
         
         if var components = URLComponents(string: site.inboxUrl) {
             components.path = ""

@@ -21,12 +21,6 @@ extension UserView {
         return tabs
     }
     
-    var cakeDayFormatter: DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
-        return dateFormatter
-    }
-    
     var bioAlignment: TextAlignment {
         if let bio = user.bio {
             if bio.rangeOfCharacter(from: CharacterSet.newlines) != nil {
