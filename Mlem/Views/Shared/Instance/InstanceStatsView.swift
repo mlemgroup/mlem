@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct InstanceStatsView: View {
+    @AppStorage("developerMode") var developerMode: Bool = false
+    
     let instance: InstanceModel
     
     var body: some View {
@@ -83,52 +85,85 @@ struct InstanceStatsView: View {
             }
             VStack(alignment: .leading, spacing: 0) {
                 settingRow(
+                    "Private",
+                    systemImage: Icons.private,
+                    value: instance.private ?? false
+                )
+                Divider()
+                settingRow(
                     "Federates",
                     systemImage: Icons.federation,
                     value: instance.federates ?? false
                 )
-                Divider()
+                if developerMode, let signedFetch = instance.federationSignedFetch {
+                    Divider()
+                    settingRow(
+                        "Federation Signed Fetch",
+                        systemImage: Icons.developerMode,
+                        value: signedFetch
+                    )
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .cornerRadius(AppConstants.largeItemCornerRadius)
+            
+            VStack(alignment: .leading, spacing: 0) {
                 settingRow(
-                    "Allows NSFW",
+                    "NSFW Content",
                     systemImage: Icons.blurNsfw,
                     value: instance.allowsNSFW ?? false
                 )
                 Divider()
                 settingRow(
-                    "Has Downvotes",
+                    "Downvotes",
                     systemImage: Icons.downvote,
                     value: instance.allowsDownvotes ?? false
                 )
                 Divider()
                 settingRow(
-                    "Allows Community Creation",
-                    systemImage: Icons.community,
+                    "Community Creation",
+                    systemImage: "house",
                     value: instance.allowsCommunityCreation ?? false
                 )
                 Divider()
                 settingRow(
-                    "Has a Slur Filter",
+                    "Slur Filter",
                     systemImage: Icons.filterFill,
                     value: instance.slurFilterRegex != nil
-                )
-                Divider()
-                settingRow(
-                    "Requires Email Verification",
-                    systemImage: Icons.email,
-                    value: instance.requiresEmailVerification ?? false
-                )
-                Divider()
-                
-                settingRow(
-                    "Requires Captcha",
-                    systemImage: Icons.photo,
-                    value: captchaLabel,
-                    color: instance.captchaDifficulty == nil ? .red : .green
                 )
             }
             .frame(maxWidth: .infinity)
             .background(Color(uiColor: .secondarySystemGroupedBackground))
             .cornerRadius(AppConstants.largeItemCornerRadius)
+            
+            VStack(alignment: .leading, spacing: 0) {
+                settingRow(
+                    "Registration",
+                    systemImage: Icons.person,
+                    value: instance.registrationMode?.label ?? "Closed",
+                    color: instance.registrationMode?.color ?? .red
+                )
+                if instance.registrationMode != .closed {
+                    Divider()
+                    settingRow(
+                        "Email Verification",
+                        systemImage: Icons.email,
+                        value: instance.requiresEmailVerification ?? false
+                    )
+                    Divider()
+                    settingRow(
+                        "Captcha",
+                        systemImage: Icons.photo,
+                        value: captchaLabel,
+                        color: instance.captchaDifficulty == nil ? .red : .green
+                    )
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .cornerRadius(AppConstants.largeItemCornerRadius)
+            
         }
         .padding(.horizontal, 16)
     }
@@ -150,7 +185,12 @@ struct InstanceStatsView: View {
         .cornerRadius(AppConstants.largeItemCornerRadius)
     }
     
-    @ViewBuilder func settingRow(_ label: String, systemImage: String, value: String, color: Color) -> some View {
+    @ViewBuilder func settingRow(
+        _ label: String,
+        systemImage: String,
+        value: String,
+        color: Color = .primary
+    ) -> some View {
         HStack {
             Image(systemName: systemImage)
                 .foregroundStyle(.secondary)

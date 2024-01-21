@@ -25,13 +25,16 @@ struct InstanceModel {
     var activeUserCount: ActiveUserCount?
     
     // From APILocalSite (only accessible via SiteResponse)
+    var `private`: Bool?
     var federates: Bool?
+    var federationSignedFetch: Bool?
     var allowsDownvotes: Bool?
     var allowsNSFW: Bool?
     var allowsCommunityCreation: Bool?
     var requiresEmailVerification: Bool?
     var slurFilterRegex: Regex<AnyRegexOutput>?
     var captchaDifficulty: APICaptchaDifficulty?
+    var registrationMode: APIRegistrationMode?
     
     init(from response: SiteResponse) {
         self.update(with: response)
@@ -59,7 +62,11 @@ struct InstanceModel {
         self.allowsCommunityCreation = !localSite.communityCreationAdminOnly
         self.requiresEmailVerification = localSite.requireEmailVerification
         self.captchaDifficulty = localSite.captchaEnabled ? localSite.captchaDifficulty : nil
+        self.private = localSite.privateInstance
         self.federates = localSite.federationEnabled
+        self.federationSignedFetch = localSite.federationSignedFetch
+
+        self.registrationMode = localSite.registrationMode
         do {
             if let regex = localSite.slurFilterRegex {
                 self.slurFilterRegex = try .init(regex)

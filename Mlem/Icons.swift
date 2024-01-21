@@ -144,6 +144,7 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     static let unfavorite: String = "star.slash"
     static let unfavoriteFill: String = "star.slash.fill"
+    static let person: String = "person"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
     static let cakeDay: String = "birthday.cake"
@@ -190,6 +191,7 @@ struct Icons {
     static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
     
     // misc
+    static let `private`: String = "lock"
     static let email: String = "envelope"
     static let photo: String = "photo"
     static let switchUser: String = "person.crop.circle.badge.plus"
