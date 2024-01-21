@@ -194,8 +194,10 @@ struct ContentView: View {
                 // disable long press in accessibility mode to prevent conflict with HUD
                 if !accessibilityFont {
                     if accountsTracker.savedAccounts.count > 2 {
-                        hapticManager.play(haptic: .rigidInfo, priority: .high)
-                        isPresentingAccountSwitcher = true
+                        if UserDefaults.standard.bool(forKey: "allowQuickSwitcherLongPressGesture") {
+                            hapticManager.play(haptic: .rigidInfo, priority: .high)
+                            isPresentingAccountSwitcher = true
+                        }
                     } else if accountsTracker.savedAccounts.count == 2 {
                         hapticManager.play(haptic: .rigidInfo, priority: .high)
                         for account in accountsTracker.savedAccounts where account != appState.currentActiveAccount {

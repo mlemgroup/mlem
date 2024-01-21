@@ -36,7 +36,7 @@ struct AccountSettingsView: View {
                 Section {
                     VStack {
                         AvatarView(url: info.localUserView.person.avatarUrl, type: .user, avatarSize: 96, iconResolution: .unrestricted)
-                        Text(info.localUserView.person.displayName ?? info.localUserView.person.name)
+                        Text(appState.currentActiveAccount?.nickname ?? info.localUserView.person.name)
                             .font(.largeTitle)
                             .padding(.top, 3)
                         if let account = appState.currentActiveAccount, let hostName = account.hostName {
@@ -81,6 +81,15 @@ struct AccountSettingsView: View {
                 }
                 .disabled(settingsDisabled)
                 
+                Section {
+                    NavigationLink(.settings(.accountLocal)) {
+                        Label("Local Options", systemImage: "iphone.gen3")
+                        .labelStyle(SquircleLabelStyle(color: .blue))
+                    }
+                } footer: {
+                    Text("These options are stored locally in Mlem and not on your Lemmy account.")
+                }
+                
 //                Section {
 //                    NavigationLink { EmptyView() } label: {
 //                        Label("Blocked Commuities", systemImage: "house.fill").labelStyle(SquircleLabelStyle(color: .gray))
@@ -118,7 +127,10 @@ struct AccountSettingsView: View {
                     Button("Delete Account", role: .destructive) {
                         accountForDeletion = appState.currentActiveAccount
                     }
-                        .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity)
+                    .sheet(item: $accountForDeletion) { account in
+                        DeleteAccountView(account: account)
+                    }
                 }
                 
             } else {
@@ -128,8 +140,5 @@ struct AccountSettingsView: View {
         .navigationTitle("Account Settings")
         .fancyTabScrollCompatible()
         .hoistNavigation()
-        .sheet(item: $accountForDeletion) { account in
-            DeleteAccountView(account: account)
-        }
     }
 }

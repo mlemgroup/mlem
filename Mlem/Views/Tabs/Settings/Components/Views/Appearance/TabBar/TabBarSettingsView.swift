@@ -9,16 +9,11 @@ import Dependencies
 import SwiftUI
 
 struct TabBarSettingsView: View {
-    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .username
+    @AppStorage("profileTabLabel") var profileTabLabel: ProfileTabLabel = .nickname
     @AppStorage("showTabNames") var showTabNames: Bool = true
     @AppStorage("showInboxUnreadBadge") var showInboxUnreadBadge: Bool = true
     @AppStorage("showUserAvatarOnProfileTab") var showUserAvatar: Bool = true
-    @AppStorage("allowTabBarSwipeUpGesture") var allowTabBarSwipeUpGesture: Bool = true
     @AppStorage("homeButtonExists") var homeButtonExists: Bool = false
-        
-    @EnvironmentObject var appState: AppState
-    
-    @State var textFieldEntry: String = ""
     
     var body: some View {
         Form {
@@ -31,35 +26,6 @@ struct TabBarSettingsView: View {
                     currentValue: $profileTabLabel,
                     options: ProfileTabLabel.allCases
                 )
-                
-                if profileTabLabel == .nickname {
-                    Label {
-                        TextField(text: $textFieldEntry, prompt: Text(appState.currentActiveAccount?.nickname ?? "")) {
-                            Text("Nickname")
-                        }
-                        .autocorrectionDisabled(true)
-                        .textInputAutocapitalization(.never)
-                        .onSubmit {
-                            print(textFieldEntry)
-                            guard let existingAccount = appState.currentActiveAccount else {
-                                return
-                            }
-                            
-                            // disallow blank nicknames
-                            let acceptedNickname = textFieldEntry.trimmed.isEmpty ? existingAccount.username : textFieldEntry
-                            
-                            let newAccount = SavedAccount(
-                                from: existingAccount,
-                                storedNickname: acceptedNickname,
-                                avatarUrl: existingAccount.avatarUrl
-                            )
-                            appState.setActiveAccount(newAccount)
-                        }
-                    } icon: {
-                        Image(systemName: Icons.nicknameField)
-                            .foregroundColor(.pink)
-                    }
-                }
             }
             
             Section {
@@ -83,25 +49,10 @@ struct TabBarSettingsView: View {
                 )
                 .disabled(profileTabLabel == .anonymous)
             }
-            if !homeButtonExists {
-                Section {
-                    SwitchableSettingsItem(
-                        settingPictureSystemName: Icons.swipeUpGestureSetting,
-                        settingName: "Swipe Up For Account Switcher",
-                        isTicked: $allowTabBarSwipeUpGesture
-                    )
-                }
-            }
         }
         .fancyTabScrollCompatible()
         .navigationTitle("Tab Bar")
         .navigationBarColor()
         .animation(.easeIn, value: profileTabLabel)
-        .onChange(of: appState.currentActiveAccount?.nickname) { nickname in
-            guard let nickname else { return }
-            print("new nickname: \(nickname)")
-            textFieldEntry = nickname
-        }
-        .hoistNavigation()
     }
 }

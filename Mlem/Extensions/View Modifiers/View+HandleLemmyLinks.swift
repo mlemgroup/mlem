@@ -102,6 +102,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             SignInAndSecuritySettingsView()
         case .accountGeneral:
             AccountGeneralSettingsView()
+        case .accountLocal:
+            LocalAccountSettingsView()
         case .accountAdvanced:
             AdvancedAccountSettingsView()
         case .accountDiscussionLanguages:
@@ -110,6 +112,8 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             MatrixLinkView()
         case .accounts:
             AccountSwitcherSettingsView()
+        case .quickSwitcher:
+            QuickSwitcherSettingsView()
         case .general:
             GeneralSettingsView()
         case .sorting:

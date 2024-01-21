@@ -9,7 +9,6 @@ import Dependencies
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     @Dependency(\.siteInformation) var siteInformation: SiteInformationTracker
     
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
@@ -21,12 +20,9 @@ struct GeneralSettingsView: View {
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
     
-    @AppStorage("showSettingsIcons") var showSettingsIcons: Bool = false
     @AppStorage("openLinksInBrowser") var openLinksInBrowser: Bool = false
 
     @EnvironmentObject var appState: AppState
-
-    @State private var isShowingFavoritesDeletionConfirmation: Bool = false
 
     var body: some View {
         List {
@@ -112,46 +108,6 @@ struct GeneralSettingsView: View {
                 Text("Connection Type")
             } footer: {
                 Text("Optimizes performance for your internet speed. You may need to restart the app for all optimizations to take effect.")
-            }
-
-            Section {
-                Button(role: .destructive) {
-                    isShowingFavoritesDeletionConfirmation.toggle()
-                } label: {
-                    Label {
-                        Text("Delete Community Favorites")
-                    } icon: {
-                        if showSettingsIcons {
-                            Image(systemName: Icons.delete)
-                        }
-                    }
-                    .foregroundColor(.red)
-                    .opacity(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty ? 0.6 : 1)
-                }
-                .disabled(favoriteCommunitiesTracker.favoritesForCurrentAccount.isEmpty)
-                .confirmationDialog(
-                    "Delete community favorites for this account?",
-                    isPresented: $isShowingFavoritesDeletionConfirmation,
-                    titleVisibility: .visible
-                ) {
-                    Button(role: .destructive) {
-                        favoriteCommunitiesTracker.clearCurrentFavourites()
-                    } label: {
-                        Text("Delete all favorites")
-                    }
-                    
-                    Button(role: .cancel) {
-                        isShowingFavoritesDeletionConfirmation.toggle()
-                    } label: {
-                        Text("Cancel")
-                    }
-
-                } message: {
-                    Text("You cannot undo this action.")
-                }
-
-            } footer: {
-                Text("Community favorites are stored on-device and are not tied to your Lemmy account.")
             }
         }
         .fancyTabScrollCompatible()
