@@ -144,6 +144,16 @@ class StandardPostTracker: StandardTracker<PostModel> {
         }
     }
     
+    @MainActor
+    func changeFeedType(to newFeedType: NewFeedType) async {
+        feedType = newFeedType
+        do {
+            try await refresh(clearBeforeRefresh: true)
+        } catch {
+            errorHandler.handle(error)
+        }
+    }
+    
     @available(*, deprecated, message: "Compatibility function for UserView. Should be removed and UserView refactored to use new multi-trackers.")
     func reset(with newPosts: [PostModel]) async {
         await setItems(newPosts)

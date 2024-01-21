@@ -12,6 +12,8 @@ enum NewFeedType {
     case all, local, subscribed, saved
     case community(CommunityModel)
     
+    static var allAggregateFeedCases: [NewFeedType] = [.all, .local, .subscribed, .saved]
+    
     var label: String {
         switch self {
         case .all: "All"
