@@ -8,7 +8,6 @@
 import Dependencies
 import SwiftUI
 
-// swiftlint:disable type_body_length
 struct UserView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
@@ -264,5 +263,3 @@ struct UserView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
-
-// swiftlint:enable type_body_length

@@ -10,7 +10,7 @@ import Charts
 import Dependencies
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
-    case about, administrators, statistics, uptime, safety
+    case about, administrators, details, uptime, safety
     
     var id: Self { self }
     
@@ -96,7 +96,7 @@ struct InstanceView: View {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
                             Divider()
-                            BubblePicker([.about, .administrators, .statistics], selected: $selectedTab) { tab in
+                            BubblePicker([.about, .administrators, .details], selected: $selectedTab) { tab in
                                 Text(tab.label)
                             }
                             Divider()
@@ -121,7 +121,7 @@ struct InstanceView: View {
                                 ProgressView()
                                     .padding(.top)
                             }
-                        case .statistics:
+                        case .details:
                             if instance.userCount != nil {
                                 InstanceStatsView(instance: instance)
                                     .padding(.top, 16)
