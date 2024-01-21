@@ -24,16 +24,18 @@ struct NewPostFeedView: View {
         content
             .onChange(of: showReadPosts) { newValue in
                 if newValue {
-                    Task {
-                        await postTracker.removeFilter(.read)
-                    }
+                    Task { await postTracker.removeFilter(.read) }
                 } else {
-                    Task {
-                        await postTracker.addFilter(.read)
-                    }
+                    Task { await postTracker.addFilter(.read) }
                 }
             }
+            .onChange(of: postSortType) { newValue in
+                Task { await postTracker.changeSortType(to: newValue) }
+            }
             .toolbar {
+                if postTracker.feedType != .saved {
+                    ToolbarItem(placement: .primaryAction) { sortMenu }
+                }
                 ToolbarItemGroup(placement: .secondaryAction) {
                     ForEach(genEllipsisMenuFunctions()) { menuFunction in
                         MenuButton(menuFunction: menuFunction, confirmDestructive: nil)
@@ -96,5 +98,27 @@ struct NewPostFeedView: View {
             }
         }
         .animation(.easeOut(duration: 0.1), value: postTracker.loadingState)
+    }
+    
+    @ViewBuilder
+    private var sortMenu: some View {
+        Menu {
+            ForEach(genOuterSortMenuFunctions()) { menuFunction in
+                MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+            }
+            
+            Menu {
+                ForEach(genTopSortMenuFunctions()) { menuFunction in
+                    MenuButton(menuFunction: menuFunction, confirmDestructive: nil) // no destructive sorts
+                }
+            } label: {
+                Label("Top...", systemImage: Icons.topSort)
+            }
+        } label: {
+            Label(
+                "Selected sorting by \(postSortType.description)",
+                systemImage: postSortType.iconName
+            )
+        }
     }
 }

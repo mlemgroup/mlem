@@ -106,6 +106,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
         return .init(items: filteredItems, cursor: cursor, numFiltered: items.count - filteredItems.count)
     }
     
+    /// Helper function to make loading saved items and feed items look the same to `fetchPage`
     func loadPageHelper(page: Int) async throws -> (items: [PostModel], cursor: String?) {
         if feedType == .saved {
             guard let userId = siteInformation.myUserInfo?.localUserView.person.id else {
@@ -132,6 +133,16 @@ class StandardPostTracker: StandardTracker<PostModel> {
     }
     
     // MARK: Custom Behavior
+    
+    /// Changes the post sort type to the specified value and reloads the feed
+    func changeSortType(to newSortType: PostSortType) async {
+        postSortType = newSortType
+        do {
+            try await refresh(clearBeforeRefresh: true)
+        } catch {
+            errorHandler.handle(error)
+        }
+    }
     
     @available(*, deprecated, message: "Compatibility function for UserView. Should be removed and UserView refactored to use new multi-trackers.")
     func reset(with newPosts: [PostModel]) async {
