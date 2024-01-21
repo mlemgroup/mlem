@@ -180,6 +180,10 @@ class StandardPostTracker: StandardTracker<PostModel> {
         }
     }
     
+    func getFilteredCount(for filter: NewPostFilterReason) -> Int {
+        filters[filter, default: 0]
+    }
+    
     /// Filters a given list of posts. Updates the counts of filtered posts in `filters`
     /// - Parameter posts: list of posts to filter
     /// - Returns: list of posts with filtered posts removed

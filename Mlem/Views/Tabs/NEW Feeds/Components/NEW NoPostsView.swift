@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewNoPostsView: View {
-    @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var postTracker: StandardPostTracker
     
     let loadingState: LoadingState
     @Binding var postSortType: PostSortType
@@ -18,28 +18,27 @@ struct NewNoPostsView: View {
         VStack {
             if loadingState != .loading {
                 VStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
-//                    let unreadItems = postTracker.hiddenItems[.read, default: 0]
+                    let unreadItems = postTracker.getFilteredCount(for: .read)
                     
                     Image(systemName: Icons.noPosts)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35)
                         .padding(.bottom, 12)
-                    // .frame(width: unreadItems == 0 ? 35 : 50)
-                    // .padding(.bottom, unreadItems == 0 ? 8: 12)
+                        .frame(width: unreadItems == 0 ? 35 : 50)
+                        .padding(.bottom, unreadItems == 0 ? 8 : 12)
                     Text(title)
-//
-//                    if unreadItems != 0 {
-//                        Text(
-//                            "\(unreadItems) read post\(unreadItems == 1 ? " has" : "s have") been hidden."
-//                        )
-//                        .foregroundStyle(.tertiary)
-//                        .multilineTextAlignment(.center)
-//                        .fixedSize(horizontal: false, vertical: true)
-//                        .padding(.horizontal, 20)
-//
-//                    }
-//                    buttons
+
+                    if unreadItems != 0 {
+                        Text(
+                            "\(unreadItems) read post\(unreadItems == 1 ? " has" : "s have") been hidden."
+                        )
+                        .foregroundStyle(.tertiary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 20)
+                    }
+                    buttons
                 }
                 .foregroundStyle(.secondary)
             }
@@ -63,7 +62,7 @@ struct NewNoPostsView: View {
                     Label("Switch to Hot", systemImage: Icons.hotSort)
                 }
             }
-            if postTracker.hiddenItems[.read, default: 0] > 0 {
+            if postTracker.getFilteredCount(for: .read) > 0 {
                 Button {
                     if !showReadPosts {
                         showReadPosts = true
