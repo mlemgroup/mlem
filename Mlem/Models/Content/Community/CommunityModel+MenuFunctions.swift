@@ -86,9 +86,9 @@ extension CommunityModel {
     }
     
     func menuFunctions(
-        _ callback: @escaping (_ item: Self) -> Void = { _ in },
         editorTracker: EditorTracker? = nil,
-        postTracker: StandardPostTracker? = nil
+        postTracker: StandardPostTracker? = nil,
+        _ callback: @escaping (_ item: Self) -> Void = { _ in }
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         if let editorTracker {

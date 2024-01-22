@@ -119,10 +119,9 @@ struct CommunityFeedView: View {
                 ToolbarItemGroup(placement: .secondaryAction) {
                     ForEach(
                         communityModel.menuFunctions(
-                            { communityModel = $0 },
                             editorTracker: editorTracker,
                             postTracker: postTracker
-                        )
+                        ) { communityModel = $0 }
                     ) { menuFunction in
                         MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
                     }
