@@ -59,6 +59,7 @@ struct AggregateFeedView: View {
     
     var body: some View {
         content
+            .environment(\.feedType, postTracker.feedType)
             .environmentObject(postTracker)
             .refreshable {
                 await Task {

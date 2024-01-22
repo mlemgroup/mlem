@@ -53,7 +53,6 @@ struct ContentView: View {
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                // FeedRoot()
                 FeedsView()
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
