@@ -16,14 +16,16 @@ struct InstanceStatsView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            box {
-                HStack {
-                    Label(instance.creationDate.dateString, systemImage: Icons.cakeDay)
-                    Text("•")
-                    Label(instance.creationDate.getRelativeTime(unitsStyle: .abbreviated), systemImage: Icons.time)
+            if let date = instance.creationDate {
+                box {
+                    HStack {
+                        Label(date.dateString, systemImage: Icons.cakeDay)
+                        Text("•")
+                        Label(date.getRelativeTime(unitsStyle: .abbreviated), systemImage: Icons.time)
+                    }
+                    .foregroundStyle(.secondary)
+                    .font(.footnote)
                 }
-                .foregroundStyle(.secondary)
-                .font(.footnote)
             }
             HStack(spacing: 16) {
                 box {

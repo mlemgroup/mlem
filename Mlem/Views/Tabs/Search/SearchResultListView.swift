@@ -36,6 +36,11 @@ struct SearchResultListView: View {
                                 contentTracker.update(with: AnyContentModel($0))
                             }
                         )
+                    } else if let instance = contentModel.wrappedValue as? InstanceModel {
+                        InstanceResultView(
+                            instance,
+                            complications: showTypeLabel ? .withTypeLabel : .withoutTypeLabel
+                        )
                     }
                 }
                 .simultaneousGesture(TapGesture().onEnded {

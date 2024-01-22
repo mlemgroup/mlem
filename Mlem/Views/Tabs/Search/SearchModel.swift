@@ -25,6 +25,8 @@ class SearchModel: ObservableObject {
     var firstPageCommunities: [AnyContentModel]?
     var firstPageUsers: [AnyContentModel]?
     
+    var instanceStubs: [InstanceStub] = []
+    
     init(searchTab: SearchTab = .topResults, internetSpeed: InternetSpeed = .fast) {
         self.searchTab = searchTab
         self.internetSpeed = internetSpeed
@@ -34,7 +36,12 @@ class SearchModel: ObservableObject {
         switch searchTab {
         case .topResults:
             if let communities = firstPageCommunities, let users = firstPageUsers {
-                contentTracker.replaceAll(with: combineResults(communities: communities, users: users))
+                contentTracker.replaceAll(
+                    with: combineResults(
+                        communities: communities,
+                        users: users,
+                        instances: searchInstances(page: 1))
+                )
                 return
             }
         case .communities:
@@ -47,6 +54,8 @@ class SearchModel: ObservableObject {
                 contentTracker.replaceAll(with: users)
                 return
             }
+        case .instances:
+            contentTracker.replaceAll(with: searchInstances(page: 1))
         }
         contentTracker.refresh(using: performSearch)
     }
@@ -57,7 +66,8 @@ class SearchModel: ObservableObject {
         case .topResults:
             async let communities = try await searchCommunities(page: page)
             async let users = try await searchUsers(page: page)
-            return try await combineResults(communities: communities, users: users)
+            async let instances = searchInstances(page: page)
+            return try await combineResults(communities: communities, users: users, instances: instances)
         case .communities:
             if searchText != previousSearchText {
                 firstPageUsers = nil
@@ -68,6 +78,9 @@ class SearchModel: ObservableObject {
                 firstPageCommunities = nil
             }
             return try await searchUsers(page: page)
+        case .instances:
+            print("SHORTCUT", instanceStubs.count)
+            return searchInstances(page: page)
         }
     }
     
@@ -97,10 +110,42 @@ class SearchModel: ObservableObject {
         return users
     }
     
-    func combineResults(communities: [AnyContentModel], users: [AnyContentModel]) -> [AnyContentModel] {
+    @discardableResult
+    func searchInstances(page: Int) -> [AnyContentModel] {
+        print("SEARCH INSTANCES", page)
+        
+        if searchText.isEmpty {
+            if page != 1 {
+                return []
+            }
+            return instanceStubs.map { AnyContentModel(InstanceModel(from: $0)) }
+        }
+        
+        let query = searchText.lowercased()
+        var results: [InstanceStub] = []
+        for stub in instanceStubs {
+            if stub.name.lowercased().contains(query) || stub.host.contains(query) {
+                results.append(stub)
+            }
+            if results.count == internetSpeed.pageSize {
+                break
+            }
+        }
+        let instances = results
+            .dropFirst((page-1) * internetSpeed.pageSize)
+            .map { AnyContentModel(InstanceModel(from: $0)) }
+        return instances
+    }
+    
+    func combineResults(
+        communities: [AnyContentModel],
+        users: [AnyContentModel],
+        instances: [AnyContentModel]
+    ) -> [AnyContentModel] {
         var results: [AnyContentModel] = .init()
         results.append(contentsOf: communities)
         results.append(contentsOf: users)
+        results.append(contentsOf: instances)
         return results.sorted { $0.searchResultScore > $1.searchResultScore }
     }
     

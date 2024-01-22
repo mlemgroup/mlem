@@ -341,6 +341,16 @@ extension APIClient {
         )
         return try await perform(request: request)
     }
+    
+    @discardableResult
+    func fetchInstanceList() async throws -> [InstanceStub] {
+        if let url = URL(string: "https://raw.githubusercontent.com/mlemgroup/mlem-stats/master/output/instances_by_score.json") {
+            if let data = try? await urlSession.data(from: url).0 {
+                return try decode([InstanceStub].self, from: data)
+            }
+        }
+        return []
+    }
 }
 
 // MARK: - Object Resolving methods
