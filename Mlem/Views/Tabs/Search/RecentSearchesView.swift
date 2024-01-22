@@ -92,7 +92,8 @@ struct RecentSearchesView: View {
                 } else if let instance = contentModel.wrappedValue as? InstanceModel {
                     InstanceResultView(
                         instance,
-                        complications: .withTypeLabel
+                        complications: .withTypeLabel,
+                        swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)])
                     )
                 }
             }
