@@ -27,8 +27,6 @@
 		030E864C2AC7037F000283A6 /* SearchBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */; };
 		0315E9F12B41BD2800E3BA88 /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9F02B41BD2800E3BA88 /* PostFeedView.swift */; };
 		0315E9F32B41C1F900E3BA88 /* PostFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9F22B41C1F900E3BA88 /* PostFeedView+Logic.swift */; };
-		0315E9F72B41CD0C00E3BA88 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9F62B41CD0C00E3BA88 /* FeedView.swift */; };
-		0315E9FB2B41E09A00E3BA88 /* FeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9FA2B41E09A00E3BA88 /* FeedView+Logic.swift */; };
 		0315E9FD2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9FC2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift */; };
 		031A617C2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */; };
 		031A617E2B1CE90F00ABF23B /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A617D2B1CE90F00ABF23B /* ChangePasswordView.swift */; };
@@ -578,8 +576,6 @@
 		030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarExtensions.swift; sourceTree = "<group>"; };
 		0315E9F02B41BD2800E3BA88 /* PostFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
 		0315E9F22B41C1F900E3BA88 /* PostFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostFeedView+Logic.swift"; sourceTree = "<group>"; };
-		0315E9F62B41CD0C00E3BA88 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
-		0315E9FA2B41E09A00E3BA88 /* FeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedView+Logic.swift"; sourceTree = "<group>"; };
 		0315E9FC2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostFeedView+MenuFunctions.swift"; sourceTree = "<group>"; };
 		031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAccountSettingsView.swift; sourceTree = "<group>"; };
 		031A617D2B1CE90F00ABF23B /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
@@ -2379,8 +2375,6 @@
 			isa = PBXGroup;
 			children = (
 				03EF1D0B2B434CB10056175C /* CommunityStatsView.swift */,
-				0315E9F62B41CD0C00E3BA88 /* FeedView.swift */,
-				0315E9FA2B41E09A00E3BA88 /* FeedView+Logic.swift */,
 				0315E9F02B41BD2800E3BA88 /* PostFeedView.swift */,
 				0315E9F22B41C1F900E3BA88 /* PostFeedView+Logic.swift */,
 				0315E9FC2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift */,
@@ -3149,7 +3143,6 @@
 				50811B382A920545006BA3F2 /* APICommunityModeratorView+Mock.swift in Sources */,
 				50F2851C2A5C5C1500CF8865 /* TokenRefreshView.swift in Sources */,
 				03F4DCA32B1A8B0400556C67 /* AccountGeneralSettingsView.swift in Sources */,
-				0315E9FB2B41E09A00E3BA88 /* FeedView+Logic.swift in Sources */,
 				507573962A5AD5CF00AA7ABD /* ContextualError.swift in Sources */,
 				50C99B592A61D889005D57DD /* APIClient+Dependency.swift in Sources */,
 				031A617C2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift in Sources */,
@@ -3499,7 +3492,6 @@
 				CDEC95142B5CBC42004BA288 /* AggregateFeedView+Logic.swift in Sources */,
 				50811B2C2A920443006BA3F2 /* Date+Mock.swift in Sources */,
 				CD391FA02A545F8600E213B5 /* Compact Post.swift in Sources */,
-				0315E9F72B41CD0C00E3BA88 /* FeedView.swift in Sources */,
 				B1A5A8152A4C882F00F203DB /* AlternativeIcon.swift in Sources */,
 				637218512A3A2AAD008C4816 /* APILocalSiteRateLimit.swift in Sources */,
 				50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */,
