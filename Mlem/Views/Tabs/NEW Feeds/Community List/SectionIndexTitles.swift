@@ -25,18 +25,22 @@ struct SectionIndexTitles: View {
         VStack {
             ForEach(communitySections) { communitySection in
                 HStack {
-                    if communitySection.sidebarEntry.sidebarIcon != nil {
-                        SectionIndexImage(image: communitySection.sidebarEntry.sidebarIcon!)
-                            .padding(.trailing)
-                    } else if communitySection.sidebarEntry.sidebarLabel != nil {
-                        SectionIndexText(label: communitySection.sidebarEntry.sidebarLabel!)
-                            .padding(.trailing)
+                    if let icon = communitySection.sidebarEntry.sidebarIcon {
+                        SectionIndexImage(image: icon)
+                    } else if let label = communitySection.sidebarEntry.sidebarLabel {
+                        SectionIndexText(label: label)
                     } else {
                         EmptyView()
                     }
                 }
                 .background(dragObserver(viewId: communitySection.viewId))
             }
+        }
+        .padding(5)
+        .padding(.top, 7) // top looks a little funky otherwise
+        .background {
+            Capsule()
+                .foregroundStyle(.regularMaterial)
         }
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .global)

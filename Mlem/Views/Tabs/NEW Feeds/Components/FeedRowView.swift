@@ -46,7 +46,7 @@ struct CommunityFeedRowView: View {
             }
             .buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
             .accessibilityHidden(true)
-        }.swipeActions {
+        }.swipeActions(edge: .leading) {
             if subscribed {
                 Button("Unsubscribe") {
                     Task(priority: .userInitiated) {

@@ -1638,14 +1638,6 @@
 			path = Accounts;
 			sourceTree = "<group>";
 		};
-		6332FDD427F080FA0009A98A /* Community List */ = {
-			isa = PBXGroup;
-			children = (
-				6D91D4532A41597B006B8F9A /* Components */,
-			);
-			path = "Community List";
-			sourceTree = "<group>";
-		};
 		63344C522A07D189001BC616 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1667,13 +1659,6 @@
 				CD04D5DE2A361585008EF95B /* Empty Button Style.swift */,
 			);
 			path = Styles;
-			sourceTree = "<group>";
-		};
-		63344C6F2A098054001BC616 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		6363D5B827EE196700E34822 = {
@@ -1781,7 +1766,6 @@
 			isa = PBXGroup;
 			children = (
 				CD4BAD382B4C6C1B00A1E726 /* NEW Feeds */,
-				CD2E14782A6B283D004198DE /* Feeds */,
 				6DA61F7F2A55B831001EA633 /* Search */,
 				6DE1183A2A4A215F00810C7E /* Profile */,
 				6DFF50412A48DEC0001E648D /* Inbox */,
@@ -2072,16 +2056,6 @@
 			path = Enums;
 			sourceTree = "<group>";
 		};
-		6D91D4532A41597B006B8F9A /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */,
-				6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */,
-				505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		6DA61F7F2A55B831001EA633 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -2358,15 +2332,6 @@
 			path = TimeInterval;
 			sourceTree = "<group>";
 		};
-		CD2E14782A6B283D004198DE /* Feeds */ = {
-			isa = PBXGroup;
-			children = (
-				6332FDD427F080FA0009A98A /* Community List */,
-				63344C6F2A098054001BC616 /* Components */,
-			);
-			path = Feeds;
-			sourceTree = "<group>";
-		};
 		CD2E14792A6B285F004198DE /* Posts */ = {
 			isa = PBXGroup;
 			children = (
@@ -2463,6 +2428,7 @@
 		CD4BAD382B4C6C1B00A1E726 /* NEW Feeds */ = {
 			isa = PBXGroup;
 			children = (
+				CD62D12F2B5EE18300395BD9 /* Community List */,
 				CDEC95172B5D8D06004BA288 /* Feed Types */,
 				CD4BAD392B4C6C2500A1E726 /* Components */,
 				CD4BAD342B4B2C0B00A1E726 /* FeedsView.swift */,
@@ -2498,6 +2464,16 @@
 			children = (
 				6D8F08FE2A4029AE003EB4FD /* CommunityListSection.swift */,
 				505240E42A86E32700EA4558 /* CommunityListModel.swift */,
+			);
+			path = "Community List";
+			sourceTree = "<group>";
+		};
+		CD62D12F2B5EE18300395BD9 /* Community List */ = {
+			isa = PBXGroup;
+			children = (
+				6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */,
+				6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */,
+				505240E62A88D36D00EA4558 /* SectionIndexTitles.swift */,
 			);
 			path = "Community List";
 			sourceTree = "<group>";
