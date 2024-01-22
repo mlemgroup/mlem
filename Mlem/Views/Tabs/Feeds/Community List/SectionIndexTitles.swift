@@ -36,11 +36,11 @@ struct SectionIndexTitles: View {
                 .background(dragObserver(viewId: communitySection.viewId))
             }
         }
-        .padding(5)
-        .padding(.top, 7) // top looks a little funky otherwise
+        .padding(2)
+        .padding(.top, 4)
         .background {
             Capsule()
-                .foregroundStyle(.regularMaterial)
+                .foregroundStyle(.ultraThinMaterial)
         }
         .gesture(
             DragGesture(minimumDistance: 0, coordinateSpace: .global)
@@ -64,7 +64,6 @@ struct SectionIndexTitles: View {
                     proxy.scrollTo(viewId, anchor: .center)
 
                     // Play nice tappy taps
-                    // HapticManager.shared.rigidInfo()
                     hapticManager.play(haptic: .rigidInfo, priority: .low)
                 }
             }
@@ -77,7 +76,7 @@ struct SectionIndexTitles: View {
 struct SectionIndexText: View {
     let label: String
     var body: some View {
-        Text(label).font(.system(size: 12)).bold()
+        Text(label).font(.system(size: 11)).fontWeight(.semibold)
     }
 }
 

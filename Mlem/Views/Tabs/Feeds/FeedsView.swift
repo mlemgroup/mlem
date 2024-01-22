@@ -46,7 +46,7 @@ struct FeedsView: View {
                                 FeedRowView(feedType: feedType)
                             }
                         }
-                        // .padding(.trailing, 22)
+                        .padding(.trailing, 10)
                         
                         ForEach(communityListModel.visibleSections) { section in
                             Section(header: communitySectionHeaderView(for: section)) {
@@ -62,14 +62,13 @@ struct FeedsView: View {
                                 }
                             }
                         }
-                        // .padding(.trailing, 22)
+                        .padding(.trailing, 10)
                     }
                     .scrollIndicators(.hidden)
                     .navigationTitle("Communities")
                     .listStyle(PlainListStyle())
                     
                     SectionIndexTitles(proxy: scrollProxy, communitySections: communityListModel.allSections())
-                        .padding(.trailing, 7)
                 }
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {

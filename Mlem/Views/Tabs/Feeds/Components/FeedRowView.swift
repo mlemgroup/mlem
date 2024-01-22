@@ -46,18 +46,23 @@ struct CommunityFeedRowView: View {
             }
             .buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
             .accessibilityHidden(true)
-        }.swipeActions(edge: .leading) {
+        }.swipeActions {
             if subscribed {
-                Button("Unsubscribe") {
+                Button {
                     Task(priority: .userInitiated) {
                         await subscribe(communityId: community.id, shouldSubscribe: false)
                     }
-                }.tint(.red) // Destructive role seems to remove from list so just make it red
+                } label: {
+                    Label("Unsubscribe", systemImage: Icons.unsubscribe)
+                }
+                .tint(.red) // Destructive role seems to remove from list so just make it red
             } else {
-                Button("Subscribe") {
+                Button {
                     Task(priority: .userInitiated) {
                         await subscribe(communityId: community.id, shouldSubscribe: true)
                     }
+                } label: {
+                    Label("Subscribe", systemImage: Icons.subscribe)
                 }.tint(.blue)
             }
         }
