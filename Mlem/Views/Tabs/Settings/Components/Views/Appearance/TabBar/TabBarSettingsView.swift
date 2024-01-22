@@ -77,11 +77,9 @@ struct TabBarSettingsView: View {
             } header: {
                 Text("Profile Icon Appearance")
             } footer: {
-                if profileTabLabel == .nickname {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("You can change your account's local nickname in Account Settings.")
-                        FooterLinkView(title: "Account Settings", destination: .settings(.accountLocal))
-                    }
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("You can change your account's local nickname in Account Settings.")
+                    FooterLinkView(title: "Account Settings", destination: .settings(.accountLocal))
                 }
             }
         }
