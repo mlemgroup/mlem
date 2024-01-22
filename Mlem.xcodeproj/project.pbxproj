@@ -25,9 +25,6 @@
 		030E86462AC6FC1B000283A6 /* DefaultTextInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E86452AC6FC1B000283A6 /* DefaultTextInputType.swift */; };
 		030E86482AC6FD1D000283A6 /* _assignIfNotEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E86472AC6FD1D000283A6 /* _assignIfNotEqual.swift */; };
 		030E864C2AC7037F000283A6 /* SearchBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */; };
-		0315E9F12B41BD2800E3BA88 /* PostFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9F02B41BD2800E3BA88 /* PostFeedView.swift */; };
-		0315E9F32B41C1F900E3BA88 /* PostFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9F22B41C1F900E3BA88 /* PostFeedView+Logic.swift */; };
-		0315E9FD2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315E9FC2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift */; };
 		031A617C2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */; };
 		031A617E2B1CE90F00ABF23B /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A617D2B1CE90F00ABF23B /* ChangePasswordView.swift */; };
 		031A61802B1CEA7300ABF23B /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A617F2B1CEA7300ABF23B /* ChangePassword.swift */; };
@@ -574,9 +571,6 @@
 		030E86452AC6FC1B000283A6 /* DefaultTextInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTextInputType.swift; sourceTree = "<group>"; };
 		030E86472AC6FD1D000283A6 /* _assignIfNotEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _assignIfNotEqual.swift; sourceTree = "<group>"; };
 		030E864B2AC7037F000283A6 /* SearchBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarExtensions.swift; sourceTree = "<group>"; };
-		0315E9F02B41BD2800E3BA88 /* PostFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFeedView.swift; sourceTree = "<group>"; };
-		0315E9F22B41C1F900E3BA88 /* PostFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostFeedView+Logic.swift"; sourceTree = "<group>"; };
-		0315E9FC2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostFeedView+MenuFunctions.swift"; sourceTree = "<group>"; };
 		031A617B2B1BDFD100ABF23B /* AdvancedAccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAccountSettingsView.swift; sourceTree = "<group>"; };
 		031A617D2B1CE90F00ABF23B /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		031A617F2B1CEA7300ABF23B /* ChangePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassword.swift; sourceTree = "<group>"; };
@@ -2375,9 +2369,6 @@
 			isa = PBXGroup;
 			children = (
 				03EF1D0B2B434CB10056175C /* CommunityStatsView.swift */,
-				0315E9F02B41BD2800E3BA88 /* PostFeedView.swift */,
-				0315E9F22B41C1F900E3BA88 /* PostFeedView+Logic.swift */,
-				0315E9FC2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift */,
 				6332FDD427F080FA0009A98A /* Community List */,
 				63344C6F2A098054001BC616 /* Components */,
 			);
@@ -3039,7 +3030,6 @@
 				CD6F29AA2A78003A00F20B6B /* PostRepository.swift in Sources */,
 				63F0C7A82A0522FC00A18C5D /* Saved Account Tracker.swift in Sources */,
 				E449C5972B35239500E3BCF4 /* InboxReplyView.swift in Sources */,
-				0315E9FD2B41E36300E3BA88 /* PostFeedView+MenuFunctions.swift in Sources */,
 				6372186A2A3A2AAD008C4816 /* GetComment.swift in Sources */,
 				03C905CA2B3C834C00B9082F /* AvatarBannerView.swift in Sources */,
 				03F76FA42B2F5F3500E2B54A /* UploadProgressView.swift in Sources */,
@@ -3155,7 +3145,6 @@
 				CDA145ED2A510AC100DDAFC9 /* MarkCommentReplyAsReadRequest.swift in Sources */,
 				CD391F982A537E8E00E213B5 /* ReplyToComment.swift in Sources */,
 				5064D03D2A6DE0AA00B22EE3 /* Notifier.swift in Sources */,
-				0315E9F32B41C1F900E3BA88 /* PostFeedView+Logic.swift in Sources */,
 				CD9A49D52B0587F1001E18A0 /* ImageDetailView.swift in Sources */,
 				CDC65D912A86B830007205E5 /* DeleteAccountView.swift in Sources */,
 				039C8DBD2B361C160096BAAF /* AccountButtonView.swift in Sources */,
@@ -3497,7 +3486,6 @@
 				50BC1ABB2A8D6A5A00E3C48B /* ScoringOperation.swift in Sources */,
 				CD4368BA2AE23F6400BD8BD1 /* TrackerItem.swift in Sources */,
 				6386E0362A042C59006B3C1D /* Contributor.swift in Sources */,
-				0315E9F12B41BD2800E3BA88 /* PostFeedView.swift in Sources */,
 				E40E018C2AABF85500410B2C /* AppRoutes.swift in Sources */,
 				CD18DC6F2A5209C3002C56BC /* MarkPrivateMessageAsReadRequest.swift in Sources */,
 				CD82A2552A716C7C00111034 /* APIPersonUnreadCounts.swift in Sources */,
