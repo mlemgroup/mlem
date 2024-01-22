@@ -1,9 +1,9 @@
-// 
+//
 //  SectionIndexTitles.swift
 //  Mlem
 //
 //  Created by mormaer on 13/08/2023.
-//  
+//
 //
 
 import Dependencies
@@ -11,11 +11,10 @@ import SwiftUI
 
 // Original article here: https://www.fivestars.blog/code/section-title-index-swiftui.html
 struct SectionIndexTitles: View {
-    
     @Dependency(\.hapticManager) var hapticManager
     
     let proxy: ScrollViewProxy
-    let communitySections: [CommunitySection]
+    let communitySections: [CommunityListSection]
     @GestureState private var dragLocation: CGPoint = .zero
 
     // Track which sidebar label we picked last to we

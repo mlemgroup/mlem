@@ -86,7 +86,7 @@ struct FeedsView: View {
         }
     }
     
-    private func communitySectionHeaderView(for section: CommunitySection) -> some View {
+    private func communitySectionHeaderView(for section: CommunityListSection) -> some View {
         HStack {
             Text(section.inlineHeaderLabel!)
                 .accessibilityLabel(section.accessibilityLabel)
