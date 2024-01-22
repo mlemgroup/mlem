@@ -9,28 +9,67 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-/// View for post feeds aggregating multiple communities (all, local, subscribed, saved)
+/// View for a single community
 struct NewCommunityFeedView: View {
+    enum Tab: String, Identifiable, CaseIterable {
+        var id: Self { self }
+        case posts, about, moderators, statistics
+    }
+    
+    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
+    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.communityRepository) var communityRepository
+    
+    @Environment(\.colorScheme) var colorScheme
     
     @StateObject var postTracker: StandardPostTracker
     
-    // TODO: sorting
-    @State var postSortType: PostSortType = .hot
+    @State var postSortType: PostSortType
+    @State var selectedTab: Tab = .posts
     
-    init(feedType: NewFeedType) {
+    @State var communityModel: CommunityModel
+    
+    // destructive confirmation
+    @State private var isPresentingConfirmDestructive: Bool = false
+    @State private var confirmationMenuFunction: StandardMenuFunction?
+    
+    func confirmDestructive(destructiveFunction: StandardMenuFunction) {
+        confirmationMenuFunction = destructiveFunction
+        isPresentingConfirmDestructive = true
+    }
+    
+    // scroll to top
+    @Namespace var scrollToTop
+    @State private var scrollToTopAppeared = false
+    private var scrollToTopId: Int? {
+        postTracker.items.first?.id
+    }
+    
+    var availableTabs: [Tab] {
+        var output: [Tab] = [.posts, .moderators, .statistics]
+        if communityModel.description != nil {
+            output.insert(.about, at: 1)
+        }
+        return output
+    }
+    
+    init(communityModel: CommunityModel) {
         // need to grab some stuff from app storage to initialize post tracker with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         @AppStorage("showReadPosts") var showReadPosts = true
         @AppStorage("defaultPostSorting") var defaultPostSorting: PostSortType = .hot
         
+        self._communityModel = .init(wrappedValue: communityModel)
         self._postSortType = .init(wrappedValue: defaultPostSorting)
         self._postTracker = .init(wrappedValue: .init(
             internetSpeed: internetSpeed,
             sortType: defaultPostSorting,
             showReadPosts: showReadPosts,
-            feedType: feedType
+            feedType: .community(communityModel)
         ))
     }
     
@@ -38,6 +77,16 @@ struct NewCommunityFeedView: View {
         content
             .onAppear {
                 Task { await postTracker.loadMoreItems() }
+                
+                if communityModel.moderators == nil {
+                    Task(priority: .userInitiated) {
+                        do {
+                            communityModel = try await communityRepository.loadDetails(for: communityModel.communityId)
+                        } catch {
+                            errorHandler.handle(error)
+                        }
+                    }
+                }
             }
             .refreshable {
                 await Task {
@@ -48,16 +97,17 @@ struct NewCommunityFeedView: View {
                     }
                 }.value
             }
-            .background {
-                VStack(spacing: 0) {
-                    Color.systemBackground
-                    Color.secondarySystemBackground
-                }
-            }
+            .destructiveConfirmation(
+                isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                confirmationMenuFunction: confirmationMenuFunction
+            )
             .fancyTabScrollCompatible()
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Community!")
+                    Text(communityModel.name)
+                        .font(.headline)
+                        .opacity(scrollToTopAppeared ? 0 : 1)
+                        .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -67,9 +117,199 @@ struct NewCommunityFeedView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            NewPostFeedView(postSortType: $postSortType, showCommunity: true)
-                .environmentObject(postTracker)
+            VStack(spacing: 0) {
+                ScrollToView(appeared: $scrollToTopAppeared)
+                    .id(scrollToTop)
+                headerView
+                    .padding(.top, 5)
+                    .background(Color.systemBackground)
+                
+                switch selectedTab {
+                case .posts: posts()
+                case .about: about()
+                case .moderators: moderators()
+                case .statistics: statistics()
+                }
+            }
+        }
+        .background {
+            VStack(spacing: 0) {
+                // this awful little hack prevents a line from appearing in gray background tabs
+                Color.systemBackground
+                    .frame(height: 1)
+                
+                if selectedTab == .statistics || selectedTab == .moderators {
+                    Color(uiColor: .systemGroupedBackground)
+                }
+            }
+        }
+    }
+    
+    func posts() -> some View {
+        NewPostFeedView(postSortType: $postSortType, showCommunity: false)
+            .environmentObject(postTracker)
+    }
+    
+    func about() -> some View {
+        VStack(spacing: AppConstants.postAndCommentSpacing) {
+            if shouldShowCommunityHeaders, let banner = communityModel.banner {
+                CachedImage(url: banner, cornerRadius: AppConstants.largeItemCornerRadius)
+            }
+            MarkdownView(text: communityModel.description ?? "", isNsfw: false)
+        }
+        .padding(AppConstants.postAndCommentSpacing)
+    }
+    
+    @ViewBuilder
+    func moderators() -> some View {
+        if let moderators = communityModel.moderators {
+            Divider()
+                .padding(.top, 15)
                 .background(Color.secondarySystemBackground)
+            ForEach(moderators, id: \.id) { user in
+                UserResultView(user, communityContext: communityModel)
+                Divider()
+            }
+            Color.secondarySystemBackground
+                .frame(height: 100)
+        }
+    }
+    
+    func statistics() -> some View {
+        VStack(spacing: 0) {
+            CommunityStatsView(community: communityModel)
+                .padding(.top, AppConstants.postAndCommentSpacing)
+                .background(Color(uiColor: .systemGroupedBackground))
+            
+            Color(uiColor: .systemGroupedBackground)
+                .frame(maxHeight: .infinity)
+        }
+        .frame(maxHeight: .infinity)
+    }
+    
+    // MARK: Header
+    
+    @ViewBuilder
+    var headerView: some View {
+        Group {
+            VStack(spacing: 5) {
+                HStack(alignment: .center, spacing: 10) {
+                    if shouldShowCommunityIcons {
+                        AvatarView(community: communityModel, avatarSize: 44, iconResolution: .unrestricted)
+                    }
+                    Button(action: communityModel.copyFullyQualifiedName) {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text(communityModel.displayName)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.01)
+                            if let fullyQualifiedName = communityModel.fullyQualifiedName {
+                                Text(fullyQualifiedName)
+                                    .font(.footnote)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(1)
+                            }
+                        }
+                        .frame(height: 44)
+                    }
+                    .buttonStyle(.plain)
+                    Spacer()
+                    subscribeButton
+                }
+                .padding(.horizontal, AppConstants.postAndCommentSpacing)
+                .padding(.bottom, 3)
+                Divider()
+                BubblePicker(availableTabs, selected: $selectedTab) {
+                    Text($0.rawValue.capitalized)
+                }
+            }
+            Divider()
+        }
+    }
+    
+    var subscribeButtonForegroundColor: Color {
+        if communityModel.favorited {
+            return .blue
+        } else if communityModel.subscribed ?? false {
+            return .green
+        }
+        return .secondary
+    }
+    
+    var subscribeButtonBackgroundColor: Color {
+        if communityModel.favorited {
+            return .blue.opacity(0.1)
+        } else if communityModel.subscribed ?? false {
+            return .green.opacity(0.1)
+        }
+        return .clear
+    }
+    
+    var subscribeButtonIcon: String {
+        if communityModel.favorited {
+            return Icons.favoriteFill
+        } else if communityModel.subscribed ?? false {
+            return Icons.successCircle
+        }
+        return Icons.personFill
+    }
+    
+    @ViewBuilder
+    var subscribeButton: some View {
+        let foregroundColor = subscribeButtonForegroundColor
+        if let subscribed = communityModel.subscribed {
+            HStack(spacing: 4) {
+                if let subscriberCount = communityModel.subscriberCount {
+                    Text(abbreviateNumber(subscriberCount))
+                }
+                Image(systemName: subscribeButtonIcon)
+                    .aspectRatio(contentMode: .fit)
+            }
+            .foregroundStyle(foregroundColor)
+            .padding(.vertical, 5)
+            .padding(.horizontal, 10)
+            .background(
+                Capsule()
+                    .strokeBorder(foregroundColor, style: .init(lineWidth: 1))
+                    .background(Capsule().fill(subscribeButtonBackgroundColor))
+            )
+            .gesture(TapGesture().onEnded { _ in
+                hapticManager.play(haptic: .lightSuccess, priority: .low)
+                print("tapped subscribe")
+                Task {
+                    var community = communityModel
+                    do {
+                        if communityModel.favorited {
+                            print("favorited")
+                            confirmDestructive(destructiveFunction: communityModel.favoriteMenuFunction { communityModel = $0 })
+                        } else if subscribed {
+                            print("subscribed")
+                            try confirmDestructive(destructiveFunction: communityModel.subscribeMenuFunction { communityModel = $0 })
+                        } else {
+                            print("not subscribed")
+                            try await community.toggleSubscribe { item in
+                                DispatchQueue.main.async { communityModel = item }
+                            }
+                        }
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
+            })
+            .simultaneousGesture(LongPressGesture().onEnded { _ in
+                hapticManager.play(haptic: .lightSuccess, priority: .low)
+                Task {
+                    var community = communityModel
+                    do {
+                        try await communityModel.toggleFavorite { item in
+                            DispatchQueue.main.async { communityModel = item }
+                        }
+                    } catch {
+                        errorHandler.handle(error)
+                    }
+                }
+            })
         }
     }
 }

@@ -401,6 +401,8 @@
 		CD4DBC032A6F803C001A1E61 /* ReplyToPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */; };
 		CD525F652A4B6D8F00BCA794 /* CommunityLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */; };
 		CD59E8A52A72C943005757F4 /* MarkAllAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */; };
+		CD62D12A2B5EC4E900395BD9 /* UserContentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD62D1292B5EC4E900395BD9 /* UserContentTracker.swift */; };
+		CD62D12C2B5EC65200395BD9 /* CommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD62D12B2B5EC65200395BD9 /* CommentModel.swift */; };
 		CD6483302A38D31C00EE6CA3 /* UpvoteCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */; };
 		CD6483322A38D3A600EE6CA3 /* ScoreCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */; };
 		CD6483362A39F20800EE6CA3 /* Post Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483352A39F20800EE6CA3 /* Post Type.swift */; };
@@ -953,6 +955,8 @@
 		CD4DBC022A6F803C001A1E61 /* ReplyToPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToPost.swift; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* CommunityLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLinkView.swift; sourceTree = "<group>"; };
 		CD59E8A42A72C943005757F4 /* MarkAllAsReadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadRequest.swift; sourceTree = "<group>"; };
+		CD62D1292B5EC4E900395BD9 /* UserContentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContentTracker.swift; sourceTree = "<group>"; };
+		CD62D12B2B5EC65200395BD9 /* CommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModel.swift; sourceTree = "<group>"; };
 		CD64832F2A38D31C00EE6CA3 /* UpvoteCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpvoteCounterView.swift; sourceTree = "<group>"; };
 		CD6483312A38D3A600EE6CA3 /* ScoreCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCounterView.swift; sourceTree = "<group>"; };
 		CD6483352A39F20800EE6CA3 /* Post Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Type.swift"; sourceTree = "<group>"; };
@@ -2197,6 +2201,7 @@
 			isa = PBXGroup;
 			children = (
 				CD1262792B4759BC007549F9 /* StandardPostTracker.swift */,
+				CD62D1292B5EC4E900395BD9 /* UserContentTracker.swift */,
 			);
 			path = Feeds;
 			sourceTree = "<group>";
@@ -2753,6 +2758,7 @@
 				CD4368C22AE2409D00BD8BD1 /* Inbox */,
 				CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */,
 				CDEBC3292A9A580B00518D9D /* Post Model.swift */,
+				CD62D12B2B5EC65200395BD9 /* CommentModel.swift */,
 				03FD64FD2AE538C600957AA9 /* Community */,
 				030D00862AD1BB0D00953B1D /* User */,
 				03B7AAF02ABE404300068B23 /* ContentModel.swift */,
@@ -3312,6 +3318,7 @@
 				B1CB6E752A4C729D00DA9675 /* Bundle+IconFileName.swift in Sources */,
 				030D4AE82AA1278400A3393D /* ErrorDetails+Mock.swift in Sources */,
 				CD4368C62AE240BF00BD8BD1 /* MessageModel.swift in Sources */,
+				CD62D12C2B5EC65200395BD9 /* CommentModel.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
 				CD04D5DF2A361585008EF95B /* Empty Button Style.swift in Sources */,
@@ -3374,6 +3381,7 @@
 				CD9A49D72B059303001E18A0 /* ImageSaver.swift in Sources */,
 				03E90FB12B3703ED00E5A802 /* AccountSortMode.swift in Sources */,
 				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
+				CD62D12A2B5EC4E900395BD9 /* UserContentTracker.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */,

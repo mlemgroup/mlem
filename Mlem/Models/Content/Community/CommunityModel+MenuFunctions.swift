@@ -17,10 +17,10 @@ extension CommunityModel {
             enabled: true
         ) {
             assertionFailure("ERIC RE-IMPLEMENT THIS")
-//                editorTracker.openEditor(with: PostEditorModel(
-//                    community: self,
-//                    postTracker: postTracker
-//                ))
+//            editorTracker.openEditor(with: PostEditorModel(
+//                community: self,
+//                postTracker: postTracker
+//            ))
         }
     }
     
