@@ -1,5 +1,5 @@
 //
-//  NEW PostFeedView+Logic.swift
+//  PostFeedView+Logic.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-01-21.
@@ -8,7 +8,7 @@
 import Dependencies
 import SwiftUI
 
-extension NewPostFeedView {
+extension PostFeedView {
     func setDefaultSortMode() {
         @Dependency(\.siteInformation) var siteInformationn
         

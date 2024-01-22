@@ -1,5 +1,5 @@
 //
-//  NEW CommunityView.swift
+//  CommunityFeedView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-01-19.
@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 /// View for a single community
-struct NewCommunityFeedView: View {
+struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
         var id: Self { self }
         case posts, about, moderators, statistics
@@ -165,7 +165,7 @@ struct NewCommunityFeedView: View {
     }
     
     func posts() -> some View {
-        NewPostFeedView(postSortType: $postSortType, showCommunity: false)
+        PostFeedView(postSortType: $postSortType, showCommunity: false)
             .environmentObject(postTracker)
     }
     

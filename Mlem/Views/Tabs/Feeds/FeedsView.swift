@@ -84,7 +84,7 @@ struct FeedsView: View {
                         case .saved:
                             SavedFeedView()
                         case let .community(communityModel):
-                            NewCommunityFeedView(communityModel: communityModel)
+                            CommunityFeedView(communityModel: communityModel)
                         case .none:
                             Text("Please select a feed")
                         }

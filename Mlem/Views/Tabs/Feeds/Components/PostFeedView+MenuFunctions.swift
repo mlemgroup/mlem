@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NewPostFeedView {
+extension PostFeedView {
     func genOuterSortMenuFunctions() -> [MenuFunction] {
         PostSortType.availableOuterTypes.map { type in
             let isSelected = postSortType == type

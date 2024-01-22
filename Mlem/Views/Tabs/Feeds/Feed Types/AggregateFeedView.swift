@@ -96,7 +96,7 @@ struct AggregateFeedView: View {
                             .padding(.top, -1)
                     }
                     
-                    NewPostFeedView(postSortType: $postSortType, showCommunity: true)
+                    PostFeedView(postSortType: $postSortType, showCommunity: true)
                         .environmentObject(postTracker)
                 }
             }

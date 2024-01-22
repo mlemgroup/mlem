@@ -1,5 +1,5 @@
 //
-//  NEW PostFeedView.swift
+//  PostFeedView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2024-01-13.
@@ -9,7 +9,7 @@ import Dependencies
 import Foundation
 import SwiftUI
 
-struct NewPostFeedView: View {
+struct PostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
     
@@ -115,7 +115,7 @@ struct NewPostFeedView: View {
                 ErrorView(errorDetails)
                     .frame(maxWidth: .infinity)
             } else {
-                NewNoPostsView(loadingState: postTracker.loadingState, postSortType: $postSortType, showReadPosts: $showReadPosts)
+                NoPostsView(loadingState: postTracker.loadingState, postSortType: $postSortType, showReadPosts: $showReadPosts)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
                     .padding(.top, 25)
             }
