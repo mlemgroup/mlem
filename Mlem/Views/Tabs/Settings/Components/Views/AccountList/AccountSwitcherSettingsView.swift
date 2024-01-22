@@ -38,7 +38,7 @@ struct AccountSwitcherSettingsView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Tip")
                                 .fontWeight(.semibold)
-                            Text("Tap and hold the Profile Icon in the tab bar to quickly switch accounts from anywhere.")
+                            Text("Tap and hold the profile icon in the tab bar to quickly switch accounts from anywhere.")
                                 .font(.footnote)
                         }
                         .foregroundStyle(.secondary)
