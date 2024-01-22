@@ -77,7 +77,7 @@ struct MlemApp: App {
         // Subscribed Feed
         let subscribedIcon = UIApplicationShortcutIcon(systemImageName: Icons.subscribedFeed)
         let subscribedFeedItem = UIApplicationShortcutItem(
-            type: FeedType.subscribed.rawValue,
+            type: FeedType.subscribed.toShortcutString,
             localizedTitle: "Subscribed",
             localizedSubtitle: nil,
             icon: subscribedIcon,
@@ -87,7 +87,7 @@ struct MlemApp: App {
         // Local Feed
         let localIcon = UIApplicationShortcutIcon(systemImageName: Icons.localFeed)
         let localFeedItem = UIApplicationShortcutItem(
-            type: FeedType.local.rawValue,
+            type: FeedType.local.toShortcutString,
             localizedTitle: "Local",
             localizedSubtitle: nil,
             icon: localIcon,
@@ -97,17 +97,28 @@ struct MlemApp: App {
         // All Feed
         let allIcon = UIApplicationShortcutIcon(systemImageName: Icons.federatedFeed)
         let allFeedItem = UIApplicationShortcutItem(
-            type: FeedType.all.rawValue,
+            type: FeedType.all.toShortcutString,
             localizedTitle: "All",
             localizedSubtitle: nil,
             icon: allIcon,
             userInfo: nil
         )
+        
+        // Saved Feed
+        let savedIcon = UIApplicationShortcutIcon(systemImageName: Icons.savedFeed)
+        let savedFeedItem = UIApplicationShortcutItem(
+            type: FeedType.saved.toShortcutString,
+            localizedTitle: "Saved",
+            localizedSubtitle: nil,
+            icon: savedIcon,
+            userInfo: nil
+        )
 
         UIApplication.shared.shortcutItems = [
-            subscribedFeedItem,
+            allFeedItem,
             localFeedItem,
-            allFeedItem
+            subscribedFeedItem,
+            savedFeedItem
         ]
     }
     

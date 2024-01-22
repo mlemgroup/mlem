@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct FeedRowView: View {
-    let feedType: NewFeedType
+    let feedType: FeedType
     
     var body: some View {
         HStack {

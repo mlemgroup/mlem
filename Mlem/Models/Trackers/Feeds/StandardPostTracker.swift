@@ -50,7 +50,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     // TODO: ERIC keyword filters could be more elegant
     var filteredKeywords: [String]
     
-    var feedType: NewFeedType
+    var feedType: FeedType
     private(set) var postSortType: PostSortType
     private var filters: [NewPostFilterReason: Int]
     
@@ -61,7 +61,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
         maxConcurrentRequestCount: 40
     )
     
-    init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: NewFeedType) {
+    init(internetSpeed: InternetSpeed, sortType: PostSortType, showReadPosts: Bool, feedType: FeedType) {
         @Dependency(\.persistenceRepository) var persistenceRepository
         
         self.feedType = feedType
@@ -97,7 +97,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
             page: page,
             cursor: cursor,
             sort: postSortType,
-            type: feedType,
+            type: feedType.toApiListingType,
             limit: internetSpeed.pageSize
         )
         
@@ -130,7 +130,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
                 page: page,
                 cursor: nil,
                 sort: postSortType,
-                type: feedType,
+                type: feedType.toApiListingType,
                 limit: internetSpeed.pageSize
             )
         }
@@ -155,7 +155,7 @@ class StandardPostTracker: StandardTracker<PostModel> {
     }
     
     @MainActor
-    func changeFeedType(to newFeedType: NewFeedType) async {
+    func changeFeedType(to newFeedType: FeedType) async {
         // don't do anything if feed type not changed
         guard feedType != newFeedType else {
             return

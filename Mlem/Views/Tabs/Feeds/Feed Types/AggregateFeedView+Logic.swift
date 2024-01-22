@@ -10,7 +10,7 @@ import Foundation
 extension AggregateFeedView {
     func genFeedSwitchingFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
-        NewFeedType.allAggregateFeedCases.forEach { type in
+        FeedType.allAggregateFeedCases.forEach { type in
             let (imageName, enabled) = type != postTracker.feedType
                 ? (type.iconName, true)
                 : (type.iconNameFill, false)

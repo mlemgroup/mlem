@@ -65,7 +65,6 @@ extension PostComposerView {
                 
                 hapticManager.play(haptic: .success, priority: .high)
                 
-                // TODO: ERIC test this
                 if let postTracker = editModel.postTracker {
                     Task {
                         await postTracker.prependItem(PostModel(from: response.postView))

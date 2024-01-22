@@ -9,11 +9,14 @@ import Foundation
 import SwiftUI
 
 struct FeedsView: View {
+    @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
+    
     @Environment(\.scenePhase) var scenePhase
     
     @EnvironmentObject var appState: AppState
     
-    @State private var selectedFeed: NewFeedType?
+    @State private var selectedFeed: FeedType?
+    @State var appeared: Bool = false // tracks whether this is the view's first appearance
     
     @StateObject private var communityListModel: CommunityListModel = .init()
     
@@ -22,14 +25,19 @@ struct FeedsView: View {
     
     var body: some View {
         content
-            // .navigationTitle("Communities")
             .onAppear {
+                // on first appearance, immediately navigate to defaultFeed
+                if !appeared {
+                    appeared = true
+                    selectedFeed = defaultFeed.toFeedType
+                }
+                
                 Task(priority: .high) {
                     await communityListModel.load()
                 }
             }
             .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active, let shortcutItem = NewFeedType.fromShortcut(shortcut: shortcutItemToProcess?.type) {
+                if newPhase == .active, let shortcutItem = FeedType.fromShortcutString(shortcut: shortcutItemToProcess?.type) {
                     selectedFeed = shortcutItem
                 }
             }
@@ -41,7 +49,7 @@ struct FeedsView: View {
                 // Note that NavigationLinks in here update selectedFeed and are handled by the detail switch, not the general navigation handler
                 ZStack(alignment: .trailing) {
                     List(selection: $selectedFeed) {
-                        ForEach([NewFeedType.all, NewFeedType.local, NewFeedType.subscribed, NewFeedType.saved]) { feedType in
+                        ForEach([FeedType.all, FeedType.local, FeedType.subscribed, FeedType.saved]) { feedType in
                             NavigationLink(value: feedType) {
                                 FeedRowView(feedType: feedType)
                             }
@@ -51,7 +59,7 @@ struct FeedsView: View {
                         ForEach(communityListModel.visibleSections) { section in
                             Section(header: communitySectionHeaderView(for: section)) {
                                 ForEach(communityListModel.communities(for: section)) { community in
-                                    NavigationLink(value: NewFeedType.community(.init(from: community, subscribed: true))) {
+                                    NavigationLink(value: FeedType.community(.init(from: community, subscribed: true))) {
                                         CommunityFeedRowView(
                                             community: community,
                                             subscribed: communityListModel.isSubscribed(to: community),

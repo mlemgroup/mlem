@@ -16,7 +16,7 @@ struct GeneralSettingsView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
-    @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
+    @AppStorage("defaultFeed") var defaultFeed: DefaultFeedType = .subscribed
     
     @AppStorage("hapticLevel") var hapticLevel: HapticPriority = .low
     @AppStorage("upvoteOnSave") var upvoteOnSave: Bool = false
@@ -48,8 +48,6 @@ struct GeneralSettingsView: View {
                     settingName: "Upvote on Save",
                     isTicked: $upvoteOnSave
                 )
-            } footer: {
-                Text("You may need to restart the app for Upvote on Save changes to take effect.")
             }
             
             Section {
@@ -93,7 +91,7 @@ struct GeneralSettingsView: View {
                     settingIconSystemName: defaultFeed.settingsIconName,
                     settingName: "Default Feed",
                     currentValue: $defaultFeed,
-                    options: FeedType.allCases
+                    options: DefaultFeedType.allCases
                 )
             } footer: {
                 Text("The feed to show by default when you open the app.")

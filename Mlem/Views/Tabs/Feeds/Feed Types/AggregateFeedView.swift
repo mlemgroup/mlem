@@ -25,7 +25,7 @@ struct AggregateFeedView: View {
         postTracker.items.first?.id
     }
     
-    init(feedType: NewFeedType) {
+    init(feedType: FeedType) {
         // need to grab some stuff from app storage to initialize with
         @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         @AppStorage("upvoteOnSave") var upvoteOnSave = false

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SavedFeedView: View {
-    // TODO: ERIC this should be a multi-feed with saved comments as well
+    // TODO: ERIC this needs its own tracker type
     
     var body: some View {
         AggregateFeedView(feedType: .saved)
