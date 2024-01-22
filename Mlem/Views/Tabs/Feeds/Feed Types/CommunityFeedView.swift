@@ -9,6 +9,8 @@ import Dependencies
 import Foundation
 import SwiftUI
 
+// swiftlint:disable type_body_length
+
 /// View for a single community
 struct CommunityFeedView: View {
     enum Tab: String, Identifiable, CaseIterable {
@@ -333,3 +335,5 @@ struct CommunityFeedView: View {
         }
     }
 }
+
+// swiftlint:enable type_body_length

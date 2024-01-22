@@ -22,7 +22,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
-    // swiftlint:disable function_body_length
     // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
         content
@@ -65,8 +64,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 }
             }
     }
-
-    // swiftlint:enable function_body_length
     
     @ViewBuilder
     // swiftlint:disable:next cyclomatic_complexity

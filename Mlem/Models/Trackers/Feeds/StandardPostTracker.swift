@@ -169,7 +169,11 @@ class StandardPostTracker: StandardTracker<PostModel> {
         }
     }
     
-    @available(*, deprecated, message: "Compatibility function for UserView. Should be removed and UserView refactored to use new multi-trackers.")
+    @available(
+        *,
+        deprecated,
+        message: "Compatibility function for UserView. Should be removed and UserView refactored to use new multi-trackers."
+    )
     func reset(with newPosts: [PostModel]) async {
         await setItems(newPosts)
     }
