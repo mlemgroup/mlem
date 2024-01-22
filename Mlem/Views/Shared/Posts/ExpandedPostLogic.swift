@@ -49,7 +49,7 @@ extension ExpandedPost {
         do {
             let response = try await apiClient.blockPerson(id: post.creator.userId, shouldBlock: true)
             if response.blocked {
-                postTracker.removeUserPosts(from: post.creator.userId)
+                await postTracker.applyFilter(.blockedUser(post.creator.userId))
                 hapticManager.play(haptic: .violentSuccess, priority: .high)
                 await notifier.add(.success("Blocked \(post.creator.name)"))
             }
@@ -144,7 +144,7 @@ extension ExpandedPost {
                 enabled: !post.post.deleted
             ) {
                 Task(priority: .userInitiated) {
-                    await postTracker.delete(post: post)
+                    await post.delete()
                 }
             })
         }

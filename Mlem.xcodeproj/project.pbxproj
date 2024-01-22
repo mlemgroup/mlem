@@ -492,7 +492,6 @@
 		CDEBC3282A9A57F200518D9D /* Content Model Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */; };
 		CDEBC32A2A9A580B00518D9D /* Post Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC3292A9A580B00518D9D /* Post Model.swift */; };
 		CDEBC32C2A9A582500518D9D /* Votes Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC32B2A9A582500518D9D /* Votes Model.swift */; };
-		CDEBC32E2A9A583900518D9D /* Post Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC32D2A9A583900518D9D /* Post Tracker.swift */; };
 		CDEBC3392A9ADE6C00518D9D /* APIClient+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */; };
 		CDEC95122B5B318B004BA288 /* CommunityFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC95112B5B318B004BA288 /* CommunityFeedView.swift */; };
 		CDEC95142B5CBC42004BA288 /* AggregateFeedView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEC95132B5CBC42004BA288 /* AggregateFeedView+Logic.swift */; };
@@ -1034,7 +1033,6 @@
 		CDEBC3272A9A57F200518D9D /* Content Model Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Content Model Identifier.swift"; sourceTree = "<group>"; };
 		CDEBC3292A9A580B00518D9D /* Post Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Model.swift"; sourceTree = "<group>"; };
 		CDEBC32B2A9A582500518D9D /* Votes Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Votes Model.swift"; sourceTree = "<group>"; };
-		CDEBC32D2A9A583900518D9D /* Post Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post Tracker.swift"; sourceTree = "<group>"; };
 		CDEBC3382A9ADE6C00518D9D /* APIClient+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Post.swift"; sourceTree = "<group>"; };
 		CDEC95112B5B318B004BA288 /* CommunityFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityFeedView.swift; sourceTree = "<group>"; };
 		CDEC95132B5CBC42004BA288 /* AggregateFeedView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AggregateFeedView+Logic.swift"; sourceTree = "<group>"; };
@@ -1994,7 +1992,6 @@
 				B1955A1E2A606F010056CF99 /* EasterFlagsTracker.swift */,
 				CDB0117E2A6F70A000D043EB /* Editor Tracker.swift */,
 				50785F702A98C4F600117245 /* SiteInformationTracker.swift */,
-				CDEBC32D2A9A583900518D9D /* Post Tracker.swift */,
 				03B7AAEE2ABCB9DC00068B23 /* ContentTracker.swift */,
 			);
 			path = Trackers;
@@ -3045,7 +3042,6 @@
 				5064D0432A6E645D00B22EE3 /* Notifiable.swift in Sources */,
 				039439932A99098900463032 /* InternetConnectionManager.swift in Sources */,
 				CD82A2592A71775E00111034 /* UnreadTracker.swift in Sources */,
-				CDEBC32E2A9A583900518D9D /* Post Tracker.swift in Sources */,
 				CD4368CA2AE2428C00BD8BD1 /* ContentIdentifiable.swift in Sources */,
 				CD3FBCE32A4A844800B2063F /* Replies Feed View.swift in Sources */,
 				637218652A3A2AAD008C4816 /* GetPosts.swift in Sources */,

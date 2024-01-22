@@ -12,14 +12,6 @@ import Foundation
 /// For simple (i.e. linear) navigation flows, you may wish to define a separate set of routes. For example, see `OnboardingRoutes`.
 ///
 enum AppRoute: Routable {
-    // case feed(NewFeedType)
-    
-    // TODO: ERIC remove this
-    // case communityLinkWithContext(CommunityLinkWithContext)
-
-    case apiPostView(APIPostView)
-    case apiPost(APIPost)
-    
     case community(CommunityModel)
     
     @available(*, deprecated, message: "Use .userProfile instead.")
@@ -42,12 +34,6 @@ enum AppRoute: Routable {
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
-//        case let value as CommunityLinkWithContext:
-//            return .communityLinkWithContext(value)
-        case let value as APIPostView:
-            return .apiPostView(value)
-        case let value as APIPost:
-            return .apiPost(value)
         case let value as CommunityModel:
             return .community(value)
         case let value as APIPerson:
@@ -56,8 +42,6 @@ enum AppRoute: Routable {
             return .userProfile(value)
         case let value as PostLinkWithContext:
             return .postLinkWithContext(value)
-//        case let value as NewPostLinkWithContext:
-//            return .newPostLinkWithContext(value)
         case let value as LazyLoadPostLinkWithContext:
             return .lazyLoadPostLinkWithContext(value)
         case let value as SettingsPage:

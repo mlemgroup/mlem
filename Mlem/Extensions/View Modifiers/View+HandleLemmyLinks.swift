@@ -33,23 +33,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)
-                case let .apiPostView(post):
-                    let postModel = PostModel(from: post)
-                    let postTracker = PostTracker(
-                        shouldPerformMergeSorting: false,
-                        internetSpeed: internetSpeed,
-                        initialItems: [postModel],
-                        upvoteOnSave: upvoteOnSave
-                    )
-                    // swiftlint:disable:next redundant_discardable_let
-                    let _ = postTracker.add([postModel])
-                    ExpandedPost(post: postModel)
-                        .environmentObject(postTracker)
-                        .environmentObject(appState)
-                        .environmentObject(quickLookState)
-                case let .apiPost(post):
-                    LazyLoadExpandedPost(post: post)
-                        .environmentObject(quickLookState)
                 case let .apiPerson(user):
                     UserView(user: UserModel(from: user))
                         .environmentObject(appState)

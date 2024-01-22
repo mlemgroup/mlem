@@ -24,8 +24,6 @@ struct CompactPost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
-    
-    @EnvironmentObject var postTracker: PostTracker
 
     // constants
     let thumbnailSize: CGFloat = 60
