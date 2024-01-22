@@ -125,8 +125,12 @@ struct InstanceView: View {
                             }
                         case .details:
                             if instance.userCount != nil {
-                                InstanceStatsView(instance: instance)
-                                    .padding(.top, 16)
+                                VStack(spacing: 0) {
+                                    InstanceStatsView(instance: instance)
+                                        .padding(.vertical, 16)
+                                        .background(Color(uiColor: .systemGroupedBackground))
+                                    Divider()
+                                }
                             } else {
                                 ProgressView()
                                     .padding(.top)
