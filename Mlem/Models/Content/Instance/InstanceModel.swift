@@ -16,9 +16,38 @@ struct InstanceModel {
     var administrators: [UserModel]?
     var url: URL!
     var version: SiteVersion?
+    var creationDate: Date!
+    
+    // From APISiteView
+    var userCount: Int?
+    var communityCount: Int?
+    var postCount: Int?
+    var commentCount: Int?
+    var activeUserCount: ActiveUserCount?
+    
+    // From APILocalSite (only accessible via SiteResponse)
+    var `private`: Bool?
+    var federates: Bool?
+    var federationSignedFetch: Bool?
+    var allowsDownvotes: Bool?
+    var allowsNSFW: Bool?
+    var allowsCommunityCreation: Bool?
+    var requiresEmailVerification: Bool?
+    var slurFilterRegex: Regex<AnyRegexOutput>?
+    var slurFilterString: String?
+    var captchaDifficulty: APICaptchaDifficulty?
+    var registrationMode: APIRegistrationMode?
+    var defaultFeedType: FeedType?
+    var hideModlogModNames: Bool?
+    var applicationsEmailAdmins: Bool?
+    var reportsEmailAdmins: Bool?
     
     init(from response: SiteResponse) {
         self.update(with: response)
+    }
+    
+    init(from siteView: APISiteView) {
+        self.update(with: siteView)
     }
     
     init(from site: APISite) {
@@ -32,7 +61,48 @@ struct InstanceModel {
             return user
         }
         self.version = SiteVersion(response.version)
-        self.update(with: response.siteView.site)
+        
+        let localSite = response.siteView.localSite
+        self.allowsDownvotes = localSite.enableDownvotes
+        self.allowsNSFW = localSite.enableNsfw
+        self.allowsCommunityCreation = !localSite.communityCreationAdminOnly
+        self.requiresEmailVerification = localSite.requireEmailVerification
+        self.captchaDifficulty = localSite.captchaEnabled ? localSite.captchaDifficulty : nil
+        self.private = localSite.privateInstance
+        self.federates = localSite.federationEnabled
+        self.federationSignedFetch = localSite.federationSignedFetch
+        self.defaultFeedType = localSite.defaultPostListingType
+        self.hideModlogModNames = localSite.hideModlogModNames
+        self.applicationsEmailAdmins = localSite.applicationEmailAdmins
+        self.reportsEmailAdmins = localSite.reportsEmailAdmins
+
+        self.registrationMode = localSite.registrationMode
+        do {
+            if let regex = localSite.slurFilterRegex {
+                self.slurFilterString = regex
+                self.slurFilterRegex = try .init(regex)
+            }
+        } catch {
+            print("Invalid slur filter regex")
+        }
+        
+        self.update(with: response.siteView)
+    }
+    
+    mutating func update(with siteView: APISiteView) {
+        userCount = siteView.counts.users
+        communityCount = siteView.counts.communities
+        postCount = siteView.counts.posts
+        commentCount = siteView.counts.comments
+        
+        self.activeUserCount = .init(
+            sixMonths: siteView.counts.usersActiveHalfYear,
+            month: siteView.counts.usersActiveMonth,
+            week: siteView.counts.usersActiveWeek,
+            day: siteView.counts.usersActiveDay
+        )
+        
+        self.update(with: siteView.site)
     }
     
     mutating func update(with site: APISite) {
@@ -41,6 +111,7 @@ struct InstanceModel {
         description = site.sidebar
         avatar = site.iconUrl
         banner = site.bannerUrl
+        creationDate = site.published
         
         if var components = URLComponents(string: site.inboxUrl) {
             components.path = ""

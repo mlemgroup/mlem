@@ -108,6 +108,7 @@ struct Icons {
     static let bannedFlair: String = "multiply.circle"
     
     // entities/general Lemmy concepts
+    static let federation: String = "point.3.filled.connected.trianglepath.dotted"
     static let instance: String = "server.rack"
     static let user: String = "person.crop.circle"
     static let userFill: String = "person.crop.circle.fill"
@@ -143,6 +144,7 @@ struct Icons {
     static let favoriteFill: String = "star.fill"
     static let unfavorite: String = "star.slash"
     static let unfavoriteFill: String = "star.slash.fill"
+    static let person: String = "person"
     static let personFill: String = "person.fill"
     static let close: String = "multiply"
     static let cakeDay: String = "birthday.cake"
@@ -189,6 +191,9 @@ struct Icons {
     static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
     
     // misc
+    static let `private`: String = "lock"
+    static let email: String = "envelope"
+    static let photo: String = "photo"
     static let switchUser: String = "person.crop.circle.badge.plus"
     static let missing: String = "questionmark.square.dashed"
     static let connection: String = "antenna.radiowaves.left.and.right"

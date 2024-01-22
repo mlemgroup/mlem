@@ -31,19 +31,6 @@ enum NotificationDisplayer {
         }
     }
     
-    /// A method to present the user with the token refresh view
-    /// - Parameters:
-    ///   - account: The current `SavedAccount` for the active session
-    ///   - refreshedAccount: A closure which will receive the updated version of the account with a refreshed access token
-    static func presentTokenRefreshFlow(
-        for account: SavedAccount,
-        refreshedAccount: @escaping (SavedAccount) -> Void
-    ) {
-        let tokenRefreshView = TokenRefreshView(account: account, refreshedAccount: refreshedAccount)
-        let view = UIHostingController(rootView: tokenRefreshView)
-        present(view)
-    }
-    
     // MARK: - Private methods
     
     private static func display(contextualError: ContextualError) async {

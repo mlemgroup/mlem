@@ -38,6 +38,7 @@
 		031A93D62AC847DA0077030C /* UploadConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A93D52AC847DA0077030C /* UploadConfirmationView.swift */; };
 		031BF9532AB24BAF00F4517F /* SiteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9522AB24BAF00F4517F /* SiteVersion.swift */; };
 		031BF9552AB25AFB00F4517F /* SiteVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031BF9542AB25AFB00F4517F /* SiteVersionTests.swift */; };
+		031F95572B5C7FF20069C244 /* InstanceStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031F95562B5C7FF20069C244 /* InstanceStatsView.swift */; };
 		032109472AA7C3FC00912DFC /* CommunityLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109462AA7C3FC00912DFC /* CommunityLabelView.swift */; };
 		032109492AA7C41800912DFC /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032109482AA7C41800912DFC /* AvatarView.swift */; };
 		032DD2FD2AC3594B00F1B33D /* LinkAttatchmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */; };
@@ -274,7 +275,7 @@
 		63F0C7B92A0533C700A18C5D /* Add Account View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7B82A0533C700A18C5D /* Add Account View.swift */; };
 		63F0C7BD2A058CD200A18C5D /* Check if Endpoint Exists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */; };
 		63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */; };
-		6D15D74C2A44DC240061B5CB /* Date+RelativeTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D15D74B2A44DC240061B5CB /* Date+RelativeTime.swift */; };
+		6D15D74C2A44DC240061B5CB /* Date+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D15D74B2A44DC240061B5CB /* Date+Formatter.swift */; };
 		6D405AFF2A43E66600C65F9C /* UserLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D405AFE2A43E66600C65F9C /* UserLabelView.swift */; };
 		6D693A3E2A5113DF009E2D76 /* CreatePostReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A3D2A5113DF009E2D76 /* CreatePostReport.swift */; };
 		6D693A402A51147E009E2D76 /* APIPostReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D693A3F2A51147E009E2D76 /* APIPostReportView.swift */; };
@@ -581,6 +582,7 @@
 		031A93D52AC847DA0077030C /* UploadConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadConfirmationView.swift; sourceTree = "<group>"; };
 		031BF9522AB24BAF00F4517F /* SiteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersion.swift; sourceTree = "<group>"; };
 		031BF9542AB25AFB00F4517F /* SiteVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVersionTests.swift; sourceTree = "<group>"; };
+		031F95562B5C7FF20069C244 /* InstanceStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStatsView.swift; sourceTree = "<group>"; };
 		032109462AA7C3FC00912DFC /* CommunityLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityLabelView.swift; sourceTree = "<group>"; };
 		032109482AA7C41800912DFC /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		032DD2FC2AC3594B00F1B33D /* LinkAttatchmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkAttatchmentView.swift; sourceTree = "<group>"; };
@@ -818,7 +820,7 @@
 		63F0C7B82A0533C700A18C5D /* Add Account View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Add Account View.swift"; sourceTree = "<group>"; };
 		63F0C7BC2A058CD200A18C5D /* Check if Endpoint Exists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Check if Endpoint Exists.swift"; sourceTree = "<group>"; };
 		63F0C7BE2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Get Correct URL to Endpoint.swift"; sourceTree = "<group>"; };
-		6D15D74B2A44DC240061B5CB /* Date+RelativeTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+RelativeTime.swift"; sourceTree = "<group>"; };
+		6D15D74B2A44DC240061B5CB /* Date+Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatter.swift"; sourceTree = "<group>"; };
 		6D405AFE2A43E66600C65F9C /* UserLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLabelView.swift; sourceTree = "<group>"; };
 		6D693A3D2A5113DF009E2D76 /* CreatePostReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostReport.swift; sourceTree = "<group>"; };
 		6D693A3F2A51147E009E2D76 /* APIPostReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPostReportView.swift; sourceTree = "<group>"; };
@@ -1323,6 +1325,7 @@
 			isa = PBXGroup;
 			children = (
 				03A54C312B5331F30064CCDE /* InstanceView.swift */,
+				031F95562B5C7FF20069C244 /* InstanceStatsView.swift */,
 			);
 			path = Instance;
 			sourceTree = "<group>";
@@ -2252,7 +2255,7 @@
 		CD29ED2E2B2E8307006937CE /* Date */ = {
 			isa = PBXGroup;
 			children = (
-				6D15D74B2A44DC240061B5CB /* Date+RelativeTime.swift */,
+				6D15D74B2A44DC240061B5CB /* Date+Formatter.swift */,
 			);
 			path = Date;
 			sourceTree = "<group>";
@@ -3317,6 +3320,7 @@
 				CDC1C93C2A7AA76000072E3D /* InternetSpeed.swift in Sources */,
 				50EC39B22A346DDC00E014C2 /* URLHandler.swift in Sources */,
 				63F0C7BF2A058EDE00A18C5D /* Get Correct URL to Endpoint.swift in Sources */,
+				031F95572B5C7FF20069C244 /* InstanceStatsView.swift in Sources */,
 				632E8EE827EE63DB007E8D75 /* DownvoteButtonView.swift in Sources */,
 				50D61E5B2AA32B9400A926EC /* APISession.swift in Sources */,
 				CDCBD72B2A8EC0A800387A2C /* Instance Summary.swift in Sources */,
@@ -3476,7 +3480,7 @@
 				E49E01F42ABD99D300E42BB3 /* Routable.swift in Sources */,
 				03F4DC9F2B1A8AD500556C67 /* SignInAndSecuritySettingsView.swift in Sources */,
 				03F76FA62B2F5F4700E2B54A /* LinkUploadOptionsView.swift in Sources */,
-				6D15D74C2A44DC240061B5CB /* Date+RelativeTime.swift in Sources */,
+				6D15D74C2A44DC240061B5CB /* Date+Formatter.swift in Sources */,
 				CDA217E62A63016A00BDA173 /* ReportMessage.swift in Sources */,
 				CD9DD8832A622A6C0044EA8E /* ReportCommentReply.swift in Sources */,
 				CD3FBCE12A4A836000B2063F /* AllItemsFeedView.swift in Sources */,

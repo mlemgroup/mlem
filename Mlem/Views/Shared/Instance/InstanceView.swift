@@ -10,7 +10,7 @@ import Charts
 import Dependencies
 
 enum InstanceViewTab: String, Identifiable, CaseIterable {
-    case about, administrators, statistics, uptime, safety
+    case about, administrators, details, uptime, safety
     
     var id: Self { self }
     
@@ -96,7 +96,7 @@ struct InstanceView: View {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
                             Divider()
-                            BubblePicker([.about, .administrators], selected: $selectedTab) { tab in
+                            BubblePicker([.about, .administrators, .details], selected: $selectedTab) { tab in
                                 Text(tab.label)
                             }
                             Divider()
@@ -119,6 +119,15 @@ struct InstanceView: View {
                                 }
                             } else {
                                 ProgressView()
+                                    .padding(.top)
+                            }
+                        case .details:
+                            if instance.userCount != nil {
+                                InstanceStatsView(instance: instance)
+                                    .padding(.top, 16)
+                            } else {
+                                ProgressView()
+                                    .padding(.top)
                             }
                         default:
                             EmptyView()
@@ -162,11 +171,11 @@ struct InstanceView: View {
                 } catch APIClientError.decoding(let data, let error) {
                     withAnimation(.easeOut(duration: 0.2)) {
                         if let content = String(data: data, encoding: .utf8),
-                           content.contains("<title>Error 404 - \(domainName)</title>" ) {
+                           content.contains("<div class=\"kbin-container\">" ) {
                             errorDetails = ErrorDetails(
                                 title: "KBin Instance",
                                 body: "We can't yet display KBin details.",
-                                icon: "point.3.filled.connected.trianglepath.dotted"
+                                icon: Icons.federation
                             )
                         } else {
                             errorDetails = ErrorDetails(error: APIClientError.decoding(data, error))
