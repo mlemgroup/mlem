@@ -32,7 +32,6 @@ struct PostComposerView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    // let postTracker: PostTracker
     let editModel: PostEditorModel
     
     @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
@@ -56,7 +55,6 @@ struct PostComposerView: View {
     @FocusState private var focusedField: Field?
     
     init(editModel: PostEditorModel) {
-        // self.postTracker = editModel.postTracker
         self.editModel = editModel
         
         self._postTitle = State(initialValue: editModel.editPost?.post.name ?? "")
