@@ -19,7 +19,7 @@ class RecentSearchesTracker: ObservableObject {
     @Published var recentSearches: [AnyContentModel] = .init()
     
     /// clears recentSearches and loads new values based on the current account
-    func reloadRecentSearches(accountId: String?, instanceStubs: [InstanceStub]) async throws {
+    func reloadRecentSearches(accountId: String?, instances: [InstanceModel]) async throws {
         defer { hasLoaded = true }
         
         if let accountId {
@@ -37,8 +37,8 @@ class RecentSearchesTracker: ObservableObject {
                     let user = try await personRepository.loadUser(for: id.contentId)
                     newSearches.append(AnyContentModel(user))
                 case .instance:
-                    if let stub = instanceStubs.first(where: { $0.host.hash == id.contentId }) {
-                        newSearches.append(AnyContentModel(InstanceModel(from: stub)))
+                    if let instance = instances.first(where: { $0.name.hash == id.contentId }) {
+                        newSearches.append(AnyContentModel(instance))
                     } else {
                         print("Recent search error: cannot find instance sub")
                     }

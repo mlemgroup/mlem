@@ -25,7 +25,7 @@ class SearchModel: ObservableObject {
     var firstPageCommunities: [AnyContentModel]?
     var firstPageUsers: [AnyContentModel]?
     
-    var instanceStubs: [InstanceStub] = []
+    static var allInstances: [InstanceModel] = []
     
     init(searchTab: SearchTab = .topResults, internetSpeed: InternetSpeed = .fast) {
         self.searchTab = searchTab
@@ -79,7 +79,7 @@ class SearchModel: ObservableObject {
             }
             return try await searchUsers(page: page)
         case .instances:
-            print("SHORTCUT", instanceStubs.count)
+            print("SHORTCUT", SearchModel.allInstances.count)
             return searchInstances(page: page)
         }
     }
@@ -112,20 +112,18 @@ class SearchModel: ObservableObject {
     
     @discardableResult
     func searchInstances(page: Int) -> [AnyContentModel] {
-        print("SEARCH INSTANCES", page)
-        
         if searchText.isEmpty {
             if page != 1 {
                 return []
             }
-            return instanceStubs.map { AnyContentModel(InstanceModel(from: $0)) }
+            return SearchModel.allInstances.map { AnyContentModel($0) }
         }
         
         let query = searchText.lowercased()
-        var results: [InstanceStub] = []
-        for stub in instanceStubs {
-            if stub.name.lowercased().contains(query) || stub.host.contains(query) {
-                results.append(stub)
+        var results: [InstanceModel] = []
+        for instance in SearchModel.allInstances {
+            if instance.displayName.lowercased().contains(query) || instance.name.contains(query) {
+                results.append(instance)
             }
             if results.count == internetSpeed.pageSize {
                 break
@@ -133,7 +131,7 @@ class SearchModel: ObservableObject {
         }
         let instances = results
             .dropFirst((page-1) * internetSpeed.pageSize)
-            .map { AnyContentModel(InstanceModel(from: $0)) }
+            .map { AnyContentModel($0) }
         return instances
     }
     

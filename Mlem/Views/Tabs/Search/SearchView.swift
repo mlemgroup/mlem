@@ -77,14 +77,13 @@ struct SearchView: View {
             .autocorrectionDisabled(true)
             .textInputAutocapitalization(.never)
             .onAppear {
-                if searchModel.instanceStubs.isEmpty {
+                if SearchModel.allInstances.isEmpty {
                     Task(priority: .background) {
-                        var instanceStubs: [InstanceStub] = []
+                        var instances: [InstanceModel] = []
                         do {
-                            instanceStubs = try await apiClient.fetchInstanceList()
+                            instances = try await apiClient.fetchInstanceList().map { InstanceModel(from: $0) }
                             DispatchQueue.main.async {
-                                searchModel.instanceStubs = instanceStubs
-                                homeSearchModel.instanceStubs = instanceStubs
+                                SearchModel.allInstances = instances
                             }
                         } catch {
                             print("Error while loading instance stubs: \(error.localizedDescription)")
@@ -93,7 +92,7 @@ struct SearchView: View {
                         do {
                             try await recentSearchesTracker.reloadRecentSearches(
                                 accountId: appState.currentActiveAccount?.stableIdString,
-                                instanceStubs: instanceStubs
+                                instances: instances
                             )
                         } catch {
                             print("Error while loading recent searches: \(error.localizedDescription)")
