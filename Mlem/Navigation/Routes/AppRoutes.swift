@@ -15,7 +15,7 @@ enum AppRoute: Routable {
     // case feed(NewFeedType)
     
     // TODO: ERIC remove this
-    case communityLinkWithContext(CommunityLinkWithContext)
+    // case communityLinkWithContext(CommunityLinkWithContext)
 
     case apiPostView(APIPostView)
     case apiPost(APIPost)
@@ -42,8 +42,8 @@ enum AppRoute: Routable {
     // swiftlint:disable cyclomatic_complexity
     static func makeRoute(_ value: some Hashable) throws -> AppRoute {
         switch value {
-        case let value as CommunityLinkWithContext:
-            return .communityLinkWithContext(value)
+//        case let value as CommunityLinkWithContext:
+//            return .communityLinkWithContext(value)
         case let value as APIPostView:
             return .apiPostView(value)
         case let value as APIPost:

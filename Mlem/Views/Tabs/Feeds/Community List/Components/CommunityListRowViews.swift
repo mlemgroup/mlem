@@ -71,7 +71,8 @@ struct CommuntiyFeedRowView: View {
             return CommunityLinkWithContext(community: CommunityModel(from: community), feedType: .subscribed)
         } else {
             // Do not use enum route path in sidebar: It doesn't work, and I have no idea why =/ [2023.09]
-            return AppRoute.communityLinkWithContext(.init(community: CommunityModel(from: community), feedType: .subscribed))
+            // return AppRoute.communityLinkWithContext(.init(community: CommunityModel(from: community), feedType: .subscribed))
+            return AppRoute.community(CommunityModel(from: community))
         }
     }
     
@@ -153,6 +154,6 @@ struct HomepageFeedRowView: View {
     }
     
     private var pathValue: AnyHashable {
-        return CommunityLinkWithContext(community: nil, feedType: feedType)
+        CommunityLinkWithContext(community: nil, feedType: feedType)
     }
 }

@@ -67,8 +67,8 @@ extension PostComposerView {
                 
                 // TODO: ERIC test this
                 if let postTracker = editModel.postTracker {
-                    withAnimation {
-                        postTracker.synchronousPrependItem(_:)(PostModel(from: response.postView))
+                    Task {
+                        await postTracker.prependItem(PostModel(from: response.postView))
                     }
                 }
             }

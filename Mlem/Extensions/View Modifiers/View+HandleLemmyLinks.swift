@@ -29,12 +29,7 @@ struct HandleLemmyLinksDisplay: ViewModifier {
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
                 case let .community(community):
-                    CommunityView(community: community)
-                        .environmentObject(appState)
-                        .environmentObject(filtersTracker)
-                        .environmentObject(quickLookState)
-                case let .communityLinkWithContext(context):
-                    FeedParentView(community: context.community, feedType: context.feedType)
+                    NewCommunityFeedView(communityModel: community)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
                         .environmentObject(quickLookState)

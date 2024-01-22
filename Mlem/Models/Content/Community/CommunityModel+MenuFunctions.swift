@@ -9,18 +9,17 @@ import Foundation
 import SwiftUI
 
 extension CommunityModel {
-    func newPostMenuFunction(editorTracker: EditorTracker, postTracker: PostTracker? = nil) -> MenuFunction {
+    func newPostMenuFunction(editorTracker: EditorTracker, postTracker: StandardPostTracker? = nil) -> MenuFunction {
         .standardMenuFunction(
             text: "New Post",
             imageName: Icons.sendFill,
             destructiveActionPrompt: nil,
             enabled: true
         ) {
-            assertionFailure("ERIC RE-IMPLEMENT THIS")
-//            editorTracker.openEditor(with: PostEditorModel(
-//                community: self,
-//                postTracker: postTracker
-//            ))
+            editorTracker.openEditor(with: PostEditorModel(
+                community: self,
+                postTracker: postTracker
+            ))
         }
     }
     
@@ -89,7 +88,7 @@ extension CommunityModel {
     func menuFunctions(
         _ callback: @escaping (_ item: Self) -> Void = { _ in },
         editorTracker: EditorTracker? = nil,
-        postTracker: PostTracker? = nil
+        postTracker: StandardPostTracker? = nil
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         if let editorTracker {

@@ -58,12 +58,6 @@ class CoreTracker<Item: TrackerItem>: ObservableObject {
         updateThresholds()
     }
     
-    func synchronousPrependItem(_ newItem: Item) {
-        Task {
-            await prependItem(newItem)
-        }
-    }
-    
     @MainActor
     func prependItem(_ newItem: Item) async {
         items.prepend(newItem)

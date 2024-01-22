@@ -40,7 +40,7 @@ struct NewPostFeedView: View {
             }
             .task(id: siteInformation.version) {
                 // when site version changes, check if it's resolved; if so, update sort type and siteVersionResolved
-                if let siteVersion = siteInformation.version {
+                if let siteVersion = siteInformation.version, !siteVersionResolved {
                     let newPostSort = siteVersion < defaultPostSorting.minimumVersion ? fallbackDefaultPostSorting : defaultPostSorting
                     
                     // manually change the tracker sort type here so that view is not redrawn by `onChange(of: postSortType)`

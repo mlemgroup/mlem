@@ -23,6 +23,8 @@ struct NewCommunityFeedView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
     
+    @EnvironmentObject var editorTracker: EditorTracker
+    
     @Environment(\.colorScheme) var colorScheme
     
     @StateObject var postTracker: StandardPostTracker
@@ -76,7 +78,9 @@ struct NewCommunityFeedView: View {
     var body: some View {
         content
             .onAppear {
-                Task { await postTracker.loadMoreItems() }
+                if postTracker.items.isEmpty {
+                    Task { await postTracker.loadMoreItems() }
+                }
                 
                 if communityModel.moderators == nil {
                     Task(priority: .userInitiated) {
@@ -109,6 +113,22 @@ struct NewCommunityFeedView: View {
                         .opacity(scrollToTopAppeared ? 0 : 1)
                         .animation(.easeOut(duration: 0.2), value: scrollToTopAppeared)
                 }
+                
+                ToolbarItemGroup(placement: .secondaryAction) {
+                    ForEach(
+                        communityModel.menuFunctions(
+                            { communityModel = $0 },
+                            editorTracker: editorTracker,
+                            postTracker: postTracker
+                        )
+                    ) { menuFunction in
+                        MenuButton(menuFunction: menuFunction, confirmDestructive: confirmDestructive)
+                    }
+                    .destructiveConfirmation(
+                        isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
+                        confirmationMenuFunction: confirmationMenuFunction
+                    )
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
@@ -134,9 +154,8 @@ struct NewCommunityFeedView: View {
         }
         .background {
             VStack(spacing: 0) {
-                // this awful little hack prevents a line from appearing in gray background tabs
                 Color.systemBackground
-                    .frame(height: 1)
+                    .frame(height: 200)
                 
                 if selectedTab == .statistics || selectedTab == .moderators {
                     Color(uiColor: .systemGroupedBackground)
@@ -302,6 +321,7 @@ struct NewCommunityFeedView: View {
                 Task {
                     var community = communityModel
                     do {
+                        // TODO: this doesn't update view state when favoriting, but it does when unfavoriting
                         try await communityModel.toggleFavorite { item in
                             DispatchQueue.main.async { communityModel = item }
                         }
