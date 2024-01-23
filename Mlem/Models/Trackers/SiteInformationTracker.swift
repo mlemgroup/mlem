@@ -34,7 +34,6 @@ class SiteInformationTracker: ObservableObject {
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
-                print("DEBUG version loaded")
             } catch {
                 errorHandler.handle(error)
             }
