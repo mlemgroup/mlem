@@ -30,6 +30,9 @@ struct PostFeedView: View {
             versionSafePostSort = postSortType
         }
     }
+    
+    // If versionSafePostSort is defined at init, the post tracker won't detect that and start loading until a fraction of a second after the view draws; if the tracker is also empty, this leads to noPostsView flashing for a fraction of a second. This masks that behavior.
+    @State var suppressNoPostsView: Bool = true
 
     let showCommunity: Bool
 
@@ -48,6 +51,7 @@ struct PostFeedView: View {
     
     var body: some View {
         content
+            .animation(.easeOut(duration: 0.2), value: postTracker.items.isEmpty)
             .onChange(of: showReadPosts) { newValue in
                 if newValue {
                     Task { await postTracker.removeFilter(.read) }
@@ -59,6 +63,8 @@ struct PostFeedView: View {
                 await setDefaultSortMode()
             }
             .task(id: versionSafePostSort) {
+                defer { suppressNoPostsView = false }
+                
                 if let versionSafePostSort {
                     await postTracker.changeSortType(
                         to: versionSafePostSort,
@@ -121,7 +127,7 @@ struct PostFeedView: View {
     private func noPostsView() -> some View {
         VStack {
             // don't show posts until site information loads to avoid jarring redraw
-            if postTracker.loadingState == .loading || versionSafePostSort == nil {
+            if postTracker.loadingState == .loading || versionSafePostSort == nil || suppressNoPostsView {
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
