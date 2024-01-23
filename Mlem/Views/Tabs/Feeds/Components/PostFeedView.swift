@@ -26,8 +26,20 @@ struct PostFeedView: View {
     @Binding var postSortType: PostSortType
     let showCommunity: Bool
     
-    @State var siteVersionResolved: Bool = false
+    @State var siteVersionResolved: Bool
+    @State var shouldPerformInitialLoad: Bool // used to display appropriate loading indicator when version resolved on initial appear
+    
     @State var errorDetails: ErrorDetails?
+    
+    init(postSortType: Binding<PostSortType>, showCommunity: Bool) {
+        @Dependency(\.siteInformation) var siteInformation
+        
+        let siteVersionResolved = siteInformation.version != nil
+        self._siteVersionResolved = .init(wrappedValue: siteVersionResolved)
+        self._shouldPerformInitialLoad = .init(wrappedValue: siteVersionResolved)
+        self._postSortType = postSortType
+        self.showCommunity = showCommunity
+    }
     
     var body: some View {
         content
@@ -38,16 +50,16 @@ struct PostFeedView: View {
                     Task { await postTracker.addFilter(.read) }
                 }
             }
-            .task(id: siteInformation.version) {
-                // when site version changes, check if it's resolved; if so, update sort type and siteVersionResolved
-                if let siteVersion = siteInformation.version, !siteVersionResolved {
-                    let newPostSort = siteVersion < defaultPostSorting.minimumVersion ? fallbackDefaultPostSorting : defaultPostSorting
-                    
-                    // manually change the tracker sort type here so that view is not redrawn by `onChange(of: postSortType)`
-                    await postTracker.changeSortType(to: newPostSort, forceRefresh: true)
-                    postSortType = newPostSort
-                    siteVersionResolved = true
+            .task {
+                if shouldPerformInitialLoad {
+                    if postTracker.items.isEmpty {
+                        await postTracker.loadMoreItems()
+                    }
+                    shouldPerformInitialLoad = false
                 }
+            }
+            .task(id: siteInformation.version) {
+                await setDefaultSortMode()
             }
             .onChange(of: postSortType) { newValue in
                 Task { await postTracker.changeSortType(to: newValue) }
@@ -107,7 +119,7 @@ struct PostFeedView: View {
     private func noPostsView() -> some View {
         VStack {
             // don't show posts until site information loads to avoid jarring redraw
-            if postTracker.loadingState == .loading || !siteVersionResolved {
+            if postTracker.loadingState == .loading || !siteVersionResolved || shouldPerformInitialLoad {
                 LoadingView(whatIsLoading: .posts)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
