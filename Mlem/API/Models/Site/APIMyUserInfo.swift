@@ -13,3 +13,9 @@ struct APIMyUserInfo: Decodable {
     var localUserView: APILocalUserView
     var discussionLanguages: [Int]
 }
+
+extension APIMyUserInfo: Equatable {
+    static func == (lhs: APIMyUserInfo, rhs: APIMyUserInfo) -> Bool {
+        lhs.localUserView.person.id == rhs.localUserView.person.id
+    }
+}
