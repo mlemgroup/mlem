@@ -2434,8 +2434,8 @@
 			children = (
 				03EF1D0B2B434CB10056175C /* CommunityStatsView.swift */,
 				CD4BAD3A2B4C6C3200A1E726 /* FeedRowView.swift */,
-				CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */,
 				CDBCBA232B54A5F40070F60D /* NoPostsView.swift */,
+				CDBCBA1F2B537A4B0070F60D /* PostFeedView.swift */,
 				CDCA28D32B58AF53009D9F54 /* PostFeedView+MenuFunctions.swift */,
 				CDEC95182B5D950D004BA288 /* PostFeedView+Logic.swift */,
 			);
