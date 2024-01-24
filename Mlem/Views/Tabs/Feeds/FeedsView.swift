@@ -41,6 +41,7 @@ struct FeedsView: View {
                     selectedFeed = shortcutItem
                 }
             }
+            .handleLemmyLinkResolution(navigationPath: .constant(feedTabNavigation))
     }
     
     var content: some View {
