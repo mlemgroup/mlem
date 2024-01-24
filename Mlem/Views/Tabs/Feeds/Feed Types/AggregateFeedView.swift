@@ -138,7 +138,7 @@ struct AggregateFeedView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding(.vertical, 5)
-                    
+                        .padding(.bottom, 3)
                 Divider()
             }
         }
