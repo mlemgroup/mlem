@@ -80,25 +80,35 @@ struct FeedsView: View {
                 }
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
-                    Group {
-                        switch selectedFeed {
-                        case .all:
-                            AggregateFeedView(feedType: .all)
-                        case .local:
-                            AggregateFeedView(feedType: .local)
-                        case .subscribed:
-                            AggregateFeedView(feedType: .subscribed)
-                        case .saved:
-                            SavedFeedView()
-                        case let .community(communityModel):
-                            CommunityFeedView(communityModel: communityModel)
-                        case .none:
-                            Text("Please select a feed")
-                        }
-                    }
-                    .handleLemmyViews()
+                    navStackView()
+                        .handleLemmyViews()
+                        .handleLemmyLinkResolution(navigationPath: .constant(feedTabNavigation))
+                        .environment(\.navigation, navigation)
+                        .environmentObject(feedTabNavigation)
+                        .tabBarNavigationEnabled(.feeds, navigation)
                 }
+                .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
+                .environment(\.navigation, navigation)
+                .environment(\.scrollViewProxy, scrollProxy)
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func navStackView() -> some View {
+        switch selectedFeed {
+        case .all:
+            AggregateFeedView(feedType: .all)
+        case .local:
+            AggregateFeedView(feedType: .local)
+        case .subscribed:
+            AggregateFeedView(feedType: .subscribed)
+        case .saved:
+            SavedFeedView()
+        case let .community(communityModel):
+            CommunityFeedView(communityModel: communityModel)
+        case .none:
+            Text("Please select a feed")
         }
     }
     

@@ -13,6 +13,8 @@ struct PostFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
     
+    @Environment(\.dismiss) private var dismiss
+    
     @AppStorage("shouldShowPostCreator") var shouldShowPostCreator: Bool = true
     @AppStorage("showReadPosts") var showReadPosts: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -71,6 +73,7 @@ struct PostFeedView: View {
                     }
                 }
             }
+            .hoistNavigation(dismiss: dismiss)
     }
     
     var content: some View {

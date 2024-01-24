@@ -74,8 +74,11 @@ struct ExpandedPost: View {
     @State private var scrollToTopAppeared = false
     @Namespace var scrollToTop
     
+    @Environment(\.navigation) private var navigation
+    
     var body: some View {
         contentView
+            .environment(\.navigation, navigation)
             .environmentObject(commentTracker)
             .navigationBarTitle(post.community.name, displayMode: .inline)
             .toolbar {

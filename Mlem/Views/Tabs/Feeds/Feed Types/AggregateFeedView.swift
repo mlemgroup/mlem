@@ -14,6 +14,8 @@ struct AggregateFeedView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @EnvironmentObject var appState: AppState
+    @Environment(\.scrollViewProxy) private var scrollViewProxy
+    @Environment(\.navigation) private var navigation
     
     @StateObject var postTracker: StandardPostTracker
     
@@ -83,6 +85,14 @@ struct AggregateFeedView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarColor(visibility: .automatic)
+            .hoistNavigation {
+                if let scrollViewProxy {
+                    withAnimation {
+                        scrollViewProxy.scrollTo(scrollToTop)
+                    }
+                }
+                return !scrollToTopAppeared
+            }
     }
     
     @ViewBuilder

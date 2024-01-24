@@ -12,6 +12,7 @@ import SwiftUI
 struct HandleLemmyLinksDisplay: ViewModifier {
     @Dependency(\.siteInformation) var siteInformation
     
+    @Environment(\.navigation) private var navigation
     @Environment(\.navigationPath) private var navigationPath
     @EnvironmentObject private var layoutWidgetTracker: LayoutWidgetTracker
     @EnvironmentObject var appState: AppState
