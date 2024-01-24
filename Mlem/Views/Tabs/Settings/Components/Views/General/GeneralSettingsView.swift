@@ -15,6 +15,7 @@ struct GeneralSettingsView: View {
     @AppStorage("confirmImageUploads") var confirmImageUploads: Bool = true
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
+    @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
     
     @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
     
@@ -42,7 +43,11 @@ struct GeneralSettingsView: View {
                     currentValue: $hapticLevel,
                     options: HapticPriority.allCases
                 )
-                
+                SwitchableSettingsItem(
+                    settingPictureSystemName: Icons.collapseComments,
+                    settingName: "Tap Comments to Collapse",
+                    isTicked: $tapCommentToCollapse
+                )
                 SwitchableSettingsItem(
                     settingPictureSystemName: Icons.upvoteOnSave,
                     settingName: "Upvote on Save",
