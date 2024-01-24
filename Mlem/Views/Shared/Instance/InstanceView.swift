@@ -50,7 +50,6 @@ struct InstanceView: View {
             instance = siteInformation.instance ?? instance
         }
         _instance = State(wrappedValue: instance)
-        print("INSTANCE", domainName)
     }
     
     var subtitleText: String {
