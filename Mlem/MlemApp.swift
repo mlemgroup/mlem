@@ -73,53 +73,17 @@ struct MlemApp: App {
 
     private func setupAppShortcuts() {
         guard accountsTracker.savedAccounts.first != nil else { return }
-
-        // Subscribed Feed
-        let subscribedIcon = UIApplicationShortcutIcon(systemImageName: Icons.subscribedFeed)
-        let subscribedFeedItem = UIApplicationShortcutItem(
-            type: FeedType.subscribed.toShortcutString,
-            localizedTitle: "Subscribed",
-            localizedSubtitle: nil,
-            icon: subscribedIcon,
-            userInfo: nil
-        )
-
-        // Local Feed
-        let localIcon = UIApplicationShortcutIcon(systemImageName: Icons.localFeed)
-        let localFeedItem = UIApplicationShortcutItem(
-            type: FeedType.local.toShortcutString,
-            localizedTitle: "Local",
-            localizedSubtitle: nil,
-            icon: localIcon,
-            userInfo: nil
-        )
-
-        // All Feed
-        let allIcon = UIApplicationShortcutIcon(systemImageName: Icons.federatedFeed)
-        let allFeedItem = UIApplicationShortcutItem(
-            type: FeedType.all.toShortcutString,
-            localizedTitle: "All",
-            localizedSubtitle: nil,
-            icon: allIcon,
-            userInfo: nil
-        )
         
-        // Saved Feed
-        let savedIcon = UIApplicationShortcutIcon(systemImageName: Icons.savedFeed)
-        let savedFeedItem = UIApplicationShortcutItem(
-            type: FeedType.saved.toShortcutString,
-            localizedTitle: "Saved",
-            localizedSubtitle: nil,
-            icon: savedIcon,
-            userInfo: nil
-        )
-
-        UIApplication.shared.shortcutItems = [
-            allFeedItem,
-            localFeedItem,
-            subscribedFeedItem,
-            savedFeedItem
-        ]
+        UIApplication.shared.shortcutItems = FeedType.allAggregateFeedCases.map { feedType in
+            let icon = UIApplicationShortcutIcon(systemImageName: feedType.iconName)
+            return UIApplicationShortcutItem(
+                type: feedType.toShortcutString,
+                localizedTitle: feedType.label,
+                localizedSubtitle: nil,
+                icon: icon,
+                userInfo: nil
+            )
+        }
     }
     
     /// A variable describing the initial flow the application should run after start-up
