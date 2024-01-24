@@ -50,11 +50,6 @@ struct FeedPost: View {
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    @State var dirtyVote: ScoringOperation = .resetVote
-    @State var dirtyScore: Int = 0
-    @State var dirtySaved: Bool = false
-    @State var dirty: Bool = false
-    
     // MARK: Parameters
 
     @ObservedObject var postModel: PostModel

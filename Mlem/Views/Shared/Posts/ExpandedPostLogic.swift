@@ -187,8 +187,9 @@ extension ExpandedPost {
         isLoading = true
         
         do {
-            // Making this request marks unread comments as read.
+            // Making this request should mark unread comments as read, but doesn't appear to so we do it manually
             let newPost = try await PostModel(from: postRepository.loadPost(postId: post.postId))
+            newPost.unreadCommentCount = 0
             post.reinit(from: newPost)
             
             let comments = try await commentRepository.comments(for: post.post.id)

@@ -97,7 +97,6 @@ struct CommunityFeedView: View {
             .refreshable {
                 await Task {
                     do {
-                        print("DEBUG refreshing from refreshable")
                         _ = try await postTracker.refresh(clearBeforeRefresh: false)
                     } catch {
                         errorHandler.handle(error)

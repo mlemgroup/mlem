@@ -48,7 +48,7 @@ struct LargePost: View {
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
 
     // parameters
-    let post: PostModel
+    @ObservedObject var post: PostModel
     
     @Binding var layoutMode: LayoutMode
     private var isExpanded: Bool {

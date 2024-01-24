@@ -10,7 +10,6 @@ import SwiftUI
 
 extension PostFeedView {
     func setDefaultSortMode() async {
-        print("DEBUG setting default sort mode")
         if let siteVersion = siteInformation.version, versionSafePostSort == nil {
             let newPostSort = siteVersion < defaultPostSorting.minimumVersion ? fallbackDefaultPostSorting : defaultPostSorting
             

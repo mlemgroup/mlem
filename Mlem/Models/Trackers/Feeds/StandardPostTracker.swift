@@ -142,7 +142,6 @@ class StandardPostTracker: StandardTracker<PostModel> {
     func changeSortType(to newSortType: PostSortType, forceRefresh: Bool = false) async {
         // don't do anything if sort type not changed
         guard postSortType != newSortType || forceRefresh else {
-            print("DEBUG sort type unchanged and forceRefresh false, will not reload feed")
             return
         }
         

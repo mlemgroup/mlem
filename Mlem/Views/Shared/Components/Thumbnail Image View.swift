@@ -16,7 +16,7 @@ struct ThumbnailImageView: View {
     @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL
     
-    let post: PostModel
+    @ObservedObject var post: PostModel
     
     var showNsfwFilter: Bool { (post.post.nsfw || post.community.nsfw) && shouldBlurNsfw }
     
