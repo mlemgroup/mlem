@@ -80,10 +80,6 @@ struct CommunityFeedView: View {
     var body: some View {
         content
             .onAppear {
-                if postTracker.items.isEmpty {
-                    Task { await postTracker.loadMoreItems() }
-                }
-                
                 if communityModel.moderators == nil {
                     Task(priority: .userInitiated) {
                         do {
