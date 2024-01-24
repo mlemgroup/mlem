@@ -26,11 +26,17 @@ extension UserModel {
     func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         if let instanceHost = self.profileUrl.host() {
+            let instance: InstanceModel?
+            if let site {
+                instance = .init(from: site)
+            } else {
+                instance = nil
+            }
             functions.append(
                 .navigationMenuFunction(
                     text: instanceHost,
                     imageName: Icons.instance,
-                    destination: .instance(instanceHost)
+                    destination: .instance(instanceHost, instance)
                 )
             )
         }
