@@ -81,17 +81,17 @@ struct FeedsView: View {
             } detail: {
                 NavigationStack(path: $feedTabNavigation.path) {
                     navStackView()
+                        .tabBarNavigationEnabled(.feeds, navigation)
                         .handleLemmyViews()
                         .handleLemmyLinkResolution(navigationPath: .constant(feedTabNavigation))
                         .environment(\.navigation, navigation)
                         .environmentObject(feedTabNavigation)
-                        .tabBarNavigationEnabled(.feeds, navigation)
                 }
-                .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
-                .environment(\.navigation, navigation)
                 .environment(\.scrollViewProxy, scrollProxy)
             }
         }
+        .environment(\.navigationPathWithRoutes, $feedTabNavigation.path)
+        .environment(\.navigation, navigation)
     }
     
     @ViewBuilder
