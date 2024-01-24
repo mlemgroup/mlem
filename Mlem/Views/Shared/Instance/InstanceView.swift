@@ -29,6 +29,8 @@ struct InstanceView: View {
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.siteInformation) var siteInformation
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @Environment(\.navigationPathWithRoutes) private var navigationPath
     @Environment(\.scrollViewProxy) private var scrollViewProxy
     
@@ -127,7 +129,9 @@ struct InstanceView: View {
                                     InstanceStatsView(instance: instance)
                                         .padding(.vertical, 16)
                                         .background(Color(uiColor: .systemGroupedBackground))
-                                    Divider()
+                                    if colorScheme == .light {
+                                        Divider()
+                                    }
                                 }
                             } else {
                                 ProgressView()
