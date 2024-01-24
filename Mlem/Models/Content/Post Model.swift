@@ -21,7 +21,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
     var community: CommunityModel
     @Published var votes: VotesModel
     var commentCount: Int
-    var unreadCommentCount: Int
+    @Published var unreadCommentCount: Int
     @Published var saved: Bool
     @Published var read: Bool
     @Published var deleted: Bool
