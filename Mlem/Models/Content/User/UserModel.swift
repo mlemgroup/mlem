@@ -55,6 +55,7 @@ struct UserModel {
     var commentCount: Int?
     
     // From GetPersonDetailsResponse
+    var site: APISite?
     var moderatedCommunities: [CommunityModel]?
     
     static let developerNames = [
@@ -73,6 +74,7 @@ struct UserModel {
     /// - Parameter response: GetPersonDetailsResponse to create a UserModel representation of
     init(from response: GetPersonDetailsResponse) {
         self.init(from: response.personView)
+        self.site = response.site
         self.moderatedCommunities = response.moderates.map { CommunityModel(from: $0.community) }
     }
     
