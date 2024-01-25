@@ -12,9 +12,9 @@ struct NoPostsView: View {
     
     let loadingState: LoadingState
     let postSortType: PostSortType
+    @Binding var showReadPosts: Bool
     // this isn't the most elegant but passing a nested binding doesn't seem to propagate changes correctly [Eric 2024.01.25]
     let switchToHot: () -> Void
-    @Binding var showReadPosts: Bool
     
     var body: some View {
         VStack {

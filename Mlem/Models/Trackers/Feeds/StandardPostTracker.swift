@@ -145,8 +145,6 @@ class StandardPostTracker: StandardTracker<PostModel> {
             return
         }
         
-        print("DEBUG changing sort type in post tracker")
-        
         postSortType = newSortType
         do {
             try await refresh(clearBeforeRefresh: true)
