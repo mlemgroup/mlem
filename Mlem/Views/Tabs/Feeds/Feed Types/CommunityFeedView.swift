@@ -84,8 +84,6 @@ struct CommunityFeedView: View {
                     Task(priority: .userInitiated) {
                         do {
                             communityModel = try await communityRepository.loadDetails(for: communityModel.communityId)
-                            print("DEBUG loaded details")
-                            print("DEBUG moderators: \(communityModel.moderators)")
                         } catch {
                             errorHandler.handle(error)
                         }
