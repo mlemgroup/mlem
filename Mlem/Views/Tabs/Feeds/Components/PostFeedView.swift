@@ -35,10 +35,11 @@ struct PostFeedView: View {
     @State var suppressNoPostsView: Bool = true
 
     let showCommunity: Bool
+    let communityContext: CommunityModel?
 
     @State var errorDetails: ErrorDetails?
     
-    init(postSortType: Binding<PostSortType>, showCommunity: Bool) {
+    init(postSortType: Binding<PostSortType>, showCommunity: Bool, communityContext: CommunityModel? = nil) {
         @Dependency(\.siteInformation) var siteInformation
         
         if let siteVersion = siteInformation.version, postSortType.wrappedValue.minimumVersion <= siteVersion {
@@ -47,6 +48,7 @@ struct PostFeedView: View {
         
         self._postSortType = postSortType
         self.showCommunity = showCommunity
+        self.communityContext = communityContext
     }
     
     var body: some View {
@@ -111,7 +113,7 @@ struct PostFeedView: View {
             NavigationLink(.postLinkWithContext(.init(post: post, community: nil, postTracker: postTracker))) {
                 FeedPost(
                     post: post,
-                    community: post.community,
+                    community: communityContext,
                     showPostCreator: shouldShowPostCreator,
                     showCommunity: showCommunity
                 )

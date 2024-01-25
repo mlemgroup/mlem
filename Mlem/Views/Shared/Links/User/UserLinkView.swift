@@ -52,6 +52,7 @@ struct UserLinkView: View {
         self.postContext = postContext
         self.commentContext = commentContext
         self.communityContext = communityContext
+        print(communityContext?.moderators)
     }
 
     var body: some View {
