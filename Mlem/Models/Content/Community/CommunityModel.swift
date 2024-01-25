@@ -185,24 +185,24 @@ struct CommunityModel {
     func toggleFavorite(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
         var new = self
         new.favorited.toggle()
-        if favorited {
-            favoriteCommunitiesTracker.unfavorite(community)
-        } else {
-            favoriteCommunitiesTracker.favorite(community)
+        if new.favorited {
+            favoriteCommunitiesTracker.favorite(self.community)
             if let subscribed, !subscribed {
-                try await self.toggleSubscribe { [self] community in
+                try await new.toggleSubscribe { community in
                     var community = community
                     if !(community.subscribed ?? true) {
                         print("Subscribe failed, unfavoriting...")
                         community.favorited = false
-                        favoriteCommunitiesTracker.unfavorite(self.community)
+                        favoriteCommunitiesTracker.unfavorite(community.community)
                     }
-                    callback(new)
+                    callback(community)
                 }
             }
-        }
-        RunLoop.main.perform { [new] in
-            callback(new)
+        } else {
+            favoriteCommunitiesTracker.unfavorite(community)
+            RunLoop.main.perform { [new] in
+                callback(new)
+            }
         }
     }
     
