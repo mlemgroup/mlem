@@ -27,6 +27,7 @@ struct PostFeedView: View {
     @State var versionSafePostSort: PostSortType?
     @Binding var postSortType: PostSortType {
         didSet {
+            print("DEBUG detected post sort type change")
             versionSafePostSort = postSortType
         }
     }
@@ -135,8 +136,13 @@ struct PostFeedView: View {
                 ErrorView(errorDetails)
                     .frame(maxWidth: .infinity)
             } else {
-                NoPostsView(loadingState: postTracker.loadingState, postSortType: $postSortType, showReadPosts: $showReadPosts)
-                    .transition(.scale(scale: 0.9).combined(with: .opacity))
+                NoPostsView(
+                    loadingState: postTracker.loadingState,
+                    postSortType: postSortType,
+                    switchToHot: { postSortType = .hot },
+                    showReadPosts: $showReadPosts
+                )
+                .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
         }
         .animation(.easeOut(duration: 0.1), value: postTracker.loadingState)

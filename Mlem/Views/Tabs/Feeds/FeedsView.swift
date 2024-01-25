@@ -74,7 +74,7 @@ struct FeedsView: View {
                         .padding(.trailing, 10)
                     }
                     .scrollIndicators(.hidden)
-                    .navigationTitle("Communities")
+                    .navigationTitle("Feeds")
                     .listStyle(PlainListStyle())
                     .fancyTabScrollCompatible()
                     

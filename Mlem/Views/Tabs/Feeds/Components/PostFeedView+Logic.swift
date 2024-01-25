@@ -11,7 +11,6 @@ import SwiftUI
 extension PostFeedView {
     func setDefaultSortMode() async {
         if let siteVersion = siteInformation.version, versionSafePostSort == nil {
-            print("DEBUG changing sort mode")
             let newPostSort = siteVersion < defaultPostSorting.minimumVersion ? fallbackDefaultPostSorting : defaultPostSorting
             
             // manually change the tracker sort type here so that view is not redrawn by `task(id: internalPostSortType)`

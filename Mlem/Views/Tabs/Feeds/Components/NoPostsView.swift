@@ -11,7 +11,9 @@ struct NoPostsView: View {
     @EnvironmentObject var postTracker: StandardPostTracker
     
     let loadingState: LoadingState
-    @Binding var postSortType: PostSortType
+    let postSortType: PostSortType
+    // this isn't the most elegant but passing a nested binding doesn't seem to propagate changes correctly [Eric 2024.01.25]
+    let switchToHot: () -> Void
     @Binding var showReadPosts: Bool
     
     var body: some View {
@@ -61,7 +63,7 @@ struct NoPostsView: View {
         VStack {
             if postSortType != .hot {
                 Button {
-                    postSortType = .hot
+                    switchToHot()
                 } label: {
                     Label("Switch to Hot", systemImage: Icons.hotSort)
                 }
