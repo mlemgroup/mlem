@@ -18,7 +18,7 @@ struct NoPostsView: View {
         VStack {
             if loadingState != .loading {
                 VStack(alignment: .center, spacing: 0) {
-                    let unreadItems = postTracker.getFilteredCount(for: .read)
+                    let unreadItems = 0 // postTracker.getFilteredCount(for: .read)
                     
                     Image(systemName: Icons.noPosts)
                         .resizable()
