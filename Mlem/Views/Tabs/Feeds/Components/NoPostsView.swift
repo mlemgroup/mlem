@@ -17,28 +17,32 @@ struct NoPostsView: View {
     var body: some View {
         VStack {
             if loadingState != .loading {
-                VStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
+                VStack(alignment: .center, spacing: 0) {
                     let unreadItems = postTracker.getFilteredCount(for: .read)
                     
                     Image(systemName: Icons.noPosts)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35)
-                        .padding(.bottom, 12)
-                        .frame(width: unreadItems == 0 ? 35 : 50)
-                        .padding(.bottom, unreadItems == 0 ? 8 : 12)
-                    Text(title)
-
-                    if unreadItems != 0 {
-                        Text(
-                            "\(unreadItems) read post\(unreadItems == 1 ? " has" : "s have") been hidden."
-                        )
-                        .foregroundStyle(.tertiary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 20)
+                        .padding(.vertical, 35)
+                        .padding(.top, 10) // offsets the illusion of whitespace created by lowercase letters below
+                    
+                    VStack(spacing: AppConstants.postAndCommentSpacing) {
+                        Text(title)
+                        
+                        if unreadItems != 0 {
+                            Text(
+                                "\(unreadItems) read post\(unreadItems == 1 ? " has" : "s have") been hidden."
+                            )
+                            .foregroundStyle(.tertiary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, 20)
+                        }
+                        
+                        buttons
+                            .padding(.top)
                     }
-                    buttons
                 }
                 .foregroundStyle(.secondary)
             }
@@ -74,7 +78,5 @@ struct NoPostsView: View {
         }
         .foregroundStyle(.secondary)
         .buttonStyle(.bordered)
-        .padding(.top)
-        .padding(.horizontal, 20)
     }
 }

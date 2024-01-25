@@ -9,7 +9,6 @@
 import Dependencies
 import SwiftUI
 
-// Original article here: https://www.fivestars.blog/code/section-title-index-swiftui.html
 struct SectionIndexTitles: View {
     @Dependency(\.hapticManager) var hapticManager
     
@@ -24,59 +23,75 @@ struct SectionIndexTitles: View {
     var body: some View {
         VStack {
             ForEach(communitySections) { communitySection in
-                HStack {
-                    if let icon = communitySection.sidebarEntry.sidebarIcon {
-                        SectionIndexImage(image: icon)
-                    } else if let label = communitySection.sidebarEntry.sidebarLabel {
-                        SectionIndexText(label: label)
-                    } else {
-                        EmptyView()
-                    }
-                }
-                .background(dragObserver(viewId: communitySection.viewId))
+                sectionTitle(for: communitySection)
+                    .frame(width: 12, height: 6)
             }
         }
-        .padding(2)
-        .padding(.top, 4)
+        .overlay {
+            GeometryReader { geo in
+                // Color.clear doesn't register gestures (presumably because it never gets drawn), so we fake it
+                Color.black
+                    .opacity(0.00000000001)
+                    .gesture(
+                        DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                            .updating($dragLocation) { value, _, _ in
+                                // ignore if out of bounds--actually add a tiny bit of padding to the left side to make it feel right
+                                guard value.location.x > -20.0, value.location.y >= 0.0, value.location.y <= geo.size.height else {
+                                    return
+                                }
+                                
+                                // compute which section is currently dragged
+                                // height of one section is communitySections.count / geo.size.height
+                                // drag is thus (value.location.y / (communitySections.count / geo.size.height )) sections up
+                                // then do some algebra to make it prettier and round down to int
+                                let sectionIndex = Int((value.location.y * Double(communitySections.count)) / geo.size.height)
+                                
+                                guard sectionIndex < communitySections.count else {
+                                    assertionFailure("Invalid section index! The math must be wrong.")
+                                    return
+                                }
+                                
+                                let sectionLabel = communitySections[sectionIndex].viewId
+                                
+                                if sectionLabel != lastSelectedLabel {
+                                    DispatchQueue.main.async {
+                                        lastSelectedLabel = sectionLabel
+                                        proxy.scrollTo(sectionLabel, anchor: .center)
+
+                                        // Play nice tappy taps
+                                        hapticManager.play(haptic: .rigidInfo, priority: .low)
+                                    }
+                                }
+                            }
+                    )
+            }
+        }
+        .padding(.vertical, 6)
         .background {
             Capsule()
                 .foregroundStyle(.ultraThinMaterial)
         }
-        .gesture(
-            DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                .updating($dragLocation) { value, state, _ in
-                    state = value.location
-                }
-        )
-    }
-
-    func dragObserver(viewId: String) -> some View {
-        GeometryReader { geometry in
-            dragObserver(geometry: geometry, viewId: viewId)
-        }
-    }
-
-    func dragObserver(geometry: GeometryProxy, viewId: String) -> some View {
-        if geometry.frame(in: .global).contains(dragLocation) {
-            if viewId != lastSelectedLabel {
-                DispatchQueue.main.async {
-                    lastSelectedLabel = viewId
-                    proxy.scrollTo(viewId, anchor: .center)
-
-                    // Play nice tappy taps
-                    hapticManager.play(haptic: .rigidInfo, priority: .low)
-                }
-            }
-        }
-        return Rectangle().fill(Color.clear)
     }
 }
 
 // Sidebar Label Views
+@ViewBuilder
+func sectionTitle(for communitySection: CommunityListSection) -> some View {
+    if let icon = communitySection.sidebarEntry.sidebarIcon {
+        SectionIndexImage(image: icon)
+    } else if let label = communitySection.sidebarEntry.sidebarLabel {
+        SectionIndexText(label: label)
+    } else {
+        EmptyView()
+    }
+}
+
 struct SectionIndexText: View {
     let label: String
     var body: some View {
-        Text(label).font(.system(size: 11)).fontWeight(.semibold)
+        Text(label)
+            .font(.system(size: 11))
+            .fontWeight(.semibold)
     }
 }
 

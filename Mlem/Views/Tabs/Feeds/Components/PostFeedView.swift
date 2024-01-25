@@ -137,7 +137,6 @@ struct PostFeedView: View {
             } else {
                 NoPostsView(loadingState: postTracker.loadingState, postSortType: $postSortType, showReadPosts: $showReadPosts)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
-                    .padding(.top, 25)
             }
         }
         .animation(.easeOut(duration: 0.1), value: postTracker.loadingState)
