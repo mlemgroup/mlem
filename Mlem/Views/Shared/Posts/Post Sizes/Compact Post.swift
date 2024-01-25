@@ -116,7 +116,8 @@ struct CompactPost: View {
                 ),
                 published: post.published,
                 updated: post.updated,
-                commentCount: post.numReplies,
+                commentCount: post.commentCount,
+                unreadCommentCount: post.unreadCommentCount,
                 saved: post.saved,
                 alignment: .center,
                 colorizeVotes: true

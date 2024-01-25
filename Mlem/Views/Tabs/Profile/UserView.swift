@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 27/12/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 // swiftlint:disable type_body_length
 struct UserView: View {
@@ -90,7 +90,6 @@ struct UserView: View {
                         Divider()
                             .padding(.bottom, AppConstants.postAndCommentSpacing)
                         MarkdownView(text: bio, isNsfw: false, alignment: bioAlignment).padding(AppConstants.postAndCommentSpacing)
-                            
                     }
                     HStack {
                         Label(cakeDayFormatter.string(from: user.creationDate), systemImage: Icons.cakeDay)
@@ -174,7 +173,9 @@ struct UserView: View {
         }
         .task(priority: .userInitiated) {
             if isLoadingContent {
-                await tryReloadUser()
+                Task {
+                    await tryReloadUser()
+                }
             }
         }
         .onChange(of: user.userId) { _ in
@@ -272,7 +273,7 @@ struct UserView: View {
     }
     
     @ViewBuilder
-    func flairBackground<Content: View>(color: Color, @ViewBuilder content: () -> Content) -> some View {
+    func flairBackground(color: Color, @ViewBuilder content: () -> some View) -> some View {
         content()
             .foregroundStyle(color)
             .padding(.vertical, 8)
@@ -283,4 +284,5 @@ struct UserView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
+
 // swiftlint:enable type_body_length

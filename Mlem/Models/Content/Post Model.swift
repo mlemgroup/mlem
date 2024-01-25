@@ -15,7 +15,8 @@ struct PostModel {
     let creator: UserModel
     let community: CommunityModel
     var votes: VotesModel
-    let numReplies: Int
+    let commentCount: Int
+    let unreadCommentCount: Int
     let saved: Bool
     let read: Bool
     let published: Date
@@ -32,7 +33,8 @@ struct PostModel {
         self.creator = UserModel(from: apiPostView.creator)
         self.community = CommunityModel(from: apiPostView.community, subscribed: apiPostView.subscribed.isSubscribed)
         self.votes = VotesModel(from: apiPostView.counts, myVote: apiPostView.myVote)
-        self.numReplies = apiPostView.counts.comments
+        self.commentCount = apiPostView.counts.comments
+        self.unreadCommentCount = apiPostView.unreadComments
         self.saved = apiPostView.saved
         self.read = apiPostView.read
         self.published = apiPostView.post.published
@@ -60,7 +62,8 @@ struct PostModel {
         creator: UserModel? = nil,
         community: CommunityModel? = nil,
         votes: VotesModel? = nil,
-        numReplies: Int? = nil,
+        commentCount: Int? = nil,
+        unreadCommentCount: Int? = nil,
         saved: Bool? = nil,
         read: Bool? = nil,
         published: Date? = nil,
@@ -71,7 +74,8 @@ struct PostModel {
         self.creator = creator ?? other.creator
         self.community = community ?? other.community
         self.votes = votes ?? other.votes
-        self.numReplies = numReplies ?? other.numReplies
+        self.commentCount = commentCount ?? other.commentCount
+        self.unreadCommentCount = unreadCommentCount ?? other.unreadCommentCount
         self.saved = saved ?? other.saved
         self.read = read ?? other.read
         self.published = published ?? other.published
