@@ -17,7 +17,7 @@ extension FeedView {
             ret.append(MenuFunction.standardMenuFunction(
                 text: type.label,
                 imageName: imageName,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: enabled,
                 callback: { feedType = type }
             ))

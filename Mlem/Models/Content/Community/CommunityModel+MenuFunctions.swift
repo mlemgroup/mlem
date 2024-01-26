@@ -13,7 +13,7 @@ extension CommunityModel {
         return .standardMenuFunction(
                 text: "New Post",
                 imageName: Icons.sendFill,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: true
             ) {
                 editorTracker.openEditor(with: PostEditorModel(
@@ -30,7 +30,7 @@ extension CommunityModel {
         return .init(
             text: subscribed ? "Unsubscribe" : "Subscribe",
             imageName: subscribed ? Icons.unsubscribe : Icons.subscribe,
-            destructiveActionPrompt: subscribed ? "Are you sure you want to unsubscribe from \(name!)?" : nil,
+            role: subscribed ? .destructive(prompt: "Are you sure you want to unsubscribe from \(name!)?") : nil,
             enabled: true,
             callback: {
                 Task {
@@ -49,7 +49,7 @@ extension CommunityModel {
         return .init(
             text: favorited ? "Unfavorite" : "Favorite",
             imageName: favorited ? Icons.unfavorite : Icons.favorite,
-            destructiveActionPrompt: favorited ? "Really unfavorite \(community.name)?" : nil,
+            role: favorited ? .destructive(prompt: "Really unfavorite \(community.name)?") : nil,
             enabled: true
         ) {
             Task {
@@ -70,7 +70,7 @@ extension CommunityModel {
         return .standardMenuFunction(
             text: blocked ? "Unblock" : "Block",
             imageName: blocked ? Icons.show : Icons.hide,
-            destructiveActionPrompt: blocked ? nil : AppConstants.blockCommunityPrompt,
+            role: blocked ? nil : .destructive(prompt: AppConstants.blockCommunityPrompt),
             enabled: true,
             callback: {
                 Task {
@@ -102,7 +102,7 @@ extension CommunityModel {
             .standardMenuFunction(
                 text: "Copy Name",
                 imageName: Icons.copy,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: true,
                 callback: copyFullyQualifiedName
             )

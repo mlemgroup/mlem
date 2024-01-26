@@ -101,7 +101,7 @@ extension ExpandedPost {
         ret.append(MenuFunction.standardMenuFunction(
             text: upvoteText,
             imageName: upvoteImg,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -116,7 +116,7 @@ extension ExpandedPost {
         ret.append(MenuFunction.standardMenuFunction(
             text: downvoteText,
             imageName: downvoteImg,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -131,7 +131,7 @@ extension ExpandedPost {
         ret.append(MenuFunction.standardMenuFunction(
             text: saveText,
             imageName: saveImg,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -143,7 +143,7 @@ extension ExpandedPost {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Reply",
             imageName: Icons.reply,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             replyToPost()
@@ -154,7 +154,7 @@ extension ExpandedPost {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Edit",
                 imageName: Icons.edit,
-                destructiveActionPrompt: nil,
+                role: nil,
                 enabled: true
             ) {
                 editorTracker.openEditor(with: PostEditorModel(
@@ -168,7 +168,7 @@ extension ExpandedPost {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
-                destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
+                role: .destructive(prompt: "Are you sure you want to delete this post?  This cannot be undone."),
                 enabled: !post.post.deleted
             ) {
                 Task(priority: .userInitiated) {
@@ -186,7 +186,7 @@ extension ExpandedPost {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Report Post",
             imageName: Icons.moderationReport,
-            destructiveActionPrompt: AppConstants.reportPostPrompt,
+            role: .destructive(prompt: AppConstants.reportPostPrompt),
             enabled: true
         ) {
             reportPost()
@@ -196,7 +196,7 @@ extension ExpandedPost {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Block User",
             imageName: Icons.userBlock,
-            destructiveActionPrompt: AppConstants.blockUserPrompt,
+            role: .destructive(prompt: AppConstants.blockUserPrompt),
             enabled: true
         ) {
             Task(priority: .userInitiated) {

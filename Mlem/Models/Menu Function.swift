@@ -25,19 +25,23 @@ enum MenuFunction: Identifiable {
     case shareImage(ShareImageFunction)
 }
 
+enum MenuFunctionRole {
+    case destructive(prompt: String?)
+}
+
 // some convenience initializers because MenuFunction.standard(StandardMenuFunction...) is ugly
 extension MenuFunction {
     static func standardMenuFunction(
         text: String,
         imageName: String,
-        destructiveActionPrompt: String?,
-        enabled: Bool,
+        role: MenuFunctionRole? = nil,
+        enabled: Bool = true,
         callback: @escaping () -> Void
     ) -> MenuFunction {
         MenuFunction.standard(StandardMenuFunction(
             text: text,
             imageName: imageName,
-            destructiveActionPrompt: destructiveActionPrompt,
+            role: role,
             enabled: enabled,
             callback: callback
         ))
@@ -75,7 +79,7 @@ struct StandardMenuFunction: Identifiable {
     
     let text: String
     let imageName: String
-    let destructiveActionPrompt: String?
+    var role: MenuFunctionRole?
     let enabled: Bool
     let callback: () -> Void
 }

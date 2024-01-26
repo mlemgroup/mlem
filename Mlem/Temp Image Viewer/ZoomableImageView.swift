@@ -79,7 +79,7 @@ struct ZoomableImageView: View {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Details",
             imageName: Icons.imageDetails,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {
@@ -90,7 +90,7 @@ struct ZoomableImageView: View {
         ret.append(MenuFunction.standardMenuFunction(
             text: "Save",
             imageName: Icons.import,
-            destructiveActionPrompt: nil,
+            role: nil,
             enabled: true
         ) {
             Task(priority: .userInitiated) {

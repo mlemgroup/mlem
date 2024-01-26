@@ -188,6 +188,7 @@ struct Icons {
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
     static let swipeUpGestureSetting: String = "arrow.up.to.line.alt"
     static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
+    static let ban: String = "xmark.circle"
     
     // misc
     static let switchUser: String = "person.crop.circle.badge.plus"

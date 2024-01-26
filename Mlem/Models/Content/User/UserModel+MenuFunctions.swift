@@ -12,8 +12,7 @@ extension UserModel {
         return .standardMenuFunction(
             text: blocked ? "Unblock" : "Block",
             imageName: blocked ? Icons.show : Icons.hide,
-            destructiveActionPrompt: blocked ? nil : AppConstants.blockUserPrompt,
-            enabled: true,
+            role: blocked ? nil : .destructive(prompt: AppConstants.blockUserPrompt),
             callback: {
                 Task {
                     var new = self
@@ -23,20 +22,38 @@ extension UserModel {
         )
     }
     
-    func menuFunctions(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> [MenuFunction] {
+    func banMenuFunction(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        editorTracker: EditorTracker
+    ) -> MenuFunction {
+        return .standardMenuFunction(
+            text: banned ? "Unban" : "Ban",
+            imageName: Icons.bannedFlair,
+            role: .destructive(prompt: nil),
+            callback: {
+                editorTracker.banUser = BanUserEditorModel(user: self)
+            }
+        )
+    }
+    
+    func menuFunctions(
+        _ callback: @escaping (_ item: Self) -> Void = { _ in },
+        editorTracker: EditorTracker? = nil
+    ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         functions.append(
             .standardMenuFunction(
                 text: "Copy Username",
                 imageName: Icons.copy,
-                destructiveActionPrompt: nil,
-                enabled: true,
                 callback: copyFullyQualifiedUsername
             )
         )
         functions.append(.shareMenuFunction(url: profileUrl))
         if siteInformation.myUserInfo?.localUserView.person.id != userId {
             functions.append(blockMenuFunction(callback))
+        }
+        if let editorTracker {
+            functions.append(banMenuFunction(callback, editorTracker: editorTracker))
         }
         return functions
     }

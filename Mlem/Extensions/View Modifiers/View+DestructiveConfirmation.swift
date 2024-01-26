@@ -23,8 +23,8 @@ struct DestructiveConfirmation: ViewModifier {
                     }
                 }
             } message: {
-                if let destructivePrompt = confirmationMenuFunction?.destructiveActionPrompt {
-                    Text(destructivePrompt)
+                if case let .destructive(prompt: prompt) = confirmationMenuFunction?.role, let prompt {
+                    Text(prompt)
                 }
             }
     }
