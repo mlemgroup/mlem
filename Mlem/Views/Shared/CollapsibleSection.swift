@@ -1,5 +1,5 @@
 //
-//  FakeSection.swift
+//  CollapsibleSection.swift
 //  Mlem
 //
 //  Created by Sjmarf on 02/01/2024.
@@ -27,7 +27,7 @@ struct CollapsibleSection<Content: View>: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 0) {
             if let header {
                 HStack {
                     Text(header)
@@ -38,19 +38,18 @@ struct CollapsibleSection<Content: View>: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.accentColor)
                         .rotationEffect(Angle(degrees: collapsed ? -90 : 0))
-                        .onTapGesture { withAnimation(.default) { collapsed.toggle() }}
                 }
                 .font(.footnote)
+                .padding(.vertical, 6)
                 .padding(.horizontal, 16)
+                .onTapGesture { withAnimation(.default) { collapsed.toggle() }}
             }
             
             if !collapsed {
-                VStack(alignment: .leading, spacing: 8) {
-                    VStack {
-                        content()
-                    }
-                    .background(Color(uiColor: .secondarySystemGroupedBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
+                Color(uiColor: .systemGroupedBackground)
+                    .frame(height: 1.5)
+                VStack {
+                    content()
                 }
                 
                 if let footer = footer {
@@ -62,7 +61,8 @@ struct CollapsibleSection<Content: View>: View {
                 }
             }
         }
-        .clipped()
+        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)
   }
