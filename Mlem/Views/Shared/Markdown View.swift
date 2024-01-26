@@ -100,7 +100,7 @@ struct MarkdownView: View {
                     )
                 } else {
                     return AnyView(
-                        CachedImage(url: url, shouldExpand: shouldExpand)
+                        CachedImage(url: url, shouldExpand: shouldExpand, cornerRadius: AppConstants.largeItemCornerRadius)
                             .applyNsfwOverlay(isNsfw)
                     )
                 }
