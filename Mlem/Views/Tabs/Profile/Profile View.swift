@@ -13,8 +13,6 @@ struct ProfileView: View {
     @Dependency(\.siteInformation) var siteInformation
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
-    let user: UserModel?
-
     @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
     @StateObject private var editorSheetNavigation: AnyNavigationPath<AppRoute> = .init()
     
