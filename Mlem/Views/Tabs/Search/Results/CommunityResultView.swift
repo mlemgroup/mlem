@@ -44,7 +44,7 @@ struct CommunityResultView: View {
         if community.blocked ?? false {
             suffix.append(" ∙ Blocked")
         }
-        } if community.nsfw {
+        if community.nsfw {
             suffix.append("∙ NSFW")
         }
         return community.name + suffix
