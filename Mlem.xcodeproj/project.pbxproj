@@ -82,6 +82,8 @@
 		03C905CA2B3C834C00B9082F /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905C92B3C834C00B9082F /* AvatarBannerView.swift */; };
 		03C905CC2B3C88F700B9082F /* SearchTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905CB2B3C88F700B9082F /* SearchTab.swift */; };
 		03C905CE2B3C8DC400B9082F /* UserView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */; };
+		03C942922B6457B4002068A4 /* BanUserEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942912B6457B4002068A4 /* BanUserEditorModel.swift */; };
+		03C942942B64596B002068A4 /* BanUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942932B64596B002068A4 /* BanUserView.swift */; };
 		03CB329E2A6D8E910021EF27 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB329D2A6D8E910021EF27 /* PostComposerView.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
 		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
@@ -622,6 +624,8 @@
 		03C905C92B3C834C00B9082F /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
 		03C905CB2B3C88F700B9082F /* SearchTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTab.swift; sourceTree = "<group>"; };
 		03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserView+Logic.swift"; sourceTree = "<group>"; };
+		03C942912B6457B4002068A4 /* BanUserEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserEditorModel.swift; sourceTree = "<group>"; };
+		03C942932B64596B002068A4 /* BanUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserView.swift; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
@@ -1319,6 +1323,14 @@
 				03B643562A6864CD00F65700 /* TabBarSettingsView.swift */,
 			);
 			path = TabBar;
+			sourceTree = "<group>";
+		};
+		03C942902B6457A3002068A4 /* Administration */ = {
+			isa = PBXGroup;
+			children = (
+				03C942912B6457B4002068A4 /* BanUserEditorModel.swift */,
+			);
+			path = Administration;
 			sourceTree = "<group>";
 		};
 		03E79F3D2AE3E6FF0006700D /* Sorting */ = {
@@ -2123,6 +2135,7 @@
 			isa = PBXGroup;
 			children = (
 				CD391F952A535F5400E213B5 /* ResponseEditorView.swift */,
+				03C942932B64596B002068A4 /* BanUserView.swift */,
 				03CB329D2A6D8E910021EF27 /* PostComposerView.swift */,
 				03EA79C32AC0D92C00BCDC91 /* PostComposerView+Logic.swift */,
 			);
@@ -2509,6 +2522,7 @@
 		CDA2C5242A705D3100649D5A /* Composers */ = {
 			isa = PBXGroup;
 			children = (
+				03C942902B6457A3002068A4 /* Administration */,
 				CD391F922A533B6C00E213B5 /* Response Composers */,
 				CDA2C5252A705D6000649D5A /* PostEditor.swift */,
 			);
@@ -3224,6 +3238,7 @@
 				030D00882AD1BB2600953B1D /* UserModel+ContentModel.swift in Sources */,
 				CD82A24C2A70A26900111034 /* View+CustomBadge.swift in Sources */,
 				B1CB6E752A4C729D00DA9675 /* Bundle+IconFileName.swift in Sources */,
+				03C942922B6457B4002068A4 /* BanUserEditorModel.swift in Sources */,
 				030D4AE82AA1278400A3393D /* ErrorDetails+Mock.swift in Sources */,
 				CD4368C62AE240BF00BD8BD1 /* MessageModel.swift in Sources */,
 				6363D60427EE20A200E34822 /* Expanded Post.swift in Sources */,
@@ -3299,6 +3314,7 @@
 				637218622A3A2AAD008C4816 /* DeletePost.swift in Sources */,
 				505240E32A86916500EA4558 /* FavoriteCommunitiesTracker+Dependency.swift in Sources */,
 				6332FDC327EFCB5F0009A98A /* Color+Colors.swift in Sources */,
+				03C942942B64596B002068A4 /* BanUserView.swift in Sources */,
 				E46AF9942B29AB270087FDF3 /* EnvironmentValues+ScrollViewReaderProxy.swift in Sources */,
 				637218432A3A2AAD008C4816 /* APIClient.swift in Sources */,
 				CD82A2572A716D7C00111034 /* PersonRepository+Dependency.swift in Sources */,
