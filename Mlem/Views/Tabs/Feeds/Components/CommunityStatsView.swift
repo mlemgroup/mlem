@@ -18,14 +18,12 @@ struct CommunityStatsView: View {
                 Text("\(community.subscriberCount ?? 0)")
                     .fontWeight(.semibold)
                     .font(.title)
-                
             }
             .padding(.vertical)
             .frame(maxWidth: .infinity)
             .background(Color(uiColor: .secondarySystemGroupedBackground))
             .cornerRadius(AppConstants.largeItemCornerRadius)
             HStack(spacing: 16) {
-                
                 VStack(spacing: 5) {
                     HStack {
                         Text("Posts")
@@ -92,7 +90,6 @@ struct CommunityStatsView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
-        
     }
 }
 

@@ -5,25 +5,34 @@
 //  Created by Eric Andrews on 2023-08-26.
 //
 
+import Dependencies
 import Foundation
 
 /// Internal model to represent a post
 /// Note: this is just the first pass at decoupling the internal models from the API models--to avoid massive merge conflicts and an unreviewably large PR, I've kept the structure practically identical, and will slowly morph it over the course of several PRs. Eventually all of the API types that this model uses will go away and everything downstream of the repositories won't ever know there's an API at all :)
-struct PostModel {
-    let postId: Int
-    let post: APIPost
-    let creator: UserModel
-    let community: CommunityModel
-    var votes: VotesModel
-    let commentCount: Int
-    let unreadCommentCount: Int
-    let saved: Bool
-    let read: Bool
-    let published: Date
-    let updated: Date?
-    let links: [LinkType]
+class PostModel: ContentIdentifiable, ObservableObject {
+    @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.postRepository) var postRepository
+    
+    var postId: Int
+    var post: APIPost
+    var creator: UserModel
+    var community: CommunityModel
+    @Published var votes: VotesModel
+    var commentCount: Int
+    @Published var unreadCommentCount: Int
+    @Published var saved: Bool
+    @Published var read: Bool
+    @Published var deleted: Bool
+    var published: Date
+    var updated: Date?
+    var links: [LinkType]
     
     var uid: ContentModelIdentifier { .init(contentType: .post, contentId: postId) }
+    
+    // prevents a voting operation from ocurring while another is ocurring
+    var voting: Bool = false
     
     /// Creates a PostModel from an APIPostView
     /// - Parameter apiPostView: APIPostView to create a PostModel representation of
@@ -37,6 +46,7 @@ struct PostModel {
         self.unreadCommentCount = apiPostView.unreadComments
         self.saved = apiPostView.saved
         self.read = apiPostView.read
+        self.deleted = apiPostView.post.deleted
         self.published = apiPostView.post.published
         self.updated = apiPostView.post.updated
         
@@ -66,6 +76,7 @@ struct PostModel {
         unreadCommentCount: Int? = nil,
         saved: Bool? = nil,
         read: Bool? = nil,
+        deleted: Bool? = nil,
         published: Date? = nil,
         updated: Date? = nil
     ) {
@@ -78,11 +89,150 @@ struct PostModel {
         self.unreadCommentCount = unreadCommentCount ?? other.unreadCommentCount
         self.saved = saved ?? other.saved
         self.read = read ?? other.read
+        self.deleted = deleted ?? other.deleted
         self.published = published ?? other.published
         self.updated = updated ?? other.updated
         
         self.links = PostModel.parseLinks(from: self.post.body)
     }
+    
+    // MARK: Main Actor State Change Methods
+    
+    @MainActor func reinit(from postModel: PostModel) {
+        postId = postModel.postId
+        post = postModel.post
+        creator = postModel.creator
+        community = postModel.community
+        votes = postModel.votes
+        commentCount = postModel.commentCount
+        unreadCommentCount = postModel.unreadCommentCount
+        saved = postModel.saved
+        read = postModel.read
+        published = postModel.published
+        updated = postModel.updated
+        links = postModel.links
+    }
+    
+    @MainActor
+    func setVotes(_ newVotes: VotesModel) {
+        votes = newVotes
+    }
+    
+    @MainActor
+    func setRead(_ newRead: Bool) {
+        read = newRead
+    }
+    
+    @MainActor
+    func setSaved(_ newSaved: Bool) {
+        saved = newSaved
+    }
+    
+    @MainActor
+    func setDeleted(_ newDeleted: Bool) {
+        deleted = newDeleted
+    }
+    
+    // MARK: Interaction Methods
+    
+    func vote(inputOp: ScoringOperation) async {
+        hapticManager.play(haptic: .lightSuccess, priority: .low)
+        let operation = votes.myVote == inputOp ? ScoringOperation.resetVote : inputOp
+        
+        // state fake
+        let original: PostModel = .init(from: self)
+        await setVotes(votes.applyScoringOperation(operation: operation))
+        await setRead(true)
+        
+        // API call
+        do {
+            let updatedPost = try await postRepository.ratePost(postId: postId, operation: operation)
+            await reinit(from: updatedPost)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
+        }
+    }
+    
+    func markRead(_ newRead: Bool) async {
+        // state fake
+        let original: PostModel = .init(from: self)
+        await setRead(newRead)
+        
+        // API call
+        do {
+            let updatedPost = try await postRepository.markRead(post: self, read: newRead)
+            await reinit(from: updatedPost)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
+        }
+    }
+    
+    func toggleSave(upvoteOnSave: Bool) async {
+        let shouldSave: Bool = !saved
+        
+        // state fake
+        let original: PostModel = .init(from: self)
+        await setSaved(shouldSave)
+        await setRead(true)
+        if shouldSave, upvoteOnSave, votes.myVote != .upvote {
+            await setVotes(votes.applyScoringOperation(operation: .upvote))
+        }
+        
+        // API call
+        do {
+            let saveResponse = try await postRepository.savePost(postId: postId, shouldSave: shouldSave)
+            
+            if shouldSave, upvoteOnSave {
+                let voteResponse = try await postRepository.ratePost(postId: postId, operation: .upvote)
+                await reinit(from: voteResponse)
+            } else {
+                await reinit(from: saveResponse)
+            }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
+        }
+    }
+    
+    func edit(
+        name: String?,
+        url: String?,
+        body: String?,
+        nsfw: Bool?
+    ) async {
+        // no need to state fake because editor spins until call completes
+        do {
+            hapticManager.play(haptic: .success, priority: .high)
+            let response = try await postRepository.editPost(postId: postId, name: name, url: url, body: body, nsfw: nsfw)
+            await reinit(from: response)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
+    func delete() async {
+        // state fake
+        let original: PostModel = .init(from: self)
+        await setDeleted(true)
+        
+        // API call
+        do {
+            let deletedResponse = try await postRepository.deletePost(postId: postId, shouldDelete: true)
+            await reinit(from: deletedResponse)
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+            await reinit(from: original)
+        }
+    }
+    
+    // MARK: Utility Methods
     
     var postType: PostType {
         // post with URL: either image or link
@@ -107,10 +257,6 @@ struct PostModel {
     }
 }
 
-extension PostModel: Identifiable {
-    var id: Int { hashValue }
-}
-
 extension PostModel: Hashable {
     /// Hashes all fields for which state changes should trigger view updates.
     func hash(into hasher: inout Hasher) {
@@ -119,5 +265,16 @@ extension PostModel: Hashable {
         hasher.combine(saved)
         hasher.combine(read)
         hasher.combine(post.updated)
+        hasher.combine(unreadCommentCount)
+    }
+}
+
+extension PostModel: Identifiable {
+    var id: Int { hashValue }
+}
+
+extension PostModel: Equatable {
+    static func == (lhs: PostModel, rhs: PostModel) -> Bool {
+        lhs.id == rhs.id
     }
 }

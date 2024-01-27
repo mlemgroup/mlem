@@ -6,8 +6,8 @@
 //
 
 import Dependencies
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 extension HorizontalAlignment {
     enum LabelStart: AlignmentID {
@@ -33,7 +33,6 @@ struct PostComposerView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    let postTracker: PostTracker
     let editModel: PostEditorModel
     
     @AppStorage("promptUser.permission.privacy.allowImageUploads") var askedForPermissionToUploadImages: Bool = false
@@ -50,7 +49,7 @@ struct PostComposerView: View {
     @State var isShowingErrorDialog: Bool = false
     @State var errorDialogMessage: String = ""
     
-    @State var uploadTask: Task<(), any Error>?
+    @State var uploadTask: Task<Void, any Error>?
     
     @Environment(\.layoutDirection) var layoutDirection
     
@@ -60,7 +59,6 @@ struct PostComposerView: View {
     @State var bodySlurMatch: String?
     
     init(editModel: PostEditorModel) {
-        self.postTracker = editModel.postTracker
         self.editModel = editModel
         
         self._postTitle = State(initialValue: editModel.editPost?.post.name ?? "")
@@ -147,7 +145,6 @@ struct PostComposerView: View {
                                                 .frame(width: AppConstants.thumbnailSize, height: AppConstants.thumbnailSize)
                                         }
                                         VStack(alignment: .leading) {
-                                            
                                             if attachmentModel.imageModel?.state == nil {
                                                 Text("Attached Image")
                                             } else {
@@ -253,7 +250,6 @@ struct PostComposerView: View {
                         }
                     }
                     .accessibilityLabel("Toggle NSFW")
-                    
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     LinkUploadOptionsView(model: attachmentModel) {

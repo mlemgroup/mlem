@@ -43,13 +43,12 @@ struct LargePost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     // global state
-    @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("limitImageHeightInFeed") var limitImageHeightInFeed: Bool = true
 
     // parameters
-    let post: PostModel
+    @ObservedObject var post: PostModel
     
     @Binding var layoutMode: LayoutMode
     private var isExpanded: Bool {
@@ -258,7 +257,7 @@ struct LargePost: View {
     /// Synchronous void wrapper for apiClient.markPostAsRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
-            await postTracker.markRead(post: post)
+            await post.markRead(true)
         }
     }
 }

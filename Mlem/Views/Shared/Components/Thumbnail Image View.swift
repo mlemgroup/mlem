@@ -11,13 +11,12 @@ import SwiftUI
 
 struct ThumbnailImageView: View {
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    @EnvironmentObject var postTracker: PostTracker
     
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
     @Environment(\.openURL) private var openURL
     
-    let post: PostModel
+    @ObservedObject var post: PostModel
     
     var showNsfwFilter: Bool { (post.post.nsfw || post.community.nsfw) && shouldBlurNsfw }
     
@@ -31,15 +30,16 @@ struct ThumbnailImageView: View {
                 CachedImage(
                     url: url,
                     fixedSize: size,
+                    blurRadius: showNsfwFilter ? 8 : 0,
                     contentMode: .fill,
                     onTapCallback: markPostAsRead
                 )
-                .blur(radius: showNsfwFilter ? 8 : 0)
             case let .link(url):
                 CachedImage(
                     url: url,
                     shouldExpand: false,
                     fixedSize: size,
+                    blurRadius: showNsfwFilter ? 8 : 0,
                     contentMode: .fill
                 )
                 .onTapGesture {
@@ -48,7 +48,6 @@ struct ThumbnailImageView: View {
                         markPostAsRead()
                     }
                 }
-                .blur(radius: showNsfwFilter ? 8 : 0)
                 .overlay {
                     Group {
                         WebsiteIndicatorView()
@@ -76,7 +75,7 @@ struct ThumbnailImageView: View {
     /// Synchronous void wrapper for postTracker.markRead to pass into CachedImage as dismiss callback
     func markPostAsRead() {
         Task(priority: .userInitiated) {
-            await postTracker.markRead(post: post)
+            await post.markRead(true)
         }
     }
 }
