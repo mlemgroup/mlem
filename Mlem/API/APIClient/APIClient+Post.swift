@@ -14,7 +14,7 @@ extension APIClient {
         page: Int,
         cursor: String?,
         sort: PostSortType?,
-        type: FeedType,
+        type: APIListingType,
         limit: Int?,
         savedOnly: Bool?,
         communityName: String?

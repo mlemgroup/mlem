@@ -1,9 +1,9 @@
-// 
+//
 //  CommunityListModel.swift
 //  Mlem
 //
 //  Created by mormaer on 11/08/2023.
-//  
+//
 //
 
 import Combine
@@ -11,7 +11,6 @@ import Dependencies
 import Foundation
 
 class CommunityListModel: ObservableObject {
-    
     @Dependency(\.communityRepository) var communityRepository
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
@@ -41,7 +40,7 @@ class CommunityListModel: ObservableObject {
             // load our subscribed communities
             let subscriptions = try await communityRepository
                 .loadSubscriptions()
-                .map { $0.community }
+                .map(\.community)
             
             // load our favourite communities
             let favorites = favoriteCommunitiesTracker.favoritesForCurrentAccount
@@ -69,36 +68,37 @@ class CommunityListModel: ObservableObject {
         }
     }
     
-    var visibleSections: [CommunitySection] {
+    var visibleSections: [CommunityListSection] {
         allSections()
         
-        // Only show sections which have labels to show
+            // Only show sections which have labels to show
             .filter { communitySection -> Bool in
                 communitySection.inlineHeaderLabel != nil
             }
         
-        // Only show letter headers for letters we have in our community list
+            // Only show letter headers for letters we have in our community list
             .filter { communitySection -> Bool in
                 communities
                     .contains(where: { communitySection.sidebarEntry
-                        .contains(community: $0, isSubscribed: isSubscribed(to: $0)) })
+                            .contains(community: $0, isSubscribed: isSubscribed(to: $0))
+                    })
             }
     }
     
-    func communities(for section: CommunitySection) -> [APICommunity] {
+    func communities(for section: CommunityListSection) -> [APICommunity] {
         // Filter down to sidebar entry which wants us
-        return communities
+        communities
             .filter { community -> Bool in
                 section.sidebarEntry.contains(community: community, isSubscribed: isSubscribed(to: community))
             }
     }
     
-    func allSections() -> [CommunitySection] {
-        var sections = [CommunitySection]()
+    func allSections() -> [CommunityListSection] {
+        var sections = [CommunityListSection]()
         
         sections.append(
             withDependencies(from: self) {
-                CommunitySection(
+                CommunityListSection(
                     viewId: "top",
                     sidebarEntry: EmptySidebarEntry(
                         sidebarLabel: nil,
@@ -112,7 +112,7 @@ class CommunityListModel: ObservableObject {
         
         sections.append(
             withDependencies(from: self) {
-                CommunitySection(
+                CommunityListSection(
                     viewId: "favorites",
                     sidebarEntry: FavoritesSidebarEntry(
                         sidebarLabel: nil,
@@ -128,7 +128,7 @@ class CommunityListModel: ObservableObject {
         
         sections.append(
             withDependencies(from: self) {
-                CommunitySection(
+                CommunityListSection(
                     viewId: "non_letter_titles",
                     sidebarEntry: RegexCommunityNameSidebarEntry(
                         communityNameRegex: /^[^a-zA-Z]/,
@@ -144,12 +144,12 @@ class CommunityListModel: ObservableObject {
         return sections
     }
     
-    func alphabeticSections() -> [CommunitySection] {
+    func alphabeticSections() -> [CommunityListSection] {
         let alphabet: [String] = .alphabet
         return alphabet.map { character in
             withDependencies(from: self) {
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
-                CommunitySection(
+                CommunityListSection(
                     viewId: character,
                     sidebarEntry: RegexCommunityNameSidebarEntry(
                         communityNameRegex: (try? Regex("^[\(character.uppercased())\(character.lowercased())]"))!,
@@ -218,7 +218,7 @@ class CommunityListModel: ObservableObject {
     private func combine(_ subscriptions: [APICommunity], _ favorites: [APICommunity]) {
         // store the values for future use...
         self.subscriptions = subscriptions
-        self.favoriteCommunities = favorites
+        favoriteCommunities = favorites
         
         // combine and sort the two lists, excluding duplicates
         let combined = subscriptions + favorites.filter { !subscriptions.contains($0) }

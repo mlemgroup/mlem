@@ -89,14 +89,17 @@ extension AccountListView {
                 }
             }
             var groups = [AccountGroup]()
+            
+            today.sort { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
             if let currentActiveAccount = appState.currentActiveAccount {
                 today.prepend(currentActiveAccount)
             }
+            
             if !today.isEmpty {
                 groups.append(
                     AccountGroup(
                         header: "Today",
-                        accounts: today.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+                        accounts: today
                     )
                 )
             }

@@ -8,7 +8,6 @@
 import Dependencies
 import SwiftUI
 
-// swiftlint:disable type_body_length
 struct UserView: View {
     @Dependency(\.apiClient) var apiClient
     @Dependency(\.errorHandler) var errorHandler
@@ -28,7 +27,7 @@ struct UserView: View {
     
     @State var isPresentingAccountSwitcher: Bool = false
     
-    @StateObject var privatePostTracker: PostTracker
+    @StateObject var privatePostTracker: StandardPostTracker
     @StateObject var privateCommentTracker: CommentTracker = .init()
     
     @StateObject var communityTracker: ContentTracker<CommunityModel> = .init()
@@ -49,11 +48,12 @@ struct UserView: View {
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self.internetSpeed = internetSpeed
-        
-        self._privatePostTracker = StateObject(wrappedValue: .init(
-            shouldPerformMergeSorting: false,
+  
+        self._privatePostTracker = .init(wrappedValue: .init(
             internetSpeed: internetSpeed,
-            upvoteOnSave: upvoteOnSave
+            sortType: .new,
+            showReadPosts: true,
+            feedType: .all
         ))
         
         self._user = State(wrappedValue: user)
@@ -71,11 +71,12 @@ struct UserView: View {
                 Button(action: user.copyFullyQualifiedUsername) {
                     VStack(spacing: 5) {
                         Text(user.displayName)
-                            .font(.title.bold())
+                            .font(.title)
+                            .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                         Text(user.fullyQualifiedUsername ?? user.name)
-                            .font(.footnote)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -149,25 +150,10 @@ struct UserView: View {
             confirmationMenuFunction: confirmationMenuFunction
         )
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .secondaryAction) {
                 let functions = user.menuFunctions { user = $0 }
-                if functions.count == 1, let first = functions.first {
-                    MenuButton(menuFunction: first, confirmDestructive: confirmDestructive)
-                } else {
-                    Menu {
-                        ForEach(functions) { item in
-                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                        }
-                    } label: {
-                        Label("Menu", systemImage: Icons.menuCircle)
-                    }
-                }
-            }
-            if isOwnProfile {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Switch Account", systemImage: Icons.switchUser) {
-                        isPresentingAccountSwitcher = true
-                    }
+                ForEach(functions) { item in
+                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                 }
             }
         }
@@ -184,9 +170,16 @@ struct UserView: View {
             }
         }
         .refreshable {
-            await Task {
+            Task {
                 await tryReloadUser()
-            }.value
+            }
+        }
+        .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
+            if isOwnProfile {
+                if let newValue {
+                    self.user.update(with: newValue)
+                }
+            }
         }
         .hoistNavigation {
             if navigationPath.isEmpty {
@@ -206,13 +199,9 @@ struct UserView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationBarColor()
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPresentingAccountSwitcher) {
-            Form {
-                AccountListView()
-            }
-        }
     }
     
     var flairs: some View {
@@ -251,7 +240,7 @@ struct UserView: View {
                             flairBackground(color: flair.color) {
                                 HStack {
                                     Image(systemName: Icons.adminFlair)
-                                    let host = try? apiClient.session.instanceUrl.host()
+                                    let host = user.profileUrl.host()
                                     Text("\(host ?? "Instance") Administrator")
                                 }
                             }
@@ -284,5 +273,3 @@ struct UserView: View {
             .padding(.horizontal, AppConstants.postAndCommentSpacing)
     }
 }
-
-// swiftlint:enable type_body_length

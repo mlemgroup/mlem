@@ -42,7 +42,6 @@ struct RegexCommunityNameSidebarEntry: SidebarEntry {
 
 // Filters to favorited communities
 struct FavoritesSidebarEntry: SidebarEntry {
-    
     @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
     
     var sidebarLabel: String?
