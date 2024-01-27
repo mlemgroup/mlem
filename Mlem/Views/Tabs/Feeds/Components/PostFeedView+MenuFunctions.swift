@@ -38,30 +38,30 @@ extension PostFeedView {
     }
     
     func genEllipsisMenuFunctions() -> [MenuFunction] {
-            var ret: [MenuFunction] = .init()
-            
-            let blurNsfwText = shouldBlurNsfw ? "Unblur NSFW" : "Blur NSFW"
-            ret.append(MenuFunction.standardMenuFunction(
-                text: blurNsfwText,
-                imageName: Icons.blurNsfw,
-                role: nil,
-                enabled: true
-            ) {
-                shouldBlurNsfw.toggle()
-            })
-            
-            let showReadPostsText = showReadPosts ? "Hide Read" : "Show Read"
-            ret.append(MenuFunction.standardMenuFunction(
-                text: showReadPostsText,
-                imageName: "book",
-                role: nil,
-                enabled: true
-            ) {
-                showReadPosts.toggle()
-            })
-            
-            return ret
-        }
+        var ret: [MenuFunction] = .init()
+        
+        let blurNsfwText = shouldBlurNsfw ? "Unblur NSFW" : "Blur NSFW"
+        ret.append(MenuFunction.standardMenuFunction(
+            text: blurNsfwText,
+            imageName: Icons.blurNsfw,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
+            shouldBlurNsfw.toggle()
+        })
+        
+        let showReadPostsText = showReadPosts ? "Hide Read" : "Show Read"
+        ret.append(MenuFunction.standardMenuFunction(
+            text: showReadPostsText,
+            imageName: "book",
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
+            showReadPosts.toggle()
+        })
+        
+        return ret
+    }
     
     func genPostSizeSwitchingFunctions() -> [MenuFunction] {
         PostSize.allCases.map { size in

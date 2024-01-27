@@ -62,7 +62,6 @@ struct InboxView: View {
     @StateObject var replyTracker: ReplyTracker
     @StateObject var mentionTracker: MentionTracker
     @StateObject var messageTracker: MessageTracker
-    @StateObject var dummyPostTracker: PostTracker // used for navigation
     
     init() {
         // TODO: once the post tracker is changed we won't need this here...
@@ -92,8 +91,6 @@ struct InboxView: View {
         self._replyTracker = StateObject(wrappedValue: newReplyTracker)
         self._mentionTracker = StateObject(wrappedValue: newMentionTracker)
         self._messageTracker = StateObject(wrappedValue: newMessageTracker)
-        
-        self._dummyPostTracker = StateObject(wrappedValue: .init(internetSpeed: internetSpeed, upvoteOnSave: upvoteOnSave))
     }
     
     // input state handling
@@ -120,16 +117,16 @@ struct InboxView: View {
                     .handleLemmyViews()
                     .environmentObject(inboxTabNavigation)
                     .environmentObject(inboxTracker)
-                    .onChange(of: shouldFilterRead) { newValue in
-                        Task(priority: .userInitiated) {
-                            await handleShouldFilterReadChange(newShouldFilterRead: newValue)
-                        }
-                    }
             }
             .handleLemmyLinkResolution(navigationPath: .constant(inboxTabNavigation))
             .environment(\.navigationPathWithRoutes, $inboxTabNavigation.path)
             .environment(\.navigation, navigation)
             .environment(\.scrollViewProxy, scrollProxy)
+        }
+        .onChange(of: shouldFilterRead) { newValue in
+            Task(priority: .userInitiated) {
+                await handleShouldFilterReadChange(newShouldFilterRead: newValue)
+            }
         }
     }
     

@@ -17,12 +17,15 @@ enum MenuFunction: Identifiable {
             return shareMenuFunction.id
         case let .shareImage(shareImageFunction):
             return shareImageFunction.id
+        case let .navigation(navigationMenuFunction):
+            return navigationMenuFunction.id
         }
     }
     
     case standard(StandardMenuFunction)
     case shareUrl(ShareMenuFunction)
     case shareImage(ShareImageFunction)
+    case navigation(NavigationMenuFunction)
 }
 
 enum MenuFunctionRole {
@@ -44,6 +47,18 @@ extension MenuFunction {
             role: role,
             enabled: enabled,
             callback: callback
+        ))
+    }
+    
+    static func navigationMenuFunction(
+        text: String,
+        imageName: String,
+        destination: AppRoute
+    ) -> MenuFunction {
+        MenuFunction.navigation(NavigationMenuFunction(
+            text: text,
+            imageName: imageName,
+            destination: destination
         ))
     }
     
@@ -82,4 +97,12 @@ struct StandardMenuFunction: Identifiable {
     var role: MenuFunctionRole?
     let enabled: Bool
     let callback: () -> Void
+}
+
+struct NavigationMenuFunction: Identifiable {
+    var id: String { text }
+    
+    let text: String
+    let imageName: String
+    let destination: AppRoute
 }

@@ -8,7 +8,16 @@ import Foundation
 
 class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<Item>, ChildTrackerProtocol {
     private weak var parentTracker: (any ParentTrackerProtocol)?
-    private var cursor: Int = 0
+    private var streamCursor: Int = 0
+    
+    private(set) var sortType: TrackerSortType
+    
+    var allItems: [ParentItem] { items.map { toParent(item: $0) }}
+    
+    init(internetSpeed: InternetSpeed, sortType: TrackerSortType) {
+        self.sortType = sortType
+        super.init(internetSpeed: internetSpeed)
+    }
 
     func toParent(item: Item) -> ParentItem {
         preconditionFailure("This method must be implemented by the inheriting class")
@@ -19,28 +28,31 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
     
     /// Gets the next item in the feed stream and increments the cursor
-    /// **WARNING** this is NOT a thread-safe function! Only one thread at a time may call this function!
     /// - Returns: next item in the feed stream
+    /// - Warning: This is NOT a thread-safe function! Only one thread at a time may call this function!
     func consumeNextItem() -> ParentItem? {
-        assert(cursor < items.count, "consumeNextItem called on a tracker without a next item (cursor: \(cursor), count: \(items.count))!")
+        assert(
+            streamCursor < items.count,
+            "consumeNextItem called on a tracker without a next item (cursor: \(streamCursor), count: \(items.count))!"
+        )
 
-        if cursor < items.count {
-            cursor += 1
-            return toParent(item: items[cursor - 1])
+        if streamCursor < items.count {
+            streamCursor += 1
+            return toParent(item: items[streamCursor - 1])
         }
 
         return nil
     }
 
     /// Gets the sort value of the next item in feed stream for a given sort type without affecting the cursor. The sort type must match the sort type of this tracker.
-    /// **WARNING** this is NOT a thread-safe function! Only one thread at a time may call this function!
     /// - Parameter sortType: type of sorting being performed
     /// - Returns: sorting value of the next tracker item corresponding to the given sort type
+    /// - Warning: This is NOT a thread-safe function! Only one thread at a time may call this function!
     func nextItemSortVal(sortType: TrackerSortType) async throws -> TrackerSortVal? {
         assert(sortType == self.sortType, "Conflicting types for sortType! This will lead to unexpected sorting behavior.")
 
-        if cursor < items.count {
-            return items[cursor].sortVal(sortType: sortType)
+        if streamCursor < items.count {
+            return items[streamCursor].sortVal(sortType: sortType)
         } else {
             // if done loading, return nil
             if loadingState == .done {
@@ -49,19 +61,19 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
 
             // otherwise, wait for the next page to load and try to return the first value
             // if the next page is already loading, this call to loadNextPage will be noop, but still wait until that load completes thanks to the semaphore
-            await loadNextPage()
-            return cursor < items.count ? items[cursor].sortVal(sortType: sortType) : nil
+            await loadMoreItems()
+            return streamCursor < items.count ? items[streamCursor].sortVal(sortType: sortType) : nil
         }
     }
     
     /// Resets the cursor to 0 but does not unload any items
     func resetCursor() {
-        cursor = 0
+        streamCursor = 0
     }
 
     func refresh(clearBeforeRefresh: Bool, notifyParent: Bool = true) async throws {
         try await refresh(clearBeforeRefresh: clearBeforeRefresh)
-        cursor = 0
+        streamCursor = 0
 
         if notifyParent, let parentTracker {
             await parentTracker.refresh(clearBeforeFetch: clearBeforeRefresh)
@@ -69,8 +81,8 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
     }
 
     func reset(notifyParent: Bool = true) async {
-        await reset()
-        cursor = 0
+        await clear()
+        streamCursor = 0
         if notifyParent, let parentTracker {
             await parentTracker.reset()
         }
@@ -80,7 +92,7 @@ class ChildTracker<Item: TrackerItem, ParentItem: TrackerItem>: StandardTracker<
         let newItems = items.filter(filter)
         let removed = items.count - newItems.count
         
-        cursor = 0
+        streamCursor = 0
         await setItems(newItems)
         
         return removed
