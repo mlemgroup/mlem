@@ -22,38 +22,15 @@ struct HandleLemmyLinksDisplay: ViewModifier {
     
     @AppStorage("upvoteOnSave") var upvoteOnSave = false
     
-    // swiftlint:disable function_body_length
     // swiftlint:disable:next cyclomatic_complexity
     func body(content: Content) -> some View {
         content
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
                 case let .community(community):
-                    CommunityView(community: community)
+                    CommunityFeedView(communityModel: community)
                         .environmentObject(appState)
                         .environmentObject(filtersTracker)
-                        .environmentObject(quickLookState)
-                case let .communityLinkWithContext(context):
-                    FeedParentView(community: context.community, feedType: context.feedType)
-                        .environmentObject(appState)
-                        .environmentObject(filtersTracker)
-                        .environmentObject(quickLookState)
-                case let .apiPostView(post):
-                    let postModel = PostModel(from: post)
-                    let postTracker = PostTracker(
-                        shouldPerformMergeSorting: false,
-                        internetSpeed: internetSpeed,
-                        initialItems: [postModel],
-                        upvoteOnSave: upvoteOnSave
-                    )
-                    // swiftlint:disable:next redundant_discardable_let
-                    let _ = postTracker.add([postModel])
-                    ExpandedPost(post: postModel)
-                        .environmentObject(postTracker)
-                        .environmentObject(appState)
-                        .environmentObject(quickLookState)
-                case let .apiPost(post):
-                    LazyLoadExpandedPost(post: post)
                         .environmentObject(quickLookState)
                 case let .apiPerson(user):
                     UserView(user: UserModel(from: user))
@@ -63,9 +40,9 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                     UserView(user: user, communityContext: communityContext)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
-                case let .postLinkWithContext(post):
-                    ExpandedPost(post: post.post, community: post.community, scrollTarget: post.scrollTarget)
-                        .environmentObject(post.postTracker)
+                case let .postLinkWithContext(postLink):
+                    ExpandedPost(post: postLink.post, community: postLink.community, scrollTarget: postLink.scrollTarget)
+                        .environmentObject(postLink.postTracker)
                         .environmentObject(appState)
                         .environmentObject(quickLookState)
                         .environmentObject(layoutWidgetTracker)
@@ -87,8 +64,6 @@ struct HandleLemmyLinksDisplay: ViewModifier {
                 }
             }
     }
-
-    // swiftlint:enable function_body_length
     
     @ViewBuilder
     // swiftlint:disable:next cyclomatic_complexity

@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 18/09/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 struct CommunityResultView: View {
     @Dependency(\.apiClient) private var apiClient
@@ -140,8 +140,8 @@ struct CommunityResultView: View {
         .contextMenu {
             ForEach(
                 community.menuFunctions(
-                    trackerCallback,
-                    editorTracker: editorTracker
+                    editorTracker: editorTracker,
+                    trackerCallback
                 )
             ) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)

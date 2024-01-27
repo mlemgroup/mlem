@@ -389,7 +389,7 @@ extension APIClient {
         query: String,
         searchType: SearchType,
         sortOption: PostSortType,
-        listingType: FeedType,
+        listingType: APIListingType,
         page: Int?,
         limit: Int?
     ) async throws -> SearchResponse {

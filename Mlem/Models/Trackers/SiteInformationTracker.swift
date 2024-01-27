@@ -23,7 +23,6 @@ class SiteInformationTracker: ObservableObject {
         version = account.siteVersion
         Task {
             do {
-            
                 let response = try await apiClient.loadSiteInformation()
                 enableDownvotes = response.siteView.localSite.enableDownvotes
                 version = SiteVersion(response.version)
