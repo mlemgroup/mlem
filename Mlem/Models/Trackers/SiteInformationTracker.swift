@@ -18,12 +18,12 @@ class SiteInformationTracker: ObservableObject {
     @Published var version: SiteVersion?
     @Published private(set) var allLanguages: [APILanguage] = .init()
     @Published var myUserInfo: APIMyUserInfo?
+    @Published var myUser: UserModel?
     
     func load(account: SavedAccount) {
         version = account.siteVersion
         Task {
             do {
-            
                 let response = try await apiClient.loadSiteInformation()
                 enableDownvotes = response.siteView.localSite.enableDownvotes
                 version = SiteVersion(response.version)
@@ -35,6 +35,11 @@ class SiteInformationTracker: ObservableObject {
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
+                if let userInfo = response.myUser {
+                    myUser = UserModel(from: userInfo.localUserView.person)
+                    myUser?.isAdmin = response.admins.contains { $0.person.id == myUser?.userId }
+                }
+                
             } catch {
                 errorHandler.handle(error)
             }

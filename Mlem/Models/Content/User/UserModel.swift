@@ -15,6 +15,7 @@ struct UserModel {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.notifier) var notifier
+    @Dependency(\.apiClient) var apiClient
     
     @available(*, deprecated, message: "Use attributes of the UserModel directly instead.")
     var person: APIPerson
@@ -34,7 +35,7 @@ struct UserModel {
     let banner: URL?
     
     // State
-    let banned: Bool
+    var banned: Bool
     let local: Bool
     let deleted: Bool
     let isBot: Bool
@@ -43,7 +44,7 @@ struct UserModel {
     // Dates
     let creationDate: Date
     let updatedDate: Date?
-    let banExpirationDate: Date?
+    var banExpirationDate: Date?
     
     // URLs
     let profileUrl: URL
@@ -107,7 +108,9 @@ struct UserModel {
         self.deleted = person.deleted
         self.isBot = person.botAccount
         
-        self.isAdmin = person.admin
+        if let admin = person.admin {
+            self.isAdmin = person.admin
+        }
         
         self.creationDate = person.published
         self.updatedDate = person.updated
@@ -173,6 +176,41 @@ struct UserModel {
         }
     }
     
+    mutating func toggleBan(
+        expires: Date? = nil,
+        reason: String? = nil,
+        removeData: Bool = false,
+        _ callback: @escaping (_ item: Self) -> Void = { _ in }
+    ) async {
+        banned.toggle()
+        if banned {
+            banExpirationDate = expires
+        }
+        RunLoop.main.perform { [self] in
+            callback(self)
+        }
+        var expirationDate: Int?
+        if let expires {
+            expirationDate = Int(expires.timeIntervalSince1970)
+        }
+        do {
+            let response = try await apiClient.banPerson(
+                id: userId,
+                shouldBan: banned,
+                expires: expirationDate,
+                reason: reason,
+                removeData: removeData
+            )
+            self.banned = response.banned
+            RunLoop.main.perform { [self] in
+                callback(self)
+            }
+        } catch {
+            hapticManager.play(haptic: .failure, priority: .high)
+            errorHandler.handle(error)
+        }
+    }
+    
     static func mock() -> UserModel {
         return self.init(from: APIPerson.mock())
     }
@@ -212,6 +250,7 @@ extension UserModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
         hasher.combine(blocked)
+        hasher.combine(banned)
         hasher.combine(postCount)
         hasher.combine(commentCount)
     }

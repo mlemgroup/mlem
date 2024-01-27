@@ -29,6 +29,8 @@ struct BanUserView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.apiClient) var apiClient
+    @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.notifier) var notifier
     
     @Environment(\.dismiss) var dismiss
     
@@ -38,6 +40,7 @@ struct BanUserView: View {
     @State var days: Int = 1
     @State var isPermanent: Bool = true
     @State var removeContent: Bool = false
+    @State var isWaiting: Bool = false
     
     enum FocusedField {
         case reason, days
@@ -90,7 +93,12 @@ struct BanUserView: View {
                         .onTapGesture {
                             focusedField = .days
                         }
-                    TextField("", value: $days, format: .number)
+                    TextField("", value: Binding(
+                        get: { days },
+                        set: { newValue in
+                            days = newValue > 1 ? newValue : 0
+                        }
+                    ), format: .number)
                         .keyboardType(.numberPad)
                         .focused($focusedField, equals: .days)
                 }
@@ -125,7 +133,9 @@ struct BanUserView: View {
                 Toggle("Remove Content", isOn: $removeContent)
                     .tint(.red)
             } footer: {
-                Text("Remove \(editModel.user.postCount ?? 0) posts and \(editModel.user.commentCount ?? 0) comments created by this user.")
+                let posts = editModel.user.postCount ?? 0
+                let comments = editModel.user.commentCount ?? 0
+                Text("Remove all \(posts) posts and \(comments) comments created by this user.")
             }
         }
         .toolbar {
@@ -140,15 +150,21 @@ struct BanUserView: View {
                     dismiss()
                 }
                 .tint(.red)
+                .disabled(isWaiting)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Confirm", systemImage: Icons.send) {
-                    
+                if isWaiting {
+                    ProgressView()
+                } else {
+                    Button("Confirm", systemImage: Icons.send, action: confirm)
                 }
             }
         }
         .navigationTitle("Ban \(editModel.user.displayName)")
         .navigationBarTitleDisplayMode(.inline)
+        .allowsHitTesting(!isWaiting)
+        .opacity(isWaiting ? 0.5 : 1)
+        .interactiveDismissDisabled(isWaiting)
     }
     
     @ViewBuilder
@@ -167,6 +183,27 @@ struct BanUserView: View {
             hapticManager.play(haptic: .gentleInfo, priority: .low)
         }
         .buttonStyle(BanFormButton(selected: days == value && !isPermanent))
+    }
+    
+    func confirm() {
+        isWaiting = true
+        Task {
+            let expires: Date? = isPermanent ? nil : .now.advanced(by: .days(Double(days)))
+            let reason = reason.isEmpty ? nil : reason
+            var user = editModel.user
+            await user.toggleBan(expires: expires, reason: reason, removeData: removeContent) { editModel.callback($0) }
+            DispatchQueue.main.async {
+                isWaiting = false
+            }
+            if user.banned {
+                await notifier.add(.success("Banned"))
+                DispatchQueue.main.async {
+                    dismiss()
+                }
+            } else {
+                await notifier.add(.failure("Failed to ban user"))
+            }
+        }
     }
 }
 

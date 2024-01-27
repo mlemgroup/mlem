@@ -29,9 +29,16 @@ extension UserModel {
         return .standardMenuFunction(
             text: banned ? "Unban" : "Ban",
             imageName: Icons.bannedFlair,
-            role: .destructive(prompt: nil),
+            role: .destructive(prompt: banned ? "Really unban this user?" : nil),
             callback: {
-                editorTracker.banUser = BanUserEditorModel(user: self)
+                if banned {
+                    Task {
+                        var new = self
+                        await new.toggleBan(callback)
+                    }
+                } else {
+                    editorTracker.banUser = BanUserEditorModel(user: self, callback: callback)
+                }
             }
         )
     }
@@ -49,11 +56,14 @@ extension UserModel {
             )
         )
         functions.append(.shareMenuFunction(url: profileUrl))
-        if siteInformation.myUserInfo?.localUserView.person.id != userId {
+        
+        let isOwnUser = (siteInformation.myUser?.userId ?? -1) == self.userId
+        
+        if !isOwnUser {
             functions.append(blockMenuFunction(callback))
-        }
-        if let editorTracker {
-            functions.append(banMenuFunction(callback, editorTracker: editorTracker))
+            if siteInformation.myUser?.isAdmin ?? false, let editorTracker {
+                functions.append(banMenuFunction(callback, editorTracker: editorTracker))
+            }
         }
         return functions
     }
