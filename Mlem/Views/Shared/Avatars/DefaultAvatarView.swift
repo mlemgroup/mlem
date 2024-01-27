@@ -11,15 +11,12 @@ import SwiftUI
 struct DefaultAvatarView: View {
     let avatarType: AvatarType
     
-    // TODO: iOS 16 deprecation - just use Color.gray.gradient here
-    static let backgroundColor = Color(rgba: 0x8E8E93FF).gradient
-    
     var body: some View {
         switch avatarType {
         case .instance:
             ZStack {
                 Circle()
-                    .fill(DefaultAvatarView.backgroundColor)
+                    .fill(Color.gray.gradient)
                 GeometryReader { frame in
                     Image(systemName: avatarType.iconNameFill)
                         .resizable()
@@ -34,7 +31,7 @@ struct DefaultAvatarView: View {
                 .resizable()
                 .scaledToFill()
                 .symbolRenderingMode(.multicolor)
-                .foregroundStyle(DefaultAvatarView.backgroundColor, .white)
+                .foregroundStyle(Color.gray.gradient, .white)
         }
     }
 }
@@ -44,6 +41,8 @@ struct DefaultAvatarView: View {
         DefaultAvatarView(avatarType: .user)
             .frame(width: 100, height: 100)
         DefaultAvatarView(avatarType: .community)
+            .frame(width: 100, height: 100)
+        DefaultAvatarView(avatarType: .instance)
             .frame(width: 100, height: 100)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
