@@ -43,7 +43,7 @@ struct UserFeedView: View {
             switch selectedTab {
             case .communities:
                 Label(
-                    "\(user.displayName) moderates \(communityTracker.items.count) communities.",
+                    "\(user.displayName) moderates ^[\(communityTracker.items.count) communities](inflect: true).",
                     systemImage: Icons.moderationFill
                 )
                 .foregroundStyle(.secondary)
