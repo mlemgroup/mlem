@@ -52,7 +52,7 @@ struct UserResultView: View {
     
     var title: String {
         if user.blocked {
-            return "\(user.displayName) ∙ Blocked"
+            return "\(user.displayName!) ∙ Blocked"
         } else {
             return user.displayName
         }

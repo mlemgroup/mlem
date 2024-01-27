@@ -27,7 +27,8 @@ struct InstanceModel {
     
     mutating func update(with response: SiteResponse) {
         self.administrators = response.admins.map {
-            var user = UserModel(from: $0, usesExternalData: true)
+            var user = UserModel(from: $0)
+            user.usesExternalData = true
             user.isAdmin = true
             return user
         }

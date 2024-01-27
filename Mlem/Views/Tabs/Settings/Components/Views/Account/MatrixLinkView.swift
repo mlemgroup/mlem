@@ -115,5 +115,6 @@ struct MatrixLinkView: View {
             }
         }
         .hoistNavigation()
+        .interactiveDismissDisabled(hasEdited != .unedited)
     }
 }
