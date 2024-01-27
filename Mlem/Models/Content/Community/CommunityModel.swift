@@ -197,6 +197,10 @@ struct CommunityModel {
                     }
                     callback(community)
                 }
+            } else {
+                RunLoop.main.perform { [new] in
+                    callback(new)
+                }
             }
         } else {
             favoriteCommunitiesTracker.unfavorite(community)

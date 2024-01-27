@@ -8,14 +8,24 @@
 import Dependencies
 import SwiftUI
 
+enum CommunityComplication: CaseIterable {
+    case type, instance, subscribers
+}
+
+extension Array where Element == CommunityComplication {
+    static let withTypeLabel: [CommunityComplication] = [.type, .instance, .subscribers]
+    static let withoutTypeLabel: [CommunityComplication] = [.instance, .subscribers]
+    static let instanceOnly: [CommunityComplication] = [.instance]
+}
+
 struct CommunityResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
     
     let community: CommunityModel
-    let showTypeLabel: Bool
     let trackerCallback: (_ item: CommunityModel) -> Void
     let swipeActions: SwipeConfiguration?
+    let complications: [CommunityComplication]
 
     @State private var isPresentingConfirmDestructive: Bool = false
     @State private var confirmationMenuFunction: StandardMenuFunction?
@@ -24,12 +34,12 @@ struct CommunityResultView: View {
     
     init(
         _ community: CommunityModel,
-        showTypeLabel: Bool = false,
+        complications: [CommunityComplication] = .withoutTypeLabel,
         swipeActions: SwipeConfiguration? = nil,
         trackerCallback: @escaping (_ item: CommunityModel) -> Void = { _ in }
     ) {
         self.community = community
-        self.showTypeLabel = showTypeLabel
+        self.complications = complications
         self.swipeActions = swipeActions
         self.trackerCallback = trackerCallback
     }
@@ -51,14 +61,14 @@ struct CommunityResultView: View {
     }
     
     var caption: String {
-        if let host = community.communityUrl.host {
-            if showTypeLabel {
-                return "Community ∙ @\(host)"
-            } else {
-                return "@\(host)"
-            }
+        var parts: [String] = []
+        if complications.contains(.type) {
+            parts.append("Community")
         }
-        return "Unknown instance"
+        if complications.contains(.instance), let host = community.communityUrl.host {
+            parts.append("@\(host)")
+        }
+        return parts.joined(separator: " ∙ ")
     }
     
     var subscriberCountColor: Color {
@@ -104,7 +114,7 @@ struct CommunityResultView: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                if let subscriberCount = community.subscriberCount {
+                if complications.contains(.subscribers), let subscriberCount = community.subscriberCount {
                     HStack(spacing: 5) {
                         Text(abbreviateNumber(subscriberCount))
                             .monospacedDigit()
@@ -152,7 +162,6 @@ struct CommunityResultView: View {
 
 #Preview {
     CommunityResultView(
-        .init(from: .mock()),
-        showTypeLabel: true
+        .init(from: .mock())
     )
 }

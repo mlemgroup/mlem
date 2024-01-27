@@ -9,7 +9,7 @@ import Foundation
 
 /// Enum of things that can have avatars
 enum AvatarType {
-    case user, community
+    case user, community, instance
 }
 
 extension AvatarType: AssociatedIcon {
@@ -19,6 +19,8 @@ extension AvatarType: AssociatedIcon {
             return Icons.user
         case .community:
             return Icons.community
+        case .instance:
+            return Icons.instance
         }
     }
     
@@ -28,6 +30,8 @@ extension AvatarType: AssociatedIcon {
             return Icons.userFill
         case .community:
             return Icons.communityFill
+        case .instance:
+            return Icons.instance
         }
     }
 }
