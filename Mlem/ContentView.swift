@@ -45,7 +45,7 @@ struct ContentView: View {
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
-                FeedRoot()
+                FeedsView()
                     .fancyTabItem(tag: TabSelection.feeds) {
                         FancyTabBarLabel(
                             tag: TabSelection.feeds,
@@ -77,9 +77,8 @@ struct ContentView: View {
                             activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
                             remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
                         )
-                    )
-                    .simultaneousGesture(accountSwitchLongPress)
-                }
+                        .simultaneousGesture(accountSwitchLongPress)
+                    }
                 
                 SearchRoot()
                     .fancyTabItem(tag: TabSelection.search) {

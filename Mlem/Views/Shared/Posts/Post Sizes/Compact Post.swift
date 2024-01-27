@@ -24,15 +24,13 @@ struct CompactPost: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
-    
-    @EnvironmentObject var postTracker: PostTracker
 
     // constants
     let thumbnailSize: CGFloat = 60
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
     
     // arguments
-    let post: PostModel
+    @ObservedObject var post: PostModel
     let community: CommunityModel?
     let showCommunity: Bool // true to show community name, false to show username
     let menuFunctions: [MenuFunction]

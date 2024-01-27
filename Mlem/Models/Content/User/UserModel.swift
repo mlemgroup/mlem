@@ -55,6 +55,7 @@ struct UserModel {
     var commentCount: Int?
     
     // From GetPersonDetailsResponse
+    var site: APISite?
     var moderatedCommunities: [CommunityModel]?
     
     static let developerNames = [
@@ -65,6 +66,9 @@ struct UserModel {
         "https://programming.dev/u/tht7",
         "https://lemmy.ml/u/sjmarf"
     ]
+    
+    /// Is True when the UserModel was created using data fetched from an instance other than the logged-in instance
+    var usesExternalData: Bool = false
     
     /// Creates a UserModel from an GetPersonDetailsResponse
     /// - Parameter response: GetPersonDetailsResponse to create a UserModel representation of
@@ -93,6 +97,8 @@ struct UserModel {
     mutating func update(with personView: APIPersonView) {
         self.postCount = personView.counts.postCount
         self.commentCount = personView.counts.commentCount
+        
+        self.usesExternalData = usesExternalData
              
         // TODO: 0.18 Deprecation
         @Dependency(\.siteInformation) var siteInformation
