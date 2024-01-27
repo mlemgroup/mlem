@@ -40,9 +40,10 @@ struct CollapsibleSection<Content: View>: View {
                         .rotationEffect(Angle(degrees: collapsed ? -90 : 0))
                 }
                 .font(.footnote)
+                .contentShape(.rect)
+                .onTapGesture { withAnimation(.default) { collapsed.toggle() }}
                 .padding(.vertical, 6)
                 .padding(.horizontal, 16)
-                .onTapGesture { withAnimation(.default) { collapsed.toggle() }}
             }
             
             if !collapsed {
