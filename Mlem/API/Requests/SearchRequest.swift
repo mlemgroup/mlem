@@ -29,7 +29,7 @@ struct SearchRequest: APIGetRequest {
         query: String,
         searchType: SearchType,
         sortOption: PostSortType,
-        listingType: FeedType,
+        listingType: APIListingType,
         page: Int?,
         communityId: Int?,
         communityName: String?,

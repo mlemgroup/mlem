@@ -132,7 +132,7 @@ struct InfoStackView: View {
     func unreadRepliesView(commentCount: Int, unreadCommentCount: Int) -> some View {
         HStack(spacing: AppConstants.iconToTextSpacing) {
             Image(systemName: Icons.unreadReplies)
-                Text("\(commentCount)")
+            Text("\(commentCount)")
                 + Text(" +\(unreadCommentCount)").foregroundColor(.green)
         }
         .accessibilityAddTraits(.isStaticText)
