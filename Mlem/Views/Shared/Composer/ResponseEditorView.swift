@@ -15,6 +15,7 @@ struct ResponseEditorView: View {
     }
     
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     
     let editorModel: any ResponseEditorModel
     
@@ -27,6 +28,8 @@ struct ResponseEditorView: View {
 
     @State var editorBody: String
     @State var isSubmitting: Bool = false
+    
+    @State var slurMatch: String?
     
     @FocusState private var focusedField: Field?
 
@@ -50,11 +53,42 @@ struct ResponseEditorView: View {
                 .onAppear {
                     focusedField = .editorBody
                 }
+                .onChange(of: editorBody) { newValue in
+                    if editorModel.showSlurWarning {
+                        do {
+                            if let regex = siteInformation.slurFilterRegex {
+                                if let output = try regex.firstMatch(in: newValue.lowercased()) {
+                                    slurMatch = String(newValue[output.range])
+                                } else {
+                                    slurMatch = nil
+                                }
+                            }
+                        } catch {
+                            print("REGEX FAILED")
+                        }
+                    }
+                }
                 
                 Divider()
                 
-                editorModel.embeddedView()
+                if let slurMatch {
+                    VStack {
+                        Text("\"\(slurMatch)\" is disallowed.")
+                            .foregroundStyle(.white)
+                        Text("You can still post this comment, but your instance will replace \"\(slurMatch)\" with \"*removed*\".")
+                            .multilineTextAlignment(.center)
+                            .font(.footnote)
+                            .foregroundStyle(.white.opacity(0.8))
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(.red))
+                    .padding(.horizontal)
+                } else {
+                    editorModel.embeddedView()
+                }
             }
+            .animation(.default, value: slurMatch)
             .padding(.bottom, AppConstants.editorOverscroll)
         }
         .scrollDismissesKeyboard(.automatic)

@@ -14,6 +14,7 @@ struct ReportMention: ResponseEditorModel {
     
     var id: Int { mention.id }
     let canUpload: Bool = false
+    let showSlurWarning: Bool = false
     let modalName: String = "Report Comment"
     let prefillContents: String? = nil
     let mention: MentionModel
