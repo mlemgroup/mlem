@@ -88,5 +88,10 @@ struct InstanceResultView: View {
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .addSwipeyActions(swipeActions ?? .init())
+        .contextMenu {
+            ForEach(instance.menuFunctions()) { item in
+                MenuButton(menuFunction: item, confirmDestructive: nil)
+            }
+        }
     }
 }
