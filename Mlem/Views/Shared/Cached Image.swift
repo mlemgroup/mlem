@@ -27,6 +27,7 @@ struct CachedImage: View {
     let maxHeight: CGFloat
     let screenWidth: CGFloat
     let contentMode: ContentMode
+    let blurRadius: CGFloat
     let cornerRadius: CGFloat
     let errorBackgroundColor: Color
     
@@ -40,6 +41,7 @@ struct CachedImage: View {
         fixedSize: CGSize? = nil,
         imageNotFound: @escaping () -> AnyView = imageNotFoundDefault,
         errorBackgroundColor: Color = Color(uiColor: .systemGray4),
+        blurRadius: CGFloat = 0,
         contentMode: ContentMode = .fit,
         onTapCallback: (() -> Void)? = nil,
         cornerRadius: CGFloat? = nil
@@ -49,6 +51,7 @@ struct CachedImage: View {
         self.maxHeight = maxHeight
         self.imageNotFound = imageNotFound
         self.errorBackgroundColor = errorBackgroundColor
+        self.blurRadius = blurRadius
         self.contentMode = contentMode
         self.onTapCallback = onTapCallback
         self.cornerRadius = cornerRadius ?? 0
@@ -88,6 +91,7 @@ struct CachedImage: View {
                     .aspectRatio(contentMode: contentMode)
                     .cornerRadius(cornerRadius)
                     .frame(idealWidth: size.width, maxHeight: size.height)
+                    .blur(radius: blurRadius)
                     .clipped()
                     .allowsHitTesting(false)
                     .overlay(alignment: .top) {
