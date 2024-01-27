@@ -68,7 +68,7 @@ enum APIRegistrationMode: String, Codable {
         case .closed:
             return .red
         case .requireApplication:
-            return .yellow
+            return .orange
         case .open:
             return .green
         }
