@@ -83,7 +83,7 @@ struct ResponseEditorView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(.red))
-                    .padding(.horizontal)
+                    .padding(.horizontal, 10)
                 } else {
                     editorModel.embeddedView()
                 }
