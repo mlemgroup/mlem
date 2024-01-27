@@ -119,11 +119,11 @@ struct AvatarView: View {
             shouldExpand: false,
             fixedSize: CGSize(width: avatarSize, height: avatarSize),
             imageNotFound: { AnyView(DefaultAvatarView(avatarType: type)) },
+            blurRadius: blurAvatar ? 4 : 0,
             contentMode: .fill
         )
         .frame(width: avatarSize, height: avatarSize)
         .accessibilityHidden(true)
-        .blur(radius: blurAvatar ? 4 : 0)
         .clipShape(Circle())
         .overlay(Circle()
             .stroke(

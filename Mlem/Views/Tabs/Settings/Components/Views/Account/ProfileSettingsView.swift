@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 23/11/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 enum UserSettingsEditState {
     case unedited, edited, updating
@@ -153,7 +153,7 @@ struct ProfileSettingsView: View {
                         hasEdited = .edited
                     }
                 }
-          }
+            }
             NavigationLink(.settings(.linkMatrixAccount)) {
                 let user = siteInformation.myUserInfo?.localUserView
                 if let user, let matrixId = user.person.matrixUserId {

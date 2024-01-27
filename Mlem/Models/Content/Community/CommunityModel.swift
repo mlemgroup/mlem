@@ -75,81 +75,85 @@ struct CommunityModel {
     var defaultPostLanguage: Int?
     
     init(from response: GetCommunityResponse) {
-        self.update(with: response)
+        update(with: response)
     }
     
     init(from response: CommunityResponse) {
-        self.update(with: response)
+        update(with: response)
     }
     
     init(from communityView: APICommunityView) {
-        self.update(with: communityView)
+        update(with: communityView)
     }
     
     init(from community: APICommunity, subscribed: Bool? = nil) {
-        self.update(with: community)
+        update(with: community)
         if let subscribed {
             self.subscribed = subscribed
         }
     }
     
     mutating func update(with response: CommunityResponse) {
-        self.discussionLanguages = response.discussionLanguages
-        self.update(with: response.communityView)
+        discussionLanguages = response.discussionLanguages
+        update(with: response.communityView)
     }
     
     mutating func update(with response: GetCommunityResponse) {
-        self.site = response.site
-        self.moderators = response.moderators.map { UserModel(from: $0.moderator) }
-        self.discussionLanguages = response.discussionLanguages
-        self.defaultPostLanguage = response.defaultPostLanguage
-        self.update(with: response.communityView)
+        site = response.site
+        moderators = response.moderators.map { UserModel(from: $0.moderator) }
+        discussionLanguages = response.discussionLanguages
+        defaultPostLanguage = response.defaultPostLanguage
+        update(with: response.communityView)
     }
     
     mutating func update(with communityView: APICommunityView) {
-        self.subscribed = communityView.subscribed.isSubscribed
-        self.blocked = communityView.blocked
-        
-        self.subscriberCount = communityView.counts.subscribers
-        self.localSubscriberCount = communityView.counts.subscribersLocal
-        self.postCount = communityView.counts.posts
-        self.commentCount = communityView.counts.comments
-        self.activeUserCount = .init(
+        subscribed = communityView.subscribed.isSubscribed
+        blocked = communityView.blocked
+        subscriberCount = communityView.counts.subscribers
+        localSubscriberCount = communityView.counts.subscribersLocal
+        postCount = communityView.counts.posts
+        commentCount = communityView.counts.comments
+        activeUserCount = .init(
+        subscriberCount = communityView.counts.subscribers
+        localSubscriberCount = communityView.counts.subscribersLocal
+        postCount = communityView.counts.posts
+        commentCount = communityView.counts.comments
+        activeUserCount = .init(
             sixMonths: communityView.counts.usersActiveHalfYear,
             month: communityView.counts.usersActiveMonth,
             week: communityView.counts.usersActiveWeek,
             day: communityView.counts.usersActiveDay
         )
-        self.update(with: communityView.community)
+        update(with: communityView.community)
     }
     
     mutating func update(with community: APICommunity) {
         self.community = community
         
-        self.communityId = community.id
-        self.instanceId = community.instanceId
+        communityId = community.id
+        instanceId = community.instanceId
         
-        self.name = community.name
-        self.displayName = community.title
-        self.description = community.description
+        name = community.name
+        displayName = community.title
+        description = community.description
         
-        self.avatar = community.iconUrl
-        self.banner = community.bannerUrl
+        avatar = community.iconUrl
+        banner = community.bannerUrl
         
-        self.nsfw = community.nsfw
-        self.local = community.local
-        self.removed = community.removed
-        self.deleted = community.deleted
-        self.hidden = community.hidden
-        self.postingRestrictedToMods = community.postingRestrictedToMods
+        nsfw = community.nsfw
+        local = community.local
+        removed = community.removed
+        deleted = community.deleted
+        hidden = community.hidden
+        postingRestrictedToMods = community.postingRestrictedToMods
         
-        self.creationDate = community.published
-        self.updatedDate = community.updated
+        creationDate = community.published
+        updatedDate = community.updated
         
-        self.communityUrl = community.actorId
+        communityUrl = community.actorId
         
         @Dependency(\.favoriteCommunitiesTracker) var favoriteCommunitiesTracker
-        self.favorited = favoriteCommunitiesTracker.isFavorited(community)
+        favorited = favoriteCommunitiesTracker.isFavorited(community)
     }
     
     func toggleSubscribe(_ callback: @escaping (_ item: Self) -> Void = { _ in }) async throws {
@@ -188,7 +192,7 @@ struct CommunityModel {
         var new = self
         new.favorited.toggle()
         if new.favorited {
-            favoriteCommunitiesTracker.favorite(self.community)
+            favoriteCommunitiesTracker.favorite(community)
             if let subscribed, !subscribed {
                 try await new.toggleSubscribe { community in
                     var community = community
@@ -243,7 +247,7 @@ struct CommunityModel {
     }
     
     var fullyQualifiedName: String? {
-        if let host = self.communityUrl.host() {
+        if let host = communityUrl.host() {
             return "\(name!)@\(host)"
         }
         return nil
@@ -264,7 +268,7 @@ struct CommunityModel {
     }
     
     static func mock() -> CommunityModel {
-        return .init(from: GetCommunityResponse.mock())
+        .init(from: GetCommunityResponse.mock())
     }
 }
 

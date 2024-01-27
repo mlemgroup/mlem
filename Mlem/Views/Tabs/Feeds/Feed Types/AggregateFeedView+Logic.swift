@@ -1,17 +1,17 @@
 //
-//  FeedView+Logic.swift
+//  AggregateFeedView+Logic.swift
 //  Mlem
 //
-//  Created by Sjmarf on 31/12/2023.
+//  Created by Eric Andrews on 2024-01-20.
 //
 
-import SwiftUI
+import Foundation
 
-extension FeedView {
+extension AggregateFeedView {
     func genFeedSwitchingFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
-        FeedType.allCases.forEach { type in
-            let (imageName, enabled) = type != feedType
+        FeedType.allAggregateFeedCases.forEach { type in
+            let (imageName, enabled) = type != postTracker.feedType
                 ? (type.iconName, true)
                 : (type.iconNameFill, false)
             ret.append(MenuFunction.standardMenuFunction(
@@ -19,7 +19,11 @@ extension FeedView {
                 imageName: imageName,
                 destructiveActionPrompt: nil,
                 enabled: enabled,
-                callback: { feedType = type }
+                callback: {
+                    Task {
+                        await postTracker.changeFeedType(to: type)
+                    }
+                }
             ))
         }
         return ret

@@ -12,12 +12,11 @@ extension UserView {
     
     var tabs: [UserViewTab] {
         var tabs: [UserViewTab] = [.overview, .posts, .comments]
-        if isOwnProfile {
-            tabs.append(.saved)
-        }
+        
         if !(user.moderatedCommunities?.isEmpty ?? true) {
             tabs.append(.communities)
         }
+        
         return tabs
     }
     
@@ -44,9 +43,9 @@ extension UserView {
              
             var newUser = UserModel(from: authoredContent)
             newUser.isAdmin = user.isAdmin
-            self.user = newUser
+            user = newUser
             
-            self.communityTracker.replaceAll(with: user.moderatedCommunities ?? [])
+            communityTracker.replaceAll(with: user.moderatedCommunities ?? [])
             
             var savedContentData: GetPersonDetailsResponse?
             if isOwnProfile {
@@ -75,18 +74,18 @@ extension UserView {
             }
             
             privateCommentTracker.comments = newComments
-            privatePostTracker.reset(with: newPosts)
+            await privatePostTracker.reset(with: newPosts)
             
-            self.isLoadingContent = false
+            isLoadingContent = false
             
         } catch {
-                errorHandler.handle(
-                    .init(
-                        title: "Couldn't load user info",
-                        message: "There was an error while loading user information.\nTry again later.",
-                        underlyingError: error
-                    )
+            errorHandler.handle(
+                .init(
+                    title: "Couldn't load user info",
+                    message: "There was an error while loading user information.\nTry again later.",
+                    underlyingError: error
                 )
-            }
+            )
+        }
     }
 }

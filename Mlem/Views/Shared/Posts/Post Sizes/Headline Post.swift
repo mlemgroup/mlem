@@ -20,7 +20,7 @@ struct HeadlinePost: View {
     private let spacing: CGFloat = 10 // constant for readability, ease of modification
 
     // arguments
-    let post: PostModel
+    @ObservedObject var post: PostModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppConstants.postAndCommentSpacing) {

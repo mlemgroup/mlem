@@ -85,7 +85,6 @@ struct CommunityStatsView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
-        
     }
 }
 
