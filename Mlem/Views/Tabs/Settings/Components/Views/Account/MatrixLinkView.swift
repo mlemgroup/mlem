@@ -37,7 +37,7 @@ struct MatrixLinkView: View {
         Form {
             Section {
                 VStack {
-                    Image("logo.matrix")
+                    Image("matrix.logo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 100)
