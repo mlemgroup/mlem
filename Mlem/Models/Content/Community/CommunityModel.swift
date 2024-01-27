@@ -114,11 +114,6 @@ struct CommunityModel {
         postCount = communityView.counts.posts
         commentCount = communityView.counts.comments
         activeUserCount = .init(
-        subscriberCount = communityView.counts.subscribers
-        localSubscriberCount = communityView.counts.subscribersLocal
-        postCount = communityView.counts.posts
-        commentCount = communityView.counts.comments
-        activeUserCount = .init(
             sixMonths: communityView.counts.usersActiveHalfYear,
             month: communityView.counts.usersActiveMonth,
             week: communityView.counts.usersActiveWeek,

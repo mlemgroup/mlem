@@ -170,7 +170,7 @@ struct InstanceStatsView: View {
                     settingRow(
                         "Default Feed Type",
                         systemImage: Icons.feeds,
-                        value: feedType.label
+                        value: feedType.rawValue
                     )
                 }
             }

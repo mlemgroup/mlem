@@ -21,7 +21,7 @@ struct APILocalSite: Decodable {
 //    let applicationQuestion: String?
     let privateInstance: Bool
 //    let defaultTheme: String
-    let defaultPostListingType: FeedType
+    let defaultPostListingType: APIListingType
 //    let legalInformation: String?
     let hideModlogModNames: Bool
     let applicationEmailAdmins: Bool

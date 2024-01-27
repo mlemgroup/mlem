@@ -18,16 +18,6 @@ extension Array where Element == CommunityComplication {
     static let instanceOnly: [CommunityComplication] = [.instance]
 }
 
-enum CommunityComplication: CaseIterable {
-    case type, instance, subscribers
-}
-
-extension Array where Element == CommunityComplication {
-    static let withTypeLabel: [CommunityComplication] = [.type, .instance, .subscribers]
-    static let withoutTypeLabel: [CommunityComplication] = [.instance, .subscribers]
-    static let instanceOnly: [CommunityComplication] = [.instance]
-}
-
 struct CommunityResultView: View {
     @Dependency(\.apiClient) private var apiClient
     @Dependency(\.hapticManager) var hapticManager
