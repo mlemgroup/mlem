@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 18/09/2023.
 //
 
-import SwiftUI
 import Dependencies
+import SwiftUI
 
 enum CommunityComplication: CaseIterable {
     case type, instance, subscribers
@@ -50,13 +50,14 @@ struct CommunityResultView: View {
     }
     
     var title: String {
+        var suffix = ""
         if community.blocked ?? false {
-            return "\(community.name) ∙ Blocked"
-        } else if community.nsfw {
-            return "\(community.name) ∙ NSFW"
-        } else {
-            return community.name
+            suffix.append(" ∙ Blocked")
         }
+        if community.nsfw {
+            suffix.append("∙ NSFW")
+        }
+        return community.name + suffix
     }
     
     var caption: String {
@@ -149,8 +150,8 @@ struct CommunityResultView: View {
         .contextMenu {
             ForEach(
                 community.menuFunctions(
-                    trackerCallback,
-                    editorTracker: editorTracker
+                    editorTracker: editorTracker,
+                    trackerCallback
                 )
             ) { item in
                 MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)

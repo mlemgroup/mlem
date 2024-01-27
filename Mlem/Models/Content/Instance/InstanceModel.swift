@@ -36,7 +36,7 @@ struct InstanceModel {
     var slurFilterString: String?
     var captchaDifficulty: APICaptchaDifficulty?
     var registrationMode: APIRegistrationMode?
-    var defaultFeedType: FeedType?
+    var defaultFeedType: APIListingType?
     var hideModlogModNames: Bool?
     var applicationsEmailAdmins: Bool?
     var reportsEmailAdmins: Bool?

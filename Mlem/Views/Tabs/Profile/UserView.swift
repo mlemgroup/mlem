@@ -27,7 +27,7 @@ struct UserView: View {
     
     @State var isPresentingAccountSwitcher: Bool = false
     
-    @StateObject var privatePostTracker: PostTracker
+    @StateObject var privatePostTracker: StandardPostTracker
     @StateObject var privateCommentTracker: CommentTracker = .init()
     
     @StateObject var communityTracker: ContentTracker<CommunityModel> = .init()
@@ -48,11 +48,12 @@ struct UserView: View {
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self.internetSpeed = internetSpeed
-        
-        self._privatePostTracker = StateObject(wrappedValue: .init(
-            shouldPerformMergeSorting: false,
+  
+        self._privatePostTracker = .init(wrappedValue: .init(
             internetSpeed: internetSpeed,
-            upvoteOnSave: upvoteOnSave
+            sortType: .new,
+            showReadPosts: true,
+            feedType: .all
         ))
         
         self._user = State(wrappedValue: user)
@@ -70,11 +71,12 @@ struct UserView: View {
                 Button(action: user.copyFullyQualifiedUsername) {
                     VStack(spacing: 5) {
                         Text(user.displayName)
-                            .font(.title.bold())
+                            .font(.title)
+                            .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                         Text(user.fullyQualifiedUsername ?? user.name)
-                            .font(.footnote)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }

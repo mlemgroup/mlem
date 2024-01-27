@@ -19,7 +19,7 @@ struct GetCommentsRequest: APIGetRequest {
         session: APISession,
         postId: Int,
         maxDepth: Int,
-        type: FeedType,
+        type: APIListingType,
         sort: CommentSortType?,
         page: Int?,
         limit: Int?,
