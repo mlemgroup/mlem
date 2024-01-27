@@ -21,5 +21,5 @@ struct CommunityLinkWithContext: Equatable, Identifiable, Hashable {
     var id: Int { hashValue }
     
     let community: CommunityModel?
-    let feedType: FeedType
+    let feedType: APIListingType
 }
