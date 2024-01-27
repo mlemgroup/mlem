@@ -14,6 +14,8 @@ class PostModel: ContentIdentifiable, ObservableObject {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.errorHandler) var errorHandler
     @Dependency(\.postRepository) var postRepository
+    @Dependency(\.siteInformation) var siteInformation
+    @Dependency(\.notifier) var notifier
     
     var postId: Int
     var post: APIPost
@@ -155,6 +157,9 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
+    func toggleUpvote() async { await vote(inputOp: .upvote) }
+    func toggleDownvote() async { await vote(inputOp: .downvote) }
+    
     func markRead(_ newRead: Bool) async {
         // state fake
         let original: PostModel = .init(from: self)
@@ -171,8 +176,11 @@ class PostModel: ContentIdentifiable, ObservableObject {
         }
     }
     
-    func toggleSave(upvoteOnSave: Bool) async {
+    func toggleSave() async {
+        hapticManager.play(haptic: .success, priority: .high)
+        
         let shouldSave: Bool = !saved
+        let upvoteOnSave = UserDefaults.standard.bool(forKey: "upvoteOnSave")
         
         // state fake
         let original: PostModel = .init(from: self)

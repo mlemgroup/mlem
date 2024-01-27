@@ -19,7 +19,7 @@ extension ExpandedPost {
     }
     
     func savePost() async {
-        await post.toggleSave(upvoteOnSave: upvoteOnSave)
+        await post.toggleSave()
     }
     
     func replyToPost() {
