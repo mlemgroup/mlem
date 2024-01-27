@@ -72,11 +72,12 @@ struct UserView: View {
                 Button(action: user.copyFullyQualifiedUsername) {
                     VStack(spacing: 5) {
                         Text(user.displayName)
-                            .font(.title.bold())
+                            .font(.title)
+                            .fontWeight(.semibold)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                         Text(user.fullyQualifiedUsername ?? user.name)
-                            .font(.footnote)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
