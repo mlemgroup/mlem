@@ -7,10 +7,7 @@
 
 import SwiftUI
 
-// Profile tab view
 struct ProfileView: View {
-    // appstorage
-    @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
     let user: UserModel?
 

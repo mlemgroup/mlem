@@ -54,7 +54,10 @@ struct ErrorView: View {
                     .font(.title3.bold())
                     .foregroundStyle(.primary)
                 
-                if let body = errorDetails.body { Text(body) }
+                if let body = errorDetails.body {
+                    Text(body)
+                        .multilineTextAlignment(.center)
+                }
                 
                 if !errorDetails.autoRefresh, let refresh = errorDetails.refresh {
                     Button {

@@ -73,6 +73,12 @@ struct GetPersonDetailsRequest: APIGetRequest {
 struct GetPersonDetailsResponse: Decodable {
     let personView: APIPersonView
     let comments: [APICommentView]
+    
+    // At the time of writing this has been merged into
+    // Lemmy but isn't in a live Lemmy version. Probably will be in 0.19.3.
+    // - Sjmarf 2024-01-24
+    let site: APISite?
+    
     let posts: [APIPostView]
     let moderates: [APICommunityModeratorView]
 }

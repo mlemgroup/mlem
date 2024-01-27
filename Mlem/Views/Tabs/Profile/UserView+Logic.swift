@@ -12,12 +12,11 @@ extension UserView {
     
     var tabs: [UserViewTab] {
         var tabs: [UserViewTab] = [.overview, .posts, .comments]
-        if isOwnProfile {
-            tabs.append(.saved)
-        }
+        
         if !(user.moderatedCommunities?.isEmpty ?? true) {
             tabs.append(.communities)
         }
+        
         return tabs
     }
     
@@ -41,9 +40,18 @@ extension UserView {
     
     func tryReloadUser() async {
         do {
-            let authoredContent = try await personRepository.loadUserDetails(for: user.userId, limit: internetSpeed.pageSize)
-            self.user = UserModel(from: authoredContent)
-            self.communityTracker.replaceAll(with: user.moderatedCommunities ?? [])
+            let authoredContent: GetPersonDetailsResponse
+            if user.usesExternalData {
+                authoredContent = try await personRepository.loadUserDetails(for: user.profileUrl, limit: internetSpeed.pageSize)
+            } else {
+                authoredContent = try await personRepository.loadUserDetails(for: user.userId, limit: internetSpeed.pageSize)
+            }
+             
+            var newUser = UserModel(from: authoredContent)
+            newUser.isAdmin = user.isAdmin
+            user = newUser
+            
+            communityTracker.replaceAll(with: user.moderatedCommunities ?? [])
             
             var savedContentData: GetPersonDetailsResponse?
             if isOwnProfile {
@@ -72,18 +80,18 @@ extension UserView {
             }
             
             privateCommentTracker.comments = newComments
-            privatePostTracker.reset(with: newPosts)
+            await privatePostTracker.reset(with: newPosts)
             
-            self.isLoadingContent = false
+            isLoadingContent = false
             
         } catch {
-                errorHandler.handle(
-                    .init(
-                        title: "Couldn't load user info",
-                        message: "There was an error while loading user information.\nTry again later.",
-                        underlyingError: error
-                    )
+            errorHandler.handle(
+                .init(
+                    title: "Couldn't load user info",
+                    message: "There was an error while loading user information.\nTry again later.",
+                    underlyingError: error
                 )
-            }
+            )
+        }
     }
 }

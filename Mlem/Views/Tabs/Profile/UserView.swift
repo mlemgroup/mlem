@@ -28,7 +28,7 @@ struct UserView: View {
     
     @State var isPresentingAccountSwitcher: Bool = false
     
-    @StateObject var privatePostTracker: PostTracker
+    @StateObject var privatePostTracker: StandardPostTracker
     @StateObject var privateCommentTracker: CommentTracker = .init()
     
     @StateObject var communityTracker: ContentTracker<CommunityModel> = .init()
@@ -49,11 +49,12 @@ struct UserView: View {
         @AppStorage("upvoteOnSave") var upvoteOnSave = false
         
         self.internetSpeed = internetSpeed
-        
-        self._privatePostTracker = StateObject(wrappedValue: .init(
-            shouldPerformMergeSorting: false,
+  
+        self._privatePostTracker = .init(wrappedValue: .init(
             internetSpeed: internetSpeed,
-            upvoteOnSave: upvoteOnSave
+            sortType: .new,
+            showReadPosts: true,
+            feedType: .all
         ))
         
         self._user = State(wrappedValue: user)
@@ -207,6 +208,7 @@ struct UserView: View {
             }
         }
         .fancyTabScrollCompatible()
+        .navigationBarColor()
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isPresentingAccountSwitcher) {
@@ -252,7 +254,7 @@ struct UserView: View {
                             flairBackground(color: flair.color) {
                                 HStack {
                                     Image(systemName: Icons.adminFlair)
-                                    let host = try? apiClient.session.instanceUrl.host()
+                                    let host = user.profileUrl.host()
                                     Text("\(host ?? "Instance") Administrator")
                                 }
                             }
