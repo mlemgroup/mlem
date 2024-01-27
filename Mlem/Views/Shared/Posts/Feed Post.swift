@@ -370,7 +370,7 @@ struct FeedPost: View {
             ret.append(MenuFunction.standardMenuFunction(
                 text: "Delete",
                 imageName: Icons.delete,
-                destructiveActionPrompt: "Are you sure you want to delete this post? This cannot be undone.",
+                role: .destructive(prompt: "Are you sure you want to delete this post? This cannot be undone."),
                 enabled: !postModel.post.deleted
             ) {
                 Task(priority: .userInitiated) {

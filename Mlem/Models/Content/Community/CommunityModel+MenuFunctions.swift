@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 extension CommunityModel {
-    func newPostMenuFunction(editorTracker: EditorTracker, postTracker: PostTracker? = nil) -> MenuFunction {
+    func newPostMenuFunction(editorTracker: EditorTracker, postTracker: StandardPostTracker? = nil) -> MenuFunction {
         return .standardMenuFunction(
                 text: "New Post",
                 imageName: Icons.sendFill,
