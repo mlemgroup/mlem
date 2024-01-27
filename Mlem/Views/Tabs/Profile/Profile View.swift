@@ -6,22 +6,60 @@
 //
 
 import SwiftUI
+import Dependencies
 
 struct ProfileView: View {
+    // appstorage
+    @Dependency(\.siteInformation) var siteInformation
+    @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
     
-    let user: UserModel?
-
     @StateObject private var profileTabNavigation: AnyNavigationPath<AppRoute> = .init()
+    @StateObject private var editorSheetNavigation: AnyNavigationPath<AppRoute> = .init()
+    
     @StateObject private var navigation: Navigation = .init()
+    @StateObject private var sheetNavigation: Navigation = .init()
+    
+    @State var isPresentingAccountSwitcher: Bool = false
+    @State var isPresentingProfileEditor: Bool = false
     
     var body: some View {
         ScrollViewReader { proxy in
             NavigationStack(path: $profileTabNavigation.path) {
-                if let user {
-                    UserView(user: user)
+                if let person = siteInformation.myUserInfo?.localUserView.person {
+                    UserView(user: UserModel(from: person))
                         .handleLemmyViews()
                         .environmentObject(profileTabNavigation)
                         .tabBarNavigationEnabled(.profile, navigation)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarLeading) {
+                                Button("Switch Account", systemImage: Icons.switchUser) {
+                                    isPresentingAccountSwitcher = true
+                                }
+                            }
+                            // TODO: 0.17 deprecation
+                            if (siteInformation.version ?? .infinity) >= .init("0.18.0") {
+                                ToolbarItem(placement: .secondaryAction) {
+                                    Button("Edit", systemImage: Icons.edit) {
+                                        isPresentingProfileEditor = true
+                                    }
+                                }
+                            }
+                        }
+                        .sheet(isPresented: $isPresentingAccountSwitcher) {
+                            Form {
+                                AccountListView()
+                            }
+                        }
+                        .sheet(isPresented: $isPresentingProfileEditor) {
+                            NavigationStack(path: $editorSheetNavigation.path) {
+                                ProfileSettingsView(showCloseButton: true)
+                                    .handleLemmyViews()
+                                    .environmentObject(editorSheetNavigation)
+                            }
+                            .handleLemmyLinkResolution(navigationPath: .constant(editorSheetNavigation))
+                            .environment(\.navigationPathWithRoutes, $editorSheetNavigation.path)
+                            .environment(\.navigation, sheetNavigation)
+                        }
                 } else {
                     LoadingView(whatIsLoading: .profile)
                         .fancyTabScrollCompatible()
