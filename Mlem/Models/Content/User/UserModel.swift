@@ -185,7 +185,7 @@ struct UserModel {
     }
     
     var isActiveAccount: Bool {
-        siteInformation.myUserInfo?.localUserView.localUser.id == userId
+        return siteInformation.myUserInfo?.localUserView.person.id == userId
     }
     
     var fullyQualifiedUsername: String? {

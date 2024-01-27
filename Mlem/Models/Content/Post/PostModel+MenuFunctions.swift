@@ -102,43 +102,43 @@ extension PostModel {
                     with: ConcreteEditorModel(post: self, operation: PostOperation.reportPost)
                 )
             })
+            
+            // Block User
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Block User",
+                imageName: Icons.userBlock,
+                destructiveActionPrompt: AppConstants.blockUserPrompt,
+                enabled: true
+            ) {
+                Task(priority: .userInitiated) {
+                    await self.creator.toggleBlock { self.creator = $0 }
+                    if self.creator.blocked {
+                        await postTracker.applyFilter(.blockedUser(self.creator.userId))
+                        await self.notifier.add(.failure("Blocked \(self.creator.name)"))
+                    } else {
+                        await self.notifier.add(.failure("Failed to block user"))
+                    }
+                }
+            })
+            
+            // Block Community
+            functions.append(MenuFunction.standardMenuFunction(
+                text: "Block Community",
+                imageName: Icons.hide,
+                destructiveActionPrompt: AppConstants.blockCommunityPrompt,
+                enabled: true
+            ) {
+                Task(priority: .userInitiated) {
+                    try await self.community.toggleBlock { self.community = $0 }
+                    if self.community.blocked ?? false {
+                        await postTracker.applyFilter(.blockedCommunity(self.community.communityId))
+                        await self.notifier.add(.failure("Blocked \(self.creator.name)"))
+                    } else {
+                        await self.notifier.add(.failure("Failed to block community"))
+                    }
+                }
+            })
         }
-        
-        // Block User
-        functions.append(MenuFunction.standardMenuFunction(
-            text: "Block User",
-            imageName: Icons.userBlock,
-            destructiveActionPrompt: AppConstants.blockUserPrompt,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await self.creator.toggleBlock { self.creator = $0 }
-                if self.creator.blocked {
-                    await postTracker.applyFilter(.blockedUser(self.creator.userId))
-                    await self.notifier.add(.failure("Blocked \(self.creator.name)"))
-                } else {
-                    await self.notifier.add(.failure("Failed to block user"))
-                }
-            }
-        })
-        
-        // Block Community
-        functions.append(MenuFunction.standardMenuFunction(
-            text: "Block Community",
-            imageName: Icons.hide,
-            destructiveActionPrompt: AppConstants.blockCommunityPrompt,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                try await self.community.toggleBlock { self.community = $0 }
-                if self.community.blocked ?? false {
-                    await postTracker.applyFilter(.blockedCommunity(self.community.communityId))
-                    await self.notifier.add(.failure("Blocked \(self.creator.name)"))
-                } else {
-                    await self.notifier.add(.failure("Failed to block community"))
-                }
-            }
-        })
 
         return functions
     }
