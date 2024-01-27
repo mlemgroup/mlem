@@ -8,37 +8,43 @@
 import SwiftUI
 
 struct NoPostsView: View {
-    @EnvironmentObject var postTracker: PostTracker
+    @EnvironmentObject var postTracker: StandardPostTracker
     
-    @Binding var isLoading: Bool
-    @Binding var postSortType: PostSortType
+    let loadingState: LoadingState
+    let postSortType: PostSortType
     @Binding var showReadPosts: Bool
+    // this isn't the most elegant but passing a nested binding doesn't seem to propagate changes correctly [Eric 2024.01.25]
+    let switchToHot: () -> Void
     
     var body: some View {
         VStack {
-            if !isLoading {
-                VStack(alignment: .center, spacing: AppConstants.postAndCommentSpacing) {
-                    
-                    let unreadItems = postTracker.hiddenItems[.read, default: 0]
+            if loadingState != .loading {
+                VStack(alignment: .center, spacing: 0) {
+                    let unreadItems = postTracker.getFilteredCount(for: .read)
                     
                     Image(systemName: Icons.noPosts)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: unreadItems == 0 ? 35 : 50)
-                        .padding(.bottom, unreadItems == 0 ? 8: 12)
-                    Text(title)
+                        .frame(width: 35)
+                        .padding(.vertical, 35)
+                        .padding(.top, 10) // offsets the illusion of whitespace created by lowercase letters below
                     
-                    if unreadItems != 0 {
-                        Text(
-                            "\(unreadItems) read post\(unreadItems == 1 ? " has" : "s have") been hidden."
-                        )
-                        .foregroundStyle(.tertiary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 20)
+                    VStack(spacing: AppConstants.postAndCommentSpacing) {
+                        Text(title)
                         
+                        if unreadItems != 0 {
+                            Text(
+                                "\(unreadItems) read post\(unreadItems == 1 ? " has" : "s have") been hidden."
+                            )
+                            .foregroundStyle(.tertiary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, 20)
+                        }
+                        
+                        buttons
+                            .padding(.top)
                     }
-                    buttons
                 }
                 .foregroundStyle(.secondary)
             }
@@ -46,7 +52,7 @@ struct NoPostsView: View {
     }
     
     var title: String {
-        if PostSortType.topTypes.contains(postSortType) && postSortType != .topAll {
+        if PostSortType.topTypes.contains(postSortType), postSortType != .topAll {
             return "No posts found from the last \(postSortType.label.lowercased())."
         }
         return "No posts found."
@@ -57,16 +63,14 @@ struct NoPostsView: View {
         VStack {
             if postSortType != .hot {
                 Button {
-                    isLoading = true
-                    postSortType = .hot
+                    switchToHot()
                 } label: {
                     Label("Switch to Hot", systemImage: Icons.hotSort)
                 }
             }
-            if postTracker.hiddenItems[.read, default: 0] > 0 {
+            if postTracker.getFilteredCount(for: .read) > 0 {
                 Button {
                     if !showReadPosts {
-                        isLoading = true
                         showReadPosts = true
                     }
                 } label: {
@@ -76,7 +80,5 @@ struct NoPostsView: View {
         }
         .foregroundStyle(.secondary)
         .buttonStyle(.bordered)
-        .padding(.top)
-        .padding(.horizontal, 20)
     }
 }

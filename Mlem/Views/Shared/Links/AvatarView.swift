@@ -86,6 +86,25 @@ struct AvatarView: View {
         )
     }
     
+    init(
+        instance: InstanceModel,
+        avatarSize: CGFloat,
+        blurAvatar: Bool = false,
+        lineColor: Color? = nil,
+        lineWidth: CGFloat = 1,
+        iconResolution: AvatarIconResolution? = nil
+    ) {
+        self.init(
+            url: instance.avatar,
+            type: .instance,
+            avatarSize: avatarSize,
+            blurAvatar: blurAvatar,
+            lineColor: lineColor,
+            lineWidth: lineWidth,
+            iconResolution: iconResolution
+        )
+    }
+    
     static func shouldShowCommunityAvatarOutline(url: URL?) -> Bool {
         guard let hostString = url?.host else {
             return true
@@ -100,11 +119,11 @@ struct AvatarView: View {
             shouldExpand: false,
             fixedSize: CGSize(width: avatarSize, height: avatarSize),
             imageNotFound: { AnyView(DefaultAvatarView(avatarType: type)) },
+            blurRadius: blurAvatar ? 4 : 0,
             contentMode: .fill
         )
         .frame(width: avatarSize, height: avatarSize)
         .accessibilityHidden(true)
-        .blur(radius: blurAvatar ? 4 : 0)
         .clipShape(Circle())
         .overlay(Circle()
             .stroke(

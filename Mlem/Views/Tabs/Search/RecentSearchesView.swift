@@ -74,7 +74,7 @@ struct RecentSearchesView: View {
                 if let community = contentModel.wrappedValue as? CommunityModel {
                     CommunityResultView(
                         community,
-                        showTypeLabel: true,
+                        complications: .withTypeLabel,
                         swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
                         trackerCallback: {
                             contentTracker.update(with: AnyContentModel($0))
@@ -83,7 +83,7 @@ struct RecentSearchesView: View {
                 } else if let user = contentModel.wrappedValue as? UserModel {
                     UserResultView(
                         user,
-                        showTypeLabel: true,
+                        complications: [.type, .instance, .comments],
                         swipeActions: .init(trailingActions: [deleteSwipeAction(contentModel)]),
                         trackerCallback: {
                             contentTracker.update(with: AnyContentModel($0))

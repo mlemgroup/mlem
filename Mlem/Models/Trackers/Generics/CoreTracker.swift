@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Class providing common tracker functionality for BasicTracker and ParentTracker
+/// Class providing common tracker functionality for StandardTracker and ParentTracker
 class CoreTracker<Item: TrackerItem>: ObservableObject {
     @Published var items: [Item] = .init()
     @Published private(set) var loadingState: LoadingState = .idle
@@ -17,11 +17,9 @@ class CoreTracker<Item: TrackerItem>: ObservableObject {
     private(set) var fallbackThreshold: ContentModelIdentifier?
     
     private(set) var internetSpeed: InternetSpeed
-    private(set) var sortType: TrackerSortType
-    
-    init(internetSpeed: InternetSpeed, sortType: TrackerSortType) {
+
+    init(internetSpeed: InternetSpeed) {
         self.internetSpeed = internetSpeed
-        self.sortType = sortType
     }
     
     /// If the given item is the loading threshold item, loads more content
@@ -30,12 +28,12 @@ class CoreTracker<Item: TrackerItem>: ObservableObject {
         if loadingState == .idle, item.uid == threshold || item.uid == fallbackThreshold {
             // this is a synchronous function that wraps the loading as a task so that the task is attached to the tracker itself, not the view that calls it, and is therefore safe from being cancelled by view redraws
             Task(priority: .userInitiated) {
-                await loadNextPage()
+                await loadMoreItems()
             }
         }
     }
     
-    func loadNextPage() async {
+    func loadMoreItems() async {
         preconditionFailure("This method must be overridden by the inheriting class")
     }
     
@@ -58,6 +56,11 @@ class CoreTracker<Item: TrackerItem>: ObservableObject {
     func addItems(_ newItems: [Item]) async {
         items.append(contentsOf: newItems)
         updateThresholds()
+    }
+    
+    @MainActor
+    func prependItem(_ newItem: Item) async {
+        items.prepend(newItem)
     }
     
     private func updateThresholds() {
