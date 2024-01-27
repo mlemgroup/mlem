@@ -97,8 +97,6 @@ struct UserModel {
     mutating func update(with personView: APIPersonView) {
         self.postCount = personView.counts.postCount
         self.commentCount = personView.counts.commentCount
-        
-        self.usesExternalData = usesExternalData
              
         // TODO: 0.18 Deprecation
         @Dependency(\.siteInformation) var siteInformation

@@ -77,8 +77,9 @@ struct ContentView: View {
                             activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
                             remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
                         )
-                        .simultaneousGesture(accountSwitchLongPress)
-                    }
+                    )
+                    .simultaneousGesture(accountSwitchLongPress)
+                }
                 
                 SearchRoot()
                     .fancyTabItem(tag: TabSelection.search) {
