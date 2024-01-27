@@ -34,20 +34,25 @@ struct AccountSettingsView: View {
         Form {
             if let info = siteInformation.myUserInfo {
                 Section {
-                    VStack {
-                        AvatarView(url: info.localUserView.person.avatarUrl, type: .user, avatarSize: 96, iconResolution: .unrestricted)
-                        Text(info.localUserView.person.displayName ?? info.localUserView.person.name)
-                            .font(.largeTitle)
-                            .padding(.top, 3)
-                        if let account = appState.currentActiveAccount, let hostName = account.hostName {
-                            Text("@\(info.localUserView.person.name)@\(hostName)")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                    VStack(spacing: AppConstants.postAndCommentSpacing) {
+                        AvatarBannerView(user: .init(from: info.localUserView.person))
+                        VStack(spacing: 5) {
+                            Text(info.localUserView.person.displayName ?? info.localUserView.person.name)
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.01)
+                            if let account = appState.currentActiveAccount, let hostName = account.hostName {
+                                Text("@\(info.localUserView.person.name)@\(hostName)")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity)
                     .listRowBackground(Color(.systemGroupedBackground))
                     .padding(.vertical, -12)
+                    .padding(.horizontal, -16)
                 }
                 
                 // See comments under APIListingType for why this is necessary.
