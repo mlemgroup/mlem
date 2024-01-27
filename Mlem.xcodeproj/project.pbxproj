@@ -84,6 +84,7 @@
 		03C905CE2B3C8DC400B9082F /* UserView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */; };
 		03C942922B6457B4002068A4 /* BanUserEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942912B6457B4002068A4 /* BanUserEditorModel.swift */; };
 		03C942942B64596B002068A4 /* BanUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942932B64596B002068A4 /* BanUserView.swift */; };
+		03C942962B648252002068A4 /* BanPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C942952B648252002068A4 /* BanPerson.swift */; };
 		03CB329E2A6D8E910021EF27 /* PostComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CB329D2A6D8E910021EF27 /* PostComposerView.swift */; };
 		03E0B9C82A61F0F400FED265 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */; };
 		03E0B9CA2A62B4A400FED265 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0B9C92A62B4A400FED265 /* ContributorsView.swift */; };
@@ -626,6 +627,7 @@
 		03C905CD2B3C8DC400B9082F /* UserView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserView+Logic.swift"; sourceTree = "<group>"; };
 		03C942912B6457B4002068A4 /* BanUserEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserEditorModel.swift; sourceTree = "<group>"; };
 		03C942932B64596B002068A4 /* BanUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanUserView.swift; sourceTree = "<group>"; };
+		03C942952B648252002068A4 /* BanPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BanPerson.swift; sourceTree = "<group>"; };
 		03CB329D2A6D8E910021EF27 /* PostComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostComposerView.swift; sourceTree = "<group>"; };
 		03E0B9C72A61F0F400FED265 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
 		03E0B9C92A62B4A400FED265 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
@@ -1949,6 +1951,7 @@
 		6372182E2A3A2AAD008C4816 /* Person */ = {
 			isa = PBXGroup;
 			children = (
+				03C942952B648252002068A4 /* BanPerson.swift */,
 				6372182F2A3A2AAD008C4816 /* GetPersonDetails.swift */,
 				CDF842632A49EAFA00723DA0 /* GetPersonMentions.swift */,
 				CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */,
@@ -3015,6 +3018,7 @@
 				637218442A3A2AAD008C4816 /* HierarchicalComment.swift in Sources */,
 				CDDCF6472A663849003DA3AC /* EnvironmentValues+TabSelectionHashValue.swift in Sources */,
 				63D24EDE2A169F2A005CCA81 /* Markdown View.swift in Sources */,
+				03C942962B648252002068A4 /* BanPerson.swift in Sources */,
 				E453A1D02A81C2140004BB8A /* QuickLookPreviewController.swift in Sources */,
 				B104A6E02A59C19400B3E725 /* OperationQueue+ConvenienceInit.swift in Sources */,
 				CD2053122ACB72190000AA38 /* AccountTransitionView.swift in Sources */,

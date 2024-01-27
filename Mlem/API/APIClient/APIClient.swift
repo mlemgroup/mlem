@@ -239,6 +239,18 @@ extension APIClient {
         return try await perform(request: request)
     }
     
+    func banPerson(id: Int, shouldBan: Bool, expires: Int?, reason: String?, removeData: Bool) async throws -> BanPersonResponse {
+        let request = try BanPersonRequest(
+            session: session,
+            personId: id,
+            ban: shouldBan,
+            expires: expires,
+            reason: reason,
+            removeData: removeData
+        )
+        return try await perform(request: request)
+    }
+    
     func markPersonMentionAsRead(mentionId: Int, isRead: Bool) async throws -> APIPersonMentionView {
         let request = try MarkPersonMentionAsRead(session: session, personMentionId: mentionId, read: isRead)
         return try await perform(request: request).personMentionView

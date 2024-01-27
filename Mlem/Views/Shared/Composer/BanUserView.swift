@@ -28,6 +28,8 @@ private struct BanFormButton: ButtonStyle {
 struct BanUserView: View {
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.hapticManager) var hapticManager
+    @Dependency(\.apiClient) var apiClient
+    
     @Environment(\.dismiss) var dismiss
     
     let editModel: BanUserEditorModel
