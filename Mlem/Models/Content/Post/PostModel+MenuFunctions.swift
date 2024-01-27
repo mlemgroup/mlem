@@ -8,6 +8,7 @@
 import Foundation
 
 extension PostModel {
+    // swiftlint:disable function_body_length
     func menuFunctions(editorTracker: EditorTracker, postTracker: StandardPostTracker) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         
@@ -141,4 +142,5 @@ extension PostModel {
 
         return functions
     }
+    // swiftlint:enable function_body_length
 }

@@ -97,9 +97,6 @@ struct FeedPost: View {
                 postItem
                     .border(width: barThickness, edges: [.leading], color: .secondary)
                     .background(Color.systemBackground)
-                    //                .background(horizontalSizeClass == .regular ? Color.secondarySystemBackground : Color.systemBackground)
-                    //                .clipShape(RoundedRectangle(cornerRadius: horizontalSizeClass == .regular ? 16 : 0))
-                    //                .padding(.all, horizontalSizeClass == .regular ? nil : 0)
                     .destructiveConfirmation(
                         isPresentingConfirmDestructive: $isPresentingConfirmDestructive,
                         confirmationMenuFunction: confirmationMenuFunction

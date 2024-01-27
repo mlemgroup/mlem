@@ -10,30 +10,11 @@ import Foundation
 extension ExpandedPost {
     // MARK: Interaction callbacks
     
-    func upvotePost() async {
-        await post.vote(inputOp: .upvote)
-    }
-    
-    func downvotePost() async {
-        await post.vote(inputOp: .downvote)
-    }
-    
-    func savePost() async {
-        await post.toggleSave()
-    }
-    
     func replyToPost() {
         editorTracker.openEditor(with: ConcreteEditorModel(
             post: post,
             commentTracker: commentTracker,
             operation: PostOperation.replyToPost
-        ))
-    }
-    
-    func reportPost() {
-        editorTracker.openEditor(with: ConcreteEditorModel(
-            post: post,
-            operation: PostOperation.reportPost
         ))
     }
     
@@ -44,142 +25,6 @@ extension ExpandedPost {
             operation: CommentOperation.replyToComment
         ))
     }
-    
-    func blockUser() async {
-        do {
-            let response = try await apiClient.blockPerson(id: post.creator.userId, shouldBlock: true)
-            if response.blocked {
-                await postTracker.applyFilter(.blockedUser(post.creator.userId))
-                hapticManager.play(haptic: .violentSuccess, priority: .high)
-                await notifier.add(.success("Blocked \(post.creator.name)"))
-            }
-        } catch {
-            errorHandler.handle(
-                .init(
-                    message: "Unable to block \(post.creator.name)",
-                    style: .toast,
-                    underlyingError: error
-                )
-            )
-        }
-    }
-    
-    // MARK: Helper functions
-    
-    // swiftlint:disable function_body_length
-    func genMenuFunctions() -> [MenuFunction] {
-        var ret: [MenuFunction] = .init()
-        
-        // upvote
-        let (upvoteText, upvoteImg) = post.votes.myVote == .upvote ?
-            ("Undo Upvote", Icons.upvoteSquareFill) :
-            ("Upvote", Icons.upvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: upvoteText,
-            imageName: upvoteImg,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await upvotePost()
-            }
-        })
-        
-        // downvote
-        let (downvoteText, downvoteImg) = post.votes.myVote == .downvote ?
-            ("Undo Downvote", Icons.downvoteSquareFill) :
-            ("Downvote", Icons.downvoteSquare)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: downvoteText,
-            imageName: downvoteImg,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await downvotePost()
-            }
-        })
-        
-        // save
-        let (saveText, saveImg) = post.saved ?
-            ("Unsave", Icons.unsave) :
-            ("Save", Icons.save)
-        ret.append(MenuFunction.standardMenuFunction(
-            text: saveText,
-            imageName: saveImg,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await savePost()
-            }
-        })
-        
-        // reply
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Reply",
-            imageName: Icons.reply,
-            destructiveActionPrompt: nil,
-            enabled: true
-        ) {
-            replyToPost()
-        })
-        
-        if appState.isCurrentAccountId(post.creator.userId) {
-            // edit
-            ret.append(MenuFunction.standardMenuFunction(
-                text: "Edit",
-                imageName: Icons.edit,
-                destructiveActionPrompt: nil,
-                enabled: true
-            ) {
-                editorTracker.openEditor(with: PostEditorModel(post: post))
-            })
-            
-            // delete
-            ret.append(MenuFunction.standardMenuFunction(
-                text: "Delete",
-                imageName: Icons.delete,
-                destructiveActionPrompt: "Are you sure you want to delete this post?  This cannot be undone.",
-                enabled: !post.post.deleted
-            ) {
-                Task(priority: .userInitiated) {
-                    await post.delete()
-                }
-            })
-        }
-        
-        // share
-        if let url = URL(string: post.post.apId) {
-            ret.append(MenuFunction.shareMenuFunction(url: url))
-        }
-        
-        // report
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Report Post",
-            imageName: Icons.moderationReport,
-            destructiveActionPrompt: AppConstants.reportPostPrompt,
-            enabled: true
-        ) {
-            reportPost()
-        })
-        
-        // block user
-        ret.append(MenuFunction.standardMenuFunction(
-            text: "Block User",
-            imageName: Icons.userBlock,
-            destructiveActionPrompt: AppConstants.blockUserPrompt,
-            enabled: true
-        ) {
-            Task(priority: .userInitiated) {
-                await blockUser()
-            }
-        })
-        
-        return ret
-    }
-
-    // swiftlint:enable function_body_length
 
     @discardableResult
     func loadComments() async -> Bool {
