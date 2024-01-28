@@ -19,7 +19,6 @@ extension HorizontalAlignment {
     static let labelStart = HorizontalAlignment(LabelStart.self)
 }
 
-// swiftlint:disable type_body_length
 struct PostComposerView: View {
     private enum Field: Hashable {
         case title, url, body
@@ -93,17 +92,7 @@ struct PostComposerView: View {
                             .padding(.top)
                             .padding(.horizontal)
                             .onChange(of: postTitle) { newValue in
-                                do {
-                                    if let regex = siteInformation.slurFilterRegex {
-                                        if let output = try regex.firstMatch(in: newValue.lowercased()) {
-                                            titleSlurMatch = String(newValue[output.range])
-                                        } else {
-                                            titleSlurMatch = nil
-                                        }
-                                    }
-                                } catch {
-                                    print("REGEX FAILED")
-                                }
+                                titleSlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
                             }
                                              
                         if attachmentModel.imageModel != nil || attachmentModel.url.isNotEmpty {
@@ -191,17 +180,7 @@ struct PostComposerView: View {
                         .focused($focusedField, equals: .body)
                         .padding(.horizontal)
                         .onChange(of: postBody) { newValue in
-                            do {
-                                if let regex = siteInformation.slurFilterRegex {
-                                    if let output = try regex.firstMatch(in: newValue.lowercased()) {
-                                        bodySlurMatch = String(newValue[output.range])
-                                    } else {
-                                        bodySlurMatch = nil
-                                    }
-                                }
-                            } catch {
-                                print("REGEX FAILED")
-                            }
+                            bodySlurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
                         }
                         
                         Spacer()
@@ -303,6 +282,7 @@ struct PostComposerView: View {
                     Capsule()
                         .fill(.red)
                     Text("\"\(slurMatch)\" is disallowed.")
+                        .foregroundStyle(.white)
                 }
                 .padding(-2)
             }
@@ -310,4 +290,3 @@ struct PostComposerView: View {
         .animation(.default, value: titleSlurMatch == nil && bodySlurMatch == nil)
     }
 }
-// swiftlint:enable type_body_length

@@ -55,17 +55,7 @@ struct ResponseEditorView: View {
                 }
                 .onChange(of: editorBody) { newValue in
                     if editorModel.showSlurWarning {
-                        do {
-                            if let regex = siteInformation.slurFilterRegex {
-                                if let output = try regex.firstMatch(in: newValue.lowercased()) {
-                                    slurMatch = String(newValue[output.range])
-                                } else {
-                                    slurMatch = nil
-                                }
-                            }
-                        } catch {
-                            print("REGEX FAILED")
-                        }
+                        slurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
                     }
                 }
                 
