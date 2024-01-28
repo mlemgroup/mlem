@@ -195,6 +195,10 @@ struct UserModel {
         return self.init(from: APIPerson.mock())
     }
     
+    var isActiveAccount: Bool {
+        return siteInformation.myUserInfo?.localUserView.person.id == userId
+    }
+    
     var fullyQualifiedUsername: String? {
         if let host = self.profileUrl.host() {
             return "\(name!)@\(host)"
