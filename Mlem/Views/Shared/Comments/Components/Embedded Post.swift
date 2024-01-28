@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct EmbeddedPost: View {
-    // used to handle the lazy load embedded post--speed doesn't matter because it's not a "real" post tracker
-    @StateObject var postTracker: PostTracker
-    
     let community: APICommunity
     let post: APIPost
     let comment: APIComment
@@ -19,9 +16,6 @@ struct EmbeddedPost: View {
         self.community = community
         self.post = post
         self.comment = comment
-        
-        @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        self._postTracker = StateObject(wrappedValue: .init(internetSpeed: .slow, upvoteOnSave: upvoteOnSave))
     }
 
     @State var loadedPostDetails: PostModel?
