@@ -180,31 +180,28 @@ struct InstanceStatsView: View {
             .background(Color(uiColor: .secondarySystemGroupedBackground))
             .cornerRadius(AppConstants.largeItemCornerRadius)
             
-            if developerMode {
-                VStack(alignment: .leading, spacing: 0) {
-                    settingRow(
-                        "Show Mod Names in Modlog",
-                        systemImage: Icons.moderation,
-                        value: !(instance.hideModlogModNames ?? true)
-                    )
-                    Divider()
-                    settingRow(
-                        "Applications Email Admins",
-                        systemImage: Icons.person,
-                        value: instance.applicationsEmailAdmins ?? false
-                    )
-                    Divider()
-                    settingRow(
-                        "Reports Email Admins",
-                        systemImage: Icons.moderationReport,
-                        value: instance.reportsEmailAdmins ?? false
-                    )
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .secondarySystemGroupedBackground))
-                .cornerRadius(AppConstants.largeItemCornerRadius)
+            VStack(alignment: .leading, spacing: 0) {
+                settingRow(
+                    "Show Mod Names in Modlog",
+                    systemImage: Icons.moderation,
+                    value: !(instance.hideModlogModNames ?? true)
+                )
+                Divider()
+                settingRow(
+                    "Applications Email Admins",
+                    systemImage: Icons.person,
+                    value: instance.applicationsEmailAdmins ?? false
+                )
+                Divider()
+                settingRow(
+                    "Reports Email Admins",
+                    systemImage: Icons.moderationReport,
+                    value: instance.reportsEmailAdmins ?? false
+                )
             }
-            
+            .frame(maxWidth: .infinity)
+            .background(Color(uiColor: .secondarySystemGroupedBackground))
+            .cornerRadius(AppConstants.largeItemCornerRadius)
         }
         .padding(.horizontal, 16)
     }
