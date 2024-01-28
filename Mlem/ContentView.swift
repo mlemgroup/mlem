@@ -179,7 +179,7 @@ struct ContentView: View {
     }
     
     func showAccountSwitcherDragCallback() {
-        if !homeButtonExists, allowTabBarSwipeUpGesture, accountsTracker.savedAccounts.count > 2 {
+        if !homeButtonExists, allowTabBarSwipeUpGesture, accountsTracker.savedAccounts.count > 1 {
             isPresentingAccountSwitcher = true
         }
     }
