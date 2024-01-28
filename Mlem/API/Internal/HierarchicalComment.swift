@@ -35,6 +35,10 @@ extension HierarchicalComment: Identifiable {
     var id: Int { commentView.id }
 }
 
+extension HierarchicalComment: ContentIdentifiable {
+    var uid: ContentModelIdentifier { .init(contentType: .comment, contentId: commentView.id) }
+}
+
 extension HierarchicalComment: Equatable {
     static func == (lhs: HierarchicalComment, rhs: HierarchicalComment) -> Bool {
         lhs.id == rhs.id

@@ -10,28 +10,35 @@ import Foundation
 import SwiftUI
 
 struct SavedFeedView: View {
-    // TODO: ERIC this whole view needs its own PR--needs its own tracker to handle loading user content, needs a different type of feed to handle mixed posts and comments, and needs a good way of determining the current user ID
+    @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
     
     @Dependency(\.siteInformation) var siteInformation
     @Dependency(\.errorHandler) var errorHandler
     
     // ugly little hack to deal with the fact that dependencies don't propagate state changes nicely but we need to listen for siteInformation.myUserInfo to resolve
-    @State var siteInformationLoaded: Bool
+    @State var userId: Int?
     
     init() {
-        @Dependency(\.siteInformation) var siteInformation
+        @AppStorage("internetSpeed") var internetSpeed: InternetSpeed = .fast
         
-        _siteInformationLoaded = .init(wrappedValue: siteInformation.myUserInfo != nil)
+        @Dependency(\.siteInformation) var siteInformation
     }
     
     var body: some View {
-        // note to reviewers: this is super ugly but exists just to get the app in a stable running state pending the aforementioned PR to make this view nice
-        if !siteInformationLoaded {
+        content
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        if let userId {
+            UserContentFeedView(userId: userId, saved: true)
+        } else {
+            // TODO: better site information loading state handling
             LoadingView(whatIsLoading: .posts)
                 .task {
                     for _ in 0 ..< 5 {
-                        if siteInformation.myUserInfo != nil {
-                            siteInformationLoaded = true
+                        if let resolvedId = siteInformation.myUserInfo?.localUserView.localUser.id {
+                            userId = resolvedId
                             break
                         }
                         
@@ -42,8 +49,6 @@ struct SavedFeedView: View {
                         }
                     }
                 }
-        } else {
-            AggregateFeedView(feedType: .saved)
         }
     }
 }
