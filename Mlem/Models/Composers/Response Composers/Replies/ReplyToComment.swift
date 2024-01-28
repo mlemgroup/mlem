@@ -14,6 +14,7 @@ struct ReplyToComment: ResponseEditorModel {
     
     var id: Int { comment.id }
     let canUpload: Bool = true
+    let showSlurWarning: Bool = true
     let modalName: String = "New Comment"
     let comment: APICommentView
     let prefillContents: String?

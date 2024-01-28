@@ -15,6 +15,7 @@ struct ReportMessage: ResponseEditorModel {
     
     var id: Int { message.id }
     let canUpload: Bool = false
+    let showSlurWarning: Bool = false
     let modalName: String = "Report Message"
     let prefillContents: String? = nil
     let message: MessageModel
