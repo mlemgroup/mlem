@@ -162,7 +162,9 @@ struct InstanceStatsView: View {
                         .foregroundStyle(.secondary)
                         .padding(12)
                         .onTapGesture {
-                            showingSlurRegex.toggle()
+                            withAnimation {
+                                showingSlurRegex.toggle()
+                            }
                         }
                 }
                 if developerMode, let feedType = instance.defaultFeedType {
