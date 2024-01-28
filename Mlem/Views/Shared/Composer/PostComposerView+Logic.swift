@@ -17,7 +17,7 @@ extension PostComposerView {
     var isReadyToPost: Bool {
         switch attachmentModel.imageModel?.state {
         case nil, .uploaded:
-            return postTitle.trimmed.isNotEmpty
+            return postTitle.trimmed.isNotEmpty && titleSlurMatch == nil && bodySlurMatch == nil
         default:
             return false
         }

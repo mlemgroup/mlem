@@ -9,8 +9,10 @@ import SwiftUI
 
 extension AccountListView {
     var accounts: [SavedAccount] {
-        let accountSort = accountsTracker.savedAccounts.count == 2 ? .name : accountSort
+        let accountSort = accountsTracker.savedAccounts.count == 2 ? .custom : accountSort
         switch accountSort {
+        case .custom:
+            return accountsTracker.savedAccounts
         case .name:
             return accountsTracker.savedAccounts.sorted { $0.nicknameSortKey < $1.nicknameSortKey }
         case .instance:
@@ -29,16 +31,17 @@ extension AccountListView {
     
     func getNameCategory(account: SavedAccount) -> String {
         guard let first = account.nickname.first else { return "Unknown" }
-        if "abcdefghijklmnopqrstuvwxyz".contains(first) {
-            return String(first)
+        if first.isLetter {
+            return String(first.lowercased())
         }
         return "*"
     }
     
     var accountGroups: [AccountGroup] {
         switch accountSort {
+        case .custom:
+            return [.init(header: "Custom", accounts: accountsTracker.savedAccounts)]
         case .name:
-            
             return Dictionary(
                 grouping: accountsTracker.savedAccounts,
                 by: { getNameCategory(account: $0) }
@@ -89,14 +92,17 @@ extension AccountListView {
                 }
             }
             var groups = [AccountGroup]()
+            
+            today.sort { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
             if let currentActiveAccount = appState.currentActiveAccount {
                 today.prepend(currentActiveAccount)
             }
+            
             if !today.isEmpty {
                 groups.append(
                     AccountGroup(
                         header: "Today",
-                        accounts: today.sorted { $0.lastUsed ?? .distantPast > $1.lastUsed ?? .distantPast }
+                        accounts: today
                     )
                 )
             }
@@ -118,5 +124,9 @@ extension AccountListView {
             }
             return groups
         }
+    }
+    
+    func reorderAccount(fromOffsets: IndexSet, toOffset: Int) {
+        accountsTracker.savedAccounts.move(fromOffsets: fromOffsets, toOffset: toOffset)
     }
 }
