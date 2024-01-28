@@ -16,6 +16,8 @@ protocol ResponseEditorModel: Identifiable {
     
     var modalName: String { get } // what to title the modal
     
+    var showSlurWarning: Bool { get }
+    
     var prefillContents: String? { get } // optional, contents to prepopulate the editor with
     
     func embeddedView() -> AnyView
