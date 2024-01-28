@@ -21,6 +21,7 @@ class SiteInformationTracker: ObservableObject {
     @Published var myUserInfo: APIMyUserInfo?
     
     func load(account: SavedAccount) {
+
         version = account.siteVersion
         Task {
             do {
@@ -36,6 +37,7 @@ class SiteInformationTracker: ObservableObject {
                 }
                 myUserInfo = response.myUser
                 allLanguages = response.allLanguages
+                
             } catch {
                 errorHandler.handle(error)
             }
