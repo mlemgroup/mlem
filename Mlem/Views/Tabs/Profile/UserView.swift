@@ -150,25 +150,10 @@ struct UserView: View {
             confirmationMenuFunction: confirmationMenuFunction
         )
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .secondaryAction) {
                 let functions = user.menuFunctions { user = $0 }
-                if functions.count == 1, let first = functions.first {
-                    MenuButton(menuFunction: first, confirmDestructive: confirmDestructive)
-                } else {
-                    Menu {
-                        ForEach(functions) { item in
-                            MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
-                        }
-                    } label: {
-                        Label("Menu", systemImage: Icons.menuCircle)
-                    }
-                }
-            }
-            if isOwnProfile {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Switch Account", systemImage: Icons.switchUser) {
-                        isPresentingAccountSwitcher = true
-                    }
+                ForEach(functions) { item in
+                    MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                 }
             }
         }
@@ -185,9 +170,16 @@ struct UserView: View {
             }
         }
         .refreshable {
-            await Task {
+            Task {
                 await tryReloadUser()
-            }.value
+            }
+        }
+        .onChange(of: siteInformation.myUserInfo?.localUserView.person) { newValue in
+            if isOwnProfile {
+                if let newValue {
+                    self.user.update(with: newValue)
+                }
+            }
         }
         .hoistNavigation {
             if navigationPath.isEmpty {
@@ -210,11 +202,6 @@ struct UserView: View {
         .navigationBarColor()
         .navigationTitle(user.displayName)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $isPresentingAccountSwitcher) {
-            Form {
-                AccountListView()
-            }
-        }
     }
     
     var flairs: some View {

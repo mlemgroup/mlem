@@ -41,6 +41,8 @@ struct InstanceModel {
     var applicationsEmailAdmins: Bool?
     var reportsEmailAdmins: Bool?
     
+    var slurFilterRegex: Regex<AnyRegexOutput>?
+    
     init(from response: SiteResponse) {
         self.update(with: response)
     }
@@ -61,7 +63,8 @@ struct InstanceModel {
     
     mutating func update(with response: SiteResponse) {
         self.administrators = response.admins.map {
-            var user = UserModel(from: $0, usesExternalData: true)
+            var user = UserModel(from: $0)
+            user.usesExternalData = true
             user.isAdmin = true
             return user
         }
@@ -131,6 +134,19 @@ struct InstanceModel {
         if let avatar = stub.avatar {
             self.avatar = URL(string: avatar)
         }
+    }
+    
+    func firstSlurFilterMatch(_ input: String) -> String? {
+        do {
+            if let slurFilterRegex {
+                if let output = try slurFilterRegex.firstMatch(in: input.lowercased()) {
+                    return String(input[output.range])
+                }
+            }
+        } catch {
+            print("REGEX FAILED")
+        }
+        return nil
     }
 }
 

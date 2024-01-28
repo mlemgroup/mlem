@@ -172,6 +172,7 @@ class PostModel: ContentIdentifiable, ObservableObject {
     }
     
     func toggleSave(upvoteOnSave: Bool) async {
+        hapticManager.play(haptic: .success, priority: .high)
         let shouldSave: Bool = !saved
         
         // state fake

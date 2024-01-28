@@ -102,6 +102,13 @@ struct EasyTapLinkView: View {
         .padding(AppConstants.postAndCommentSpacing)
         .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius)
             .foregroundColor(Color(UIColor.secondarySystemBackground)))
+        .contextMenu {
+            Button("Copy", systemImage: Icons.copy) {
+                let pasteboard = UIPasteboard.general
+                pasteboard.url = linkType.url
+            }
+            ShareLink(item: linkType.url)
+        }
     }
     
     @ViewBuilder
