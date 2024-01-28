@@ -17,6 +17,8 @@ struct InstanceModel {
     var url: URL!
     var version: SiteVersion?
     
+    var slurFilterRegex: Regex<AnyRegexOutput>?
+    
     init(from response: SiteResponse) {
         self.update(with: response)
     }
@@ -27,11 +29,23 @@ struct InstanceModel {
     
     mutating func update(with response: SiteResponse) {
         self.administrators = response.admins.map {
-            var user = UserModel(from: $0, usesExternalData: true)
+            var user = UserModel(from: $0)
+            user.usesExternalData = true
             user.isAdmin = true
             return user
         }
         self.version = SiteVersion(response.version)
+        
+        let localSite = response.siteView.localSite
+        
+        do {
+            if let regex = localSite.slurFilterRegex {
+                self.slurFilterRegex = try .init(regex)
+            }
+        } catch {
+            print("Invalid slur filter regex")
+        }
+
         self.update(with: response.siteView.site)
     }
     
@@ -46,6 +60,19 @@ struct InstanceModel {
             components.path = ""
             url = components.url
         }
+    }
+    
+    func firstSlurFilterMatch(_ input: String) -> String? {
+        do {
+            if let slurFilterRegex {
+                if let output = try slurFilterRegex.firstMatch(in: input.lowercased()) {
+                    return String(input[output.range])
+                }
+            }
+        } catch {
+            print("REGEX FAILED")
+        }
+        return nil
     }
 }
 

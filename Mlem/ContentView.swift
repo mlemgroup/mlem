@@ -42,14 +42,6 @@ struct ContentView: View {
     
     var accessibilityFont: Bool { UIApplication.shared.preferredContentSizeCategory.isAccessibilityCategory }
     
-    var myUser: UserModel? {
-        if let person = siteInformation.myUserInfo?.localUserView.person {
-            return UserModel(from: person)
-        } else {
-            return nil
-        }
-    }
-    
     var body: some View {
         FancyTabBar(selection: $tabSelection, navigationSelection: $tabNavigation, dragUpGestureCallback: showAccountSwitcherDragCallback) {
             Group {
@@ -75,19 +67,19 @@ struct ContentView: View {
                         }
                 }
                     
-                ProfileView(user: myUser)
-                    .fancyTabItem(tag: TabSelection.profile) {
-                        FancyTabBarLabel(
-                            tag: TabSelection.profile,
-                            customText: appState.tabDisplayName,
-                            symbolConfiguration: .init(
-                                symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
-                                activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
-                                remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
-                            )
+                ProfileView()
+                .fancyTabItem(tag: TabSelection.profile) {
+                    FancyTabBarLabel(
+                        tag: TabSelection.profile,
+                        customText: appState.tabDisplayName,
+                        symbolConfiguration: .init(
+                            symbol: FancyTabBarLabel.SymbolConfiguration.profile.symbol,
+                            activeSymbol: FancyTabBarLabel.SymbolConfiguration.profile.activeSymbol,
+                            remoteSymbolUrl: appState.profileTabRemoteSymbolUrl
                         )
-                        .simultaneousGesture(accountSwitchLongPress)
-                    }
+                    )
+                    .simultaneousGesture(accountSwitchLongPress)
+                }
                 
                 SearchRoot()
                     .fancyTabItem(tag: TabSelection.search) {

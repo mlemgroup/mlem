@@ -23,7 +23,7 @@ struct APILocalSite: Decodable {
 //    let legalInformation: String?
 //    let hideModlogModNames: Bool
 //    let applicationEmailAdmins: Bool
-//    let slurFilterRegex: String?
+      let slurFilterRegex: String?
 //    let actorNameMaxLength: Int
 //    let federationEnabled: Bool
 //    let federationDebug: Bool

@@ -25,9 +25,8 @@ struct CommunityFeedView: View {
     @Dependency(\.hapticManager) var hapticManager
     @Dependency(\.communityRepository) var communityRepository
     
-    @EnvironmentObject var editorTracker: EditorTracker
-    
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var editorTracker: EditorTracker
     
     @StateObject var postTracker: StandardPostTracker
     
@@ -149,16 +148,6 @@ struct CommunityFeedView: View {
                 }
             }
         }
-        .background {
-            VStack(spacing: 0) {
-                Color.systemBackground
-                    .frame(height: 200)
-                
-                if selectedTab == .statistics || selectedTab == .moderators {
-                    Color(uiColor: .systemGroupedBackground)
-                }
-            }
-        }
     }
     
     func posts() -> some View {
@@ -179,26 +168,22 @@ struct CommunityFeedView: View {
     @ViewBuilder
     func moderators() -> some View {
         if let moderators = communityModel.moderators {
-            Divider()
-                .padding(.top, 15)
-                .background(Color.secondarySystemBackground)
             ForEach(moderators, id: \.id) { user in
                 UserResultView(user, communityContext: communityModel)
                 Divider()
             }
-            Color.secondarySystemBackground
-                .frame(height: 100)
         }
     }
     
     func statistics() -> some View {
         VStack(spacing: 0) {
             CommunityStatsView(community: communityModel)
-                .padding(.top, AppConstants.postAndCommentSpacing)
+                .padding(.vertical, 16)
                 .background(Color(uiColor: .systemGroupedBackground))
             
-            Color(uiColor: .systemGroupedBackground)
-                .frame(maxHeight: .infinity)
+            if colorScheme == .light {
+                Divider()
+            }
         }
         .frame(maxHeight: .infinity)
     }

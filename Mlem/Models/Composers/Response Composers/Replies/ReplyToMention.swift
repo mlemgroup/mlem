@@ -13,6 +13,7 @@ struct ReplyToMention: ResponseEditorModel {
     @Dependency(\.commentRepository) var commentRepository
     
     let canUpload: Bool = true
+    let showSlurWarning: Bool = true
     let modalName: String = "New Comment"
     let prefillContents: String? = nil
     let mention: MentionModel
