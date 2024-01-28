@@ -12,38 +12,23 @@ struct PostEditorModel: Identifiable {
     var id: Int { community.communityId }
     
     let community: CommunityModel
-    var postTracker: PostTracker!
+    let postTracker: StandardPostTracker?
     let editPost: PostModel?
-    var responseCallback: ((PostModel) -> Void)?
     
+    /// Initializer for creating a post. If `postTracker` is provided, the new post will be prepended to it.
     init(
         community: CommunityModel,
-        postTracker: PostTracker? = nil,
-        responseCallback: ((PostModel) -> Void)? = nil
+        postTracker: StandardPostTracker?
     ) {
         self.community = community
+        self.postTracker = postTracker
         self.editPost = nil
-        self.responseCallback = responseCallback
-        self.initialiseTracker(postTracker)
     }
     
-    init(
-        post: PostModel,
-        postTracker: PostTracker? = nil,
-        responseCallback: ((PostModel) -> Void)? = nil
-    ) {
-        self.editPost = post
+    /// Initializer for editing a post
+    init(post: PostModel) {
         self.community = post.community
-        self.responseCallback = responseCallback
-        self.initialiseTracker(postTracker)
-    }
-    
-    private mutating func initialiseTracker(_ postTracker: PostTracker?) {
-        @AppStorage("upvoteOnSave") var upvoteOnSave = false
-        if let postTracker {
-            self.postTracker = postTracker
-        } else {
-            self.postTracker = .init(shouldPerformMergeSorting: false, internetSpeed: .slow, upvoteOnSave: upvoteOnSave)
-        }
+        self.postTracker = nil
+        self.editPost = post
     }
 }

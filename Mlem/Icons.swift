@@ -46,7 +46,7 @@ struct Icons {
     
     // misc post
     static let posts: String = "doc.plaintext"
-    static let replies: String = "bubble"
+    static let replies: String = "bubble.left"
     static let unreadReplies: String = "text.bubble"
     static let textPost: String = "text.book.closed"
     static let titleOnlyPost: String = "character.bubble"
@@ -186,6 +186,7 @@ struct Icons {
     static let leftRight: String = "arrow.left.arrow.right"
     static let developerMode: String = "wrench.adjustable.fill"
     static let limitImageHeightSetting: String = "rectangle.compress.vertical"
+    static let collapseComments: String = "arrow.down.and.line.horizontal.and.arrow.up"
     
     // misc
     static let switchUser: String = "person.crop.circle.badge.plus"

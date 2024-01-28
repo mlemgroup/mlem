@@ -27,6 +27,7 @@ struct CommentItem: View {
     @AppStorage("shouldShowSavedInCommentBar") var shouldShowSavedInCommentBar: Bool = false
     @AppStorage("shouldShowRepliesInCommentBar") var shouldShowRepliesInCommentBar: Bool = true
     @AppStorage("compactComments") var compactComments: Bool = false
+    @AppStorage("tapCommentToCollapse") var tapCommentToCollapse: Bool = true
 
     // MARK: Temporary
 
@@ -188,7 +189,9 @@ struct CommentItem: View {
         }
         .contentShape(Rectangle()) // allow taps in blank space to register
         .onTapGesture {
-            toggleCollapsed()
+            if tapCommentToCollapse {
+                toggleCollapsed()
+            }
         }
         .destructiveConfirmation(
             isPresentingConfirmDestructive: $isPresentingConfirmDestructive,

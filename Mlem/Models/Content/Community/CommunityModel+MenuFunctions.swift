@@ -9,18 +9,18 @@ import Foundation
 import SwiftUI
 
 extension CommunityModel {
-    func newPostMenuFunction(editorTracker: EditorTracker, postTracker: PostTracker? = nil) -> MenuFunction {
-        return .standardMenuFunction(
-                text: "New Post",
-                imageName: Icons.sendFill,
-                destructiveActionPrompt: nil,
-                enabled: true
-            ) {
-                editorTracker.openEditor(with: PostEditorModel(
-                    community: self,
-                    postTracker: postTracker
-                ))
-            }
+    func newPostMenuFunction(editorTracker: EditorTracker, postTracker: StandardPostTracker? = nil) -> MenuFunction {
+        .standardMenuFunction(
+            text: "New Post",
+            imageName: Icons.sendFill,
+            destructiveActionPrompt: nil,
+            enabled: true
+        ) {
+            editorTracker.openEditor(with: PostEditorModel(
+                community: self,
+                postTracker: postTracker
+            ))
+        }
     }
     
     func subscribeMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) throws -> StandardMenuFunction {
@@ -46,7 +46,7 @@ extension CommunityModel {
     }
     
     func favoriteMenuFunction(_ callback: @escaping (_ item: Self) -> Void = { _ in }) -> StandardMenuFunction {
-        return .init(
+        .init(
             text: favorited ? "Unfavorite" : "Favorite",
             imageName: favorited ? Icons.unfavorite : Icons.favorite,
             destructiveActionPrompt: favorited ? "Really unfavorite \(community.name)?" : nil,
@@ -86,9 +86,9 @@ extension CommunityModel {
     }
     
     func menuFunctions(
-        _ callback: @escaping (_ item: Self) -> Void = { _ in },
         editorTracker: EditorTracker? = nil,
-        postTracker: PostTracker? = nil
+        postTracker: StandardPostTracker? = nil,
+        _ callback: @escaping (_ item: Self) -> Void = { _ in }
     ) -> [MenuFunction] {
         var functions: [MenuFunction] = .init()
         if let editorTracker {
@@ -97,6 +97,21 @@ extension CommunityModel {
         if let function = try? subscribeMenuFunction(callback) {
             functions.append(.standard(function))
             functions.append(.standard(favoriteMenuFunction(callback)))
+        }
+        if let instanceHost = self.communityUrl.host() {
+            let instance: InstanceModel?
+            if let site {
+                instance = .init(from: site)
+            } else {
+                instance = nil
+            }
+            functions.append(
+                .navigationMenuFunction(
+                    text: instanceHost,
+                    imageName: Icons.instance,
+                    destination: .instance(instanceHost, instance)
+                )
+            )
         }
         functions.append(
             .standardMenuFunction(

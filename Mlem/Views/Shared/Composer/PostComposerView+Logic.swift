@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 extension PostComposerView {
     var hasPostContent: Bool {
@@ -25,7 +25,7 @@ extension PostComposerView {
     
     var isValidURL: Bool {
         guard attachmentModel.url.lowercased().hasPrefix("http://") ||
-                attachmentModel.url.lowercased().hasPrefix("https://") else {
+            attachmentModel.url.lowercased().hasPrefix("https://") else {
             return false // URL protocol is missing
         }
 
@@ -53,12 +53,7 @@ extension PostComposerView {
             isSubmitting = true
             
             if let post = editModel.editPost {
-                let editedPost = await postTracker.edit(post: post, name: postTitle, url: attachmentModel.url, body: postBody, nsfw: isNSFW)
-                
-                if let responseCallback = editModel.responseCallback {
-                    responseCallback(editedPost)
-                }
-                
+                await post.edit(name: postTitle, url: attachmentModel.url, body: postBody, nsfw: isNSFW)
             } else {
                 let response = try await apiClient.createPost(
                     communityId: editModel.community.communityId,
@@ -70,9 +65,9 @@ extension PostComposerView {
                 
                 hapticManager.play(haptic: .success, priority: .high)
                 
-                await MainActor.run {
-                    withAnimation {
-                        postTracker.prepend(PostModel(from: response.postView))
+                if let postTracker = editModel.postTracker {
+                    Task {
+                        await postTracker.prependItem(PostModel(from: response.postView))
                     }
                 }
             }

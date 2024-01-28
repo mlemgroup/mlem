@@ -73,42 +73,17 @@ struct MlemApp: App {
 
     private func setupAppShortcuts() {
         guard accountsTracker.savedAccounts.first != nil else { return }
-
-        // Subscribed Feed
-        let subscribedIcon = UIApplicationShortcutIcon(systemImageName: Icons.subscribedFeed)
-        let subscribedFeedItem = UIApplicationShortcutItem(
-            type: FeedType.subscribed.rawValue,
-            localizedTitle: "Subscribed",
-            localizedSubtitle: nil,
-            icon: subscribedIcon,
-            userInfo: nil
-        )
-
-        // Local Feed
-        let localIcon = UIApplicationShortcutIcon(systemImageName: Icons.localFeed)
-        let localFeedItem = UIApplicationShortcutItem(
-            type: FeedType.local.rawValue,
-            localizedTitle: "Local",
-            localizedSubtitle: nil,
-            icon: localIcon,
-            userInfo: nil
-        )
-
-        // All Feed
-        let allIcon = UIApplicationShortcutIcon(systemImageName: Icons.federatedFeed)
-        let allFeedItem = UIApplicationShortcutItem(
-            type: FeedType.all.rawValue,
-            localizedTitle: "All",
-            localizedSubtitle: nil,
-            icon: allIcon,
-            userInfo: nil
-        )
-
-        UIApplication.shared.shortcutItems = [
-            subscribedFeedItem,
-            localFeedItem,
-            allFeedItem
-        ]
+        
+        UIApplication.shared.shortcutItems = FeedType.allAggregateFeedCases.map { feedType in
+            let icon = UIApplicationShortcutIcon(systemImageName: feedType.iconName)
+            return UIApplicationShortcutItem(
+                type: feedType.toShortcutString,
+                localizedTitle: feedType.label,
+                localizedSubtitle: nil,
+                icon: icon,
+                userInfo: nil
+            )
+        }
     }
     
     /// A variable describing the initial flow the application should run after start-up

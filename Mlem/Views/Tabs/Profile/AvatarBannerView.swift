@@ -15,27 +15,35 @@ struct AvatarBannerView: View {
     let avatar: URL?
     let banner: URL?
     
-    let showBanner: Bool
-    let showAvatar: Bool
+    var showEmptyBanner: Bool = false
+    var showBanner: Bool = true
+    var showAvatar: Bool = true
     
-    init(user: UserModel) {
+    init(user: UserModel?) {
         self.type = .user
-        self.avatar = user.avatar
-        self.banner = user.banner
+        self.avatar = user?.avatar
+        self.banner = user?.banner
         @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
         self.showBanner = shouldShowUserHeaders
         @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
         self.showAvatar = shouldShowUserAvatars
     }
     
-    init(community: CommunityModel) {
+    init(community: CommunityModel?) {
         self.type = .community
-        self.avatar = community.avatar
-        self.banner = community.banner
+        self.avatar = community?.avatar
+        self.banner = community?.banner
         @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
         self.showBanner = shouldShowCommunityHeaders
         @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
         self.showAvatar = shouldShowCommunityIcons
+    }
+    
+    init(instance: InstanceModel?) {
+        self.type = .instance
+        self.avatar = instance?.avatar
+        self.banner = instance?.banner
+        self.showEmptyBanner = true
     }
     
     static let bannerHeight: CGFloat = 170
@@ -55,7 +63,7 @@ struct AvatarBannerView: View {
     
     var body: some View {
         Group {
-            if let banner, showBanner {
+            if (banner != nil || showEmptyBanner) && showBanner {
                 ZStack(alignment: .bottom) {
                     VStack {
                         LazyImage(url: banner) { state in
