@@ -15,6 +15,7 @@ struct ResponseEditorView: View {
     }
     
     @Dependency(\.errorHandler) var errorHandler
+    @Dependency(\.siteInformation) var siteInformation
     
     let editorModel: any ResponseEditorModel
     
@@ -28,20 +29,14 @@ struct ResponseEditorView: View {
     @State var editorBody: String
     @State var isSubmitting: Bool = false
     
+    @State var slurMatch: String?
+    
     @FocusState private var focusedField: Field?
 
     private var isReadyToReply: Bool {
         editorBody.trimmed.isNotEmpty
     }
-    
-    func uploadImage() {
-        if editorModel.canUpload {
-            print("Uploading")
-        } else {
-            print("Uploading disabled for this sort of response")
-        }
-    }
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: AppConstants.postAndCommentSpacing) {
@@ -58,11 +53,32 @@ struct ResponseEditorView: View {
                 .onAppear {
                     focusedField = .editorBody
                 }
+                .onChange(of: editorBody) { newValue in
+                    if editorModel.showSlurWarning {
+                        slurMatch = siteInformation.instance?.firstSlurFilterMatch(newValue)
+                    }
+                }
                 
                 Divider()
                 
-                editorModel.embeddedView()
+                if let slurMatch {
+                    VStack {
+                        Text("\"\(slurMatch)\" is disallowed.")
+                            .foregroundStyle(.white)
+                        Text("You can still post this comment, but your instance will replace \"\(slurMatch)\" with \"*removed*\".")
+                            .multilineTextAlignment(.center)
+                            .font(.footnote)
+                            .foregroundStyle(.white.opacity(0.8))
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(RoundedRectangle(cornerRadius: AppConstants.largeItemCornerRadius).fill(.red))
+                    .padding(.horizontal, 10)
+                } else {
+                    editorModel.embeddedView()
+                }
             }
+            .animation(.default, value: slurMatch)
             .padding(.bottom, AppConstants.editorOverscroll)
         }
         .scrollDismissesKeyboard(.automatic)
