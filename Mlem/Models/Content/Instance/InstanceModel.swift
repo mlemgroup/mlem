@@ -41,8 +41,6 @@ struct InstanceModel {
     var applicationsEmailAdmins: Bool?
     var reportsEmailAdmins: Bool?
     
-    var slurFilterRegex: Regex<AnyRegexOutput>?
-    
     init(from response: SiteResponse) {
         self.update(with: response)
     }
