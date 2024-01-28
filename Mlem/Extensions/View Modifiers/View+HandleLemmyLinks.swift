@@ -223,13 +223,7 @@ struct HandleLemmyLinkResolution<Path: AnyNavigablePath>: ViewModifier {
                             return
                         }
                     } catch {
-                        guard case let APIClientError.response(apiError, _) = error,
-                              apiError.error == "couldnt_find_object",
-                              url.scheme == "https" else {
-                            errorHandler.handle(error)
-                            
-                            return
-                        }
+                        OpenURLAction(handler: { _ in .systemAction }).callAsFunction(url)
                     }
                     
                     // if all else fails fallback!

@@ -36,6 +36,7 @@ struct InstanceView: View {
     
     @State var domainName: String
     @State var instance: InstanceModel?
+    @State var uptimeData: UptimeData?
     @State var errorDetails: ErrorDetails?
     
     @Namespace var scrollToTop
@@ -58,6 +59,14 @@ struct InstanceView: View {
         } else {
             domainName
         }
+    }
+    
+    var availableTabs: [InstanceViewTab] {
+        var tabs: [InstanceViewTab] = [.about, .administrators, .details]
+        if let instance, instance.canFetchUptime {
+            tabs.append(.uptime)
+        }
+        return tabs
     }
     
     var body: some View {
@@ -98,7 +107,7 @@ struct InstanceView: View {
                     VStack(spacing: 0) {
                         VStack(spacing: 4) {
                             Divider()
-                            BubblePicker([.about, .administrators, .details], selected: $selectedTab) { tab in
+                            BubblePicker(availableTabs, selected: $selectedTab) { tab in
                                 Text(tab.label)
                             }
                             Divider()
@@ -138,6 +147,8 @@ struct InstanceView: View {
                                 ProgressView()
                                     .padding(.top)
                             }
+                        case .uptime:
+                            InstanceUptimeView(instance: instance, uptimeData: $uptimeData)
                         default:
                             EmptyView()
                         }
