@@ -13,6 +13,7 @@ struct CommentEditor: ResponseEditorModel {
     @Dependency(\.commentRepository) var commentRepository
 
     let canUpload: Bool = true
+    let showSlurWarning: Bool = true
     let modalName: String = "Edit Comment"
     var prefillContents: String? { comment.comment.content }
     let comment: APICommentView
