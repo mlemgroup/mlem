@@ -115,6 +115,9 @@ struct SwipeyView: ViewModifier {
                 DragGesture(minimumDistance: 20, coordinateSpace: .global) // min distance prevents conflict with scrolling drag gesture
                     .updating($dragState) { value, state, _ in
                         // this check adds a dead zone to the left side of the screen so it doesn't interfere with navigation
+                        if dragState == .zero && abs(value.translation.height) * 1.7 > abs(value.translation.width) {
+                            return
+                        }
                         if dragState != .zero || value.location.x > 70 {
                             state = value.translation.width
                         }
