@@ -58,6 +58,7 @@ struct FeedHeaderView: View {
             }
             .padding(.vertical, 5)
             .padding(.bottom, 3)
+            
             Divider()
         }
     }

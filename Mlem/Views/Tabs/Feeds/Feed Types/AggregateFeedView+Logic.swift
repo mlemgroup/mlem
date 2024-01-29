@@ -10,7 +10,6 @@ import Foundation
 extension AggregateFeedView {
     func genFeedSwitchingFunctions() -> [MenuFunction] {
         var ret: [MenuFunction] = .init()
-        // FeedType.allAggregateFeedCases.forEach { type in
         availableFeeds.forEach { type in
             let (imageName, enabled) = type != selectedFeed
                 ? (type.iconName, true)

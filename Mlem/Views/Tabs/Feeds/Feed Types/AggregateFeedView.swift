@@ -116,17 +116,15 @@ struct AggregateFeedView: View {
                             .padding(.top, -1)
                     }
                     
-                    Group {
-                        switch selectedFeed {
-                        case .all, .local, .subscribed:
-                            PostFeedView(postSortType: $postSortType, showCommunity: true)
-                                .environmentObject(postTracker)
-                        case .saved:
-                            UserContentFeedView()
-                                .environmentObject(savedContentTracker)
-                        default:
-                            EmptyView() // shouldn't be possible
-                        }
+                    switch selectedFeed {
+                    case .all, .local, .subscribed:
+                        PostFeedView(postSortType: $postSortType, showCommunity: true)
+                            .environmentObject(postTracker)
+                    case .saved:
+                        UserContentFeedView()
+                            .environmentObject(savedContentTracker)
+                    default:
+                        EmptyView() // shouldn't be possible
                     }
                 }
             }
