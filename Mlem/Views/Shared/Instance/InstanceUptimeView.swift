@@ -14,6 +14,7 @@ struct InstanceUptimeView: View {
     @Dependency(\.errorHandler) var errorHandler
     
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     @State var showingExactTime: Bool = false
     
@@ -61,7 +62,9 @@ struct InstanceUptimeView: View {
                     .padding(.vertical, 8)
                     .padding(.leading, 6)
             }
-            Divider()
+            if colorScheme == .light {
+                Divider()
+            }
         }
         .padding(.horizontal, 16)
         .background(Color(uiColor: .systemGroupedBackground))
