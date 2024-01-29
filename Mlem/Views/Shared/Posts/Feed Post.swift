@@ -23,6 +23,8 @@ struct FeedPost: View {
     // MARK: Environment
 
     @Environment(\.accessibilityDifferentiateWithoutColor) var diffWithoutColor: Bool
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.feedType) var feedType
     
     @AppStorage("postSize") var postSize: PostSize = .large
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
@@ -43,7 +45,6 @@ struct FeedPost: View {
     @EnvironmentObject var editorTracker: EditorTracker
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var layoutWidgetTracker: LayoutWidgetTracker
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     // MARK: Parameters
 
@@ -112,7 +113,10 @@ struct FeedPost: View {
                         ]
                     )
                     .contextMenu {
-                        let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+                        let functions = postModel.menuFunctions(
+                            editorTracker: editorTracker,
+                            postTracker: feedType == .saved ? nil : postTracker
+                        )
                         ForEach(functions) { item in
                             MenuButton(menuFunction: item, confirmDestructive: confirmDestructive)
                         }
@@ -172,7 +176,10 @@ struct FeedPost: View {
                             ReadCheck()
                         }
                         
-                        let functions = postModel.menuFunctions(editorTracker: editorTracker, postTracker: postTracker)
+                        let functions = postModel.menuFunctions(
+                            editorTracker: editorTracker,
+                            postTracker: feedType == .saved ? nil : postTracker
+                        )
                         EllipsisMenu(size: 24, menuFunctions: functions)
                     }
 
